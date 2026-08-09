@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "retrievedOn": "2026-08-09",
+  "suites": [
+    {
+      "id": "w3c-rdf-tests",
+      "specifications": ["RDF 1.1", "RDF 1.2"],
+      "upstream": "https://github.com/w3c/rdf-tests",
+      "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f",
+      "applicable": ["Turtle", "TriG", "N-Triples", "N-Quads", "RDF/XML"],
+      "classificationManifest": "docs/owlapi-js/conformance/classification-manifests.json#w3c-rdf-tests"
+    },
+    {
+      "id": "w3c-json-ld-api",
+      "specifications": [
+        "JSON-LD 1.1",
+        "JSON-LD 1.1 Processing Algorithms and API"
+      ],
+      "upstream": "https://github.com/w3c/json-ld-api",
+      "revision": "92f07705a0c0ac27aa9bc6fe1322dcc9fad0114d",
+      "applicable": ["toRdf", "fromRdf", "remote document policy"],
+      "classificationManifest": "docs/owlapi-js/conformance/classification-manifests.json#w3c-json-ld-api"
+    },
+    {
+      "id": "w3c-owl2",
+      "specifications": [
+        "OWL 2 Structural Specification Second Edition",
+        "OWL 2 Mapping to RDF Graphs Second Edition",
+        "OWL 2 Conformance Second Edition"
+      ],
+      "upstream": "https://www.w3.org/TR/owl2-conformance/",
+      "revision": "W3C Recommendation 11 December 2012",
+      "applicable": [
+        "structural model",
+        "syntax translation",
+        "OWL to RDF",
+        "RDF to OWL"
+      ],
+      "classificationManifest": "focused REQUIRED_V1 fixtures are accumulated sequentially with each structural/parser phase"
+    },
+    {
+      "id": "owlapi-reference",
+      "specifications": ["selected OWLAPI 5 behavioral compatibility"],
+      "upstream": "C:/Users/maksy/GitHub/owlcs/owlapi",
+      "revision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "version": "5.5.1",
+      "runtime": "development and test only",
+      "harness": "util/owlapi-reference/GenerateStructuralSnapshot.java"
+    },
+    {
+      "id": "owl2vowl-reference",
+      "specifications": ["legacy WebVOWL behavioral characterization"],
+      "upstream": "C:/Users/maksy/GitHub/VisualDataWeb/OWL2VOWL/target/OWL2VOWL-0.3.7-shaded.jar",
+      "revision": "sha256:4bd16f5b953fa27bd7bded24da329d574b8c9114732e9c56379ee2eb905800de",
+      "embeddedOwlapiVersion": "5.1.1",
+      "runtime": "development and test only"
+    }
+  ]
+}

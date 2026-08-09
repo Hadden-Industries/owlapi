@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "selectorLanguage": "RFC 9535 JSONPath",
+  "applicationStage": "after semantic canonicalization and atomic-difference calculation",
+  "atomicDifferenceTypes": [
+    "EXTRA",
+    "MISSING",
+    "VALUE_CHANGED",
+    "TYPE_CHANGED"
+  ],
+  "sides": ["Java", "JS"],
+  "cardinalityForms": [
+    "exact",
+    "range",
+    "zero-or-one",
+    "zero-or-more",
+    "one-or-more"
+  ],
+  "gate": {
+    "unmatchedActualDifferences": 0,
+    "ambiguousRuleMatches": 0,
+    "unsatisfiedRequiredExpectedDifferences": 0
+  },
+  "rules": []
+}

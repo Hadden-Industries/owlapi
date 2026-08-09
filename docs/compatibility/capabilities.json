@@ -1,0 +1,390 @@
+{
+  "schemaVersion": 1,
+  "release": "v1",
+  "normativeStatuses": [
+    "REQUIRED_V1",
+    "DEFERRED",
+    "UNSUPPORTED_BY_DESIGN",
+    "DELEGATED"
+  ],
+  "progressStates": ["NOT_STARTED", "IN_PROGRESS", "COMPLETE"],
+  "capabilities": [
+    {
+      "id": "parser.functional",
+      "category": "parser",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 2
+    },
+    {
+      "id": "parser.manchester",
+      "category": "parser",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 3
+    },
+    {
+      "id": "parser.owlxml",
+      "category": "parser",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 4
+    },
+    {
+      "id": "parser.dl",
+      "category": "parser",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 5
+    },
+    {
+      "id": "parser.krss2",
+      "category": "parser",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 6
+    },
+    {
+      "id": "parser.krss1",
+      "category": "parser",
+      "status": "DEFERRED",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "format.krss1.identity",
+      "category": "format",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 6
+    },
+    {
+      "id": "parser.turtle",
+      "category": "parser",
+      "status": "DELEGATED",
+      "progress": "NOT_STARTED",
+      "phase": 7,
+      "delegate": "n3"
+    },
+    {
+      "id": "parser.trig",
+      "category": "parser",
+      "status": "DELEGATED",
+      "progress": "NOT_STARTED",
+      "phase": 7,
+      "delegate": "n3"
+    },
+    {
+      "id": "parser.ntriples",
+      "category": "parser",
+      "status": "DELEGATED",
+      "progress": "NOT_STARTED",
+      "phase": 7,
+      "delegate": "n3"
+    },
+    {
+      "id": "parser.nquads",
+      "category": "parser",
+      "status": "DELEGATED",
+      "progress": "NOT_STARTED",
+      "phase": 7,
+      "delegate": "n3"
+    },
+    {
+      "id": "parser.n3-language",
+      "category": "parser",
+      "status": "DEFERRED",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "parser.rdfxml",
+      "category": "parser",
+      "status": "DELEGATED",
+      "progress": "NOT_STARTED",
+      "phase": 9,
+      "delegate": "rdfxml-streaming-parser"
+    },
+    {
+      "id": "parser.jsonld",
+      "category": "parser",
+      "status": "DELEGATED",
+      "progress": "NOT_STARTED",
+      "phase": 10,
+      "delegate": "jsonld"
+    },
+    {
+      "id": "parser.obo",
+      "category": "parser",
+      "status": "UNSUPPORTED_BY_DESIGN",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "parser.rdfa",
+      "category": "parser",
+      "status": "DEFERRED",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "parser.rdfjson",
+      "category": "parser",
+      "status": "DEFERRED",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "parser.trix",
+      "category": "parser",
+      "status": "DEFERRED",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "model.core-values",
+      "category": "structural-model",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "model.entities",
+      "category": "structural-model",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "model.object-property-expressions",
+      "category": "structural-model",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "model.class-expressions",
+      "category": "structural-model",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "model.data-ranges",
+      "category": "structural-model",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "model.axioms",
+      "category": "structural-model",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "model.structural-equality",
+      "category": "structural-model",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "model.exhaustive-kind-dispatch",
+      "category": "structural-model",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "factory.required-v1-constructors",
+      "category": "data-factory",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "ontology.direct-query-surface",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "manager.narrow-v1-surface",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "manager.java-listeners",
+      "category": "public-api",
+      "status": "UNSUPPORTED_BY_DESIGN",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "manager.transactional-candidates",
+      "category": "loading",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "loading.import-closure",
+      "category": "loading",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "loading.remote-default-deny",
+      "category": "security",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "loading.abort-signal",
+      "category": "loading",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "detection.bounded-tristate",
+      "category": "parser-framework",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "diagnostics.structured",
+      "category": "diagnostics",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "errors.canonical-taxonomy",
+      "category": "diagnostics",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "rdf.rdfjs-dataset-boundary",
+      "category": "rdf",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 1
+    },
+    {
+      "id": "rdf.dataset-graph-policy",
+      "category": "rdf",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 7
+    },
+    {
+      "id": "mapping.rdf-to-owl",
+      "category": "mapping",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 8
+    },
+    {
+      "id": "mapping.owl-to-rdf",
+      "category": "mapping",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 11
+    },
+    {
+      "id": "mapping.rdf12-triple-terms",
+      "category": "mapping",
+      "status": "UNSUPPORTED_BY_DESIGN",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "webvowl.vowl-builder",
+      "category": "integration",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 12
+    },
+    {
+      "id": "webvowl.legacy-output-parity",
+      "category": "compatibility",
+      "status": "REQUIRED_V1",
+      "progress": "IN_PROGRESS",
+      "phase": 12
+    },
+    {
+      "id": "compatibility.owlapi-5.5.1",
+      "category": "compatibility",
+      "status": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "phase": 0
+    },
+    {
+      "id": "compatibility.expected-differences",
+      "category": "compatibility",
+      "status": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "phase": 0
+    },
+    {
+      "id": "packaging.native-esm",
+      "category": "packaging",
+      "status": "REQUIRED_V1",
+      "progress": "NOT_STARTED",
+      "phase": 14
+    },
+    {
+      "id": "packaging.typescript",
+      "category": "packaging",
+      "status": "UNSUPPORTED_BY_DESIGN",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "reasoner",
+      "category": "public-api",
+      "status": "UNSUPPORTED_BY_DESIGN",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "swrl",
+      "category": "structural-model",
+      "status": "DEFERRED",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "storer.concrete-serializers",
+      "category": "public-api",
+      "status": "DEFERRED",
+      "progress": "NOT_STARTED",
+      "phase": null
+    }
+  ],
+  "knownDeviations": [
+    {
+      "id": "DEV-001",
+      "capability": "parser.krss1",
+      "description": "KRSS1 has a required compatibility identity but no v1 parser implementation.",
+      "authority": "docs/owlapi-js/implementation-plan.md sections 1.3, 9.1.1, and 17.13"
+    },
+    {
+      "id": "DEV-002",
+      "capability": "parser.n3-language",
+      "description": "N3.js is used for four RDF syntaxes; the broader N3 language is not claimed.",
+      "authority": "docs/owlapi-js/implementation-plan.md sections 2.2 and 6.7"
+    }
+  ]
+}

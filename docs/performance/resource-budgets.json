@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "units": "bytes unless otherwise stated",
+  "evidence": {
+    "webvowlCommit": "5301d6c0b9e69c048f6ab079ea1103790bc70b85",
+    "measuredCorpusPath": "../universal-ontology/src/external",
+    "largestMeasuredInputBytes": 1987111,
+    "largestMeasuredInput": "schemaorg.owl",
+    "knownHeapRegressionInputBytes": 2097152,
+    "rationale": "Hard ceilings provide at least 16x byte headroom over the measured corpus while bounding attacker-controlled work. Structural limits are deliberately conservative and must be lowered or raised only through the governed benchmark/security process."
+  },
+  "limits": {
+    "maxSniffBytes": {
+      "value": 8192,
+      "unit": "bytes",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxInputBytes": {
+      "value": 33554432,
+      "unit": "bytes",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxTokenLength": {
+      "value": 1048576,
+      "unit": "bytes",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxTokenCount": {
+      "value": 5000000,
+      "unit": "tokens",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxAxioms": {
+      "value": 1000000,
+      "unit": "axioms",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxQuads": {
+      "value": 5000000,
+      "unit": "quads",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxBlankNodes": {
+      "value": 1000000,
+      "unit": "blank nodes",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxRdfListLength": {
+      "value": 1000000,
+      "unit": "items",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxExpressionDepth": {
+      "value": 512,
+      "unit": "levels",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxAnnotationDepth": {
+      "value": 64,
+      "unit": "levels",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxImportDepth": {
+      "value": 32,
+      "unit": "levels",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxImportCount": {
+      "value": 256,
+      "unit": "documents",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxXmlNestingDepth": {
+      "value": 512,
+      "unit": "levels",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxEntityDeclarations": {
+      "value": 256,
+      "unit": "declarations",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxEntityReplacementLength": {
+      "value": 65536,
+      "unit": "bytes",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxEntityExpansionDepth": {
+      "value": 16,
+      "unit": "levels",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxExpandedXmlBytes": {
+      "value": 33554432,
+      "unit": "bytes",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxRemoteDocumentBytes": {
+      "value": 33554432,
+      "unit": "bytes",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "timeoutMs": {
+      "value": 30000,
+      "unit": "milliseconds",
+      "failure": "RESOURCE_LIMIT_EXCEEDED"
+    },
+    "maxRedirects": {
+      "value": 0,
+      "unit": "redirects",
+      "failure": "SECURITY_POLICY_VIOLATION"
+    },
+    "maxRetries": {
+      "value": 0,
+      "unit": "retries",
+      "failure": "DOCUMENT_LOAD_FAILED"
+    }
+  },
+  "benchmarkPolicy": {
+    "environment": "Windows x64; Node version recorded with every run; repository lockfile and fixture revisions pinned",
+    "warmupRuns": 1,
+    "measuredRuns": 5,
+    "aggregation": "median",
+    "maximumWallTimeRegressionPercent": 20,
+    "maximumPeakHeapRegressionPercent": 20,
+    "baselineUpdate": "Requires passing Definition of Done, evidence, rationale, and project approval"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "owlapiVersionLine": "5.5.1",
+  "sourceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+  "sourceDescribe": "owlapi-parent-5.5.1-7-gd7e997a53",
+  "sourcePathForPhase0Evidence": "C:/Users/maksy/GitHub/owlcs/owlapi",
+  "use": "development-only black-box structural behavior oracle",
+  "productionRuntimeDependency": false,
+  "owl2vowlOracle": {
+    "pathForPhase0Evidence": "C:/Users/maksy/GitHub/VisualDataWeb/OWL2VOWL/target/OWL2VOWL-0.3.7-shaded.jar",
+    "sha256": "4bd16f5b953fa27bd7bded24da329d574b8c9114732e9c56379ee2eb905800de",
+    "use": "separate end-to-end VOWL output oracle only",
+    "embeddedOwlapiVersion": "5.1.1",
+    "structuralOracle": false
+  }
+}

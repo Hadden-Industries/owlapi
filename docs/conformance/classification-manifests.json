@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "classifications": ["REQUIRED", "NOT_APPLICABLE", "EXCLUDED_WITH_REASON"],
+  "policy": "Every test in an applicable upstream manifest must receive exactly one classification before its owning phase can complete.",
+  "manifests": [
+    {
+      "suite": "w3c-rdf-tests",
+      "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f",
+      "paths": [
+        "rdf/rdf11/rdf-turtle/manifest.ttl",
+        "rdf/rdf11/rdf-trig/manifest.ttl",
+        "rdf/rdf11/rdf-n-triples/manifest.ttl",
+        "rdf/rdf11/rdf-n-quads/manifest.ttl",
+        "rdf/rdf11/rdf-xml/manifest.ttl",
+        "rdf/rdf12/rdf-turtle/syntax/manifest.ttl",
+        "rdf/rdf12/rdf-trig/syntax/manifest.ttl",
+        "rdf/rdf12/rdf-n-triples/syntax/manifest.ttl",
+        "rdf/rdf12/rdf-n-quads/syntax/manifest.ttl"
+      ],
+      "classificationOwnerPhases": [7, 9],
+      "entries": []
+    },
+    {
+      "suite": "w3c-json-ld-api",
+      "revision": "92f07705a0c0ac27aa9bc6fe1322dcc9fad0114d",
+      "paths": ["tests/toRdf-manifest.jsonld", "tests/fromRdf-manifest.jsonld"],
+      "classificationOwnerPhases": [10],
+      "entries": []
+    }
+  ]
+}

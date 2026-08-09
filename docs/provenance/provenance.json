@@ -1,0 +1,279 @@
+{
+  "schemaVersion": 2,
+  "referenceOwlapi": {
+    "version": "5.5.1",
+    "revision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+    "use": "black-box behavioral oracle and public API identity reference only"
+  },
+  "decisionReferences": {
+    "PHASE0-2026-08-10": "Repository-owner approval of the Phase 0 implementation-plan artifacts on 10 August 2026"
+  },
+  "provenanceCategories": {
+    "A_PROJECT_ORIGINAL": "Project-authored implementation with no identified upstream-derived semantic implementation",
+    "B_STANDARDS_ADAPTER": "Project adapter around a separately governed standards implementation",
+    "C_LEGACY_DERIVED_OR_MIXED": "Legacy semantic implementation described as upstream-derived or materially mixed and requiring independent replacement",
+    "D_EXTERNAL_REFERENCE": "External or generated behavioral evidence usable only as an oracle",
+    "E_APPLICATION_SPECIFIC": "WebVOWL application concern excluded from the generic core"
+  },
+  "dispositions": [
+    "REUSE_ALLOWED",
+    "REFERENCE_ONLY",
+    "REIMPLEMENT",
+    "EXCLUDE",
+    "REVIEW_EXCEPTION"
+  ],
+  "items": [
+    {
+      "id": "LEGACY-FUNCTIONAL",
+      "path": "src/owl2vowl/js/functionalSyntaxParser.js",
+      "scope": "entire module",
+      "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
+      "origin": "legacy WebVOWL parser with RDF/XML emission",
+      "licenseCopyright": "Repository MIT context; historically OWLAPI-derived behavior is replaced, not transplanted",
+      "disposition": "REIMPLEMENT",
+      "replacementPhase": 2,
+      "evidence": "characterization tests and public W3C Functional-Style Syntax",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "LEGACY-MANCHESTER",
+      "path": "src/owl2vowl/js/manchesterSyntaxParser.js",
+      "scope": "entire module",
+      "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
+      "origin": "legacy WebVOWL parser",
+      "licenseCopyright": "Repository MIT context; historically OWLAPI-derived behavior is replaced, not transplanted",
+      "disposition": "REIMPLEMENT",
+      "replacementPhase": 3,
+      "evidence": "characterization tests and public Manchester syntax material",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "LEGACY-OWLXML",
+      "path": "src/owl2vowl/js/owlXmlParser.js",
+      "scope": "entire module",
+      "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
+      "origin": "legacy WebVOWL OWL/XML-to-RDF/XML converter",
+      "licenseCopyright": "Repository MIT context; historically OWLAPI-derived behavior is replaced, not transplanted",
+      "disposition": "REIMPLEMENT",
+      "replacementPhase": 4,
+      "evidence": "known semantic-loss inventory in implementation plan section 3.2.5",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "LEGACY-DL",
+      "path": "src/owl2vowl/js/dlSyntaxParser.js",
+      "scope": "entire module",
+      "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
+      "origin": "legacy WebVOWL parser",
+      "licenseCopyright": "Repository MIT context; historically OWLAPI-derived behavior is replaced, not transplanted",
+      "disposition": "REIMPLEMENT",
+      "replacementPhase": 5,
+      "evidence": "characterization fixtures plus public dialect evidence",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "LEGACY-KRSS2",
+      "path": "src/owl2vowl/js/krss2SyntaxParser.js",
+      "scope": "entire module",
+      "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
+      "origin": "legacy WebVOWL parser",
+      "licenseCopyright": "Repository MIT context; historically OWLAPI-derived behavior is replaced, not transplanted",
+      "disposition": "REIMPLEMENT",
+      "replacementPhase": 6,
+      "evidence": "characterization fixtures and separate OWLAPI KRSS1/KRSS2 public identities",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "LEGACY-TURTLE",
+      "path": "src/owl2vowl/js/turtleParser.js",
+      "scope": "entire module",
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "origin": "legacy N3.js adapter with project triples",
+      "licenseCopyright": "Repository MIT adapter; N3.js remains separately governed under MIT",
+      "disposition": "REIMPLEMENT",
+      "replacementPhase": 7,
+      "evidence": "replace with direct RDF/JS adapter",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "LEGACY-JSONLD",
+      "path": "src/owl2vowl/js/jsonLdParser.js",
+      "scope": "entire module",
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "origin": "legacy JSON-LD adapter",
+      "licenseCopyright": "Repository MIT adapter; jsonld.js remains separately governed under BSD-3-Clause",
+      "disposition": "REIMPLEMENT",
+      "replacementPhase": 10,
+      "evidence": "replace with restricted direct RDF/JS adapter",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "LEGACY-RDF",
+      "path": "src/owl2vowl/js/rdfParser.js",
+      "scope": "entire module",
+      "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
+      "origin": "RDF/XML, OWL interpretation, and VOWL monolith",
+      "licenseCopyright": "Repository MIT context with mixed legacy semantic provenance; oracle use only",
+      "disposition": "REFERENCE_ONLY",
+      "replacementPhase": 8,
+      "evidence": "legacy characterization oracle; must not move intact",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "LEGACY-RDFXML-SERIALIZER",
+      "path": "src/owl2vowl/js/rdfXmlSerializer.js",
+      "scope": "entire module",
+      "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
+      "origin": "internal interchange shim",
+      "licenseCopyright": "Repository MIT context with legacy semantic provenance; excluded from the target core",
+      "disposition": "EXCLUDE",
+      "replacementPhase": 13,
+      "evidence": "RDF/XML internal interchange is prohibited",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "LEGACY-IMPORT-LOADER",
+      "path": "src/owl2vowl/js/importLoader.js",
+      "scope": "entire module",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "origin": "fallback, ambient network loading, and DOM merge",
+      "licenseCopyright": "Repository MIT",
+      "disposition": "REIMPLEMENT",
+      "replacementPhase": 1,
+      "evidence": "manager transaction and default-deny loader contracts",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "LEGACY-IRI",
+      "path": "src/owl2vowl/js/iriResolver.js",
+      "scope": "generic syntax/base behavior",
+      "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
+      "origin": "mixed application and syntax rules",
+      "licenseCopyright": "Repository MIT context with mixed legacy implementation provenance",
+      "disposition": "REIMPLEMENT",
+      "replacementPhase": 1,
+      "evidence": "split standards IRI rules from WebVOWL catalog policy",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "LEGACY-XML",
+      "path": "src/owl2vowl/js/xmlUtils.js",
+      "scope": "entity processing",
+      "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
+      "origin": "legacy XML compatibility helper",
+      "licenseCopyright": "Repository MIT context with mixed legacy implementation provenance",
+      "disposition": "REIMPLEMENT",
+      "replacementPhase": 4,
+      "evidence": "finite entity/resource policy required",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "LEGACY-DOM",
+      "path": "src/owl2vowl/js/domUtils.js",
+      "scope": "generic XML helpers",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "origin": "legacy DOM helpers",
+      "licenseCopyright": "Repository MIT",
+      "disposition": "REFERENCE_ONLY",
+      "replacementPhase": 4,
+      "evidence": "new XML adapter must normalize browser and Node behavior",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "LEGACY-CONSTANTS",
+      "path": "src/owl2vowl/js/constants.js",
+      "scope": "namespace and parser constants",
+      "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
+      "origin": "mixed generic and WebVOWL constants",
+      "licenseCopyright": "Repository MIT context; semantic vocabulary is independently reconstructed from standards",
+      "disposition": "REIMPLEMENT",
+      "replacementPhase": 1,
+      "evidence": "authoritative core vocabulary and resource-budget records",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "WEBVOWL-PARSER-CONTEXT",
+      "path": "src/owl2vowl/js/parserContext.js",
+      "scope": "entire module",
+      "provenanceCategory": "E_APPLICATION_SPECIFIC",
+      "origin": "WebVOWL state",
+      "licenseCopyright": "Repository MIT",
+      "disposition": "EXCLUDE",
+      "replacementPhase": 12,
+      "evidence": "remains downstream of structural OWL",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "WEBVOWL-CONVERTER",
+      "path": "src/owl2vowl/js/ontologyConverter.js",
+      "scope": "entire module",
+      "provenanceCategory": "E_APPLICATION_SPECIFIC",
+      "origin": "WebVOWL conversion",
+      "licenseCopyright": "Repository MIT",
+      "disposition": "EXCLUDE",
+      "replacementPhase": 12,
+      "evidence": "visualization concern retained downstream",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "WEBVOWL-EXPORTER",
+      "path": "src/owl2vowl/js/jsonExporter.js",
+      "scope": "entire module",
+      "provenanceCategory": "E_APPLICATION_SPECIFIC",
+      "origin": "VOWL-JSON output",
+      "licenseCopyright": "Repository MIT",
+      "disposition": "EXCLUDE",
+      "replacementPhase": null,
+      "evidence": "not part of owlapi-js",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "WEBVOWL-ENTRY",
+      "path": "src/owl2vowl/js/index.js",
+      "scope": "entire module",
+      "provenanceCategory": "E_APPLICATION_SPECIFIC",
+      "origin": "WebVOWL parser and conversion entry point",
+      "licenseCopyright": "Repository MIT",
+      "disposition": "EXCLUDE",
+      "replacementPhase": 12,
+      "evidence": "stays in WebVOWL and consumes the eventual public owlapi-js API",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "LEGACY-CHARACTERIZATION-TESTS",
+      "path": "src/owl2vowl/js/*.test.js",
+      "scope": "legacy parser and converter tests",
+      "provenanceCategory": "D_EXTERNAL_REFERENCE",
+      "origin": "project-owned characterization around legacy behavior",
+      "licenseCopyright": "Repository MIT; behavioral facts do not authorize production implementation copying",
+      "disposition": "REFERENCE_ONLY",
+      "replacementPhase": null,
+      "evidence": "retained as compatibility evidence until each replacement gate passes",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "JAVA-VOWL-DIFFERENTIAL-EVIDENCE",
+      "path": "src/owl2vowl/test/**",
+      "scope": "differential harness and generated reference outputs",
+      "provenanceCategory": "D_EXTERNAL_REFERENCE",
+      "origin": "project harness plus output generated by the pinned OWL2VOWL JAR",
+      "licenseCopyright": "Repository MIT harness; generated outputs are test evidence with separately recorded oracle provenance",
+      "disposition": "REFERENCE_ONLY",
+      "replacementPhase": null,
+      "evidence": "44-fixture end-to-end behavioral baseline",
+      "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "JAVA-VOWL-FIXTURE-GENERATOR",
+      "path": "util/generate-owl2vowl-java-test-fixtures.py",
+      "scope": "entire development utility",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "origin": "project-owned black-box fixture-generation utility",
+      "licenseCopyright": "Repository MIT",
+      "disposition": "REUSE_ALLOWED",
+      "replacementPhase": null,
+      "evidence": "development-only oracle isolation; never included in runtime bundles",
+      "decisionRef": "PHASE0-2026-08-10"
+    }
+  ]
+}

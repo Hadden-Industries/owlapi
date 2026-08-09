@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "recordedOn": "2026-08-10",
+  "fixtureAcquisitionPolicy": "Verify byte length and SHA-256 before accepting a measurement. Generated fixtures are produced on demand from the exact generator version and parameters below.",
+  "realWorldFixtures": [
+    {
+      "id": "real-small-sosa",
+      "source": "https://github.com/w3c/sdw-sosa-ssn/raw/refs/heads/gh-pages/ssn/rdf/ontology/core/sosa.ttl",
+      "localEvidencePath": "C:/Users/maksy/GitHub/universal-ontology/src/external/sosa.ttl",
+      "bytes": 2997,
+      "sha256": "a1875d19988b0bd17e5cd3a61f76440b6e0f7b1e07bd30237e6fb7341c170305",
+      "roles": ["small valid ontology", "Turtle", "complete WebVOWL conversion"]
+    },
+    {
+      "id": "real-medium-wine",
+      "source": "https://www.w3.org/TR/2003/PR-owl-guide-20031209/wine",
+      "localEvidencePath": "C:/Users/maksy/GitHub/universal-ontology/src/external/wine.rdf",
+      "bytes": 78225,
+      "sha256": "bb1666593f9d7ba2ec9cb06dd4fcc17751ac8d523dc33ce22bcee6beeda778eb",
+      "roles": [
+        "medium valid ontology",
+        "RDF/XML",
+        "complete WebVOWL conversion"
+      ]
+    },
+    {
+      "id": "real-large-geonames",
+      "source": "https://www.geonames.org/ontology/ontology_v3.3.rdf",
+      "localEvidencePath": "C:/Users/maksy/GitHub/universal-ontology/src/external/ontology_v3.3.rdf",
+      "bytes": 532782,
+      "sha256": "dcd85810b10623520567700e4c6ab560ab9e16bd7f53387b893beee238b9f50c",
+      "roles": [
+        "large valid ontology",
+        "RDF/XML",
+        "complete WebVOWL conversion"
+      ]
+    },
+    {
+      "id": "real-largest-schemaorg",
+      "source": "https://schema.org/docs/schemaorg.owl",
+      "localEvidencePath": "C:/Users/maksy/GitHub/universal-ontology/src/external/schemaorg.owl",
+      "bytes": 1987111,
+      "sha256": "6ffe9fec45c718321acd943b6d8ac47bdafb2fa0ed4bac1135c82f06f0c881a0",
+      "roles": [
+        "largest measured real-world ontology",
+        "RDF/XML",
+        "complete WebVOWL conversion"
+      ]
+    }
+  ],
+  "generatedFixtures": [
+    {
+      "id": "generated-functional-large",
+      "generator": "owlapi-benchmark-corpus-v1",
+      "kind": "functional",
+      "count": 50000,
+      "roles": ["large Functional Syntax", "axiom throughput"]
+    },
+    {
+      "id": "generated-manchester-large",
+      "generator": "owlapi-benchmark-corpus-v1",
+      "kind": "manchester",
+      "count": 50000,
+      "roles": ["large Manchester Syntax", "frame throughput"]
+    },
+    {
+      "id": "generated-owlxml-large",
+      "generator": "owlapi-benchmark-corpus-v1",
+      "kind": "owlxml",
+      "count": 50000,
+      "roles": ["large OWL/XML", "XML nesting and node throughput"]
+    },
+    {
+      "id": "generated-rdfxml-large",
+      "generator": "owlapi-benchmark-corpus-v1",
+      "kind": "rdfxml",
+      "count": 50000,
+      "roles": ["large RDF/XML", "RDF quad throughput"]
+    },
+    {
+      "id": "generated-turtle-large",
+      "generator": "owlapi-benchmark-corpus-v1",
+      "kind": "turtle",
+      "count": 50000,
+      "roles": ["large RDF input", "RDF quad throughput"]
+    },
+    {
+      "id": "generated-functional-depth",
+      "generator": "owlapi-benchmark-corpus-v1",
+      "kind": "functional-depth",
+      "depth": 512,
+      "roles": ["deeply nested valid expression", "expression depth boundary"]
+    },
+    {
+      "id": "generated-turtle-list",
+      "generator": "owlapi-benchmark-corpus-v1",
+      "kind": "turtle-list",
+      "count": 100000,
+      "roles": ["long RDF list", "list decoder throughput"]
+    },
+    {
+      "id": "generated-import-closure",
+      "generator": "owlapi-benchmark-corpus-v1",
+      "kind": "import-closure",
+      "count": 128,
+      "roles": [
+        "representative import closure",
+        "cycle and resolver throughput"
+      ]
+    },
+    {
+      "id": "generated-mismatch-large",
+      "generator": "owlapi-benchmark-corpus-v1",
+      "kind": "mismatch",
+      "bytes": 16777216,
+      "roles": ["large mismatched input", "bounded early rejection"]
+    }
+  ]
+}
