@@ -1,0 +1,187 @@
+export const OWLObjectKind = Object.freeze({
+  // TODO(OWLAPI parity): SWRL rules, atoms, arguments, and built-ins exposed by
+  // Java OWLAPI 5.5.1 are deferred as one explicit family. They are not valid
+  // `OWLObjectKind` values in v1, and OWLDataFactory therefore has no silent or
+  // partial SWRL construction path. Implement the public SWRL structural model,
+  // equality, dispatch, factory, parser/mapping support, and differential tests
+  // together before adding kinds. Verification: capability `swrl` (DEFERRED).
+  IRI: "IRI",
+  LITERAL: "OWLLiteral",
+  ANONYMOUS_INDIVIDUAL: "OWLAnonymousIndividual",
+  ANNOTATION: "OWLAnnotation",
+  IMPORTS_DECLARATION: "OWLImportsDeclaration",
+  ONTOLOGY_ID: "OWLOntologyID",
+  CLASS: "OWLClass",
+  DATATYPE: "OWLDatatype",
+  OBJECT_PROPERTY: "OWLObjectProperty",
+  DATA_PROPERTY: "OWLDataProperty",
+  ANNOTATION_PROPERTY: "OWLAnnotationProperty",
+  NAMED_INDIVIDUAL: "OWLNamedIndividual",
+  OBJECT_INVERSE_OF: "OWLObjectInverseOf",
+  OBJECT_INTERSECTION_OF: "OWLObjectIntersectionOf",
+  OBJECT_UNION_OF: "OWLObjectUnionOf",
+  OBJECT_COMPLEMENT_OF: "OWLObjectComplementOf",
+  OBJECT_ONE_OF: "OWLObjectOneOf",
+  OBJECT_SOME_VALUES_FROM: "OWLObjectSomeValuesFrom",
+  OBJECT_ALL_VALUES_FROM: "OWLObjectAllValuesFrom",
+  OBJECT_HAS_VALUE: "OWLObjectHasValue",
+  OBJECT_HAS_SELF: "OWLObjectHasSelf",
+  OBJECT_MIN_CARDINALITY: "OWLObjectMinCardinality",
+  OBJECT_MAX_CARDINALITY: "OWLObjectMaxCardinality",
+  OBJECT_EXACT_CARDINALITY: "OWLObjectExactCardinality",
+  DATA_SOME_VALUES_FROM: "OWLDataSomeValuesFrom",
+  DATA_ALL_VALUES_FROM: "OWLDataAllValuesFrom",
+  DATA_HAS_VALUE: "OWLDataHasValue",
+  DATA_MIN_CARDINALITY: "OWLDataMinCardinality",
+  DATA_MAX_CARDINALITY: "OWLDataMaxCardinality",
+  DATA_EXACT_CARDINALITY: "OWLDataExactCardinality",
+  DATA_INTERSECTION_OF: "OWLDataIntersectionOf",
+  DATA_UNION_OF: "OWLDataUnionOf",
+  DATA_COMPLEMENT_OF: "OWLDataComplementOf",
+  DATA_ONE_OF: "OWLDataOneOf",
+  DATATYPE_RESTRICTION: "OWLDatatypeRestriction",
+  FACET_RESTRICTION: "OWLFacetRestriction",
+  DECLARATION_AXIOM: "OWLDeclarationAxiom",
+  SUBCLASS_OF_AXIOM: "OWLSubClassOfAxiom",
+  EQUIVALENT_CLASSES_AXIOM: "OWLEquivalentClassesAxiom",
+  DISJOINT_CLASSES_AXIOM: "OWLDisjointClassesAxiom",
+  DISJOINT_UNION_AXIOM: "OWLDisjointUnionAxiom",
+  SUB_OBJECT_PROPERTY_AXIOM: "OWLSubObjectPropertyOfAxiom",
+  SUB_PROPERTY_CHAIN_AXIOM: "OWLSubPropertyChainOfAxiom",
+  EQUIVALENT_OBJECT_PROPERTIES_AXIOM: "OWLEquivalentObjectPropertiesAxiom",
+  DISJOINT_OBJECT_PROPERTIES_AXIOM: "OWLDisjointObjectPropertiesAxiom",
+  OBJECT_PROPERTY_DOMAIN_AXIOM: "OWLObjectPropertyDomainAxiom",
+  OBJECT_PROPERTY_RANGE_AXIOM: "OWLObjectPropertyRangeAxiom",
+  INVERSE_OBJECT_PROPERTIES_AXIOM: "OWLInverseObjectPropertiesAxiom",
+  FUNCTIONAL_OBJECT_PROPERTY_AXIOM: "OWLFunctionalObjectPropertyAxiom",
+  INVERSE_FUNCTIONAL_OBJECT_PROPERTY_AXIOM:
+    "OWLInverseFunctionalObjectPropertyAxiom",
+  REFLEXIVE_OBJECT_PROPERTY_AXIOM: "OWLReflexiveObjectPropertyAxiom",
+  IRREFLEXIVE_OBJECT_PROPERTY_AXIOM: "OWLIrreflexiveObjectPropertyAxiom",
+  SYMMETRIC_OBJECT_PROPERTY_AXIOM: "OWLSymmetricObjectPropertyAxiom",
+  ASYMMETRIC_OBJECT_PROPERTY_AXIOM: "OWLAsymmetricObjectPropertyAxiom",
+  TRANSITIVE_OBJECT_PROPERTY_AXIOM: "OWLTransitiveObjectPropertyAxiom",
+  SUB_DATA_PROPERTY_AXIOM: "OWLSubDataPropertyOfAxiom",
+  EQUIVALENT_DATA_PROPERTIES_AXIOM: "OWLEquivalentDataPropertiesAxiom",
+  DISJOINT_DATA_PROPERTIES_AXIOM: "OWLDisjointDataPropertiesAxiom",
+  DATA_PROPERTY_DOMAIN_AXIOM: "OWLDataPropertyDomainAxiom",
+  DATA_PROPERTY_RANGE_AXIOM: "OWLDataPropertyRangeAxiom",
+  FUNCTIONAL_DATA_PROPERTY_AXIOM: "OWLFunctionalDataPropertyAxiom",
+  DATATYPE_DEFINITION_AXIOM: "OWLDatatypeDefinitionAxiom",
+  HAS_KEY_AXIOM: "OWLHasKeyAxiom",
+  SAME_INDIVIDUAL_AXIOM: "OWLSameIndividualAxiom",
+  DIFFERENT_INDIVIDUALS_AXIOM: "OWLDifferentIndividualsAxiom",
+  CLASS_ASSERTION_AXIOM: "OWLClassAssertionAxiom",
+  OBJECT_PROPERTY_ASSERTION_AXIOM: "OWLObjectPropertyAssertionAxiom",
+  NEGATIVE_OBJECT_PROPERTY_ASSERTION_AXIOM:
+    "OWLNegativeObjectPropertyAssertionAxiom",
+  DATA_PROPERTY_ASSERTION_AXIOM: "OWLDataPropertyAssertionAxiom",
+  NEGATIVE_DATA_PROPERTY_ASSERTION_AXIOM:
+    "OWLNegativeDataPropertyAssertionAxiom",
+  ANNOTATION_ASSERTION_AXIOM: "OWLAnnotationAssertionAxiom",
+  SUB_ANNOTATION_PROPERTY_AXIOM: "OWLSubAnnotationPropertyOfAxiom",
+  ANNOTATION_PROPERTY_DOMAIN_AXIOM: "OWLAnnotationPropertyDomainAxiom",
+  ANNOTATION_PROPERTY_RANGE_AXIOM: "OWLAnnotationPropertyRangeAxiom",
+});
+
+export const CLASS_EXPRESSION_KINDS = Object.freeze([
+  OWLObjectKind.CLASS,
+  OWLObjectKind.OBJECT_INTERSECTION_OF,
+  OWLObjectKind.OBJECT_UNION_OF,
+  OWLObjectKind.OBJECT_COMPLEMENT_OF,
+  OWLObjectKind.OBJECT_ONE_OF,
+  OWLObjectKind.OBJECT_SOME_VALUES_FROM,
+  OWLObjectKind.OBJECT_ALL_VALUES_FROM,
+  OWLObjectKind.OBJECT_HAS_VALUE,
+  OWLObjectKind.OBJECT_HAS_SELF,
+  OWLObjectKind.OBJECT_MIN_CARDINALITY,
+  OWLObjectKind.OBJECT_MAX_CARDINALITY,
+  OWLObjectKind.OBJECT_EXACT_CARDINALITY,
+  OWLObjectKind.DATA_SOME_VALUES_FROM,
+  OWLObjectKind.DATA_ALL_VALUES_FROM,
+  OWLObjectKind.DATA_HAS_VALUE,
+  OWLObjectKind.DATA_MIN_CARDINALITY,
+  OWLObjectKind.DATA_MAX_CARDINALITY,
+  OWLObjectKind.DATA_EXACT_CARDINALITY,
+]);
+
+export const DATA_RANGE_KINDS = Object.freeze([
+  OWLObjectKind.DATATYPE,
+  OWLObjectKind.DATA_INTERSECTION_OF,
+  OWLObjectKind.DATA_UNION_OF,
+  OWLObjectKind.DATA_COMPLEMENT_OF,
+  OWLObjectKind.DATA_ONE_OF,
+  OWLObjectKind.DATATYPE_RESTRICTION,
+]);
+
+export const OBJECT_PROPERTY_EXPRESSION_KINDS = Object.freeze([
+  OWLObjectKind.OBJECT_PROPERTY,
+  OWLObjectKind.OBJECT_INVERSE_OF,
+]);
+
+export const DATA_PROPERTY_EXPRESSION_KINDS = Object.freeze([
+  OWLObjectKind.DATA_PROPERTY,
+]);
+
+export const ENTITY_KINDS = Object.freeze([
+  OWLObjectKind.CLASS,
+  OWLObjectKind.DATATYPE,
+  OWLObjectKind.OBJECT_PROPERTY,
+  OWLObjectKind.DATA_PROPERTY,
+  OWLObjectKind.ANNOTATION_PROPERTY,
+  OWLObjectKind.NAMED_INDIVIDUAL,
+]);
+
+export const INDIVIDUAL_KINDS = Object.freeze([
+  OWLObjectKind.NAMED_INDIVIDUAL,
+  OWLObjectKind.ANONYMOUS_INDIVIDUAL,
+]);
+
+export const ANNOTATION_VALUE_KINDS = Object.freeze([
+  OWLObjectKind.IRI,
+  OWLObjectKind.ANONYMOUS_INDIVIDUAL,
+  OWLObjectKind.LITERAL,
+]);
+
+export const AXIOM_KINDS = Object.freeze([
+  OWLObjectKind.DECLARATION_AXIOM,
+  OWLObjectKind.SUBCLASS_OF_AXIOM,
+  OWLObjectKind.EQUIVALENT_CLASSES_AXIOM,
+  OWLObjectKind.DISJOINT_CLASSES_AXIOM,
+  OWLObjectKind.DISJOINT_UNION_AXIOM,
+  OWLObjectKind.SUB_OBJECT_PROPERTY_AXIOM,
+  OWLObjectKind.SUB_PROPERTY_CHAIN_AXIOM,
+  OWLObjectKind.EQUIVALENT_OBJECT_PROPERTIES_AXIOM,
+  OWLObjectKind.DISJOINT_OBJECT_PROPERTIES_AXIOM,
+  OWLObjectKind.OBJECT_PROPERTY_DOMAIN_AXIOM,
+  OWLObjectKind.OBJECT_PROPERTY_RANGE_AXIOM,
+  OWLObjectKind.INVERSE_OBJECT_PROPERTIES_AXIOM,
+  OWLObjectKind.FUNCTIONAL_OBJECT_PROPERTY_AXIOM,
+  OWLObjectKind.INVERSE_FUNCTIONAL_OBJECT_PROPERTY_AXIOM,
+  OWLObjectKind.REFLEXIVE_OBJECT_PROPERTY_AXIOM,
+  OWLObjectKind.IRREFLEXIVE_OBJECT_PROPERTY_AXIOM,
+  OWLObjectKind.SYMMETRIC_OBJECT_PROPERTY_AXIOM,
+  OWLObjectKind.ASYMMETRIC_OBJECT_PROPERTY_AXIOM,
+  OWLObjectKind.TRANSITIVE_OBJECT_PROPERTY_AXIOM,
+  OWLObjectKind.SUB_DATA_PROPERTY_AXIOM,
+  OWLObjectKind.EQUIVALENT_DATA_PROPERTIES_AXIOM,
+  OWLObjectKind.DISJOINT_DATA_PROPERTIES_AXIOM,
+  OWLObjectKind.DATA_PROPERTY_DOMAIN_AXIOM,
+  OWLObjectKind.DATA_PROPERTY_RANGE_AXIOM,
+  OWLObjectKind.FUNCTIONAL_DATA_PROPERTY_AXIOM,
+  OWLObjectKind.DATATYPE_DEFINITION_AXIOM,
+  OWLObjectKind.HAS_KEY_AXIOM,
+  OWLObjectKind.SAME_INDIVIDUAL_AXIOM,
+  OWLObjectKind.DIFFERENT_INDIVIDUALS_AXIOM,
+  OWLObjectKind.CLASS_ASSERTION_AXIOM,
+  OWLObjectKind.OBJECT_PROPERTY_ASSERTION_AXIOM,
+  OWLObjectKind.NEGATIVE_OBJECT_PROPERTY_ASSERTION_AXIOM,
+  OWLObjectKind.DATA_PROPERTY_ASSERTION_AXIOM,
+  OWLObjectKind.NEGATIVE_DATA_PROPERTY_ASSERTION_AXIOM,
+  OWLObjectKind.ANNOTATION_ASSERTION_AXIOM,
+  OWLObjectKind.SUB_ANNOTATION_PROPERTY_AXIOM,
+  OWLObjectKind.ANNOTATION_PROPERTY_DOMAIN_AXIOM,
+  OWLObjectKind.ANNOTATION_PROPERTY_RANGE_AXIOM,
+]);
+
+export const OWL_OBJECT_KINDS = Object.freeze(Object.values(OWLObjectKind));

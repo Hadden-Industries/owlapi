@@ -5,8 +5,8 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 | Phase | Scope                                                              | State       | Gate                                                          |
 | ----: | ------------------------------------------------------------------ | ----------- | ------------------------------------------------------------- |
 |     0 | Governance, capability, provenance, conformance, budgets, baseline | Complete    | PASS: artifacts validated; full tests/lint/format/build green |
-|     1 | Structural core and construction seams                             | Not started | ready after the Phase 0 checkpoint commit                     |
-|     2 | Functional Syntax                                                  | Not started | blocked by Phase 1                                            |
+|     1 | Structural core and construction seams                             | Complete    | PASS: 9/78 focused; 57/476 full; lint/format/build green      |
+|     2 | Functional Syntax                                                  | Not started | ready after the Phase 1 checkpoint commit                     |
 |     3 | Manchester Syntax                                                  | Not started | blocked by Phase 2 learning gate                              |
 |     4 | OWL/XML                                                            | Not started | blocked by Phase 3 learning gate                              |
 |     5 | DL Syntax                                                          | Not started | blocked by Phase 4 learning gate                              |
@@ -20,5 +20,7 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |    13 | Legacy interchange removal                                         | Not started | blocked by parity acceptance                                  |
 |    14 | Package/release                                                    | Not started | blocked by all prior gates                                    |
 
-Active ingestion migration: none. The WIP lock is clear. Phase 0 completed on
-10 August 2026; Phase 1 begins only after the requested Git checkpoint.
+Active ingestion migration: none. The WIP lock is clear. Phase 1 completed on
+10 August 2026 and is awaiting the requested Git checkpoint. Phase 2 is the
+first major ingestion migration, so its WIP lock and formal learning gate begin
+only after that checkpoint.

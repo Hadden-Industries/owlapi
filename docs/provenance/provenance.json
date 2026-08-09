@@ -22,6 +22,342 @@
     "EXCLUDE",
     "REVIEW_EXCEPTION"
   ],
+  "implementationRecords": [
+    {
+      "id": "PHASE1-MODEL-KINDS",
+      "path": "src/owlapi-js/model/kinds.js",
+      "phase": 1,
+      "scope": "canonical OWL object-kind taxonomy and category memberships",
+      "legacyWebVowlSources": ["src/owl2vowl/js/constants.js"],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ sections 5-10",
+        "docs/owlapi-js/implementation-plan.md sections 4.1-4.2"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public model interfaces and pinned black-box reference harness"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/model/dispatch.test.js",
+        "src/owlapi-js/model/factory.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "PHASE0-2026-08-10",
+      "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE1-MODEL-STRUCTURAL",
+      "path": "src/owlapi-js/model/structural.js",
+      "phase": 1,
+      "scope": "immutable structural objects, canonical keys, equality, and structural sets",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ section 2.1",
+        "docs/owlapi-js/implementation-plan.md sections 4.3 and 31.2"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public OWLObject equality behavior and pinned black-box reference harness"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["src/owlapi-js/model/model.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "PHASE0-2026-08-10",
+      "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE1-MODEL-DISPATCH",
+      "path": "src/owlapi-js/model/dispatch.js",
+      "phase": 1,
+      "scope": "mechanically exhaustive kind-based dispatch for structural categories",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ sections 5-10",
+        "docs/owlapi-js/implementation-plan.md section 4.2"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public OWLObjectVisitor interface family"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["src/owlapi-js/model/dispatch.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "PHASE0-2026-08-10",
+      "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE1-MODEL-DATA-FACTORY",
+      "path": "src/owlapi-js/model/owlDataFactory.js",
+      "phase": 1,
+      "scope": "required-v1 structural constructors and operand validation",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/constants.js",
+        "src/owl2vowl/js/iriResolver.js"
+      ],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ sections 5-10",
+        "docs/owlapi-js/implementation-plan.md sections 4.1-4.3 and 10.3"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public OWLDataFactory and model interfaces plus pinned black-box reference harness"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/model/factory.test.js",
+        "src/owlapi-js/model/model.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE0-2026-08-10",
+      "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE1-MODEL-ONTOLOGY",
+      "path": "src/owlapi-js/model/owlOntology.js",
+      "phase": 1,
+      "scope": "ontology identity/content ownership and direct query indexes",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ section 3",
+        "docs/owlapi-js/implementation-plan.md sections 10.1-10.2"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public OWLOntology and OWLOntologyID interfaces plus pinned black-box reference harness"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["src/owlapi-js/model/model.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "PHASE0-2026-08-10",
+      "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE1-IO-DOCUMENT",
+      "path": "src/owlapi-js/io/document.js",
+      "phase": 1,
+      "scope": "immutable string document sources and format metadata",
+      "legacyWebVowlSources": ["src/owl2vowl/js/importLoader.js"],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/owlapi-js/implementation-plan.md sections 11.1-11.2"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public OWLOntologyDocumentSource and OWLDocumentFormat interfaces"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["src/owlapi-js/io/io.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE0-2026-08-10",
+      "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE1-IO-LOADER-CONFIGURATION",
+      "path": "src/owlapi-js/io/loaderConfiguration.js",
+      "phase": 1,
+      "scope": "immutable loader/security/resource configuration",
+      "legacyWebVowlSources": ["src/owl2vowl/js/importLoader.js"],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://dom.spec.whatwg.org/#abortsignal",
+        "docs/owlapi-js/implementation-plan.md sections 10.7-10.9"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public OWLOntologyLoaderConfiguration API"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["src/owlapi-js/io/io.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE0-2026-08-10",
+      "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE1-IO-ERRORS",
+      "path": "src/owlapi-js/io/errors.js",
+      "phase": 1,
+      "scope": "canonical typed public error taxonomy",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://tc39.es/ecma262/#sec-error-objects",
+        "docs/owlapi-js/implementation-plan.md sections 11.3-11.4"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public ontology-creation and parser exception APIs"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["src/owlapi-js/io/io.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "PHASE0-2026-08-10",
+      "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE1-MANAGER-PARSER-REGISTRY",
+      "path": "src/owlapi-js/manager/parserRegistry.js",
+      "phase": 1,
+      "scope": "immutable parser descriptors, bounded tri-state detection, and deterministic candidate ordering",
+      "legacyWebVowlSources": ["src/owl2vowl/js/index.js"],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://encoding.spec.whatwg.org/#interface-textencoder",
+        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public OWLParserFactory and OWLDocumentFormat identities"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/manager/parserRegistry.test.js",
+        "src/owlapi-js/manager/owlOntologyManager.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE0-2026-08-10",
+      "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE1-MANAGER-ONTOLOGY-MANAGER",
+      "path": "src/owlapi-js/manager/owlOntologyManager.js",
+      "phase": 1,
+      "scope": "narrow manager API, transactional parser attempts, import closure, cancellation, diagnostics, and registration",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/importLoader.js",
+        "src/owl2vowl/js/iriResolver.js",
+        "src/owl2vowl/js/index.js"
+      ],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://dom.spec.whatwg.org/#abortsignal",
+        "docs/owlapi-js/implementation-plan.md sections 9.4, 10.4-10.9, and 11.3-11.5"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public OWLOntologyManager loading API plus pinned black-box reference harness"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["src/owlapi-js/manager/owlOntologyManager.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE0-2026-08-10",
+      "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE1-MANAGER-OWL-MANAGER",
+      "path": "src/owlapi-js/manager/owlManager.js",
+      "phase": 1,
+      "scope": "JavaScript-native manager construction entry point",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "docs/owlapi-js/implementation-plan.md sections 10.2 and 14.2"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public OWLManager.createOWLOntologyManager API"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["src/owlapi-js/manager/managerApi.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "PHASE0-2026-08-10",
+      "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE1-RDF-ENVIRONMENT",
+      "path": "src/owlapi-js/rdf/environment.js",
+      "phase": 1,
+      "scope": "canonical RDF/JS data-factory and DatasetCore boundary",
+      "legacyWebVowlSources": ["src/owl2vowl/js/turtleParser.js"],
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "normativePublicSources": [
+        "https://rdf.js.org/data-model-spec/",
+        "https://rdf.js.org/dataset-spec/",
+        "docs/owlapi-js/implementation-plan.md section 5"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public RDF parser boundary used only as behavioral context"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["src/owlapi-js/rdf/graphPolicy.test.js"],
+      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE0-2026-08-10",
+      "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE1-RDF-GRAPH-POLICY",
+      "path": "src/owlapi-js/rdf/graphPolicy.js",
+      "phase": 1,
+      "scope": "dataset graph analysis and explicit selection-policy foundation",
+      "legacyWebVowlSources": ["src/owl2vowl/js/rdfParser.js"],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/rdf11-concepts/#section-dataset",
+        "https://rdf.js.org/dataset-spec/",
+        "docs/owlapi-js/implementation-plan.md section 5.4"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public RDF-loading behavior used only as behavioral context"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["src/owlapi-js/rdf/graphPolicy.test.js"],
+      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE0-2026-08-10",
+      "reviewDate": "2026-08-10"
+    }
+  ],
+  "compatibilityResearch": [
+    {
+      "id": "PHASE1-RESEARCH-INVERSE-PROPERTY-AXIOM",
+      "question": "Whether inverse-object-property axiom operands are order-insensitive while retaining a repeated operand",
+      "publicBasis": "W3C OWL 2 Structural Specification section 9.2.4 and public OWLAPI API behavior",
+      "implementationSourcesInspected": [
+        "impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLInverseObjectPropertiesAxiomImpl.java",
+        "impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLNaryPropertyAxiomImpl.java",
+        "api/src/main/java/org/semanticweb/owlapi/util/OWLAPIPreconditions.java"
+      ],
+      "sourceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "reason": "Source inspection followed public-specification research to resolve a narrow observable compatibility edge case.",
+      "productionUse": "No implementation text or control flow was copied; the project-owned regression test defines the independently authored behavior.",
+      "evidence": "src/owlapi-js/model/factory.test.js"
+    },
+    {
+      "id": "PHASE1-RESEARCH-ANONYMOUS-ONTOLOGY-ID",
+      "question": "Whether separately created anonymous ontology IDs compare as distinct manager identities",
+      "publicBasis": "Public OWLOntologyID and OWLOntologyManager API behavior",
+      "implementationSourcesInspected": [
+        "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyID.java",
+        "impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyManagerImpl.java"
+      ],
+      "sourceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "reason": "Source inspection resolved a narrow compatibility question after the plan established that no semantic ontology IRI may be invented.",
+      "productionUse": "No implementation text or control flow was copied; project-owned model and manager regressions establish the behavior.",
+      "evidence": [
+        "src/owlapi-js/model/model.test.js",
+        "src/owlapi-js/manager/owlOntologyManager.test.js"
+      ]
+    },
+    {
+      "id": "PHASE1-RESEARCH-LITERAL-DATATYPE",
+      "question": "Whether OWLLiteral exposes its datatype as an OWLDatatype structural entity",
+      "publicBasis": "W3C OWL 2 literal structure and public OWLAPI LiteralProvider/OWLLiteral APIs",
+      "implementationSourcesInspected": [
+        "api/src/main/java/org/semanticweb/owlapi/model/providers/LiteralProvider.java",
+        "impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLLiteralImpl.java"
+      ],
+      "sourceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "reason": "Source search corroborated the public API shape while auditing the independently authored structural model.",
+      "productionUse": "No implementation text or control flow was copied; the public structural contract and project test define behavior.",
+      "evidence": "src/owlapi-js/model/factory.test.js"
+    }
+  ],
   "items": [
     {
       "id": "LEGACY-FUNCTIONAL",

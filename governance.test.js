@@ -1,6 +1,8 @@
 import { createRequire } from "node:module";
 import { readFileSync, readdirSync } from "node:fs";
 
+import { OWLOntologyLoaderConfiguration } from "./io/index.js";
+
 const require = createRequire(import.meta.url);
 const {
   GENERATOR_VERSION,
@@ -10,7 +12,25 @@ const {
 const readJson = (relativePath) =>
   JSON.parse(readFileSync(new URL(relativePath, import.meta.url), "utf8"));
 
-describe("owlapi-js Phase 0 governance artifacts", () => {
+const listProductionModules = (directory, prefix) =>
+  readdirSync(directory, { withFileTypes: true })
+    .flatMap((entry) => {
+      const relativePath = `${prefix}/${entry.name}`;
+      if (entry.isDirectory()) {
+        return listProductionModules(
+          new URL(`${entry.name}/`, directory),
+          relativePath,
+        );
+      }
+      return entry.name.endsWith(".js") &&
+        !entry.name.endsWith(".test.js") &&
+        entry.name !== "index.js"
+        ? [relativePath]
+        : [];
+    })
+    .sort();
+
+describe("owlapi-js governance artifacts", () => {
   it("classifies every capability exactly once with a normative status", () => {
     const matrix = readJson(
       "../../docs/owlapi-js/compatibility/capabilities.json",
@@ -24,7 +44,7 @@ describe("owlapi-js Phase 0 governance artifacts", () => {
     }
     expect(
       matrix.capabilities
-        .filter(({ phase }) => phase === 0)
+        .filter(({ phase }) => phase !== null && phase <= 1)
         .every(({ progress }) => progress === "COMPLETE"),
     ).toBe(true);
   });
@@ -75,6 +95,17 @@ describe("owlapi-js Phase 0 governance artifacts", () => {
     }
   });
 
+  it("uses the governed resource budgets as loader defaults", () => {
+    const budget = readJson(
+      "../../docs/owlapi-js/performance/resource-budgets.json",
+    );
+    const configuration = OWLOntologyLoaderConfiguration.defaults();
+
+    for (const [name, { value }] of Object.entries(budget.limits)) {
+      expect(configuration[name]).toBe(value);
+    }
+  });
+
   it("gives every legacy migration artifact one definitive disposition", () => {
     const manifest = readJson(
       "../../docs/owlapi-js/provenance/provenance.json",
@@ -106,6 +137,44 @@ describe("owlapi-js Phase 0 governance artifacts", () => {
       )
       .sort();
     expect(inventoriedModules).toEqual(productionModules);
+  });
+
+  it("records provenance for every Phase 1 semantic production module", () => {
+    const manifest = readJson(
+      "../../docs/owlapi-js/provenance/provenance.json",
+    );
+    const records = manifest.implementationRecords;
+    const paths = records.map(({ path }) => path).sort();
+    const productionModules = listProductionModules(
+      new URL("./", import.meta.url),
+      "src/owlapi-js",
+    );
+
+    expect(new Set(paths).size).toBe(paths.length);
+    expect(paths).toEqual(productionModules);
+    for (const record of records) {
+      expect(record.phase).toBe(1);
+      expect(manifest.provenanceCategories).toHaveProperty(
+        record.provenanceCategory,
+      );
+      expect(record.normativePublicSources.length).toBeGreaterThan(0);
+      expect(record.compatibilityReferences.length).toBeGreaterThan(0);
+      expect(record.referenceOwlapiRevision).toBe(
+        manifest.referenceOwlapi.revision,
+      );
+      expect(record.focusedEvidence.length).toBeGreaterThan(0);
+      expect(record.thirdPartyDependencies).toBeInstanceOf(Array);
+      expect(["replaced", "excluded", "not-applicable"]).toContain(
+        record.legacyDerivedImplementationDisposition,
+      );
+      expect(manifest.decisionReferences).toHaveProperty(record.decisionRef);
+    }
+    for (const research of manifest.compatibilityResearch) {
+      expect(research.sourceRevision).toBe(manifest.referenceOwlapi.revision);
+      expect(research.implementationSourcesInspected.length).toBeGreaterThan(0);
+      expect(research.productionUse).toMatch(/No implementation text/);
+      expect(research.evidence).toBeTruthy();
+    }
   });
 
   it("pins immutable external and behavioral reference revisions", () => {
