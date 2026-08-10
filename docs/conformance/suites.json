@@ -28,15 +28,22 @@
         "OWL 2 Mapping to RDF Graphs Second Edition",
         "OWL 2 Conformance Second Edition"
       ],
-      "upstream": "https://www.w3.org/TR/owl2-conformance/",
-      "revision": "W3C Recommendation 11 December 2012",
+      "upstream": "https://www.w3.org/2007/OWL/wiki/Test_Suite_Status",
+      "revision": "sha256:986ce4f9df655b1f44aec86a5753530d295355a8e9a16700e0253ac30759c4e1",
+      "governingSpecificationRevision": "W3C Recommendation 11 December 2012",
+      "artifactSource": "OWLAPI 5.5.1 contract/src/test/resources/all.rdf at d7e997a53b470e32700de89cc610d9daf01ea769",
+      "retrievedOn": "2026-08-10",
+      "manifestArtifact": "docs/owlapi-js/conformance/upstream/w3c-owl2/all.rdf",
+      "manifestSha256": "986ce4f9df655b1f44aec86a5753530d295355a8e9a16700e0253ac30759c4e1",
+      "sourceTestCount": 338,
       "applicable": [
         "structural model",
         "syntax translation",
         "OWL to RDF",
         "RDF to OWL"
       ],
-      "classificationManifest": "focused REQUIRED_V1 fixtures are accumulated sequentially with each structural/parser phase"
+      "classificationManifest": "docs/owlapi-js/conformance/classification-manifests.json#w3c-owl2",
+      "runner": "src/owlapi-js/parser/functional/functionalSyntax.conformance.test.js"
     },
     {
       "id": "owlapi-reference",

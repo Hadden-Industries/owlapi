@@ -6,7 +6,7 @@ the Java implementation is not a JavaScript implementation template.
 
 | OWLAPI identity                                                               | owlapi-js capability         | v1 status                                    |
 | ----------------------------------------------------------------------------- | ---------------------------- | -------------------------------------------- |
-| `OWLFunctionalSyntaxOWLParser` / `FunctionalSyntaxDocumentFormatFactory`      | `parser.functional`          | `REQUIRED_V1`                                |
+| `OWLFunctionalSyntaxOWLParser` / `FunctionalSyntaxDocumentFormatFactory`      | `parser.functional`          | `REQUIRED_V1`; Phase 2 `COMPLETE`            |
 | `ManchesterOWLSyntaxOntologyParser` / `ManchesterSyntaxDocumentFormatFactory` | `parser.manchester`          | `REQUIRED_V1`                                |
 | `OWLXMLParser` / `OWLXMLDocumentFormatFactory`                                | `parser.owlxml`              | `REQUIRED_V1`                                |
 | `DLSyntaxOWLParser` / `DLSyntaxDocumentFormatFactory`                         | `parser.dl`                  | `REQUIRED_V1`                                |

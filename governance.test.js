@@ -44,7 +44,7 @@ describe("owlapi-js governance artifacts", () => {
     }
     expect(
       matrix.capabilities
-        .filter(({ phase }) => phase !== null && phase <= 1)
+        .filter(({ phase }) => phase !== null && phase <= 2)
         .every(({ progress }) => progress === "COMPLETE"),
     ).toBe(true);
   });
@@ -139,7 +139,7 @@ describe("owlapi-js governance artifacts", () => {
     expect(inventoriedModules).toEqual(productionModules);
   });
 
-  it("records provenance for every Phase 1 semantic production module", () => {
+  it("records provenance for every completed semantic production module", () => {
     const manifest = readJson(
       "../../docs/owlapi-js/provenance/provenance.json",
     );
@@ -153,7 +153,7 @@ describe("owlapi-js governance artifacts", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(paths).toEqual(productionModules);
     for (const record of records) {
-      expect(record.phase).toBe(1);
+      expect([1, 2]).toContain(record.phase);
       expect(manifest.provenanceCategories).toHaveProperty(
         record.provenanceCategory,
       );
@@ -168,7 +168,23 @@ describe("owlapi-js governance artifacts", () => {
         record.legacyDerivedImplementationDisposition,
       );
       expect(manifest.decisionReferences).toHaveProperty(record.decisionRef);
+      for (const change of record.laterPhaseChanges || []) {
+        expect(change.phase).toBeGreaterThan(record.phase);
+        expect(change.normativePublicSources.length).toBeGreaterThan(0);
+        expect(change.focusedEvidence.length).toBeGreaterThan(0);
+        expect(manifest.decisionReferences).toHaveProperty(change.decisionRef);
+      }
     }
+    expect(
+      records
+        .filter(({ phase }) => phase === 2)
+        .map(({ path }) => path)
+        .sort(),
+    ).toEqual([
+      "src/owlapi-js/parser/functional/descriptor.js",
+      "src/owlapi-js/parser/functional/lexer.js",
+      "src/owlapi-js/parser/functional/parser.js",
+    ]);
     for (const research of manifest.compatibilityResearch) {
       expect(research.sourceRevision).toBe(manifest.referenceOwlapi.revision);
       expect(research.implementationSourcesInspected.length).toBeGreaterThan(0);
@@ -241,10 +257,41 @@ describe("owlapi-js governance artifacts", () => {
       expect(manifest.revision).toBe(revisions.get(manifest.suite));
       expect(manifest.paths.length).toBeGreaterThan(0);
       expect(manifest.classificationOwnerPhases.length).toBeGreaterThan(0);
+      const ids = manifest.entries.map(({ id }) => id);
+      expect(new Set(ids).size).toBe(ids.length);
       for (const entry of manifest.entries) {
         expect(classifications.classifications).toContain(entry.classification);
       }
     }
+
+    const w3cSuite = suites.suites.find(({ id }) => id === "w3c-owl2");
+    const w3cManifest = classifications.manifests.find(
+      ({ suite }) => suite === "w3c-owl2",
+    );
+    const required = w3cManifest.entries.filter(
+      ({ classification }) => classification === "REQUIRED",
+    );
+    const notApplicable = w3cManifest.entries.filter(
+      ({ classification }) => classification === "NOT_APPLICABLE",
+    );
+    expect(w3cManifest.entries).toHaveLength(w3cManifest.sourceTestCount);
+    expect(required).toHaveLength(w3cManifest.requiredTestCount);
+    expect(
+      required.reduce(
+        (count, entry) => count + entry.functionalDocuments.length,
+        0,
+      ),
+    ).toBe(w3cManifest.requiredDocumentCount);
+    expect(notApplicable).toHaveLength(
+      w3cManifest.sourceTestCount - w3cManifest.requiredTestCount,
+    );
+    expect(
+      notApplicable.every(
+        ({ reasonCategory }) => reasonCategory === "DIFFERENT_SYNTAX",
+      ),
+    ).toBe(true);
+    expect(w3cSuite.manifestArtifact).toBe(w3cManifest.paths[0]);
+    expect(w3cSuite.runner).toBe(w3cManifest.runner);
   });
 
   it("pins real and generated benchmark corpus identities", () => {

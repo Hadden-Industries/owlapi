@@ -15,6 +15,7 @@ import {
   OWLOntology,
   StructuralSet,
 } from "../model/index.js";
+import { functionalSyntaxParserDescriptor } from "../parser/functional/descriptor.js";
 import { OWLParserRegistry } from "./parserRegistry.js";
 
 const DIAGNOSTIC_SEVERITIES = new Set(["info", "warning"]);
@@ -242,7 +243,8 @@ export class OWLOntologyManager {
         throw new TypeError("Each IRI mapper must implement getDocumentIRI()");
       }
     }
-    const normalizedRegistry = registry || new OWLParserRegistry();
+    const normalizedRegistry =
+      registry || new OWLParserRegistry([functionalSyntaxParserDescriptor]);
     if (typeof normalizedRegistry.resolveCandidates !== "function") {
       throw new TypeError("registry must implement resolveCandidates()");
     }

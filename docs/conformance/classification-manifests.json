@@ -26,6 +26,1720 @@
       "paths": ["tests/toRdf-manifest.jsonld", "tests/fromRdf-manifest.jsonld"],
       "classificationOwnerPhases": [10],
       "entries": []
+    },
+    {
+      "suite": "w3c-owl2",
+      "revision": "sha256:986ce4f9df655b1f44aec86a5753530d295355a8e9a16700e0253ac30759c4e1",
+      "paths": ["docs/owlapi-js/conformance/upstream/w3c-owl2/all.rdf"],
+      "classificationOwnerPhases": [2],
+      "sourceTestCount": 338,
+      "requiredTestCount": 46,
+      "requiredDocumentCount": 62,
+      "compatibleRecoveryDocumentCount": 24,
+      "runner": "src/owlapi-js/parser/functional/functionalSyntax.conformance.test.js",
+      "runnerScope": "Parse every Functional premise, conclusion, and non-conclusion document; semantic entailment/profile outcomes are outside the parser phase.",
+      "runnerParsingMode": "compatible, solely for exact redundant declarations of predefined standard prefixes in the archived manifest; strict rejection remains separately tested",
+      "notApplicableReasonCategories": {
+        "DIFFERENT_SYNTAX": "The pinned W3C case contains no Functional Syntax document property."
+      },
+      "entries": [
+        {
+          "id": "bnode2somevaluesfrom",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "chain2trans1",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "Consistent Datatype restrictions with Different Types",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "consistent-dataproperty-disjointness",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "consistent-integer-filler",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "Contradicting datatype Restrictions",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "Contradicting-dateTime-restrictions",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "Datatype-DataComplementOf-001",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "Datatype-Float-Discrete-001",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "datatype-restriction-min-max-inconsistency",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "Different types in Datatype Restrictions and Complement",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "DisjointClasses-001",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+        },
+        {
+          "id": "DisjointClasses-002",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "DisjointClasses-003",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+        },
+        {
+          "id": "functionality-clash",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "Inconsistent Byte Filler",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "Inconsistent Data Complement with the Restrictions",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "inconsistent-integer-filler",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "inconsistent_datatypes",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "Minus Infinity is not in owl:real",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "New-Feature-AsymmetricProperty-001",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "New-Feature-DisjointDataProperties-001",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "New-Feature-DisjointDataProperties-002",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+        },
+        {
+          "id": "New-Feature-DisjointObjectProperties-001",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+        },
+        {
+          "id": "New-Feature-DisjointObjectProperties-002",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+        },
+        {
+          "id": "New-Feature-DisjointUnion-001",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+        },
+        {
+          "id": "New-Feature-IrreflexiveProperty-001",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "New-Feature-Keys-001",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+        },
+        {
+          "id": "New-Feature-Keys-002",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "New-Feature-Keys-003",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+        },
+        {
+          "id": "New-Feature-Keys-004",
+          "classification": "REQUIRED",
+          "functionalDocuments": [
+            "fsPremiseOntology",
+            "fsNonConclusionOntology"
+          ]
+        },
+        {
+          "id": "New-Feature-Keys-005",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "New-Feature-Keys-006",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "New-Feature-Keys-007",
+          "classification": "REQUIRED",
+          "functionalDocuments": [
+            "fsPremiseOntology",
+            "fsNonConclusionOntology"
+          ]
+        },
+        {
+          "id": "New-Feature-NegativeDataPropertyAssertion-001",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "New-Feature-NegativeObjectPropertyAssertion-001",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "New-Feature-ObjectPropertyChain-001",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+        },
+        {
+          "id": "New-Feature-ObjectPropertyChain-BJP-003",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "New-Feature-ObjectPropertyChain-BJP-004",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "New-Feature-ObjectQCR-001",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+        },
+        {
+          "id": "New-Feature-ObjectQCR-002",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+        },
+        {
+          "id": "New-Feature-Rational-001",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "New-Feature-Rational-002",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "New-Feature-Rational-003",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "New-Feature-ReflexiveProperty-001",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+        },
+        {
+          "id": "New-Feature-SelfRestriction-001",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+        },
+        {
+          "id": "New-Feature-SelfRestriction-002",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology", "fsConclusionOntology"]
+        },
+        {
+          "id": "one=two",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "owl2-rl-anonymous-individual",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "owl2-rl-invalid-leftside-allvaluesfrom",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "owl2-rl-invalid-leftside-maxcard",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "owl2-rl-invalid-oneof",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "owl2-rl-invalid-owlreal",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "owl2-rl-invalid-rightside-somevaluesfrom",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "owl2-rl-invalid-rightside-unionof",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "owl2-rl-invalid-unionof",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "owl2-rl-rules-fp-differentFrom",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "owl2-rl-rules-ifp-differentFrom",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "owl2-rl-valid-mincard",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "owl2-rl-valid-oneof",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "owl2-rl-valid-rightside-allvaluesfrom",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "Plus and Minus Zero Integer",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "Plus and Minus Zero are Distinct",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "rdfbased-sem-bool-complement-inst",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-bool-intersection-inst-comp",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-bool-intersection-inst-expr",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-bool-intersection-term",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-bool-union-inst-comp",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-bool-union-term",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-chain-def",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-char-asymmetric-inst",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-char-asymmetric-term",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-char-functional-inst",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-char-inversefunc-data",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-char-inversefunc-inst",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-char-irreflexive-inst",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-char-symmetric-inst",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-char-transitive-inst",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-class-nothing-ext",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-class-nothing-term",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-class-nothing-type",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-class-thing-term",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-class-thing-type",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-enum-inst-included",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-different-irrflxv",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-different-sameas",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-disclass-eqclass",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-disclass-inst",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-disclass-irrflxv",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-disprop-eqprop",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-disprop-inst",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-disprop-irrflxv",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-eqclass-inst",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-eqclass-rflxv",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-eqclass-subclass-1",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-eqclass-subclass-2",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-eqclass-subst",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-eqclass-sym",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-eqclass-trans",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-eqprop-inst",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-eqprop-rflxv",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-eqprop-subprop-1",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-eqprop-subprop-2",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-eqprop-subst",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-eqprop-sym",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-eqprop-trans",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-sameas-rflxv",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-sameas-subst",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-sameas-sym",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-eqdis-sameas-trans",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-inv-inst",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-key-def",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-ndis-alldifferent-fw",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-ndis-alldifferent-fw-distinctmembers",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-ndis-alldisjointclasses-fw",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-ndis-alldisjointproperties-fw",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-npa-dat-fw",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-npa-ind-fw",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-prop-backwardcompatiblewith-type-annot",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-prop-comment-type",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-prop-deprecated-type",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-prop-incompatiblewith-type-annot",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-prop-isdefinedby-type",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-prop-label-type",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-prop-priorversion-type-annot",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-prop-seealso-type",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-prop-versioninfo-type",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-rdfs-domain-cond",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-rdfs-range-cond",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-rdfs-subclass-cond",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-rdfs-subclass-trans",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-rdfs-subprop-cond",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-rdfs-subprop-trans",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-rdfsext-domain-subprop",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-rdfsext-domain-superclass",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-rdfsext-range-subprop",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-rdfsext-range-superclass",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-restrict-allvalues-cmp-class",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-restrict-allvalues-cmp-prop",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-restrict-allvalues-inst-obj",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-restrict-hasvalue-cmp-prop",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-restrict-hasvalue-inst-obj",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-restrict-hasvalue-inst-subj",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-restrict-maxcard-inst-obj-one",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-restrict-maxcard-inst-obj-zero",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-restrict-maxqcr-inst-obj-one",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-restrict-maxqcr-inst-obj-zero",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-restrict-somevalues-cmp-class",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-restrict-somevalues-cmp-prop",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "rdfbased-sem-restrict-somevalues-inst-subj",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "string-integer-clash",
+          "classification": "REQUIRED",
+          "functionalDocuments": ["fsPremiseOntology"]
+        },
+        {
+          "id": "WebOnt-AnnotationProperty-002",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-AnnotationProperty-003",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-AnnotationProperty-004",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I4.5-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I4.5-002",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I4.6-004",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I4.6-005-Direct",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.2-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.2-002",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.2-003",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.2-004",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.2-005",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.2-006",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.21-002",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.24-003",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.24-004",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.26-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.26-002",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.26-003",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.26-004",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.26-005",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.26-009",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.26-010",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.3-006",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.3-008",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.3-010",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.3-011",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.5-005",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.8-006",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.8-007",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.8-008",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.8-009",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.8-010",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-I5.8-011",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-InverseFunctionalProperty-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-Nothing-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-Ontology-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-Restriction-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-Restriction-002",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-Restriction-003",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-Restriction-004",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-SymmetricProperty-002",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-SymmetricProperty-003",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-Thing-003",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-Thing-004",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-TransitiveProperty-002",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-allValuesFrom-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-allValuesFrom-002",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-backwardCompatibleWith-002",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-cardinality-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-cardinality-002",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-cardinality-003",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-cardinality-004",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-002",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-003",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-004",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-005",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-006",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-007",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-008",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-009",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-010",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-011",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-012",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-013",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-014",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-015",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-016",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-017",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-018",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-019",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-020",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-021",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-022",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-023",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-024",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-025",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-026",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-027",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-028",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-029",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-030",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-031",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-032",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-033",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-034",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-035",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-040",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-101",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-102",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-103",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-104",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-105",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-106",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-107",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-108",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-109",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-110",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-111",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-201",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-205",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-207",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-208",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-209",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-501",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-502",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-503",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-504",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-601",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-602",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-603",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-604",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-605",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-606",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-608",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-609",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-610",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-611",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-612",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-613",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-614",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-615",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-616",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-617",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-623",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-624",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-625",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-626",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-627",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-628",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-629",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-630",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-631",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-632",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-633",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-634",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-641",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-642",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-643",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-644",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-646",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-650",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-661",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-665",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-667",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-901",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-902",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-905",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-description-logic-908",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-differentFrom-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-disjointWith-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-disjointWith-003",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-disjointWith-004",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-disjointWith-005",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-disjointWith-006",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-disjointWith-007",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-disjointWith-008",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-disjointWith-009",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-equivalentClass-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-equivalentClass-002",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-equivalentClass-003",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-equivalentClass-004",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-equivalentClass-005",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-equivalentClass-006",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-equivalentClass-008-Direct",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-equivalentClass-009",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-equivalentProperty-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-equivalentProperty-002",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-equivalentProperty-003",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-equivalentProperty-004",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-imports-011",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-maxCardinality-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-miscellaneous-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-miscellaneous-002",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-miscellaneous-102",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-miscellaneous-103",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-miscellaneous-202",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-miscellaneous-203",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-miscellaneous-204",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-miscellaneous-302-Direct",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-miscellaneous-303",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-oneOf-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-oneOf-004",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-sameAs-001",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-unionOf-003",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "id": "WebOnt-unionOf-004",
+          "classification": "NOT_APPLICABLE",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        }
+      ]
     }
   ]
 }

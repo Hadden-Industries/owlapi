@@ -6,12 +6,15 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.FileDocumentSource;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.MissingImportHandlingStrategy;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLImportsDeclaration;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** Development-only black-box snapshot harness for the pinned OWLAPI revision. */
@@ -19,13 +22,21 @@ public final class GenerateStructuralSnapshot {
     private GenerateStructuralSnapshot() {}
 
     public static void main(String[] arguments) throws Exception {
-        if (arguments.length != 1) {
-            System.err.println("Usage: GenerateStructuralSnapshot <ontology-document>");
+        if (arguments.length < 1) {
+            System.err.println(
+                "Usage: GenerateStructuralSnapshot <ontology-document> [ignored-import-iri ...]");
             System.exit(2);
         }
 
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-        OWLOntology ontology = manager.loadOntologyFromOntologyDocument(new File(arguments[0]));
+        OWLOntologyLoaderConfiguration configuration =
+            new OWLOntologyLoaderConfiguration().setMissingImportHandlingStrategy(
+                MissingImportHandlingStrategy.SILENT);
+        for (int index = 1; index < arguments.length; index += 1) {
+            configuration = configuration.addIgnoredImport(IRI.create(arguments[index]));
+        }
+        OWLOntology ontology = manager.loadOntologyFromOntologyDocument(
+            new FileDocumentSource(new File(arguments[0])), configuration);
         System.out.println(snapshot(ontology));
     }
 

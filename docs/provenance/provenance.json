@@ -6,7 +6,8 @@
     "use": "black-box behavioral oracle and public API identity reference only"
   },
   "decisionReferences": {
-    "PHASE0-2026-08-10": "Repository-owner approval of the Phase 0 implementation-plan artifacts on 10 August 2026"
+    "PHASE0-2026-08-10": "Repository-owner approval of the Phase 0 implementation-plan artifacts on 10 August 2026",
+    "PHASE2-2026-08-10": "Repository-owner approval of Phase 2 implementation and the named capability, conformance, and provenance updates on 10 August 2026"
   },
   "provenanceCategories": {
     "A_PROJECT_ORIGINAL": "Project-authored implementation with no identified upstream-derived semantic implementation",
@@ -243,6 +244,19 @@
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": ["src/owlapi-js/manager/owlOntologyManager.test.js"],
+      "laterPhaseChanges": [
+        {
+          "phase": 2,
+          "scope": "register the Functional Syntax descriptor in the default manager while preserving injected registries",
+          "normativePublicSources": [
+            "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.9"
+          ],
+          "focusedEvidence": [
+            "src/owlapi-js/parser/functional/functionalSyntax.test.js"
+          ],
+          "decisionRef": "PHASE2-2026-08-10"
+        }
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE0-2026-08-10",
@@ -311,6 +325,88 @@
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE0-2026-08-10",
       "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE2-FUNCTIONAL-DESCRIPTOR",
+      "path": "src/owlapi-js/parser/functional/descriptor.js",
+      "phase": 2,
+      "scope": "immutable Functional Syntax identity, format metadata, and bounded tri-state detection",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/functionalSyntaxParser.js",
+        "src/owl2vowl/js/index.js"
+      ],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ section 2.3",
+        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.9"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public FunctionalSyntaxDocumentFormat and OWLParserFactory identities"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/functional/functionalSyntax.test.js",
+        "src/owlapi-js/parser/functional/functionalSyntax.resource.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE2-2026-08-10",
+      "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE2-FUNCTIONAL-LEXER",
+      "path": "src/owlapi-js/parser/functional/lexer.js",
+      "phase": 2,
+      "scope": "lazy pull lexer for Functional tokens, exact lexical values, source locations, cancellation, timeout, and token budgets",
+      "legacyWebVowlSources": ["src/owl2vowl/js/functionalSyntaxParser.js"],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ sections 2.2-2.3 and 5.7",
+        "https://www.rfc-editor.org/rfc/rfc3987",
+        "docs/owlapi-js/implementation-plan.md sections 18.3, 19, and 20.1"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 accepted/rejected input observed only through the pinned black-box harness and project-owned fixtures"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/functional/functionalSyntax.test.js",
+        "src/owlapi-js/parser/functional/functionalSyntax.resource.test.js",
+        "src/owlapi-js/parser/functional/functionalSyntax.conformance.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE2-2026-08-10",
+      "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE2-FUNCTIONAL-PARSER",
+      "path": "src/owlapi-js/parser/functional/parser.js",
+      "phase": 2,
+      "scope": "complete required-v1 Functional ontology, expression, data-range, annotation, and 38-axiom construction into the structural model",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/functionalSyntaxParser.js",
+        "src/owl2vowl/js/iriResolver.js"
+      ],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ sections 3-10",
+        "docs/owlapi-js/implementation-plan.md sections 4, 9, 17.9, and 18"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 pinned Java structural snapshots and the pinned 338-case W3C manifest copy"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/functional/functionalSyntax.test.js",
+        "src/owlapi-js/parser/functional/functionalSyntax.resource.test.js",
+        "src/owlapi-js/parser/functional/functionalSyntax.conformance.test.js",
+        "src/owlapi-js/parser/functional/functionalSyntax.differential.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE2-2026-08-10",
+      "reviewDate": "2026-08-10"
     }
   ],
   "compatibilityResearch": [
@@ -356,6 +452,26 @@
       "reason": "Source search corroborated the public API shape while auditing the independently authored structural model.",
       "productionUse": "No implementation text or control flow was copied; the public structural contract and project test define behavior.",
       "evidence": "src/owlapi-js/model/factory.test.js"
+    },
+    {
+      "id": "PHASE2-RESEARCH-FUNCTIONAL-COMPATIBILITY",
+      "question": "Which Functional Syntax behaviors are normative grammar requirements and which OWLAPI behaviors are compatibility-only observations",
+      "publicBasis": "W3C OWL 2 Structural Specification and Functional-Style Syntax Second Edition plus public OWLAPI parser/format APIs",
+      "implementationSourcesInspected": [
+        "parsers/src/main/java/org/semanticweb/owlapi/functional/parser/OWLFunctionalSyntaxOWLParser.java",
+        "parsers/src/main/java/org/semanticweb/owlapi/functional/parser/OWLFunctionalSyntaxParser.jj",
+        "parsers/src/main/java/org/semanticweb/owlapi/functional/parser/CustomTokenizer.java",
+        "api/src/main/java/org/semanticweb/owlapi/model/AxiomType.java"
+      ],
+      "sourceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "reason": "Source inspection was limited to provenance and narrow compatibility research after the W3C grammar and project parser contracts were established; observable results were captured through the pinned Java harness.",
+      "productionUse": "No implementation text, grammar actions, generated parser structure, or control flow was copied; independently authored production behavior is defined by the W3C specification and project-owned tests.",
+      "evidence": [
+        "util/owlapi-reference/fixtures/functional/phase2-structural.ofn",
+        "util/owlapi-reference/fixtures/functional/phase2-structural.java.json",
+        "src/owlapi-js/parser/functional/functionalSyntax.conformance.test.js",
+        "src/owlapi-js/parser/functional/functionalSyntax.differential.test.js"
+      ]
     }
   ],
   "items": [

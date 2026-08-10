@@ -29,9 +29,16 @@ One reproducible setup is:
 3. Build a runtime classpath for the OWLAPI distribution with Maven's
    dependency tooling.
 4. Compile `GenerateStructuralSnapshot.java` with that classpath.
-5. Run `GenerateStructuralSnapshot <input-ontology>`, capture standard output,
-   and store the JSON beside the owning project fixture with the source
-   revision recorded.
+5. Run `GenerateStructuralSnapshot <input-ontology> [ignored-import-iri ...]`,
+   capture standard output, and store the JSON beside the owning project
+   fixture with the source revision recorded. Ignored import IRIs retain their
+   declarations in the direct ontology snapshot but are not dereferenced.
+
+The Phase 2 reference pair is
+`fixtures/functional/phase2-structural.ofn` and
+`fixtures/functional/phase2-structural.java.json`. Regenerate it only from the
+pinned source revision and review any structural change through the governed
+zero-tolerance expected-difference process.
 
 The harness deliberately has no WebVOWL, npm, or browser dependency. Generated
 snapshots are test evidence and require their own fixture provenance record.

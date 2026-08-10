@@ -27,5 +27,7 @@ evidence; `migration/parser-migration-playbook.md` is the concise current method
 Phase 1 provides the independently authored structural model, factory,
 ontology, manager/loading foundation, source/configuration/error contracts,
 parser-selection infrastructure, and RDF/JS dataset boundary under
-`src/owlapi-js/`. No concrete syntax parser is registered yet; Functional
-Syntax begins in Phase 2 after the Phase 1 checkpoint commit.
+`src/owlapi-js/`. Phase 2 adds the default Functional Syntax parser plus its
+W3C conformance, Java structural differential, resource/performance, provenance,
+and learning-gate evidence. Manchester Syntax remains inactive until the
+requested Phase 2 checkpoint commit and an explicit instruction to proceed.
