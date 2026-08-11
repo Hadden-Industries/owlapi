@@ -24,6 +24,24 @@ do not append chronology here.
 - Keep detection within `maxSniffBytes`. Compatibility recovery is available
   only after a positive detector match; syntax hints do not authorize broad
   fallback.
+- Put every XML syntax behind one `XmlParserAdapter`: browsers use native
+  `DOMParser`, Node loads the governed DOM implementation lazily, and neither
+  environment-specific nodes nor parser errors cross the adapter boundary.
+- Apply the default-deny XML entity policy before DOM construction. Reject
+  external subsets, external entities, parameter entities, and unsupported DTD
+  markup; bound internal general-entity declarations, replacement length,
+  expansion depth, and expanded bytes before parsing.
+- For XML syntaxes, resolve each schema `xsd:anyURI` value against the
+  element-scoped effective XML Base while preserving unescaped non-ASCII IRI
+  characters. Literal lexical forms remain opaque and are never base-resolved.
+- Keep XML namespace bindings and syntax-level abbreviated-IRI prefix
+  declarations in separate contexts. Validate each name against its governing
+  XML or syntax grammar rather than accepting a convenient JavaScript-identifier
+  subset.
+- Turn every finite normative XML-schema group into an immutable production
+  inventory and a conformance assertion. Unknown elements, attributes, arities,
+  or operand orders fail explicitly; no valid construct may fall through to a
+  silent skip.
 - Yield between top-level constructs after approximately 50 ms of work. Prefer
   `scheduler.yield()` where available and use a zero-delay timer fallback so
   browsers and Node can deliver aborts without changing parse order.
@@ -56,43 +74,53 @@ do not append chronology here.
    representation details such as unordered iteration, blank-node labels, or
    documented display-label spelling. Any semantic difference goes through the
    machine-readable expected-difference gate.
-4. When a Java renderer collapses a semantic object into one string, decompose
+4. Compare equivalent project-owned documents across every implemented syntax
+   that can express the fixture. Keep Java-reference differences as separately
+   calculated atomic fields so whole-ontology parity cannot hide a narrow
+   semantic omission.
+5. When a Java renderer collapses a semantic object into one string, decompose
    that object into named structural fields before calculating atomic
    differences. Never normalize a known semantic difference out of the compared
    values merely to make whole-axiom strings equal.
-5. Verify that signatures include entities occurring in ontology annotations,
+6. Verify that signatures include entities occurring in ontology annotations,
    nested annotations, and axioms; do not infer signature completeness from
    axiom counts alone.
-6. Use the Java oracle with its fully resolved runtime dependency classpath.
+7. Use the Java oracle with its fully resolved runtime dependency classpath.
    Declare intentionally ignored fixture imports explicitly so their import
    declarations remain in the direct-ontology snapshot without network access.
-7. Record every material finding with evidence and one primary disposition.
-8. Turn reusable findings into tests/contracts where deterministic.
-9. Update this playbook and all impacted future phase assumptions.
-10. Close the mechanically reviewable learning gate before activating the next ingestion phase.
+8. For XML phases, run the adapter contract in Node and a browser-compatible
+   environment, verify that the Node fallback dependency stays outside browser
+   bundles, and exercise entity, nesting, timeout, abort, and malformed-input
+   behavior independently.
+9. Record every material finding with evidence and one primary disposition.
+10. Turn reusable findings into tests/contracts where deterministic.
+11. Update this playbook and all impacted future phase assumptions.
+12. Close the mechanically reviewable learning gate before activating the next ingestion phase.
 
-## Next migration: Phase 4 OWL/XML
+## Next migration: Phase 5 DL Syntax
 
-- Reuse the established descriptor, isolated transaction, typed-error,
-  cancellation, monotonic-deadline, and finite-resource-budget contracts while
-  deriving detection and syntax behavior from the OWL/XML specification.
-- Map OWL/XML elements directly to the existing structural data factory. Do not
-  reuse either the legacy RDF/XML emission path or RDF-oriented intermediate
-  representations.
-- Select an XML implementation behind a narrow parser boundary and verify both
-  browser and Node behavior. Parser-specific nodes, errors, and configuration
-  must not leak into the structural model or manager API.
-- Enforce XML nesting, entity declaration/replacement/expansion depth, and
-  expanded-byte limits in addition to the shared input, axiom, expression,
-  annotation, cancellation, and timeout budgets. External entity and implicit
-  network access remain prohibited.
-- Establish focused regressions for namespaces, abbreviated and absolute IRIs,
-  XML literals, annotations, entity expansion, malformed nesting, cancellation,
-  and transactional failure before accepting production behavior.
-- Use the pinned OWL/XML conformance classification plus a project-owned
-  OWL/XML/Functional structural pair and pinned Java structural snapshot.
-- Repeat the complete acceptance shape: exhaustive grammar coverage,
-  transaction/import behavior, Java structural differential, resource and
-  abort protection, browser/Node checks, repeated wall/heap measurements,
-  provenance, and a formal learning gate. Do not change shared budgets or
-  contracts without the repository-owner approval process.
+- Audit the published DL syntax/dialect material and characterize the pinned
+  OWLAPI and legacy WebVOWL observable dialects before designing the grammar.
+  Record the exact required-v1 subset and make every out-of-scope production
+  fail explicitly.
+- Reuse the lazy textual lexer, bounded lookahead, source-location,
+  cancellation, monotonic-deadline, cooperative-yield, and isolated-transaction
+  contracts. Do not assume Manchester token boundaries or frame semantics apply
+  to DL notation without grammar evidence.
+- Map DL constructs directly to the structural data factory. Do not retain or
+  recreate the legacy RDF/XML emission path, QName synthesis, or VOWL-specific
+  parser state.
+- Preserve operator precedence, associativity, operand category, Unicode
+  symbols and their documented textual aliases. Add negative dialect fixtures
+  for near-miss Manchester, Functional, and KRSS input so detection and fallback
+  remain bounded and deterministic.
+- Build a project-owned DL fixture with Functional, Manchester, and OWL/XML
+  counterparts for its expressible subset, then pin a Java structural snapshot
+  and calculate any semantic divergence through exact expected-difference
+  rules.
+- Repeat the full acceptance shape: finite grammar inventory, focused
+  conformance and Java differential evidence, resource/abort/transaction tests,
+  large-valid and mismatch wall/heap measurements, provenance, full repository
+  verification, and a formal Phase 5 learning gate. Shared budgets, public
+  contracts, and capability classifications change only through the approved
+  governance process.

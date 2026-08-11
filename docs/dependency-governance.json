@@ -117,6 +117,29 @@
       "license": "BSD-3-Clause",
       "noticeAction": "Retain the dependency and transitive dependency licences in release notices",
       "adapterBoundary": "src/owlapi-js/parsers/jsonld/jsonLdSyntaxAdapter.js"
+    },
+    {
+      "name": "@xmldom/xmldom",
+      "version": "0.9.10",
+      "role": "Node-only DOM implementation behind the OWL/XML parser adapter; browsers use the native DOMParser",
+      "standardsGrounding": [
+        "W3C XML",
+        "W3C DOM",
+        "W3C OWL 2 XML Serialization"
+      ],
+      "conformanceEvidence": [
+        "src/owlapi-js/parser/xml/xmlParserAdapter.test.js",
+        "src/owlapi-js/parser/owlxml/owlXml.conformance.test.js",
+        "src/owlapi-js/parser/owlxml/owlXml.resource.test.js"
+      ],
+      "releaseAuthority": "xmldom maintainers",
+      "maintenanceStatus": "Pinned production release; revalidate XML error handling, security policy and browser exclusion at every material upgrade",
+      "runtimeDependencies": [],
+      "networkBehavior": "Parses caller-provided XML in memory and performs no document loading or ambient network access",
+      "browserCost": "Node-only fallback behind XmlParserAdapter; browser execution uses native DOMParser and the dependency must remain absent from browser bundles",
+      "license": "MIT",
+      "noticeAction": "Retain the dependency licence in release notices",
+      "adapterBoundary": "src/owlapi-js/parser/xml/xmlParserAdapter.js"
     }
   ]
 }

@@ -49,5 +49,14 @@ OWLAPI 5.5.1's comparison-facet result; the two standards-correct JavaScript
 differences are matched only by the exact fixture-scoped rules in
 `docs/owlapi-js/compatibility/expected-differences.json`.
 
+The Phase 4 OWL/XML reference pair is
+`fixtures/owlxml/phase4-structural.owx` and
+`fixtures/owlxml/phase4-structural.java.json`. The sibling
+`phase4-structural.ofn` is the project-owned Functional counterpart used for
+cross-syntax structural conformance. The Java snapshot omits the anonymous
+individual inside one `ObjectOneOf`; JavaScript retains it as required by the
+W3C OWL/XML schema. That single semantic divergence is calculated as an atomic
+field and accepted only by its exact fixture-scoped expected-difference rule.
+
 The harness deliberately has no WebVOWL, npm, or browser dependency. Generated
 snapshots are test evidence and require their own fixture provenance record.

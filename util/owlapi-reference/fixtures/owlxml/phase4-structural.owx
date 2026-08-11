@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+  ontologyIRI="urn:owlapi-js:phase4"
+  versionIRI="urn:owlapi-js:phase4:v1">
+  <Prefix name="" IRI="urn:owlapi-js:phase4:"/>
+  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+  <Import>urn:owlapi-js:phase4:import</Import>
+  <Annotation>
+    <Annotation>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <Literal xml:lang="en">nested</Literal>
+    </Annotation>
+    <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+    <Literal xml:lang="en">Phase 4</Literal>
+  </Annotation>
+
+  <Declaration>
+    <Annotation>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <Literal>declared class</Literal>
+    </Annotation>
+    <Class abbreviatedIRI=":A"/>
+  </Declaration>
+  <Declaration><Datatype abbreviatedIRI=":Code"/></Declaration>
+  <Declaration><ObjectProperty abbreviatedIRI=":p"/></Declaration>
+  <Declaration><DataProperty abbreviatedIRI=":d"/></Declaration>
+  <Declaration><AnnotationProperty abbreviatedIRI=":note"/></Declaration>
+  <Declaration><NamedIndividual abbreviatedIRI=":i"/></Declaration>
+
+  <SubClassOf>
+    <Annotation><AnnotationProperty abbreviatedIRI=":note"/><Literal>annotated axiom</Literal></Annotation>
+    <ObjectUnionOf><Class abbreviatedIRI=":A"/><Class abbreviatedIRI=":B"/></ObjectUnionOf>
+    <ObjectIntersectionOf>
+      <Class abbreviatedIRI=":B"/>
+      <ObjectSomeValuesFrom>
+        <ObjectInverseOf><ObjectProperty abbreviatedIRI=":p"/></ObjectInverseOf>
+        <Class abbreviatedIRI=":C"/>
+      </ObjectSomeValuesFrom>
+    </ObjectIntersectionOf>
+  </SubClassOf>
+  <EquivalentClasses>
+    <Class abbreviatedIRI=":A"/>
+    <ObjectUnionOf>
+      <Class abbreviatedIRI=":B"/>
+      <ObjectComplementOf><Class abbreviatedIRI=":C"/></ObjectComplementOf>
+    </ObjectUnionOf>
+  </EquivalentClasses>
+  <DisjointClasses><Class abbreviatedIRI=":A"/><Class abbreviatedIRI=":B"/><Class abbreviatedIRI=":C"/></DisjointClasses>
+  <DisjointUnion>
+    <Class abbreviatedIRI=":A"/>
+    <Class abbreviatedIRI=":B"/>
+    <ObjectOneOf><NamedIndividual abbreviatedIRI=":i"/><AnonymousIndividual nodeID="anon"/></ObjectOneOf>
+  </DisjointUnion>
+
+  <SubObjectPropertyOf><ObjectProperty abbreviatedIRI=":p"/><ObjectProperty abbreviatedIRI=":q"/></SubObjectPropertyOf>
+  <SubObjectPropertyOf>
+    <ObjectPropertyChain><ObjectProperty abbreviatedIRI=":p"/><ObjectProperty abbreviatedIRI=":q"/></ObjectPropertyChain>
+    <ObjectProperty abbreviatedIRI=":r"/>
+  </SubObjectPropertyOf>
+  <EquivalentObjectProperties><ObjectProperty abbreviatedIRI=":p"/><ObjectProperty abbreviatedIRI=":q"/></EquivalentObjectProperties>
+  <DisjointObjectProperties><ObjectProperty abbreviatedIRI=":p"/><ObjectProperty abbreviatedIRI=":q"/></DisjointObjectProperties>
+  <InverseObjectProperties><ObjectProperty abbreviatedIRI=":p"/><ObjectProperty abbreviatedIRI=":q"/></InverseObjectProperties>
+  <ObjectPropertyDomain>
+    <ObjectProperty abbreviatedIRI=":p"/>
+    <ObjectAllValuesFrom><ObjectProperty abbreviatedIRI=":q"/><Class abbreviatedIRI=":B"/></ObjectAllValuesFrom>
+  </ObjectPropertyDomain>
+  <ObjectPropertyRange>
+    <ObjectProperty abbreviatedIRI=":p"/>
+    <ObjectHasValue><ObjectProperty abbreviatedIRI=":q"/><NamedIndividual abbreviatedIRI=":i"/></ObjectHasValue>
+  </ObjectPropertyRange>
+  <FunctionalObjectProperty><ObjectProperty abbreviatedIRI=":p"/></FunctionalObjectProperty>
+  <InverseFunctionalObjectProperty><ObjectProperty abbreviatedIRI=":p"/></InverseFunctionalObjectProperty>
+  <ReflexiveObjectProperty><ObjectProperty abbreviatedIRI=":p"/></ReflexiveObjectProperty>
+  <IrreflexiveObjectProperty><ObjectProperty abbreviatedIRI=":q"/></IrreflexiveObjectProperty>
+  <SymmetricObjectProperty><ObjectProperty abbreviatedIRI=":p"/></SymmetricObjectProperty>
+  <AsymmetricObjectProperty><ObjectProperty abbreviatedIRI=":q"/></AsymmetricObjectProperty>
+  <TransitiveObjectProperty><ObjectProperty abbreviatedIRI=":r"/></TransitiveObjectProperty>
+
+  <SubDataPropertyOf><DataProperty abbreviatedIRI=":d"/><DataProperty abbreviatedIRI=":e"/></SubDataPropertyOf>
+  <EquivalentDataProperties><DataProperty abbreviatedIRI=":d"/><DataProperty abbreviatedIRI=":e"/></EquivalentDataProperties>
+  <DisjointDataProperties><DataProperty abbreviatedIRI=":d"/><DataProperty abbreviatedIRI=":e"/></DisjointDataProperties>
+  <DataPropertyDomain>
+    <DataProperty abbreviatedIRI=":d"/>
+    <DataSomeValuesFrom>
+      <DataProperty abbreviatedIRI=":e"/>
+      <DataUnionOf><Datatype abbreviatedIRI="xsd:string"/><Datatype abbreviatedIRI="xsd:integer"/></DataUnionOf>
+    </DataSomeValuesFrom>
+  </DataPropertyDomain>
+  <DataPropertyRange>
+    <DataProperty abbreviatedIRI=":d"/>
+    <DatatypeRestriction>
+      <Datatype abbreviatedIRI="xsd:integer"/>
+      <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">0</Literal>
+      </FacetRestriction>
+    </DatatypeRestriction>
+  </DataPropertyRange>
+  <FunctionalDataProperty><DataProperty abbreviatedIRI=":d"/></FunctionalDataProperty>
+  <DatatypeDefinition>
+    <Datatype abbreviatedIRI=":Code"/>
+    <DataOneOf><Literal>alpha</Literal><Literal xml:lang="en">beta</Literal></DataOneOf>
+  </DatatypeDefinition>
+  <HasKey>
+    <Class abbreviatedIRI=":A"/>
+    <ObjectProperty abbreviatedIRI=":p"/><ObjectProperty abbreviatedIRI=":q"/>
+    <DataProperty abbreviatedIRI=":d"/><DataProperty abbreviatedIRI=":e"/>
+  </HasKey>
+
+  <SameIndividual><NamedIndividual abbreviatedIRI=":i"/><AnonymousIndividual nodeID="anon"/></SameIndividual>
+  <DifferentIndividuals><NamedIndividual abbreviatedIRI=":i"/><NamedIndividual abbreviatedIRI=":j"/></DifferentIndividuals>
+  <ClassAssertion>
+    <ObjectMinCardinality cardinality="1"><ObjectProperty abbreviatedIRI=":p"/><Class abbreviatedIRI=":B"/></ObjectMinCardinality>
+    <AnonymousIndividual nodeID="anon"/>
+  </ClassAssertion>
+  <ObjectPropertyAssertion><ObjectProperty abbreviatedIRI=":p"/><NamedIndividual abbreviatedIRI=":i"/><AnonymousIndividual nodeID="anon"/></ObjectPropertyAssertion>
+  <NegativeObjectPropertyAssertion><ObjectProperty abbreviatedIRI=":q"/><AnonymousIndividual nodeID="anon"/><NamedIndividual abbreviatedIRI=":j"/></NegativeObjectPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty abbreviatedIRI=":d"/><NamedIndividual abbreviatedIRI=":i"/>
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">01</Literal>
+  </DataPropertyAssertion>
+  <NegativeDataPropertyAssertion><DataProperty abbreviatedIRI=":e"/><AnonymousIndividual nodeID="anon"/><Literal>plain</Literal></NegativeDataPropertyAssertion>
+
+  <AnnotationAssertion>
+    <Annotation><AnnotationProperty abbreviatedIRI=":note"/><Literal>axiom metadata</Literal></Annotation>
+    <AnnotationProperty abbreviatedIRI=":note"/>
+    <AnonymousIndividual nodeID="anon"/>
+    <IRI>urn:owlapi-js:phase4:value</IRI>
+  </AnnotationAssertion>
+  <SubAnnotationPropertyOf><AnnotationProperty abbreviatedIRI=":note"/><AnnotationProperty abbreviatedIRI="rdfs:label"/></SubAnnotationPropertyOf>
+  <AnnotationPropertyDomain><AnnotationProperty abbreviatedIRI=":note"/><IRI>urn:owlapi-js:phase4:domain</IRI></AnnotationPropertyDomain>
+  <AnnotationPropertyRange><AnnotationProperty abbreviatedIRI=":note"/><IRI>urn:owlapi-js:phase4:range</IRI></AnnotationPropertyRange>
+</Ontology>

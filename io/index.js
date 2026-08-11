@@ -20,4 +20,5 @@ export {
   UnloadableImportError,
   UnparsableOntologyException,
   UnsupportedConstructError,
+  XmlParseError,
 } from "./errors.js";

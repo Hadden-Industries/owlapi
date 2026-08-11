@@ -8,7 +8,8 @@
   "decisionReferences": {
     "PHASE0-2026-08-10": "Repository-owner approval of the Phase 0 implementation-plan artifacts on 10 August 2026",
     "PHASE2-2026-08-10": "Repository-owner approval of Phase 2 implementation and the named capability, conformance, and provenance updates on 10 August 2026",
-    "PHASE3-2026-08-11": "Repository-owner approval of Phase 3 implementation and the named capability, expected-difference, provenance, performance, migration-status, and playbook updates on 11 August 2026"
+    "PHASE3-2026-08-11": "Repository-owner approval of Phase 3 implementation and the named capability, expected-difference, provenance, performance, migration-status, and playbook updates on 11 August 2026",
+    "PHASE4-2026-08-11": "Repository-owner approval of Phase 4 implementation and the named dependency, capability, conformance, expected-difference, provenance, performance, migration-status, and playbook updates on 11 August 2026"
   },
   "provenanceCategories": {
     "A_PROJECT_ORIGINAL": "Project-authored implementation with no identified upstream-derived semantic implementation",
@@ -171,6 +172,21 @@
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": ["src/owlapi-js/io/io.test.js"],
+      "laterPhaseChanges": [
+        {
+          "phase": 4,
+          "scope": "add the public XmlParseError used for deterministic XML well-formedness and environment failures",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/xml/",
+            "docs/owlapi-js/implementation-plan.md sections 11.3-11.4 and 17.11"
+          ],
+          "focusedEvidence": [
+            "src/owlapi-js/parser/xml/xmlParserAdapter.test.js",
+            "src/owlapi-js/parser/owlxml/owlXml.resource.test.js"
+          ],
+          "decisionRef": "PHASE4-2026-08-11"
+        }
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE0-2026-08-10",
@@ -286,6 +302,19 @@
             "src/owlapi-js/parser/manchester/manchesterSyntax.conformance.test.js"
           ],
           "decisionRef": "PHASE3-2026-08-11"
+        },
+        {
+          "phase": 4,
+          "scope": "register the OWL/XML descriptor before the textual syntaxes in the default manager while preserving injected registries",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/owl2-xml-serialization/",
+            "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.11"
+          ],
+          "focusedEvidence": [
+            "src/owlapi-js/parser/owlxml/owlXml.test.js",
+            "src/owlapi-js/parser/owlxml/owlXml.differential.test.js"
+          ],
+          "decisionRef": "PHASE4-2026-08-11"
         }
       ],
       "thirdPartyDependencies": [],
@@ -523,6 +552,142 @@
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE3-2026-08-11",
       "reviewDate": "2026-08-11"
+    },
+    {
+      "id": "PHASE4-OWLXML-DESCRIPTOR",
+      "path": "src/owlapi-js/parser/owlxml/descriptor.js",
+      "phase": 4,
+      "scope": "immutable OWL/XML identity, format metadata, and bounded namespace-aware tri-state detection",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/owlXmlParser.js",
+        "src/owl2vowl/js/index.js"
+      ],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-xml-serialization/",
+        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.11"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public OWLXMLDocumentFormat and OWLXMLParserFactory identities"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/owlxml/owlXml.test.js",
+        "src/owlapi-js/parser/owlxml/owlXml.resource.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE4-2026-08-11",
+      "reviewDate": "2026-08-11"
+    },
+    {
+      "id": "PHASE4-OWLXML-GRAMMAR",
+      "path": "src/owlapi-js/parser/owlxml/grammar.js",
+      "phase": 4,
+      "scope": "immutable complete finite inventory of OWL/XML ontology, entity, expression, data-range, annotation, and axiom productions",
+      "legacyWebVowlSources": ["src/owl2vowl/js/owlXmlParser.js"],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-xml-serialization/#sec-xml-schema",
+        "https://www.w3.org/TR/owl2-syntax/",
+        "docs/owlapi-js/implementation-plan.md sections 3.2.5 and 17.11"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public OWL/XML parser surface and pinned Phase 4 fixture inventory"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/owlxml/owlXml.conformance.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE4-2026-08-11",
+      "reviewDate": "2026-08-11"
+    },
+    {
+      "id": "PHASE4-OWLXML-PARSER",
+      "path": "src/owlapi-js/parser/owlxml/parser.js",
+      "phase": 4,
+      "scope": "complete required-v1 OWL/XML ontology, expression, data-range, annotation, and 38-axiom construction directly into the structural model",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/owlXmlParser.js",
+        "src/owl2vowl/js/iriResolver.js"
+      ],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-xml-serialization/",
+        "https://www.w3.org/TR/owl2-syntax/",
+        "https://www.w3.org/TR/xmlbase/",
+        "docs/owlapi-js/implementation-plan.md sections 3.2.5, 4, 9, 17.11, and 18"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 pinned Java OWL/XML structural snapshot and project-owned OWL/XML/Functional structural pair"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/owlxml/owlXml.test.js",
+        "src/owlapi-js/parser/owlxml/owlXml.resource.test.js",
+        "src/owlapi-js/parser/owlxml/owlXml.conformance.test.js",
+        "src/owlapi-js/parser/owlxml/owlXml.differential.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE4-2026-08-11",
+      "reviewDate": "2026-08-11"
+    },
+    {
+      "id": "PHASE4-XML-ENTITY-POLICY",
+      "path": "src/owlapi-js/parser/xml/xmlEntityPolicy.js",
+      "phase": 4,
+      "scope": "default-deny external XML resource policy and bounded internal general-entity validation and expansion",
+      "legacyWebVowlSources": ["src/owl2vowl/js/xmlUtils.js"],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/xml/",
+        "docs/owlapi-js/implementation-plan.md sections 10.8, 17.11, 20, and 21"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 pinned OWL/XML behavioral fixture; external-resource behavior is governed by the stricter project security policy"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/owlxml/owlXml.resource.test.js",
+        "src/owlapi-js/parser/xml/xmlParserAdapter.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE4-2026-08-11",
+      "reviewDate": "2026-08-11"
+    },
+    {
+      "id": "PHASE4-XML-PARSER-ADAPTER",
+      "path": "src/owlapi-js/parser/xml/xmlParserAdapter.js",
+      "phase": 4,
+      "scope": "environment-neutral XML parsing boundary using native browser DOMParser and a lazily loaded Node DOM implementation",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/domUtils.js",
+        "src/owl2vowl/js/xmlUtils.js"
+      ],
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "normativePublicSources": [
+        "https://dom.spec.whatwg.org/",
+        "https://www.w3.org/TR/xml/",
+        "docs/owlapi-js/implementation-plan.md sections 17.11, 20, and 21"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 pinned OWL/XML structural snapshot; environment behavior is defined by project-owned adapter contracts"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/xml/xmlParserAdapter.test.js",
+        "src/owlapi-js/parser/owlxml/owlXml.test.js"
+      ],
+      "thirdPartyDependencies": [
+        "@xmldom/xmldom 0.9.10 (Node-only DOM implementation behind XmlParserAdapter)"
+      ],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE4-2026-08-11",
+      "reviewDate": "2026-08-11"
     }
   ],
   "compatibilityResearch": [
@@ -587,6 +752,22 @@
         "util/owlapi-reference/fixtures/functional/phase2-structural.java.json",
         "src/owlapi-js/parser/functional/functionalSyntax.conformance.test.js",
         "src/owlapi-js/parser/functional/functionalSyntax.differential.test.js"
+      ]
+    },
+    {
+      "id": "PHASE4-RESEARCH-OWLXML-ANONYMOUS-OBJECT-ONE-OF",
+      "question": "Why OWLAPI 5.5.1 omits an OWL/XML AnonymousIndividual child from ObjectOneOf while retaining the named individual",
+      "publicBasis": "W3C OWL 2 XML Serialization XML Schema ObjectOneOf and Individual productions plus the pinned OWLAPI behavioral snapshot",
+      "implementationSourcesInspected": [
+        "parsers/src/main/java/org/semanticweb/owlapi/owlxml/parser/PARSER_OWLXMLVocabulary.java"
+      ],
+      "sourceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "reason": "Source inspection was restricted to the OneOfEH, AnonEH, and anonymous-individual child dispatch after the W3C grammar and black-box structural divergence were established; it localized the omission to a narrow reference-parser handling gap.",
+      "productionUse": "No implementation text, handler structure, or control flow was copied; the independently authored parser follows the W3C grammar and the exact project-owned expected-difference rule records the reference behavior.",
+      "evidence": [
+        "util/owlapi-reference/fixtures/owlxml/phase4-structural.owx",
+        "util/owlapi-reference/fixtures/owlxml/phase4-structural.java.json",
+        "src/owlapi-js/parser/owlxml/owlXml.differential.test.js"
       ]
     }
   ],

@@ -11,3 +11,9 @@ Allowed applicability tags: `CROSS_CUTTING`, `OWL_NATIVE`, `TEXTUAL_PARSER`,
 Allowed primary dispositions: `NO_CHANGE`, `PLAYBOOK_UPDATE`,
 `TEST_OR_FITNESS_UPDATE`, `LOCAL_PHASE_FOLLOW_UP`, and
 `PROPOSED_NORMATIVE_CHANGE`.
+
+## Completed records
+
+- [Phase 2: Functional Syntax](001-functional-syntax.md)
+- [Phase 3: Manchester Syntax](002-manchester-syntax.md)
+- [Phase 4: OWL/XML](003-owlxml.md)

@@ -59,6 +59,25 @@
       },
       "rationale": "For the source facet <= 10, OWLAPI 5.5.1 produces xsd:maxInclusive while the W3C Manchester mapping table specifies xsd:minInclusive.",
       "authority": "https://www.w3.org/TR/owl2-manchester-syntax/#sec-owl2-manchester-to-structural"
+    },
+    {
+      "id": "PHASE4-OWLXML-OBJECT-ONE-OF-ANONYMOUS-INDIVIDUAL",
+      "artifactType": "OWL structural snapshot",
+      "fixture": "util/owlapi-reference/fixtures/owlxml/phase4-structural.owx",
+      "parser": "OWL/XML",
+      "capability": "parser.owlxml",
+      "differenceCategory": "NORMATIVE_SPECIFICATION_DIVERGENCE",
+      "differenceType": "VALUE_CHANGED",
+      "side": "Java",
+      "selector": "$['disjointUnion']['objectOneOf']['anonymousIndividualCount']",
+      "javaValue": 0,
+      "jsValue": 1,
+      "cardinality": {
+        "form": "exact",
+        "value": 1
+      },
+      "rationale": "OWLAPI 5.5.1 omits an AnonymousIndividual child from an OWL/XML ObjectOneOf expression, while the W3C OWL/XML schema requires one or more Individual operands and includes anonymous individuals in that group.",
+      "authority": "https://www.w3.org/TR/owl2-xml-serialization/#sec-xml-schema"
     }
   ]
 }

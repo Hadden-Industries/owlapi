@@ -7,8 +7,8 @@ the Java implementation is not a JavaScript implementation template.
 | OWLAPI identity                                                               | owlapi-js capability         | v1 status                                    |
 | ----------------------------------------------------------------------------- | ---------------------------- | -------------------------------------------- |
 | `OWLFunctionalSyntaxOWLParser` / `FunctionalSyntaxDocumentFormatFactory`      | `parser.functional`          | `REQUIRED_V1`; Phase 2 `COMPLETE`            |
-| `ManchesterOWLSyntaxOntologyParser` / `ManchesterSyntaxDocumentFormatFactory` | `parser.manchester`          | `REQUIRED_V1`                                |
-| `OWLXMLParser` / `OWLXMLDocumentFormatFactory`                                | `parser.owlxml`              | `REQUIRED_V1`                                |
+| `ManchesterOWLSyntaxOntologyParser` / `ManchesterSyntaxDocumentFormatFactory` | `parser.manchester`          | `REQUIRED_V1`; Phase 3 `COMPLETE`            |
+| `OWLXMLParser` / `OWLXMLDocumentFormatFactory`                                | `parser.owlxml`              | `REQUIRED_V1`; Phase 4 `COMPLETE`            |
 | `DLSyntaxOWLParser` / `DLSyntaxDocumentFormatFactory`                         | `parser.dl`                  | `REQUIRED_V1`                                |
 | `KRSS2OWLParser` / `KRSS2DocumentFormatFactory`                               | `parser.krss2`               | `REQUIRED_V1`                                |
 | `KRSSOWLParser` / `KRSSDocumentFormatFactory`                                 | `parser.krss1`               | `DEFERRED` implementation; identity required |

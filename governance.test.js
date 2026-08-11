@@ -44,7 +44,7 @@ describe("owlapi-js governance artifacts", () => {
     }
     expect(
       matrix.capabilities
-        .filter(({ phase }) => phase !== null && phase <= 3)
+        .filter(({ phase }) => phase !== null && phase <= 4)
         .every(({ progress }) => progress === "COMPLETE"),
     ).toBe(true);
   });
@@ -153,7 +153,7 @@ describe("owlapi-js governance artifacts", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(paths).toEqual(productionModules);
     for (const record of records) {
-      expect([1, 2, 3]).toContain(record.phase);
+      expect([1, 2, 3, 4]).toContain(record.phase);
       expect(manifest.provenanceCategories).toHaveProperty(
         record.provenanceCategory,
       );
@@ -195,6 +195,18 @@ describe("owlapi-js governance artifacts", () => {
       "src/owlapi-js/parser/manchester/lexer.js",
       "src/owlapi-js/parser/manchester/parser.js",
     ]);
+    expect(
+      records
+        .filter(({ phase }) => phase === 4)
+        .map(({ path }) => path)
+        .sort(),
+    ).toEqual([
+      "src/owlapi-js/parser/owlxml/descriptor.js",
+      "src/owlapi-js/parser/owlxml/grammar.js",
+      "src/owlapi-js/parser/owlxml/parser.js",
+      "src/owlapi-js/parser/xml/xmlEntityPolicy.js",
+      "src/owlapi-js/parser/xml/xmlParserAdapter.js",
+    ]);
     for (const research of manifest.compatibilityResearch) {
       expect(research.sourceRevision).toBe(manifest.referenceOwlapi.revision);
       expect(research.implementationSourcesInspected.length).toBeGreaterThan(0);
@@ -219,7 +231,7 @@ describe("owlapi-js governance artifacts", () => {
     const packageJson = readJson("../../package.json");
     const lock = readJson("../../package-lock.json");
 
-    expect(governance.dependencies).toHaveLength(5);
+    expect(governance.dependencies).toHaveLength(6);
     for (const dependency of governance.dependencies) {
       expect(packageJson.dependencies[dependency.name]).toBe(
         dependency.version,

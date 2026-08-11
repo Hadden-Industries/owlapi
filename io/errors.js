@@ -44,6 +44,12 @@ export class OWLSyntaxError extends OWLParserError {
   }
 }
 
+export class XmlParseError extends OWLParserError {
+  constructor(message = "The XML document could not be parsed", details) {
+    super(message, "XML_PARSE_ERROR", details);
+  }
+}
+
 export class UnsupportedConstructError extends OWLParserError {
   constructor(message = "Unsupported OWL construct", details) {
     super(message, "UNSUPPORTED_CONSTRUCT", details);

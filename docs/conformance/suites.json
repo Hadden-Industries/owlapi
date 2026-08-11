@@ -46,6 +46,17 @@
       "runner": "src/owlapi-js/parser/functional/functionalSyntax.conformance.test.js"
     },
     {
+      "id": "w3c-owl2-xml-serialization",
+      "specifications": [
+        "OWL 2 Web Ontology Language XML Serialization (Second Edition)"
+      ],
+      "upstream": "https://www.w3.org/TR/2012/REC-owl2-xml-serialization-20121211/",
+      "revision": "W3C Recommendation 11 December 2012",
+      "retrievedOn": "2026-08-11",
+      "applicable": ["complete finite OWL/XML structural-production inventory"],
+      "runner": "src/owlapi-js/parser/owlxml/owlXml.conformance.test.js"
+    },
+    {
       "id": "owlapi-reference",
       "specifications": ["selected OWLAPI 5 behavioral compatibility"],
       "upstream": "C:/Users/maksy/GitHub/owlcs/owlapi",
