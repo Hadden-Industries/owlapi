@@ -154,12 +154,14 @@ export class OWLOntology {
 
   #getSignatureByKind(kind) {
     const entities = new StructuralSet();
-    for (const axiom of this.#axioms) {
-      visitStructuralValues(axiom, (value) => {
-        if (value.kind === kind) {
-          entities.add(value);
-        }
-      });
+    for (const values of [this.#axioms, this.#annotations]) {
+      for (const value of values) {
+        visitStructuralValues(value, (nestedValue) => {
+          if (nestedValue.kind === kind) {
+            entities.add(nestedValue);
+          }
+        });
+      }
     }
     return entities.toSet();
   }

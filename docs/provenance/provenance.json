@@ -7,7 +7,8 @@
   },
   "decisionReferences": {
     "PHASE0-2026-08-10": "Repository-owner approval of the Phase 0 implementation-plan artifacts on 10 August 2026",
-    "PHASE2-2026-08-10": "Repository-owner approval of Phase 2 implementation and the named capability, conformance, and provenance updates on 10 August 2026"
+    "PHASE2-2026-08-10": "Repository-owner approval of Phase 2 implementation and the named capability, conformance, and provenance updates on 10 August 2026",
+    "PHASE3-2026-08-11": "Repository-owner approval of Phase 3 implementation and the named capability, expected-difference, provenance, performance, migration-status, and playbook updates on 11 August 2026"
   },
   "provenanceCategories": {
     "A_PROJECT_ORIGINAL": "Project-authored implementation with no identified upstream-derived semantic implementation",
@@ -64,6 +65,23 @@
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": ["src/owlapi-js/model/model.test.js"],
+      "laterPhaseChanges": [
+        {
+          "phase": 3,
+          "scope": "include entities occurring in nested ontology annotations when calculating direct ontology signatures",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/owl2-syntax/#Ontology_Annotations"
+          ],
+          "compatibilityReferences": [
+            "OWLAPI 5.5.1 pinned Phase 3 structural snapshot"
+          ],
+          "focusedEvidence": [
+            "src/owlapi-js/model/model.test.js",
+            "src/owlapi-js/parser/manchester/manchesterSyntax.differential.test.js"
+          ],
+          "decisionRef": "PHASE3-2026-08-11"
+        }
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE0-2026-08-10",
@@ -125,7 +143,7 @@
       "legacyWebVowlSources": [],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
-        "https://www.w3.org/TR/owl2-syntax/ section 3",
+        "https://www.w3.org/TR/owl2-syntax/#Ontologies",
         "docs/owlapi-js/implementation-plan.md sections 10.1-10.2"
       ],
       "compatibilityReferences": [
@@ -255,6 +273,19 @@
             "src/owlapi-js/parser/functional/functionalSyntax.test.js"
           ],
           "decisionRef": "PHASE2-2026-08-10"
+        },
+        {
+          "phase": 3,
+          "scope": "register the Manchester Syntax descriptor after Functional Syntax in the default manager while preserving injected registries",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/owl2-manchester-syntax/",
+            "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.10"
+          ],
+          "focusedEvidence": [
+            "src/owlapi-js/parser/manchester/manchesterSyntax.test.js",
+            "src/owlapi-js/parser/manchester/manchesterSyntax.conformance.test.js"
+          ],
+          "decisionRef": "PHASE3-2026-08-11"
         }
       ],
       "thirdPartyDependencies": [],
@@ -407,6 +438,91 @@
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE2-2026-08-10",
       "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE3-MANCHESTER-DESCRIPTOR",
+      "path": "src/owlapi-js/parser/manchester/descriptor.js",
+      "phase": 3,
+      "scope": "immutable Manchester Syntax identity, format metadata, and bounded tri-state Prefix:/Ontology: detection",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/manchesterSyntaxParser.js",
+        "src/owl2vowl/js/index.js"
+      ],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-manchester-syntax/",
+        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.10"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public ManchesterSyntaxDocumentFormat and ManchesterOWLSyntaxOntologyParserFactory identities"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/manchester/manchesterSyntax.test.js",
+        "src/owlapi-js/parser/manchester/manchesterSyntax.resource.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE3-2026-08-11",
+      "reviewDate": "2026-08-11"
+    },
+    {
+      "id": "PHASE3-MANCHESTER-LEXER",
+      "path": "src/owlapi-js/parser/manchester/lexer.js",
+      "phase": 3,
+      "scope": "lazy pull lexer for Manchester tokens, exact lexical values and adjacency, SPARQL-style names, source locations, cancellation, timeout, and token budgets",
+      "legacyWebVowlSources": ["src/owl2vowl/js/manchesterSyntaxParser.js"],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-manchester-syntax/",
+        "https://www.w3.org/TR/sparql11-query/#rPN_PREFIX",
+        "https://www.rfc-editor.org/rfc/rfc3987",
+        "https://www.rfc-editor.org/rfc/bcp/bcp47.txt",
+        "docs/owlapi-js/implementation-plan.md sections 18.3, 19, and 20.1"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 accepted/rejected input observed only through the pinned black-box harness and project-owned fixtures"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/manchester/manchesterSyntax.test.js",
+        "src/owlapi-js/parser/manchester/manchesterSyntax.resource.test.js",
+        "src/owlapi-js/parser/manchester/manchesterSyntax.conformance.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE3-2026-08-11",
+      "reviewDate": "2026-08-11"
+    },
+    {
+      "id": "PHASE3-MANCHESTER-PARSER",
+      "path": "src/owlapi-js/parser/manchester/parser.js",
+      "phase": 3,
+      "scope": "complete required-v1 Manchester ontology, frame, expression, data-range, annotation, and 38-axiom construction into the structural model",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/manchesterSyntaxParser.js",
+        "src/owl2vowl/js/iriResolver.js"
+      ],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-manchester-syntax/",
+        "https://www.w3.org/TR/owl2-syntax/",
+        "docs/owlapi-js/implementation-plan.md sections 4, 9, 17.10, and 18"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 pinned Java Manchester structural snapshot and project-owned Manchester/Functional structural pair"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/manchester/manchesterSyntax.test.js",
+        "src/owlapi-js/parser/manchester/manchesterSyntax.resource.test.js",
+        "src/owlapi-js/parser/manchester/manchesterSyntax.conformance.test.js",
+        "src/owlapi-js/parser/manchester/manchesterSyntax.differential.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE3-2026-08-11",
+      "reviewDate": "2026-08-11"
     }
   ],
   "compatibilityResearch": [

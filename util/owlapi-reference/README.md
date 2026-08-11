@@ -40,5 +40,14 @@ The Phase 2 reference pair is
 pinned source revision and review any structural change through the governed
 zero-tolerance expected-difference process.
 
+The Phase 3 Java reference pair is
+`fixtures/manchester/phase3-structural.omn` and
+`fixtures/manchester/phase3-structural.java.json`. The sibling
+`phase3-structural.ofn` is the project-owned Functional counterpart used for
+cross-syntax structural conformance. The Java snapshot deliberately preserves
+OWLAPI 5.5.1's comparison-facet result; the two standards-correct JavaScript
+differences are matched only by the exact fixture-scoped rules in
+`docs/owlapi-js/compatibility/expected-differences.json`.
+
 The harness deliberately has no WebVOWL, npm, or browser dependency. Generated
 snapshots are test evidence and require their own fixture provenance record.

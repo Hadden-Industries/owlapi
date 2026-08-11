@@ -1,0 +1,86 @@
+Prefix(:=<urn:owlapi-js:phase3:>)
+Ontology(<urn:owlapi-js:phase3> <urn:owlapi-js:phase3:v1>
+  Import(<urn:owlapi-js:phase3:import>)
+  Annotation(Annotation(rdfs:comment "nested"@en) rdfs:label "Phase 3"@en)
+
+  Declaration(AnnotationProperty(:note))
+  Declaration(AnnotationProperty(:superNote))
+  Declaration(ObjectProperty(:p))
+  Declaration(ObjectProperty(:q))
+  Declaration(ObjectProperty(:r))
+  Declaration(DataProperty(:d))
+  Declaration(DataProperty(:e))
+  Declaration(Datatype(:Code))
+  Declaration(Class(:A))
+  Declaration(Class(:B))
+  Declaration(Class(:C))
+  Declaration(NamedIndividual(:i))
+  Declaration(NamedIndividual(:j))
+  Declaration(NamedIndividual(:k))
+
+  AnnotationPropertyDomain(:note <urn:owlapi-js:phase3:domain>)
+  AnnotationPropertyRange(:note <urn:owlapi-js:phase3:range>)
+  SubAnnotationPropertyOf(:note :superNote)
+
+  ObjectPropertyDomain(:p :A)
+  ObjectPropertyRange(:p :B)
+  FunctionalObjectProperty(:p)
+  InverseFunctionalObjectProperty(:p)
+  ReflexiveObjectProperty(:p)
+  SymmetricObjectProperty(:p)
+  SubObjectPropertyOf(:p :q)
+  EquivalentObjectProperties(:p :q)
+  DisjointObjectProperties(:p :r)
+  InverseObjectProperties(:p :q)
+  SubObjectPropertyOf(ObjectPropertyChain(:q :r) :p)
+  IrreflexiveObjectProperty(:q)
+  AsymmetricObjectProperty(:q)
+  TransitiveObjectProperty(:r)
+
+  DataPropertyDomain(:d DataSomeValuesFrom(:e DataUnionOf(xsd:string xsd:integer)))
+  DataPropertyRange(:d DatatypeRestriction(
+    xsd:integer
+    xsd:maxInclusive "0"^^xsd:integer
+    xsd:minInclusive "10"^^xsd:integer
+  ))
+  FunctionalDataProperty(:d)
+  SubDataPropertyOf(:d :e)
+  EquivalentDataProperties(:d :e)
+  DisjointDataProperties(:d :e)
+
+  DatatypeDefinition(:Code DataOneOf("alpha" "beta"@en))
+
+  AnnotationAssertion(
+    Annotation(:note "axiom metadata")
+    :note
+    :A
+    <urn:owlapi-js:phase3:value>
+  )
+  SubClassOf(
+    Annotation(:note "annotated axiom")
+    :A
+    ObjectIntersectionOf(:B ObjectSomeValuesFrom(ObjectInverseOf(:p) :C))
+  )
+  EquivalentClasses(:A ObjectUnionOf(:B ObjectComplementOf(:C)))
+  DisjointClasses(:A :C)
+  DisjointUnion(:A :B :C)
+  HasKey(:A (:p) ())
+
+  ClassAssertion(ObjectMinCardinality(1 :p :B) :i)
+  ObjectPropertyAssertion(:p :i :j)
+  NegativeObjectPropertyAssertion(:q :i :k)
+  DataPropertyAssertion(:d :i "01"^^xsd:integer)
+  NegativeDataPropertyAssertion(:e :i "plain")
+  SameIndividual(:i _:anon)
+  DifferentIndividuals(:i :j)
+  ClassAssertion(:A _:anon)
+
+  EquivalentClasses(:B :C)
+  DisjointClasses(:A :B :C)
+  EquivalentObjectProperties(:p :r)
+  DisjointObjectProperties(:q :r)
+  EquivalentDataProperties(:d :e)
+  DisjointDataProperties(:d :e)
+  SameIndividual(:i :k)
+  DifferentIndividuals(_:anon :k)
+)

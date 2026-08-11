@@ -1,0 +1,66 @@
+Prefix: : <urn:owlapi-js:phase3:>
+Ontology: <urn:owlapi-js:phase3> <urn:owlapi-js:phase3:v1>
+  Import: <urn:owlapi-js:phase3:import>
+  Annotations: Annotations: rdfs:comment "nested"@en rdfs:label "Phase 3"@en
+
+  AnnotationProperty: :note
+    Domain: <urn:owlapi-js:phase3:domain>
+    Range: <urn:owlapi-js:phase3:range>
+    SubPropertyOf: :superNote
+  AnnotationProperty: :superNote
+
+  ObjectProperty: :p
+    Domain: :A
+    Range: :B
+    Characteristics: Functional, InverseFunctional, Reflexive, Symmetric
+    SubPropertyOf: :q
+    EquivalentTo: :q
+    DisjointWith: :r
+    InverseOf: :q
+    SubPropertyChain: :q o :r
+  ObjectProperty: :q
+    Characteristics: Irreflexive, Asymmetric
+  ObjectProperty: :r
+    Characteristics: Transitive
+
+  DataProperty: :e
+  DataProperty: :d
+    Domain: :e some (xsd:string or xsd:integer)
+    Range: xsd:integer [ >= 0, <= 10 ]
+    Characteristics: Functional
+    SubPropertyOf: :e
+    EquivalentTo: :e
+    DisjointWith: :e
+  Datatype: :Code
+    EquivalentTo: { "alpha", "beta"@en }
+
+  Class: :A
+    Annotations: Annotations: :note "axiom metadata" :note <urn:owlapi-js:phase3:value>
+    SubClassOf: Annotations: :note "annotated axiom" :B and inverse :p some :C
+    EquivalentTo: :B or not :C
+    DisjointWith: :C
+  Class: :A
+    DisjointUnionOf: :B, :C
+  Class: :A
+    HasKey: :p
+  Class: :B
+  Class: :C
+
+  Individual: :i
+    Types: :p min 1 :B
+    Facts: :p :j, not :q :k, :d "01"^^xsd:integer, not :e "plain"
+    SameAs: _:anon
+    DifferentFrom: :j
+  Individual: :j
+  Individual: :k
+  Individual: _:anon
+    Types: :A
+
+  EquivalentClasses: :B, :C
+  DisjointClasses: :A, :B, :C
+  EquivalentProperties: :p, :r
+  DisjointProperties: :q, :r
+  EquivalentProperties: :d, :e
+  DisjointProperties: :d, :e
+  SameIndividual: :i, :k
+  DifferentIndividuals: _:anon, :k

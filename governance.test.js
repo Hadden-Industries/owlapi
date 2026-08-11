@@ -44,7 +44,7 @@ describe("owlapi-js governance artifacts", () => {
     }
     expect(
       matrix.capabilities
-        .filter(({ phase }) => phase !== null && phase <= 2)
+        .filter(({ phase }) => phase !== null && phase <= 3)
         .every(({ progress }) => progress === "COMPLETE"),
     ).toBe(true);
   });
@@ -153,7 +153,7 @@ describe("owlapi-js governance artifacts", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(paths).toEqual(productionModules);
     for (const record of records) {
-      expect([1, 2]).toContain(record.phase);
+      expect([1, 2, 3]).toContain(record.phase);
       expect(manifest.provenanceCategories).toHaveProperty(
         record.provenanceCategory,
       );
@@ -184,6 +184,16 @@ describe("owlapi-js governance artifacts", () => {
       "src/owlapi-js/parser/functional/descriptor.js",
       "src/owlapi-js/parser/functional/lexer.js",
       "src/owlapi-js/parser/functional/parser.js",
+    ]);
+    expect(
+      records
+        .filter(({ phase }) => phase === 3)
+        .map(({ path }) => path)
+        .sort(),
+    ).toEqual([
+      "src/owlapi-js/parser/manchester/descriptor.js",
+      "src/owlapi-js/parser/manchester/lexer.js",
+      "src/owlapi-js/parser/manchester/parser.js",
     ]);
     for (const research of manifest.compatibilityResearch) {
       expect(research.sourceRevision).toBe(manifest.referenceOwlapi.revision);
@@ -234,13 +244,28 @@ describe("owlapi-js governance artifacts", () => {
       new Set(["EXTRA", "MISSING", "VALUE_CHANGED", "TYPE_CHANGED"]),
     );
     expect(Object.values(manifest.gate)).toEqual([0, 0, 0]);
+    expect(new Set(manifest.rules.map(({ id }) => id)).size).toBe(
+      manifest.rules.length,
+    );
     for (const rule of manifest.rules) {
       expect(rule.id).toBeTruthy();
       expect(rule.selector).toMatch(/^\$/);
+      expect(rule.selector).not.toMatch(/\.\.|\[\*\]/u);
       expect(manifest.atomicDifferenceTypes).toContain(rule.differenceType);
       expect(manifest.sides).toContain(rule.side);
+      expect(manifest.cardinalityForms).toContain(rule.cardinality.form);
+      expect(rule.cardinality).toMatchObject({ form: "exact" });
+      expect(Number.isSafeInteger(rule.cardinality.value)).toBe(true);
+      expect(rule.cardinality.value).toBeGreaterThanOrEqual(0);
+      expect(rule.artifactType).toBe("OWL structural snapshot");
+      expect(rule.fixture).toMatch(/^util\/owlapi-reference\/fixtures\//u);
+      expect(rule.parser).toBeTruthy();
+      expect(rule.capability).toBeTruthy();
+      expect(rule.differenceCategory).toBeTruthy();
+      expect(rule).toHaveProperty("javaValue");
+      expect(rule).toHaveProperty("jsValue");
       expect(rule.rationale).toBeTruthy();
-      expect(rule.authority).toBeTruthy();
+      expect(rule.authority).toMatch(/^https:\/\//u);
     }
   });
 

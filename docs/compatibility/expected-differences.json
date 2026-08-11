@@ -21,5 +21,44 @@
     "ambiguousRuleMatches": 0,
     "unsatisfiedRequiredExpectedDifferences": 0
   },
-  "rules": []
+  "rules": [
+    {
+      "id": "PHASE3-MANCHESTER-GTE-FACET-MAPPING",
+      "artifactType": "OWL structural snapshot",
+      "fixture": "util/owlapi-reference/fixtures/manchester/phase3-structural.omn",
+      "parser": "Manchester Syntax",
+      "capability": "parser.manchester",
+      "differenceCategory": "NORMATIVE_SPECIFICATION_DIVERGENCE",
+      "differenceType": "VALUE_CHANGED",
+      "side": "Java",
+      "selector": "$['dataPropertyRanges']['urn:owlapi-js:phase3:d']['facets']['0']['facet']",
+      "javaValue": "http://www.w3.org/2001/XMLSchema#minInclusive",
+      "jsValue": "http://www.w3.org/2001/XMLSchema#maxInclusive",
+      "cardinality": {
+        "form": "exact",
+        "value": 1
+      },
+      "rationale": "For the source facet >= 0, OWLAPI 5.5.1 produces xsd:minInclusive while the W3C Manchester mapping table specifies xsd:maxInclusive.",
+      "authority": "https://www.w3.org/TR/owl2-manchester-syntax/#sec-owl2-manchester-to-structural"
+    },
+    {
+      "id": "PHASE3-MANCHESTER-LTE-FACET-MAPPING",
+      "artifactType": "OWL structural snapshot",
+      "fixture": "util/owlapi-reference/fixtures/manchester/phase3-structural.omn",
+      "parser": "Manchester Syntax",
+      "capability": "parser.manchester",
+      "differenceCategory": "NORMATIVE_SPECIFICATION_DIVERGENCE",
+      "differenceType": "VALUE_CHANGED",
+      "side": "Java",
+      "selector": "$['dataPropertyRanges']['urn:owlapi-js:phase3:d']['facets']['10']['facet']",
+      "javaValue": "http://www.w3.org/2001/XMLSchema#maxInclusive",
+      "jsValue": "http://www.w3.org/2001/XMLSchema#minInclusive",
+      "cardinality": {
+        "form": "exact",
+        "value": 1
+      },
+      "rationale": "For the source facet <= 10, OWLAPI 5.5.1 produces xsd:maxInclusive while the W3C Manchester mapping table specifies xsd:minInclusive.",
+      "authority": "https://www.w3.org/TR/owl2-manchester-syntax/#sec-owl2-manchester-to-structural"
+    }
+  ]
 }

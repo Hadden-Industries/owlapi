@@ -57,6 +57,29 @@ describe("OWL structural model", () => {
     expect(ontology.getReferencingAxioms(classA)).toEqual(new Set([axiom]));
   });
 
+  it("includes nested ontology annotation properties in the signature", () => {
+    const factory = new OWLDataFactory();
+    const outerProperty = factory.getRDFSLabel();
+    const nestedProperty = factory.getOWLAnnotationProperty(
+      IRI.create("http://www.w3.org/2000/01/rdf-schema#comment"),
+    );
+    const annotation = factory.getOWLAnnotation(
+      outerProperty,
+      factory.getOWLLiteral("outer", "en"),
+      [
+        factory.getOWLAnnotation(
+          nestedProperty,
+          factory.getOWLLiteral("nested", "en"),
+        ),
+      ],
+    );
+    const ontology = new OWLOntology({ annotations: [annotation] });
+
+    expect(ontology.getAnnotationPropertiesInSignature()).toEqual(
+      new Set([nestedProperty, outerProperty]),
+    );
+  });
+
   it("preserves ontology identity, anonymous-individual scope, and entity categories", () => {
     const factory = new OWLDataFactory();
     const ontologyIri = IRI.create("https://example.com/ontology");

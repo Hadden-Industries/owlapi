@@ -16,6 +16,7 @@ import {
   StructuralSet,
 } from "../model/index.js";
 import { functionalSyntaxParserDescriptor } from "../parser/functional/descriptor.js";
+import { manchesterSyntaxParserDescriptor } from "../parser/manchester/descriptor.js";
 import { OWLParserRegistry } from "./parserRegistry.js";
 
 const DIAGNOSTIC_SEVERITIES = new Set(["info", "warning"]);
@@ -244,7 +245,11 @@ export class OWLOntologyManager {
       }
     }
     const normalizedRegistry =
-      registry || new OWLParserRegistry([functionalSyntaxParserDescriptor]);
+      registry ||
+      new OWLParserRegistry([
+        functionalSyntaxParserDescriptor,
+        manchesterSyntaxParserDescriptor,
+      ]);
     if (typeof normalizedRegistry.resolveCandidates !== "function") {
       throw new TypeError("registry must implement resolveCandidates()");
     }

@@ -17,6 +17,10 @@ do not append chronology here.
 - Keep lazy pull tokenization and bounded lookahead; do not materialize a token
   array. Enforce UTF-8 token length while scanning, and check cancellation and
   the monotonic deadline after bounded units of lexical work.
+- When a frame syntax requires global entity typing and declarations may follow
+  uses, perform a bounded lazy pre-index pass instead of buffering an AST or
+  guessing property categories. Both passes share cancellation, deadline, and
+  token-length controls; count the governed document token budget only once.
 - Keep detection within `maxSniffBytes`. Compatibility recovery is available
   only after a positive detector match; syntax hints do not authorize broad
   fallback.
@@ -31,6 +35,9 @@ do not append chronology here.
   not whitespace-tolerant conveniences. Route plain and language-tagged
   literals through the shared data factory so every syntax inherits the same
   RDF 1.1 datatype model.
+- Resolve lexically ambiguous literal/abbreviated-IRI tokens using their grammar
+  context. In positions that admit both, recognize valid numeric literal forms
+  before falling back to IRI expansion.
 - If an archived fixture redundantly declares a predefined prefix, any
   compatibility recovery must require an exact standard binding. Strict mode
   still rejects the declaration; never accept a conflicting reserved binding.
@@ -49,29 +56,43 @@ do not append chronology here.
    representation details such as unordered iteration, blank-node labels, or
    documented display-label spelling. Any semantic difference goes through the
    machine-readable expected-difference gate.
-4. Use the Java oracle with its fully resolved runtime dependency classpath.
+4. When a Java renderer collapses a semantic object into one string, decompose
+   that object into named structural fields before calculating atomic
+   differences. Never normalize a known semantic difference out of the compared
+   values merely to make whole-axiom strings equal.
+5. Verify that signatures include entities occurring in ontology annotations,
+   nested annotations, and axioms; do not infer signature completeness from
+   axiom counts alone.
+6. Use the Java oracle with its fully resolved runtime dependency classpath.
    Declare intentionally ignored fixture imports explicitly so their import
    declarations remain in the direct-ontology snapshot without network access.
-5. Record every material finding with evidence and one primary disposition.
-6. Turn reusable findings into tests/contracts where deterministic.
-7. Update this playbook and all impacted future phase assumptions.
-8. Close the mechanically reviewable learning gate before activating the next ingestion phase.
+7. Record every material finding with evidence and one primary disposition.
+8. Turn reusable findings into tests/contracts where deterministic.
+9. Update this playbook and all impacted future phase assumptions.
+10. Close the mechanically reviewable learning gate before activating the next ingestion phase.
 
-## Next migration: Phase 3 Manchester Syntax
+## Next migration: Phase 4 OWL/XML
 
-- Reuse the Functional parser's descriptor/transaction/resource/cancellation
-  pattern, but derive Manchester detection and recovery from its own public
-  grammar; Functional prefix behavior is not automatically transferable.
-- Map frames and inline expressions directly to the existing Phase 1 factory.
-  Do not reuse the legacy RDF/XML emission path.
-- Establish lexical regressions for frame delimiters, prefix/base handling,
-  quoted names, literals, comments, and ambiguous keyword/entity positions
-  before implementing production behavior.
-- Reuse the pinned W3C artifact where it contains applicable Manchester
-  documents; otherwise record the exact project-owned cross-syntax fixture
-  source and classification scope.
-- Repeat the Functional acceptance shape: exhaustive grammar coverage,
+- Reuse the established descriptor, isolated transaction, typed-error,
+  cancellation, monotonic-deadline, and finite-resource-budget contracts while
+  deriving detection and syntax behavior from the OWL/XML specification.
+- Map OWL/XML elements directly to the existing structural data factory. Do not
+  reuse either the legacy RDF/XML emission path or RDF-oriented intermediate
+  representations.
+- Select an XML implementation behind a narrow parser boundary and verify both
+  browser and Node behavior. Parser-specific nodes, errors, and configuration
+  must not leak into the structural model or manager API.
+- Enforce XML nesting, entity declaration/replacement/expansion depth, and
+  expanded-byte limits in addition to the shared input, axiom, expression,
+  annotation, cancellation, and timeout budgets. External entity and implicit
+  network access remain prohibited.
+- Establish focused regressions for namespaces, abbreviated and absolute IRIs,
+  XML literals, annotations, entity expansion, malformed nesting, cancellation,
+  and transactional failure before accepting production behavior.
+- Use the pinned OWL/XML conformance classification plus a project-owned
+  OWL/XML/Functional structural pair and pinned Java structural snapshot.
+- Repeat the complete acceptance shape: exhaustive grammar coverage,
   transaction/import behavior, Java structural differential, resource and
-  abort protection, repeated wall/heap measurements, provenance, and a formal
-  learning gate. Do not change shared budgets or contracts without the
-  repository-owner approval process.
+  abort protection, browser/Node checks, repeated wall/heap measurements,
+  provenance, and a formal learning gate. Do not change shared budgets or
+  contracts without the repository-owner approval process.

@@ -46,3 +46,40 @@ baseline, so there is no earlier Functional parser measurement against which to
 calculate the existing 20% regression threshold. Later accepted phases and
 Functional-parser changes compare against these medians; the threshold itself
 is unchanged.
+
+## Phase 3 Manchester Syntax baseline
+
+- Phase 2 checkpoint revision: `8a85801`.
+- Measurement date: 11 August 2026.
+- Environment: Windows `10.0.26200` x64, Node.js `v24.17.0`, 12th Gen
+  Intel Core i9-12900K (24 logical CPUs), 34,053,869,568 bytes system memory.
+- Dependency identity: `package-lock.json` SHA-256
+  `af79e01c2906a6df0ac2846afec87deb3baef3084606dff965b82bf6056c55e1`.
+- Command: `node --expose-gc util/benchmark-owlapi-manchester.mjs`.
+- Protocol: generator `owlapi-benchmark-corpus-v1`; one warm-up and five
+  measured runs per fixture; median aggregation; garbage collection requested
+  before each run; heap sampled every 5 ms and at operation completion.
+
+| Fixture                      | Median wall time (ms) | Median peak heap (bytes) | Median peak heap delta (bytes) |
+| ---------------------------- | --------------------: | -----------------------: | -----------------------------: |
+| `generated-manchester-large` |                530.81 |              144,777,480 |                    137,913,208 |
+| `generated-mismatch-large`   |                 27.52 |               22,686,456 |                         33,112 |
+
+`generated-manchester-large` contains 50,000 class frames. This is the first
+accepted Manchester Syntax baseline, so no earlier Manchester parser result
+exists for threshold comparison. The mismatch result remains a bounded-detector
+signal rather than a parser-throughput result.
+
+The Phase 2 signals were remeasured with
+`node --expose-gc util/benchmark-owlapi-functional.mjs` to protect the accepted
+baseline after registering Manchester in the default parser registry.
+
+| Existing signal              | Phase 3 wall / peak-heap delta | Wall change | Peak-heap-delta change |
+| ---------------------------- | -----------------------------: | ----------: | ---------------------: |
+| `generated-functional-large` |  457.26 ms / 118,823,688 bytes |      -0.66% |                 -0.14% |
+| `generated-functional-depth` |   329.60 ms / 49,559,760 bytes |      +6.58% |                 -0.01% |
+| `generated-mismatch-large`   |        26.54 ms / 29,752 bytes |      +8.67% |                 +1.72% |
+
+Every remeasured wall-time and peak-heap-delta change is below the unchanged
+20% release threshold. Phase 3 therefore introduces no measured regression to
+an existing accepted signal.
