@@ -493,7 +493,7 @@ This conclusion was not reached merely by finding a few missing `else if` branch
 2. interpreting OWL structural constructs;
 3. manually rendering the corresponding RDF/XML.
 
-That makes it very easy for a construct to be *recognized syntactically* but then be represented incorrectly, incompletely, or not at all during RDF/XML emission. The refactor must therefore **not port this control flow unchanged**. It must re-derive the supported semantics from the normative OWL 2 structural model and use the existing implementation only to recover practical parser behaviour that has already been proven useful.
+That makes it very easy for a construct to be _recognized syntactically_ but then be represented incorrectly, incompletely, or not at all during RDF/XML emission. The refactor must therefore **not port this control flow unchanged**. It must re-derive the supported semantics from the normative OWL 2 structural model and use the existing implementation only to recover practical parser behaviour that has already been proven useful.
 
 The relevant standards are the W3C **OWL 2 XML Serialization** and **OWL 2 Mapping to RDF Graphs** specifications (see Core References 2 and 4). OWL/XML explicitly mirrors the structural specification, so the natural refactor is:
 
@@ -519,31 +519,31 @@ The parser must **not know how those objects are serialized as RDF/XML**. That b
 
 The following gaps have already been identified directly in the current `owlXmlParser.js`. They should become explicit migration requirements and regression tests.
 
-| Gap | Current behaviour / failure mode | Why it is wrong or lossy | Required refactor solution |
-|---|---|---|---|
-| **`ObjectHasValue` uses the wrong filler type** | `renderClassExpressionRdf()` groups `ObjectHasValue` with `ObjectSomeValuesFrom` / `ObjectAllValuesFrom` and searches for a child `Class`. | OWL/XML defines `ObjectHasValue` as an object-property expression followed by an **Individual** (`NamedIndividual` or `AnonymousIndividual`), not a class. The current branch therefore cannot correctly represent a valid `ObjectHasValue` expression. | Parse it as `OWLObjectHasValue(objectPropertyExpression, individual)`. Add separate `parseIndividual()` support for named and anonymous individuals. Never reuse the some/all-values class-filler path. |
-| **Nested class expressions are only partially recognized** | `SubClassOf`'s caller lists `ObjectUnionOf`, `ObjectIntersectionOf`, and `ObjectComplementOf`, but `renderClassExpressionRdf()` has no implementation for them and ultimately returns `null`. | A valid construct can pass initial dispatch yet disappear later. This is a particularly dangerous form of apparent support because it fails silently. | Replace `renderClassExpressionRdf()` with a recursive `parseClassExpression(element)` that covers every supported class-expression kind and returns an OWL structural object. Unsupported kinds must throw/diagnose explicitly rather than return `null`. |
-| **The subclass side of `SubClassOf` is effectively restricted to a named class** | The first operand is reduced through `getIriFromEl()` into `subIri`; a complex class expression has no single entity IRI and is therefore dropped. | OWL 2 permits **any class expression** on both sides of `SubClassOf`. General class inclusion axioms are therefore not faithfully handled. | Parse both operands through `parseClassExpression()` and construct `OWLSubClassOfAxiom(subClassExpression, superClassExpression)`. Do not special-case the first operand as an IRI. |
-| **`ObjectSomeValuesFrom` / `ObjectAllValuesFrom` accept only a named property and named class filler** | The renderer searches for immediate `ObjectProperty` and `Class` children. | Both use an **ObjectPropertyExpression** and a **ClassExpression**. Valid inverse-property expressions and nested fillers such as intersections, unions, complements, enumerations or restrictions are lost. | Implement `parseObjectPropertyExpression()` (`OWLObjectProperty` / `OWLObjectInverseOf`) and recursively parse the filler with `parseClassExpression()`. |
-| **`ObjectInverseOf` is absent as a reusable property-expression primitive** | Property axioms and restrictions generally search only for `ObjectProperty`. | Many OWL 2 object-property constructs accept an `ObjectPropertyExpression`, not only a named property. Treating the named-property case as the whole grammar silently narrows valid OWL 2. | Make object-property expressions a first-class structural parser primitive and use it everywhere the structural specification says `OPE`, including restrictions, domains/ranges and relevant property axioms. |
-| **Qualified cardinalities are currently changed into unqualified cardinalities** | `ObjectMinCardinality`, `ObjectMaxCardinality`, and `ObjectExactCardinality` emit only `owl:minCardinality`, `owl:maxCardinality`, or `owl:cardinality`; any optional class-expression filler is ignored. | `ObjectMinCardinality(1 :p :C)` is **not** equivalent to unqualified `ObjectMinCardinality(1 :p)`. The normative RDF mapping uses `owl:minQualifiedCardinality` plus `owl:onClass` (and corresponding max/exact forms) when a filler is present. This is a direct semantic change, not merely incomplete serialization. | Structural cardinality objects must retain `{cardinality, propertyExpression, optionalFiller}`. The shared OWL→RDF translator then chooses qualified vs. unqualified RDF vocabulary. Add regression fixtures for all six qualified/unqualified object-cardinality forms. |
-| **Missing cardinality is silently invented as `1`** | `exprEl.getAttribute("cardinality") || "1"`. | OWL/XML declares `cardinality` as required. Inventing a value converts malformed input into a different valid ontology and hides the source error. | Validate the required attribute and throw a typed syntax/parse error if absent or not a non-negative integer. Recovery, if ever supported, must be explicit and diagnostic—not semantic invention. |
-| **Data restrictions and data ranges are largely absent** | No structural support exists for `DataSomeValuesFrom`, `DataAllValuesFrom`, `DataHasValue`, data cardinalities, `DataIntersectionOf`, `DataUnionOf`, `DataComplementOf`, `DataOneOf`, or `DatatypeRestriction`. | These are first-class OWL 2 constructs. Treating data-property semantics as only named datatypes and ranges leaves a substantial portion of OWL 2 unrepresentable. | Implement recursive `parseDataRange()` and the data restriction class-expression constructors. Remember that `DataSomeValuesFrom` / `DataAllValuesFrom` may contain one or more data-property expressions before the data range. |
-| **Object/data property domains and ranges collapse expressions to IRIs** | `ObjectPropertyDomain` / `Range` mention unions/intersections in lookup code but call `getIriFromEl()` on them; `DataPropertyDomain` accepts only `Class`; `DataPropertyRange` accepts only `Datatype`. | Domains/ranges are structural expressions: object/data property domains and object property ranges use a `ClassExpression`; a data property range uses a `DataRange`. Complex valid expressions are silently omitted. | Construct the corresponding structural axiom using `parseObjectPropertyExpression()` / `parseDataPropertyExpression()` plus `parseClassExpression()` or `parseDataRange()`. |
-| **`EquivalentClasses` and `DisjointClasses` handle named classes only** | Both branches collect only immediate `Class` elements. | Their operands are arbitrary `ClassExpression`s. Restrictions, unions, intersections, complements, one-of expressions, etc. are therefore excluded. | Parse all class-expression operands recursively and create one n-ary structural axiom. |
-| **N-ary axiom identity is destroyed by pairwise RDF emission** | `EquivalentClasses` and `DisjointClasses` are expanded into all pair combinations. | Even where pairwise triples can be logically equivalent, they are **not structurally equivalent to the original OWL axiom**. For `DisjointClasses` with more than two operands the normative OWL→RDF mapping uses `owl:AllDisjointClasses` plus an RDF list. N-ary axiom annotations also cannot be preserved correctly by ad-hoc pairwise expansion. | Preserve the original n-ary `OWLEquivalentClassesAxiom` / `OWLDisjointClassesAxiom` in the structural model. Let the shared translator implement the W3C RDF mapping, including list/blank-node and annotation rules. |
-| **Property chains and several property-axiom families are absent** | `SubObjectPropertyOf` handles only two named object properties. There is no `ObjectPropertyChain`, `EquivalentObjectProperties`, `DisjointObjectProperties`, `EquivalentDataProperties`, `DisjointDataProperties`, etc. | OWL/XML's axiom grammar is materially broader than the implemented branch set. Property chains are especially important because they are structurally ordered and map to RDF lists. | Build a coverage matrix from the W3C `Axiom` group. Add dedicated structural constructors for each supported axiom. `SubObjectPropertyOf(ObjectPropertyChain(...), superProperty)` must retain chain order exactly. |
-| **Large assertion/ontology axiom families are missing entirely** | There are no branches for `DisjointUnion`, `DatatypeDefinition`, `HasKey`, `SameIndividual`, `DifferentIndividuals`, `ClassAssertion`, object/data property assertions, negative property assertions, or the annotation-property hierarchy/domain/range axioms. | This is not merely a serializer gap: a valid OWL/XML ontology can contain these constructs and currently receive no corresponding semantic representation. | Classify every normative axiom kind as **implemented**, **explicitly unsupported**, or **out of initial scope**. Never leave valid constructs in an implicit fall-through state. Implement in priority order based on WebVOWL usage, but keep the model/API taxonomy compatible with full OWL 2. |
-| **Axiom annotations are ignored** | Top-level axiom branches read their main children but do not preserve leading `Annotation` elements belonging to the axiom. | Axiom annotations are part of OWL structural equivalence. Dropping them loses ontology content even if the unannotated logical axiom survives. | `parseAxiom()` must parse the axiom's annotation set first and attach it to the constructed `OWLAxiom`. The later OWL→RDF translator handles `owl:Axiom`, `owl:annotatedSource`, `owl:annotatedProperty`, and `owl:annotatedTarget` according to the normative mapping. |
-| **Annotation values are incorrectly narrowed to literals** | Ontology annotations and `AnnotationAssertion` call `getLiteralFromEl()`. If no `Literal` child exists, that helper falls back to `element.textContent`. | An OWL annotation value may be an **IRI, anonymous individual, or literal**. The text-content fallback can therefore turn an IRI-valued annotation into a plain literal rather than merely dropping it. This is an active semantic corruption path. | Implement `parseAnnotationValue()` with explicit branches for IRI, anonymous individual and literal. Remove generic `textContent` fallback from semantic parsing. Malformed shapes must fail explicitly. |
-| **Literal datatype information is parsed and then discarded** | `getLiteralFromEl()` extracts `datatype`, but annotation emission only uses the value and optional language tag. | Typed literal identity is part of RDF/OWL semantics; `"1"^^xsd:integer` is not interchangeable with an untyped/plain string. | Construct `OWLLiteral` with lexical form plus exactly one of language/datatype as required. Never convert through XML text serialization. Add tests for language-tagged, typed and plain literals, including lexical forms that share a value but not a lexical representation. |
-| **Nested annotations are not represented** | The current annotation handling is single-level. | OWL 2 permits annotations on annotations; the normative RDF mapping recursively reifies them. | Model `OWLAnnotation` recursively, including its own annotation set. Keep this in the structural layer so both OWL/XML parsing and OWL→RDF mapping share one representation. |
-| **Anonymous individuals are not supported where OWL allows them** | Current code generally assumes IRIs for individual-like values and annotation subjects/values. | OWL/XML has both `NamedIndividual` and `AnonymousIndividual`; anonymous individuals can participate in class/assertion/value constructs and annotation subjects/values where permitted. | Add `OWLAnonymousIndividual` / `parseIndividual()` and preserve `nodeID` semantics as document-scoped structural identity. Do not confuse generated RDF blank nodes with source anonymous individuals. |
-| **Anonymous ontologies are assigned a fabricated ontology IRI** | If neither `ontologyIRI` nor a base is available, the converter invents `http://haddenindustries.com/ontology/owlxml`. | OWL 2 explicitly permits an ontology with no ontology IRI. The RDF mapping represents such an ontology header with a fresh blank node. Inventing a global IRI changes ontology identity. | Represent ontology identity as `OWLOntologyID` with optional ontology/version IRIs. Never synthesize a semantic ontology IRI. Document/source IRI belongs in `OntologyDocumentContext`, not in ontology identity unless the syntax explicitly says so. |
-| **IRI resolution is rooted too high and is partly heuristic** | A single root `baseAttr` is used; `ontologyIRI` itself is not normalized through the same resolver; relative `<Prefix IRI>` values are stored directly; only selected URI schemes are specially recognized. | OWL/XML requires every schema value of type `xsd:anyURI` to be resolved against its **respective XML Base**, which is inherited/scoped by element. Relative IRIs can therefore have different effective bases within one document. OWL literals of datatype `xsd:anyURI`, conversely, must remain opaque lexical values and must not be base-resolved. | Add `effectiveBaseIri(element, documentIri)` and a strict `resolveAnyUriAttribute(element, value)`. Apply it to ontology/version/import/prefix/entity/facet IRIs according to the OWL/XML schema. Keep literal lexical values out of this resolver. Test nested `xml:base`. |
-| **XML namespace prefixes and OWL abbreviated-IRI prefixes are conflated** | The same `prefixMap` is populated from `xmlns:*` attributes and OWL `<Prefix>` elements. | OWL/XML specifies that prefixes used by `abbreviatedIRI` are declared by OWL `<Prefix>` elements and are file-scoped. XML namespace bindings serve XML QName parsing and are a different mechanism. Conflation can accidentally accept non-conforming abbreviated IRIs and makes parser behaviour depend on serializer concerns. | Maintain separate XML namespace context and OWL abbreviated-IRI prefix context. In strict mode, resolve `abbreviatedIRI` only from the OWL prefix declarations required by the specification; any OWLAPI compatibility extensions should be deliberate and separately tested. |
-| **Unknown annotation predicates can disappear because RDF/XML needs a QName** | `getPredXmlTag()` returns `null` if an annotation-property IRI cannot be converted into a convenient XML element name, and the caller simply emits nothing. | This is a serializer artifact masquerading as an ontology limitation. RDF/OWL imposes no requirement that an annotation property already have a convenient source prefix. | This entire failure mode disappears when the parser creates `OWLAnnotationProperty` / `OWLAnnotation` objects. If RDF output is later requested, the shared RDF layer/serializer handles namespace allocation independently. |
-| **Unsupported constructs are silently swallowed** | The top-level `else if` chain has no mandatory unsupported-construct path; helper functions return `null`; many callers use `if (x) { emit... }` and otherwise continue. | Silent omission is worse than an explicit unsupported error because the result can look valid while containing a different ontology. Earlier parser work already demonstrated how dangerous silent data loss is. | In strict mode, every syntactically recognized but unsupported OWL construct must raise a typed `UnsupportedConstructError` (or equivalent) carrying syntax, construct name and source location. Compatibility mode may recover only under an explicit documented policy and must emit a diagnostic. |
+| Gap                                                                                                    | Current behaviour / failure mode                                                                                                                                                                                                                                | Why it is wrong or lossy                                                                                                                                                                                                                                                                                                                               | Required refactor solution                                                                                                                                                                                                                                                                           |
+| ------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`ObjectHasValue` uses the wrong filler type**                                                        | `renderClassExpressionRdf()` groups `ObjectHasValue` with `ObjectSomeValuesFrom` / `ObjectAllValuesFrom` and searches for a child `Class`.                                                                                                                      | OWL/XML defines `ObjectHasValue` as an object-property expression followed by an **Individual** (`NamedIndividual` or `AnonymousIndividual`), not a class. The current branch therefore cannot correctly represent a valid `ObjectHasValue` expression.                                                                                                | Parse it as `OWLObjectHasValue(objectPropertyExpression, individual)`. Add separate `parseIndividual()` support for named and anonymous individuals. Never reuse the some/all-values class-filler path.                                                                                              |
+| **Nested class expressions are only partially recognized**                                             | `SubClassOf`'s caller lists `ObjectUnionOf`, `ObjectIntersectionOf`, and `ObjectComplementOf`, but `renderClassExpressionRdf()` has no implementation for them and ultimately returns `null`.                                                                   | A valid construct can pass initial dispatch yet disappear later. This is a particularly dangerous form of apparent support because it fails silently.                                                                                                                                                                                                  | Replace `renderClassExpressionRdf()` with a recursive `parseClassExpression(element)` that covers every supported class-expression kind and returns an OWL structural object. Unsupported kinds must throw/diagnose explicitly rather than return `null`.                                            |
+| **The subclass side of `SubClassOf` is effectively restricted to a named class**                       | The first operand is reduced through `getIriFromEl()` into `subIri`; a complex class expression has no single entity IRI and is therefore dropped.                                                                                                              | OWL 2 permits **any class expression** on both sides of `SubClassOf`. General class inclusion axioms are therefore not faithfully handled.                                                                                                                                                                                                             | Parse both operands through `parseClassExpression()` and construct `OWLSubClassOfAxiom(subClassExpression, superClassExpression)`. Do not special-case the first operand as an IRI.                                                                                                                  |
+| **`ObjectSomeValuesFrom` / `ObjectAllValuesFrom` accept only a named property and named class filler** | The renderer searches for immediate `ObjectProperty` and `Class` children.                                                                                                                                                                                      | Both use an **ObjectPropertyExpression** and a **ClassExpression**. Valid inverse-property expressions and nested fillers such as intersections, unions, complements, enumerations or restrictions are lost.                                                                                                                                           | Implement `parseObjectPropertyExpression()` (`OWLObjectProperty` / `OWLObjectInverseOf`) and recursively parse the filler with `parseClassExpression()`.                                                                                                                                             |
+| **`ObjectInverseOf` is absent as a reusable property-expression primitive**                            | Property axioms and restrictions generally search only for `ObjectProperty`.                                                                                                                                                                                    | Many OWL 2 object-property constructs accept an `ObjectPropertyExpression`, not only a named property. Treating the named-property case as the whole grammar silently narrows valid OWL 2.                                                                                                                                                             | Make object-property expressions a first-class structural parser primitive and use it everywhere the structural specification says `OPE`, including restrictions, domains/ranges and relevant property axioms.                                                                                       |
+| **Qualified cardinalities are currently changed into unqualified cardinalities**                       | `ObjectMinCardinality`, `ObjectMaxCardinality`, and `ObjectExactCardinality` emit only `owl:minCardinality`, `owl:maxCardinality`, or `owl:cardinality`; any optional class-expression filler is ignored.                                                       | `ObjectMinCardinality(1 :p :C)` is **not** equivalent to unqualified `ObjectMinCardinality(1 :p)`. The normative RDF mapping uses `owl:minQualifiedCardinality` plus `owl:onClass` (and corresponding max/exact forms) when a filler is present. This is a direct semantic change, not merely incomplete serialization.                                | Structural cardinality objects must retain `{cardinality, propertyExpression, optionalFiller}`. The shared OWL→RDF translator then chooses qualified vs. unqualified RDF vocabulary. Add regression fixtures for all six qualified/unqualified object-cardinality forms.                             |
+| **Missing cardinality is silently invented as `1`**                                                    | `exprEl.getAttribute("cardinality")                                                                                                                                                                                                                             |                                                                                                                                                                                                                                                                                                                                                        | "1"`.                                                                                                                                                                                                                                                                                                | OWL/XML declares `cardinality` as required. Inventing a value converts malformed input into a different valid ontology and hides the source error. | Validate the required attribute and throw a typed syntax/parse error if absent or not a non-negative integer. Recovery, if ever supported, must be explicit and diagnostic—not semantic invention. |
+| **Data restrictions and data ranges are largely absent**                                               | No structural support exists for `DataSomeValuesFrom`, `DataAllValuesFrom`, `DataHasValue`, data cardinalities, `DataIntersectionOf`, `DataUnionOf`, `DataComplementOf`, `DataOneOf`, or `DatatypeRestriction`.                                                 | These are first-class OWL 2 constructs. Treating data-property semantics as only named datatypes and ranges leaves a substantial portion of OWL 2 unrepresentable.                                                                                                                                                                                     | Implement recursive `parseDataRange()` and the data restriction class-expression constructors. Remember that `DataSomeValuesFrom` / `DataAllValuesFrom` may contain one or more data-property expressions before the data range.                                                                     |
+| **Object/data property domains and ranges collapse expressions to IRIs**                               | `ObjectPropertyDomain` / `Range` mention unions/intersections in lookup code but call `getIriFromEl()` on them; `DataPropertyDomain` accepts only `Class`; `DataPropertyRange` accepts only `Datatype`.                                                         | Domains/ranges are structural expressions: object/data property domains and object property ranges use a `ClassExpression`; a data property range uses a `DataRange`. Complex valid expressions are silently omitted.                                                                                                                                  | Construct the corresponding structural axiom using `parseObjectPropertyExpression()` / `parseDataPropertyExpression()` plus `parseClassExpression()` or `parseDataRange()`.                                                                                                                          |
+| **`EquivalentClasses` and `DisjointClasses` handle named classes only**                                | Both branches collect only immediate `Class` elements.                                                                                                                                                                                                          | Their operands are arbitrary `ClassExpression`s. Restrictions, unions, intersections, complements, one-of expressions, etc. are therefore excluded.                                                                                                                                                                                                    | Parse all class-expression operands recursively and create one n-ary structural axiom.                                                                                                                                                                                                               |
+| **N-ary axiom identity is destroyed by pairwise RDF emission**                                         | `EquivalentClasses` and `DisjointClasses` are expanded into all pair combinations.                                                                                                                                                                              | Even where pairwise triples can be logically equivalent, they are **not structurally equivalent to the original OWL axiom**. For `DisjointClasses` with more than two operands the normative OWL→RDF mapping uses `owl:AllDisjointClasses` plus an RDF list. N-ary axiom annotations also cannot be preserved correctly by ad-hoc pairwise expansion.  | Preserve the original n-ary `OWLEquivalentClassesAxiom` / `OWLDisjointClassesAxiom` in the structural model. Let the shared translator implement the W3C RDF mapping, including list/blank-node and annotation rules.                                                                                |
+| **Property chains and several property-axiom families are absent**                                     | `SubObjectPropertyOf` handles only two named object properties. There is no `ObjectPropertyChain`, `EquivalentObjectProperties`, `DisjointObjectProperties`, `EquivalentDataProperties`, `DisjointDataProperties`, etc.                                         | OWL/XML's axiom grammar is materially broader than the implemented branch set. Property chains are especially important because they are structurally ordered and map to RDF lists.                                                                                                                                                                    | Build a coverage matrix from the W3C `Axiom` group. Add dedicated structural constructors for each supported axiom. `SubObjectPropertyOf(ObjectPropertyChain(...), superProperty)` must retain chain order exactly.                                                                                  |
+| **Large assertion/ontology axiom families are missing entirely**                                       | There are no branches for `DisjointUnion`, `DatatypeDefinition`, `HasKey`, `SameIndividual`, `DifferentIndividuals`, `ClassAssertion`, object/data property assertions, negative property assertions, or the annotation-property hierarchy/domain/range axioms. | This is not merely a serializer gap: a valid OWL/XML ontology can contain these constructs and currently receive no corresponding semantic representation.                                                                                                                                                                                             | Classify every normative axiom kind as **implemented**, **explicitly unsupported**, or **out of initial scope**. Never leave valid constructs in an implicit fall-through state. Implement in priority order based on WebVOWL usage, but keep the model/API taxonomy compatible with full OWL 2.     |
+| **Axiom annotations are ignored**                                                                      | Top-level axiom branches read their main children but do not preserve leading `Annotation` elements belonging to the axiom.                                                                                                                                     | Axiom annotations are part of OWL structural equivalence. Dropping them loses ontology content even if the unannotated logical axiom survives.                                                                                                                                                                                                         | `parseAxiom()` must parse the axiom's annotation set first and attach it to the constructed `OWLAxiom`. The later OWL→RDF translator handles `owl:Axiom`, `owl:annotatedSource`, `owl:annotatedProperty`, and `owl:annotatedTarget` according to the normative mapping.                              |
+| **Annotation values are incorrectly narrowed to literals**                                             | Ontology annotations and `AnnotationAssertion` call `getLiteralFromEl()`. If no `Literal` child exists, that helper falls back to `element.textContent`.                                                                                                        | An OWL annotation value may be an **IRI, anonymous individual, or literal**. The text-content fallback can therefore turn an IRI-valued annotation into a plain literal rather than merely dropping it. This is an active semantic corruption path.                                                                                                    | Implement `parseAnnotationValue()` with explicit branches for IRI, anonymous individual and literal. Remove generic `textContent` fallback from semantic parsing. Malformed shapes must fail explicitly.                                                                                             |
+| **Literal datatype information is parsed and then discarded**                                          | `getLiteralFromEl()` extracts `datatype`, but annotation emission only uses the value and optional language tag.                                                                                                                                                | Typed literal identity is part of RDF/OWL semantics; `"1"^^xsd:integer` is not interchangeable with an untyped/plain string.                                                                                                                                                                                                                           | Construct `OWLLiteral` with lexical form plus exactly one of language/datatype as required. Never convert through XML text serialization. Add tests for language-tagged, typed and plain literals, including lexical forms that share a value but not a lexical representation.                      |
+| **Nested annotations are not represented**                                                             | The current annotation handling is single-level.                                                                                                                                                                                                                | OWL 2 permits annotations on annotations; the normative RDF mapping recursively reifies them.                                                                                                                                                                                                                                                          | Model `OWLAnnotation` recursively, including its own annotation set. Keep this in the structural layer so both OWL/XML parsing and OWL→RDF mapping share one representation.                                                                                                                         |
+| **Anonymous individuals are not supported where OWL allows them**                                      | Current code generally assumes IRIs for individual-like values and annotation subjects/values.                                                                                                                                                                  | OWL/XML has both `NamedIndividual` and `AnonymousIndividual`; anonymous individuals can participate in class/assertion/value constructs and annotation subjects/values where permitted.                                                                                                                                                                | Add `OWLAnonymousIndividual` / `parseIndividual()` and preserve `nodeID` semantics as document-scoped structural identity. Do not confuse generated RDF blank nodes with source anonymous individuals.                                                                                               |
+| **Anonymous ontologies are assigned a fabricated ontology IRI**                                        | If neither `ontologyIRI` nor a base is available, the converter invents `http://haddenindustries.com/ontology/owlxml`.                                                                                                                                          | OWL 2 explicitly permits an ontology with no ontology IRI. The RDF mapping represents such an ontology header with a fresh blank node. Inventing a global IRI changes ontology identity.                                                                                                                                                               | Represent ontology identity as `OWLOntologyID` with optional ontology/version IRIs. Never synthesize a semantic ontology IRI. Document/source IRI belongs in `OntologyDocumentContext`, not in ontology identity unless the syntax explicitly says so.                                               |
+| **IRI resolution is rooted too high and is partly heuristic**                                          | A single root `baseAttr` is used; `ontologyIRI` itself is not normalized through the same resolver; relative `<Prefix IRI>` values are stored directly; only selected URI schemes are specially recognized.                                                     | OWL/XML requires every schema value of type `xsd:anyURI` to be resolved against its **respective XML Base**, which is inherited/scoped by element. Relative IRIs can therefore have different effective bases within one document. OWL literals of datatype `xsd:anyURI`, conversely, must remain opaque lexical values and must not be base-resolved. | Add `effectiveBaseIri(element, documentIri)` and a strict `resolveAnyUriAttribute(element, value)`. Apply it to ontology/version/import/prefix/entity/facet IRIs according to the OWL/XML schema. Keep literal lexical values out of this resolver. Test nested `xml:base`.                          |
+| **XML namespace prefixes and OWL abbreviated-IRI prefixes are conflated**                              | The same `prefixMap` is populated from `xmlns:*` attributes and OWL `<Prefix>` elements.                                                                                                                                                                        | OWL/XML specifies that prefixes used by `abbreviatedIRI` are declared by OWL `<Prefix>` elements and are file-scoped. XML namespace bindings serve XML QName parsing and are a different mechanism. Conflation can accidentally accept non-conforming abbreviated IRIs and makes parser behaviour depend on serializer concerns.                       | Maintain separate XML namespace context and OWL abbreviated-IRI prefix context. In strict mode, resolve `abbreviatedIRI` only from the OWL prefix declarations required by the specification; any OWLAPI compatibility extensions should be deliberate and separately tested.                        |
+| **Unknown annotation predicates can disappear because RDF/XML needs a QName**                          | `getPredXmlTag()` returns `null` if an annotation-property IRI cannot be converted into a convenient XML element name, and the caller simply emits nothing.                                                                                                     | This is a serializer artifact masquerading as an ontology limitation. RDF/OWL imposes no requirement that an annotation property already have a convenient source prefix.                                                                                                                                                                              | This entire failure mode disappears when the parser creates `OWLAnnotationProperty` / `OWLAnnotation` objects. If RDF output is later requested, the shared RDF layer/serializer handles namespace allocation independently.                                                                         |
+| **Unsupported constructs are silently swallowed**                                                      | The top-level `else if` chain has no mandatory unsupported-construct path; helper functions return `null`; many callers use `if (x) { emit... }` and otherwise continue.                                                                                        | Silent omission is worse than an explicit unsupported error because the result can look valid while containing a different ontology. Earlier parser work already demonstrated how dangerous silent data loss is.                                                                                                                                       | In strict mode, every syntactically recognized but unsupported OWL construct must raise a typed `UnsupportedConstructError` (or equivalent) carrying syntax, construct name and source location. Compatibility mode may recover only under an explicit documented policy and must emit a diagnostic. |
 
 This table is intentionally broader than the subset currently needed by WebVOWL. It does **not** mean every missing OWL 2 construct must be implemented in the first extraction phase. It means the refactor must know which semantic surface exists and must never confuse “not yet implemented” with “successfully parsed.”
 
@@ -582,16 +582,16 @@ Inventory every current dispatch case (`name === ...`, token keyword, AST node k
 
 The coverage matrix should record at least:
 
-| Construct | Normative operand shape | Current parser recognizes? | Current output retains all operands? | Structural target | Test fixture |
-|---|---|---:|---:|---|---|
-| `ObjectHasValue` | `OPE, Individual` | yes | **no** | `OWLObjectHasValue` | required |
-| `ObjectUnionOf` | `ClassExpression{2..n}` | partly | **no** | `OWLObjectUnionOf` | required |
-| `ObjectExactCardinality` | `n, OPE, [CE]` | yes | **no** when qualified | `OWLObjectExactCardinality` | required |
-| ... | ... | ... | ... | ... | ... |
+| Construct                | Normative operand shape | Current parser recognizes? | Current output retains all operands? | Structural target           | Test fixture |
+| ------------------------ | ----------------------- | -------------------------: | -----------------------------------: | --------------------------- | ------------ |
+| `ObjectHasValue`         | `OPE, Individual`       |                        yes |                               **no** | `OWLObjectHasValue`         | required     |
+| `ObjectUnionOf`          | `ClassExpression{2..n}` |                     partly |                               **no** | `OWLObjectUnionOf`          | required     |
+| `ObjectExactCardinality` | `n, OPE, [CE]`          |                        yes |                **no** when qualified | `OWLObjectExactCardinality` | required     |
+| ...                      | ...                     |                        ... |                                  ... | ...                         | ...          |
 
 This matrix becomes a migration artefact, not a one-off review note.
 
-**3. Verify operand *types and cardinalities*, not just construct names.**
+**3. Verify operand _types and cardinalities_, not just construct names.**
 
 This is how the `ObjectHasValue` defect was found. The implementation grouped it with some/all-values restrictions because their RDF shape looks similar, but the OWL/XML schema says its second operand is an `Individual`, whereas some/all-values use a `ClassExpression`.
 
@@ -632,7 +632,7 @@ fallback default values
 unknown-token recovery
 ```
 
-Then ask: *Can valid source syntax reach this path?* The union/intersection/complement gap was found because caller code deliberately admitted those node names, while the renderer had no corresponding case and ended in `return null`.
+Then ask: _Can valid source syntax reach this path?_ The union/intersection/complement gap was found because caller code deliberately admitted those node names, while the renderer had no corresponding case and ended in `return null`.
 
 This audit is particularly important because the existing differential testing history has already shown that the most damaging parser bugs often produce **valid-looking but smaller output**, not exceptions.
 
@@ -702,6 +702,7 @@ For every OWL-native parser:
    - KRSS/KRSS1 and KRSS2: use the published KRSS family specifications/documentation where available and audit the two OWLAPI parser/format identities separately through public API metadata and black-box fixtures. KRSS2 explicitly supports an extended KRSS vocabulary; do **not** assume that one parser can stand in for the other merely because of substantial syntactic overlap.
 
    For a non-W3C syntax where OWLAPI behaviour is effectively part of the compatibility target and the public syntax specification leaves an ambiguity, encode that ambiguity as a focused differential test. The resulting test expectation is project-owned behavioural evidence; the Java implementation algorithm is not copied into the JavaScript implementation.
+
 3. **Enumerate productions/constructs before reading the JS branch coverage.**
 4. **Map each production to one structural `OWLDataFactory` constructor.** A syntax parser should not invent a syntax-specific semantic AST if an OWL structural object already exists.
 5. **Compare operand category, arity, ordering and optionality.** In particular distinguish unordered OWL sets from ordered structures such as property chains.
@@ -759,27 +760,27 @@ The broader lesson is critical to the whole extraction: **do not measure parser 
 
 ### 3.3 Current file inventory and revised destination
 
-| Current file | Current role | Revised destination / treatment |
-|---|---|---|
-| `manchesterSyntaxParser.js` | Manchester → RDF/XML | Retarget to structural OWL parser; move to `owlapi-js/parsers/manchester/` |
-| `functionalSyntaxParser.js` | Functional → RDF/XML | Retarget to structural OWL parser; **recommended first migration** |
-| `owlXmlParser.js` | OWL/XML → RDF/XML | Rewrite emission to structural model; keep XML-specific helpers |
-| `dlSyntaxParser.js` | DL → RDF/XML | Retarget to structural model |
-| `krss2SyntaxParser.js` | KRSS2 → RDF/XML | Retarget to shared KRSS structural parser core + strict KRSS2 dialect adapter |
-| *(not currently present)* | original KRSS / KRSS1 | Keep parser implementation `DEFERRED`; add/retain distinct format + compatibility identity, grammar-gap analysis, fixtures and future-ready insertion point; share machinery with KRSS2 only when a later approved implementation proves equivalence |
-| `turtleParser.js` | Turtle → triples via N3 | Replace with separate N3.js-backed RDF/JS format identities/adapters for Turtle, TriG, N-Triples and N-Quads; keep broader N3 language ingestion `DEFERRED` |
-| `jsonLdParser.js` | JSON-LD → triples | Replace/thin into Digital Bazaar `jsonld.js` adapter; translate its RDF dataset directly to RDF/JS; inject/restrict remote document loading |
-| `rdfParser.js` | RDF/XML + OWL/RDF + VOWL monolith | Decompose; do not move monolith intact |
-| `rdfXmlSerializer.js` | triples → RDF/XML | Delete from internal pipeline |
-| `importLoader.js` | fallback + imports | Split manager orchestration from WebVOWL-specific document resolver/catalog policy |
-| `iriResolver.js` | IRI resolution | Split generic IRI/base rules into core; keep WebVOWL URL/catalog concerns outside |
-| `constants.js` | namespaces/sniff size | Move reusable vocabulary/security constants into core |
-| `domUtils.js` | XML helpers | Move only generic helpers required by OWL/XML/XML parsing |
-| `xmlUtils.js` | XML entity resolution | Move with hard resource limits/security review |
-| `parserContext.js` | VOWL state | Stay in WebVOWL or disappear into `VOWLBuilder` |
-| `ontologyConverter.js` | VOWL conversion | Stay in WebVOWL |
-| `jsonExporter.js` | VOWL-JSON output | Stay in WebVOWL |
-| `index.js` | WebVOWL entry | Stay; consume public `owlapi-js` API |
+| Current file                | Current role                      | Revised destination / treatment                                                                                                                                                                                                                      |
+| --------------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `manchesterSyntaxParser.js` | Manchester → RDF/XML              | Retarget to structural OWL parser; move to `owlapi-js/parsers/manchester/`                                                                                                                                                                           |
+| `functionalSyntaxParser.js` | Functional → RDF/XML              | Retarget to structural OWL parser; **recommended first migration**                                                                                                                                                                                   |
+| `owlXmlParser.js`           | OWL/XML → RDF/XML                 | Rewrite emission to structural model; keep XML-specific helpers                                                                                                                                                                                      |
+| `dlSyntaxParser.js`         | DL → RDF/XML                      | Retarget to structural model                                                                                                                                                                                                                         |
+| `krss2SyntaxParser.js`      | KRSS2 → RDF/XML                   | Retarget to shared KRSS structural parser core + strict KRSS2 dialect adapter                                                                                                                                                                        |
+| _(not currently present)_   | original KRSS / KRSS1             | Keep parser implementation `DEFERRED`; add/retain distinct format + compatibility identity, grammar-gap analysis, fixtures and future-ready insertion point; share machinery with KRSS2 only when a later approved implementation proves equivalence |
+| `turtleParser.js`           | Turtle → triples via N3           | Replace with separate N3.js-backed RDF/JS format identities/adapters for Turtle, TriG, N-Triples and N-Quads; keep broader N3 language ingestion `DEFERRED`                                                                                          |
+| `jsonLdParser.js`           | JSON-LD → triples                 | Replace/thin into Digital Bazaar `jsonld.js` adapter; translate its RDF dataset directly to RDF/JS; inject/restrict remote document loading                                                                                                          |
+| `rdfParser.js`              | RDF/XML + OWL/RDF + VOWL monolith | Decompose; do not move monolith intact                                                                                                                                                                                                               |
+| `rdfXmlSerializer.js`       | triples → RDF/XML                 | Delete from internal pipeline                                                                                                                                                                                                                        |
+| `importLoader.js`           | fallback + imports                | Split manager orchestration from WebVOWL-specific document resolver/catalog policy                                                                                                                                                                   |
+| `iriResolver.js`            | IRI resolution                    | Split generic IRI/base rules into core; keep WebVOWL URL/catalog concerns outside                                                                                                                                                                    |
+| `constants.js`              | namespaces/sniff size             | Move reusable vocabulary/security constants into core                                                                                                                                                                                                |
+| `domUtils.js`               | XML helpers                       | Move only generic helpers required by OWL/XML/XML parsing                                                                                                                                                                                            |
+| `xmlUtils.js`               | XML entity resolution             | Move with hard resource limits/security review                                                                                                                                                                                                       |
+| `parserContext.js`          | VOWL state                        | Stay in WebVOWL or disappear into `VOWLBuilder`                                                                                                                                                                                                      |
+| `ontologyConverter.js`      | legacy VOWL conversion            | Retain at its current path for characterization/reference through Phase 16; make it production-unreachable at Phase 8 and delete it in Phase 17                                                                                                      |
+| `jsonExporter.js`           | legacy VOWL-JSON output           | Retain at its current path for characterization/reference through Phase 16; make it production-unreachable at Phase 8 and delete it in Phase 17                                                                                                      |
+| `index.js`                  | WebVOWL entry                     | Stay; consume public `owlapi-js` API                                                                                                                                                                                                                 |
 
 ---
 
@@ -814,8 +815,14 @@ Input / ontology document
 └───────────────────────────────┬────────────────────────────┘
                                 │
                                 ▼
-ontologyConverter.js → jsonExporter.js → VOWL-JSON
+VOWLBuilder result → VOWL-JSON consumed by WebVOWL
 ```
+
+After the Phase 8 production cutover, the production graph **MUST NOT** import
+the legacy `ontologyConverter.js`, `jsonExporter.js`, parser, RDF/XML bridge or
+serializer path. Those files remain at their existing paths for finite
+characterization/reference work until Phase 17; retaining a file is not a
+runtime fallback or an authorization to keep it production-reachable.
 
 ### 4.2 Internal `owlapi-js` architecture
 
@@ -851,12 +858,12 @@ ontologyConverter.js → jsonExporter.js → VOWL-JSON
 
 ### 4.3 Two canonical representations, deliberately
 
-| Concern | Canonical representation | Why |
-|---|---|---|
-| OWL semantics/API | W3C OWL structural model | Syntax-independent OWL constructs; aligns with OWLAPI and Direct Semantics tooling |
-| RDF data/datasets | RDF/JS `DatasetCore<Quad>` | Standard JS interoperability; preserves graph membership; serialization-independent |
-| Source/document concerns | `OntologyDocumentContext` | Document IRI, format, prefix/context metadata, selected RDF graph, diagnostics |
-| VOWL | WebVOWL-specific builder/output model | Visualization concern, deliberately downstream |
+| Concern                  | Canonical representation              | Why                                                                                 |
+| ------------------------ | ------------------------------------- | ----------------------------------------------------------------------------------- |
+| OWL semantics/API        | W3C OWL structural model              | Syntax-independent OWL constructs; aligns with OWLAPI and Direct Semantics tooling  |
+| RDF data/datasets        | RDF/JS `DatasetCore<Quad>`            | Standard JS interoperability; preserves graph membership; serialization-independent |
+| Source/document concerns | `OntologyDocumentContext`             | Document IRI, format, prefix/context metadata, selected RDF graph, diagnostics      |
+| VOWL                     | WebVOWL-specific builder/output model | Visualization concern, deliberately downstream                                      |
 
 The representations are connected, but none should impersonate another.
 
@@ -1003,7 +1010,9 @@ Use one `OWLDataFactory` as the construction seam for structural objects:
 
 ```javascript
 const cls = dataFactory.getOWLClass(IRI.create("https://example.org/Person"));
-const prop = dataFactory.getOWLObjectProperty(IRI.create("https://example.org/hasParent"));
+const prop = dataFactory.getOWLObjectProperty(
+  IRI.create("https://example.org/hasParent"),
+);
 const some = dataFactory.getOWLObjectSomeValuesFrom(prop, cls);
 const axiom = dataFactory.getOWLSubClassOfAxiom(child, some, annotations);
 ```
@@ -1231,17 +1240,17 @@ class OntologyDocumentContext {
 
 Important distinctions:
 
-| Concept | Belongs where? |
-|---|---|
-| ontology IRI | `OWLOntologyID` / structural OWL model |
-| version IRI | `OWLOntologyID` |
-| imports declarations | structural OWL model |
-| ontology annotations | structural OWL model |
-| document IRI / retrieval URL | document context / manager mapping |
-| Turtle prefixes | format/document metadata, not OWL semantics |
-| JSON-LD `@context` text | format/document metadata |
-| RDF named graph | RDF dataset/document context |
-| parser diagnostics/source locations | document context / diagnostics |
+| Concept                             | Belongs where?                              |
+| ----------------------------------- | ------------------------------------------- |
+| ontology IRI                        | `OWLOntologyID` / structural OWL model      |
+| version IRI                         | `OWLOntologyID`                             |
+| imports declarations                | structural OWL model                        |
+| ontology annotations                | structural OWL model                        |
+| document IRI / retrieval URL        | document context / manager mapping          |
+| Turtle prefixes                     | format/document metadata, not OWL semantics |
+| JSON-LD `@context` text             | format/document metadata                    |
+| RDF named graph                     | RDF dataset/document context                |
+| parser diagnostics/source locations | document context / diagnostics              |
 
 ### 6.6 RDF 1.2 boundary policy
 
@@ -1279,19 +1288,39 @@ The v1 RDF adapter architecture **MUST** therefore be direct:
 
 The selected v1 assignments are:
 
-| RDF syntax | Selected v1 implementation |
-|---|---|
-| Turtle | N3.js |
-| TriG | N3.js |
-| N-Triples | N3.js |
-| N-Quads | N3.js |
-| RDF/XML | `rdfxml-streaming-parser` |
-| JSON-LD | Digital Bazaar `jsonld.js` |
-| N3 language | `DEFERRED` |
+| RDF syntax  | Selected v1 implementation |
+| ----------- | -------------------------- |
+| Turtle      | N3.js                      |
+| TriG        | N3.js                      |
+| N-Triples   | N3.js                      |
+| N-Quads     | N3.js                      |
+| RDF/XML     | `rdfxml-streaming-parser`  |
+| JSON-LD     | Digital Bazaar `jsonld.js` |
+| N3 language | `DEFERRED`                 |
 
 Each supported syntax retains its own `OWLDocumentFormat`, `ParserDescriptor`, detection contract, conformance manifest and capability-matrix entry even where implementation machinery is shared.
 
 N3-specific constructs such as quoted formulae, logical implication/rules, N3-specific built-ins or other N3 semantics beyond the v1 RDF dataset contract **MUST NOT** be accepted merely because N3.js can parse them. N3-specific input **MUST NOT** be silently approximated as Turtle or ordinary RDF.
+
+N3.js's default parser mode is a permissive superset. Every `owlapi-js`
+N3.js-backed adapter **MUST** pass its exact format explicitly; a shared private
+implementation **MUST NOT** weaken the separate public format identities. Phase
+9 registers only Turtle. The N-Triples, N-Quads and TriG descriptors remain
+unregistered and unsupported until Phases 12, 13 and 14 respectively. Syntax
+overlap does not itself advertise a format: content explicitly identified as
+`application/n-triples`, for example, remains unsupported before Phase 12 even
+though some N-Triples documents are also valid Turtle documents.
+
+N3.js **SHOULD** be conditionally imported inside the selected adapter's
+asynchronous parse path so its dependency surface is absent from initial
+application execution. Top-level `await` is not required. For inputs whose
+measured parse cost can create browser long tasks, the adapter **MUST** use the
+dependency's streaming surface with bounded Unicode-safe chunks, observe
+backpressure, check abort/timeout/quad limits between chunks, and cooperatively
+yield. Prefer `scheduler.yield()` where available and provide a `setTimeout(0)`
+fallback. Thresholds and chunk sizes **MUST** be selected from recorded browser
+and Node measurements rather than guessed. Production code **MUST NOT** import
+an undeclared transitive dependency merely because N3.js currently carries it.
 
 A future promotion of N3 from `DEFERRED` requires a separate capability decision specifying the exact N3 language/version, supported constructs, internal semantic representation, RDF→OWL interaction, detection rules, conformance evidence, unsupported behaviour and public API implications.
 
@@ -1310,13 +1339,13 @@ Additional constraints:
 
 The v1 baseline implementations are normative selections:
 
-| Dependency | Normative v1 role |
-|---|---|
-| `@rdfjs/data-model` | canonical RDF/JS term and quad factory |
-| `@rdfjs/dataset` | canonical `DatasetCore` implementation |
-| `n3` / N3.js | Turtle, TriG, N-Triples and N-Quads parsing |
-| `rdfxml-streaming-parser` | RDF/XML parsing |
-| `jsonld` / Digital Bazaar `jsonld.js` | JSON-LD processing |
+| Dependency                            | Normative v1 role                           |
+| ------------------------------------- | ------------------------------------------- |
+| `@rdfjs/data-model`                   | canonical RDF/JS term and quad factory      |
+| `@rdfjs/dataset`                      | canonical `DatasetCore` implementation      |
+| `n3` / N3.js                          | Turtle, TriG, N-Triples and N-Quads parsing |
+| `rdfxml-streaming-parser`             | RDF/XML parsing                             |
+| `jsonld` / Digital Bazaar `jsonld.js` | JSON-LD processing                          |
 
 These dependencies **MUST** be used for their stated v1 roles unless an approved dependency-replacement decision changes the normative plan. They are implementation dependencies rather than public semantic dependencies.
 
@@ -1454,21 +1483,21 @@ A deterministic blank-node allocator may still be useful in debug snapshots, but
 
 The conceptual difficulty is modest because the mapping is deterministic and recursive. The engineering cost comes from breadth and edge cases, not architectural uncertainty.
 
-| Area | Relative difficulty |
-|---|---:|
-| declarations | very low |
-| simple hierarchy/domain/range | very low |
-| property characteristics | very low |
-| simple restrictions | low |
-| Boolean class expressions | low–moderate |
-| RDF lists | low after shared helper |
-| cardinalities | low–moderate |
-| datatype restrictions | moderate |
-| n-ary axioms | moderate |
-| property chains | moderate |
-| negative assertions | moderate |
-| annotated/nested annotated axioms | moderate–high |
-| exact OWLAPI rendering quirks | intentionally not a core goal |
+| Area                              |           Relative difficulty |
+| --------------------------------- | ----------------------------: |
+| declarations                      |                      very low |
+| simple hierarchy/domain/range     |                      very low |
+| property characteristics          |                      very low |
+| simple restrictions               |                           low |
+| Boolean class expressions         |                  low–moderate |
+| RDF lists                         |       low after shared helper |
+| cardinalities                     |                  low–moderate |
+| datatype restrictions             |                      moderate |
+| n-ary axioms                      |                      moderate |
+| property chains                   |                      moderate |
+| negative assertions               |                      moderate |
+| annotated/nested annotated axioms |                 moderate–high |
+| exact OWLAPI rendering quirks     | intentionally not a core goal |
 
 ---
 
@@ -1598,18 +1627,32 @@ warn:   ontology returned plus structured diagnostics
 ignore: explicitly requested compatibility behaviour
 ```
 
-### 8.4 Do not require complete RDF→OWL coverage before beginning extraction
+### 8.4 Complete the shared RDF→OWL contract before the first RDF cutover
 
-A migration-safe route is:
+Phases 1 through 4 completed the structural model and the first three
+OWL-native parsers without making RDF reconstruction their prerequisite. The
+remaining migration-safe route is now:
 
-1. build the structural model;
-2. retarget OWL-native parsers first;
-3. keep existing RDF/XML/VOWL path as a temporary compatibility branch;
-4. implement RDF→OWL against the constructs needed by the current RDF corpus;
-5. switch RDF formats to the common structural pipeline only once differential parity is demonstrated;
-6. remove legacy RDF parser code last.
+1. implement the syntax-independent RDF/JS ingestion contract, graph policy and
+   baseline-complete shared RDF→OWL mapping from constructed datasets;
+2. add RDF/XML as the first real RDF adapter and fix every reconstruction gap
+   in the shared translator rather than in the adapter;
+3. prove structural and VOWL differential acceptance through the development
+   integration;
+4. cut production over to the structural path with explicit unsupported-format
+   errors and zero production reachability to the legacy path;
+5. retain legacy files at their existing paths only for characterization and
+   reference while the remaining planned migrations proceed;
+6. add Turtle as the second real RDF adapter, thereby validating that the
+   shared RDF seam is format-neutral; and
+7. physically delete the legacy implementation only in Phase 17.
 
-This avoids making the hardest component a prerequisite for every architectural improvement.
+Phase 5 **MUST NOT** limit the translator to whichever happy-path constructs
+happen to occur in a small WebVOWL corpus. Its W3C mapping inventory, Java
+behavioural differential fixtures, unconsumed-triple policy, RDF-list and
+blank-node safety, ontology-header/import handling, axiom annotations and
+resource contracts are production prerequisites. Phase 6 supplies the first
+real-adapter hardening evidence, not a place for RDF/XML-local OWL rules.
 
 ---
 
@@ -1619,14 +1662,14 @@ This avoids making the hardest component a prerequisite for every architectural 
 
 These should parse directly to the structural model:
 
-| Syntax | Strategy | Rationale |
-|---|---|---|
-| Functional Syntax | custom lexer/parser → structural objects | closest concrete syntax to W3C structural specification; best first migration |
-| Manchester Syntax | existing lazy lexer/parser → structural objects | semantic AST already natural; preserve permissive-mode lessons |
-| OWL/XML | DOM/XML parser → structural objects | direct XML representation of structural OWL; do not detour through RDF |
-| DL Syntax | custom parser → structural subset | non-RDF syntax |
-| KRSS / KRSS1 | parser implementation `DEFERRED` for v1 | retain distinct OWLAPI format/compatibility identity, grammar-gap analysis and fixtures without claiming parse support |
-| KRSS2 | KRSS-family parser → strict KRSS2 dialect → structural subset | distinct OWLAPI parser/format identity; extended KRSS vocabulary |
+| Syntax            | Strategy                                                      | Rationale                                                                                                              |
+| ----------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Functional Syntax | custom lexer/parser → structural objects                      | closest concrete syntax to W3C structural specification; best first migration                                          |
+| Manchester Syntax | existing lazy lexer/parser → structural objects               | semantic AST already natural; preserve permissive-mode lessons                                                         |
+| OWL/XML           | DOM/XML parser → structural objects                           | direct XML representation of structural OWL; do not detour through RDF                                                 |
+| DL Syntax         | custom parser → structural subset                             | non-RDF syntax                                                                                                         |
+| KRSS / KRSS1      | parser implementation `DEFERRED` for v1                       | retain distinct OWLAPI format/compatibility identity, grammar-gap analysis and fixtures without claiming parse support |
+| KRSS2             | KRSS-family parser → strict KRSS2 dialect → structural subset | distinct OWLAPI parser/format identity; extended KRSS vocabulary                                                       |
 
 #### 9.1.1 KRSS1 and KRSS2: distinct compatibility surfaces, shared machinery where justified
 
@@ -1659,15 +1702,15 @@ A future KRSS1 implementation requires an explicit capability promotion from `DE
 
 Prefer mature RDF parsers rather than porting low-level syntax lexers:
 
-| Syntax | Strategy |
-|---|---|
-| RDF/XML | `rdfxml-streaming-parser` → RDF/JS quads → RDF→OWL |
-| Turtle | N3.js → RDF/JS quads → RDF→OWL |
-| N-Triples | N3.js → RDF/JS quads → RDF→OWL |
-| TriG | N3.js → RDF/JS quads → dataset graph policy → RDF→OWL |
-| N-Quads | N3.js → RDF/JS quads → dataset graph policy → RDF→OWL |
-| JSON-LD | Digital Bazaar `jsonld.js` → direct RDF dataset adapter → RDF/JS quads → RDF→OWL |
-| N3 | `DEFERRED` for v1; N3.js availability does not constitute language support |
+| Syntax           | Strategy                                                                                                                         |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| RDF/XML          | `rdfxml-streaming-parser` → RDF/JS quads → RDF→OWL                                                                               |
+| Turtle           | N3.js → RDF/JS quads → RDF→OWL                                                                                                   |
+| N-Triples        | N3.js → RDF/JS quads → RDF→OWL                                                                                                   |
+| TriG             | N3.js → RDF/JS quads → dataset graph policy → RDF→OWL                                                                            |
+| N-Quads          | N3.js → RDF/JS quads → dataset graph policy → RDF→OWL                                                                            |
+| JSON-LD          | Digital Bazaar `jsonld.js` → direct RDF dataset adapter → RDF/JS quads → RDF→OWL                                                 |
+| N3               | `DEFERRED` for v1; N3.js availability does not constitute language support                                                       |
 | RDFa / Microdata | optional future adapters only when a concrete requirement and suitably governed/conformant implementation justify the dependency |
 
 This strategic delegation is a major simplification: standardized RDF syntax handling is not where `owlapi-js` should differentiate itself. The **adapter boundary** is where `owlapi-js` adds value: parser selection, security policy, error normalization, RDF/JS normalization, provenance/diagnostics and independent conformance verification.
@@ -2215,17 +2258,17 @@ Existing parser priority ordering is useful for parity and fallback behaviour, b
 
 Current relevant ordering derived from OWLAPI work includes approximately:
 
-| Priority | Parser / format | `owlapi-js` strategy |
-|---:|---|---|
-| 0 | RDF/XML | RDF/JS parser adapter |
-| 1 | OWL/XML | structural parser |
-| 2 | Functional | structural parser |
-| 3 | Rio Turtle | covered through the N3.js RDF adapter rather than a duplicate parser |
-| 4 | Manchester | structural parser with strict sniff gate |
-| 7–12 | various Rio RDF formats | map each supported syntax to the direct format-specific RDF adapter; do not introduce a generic nested dispatcher |
-| 12 | TurtleOntologyParser | no need to duplicate if the N3.js adapter provides equivalent semantics |
-| 15 | DL Syntax | structural parser |
-| 16 | KRSS2 | structural parser |
+| Priority | Parser / format         | `owlapi-js` strategy                                                                                              |
+| -------: | ----------------------- | ----------------------------------------------------------------------------------------------------------------- |
+|        0 | RDF/XML                 | RDF/JS parser adapter                                                                                             |
+|        1 | OWL/XML                 | structural parser                                                                                                 |
+|        2 | Functional              | structural parser                                                                                                 |
+|        3 | Rio Turtle              | covered through the N3.js RDF adapter rather than a duplicate parser                                              |
+|        4 | Manchester              | structural parser with strict sniff gate                                                                          |
+|     7–12 | various Rio RDF formats | map each supported syntax to the direct format-specific RDF adapter; do not introduce a generic nested dispatcher |
+|       12 | TurtleOntologyParser    | no need to duplicate if the N3.js adapter provides equivalent semantics                                           |
+|       15 | DL Syntax               | structural parser                                                                                                 |
+|       16 | KRSS2                   | structural parser                                                                                                 |
 
 Do not clone every Java parser factory when multiple Java factories exist primarily because of Java RDF library integrations that JavaScript can replace with one interoperable RDF/JS adapter.
 
@@ -2346,7 +2389,6 @@ Before Phase 1, Phase 0 **MUST** identify the repository's applicable JavaScript
 Engineering quality is part of Definition of Done. Review **MUST** consider architectural boundaries, cohesion/coupling, duplication, encapsulation, dependency discipline, state ownership, error/async behaviour, runtime portability, testability, clarity and current JavaScript practice. A materially inferior implementation **MUST NOT** be accepted merely because the blueprint left a physical implementation choice open.
 
 ### 13.1 Illustrative directory/package structure
-
 
 The original proposed directory is too shallow because it lacks the structural model and the two RDF mapping layers. A stronger structure is:
 
@@ -2510,8 +2552,8 @@ Keep `*.test.js` alongside source modules where that matches current repository 
 
 ### 14.1 `OWLManager`
 
-| Java OWLAPI | Recommended JS |
-|---|---|
+| Java OWLAPI                             | Recommended JS                                  |
+| --------------------------------------- | ----------------------------------------------- |
 | `OWLManager.createOWLOntologyManager()` | `OWLManager.createOWLOntologyManager(options?)` |
 
 `OWLManager` is a convenience binding/factory. Keep it intentionally thin.
@@ -2602,14 +2644,14 @@ Similarly, expose iterable collections rather than creating a custom Java-Stream
 
 Maintain a machine-readable or Markdown parity matrix throughout development:
 
-| Java type/method | JS status | Behavioural parity | Required by WebVOWL | Tests |
-|---|---|---|---|---|
-| `OWLManager.createOWLOntologyManager` | planned | targeted | yes | — |
-| `OWLOntology.getAxioms` | planned | targeted subset | yes | — |
-| `OWLOntology.getClassesInSignature` | planned | targeted | yes | — |
-| `OWLRDFConsumer` behaviour | phased | construct subset first | yes for RDF inputs | — |
-| storers/renderers | deferred | no | no | — |
-| reasoner interfaces | out of initial scope | no | no | — |
+| Java type/method                      | JS status            | Behavioural parity     | Required by WebVOWL | Tests |
+| ------------------------------------- | -------------------- | ---------------------- | ------------------- | ----- |
+| `OWLManager.createOWLOntologyManager` | planned              | targeted               | yes                 | —     |
+| `OWLOntology.getAxioms`               | planned              | targeted subset        | yes                 | —     |
+| `OWLOntology.getClassesInSignature`   | planned              | targeted               | yes                 | —     |
+| `OWLRDFConsumer` behaviour            | phased               | construct subset first | yes for RDF inputs  | —     |
+| storers/renderers                     | deferred             | no                     | no                  | —     |
+| reasoner interfaces                   | out of initial scope | no                     | no                  | —     |
 
 This prevents the project from casually claiming “OWLAPI compatible” where only names match.
 
@@ -2726,9 +2768,7 @@ OWLOntology
     ↓
 VOWLBuilder
     ↓
-WebVOWL intermediate structures
-    ↓
-ontologyConverter / jsonExporter
+VOWL-JSON-compatible WebVOWL structures
 ```
 
 It should never:
@@ -2758,9 +2798,21 @@ This makes VOWL conversion much easier to reason about and test.
 
 Do not design `OWLOntology` merely around the handful of flattened fields that VOWL currently consumes. The structural model should faithfully represent the OWL constructs; VOWL decides which constructs it visualizes and how.
 
-### 15.4 Transitional adapter
+### 15.4 Development integration and cutover rule
 
-During migration, a temporary adapter may expose legacy VOWL data from the new ontology model so that `ontologyConverter.js` can remain unchanged initially. This is preferable to simultaneously rewriting parsing, ontology semantics and final VOWL JSON generation.
+Phase 7 may add one explicitly development-only invocation seam so the new
+`OWLOntology` → `VOWLBuilder` path can be exercised in the app and end-to-end
+tests before it becomes the production default. That seam must return the new
+VOWL result directly; it **MUST NOT** adapt structural OWL back into the legacy
+RDF/parser/converter representation.
+
+Phase 8 rewires the existing production entry point in place and removes any
+temporary development-only routing that would preserve two production paths.
+After that cutover there is no runtime legacy fallback. An architecture test
+and production-bundle/import-graph inspection **MUST** prove that the entry
+graph cannot reach the old parser, RDF/XML interchange, `ontologyConverter.js`
+or `jsonExporter.js`. The legacy files remain unmoved for characterization and
+reference only.
 
 ---
 
@@ -2768,22 +2820,26 @@ During migration, a temporary adapter may expose legacy VOWL data from the new o
 
 ### 16.1 Files to delete eventually
 
-| File | Final treatment |
-|---|---|
-| `src/owl2vowl/js/rdfXmlSerializer.js` | **Delete** after no internal caller requires RDF/XML |
-| `src/owl2vowl/js/rdfXmlSerializer.test.js` | Delete/replace with OWL→RDF semantic tests if relevant |
-| `src/owl2vowl/js/importLoader.js` | Delete only after responsibilities have moved to manager + WebVOWL resolver |
-| `src/owl2vowl/js/rdfParser.js` | Delete only after RDF→OWL + VOWLBuilder parity is complete |
+| File                                       | Final treatment                                                                                                 |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `src/owl2vowl/js/rdfXmlSerializer.js`      | **Delete** after no internal caller requires RDF/XML                                                            |
+| `src/owl2vowl/js/rdfXmlSerializer.test.js` | Delete/replace with OWL→RDF semantic tests if relevant                                                          |
+| `src/owl2vowl/js/importLoader.js`          | Delete only after responsibilities have moved to manager + WebVOWL resolver                                     |
+| `src/owl2vowl/js/rdfParser.js`             | Delete only after RDF→OWL + VOWLBuilder parity is complete                                                      |
+| `src/owl2vowl/js/ontologyConverter.js`     | Make production-unreachable in Phase 8; retain in place through remaining reference work and delete in Phase 17 |
+| `src/owl2vowl/js/jsonExporter.js`          | Make production-unreachable in Phase 8; retain in place through remaining reference work and delete in Phase 17 |
 
-Do not delete the old RDF parser early. It is valuable as a shadow implementation/oracle during migration.
+Do not move, rename or delete legacy files at cutover. They remain valuable as
+characterization/reference material during the remaining migrations, but they
+must be absent from the production reachability graph after Phase 8.
 
 ### 16.2 Files to create in WebVOWL
 
-| File | Role |
-|---|---|
-| `src/owl2vowl/js/vowlBuilder.js` | Pure OWL structural model → VOWL structures |
-| `src/owl2vowl/js/importResolver.js` | WebVOWL-specific catalog/path/IRI mapping provider implementing core loader interfaces |
-| `src/owl2vowl/js/owlapiAdapter.js` | **Optional temporary migration seam only**; remove once callers use `owlapi-js` directly |
+| File                                | Role                                                                                                                                  |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/owl2vowl/js/vowlBuilder.js`    | Pure OWL structural model → VOWL-JSON-compatible WebVOWL structures; no legacy converter/exporter dependency                          |
+| `src/owl2vowl/js/importResolver.js` | WebVOWL-specific catalog/path/IRI mapping provider implementing core loader interfaces                                                |
+| `src/owl2vowl/js/owlapiAdapter.js`  | **Optional Phase 7 development-only invocation seam**; remove or make unreachable when the existing entry point is rewired in Phase 8 |
 
 ### 16.3 Generic `iriResolver.js` split
 
@@ -2798,13 +2854,16 @@ Move only utilities required to parse OWL/XML/XML sources. Do not carry VOWL-spe
 
 ---
 
-## 17. Migration Strategy — Fixed Sequential Ingestion, Rolling-Wave Elaboration, Mandatory Learning Gates
+## 17. Migration Strategy — Fixed Sequential Delivery, Rolling-Wave Elaboration, Mandatory Gates
 
-The finite v1 ontology-ingestion programme **MUST** be executed sequentially. At most one major ontology-ingestion migration may be active at a time.
+The finite v1 ontology-ingestion and cutover programme **MUST** be executed
+sequentially. At most one major ontology-ingestion migration may be active at a
+time, and an integration/cutover gate in the normative sequence **MUST** finish
+before the following ingestion migration begins.
 
 ### 17.1 Normative WIP-locked ingestion sequence
 
-The complete v1 WIP-locked sequence is:
+The complete v1 WIP-locked delivery sequence is:
 
 ```text
 Functional Syntax
@@ -2813,35 +2872,64 @@ Manchester Syntax
         ↓
 OWL/XML
         ↓
+RDF/JS ingestion + shared RDF→OWL reconstruction
+        ↓
+RDF/XML + first-real-adapter hardening
+        ↓
+early development-app integration
+        ↓
+production WebVOWL cutover
+(legacy files retained in place, production-disconnected)
+        ↓
+N3.js adapter foundation + strict Turtle
+        ↓
 DL Syntax
         ↓
 KRSS2 / KRSS-family migration
         ↓
-N3.js-backed RDF foundation
-(Turtle / TriG / N-Triples / N-Quads)
+N-Triples
         ↓
-RDF→OWL translator hardening
+N-Quads
         ↓
-RDF/XML
+TriG
         ↓
 JSON-LD
+        ↓
+shared OWL→RDF
+        ↓
+physical legacy deletion
+        ↓
+standalone package / release
 ```
 
-Each item **MUST** complete its Definition of Done and learning gate before the next begins.
+Each numbered phase **MUST** complete its Definition of Done and applicable
+learning or acceptance gate, then pause for the requested Git checkpoint. The
+next phase **MUST NOT** begin until that checkpoint is committed and the
+repository owner explicitly instructs the implementation to proceed.
 
 For v1, the following are normatively classified as major ontology-ingestion migrations:
 
 1. Functional Syntax structural-parser migration;
 2. Manchester Syntax structural-parser migration;
 3. OWL/XML structural-parser migration;
-4. DL Syntax structural-parser migration;
-5. KRSS2/KRSS-family structural-parser migration;
-6. N3.js-backed Turtle/TriG/N-Triples/N-Quads RDF-adapter migration;
-7. shared `RdfToOwlTranslator` hardening needed to establish the reusable RDF→OWL ingestion contract;
-8. RDF/XML adapter migration;
-9. JSON-LD adapter migration.
+4. syntax-independent RDF/JS ingestion and shared `RdfToOwlTranslator`
+   implementation;
+5. RDF/XML adapter migration and first-real-adapter hardening;
+6. N3.js-backed Turtle adapter migration;
+7. DL Syntax structural-parser migration;
+8. KRSS2/KRSS-family structural-parser migration;
+9. N3.js-backed N-Triples adapter migration;
+10. N3.js-backed N-Quads adapter migration;
+11. N3.js-backed TriG adapter migration; and
+12. JSON-LD adapter migration.
 
 An implementation team **MUST NOT** relabel one of these items as “infrastructure”, “translator work” or “refactoring” to execute it concurrently with another active ingestion migration.
+
+Phases 7 and 8 are mandatory development-integration and production-cutover
+gates inside this sequence. They are not permission to start the Turtle
+migration concurrently. Phase 9 remains blocked until the Phase 8 production
+reachability, supported-format and unsupported-format gates pass and the Phase
+8 Git checkpoint is committed.
 
 KRSS1 remains `DEFERRED`; the KRSS-family phase nevertheless performs its required compatibility-identity, grammar-gap and fixture work.
 
@@ -3002,6 +3090,11 @@ Before Phase 0 completes, the repository **MUST** identify the role/governance m
 
 An active team may **propose** reordering future not-yet-started migrations, but it **MUST NOT** enact the reorder itself. Any approved reorder updates the normative sequence/prerequisites/status artefacts and still preserves the one-ingestion-migration WIP lock.
 
+The current post-Phase-4 reorder, early integration/cutover rules, retained
+legacy-file policy and Turtle-first N3.js sequencing were approved in
+`docs/adr/0002-prioritize-rdf-ingestion-and-early-webvowl-cutover.md` and are
+incorporated normatively throughout this plan.
+
 ### 17.7 Phase 0 — freeze behaviour, provenance, governance, conformance and budgets
 
 Before production migration begins:
@@ -3037,47 +3130,143 @@ Implement Manchester Syntax directly to the structural model, inheriting all app
 
 Implement OWL/XML directly to the structural model, inheriting textual-parser lessons where applicable and adding XML/environment/security lessons. Complete acceptance and learning gate.
 
-### 17.12 Phase 5 — DL Syntax
+### 17.12 Phase 5 — canonical RDF ingestion and shared RDF→OWL reconstruction
 
-Implement DL Syntax directly to the structural model using the matured textual-parser contracts. Complete acceptance and learning gate.
+Complete the syntax-independent RDF ingestion path before activating any new
+RDF syntax adapter. Implement the shared `RdfToOwlTranslator`, complete and
+verify the dataset graph policy, and translate selected RDF graphs to the
+canonical structural model through `OWLDataFactory` and ontology transactions.
 
-### 17.13 Phase 6 — KRSS family
+Phase 5 tests **MUST** enter through constructed canonical RDF/JS datasets, not
+through an RDF syntax parser. They must establish a finite W3C OWL-to-RDF
+mapping inventory in the reverse direction, Java OWLAPI behavioural
+differentials, ontology header/import/annotation reconstruction, class and data
+expressions, property expressions and characteristics, assertions, keys,
+negative assertions, disjointness, axiom annotations, blank-node scope, RDF
+list cycle/length protection, unconsumed OWL-significant triple policy,
+diagnostics, abort/timeout/resource handling and transactional rollback.
+
+No RDF/XML-, Turtle- or other syntax-specific reconstruction rule may enter the
+translator. Complete the Phase 5 learning gate before RDF/XML begins.
+
+### 17.13 Phase 6 — RDF/XML and first-real-adapter hardening
+
+Implement the selected `rdfxml-streaming-parser` adapter, inheriting the Phase
+4 XML/environment/security lessons and terminating at canonical RDF/JS quads.
+Run the independently owned W3C RDF/XML syntax classifications at the
+syntax/RDF seam, then run shared RDF→OWL, Java structural differential,
+import-closure, WebVOWL, resource, abort, browser/Node, heap and performance
+acceptance.
+
+Any semantic gap exposed by RDF/XML **MUST** be corrected and tested in the
+shared translator unless the defect is demonstrably RDF/XML syntax
+normalization. Complete the Phase 6 learning gate before development-app
+integration begins.
+
+### 17.14 Phase 7 — early development-app integration
+
+Implement `VOWLBuilder` as a direct `OWLOntology` → VOWL-JSON-compatible WebVOWL
+module and make the new ingestion/conversion path explicitly invocable in the
+development app and end-to-end tests. It must not adapt structural OWL back to
+the legacy RDF/parser/converter representation.
+
+The production default remains unchanged for this checkpoint. The Phase 7
+acceptance gate includes exact differential evidence, supported and malformed
+RDF/XML fixtures, import closure, empty/anonymous ontologies, resource
+failures, and confirmation that the new builder has no concrete-syntax
+knowledge. Pause for the Phase 7 Git checkpoint before cutover.
+
+### 17.15 Phase 8 — production WebVOWL cutover
+
+Rewrite the existing WebVOWL production entry path in place to use
+`owlapi-js` → `OWLOntology` → `VOWLBuilder`. Do not move, rename or delete any
+legacy file. Remove temporary development routing that would create two
+production implementations.
+
+After cutover, the production import/bundle graph **MUST NOT** reach the legacy
+parsers, RDF/XML serializer/bridge, `ontologyConverter.js` or
+`jsonExporter.js`. Enforce this with a static architecture test plus production
+bundle/import-graph inspection. There is no runtime legacy fallback.
+
+At this checkpoint WebVOWL advertises only Functional Syntax, Manchester
+Syntax, OWL/XML and RDF/XML from the new path. Any other legacy-only syntax,
+including one discovered in an import closure, must fail explicitly with the
+canonical unsupported-format diagnostics. The legacy sources remain at their
+existing paths for characterization/reference tests only. Complete production
+smoke, differential, import, unsupported-format and reachability acceptance,
+then pause for the Phase 8 Git checkpoint before Turtle begins.
+
+### 17.16 Phase 9 — private N3.js adapter foundation and strict Turtle
+
+Introduce one private format-locked N3.js implementation behind the existing
+RDF syntax seam and register only the Turtle descriptor. Always select explicit
+Turtle mode; the dependency's permissive default mode is forbidden. Normalize
+terms/quads/errors immediately, preserve prefix/document context, and pass the
+canonical dataset through the already shared graph-policy and RDF→OWL modules.
+
+N3.js should be conditionally imported after parser selection. Establish a
+measured bounded streaming/chunking path for large inputs with Unicode-safe
+chunks, backpressure, abort/timeout/quad-limit checks and cooperative browser
+yielding. No third-party type, stream, error or undeclared transitive dependency
+may leak past the private implementation.
+
+Complete the independently owned RDF 1.1 and RDF 1.2 Turtle classifications,
+strict Notation3-negative tests, bounded detection and strong-negative tests,
+Node/browser adapter contracts, bundle/first-use/main-thread measurements,
+resource and long-list cases, Java structural differentials, paired
+RDF/XML/Turtle structural equivalence, import closure and complete WebVOWL
+conversion. N-Triples, N-Quads, TriG and the broader N3 language remain
+unregistered. Complete the Phase 9 learning gate before DL Syntax begins.
+
+### 17.17 Phase 10 — DL Syntax
+
+Implement DL Syntax directly to the structural model using the matured textual-parser contracts and all applicable resource, detection, diagnostics and differential lessons. Complete acceptance and learning gate.
+
+### 17.18 Phase 11 — KRSS family
 
 Implement the `REQUIRED_V1` KRSS2/KRSS-family parser scope, retain explicit KRSS1 compatibility identity, perform the required KRSS1/KRSS2 grammar-gap/fixture/negative-dialect work, and leave KRSS1 implementation `DEFERRED`. Complete acceptance and learning gate.
 
-### 17.14 Phase 7 — RDF/JS + N3.js-backed standard RDF syntaxes
+### 17.19 Phase 12 — N-Triples
 
-Introduce the first production RDF ingestion slice using the selected RDF/JS foundation and separate descriptors/adapters for Turtle, TriG, N-Triples and N-Quads. N3 language support remains `DEFERRED`.
+Add the distinct strict N-Triples format/descriptor through the private N3.js
+implementation established in Phase 9. Complete its independent W3C RDF 1.1
+and RDF 1.2 classifications, bounded detection, default-graph normalization,
+adapter replacement, differential, resource/performance and learning gates.
 
-Produce canonical `DatasetCore<Quad>` output and establish adapter normalization, graph-policy, resource/security and conformance contracts. Complete acceptance and learning gate.
+### 17.20 Phase 13 — N-Quads
 
-### 17.15 Phase 8 — harden RDF→OWL reconstruction
+Add the distinct strict N-Quads format/descriptor through the same private
+implementation. Preserve every graph term and use this simplest line-oriented
+dataset syntax to validate every dataset graph policy with real parsed input.
+Complete independent conformance, differential, resource/performance and
+learning gates.
 
-Harden the shared `RdfToOwlTranslator` against the first real RDF path. This phase **is part of the WIP-locked ingestion sequence** and **MUST** complete before RDF/XML begins.
+### 17.21 Phase 14 — TriG
 
-### 17.16 Phase 9 — RDF/XML
+Add the distinct strict TriG format/descriptor after both Turtle syntax and
+N-Quads named-graph behavior are established. Validate the combination of
+Turtle-style syntax, graph blocks, dataset graph selection/loss diagnostics,
+cross-format equivalence, conformance, resource/performance and learning gates.
 
-Implement the selected `rdfxml-streaming-parser` adapter, inheriting both XML/environment lessons and the mature RDF/JS/RDF→OWL contracts. Complete acceptance and learning gate.
-
-### 17.17 Phase 10 — JSON-LD
+### 17.22 Phase 15 — JSON-LD
 
 Implement the Digital Bazaar `jsonld.js` adapter with restricted/injected document loading and no N-Quads string round-trip. Complete acceptance and the final ingestion-program learning gate.
 
 The ingestion programme is complete after this gate unless the normative capability matrix/plan changes through §17.6 governance.
 
-### 17.18 Phase 11 — shared OWL→RDF translator
+### 17.23 Phase 16 — shared OWL→RDF translator
 
 Implement the W3C OWL→RDF mapping from canonical structural OWL to RDF/JS quads using exhaustive `kind` dispatch and graph-equivalence tests.
 
-### 17.19 Phase 12 — switch `VOWLBuilder` to `OWLOntology`
+### 17.24 Phase 17 — remove the retained legacy pipeline
 
-Move WebVOWL consumption to the structural ontology boundary, preserving VOWL differential behaviour through explicitly approved expected differences.
+Delete the legacy parsers, RDF/XML bridge/serializer,
+`ontologyConverter.js`, `jsonExporter.js` and other syntax-coupled VOWL paths
+only after all planned replacement/reference work has passed acceptance and the
+Phase 8 production no-reachability gate remains green. Phase 17 is physical
+deletion, not the production cutover.
 
-### 17.20 Phase 13 — remove the legacy RDF/XML pipeline
-
-Delete obsolete RDF/XML bridge/serializer and syntax-coupled VOWL paths only after their replacements have passed acceptance and no production dependency remains.
-
-### 17.21 Phase 14 — extract/publish standalone package
+### 17.25 Phase 18 — extract/publish standalone package
 
 Finalize package exports, browser/Node CI, notices/licensing/provenance, dependency records, bundle analysis, compatibility documentation and release acceptance.
 
@@ -3091,11 +3280,11 @@ OWL 2 conformance includes syntax-translation tests whose successful outputs nee
 
 Development is test-first from the beginning of the migration, but do **not** force artificial RED states for behaviour-preserving mechanical refactors. Use three explicit modes:
 
-| Change type | Required methodology | Expected starting state |
-|---|---|---|
-| understand/protect existing legacy behaviour | characterization testing | existing implementation defines observed behaviour, while known defects are labelled as defects |
-| pure structural/refactoring change with no observable semantic change | **GREEN → GREEN** | relevant suites pass before and after each small change |
-| new capability, semantic correction, bug fix, OWLAPI parity addition, W3C mapping behaviour or other observable behaviour change | strict **RED → GREEN → REFACTOR** | first add a focused test that fails for the intended reason |
+| Change type                                                                                                                      | Required methodology              | Expected starting state                                                                         |
+| -------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- | ----------------------------------------------------------------------------------------------- |
+| understand/protect existing legacy behaviour                                                                                     | characterization testing          | existing implementation defines observed behaviour, while known defects are labelled as defects |
+| pure structural/refactoring change with no observable semantic change                                                            | **GREEN → GREEN**                 | relevant suites pass before and after each small change                                         |
+| new capability, semantic correction, bug fix, OWLAPI parity addition, W3C mapping behaviour or other observable behaviour change | strict **RED → GREEN → REFACTOR** | first add a focused test that fails for the intended reason                                     |
 
 For every known semantic defect, **no production fix occurs before a failing regression test demonstrates the defect**. For every newly implemented W3C/OWLAPI capability, create the focused specification/parity test before production behaviour is added.
 
@@ -3786,10 +3975,7 @@ This document is engineering guidance, not legal advice. Before first public rel
 The final WebVOWL call site should become simple:
 
 ```javascript
-import {
-  OWLManager,
-  StringDocumentSource,
-} from "owlapi-js";
+import { OWLManager, StringDocumentSource } from "owlapi-js";
 
 import { VOWLBuilder } from "./vowlBuilder.js";
 
@@ -3908,39 +4094,39 @@ The syntax adapter and OWL interpreter are deliberately separate components. RDF
 
 ## 26. Anti-Pattern Catalogue for the Refactor
 
-| Anti-pattern | Why it is wrong | Replacement |
-|---|---|---|
-| Every parser emits RDF/XML | duplicates semantic mapping and serialization logic | OWL-native parser → structural model |
-| “Triples are the lingua franca” | loses named graph data and wrongly makes RDF the OWL storage model | structural OWL + RDF/JS quads as separate IRs |
-| `OWLOntology` wraps raw triples | leaks RDF representation into OWL API and burdens native syntaxes | axiom/object model as source of truth |
-| Flatten RDF datasets automatically | destroys graph membership and can combine unrelated graph fragments | explicit graph policy |
-| Add `.graph` to axioms | named graph is RDF dataset context, not OWL structural semantics | document/dataset context |
-| Compare OWL objects with `===` | violates structural equivalence | structural keys/equality/interning |
-| Store unordered operands in parse order and hash directly | structurally equal objects become unequal | canonicalize set-valued operands |
-| Exact RDF/XML/text golden tests | serialization differences are not semantic differences | structural/RDF graph equivalence tests |
-| Eager tokenization | catastrophic V8 memory overhead on large/mismatched inputs | generators/pull scanners |
-| compatible parser without sniff gate | false-positive “successful” parses | positive bounded sniff |
-| `.owl` extension determines syntax | `.owl` commonly covers RDF/XML and OWL/XML; `rdf-parse` maps it to RDF/XML | content hint + sniff |
-| valid XML means RDF/XML | OWL/XML is valid XML too | inspect root/namespace/syntax |
-| broad `catch` means “try next parser” | hides implementation/security/resource errors | typed recoverable-vs-fatal errors |
-| unresolved/unbounded XML entities | data loss or entity-expansion DoS | bounded internal entity resolver |
-| JSON-LD may fetch arbitrary contexts | uncontrolled network/SSRF-like behaviour in some environments | injected restricted document loader |
-| VOWL builder traverses XML/RDF directly | couples visualization to syntax | consume OWL structural objects |
-| claim “100% OWLAPI parity” from a few fixtures | creates misleading compatibility contract | explicit parity matrix + conformance/differential tests |
-| leave unimplemented OWLAPI behaviour only in planning docs or generic `TODO`s | local code hides known compatibility gaps and future refactors rediscover them by accident | mandatory `TODO(OWLAPI parity)` / `UNSUPPORTED(OWLAPI parity)` annotations linked to parity matrix and focused tests (§14.10) |
-| derive the supported-format list only from WebVOWL's current files | hides OWLAPI compatibility surfaces such as original KRSS/KRSS1 | inventory OWLAPI parser + factory + document-format identities first, then classify each explicitly |
-| treat KRSS2 as a generic KRSS parser | loses dialect identity and can accept extended KRSS2 constructs when validating KRSS1 | separate KRSS/KRSS1 and KRSS2 adapters over a shared core only where grammar audit justifies reuse |
-| put `rdf-parse`/Comunica beneath `OWLOntologyManager` as another universal dispatcher | duplicates format selection/fallback and expands dependency authority | direct format-specific adapters terminating at RDF/JS |
-| choose parser dependencies only by stars or convenience | ignores conformance, release authority, bus factor, supply chain and browser cost | explicit dependency-governance rubric + local standards-suite CI |
-| avoid third-party parser risk by writing RDF syntaxes ourselves | transfers mature standards risk into local unproven code | conformance-tested replaceable adapters over external standards implementations |
-| publish moved OWLAPI-derived code as if provenance-free | licensing/compliance risk and avoidable constraint on future licence choice | provenance audit; independently reimplement by default; explicit exception only after licensing review |
-| mechanically translate OWLAPI Java implementation/source comments into the new JavaScript core | couples production-code provenance to OWLAPI implementation terms and preserves Java-specific design quirks | specifications-first independent implementation + black-box OWLAPI structural differential oracle |
-| treat an OWLAPI source-code location in a parity comment as an implementation recipe | future contributors may unknowingly recreate upstream implementation structure | comments cite public API identity + normative spec + project-owned fixture; source locations only for provenance audit |
-| parallelize major parser/adapter migrations | duplicates discovery, diverges shared contracts and bypasses the deliberate cumulative-learning handoff | fixed §17 WIP lock: exactly one major ontology-ingestion migration at a time for the complete v1 sequence |
-| maintain an append-only "lessons learned" diary as the handoff mechanism | future teams face growing cognitive load and cannot tell current best practice from superseded history | preserve per-phase historical records **and** continuously rewrite a concise canonical migration playbook |
-| record a useful parser lesson only in retrospective prose | the same defect can recur when the next implementer does not retrieve/apply the note | convert important lessons into regression/contract/conformance/fitness tests and shared policies |
-| isolate OWL-native and RDF parser teams' learning because their semantic pipelines differ | loses cross-cutting lessons about selection, diagnostics, IRI handling, security, performance, environment behaviour and testing | one cumulative ontology-ingestion playbook with explicit lesson applicability scopes |
-| fully prescribe distant parser implementations before earlier migrations have generated evidence | creates brittle plans based on assumptions and discourages incorporation of newly learned better approaches | rolling-wave elaboration: detailed next phase, high-level later phases, mandatory re-planning after each learning gate |
+| Anti-pattern                                                                                     | Why it is wrong                                                                                                                  | Replacement                                                                                                                   |
+| ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Every parser emits RDF/XML                                                                       | duplicates semantic mapping and serialization logic                                                                              | OWL-native parser → structural model                                                                                          |
+| “Triples are the lingua franca”                                                                  | loses named graph data and wrongly makes RDF the OWL storage model                                                               | structural OWL + RDF/JS quads as separate IRs                                                                                 |
+| `OWLOntology` wraps raw triples                                                                  | leaks RDF representation into OWL API and burdens native syntaxes                                                                | axiom/object model as source of truth                                                                                         |
+| Flatten RDF datasets automatically                                                               | destroys graph membership and can combine unrelated graph fragments                                                              | explicit graph policy                                                                                                         |
+| Add `.graph` to axioms                                                                           | named graph is RDF dataset context, not OWL structural semantics                                                                 | document/dataset context                                                                                                      |
+| Compare OWL objects with `===`                                                                   | violates structural equivalence                                                                                                  | structural keys/equality/interning                                                                                            |
+| Store unordered operands in parse order and hash directly                                        | structurally equal objects become unequal                                                                                        | canonicalize set-valued operands                                                                                              |
+| Exact RDF/XML/text golden tests                                                                  | serialization differences are not semantic differences                                                                           | structural/RDF graph equivalence tests                                                                                        |
+| Eager tokenization                                                                               | catastrophic V8 memory overhead on large/mismatched inputs                                                                       | generators/pull scanners                                                                                                      |
+| compatible parser without sniff gate                                                             | false-positive “successful” parses                                                                                               | positive bounded sniff                                                                                                        |
+| `.owl` extension determines syntax                                                               | `.owl` commonly covers RDF/XML and OWL/XML; `rdf-parse` maps it to RDF/XML                                                       | content hint + sniff                                                                                                          |
+| valid XML means RDF/XML                                                                          | OWL/XML is valid XML too                                                                                                         | inspect root/namespace/syntax                                                                                                 |
+| broad `catch` means “try next parser”                                                            | hides implementation/security/resource errors                                                                                    | typed recoverable-vs-fatal errors                                                                                             |
+| unresolved/unbounded XML entities                                                                | data loss or entity-expansion DoS                                                                                                | bounded internal entity resolver                                                                                              |
+| JSON-LD may fetch arbitrary contexts                                                             | uncontrolled network/SSRF-like behaviour in some environments                                                                    | injected restricted document loader                                                                                           |
+| VOWL builder traverses XML/RDF directly                                                          | couples visualization to syntax                                                                                                  | consume OWL structural objects                                                                                                |
+| claim “100% OWLAPI parity” from a few fixtures                                                   | creates misleading compatibility contract                                                                                        | explicit parity matrix + conformance/differential tests                                                                       |
+| leave unimplemented OWLAPI behaviour only in planning docs or generic `TODO`s                    | local code hides known compatibility gaps and future refactors rediscover them by accident                                       | mandatory `TODO(OWLAPI parity)` / `UNSUPPORTED(OWLAPI parity)` annotations linked to parity matrix and focused tests (§14.10) |
+| derive the supported-format list only from WebVOWL's current files                               | hides OWLAPI compatibility surfaces such as original KRSS/KRSS1                                                                  | inventory OWLAPI parser + factory + document-format identities first, then classify each explicitly                           |
+| treat KRSS2 as a generic KRSS parser                                                             | loses dialect identity and can accept extended KRSS2 constructs when validating KRSS1                                            | separate KRSS/KRSS1 and KRSS2 adapters over a shared core only where grammar audit justifies reuse                            |
+| put `rdf-parse`/Comunica beneath `OWLOntologyManager` as another universal dispatcher            | duplicates format selection/fallback and expands dependency authority                                                            | direct format-specific adapters terminating at RDF/JS                                                                         |
+| choose parser dependencies only by stars or convenience                                          | ignores conformance, release authority, bus factor, supply chain and browser cost                                                | explicit dependency-governance rubric + local standards-suite CI                                                              |
+| avoid third-party parser risk by writing RDF syntaxes ourselves                                  | transfers mature standards risk into local unproven code                                                                         | conformance-tested replaceable adapters over external standards implementations                                               |
+| publish moved OWLAPI-derived code as if provenance-free                                          | licensing/compliance risk and avoidable constraint on future licence choice                                                      | provenance audit; independently reimplement by default; explicit exception only after licensing review                        |
+| mechanically translate OWLAPI Java implementation/source comments into the new JavaScript core   | couples production-code provenance to OWLAPI implementation terms and preserves Java-specific design quirks                      | specifications-first independent implementation + black-box OWLAPI structural differential oracle                             |
+| treat an OWLAPI source-code location in a parity comment as an implementation recipe             | future contributors may unknowingly recreate upstream implementation structure                                                   | comments cite public API identity + normative spec + project-owned fixture; source locations only for provenance audit        |
+| parallelize major parser/adapter migrations                                                      | duplicates discovery, diverges shared contracts and bypasses the deliberate cumulative-learning handoff                          | fixed §17 WIP lock: exactly one major ontology-ingestion migration at a time for the complete v1 sequence                     |
+| maintain an append-only "lessons learned" diary as the handoff mechanism                         | future teams face growing cognitive load and cannot tell current best practice from superseded history                           | preserve per-phase historical records **and** continuously rewrite a concise canonical migration playbook                     |
+| record a useful parser lesson only in retrospective prose                                        | the same defect can recur when the next implementer does not retrieve/apply the note                                             | convert important lessons into regression/contract/conformance/fitness tests and shared policies                              |
+| isolate OWL-native and RDF parser teams' learning because their semantic pipelines differ        | loses cross-cutting lessons about selection, diagnostics, IRI handling, security, performance, environment behaviour and testing | one cumulative ontology-ingestion playbook with explicit lesson applicability scopes                                          |
+| fully prescribe distant parser implementations before earlier migrations have generated evidence | creates brittle plans based on assumptions and discourages incorporation of newly learned better approaches                      | rolling-wave elaboration: detailed next phase, high-level later phases, mandatory re-planning after each learning gate        |
 
 ---
 
@@ -4006,8 +4192,6 @@ OWL structural sets do not semantically preserve order, but legacy visualization
 A compatibility project naturally encourages developers to inspect the reference implementation. Without an explicit boundary, “make JS behave like OWLAPI” can drift into Java-to-JavaScript translation, reducing licence-choice independence and reintroducing Java-specific implementation structure.
 
 **Mitigation:** enforce §22 as a migration invariant: specifications/public documentation define the implementation; the pinned Java OWLAPI harness supplies black-box behavioural evidence; historically OWLAPI-derived WebVOWL code is characterized then replaced; any exception is explicit and reviewed.
-
-
 
 ### 27.9 Risk: violating the fixed sequential ingestion WIP lock
 
@@ -4146,7 +4330,9 @@ without importing any VOWL code.
 
 ### Native parsers
 
-Execute these as sequential learning batches in the order currently recommended by §17 unless a learning-gate/ADR deliberately reorders later work:
+Execute these as sequential learning batches at their §17 positions. The RDF
+foundation, RDF/XML, integration/cutover and Turtle phases now occur between
+the completed OWL/XML batch and the later DL/KRSS batches:
 
 - [ ] Functional → structural model; complete learning gate.
 - [ ] Manchester → structural model; complete learning gate.
@@ -4164,19 +4350,20 @@ Execute these as sequential learning batches in the order currently recommended 
 
 Continue the same cumulative ingestion-learning sequence rather than treating RDF adapters as an unrelated programme:
 
-- [ ] Introduce RDF/JS terms/quads/dataset with the N3-family learning slice.
-- [ ] Implement separate N3.js-backed adapters/descriptors for Turtle/TriG/N-Triples/N-Quads; keep N3 language ingestion `DEFERRED`; complete learning gate.
-- [ ] Harden RDF→OWL from the first real RDF path before adding the next RDF syntax.
-- [ ] Implement direct `rdfxml-streaming-parser` adapter for RDF/XML, inheriting both XML and RDF lessons; complete learning gate.
-- [ ] Implement Digital Bazaar `jsonld.js` adapter with restricted/injected document loader and no N-Quads string round-trip; complete learning gate.
+- [ ] Complete the canonical RDF/JS dataset/graph-policy contracts and shared, syntax-independent RDF→OWL translator in Phase 5 using constructed datasets.
+- [ ] Implement the direct `rdfxml-streaming-parser` adapter in Phase 6, inheriting XML and RDF lessons and hardening only the shared translator for semantic gaps.
+- [ ] Introduce the private strict-mode N3.js implementation plus Turtle only in Phase 9; conditionally load it and establish measured streaming/yield behavior.
+- [ ] Keep N3 language ingestion `DEFERRED` and enforce focused Notation3-negative tests.
+- [ ] Add the remaining N3.js-backed formats independently as N-Triples, N-Quads and TriG in Phases 12, 13 and 14.
+- [ ] Implement Digital Bazaar `jsonld.js` in Phase 15 with a restricted/injected document loader and no N-Quads string round-trip.
 - [ ] Keep all parser-specific types/errors/configuration behind `RdfSyntaxAdapter`.
 - [ ] Record dependency governance metadata and execute the exact pinned conformance manifests in CI.
 - [ ] Preserve graph field.
 - [ ] Implement exact `rdfDatasetGraphPolicy` values: `requireSingleGraph`, `defaultGraphOnly`, `selectGraph`, `merge`.
 - [ ] Implement RDF-list decoder.
-- [ ] Implement RDF→OWL translator incrementally.
-- [ ] Implement shared OWL→RDF translator.
-- [ ] Remove RDF/XML internal serializer.
+- [ ] Keep RDF→OWL semantic reconstruction in one shared translator; never patch a syntax adapter with private OWL mapping rules.
+- [ ] Implement the shared OWL→RDF translator in Phase 16.
+- [ ] Remove the RDF/XML internal serializer with the retained legacy pipeline in Phase 17.
 
 ### Manager / I/O
 
@@ -4191,10 +4378,12 @@ Continue the same cumulative ingestion-learning sequence rather than treating RD
 
 ### WebVOWL
 
-- [ ] Create `VOWLBuilder` consuming `OWLOntology`.
+- [ ] Create `VOWLBuilder` consuming `OWLOntology` and producing VOWL-JSON-compatible structures without legacy converter/exporter imports.
 - [ ] Move WebVOWL catalog/path resolver to injected core interfaces.
 - [ ] Remove XML/RDF syntax awareness from VOWL conversion.
-- [ ] Delete legacy bridge modules only after parity.
+- [ ] Exercise the new path in the development app in Phase 7, then rewire the existing production entry in Phase 8.
+- [ ] After Phase 8, enforce zero production import/bundle reachability to the legacy parser/converter/exporter path and no runtime fallback.
+- [ ] Leave legacy files unmoved for characterization/reference until physical deletion in Phase 17.
 
 ### Security
 
@@ -4220,9 +4409,11 @@ Continue the same cumulative ingestion-learning sequence rather than treating RD
 - [ ] existing 44-ontology / WebVOWL differential corpus.
 - [ ] performance/heap regressions against the pinned benchmark environment and approved thresholds.
 - [ ] malformed/adversarial inputs.
-- [ ] Pinned exhaustive conformance manifests for RDF/XML/Turtle/TriG/N-Triples/N-Quads with every upstream test classified `REQUIRED`, `NOT_APPLICABLE` or `EXCLUDED_WITH_REASON`.
+- [ ] Independently owned pinned exhaustive conformance scopes for RDF/XML, Turtle, N-Triples, N-Quads and TriG with every upstream test classified `REQUIRED`, `NOT_APPLICABLE` or `EXCLUDED_WITH_REASON` before its phase completes.
 - [ ] Pinned exhaustive JSON-LD conformance manifest with every upstream test classified and every `REQUIRED` test passing.
 - [ ] adapter replacement contract tests proving parser-specific types do not leak past RDF/JS normalization.
+- [ ] strict N3.js format-mode and Notation3-negative tests; never exercise the dependency's permissive default as a supported format.
+- [ ] production no-legacy-reachability and explicit unsupported-format/import tests after cutover.
 
 ### Packaging / compliance
 
@@ -4407,10 +4598,10 @@ The following sources should be treated as the architectural/behavioural hierarc
     https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/io/OWLParser.html
 
 21a. **OWLAPI `KRSS2OWLParser` Javadocs** — documents the extended KRSS2 vocabulary and explicitly distinguishes it from `KRSSOWLParser`  
-    https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss2/parser/KRSS2OWLParser.html
+https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss2/parser/KRSS2OWLParser.html
 
 21b. **OWLAPI class hierarchy / parser and document-format factories** — includes separate KRSS1/KRSS2 parsers and format factories  
-    https://owlcs.github.io/owlapi/apidocs_5/overview-tree.html
+https://owlcs.github.io/owlapi/apidocs_5/overview-tree.html
 
 22. **OWLAPI `OWLRDFConsumer` Javadocs**  
     https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/rdf/rdfxml/parser/OWLRDFConsumer.html
@@ -4473,7 +4664,7 @@ The final architectural rules are:
 
 > **Implementation discretion is constrained by modern JavaScript engineering best practice, the repository's engineering standards and the normative logical/module boundaries in this plan. `owlapi-js` v1 remains native ESM JavaScript with no TypeScript/`tsc`/`checkJs` requirement.**
 
-The normative ingestion-learning sequence is:
+The normative delivery sequence is:
 
 ```text
 Functional
@@ -4482,22 +4673,32 @@ Manchester
    ↓ learn / institutionalize
 OWL/XML
    ↓ learn / institutionalize
+RDF/JS + shared RDF→OWL
+   ↓ learn / institutionalize
+RDF/XML
+   ↓ learn / institutionalize
+development integration
+   ↓ acceptance / checkpoint
+production cutover; legacy retained in place but disconnected
+   ↓ acceptance / checkpoint
+strict Turtle via private N3.js implementation
+   ↓ learn / institutionalize
 DL
    ↓ learn / institutionalize
 KRSS2 / KRSS-family
    ↓ learn / institutionalize
-Turtle / TriG / N-Triples / N-Quads via N3.js
+N-Triples
    ↓ learn / institutionalize
-RDF→OWL hardening
+N-Quads
    ↓ learn / institutionalize
-RDF/XML
+TriG
    ↓ learn / institutionalize
 JSON-LD
    ↓ final ingestion learning gate
-shared OWL→RDF → VOWL cutover → legacy removal → release
+shared OWL→RDF → physical legacy deletion → release
 ```
 
-KRSS1 remains a distinct required compatibility identity with grammar-gap/fixture/future-architecture work, while its parser implementation is `DEFERRED` for v1. N3.js is the selected parser library for the four standard RDF syntaxes above; broader N3-language ingestion is independently `DEFERRED`.
+KRSS1 remains a distinct required compatibility identity with grammar-gap/fixture/future-architecture work, while its parser implementation is `DEFERRED` for v1. N3.js is the selected parser library for the four standard RDF syntaxes above; each has an independent strict descriptor and phase, while broader N3-language ingestion is independently `DEFERRED`.
 
 The plan may reorder future not-yet-started phases only through the approved project-decision process and corresponding normative-document updates; reordering never removes the one-at-a-time ingestion WIP lock.
 

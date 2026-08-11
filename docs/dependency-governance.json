@@ -21,7 +21,7 @@
       "maintenanceStatus": "Pinned production release; reassess at every material upgrade",
       "runtimeDependencies": [],
       "networkBehavior": "No document loading or ambient network access",
-      "browserCost": "Small foundational term implementation; measure in the Phase 7 bundle gate",
+      "browserCost": "Small foundational term implementation; measure in the Phase 5 RDF-ingestion gate",
       "license": "MIT",
       "noticeAction": "Retain the dependency licence in release notices",
       "adapterBoundary": "src/owlapi-js/rdf/environment.js"
@@ -38,7 +38,7 @@
       "maintenanceStatus": "Pinned production release; reassess at every material upgrade",
       "runtimeDependencies": [],
       "networkBehavior": "No document loading or ambient network access",
-      "browserCost": "Indexed in-memory dataset; quantify heap and bundle impact in Phase 7",
+      "browserCost": "Indexed in-memory dataset; quantify heap and bundle impact in Phase 5",
       "license": "MIT",
       "noticeAction": "Retain the dependency licence in release notices",
       "adapterBoundary": "src/owlapi-js/rdf/environment.js"
@@ -55,13 +55,13 @@
       ],
       "conformanceEvidence": [
         "Pinned W3C rdf-tests revision",
-        "Separate owlapi-js adapter classification and contract suites required in Phase 7"
+        "Independent owlapi-js Turtle classification and adapter-contract suites required in Phase 9; N-Triples, N-Quads, and TriG scopes follow in Phases 12, 13, and 14"
       ],
       "releaseAuthority": "RDF/JS community; rdfjs/N3.js maintainers",
       "maintenanceStatus": "Pinned production release with active standards test scripts",
       "runtimeDependencies": ["buffer", "readable-stream"],
       "networkBehavior": "Parser APIs consume caller-provided input and do not resolve documents",
-      "browserCost": "Load only from RDF syntax adapters; establish a Phase 7 bundle baseline",
+      "browserCost": "Conditionally import after strict format selection; establish initial-bundle, lazy-chunk, first-use, heap, and main-thread baselines in Phase 9 and remeasure the added modes in Phases 12 through 14",
       "license": "MIT",
       "noticeAction": "Retain the dependency and transitive dependency licences in release notices",
       "adapterBoundary": "src/owlapi-js/parsers/rdf/n3SyntaxAdapter.js"
@@ -73,10 +73,10 @@
       "standardsGrounding": ["W3C RDF/XML", "RDF/JS streams and quads"],
       "conformanceEvidence": [
         "Pinned W3C rdf-tests revision",
-        "Separate owlapi-js adapter classification and contract suites required in Phase 9"
+        "Separate owlapi-js adapter classification and contract suites required in Phase 6"
       ],
       "releaseAuthority": "rdfjs/rdfxml-streaming-parser.js maintainers",
-      "maintenanceStatus": "Pinned production release; XML/security behavior is revalidated in Phase 9",
+      "maintenanceStatus": "Pinned production release; XML/security behavior is revalidated in Phase 6",
       "runtimeDependencies": [
         "@rubensworks/saxes",
         "@types/readable-stream",
@@ -87,7 +87,7 @@
         "validate-iri"
       ],
       "networkBehavior": "Streaming parser consumes supplied XML; the owlapi-js adapter forbids external-entity retrieval",
-      "browserCost": "Streaming/XML dependency surface; establish heap and bundle baselines in Phase 9",
+      "browserCost": "Streaming/XML dependency surface; establish heap and bundle baselines in Phase 6",
       "license": "MIT",
       "noticeAction": "Retain the dependency and transitive dependency licences in release notices",
       "adapterBoundary": "src/owlapi-js/parsers/rdfxml/rdfXmlSyntaxAdapter.js"
@@ -102,10 +102,10 @@
       ],
       "conformanceEvidence": [
         "Pinned W3C json-ld-api revision",
-        "Separate owlapi-js adapter classification and contract suites required in Phase 10"
+        "Separate owlapi-js adapter classification and contract suites required in Phase 15"
       ],
       "releaseAuthority": "Digital Bazaar jsonld.js maintainers",
-      "maintenanceStatus": "Pinned production release; restricted-loader behavior is revalidated in Phase 10",
+      "maintenanceStatus": "Pinned production release; restricted-loader behavior is revalidated in Phase 15",
       "runtimeDependencies": [
         "@digitalbazaar/http-client",
         "canonicalize",
@@ -113,7 +113,7 @@
         "rdf-canonize"
       ],
       "networkBehavior": "Upstream supports document loading; owlapi-js must always inject its default-deny controlled loader",
-      "browserCost": "Largest selected adapter surface; lazy loading and a Phase 10 bundle baseline are mandatory",
+      "browserCost": "Largest selected adapter surface; lazy loading and a Phase 15 bundle baseline are mandatory",
       "license": "BSD-3-Clause",
       "noticeAction": "Retain the dependency and transitive dependency licences in release notices",
       "adapterBoundary": "src/owlapi-js/parsers/jsonld/jsonLdSyntaxAdapter.js"

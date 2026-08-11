@@ -49,6 +49,42 @@ describe("owlapi-js governance artifacts", () => {
     ).toBe(true);
   });
 
+  it("pins the approved post-Phase-4 delivery order", () => {
+    const matrix = readJson(
+      "../../docs/owlapi-js/compatibility/capabilities.json",
+    );
+    const byId = new Map(
+      matrix.capabilities.map((capability) => [capability.id, capability]),
+    );
+    const expectedPhases = new Map([
+      ["rdf.dataset-graph-policy", 5],
+      ["mapping.rdf-to-owl", 5],
+      ["parser.rdfxml", 6],
+      ["webvowl.vowl-builder", 7],
+      ["webvowl.legacy-output-parity", 7],
+      ["webvowl.production-cutover", 8],
+      ["parser.turtle", 9],
+      ["parser.dl", 10],
+      ["parser.krss2", 11],
+      ["format.krss1.identity", 11],
+      ["parser.ntriples", 12],
+      ["parser.nquads", 13],
+      ["parser.trig", 14],
+      ["parser.jsonld", 15],
+      ["mapping.owl-to-rdf", 16],
+      ["packaging.native-esm", 18],
+    ]);
+
+    for (const [id, phase] of expectedPhases) {
+      expect(byId.get(id)?.phase).toBe(phase);
+    }
+    expect(byId.get("webvowl.production-cutover")?.status).toBe("REQUIRED_V1");
+    expect(byId.get("parser.n3-language")).toMatchObject({
+      status: "DEFERRED",
+      phase: null,
+    });
+  });
+
   it("keeps KRSS1 and KRSS2 as distinct compatibility identities", () => {
     const matrix = readJson(
       "../../docs/owlapi-js/compatibility/capabilities.json",
@@ -106,13 +142,18 @@ describe("owlapi-js governance artifacts", () => {
     }
   });
 
-  it("gives every legacy migration artifact one definitive disposition", () => {
+  it("gives every legacy migration artifact a governed disposition", () => {
     const manifest = readJson(
       "../../docs/owlapi-js/provenance/provenance.json",
     );
     const ids = manifest.items.map(({ id }) => id);
+    const paths = manifest.items.map(({ path }) => path);
+    const revisionSelectors = manifest.revisionDispositionPolicy.selectors;
 
+    expect(manifest.schemaVersion).toBe(3);
     expect(new Set(ids).size).toBe(ids.length);
+    expect(new Set(paths).size).toBe(paths.length);
+    expect(revisionSelectors).toEqual(["AT_REVISION", "AFTER_REVISION"]);
     for (const item of manifest.items) {
       expect(manifest.dispositions).toContain(item.disposition);
       expect(item.disposition).not.toBe("REVIEW_EXCEPTION");
@@ -121,6 +162,14 @@ describe("owlapi-js governance artifacts", () => {
       );
       expect(item.licenseCopyright).toBeTruthy();
       expect(manifest.decisionReferences).toHaveProperty(item.decisionRef);
+      for (const revisionDisposition of item.revisionDispositions || []) {
+        expect(revisionSelectors).toContain(revisionDisposition.selector);
+        expect(revisionDisposition.revision).toMatch(/^[0-9a-f]{40}$/);
+        expect(manifest.dispositions).toContain(
+          revisionDisposition.disposition,
+        );
+        expect(revisionDisposition.disposition).not.toBe("REVIEW_EXCEPTION");
+      }
     }
 
     const productionModules = readdirSync(
@@ -133,10 +182,77 @@ describe("owlapi-js governance artifacts", () => {
     const inventoriedModules = manifest.items
       .map(({ path }) => path)
       .filter(
-        (path) => path.startsWith("src/owl2vowl/js/") && !path.includes("*"),
+        (path) =>
+          path.startsWith("src/owl2vowl/js/") &&
+          !path.includes("*") &&
+          !path.endsWith(".test.js"),
       )
       .sort();
     expect(inventoriedModules).toEqual(productionModules);
+  });
+
+  it("pins the approved commit-bounded reuse dispositions", () => {
+    const manifest = readJson(
+      "../../docs/owlapi-js/provenance/provenance.json",
+    );
+    const revisionBoundaries = new Map([
+      [
+        "src/owl2vowl/js/ontologyConverter.js",
+        "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+      ],
+      [
+        "src/owl2vowl/js/ontologyConverter.test.js",
+        "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+      ],
+      [
+        "src/owl2vowl/js/rdfParser.js",
+        "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+      ],
+      [
+        "src/owl2vowl/js/rdfParser.test.js",
+        "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+      ],
+      [
+        "src/owl2vowl/js/turtleParser.js",
+        "c279ee48dbaee5020b92d43d1435fe37f7abda1c",
+      ],
+      [
+        "src/owl2vowl/js/turtleParser.test.js",
+        "c279ee48dbaee5020b92d43d1435fe37f7abda1c",
+      ],
+    ]);
+
+    for (const [path, revision] of revisionBoundaries) {
+      const item = manifest.items.find((candidate) => candidate.path === path);
+
+      expect(item).toMatchObject({
+        disposition: "REIMPLEMENT",
+        decisionRef: "PROVENANCE-2026-08-11",
+      });
+      expect(item.revisionDispositions).toEqual([
+        {
+          selector: "AT_REVISION",
+          revision,
+          disposition: "REUSE_ALLOWED",
+        },
+        {
+          selector: "AFTER_REVISION",
+          revision,
+          disposition: "REIMPLEMENT",
+        },
+      ]);
+    }
+
+    const characterizationTests = manifest.items.find(
+      ({ id }) => id === "LEGACY-CHARACTERIZATION-TESTS",
+    );
+    const exactTestPaths = [...revisionBoundaries.keys()]
+      .filter((path) => path.endsWith(".test.js"))
+      .sort();
+
+    expect([...characterizationTests.excludedPaths].sort()).toEqual(
+      exactTestPaths,
+    );
   });
 
   it("records provenance for every completed semantic production module", () => {
@@ -289,6 +405,10 @@ describe("owlapi-js governance artifacts", () => {
     const revisions = new Map(
       suites.suites.map(({ id, revision }) => [id, revision]),
     );
+    const manifestIds = classifications.manifests.map(({ id }) => id);
+
+    expect(manifestIds.every(Boolean)).toBe(true);
+    expect(new Set(manifestIds).size).toBe(manifestIds.length);
 
     for (const manifest of classifications.manifests) {
       expect(manifest.revision).toBe(revisions.get(manifest.suite));
@@ -301,9 +421,25 @@ describe("owlapi-js governance artifacts", () => {
       }
     }
 
+    const byId = new Map(
+      classifications.manifests.map((manifest) => [manifest.id, manifest]),
+    );
+    const expectedOwnerPhases = new Map([
+      ["w3c-owl2.rdf-to-owl", [5]],
+      ["w3c-rdf-tests.rdfxml", [6]],
+      ["w3c-rdf-tests.turtle", [9]],
+      ["w3c-rdf-tests.ntriples", [12]],
+      ["w3c-rdf-tests.nquads", [13]],
+      ["w3c-rdf-tests.trig", [14]],
+      ["w3c-json-ld-api.to-from-rdf", [15]],
+    ]);
+    for (const [id, phases] of expectedOwnerPhases) {
+      expect(byId.get(id)?.classificationOwnerPhases).toEqual(phases);
+    }
+
     const w3cSuite = suites.suites.find(({ id }) => id === "w3c-owl2");
     const w3cManifest = classifications.manifests.find(
-      ({ suite }) => suite === "w3c-owl2",
+      ({ id }) => id === "w3c-owl2.functional",
     );
     const required = w3cManifest.entries.filter(
       ({ classification }) => classification === "REQUIRED",

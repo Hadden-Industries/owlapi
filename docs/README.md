@@ -24,10 +24,16 @@ runtime dependency.
 Delivery records live under `migration/`. Historical lesson records preserve
 evidence; `migration/parser-migration-playbook.md` is the concise current method.
 
-Phase 1 provides the independently authored structural model, factory,
-ontology, manager/loading foundation, source/configuration/error contracts,
-parser-selection infrastructure, and RDF/JS dataset boundary under
-`src/owlapi-js/`. Phase 2 adds the default Functional Syntax parser plus its
-W3C conformance, Java structural differential, resource/performance, provenance,
-and learning-gate evidence. Manchester Syntax remains inactive until the
-requested Phase 2 checkpoint commit and an explicit instruction to proceed.
+Phases 1 through 4 provide the independently authored structural model,
+factory, ontology, manager/loading foundation, source/configuration/error
+contracts, parser-selection infrastructure, RDF/JS dataset boundary, and the
+complete Functional Syntax, Manchester Syntax, and OWL/XML migrations with
+their conformance, differential, resource/performance, provenance, and
+learning-gate evidence.
+
+ADR 0002 prioritizes the shared RDF-to-OWL foundation, RDF/XML, early
+development-app integration, production cutover, and strict Turtle before the
+remaining parser programme. The current phase table and blocker are recorded in
+`migration/migration-status.md`. No next phase begins until the preceding phase
+passes its gate, receives its requested Git checkpoint, and the repository
+owner explicitly instructs the implementation to proceed.

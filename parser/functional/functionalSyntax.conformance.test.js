@@ -70,7 +70,7 @@ const classificationsDocument = JSON.parse(
   readFileSync(CLASSIFICATIONS_URL, "utf8"),
 );
 const classifications = classificationsDocument.manifests.find(
-  ({ suite }) => suite === "w3c-owl2",
+  ({ id }) => id === "w3c-owl2.functional",
 );
 const classificationById = new Map(
   classifications.entries.map((entry) => [entry.id, entry]),

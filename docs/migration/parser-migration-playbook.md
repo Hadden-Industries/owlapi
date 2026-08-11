@@ -97,30 +97,42 @@ do not append chronology here.
 11. Update this playbook and all impacted future phase assumptions.
 12. Close the mechanically reviewable learning gate before activating the next ingestion phase.
 
-## Next migration: Phase 5 DL Syntax
+## Next migration: Phase 5 canonical RDF ingestion and shared RDF-to-OWL reconstruction
 
-- Audit the published DL syntax/dialect material and characterize the pinned
-  OWLAPI and legacy WebVOWL observable dialects before designing the grammar.
-  Record the exact required-v1 subset and make every out-of-scope production
-  fail explicitly.
-- Reuse the lazy textual lexer, bounded lookahead, source-location,
-  cancellation, monotonic-deadline, cooperative-yield, and isolated-transaction
-  contracts. Do not assume Manchester token boundaries or frame semantics apply
-  to DL notation without grammar evidence.
-- Map DL constructs directly to the structural data factory. Do not retain or
-  recreate the legacy RDF/XML emission path, QName synthesis, or VOWL-specific
-  parser state.
-- Preserve operator precedence, associativity, operand category, Unicode
-  symbols and their documented textual aliases. Add negative dialect fixtures
-  for near-miss Manchester, Functional, and KRSS input so detection and fallback
-  remain bounded and deterministic.
-- Build a project-owned DL fixture with Functional, Manchester, and OWL/XML
-  counterparts for its expressible subset, then pin a Java structural snapshot
-  and calculate any semantic divergence through exact expected-difference
-  rules.
-- Repeat the full acceptance shape: finite grammar inventory, focused
-  conformance and Java differential evidence, resource/abort/transaction tests,
-  large-valid and mismatch wall/heap measurements, provenance, full repository
-  verification, and a formal Phase 5 learning gate. Shared budgets, public
-  contracts, and capability classifications change only through the approved
+- Treat Phase 5 as a major ingestion migration even though it introduces no
+  concrete RDF syntax parser. Keep the WIP lock closed until its Definition of
+  Done, learning gate, Git checkpoint, and explicit proceed instruction are
+  complete.
+- Build a finite handler/production inventory from the W3C OWL 2 Mapping to RDF
+  Graphs in the RDF-to-structural direction. Cross-check externally observable
+  Java OWLAPI behavior with constructed fixtures; do not translate
+  `OWLRDFConsumer` source structure or algorithms into production code.
+- Enter tests through canonical RDF/JS `DatasetCore<Quad>` values constructed
+  with the project environment. Do not activate RDF/XML, Turtle, N-Triples,
+  N-Quads, TriG, JSON-LD, a generalized RDF dispatcher, or any legacy parser to
+  manufacture the Phase 5 test boundary.
+- Complete and test dataset graph selection before reconstruction. Preserve
+  blank-node identity at dataset scope and verify `requireSingleGraph`,
+  `defaultGraphOnly`, `selectGraph`, and `merge`, including diagnostics for
+  graph loss and deterministic ambiguity/errors.
+- Implement one shared translator through `OWLDataFactory` and ontology
+  transactions. Cover ontology IDs/imports/annotations, declarations, class and
+  data expressions, object/data/annotation properties, assertions, negative
+  assertions, property characteristics/chains, keys, disjointness, n-ary
+  structures, RDF lists, axiom annotation reification, and the governed policy
+  for unsupported or unconsumed OWL-significant triples.
+- Preserve the existing cancellation, monotonic deadline, isolated transaction,
+  diagnostics, source/document IRI, blank-node, maximum-quad, maximum-list,
+  maximum-depth, and maximum-axiom contracts. Add focused cycle, malformed-list,
+  duplicate/conflicting structural pattern, abort, timeout, and rollback tests.
+- Keep every syntax-specific term, stream, error, prefix callback, XML concern,
+  and parser configuration outside the translator. Phase 6 may expose shared
+  reconstruction gaps, but it may not patch them privately in the RDF/XML
+  adapter.
+- Classify the independently owned W3C RDF-to-OWL mapping scope, pin Java
+  structural snapshots, compare project-owned equivalent ontologies across the
+  already implemented structural syntaxes, run resource/wall/heap measurements,
+  record provenance, run full repository verification, and close the formal
+  Phase 5 learning gate. Shared budgets, public contracts, capability
+  classifications, and phase assumptions change only through the approved
   governance process.

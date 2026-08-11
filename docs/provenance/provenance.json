@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "referenceOwlapi": {
     "version": "5.5.1",
     "revision": "d7e997a53b470e32700de89cc610d9daf01ea769",
@@ -9,7 +9,8 @@
     "PHASE0-2026-08-10": "Repository-owner approval of the Phase 0 implementation-plan artifacts on 10 August 2026",
     "PHASE2-2026-08-10": "Repository-owner approval of Phase 2 implementation and the named capability, conformance, and provenance updates on 10 August 2026",
     "PHASE3-2026-08-11": "Repository-owner approval of Phase 3 implementation and the named capability, expected-difference, provenance, performance, migration-status, and playbook updates on 11 August 2026",
-    "PHASE4-2026-08-11": "Repository-owner approval of Phase 4 implementation and the named dependency, capability, conformance, expected-difference, provenance, performance, migration-status, and playbook updates on 11 August 2026"
+    "PHASE4-2026-08-11": "Repository-owner approval of Phase 4 implementation and the named dependency, capability, conformance, expected-difference, provenance, performance, migration-status, and playbook updates on 11 August 2026",
+    "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026"
   },
   "provenanceCategories": {
     "A_PROJECT_ORIGINAL": "Project-authored implementation with no identified upstream-derived semantic implementation",
@@ -25,6 +26,14 @@
     "EXCLUDE",
     "REVIEW_EXCEPTION"
   ],
+  "revisionDispositionPolicy": {
+    "selectors": ["AT_REVISION", "AFTER_REVISION"],
+    "semantics": {
+      "AT_REVISION": "matches only the named Git commit snapshot",
+      "AFTER_REVISION": "matches descendants of the named Git commit and excludes the named commit"
+    },
+    "currentDisposition": "An item's top-level disposition is authoritative for the current working revision; revisionDispositions records the approved boundary-specific history."
+  },
   "implementationRecords": [
     {
       "id": "PHASE1-MODEL-KINDS",
@@ -840,9 +849,45 @@
       "origin": "legacy N3.js adapter with project triples",
       "licenseCopyright": "Repository MIT adapter; N3.js remains separately governed under MIT",
       "disposition": "REIMPLEMENT",
+      "revisionDispositions": [
+        {
+          "selector": "AT_REVISION",
+          "revision": "c279ee48dbaee5020b92d43d1435fe37f7abda1c",
+          "disposition": "REUSE_ALLOWED"
+        },
+        {
+          "selector": "AFTER_REVISION",
+          "revision": "c279ee48dbaee5020b92d43d1435fe37f7abda1c",
+          "disposition": "REIMPLEMENT"
+        }
+      ],
       "replacementPhase": 7,
-      "evidence": "replace with direct RDF/JS adapter",
-      "decisionRef": "PHASE0-2026-08-10"
+      "evidence": "the named snapshot may be reused; descendant revisions must be reimplemented as a direct RDF/JS adapter",
+      "decisionRef": "PROVENANCE-2026-08-11"
+    },
+    {
+      "id": "LEGACY-TURTLE-TEST",
+      "path": "src/owl2vowl/js/turtleParser.test.js",
+      "scope": "entire test module",
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "origin": "legacy project tests for the N3.js Turtle adapter",
+      "licenseCopyright": "Repository MIT; N3.js remains separately governed under MIT",
+      "disposition": "REIMPLEMENT",
+      "revisionDispositions": [
+        {
+          "selector": "AT_REVISION",
+          "revision": "c279ee48dbaee5020b92d43d1435fe37f7abda1c",
+          "disposition": "REUSE_ALLOWED"
+        },
+        {
+          "selector": "AFTER_REVISION",
+          "revision": "c279ee48dbaee5020b92d43d1435fe37f7abda1c",
+          "disposition": "REIMPLEMENT"
+        }
+      ],
+      "replacementPhase": 7,
+      "evidence": "the named test snapshot may be reused; descendant revisions must be reimplemented with the Turtle adapter",
+      "decisionRef": "PROVENANCE-2026-08-11"
     },
     {
       "id": "LEGACY-JSONLD",
@@ -862,11 +907,47 @@
       "scope": "entire module",
       "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
       "origin": "RDF/XML, OWL interpretation, and VOWL monolith",
-      "licenseCopyright": "Repository MIT context with mixed legacy semantic provenance; oracle use only",
-      "disposition": "REFERENCE_ONLY",
+      "licenseCopyright": "Repository MIT context with mixed legacy semantic provenance; reuse is limited to the approved commit snapshot",
+      "disposition": "REIMPLEMENT",
+      "revisionDispositions": [
+        {
+          "selector": "AT_REVISION",
+          "revision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "disposition": "REUSE_ALLOWED"
+        },
+        {
+          "selector": "AFTER_REVISION",
+          "revision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "disposition": "REIMPLEMENT"
+        }
+      ],
       "replacementPhase": 8,
-      "evidence": "legacy characterization oracle; must not move intact",
-      "decisionRef": "PHASE0-2026-08-10"
+      "evidence": "the named snapshot may be reused; descendant revisions must be reimplemented",
+      "decisionRef": "PROVENANCE-2026-08-11"
+    },
+    {
+      "id": "LEGACY-RDF-TEST",
+      "path": "src/owl2vowl/js/rdfParser.test.js",
+      "scope": "entire test module",
+      "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
+      "origin": "legacy project tests for the RDF/XML, OWL interpretation, and VOWL monolith",
+      "licenseCopyright": "Repository MIT context with mixed legacy semantic provenance",
+      "disposition": "REIMPLEMENT",
+      "revisionDispositions": [
+        {
+          "selector": "AT_REVISION",
+          "revision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "disposition": "REUSE_ALLOWED"
+        },
+        {
+          "selector": "AFTER_REVISION",
+          "revision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "disposition": "REIMPLEMENT"
+        }
+      ],
+      "replacementPhase": 8,
+      "evidence": "the named test snapshot may be reused; descendant revisions must be reimplemented with the RDF replacement",
+      "decisionRef": "PROVENANCE-2026-08-11"
     },
     {
       "id": "LEGACY-RDFXML-SERIALIZER",
@@ -959,10 +1040,46 @@
       "provenanceCategory": "E_APPLICATION_SPECIFIC",
       "origin": "WebVOWL conversion",
       "licenseCopyright": "Repository MIT",
-      "disposition": "EXCLUDE",
+      "disposition": "REIMPLEMENT",
+      "revisionDispositions": [
+        {
+          "selector": "AT_REVISION",
+          "revision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "disposition": "REUSE_ALLOWED"
+        },
+        {
+          "selector": "AFTER_REVISION",
+          "revision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "disposition": "REIMPLEMENT"
+        }
+      ],
       "replacementPhase": 12,
-      "evidence": "visualization concern retained downstream",
-      "decisionRef": "PHASE0-2026-08-10"
+      "evidence": "the named snapshot may be reused for downstream WebVOWL conversion; descendant revisions must be reimplemented",
+      "decisionRef": "PROVENANCE-2026-08-11"
+    },
+    {
+      "id": "WEBVOWL-CONVERTER-TEST",
+      "path": "src/owl2vowl/js/ontologyConverter.test.js",
+      "scope": "entire test module",
+      "provenanceCategory": "E_APPLICATION_SPECIFIC",
+      "origin": "project-owned WebVOWL converter tests",
+      "licenseCopyright": "Repository MIT",
+      "disposition": "REIMPLEMENT",
+      "revisionDispositions": [
+        {
+          "selector": "AT_REVISION",
+          "revision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "disposition": "REUSE_ALLOWED"
+        },
+        {
+          "selector": "AFTER_REVISION",
+          "revision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "disposition": "REIMPLEMENT"
+        }
+      ],
+      "replacementPhase": 12,
+      "evidence": "the named test snapshot may be reused; descendant revisions must be reimplemented with the converter",
+      "decisionRef": "PROVENANCE-2026-08-11"
     },
     {
       "id": "WEBVOWL-EXPORTER",
@@ -991,6 +1108,11 @@
     {
       "id": "LEGACY-CHARACTERIZATION-TESTS",
       "path": "src/owl2vowl/js/*.test.js",
+      "excludedPaths": [
+        "src/owl2vowl/js/ontologyConverter.test.js",
+        "src/owl2vowl/js/rdfParser.test.js",
+        "src/owl2vowl/js/turtleParser.test.js"
+      ],
       "scope": "legacy parser and converter tests",
       "provenanceCategory": "D_EXTERNAL_REFERENCE",
       "origin": "project-owned characterization around legacy behavior",

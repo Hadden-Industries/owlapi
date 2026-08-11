@@ -1,33 +1,79 @@
 {
   "schemaVersion": 1,
   "classifications": ["REQUIRED", "NOT_APPLICABLE", "EXCLUDED_WITH_REASON"],
-  "policy": "Every test in an applicable upstream manifest must receive exactly one classification before its owning phase can complete.",
+  "policy": "Every test in an applicable independently owned syntax or mapping scope must receive exactly one classification before its owning phase can complete.",
   "manifests": [
     {
+      "id": "w3c-rdf-tests.rdfxml",
+      "suite": "w3c-rdf-tests",
+      "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f",
+      "paths": ["rdf/rdf11/rdf-xml/manifest.ttl"],
+      "classificationOwnerPhases": [6],
+      "entries": []
+    },
+    {
+      "id": "w3c-rdf-tests.turtle",
       "suite": "w3c-rdf-tests",
       "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f",
       "paths": [
         "rdf/rdf11/rdf-turtle/manifest.ttl",
-        "rdf/rdf11/rdf-trig/manifest.ttl",
-        "rdf/rdf11/rdf-n-triples/manifest.ttl",
-        "rdf/rdf11/rdf-n-quads/manifest.ttl",
-        "rdf/rdf11/rdf-xml/manifest.ttl",
-        "rdf/rdf12/rdf-turtle/syntax/manifest.ttl",
-        "rdf/rdf12/rdf-trig/syntax/manifest.ttl",
-        "rdf/rdf12/rdf-n-triples/syntax/manifest.ttl",
-        "rdf/rdf12/rdf-n-quads/syntax/manifest.ttl"
+        "rdf/rdf12/rdf-turtle/syntax/manifest.ttl"
       ],
-      "classificationOwnerPhases": [7, 9],
+      "classificationOwnerPhases": [9],
       "entries": []
     },
     {
+      "id": "w3c-rdf-tests.ntriples",
+      "suite": "w3c-rdf-tests",
+      "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f",
+      "paths": [
+        "rdf/rdf11/rdf-n-triples/manifest.ttl",
+        "rdf/rdf12/rdf-n-triples/syntax/manifest.ttl"
+      ],
+      "classificationOwnerPhases": [12],
+      "entries": []
+    },
+    {
+      "id": "w3c-rdf-tests.nquads",
+      "suite": "w3c-rdf-tests",
+      "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f",
+      "paths": [
+        "rdf/rdf11/rdf-n-quads/manifest.ttl",
+        "rdf/rdf12/rdf-n-quads/syntax/manifest.ttl"
+      ],
+      "classificationOwnerPhases": [13],
+      "entries": []
+    },
+    {
+      "id": "w3c-rdf-tests.trig",
+      "suite": "w3c-rdf-tests",
+      "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f",
+      "paths": [
+        "rdf/rdf11/rdf-trig/manifest.ttl",
+        "rdf/rdf12/rdf-trig/syntax/manifest.ttl"
+      ],
+      "classificationOwnerPhases": [14],
+      "entries": []
+    },
+    {
+      "id": "w3c-json-ld-api.to-from-rdf",
       "suite": "w3c-json-ld-api",
       "revision": "92f07705a0c0ac27aa9bc6fe1322dcc9fad0114d",
       "paths": ["tests/toRdf-manifest.jsonld", "tests/fromRdf-manifest.jsonld"],
-      "classificationOwnerPhases": [10],
+      "classificationOwnerPhases": [15],
       "entries": []
     },
     {
+      "id": "w3c-owl2.rdf-to-owl",
+      "suite": "w3c-owl2",
+      "revision": "sha256:986ce4f9df655b1f44aec86a5753530d295355a8e9a16700e0253ac30759c4e1",
+      "paths": ["docs/owlapi-js/conformance/upstream/w3c-owl2/all.rdf"],
+      "classificationOwnerPhases": [5],
+      "runnerScope": "Classify and reconstruct every applicable RDF premise, conclusion, and non-conclusion document at the RDF-to-OWL mapping seam; semantic entailment/profile outcomes remain outside this phase.",
+      "entries": []
+    },
+    {
+      "id": "w3c-owl2.functional",
       "suite": "w3c-owl2",
       "revision": "sha256:986ce4f9df655b1f44aec86a5753530d295355a8e9a16700e0253ac30759c4e1",
       "paths": ["docs/owlapi-js/conformance/upstream/w3c-owl2/all.rdf"],
