@@ -97,42 +97,50 @@ do not append chronology here.
 11. Update this playbook and all impacted future phase assumptions.
 12. Close the mechanically reviewable learning gate before activating the next ingestion phase.
 
-## Next migration: Phase 5 canonical RDF ingestion and shared RDF-to-OWL reconstruction
+## Next migration: Phase 6 RDF/XML and first-real-adapter hardening
 
-- Treat Phase 5 as a major ingestion migration even though it introduces no
-  concrete RDF syntax parser. Keep the WIP lock closed until its Definition of
-  Done, learning gate, Git checkpoint, and explicit proceed instruction are
-  complete.
-- Build a finite handler/production inventory from the W3C OWL 2 Mapping to RDF
-  Graphs in the RDF-to-structural direction. Cross-check externally observable
-  Java OWLAPI behavior with constructed fixtures; do not translate
-  `OWLRDFConsumer` source structure or algorithms into production code.
-- Enter tests through canonical RDF/JS `DatasetCore<Quad>` values constructed
-  with the project environment. Do not activate RDF/XML, Turtle, N-Triples,
-  N-Quads, TriG, JSON-LD, a generalized RDF dispatcher, or any legacy parser to
-  manufacture the Phase 5 test boundary.
-- Complete and test dataset graph selection before reconstruction. Preserve
-  blank-node identity at dataset scope and verify `requireSingleGraph`,
-  `defaultGraphOnly`, `selectGraph`, and `merge`, including diagnostics for
-  graph loss and deterministic ambiguity/errors.
-- Implement one shared translator through `OWLDataFactory` and ontology
-  transactions. Cover ontology IDs/imports/annotations, declarations, class and
-  data expressions, object/data/annotation properties, assertions, negative
-  assertions, property characteristics/chains, keys, disjointness, n-ary
-  structures, RDF lists, axiom annotation reification, and the governed policy
-  for unsupported or unconsumed OWL-significant triples.
-- Preserve the existing cancellation, monotonic deadline, isolated transaction,
-  diagnostics, source/document IRI, blank-node, maximum-quad, maximum-list,
-  maximum-depth, and maximum-axiom contracts. Add focused cycle, malformed-list,
-  duplicate/conflicting structural pattern, abort, timeout, and rollback tests.
-- Keep every syntax-specific term, stream, error, prefix callback, XML concern,
-  and parser configuration outside the translator. Phase 6 may expose shared
-  reconstruction gaps, but it may not patch them privately in the RDF/XML
-  adapter.
-- Classify the independently owned W3C RDF-to-OWL mapping scope, pin Java
-  structural snapshots, compare project-owned equivalent ontologies across the
-  already implemented structural syntaxes, run resource/wall/heap measurements,
-  record provenance, run full repository verification, and close the formal
-  Phase 5 learning gate. Shared budgets, public contracts, capability
-  classifications, and phase assumptions change only through the approved
-  governance process.
+- Keep the Phase 5 `RdfToOwlTranslator` and graph policy as the only RDF
+  semantic reconstruction path. The RDF/XML adapter terminates at canonical
+  RDF/JS `DatasetCore<Quad>` values and must contain no class-expression,
+  declaration, axiom, annotation, list, or OWL 1 compatibility rule.
+- Wrap the pinned `rdfxml-streaming-parser` API behind one private adapter. Do
+  not expose its streams, errors, callbacks, term factory, or configuration to
+  the manager, translator, structural model, WebVOWL, or public exports.
+- Normalize every emitted term and quad to the project RDF/JS environment at
+  the adapter boundary. Preserve datatype and language information, base-IRI
+  resolution, blank-node identity, and default-graph membership exactly; do not
+  stringify and reparse an intermediate graph.
+- Reuse the Phase 4 XML security decisions at the streaming seam: no ambient
+  retrieval, no external entity or external subset authority, bounded input,
+  deterministic malformed-XML errors, browser/Node parity, cancellation,
+  timeout, and cooperative delivery of aborts. Keep RDF/XML-specific XML
+  normalization separate from OWL/XML DOM parsing.
+- Pin and classify every W3C RDF/XML syntax test independently of the already
+  complete RDF-to-OWL classification. First compare the adapter result at the
+  RDF/JS dataset boundary; only accepted syntax results proceed through graph
+  selection and shared reconstruction.
+- Reuse `docs/owlapi-js/conformance/rdf-to-owl-mapping.json` as an executable
+  semantic coverage boundary. Any semantic gap exposed by RDF/XML is fixed and
+  tested in the shared translator unless the evidence shows that emitted quads,
+  base handling, or syntax error normalization are wrong in the adapter.
+- Keep the two pinned W3C Rational malformed-list documents as an explicit
+  source-defect exception only. Their compatible non-`rdf:nil` terminal warning
+  does not authorize general list repair in the RDF/XML adapter or translator.
+- Add adapter-replacement tests proving that parser-specific objects never
+  cross the RDF/JS boundary. Exercise chunk splits, Unicode, XML Base, parseType
+  forms, collections, typed and language literals, empty documents, anonymous
+  ontologies, malformed XML, graph/resource limits, abort/timeout, and failed
+  transaction rollback.
+- Compare a project-owned RDF/XML fixture with its Functional, Manchester,
+  OWL/XML, and pinned Java structural counterparts. Preserve the distinction
+  between syntax-to-RDF differences, shared RDF-to-OWL differences, and Java
+  behavioral differences so a passing aggregate count cannot hide a boundary
+  defect.
+- Establish separate syntax-to-RDF and end-to-end wall/heap signals, measure
+  the lazy browser chunk and first-use cost of `rdfxml-streaming-parser`, rerun
+  all accepted parser and shared-translator signals, and retain the unchanged
+  regression threshold unless separately approved evidence supports a change.
+- Close the Phase 6 conformance, differential, resource, browser/Node,
+  dependency, provenance, performance, full-repository, and learning gates;
+  then pause for its Git checkpoint before activating Phase 7 development-app
+  integration.

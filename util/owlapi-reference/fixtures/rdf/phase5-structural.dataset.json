@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "source": "util/owlapi-reference/fixtures/rdf/phase5-structural.rdf",
+  "quads": [
+    [
+      ["N", "https://example.com/phase5"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
+      ["N", "http://www.w3.org/2002/07/owl#Ontology"]
+    ],
+    [
+      ["N", "https://example.com/phase5"],
+      ["N", "http://www.w3.org/2002/07/owl#versionIRI"],
+      ["N", "https://example.com/phase5/1"]
+    ],
+    [
+      ["N", "https://example.com/phase5"],
+      ["N", "http://www.w3.org/2002/07/owl#imports"],
+      ["N", "https://example.com/imported"]
+    ],
+    [
+      ["N", "https://example.com/phase5"],
+      ["N", "http://www.w3.org/2000/01/rdf-schema#label"],
+      [
+        "L",
+        "Phase 5",
+        "en",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+      ]
+    ],
+
+    [
+      ["N", "https://example.com/phase5#Person"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
+      ["N", "http://www.w3.org/2002/07/owl#Class"]
+    ],
+    [
+      ["N", "https://example.com/phase5#Parent"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
+      ["N", "http://www.w3.org/2002/07/owl#Class"]
+    ],
+    [
+      ["N", "https://example.com/phase5#Child"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
+      ["N", "http://www.w3.org/2002/07/owl#Class"]
+    ],
+    [
+      ["N", "https://example.com/phase5#hasChild"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
+      ["N", "http://www.w3.org/2002/07/owl#ObjectProperty"]
+    ],
+    [
+      ["N", "https://example.com/phase5#knows"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
+      ["N", "http://www.w3.org/2002/07/owl#ObjectProperty"]
+    ],
+    [
+      ["N", "https://example.com/phase5#age"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
+      ["N", "http://www.w3.org/2002/07/owl#DatatypeProperty"]
+    ],
+    [
+      ["N", "https://example.com/phase5#source"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
+      ["N", "http://www.w3.org/2002/07/owl#AnnotationProperty"]
+    ],
+    [
+      ["N", "https://example.com/phase5#alice"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
+      ["N", "http://www.w3.org/2002/07/owl#NamedIndividual"]
+    ],
+    [
+      ["N", "https://example.com/phase5#bob"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
+      ["N", "http://www.w3.org/2002/07/owl#NamedIndividual"]
+    ],
+
+    [
+      ["B", "parentRestriction"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
+      ["N", "http://www.w3.org/2002/07/owl#Restriction"]
+    ],
+    [
+      ["B", "parentRestriction"],
+      ["N", "http://www.w3.org/2002/07/owl#onProperty"],
+      ["N", "https://example.com/phase5#hasChild"]
+    ],
+    [
+      ["B", "parentRestriction"],
+      ["N", "http://www.w3.org/2002/07/owl#someValuesFrom"],
+      ["N", "https://example.com/phase5#Child"]
+    ],
+    [
+      ["N", "https://example.com/phase5#Parent"],
+      ["N", "http://www.w3.org/2000/01/rdf-schema#subClassOf"],
+      ["B", "parentRestriction"]
+    ],
+
+    [
+      ["B", "axiom"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
+      ["N", "http://www.w3.org/2002/07/owl#Axiom"]
+    ],
+    [
+      ["B", "axiom"],
+      ["N", "http://www.w3.org/2002/07/owl#annotatedSource"],
+      ["N", "https://example.com/phase5#Parent"]
+    ],
+    [
+      ["B", "axiom"],
+      ["N", "http://www.w3.org/2002/07/owl#annotatedProperty"],
+      ["N", "http://www.w3.org/2000/01/rdf-schema#subClassOf"]
+    ],
+    [
+      ["B", "axiom"],
+      ["N", "http://www.w3.org/2002/07/owl#annotatedTarget"],
+      ["B", "parentRestriction"]
+    ],
+    [
+      ["B", "axiom"],
+      ["N", "https://example.com/phase5#source"],
+      ["L", "fixture", "", "http://www.w3.org/2001/XMLSchema#string"]
+    ],
+
+    [
+      ["N", "https://example.com/phase5#Person"],
+      ["N", "http://www.w3.org/2002/07/owl#hasKey"],
+      ["B", "key0"]
+    ],
+    [
+      ["B", "key0"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"],
+      ["N", "https://example.com/phase5#hasChild"]
+    ],
+    [
+      ["B", "key0"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"],
+      ["B", "key1"]
+    ],
+    [
+      ["B", "key1"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"],
+      ["N", "https://example.com/phase5#age"]
+    ],
+    [
+      ["B", "key1"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"]
+    ],
+
+    [
+      ["B", "disjoint"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
+      ["N", "http://www.w3.org/2002/07/owl#AllDisjointClasses"]
+    ],
+    [
+      ["B", "disjoint"],
+      ["N", "http://www.w3.org/2002/07/owl#members"],
+      ["B", "disjoint0"]
+    ],
+    [
+      ["B", "disjoint0"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"],
+      ["N", "https://example.com/phase5#Person"]
+    ],
+    [
+      ["B", "disjoint0"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"],
+      ["B", "disjoint1"]
+    ],
+    [
+      ["B", "disjoint1"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"],
+      ["N", "https://example.com/phase5#Parent"]
+    ],
+    [
+      ["B", "disjoint1"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"],
+      ["B", "disjoint2"]
+    ],
+    [
+      ["B", "disjoint2"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"],
+      ["N", "https://example.com/phase5#Child"]
+    ],
+    [
+      ["B", "disjoint2"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"]
+    ],
+
+    [
+      ["N", "https://example.com/phase5#alice"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
+      ["N", "https://example.com/phase5#Parent"]
+    ],
+    [
+      ["N", "https://example.com/phase5#alice"],
+      ["N", "https://example.com/phase5#hasChild"],
+      ["N", "https://example.com/phase5#bob"]
+    ],
+    [
+      ["N", "https://example.com/phase5#alice"],
+      ["N", "https://example.com/phase5#age"],
+      ["L", "42", "", "http://www.w3.org/2001/XMLSchema#integer"]
+    ],
+
+    [
+      ["B", "negative"],
+      ["N", "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"],
+      ["N", "http://www.w3.org/2002/07/owl#NegativePropertyAssertion"]
+    ],
+    [
+      ["B", "negative"],
+      ["N", "http://www.w3.org/2002/07/owl#sourceIndividual"],
+      ["N", "https://example.com/phase5#alice"]
+    ],
+    [
+      ["B", "negative"],
+      ["N", "http://www.w3.org/2002/07/owl#assertionProperty"],
+      ["N", "https://example.com/phase5#knows"]
+    ],
+    [
+      ["B", "negative"],
+      ["N", "http://www.w3.org/2002/07/owl#targetIndividual"],
+      ["N", "https://example.com/phase5#bob"]
+    ]
+  ]
+}

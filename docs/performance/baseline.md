@@ -124,3 +124,62 @@ OWL/XML and reclassifying the Node DOM adapter as a production dependency.
 Every accepted wall-time and peak-heap-delta signal remains below the unchanged
 20% release threshold. Phase 4 therefore establishes an OWL/XML baseline
 without a measured regression to the Functional or Manchester baselines.
+
+## Phase 5 RDF-to-OWL baseline
+
+- Phase 4 checkpoint revision:
+  `ddd7af080efaf828653c83c9e18afe699f16510a`.
+- Measurement date: 13 August 2026.
+- Environment: Windows `10.0.26200` x64, Node.js `v24.19.0`, 12th Gen
+  Intel Core i9-12900K (24 logical CPUs), 34,053,869,568 bytes system memory.
+- Dependency identity: `package-lock.json` SHA-256
+  `dbf218f2d46d6f9d9aac0a5727afe5a1efe2fb4a349bd6719fd55106c781fa5a`.
+- Command: `node --expose-gc util/benchmark-owlapi-rdf-to-owl.mjs`.
+- Protocol: constructed canonical RDF/JS datasets; dataset construction is
+  excluded; one warm-up and five measured translations per fixture; median
+  aggregation; garbage collection requested before each run; heap sampled
+  every 5 ms and at operation completion.
+
+| Fixture                            | Input shape                       | Median wall time (ms) | Median peak heap delta (bytes) |
+| ---------------------------------- | --------------------------------- | --------------------: | -----------------------------: |
+| `generated-rdf-declarations-large` | 50,000 quads / declaration axioms |              1,155.98 |                    264,927,896 |
+| `generated-rdf-list-long`          | 25,000 items / 50,002 quads       |              1,320.91 |                    273,877,992 |
+| `generated-rdf-expression-depth`   | 256 levels / 257 quads            |                 21.54 |                     44,263,032 |
+
+These are the first accepted syntax-independent RDF-to-OWL signals. The large
+declaration case measures indexed DatasetCore traversal plus structural axiom
+construction, the list case stresses iterative RDF collection validation, and
+the depth case exercises recursive expression reconstruction below the governed
+depth ceiling. Dataset creation is intentionally outside the operation so later
+RDF syntax adapters can measure syntax-to-RDF costs independently.
+
+The existing Functional, Manchester, and OWL/XML signals were remeasured after
+adding the shared translator. Comparisons use the latest accepted Phase 4
+measurements, not the original Phase 2 or Phase 3 values.
+
+| Existing signal              | Phase 5 wall / peak-heap delta | Wall change | Peak-heap-delta change |
+| ---------------------------- | -----------------------------: | ----------: | ---------------------: |
+| `generated-functional-large` |  449.92 ms / 121,654,152 bytes |      -1.86% |                 +0.04% |
+| `generated-functional-depth` |   144.01 ms / 49,581,816 bytes |     -55.46% |                 +0.02% |
+| Functional mismatch          |         6.76 ms / 30,632 bytes |     -72.18% |                 -0.05% |
+| `generated-manchester-large` |  501.03 ms / 128,725,752 bytes |     -11.74% |                 -7.68% |
+| Manchester mismatch          |         7.27 ms / 40,720 bytes |     -70.20% |                 +9.37% |
+| `generated-owlxml-large`     |  617.39 ms / 203,598,176 bytes |      -9.53% |                 -4.93% |
+| OWL/XML mismatch             |         6.63 ms / 37,400 bytes |     -75.06% |                +10.05% |
+
+Every existing accepted wall-time and peak-heap-delta signal remains below the
+unchanged 20% release threshold.
+
+The browser-cost measurement used
+`node util/measure-owlapi-rdf-browser-cost.mjs` with Vite 8's Oxc production
+minifier and in-memory entry points. It excludes application code and records
+both standalone dependency costs and their combined tree-shaken cost.
+
+| Browser dependency entry                  | Minified bytes | Gzip bytes |
+| ----------------------------------------- | -------------: | ---------: |
+| `@rdfjs/data-model`                       |          2,581 |        828 |
+| `@rdfjs/dataset`                          |          4,296 |      1,611 |
+| `@rdfjs/data-model` plus `@rdfjs/dataset` |          6,885 |      2,208 |
+
+Phase 5 therefore establishes the first RDF reconstruction and foundational
+RDF/JS browser-cost baselines without changing the governed resource ceilings.

@@ -13,6 +13,8 @@ Authoritative machine-readable records:
   provenance records, and recorded compatibility research.
 - `conformance/suites.json`: pinned external standards and behavioural references.
 - `conformance/classification-manifests.json`: exhaustive upstream-test classification gate.
+- `conformance/rdf-to-owl-mapping.json`: finite, evidenced W3C reverse-mapping
+  inventory for Tables 4 through 18.
 - `compatibility/expected-differences.json`: exact Java/JavaScript differential exceptions.
 - `dependency-governance.json`: selected dependency authority, risk, licence, and replacement records.
 
@@ -24,12 +26,12 @@ runtime dependency.
 Delivery records live under `migration/`. Historical lesson records preserve
 evidence; `migration/parser-migration-playbook.md` is the concise current method.
 
-Phases 1 through 4 provide the independently authored structural model,
+Phases 1 through 5 provide the independently authored structural model,
 factory, ontology, manager/loading foundation, source/configuration/error
 contracts, parser-selection infrastructure, RDF/JS dataset boundary, and the
-complete Functional Syntax, Manchester Syntax, and OWL/XML migrations with
-their conformance, differential, resource/performance, provenance, and
-learning-gate evidence.
+complete Functional Syntax, Manchester Syntax, OWL/XML, dataset graph-policy,
+and shared RDF-to-OWL migrations with their conformance, differential,
+resource/performance, provenance, and learning-gate evidence.
 
 ADR 0002 prioritizes the shared RDF-to-OWL foundation, RDF/XML, early
 development-app integration, production cutover, and strict Turtle before the

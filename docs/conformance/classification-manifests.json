@@ -70,7 +70,1744 @@
       "paths": ["docs/owlapi-js/conformance/upstream/w3c-owl2/all.rdf"],
       "classificationOwnerPhases": [5],
       "runnerScope": "Classify and reconstruct every applicable RDF premise, conclusion, and non-conclusion document at the RDF-to-OWL mapping seam; semantic entailment/profile outcomes remain outside this phase.",
-      "entries": []
+      "entries": [
+        {
+          "classification": "REQUIRED",
+          "id": "bnode2somevaluesfrom",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "chain2trans1",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "Consistent Datatype restrictions with Different Types",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "consistent-dataproperty-disjointness",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "consistent-integer-filler",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "Contradicting datatype Restrictions",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "Contradicting-dateTime-restrictions",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "Datatype-DataComplementOf-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "Datatype-Float-Discrete-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "datatype-restriction-min-max-inconsistency",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "Different types in Datatype Restrictions and Complement",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "DisjointClasses-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "DisjointClasses-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "DisjointClasses-003",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "functionality-clash",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "Inconsistent Byte Filler",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "Inconsistent Data Complement with the Restrictions",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "inconsistent-integer-filler",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "inconsistent_datatypes",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "Minus Infinity is not in owl:real",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-AsymmetricProperty-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-DisjointDataProperties-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-DisjointDataProperties-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-DisjointObjectProperties-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-DisjointObjectProperties-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-DisjointUnion-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-IrreflexiveProperty-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-Keys-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-Keys-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-Keys-003",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-Keys-004",
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlNonConclusionOntology"
+          ]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-Keys-005",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-Keys-006",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-Keys-007",
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlNonConclusionOntology"
+          ]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-NegativeDataPropertyAssertion-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-NegativeObjectPropertyAssertion-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-ObjectPropertyChain-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-ObjectPropertyChain-BJP-003",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-ObjectPropertyChain-BJP-004",
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlNonConclusionOntology"
+          ]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-ObjectQCR-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-ObjectQCR-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-Rational-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-Rational-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-Rational-003",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-ReflexiveProperty-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-SelfRestriction-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "New-Feature-SelfRestriction-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "one=two",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "owl2-rl-anonymous-individual",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "owl2-rl-invalid-leftside-allvaluesfrom",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "owl2-rl-invalid-leftside-maxcard",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "owl2-rl-invalid-oneof",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "owl2-rl-invalid-owlreal",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "owl2-rl-invalid-rightside-somevaluesfrom",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "owl2-rl-invalid-rightside-unionof",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "owl2-rl-invalid-unionof",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "owl2-rl-rules-fp-differentFrom",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "owl2-rl-rules-ifp-differentFrom",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "owl2-rl-valid-mincard",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "owl2-rl-valid-oneof",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "owl2-rl-valid-rightside-allvaluesfrom",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "Plus and Minus Zero Integer",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "Plus and Minus Zero are Distinct",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-bool-complement-inst",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-bool-intersection-inst-comp",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-bool-intersection-inst-expr",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-bool-intersection-term",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-bool-union-inst-comp",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-bool-union-term",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-chain-def",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-char-asymmetric-inst",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-char-asymmetric-term",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-char-functional-inst",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-char-inversefunc-data",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-char-inversefunc-inst",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-char-irreflexive-inst",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-char-symmetric-inst",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-char-transitive-inst",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-class-nothing-ext",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-class-nothing-term",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-class-nothing-type",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-class-thing-term",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-class-thing-type",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-enum-inst-included",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-different-irrflxv",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-different-sameas",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-disclass-eqclass",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-disclass-inst",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-disclass-irrflxv",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-disprop-eqprop",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-disprop-inst",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-disprop-irrflxv",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-eqclass-inst",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-eqclass-rflxv",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-eqclass-subclass-1",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-eqclass-subclass-2",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-eqclass-subst",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-eqclass-sym",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-eqclass-trans",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-eqprop-inst",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-eqprop-rflxv",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-eqprop-subprop-1",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-eqprop-subprop-2",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-eqprop-subst",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-eqprop-sym",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-eqprop-trans",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-sameas-rflxv",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-sameas-subst",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-sameas-sym",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-eqdis-sameas-trans",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-inv-inst",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-key-def",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-ndis-alldifferent-fw",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-ndis-alldifferent-fw-distinctmembers",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-ndis-alldisjointclasses-fw",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-ndis-alldisjointproperties-fw",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-npa-dat-fw",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-npa-ind-fw",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-prop-backwardcompatiblewith-type-annot",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-prop-comment-type",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-prop-deprecated-type",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-prop-incompatiblewith-type-annot",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-prop-isdefinedby-type",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-prop-label-type",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-prop-priorversion-type-annot",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-prop-seealso-type",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-prop-versioninfo-type",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-rdfs-domain-cond",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-rdfs-range-cond",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-rdfs-subclass-cond",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-rdfs-subclass-trans",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-rdfs-subprop-cond",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-rdfs-subprop-trans",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-rdfsext-domain-subprop",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-rdfsext-domain-superclass",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-rdfsext-range-subprop",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-rdfsext-range-superclass",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-restrict-allvalues-cmp-class",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-restrict-allvalues-cmp-prop",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-restrict-allvalues-inst-obj",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-restrict-hasvalue-cmp-prop",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-restrict-hasvalue-inst-obj",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-restrict-hasvalue-inst-subj",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-restrict-maxcard-inst-obj-one",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-restrict-maxcard-inst-obj-zero",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-restrict-maxqcr-inst-obj-one",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-restrict-maxqcr-inst-obj-zero",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-restrict-somevalues-cmp-class",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-restrict-somevalues-cmp-prop",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "rdfbased-sem-restrict-somevalues-inst-subj",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "string-integer-clash",
+          "reasonCategory": "DIFFERENT_SYNTAX"
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-AnnotationProperty-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-AnnotationProperty-003",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-AnnotationProperty-004",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I4.5-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I4.5-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I4.6-004",
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlNonConclusionOntology"
+          ]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I4.6-005-Direct",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.2-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.2-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.2-003",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.2-004",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.2-005",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.2-006",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.21-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.24-003",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.24-004",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.26-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.26-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.26-003",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.26-004",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.26-005",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.26-009",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.26-010",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.3-006",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.3-008",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.3-010",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.3-011",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.5-005",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.8-006",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.8-007",
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlNonConclusionOntology"
+          ]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.8-008",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.8-009",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.8-010",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-I5.8-011",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "WebOnt-InverseFunctionalProperty-001",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-Nothing-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-Ontology-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-Restriction-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-Restriction-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-Restriction-003",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-Restriction-004",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-SymmetricProperty-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "NOT_APPLICABLE",
+          "id": "WebOnt-SymmetricProperty-003",
+          "reasonCategory": "OUTSIDE_OWL2_DL_REVERSE_MAPPING"
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-Thing-003",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-Thing-004",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-TransitiveProperty-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-allValuesFrom-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-allValuesFrom-002",
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlNonConclusionOntology"
+          ]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-backwardCompatibleWith-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-cardinality-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-cardinality-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-cardinality-003",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-cardinality-004",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-003",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-004",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-005",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-006",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-007",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-008",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-009",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-010",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-011",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-012",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-013",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-014",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-015",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-016",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-017",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-018",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-019",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-020",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-021",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-022",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-023",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-024",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-025",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-026",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-027",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-028",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-029",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-030",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-031",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-032",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-033",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-034",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-035",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-040",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-101",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-102",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-103",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-104",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-105",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-106",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-107",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-108",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-109",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-110",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-111",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-201",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-205",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-207",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-208",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-209",
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlNonConclusionOntology"
+          ]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-501",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-502",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-503",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-504",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-601",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-602",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-603",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-604",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-605",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-606",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-608",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-609",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-610",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-611",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-612",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-613",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-614",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-615",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-616",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-617",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-623",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-624",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-625",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-626",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-627",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-628",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-629",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-630",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-631",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-632",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-633",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-634",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-641",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-642",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-643",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-644",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-646",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-650",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-661",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-665",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-667",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-901",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-902",
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlNonConclusionOntology"
+          ]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-905",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-description-logic-908",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-differentFrom-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-disjointWith-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-disjointWith-003",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-disjointWith-004",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-disjointWith-005",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-disjointWith-006",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-disjointWith-007",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-disjointWith-008",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-disjointWith-009",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-equivalentClass-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-equivalentClass-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-equivalentClass-003",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-equivalentClass-004",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-equivalentClass-005",
+          "rdfDocuments": [
+            "rdfXmlPremiseOntology",
+            "rdfXmlNonConclusionOntology"
+          ]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-equivalentClass-006",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-equivalentClass-008-Direct",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-equivalentClass-009",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-equivalentProperty-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-equivalentProperty-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-equivalentProperty-003",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-equivalentProperty-004",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-imports-011",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-maxCardinality-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-miscellaneous-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-miscellaneous-002",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-miscellaneous-102",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-miscellaneous-103",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-miscellaneous-202",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-miscellaneous-203",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-miscellaneous-204",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-miscellaneous-302-Direct",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-miscellaneous-303",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-oneOf-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-oneOf-004",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-sameAs-001",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-unionOf-003",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        },
+        {
+          "classification": "REQUIRED",
+          "id": "WebOnt-unionOf-004",
+          "rdfDocuments": ["rdfXmlPremiseOntology", "rdfXmlConclusionOntology"]
+        }
+      ],
+      "notApplicableReasonCategories": {
+        "DIFFERENT_SYNTAX": "The pinned W3C case contains no RDF premise, conclusion, or non-conclusion document property.",
+        "OUTSIDE_OWL2_DL_REVERSE_MAPPING": "The RDF document belongs to an OWL Full/RDF-based case outside the normative OWL 2 DL RDF-graph-to-structural-specification mapping domain."
+      },
+      "requiredDocumentCount": 312,
+      "requiredTestCount": 233,
+      "runner": "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js",
+      "sourceTestCount": 338,
+      "knownSourceDefects": [
+        {
+          "compatibleDiagnostic": "RDF_LIST_NON_NIL_TERMINATOR",
+          "defect": "The embedded RDF/XML ends the owl:oneOf collection at the RDF namespace IRI rather than rdf:nil.",
+          "javaOwlapi551Behavior": "Accepts the unstructured IRI as a terminal and reconstructs both list literals.",
+          "rdfDocument": "rdfXmlPremiseOntology",
+          "strictOutcome": "OWL_SYNTAX_ERROR",
+          "testIds": ["New-Feature-Rational-002", "New-Feature-Rational-003"]
+        }
+      ],
+      "runnerParsingPolicy": "Strict for 310 documents; the two declared source-defect documents use the narrow Java-compatible non-rdf:nil terminal recovery and assert its warning."
     },
     {
       "id": "w3c-owl2.functional",

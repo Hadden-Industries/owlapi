@@ -1,5 +1,5 @@
 import { createRequire } from "node:module";
-import { readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 
 import { OWLOntologyLoaderConfiguration } from "./io/index.js";
 
@@ -269,7 +269,7 @@ describe("owlapi-js governance artifacts", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(paths).toEqual(productionModules);
     for (const record of records) {
-      expect([1, 2, 3, 4]).toContain(record.phase);
+      expect([1, 2, 3, 4, 5]).toContain(record.phase);
       expect(manifest.provenanceCategories).toHaveProperty(
         record.provenanceCategory,
       );
@@ -323,6 +323,20 @@ describe("owlapi-js governance artifacts", () => {
       "src/owlapi-js/parser/xml/xmlEntityPolicy.js",
       "src/owlapi-js/parser/xml/xmlParserAdapter.js",
     ]);
+    expect(
+      records
+        .filter(({ phase }) => phase === 5)
+        .map(({ path }) => path)
+        .sort(),
+    ).toEqual([
+      "src/owlapi-js/rdf/rdfToOwlTranslator.js",
+      "src/owlapi-js/rdf/vocabulary.js",
+    ]);
+    expect(
+      records
+        .find(({ path }) => path === "src/owlapi-js/rdf/graphPolicy.js")
+        ?.laterPhaseChanges?.map(({ phase }) => phase),
+    ).toContain(5);
     for (const research of manifest.compatibilityResearch) {
       expect(research.sourceRevision).toBe(manifest.referenceOwlapi.revision);
       expect(research.implementationSourcesInspected.length).toBeGreaterThan(0);
@@ -437,6 +451,40 @@ describe("owlapi-js governance artifacts", () => {
       expect(byId.get(id)?.classificationOwnerPhases).toEqual(phases);
     }
 
+    const rdfToOwlManifest = byId.get("w3c-owl2.rdf-to-owl");
+    const rdfToOwlRequired = rdfToOwlManifest.entries.filter(
+      ({ classification }) => classification === "REQUIRED",
+    );
+    const rdfToOwlNotApplicable = rdfToOwlManifest.entries.filter(
+      ({ classification }) => classification === "NOT_APPLICABLE",
+    );
+    expect(rdfToOwlManifest).toMatchObject({
+      requiredDocumentCount: 312,
+      requiredTestCount: 233,
+      runner: "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js",
+      sourceTestCount: 338,
+    });
+    expect(rdfToOwlManifest.entries).toHaveLength(338);
+    expect(rdfToOwlRequired).toHaveLength(233);
+    expect(
+      rdfToOwlRequired.reduce(
+        (count, entry) => count + entry.rdfDocuments.length,
+        0,
+      ),
+    ).toBe(312);
+    expect(rdfToOwlNotApplicable).toHaveLength(105);
+    expect(
+      rdfToOwlNotApplicable.filter(
+        ({ reasonCategory }) =>
+          reasonCategory === "OUTSIDE_OWL2_DL_REVERSE_MAPPING",
+      ),
+    ).toHaveLength(89);
+    expect(
+      rdfToOwlNotApplicable.filter(
+        ({ reasonCategory }) => reasonCategory === "DIFFERENT_SYNTAX",
+      ),
+    ).toHaveLength(16);
+
     const w3cSuite = suites.suites.find(({ id }) => id === "w3c-owl2");
     const w3cManifest = classifications.manifests.find(
       ({ id }) => id === "w3c-owl2.functional",
@@ -465,6 +513,46 @@ describe("owlapi-js governance artifacts", () => {
     ).toBe(true);
     expect(w3cSuite.manifestArtifact).toBe(w3cManifest.paths[0]);
     expect(w3cSuite.runner).toBe(w3cManifest.runner);
+  });
+
+  it("keeps a finite, evidenced Phase 5 inventory for W3C mapping Tables 4 through 18", () => {
+    const inventory = readJson(
+      "../../docs/owlapi-js/conformance/rdf-to-owl-mapping.json",
+    );
+    const expectedTables = Array.from({ length: 15 }, (_, index) => index + 4);
+    const ruleIds = inventory.tables.flatMap(({ rules }) =>
+      rules.map(({ id }) => id),
+    );
+    const evidencePaths = new Set([
+      inventory.implementation,
+      ...inventory.sharedEvidence,
+      ...inventory.tables.flatMap(({ rules }) =>
+        rules.flatMap(({ evidence }) => evidence),
+      ),
+    ]);
+
+    expect(inventory).toMatchObject({
+      schemaVersion: 1,
+      phase: 5,
+      status: "COMPLETE",
+    });
+    expect(inventory.tables.map(({ table }) => table)).toEqual(expectedTables);
+    expect(new Set(ruleIds).size).toBe(ruleIds.length);
+    for (const table of inventory.tables) {
+      expect(table.status).toBe("COMPLETE");
+      expect(table.handlers.length).toBeGreaterThan(0);
+      expect(table.rules.length).toBeGreaterThan(0);
+      for (const rule of table.rules) {
+        expect(rule.status).toBe("COMPLETE");
+        expect(rule.constructs.length).toBeGreaterThan(0);
+        expect(rule.evidence.length).toBeGreaterThan(0);
+      }
+    }
+    for (const evidencePath of evidencePaths) {
+      expect(
+        existsSync(new URL(`../../${evidencePath}`, import.meta.url)),
+      ).toBe(true);
+    }
   });
 
   it("pins real and generated benchmark corpus identities", () => {

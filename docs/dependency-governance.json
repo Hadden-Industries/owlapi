@@ -16,12 +16,16 @@
       "version": "2.1.2",
       "role": "Canonical RDF/JS term and quad factory",
       "standardsGrounding": ["RDF/JS Data Model specification"],
-      "conformanceEvidence": ["owlapi-js RDF/JS boundary contract tests"],
+      "conformanceEvidence": [
+        "src/owlapi-js/rdf/graphPolicy.test.js",
+        "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
+        "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js"
+      ],
       "releaseAuthority": "RDF/JS community; rdfjs-base/data-model maintainers",
       "maintenanceStatus": "Pinned production release; reassess at every material upgrade",
       "runtimeDependencies": [],
       "networkBehavior": "No document loading or ambient network access",
-      "browserCost": "Small foundational term implementation; measure in the Phase 5 RDF-ingestion gate",
+      "browserCost": "Phase 5 Vite 8/Oxc browser production measurement: 2,581 minified bytes and 828 gzip bytes standalone; @rdfjs/data-model plus @rdfjs/dataset is 6,885 minified bytes and 2,208 gzip bytes.",
       "license": "MIT",
       "noticeAction": "Retain the dependency licence in release notices",
       "adapterBoundary": "src/owlapi-js/rdf/environment.js"
@@ -32,13 +36,16 @@
       "role": "Canonical indexed RDF/JS DatasetCore implementation",
       "standardsGrounding": ["RDF/JS Dataset specification"],
       "conformanceEvidence": [
-        "owlapi-js DatasetCore and graph-policy contract tests"
+        "src/owlapi-js/rdf/graphPolicy.test.js",
+        "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
+        "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js",
+        "src/owlapi-js/rdf/rdfToOwlTranslator.resource.test.js"
       ],
       "releaseAuthority": "RDF/JS community; rdfjs-base/dataset maintainers",
       "maintenanceStatus": "Pinned production release; reassess at every material upgrade",
       "runtimeDependencies": [],
       "networkBehavior": "No document loading or ambient network access",
-      "browserCost": "Indexed in-memory dataset; quantify heap and bundle impact in Phase 5",
+      "browserCost": "Phase 5 Vite 8/Oxc browser production measurement: 4,296 minified bytes and 1,611 gzip bytes standalone; @rdfjs/data-model plus @rdfjs/dataset is 6,885 minified bytes and 2,208 gzip bytes.",
       "license": "MIT",
       "noticeAction": "Retain the dependency licence in release notices",
       "adapterBoundary": "src/owlapi-js/rdf/environment.js"

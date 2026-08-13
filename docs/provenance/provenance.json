@@ -10,6 +10,7 @@
     "PHASE2-2026-08-10": "Repository-owner approval of Phase 2 implementation and the named capability, conformance, and provenance updates on 10 August 2026",
     "PHASE3-2026-08-11": "Repository-owner approval of Phase 3 implementation and the named capability, expected-difference, provenance, performance, migration-status, and playbook updates on 11 August 2026",
     "PHASE4-2026-08-11": "Repository-owner approval of Phase 4 implementation and the named dependency, capability, conformance, expected-difference, provenance, performance, migration-status, and playbook updates on 11 August 2026",
+    "PHASE5-2026-08-13": "Repository-owner approval of Phase 5 implementation and the named capability, conformance, dependency, provenance, performance, migration-status, and playbook updates on 13 August 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026"
   },
   "provenanceCategories": {
@@ -390,6 +391,23 @@
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": ["src/owlapi-js/rdf/graphPolicy.test.js"],
+      "laterPhaseChanges": [
+        {
+          "phase": 5,
+          "scope": "complete the graph-selection contract for syntax-independent RDF-to-OWL reconstruction, including default, single-named, explicit, merge, ambiguity, blank-graph, and resource-policy behavior",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/rdf11-concepts/#section-dataset",
+            "https://rdf.js.org/dataset-spec/",
+            "docs/owlapi-js/implementation-plan.md sections 6 and 17.12"
+          ],
+          "focusedEvidence": [
+            "src/owlapi-js/rdf/graphPolicy.test.js",
+            "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
+            "src/owlapi-js/rdf/rdfToOwlTranslator.resource.test.js"
+          ],
+          "decisionRef": "PHASE5-2026-08-13"
+        }
+      ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE0-2026-08-10",
@@ -697,6 +715,72 @@
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE4-2026-08-11",
       "reviewDate": "2026-08-11"
+    },
+    {
+      "id": "PHASE5-RDF-VOCABULARY",
+      "path": "src/owlapi-js/rdf/vocabulary.js",
+      "phase": 5,
+      "scope": "authoritative RDF, RDFS, OWL, and XSD vocabulary constants and built-in OWL annotation-property classification used by the shared mapping boundary",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/constants.js",
+        "src/owl2vowl/js/rdfParser.js"
+      ],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification",
+        "https://www.w3.org/TR/owl2-syntax/#Annotation_Properties",
+        "https://www.w3.org/TR/rdf11-concepts/",
+        "docs/owlapi-js/implementation-plan.md sections 6 and 17.12"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public vocabulary identities and pinned Phase 5 black-box structural snapshot"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
+        "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js",
+        "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE5-2026-08-13",
+      "reviewDate": "2026-08-13"
+    },
+    {
+      "id": "PHASE5-RDF-TO-OWL-TRANSLATOR",
+      "path": "src/owlapi-js/rdf/rdfToOwlTranslator.js",
+      "phase": 5,
+      "scope": "syntax-independent RDF/JS DatasetCore to structural OWLOntology reconstruction for the complete finite W3C reverse-mapping inventory, OWL 1 compatibility rules, annotations, graph policy, diagnostics, resource limits, and transactional rollback",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/rdfParser.js",
+        "src/owl2vowl/js/ontologyConverter.js"
+      ],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification",
+        "https://www.w3.org/TR/owl2-syntax/",
+        "https://rdf.js.org/data-model-spec/",
+        "https://rdf.js.org/dataset-spec/",
+        "docs/owlapi-js/implementation-plan.md sections 6, 8, and 17.12"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 pinned Phase 5 Java structural snapshot and malformed-list black-box probe",
+        "Pinned 338-case W3C OWL 2 test manifest with 233 applicable tests and 312 constructed RDF/JS documents"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "docs/owlapi-js/conformance/rdf-to-owl-mapping.json",
+        "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
+        "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js",
+        "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
+        "src/owlapi-js/rdf/rdfToOwlTranslator.resource.test.js",
+        "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js",
+        "src/owlapi-js/rdf/rdfToOwlTranslator.differential.test.js"
+      ],
+      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE5-2026-08-13",
+      "reviewDate": "2026-08-13"
     }
   ],
   "compatibilityResearch": [

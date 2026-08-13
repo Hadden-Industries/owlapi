@@ -1,0 +1,26 @@
+Prefix( : = <https://example.com/phase5#> )
+
+Ontology( <https://example.com/phase5> <https://example.com/phase5/1>
+  Import( <https://example.com/imported> )
+  Annotation( rdfs:label "Phase 5"@en )
+  Declaration( Class( :Person ) )
+  Declaration( Class( :Parent ) )
+  Declaration( Class( :Child ) )
+  Declaration( ObjectProperty( :hasChild ) )
+  Declaration( ObjectProperty( :knows ) )
+  Declaration( DataProperty( :age ) )
+  Declaration( AnnotationProperty( :source ) )
+  Declaration( NamedIndividual( :alice ) )
+  Declaration( NamedIndividual( :bob ) )
+  SubClassOf(
+    Annotation( :source "fixture" )
+    :Parent
+    ObjectSomeValuesFrom( :hasChild :Child )
+  )
+  HasKey( :Person ( :hasChild ) ( :age ) )
+  DisjointClasses( :Person :Parent :Child )
+  ClassAssertion( :Parent :alice )
+  ObjectPropertyAssertion( :hasChild :alice :bob )
+  DataPropertyAssertion( :age :alice "42"^^xsd:integer )
+  NegativeObjectPropertyAssertion( :knows :alice :bob )
+)

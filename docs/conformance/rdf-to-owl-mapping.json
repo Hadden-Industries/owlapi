@@ -1,0 +1,706 @@
+{
+  "schemaVersion": 1,
+  "phase": 5,
+  "status": "COMPLETE",
+  "normativeSource": "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification",
+  "implementation": "src/owlapi-js/rdf/rdfToOwlTranslator.js",
+  "scope": {
+    "firstTable": 4,
+    "lastTable": 18,
+    "canonicalInput": "RDF/JS DatasetCore<Quad>",
+    "canonicalOutput": "owlapi-js structural OWLOntology",
+    "listPrerequisite": "Table 3 list matching is implemented once by #rdfList and is exercised by expression, axiom, conformance, and resource tests.",
+    "importResolutionBoundary": "Section 3.1.1 document retrieval and include resolution remain OWLOntologyManager responsibilities; this syntax-independent translator reconstructs owl:imports declarations from its selected dataset graph."
+  },
+  "sharedEvidence": [
+    "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
+    "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js",
+    "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
+    "src/owlapi-js/rdf/rdfToOwlTranslator.resource.test.js",
+    "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js",
+    "src/owlapi-js/rdf/rdfToOwlTranslator.differential.test.js"
+  ],
+  "tables": [
+    {
+      "table": 4,
+      "title": "Parsing of the Ontology Header",
+      "status": "COMPLETE",
+      "handlers": ["#readOntologyHeader"],
+      "rules": [
+        {
+          "id": "T04-NAMED-HEADER",
+          "constructs": [
+            "named ontology IRI",
+            "optional version IRI",
+            "zero or more imports"
+          ],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.test.js"]
+        },
+        {
+          "id": "T04-ANONYMOUS-HEADER",
+          "constructs": ["anonymous ontology", "zero or more imports"],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.test.js"]
+        },
+        {
+          "id": "T04-REFERENCED-ONTOLOGY",
+          "constructs": [
+            "ontology-property reference excludes the referenced ontology node from root-header selection"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
+            "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js"
+          ]
+        }
+      ]
+    },
+    {
+      "table": 5,
+      "title": "Triples Removed for OWL 1 DL Compatibility",
+      "status": "COMPLETE",
+      "handlers": [
+        "#readOntologyHeader",
+        "#consumeRedundantOwl1Types",
+        "#classExpression"
+      ],
+      "rules": [
+        {
+          "id": "T05-ONTOLOGY-TYPE",
+          "constructs": ["owl:Ontology type consumption"],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.test.js"]
+        },
+        {
+          "id": "T05-REDUNDANT-RDFS-CLASS",
+          "constructs": [
+            "owl:Class plus rdfs:Class",
+            "rdfs:Datatype plus rdfs:Class",
+            "owl:DataRange plus rdfs:Class",
+            "owl:Restriction plus rdfs:Class"
+          ],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+        },
+        {
+          "id": "T05-REDUNDANT-OWL-CLASS",
+          "constructs": ["owl:Restriction plus owl:Class"],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js",
+            "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js"
+          ]
+        },
+        {
+          "id": "T05-REDUNDANT-RDF-PROPERTY",
+          "constructs": [
+            "owl:ObjectProperty",
+            "owl:FunctionalProperty",
+            "owl:InverseFunctionalProperty",
+            "owl:TransitiveProperty",
+            "owl:DatatypeProperty",
+            "owl:AnnotationProperty",
+            "owl:OntologyProperty"
+          ],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+        },
+        {
+          "id": "T05-REDUNDANT-RDF-LIST",
+          "constructs": [
+            "rdf:List type on a node with exactly one rdf:first and rdf:rest"
+          ],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+        }
+      ]
+    },
+    {
+      "table": 6,
+      "title": "Additional Declaration Triples",
+      "status": "COMPLETE",
+      "handlers": ["#readDeclarations"],
+      "rules": [
+        {
+          "id": "T06-ONTOLOGY-PROPERTY",
+          "constructs": [
+            "owl:OntologyProperty to annotation-property declaration"
+          ],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+        },
+        {
+          "id": "T06-OWL1-OBJECT-PROPERTY-INFERENCE",
+          "constructs": [
+            "owl:InverseFunctionalProperty",
+            "owl:TransitiveProperty",
+            "owl:SymmetricProperty"
+          ],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+        }
+      ]
+    },
+    {
+      "table": 7,
+      "title": "Parsing Declarations",
+      "status": "COMPLETE",
+      "handlers": [
+        "#readDeclarations",
+        "#indexReifications",
+        "#axiomAnnotations"
+      ],
+      "rules": [
+        {
+          "id": "T07-DIRECT-DECLARATIONS",
+          "constructs": [
+            "Class",
+            "Datatype",
+            "ObjectProperty",
+            "DataProperty",
+            "AnnotationProperty",
+            "NamedIndividual"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
+            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"
+          ]
+        },
+        {
+          "id": "T07-ANNOTATED-DECLARATIONS",
+          "constructs": [
+            "annotated Class declaration",
+            "annotated Datatype declaration",
+            "annotated ObjectProperty declaration",
+            "annotated DataProperty declaration",
+            "annotated AnnotationProperty declaration",
+            "annotated NamedIndividual declaration"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
+            "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js"
+          ]
+        }
+      ]
+    },
+    {
+      "table": 8,
+      "title": "Identifying Reification Blank Nodes",
+      "status": "COMPLETE",
+      "handlers": [
+        "#indexReifications",
+        "#readNaryAxioms",
+        "#readDifferentIndividuals",
+        "#readNegativeAssertions"
+      ],
+      "rules": [
+        {
+          "id": "T08-REIFICATION-NODES",
+          "constructs": [
+            "owl:Axiom",
+            "owl:Annotation",
+            "owl:AllDisjointClasses",
+            "owl:AllDisjointProperties",
+            "owl:AllDifferent",
+            "owl:NegativePropertyAssertion"
+          ],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+        }
+      ]
+    },
+    {
+      "table": 9,
+      "title": "Initialization of CE, DR, OPE, DPE, and AP",
+      "status": "COMPLETE",
+      "handlers": [
+        "#readDeclarations",
+        "#classExpression",
+        "#dataRange",
+        "#objectPropertyExpression",
+        "#dataProperty",
+        "#annotationProperty"
+      ],
+      "rules": [
+        {
+          "id": "T09-ENTITY-CATEGORIES",
+          "constructs": [
+            "CE from Class",
+            "DR from Datatype",
+            "OPE from ObjectProperty",
+            "DPE from DataProperty",
+            "AP from AnnotationProperty",
+            "property-category exclusivity",
+            "class/data-range exclusivity"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
+            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+          ]
+        }
+      ]
+    },
+    {
+      "table": 10,
+      "title": "Parsing of Annotations",
+      "status": "COMPLETE",
+      "handlers": [
+        "#indexReifications",
+        "#annotationFromQuad",
+        "#nodeAnnotations",
+        "#readOntologyHeader",
+        "#readKeysAndAssertions"
+      ],
+      "rules": [
+        {
+          "id": "T10-DIRECT-ANNOTATION",
+          "constructs": [
+            "direct annotation with IRI, blank-node, or literal value"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
+            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"
+          ]
+        },
+        {
+          "id": "T10-NESTED-ANNOTATION",
+          "constructs": [
+            "owl:Annotation reification",
+            "nested annotation recursion",
+            "annotation-depth limit"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
+            "src/owlapi-js/rdf/rdfToOwlTranslator.resource.test.js"
+          ]
+        },
+        {
+          "id": "T10-ONTOLOGY-AND-ASSERTION-ANNOTATIONS",
+          "constructs": [
+            "ontology annotations",
+            "annotation assertions for non-reification subjects",
+            "loadAnnotationAxioms policy"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
+            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"
+          ]
+        }
+      ]
+    },
+    {
+      "table": 11,
+      "title": "Parsing Object Property Expressions",
+      "status": "COMPLETE",
+      "handlers": ["#objectPropertyExpression"],
+      "rules": [
+        {
+          "id": "T11-INVERSE-OBJECT-PROPERTY",
+          "constructs": [
+            "ObjectInverseOf",
+            "nested inverse cycle rejection",
+            "expression-depth limit"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js",
+            "src/owlapi-js/rdf/rdfToOwlTranslator.resource.test.js"
+          ]
+        }
+      ]
+    },
+    {
+      "table": 12,
+      "title": "Parsing of Data Ranges",
+      "status": "COMPLETE",
+      "handlers": ["#dataRange", "#facetRestriction", "#rdfList"],
+      "rules": [
+        {
+          "id": "T12-BOOLEAN-DATA-RANGES",
+          "constructs": [
+            "DataIntersectionOf",
+            "DataUnionOf",
+            "DataComplementOf"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+          ]
+        },
+        {
+          "id": "T12-DATA-ONE-OF",
+          "constructs": ["DataOneOf with one or more literals"],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+          ]
+        },
+        {
+          "id": "T12-DATATYPE-RESTRICTION",
+          "constructs": [
+            "DatatypeRestriction",
+            "one or more facet restrictions"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+          ]
+        }
+      ]
+    },
+    {
+      "table": 13,
+      "title": "Parsing of Class Expressions",
+      "status": "COMPLETE",
+      "handlers": [
+        "#classExpression",
+        "#restriction",
+        "#cardinality",
+        "#rdfList"
+      ],
+      "rules": [
+        {
+          "id": "T13-OBJECT-BOOLEAN-AND-ENUMERATION",
+          "constructs": [
+            "ObjectIntersectionOf",
+            "ObjectUnionOf",
+            "ObjectComplementOf",
+            "ObjectOneOf"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+          ]
+        },
+        {
+          "id": "T13-OBJECT-VALUE-RESTRICTIONS",
+          "constructs": [
+            "ObjectSomeValuesFrom",
+            "ObjectAllValuesFrom",
+            "ObjectHasValue",
+            "ObjectHasSelf"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+          ]
+        },
+        {
+          "id": "T13-OBJECT-CARDINALITIES",
+          "constructs": [
+            "ObjectMinCardinality unqualified",
+            "ObjectMaxCardinality unqualified",
+            "ObjectExactCardinality unqualified",
+            "ObjectMinCardinality qualified",
+            "ObjectMaxCardinality qualified",
+            "ObjectExactCardinality qualified",
+            "NN_INT value validation"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+          ]
+        },
+        {
+          "id": "T13-DATA-VALUE-RESTRICTIONS",
+          "constructs": [
+            "DataHasValue",
+            "DataSomeValuesFrom single property",
+            "DataSomeValuesFrom property list",
+            "DataAllValuesFrom single property",
+            "DataAllValuesFrom property list"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+          ]
+        },
+        {
+          "id": "T13-DATA-CARDINALITIES",
+          "constructs": [
+            "DataMinCardinality unqualified",
+            "DataMaxCardinality unqualified",
+            "DataExactCardinality unqualified",
+            "DataMinCardinality qualified",
+            "DataMaxCardinality qualified",
+            "DataExactCardinality qualified",
+            "NN_INT value validation"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+          ]
+        }
+      ]
+    },
+    {
+      "table": 14,
+      "title": "OWL 1 DL Compatible Data Ranges",
+      "status": "COMPLETE",
+      "handlers": ["#readDeclarations", "#dataRange"],
+      "rules": [
+        {
+          "id": "T14-OWL1-DATA-ONE-OF",
+          "constructs": [
+            "owl:DataRange nonempty oneOf to DataOneOf",
+            "owl:DataRange empty oneOf to DataComplementOf(rdfs:Literal)"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+          ]
+        }
+      ]
+    },
+    {
+      "table": 15,
+      "title": "OWL 1 DL Compatible Class Expressions",
+      "status": "COMPLETE",
+      "handlers": ["#classExpression", "#normalizedObjectBooleanExpression"],
+      "rules": [
+        {
+          "id": "T15-OWL1-BOOLEAN-NORMALIZATION",
+          "constructs": [
+            "empty union to owl:Nothing",
+            "singleton union to its operand",
+            "empty intersection to owl:Thing",
+            "singleton intersection to its operand",
+            "empty oneOf to owl:Nothing"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js",
+            "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js"
+          ]
+        }
+      ]
+    },
+    {
+      "table": 16,
+      "title": "Parsing of Axioms without Annotations",
+      "status": "COMPLETE",
+      "handlers": [
+        "#readDeclarations",
+        "#readClassAxioms",
+        "#readPropertyAxioms",
+        "#readNaryAxioms",
+        "#readKeysAndAssertions",
+        "#readKeys",
+        "#readDifferentIndividuals",
+        "#readNegativeAssertions"
+      ],
+      "rules": [
+        {
+          "id": "T16-DECLARATION-AXIOMS",
+          "constructs": [
+            "Declaration(Class)",
+            "Declaration(Datatype)",
+            "Declaration(ObjectProperty)",
+            "Declaration(DataProperty)",
+            "Declaration(AnnotationProperty)",
+            "Declaration(NamedIndividual)"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
+            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"
+          ]
+        },
+        {
+          "id": "T16-CLASS-AXIOMS",
+          "constructs": [
+            "SubClassOf",
+            "EquivalentClasses",
+            "DisjointClasses binary",
+            "DisjointClasses n-ary",
+            "DisjointUnion"
+          ],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+        },
+        {
+          "id": "T16-OBJECT-PROPERTY-AXIOMS",
+          "constructs": [
+            "SubObjectPropertyOf",
+            "SubObjectPropertyOf property chain",
+            "EquivalentObjectProperties",
+            "DisjointObjectProperties binary",
+            "DisjointObjectProperties n-ary",
+            "ObjectPropertyDomain",
+            "ObjectPropertyRange",
+            "InverseObjectProperties",
+            "FunctionalObjectProperty",
+            "InverseFunctionalObjectProperty",
+            "ReflexiveObjectProperty",
+            "IrreflexiveObjectProperty",
+            "SymmetricObjectProperty",
+            "AsymmetricObjectProperty",
+            "TransitiveObjectProperty"
+          ],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+        },
+        {
+          "id": "T16-DATA-PROPERTY-AXIOMS",
+          "constructs": [
+            "SubDataPropertyOf",
+            "EquivalentDataProperties",
+            "DisjointDataProperties binary",
+            "DisjointDataProperties n-ary",
+            "DataPropertyDomain",
+            "DataPropertyRange",
+            "FunctionalDataProperty"
+          ],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+        },
+        {
+          "id": "T16-DATATYPE-AND-KEY-AXIOMS",
+          "constructs": [
+            "DatatypeDefinition",
+            "HasKey with object and data property partition"
+          ],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+        },
+        {
+          "id": "T16-INDIVIDUAL-AXIOMS",
+          "constructs": [
+            "SameIndividual",
+            "DifferentIndividuals binary",
+            "DifferentIndividuals via owl:members",
+            "DifferentIndividuals via owl:distinctMembers",
+            "ClassAssertion",
+            "ObjectPropertyAssertion",
+            "NegativeObjectPropertyAssertion",
+            "DataPropertyAssertion",
+            "NegativeDataPropertyAssertion"
+          ],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+        },
+        {
+          "id": "T16-OWL1-DEPRECATION-AXIOMS",
+          "constructs": [
+            "owl:DeprecatedClass to owl:deprecated true",
+            "owl:DeprecatedProperty to owl:deprecated true"
+          ],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+        },
+        {
+          "id": "T16-ANNOTATION-PROPERTY-AXIOMS",
+          "constructs": [
+            "SubAnnotationPropertyOf",
+            "AnnotationPropertyDomain",
+            "AnnotationPropertyRange"
+          ],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+        }
+      ]
+    },
+    {
+      "table": 17,
+      "title": "Parsing of Annotated Axioms",
+      "status": "COMPLETE",
+      "handlers": [
+        "#indexReifications",
+        "#axiomAnnotations",
+        "#nodeAnnotations"
+      ],
+      "rules": [
+        {
+          "id": "T17-MAIN-TRIPLE-REIFICATION",
+          "constructs": [
+            "owl:Axiom reification of every Table 16 main-triple axiom",
+            "nested axiom annotations"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
+            "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js"
+          ]
+        },
+        {
+          "id": "T17-BLANK-NODE-AXIOM-ANNOTATIONS",
+          "constructs": [
+            "AllDisjointClasses annotations",
+            "AllDisjointProperties annotations",
+            "AllDifferent annotations",
+            "NegativePropertyAssertion annotations"
+          ],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+        }
+      ]
+    },
+    {
+      "table": 18,
+      "title": "OWL 1 DL Compatible Axioms",
+      "status": "COMPLETE",
+      "handlers": [
+        "#readClassAxioms",
+        "#owl1CompatibleNamedClassAxiom",
+        "#normalizedObjectBooleanExpression"
+      ],
+      "rules": [
+        {
+          "id": "T18-NAMED-CLASS-COMPLEMENT",
+          "constructs": ["named class owl:complementOf to EquivalentClasses"],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+        },
+        {
+          "id": "T18-NAMED-CLASS-UNION",
+          "constructs": ["empty union", "singleton union", "n-ary union"],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
+            "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js"
+          ]
+        },
+        {
+          "id": "T18-NAMED-CLASS-INTERSECTION",
+          "constructs": [
+            "empty intersection",
+            "singleton intersection",
+            "n-ary intersection"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
+            "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js"
+          ]
+        },
+        {
+          "id": "T18-NAMED-CLASS-ONE-OF",
+          "constructs": ["empty oneOf", "nonempty named-individual oneOf"],
+          "status": "COMPLETE",
+          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+        }
+      ]
+    }
+  ],
+  "extensionsAndPolicies": [
+    {
+      "id": "OWLAPI-ANONYMOUS-WITHOUT-HEADER",
+      "policy": "A dataset with no owl:Ontology type reconstructs an anonymous ontology, matching the public OWLAPI loading model for headerless RDF documents."
+    },
+    {
+      "id": "OWL-SIGNIFICANT-UNCONSUMED",
+      "policy": "Strict mode rejects unconsumed OWL-significant triples; compatible mode emits a structured warning rather than silently discarding them."
+    },
+    {
+      "id": "RDF-1.2-TRIPLE-TERMS",
+      "policy": "RDF 1.2 triple terms are rejected because OWL 2 assigns them no structural mapping."
+    }
+  ]
+}

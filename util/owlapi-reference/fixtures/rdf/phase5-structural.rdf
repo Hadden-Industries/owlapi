@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<rdf:RDF
+  xml:base="https://example.com/phase5"
+  xmlns="https://example.com/phase5#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+  <owl:Ontology rdf:about="https://example.com/phase5">
+    <owl:versionIRI rdf:resource="https://example.com/phase5/1"/>
+    <owl:imports rdf:resource="https://example.com/imported"/>
+    <rdfs:label xml:lang="en">Phase 5</rdfs:label>
+  </owl:Ontology>
+
+  <owl:Class rdf:about="#Person"/>
+  <owl:Class rdf:about="#Parent">
+    <rdfs:subClassOf rdf:nodeID="parentRestriction"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Child"/>
+  <owl:ObjectProperty rdf:about="#hasChild"/>
+  <owl:ObjectProperty rdf:about="#knows"/>
+  <owl:DatatypeProperty rdf:about="#age"/>
+  <owl:AnnotationProperty rdf:about="#source"/>
+  <owl:NamedIndividual rdf:about="#alice"/>
+  <owl:NamedIndividual rdf:about="#bob"/>
+
+  <owl:Restriction rdf:nodeID="parentRestriction">
+    <owl:onProperty rdf:resource="#hasChild"/>
+    <owl:someValuesFrom rdf:resource="#Child"/>
+  </owl:Restriction>
+
+  <owl:Axiom>
+    <owl:annotatedSource rdf:resource="#Parent"/>
+    <owl:annotatedProperty rdf:resource="http://www.w3.org/2000/01/rdf-schema#subClassOf"/>
+    <owl:annotatedTarget rdf:nodeID="parentRestriction"/>
+    <source>fixture</source>
+  </owl:Axiom>
+
+  <rdf:Description rdf:about="#Person">
+    <owl:hasKey rdf:parseType="Collection">
+      <rdf:Description rdf:about="#hasChild"/>
+      <rdf:Description rdf:about="#age"/>
+    </owl:hasKey>
+  </rdf:Description>
+
+  <owl:AllDisjointClasses>
+    <owl:members rdf:parseType="Collection">
+      <rdf:Description rdf:about="#Person"/>
+      <rdf:Description rdf:about="#Parent"/>
+      <rdf:Description rdf:about="#Child"/>
+    </owl:members>
+  </owl:AllDisjointClasses>
+
+  <rdf:Description rdf:about="#alice">
+    <rdf:type rdf:resource="#Parent"/>
+    <hasChild rdf:resource="#bob"/>
+    <age rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">42</age>
+  </rdf:Description>
+
+  <owl:NegativePropertyAssertion>
+    <owl:sourceIndividual rdf:resource="#alice"/>
+    <owl:assertionProperty rdf:resource="#knows"/>
+    <owl:targetIndividual rdf:resource="#bob"/>
+  </owl:NegativePropertyAssertion>
+</rdf:RDF>

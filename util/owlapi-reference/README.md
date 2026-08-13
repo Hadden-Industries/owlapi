@@ -34,6 +34,14 @@ One reproducible setup is:
    fixture with the source revision recorded. Ignored import IRIs retain their
    declarations in the direct ontology snapshot but are not dereferenced.
 
+On Windows, a fully resolved Maven runtime classpath can exceed reliable shell
+or Java argument-file handling. `RunWithClasspath.java` is a test-tooling-only
+launcher for that case. Compile it once, then invoke
+`RunWithClasspath <classpath-file> <harness-class-directory> <main-class>
+[args...]`; it starts the same JDK with the harness directory prepended to the
+classpath read from the file. It neither resolves dependencies nor changes the
+pinned oracle identity.
+
 The Phase 2 reference pair is
 `fixtures/functional/phase2-structural.ofn` and
 `fixtures/functional/phase2-structural.java.json`. Regenerate it only from the
@@ -57,6 +65,25 @@ cross-syntax structural conformance. The Java snapshot omits the anonymous
 individual inside one `ObjectOneOf`; JavaScript retains it as required by the
 W3C OWL/XML schema. That single semantic divergence is calculated as an atomic
 field and accepted only by its exact fixture-scoped expected-difference rule.
+
+The Phase 5 RDF reference set is under `fixtures/rdf/`:
+
+- `phase5-structural.rdf` is the RDF/XML document loaded only by the Java
+  oracle;
+- `phase5-structural.dataset.json` is the independently constructed canonical
+  RDF/JS quad fixture consumed directly by the JavaScript translator test;
+- `phase5-structural.ofn` is the project-owned Functional counterpart used for
+  full cross-syntax structural comparison; and
+- `phase5-structural.java.json` is the pinned OWLAPI 5.5.1 structural snapshot.
+
+The Phase 5 differential deliberately does not parse the `.rdf` file in
+JavaScript: syntax parsing belongs to Phase 6. It compares the constructed
+dataset translation with the Functional ontology in full, then compares
+ontology identity, imports, counts and signature categories with the Java
+snapshot. `phase5-malformed-list.rdf` is a separate black-box probe recording
+that OWLAPI 5.5.1 accepts the two pinned W3C Rational fixtures' malformed
+non-`rdf:nil` collection terminal. It is not a general compatibility fixture
+and does not authorize silent list repair.
 
 The harness deliberately has no WebVOWL, npm, or browser dependency. Generated
 snapshots are test evidence and require their own fixture provenance record.

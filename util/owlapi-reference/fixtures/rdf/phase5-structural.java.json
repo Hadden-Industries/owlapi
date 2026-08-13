@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "oracle": {
+    "name": "OWLAPI",
+    "version": "5.5.1",
+    "revision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+    "harness": "util/owlapi-reference/GenerateStructuralSnapshot.java",
+    "ignoredImports": ["https://example.com/imported"]
+  },
+  "fixture": "util/owlapi-reference/fixtures/rdf/phase5-structural.rdf",
+  "snapshot": {
+    "ontologyIRI": "https://example.com/phase5",
+    "versionIRI": "https://example.com/phase5/1",
+    "imports": ["https://example.com/imported"],
+    "ontologyAnnotations": ["Annotation(rdfs:label \"Phase 5\"@en)"],
+    "axiomTypeCounts": {
+      "ClassAssertion": 1,
+      "DataPropertyAssertion": 1,
+      "Declaration": 9,
+      "DisjointClasses": 1,
+      "HasKey": 1,
+      "NegativeObjectPropertyAssertion": 1,
+      "ObjectPropertyAssertion": 1,
+      "SubClassOf": 1
+    },
+    "axioms": [
+      "ClassAssertion(<https://example.com/phase5#Parent> <https://example.com/phase5#alice>)",
+      "DataPropertyAssertion(<https://example.com/phase5#age> <https://example.com/phase5#alice> \"42\"^^xsd:integer)",
+      "Declaration(AnnotationProperty(<https://example.com/phase5#source>))",
+      "Declaration(Class(<https://example.com/phase5#Child>))",
+      "Declaration(Class(<https://example.com/phase5#Parent>))",
+      "Declaration(Class(<https://example.com/phase5#Person>))",
+      "Declaration(DataProperty(<https://example.com/phase5#age>))",
+      "Declaration(NamedIndividual(<https://example.com/phase5#alice>))",
+      "Declaration(NamedIndividual(<https://example.com/phase5#bob>))",
+      "Declaration(ObjectProperty(<https://example.com/phase5#hasChild>))",
+      "Declaration(ObjectProperty(<https://example.com/phase5#knows>))",
+      "DisjointClasses(<https://example.com/phase5#Child> <https://example.com/phase5#Parent> <https://example.com/phase5#Person>)",
+      "HasKey(<https://example.com/phase5#Person> (<https://example.com/phase5#hasChild>) (<https://example.com/phase5#age>))",
+      "NegativeObjectPropertyAssertion(<https://example.com/phase5#knows> <https://example.com/phase5#alice> <https://example.com/phase5#bob>)",
+      "ObjectPropertyAssertion(<https://example.com/phase5#hasChild> <https://example.com/phase5#alice> <https://example.com/phase5#bob>)",
+      "SubClassOf(Annotation(<https://example.com/phase5#source> \"fixture\"^^xsd:string) <https://example.com/phase5#Parent> ObjectSomeValuesFrom(<https://example.com/phase5#hasChild> <https://example.com/phase5#Child>))"
+    ],
+    "signature": {
+      "classes": [
+        "https://example.com/phase5#Child",
+        "https://example.com/phase5#Parent",
+        "https://example.com/phase5#Person"
+      ],
+      "objectProperties": [
+        "https://example.com/phase5#hasChild",
+        "https://example.com/phase5#knows"
+      ],
+      "dataProperties": ["https://example.com/phase5#age"],
+      "annotationProperties": [
+        "http://www.w3.org/2000/01/rdf-schema#label",
+        "https://example.com/phase5#source"
+      ],
+      "individuals": [
+        "https://example.com/phase5#alice",
+        "https://example.com/phase5#bob"
+      ],
+      "datatypes": [
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+        "http://www.w3.org/2001/XMLSchema#integer",
+        "http://www.w3.org/2001/XMLSchema#string"
+      ]
+    }
+  }
+}
