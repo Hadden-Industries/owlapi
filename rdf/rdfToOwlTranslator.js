@@ -939,13 +939,13 @@ class RdfGraphInterpreter {
         } else if (this.#isDataPropertyTerm(currentQuad.subject)) {
           axiom = this.#dataFactory.getOWLSubDataPropertyOfAxiom(
             this.#dataProperty(currentQuad.subject),
-            this.#dataProperty(currentQuad.object),
+            this.#dataPropertyForAxiom(currentQuad.object),
             annotations,
           );
         } else if (this.#isObjectPropertyTerm(currentQuad.subject)) {
           axiom = this.#dataFactory.getOWLSubObjectPropertyOfAxiom(
             await this.#objectPropertyExpression(currentQuad.subject, 0),
-            await this.#objectPropertyExpression(currentQuad.object, 0),
+            await this.#objectPropertyExpressionForAxiom(currentQuad.object, 0),
             annotations,
           );
         } else {
@@ -1042,6 +1042,36 @@ class RdfGraphInterpreter {
             ),
             annotations,
           );
+        } else if (
+          this.#isDataPropertyTerm(currentQuad.subject) &&
+          this.#isKnownClassExpressionTerm(currentQuad.object)
+        ) {
+          const details = {
+            property: currentQuad.subject.value,
+            range: currentQuad.object.value,
+          };
+          if (this.#configuration.parsingMode === "strict") {
+            throw new OWLSyntaxError(
+              "An OWL class expression cannot be used as a data property range",
+              details,
+            );
+          }
+          axiom = this.#dataFactory.getOWLObjectPropertyRangeAxiom(
+            this.#dataFactory.getOWLObjectProperty(
+              IRI.create(currentQuad.subject.value),
+            ),
+            await this.#classExpression(currentQuad.object, 0),
+            annotations,
+          );
+          if (this.#configuration.collectWarnings) {
+            this.#diagnostics.push({
+              code: "RDF_OWL_FULL_DATA_PROPERTY_RANGE_AS_CLASS",
+              message:
+                "An OWL Full data-property range encoded as a class expression was reconstructed as an object-property range",
+              severity: "warning",
+              ...details,
+            });
+          }
         } else if (this.#isDataPropertyTerm(currentQuad.subject)) {
           axiom = this.#dataFactory.getOWLDataPropertyRangeAxiom(
             this.#dataProperty(currentQuad.subject),
@@ -1292,7 +1322,28 @@ class RdfGraphInterpreter {
           ],
           annotations,
         );
+      } else if (this.#isAnnotationPropertyTerm(currentQuad.predicate)) {
+        this.#consume(currentQuad);
+        if (!this.#configuration.loadAnnotationAxioms) {
+          continue;
+        }
+        axiom = this.#dataFactory.getOWLAnnotationAssertionAxiom(
+          this.#annotationProperty(currentQuad.predicate),
+          this.#annotationSubject(currentQuad.subject),
+          this.#annotationValue(currentQuad.object),
+          annotations,
+        );
       } else if (this.#isObjectPropertyTerm(currentQuad.predicate)) {
+        if (currentQuad.object.termType === "Literal") {
+          throw new OWLSyntaxError(
+            "An object property assertion requires an individual object",
+            {
+              object: currentQuad.object.value,
+              predicate: currentQuad.predicate.value,
+              subject: currentQuad.subject.value,
+            },
+          );
+        }
         axiom = this.#dataFactory.getOWLObjectPropertyAssertionAxiom(
           await this.#objectPropertyExpression(currentQuad.predicate, 0),
           this.#individual(currentQuad.subject),
@@ -1304,17 +1355,6 @@ class RdfGraphInterpreter {
           this.#dataProperty(currentQuad.predicate),
           this.#individual(currentQuad.subject),
           this.#literal(currentQuad.object),
-          annotations,
-        );
-      } else if (this.#isAnnotationPropertyTerm(currentQuad.predicate)) {
-        this.#consume(currentQuad);
-        if (!this.#configuration.loadAnnotationAxioms) {
-          continue;
-        }
-        axiom = this.#dataFactory.getOWLAnnotationAssertionAxiom(
-          this.#annotationProperty(currentQuad.predicate),
-          this.#annotationSubject(currentQuad.subject),
-          this.#annotationValue(currentQuad.object),
           annotations,
         );
       } else {
@@ -2018,10 +2058,13 @@ class RdfGraphInterpreter {
   async #objectPropertyExpression(term, depth) {
     this.#checkExpressionDepth(depth);
     if (term.termType === "NamedNode") {
-      if (this.#dataPropertyIris.has(term.value)) {
+      const conflictingCategories = this.#propertyCategories(term.value).filter(
+        (category) => category !== "object",
+      );
+      if (conflictingCategories.length > 0) {
         throw new OWLSyntaxError(
-          "A data property cannot be used as an object property expression",
-          { iri: term.value },
+          "A property in another OWL category cannot be used as an object property expression",
+          { iri: term.value, propertyCategories: conflictingCategories },
         );
       }
       this.#objectPropertyIris.add(term.value);
@@ -2053,19 +2096,92 @@ class RdfGraphInterpreter {
     }
   }
 
+  async #objectPropertyExpressionForAxiom(term, depth) {
+    if (term.termType === "NamedNode") {
+      const conflictingCategories = this.#propertyCategories(term.value).filter(
+        (category) => category !== "object",
+      );
+      if (conflictingCategories.length > 0) {
+        this.#requireCompatiblePropertyCategoryReuse(
+          term.value,
+          "object",
+          conflictingCategories,
+        );
+        return this.#dataFactory.getOWLObjectProperty(IRI.create(term.value));
+      }
+    }
+    return this.#objectPropertyExpression(term, depth);
+  }
+
   #dataProperty(term) {
     const named = requireNamedNode(
       term,
       "OWL data property expressions require an IRI",
     );
-    if (this.#objectPropertyIris.has(named.value)) {
+    const conflictingCategories = this.#propertyCategories(named.value).filter(
+      (category) => category !== "data",
+    );
+    if (conflictingCategories.length > 0) {
       throw new OWLSyntaxError(
-        "An object property cannot be used as a data property expression",
-        { iri: named.value },
+        "A property in another OWL category cannot be used as a data property expression",
+        { iri: named.value, propertyCategories: conflictingCategories },
       );
     }
     this.#dataPropertyIris.add(named.value);
     return this.#dataFactory.getOWLDataProperty(IRI.create(named.value));
+  }
+
+  #dataPropertyForAxiom(term) {
+    const named = requireNamedNode(
+      term,
+      "OWL data property expressions require an IRI",
+    );
+    const conflictingCategories = this.#propertyCategories(named.value).filter(
+      (category) => category !== "data",
+    );
+    if (conflictingCategories.length > 0) {
+      this.#requireCompatiblePropertyCategoryReuse(
+        named.value,
+        "data",
+        conflictingCategories,
+      );
+      return this.#dataFactory.getOWLDataProperty(IRI.create(named.value));
+    }
+    return this.#dataProperty(named);
+  }
+
+  #propertyCategories(iri) {
+    return [
+      ["annotation", this.#annotationPropertyIris],
+      ["data", this.#dataPropertyIris],
+      ["object", this.#objectPropertyIris],
+    ]
+      .filter(([, values]) => values.has(iri))
+      .map(([category]) => category);
+  }
+
+  #requireCompatiblePropertyCategoryReuse(
+    iri,
+    requestedCategory,
+    existingCategories,
+  ) {
+    if (this.#configuration.parsingMode === "strict") {
+      throw new OWLSyntaxError(
+        "An IRI cannot be reused in another OWL property category",
+        { existingCategories, iri, requestedCategory },
+      );
+    }
+    if (this.#configuration.collectWarnings) {
+      this.#diagnostics.push({
+        code: "RDF_PROPERTY_CATEGORY_REUSE",
+        existingCategories,
+        iri,
+        message:
+          "A property was reused in another OWL property category for this axiom",
+        requestedCategory,
+        severity: "warning",
+      });
+    }
   }
 
   #annotationProperty(term) {
@@ -2284,6 +2400,17 @@ class RdfGraphInterpreter {
   #isDataPropertyTerm(term) {
     return (
       term.termType === "NamedNode" && this.#dataPropertyIris.has(term.value)
+    );
+  }
+
+  #isKnownClassExpressionTerm(term) {
+    if (term.termType === "NamedNode") {
+      return this.#classIris.has(term.value);
+    }
+    return (
+      term.termType === "BlankNode" &&
+      (this.#anonymousClassNodes.has(termKey(term)) ||
+        this.#classExpressionCache.has(termKey(term)))
     );
   }
 

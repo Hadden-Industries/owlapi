@@ -97,50 +97,75 @@ do not append chronology here.
 11. Update this playbook and all impacted future phase assumptions.
 12. Close the mechanically reviewable learning gate before activating the next ingestion phase.
 
-## Next migration: Phase 6 RDF/XML and first-real-adapter hardening
+## Institutionalized RDF syntax-adapter method
 
-- Keep the Phase 5 `RdfToOwlTranslator` and graph policy as the only RDF
-  semantic reconstruction path. The RDF/XML adapter terminates at canonical
-  RDF/JS `DatasetCore<Quad>` values and must contain no class-expression,
-  declaration, axiom, annotation, list, or OWL 1 compatibility rule.
-- Wrap the pinned `rdfxml-streaming-parser` API behind one private adapter. Do
-  not expose its streams, errors, callbacks, term factory, or configuration to
-  the manager, translator, structural model, WebVOWL, or public exports.
-- Normalize every emitted term and quad to the project RDF/JS environment at
-  the adapter boundary. Preserve datatype and language information, base-IRI
-  resolution, blank-node identity, and default-graph membership exactly; do not
-  stringify and reparse an intermediate graph.
-- Reuse the Phase 4 XML security decisions at the streaming seam: no ambient
-  retrieval, no external entity or external subset authority, bounded input,
-  deterministic malformed-XML errors, browser/Node parity, cancellation,
-  timeout, and cooperative delivery of aborts. Keep RDF/XML-specific XML
-  normalization separate from OWL/XML DOM parsing.
-- Pin and classify every W3C RDF/XML syntax test independently of the already
-  complete RDF-to-OWL classification. First compare the adapter result at the
-  RDF/JS dataset boundary; only accepted syntax results proceed through graph
-  selection and shared reconstruction.
-- Reuse `docs/owlapi-js/conformance/rdf-to-owl-mapping.json` as an executable
-  semantic coverage boundary. Any semantic gap exposed by RDF/XML is fixed and
-  tested in the shared translator unless the evidence shows that emitted quads,
-  base handling, or syntax error normalization are wrong in the adapter.
+- Keep `RdfToOwlTranslator` and the graph policy as the only RDF semantic
+  reconstruction path. Every RDF syntax adapter terminates at canonical RDF/JS
+  `DatasetCore<Quad>` values and contains no declaration, class-expression,
+  axiom, annotation, list, or OWL compatibility rule.
+- Wrap each selected standards parser behind one private adapter. Normalize
+  terms, quads, configuration, streams/callbacks and errors before they cross
+  the boundary; never stringify and reparse an intermediate graph.
+- Prove syntax correctness before semantic reconstruction. Classify every
+  independently owned upstream definition, archive or generate self-contained
+  fixtures, compare evaluation results by RDF graph isomorphism, and require
+  negative syntax to fail at the adapter seam.
+- Keep concrete-syntax normalization syntax-local. For RDF/XML this includes
+  XML Base, optional RDF node-element roots, the canonical lexical form of
+  `rdf:parseType="Literal"`, and the specified Literal behavior of other
+  non-reserved `rdf:parseType` values; it does not include OWL mapping or
+  general graph repair. Compare namespace identity using XML-expanded values,
+  and make source rewrites structurally aware so syntax-looking content inside
+  an XML literal is never changed.
+- Treat streaming as a delivery property, not a security policy. Retain owned
+  input, token, quad, blank-node, nesting, entity, timeout and cancellation
+  checks, deterministic malformed-input errors, Unicode-safe chunks,
+  backpressure, cooperative yielding, and transaction rollback. Keep an
+  independent wall-clock watchdog active while awaiting backpressure or stream
+  completion; callback-only elapsed-time checks cannot bound a stalled
+  dependency. Cap and re-arm delays that exceed the host timer's maximum, and
+  apply token limits to nested RDF term components such as literal datatypes,
+  languages, and directions as well as primary term values.
+- Diagnose real-world failures at the deepest stable seam. Incorrect emitted
+  quads, base handling or syntax errors belong to the adapter. Structural OWL
+  failures belong to the shared translator. Compatible OWL Full recovery must
+  be local, explicit and diagnostic rather than a global category mutation.
+- Preserve strict and compatible corpus roles separately. Pin bytes and hashes;
+  report warning counts for compatible inputs so “loads successfully” cannot
+  conceal lossy or widened interpretation.
 - Keep the two pinned W3C Rational malformed-list documents as an explicit
   source-defect exception only. Their compatible non-`rdf:nil` terminal warning
-  does not authorize general list repair in the RDF/XML adapter or translator.
-- Add adapter-replacement tests proving that parser-specific objects never
-  cross the RDF/JS boundary. Exercise chunk splits, Unicode, XML Base, parseType
-  forms, collections, typed and language literals, empty documents, anonymous
-  ontologies, malformed XML, graph/resource limits, abort/timeout, and failed
-  transaction rollback.
-- Compare a project-owned RDF/XML fixture with its Functional, Manchester,
-  OWL/XML, and pinned Java structural counterparts. Preserve the distinction
-  between syntax-to-RDF differences, shared RDF-to-OWL differences, and Java
-  behavioral differences so a passing aggregate count cannot hide a boundary
-  defect.
-- Establish separate syntax-to-RDF and end-to-end wall/heap signals, measure
-  the lazy browser chunk and first-use cost of `rdfxml-streaming-parser`, rerun
-  all accepted parser and shared-translator signals, and retain the unchanged
-  regression threshold unless separately approved evidence supports a change.
-- Close the Phase 6 conformance, differential, resource, browser/Node,
-  dependency, provenance, performance, full-repository, and learning gates;
-  then pause for its Git checkpoint before activating Phase 7 development-app
-  integration.
+  does not authorize general list repair.
+- Measure syntax-to-RDF and end-to-end costs separately. Also measure lazy
+  browser chunks, first use, Node/browser parity and Node-only fallback leakage.
+  Compare regressions with paired measurements on the same runtime and machine.
+
+## Next migration: Phase 7 early development-app integration
+
+- Implement one `VOWLBuilder` that accepts canonical `OWLOntology` structural
+  objects and produces the VOWL-JSON-compatible application result. Its public
+  input must not mention RDF/XML, RDF/JS, parser ASTs, DOM nodes, legacy maps or
+  legacy converter state.
+- Make the new manager → ontology → builder route explicitly invocable in the
+  development app and end-to-end tests while leaving the production default
+  unchanged until Phase 8.
+- Start with project-owned builder fixtures and structural visitor/dispatch
+  tests. Protect entity kinds, labels/comments/annotations, subclass and
+  property relations, restrictions, cardinalities, individuals, datatypes,
+  ontology metadata and imports before comparing aggregate JSON.
+- Compare the new result with the pinned Java OWL2VOWL and retained legacy
+  outputs through the governed exact-difference machinery. Counts alone are
+  insufficient; no unmatched, ambiguous or stale expected difference may pass.
+- Exercise Functional, Manchester, OWL/XML and RDF/XML through the same builder.
+  Include supported and malformed RDF/XML, import closure, an empty anonymous
+  ontology, a compatible OWL Full document with observable warnings, and a
+  resource failure that proves no partial application state is published.
+- Preserve loader/parser diagnostics through the development route. The
+  builder must not silently absorb compatible RDF warnings or retry through the
+  legacy parser/converter pipeline.
+- Add a static architecture test proving that `VOWLBuilder` has no imports from
+  concrete syntax adapters, RDF mapping modules or retained legacy
+  parser/converter modules.
+- Close structural-builder, differential, development-app, import, malformed,
+  resource, architecture, provenance, performance, full-repository and learning
+  gates; then pause for the Phase 7 Git checkpoint before production cutover.

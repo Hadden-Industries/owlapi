@@ -79,11 +79,13 @@
       "role": "RDF/XML syntax-to-RDF/JS adapter only",
       "standardsGrounding": ["W3C RDF/XML", "RDF/JS streams and quads"],
       "conformanceEvidence": [
-        "Pinned W3C rdf-tests revision",
-        "Separate owlapi-js adapter classification and contract suites required in Phase 6"
+        "docs/owlapi-js/conformance/classification-manifests.json#w3c-rdf-tests.rdfxml",
+        "src/owlapi-js/parser/rdfxml/rdfXml.conformance.test.js",
+        "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.test.js",
+        "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.resource.test.js"
       ],
       "releaseAuthority": "rdfjs/rdfxml-streaming-parser.js maintainers",
-      "maintenanceStatus": "Pinned production release; XML/security behavior is revalidated in Phase 6",
+      "maintenanceStatus": "Pinned production release; Phase 6 independently passed all 166 active W3C RDF/XML manifest entries and the project XML/security/resource contracts",
       "runtimeDependencies": [
         "@rubensworks/saxes",
         "@types/readable-stream",
@@ -94,10 +96,31 @@
         "validate-iri"
       ],
       "networkBehavior": "Streaming parser consumes supplied XML; the owlapi-js adapter forbids external-entity retrieval",
-      "browserCost": "Streaming/XML dependency surface; establish heap and bundle baselines in Phase 6",
+      "browserCost": "Phase 6 Vite 8/Oxc browser production measurement: the third-party implementation is absent from the 196,267-minified-byte / 49,466-gzip-byte initial graph and isolated in a lazy 163,163-minified-byte / 46,737-gzip-byte dependency graph; Node first use through manager, the first conditional dependency load, and the shared translator measured 36.59 ms with an 8,331,688-byte peak-heap delta.",
+      "securityReview": {
+        "reviewedOn": "2026-08-13",
+        "source": "https://github.com/advisories",
+        "queryPolicy": "Exact npm package-name searches for the direct dependency and every package in runtimeDependencies",
+        "packages": [
+          "rdfxml-streaming-parser",
+          "@rubensworks/saxes",
+          "@types/readable-stream",
+          "buffer",
+          "rdf-data-factory",
+          "readable-stream",
+          "relative-to-absolute-iri",
+          "validate-iri"
+        ],
+        "advisoryDatabaseResult": "NO_EXACT_PACKAGE_MATCHES",
+        "executableEvidence": [
+          "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.resource.test.js",
+          "src/owlapi-js/parser/rdfxml/rdfXml.browser.test.js"
+        ],
+        "toolingNote": "npm 12.0.2 ran `npm audit --omit=dev --json` successfully outside the workspace sandbox on 13 August 2026: the production dependency scope contained 73 dependencies and reported zero info, low, moderate, high, or critical vulnerabilities. The earlier sandboxed `MODULE_NOT_FOUND` was caused by restricted access to the selected user-level npm prefix, not by a broken host npm installation."
+      },
       "license": "MIT",
       "noticeAction": "Retain the dependency and transitive dependency licences in release notices",
-      "adapterBoundary": "src/owlapi-js/parsers/rdfxml/rdfXmlSyntaxAdapter.js"
+      "adapterBoundary": "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.js"
     },
     {
       "name": "jsonld",

@@ -183,3 +183,69 @@ both standalone dependency costs and their combined tree-shaken cost.
 
 Phase 5 therefore establishes the first RDF reconstruction and foundational
 RDF/JS browser-cost baselines without changing the governed resource ceilings.
+
+## Phase 6 RDF/XML baseline
+
+- Phase 5 checkpoint revision:
+  `86f1602cb958b08fc13b30e430a116f262db9604`.
+- Measurement date: 13 August 2026.
+- Environment: Windows `10.0.26200` x64, Node.js `v24.17.0`, 12th Gen
+  Intel Core i9-12900K (24 logical CPUs), 34,053,869,568 bytes system memory.
+- Dependency identity: `package-lock.json` SHA-256
+  `dbf218f2d46d6f9d9aac0a5727afe5a1efe2fb4a349bd6719fd55106c781fa5a`.
+- Command: `node --expose-gc util/benchmark-owlapi-rdfxml.mjs`.
+- Protocol: generator `owlapi-benchmark-corpus-v1`; one warm-up and five
+  measured runs for the large fixture; median aggregation; garbage collection
+  requested before every run; heap sampled every 5 ms and at operation
+  completion. First use separately measures manager selection → first
+  conditional RDF/XML dependency load → shared RDF-to-OWL reconstruction.
+
+| Signal                                 | Input                           | Accepted wall time (ms) | Accepted peak heap delta (bytes) |
+| -------------------------------------- | ------------------------------- | ----------------------: | -------------------------------: |
+| RDF/XML first use                      | 5,448 bytes / 100 declarations  |                   36.59 |                        8,331,688 |
+| `generated-rdfxml-large.syntax-to-rdf` | 2,789,048 bytes / 50,000 quads  |                  306.15 |                       92,747,760 |
+| `generated-rdfxml-large.end-to-end`    | 2,789,048 bytes / 50,000 axioms |                1,844.23 |                      341,045,176 |
+
+The syntax-only signal ends at the canonical RDF/JS dataset boundary. The
+end-to-end signal includes parser selection, the conditionally imported
+`rdfxml-streaming-parser`, project term/quad normalization, graph selection,
+shared RDF-to-OWL reconstruction, and structural ontology publication. These
+are the first accepted RDF/XML measurements, so neither changes an existing
+RDF/XML threshold baseline.
+
+The Phase 5 checkpoint was remeasured from an exact `git archive` on the same
+Node/runtime and machine before comparing existing signals. This paired
+measurement avoids treating the accepted Phase 5 document's Node.js `v24.19.0`
+results as directly comparable to the available `v24.17.0` runtime. The
+temporary archive is not a repository artifact.
+
+| Existing signal                    | Paired Phase 5 wall / heap delta | Phase 6 wall / heap delta | Wall change | Heap-delta change |
+| ---------------------------------- | -------------------------------: | ------------------------: | ----------: | ----------------: |
+| `generated-functional-large`       |    472.24 ms / 118,473,640 bytes |   468.93 ms / 117,510,288 |      -0.70% |            -0.81% |
+| `generated-functional-depth`       |     146.85 ms / 49,645,616 bytes |    145.86 ms / 49,563,656 |      -0.67% |            -0.17% |
+| Functional mismatch                |          14.09 ms / 30,648 bytes |         13.93 ms / 31,616 |      -1.09% |            +3.16% |
+| `generated-manchester-large`       |    507.73 ms / 131,897,432 bytes |   500.88 ms / 133,520,080 |      -1.35% |            +1.23% |
+| Manchester mismatch                |          13.96 ms / 39,784 bytes |         13.87 ms / 36,904 |      -0.65% |            -7.24% |
+| `generated-owlxml-large`           |    623.53 ms / 206,880,056 bytes |   628.14 ms / 208,121,968 |      +0.74% |            +0.60% |
+| OWL/XML mismatch                   |          13.93 ms / 37,416 bytes |         13.86 ms / 34,536 |      -0.52% |            -7.70% |
+| `generated-rdf-declarations-large` |  1,183.38 ms / 265,943,704 bytes | 1,190.86 ms / 296,777,176 |      +0.63% |           +11.59% |
+| `generated-rdf-list-long`          |  1,374.53 ms / 290,586,440 bytes | 1,356.80 ms / 282,604,344 |      -1.29% |            -2.75% |
+| `generated-rdf-expression-depth`   |      24.08 ms / 44,262,512 bytes |     22.17 ms / 44,262,416 |      -7.93% |             0.00% |
+
+Every paired wall-time and peak-heap-delta change remains below the unchanged
+20% release threshold. No resource ceiling or regression threshold changed.
+
+The browser-cost measurement used
+`node util/measure-owlapi-rdfxml-browser-cost.mjs` with a Vite 8 programmatic
+production build, Oxc minification, ES2022 target, and in-memory output.
+
+| Browser graph      | Chunks | Minified bytes | Gzip bytes |
+| ------------------ | -----: | -------------: | ---------: |
+| Initial manager    |      1 |        196,267 |     49,466 |
+| Lazy RDF/XML graph |      1 |        163,163 |     46,737 |
+
+The RDF/XML implementation is absent from the initial graph, is loaded only in
+the measured lazy graph, and does not pull the Node `@xmldom/xmldom` fallback
+into the browser build. Phase 6 therefore accepts the first RDF/XML syntax,
+end-to-end, first-use, and lazy-browser baselines without technical-debt
+exceptions.

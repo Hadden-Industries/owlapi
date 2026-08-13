@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+  ontologyIRI="https://example.com/phase5"
+  versionIRI="https://example.com/phase5/1">
+  <Prefix name="" IRI="https://example.com/phase5#"/>
+  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+  <Import>https://example.com/imported</Import>
+  <Annotation>
+    <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+    <Literal xml:lang="en">Phase 5</Literal>
+  </Annotation>
+
+  <Declaration><Class abbreviatedIRI=":Person"/></Declaration>
+  <Declaration><Class abbreviatedIRI=":Parent"/></Declaration>
+  <Declaration><Class abbreviatedIRI=":Child"/></Declaration>
+  <Declaration><ObjectProperty abbreviatedIRI=":hasChild"/></Declaration>
+  <Declaration><ObjectProperty abbreviatedIRI=":knows"/></Declaration>
+  <Declaration><DataProperty abbreviatedIRI=":age"/></Declaration>
+  <Declaration><AnnotationProperty abbreviatedIRI=":source"/></Declaration>
+  <Declaration><NamedIndividual abbreviatedIRI=":alice"/></Declaration>
+  <Declaration><NamedIndividual abbreviatedIRI=":bob"/></Declaration>
+
+  <SubClassOf>
+    <Annotation>
+      <AnnotationProperty abbreviatedIRI=":source"/>
+      <Literal>fixture</Literal>
+    </Annotation>
+    <Class abbreviatedIRI=":Parent"/>
+    <ObjectSomeValuesFrom>
+      <ObjectProperty abbreviatedIRI=":hasChild"/>
+      <Class abbreviatedIRI=":Child"/>
+    </ObjectSomeValuesFrom>
+  </SubClassOf>
+  <HasKey>
+    <Class abbreviatedIRI=":Person"/>
+    <ObjectProperty abbreviatedIRI=":hasChild"/>
+    <DataProperty abbreviatedIRI=":age"/>
+  </HasKey>
+  <DisjointClasses>
+    <Class abbreviatedIRI=":Person"/>
+    <Class abbreviatedIRI=":Parent"/>
+    <Class abbreviatedIRI=":Child"/>
+  </DisjointClasses>
+  <ClassAssertion>
+    <Class abbreviatedIRI=":Parent"/>
+    <NamedIndividual abbreviatedIRI=":alice"/>
+  </ClassAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty abbreviatedIRI=":hasChild"/>
+    <NamedIndividual abbreviatedIRI=":alice"/>
+    <NamedIndividual abbreviatedIRI=":bob"/>
+  </ObjectPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty abbreviatedIRI=":age"/>
+    <NamedIndividual abbreviatedIRI=":alice"/>
+    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">42</Literal>
+  </DataPropertyAssertion>
+  <NegativeObjectPropertyAssertion>
+    <ObjectProperty abbreviatedIRI=":knows"/>
+    <NamedIndividual abbreviatedIRI=":alice"/>
+    <NamedIndividual abbreviatedIRI=":bob"/>
+  </NegativeObjectPropertyAssertion>
+</Ontology>

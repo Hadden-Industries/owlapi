@@ -44,7 +44,7 @@ describe("owlapi-js governance artifacts", () => {
     }
     expect(
       matrix.capabilities
-        .filter(({ phase }) => phase !== null && phase <= 4)
+        .filter(({ phase }) => phase !== null && phase <= 6)
         .every(({ progress }) => progress === "COMPLETE"),
     ).toBe(true);
   });
@@ -269,7 +269,7 @@ describe("owlapi-js governance artifacts", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(paths).toEqual(productionModules);
     for (const record of records) {
-      expect([1, 2, 3, 4, 5]).toContain(record.phase);
+      expect([1, 2, 3, 4, 5, 6]).toContain(record.phase);
       expect(manifest.provenanceCategories).toHaveProperty(
         record.provenanceCategory,
       );
@@ -334,9 +334,31 @@ describe("owlapi-js governance artifacts", () => {
     ]);
     expect(
       records
+        .filter(({ phase }) => phase === 6)
+        .map(({ path }) => path)
+        .sort(),
+    ).toEqual([
+      "src/owlapi-js/parser/rdfxml/descriptor.js",
+      "src/owlapi-js/parser/rdfxml/parser.js",
+      "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.js",
+    ]);
+    expect(
+      records
         .find(({ path }) => path === "src/owlapi-js/rdf/graphPolicy.js")
         ?.laterPhaseChanges?.map(({ phase }) => phase),
     ).toContain(5);
+    expect(
+      records
+        .find(
+          ({ path }) => path === "src/owlapi-js/manager/owlOntologyManager.js",
+        )
+        ?.laterPhaseChanges?.map(({ phase }) => phase),
+    ).toContain(6);
+    expect(
+      records
+        .find(({ path }) => path === "src/owlapi-js/rdf/rdfToOwlTranslator.js")
+        ?.laterPhaseChanges?.map(({ phase }) => phase),
+    ).toContain(6);
     for (const research of manifest.compatibilityResearch) {
       expect(research.sourceRevision).toBe(manifest.referenceOwlapi.revision);
       expect(research.implementationSourcesInspected.length).toBeGreaterThan(0);
@@ -374,6 +396,36 @@ describe("owlapi-js governance artifacts", () => {
       expect(dependency.networkBehavior).toBeTruthy();
       expect(dependency.runtimeDependencies).toBeInstanceOf(Array);
     }
+
+    const rdfXml = governance.dependencies.find(
+      ({ name }) => name === "rdfxml-streaming-parser",
+    );
+    expect(rdfXml.adapterBoundary).toBe(
+      "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.js",
+    );
+    expect(rdfXml.conformanceEvidence).toEqual(
+      expect.arrayContaining([
+        "docs/owlapi-js/conformance/classification-manifests.json#w3c-rdf-tests.rdfxml",
+        "src/owlapi-js/parser/rdfxml/rdfXml.conformance.test.js",
+        "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.test.js",
+        "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.resource.test.js",
+      ]),
+    );
+    expect(rdfXml.browserCost).toMatch(/163,163-minified-byte/u);
+    expect(rdfXml.securityReview).toMatchObject({
+      advisoryDatabaseResult: "NO_EXACT_PACKAGE_MATCHES",
+      reviewedOn: "2026-08-13",
+    });
+    expect(rdfXml.securityReview.packages).toEqual([
+      "rdfxml-streaming-parser",
+      "@rubensworks/saxes",
+      "@types/readable-stream",
+      "buffer",
+      "rdf-data-factory",
+      "readable-stream",
+      "relative-to-absolute-iri",
+      "validate-iri",
+    ]);
   });
 
   it("defines a zero-tolerance expected-difference gate", () => {
@@ -484,6 +536,30 @@ describe("owlapi-js governance artifacts", () => {
         ({ reasonCategory }) => reasonCategory === "DIFFERENT_SYNTAX",
       ),
     ).toHaveLength(16);
+
+    const rdfXmlManifest = byId.get("w3c-rdf-tests.rdfxml");
+    const rdfXmlRequired = rdfXmlManifest.entries.filter(
+      ({ classification }) => classification === "REQUIRED",
+    );
+    const rdfXmlExcluded = rdfXmlManifest.excludedSourceDefinitions;
+    expect(rdfXmlManifest).toMatchObject({
+      evaluationTestCount: 126,
+      excludedDefinitionCount: 7,
+      manifestEntryCount: 166,
+      negativeSyntaxTestCount: 40,
+      requiredTestCount: 166,
+      runner: "src/owlapi-js/parser/rdfxml/rdfXml.conformance.test.js",
+      sourceDefinitionCount: 173,
+      sourceTestCount: 166,
+    });
+    expect(rdfXmlManifest.entries).toHaveLength(166);
+    expect(rdfXmlRequired).toHaveLength(166);
+    expect(rdfXmlExcluded).toHaveLength(7);
+    expect(
+      rdfXmlExcluded.every(
+        ({ reasonCategory }) => reasonCategory === "COMMENTED_OUT_UPSTREAM",
+      ),
+    ).toBe(true);
 
     const w3cSuite = suites.suites.find(({ id }) => id === "w3c-owl2");
     const w3cManifest = classifications.manifests.find(

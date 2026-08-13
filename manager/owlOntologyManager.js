@@ -18,6 +18,7 @@ import {
 import { functionalSyntaxParserDescriptor } from "../parser/functional/descriptor.js";
 import { manchesterSyntaxParserDescriptor } from "../parser/manchester/descriptor.js";
 import { owlXmlParserDescriptor } from "../parser/owlxml/descriptor.js";
+import { rdfXmlParserDescriptor } from "../parser/rdfxml/descriptor.js";
 import { OWLParserRegistry } from "./parserRegistry.js";
 
 const DIAGNOSTIC_SEVERITIES = new Set(["info", "warning"]);
@@ -249,6 +250,7 @@ export class OWLOntologyManager {
       registry ||
       new OWLParserRegistry([
         owlXmlParserDescriptor,
+        rdfXmlParserDescriptor,
         functionalSyntaxParserDescriptor,
         manchesterSyntaxParserDescriptor,
       ]);

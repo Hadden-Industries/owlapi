@@ -9,7 +9,1189 @@
       "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f",
       "paths": ["rdf/rdf11/rdf-xml/manifest.ttl"],
       "classificationOwnerPhases": [6],
-      "entries": []
+      "entries": [
+        {
+          "action": "amp-in-url/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "amp-in-url-test001",
+          "testType": "EVALUATION",
+          "result": "amp-in-url/test001.nt"
+        },
+        {
+          "action": "datatypes/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "datatypes-test001",
+          "testType": "EVALUATION",
+          "result": "datatypes/test001.nt"
+        },
+        {
+          "action": "datatypes/test002.rdf",
+          "classification": "REQUIRED",
+          "id": "datatypes-test002",
+          "testType": "EVALUATION",
+          "result": "datatypes/test002.nt"
+        },
+        {
+          "action": "rdf-charmod-literals/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-charmod-literals-test001",
+          "testType": "EVALUATION",
+          "result": "rdf-charmod-literals/test001.nt"
+        },
+        {
+          "action": "rdf-charmod-uris/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-charmod-uris-test001",
+          "testType": "EVALUATION",
+          "result": "rdf-charmod-uris/test001.nt"
+        },
+        {
+          "action": "rdf-charmod-uris/test002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-charmod-uris-test002",
+          "testType": "EVALUATION",
+          "result": "rdf-charmod-uris/test002.nt"
+        },
+        {
+          "action": "rdf-containers-syntax-vs-schema/error001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-containers-syntax-vs-schema-error001",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdf-containers-syntax-vs-schema/error002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-containers-syntax-vs-schema-error002",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdf-containers-syntax-vs-schema/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-containers-syntax-vs-schema-test001",
+          "testType": "EVALUATION",
+          "result": "rdf-containers-syntax-vs-schema/test001.nt"
+        },
+        {
+          "action": "rdf-containers-syntax-vs-schema/test002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-containers-syntax-vs-schema-test002",
+          "testType": "EVALUATION",
+          "result": "rdf-containers-syntax-vs-schema/test002.nt"
+        },
+        {
+          "action": "rdf-containers-syntax-vs-schema/test003.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-containers-syntax-vs-schema-test003",
+          "testType": "EVALUATION",
+          "result": "rdf-containers-syntax-vs-schema/test003.nt"
+        },
+        {
+          "action": "rdf-containers-syntax-vs-schema/test004.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-containers-syntax-vs-schema-test004",
+          "testType": "EVALUATION",
+          "result": "rdf-containers-syntax-vs-schema/test004.nt"
+        },
+        {
+          "action": "rdf-containers-syntax-vs-schema/test006.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-containers-syntax-vs-schema-test006",
+          "testType": "EVALUATION",
+          "result": "rdf-containers-syntax-vs-schema/test006.nt"
+        },
+        {
+          "action": "rdf-containers-syntax-vs-schema/test007.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-containers-syntax-vs-schema-test007",
+          "testType": "EVALUATION",
+          "result": "rdf-containers-syntax-vs-schema/test007.nt"
+        },
+        {
+          "action": "rdf-containers-syntax-vs-schema/test008.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-containers-syntax-vs-schema-test008",
+          "testType": "EVALUATION",
+          "result": "rdf-containers-syntax-vs-schema/test008.nt"
+        },
+        {
+          "action": "rdf-element-not-mandatory/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-element-not-mandatory-test001",
+          "testType": "EVALUATION",
+          "result": "rdf-element-not-mandatory/test001.nt"
+        },
+        {
+          "action": "rdf-node-element/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-node-element-test001",
+          "testType": "EVALUATION",
+          "result": "rdf-node-element/test001.nt"
+        },
+        {
+          "action": "rdf-ns-prefix-confusion/test0001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-ns-prefix-confusion-test0001",
+          "testType": "EVALUATION",
+          "result": "rdf-ns-prefix-confusion/test0001.nt"
+        },
+        {
+          "action": "rdf-ns-prefix-confusion/test0003.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-ns-prefix-confusion-test0003",
+          "testType": "EVALUATION",
+          "result": "rdf-ns-prefix-confusion/test0003.nt"
+        },
+        {
+          "action": "rdf-ns-prefix-confusion/test0004.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-ns-prefix-confusion-test0004",
+          "testType": "EVALUATION",
+          "result": "rdf-ns-prefix-confusion/test0004.nt"
+        },
+        {
+          "action": "rdf-ns-prefix-confusion/test0005.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-ns-prefix-confusion-test0005",
+          "testType": "EVALUATION",
+          "result": "rdf-ns-prefix-confusion/test0005.nt"
+        },
+        {
+          "action": "rdf-ns-prefix-confusion/test0006.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-ns-prefix-confusion-test0006",
+          "testType": "EVALUATION",
+          "result": "rdf-ns-prefix-confusion/test0006.nt"
+        },
+        {
+          "action": "rdf-ns-prefix-confusion/test0009.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-ns-prefix-confusion-test0009",
+          "testType": "EVALUATION",
+          "result": "rdf-ns-prefix-confusion/test0009.nt"
+        },
+        {
+          "action": "rdf-ns-prefix-confusion/test0010.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-ns-prefix-confusion-test0010",
+          "testType": "EVALUATION",
+          "result": "rdf-ns-prefix-confusion/test0010.nt"
+        },
+        {
+          "action": "rdf-ns-prefix-confusion/test0011.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-ns-prefix-confusion-test0011",
+          "testType": "EVALUATION",
+          "result": "rdf-ns-prefix-confusion/test0011.nt"
+        },
+        {
+          "action": "rdf-ns-prefix-confusion/test0012.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-ns-prefix-confusion-test0012",
+          "testType": "EVALUATION",
+          "result": "rdf-ns-prefix-confusion/test0012.nt"
+        },
+        {
+          "action": "rdf-ns-prefix-confusion/test0013.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-ns-prefix-confusion-test0013",
+          "testType": "EVALUATION",
+          "result": "rdf-ns-prefix-confusion/test0013.nt"
+        },
+        {
+          "action": "rdf-ns-prefix-confusion/test0014.rdf",
+          "classification": "REQUIRED",
+          "id": "rdf-ns-prefix-confusion-test0014",
+          "testType": "EVALUATION",
+          "result": "rdf-ns-prefix-confusion/test0014.nt"
+        },
+        {
+          "action": "rdfms-abouteach/error001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-abouteach-error001",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-abouteach/error002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-abouteach-error002",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-difference-between-ID-and-about/error1.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-difference-between-ID-and-about-error1",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-difference-between-ID-and-about/test1.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-difference-between-ID-and-about-test1",
+          "testType": "EVALUATION",
+          "result": "rdfms-difference-between-ID-and-about/test1.nt"
+        },
+        {
+          "action": "rdfms-difference-between-ID-and-about/test2.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-difference-between-ID-and-about-test2",
+          "testType": "EVALUATION",
+          "result": "rdfms-difference-between-ID-and-about/test2.nt"
+        },
+        {
+          "action": "rdfms-difference-between-ID-and-about/test3.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-difference-between-ID-and-about-test3",
+          "testType": "EVALUATION",
+          "result": "rdfms-difference-between-ID-and-about/test3.nt"
+        },
+        {
+          "action": "rdfms-duplicate-member-props/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-duplicate-member-props-test001",
+          "testType": "EVALUATION",
+          "result": "rdfms-duplicate-member-props/test001.nt"
+        },
+        {
+          "action": "rdfms-empty-property-elements/error001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-error001",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-empty-property-elements/error002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-error002",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-empty-property-elements/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-test001",
+          "testType": "EVALUATION",
+          "result": "rdfms-empty-property-elements/test001.nt"
+        },
+        {
+          "action": "rdfms-empty-property-elements/test002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-test002",
+          "testType": "EVALUATION",
+          "result": "rdfms-empty-property-elements/test002.nt"
+        },
+        {
+          "action": "rdfms-empty-property-elements/test004.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-test004",
+          "testType": "EVALUATION",
+          "result": "rdfms-empty-property-elements/test004.nt"
+        },
+        {
+          "action": "rdfms-empty-property-elements/test005.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-test005",
+          "testType": "EVALUATION",
+          "result": "rdfms-empty-property-elements/test005.nt"
+        },
+        {
+          "action": "rdfms-empty-property-elements/test006.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-test006",
+          "testType": "EVALUATION",
+          "result": "rdfms-empty-property-elements/test006.nt"
+        },
+        {
+          "action": "rdfms-empty-property-elements/test007.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-test007",
+          "testType": "EVALUATION",
+          "result": "rdfms-empty-property-elements/test007.nt"
+        },
+        {
+          "action": "rdfms-empty-property-elements/test008.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-test008",
+          "testType": "EVALUATION",
+          "result": "rdfms-empty-property-elements/test008.nt"
+        },
+        {
+          "action": "rdfms-empty-property-elements/test010.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-test010",
+          "testType": "EVALUATION",
+          "result": "rdfms-empty-property-elements/test010.nt"
+        },
+        {
+          "action": "rdfms-empty-property-elements/test011.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-test011",
+          "testType": "EVALUATION",
+          "result": "rdfms-empty-property-elements/test011.nt"
+        },
+        {
+          "action": "rdfms-empty-property-elements/test012.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-test012",
+          "testType": "EVALUATION",
+          "result": "rdfms-empty-property-elements/test012.nt"
+        },
+        {
+          "action": "rdfms-empty-property-elements/test013.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-test013",
+          "testType": "EVALUATION",
+          "result": "rdfms-empty-property-elements/test013.nt"
+        },
+        {
+          "action": "rdfms-empty-property-elements/test014.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-test014",
+          "testType": "EVALUATION",
+          "result": "rdfms-empty-property-elements/test014.nt"
+        },
+        {
+          "action": "rdfms-empty-property-elements/test015.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-test015",
+          "testType": "EVALUATION",
+          "result": "rdfms-empty-property-elements/test015.nt"
+        },
+        {
+          "action": "rdfms-empty-property-elements/test016.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-test016",
+          "testType": "EVALUATION",
+          "result": "rdfms-empty-property-elements/test016.nt"
+        },
+        {
+          "action": "rdfms-empty-property-elements/test017.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-empty-property-elements-test017",
+          "testType": "EVALUATION",
+          "result": "rdfms-empty-property-elements/test017.nt"
+        },
+        {
+          "action": "rdfms-identity-anon-resources/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-identity-anon-resources-test001",
+          "testType": "EVALUATION",
+          "result": "rdfms-identity-anon-resources/test001.nt"
+        },
+        {
+          "action": "rdfms-identity-anon-resources/test002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-identity-anon-resources-test002",
+          "testType": "EVALUATION",
+          "result": "rdfms-identity-anon-resources/test002.nt"
+        },
+        {
+          "action": "rdfms-identity-anon-resources/test003.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-identity-anon-resources-test003",
+          "testType": "EVALUATION",
+          "result": "rdfms-identity-anon-resources/test003.nt"
+        },
+        {
+          "action": "rdfms-identity-anon-resources/test004.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-identity-anon-resources-test004",
+          "testType": "EVALUATION",
+          "result": "rdfms-identity-anon-resources/test004.nt"
+        },
+        {
+          "action": "rdfms-identity-anon-resources/test005.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-identity-anon-resources-test005",
+          "testType": "EVALUATION",
+          "result": "rdfms-identity-anon-resources/test005.nt"
+        },
+        {
+          "action": "rdfms-not-id-and-resource-attr/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-not-id-and-resource-attr-test001",
+          "testType": "EVALUATION",
+          "result": "rdfms-not-id-and-resource-attr/test001.nt"
+        },
+        {
+          "action": "rdfms-not-id-and-resource-attr/test002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-not-id-and-resource-attr-test002",
+          "testType": "EVALUATION",
+          "result": "rdfms-not-id-and-resource-attr/test002.nt"
+        },
+        {
+          "action": "rdfms-not-id-and-resource-attr/test004.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-not-id-and-resource-attr-test004",
+          "testType": "EVALUATION",
+          "result": "rdfms-not-id-and-resource-attr/test004.nt"
+        },
+        {
+          "action": "rdfms-not-id-and-resource-attr/test005.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-not-id-and-resource-attr-test005",
+          "testType": "EVALUATION",
+          "result": "rdfms-not-id-and-resource-attr/test005.nt"
+        },
+        {
+          "action": "rdfms-para196/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-para196-test001",
+          "testType": "EVALUATION",
+          "result": "rdfms-para196/test001.nt"
+        },
+        {
+          "action": "rdfms-rdf-id/error001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-id-error001",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-id/error002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-id-error002",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-id/error003.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-id-error003",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-id/error004.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-id-error004",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-id/error005.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-id-error005",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-id/error006.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-id-error006",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-id/error007.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-id-error007",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-001",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-002",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-003.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-003",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-004.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-004",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-005.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-005",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-006.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-006",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-007.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-007",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-008.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-008",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-009.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-009",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-010.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-010",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-011.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-011",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-012.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-012",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-013.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-013",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-014.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-014",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-015.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-015",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-016.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-016",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-017.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-017",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-018.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-018",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-019.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-019",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/error-020.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-error-020",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-001",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-001.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-002",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-002.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-003.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-003",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-003.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-004.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-004",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-004.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-005.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-005",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-005.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-006.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-006",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-006.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-007.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-007",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-007.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-008.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-008",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-008.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-009.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-009",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-009.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-010.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-010",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-010.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-011.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-011",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-011.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-012.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-012",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-012.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-013.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-013",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-013.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-014.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-014",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-014.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-015.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-015",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-015.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-016.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-016",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-016.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-017.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-017",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-017.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-018.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-018",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-018.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-019.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-019",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-019.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-020.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-020",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-020.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-021.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-021",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-021.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-022.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-022",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-022.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-023.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-023",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-023.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-024.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-024",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-024.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-025.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-025",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-025.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-026.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-026",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-026.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-027.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-027",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-027.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-028.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-028",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-028.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-029.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-029",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-029.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-030.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-030",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-030.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-031.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-031",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-031.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-032.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-032",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-032.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-033.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-033",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-033.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-034.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-034",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-034.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-035.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-035",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-035.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-036.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-036",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-036.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/test-037.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-test-037",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/test-037.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/warn-001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-warn-001",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/warn-001.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/warn-002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-warn-002",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/warn-002.nt"
+        },
+        {
+          "action": "rdfms-rdf-names-use/warn-003.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-rdf-names-use-warn-003",
+          "testType": "EVALUATION",
+          "result": "rdfms-rdf-names-use/warn-003.nt"
+        },
+        {
+          "action": "rdfms-reification-required/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-reification-required-test001",
+          "testType": "EVALUATION",
+          "result": "rdfms-reification-required/test001.nt"
+        },
+        {
+          "action": "rdfms-reification-required/test002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-reification-required-test002",
+          "testType": "EVALUATION",
+          "result": "rdfms-reification-required/test002.nt"
+        },
+        {
+          "action": "rdfms-seq-representation/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-seq-representation-test001",
+          "testType": "EVALUATION",
+          "result": "rdfms-seq-representation/test001.nt"
+        },
+        {
+          "action": "rdfms-seq-representation/test002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-seq-representation-test002",
+          "testType": "EVALUATION",
+          "result": "rdfms-seq-representation/test002.nt"
+        },
+        {
+          "action": "rdfms-syntax-incomplete/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-syntax-incomplete-test001",
+          "testType": "EVALUATION",
+          "result": "rdfms-syntax-incomplete/test001.nt"
+        },
+        {
+          "action": "rdfms-syntax-incomplete/test002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-syntax-incomplete-test002",
+          "testType": "EVALUATION",
+          "result": "rdfms-syntax-incomplete/test002.nt"
+        },
+        {
+          "action": "rdfms-syntax-incomplete/test003.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-syntax-incomplete-test003",
+          "testType": "EVALUATION",
+          "result": "rdfms-syntax-incomplete/test003.nt"
+        },
+        {
+          "action": "rdfms-syntax-incomplete/test004.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-syntax-incomplete-test004",
+          "testType": "EVALUATION",
+          "result": "rdfms-syntax-incomplete/test004.nt"
+        },
+        {
+          "action": "rdfms-syntax-incomplete/error001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-syntax-incomplete-error001",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-syntax-incomplete/error002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-syntax-incomplete-error002",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-syntax-incomplete/error003.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-syntax-incomplete-error003",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-syntax-incomplete/error004.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-syntax-incomplete-error004",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-syntax-incomplete/error005.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-syntax-incomplete-error005",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-syntax-incomplete/error006.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-syntax-incomplete-error006",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "rdfms-uri-substructure/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-uri-substructure-test001",
+          "testType": "EVALUATION",
+          "result": "rdfms-uri-substructure/test001.nt"
+        },
+        {
+          "action": "rdfms-xmllang/test003.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-xmllang-test003",
+          "testType": "EVALUATION",
+          "result": "rdfms-xmllang/test003.nt"
+        },
+        {
+          "action": "rdfms-xmllang/test004.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-xmllang-test004",
+          "testType": "EVALUATION",
+          "result": "rdfms-xmllang/test004.nt"
+        },
+        {
+          "action": "rdfms-xmllang/test005.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-xmllang-test005",
+          "testType": "EVALUATION",
+          "result": "rdfms-xmllang/test005.nt"
+        },
+        {
+          "action": "rdfms-xmllang/test006.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfms-xmllang-test006",
+          "testType": "EVALUATION",
+          "result": "rdfms-xmllang/test006.nt"
+        },
+        {
+          "action": "rdfs-domain-and-range/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfs-domain-and-range-test001",
+          "testType": "EVALUATION",
+          "result": "rdfs-domain-and-range/test001.nt"
+        },
+        {
+          "action": "rdfs-domain-and-range/test002.rdf",
+          "classification": "REQUIRED",
+          "id": "rdfs-domain-and-range-test002",
+          "testType": "EVALUATION",
+          "result": "rdfs-domain-and-range/test002.nt"
+        },
+        {
+          "action": "unrecognised-xml-attributes/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "unrecognised-xml-attributes-test001",
+          "testType": "EVALUATION",
+          "result": "unrecognised-xml-attributes/test001.nt"
+        },
+        {
+          "action": "unrecognised-xml-attributes/test002.rdf",
+          "classification": "REQUIRED",
+          "id": "unrecognised-xml-attributes-test002",
+          "testType": "EVALUATION",
+          "result": "unrecognised-xml-attributes/test002.nt"
+        },
+        {
+          "action": "xml-canon/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "xml-canon-test001",
+          "testType": "EVALUATION",
+          "result": "xml-canon/test001.nt"
+        },
+        {
+          "action": "xml-canon/test002.rdf",
+          "classification": "REQUIRED",
+          "id": "xml-canon-test002",
+          "testType": "EVALUATION",
+          "result": "xml-canon/test002.nt"
+        },
+        {
+          "action": "xmlbase/test001.rdf",
+          "classification": "REQUIRED",
+          "id": "xmlbase-test001",
+          "testType": "EVALUATION",
+          "result": "xmlbase/test001.nt"
+        },
+        {
+          "action": "xmlbase/test002.rdf",
+          "classification": "REQUIRED",
+          "id": "xmlbase-test002",
+          "testType": "EVALUATION",
+          "result": "xmlbase/test002.nt"
+        },
+        {
+          "action": "xmlbase/test003.rdf",
+          "classification": "REQUIRED",
+          "id": "xmlbase-test003",
+          "testType": "EVALUATION",
+          "result": "xmlbase/test003.nt"
+        },
+        {
+          "action": "xmlbase/test004.rdf",
+          "classification": "REQUIRED",
+          "id": "xmlbase-test004",
+          "testType": "EVALUATION",
+          "result": "xmlbase/test004.nt"
+        },
+        {
+          "action": "xmlbase/test006.rdf",
+          "classification": "REQUIRED",
+          "id": "xmlbase-test006",
+          "testType": "EVALUATION",
+          "result": "xmlbase/test006.nt"
+        },
+        {
+          "action": "xmlbase/test007.rdf",
+          "classification": "REQUIRED",
+          "id": "xmlbase-test007",
+          "testType": "EVALUATION",
+          "result": "xmlbase/test007.nt"
+        },
+        {
+          "action": "xmlbase/test008.rdf",
+          "classification": "REQUIRED",
+          "id": "xmlbase-test008",
+          "testType": "EVALUATION",
+          "result": "xmlbase/test008.nt"
+        },
+        {
+          "action": "xmlbase/test009.rdf",
+          "classification": "REQUIRED",
+          "id": "xmlbase-test009",
+          "testType": "EVALUATION",
+          "result": "xmlbase/test009.nt"
+        },
+        {
+          "action": "xmlbase/test010.rdf",
+          "classification": "REQUIRED",
+          "id": "xmlbase-test010",
+          "testType": "EVALUATION",
+          "result": "xmlbase/test010.nt"
+        },
+        {
+          "action": "xmlbase/test011.rdf",
+          "classification": "REQUIRED",
+          "id": "xmlbase-test011",
+          "testType": "EVALUATION",
+          "result": "xmlbase/test011.nt"
+        },
+        {
+          "action": "xmlbase/test013.rdf",
+          "classification": "REQUIRED",
+          "id": "xmlbase-test013",
+          "testType": "EVALUATION",
+          "result": "xmlbase/test013.nt"
+        },
+        {
+          "action": "xmlbase/test014.rdf",
+          "classification": "REQUIRED",
+          "id": "xmlbase-test014",
+          "testType": "EVALUATION",
+          "result": "xmlbase/test014.nt"
+        }
+      ],
+      "evaluationTestCount": 126,
+      "excludedDefinitionCount": 7,
+      "excludedReasonCategories": {
+        "COMMENTED_OUT_UPSTREAM": "The definition is fully commented out in the pinned upstream Turtle manifest and is not a member of its mf:entries collection."
+      },
+      "excludedSourceDefinitions": [
+        {
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "rdfms-empty-property-elements-error003",
+          "reasonCategory": "COMMENTED_OUT_UPSTREAM",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "rdfms-empty-property-elements-test003",
+          "reasonCategory": "COMMENTED_OUT_UPSTREAM",
+          "testType": "EVALUATION"
+        },
+        {
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "rdfms-empty-property-elements-test009",
+          "reasonCategory": "COMMENTED_OUT_UPSTREAM",
+          "testType": "EVALUATION"
+        },
+        {
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "rdfms-xml-literal-namespaces-test001",
+          "reasonCategory": "COMMENTED_OUT_UPSTREAM",
+          "testType": "EVALUATION"
+        },
+        {
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "rdfms-xml-literal-namespaces-test002",
+          "reasonCategory": "COMMENTED_OUT_UPSTREAM",
+          "testType": "EVALUATION"
+        },
+        {
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "rdfms-xmllang-test001",
+          "reasonCategory": "COMMENTED_OUT_UPSTREAM",
+          "testType": "EVALUATION"
+        },
+        {
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "rdfms-xmllang-test002",
+          "reasonCategory": "COMMENTED_OUT_UPSTREAM",
+          "testType": "EVALUATION"
+        }
+      ],
+      "localManifestArtifact": "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl",
+      "manifestEntryCount": 166,
+      "manifestSha256": "027679cf7d460cdc401ccf2aab3546dfbdfad64badcdd15f225948f5643f6370",
+      "negativeSyntaxTestCount": 40,
+      "requiredTestCount": 166,
+      "runner": "src/owlapi-js/parser/rdfxml/rdfXml.conformance.test.js",
+      "runnerParsingPolicy": "Every active evaluation case must produce an RDF/JS dataset graph-isomorphic to its N-Triples result; every active negative-syntax case must reject before RDF-to-OWL reconstruction.",
+      "runnerScope": "Exercise the RDF/XML syntax-to-RDF/JS boundary independently; accepted syntax may then proceed through the separately governed shared RDF-to-OWL translator.",
+      "sourceDefinitionCount": 173,
+      "sourceTestCount": 166
     },
     {
       "id": "w3c-rdf-tests.turtle",

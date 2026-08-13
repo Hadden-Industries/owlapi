@@ -1,0 +1,22 @@
+Prefix: : <https://example.com/phase5#>
+Ontology: <https://example.com/phase5> <https://example.com/phase5/1>
+  Import: <https://example.com/imported>
+  Annotations: rdfs:label "Phase 5"@en
+
+  AnnotationProperty: :source
+  ObjectProperty: :hasChild
+  ObjectProperty: :knows
+  DataProperty: :age
+
+  Class: :Person
+    HasKey: :hasChild :age
+  Class: :Parent
+    SubClassOf: Annotations: :source "fixture" :hasChild some :Child
+  Class: :Child
+
+  Individual: :alice
+    Types: :Parent
+    Facts: :hasChild :bob, :age "42"^^xsd:integer, not :knows :bob
+  Individual: :bob
+
+  DisjointClasses: :Person, :Parent, :Child

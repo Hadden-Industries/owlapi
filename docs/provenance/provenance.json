@@ -11,6 +11,7 @@
     "PHASE3-2026-08-11": "Repository-owner approval of Phase 3 implementation and the named capability, expected-difference, provenance, performance, migration-status, and playbook updates on 11 August 2026",
     "PHASE4-2026-08-11": "Repository-owner approval of Phase 4 implementation and the named dependency, capability, conformance, expected-difference, provenance, performance, migration-status, and playbook updates on 11 August 2026",
     "PHASE5-2026-08-13": "Repository-owner approval of Phase 5 implementation and the named capability, conformance, dependency, provenance, performance, migration-status, and playbook updates on 13 August 2026",
+    "PHASE6-2026-08-13": "Repository-owner approval of Phase 6 implementation and the named capability, conformance, dependency, provenance, performance, migration-status, and playbook updates on 13 August 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026"
   },
   "provenanceCategories": {
@@ -325,6 +326,19 @@
             "src/owlapi-js/parser/owlxml/owlXml.differential.test.js"
           ],
           "decisionRef": "PHASE4-2026-08-11"
+        },
+        {
+          "phase": 6,
+          "scope": "register the RDF/XML descriptor after OWL/XML and before textual syntaxes while preserving injected registries and transactional import loading",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/rdf-syntax-grammar/",
+            "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.13"
+          ],
+          "focusedEvidence": [
+            "src/owlapi-js/parser/rdfxml/rdfXml.test.js",
+            "src/owlapi-js/parser/rdfxml/rdfXml.differential.test.js"
+          ],
+          "decisionRef": "PHASE6-2026-08-13"
         }
       ],
       "thirdPartyDependencies": [],
@@ -777,9 +791,119 @@
         "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js",
         "src/owlapi-js/rdf/rdfToOwlTranslator.differential.test.js"
       ],
+      "laterPhaseChanges": [
+        {
+          "phase": 6,
+          "scope": "preserve compatible-mode reconstruction of OWL Full RDF graphs that reuse a property across data, object, or annotation categories without mutating the graph-wide inferred category; strict-mode rejection and localized diagnostics remain explicit",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification",
+            "https://www.w3.org/TR/owl2-syntax/#Entities_Declarations_and_Typing",
+            "docs/owlapi-js/implementation-plan.md sections 17.13 and 22"
+          ],
+          "compatibilityReferences": [
+            "OWLAPI 5.5.1 lax RDF-consumer behavior for cross-category property use observed through focused source inspection after a public Schema.org fixture exposed the compatibility case"
+          ],
+          "focusedEvidence": [
+            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
+            "util/verify-owlapi-rdfxml-corpus.mjs"
+          ],
+          "decisionRef": "PHASE6-2026-08-13"
+        }
+      ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE5-2026-08-13",
+      "reviewDate": "2026-08-13"
+    },
+    {
+      "id": "PHASE6-RDFXML-DESCRIPTOR",
+      "path": "src/owlapi-js/parser/rdfxml/descriptor.js",
+      "phase": 6,
+      "scope": "bounded tri-state RDF/XML detection and immutable manager-registry metadata without claiming OWL/XML documents",
+      "legacyWebVowlSources": ["src/owl2vowl/js/importLoader.js"],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/rdf-syntax-grammar/",
+        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.13"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public RDF/XML document-format and parser-factory identities"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/rdfxml/rdfXml.test.js",
+        "src/owlapi-js/parser/rdfxml/rdfXml.browser.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE6-2026-08-13",
+      "reviewDate": "2026-08-13"
+    },
+    {
+      "id": "PHASE6-RDFXML-PARSER",
+      "path": "src/owlapi-js/parser/rdfxml/parser.js",
+      "phase": 6,
+      "scope": "transactional composition of the RDF/XML syntax adapter with the shared syntax-independent RDF-to-OWL translator",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/importLoader.js",
+        "src/owl2vowl/js/rdfParser.js"
+      ],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification",
+        "https://rdf.js.org/dataset-spec/",
+        "docs/owlapi-js/implementation-plan.md sections 6 and 17.13"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 pinned Phase 5 structural snapshot loaded through RDF/XML"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/rdfxml/rdfXml.test.js",
+        "src/owlapi-js/parser/rdfxml/rdfXml.differential.test.js"
+      ],
+      "thirdPartyDependencies": [
+        "@rdfjs/data-model",
+        "@rdfjs/dataset",
+        "rdfxml-streaming-parser"
+      ],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE6-2026-08-13",
+      "reviewDate": "2026-08-13"
+    },
+    {
+      "id": "PHASE6-RDFXML-SYNTAX-ADAPTER",
+      "path": "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.js",
+      "phase": 6,
+      "scope": "private streaming RDF/XML-to-RDF/JS normalization with bounded XML security, chunking, cancellation, error normalization, and source-aware XMLLiteral canonicalization",
+      "legacyWebVowlSources": ["src/owl2vowl/js/rdfParser.js"],
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/rdf-syntax-grammar/",
+        "https://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal",
+        "https://www.w3.org/TR/xml-exc-c14n/",
+        "https://rdf.js.org/data-model-spec/",
+        "https://rdf.js.org/dataset-spec/",
+        "docs/owlapi-js/implementation-plan.md sections 17.13 and 21.7-21.8"
+      ],
+      "compatibilityReferences": [
+        "Pinned W3C rdf-tests revision ad541a5f0479f0798608c4801369d97b8e08b36f with all 166 active RDF/XML manifest entries passing"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "docs/owlapi-js/conformance/generated/w3c-rdfxml.json",
+        "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.test.js",
+        "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.resource.test.js",
+        "src/owlapi-js/parser/rdfxml/rdfXml.conformance.test.js",
+        "src/owlapi-js/parser/rdfxml/rdfXml.browser.test.js"
+      ],
+      "thirdPartyDependencies": [
+        "@rdfjs/data-model",
+        "@rdfjs/dataset",
+        "rdfxml-streaming-parser"
+      ],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE6-2026-08-13",
       "reviewDate": "2026-08-13"
     }
   ],
@@ -861,6 +985,22 @@
         "util/owlapi-reference/fixtures/owlxml/phase4-structural.owx",
         "util/owlapi-reference/fixtures/owlxml/phase4-structural.java.json",
         "src/owlapi-js/parser/owlxml/owlXml.differential.test.js"
+      ]
+    },
+    {
+      "id": "PHASE6-RESEARCH-OWL-FULL-PROPERTY-CATEGORY-REUSE",
+      "question": "How OWLAPI 5.5.1 reconstructs RDF graphs that use the same property across data, object, or annotation categories in compatible mode",
+      "publicBasis": "W3C OWL 2 Mapping to RDF Graphs reverse mapping, W3C OWL 2 entity declaration and typing rules, and public OWLRDFConsumer API documentation",
+      "implementationSourcesInspected": [
+        "parsers/src/main/java/org/semanticweb/owlapi/rdf/rdfxml/parser/TripleHandlers.java",
+        "parsers/src/main/java/org/semanticweb/owlapi/rdf/rdfxml/parser/OWLRDFConsumer.java"
+      ],
+      "sourceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "reason": "Focused source inspection followed the standards analysis and a failing public Schema.org fixture to confirm the observable scope of OWLAPI's lax RDF-consumer behavior.",
+      "productionUse": "No implementation text or control flow was copied; the independently authored compatibility rule is localized, diagnostic, and defined by project-owned regression and corpus tests.",
+      "evidence": [
+        "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
+        "util/verify-owlapi-rdfxml-corpus.mjs"
       ]
     }
   ],

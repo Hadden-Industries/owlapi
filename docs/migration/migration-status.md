@@ -10,7 +10,7 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |     3 | Manchester Syntax                                                  | Complete    | PASS: 4/22 focused; 65/564 full; lint/format/build green      |
 |     4 | OWL/XML                                                            | Complete    | PASS: 5/45 focused; 70/609 full; lint/format/build green      |
 |     5 | Canonical RDF ingestion and shared RDF-to-OWL reconstruction       | Complete    | PASS: 7/363 focused; 77/970 full; 312/312 W3C RDF documents   |
-|     6 | RDF/XML and first-real-adapter hardening                           | Not started | blocked by the Phase 5 Git checkpoint                         |
+|     6 | RDF/XML and first-real-adapter hardening                           | Complete    | PASS: 6/201 focused; 84/1178 full; 166/166 W3C RDF/XML        |
 |     7 | Early development-app integration                                  | Not started | blocked by Phase 6 learning gate                              |
 |     8 | Production WebVOWL cutover                                         | Not started | blocked by Phase 7 acceptance gate                            |
 |     9 | Private N3.js adapter foundation and strict Turtle                 | Not started | blocked by Phase 8 cutover gate                               |
@@ -24,9 +24,9 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |    17 | Physical legacy deletion                                           | Not started | blocked by Phase 16 and retained-reference audit              |
 |    18 | Package/release                                                    | Not started | blocked by all prior gates                                    |
 
-Active ingestion migration: Phase 5 is complete at its requested checkpoint;
+Active ingestion migration: Phase 6 is complete at its requested checkpoint;
 the WIP lock remains held. Phase 1 was committed as `3c1994a`; Phase 2 as
-`6be7059`; Phase 3 as `4e118d5`; and Phase 4 as `ddd7af0`. ADR 0002 and plan
-checkpoint `b71bbc2` record the approved future-phase reorder. Phase 6 remains
-inactive until the repository owner commits the Phase 5 checkpoint and
-explicitly instructs the implementation to proceed.
+`6be7059`; Phase 3 as `4e118d5`; Phase 4 as `ddd7af0`; and Phase 5 as `86f1602`.
+ADR 0002 and plan checkpoint `b71bbc2` record the approved future-phase
+reorder. Phase 7 remains inactive until the repository owner commits the Phase
+6 checkpoint and explicitly instructs the implementation to proceed.

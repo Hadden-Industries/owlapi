@@ -300,6 +300,145 @@ describe("RdfToOwlTranslator axiom reconstruction", () => {
     expect(disjoint.properties).toHaveLength(3);
   });
 
+  it("recovers an OWL Full data-property range encoded as a class only in compatible mode", async () => {
+    const property = nn(`${EX}legacyDataProperty`);
+    const range = bn("legacy-class-range");
+    const rangeMember = nn(`${EX}LegacyBoolean`);
+    const members = rdfList("legacy-class-range-members", [rangeMember]);
+    const input = datasetOf(
+      declaration(property, `${OWL}DatatypeProperty`),
+      declaration(range, `${OWL}Class`),
+      declaration(rangeMember, `${OWL}Class`),
+      q(range, nn(`${OWL}unionOf`), members.head),
+      members.quads,
+      q(property, nn(`${RDFS}range`), range),
+    );
+
+    await expect(
+      new RdfToOwlTranslator().translate(input),
+    ).rejects.toMatchObject({ code: "OWL_SYNTAX_ERROR" });
+
+    const { context, ontology } = await new RdfToOwlTranslator().translate(
+      input,
+      {
+        configuration: { parsingMode: "compatible" },
+      },
+    );
+    const [rangeAxiom] = ontology.getAxiomsByType(
+      OWLObjectKind.OBJECT_PROPERTY_RANGE_AXIOM,
+    );
+
+    expectAxiomCount(ontology, OWLObjectKind.DATA_PROPERTY_RANGE_AXIOM, 0);
+    expect(rangeAxiom).toMatchObject({
+      property: { iri: { value: property.value } },
+      range: { iri: { value: rangeMember.value } },
+    });
+    expect(context.diagnostics).toContainEqual(
+      expect.objectContaining({
+        code: "RDF_OWL_FULL_DATA_PROPERTY_RANGE_AS_CLASS",
+        property: property.value,
+        severity: "warning",
+      }),
+    );
+  });
+
+  it("keeps lax super-property inference local to each compatible axiom", async () => {
+    const objectProperty = nn(`${EX}objectChild`);
+    const dataProperty = nn(`${EX}dataChild`);
+    const sharedSuperProperty = nn(`${EX}sharedSuperProperty`);
+    const secondObjectProperty = nn(`${EX}secondObjectChild`);
+    const secondDataProperty = nn(`${EX}secondDataChild`);
+    const secondSharedSuperProperty = nn(`${EX}secondSharedSuperProperty`);
+    const input = datasetOf(
+      declaration(objectProperty, `${OWL}ObjectProperty`),
+      declaration(dataProperty, `${OWL}DatatypeProperty`),
+      declaration(secondObjectProperty, `${OWL}ObjectProperty`),
+      declaration(secondDataProperty, `${OWL}DatatypeProperty`),
+      q(objectProperty, nn(`${RDFS}subPropertyOf`), sharedSuperProperty),
+      q(dataProperty, nn(`${RDFS}subPropertyOf`), sharedSuperProperty),
+      q(
+        secondDataProperty,
+        nn(`${RDFS}subPropertyOf`),
+        secondSharedSuperProperty,
+      ),
+      q(
+        secondObjectProperty,
+        nn(`${RDFS}subPropertyOf`),
+        secondSharedSuperProperty,
+      ),
+    );
+
+    await expect(
+      new RdfToOwlTranslator().translate(input),
+    ).rejects.toMatchObject({ code: "OWL_SYNTAX_ERROR" });
+
+    const { context, ontology } = await new RdfToOwlTranslator().translate(
+      input,
+      {
+        configuration: { parsingMode: "compatible" },
+      },
+    );
+
+    expectAxiomCount(ontology, OWLObjectKind.SUB_OBJECT_PROPERTY_AXIOM, 2);
+    expectAxiomCount(ontology, OWLObjectKind.SUB_DATA_PROPERTY_AXIOM, 2);
+    expect(context.diagnostics).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: "RDF_PROPERTY_CATEGORY_REUSE",
+          iri: sharedSuperProperty.value,
+          requestedCategory: "data",
+          severity: "warning",
+        }),
+        expect.objectContaining({
+          code: "RDF_PROPERTY_CATEGORY_REUSE",
+          iri: secondSharedSuperProperty.value,
+          requestedCategory: "data",
+          severity: "warning",
+        }),
+      ]),
+    );
+  });
+
+  it("preserves annotation precedence when OWL Full reuses an annotation property", async () => {
+    const objectProperty = nn(`${EX}objectChild`);
+    const subject = nn(`${EX}Subject`);
+    const label = nn(`${RDFS}label`);
+    const input = datasetOf(
+      declaration(objectProperty, `${OWL}ObjectProperty`),
+      declaration(subject, `${OWL}Class`),
+      q(objectProperty, nn(`${RDFS}subPropertyOf`), label),
+      q(subject, label, literal("subject label", "en")),
+    );
+
+    await expect(
+      new RdfToOwlTranslator().translate(input),
+    ).rejects.toMatchObject({ code: "OWL_SYNTAX_ERROR" });
+
+    const { context, ontology } = await new RdfToOwlTranslator().translate(
+      input,
+      {
+        configuration: { parsingMode: "compatible" },
+      },
+    );
+
+    expectAxiomCount(ontology, OWLObjectKind.SUB_OBJECT_PROPERTY_AXIOM);
+    expectAxiomCount(ontology, OWLObjectKind.ANNOTATION_ASSERTION_AXIOM);
+    expectAxiomCount(
+      ontology,
+      OWLObjectKind.OBJECT_PROPERTY_ASSERTION_AXIOM,
+      0,
+    );
+    expect(context.diagnostics).toContainEqual(
+      expect.objectContaining({
+        code: "RDF_PROPERTY_CATEGORY_REUSE",
+        existingCategories: ["annotation"],
+        iri: label.value,
+        requestedCategory: "object",
+        severity: "warning",
+      }),
+    );
+  });
+
   it("reconstructs keys, positive assertions, negative assertions, and n-ary individual axioms", async () => {
     const owlClass = nn(`${EX}Person`);
     const objectProperty = nn(`${EX}knows`);
