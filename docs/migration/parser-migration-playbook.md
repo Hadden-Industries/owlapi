@@ -174,6 +174,14 @@ do not append chronology here.
 - Remeasure pre-existing signals on the current runtime before claiming any
   regression comparison, and record a failing threshold as an open regression
   rather than re-baselining it.
+- Serialize benchmark runs against all other work. Never launch one in the
+  background while tests, builds, or large file scans continue; contention
+  inflates wall time by a factor that looks exactly like a real regression.
+- Treat a tight run-to-run spread as evidence of sustained conditions, not of
+  clean conditions. Before recording any threshold breach as a finding,
+  cross-check it independently: repeat one isolated run, confirm the cost
+  scales as expected across input sizes, and verify that related signals remain
+  arithmetically consistent with each other.
 
 ## Next migration: Phase 8 production WebVOWL cutover
 
@@ -188,9 +196,6 @@ do not append chronology here.
 - Advertise only Functional Syntax, Manchester Syntax, OWL/XML and RDF/XML from
   the new path. Any other legacy-only syntax, including one discovered in an
   import closure, must fail with the canonical unsupported-format diagnostics.
-- Resolve finding `M7-008` before accepting cutover performance evidence. The
-  production path becomes exactly the signal that is currently 85.75% above its
-  accepted baseline, so that regression must be diagnosed rather than inherited.
 - Close production smoke, differential, import, unsupported-format and
   reachability acceptance; then pause for the Phase 8 Git checkpoint before
   Turtle begins.

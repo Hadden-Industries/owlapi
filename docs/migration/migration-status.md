@@ -12,7 +12,7 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |     5 | Canonical RDF ingestion and shared RDF-to-OWL reconstruction       | Complete    | PASS: 7/363 focused; 77/970 full; 312/312 W3C RDF documents   |
 |     6 | RDF/XML and first-real-adapter hardening                           | Complete    | PASS: 6/201 focused; 84/1178 full; 166/166 W3C RDF/XML        |
 |     7 | Early development-app integration                                  | Complete    | PASS: 10/37 focused; 94/1218 full; lint/format/build green    |
-|     8 | Production WebVOWL cutover                                         | Not started | blocked by Phase 7 checkpoint and finding `M7-008`            |
+|     8 | Production WebVOWL cutover                                         | Not started | blocked by Phase 7 acceptance gate                            |
 |     9 | Private N3.js adapter foundation and strict Turtle                 | Not started | blocked by Phase 8 cutover gate                               |
 |    10 | DL Syntax                                                          | Not started | blocked by Phase 9 learning gate                              |
 |    11 | KRSS family                                                        | Not started | blocked by Phase 10 learning gate                             |
@@ -29,12 +29,13 @@ the WIP lock remains held. Phase 8 remains inactive until the repository owner
 commits the Phase 7 checkpoint and explicitly instructs the implementation to
 proceed.
 
-Phase 7 closes with one deferred item. Finding `M7-008` records that
-`generated-rdfxml-large.end-to-end` measures 85.75% above its accepted Phase 6
-baseline. The regression predates Phase 7 and was measured at approximately
-68 ms of Phase 7 attributable cost, so the repository owner assigned it to
-Phase 8, which rewires production onto that path. The accepted baseline is
-retained unchanged, as section 20.6 requires.
+Phase 7 closes with no deferred items. Finding `M7-008` initially recorded
+`generated-rdfxml-large.end-to-end` as 85.75% above its accepted Phase 6
+baseline; that measurement was taken while other work ran concurrently.
+Remeasured on an idle machine, the same signal is 1.86% below the accepted
+baseline, so no regression exists and no baseline was re-anchored. The finding
+was rewritten as a benchmark-isolation lesson and its disposition changed from
+`LOCAL_PHASE_FOLLOW_UP` to `PLAYBOOK_UPDATE`.
 
 Recorded commit identifiers predating Phase 7 are not resolvable on the current
 branch, which was rewritten after they were recorded; the Phase 1 through
