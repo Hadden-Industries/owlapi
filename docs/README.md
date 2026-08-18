@@ -33,6 +33,11 @@ complete Functional Syntax, Manchester Syntax, OWL/XML, dataset graph-policy,
 and shared RDF-to-OWL migrations with their conformance, differential,
 resource/performance, provenance, and learning-gate evidence.
 
+Phase 6 adds the RDF/XML adapter and the first-real-adapter hardening. Phase 7
+adds `VOWLBuilder`, the WebVOWL import resolver, and an explicitly
+development-only invocation seam, with exact Java and legacy differential
+evidence. The production default is unchanged until the Phase 8 cutover.
+
 ADR 0002 prioritizes the shared RDF-to-OWL foundation, RDF/XML, early
 development-app integration, production cutover, and strict Turtle before the
 remaining parser programme. The current phase table and blocker are recorded in

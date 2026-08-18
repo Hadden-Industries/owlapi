@@ -287,6 +287,14 @@ export class OWLOntologyManager {
   }
 
   async loadOntologyFromOntologyDocument(source, configuration) {
+    const result = await this.loadOntologyGraphFromOntologyDocument(
+      source,
+      configuration,
+    );
+    return result.ontology;
+  }
+
+  async loadOntologyGraphFromOntologyDocument(source, configuration) {
     const normalizedConfiguration = normalizeConfiguration(configuration);
     this.#throwIfAborted(normalizedConfiguration);
     const normalizedSource = normalizeSource(source);
@@ -319,7 +327,19 @@ export class OWLOntologyManager {
       this.#ontologies.set(key, entry.ontology);
       this.#contexts.set(entry.ontology, freezeContext(entry.context));
     }
-    return root;
+    const documents = Object.freeze(
+      session.entries.map((entry) =>
+        Object.freeze({
+          context: this.#contexts.get(entry.ontology),
+          ontology: entry.ontology,
+        }),
+      ),
+    );
+    return Object.freeze({
+      documents,
+      importsClosure: Object.freeze(documents.map(({ ontology }) => ontology)),
+      ontology: root,
+    });
   }
 
   async #loadDocument(source, configuration, session, depth) {

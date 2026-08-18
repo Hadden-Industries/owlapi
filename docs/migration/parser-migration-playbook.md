@@ -140,32 +140,57 @@ do not append chronology here.
   browser chunks, first use, Node/browser parity and Node-only fallback leakage.
   Compare regressions with paired measurements on the same runtime and machine.
 
-## Next migration: Phase 7 early development-app integration
+## Institutionalized application-integration method
 
-- Implement one `VOWLBuilder` that accepts canonical `OWLOntology` structural
-  objects and produces the VOWL-JSON-compatible application result. Its public
-  input must not mention RDF/XML, RDF/JS, parser ASTs, DOM nodes, legacy maps or
-  legacy converter state.
-- Make the new manager → ontology → builder route explicitly invocable in the
-  development app and end-to-end tests while leaving the production default
-  unchanged until Phase 8.
-- Start with project-owned builder fixtures and structural visitor/dispatch
-  tests. Protect entity kinds, labels/comments/annotations, subclass and
-  property relations, restrictions, cardinalities, individuals, datatypes,
-  ontology metadata and imports before comparing aggregate JSON.
-- Compare the new result with the pinned Java OWL2VOWL and retained legacy
-  outputs through the governed exact-difference machinery. Counts alone are
-  insufficient; no unmatched, ambiguous or stale expected difference may pass.
-- Exercise Functional, Manchester, OWL/XML and RDF/XML through the same builder.
-  Include supported and malformed RDF/XML, import closure, an empty anonymous
-  ontology, a compatible OWL Full document with observable warnings, and a
-  resource failure that proves no partial application state is published.
-- Preserve loader/parser diagnostics through the development route. The
-  builder must not silently absorb compatible RDF warnings or retry through the
-  legacy parser/converter pipeline.
-- Add a static architecture test proving that `VOWLBuilder` has no imports from
-  concrete syntax adapters, RDF mapping modules or retained legacy
-  parser/converter modules.
-- Close structural-builder, differential, development-app, import, malformed,
-  resource, architecture, provenance, performance, full-repository and learning
-  gates; then pause for the Phase 7 Git checkpoint before production cutover.
+- Keep the application builder free of concrete-syntax knowledge. It consumes
+  structural OWL objects only, and a fitness test must prove its transitive
+  import graph reaches no parser, RDF, or retained legacy converter module.
+- Dispose of every construct explicitly. Map each canonical axiom kind in the
+  dispatch table, and give kinds the application does not visualize a named
+  ignore with a stated reason so silence never stands in for omission.
+- Start the builder from a deliberately failing stub so the first failure comes
+  from the missing feature rather than from a typo, then add one mapping rule
+  per red step.
+- Prefer a rich pinned oracle fixture over a minimal one. A minimal fixture
+  matches on the first attempt and hides defects that a rich one turns into
+  failing tests instead of expected-difference entries.
+- Never share one canonicalizer between a foreign-oracle comparison and a
+  comparison of two implementations of the same format. Normalization that is
+  correct against a foreign dialect silently weakens the same-format gate.
+- Declare oracle dialect differences; do not delete them inside a comparison
+  helper. Name the normalization, apply it only to that oracle's comparison,
+  and pin its exact contents by test so it cannot be widened quietly.
+- Confirm a differential gate can accept its own governed exceptions. Assert the
+  expected difference count derived from the manifest's scoped rules, never a
+  hard-coded empty result.
+- Prove a hole is closed by breaking the production behaviour on purpose and
+  watching the intended test fail; a gate that stays green under that mutation
+  was not protecting anything.
+- Treat a development-only seam as unproven until both builds are produced and
+  the production bundle is inspected for its markers.
+- Verify recorded Git revisions resolve on the current branch. A format-only
+  check on a revision string cannot detect an identifier orphaned by a rebase,
+  and equivalence after a rewrite is proved by blob hash, not commit subject.
+- Remeasure pre-existing signals on the current runtime before claiming any
+  regression comparison, and record a failing threshold as an open regression
+  rather than re-baselining it.
+
+## Next migration: Phase 8 production WebVOWL cutover
+
+- Rewrite the existing WebVOWL production entry path in place to use
+  `owlapi-js` to `OWLOntology` to `VOWLBuilder`. Do not move, rename or delete
+  any legacy file.
+- Remove the temporary development-only routing so two production
+  implementations cannot coexist. There is no runtime legacy fallback.
+- Prove by static architecture test and production bundle/import-graph
+  inspection that the entry graph cannot reach the legacy parsers, the RDF/XML
+  serializer/bridge, `ontologyConverter.js` or `jsonExporter.js`.
+- Advertise only Functional Syntax, Manchester Syntax, OWL/XML and RDF/XML from
+  the new path. Any other legacy-only syntax, including one discovered in an
+  import closure, must fail with the canonical unsupported-format diagnostics.
+- Resolve finding `M7-008` before accepting cutover performance evidence. The
+  production path becomes exactly the signal that is currently 85.75% above its
+  accepted baseline, so that regression must be diagnosed rather than inherited.
+- Close production smoke, differential, import, unsupported-format and
+  reachability acceptance; then pause for the Phase 8 Git checkpoint before
+  Turtle begins.

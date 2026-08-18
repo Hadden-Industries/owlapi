@@ -12,6 +12,7 @@
     "PHASE4-2026-08-11": "Repository-owner approval of Phase 4 implementation and the named dependency, capability, conformance, expected-difference, provenance, performance, migration-status, and playbook updates on 11 August 2026",
     "PHASE5-2026-08-13": "Repository-owner approval of Phase 5 implementation and the named capability, conformance, dependency, provenance, performance, migration-status, and playbook updates on 13 August 2026",
     "PHASE6-2026-08-13": "Repository-owner approval of Phase 6 implementation and the named capability, conformance, dependency, provenance, performance, migration-status, and playbook updates on 13 August 2026",
+    "PHASE7-2026-08-18": "Repository-owner approval of Phase 7 implementation and the named capability, conformance, provenance, performance, migration-status, and playbook updates on 18 August 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026"
   },
   "provenanceCategories": {
@@ -34,7 +35,30 @@
       "AT_REVISION": "matches only the named Git commit snapshot",
       "AFTER_REVISION": "matches descendants of the named Git commit and excludes the named commit"
     },
-    "currentDisposition": "An item's top-level disposition is authoritative for the current working revision; revisionDispositions records the approved boundary-specific history."
+    "currentDisposition": "An item's top-level disposition is authoritative for the current working revision; revisionDispositions records the approved boundary-specific history.",
+    "reanchoring": {
+      "reason": "The migration branch was rebased after the boundaries were first recorded, which orphaned the original commits: they remained reachable as objects but were no longer ancestors of any branch, so the AT_REVISION and AFTER_REVISION selectors could not be evaluated.",
+      "verification": "Each replacement was confirmed by comparing the Git blob hash of the governed path at the original and replacement commits; both pairs were byte-identical.",
+      "gate": "src/owlapi-js/governance.test.js asserts that every recorded reuse-boundary revision is an ancestor of HEAD, so a future rebase fails the suite instead of silently invalidating these selectors.",
+      "history": [
+        {
+          "originalRevision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "currentRevision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
+          "subject": "fix(owl2vowl): Support XML property attributes and property characteristics",
+          "verifiedPath": "src/owl2vowl/js/ontologyConverter.js",
+          "verifiedBlob": "b6be72f9f58c686f7c02ff614336ca91c750d20f",
+          "decisionRef": "PHASE7-2026-08-18"
+        },
+        {
+          "originalRevision": "c279ee48dbaee5020b92d43d1435fe37f7abda1c",
+          "currentRevision": "32827d4aec692af2968dae996fca2169e33bf46b",
+          "subject": "refactor(lint): enforce strict ES2024 standards and resolve all ESLint issues",
+          "verifiedPath": "src/owl2vowl/js/turtleParser.js",
+          "verifiedBlob": "a0be0c01b77a1d6b48737aa91f3018273a3996a3",
+          "decisionRef": "PHASE7-2026-08-18"
+        }
+      ]
+    }
   },
   "implementationRecords": [
     {
@@ -339,6 +363,17 @@
             "src/owlapi-js/parser/rdfxml/rdfXml.differential.test.js"
           ],
           "decisionRef": "PHASE6-2026-08-13"
+        },
+        {
+          "phase": 7,
+          "scope": "add loadOntologyGraphFromOntologyDocument, returning the frozen root ontology, imports closure, and per-document contexts so a consumer can reach parser diagnostics without re-walking the closure",
+          "normativePublicSources": [
+            "docs/owlapi-js/implementation-plan.md sections 10.3-10.6, 11.5, and 17.14"
+          ],
+          "focusedEvidence": [
+            "src/owlapi-js/manager/owlOntologyManager.integration.test.js"
+          ],
+          "decisionRef": "PHASE7-2026-08-18"
         }
       ],
       "thirdPartyDependencies": [],
@@ -1076,12 +1111,12 @@
       "revisionDispositions": [
         {
           "selector": "AT_REVISION",
-          "revision": "c279ee48dbaee5020b92d43d1435fe37f7abda1c",
+          "revision": "32827d4aec692af2968dae996fca2169e33bf46b",
           "disposition": "REUSE_ALLOWED"
         },
         {
           "selector": "AFTER_REVISION",
-          "revision": "c279ee48dbaee5020b92d43d1435fe37f7abda1c",
+          "revision": "32827d4aec692af2968dae996fca2169e33bf46b",
           "disposition": "REIMPLEMENT"
         }
       ],
@@ -1100,12 +1135,12 @@
       "revisionDispositions": [
         {
           "selector": "AT_REVISION",
-          "revision": "c279ee48dbaee5020b92d43d1435fe37f7abda1c",
+          "revision": "32827d4aec692af2968dae996fca2169e33bf46b",
           "disposition": "REUSE_ALLOWED"
         },
         {
           "selector": "AFTER_REVISION",
-          "revision": "c279ee48dbaee5020b92d43d1435fe37f7abda1c",
+          "revision": "32827d4aec692af2968dae996fca2169e33bf46b",
           "disposition": "REIMPLEMENT"
         }
       ],
@@ -1136,12 +1171,12 @@
       "revisionDispositions": [
         {
           "selector": "AT_REVISION",
-          "revision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "revision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
           "disposition": "REUSE_ALLOWED"
         },
         {
           "selector": "AFTER_REVISION",
-          "revision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "revision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
           "disposition": "REIMPLEMENT"
         }
       ],
@@ -1160,12 +1195,12 @@
       "revisionDispositions": [
         {
           "selector": "AT_REVISION",
-          "revision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "revision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
           "disposition": "REUSE_ALLOWED"
         },
         {
           "selector": "AFTER_REVISION",
-          "revision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "revision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
           "disposition": "REIMPLEMENT"
         }
       ],
@@ -1268,12 +1303,12 @@
       "revisionDispositions": [
         {
           "selector": "AT_REVISION",
-          "revision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "revision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
           "disposition": "REUSE_ALLOWED"
         },
         {
           "selector": "AFTER_REVISION",
-          "revision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "revision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
           "disposition": "REIMPLEMENT"
         }
       ],
@@ -1292,12 +1327,12 @@
       "revisionDispositions": [
         {
           "selector": "AT_REVISION",
-          "revision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "revision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
           "disposition": "REUSE_ALLOWED"
         },
         {
           "selector": "AFTER_REVISION",
-          "revision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+          "revision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
           "disposition": "REIMPLEMENT"
         }
       ],
@@ -1316,6 +1351,42 @@
       "replacementPhase": null,
       "evidence": "not part of owlapi-js",
       "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "WEBVOWL-VOWL-BUILDER",
+      "path": "src/owl2vowl/js/vowlBuilder.js",
+      "scope": "entire module",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "origin": "Phase 7 structural OWL to VOWL-JSON builder authored test-first against project-owned fixtures and the pinned OWL2VOWL behavioural oracle",
+      "licenseCopyright": "Repository MIT",
+      "disposition": "REUSE_ALLOWED",
+      "replacementPhase": null,
+      "evidence": "src/owl2vowl/js/vowlBuilder.test.js, vowlBuilder.architecture.test.js, and src/owl2vowl/test/vowlBuilder.differential.test.js; the VOWL-JSON header field mapping and the inferred/someValuesFrom attribute vocabulary were confirmed against src/owl2vowl/js/ontologyConverter.js and src/owl2vowl/js/jsonExporter.js as compatibility research under section 22.2, not copied as implementation",
+      "decisionRef": "PHASE7-2026-08-18"
+    },
+    {
+      "id": "WEBVOWL-OWLAPI-ADAPTER",
+      "path": "src/owl2vowl/js/owlapiAdapter.js",
+      "scope": "entire module",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "origin": "Phase 7 development-only invocation seam over the public owlapi-js manager API",
+      "licenseCopyright": "Repository MIT",
+      "disposition": "REUSE_ALLOWED",
+      "replacementPhase": 8,
+      "evidence": "src/owl2vowl/js/owlapiAdapter.test.js; removed or made production-unreachable when the production entry point is rewired in Phase 8",
+      "decisionRef": "PHASE7-2026-08-18"
+    },
+    {
+      "id": "WEBVOWL-IMPORT-RESOLVER",
+      "path": "src/owl2vowl/js/importResolver.js",
+      "scope": "entire module",
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "origin": "Phase 7 WebVOWL catalog and HTTP import policy implementing the core loader interfaces",
+      "licenseCopyright": "Repository MIT",
+      "disposition": "REUSE_ALLOWED",
+      "replacementPhase": null,
+      "evidence": "src/owl2vowl/js/importResolver.test.js; implements the application-side policy that section 10.5 keeps out of owlapi-js core",
+      "decisionRef": "PHASE7-2026-08-18"
     },
     {
       "id": "WEBVOWL-ENTRY",

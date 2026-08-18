@@ -71,7 +71,10 @@
       "upstream": "C:/Users/maksy/GitHub/VisualDataWeb/OWL2VOWL/target/OWL2VOWL-0.3.7-shaded.jar",
       "revision": "sha256:4bd16f5b953fa27bd7bded24da329d574b8c9114732e9c56379ee2eb905800de",
       "embeddedOwlapiVersion": "5.1.1",
-      "runtime": "development and test only"
+      "runtime": "development and test only",
+      "applicable": ["VOWL semantic snapshot"],
+      "dialectNormalization": "src/owl2vowl/test/vowlSemanticSnapshot.js#JAVA_OWL2VOWL_DIALECT",
+      "runner": "src/owl2vowl/test/vowlBuilder.differential.test.js"
     }
   ]
 }

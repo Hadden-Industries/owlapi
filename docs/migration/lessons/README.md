@@ -19,3 +19,4 @@ Allowed primary dispositions: `NO_CHANGE`, `PLAYBOOK_UPDATE`,
 - [Phase 4: OWL/XML](003-owlxml.md)
 - [Phase 5: canonical RDF ingestion and RDF-to-OWL](004-rdf-to-owl.md)
 - [Phase 6: RDF/XML and first-real-adapter hardening](005-rdfxml.md)
+- [Phase 7: early development-app integration](006-development-integration.md)

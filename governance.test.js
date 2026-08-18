@@ -1,5 +1,7 @@
 import { createRequire } from "node:module";
+import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
 import { OWLOntologyLoaderConfiguration } from "./io/index.js";
 
@@ -11,6 +13,39 @@ const {
 
 const readJson = (relativePath) =>
   JSON.parse(readFileSync(new URL(relativePath, import.meta.url), "utf8"));
+
+const REPOSITORY_ROOT = fileURLToPath(new URL("../../", import.meta.url));
+
+const git = (...args) =>
+  execFileSync("git", args, {
+    cwd: REPOSITORY_ROOT,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "pipe"],
+  }).trim();
+
+// A shallow clone or a checkout without Git metadata cannot answer ancestry at
+// all, and both occur in this repository's pipelines: Travis clones at its
+// default depth and .dockerignore excludes .git from the image context. The
+// unavailability is therefore proved rather than assumed, so this gate can only
+// be bypassed where it is genuinely impossible to evaluate.
+const completeHistoryUnavailableReason = () => {
+  try {
+    return git("rev-parse", "--is-shallow-repository") === "true"
+      ? "shallow repository"
+      : undefined;
+  } catch {
+    return "git metadata unavailable";
+  }
+};
+
+const isAncestorOfHead = (revision) => {
+  try {
+    git("merge-base", "--is-ancestor", revision, "HEAD");
+    return true;
+  } catch {
+    return false;
+  }
+};
 
 const listProductionModules = (directory, prefix) =>
   readdirSync(directory, { withFileTypes: true })
@@ -44,7 +79,7 @@ describe("owlapi-js governance artifacts", () => {
     }
     expect(
       matrix.capabilities
-        .filter(({ phase }) => phase !== null && phase <= 6)
+        .filter(({ phase }) => phase !== null && phase <= 7)
         .every(({ progress }) => progress === "COMPLETE"),
     ).toBe(true);
   });
@@ -198,27 +233,27 @@ describe("owlapi-js governance artifacts", () => {
     const revisionBoundaries = new Map([
       [
         "src/owl2vowl/js/ontologyConverter.js",
-        "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+        "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
       ],
       [
         "src/owl2vowl/js/ontologyConverter.test.js",
-        "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+        "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
       ],
       [
         "src/owl2vowl/js/rdfParser.js",
-        "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+        "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
       ],
       [
         "src/owl2vowl/js/rdfParser.test.js",
-        "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
+        "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
       ],
       [
         "src/owl2vowl/js/turtleParser.js",
-        "c279ee48dbaee5020b92d43d1435fe37f7abda1c",
+        "32827d4aec692af2968dae996fca2169e33bf46b",
       ],
       [
         "src/owl2vowl/js/turtleParser.test.js",
-        "c279ee48dbaee5020b92d43d1435fe37f7abda1c",
+        "32827d4aec692af2968dae996fca2169e33bf46b",
       ],
     ]);
 
@@ -374,6 +409,59 @@ describe("owlapi-js governance artifacts", () => {
       expect(suite.revision).toBeTruthy();
       expect(suite.revision).not.toMatch(/^(main|master|latest)$/i);
     }
+  });
+
+  it("resolves every recorded reuse-boundary revision on the current branch", () => {
+    const manifest = readJson(
+      "../../docs/owlapi-js/provenance/provenance.json",
+    );
+    const revisions = [
+      ...new Set(
+        manifest.items.flatMap((item) =>
+          (item.revisionDispositions || []).map(({ revision }) => revision),
+        ),
+      ),
+    ];
+    const unavailable = completeHistoryUnavailableReason();
+
+    expect(revisions.length).toBeGreaterThan(0);
+    if (unavailable) {
+      expect(["shallow repository", "git metadata unavailable"]).toContain(
+        unavailable,
+      );
+      return;
+    }
+    for (const revision of revisions) {
+      expect({ onCurrentBranch: isAncestorOfHead(revision), revision }).toEqual(
+        {
+          onCurrentBranch: true,
+          revision,
+        },
+      );
+    }
+  });
+
+  it("resolves every declared conformance runner and harness on disk", () => {
+    const manifest = readJson("../../docs/owlapi-js/conformance/suites.json");
+
+    for (const suite of manifest.suites) {
+      for (const path of [suite.runner, suite.harness].filter(Boolean)) {
+        expect({
+          exists: existsSync(new URL(`../../${path}`, import.meta.url)),
+          path,
+        }).toEqual({ exists: true, path });
+      }
+    }
+  });
+
+  it("declares the Phase 7 VOWL semantic differential against the OWL2VOWL oracle", () => {
+    const manifest = readJson("../../docs/owlapi-js/conformance/suites.json");
+    const suite = manifest.suites.find(({ id }) => id === "owl2vowl-reference");
+
+    expect(suite.applicable).toContain("VOWL semantic snapshot");
+    expect(suite.runner).toBe(
+      "src/owl2vowl/test/vowlBuilder.differential.test.js",
+    );
   });
 
   it("pins selected dependency versions and their replacement boundaries", () => {
