@@ -9,6 +9,10 @@ import {
   RdfToOwlTranslator,
 } from "../src/owlapi-js/rdf/index.js";
 
+import { assertQuiescentMachine } from "./benchmarkEnvironment.mjs";
+
+await assertQuiescentMachine();
+
 const RUN_COUNT = 5;
 const WARMUP_COUNT = 1;
 const SAMPLE_INTERVAL_MS = 5;

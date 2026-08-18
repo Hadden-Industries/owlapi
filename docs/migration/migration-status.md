@@ -24,10 +24,9 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |    17 | Physical legacy deletion                                           | Not started | blocked by Phase 16 and retained-reference audit              |
 |    18 | Package/release                                                    | Not started | blocked by all prior gates                                    |
 
-Active ingestion migration: Phase 7 is complete at its requested checkpoint;
-the WIP lock remains held. Phase 8 remains inactive until the repository owner
-commits the Phase 7 checkpoint and explicitly instructs the implementation to
-proceed.
+Active ingestion migration: Phase 7 is complete and committed as `27dba50`,
+corrected by `9733cc9`; the WIP lock remains held. Phase 8 remains inactive
+until the repository owner explicitly instructs the implementation to proceed.
 
 Phase 7 closes with no deferred items. Finding `M7-008` initially recorded
 `generated-rdfxml-large.end-to-end` as 85.75% above its accepted Phase 6
@@ -40,7 +39,7 @@ was rewritten as a benchmark-isolation lesson and its disposition changed from
 Recorded commit identifiers predating Phase 7 are not resolvable on the current
 branch, which was rewritten after they were recorded; the Phase 1 through
 Phase 5 identifiers in earlier records are historical. Phase 6 is committed as
-`7590c17`. The two commit-bounded reuse boundaries in
+`7590c17` and Phase 7 as `27dba50`. The two commit-bounded reuse boundaries in
 `provenance/provenance.json` were re-anchored during Phase 7 to the rewritten
 commits carrying byte-identical content, and `governance.test.js` now fails if
 any recorded reuse-boundary revision stops being an ancestor of `HEAD`.

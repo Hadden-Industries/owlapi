@@ -177,6 +177,8 @@ do not append chronology here.
 - Serialize benchmark runs against all other work. Never launch one in the
   background while tests, builds, or large file scans continue; contention
   inflates wall time by a factor that looks exactly like a real regression.
+  `util/benchmarkEnvironment.mjs` enforces this and aborts a benchmark started
+  on a busy machine; see ADR 0003.
 - Treat a tight run-to-run spread as evidence of sustained conditions, not of
   clean conditions. Before recording any threshold breach as a finding,
   cross-check it independently: repeat one isolated run, confirm the cost

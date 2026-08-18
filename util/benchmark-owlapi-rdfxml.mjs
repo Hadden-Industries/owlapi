@@ -10,6 +10,10 @@ import { StringDocumentSource } from "../src/owlapi-js/io/index.js";
 import { OWLManager } from "../src/owlapi-js/manager/index.js";
 import { RdfXmlSyntaxAdapter } from "../src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.js";
 
+import { assertQuiescentMachine } from "./benchmarkEnvironment.mjs";
+
+await assertQuiescentMachine();
+
 const require = createRequire(import.meta.url);
 const {
   GENERATOR_VERSION,

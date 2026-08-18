@@ -3688,11 +3688,15 @@ Performance measurement **MUST** include at least wall-clock duration and peak h
 
 Performance thresholds **MUST** be evaluated in a defined benchmark environment recording relevant OS/runtime versions, architecture, memory settings where material, dependency lockfile, fixture revisions, warm-up method, measured-run count and aggregation statistic.
 
+The benchmark environment record **MUST** also include the concurrent-load state of the machine, which is a property of the moment of measurement rather than a static property of the environment. A release-gated measurement **MUST** be taken with no other benchmark, test run, build or bulk file-scanning work in progress. A benchmark **MUST NOT** be executed in the background alongside other work: sustained contention inflates wall time by a factor indistinguishable from a genuine regression, and backgrounding removes the waiting period during which the interference would otherwise be noticed. This requirement **SHOULD** be enforced by an executable pre-flight check rather than by convention alone.
+
 Phase 0 **MUST** establish available legacy baselines. Each completed migration establishes a new accepted baseline after its Definition of Done passes. A baseline **MUST NOT** be updated merely because a regression made the old threshold fail.
 
 Every release-gated benchmark **MUST** have an explicit threshold, expressed as an absolute bound in the pinned environment, a maximum permitted regression relative to approved baseline, or both. Exact thresholds are derived from Phase 0 evidence rather than invented by later teams.
 
-Performance gates **MUST** use repeated measurements and a predefined aggregation/noise policy. Re-running a failing benchmark until one favourable sample passes is forbidden.
+Performance gates **MUST** use repeated measurements and a predefined aggregation/noise policy. Re-running a failing benchmark until one favourable sample passes is forbidden. That prohibition forbids **selecting** a favourable sample; it does **NOT** forbid discarding a measurement demonstrated to be invalid, provided the demonstration is evidenced and the discarded measurement and its cause are recorded.
+
+Repeated measurement and aggregation **MUST NOT** be treated as protection against sustained interference. They defend against random, short-lived noise; sustained contention inflates every run by a similar factor, so a tight run-to-run spread is evidence of sustained conditions rather than of clean conditions. Accordingly, a threshold breach **MUST** be corroborated independently before it is recorded as a finding, a regression or a gate failure. At least one of the following is required: an isolated repeat of a single run, a scaling check across input sizes, or an arithmetic consistency check against related signals.
 
 Parser-selection performance is part of the contract: a large input that does not belong to a candidate syntax **MUST** be rejected through bounded detection/fail-fast behaviour rather than eagerly tokenizing/parsing the full document merely to discover mismatch.
 

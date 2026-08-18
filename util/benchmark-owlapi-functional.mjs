@@ -6,6 +6,10 @@ import { performance } from "node:perf_hooks";
 
 import { OWLManager } from "../src/owlapi-js/manager/index.js";
 
+import { assertQuiescentMachine } from "./benchmarkEnvironment.mjs";
+
+await assertQuiescentMachine();
+
 const require = createRequire(import.meta.url);
 const {
   GENERATOR_VERSION,
