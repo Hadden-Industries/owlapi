@@ -36,7 +36,17 @@ resource/performance, provenance, and learning-gate evidence.
 Phase 6 adds the RDF/XML adapter and the first-real-adapter hardening. Phase 7
 adds `VOWLBuilder`, the WebVOWL import resolver, and an explicitly
 development-only invocation seam, with exact Java and legacy differential
-evidence. The production default is unchanged until the Phase 8 cutover.
+evidence.
+
+Phase 8 performs the production cutover and is still open. WebVOWL ingests
+ontologies only through `owlapi-js`, the development seam is removed, and there
+is no runtime legacy fallback. The legacy parsers, `ontologyConverter.js` and
+`jsonExporter.js` remain unmoved for characterization and are proven
+unreachable from production by `src/productionGraph.architecture.test.js` and
+by bundle inspection. All 44 advertised corpus documents load through the
+production entry. The phase does not close until the corpus differential
+required by sections 17.15 and 18.8 runs the production path rather than the
+retained legacy pipeline.
 
 ADR 0002 prioritizes the shared RDF-to-OWL foundation, RDF/XML, early
 development-app integration, production cutover, and strict Turtle before the

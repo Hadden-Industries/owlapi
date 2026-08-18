@@ -185,19 +185,43 @@ do not append chronology here.
   scales as expected across input sizes, and verify that related signals remain
   arithmetically consistent with each other.
 
-## Next migration: Phase 8 production WebVOWL cutover
+## Institutionalized cutover method
 
-- Rewrite the existing WebVOWL production entry path in place to use
-  `owlapi-js` to `OWLOntology` to `VOWLBuilder`. Do not move, rename or delete
-  any legacy file.
-- Remove the temporary development-only routing so two production
-  implementations cannot coexist. There is no runtime legacy fallback.
-- Prove by static architecture test and production bundle/import-graph
-  inspection that the entry graph cannot reach the legacy parsers, the RDF/XML
-  serializer/bridge, `ontologyConverter.js` or `jsonExporter.js`.
-- Advertise only Functional Syntax, Manchester Syntax, OWL/XML and RDF/XML from
-  the new path. Any other legacy-only syntax, including one discovered in an
-  import closure, must fail with the canonical unsupported-format diagnostics.
-- Close production smoke, differential, import, unsupported-format and
-  reachability acceptance; then pause for the Phase 8 Git checkpoint before
-  Turtle begins.
+- Before rewriting an entry point in place, enumerate every consumer, not only
+  the production ones. Tests that import it are silently retargeted by the
+  rewrite, and a comparison against a retained oracle becomes a tautology that
+  passes forever.
+- Give the oracle its own entry first. Extract the old composition verbatim,
+  repoint its consumers, and prove the extraction faithful by watching the
+  characterization suite stay green across the move.
+- Migrate a seam's acceptance tests onto its replacement before deleting the
+  seam, so no gate lapses between the two states.
+- Build reachability gates that follow every module system the application
+  actually uses. A gate that follows only `import` in a codebase with CommonJS
+  callers traverses almost nothing and passes vacuously.
+- Exclude whole-line comments from a reachability scan, and only whole-line
+  comments: namespace IRIs inside string literals contain `//` and are corrupted
+  by a naive strip.
+- Verify a gate by breaking production on purpose. A gate that has never been
+  observed failing is an assumption.
+- Treat a full suite that stays green across a total implementation replacement
+  as a coverage report, not as reassurance. Find out which tests should have
+  failed and did not.
+
+## Next migration: Phase 9 private N3.js adapter foundation and strict Turtle
+
+- Implement the N3.js-backed Turtle adapter behind one private syntax adapter
+  terminating at canonical RDF/JS quads, composed with the existing shared
+  `RdfToOwlTranslator`. Do not revive `turtleParser.js`, which remains on disk
+  for characterization only.
+- This is the first syntax added after the cutover, so it extends a live
+  production surface. The reachability gate now protects production directly.
+- Rewrite the unsupported-format assertions in `src/owl2vowl/js/index.test.js`
+  deliberately: Turtle moves from rejected to advertised, and those assertions
+  are the record of what the application claims to support.
+- Run the independently owned W3C Turtle classifications at the syntax seam
+  before OWL reconstruction, then shared RDF-to-OWL, Java structural
+  differential, import-closure, WebVOWL, resource, abort, browser/Node, heap and
+  performance acceptance.
+- Measure on an idle machine, corroborate any threshold breach independently,
+  and pause for the Phase 9 Git checkpoint.

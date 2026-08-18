@@ -12,7 +12,7 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |     5 | Canonical RDF ingestion and shared RDF-to-OWL reconstruction       | Complete    | PASS: 7/363 focused; 77/970 full; 312/312 W3C RDF documents   |
 |     6 | RDF/XML and first-real-adapter hardening                           | Complete    | PASS: 6/201 focused; 84/1178 full; 166/166 W3C RDF/XML        |
 |     7 | Early development-app integration                                  | Complete    | PASS: 10/37 focused; 94/1218 full; lint/format/build green    |
-|     8 | Production WebVOWL cutover                                         | Not started | blocked by Phase 7 acceptance gate                            |
+|     8 | Production WebVOWL cutover                                         | In progress | blocked: no production corpus differential; see `M8-006`      |
 |     9 | Private N3.js adapter foundation and strict Turtle                 | Not started | blocked by Phase 8 cutover gate                               |
 |    10 | DL Syntax                                                          | Not started | blocked by Phase 9 learning gate                              |
 |    11 | KRSS family                                                        | Not started | blocked by Phase 10 learning gate                             |
@@ -24,9 +24,38 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |    17 | Physical legacy deletion                                           | Not started | blocked by Phase 16 and retained-reference audit              |
 |    18 | Package/release                                                    | Not started | blocked by all prior gates                                    |
 
-Active ingestion migration: Phase 7 is complete and committed as `27dba50`,
-corrected by `9733cc9`; the WIP lock remains held. Phase 8 remains inactive
-until the repository owner explicitly instructs the implementation to proceed.
+Active ingestion migration: Phase 8 is in progress and does not pass its gate.
+The WIP lock remains held.
+
+The structural cutover itself is in place. WebVOWL ingests ontologies only
+through `owlapi-js`, the production graph reaches no retained legacy parser,
+converter or exporter, and a legacy-only syntax such as Turtle fails with the
+canonical unsupported-format diagnostics, including when discovered inside an
+import closure. The legacy modules remain unmoved for characterization until
+the Phase 17 deletion.
+
+Real-corpus loading is now green. Finding `M8-006` records that the cutover
+first shipped with only 8 of 29 real RDF/XML-family ontologies loading, and that
+a full suite stayed green throughout because no gate measured real documents.
+`src/owl2vowl/test/productionCorpus.test.js` is that gate, and all 44 advertised
+documents now load through the production entry. Its acceptance set is the
+pinned OWL2VOWL reference outputs under
+`src/owl2vowl/test/fixtures/java-reference-outputs/`: every source the oracle
+converted successfully must load through the production entry.
+
+Phase 8 is nevertheless blocked, on a different gate. Section 18.8 defines the
+corpus differential as Java reference output compared against WebVOWL output
+"through new architecture", and section 17.15 requires production differential
+acceptance before the Phase 8 checkpoint. The existing 44-fixture suite in
+`src/owl2vowl/test/differential.test.js` runs the retained legacy pipeline
+through `legacyPipeline.js`, so it measures the engine that was replaced. It
+satisfied section 18.8 only while the legacy pipeline was the architecture.
+Phase 8 closes when an equivalent differential runs the production path, with
+every difference from the pinned oracle individually justified.
+
+Loading acceptance and differential acceptance are distinct claims. The corpus
+gate proves every advertised document is accepted; it does not prove the output
+matches what users saw under WebVOWL v1.1.7.
 
 Phase 7 closes with no deferred items. Finding `M7-008` initially recorded
 `generated-rdfxml-large.end-to-end` as 85.75% above its accepted Phase 6

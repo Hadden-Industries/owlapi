@@ -13,6 +13,7 @@
     "PHASE5-2026-08-13": "Repository-owner approval of Phase 5 implementation and the named capability, conformance, dependency, provenance, performance, migration-status, and playbook updates on 13 August 2026",
     "PHASE6-2026-08-13": "Repository-owner approval of Phase 6 implementation and the named capability, conformance, dependency, provenance, performance, migration-status, and playbook updates on 13 August 2026",
     "PHASE7-2026-08-18": "Repository-owner approval of Phase 7 implementation and the named capability, conformance, provenance, performance, migration-status, and playbook updates on 18 August 2026",
+    "PHASE8-2026-08-18": "Repository-owner approval of Phase 8 implementation and the named capability, provenance, performance, migration-status, and playbook updates on 18 August 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026"
   },
   "provenanceCategories": {
@@ -1312,8 +1313,8 @@
           "disposition": "REIMPLEMENT"
         }
       ],
-      "replacementPhase": 12,
-      "evidence": "the named snapshot may be reused for downstream WebVOWL conversion; descendant revisions must be reimplemented",
+      "replacementPhase": 8,
+      "evidence": "the named snapshot may be reused for downstream WebVOWL conversion; descendant revisions must be reimplemented; production-unreachable since the Phase 8 cutover and retained for characterization until the Phase 17 deletion",
       "decisionRef": "PROVENANCE-2026-08-11"
     },
     {
@@ -1348,9 +1349,9 @@
       "origin": "VOWL-JSON output",
       "licenseCopyright": "Repository MIT",
       "disposition": "EXCLUDE",
-      "replacementPhase": null,
-      "evidence": "not part of owlapi-js",
-      "decisionRef": "PHASE0-2026-08-10"
+      "replacementPhase": 8,
+      "evidence": "not part of owlapi-js; superseded in production by src/owl2vowl/js/vowlBuilder.js at the Phase 8 cutover and retained for characterization until the Phase 17 deletion",
+      "decisionRef": "PHASE8-2026-08-18"
     },
     {
       "id": "WEBVOWL-VOWL-BUILDER",
@@ -1362,18 +1363,6 @@
       "disposition": "REUSE_ALLOWED",
       "replacementPhase": null,
       "evidence": "src/owl2vowl/js/vowlBuilder.test.js, vowlBuilder.architecture.test.js, and src/owl2vowl/test/vowlBuilder.differential.test.js; the VOWL-JSON header field mapping and the inferred/someValuesFrom attribute vocabulary were confirmed against src/owl2vowl/js/ontologyConverter.js and src/owl2vowl/js/jsonExporter.js as compatibility research under section 22.2, not copied as implementation",
-      "decisionRef": "PHASE7-2026-08-18"
-    },
-    {
-      "id": "WEBVOWL-OWLAPI-ADAPTER",
-      "path": "src/owl2vowl/js/owlapiAdapter.js",
-      "scope": "entire module",
-      "provenanceCategory": "A_PROJECT_ORIGINAL",
-      "origin": "Phase 7 development-only invocation seam over the public owlapi-js manager API",
-      "licenseCopyright": "Repository MIT",
-      "disposition": "REUSE_ALLOWED",
-      "replacementPhase": 8,
-      "evidence": "src/owl2vowl/js/owlapiAdapter.test.js; removed or made production-unreachable when the production entry point is rewired in Phase 8",
       "decisionRef": "PHASE7-2026-08-18"
     },
     {
@@ -1396,9 +1385,9 @@
       "origin": "WebVOWL parser and conversion entry point",
       "licenseCopyright": "Repository MIT",
       "disposition": "EXCLUDE",
-      "replacementPhase": 12,
-      "evidence": "stays in WebVOWL and consumes the eventual public owlapi-js API",
-      "decisionRef": "PHASE0-2026-08-10"
+      "replacementPhase": 8,
+      "evidence": "stays in WebVOWL and consumes the public owlapi-js API; rewritten in place during the Phase 8 cutover to route through OWLOntology and VOWLBuilder, with src/owl2vowl/js/index.test.js and src/productionGraph.architecture.test.js proving it reaches no retained legacy module",
+      "decisionRef": "PHASE8-2026-08-18"
     },
     {
       "id": "LEGACY-CHARACTERIZATION-TESTS",

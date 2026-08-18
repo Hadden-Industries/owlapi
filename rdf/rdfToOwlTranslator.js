@@ -490,7 +490,7 @@ class RdfGraphInterpreter {
       }
     }
 
-    this.#assertCompatiblePropertyCategories();
+    this.#resolvePropertyCategoryPunning();
     this.#indexReifications();
     for (const { constructorName, currentQuad, subject } of declarations) {
       const entity = this.#dataFactory[constructorName](
@@ -592,10 +592,47 @@ class RdfGraphInterpreter {
       ({ subject }) => !referencedOntologyNodeKeys.has(termKey(subject)),
     );
     if (ontologyTypeQuads.length > 1) {
-      throw new OWLSyntaxError(
-        "An RDF graph cannot identify more than one OWL ontology header",
-        { observed: ontologyTypeQuads.length },
-      );
+      // OWL 2 expects a document to carry one ontology header, so strict mode
+      // rejects the graph. Real vocabularies violate this: protege-dc.owl
+      // declares both itself and the Dublin Core elements vocabulary, and
+      // prov.owl merges fifteen PROV modules into a single document.
+      //
+      // Compatible mode selects one deterministically, preferring the header
+      // whose IRI is the document's own. That is the ontology the document *is*,
+      // as opposed to one it merely describes, and it is the choice the pinned
+      // oracle makes for protege-dc.owl. Where no header matches the document,
+      // the first declared wins; the oracle's choice in that case could not be
+      // derived and may differ.
+      if (this.#configuration.parsingMode === "strict") {
+        throw new OWLSyntaxError(
+          "An RDF graph cannot identify more than one OWL ontology header",
+          { observed: ontologyTypeQuads.length },
+        );
+      }
+      // `#documentScope` is the document IRI, or a synthetic per-document urn
+      // when the caller supplied none. The synthetic form matches no header, so
+      // an anonymous document falls through to the first declared.
+      const selected =
+        ontologyTypeQuads.find(
+          ({ subject }) => subject.value === this.#documentScope,
+        ) || ontologyTypeQuads[0];
+      if (this.#configuration.collectWarnings) {
+        this.#diagnostics.push({
+          code: "RDF_MULTIPLE_ONTOLOGY_HEADERS",
+          message:
+            "The RDF graph declared more than one OWL ontology header and one was selected",
+          observed: ontologyTypeQuads.length,
+          selectedOntologyIRI: selected.subject.value,
+          severity: "warning",
+        });
+      }
+      for (const quad of ontologyTypeQuads) {
+        if (quad !== selected) {
+          this.#consume(quad);
+        }
+      }
+      ontologyTypeQuads.length = 0;
+      ontologyTypeQuads.push(selected);
     }
     if (ontologyTypeQuads.length === 0) {
       return;
@@ -1144,7 +1181,10 @@ class RdfGraphInterpreter {
               annotations,
             )
           : this.#dataFactory.getOWLFunctionalObjectPropertyAxiom(
-              await this.#objectPropertyExpression(currentQuad.subject, 0),
+              await this.#objectPropertyExpressionForAxiom(
+                currentQuad.subject,
+                0,
+              ),
               annotations,
             );
       } else {
@@ -1152,8 +1192,12 @@ class RdfGraphInterpreter {
         if (!method) {
           continue;
         }
+        // A property characteristic is an axiom, so it uses the
+        // recovery-capable entry point: in compatible mode a property punned
+        // into another category is still honoured for this one axiom and the
+        // reuse is recorded, rather than the whole document being rejected.
         axiom = this.#dataFactory[method](
-          await this.#objectPropertyExpression(currentQuad.subject, 0),
+          await this.#objectPropertyExpressionForAxiom(currentQuad.subject, 0),
           annotations,
         );
       }
@@ -1335,14 +1379,48 @@ class RdfGraphInterpreter {
         );
       } else if (this.#isObjectPropertyTerm(currentQuad.predicate)) {
         if (currentQuad.object.termType === "Literal") {
-          throw new OWLSyntaxError(
-            "An object property assertion requires an individual object",
-            {
+          // An object property assertion cannot take a literal object, so this
+          // graph is OWL Full. Unlike a category conflict there is no competing
+          // logical reading to prefer: the object-property reading is
+          // impossible, so the choice is between preserving the statement as an
+          // annotation and discarding it. Strict discards; compatible preserves
+          // it and records the recovery.
+          if (this.#configuration.parsingMode === "strict") {
+            throw new OWLSyntaxError(
+              "An object property assertion requires an individual object",
+              {
+                object: currentQuad.object.value,
+                predicate: currentQuad.predicate.value,
+                subject: currentQuad.subject.value,
+              },
+            );
+          }
+          if (this.#configuration.collectWarnings) {
+            this.#diagnostics.push({
+              code: "RDF_OWL_FULL_OBJECT_PROPERTY_LITERAL",
+              message:
+                "An object property was asserted with a literal object and was recovered as an annotation",
               object: currentQuad.object.value,
               predicate: currentQuad.predicate.value,
+              severity: "warning",
               subject: currentQuad.subject.value,
-            },
+            });
+          }
+          this.#consume(currentQuad);
+          if (!this.#configuration.loadAnnotationAxioms) {
+            continue;
+          }
+          this.#transaction.addAxiom(
+            this.#dataFactory.getOWLAnnotationAssertionAxiom(
+              this.#dataFactory.getOWLAnnotationProperty(
+                IRI.create(currentQuad.predicate.value),
+              ),
+              this.#annotationSubject(currentQuad.subject),
+              this.#annotationValue(currentQuad.object),
+              annotations,
+            ),
           );
+          continue;
         }
         axiom = this.#dataFactory.getOWLObjectPropertyAssertionAxiom(
           await this.#objectPropertyExpression(currentQuad.predicate, 0),
@@ -1369,28 +1447,78 @@ class RdfGraphInterpreter {
     }
   }
 
-  #assertCompatiblePropertyCategories() {
-    const categories = [
+  // The OWL 2 Structural Specification's typing constraints forbid an IRI being
+  // declared in more than one property category: no IRI is declared "to be both
+  // object and data, object and annotation, or data and annotation property".
+  // Strict mode therefore rejects such a document.
+  //
+  // Compatible mode explicitly does not claim OWL 2 DL conformance, so it
+  // resolves the conflict rather than rejecting the ontology. Resolution is
+  // mandatory, not cosmetic: the category predicates are independent, so an IRI
+  // left in two sets makes two of them report true and the effective category
+  // would depend on which predicate a code path happens to evaluate first.
+  // Removing the losing categories keeps the sets mutually exclusive.
+  //
+  // Precedence is data, then object, then annotation. Object and data
+  // properties carry logical meaning, whereas OWL 2 annotation properties are
+  // explicitly non-logical, so preferring a logical category preserves more of
+  // the ontology's semantics. Between the two logical categories the pinned
+  // behavioural oracle resolves to the data property. See ADR 0005.
+  #resolvePropertyCategoryPunning() {
+    const precedence = ["data", "object", "annotation"];
+    const categorySets = new Map([
       ["annotation", this.#annotationPropertyIris],
       ["data", this.#dataPropertyIris],
       ["object", this.#objectPropertyIris],
-    ];
-    for (let leftIndex = 0; leftIndex < categories.length; leftIndex += 1) {
-      const [leftName, leftValues] = categories[leftIndex];
-      for (
-        let rightIndex = leftIndex + 1;
-        rightIndex < categories.length;
-        rightIndex += 1
-      ) {
-        const [rightName, rightValues] = categories[rightIndex];
-        for (const iri of leftValues) {
-          if (rightValues.has(iri)) {
-            throw new OWLSyntaxError(
-              "An IRI cannot identify conflicting OWL property categories",
-              { iri, propertyCategories: [leftName, rightName] },
-            );
-          }
+    ]);
+
+    const declaredCategories = new Map();
+    for (const [name, values] of categorySets) {
+      for (const iri of values) {
+        const existing = declaredCategories.get(iri);
+        if (existing) {
+          existing.push(name);
+        } else {
+          declaredCategories.set(iri, [name]);
         }
+      }
+    }
+
+    for (const [iri, categories] of declaredCategories) {
+      if (categories.length < 2) {
+        continue;
+      }
+      if (this.#configuration.parsingMode === "strict") {
+        throw new OWLSyntaxError(
+          "An IRI cannot identify conflicting OWL property categories",
+          { iri, propertyCategories: categories },
+        );
+      }
+
+      const resolvedCategory = precedence.find((name) =>
+        categories.includes(name),
+      );
+      for (const name of categories) {
+        if (name !== resolvedCategory) {
+          categorySets.get(name).delete(iri);
+        }
+      }
+
+      if (this.#configuration.collectWarnings) {
+        // The object/annotation pair is principled but has never been observed
+        // in the pinned corpus, so it carries its own code and the first real
+        // occurrence announces itself instead of passing as a routine recovery.
+        const unobserved = !categories.includes("data");
+        this.#diagnostics.push({
+          code: unobserved
+            ? "RDF_PROPERTY_CATEGORY_PUNNING_UNEVIDENCED"
+            : "RDF_PROPERTY_CATEGORY_PUNNING",
+          declaredCategories: [...categories].sort(),
+          iri,
+          message: "An IRI was declared in more than one OWL property category",
+          resolvedCategory,
+          severity: "warning",
+        });
       }
     }
   }

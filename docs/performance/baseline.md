@@ -266,11 +266,15 @@ exceptions.
   completion. First use separately measures the development adapter through
   manager selection, RDF/XML, shared RDF-to-OWL reconstruction, and the builder.
 
-| Signal                                    | Input                             | Accepted wall time (ms) | Accepted peak heap delta (bytes) |
-| ----------------------------------------- | --------------------------------- | ----------------------: | -------------------------------: |
-| VOWL development-route first use          | 5,448 bytes / 100 declarations    |                   39.09 |                        8,901,328 |
-| `generated-vowl-classes-large.builder-only` | 1,388,974 bytes / 50,000 classes |                  129.55 |                       69,256,616 |
-| `generated-rdfxml-large.owlapi-to-vowl`   | 2,789,048 bytes / 50,000 classes  |                3,539.46 |                      340,096,248 |
+Every measurement below was taken on an otherwise idle machine, with no other
+benchmark, test run, or file-scanning work in progress, as ADR 0003 and
+section 20.6 now require. See finding `M7-008`.
+
+| Signal                                      | Input                            | Accepted wall time (ms) | Accepted peak heap delta (bytes) |
+| ------------------------------------------- | -------------------------------- | ----------------------: | -------------------------------: |
+| VOWL development-route first use            | 5,448 bytes / 100 declarations   |                   40.10 |                        8,902,104 |
+| `generated-vowl-classes-large.builder-only` | 1,388,974 bytes / 50,000 classes |                  138.95 |                       68,991,864 |
+| `generated-rdfxml-large.owlapi-to-vowl`     | 2,789,048 bytes / 50,000 classes |                1,947.63 |                      341,643,480 |
 
 The builder-only signal starts from an already-loaded `OWLOntology` and ends at
 the VOWL-JSON-compatible result. The `owlapi-to-vowl` signal is the complete
@@ -284,31 +288,86 @@ before any comparison, as finding `M6-011` requires.
 
 | Existing signal                        | Accepted Phase 6 wall / heap delta | Paired Phase 7 wall / heap delta | Wall change | Heap-delta change |
 | -------------------------------------- | ---------------------------------: | -------------------------------: | ----------: | ----------------: |
-| `generated-rdfxml-large.syntax-to-rdf` |      306.15 ms / 92,747,760 bytes  |    323.66 ms / 92,858,312 bytes  |      +5.72% |            +0.12% |
-| `generated-rdfxml-large.end-to-end`    |    1,844.23 ms / 341,045,176 bytes |  3,425.74 ms / 296,818,888 bytes |     +85.75% |           -12.97% |
+| `generated-rdfxml-large.syntax-to-rdf` |     306.15 ms / 92,747,760 bytes   |   334.48 ms / 92,750,176 bytes   |      +9.25% |            +0.00% |
+| `generated-rdfxml-large.end-to-end`    |   1,844.23 ms / 341,045,176 bytes  | 1,809.97 ms / 341,473,632 bytes  |      -1.86% |            +0.13% |
 
-The `syntax-to-rdf` change is within the unchanged 20% release threshold. The
-`end-to-end` change is not, and is recorded here as an accepted open regression
-rather than a re-baselined threshold, because section 20.6 forbids updating a
-baseline merely because a regression made the old threshold fail.
+Both paired changes remain within the unchanged 20% release threshold. No
+resource ceiling or regression threshold changed, and no baseline was
+re-anchored.
 
-The regression is not attributable to Phase 7. It was isolated by temporarily
-bypassing the new import-closure construction in
-`loadOntologyGraphFromOntologyDocument` and repeating the same benchmark:
+The three accepted signals are mutually consistent, which is the arithmetic
+check that the numbers are sound: `owlapi-to-vowl` minus the paired
+`end-to-end` signal is approximately 138 ms, matching the independently
+measured `builder-only` signal of 138.95 ms. VOWL construction over 50,000
+classes is therefore time-cheap relative to ingestion and adds no measurable
+peak heap, because the structural ontology already dominates.
 
-| Configuration                        | `end-to-end` median wall time |
-| ------------------------------------ | ----------------------------: |
-| Phase 7 working tree                 |                    3,425.74 ms |
-| Phase 7 closure construction bypassed |                    3,357.99 ms |
-| Attributable Phase 7 cost            |             approximately 68 ms |
+## Phase 8 production-cutover baseline
 
-Three observations locate the defect ahead of the Phase 8 investigation. The
-syntax seam moved only 5.72%, so the loss is after the canonical RDF/JS
-boundary rather than in RDF/XML parsing. Peak heap fell by 12.97% while wall
-time rose, which is consistent with a changed structure or an added traversal
-rather than machine variance. The five measured runs spanned 3,389 ms to
-3,493 ms, so the signal is stable and not a sampling artifact.
+- Phase 7 checkpoint revision: `27dba50`, corrected by `9733cc9`.
+- Measurement date: 18 August 2026.
+- Environment: Windows `10.0.26200` x64, Node.js `v24.17.0`, 12th Gen
+  Intel Core i9-12900K (24 logical CPUs), 34,053,869,568 bytes system memory.
+- Dependency identity: `package-lock.json` SHA-256
+  `dbf218f2d46d6f9d9aac0a5727afe5a1efe2fb4a349bd6719fd55106c781fa5a`,
+  unchanged from the accepted Phase 6 and Phase 7 documents.
+- Commands: `node --expose-gc util/benchmark-vowl-builder.mjs` and
+  `node --expose-gc util/benchmark-owlapi-rdfxml.mjs`, each run in the
+  foreground on an otherwise idle machine as ADR 0003 requires.
 
-Phase 7 therefore accepts its own three new signals and records
-`generated-rdfxml-large.end-to-end` as finding `M7-008`, owned by the Phase 8
-cutover, which rewires the production entry point onto exactly this path.
+The measured path is now the production path. `util/benchmark-vowl-builder.mjs`
+invokes `src/owl2vowl/js/index.js`, the same entry the application uses, rather
+than the removed Phase 7 development adapter.
+
+| Signal                                      | Accepted Phase 7 wall / heap delta | Phase 8 wall / heap delta       | Wall change | Heap-delta change |
+| ------------------------------------------- | ---------------------------------: | ------------------------------: | ----------: | ----------------: |
+| VOWL production first use                   |      40.10 ms / 8,902,104 bytes    |    41.47 ms / 8,908,288 bytes   |      +3.42% |            +0.07% |
+| `generated-vowl-classes-large.builder-only` |     138.95 ms / 68,991,864 bytes   |  143.05 ms / 69,181,792 bytes   |      +2.95% |            +0.28% |
+| `generated-rdfxml-large.owlapi-to-vowl`     |   1,947.63 ms / 341,643,480 bytes  | 1,928.00 ms / 340,313,624 bytes |      -1.01% |            -0.39% |
+
+| Existing signal                        | Accepted Phase 6 wall / heap delta | Phase 8 wall / heap delta       | Wall change | Heap-delta change |
+| -------------------------------------- | ---------------------------------: | ------------------------------: | ----------: | ----------------: |
+| `generated-rdfxml-large.syntax-to-rdf` |     306.15 ms / 92,747,760 bytes   |   320.66 ms / 92,767,720 bytes  |      +4.74% |            +0.02% |
+| `generated-rdfxml-large.end-to-end`    |   1,844.23 ms / 341,045,176 bytes  | 1,880.48 ms / 341,859,680 bytes |      +1.97% |            +0.24% |
+
+Every signal is within the unchanged 20% release threshold. No resource
+ceiling, regression threshold or accepted baseline changed. Replacing the
+legacy pipeline with the structural path therefore costs nothing measurable at
+the production entry.
+
+### A corrected reading of the cross-signal check
+
+The Phase 7 record stated that `owlapi-to-vowl` minus the paired `end-to-end`
+signal matches the independently measured `builder-only` signal. In Phase 7
+those figures were 1,947.63, 1,809.97 and 138.95 ms, and the arithmetic
+appeared exact. That agreement was a coincidence: `builder-only` builds the
+ontology produced from the **Functional Syntax** fixture, while
+`owlapi-to-vowl` builds the one produced from the **RDF/XML** fixture. The two
+inputs are different ontologies with different axiom mixes, so their build costs
+are related but not equal. The Phase 8 figures make that visible: 1,928.00 minus
+1,880.48 is 47.52 ms against an independently measured 143.05 ms.
+
+The check remains useful as an order-of-magnitude corroboration that the three
+signals describe the same system, and it is what exposed finding `M8-004`. It
+is not an identity, and it must not be reported as one.
+
+### A contaminated measurement the pre-flight guard did not catch
+
+The first Phase 8 run of `util/benchmark-vowl-builder.mjs` reported
+`owlapi-to-vowl` at 3,684.71 ms, 89% above the accepted Phase 7 figure, with a
+run-to-run spread of 3,062 ms to 3,836 ms. The ADR 0003 pre-flight guard
+sampled processor time at process start, found the machine idle, and allowed
+the run.
+
+The measurement was contaminated. An isolated repeat on the same revision and
+machine produced 1,928.00 ms with a 6% spread, and a standalone probe of the
+production entry produced 1,793 ms to 2,072 ms. The figure was never recorded
+as a regression because the corroboration required by section 20.6 rejected it
+first: the cross-signal arithmetic was impossible, since 3,684.71 ms minus a
+143.05 ms build cannot be reconciled with an RDF/XML end-to-end signal measured
+at 1,880.48 ms minutes later on the same machine.
+
+This is recorded as finding `M8-004`. The guard is a start-of-run check and
+cannot observe interference that begins after the process starts, so it reduces
+the frequency of contaminated measurements without eliminating them. The
+corroboration requirement, not the guard, is the control that holds.

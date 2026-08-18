@@ -15,6 +15,8 @@ const XMLNS_NAMESPACE = "http://www.w3.org/2000/xmlns/";
 const XSI_NAMESPACE = "http://www.w3.org/2001/XMLSchema-instance";
 const COOPERATIVE_YIELD_INTERVAL_MS = 50;
 const LANGUAGE_TAG = /^[A-Za-z]{1,8}(?:-[A-Za-z0-9]{1,8})*$/u;
+const RDF_PLAIN_LITERAL =
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral";
 const IRI_REFERENCE =
   /^(?:([A-Za-z][A-Za-z0-9+.-]*):)?(?:\/\/([^/?#]*))?([^?#]*)(?:\?([^#]*))?(?:#(.*))?$/u;
 const ENTITY_CONSTRUCTORS = Object.freeze({
@@ -1333,9 +1335,21 @@ export class OWLXMLParser {
     const lexicalForm = this.#simpleText(element);
     const language = this.#effectiveXmlLanguage(element);
     const hasDatatype = element.hasAttribute("datatypeIRI");
-    if (language && hasDatatype) {
+    // The OWL 2 XML Serialization schema extends xsd:string with both a
+    // datatypeIRI attribute and the xml:specialAttrs group that carries
+    // xml:lang, and states no prohibition on their combination. Only a datatype
+    // that contradicts the language tag is an error: rdf:PlainLiteral is OWL 2's
+    // datatype for language-tagged literals, so pairing it with xml:lang is
+    // redundant rather than inconsistent, and real vocabularies serialise it
+    // that way.
+    if (
+      language &&
+      hasDatatype &&
+      this.#resolveAnyUri(element, element.getAttribute("datatypeIRI"))
+        .value !== RDF_PLAIN_LITERAL
+    ) {
       this.#syntax(
-        "OWL/XML literals cannot specify both xml:lang and datatypeIRI",
+        "OWL/XML literals cannot specify a language tag with a datatype other than rdf:PlainLiteral",
         element,
         { construct: "Literal" },
       );
@@ -1345,7 +1359,9 @@ export class OWLXMLParser {
         language,
       });
     }
-    if (hasDatatype) {
+    // A language tag survives an explicit rdf:PlainLiteral datatype: the tag is
+    // the part that carries meaning, and dropping it would lose the language.
+    if (hasDatatype && !language) {
       return this.#dataFactory.getOWLLiteral(
         lexicalForm,
         this.#resolveAnyUri(element, element.getAttribute("datatypeIRI")),
