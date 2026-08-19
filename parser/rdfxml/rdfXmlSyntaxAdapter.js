@@ -149,6 +149,29 @@ const attributeNS = (element, namespaceURI, localName) =>
       (attribute.localName || attribute.name) === localName,
   );
 
+// RFC 3986 section 5.1 ranks a base embedded in the content above the URI the
+// document was retrieved from, so a document that declares `xml:base` on its
+// root element identifies itself by that IRI rather than by wherever it was
+// fetched from. The RDF/XML parser already applies this when resolving relative
+// references; this exposes the same base to consumers that need to know what the
+// document calls itself - selecting among several ontology headers, for one.
+//
+// Only the root element is inspected. A nested `xml:base` rebases part of the
+// document, not the document's own identity.
+export const documentBaseIRI = (text, retrievalIRI) => {
+  const rootElement = text.match(/<[A-Za-z_][\w.:-]*\b[^>]*>/u)?.[0];
+  const base = rootElement?.match(/\sxml:base\s*=\s*(?:"([^"]*)"|'([^']*)')/u);
+  const declared = base?.[1] ?? base?.[2];
+  if (declared === undefined) {
+    return retrievalIRI;
+  }
+  try {
+    return new URL(declared, retrievalIRI || undefined).href;
+  } catch {
+    return declared;
+  }
+};
+
 const effectiveBaseIRI = (element, inheritedBaseIRI) => {
   const base = attributeNS(element, XML_NAMESPACE, "base")?.value;
   if (base === undefined) {

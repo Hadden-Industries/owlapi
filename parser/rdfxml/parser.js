@@ -1,7 +1,7 @@
 import { OWLDocumentFormats } from "../../io/index.js";
 import { RdfToOwlTranslator } from "../../rdf/index.js";
 
-import { RdfXmlSyntaxAdapter } from "./rdfXmlSyntaxAdapter.js";
+import { documentBaseIRI, RdfXmlSyntaxAdapter } from "./rdfXmlSyntaxAdapter.js";
 
 const defaultTranslatorFactory = (dataFactory) =>
   new RdfToOwlTranslator({ dataFactory });
@@ -35,9 +35,17 @@ export class RDFXMLParser {
     if (!translator || typeof translator.translate !== "function") {
       throw new TypeError("createTranslator must return a translator");
     }
+    const retrievalIRI = source.getDocumentIRI()?.value;
     const translated = await translator.translate(dataset, {
+      // Per RFC 3986 section 5.1 an embedded base outranks the retrieval URI, so
+      // this is what the document calls itself. It decides which of several
+      // ontology headers is the one the document *is*.
+      baseIRI:
+        typeof source.getText === "function"
+          ? documentBaseIRI(source.getText(), retrievalIRI)
+          : retrievalIRI,
       configuration,
-      documentIRI: source.getDocumentIRI()?.value,
+      documentIRI: retrievalIRI,
     });
     const { context, ontology } = translated;
 

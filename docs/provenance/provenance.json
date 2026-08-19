@@ -5,6 +5,14 @@
     "revision": "d7e997a53b470e32700de89cc610d9daf01ea769",
     "use": "black-box behavioral oracle and public API identity reference only"
   },
+  "referenceOwl2Vowl": {
+    "version": "0.3.7",
+    "revision": "c6331c4c79b0034b8537a11cccd1a6587cedb0b9",
+    "licence": "MIT",
+    "consumer": "src/owl2vowl/js/vowlBuilder.js",
+    "use": "behavioral oracle for VOWL-JSON output, and consult-only source reference for VOWL conversion semantics; no implementation text or control flow is translated into production code",
+    "note": "OWL2VOWL converts an OWLAPI OWLOntology into VOWL-JSON, which is the same position VOWLBuilder occupies, so its conversion logic is directly comparable. Nothing derived from it may reach owlapi-js, which knows nothing of VOWL."
+  },
   "decisionReferences": {
     "PHASE0-2026-08-10": "Repository-owner approval of the Phase 0 implementation-plan artifacts on 10 August 2026",
     "PHASE2-2026-08-10": "Repository-owner approval of Phase 2 implementation and the named capability, conformance, and provenance updates on 10 August 2026",
@@ -1037,6 +1045,41 @@
       "evidence": [
         "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
         "util/verify-owlapi-rdfxml-corpus.mjs"
+      ]
+    },
+    {
+      "id": "PHASE8-RESEARCH-OWL2VOWL-ENTITY-CREATION",
+      "reference": "referenceOwl2Vowl",
+      "question": "Whether OWL2VOWL creates a VOWL entity for a property that is declared but carries no property axioms",
+      "publicBasis": "VOWL 2.0 specification and the pinned OWL2VOWL 0.3.7 reference outputs under src/owl2vowl/test/fixtures/java-reference-outputs/",
+      "implementationSourcesInspected": [
+        "src/main/java/de/uni_stuttgart/vis/vowl/owl2vowl/converter/AbstractConverter.java"
+      ],
+      "sourceRevision": "c6331c4c79b0034b8537a11cccd1a6587cedb0b9",
+      "reason": "A corpus difference showed 95 declaration-only properties emitted by VOWLBuilder and absent from the reference output. The output alone could not distinguish between several candidate causes, so the converter's orchestration was read to establish how its entity set is formed.",
+      "finding": "Entities are established in preParsing by an OWLOntologyWalker driving an EntityCreationVisitor across the whole imports closure, before any axiom-driven phase runs. The later per-property axiom loops decorate entities that already exist; they do not create them. A declared property therefore does appear, which the phase5-structural reference output confirms for a property carrying nothing but a declaration.",
+      "productionUse": "None. A filter written on the mistaken reading that axioms create entities was reverted in full before any commit, together with the test that encoded it. No implementation text or control flow was copied.",
+      "evidence": [
+        "src/owl2vowl/test/fixtures/java-reference-outputs/phase5-structural.rdf.java.json",
+        "src/owl2vowl/test/vowlBuilder.differential.test.js",
+        "src/owl2vowl/test/vowlBuilder.webvowl.test.js"
+      ]
+    },
+    {
+      "id": "PHASE8-RESEARCH-OWL2VOWL-IMPORTED-ENTITY-SCOPE",
+      "reference": "referenceOwl2Vowl",
+      "question": "Whether OWL2VOWL restricts entities drawn from imported ontologies to those the importing document references",
+      "publicBasis": "VOWL 2.0 specification and the pinned OWL2VOWL 0.3.7 reference outputs",
+      "implementationSourcesInspected": [
+        "src/main/java/de/uni_stuttgart/vis/vowl/owl2vowl/converter/AbstractConverter.java"
+      ],
+      "sourceRevision": "c6331c4c79b0034b8537a11cccd1a6587cedb0b9",
+      "reason": "tagont.owl produced 77 more properties than the reference output, all of them from imported namespaces rather than declared in the document.",
+      "finding": "No such restriction exists. The reference output emits 20 skos/core entities that tagont.owl never mentions and 99 such entities for dcat3.rdf, so imports were resolved and imported entities were not filtered by reference. The difference is instead an asymmetry of inputs: tagont.owl imports the long-dead http://www.mindswap.org/2003/owl/foaf, which the reference run could not fetch, while the project's ONTOLOGY_CATALOG maps that IRI to a local FOAF copy. The two sides converted different ontologies.",
+      "productionUse": "None. The finding is a property of the differential harness rather than of either engine, and no production behavior was changed.",
+      "evidence": [
+        "src/owl2vowl/js/constants.js",
+        "src/owl2vowl/test/vowlDifferential.js"
       ]
     }
   ],

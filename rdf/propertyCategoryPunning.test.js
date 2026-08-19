@@ -5,6 +5,7 @@ import {
 import { OWLManager } from "../manager/index.js";
 
 const RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+const RDFS = "http://www.w3.org/2000/01/rdf-schema#";
 const OWL = "http://www.w3.org/2002/07/owl#";
 
 // OWL 2 DL forbids an IRI being declared in more than one property category
@@ -79,13 +80,21 @@ describe("cross-category property declarations", () => {
   // the characteristic axiom still needs an object property expression. Axiom
   // construction has a recovery-capable entry point for exactly this; the strict
   // one rejects the whole document instead.
+  //
+  // The `rdfs:range` matters and mirrors the real vocabulary: under the amended
+  // ADR 0005 the declared literal range is what resolves the IRI to data. Without
+  // it the inverse-functional characteristic would be the only evidence present
+  // and would resolve the IRI to an object property, leaving nothing to recover.
   it("builds a property characteristic axiom over a punned property", async () => {
     const document = `
-      <rdf:RDF xmlns:rdf="${RDF}" xmlns:owl="${OWL}">
+      <rdf:RDF xmlns:rdf="${RDF}" xmlns:rdfs="${RDFS}" xmlns:owl="${OWL}">
         <owl:Ontology rdf:about="urn:test:punning"/>
         <owl:DatatypeProperty rdf:about="urn:test:punned"/>
         <owl:ObjectProperty rdf:about="urn:test:punned"/>
         <owl:InverseFunctionalProperty rdf:about="urn:test:punned"/>
+        <rdf:Description rdf:about="urn:test:punned">
+          <rdfs:range rdf:resource="${RDFS}Literal"/>
+        </rdf:Description>
       </rdf:RDF>
     `;
 

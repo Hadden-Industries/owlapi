@@ -25,6 +25,18 @@ import {
 const COOPERATIVE_YIELD_INTERVAL_MS = 50;
 const CHECK_INTERVAL = 512;
 const SUBJECT_TERM_TYPES = new Set(["BlankNode", "NamedNode"]);
+// Characteristics OWL 2 defines only for object properties, so asserting one is
+// evidence that a punned IRI was meant as an object property. `owl:inverseOf` is
+// handled separately because it is evidence about both of its arguments.
+const OBJECT_ONLY_CHARACTERISTICS = new Set([
+  OWL_VOCABULARY.AsymmetricProperty,
+  OWL_VOCABULARY.InverseFunctionalProperty,
+  OWL_VOCABULARY.IrreflexiveProperty,
+  OWL_VOCABULARY.ReflexiveProperty,
+  OWL_VOCABULARY.SymmetricProperty,
+  OWL_VOCABULARY.TransitiveProperty,
+]);
+
 const OBJECT_TERM_TYPES = new Set(["BlankNode", "Literal", "NamedNode"]);
 const GRAPH_TERM_TYPES = new Set(["BlankNode", "DefaultGraph", "NamedNode"]);
 const XSD_INTEGER_DATATYPE_BOUNDS = new Map([
@@ -320,6 +332,7 @@ class RdfGraphInterpreter {
   ]);
   #diagnostics;
   #documentScope;
+  #evidenceIndex;
   #execution;
   #individualIris = new Set();
   #listOwners = new Map();
@@ -514,7 +527,77 @@ class RdfGraphInterpreter {
         ),
       );
     }
+    this.#declareUntypedProperties();
     this.#consumeRedundantOwl1Types();
+  }
+
+  // A bare `rdf:Property` is not an OWL property: OWL 2 requires every property
+  // to be declared object, data or annotation, and `x rdf:type rdf:Property`
+  // matches no declaration pattern in OWL 2 Mapping to RDF Graphs. A document
+  // relying on it is therefore not OWL 2 DL, and strict mode leaves the triple
+  // unreconstructed as it should.
+  //
+  // Real vocabularies rely on it heavily - `doap.rdf` declares all 43 of its
+  // properties this way and no OWL property at all - so emitting nothing would
+  // discard the entire vocabulary. Compatible mode recovers, taking the category
+  // from the same evidence ADR 0005 uses for punning: a literal range means a
+  // data property, a class range an object property. A property with no range
+  // evidence is left alone, because guessing its category would invent a
+  // distinction the document does not make.
+  #declareUntypedProperties() {
+    if (this.#configuration.parsingMode === "strict") {
+      return;
+    }
+    const index = this.#propertyEvidenceIndex();
+    const alreadyTyped = (iri) =>
+      this.#objectPropertyIris.has(iri) ||
+      this.#dataPropertyIris.has(iri) ||
+      this.#annotationPropertyIris.has(iri);
+
+    for (const quad of this.#dataset.match(null, null, null, null)) {
+      if (
+        quad.predicate.value !== RDF_VOCABULARY.type ||
+        quad.object.value !== RDF_VOCABULARY.Property ||
+        quad.subject.termType !== "NamedNode"
+      ) {
+        continue;
+      }
+      const iri = quad.subject.value;
+      if (alreadyTyped(iri)) {
+        continue;
+      }
+      const category = this.#categoryFromRanges(iri, index);
+      if (!category) {
+        continue;
+      }
+
+      if (category === "data") {
+        this.#dataPropertyIris.add(iri);
+        this.#transaction.addAxiom(
+          this.#dataFactory.getOWLDeclarationAxiom(
+            this.#dataFactory.getOWLDataProperty(IRI.create(iri)),
+          ),
+        );
+      } else {
+        this.#objectPropertyIris.add(iri);
+        this.#transaction.addAxiom(
+          this.#dataFactory.getOWLDeclarationAxiom(
+            this.#dataFactory.getOWLObjectProperty(IRI.create(iri)),
+          ),
+        );
+      }
+
+      if (this.#configuration.collectWarnings) {
+        this.#diagnostics.push({
+          code: "RDF_UNTYPED_PROPERTY",
+          iri,
+          message:
+            "A property was declared only as rdf:Property and its category was recovered from its range",
+          resolvedCategory: category,
+          severity: "warning",
+        });
+      }
+    }
   }
 
   #consumeRedundantOwl1Types() {
@@ -600,9 +683,20 @@ class RdfGraphInterpreter {
       // Compatible mode selects one deterministically, preferring the header
       // whose IRI is the document's own. That is the ontology the document *is*,
       // as opposed to one it merely describes, and it is the choice the pinned
-      // oracle makes for protege-dc.owl. Where no header matches the document,
-      // the first declared wins; the oracle's choice in that case could not be
-      // derived and may differ.
+      // oracle makes for protege-dc.owl.
+      //
+      // Where no header is the document, there is no fact about which ontology
+      // the document is, so the rule only has to be a function of the ontology.
+      // Document order is not one: RDF is an unordered graph, so the same
+      // ontology may serialise its type triples in any order and a
+      // first-declared rule would answer differently for identical input.
+      //
+      // The shortest IRI wins instead, because authors name the core vocabulary
+      // most briefly and extend it with suffixes for modules - `prov#` against
+      // `prov-dictionary#`. Code-point comparison breaks ties; `localeCompare`
+      // weights `#` and `-` as punctuation and would reverse that very case.
+      // The oracle's own pick for prov.owl is not derivable from any rule and is
+      // recorded as a governed difference rather than reproduced.
       if (this.#configuration.parsingMode === "strict") {
         throw new OWLSyntaxError(
           "An RDF graph cannot identify more than one OWL ontology header",
@@ -612,12 +706,23 @@ class RdfGraphInterpreter {
       // `#documentScope` is the document IRI, or a synthetic per-document urn
       // when the caller supplied none. The synthetic form matches no header, so
       // an anonymous document falls through to the first declared.
+      const shortestThenCodePoint = (left, right) => {
+        if (left.subject.value.length !== right.subject.value.length) {
+          return left.subject.value.length - right.subject.value.length;
+        }
+        return left.subject.value < right.subject.value ? -1 : 1;
+      };
       const selected =
         ontologyTypeQuads.find(
           ({ subject }) => subject.value === this.#documentScope,
-        ) || ontologyTypeQuads[0];
+        ) || [...ontologyTypeQuads].sort(shortestThenCodePoint)[0];
       if (this.#configuration.collectWarnings) {
         this.#diagnostics.push({
+          // Every candidate is named so the discarded ones stay visible rather
+          // than being silently dropped.
+          candidateOntologyIRIs: ontologyTypeQuads.map(
+            ({ subject }) => subject.value,
+          ),
           code: "RDF_MULTIPLE_ONTOLOGY_HEADERS",
           message:
             "The RDF graph declared more than one OWL ontology header and one was selected",
@@ -1459,11 +1564,35 @@ class RdfGraphInterpreter {
   // would depend on which predicate a code path happens to evaluate first.
   // Removing the losing categories keeps the sets mutually exclusive.
   //
-  // Precedence is data, then object, then annotation. Object and data
-  // properties carry logical meaning, whereas OWL 2 annotation properties are
-  // explicitly non-logical, so preferring a logical category preserves more of
-  // the ontology's semantics. Between the two logical categories the pinned
-  // behavioural oracle resolves to the data property. See ADR 0005.
+  // Resolution asks the ontology before it consults a table. See ADR 0005.
+  //
+  //   1. Direct evidence about the property. `rdfs:range` decides: a datatype or
+  //      `rdfs:Literal` range is only meaningful for a data property, a class
+  //      range only for an object property. It outranks a characteristic that
+  //      disagrees, being the author's most direct statement of what the
+  //      property relates.
+  //   2. Evidence inferred by bounded propagation across `rdfs:subPropertyOf`
+  //      and `owl:equivalentProperty` to a property declared in exactly one
+  //      category. This is syntactic traversal of two relations, deliberately
+  //      not DL reasoning - entailment closure is a different undertaking, and
+  //      the corpus register already treats reasoner-derived axioms as an
+  //      expected difference class.
+  //   3. The fixed precedence data > object > annotation, as a deterministic
+  //      fallback when the ontology offers nothing. Object and data properties
+  //      carry logical meaning where OWL 2 annotation properties are explicitly
+  //      non-logical, so a logical category preserves more of the semantics.
+  //
+  // A fixed precedence alone was tried first and rejected: every punned property
+  // in the pinned corpus declares `rdfs:range rdfs:Literal`, and any rule that
+  // ignores that discards the author's own statement. Resolution by document
+  // order was rejected outright - RDF is an unordered graph, so it answers
+  // differently for the same ontology depending on how it was serialised.
+  //
+  // Scope is the document. The import closure is best-effort - a missing import
+  // is a diagnostic, not a failure - so consulting it would make the rendering
+  // depend on what the network returned, reintroducing by another route the
+  // environment-dependence that document order was rejected for. Strict-mode
+  // conformance is a separate question and keeps the specification's scope.
   #resolvePropertyCategoryPunning() {
     const precedence = ["data", "object", "annotation"];
     const categorySets = new Map([
@@ -1495,9 +1624,15 @@ class RdfGraphInterpreter {
         );
       }
 
-      const resolvedCategory = precedence.find((name) =>
-        categories.includes(name),
+      const evidenced = this.#categoryFromEvidence(
+        iri,
+        categories,
+        declaredCategories,
       );
+      const resolvedCategory =
+        evidenced?.category ??
+        precedence.find((name) => categories.includes(name));
+      const evidence = evidenced?.evidence ?? "precedence";
       for (const name of categories) {
         if (name !== resolvedCategory) {
           categorySets.get(name).delete(iri);
@@ -1508,12 +1643,16 @@ class RdfGraphInterpreter {
         // The object/annotation pair is principled but has never been observed
         // in the pinned corpus, so it carries its own code and the first real
         // occurrence announces itself instead of passing as a routine recovery.
-        const unobserved = !categories.includes("data");
+        const unobserved =
+          evidence === "precedence" && !categories.includes("data");
         this.#diagnostics.push({
           code: unobserved
             ? "RDF_PROPERTY_CATEGORY_PUNNING_UNEVIDENCED"
             : "RDF_PROPERTY_CATEGORY_PUNNING",
           declaredCategories: [...categories].sort(),
+          // Which step decided, so a reader can tell a reasoned resolution from
+          // a defaulted one.
+          evidence,
           iri,
           message: "An IRI was declared in more than one OWL property category",
           resolvedCategory,
@@ -2598,6 +2737,142 @@ class RdfGraphInterpreter {
     return this.#consumed.has(quadKey(quad));
   }
 
+  // Evidence about one punned IRI, gathered from the document in a single pass.
+  // Returns undefined when the ontology says nothing, leaving the caller to fall
+  // back to the fixed precedence.
+  #categoryFromEvidence(iri, categories, declaredCategories) {
+    const permitted = new Set(categories);
+    const index = this.#propertyEvidenceIndex();
+    const evidence = index.get(iri);
+
+    // 1. `rdfs:range` decides, and outranks a characteristic that disagrees.
+    for (const rangeIri of evidence?.ranges ?? []) {
+      const category = this.#categoryForRange(rangeIri, index);
+      if (category && permitted.has(category)) {
+        return { category, evidence: "range" };
+      }
+    }
+
+    // 2. A characteristic that exists only for object properties.
+    if (evidence?.objectOnlyCharacteristic && permitted.has("object")) {
+      return { category: "object", evidence: "characteristic" };
+    }
+
+    // 3. Bounded propagation to a property declared in exactly one category.
+    //    Breadth-first over two relations with a visited set, so a cyclic
+    //    hierarchy terminates and no entailment closure is attempted.
+    const visited = new Set([iri]);
+    const pending = [...(evidence?.related ?? [])];
+    while (pending.length > 0) {
+      const candidate = pending.shift();
+      if (visited.has(candidate)) {
+        continue;
+      }
+      visited.add(candidate);
+      const declared = declaredCategories.get(candidate);
+      if (declared?.length === 1 && permitted.has(declared[0])) {
+        return { category: declared[0], evidence: "inferred" };
+      }
+      pending.push(...(index.get(candidate)?.related ?? []));
+    }
+
+    return undefined;
+  }
+
+  // A range names a datatype when it is declared one, sits in the XML Schema
+  // namespace, or is `rdfs:Literal`. Anything else cannot be a data range, so it
+  // implies an object property - whether or not the range IRI happens to carry a
+  // local class declaration. `doap:blog` ranges over `rdfs:Resource` and
+  // `sioct:Weblog`, neither declared in that document, and is an object property
+  // all the same.
+  #categoryForRange(rangeIri, index) {
+    if (
+      rangeIri === RDFS_VOCABULARY.Literal ||
+      rangeIri.startsWith(XSD_NAMESPACE) ||
+      index.get(rangeIri)?.isDatatype
+    ) {
+      return "data";
+    }
+    return "object";
+  }
+
+  // Ranges are a set, not a sequence: several corpus properties declare both a
+  // literal and a class range, and taking whichever arrived first would make the
+  // answer depend on how the document was serialised. A literal range can only
+  // belong to a data property, so its presence decides; otherwise any range at
+  // all implies an object property. No range means no evidence.
+  #categoryFromRanges(iri, index) {
+    const categories = (index.get(iri)?.ranges ?? []).map((rangeIri) =>
+      this.#categoryForRange(rangeIri, index),
+    );
+    if (categories.includes("data")) {
+      return "data";
+    }
+    return categories.includes("object") ? "object" : undefined;
+  }
+
+  #propertyEvidenceIndex() {
+    if (this.#evidenceIndex) {
+      return this.#evidenceIndex;
+    }
+    const index = new Map();
+    const entryFor = (key) => {
+      let entry = index.get(key);
+      if (!entry) {
+        entry = {
+          isClass: false,
+          isDatatype: false,
+          objectOnlyCharacteristic: false,
+          ranges: [],
+          related: [],
+        };
+        index.set(key, entry);
+      }
+      return entry;
+    };
+
+    for (const quad of this.#dataset.match(null, null, null, null)) {
+      const subject = quad.subject.value;
+      const object = quad.object.value;
+      switch (quad.predicate.value) {
+        case RDFS_VOCABULARY.range:
+          entryFor(subject).ranges.push(object);
+          break;
+        case RDFS_VOCABULARY.subPropertyOf:
+        case OWL_VOCABULARY.equivalentProperty:
+          entryFor(subject).related.push(object);
+          entryFor(object).related.push(subject);
+          break;
+        case RDF_VOCABULARY.type:
+          if (OBJECT_ONLY_CHARACTERISTICS.has(object)) {
+            entryFor(subject).objectOnlyCharacteristic = true;
+          } else if (object === OWL_VOCABULARY.Class) {
+            entryFor(subject).isClass = true;
+          } else if (
+            object === RDFS_VOCABULARY.Datatype ||
+            object === RDFS_VOCABULARY.Class
+          ) {
+            entryFor(subject).isDatatype = object === RDFS_VOCABULARY.Datatype;
+            entryFor(subject).isClass ||= object === RDFS_VOCABULARY.Class;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+
+    // `owl:inverseOf` only relates object properties, on either side.
+    for (const quad of this.#dataset.match(null, null, null, null)) {
+      if (quad.predicate.value === OWL_VOCABULARY.inverseOf) {
+        entryFor(quad.subject.value).objectOnlyCharacteristic = true;
+        entryFor(quad.object.value).objectOnlyCharacteristic = true;
+      }
+    }
+
+    this.#evidenceIndex = index;
+    return index;
+  }
+
   #outgoing(subject, predicate) {
     return [...this.#dataset.match(subject, null, null, null)].filter(
       (currentQuad) =>
@@ -2680,10 +2955,14 @@ export class RdfToOwlTranslator {
     this.#dataFactory = dataFactory;
   }
 
-  async translate(dataset, { configuration, documentIRI } = {}) {
+  async translate(dataset, { baseIRI, configuration, documentIRI } = {}) {
     const normalizedConfiguration = normalizeConfiguration(configuration);
+    // RFC 3986 section 5.1: a base embedded in the content outranks the URI the
+    // document was retrieved from. `baseIRI` is therefore what the document
+    // calls itself, and is what decides which ontology header the document *is*.
+    const effectiveIRI = baseIRI ?? documentIRI;
     const normalizedDocumentIRI =
-      documentIRI === undefined ? undefined : IRI.create(documentIRI);
+      effectiveIRI === undefined ? undefined : IRI.create(effectiveIRI);
     const execution = new ExecutionController(normalizedConfiguration);
     await validateDataset(dataset, normalizedConfiguration, execution);
     const graphSelection = selectOntologyGraph(

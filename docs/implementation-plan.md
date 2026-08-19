@@ -3852,6 +3852,112 @@ For new `owlapi-js` production code:
 
 If an implementer believes that consulting Java OWLAPI implementation source is necessary to resolve a compatibility question, first attempt to answer it with the normative/public specification, Javadocs/API documentation and a black-box differential fixture. If source inspection is still required, record it as a **compatibility/provenance research activity** and do not copy or translate the implementation into production code.
 
+### 22.2.1 Reference implementations other than OWLAPI
+
+The policy above is written for OWLAPI because `owlapi-js` is the component it
+protects. The project has a **second** reference implementation, and the rules
+that apply to it are not identical. This section states them, because the
+difference is easy to get wrong in both directions — treating OWL2VOWL as
+forbidden when it is not, or treating it as freely portable when the project's
+independence policy still applies.
+
+#### Which reference governs which component
+
+| Component | Reference implementation | Normative authority |
+| --- | --- | --- |
+| `owlapi-js` | Java OWLAPI 5.5.1 | W3C OWL 2 specifications |
+| `VOWLBuilder` (`src/owl2vowl/js/vowlBuilder.js`) | OWL2VOWL 0.3.7 | VOWL 2.0 specification |
+
+`OWL2VOWL` converts an OWLAPI `OWLOntology` into VOWL-JSON. That is precisely
+the position `VOWLBuilder` occupies, which is what makes its conversion logic
+directly comparable — unlike the retained legacy converter in this repository,
+whose `convertOntology(subjects, languagesSet, resolver, context, header)`
+signature binds it to the legacy parser's private intermediate representation
+rather than to an OWL structural model.
+
+#### What differs from the OWLAPI position, and why
+
+Three things differ, and each changes the calculus:
+
+1. **Licence.** OWL2VOWL is MIT (© 2014–2020 Link, Lohmann, Marbach, Wiens).
+   Section 22.1's concern — that avoidable source derivation could force the
+   project's own licence direction — does not arise. Reuse would be *legally*
+   available subject to carrying the copyright and permission notice.
+2. **Consumer.** `VOWLBuilder` is WebVOWL-side and is not part of the package
+   intended for standalone extraction, so its provenance does not constrain the
+   extractable core.
+3. **Specification coverage.** VOWL 2.0 specifies the visual notation but not
+   the VOWL-JSON serialisation. Where no specification exists, OWL2VOWL's
+   behaviour is the only available contract, and deriving from its output is
+   unavoidable rather than a shortcut.
+
+None of that repeals the independence policy. The project's decision, recorded
+by the repository owner, is **consult and derive**: read the Java to understand
+a rule, then implement it independently in the project's own terms.
+`VOWLBuilder` therefore remains `A_PROJECT_ORIGINAL`, and no MIT attribution
+obligation enters the codebase. Porting or adapting OWL2VOWL source would be
+permissible under its licence but is a **separate decision** requiring the
+repository owner's approval, a provenance reclassification of the affected
+modules, and the MIT notice.
+
+#### Required procedure
+
+Consulting OWL2VOWL source **MUST** follow the same escalation as OWLAPI:
+
+1. Answer the question from the **VOWL 2.0 specification** first, and from the
+   W3C OWL 2 specifications where the question is really about OWL semantics
+   rather than about visualisation.
+2. Failing that, use the **pinned reference outputs** under
+   `src/owl2vowl/test/fixtures/java-reference-outputs/` as a black-box oracle.
+   Forty-six documents is a large behavioural sample and often settles a
+   question outright.
+3. Only then read the source, and **record a `compatibilityResearch` entry** in
+   `docs/owlapi-js/provenance/provenance.json` carrying `reference`,
+   `question`, `publicBasis`, `implementationSourcesInspected`,
+   `sourceRevision`, `reason`, `finding`, `productionUse` and `evidence`.
+   Record the entry whether or not the finding changed any code: a refuted
+   hypothesis is exactly as valuable to the next implementer as a confirmed one,
+   and without the record the same source will be read again to reach the same
+   dead end.
+
+#### Two failure modes observed in practice
+
+Both of these occurred during Phase 8 and are recorded here so they are not
+repeated.
+
+**Reading one method and treating it as the algorithm.** `AbstractConverter`
+contains a loop of the shape `for (property in signature) { for
+(axioms(property)) { visitor } }`, which reads as though a property with no
+axioms can never produce a VOWL entity. It cannot be read in isolation:
+`preParsing` has already walked the entire imports closure with an
+`OWLOntologyWalker` and an `EntityCreationVisitor`, establishing the entity set
+before any axiom-driven phase runs. **Find the orchestration before drawing a
+conclusion from any single method**, and prefer a hypothesis that the reference
+outputs can falsify.
+
+**Mistaking a harness asymmetry for an engine difference.** The pinned outputs
+were generated by running the jar against local files, so any import the run
+could not fetch is simply absent from that fixture. `tagont.owl` imports
+`http://www.mindswap.org/2003/owl/foaf`, a long-dead URL, and its reference
+output accordingly contains almost no FOAF vocabulary — while this project's
+`ONTOLOGY_CATALOG` maps that IRI to a local copy and resolves it. The two sides
+then convert **different ontologies**, and the resulting difference says nothing
+about either engine. Before treating a corpus difference as a conversion
+difference, confirm that both sides saw the same import closure.
+
+#### Layering constraint
+
+Nothing learned from OWL2VOWL may influence `owlapi-js`. The library follows the
+W3C OWL 2 specifications and must remain unaware of VOWL and of every downstream
+consumer; `src/owlapi-js/coreIsolation.architecture.test.js` enforces the
+vocabulary half of this automatically. The half no test can enforce is
+motivation: a rule added to the parser or the RDF-to-OWL translator *because a
+VOWL diagram looked wrong* belongs in `owlapi-js` only if it stands on OWL or
+RDF grounds by itself, such that a consumer with no interest in VOWL would want
+the same behaviour. If the justification needs VOWL to make sense, the logic
+belongs in `VOWLBuilder`. State plainly, in the change that introduces it, when
+a VOWL difference is what prompted the investigation.
+
 ### 22.3 Authoritative legacy-code provenance dispositions
 
 Before migration implementation begins, Phase 0 **MUST** classify every legacy source module, substantial fragment and other implementation artefact reasonably likely to be reused by `owlapi-js`.
