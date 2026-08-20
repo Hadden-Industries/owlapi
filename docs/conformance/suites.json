@@ -57,6 +57,104 @@
       "runner": "src/owlapi-js/parser/owlxml/owlXml.conformance.test.js"
     },
     {
+      "id": "vowl-2",
+      "specifications": [
+        "VOWL: Visual Notation for OWL Ontologies, Specification of Version 2.0"
+      ],
+      "authors": ["Stefan Negru", "Steffen Lohmann", "Florian Haag"],
+      "documentVersion": "2.0",
+      "documentDate": "2014-04-07",
+      "canonicalVersionIri": "http://purl.org/vowl/spec/v2/",
+      "canonicalLatestIri": "http://purl.org/vowl/spec/",
+      "upstream": "https://github.com/neon12345/WebVOWL",
+      "revision": "61abca1ad6aeb5108be7f06e9590c702d4013e7a",
+      "retrievedOn": "2026-08-18",
+      "manifestArtifact": "docs/owlapi-js/conformance/upstream/vowl-2",
+      "hashManifest": "docs/owlapi-js/conformance/upstream/vowl-2/SHA256SUMS",
+      "primaryFile": "index.orig",
+      "provenance": "Third-party recovery of the original specification site, added by the unmerged draft pull request VisualDataWeb/WebVOWL#210. Content identity is corroborated by the document's own title, version, date and PURL identifiers, and by the authors' May 2014 publication announcement. Byte identity with the 2014 origin server is NOT established. index.orig preserves the original absolute hyperlinks; index.html is the recoverer's copy with dead links rewritten to '#'. Their tag-stripped text is identical, so the difference is link rewriting only.",
+      "applicable": [
+        "VOWL visual notation",
+        "OWL construct visualization scope"
+      ],
+      "authorityScope": "Normative for which OWL constructs VOWL depicts and how. NOT normative for the VOWL-JSON serialization, which the VOWL article names as a format used by WebVOWL rather than a specified artifact.",
+      "corroboratingPublication": {
+        "authors": [
+          "Steffen Lohmann",
+          "Stefan Negru",
+          "Florian Haag",
+          "Thomas Ertl"
+        ],
+        "designatedBy": "repository owner, 2026-08-20",
+        "why": "The specification pinned above is a third-party recovery whose byte identity with the 2014 origin server is not established. The authors' own peer-reviewed publication is an independently citable record of the same notation, and it is the source ADR 0004 already relies on in three places without citing it.",
+        "supersessionChain": "The Semantic Web Journal record is a chain of three successive versions, each superseding the last. Citing the earliest as authoritative would cite a superseded draft, so the current version governs and the earlier ones are retained only to date a claim.",
+        "versions": [
+          {
+            "submission": 750,
+            "title": "VOWL 2: User-Oriented Visualization of Ontologies",
+            "landingPage": "https://www.semantic-web-journal.net/content/vowl-2-user-oriented-visualization-ontologies",
+            "pdf": "https://www.semantic-web-journal.net/system/files/swj750.pdf",
+            "status": "superseded by submission 892",
+            "localCopy": "G:\\My Drive\\Hadden Industries\\Ontology\\WebVOWL\\VOWL 2_ User-Oriented Visualization of Ontologies swj750.pdf",
+            "localCopySha256": "3b1dc547432713d86e317edc69d4b1b39f0e62b8a543602281ce90e41fe36dc5",
+            "localCopyBytes": 634969,
+            "byteIdentityWithPublishedPdf": "verified 2026-08-19: the file was retrieved from the pdf URL above and its SHA-256 matches the local copy exactly",
+            "read": "2026-08-19, in full, 15 pages plus references"
+          },
+          {
+            "submission": 892,
+            "title": "Visualizing Ontologies with VOWL",
+            "landingPage": "https://www.semantic-web-journal.net/content/visualizing-ontologies-vowl",
+            "pdf": "https://www.semantic-web-journal.net/system/files/swj892.pdf",
+            "selfDescription": "invited extended version of a paper submitted to EKAW 2014",
+            "status": "superseded by submission 1114",
+            "localCopy": "G:\\My Drive\\Hadden Industries\\Ontology\\WebVOWL\\Visualizing Ontologies with VOWL swj892.pdf",
+            "localCopySha256": "66991e91491eefa0a0823d47f5b1811a00631e14e7f73053427dd9f261e3b2d0",
+            "localCopyBytes": 1695717,
+            "byteIdentityWithPublishedPdf": "verified 2026-08-19: the file was retrieved from the pdf URL above and its SHA-256 matches the local copy exactly",
+            "read": "2026-08-19, the benchmark evaluation and conclusion"
+          },
+          {
+            "submission": 1114,
+            "title": "Visualizing Ontologies with VOWL",
+            "landingPage": "https://www.semantic-web-journal.net/content/visualizing-ontologies-vowl-0",
+            "pdf": "https://www.semantic-web-journal.net/system/files/swj1114.pdf",
+            "venue": "Semantic Web journal, IOS Press",
+            "status": "current version; this is the one to cite",
+            "localCopy": "G:\\My Drive\\Hadden Industries\\Ontology\\WebVOWL\\Visualizing Ontologies with VOWL swj1114.pdf",
+            "localCopySha256": "f6ad0e31d8ba985e9ac83daa1e6d6c34a909b08abfa5fe6c4e30f92cce190e5c",
+            "localCopyBytes": 2868099,
+            "byteIdentityWithPublishedPdf": "verified 2026-08-19: the file was retrieved from the pdf URL above and its SHA-256 matches the local copy exactly",
+            "read": "2026-08-19, sections 1 to 6 and the benchmark evaluation"
+          }
+        ],
+        "notInRepository": "No version is committed here. These are third-party publications whose licence has not been established, and the specification they corroborate is already pinned by hash. The recorded SHA-256 of each is what makes that safe: the bytes are identified without being redistributed, so any copy can be checked against this record.",
+        "provenanceStrength": "Stronger than the specification pinned above, and deliberately so. That artifact is a third-party recovery whose byte identity with its 2014 origin server cannot be established, because the origin no longer serves it. These three are still served by the publisher, so each was retrieved and hashed against the local copy and all three matched. Where the recovered specification and these papers disagree, the papers are the better-evidenced text.",
+        "authorityScope": "Corroborating and citable source for the VOWL notation and for the authors' own statements about their implementations. The pinned 2014 specification remains the normative artifact for the notation tables; where the two differ, that difference is a finding to record rather than something either source settles alone. A later version of the paper may describe VOWL or WebVOWL as they stood after 2014, which is exactly the post-2014 extension ADR 0004 point 6 anticipates, so it must not be read as evidence about the 2014 specification's own scope.",
+        "establishedFactsFromSubmission750": [
+          "Section 3.3 states that WebVOWL does not implement an OWL parser and instead specifies a JSON structure that ontologies are transformed into, which supports treating VOWL-JSON as WebVOWL's own artifact rather than a specified one.",
+          "Section 4 states that the user study used WebVOWL because it fully implements the VOWL 2 specification, which was not then true of ProtegeVOWL. It names no WebVOWL version number.",
+          "Section 5.1 and the study results corroborate the splitting rules: owl:Thing is displayed several times, and multiplying general nodes such as owl:Thing and rdfs:Literal so they do not appear overly important was understood by participants.",
+          "Footnote 1 defers to the specification at http://purl.org/vowl for the remaining OWL elements, describing them as variations such as further property attributes and set operators. It does not mention restrictions."
+        ],
+        "establishedFactsFromSubmission1114": [
+          "Section 3.1.1 states the domain and range substitution rule directly: where no domain or range axiom is defined for a property, owl:Thing is used, except that a datatype property without a defined range takes rdfs:Literal. This corroborates the pinned specification.",
+          "Section 3.3 states the splitting rules concretely: owl:Thing is added once for every class it is connected to, and datatype nodes appear once for every datatype property.",
+          "Section 3.2 states that equivalent elements are merged into one visual element and that the labels of merged elements are shown in brackets so they remain available to the viewer, so the equivalence is preserved rather than discarded.",
+          "Section 5.3 confirms cardinality is drawn as a label on the property, describing a range of cardinalities composed from the separate minimum and maximum expressions defined for that class and property.",
+          "Section 5.3 confirms the deprecated marker and its priority: the deprecated colour overrides the external colour, and also overrides the standard colours of object and datatype properties.",
+          "Section 6 states that VOWL considers a large portion of the OWL language constructs but is not yet complete, in particular with regard to OWL 2, and that extending it is future work.",
+          "Section 5.3 is the source of both quotations ADR 0004 attributes to 'the VOWL article': it describes WebVOWL version 0.4.0 as providing a complete implementation of VOWL 2, and section 6 refers to the VOWL-JSON format used in WebVOWL. ADR 0004's citations are accurate and belong to this version, not to submission 750."
+        ],
+        "settlesTheRestrictionQuestion": {
+          "finding": "VOWL 2 does not draw an edge for owl:someValuesFrom, owl:allValuesFrom, owl:hasValue or owl:hasSelf. Drawing one is an extension postdating the specification, not an interpretation of it.",
+          "evidence": "Section 5.3 tests VOWL against OntoViBe 2, a benchmark built from a comprehensive set of OWL 2 constructs whose elements are named self-descriptively, and Figure 5 is that benchmark rendered by WebVOWL 0.4.0, which the same paragraph calls a complete implementation of VOWL 2. In that figure the classes named SomeValuesFromClass, AllValuesFromClass, HasValueClass and HasSelfClass appear as isolated circles with no edges at all, and the surrounding text remarks on exactly that, noting several classes not linked to any other class. The authors then enumerate the omissions they consider crucial - custom data ranges, named classes defined by set operations, and the nesting direction of set operations - and restrictions are not among them, because they are outside VOWL 2's scope rather than missing from it.",
+          "consequence": "Keeping restriction edges is a deliberate departure from VOWL 2 in favour of compatibility with a later implementation. It is defensible on the transparency goal, but it must be recorded as a departure and not as conformance.",
+          "stableAcrossVersions": "Submission 892 reaches the same finding independently, against OntoViBe 1 rather than OntoViBe 2. It likewise remarks that the benchmark features classes not directly connected to the rest of the graph, and its list of omissions crucial to class structure is the same two set-operation issues, again without restrictions. It is also more explicit about scope, saying custom OWL 2 data ranges are intentionally not included for the time being because VOWL focuses on classes and properties. Two successive versions, two benchmark releases, one conclusion."
+        }
+      }
+    },
+    {
       "id": "owlapi-reference",
       "specifications": ["selected OWLAPI 5 behavioral compatibility"],
       "upstream": "C:/Users/maksy/GitHub/owlcs/owlapi",

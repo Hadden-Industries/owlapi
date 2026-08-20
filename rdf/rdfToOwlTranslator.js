@@ -333,6 +333,7 @@ class RdfGraphInterpreter {
   #diagnostics;
   #documentScope;
   #evidenceIndex;
+  #recoveredAnnotationPropertyIris = new Set();
   #execution;
   #individualIris = new Set();
   #listOwners = new Map();
@@ -527,8 +528,156 @@ class RdfGraphInterpreter {
         ),
       );
     }
+    this.#declareRdfsClasses();
     this.#declareUntypedProperties();
+    this.#declareUndeclaredAnnotationProperties();
     this.#consumeRedundantOwl1Types();
+  }
+
+  // Whether a triple using an undeclared predicate can be read as an annotation.
+  // A literal object settles it: no object property can hold one. An IRI object
+  // is only taken where the subject is a class or a property, because an object
+  // property assertion there would have to pun the subject into an individual
+  // and so change the ontology's structure; on an individual subject the
+  // assertion is a real reading and the triple is left alone.
+  #isRecoverableAnnotation(quad, subjectIris, annotationCarriers) {
+    // A triple hanging off an `owl:Axiom` or `owl:Annotation` node is an
+    // annotation by construction: the mapping makes every triple on such a node
+    // beyond the three `owl:annotated*` ones part of the annotation set. The
+    // object may be anything, so no further test applies.
+    if (quad.subject.termType === "BlankNode") {
+      return annotationCarriers.has(termKey(quad.subject));
+    }
+    if (quad.subject.termType !== "NamedNode") {
+      return false;
+    }
+    if (quad.object.termType === "Literal") {
+      return true;
+    }
+    return (
+      quad.object.termType === "NamedNode" &&
+      subjectIris.has(quad.subject.value)
+    );
+  }
+
+  // OWL 2 Mapping to RDF Graphs admits an annotation assertion only where the
+  // predicate is a declared annotation property, and real vocabularies annotate
+  // with undeclared ones constantly, so compatible mode declares them. What
+  // matters is *when*: this runs in the declaration phase, before any axiom is
+  // read.
+  //
+  // The reason is `owl:Axiom` reification. A reification names the assertion it
+  // annotates through `owl:annotatedSource`, `owl:annotatedProperty` and
+  // `owl:annotatedTarget`, and can only attach to an assertion that already
+  // exists when reifications are indexed. Reconstructing the assertion later,
+  // while sweeping up unconsumed triples, is too late - the reification has
+  // already failed to find it, and its own annotations go with it.
+  // `universal_reference-data_20260714` declares eight annotation properties and
+  // uses dozens, so this cost it 144 annotations.
+  //
+  // The sets that decide whether an IRI-valued triple qualifies are captured
+  // before the scan, so declaring one property cannot change the verdict for a
+  // later one and the outcome does not depend on the order triples arrive in.
+  #declareUndeclaredAnnotationProperties() {
+    if (this.#configuration.parsingMode === "strict") {
+      return;
+    }
+
+    const subjectIris = new Set([
+      ...this.#classIris,
+      ...this.#annotationPropertyIris,
+      ...this.#dataPropertyIris,
+      ...this.#objectPropertyIris,
+    ]);
+    const annotationCarriers = new Set();
+    for (const quad of this.#dataset.match(null, null, null, null)) {
+      if (
+        quad.predicate.value === RDF_VOCABULARY.type &&
+        quad.subject.termType === "BlankNode" &&
+        (quad.object.value === OWL_VOCABULARY.Axiom ||
+          quad.object.value === OWL_VOCABULARY.Annotation)
+      ) {
+        annotationCarriers.add(termKey(quad.subject));
+      }
+    }
+    const recovered = new Set();
+
+    for (const quad of this.#dataset.match(null, null, null, null)) {
+      const iri = quad.predicate.value;
+      if (
+        recovered.has(iri) ||
+        this.#annotationPropertyIris.has(iri) ||
+        this.#dataPropertyIris.has(iri) ||
+        this.#objectPropertyIris.has(iri) ||
+        iri.startsWith(RDF_NAMESPACE) ||
+        iri.startsWith(RDFS_NAMESPACE) ||
+        iri.startsWith(OWL_NAMESPACE) ||
+        !this.#isRecoverableAnnotation(quad, subjectIris, annotationCarriers)
+      ) {
+        continue;
+      }
+      recovered.add(iri);
+      this.#annotationPropertyIris.add(iri);
+
+      if (this.#configuration.collectWarnings) {
+        this.#diagnostics.push({
+          code: "RDF_UNDECLARED_ANNOTATION_PROPERTY",
+          iri,
+          message:
+            "A property used in an assertion was undeclared and was taken as an annotation property",
+          severity: "warning",
+        });
+      }
+    }
+  }
+
+  // `x rdf:type rdfs:Class` says the subject is a class, but says it in the
+  // RDFS vocabulary that OWL 1 admitted and OWL 2 replaced with `owl:Class`. It
+  // matches no declaration pattern in OWL 2 Mapping to RDF Graphs, so a
+  // document relying on it is not OWL 2 DL and strict mode leaves it alone.
+  //
+  // Compatible mode recovers it, because dropping it discards the vocabulary
+  // rather than repairing it: `dcmitype.rdf` types all twelve of its classes
+  // this way and declares no `owl:Class` at all. Unlike the bare `rdf:Property`
+  // case below there is nothing to infer - a class is a class - so no evidence
+  // is required and none is consulted.
+  #declareRdfsClasses() {
+    if (this.#configuration.parsingMode === "strict") {
+      return;
+    }
+
+    for (const quad of this.#dataset.match(null, null, null, null)) {
+      if (
+        quad.predicate.value !== RDF_VOCABULARY.type ||
+        quad.object.value !== RDFS_VOCABULARY.Class ||
+        quad.subject.termType !== "NamedNode"
+      ) {
+        continue;
+      }
+      const iri = quad.subject.value;
+      // A datatype is not re-read as a class, and an existing declaration
+      // already says what this triple says.
+      if (this.#classIris.has(iri) || this.#datatypeIris.has(iri)) {
+        continue;
+      }
+      this.#classIris.add(iri);
+      this.#transaction.addAxiom(
+        this.#dataFactory.getOWLDeclarationAxiom(
+          this.#dataFactory.getOWLClass(IRI.create(iri)),
+        ),
+      );
+      this.#consume(quad);
+
+      if (this.#configuration.collectWarnings) {
+        this.#diagnostics.push({
+          code: "RDF_RDFS_CLASS",
+          iri,
+          message:
+            "A class was declared with rdfs:Class and was recovered as an OWL class",
+          severity: "warning",
+        });
+      }
+    }
   }
 
   // A bare `rdf:Property` is not an OWL property: OWL 2 requires every property
@@ -1072,6 +1221,26 @@ class RdfGraphInterpreter {
       let axiom;
       const annotations = await this.#axiomAnnotations(currentQuad);
       if (predicate === RDFS_VOCABULARY.subPropertyOf) {
+        // Strict mode is left to the dispatch below, whose strict accessors
+        // already reject the document and say more precisely why. Only the
+        // compatible-mode recovery is at issue here.
+        if (
+          this.#configuration.parsingMode !== "strict" &&
+          this.#isCrossCategorySubProperty(currentQuad)
+        ) {
+          this.#consume(currentQuad);
+          if (this.#configuration.collectWarnings) {
+            this.#diagnostics.push({
+              code: "RDF_CROSS_CATEGORY_SUBPROPERTY",
+              message:
+                "A sub-property triple related two different property categories and was ignored",
+              severity: "warning",
+              subProperty: currentQuad.subject.value,
+              superProperty: currentQuad.object.value,
+            });
+          }
+          continue;
+        }
         if (this.#isAnnotationPropertyTerm(currentQuad.subject)) {
           axiom = this.#dataFactory.getOWLSubAnnotationPropertyOfAxiom(
             this.#annotationProperty(currentQuad.subject),
@@ -1409,6 +1578,12 @@ class RdfGraphInterpreter {
       OWL_VOCABULARY.Restriction,
       OWL_VOCABULARY.SymmetricProperty,
       OWL_VOCABULARY.TransitiveProperty,
+      // The RDF and RDFS spellings of terms already listed above. They type an
+      // entity rather than place an individual in a class, and reserved
+      // vocabulary cannot be a class name in any case, so reading them as class
+      // assertions invents a class the document never mentions.
+      RDF_VOCABULARY.Property,
+      RDFS_VOCABULARY.Class,
       RDFS_VOCABULARY.Datatype,
     ]);
     let visited = 0;
@@ -1662,6 +1837,96 @@ class RdfGraphInterpreter {
     }
   }
 
+  // OWL 2 Mapping to RDF Graphs admits an annotation assertion only where the
+  // predicate is a declared annotation property, so a document that annotates
+  // with an undeclared one leaves triples matching no pattern. Strict mode is
+  // right to reject them; compatible mode recovers.
+  //
+  // Only a literal object is recovered. A literal cannot belong to an object
+  // property, and a data property assertion would be nonsense on a class, so an
+  // annotation is the reading that keeps the statement while asserting nothing
+  // logically. An IRI object is left alone, because there it is genuinely
+  // ambiguous whether an object property assertion was meant.
+  //
+  // Real vocabularies rely on this: `spatial.rdf` annotates sixteen properties
+  // and a class with `vs:term_status` while declaring no annotation property at
+  // all, so without the recovery it renders with no annotations whatsoever.
+  #recoverUndeclaredAnnotation(quad) {
+    if (
+      this.#configuration.parsingMode === "strict" ||
+      quad.subject.termType !== "NamedNode"
+    ) {
+      return false;
+    }
+    // A literal object settles it on its own: no object property can hold one.
+    // An IRI object is only recovered where the subject is a class or a
+    // property, because an object property assertion there would have to pun
+    // the subject into an individual and so change the ontology's structure. On
+    // an individual subject the assertion is a real reading and the triple is
+    // left alone rather than guessed at.
+    if (
+      quad.object.termType !== "Literal" &&
+      !(
+        quad.object.termType === "NamedNode" &&
+        (this.#classIris.has(quad.subject.value) ||
+          this.#annotationPropertyIris.has(quad.subject.value) ||
+          this.#dataPropertyIris.has(quad.subject.value) ||
+          this.#objectPropertyIris.has(quad.subject.value))
+      )
+    ) {
+      return false;
+    }
+    const iri = quad.predicate.value;
+    // The recovery invents a declaration, and the RDF, RDFS and OWL namespaces
+    // are reserved: an IRI from them cannot be given a meaning the standard did
+    // not give it. The built-in annotation properties are already declared and
+    // never reach this path, so what is refused here is exactly the terms that
+    // have no standard meaning to fall back on.
+    if (
+      iri.startsWith(RDF_NAMESPACE) ||
+      iri.startsWith(RDFS_NAMESPACE) ||
+      iri.startsWith(OWL_NAMESPACE)
+    ) {
+      return false;
+    }
+    // Recovering the first assertion declares the property, so asking only
+    // whether it is declared would refuse every assertion after the first. The
+    // recovered set is tracked separately for that reason: a property recovered
+    // here stays eligible, while one the document genuinely declared does not
+    // reach this path at all.
+    if (
+      !this.#recoveredAnnotationPropertyIris.has(iri) &&
+      (this.#annotationPropertyIris.has(iri) ||
+        this.#dataPropertyIris.has(iri) ||
+        this.#objectPropertyIris.has(iri))
+    ) {
+      return false;
+    }
+
+    this.#recoveredAnnotationPropertyIris.add(iri);
+    this.#annotationPropertyIris.add(iri);
+    this.#transaction.addAxiom(
+      this.#dataFactory.getOWLAnnotationAssertionAxiom(
+        this.#dataFactory.getOWLAnnotationProperty(IRI.create(iri)),
+        IRI.create(quad.subject.value),
+        this.#annotationValue(quad.object),
+      ),
+    );
+    this.#consume(quad);
+
+    if (this.#configuration.collectWarnings) {
+      this.#diagnostics.push({
+        code: "RDF_UNDECLARED_ANNOTATION_PROPERTY",
+        iri,
+        message:
+          "An assertion used an undeclared property and was kept as an annotation",
+        severity: "warning",
+        subject: quad.subject.value,
+      });
+    }
+    return true;
+  }
+
   async #accountForUnconsumedTriples() {
     let visited = 0;
     for (const currentQuad of this.#dataset) {
@@ -1669,6 +1934,9 @@ class RdfGraphInterpreter {
         this.#isConsumed(currentQuad) ||
         !this.#isOwlSignificant(currentQuad)
       ) {
+        continue;
+      }
+      if (this.#recoverUndeclaredAnnotation(currentQuad)) {
         continue;
       }
       const details = {
@@ -2687,6 +2955,44 @@ class RdfGraphInterpreter {
         this.#objectPropertyIris.has(term.value)) ||
       term.termType === "BlankNode"
     );
+  }
+
+  // Each of the three `rdfs:subPropertyOf` patterns constrains both ends to the
+  // same property category, so a triple whose ends sit in different categories
+  // matches none of them. It cannot be repaired by moving one end either:
+  // section 3.2.1 allows at most one of OPE(x), DPE(x) and AP(x) to be defined
+  // for any x, so reading `rdfs:label` as an object property because an object
+  // property is declared beneath it would define OPE for an IRI that already
+  // has AP.
+  //
+  // Only named ends are judged. A blank-node object is a property expression
+  // such as `owl:inverseOf`, which carries no category of its own.
+  #propertyCategoryOf(term) {
+    if (term.termType !== "NamedNode") {
+      return null;
+    }
+    if (this.#annotationPropertyIris.has(term.value)) {
+      return "annotation";
+    }
+    if (this.#dataPropertyIris.has(term.value)) {
+      return "data";
+    }
+    return this.#objectPropertyIris.has(term.value) ? "object" : null;
+  }
+
+  // Only a crossing that involves the annotation category is refused. ADR 0005
+  // has evidence for recovering `data` against `object` - the oracle renders
+  // `foaf:mbox_sha1sum` and `sioc:delivered_at`, and FOAF needs the axiom-local
+  // reuse to load at all - so that recovery is left exactly as it is. It has no
+  // evidence for the annotation pairs, and manufacturing an object property out
+  // of an annotation property is what drew `rdfs:label` as a node of its own.
+  #isCrossCategorySubProperty(quad) {
+    const subject = this.#propertyCategoryOf(quad.subject);
+    const object = this.#propertyCategoryOf(quad.object);
+    if (!subject || !object || subject === object) {
+      return false;
+    }
+    return subject === "annotation" || object === "annotation";
   }
 
   #isAnnotationPropertyTerm(term) {

@@ -92,10 +92,24 @@ do not append chronology here.
    environment, verify that the Node fallback dependency stays outside browser
    bundles, and exercise entity, nesting, timeout, abort, and malformed-input
    behavior independently.
-9. Record every material finding with evidence and one primary disposition.
-10. Turn reusable findings into tests/contracts where deterministic.
-11. Update this playbook and all impacted future phase assumptions.
-12. Close the mechanically reviewable learning gate before activating the next ingestion phase.
+9. Run every verification command whole, and read its whole output. A shell
+   pipeline reports its **last** command's exit status, so `npm run lint | tail`
+   exits zero on a failing lint run and truncates away the diagnostic that would
+   have said so. `AGENTS.md` forbids pipelines, chaining and command
+   substitution for the host environment's sake; finding `M8-009` is why the
+   same rule is load-bearing for correctness. Anything that discards an exit
+   code or truncates output can turn a red gate green without anyone making a
+   false statement.
+10. Treat a reference output as a function of two pinned things, an input and an
+    oracle version. When a difference is implausibly small - one character, one
+    field - check that both sides converted the same bytes before reasoning
+    about behaviour. Two reference outputs that disagree with each other about
+    one statement are proof the inputs differed, not the engines; finding
+    `M8-010` is the worked case.
+11. Record every material finding with evidence and one primary disposition.
+12. Turn reusable findings into tests/contracts where deterministic.
+13. Update this playbook and all impacted future phase assumptions.
+14. Close the mechanically reviewable learning gate before activating the next ingestion phase.
 
 ## Institutionalized RDF syntax-adapter method
 
@@ -207,6 +221,21 @@ do not append chronology here.
 - Treat a full suite that stays green across a total implementation replacement
   as a coverage report, not as reassurance. Find out which tests should have
   failed and did not.
+- State what a differential's dimensions can and cannot see, and re-read that
+  statement whenever the specification allows one entity to be drawn more than
+  once. A comparator keyed on IRI silently compares one arbitrary pair when
+  VOWL 2's splitting rules turn one IRI into many nodes. Collect every match,
+  compare pairwise against unused candidates, and treat per-IRI scalars as sets.
+- Accept that a green differential means its dimensions agree, not that the
+  outputs agree, and do not let the register's authority outrun that. A defect
+  orthogonal to every dimension - nine discarded domain axioms and four class
+  nodes no edge touched - produces no signal at all and is found only by reading
+  the document.
+- Justify differences **per dimension**, never per document, and fail the gate
+  when a justification outlives the difference it justified. One entry covering
+  a whole document lets an unanalysed difference pass as governed because a
+  different difference in the same document was explained; a stale entry leaves
+  a false record in the acceptance ledger.
 
 ## Next migration: Phase 9 private N3.js adapter foundation and strict Turtle
 

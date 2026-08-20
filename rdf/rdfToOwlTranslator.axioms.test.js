@@ -421,7 +421,14 @@ describe("RdfToOwlTranslator axiom reconstruction", () => {
       },
     );
 
-    expectAxiomCount(ontology, OWLObjectKind.SUB_OBJECT_PROPERTY_AXIOM);
+    // Precedence is preserved for the sub-property axiom too, not only for the
+    // assertion. Building it would have defined OPE(rdfs:label) for an IRI that
+    // already has AP(rdfs:label), which is the pairing the typing constraints
+    // quoted in ADR 0005 forbid, and it drew `rdfs:label` as a property node of
+    // its own in `schemaorg.owl`. The axiom-local reuse recovery still applies
+    // to the evidenced `data` against `object` pair; it no longer manufactures
+    // an object property out of an annotation property.
+    expectAxiomCount(ontology, OWLObjectKind.SUB_OBJECT_PROPERTY_AXIOM, 0);
     expectAxiomCount(ontology, OWLObjectKind.ANNOTATION_ASSERTION_AXIOM);
     expectAxiomCount(
       ontology,
@@ -430,10 +437,9 @@ describe("RdfToOwlTranslator axiom reconstruction", () => {
     );
     expect(context.diagnostics).toContainEqual(
       expect.objectContaining({
-        code: "RDF_PROPERTY_CATEGORY_REUSE",
-        existingCategories: ["annotation"],
-        iri: label.value,
-        requestedCategory: "object",
+        code: "RDF_CROSS_CATEGORY_SUBPROPERTY",
+        subProperty: objectProperty.value,
+        superProperty: label.value,
         severity: "warning",
       }),
     );

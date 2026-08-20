@@ -1066,6 +1066,24 @@
       ]
     },
     {
+      "id": "PHASE8-RESEARCH-OWL2VOWL-INSTANCE-COUNT",
+      "reference": "referenceOwl2Vowl",
+      "question": "What the VOWL-JSON `instances` count on a class actually counts, given that it disagrees with the length of the same entry's `individuals` array",
+      "publicBasis": "VOWL 2.0 specification and the pinned OWL2VOWL 0.3.7 reference outputs under src/owl2vowl/test/fixtures/java-reference-outputs/",
+      "implementationSourcesInspected": [
+        "src/main/java/de/uni_stuttgart/vis/vowl/owl2vowl/parser/owlapi/IndividualsVisitor.java",
+        "src/main/java/de/uni_stuttgart/vis/vowl/owl2vowl/export/JsonGeneratorVisitorImpl.java"
+      ],
+      "sourceRevision": "c6331c4c79b0034b8537a11cccd1a6587cedb0b9",
+      "reason": "The reference outputs establish that the two fields are independent - only 6 of 9102 class entries carry a non-zero `instances`, and `time-gregorian.ttl` renders `MonthOfYear` with `instances: 1` beside eleven `individuals` - but they cannot reveal the rule that separates them. VOWL 2.0 does not specify the serialisation, so neither source of evidence could settle it.",
+      "finding": "`IndividualsVisitor` branches on whether the individual's IRI is also present in the class map. When it is, the IRI is recorded as an instance; otherwise it is recorded as an individual. `instances` therefore counts class-and-individual punning, which OWL 2 permits, and never the ordinary members of a class. That is why it is almost always zero and why it is unrelated to the length of `individuals`.",
+      "productionUse": "None. No implementation text or control flow was copied; the rule was reimplemented independently in VOWLBuilder against project-owned tests.",
+      "evidence": [
+        "src/owl2vowl/js/vowlBuilder.instances.test.js",
+        "src/owl2vowl/test/fixtures/java-reference-outputs/time-gregorian.ttl.java.json"
+      ]
+    },
+    {
       "id": "PHASE8-RESEARCH-OWL2VOWL-IMPORTED-ENTITY-SCOPE",
       "reference": "referenceOwl2Vowl",
       "question": "Whether OWL2VOWL restricts entities drawn from imported ontologies to those the importing document references",
