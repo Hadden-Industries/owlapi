@@ -80,7 +80,7 @@ describe("owlapi-js governance artifacts", () => {
     }
     expect(
       matrix.capabilities
-        .filter(({ phase }) => phase !== null && phase <= 7)
+        .filter(({ phase }) => phase !== null && phase <= 9)
         .every(({ progress }) => progress === "COMPLETE"),
     ).toBe(true);
   });
@@ -115,6 +115,11 @@ describe("owlapi-js governance artifacts", () => {
       expect(byId.get(id)?.phase).toBe(phase);
     }
     expect(byId.get("webvowl.production-cutover")?.status).toBe("REQUIRED_V1");
+    expect(byId.get("parser.turtle")).toMatchObject({
+      delegate: "n3",
+      progress: "COMPLETE",
+      status: "DELEGATED",
+    });
     expect(byId.get("parser.n3-language")).toMatchObject({
       status: "DEFERRED",
       phase: null,
@@ -234,27 +239,27 @@ describe("owlapi-js governance artifacts", () => {
     const revisionBoundaries = new Map([
       [
         "src/owl2vowl/js/ontologyConverter.js",
-        "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
+        "f0dbf623a69adf08bc61f5867c7421fba9c2e750",
       ],
       [
         "src/owl2vowl/js/ontologyConverter.test.js",
-        "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
+        "f0dbf623a69adf08bc61f5867c7421fba9c2e750",
       ],
       [
         "src/owl2vowl/js/rdfParser.js",
-        "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
+        "f0dbf623a69adf08bc61f5867c7421fba9c2e750",
       ],
       [
         "src/owl2vowl/js/rdfParser.test.js",
-        "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
+        "f0dbf623a69adf08bc61f5867c7421fba9c2e750",
       ],
       [
         "src/owl2vowl/js/turtleParser.js",
-        "32827d4aec692af2968dae996fca2169e33bf46b",
+        "5967a0fe0575e03f84e65cb8f18fd4229612b315",
       ],
       [
         "src/owl2vowl/js/turtleParser.test.js",
-        "32827d4aec692af2968dae996fca2169e33bf46b",
+        "5967a0fe0575e03f84e65cb8f18fd4229612b315",
       ],
     ]);
 
@@ -305,7 +310,7 @@ describe("owlapi-js governance artifacts", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(paths).toEqual(productionModules);
     for (const record of records) {
-      expect([1, 2, 3, 4, 5, 6]).toContain(record.phase);
+      expect([1, 2, 3, 4, 5, 6, 9]).toContain(record.phase);
       expect(manifest.provenanceCategories).toHaveProperty(
         record.provenanceCategory,
       );
@@ -380,6 +385,16 @@ describe("owlapi-js governance artifacts", () => {
     ]);
     expect(
       records
+        .filter(({ phase }) => phase === 9)
+        .map(({ path }) => path)
+        .sort(),
+    ).toEqual([
+      "src/owlapi-js/parser/rdf/n3SyntaxAdapter.js",
+      "src/owlapi-js/parser/turtle/descriptor.js",
+      "src/owlapi-js/parser/turtle/parser.js",
+    ]);
+    expect(
+      records
         .find(({ path }) => path === "src/owlapi-js/rdf/graphPolicy.js")
         ?.laterPhaseChanges?.map(({ phase }) => phase),
     ).toContain(5);
@@ -413,9 +428,43 @@ describe("owlapi-js governance artifacts", () => {
     const manifest = readJson("../../docs/owlapi-js/conformance/suites.json");
 
     for (const suite of manifest.suites) {
-      expect(suite.revision).toBeTruthy();
-      expect(suite.revision).not.toMatch(/^(main|master|latest)$/i);
+      const revisions = suite.revisionScopes?.map(
+        ({ revision }) => revision,
+      ) ?? [suite.revision];
+      expect(revisions.length).toBeGreaterThan(0);
+      for (const revision of revisions) {
+        expect(revision).toBeTruthy();
+        expect(revision).not.toMatch(/^(main|master|latest)$/i);
+      }
     }
+  });
+
+  it("keeps RDF/XML and Turtle pinned to the W3C revisions actually ingested", () => {
+    const suites = readJson("../../docs/owlapi-js/conformance/suites.json");
+    const classifications = readJson(
+      "../../docs/owlapi-js/conformance/classification-manifests.json",
+    );
+    const suite = suites.suites.find(({ id }) => id === "w3c-rdf-tests");
+    const manifests = new Map(
+      classifications.manifests.map((manifest) => [manifest.id, manifest]),
+    );
+
+    expect(suite.revisionScopes).toEqual([
+      {
+        formats: ["RDF/XML", "N-Triples", "N-Quads", "TriG"],
+        revision: "ad541a5f0479f0798608c4801369d97b8e08b36f",
+      },
+      {
+        formats: ["Turtle"],
+        revision: "12774b0ebb385d17651b396654b19254d0fefbfa",
+      },
+    ]);
+    expect(manifests.get("w3c-rdf-tests.rdfxml")?.revision).toBe(
+      "ad541a5f0479f0798608c4801369d97b8e08b36f",
+    );
+    expect(manifests.get("w3c-rdf-tests.turtle")?.revision).toBe(
+      "12774b0ebb385d17651b396654b19254d0fefbfa",
+    );
   });
 
   it("resolves every recorded reuse-boundary revision on the current branch", () => {
@@ -593,7 +642,10 @@ describe("owlapi-js governance artifacts", () => {
       "../../docs/owlapi-js/conformance/classification-manifests.json",
     );
     const revisions = new Map(
-      suites.suites.map(({ id, revision }) => [id, revision]),
+      suites.suites.map(({ id, revision, revisionScopes }) => [
+        id,
+        new Set(revisionScopes?.map((scope) => scope.revision) ?? [revision]),
+      ]),
     );
     const manifestIds = classifications.manifests.map(({ id }) => id);
 
@@ -601,7 +653,7 @@ describe("owlapi-js governance artifacts", () => {
     expect(new Set(manifestIds).size).toBe(manifestIds.length);
 
     for (const manifest of classifications.manifests) {
-      expect(manifest.revision).toBe(revisions.get(manifest.suite));
+      expect(revisions.get(manifest.suite)).toContain(manifest.revision);
       expect(manifest.paths.length).toBeGreaterThan(0);
       expect(manifest.classificationOwnerPhases.length).toBeGreaterThan(0);
       const ids = manifest.entries.map(({ id }) => id);
@@ -684,6 +736,34 @@ describe("owlapi-js governance artifacts", () => {
         ({ reasonCategory }) => reasonCategory === "COMMENTED_OUT_UPSTREAM",
       ),
     ).toBe(true);
+
+    const turtleManifest = byId.get("w3c-rdf-tests.turtle");
+    const turtleRequired = turtleManifest.entries.filter(
+      ({ classification }) => classification === "REQUIRED",
+    );
+    expect(turtleManifest).toMatchObject({
+      evaluationTestCount: 145,
+      manifestEntryCount: 387,
+      manifestEntryCounts: { rdf11: 313, rdf12Syntax: 74 },
+      manifestSha256: {
+        rdf11:
+          "b90a85ee867279b7688033dc18088789580f0bcc2c59600b8c5796889414cf36",
+        rdf12Syntax:
+          "cd097ec4c5b312b04897eb9fcf0e7429381967936dfe14194fff9c7027a7203b",
+      },
+      negativeSyntaxTestCount: 127,
+      positiveSyntaxTestCount: 115,
+      requiredTestCount: 387,
+      runner: "src/owlapi-js/parser/turtle/turtle.conformance.test.js",
+      sourceTestCount: 387,
+    });
+    expect(turtleManifest.entries).toHaveLength(387);
+    expect(turtleRequired).toHaveLength(387);
+    for (const artifact of turtleManifest.localManifestArtifacts) {
+      expect(existsSync(new URL(`../../${artifact}`, import.meta.url))).toBe(
+        true,
+      );
+    }
 
     const w3cSuite = suites.suites.find(({ id }) => id === "w3c-owl2");
     const w3cManifest = classifications.manifests.find(

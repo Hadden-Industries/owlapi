@@ -19,6 +19,7 @@ import { functionalSyntaxParserDescriptor } from "../parser/functional/descripto
 import { manchesterSyntaxParserDescriptor } from "../parser/manchester/descriptor.js";
 import { owlXmlParserDescriptor } from "../parser/owlxml/descriptor.js";
 import { rdfXmlParserDescriptor } from "../parser/rdfxml/descriptor.js";
+import { turtleParserDescriptor } from "../parser/turtle/descriptor.js";
 import { OWLParserRegistry } from "./parserRegistry.js";
 
 const DIAGNOSTIC_SEVERITIES = new Set(["info", "warning"]);
@@ -78,6 +79,7 @@ class ParseTransaction {
   #documentFormat;
   #imports = new StructuralSet();
   #ontologyID;
+  #prefixes;
 
   constructor(dataFactory, configuration) {
     this.#dataFactory = dataFactory;
@@ -143,6 +145,21 @@ class ParseTransaction {
     return this.#documentFormat;
   }
 
+  setPrefixes(prefixes) {
+    if (
+      !prefixes ||
+      typeof prefixes !== "object" ||
+      Array.isArray(prefixes) ||
+      Object.entries(prefixes).some(
+        ([prefix, iri]) =>
+          typeof prefix !== "string" || typeof iri !== "string",
+      )
+    ) {
+      throw new TypeError("prefixes must be a string-to-string object");
+    }
+    this.#prefixes = Object.freeze({ ...prefixes });
+  }
+
   commit(defaultFormat, documentIRI) {
     const ontologyID = this.#ontologyID || this.#dataFactory.getOWLOntologyID();
     return {
@@ -150,6 +167,7 @@ class ParseTransaction {
         diagnostics: [...this.#diagnostics],
         documentIRI,
         format: this.#documentFormat || defaultFormat,
+        ...(this.#prefixes === undefined ? {} : { prefixes: this.#prefixes }),
       },
       ontology: new OWLOntology({
         annotations: this.#annotations,
@@ -251,6 +269,7 @@ export class OWLOntologyManager {
       new OWLParserRegistry([
         owlXmlParserDescriptor,
         rdfXmlParserDescriptor,
+        turtleParserDescriptor,
         functionalSyntaxParserDescriptor,
         manchesterSyntaxParserDescriptor,
       ]);

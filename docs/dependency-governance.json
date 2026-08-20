@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordedOn": "2026-08-10",
+  "recordedOn": "2026-08-20",
   "transitiveInventoryAuthority": "package-lock.json",
   "upgradeGate": [
     "applicable standards-conformance suites",
@@ -8,7 +8,8 @@
     "Java/WebVOWL differential tests",
     "security and finite-resource tests",
     "browser and Node tests",
-    "bundle-size and parser-performance benchmarks"
+    "bundle-size and parser-performance benchmarks",
+    "production static-import-closure verification"
   ],
   "dependencies": [
     {
@@ -53,7 +54,7 @@
     {
       "name": "n3",
       "version": "2.2.0",
-      "role": "Turtle, TriG, N-Triples, and N-Quads syntax adapters only",
+      "role": "Private strict-format RDF syntax implementation; Phase 9 enables Turtle only, with TriG, N-Triples, and N-Quads reserved for their later independent phases",
       "standardsGrounding": [
         "W3C Turtle",
         "W3C TriG",
@@ -61,17 +62,36 @@
         "W3C N-Quads"
       ],
       "conformanceEvidence": [
-        "Pinned W3C rdf-tests revision",
-        "Independent owlapi-js Turtle classification and adapter-contract suites required in Phase 9; N-Triples, N-Quads, and TriG scopes follow in Phases 12, 13, and 14"
+        "docs/owlapi-js/conformance/classification-manifests.json#w3c-rdf-tests.turtle",
+        "docs/owlapi-js/conformance/generated/w3c-turtle.json",
+        "src/owlapi-js/parser/turtle/turtle.conformance.test.js",
+        "src/owlapi-js/parser/rdf/n3SyntaxAdapter.test.js",
+        "src/owlapi-js/parser/rdf/n3SyntaxAdapter.resource.test.js",
+        "src/owlapi-js/parser/turtle/turtle.browser.test.js",
+        "src/owlapi-js/parser/turtle/turtle.differential.test.js",
+        "N-Triples, N-Quads, and TriG remain unregistered until their independent Phases 12, 13, and 14 classifications"
       ],
       "releaseAuthority": "RDF/JS community; rdfjs/N3.js maintainers",
-      "maintenanceStatus": "Pinned production release with active standards test scripts",
+      "maintenanceStatus": "Pinned production release; Phase 9 independently passed all 387 classified W3C RDF 1.1 and RDF 1.2 Turtle entries plus one RDF/JS language-tag canonicalization regression",
       "runtimeDependencies": ["buffer", "readable-stream"],
       "networkBehavior": "Parser APIs consume caller-provided input and do not resolve documents",
-      "browserCost": "Conditionally import after strict format selection; establish initial-bundle, lazy-chunk, first-use, heap, and main-thread baselines in Phase 9 and remeasure the added modes in Phases 12 through 14",
+      "browserCost": "Phase 9 Vite 8/Oxc isolated-manager measurement: N3.js is absent from the 214,411-minified-byte / 53,742-gzip-byte initial graph and isolated in one 185,923-minified-byte / 51,873-gzip-byte lazy Turtle graph. The actual entry-aware WebVOWL production build has a 639,028-minified-byte / 160,232-gzip-byte three-chunk initial static closure and a 187,063-minified-byte / 52,570-gzip-byte three-chunk lazy Turtle closure. The adapter loads the published self-contained browser UMD entry after strict Turtle selection so browser execution does not depend on Node globals; util/verify-webvowl-lazy-parser-chunks.mjs proves the N3 implementation marker is absent from the initial closure and present behind the dynamic Turtle boundary.",
+      "securityReview": {
+        "reviewedOn": "2026-08-20",
+        "source": "npm registry audit service through the installed npm client",
+        "command": "npm audit --omit=dev --json",
+        "packages": ["n3", "buffer", "readable-stream"],
+        "result": "The complete production scope contained 73 dependencies and reported zero info, low, moderate, high, critical, or total vulnerabilities.",
+        "executableEvidence": [
+          "src/owlapi-js/parser/rdf/n3SyntaxAdapter.resource.test.js",
+          "src/owlapi-js/parser/turtle/turtle.browser.test.js",
+          "src/owlapi-js/parser/turtle/turtle.test.js",
+          "util/verify-webvowl-lazy-parser-chunks.mjs"
+        ]
+      },
       "license": "MIT",
-      "noticeAction": "Retain the dependency and transitive dependency licences in release notices",
-      "adapterBoundary": "src/owlapi-js/parsers/rdf/n3SyntaxAdapter.js"
+      "noticeAction": "Retain the MIT licences for N3.js, buffer, and readable-stream in release notices",
+      "adapterBoundary": "src/owlapi-js/parser/rdf/n3SyntaxAdapter.js"
     },
     {
       "name": "rdfxml-streaming-parser",

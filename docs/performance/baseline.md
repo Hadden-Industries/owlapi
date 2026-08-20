@@ -288,8 +288,8 @@ before any comparison, as finding `M6-011` requires.
 
 | Existing signal                        | Accepted Phase 6 wall / heap delta | Paired Phase 7 wall / heap delta | Wall change | Heap-delta change |
 | -------------------------------------- | ---------------------------------: | -------------------------------: | ----------: | ----------------: |
-| `generated-rdfxml-large.syntax-to-rdf` |     306.15 ms / 92,747,760 bytes   |   334.48 ms / 92,750,176 bytes   |      +9.25% |            +0.00% |
-| `generated-rdfxml-large.end-to-end`    |   1,844.23 ms / 341,045,176 bytes  | 1,809.97 ms / 341,473,632 bytes  |      -1.86% |            +0.13% |
+| `generated-rdfxml-large.syntax-to-rdf` |       306.15 ms / 92,747,760 bytes |     334.48 ms / 92,750,176 bytes |      +9.25% |            +0.00% |
+| `generated-rdfxml-large.end-to-end`    |    1,844.23 ms / 341,045,176 bytes |  1,809.97 ms / 341,473,632 bytes |      -1.86% |            +0.13% |
 
 Both paired changes remain within the unchanged 20% release threshold. No
 resource ceiling or regression threshold changed, and no baseline was
@@ -319,16 +319,16 @@ The measured path is now the production path. `util/benchmark-vowl-builder.mjs`
 invokes `src/owl2vowl/js/index.js`, the same entry the application uses, rather
 than the removed Phase 7 development adapter.
 
-| Signal                                      | Accepted Phase 7 wall / heap delta | Phase 8 wall / heap delta       | Wall change | Heap-delta change |
+| Signal                                      | Accepted Phase 7 wall / heap delta |       Phase 8 wall / heap delta | Wall change | Heap-delta change |
 | ------------------------------------------- | ---------------------------------: | ------------------------------: | ----------: | ----------------: |
-| VOWL production first use                   |      40.10 ms / 8,902,104 bytes    |    41.47 ms / 8,908,288 bytes   |      +3.42% |            +0.07% |
-| `generated-vowl-classes-large.builder-only` |     138.95 ms / 68,991,864 bytes   |  143.05 ms / 69,181,792 bytes   |      +2.95% |            +0.28% |
-| `generated-rdfxml-large.owlapi-to-vowl`     |   1,947.63 ms / 341,643,480 bytes  | 1,928.00 ms / 340,313,624 bytes |      -1.01% |            -0.39% |
+| VOWL production first use                   |         40.10 ms / 8,902,104 bytes |      41.47 ms / 8,908,288 bytes |      +3.42% |            +0.07% |
+| `generated-vowl-classes-large.builder-only` |       138.95 ms / 68,991,864 bytes |    143.05 ms / 69,181,792 bytes |      +2.95% |            +0.28% |
+| `generated-rdfxml-large.owlapi-to-vowl`     |    1,947.63 ms / 341,643,480 bytes | 1,928.00 ms / 340,313,624 bytes |      -1.01% |            -0.39% |
 
-| Existing signal                        | Accepted Phase 6 wall / heap delta | Phase 8 wall / heap delta       | Wall change | Heap-delta change |
+| Existing signal                        | Accepted Phase 6 wall / heap delta |       Phase 8 wall / heap delta | Wall change | Heap-delta change |
 | -------------------------------------- | ---------------------------------: | ------------------------------: | ----------: | ----------------: |
-| `generated-rdfxml-large.syntax-to-rdf` |     306.15 ms / 92,747,760 bytes   |   320.66 ms / 92,767,720 bytes  |      +4.74% |            +0.02% |
-| `generated-rdfxml-large.end-to-end`    |   1,844.23 ms / 341,045,176 bytes  | 1,880.48 ms / 341,859,680 bytes |      +1.97% |            +0.24% |
+| `generated-rdfxml-large.syntax-to-rdf` |       306.15 ms / 92,747,760 bytes |    320.66 ms / 92,767,720 bytes |      +4.74% |            +0.02% |
+| `generated-rdfxml-large.end-to-end`    |    1,844.23 ms / 341,045,176 bytes | 1,880.48 ms / 341,859,680 bytes |      +1.97% |            +0.24% |
 
 Every signal is within the unchanged 20% release threshold. No resource
 ceiling, regression threshold or accepted baseline changed. Replacing the
@@ -371,3 +371,111 @@ This is recorded as finding `M8-004`. The guard is a start-of-run check and
 cannot observe interference that begins after the process starts, so it reduces
 the frequency of contaminated measurements without eliminating them. The
 corroboration requirement, not the guard, is the control that holds.
+
+## Phase 9 strict Turtle baseline
+
+- Pre-Phase-9 control revision: `29909bb`.
+- Measurement date: 20 August 2026.
+- Environment: Windows `10.0.26200` x64, Node.js `v24.19.0`, 12th Gen
+  Intel Core i9-12900K (24 logical CPUs), 34,053,869,568 bytes system memory.
+- Dependency identity: `package-lock.json` SHA-256
+  `dbf218f2d46d6f9d9aac0a5727afe5a1efe2fb4a349bd6719fd55106c781fa5a`,
+  unchanged from Phases 4 through 8.
+- Commands: `node --expose-gc util/benchmark-owlapi-turtle.mjs`,
+  `node util/measure-owlapi-turtle-browser-cost.mjs`, and the applicable
+  pre-existing benchmark and browser-cost utilities.
+- Protocol: generator `owlapi-benchmark-corpus-v1`; one warm-up and five
+  measured runs; median aggregation; garbage collection requested before each
+  run; heap and event-loop responsiveness sampled every 5 ms. All runs passed
+  the repository idle-machine guard.
+
+The new Turtle fixture contains 50,000 declaration triples in 1,088,977 bytes.
+Syntax-only measurements end at the canonical RDF/JS dataset boundary; the
+end-to-end measurement continues through parser selection, graph policy,
+shared RDF-to-OWL reconstruction, and structural ontology publication.
+
+| Signal                                              | Chunk bytes | Median wall (ms) | Median peak-heap delta (bytes) | Median max event-loop delay (ms) |
+| --------------------------------------------------- | ----------: | ---------------: | -----------------------------: | -------------------------------: |
+| Turtle first use, 100 declarations                  |      65,536 |            35.84 |                      7,957,352 |                            10.56 |
+| `generated-turtle-large.syntax-to-rdf.chunk-16384`  |      16,384 |           963.49 |                    109,138,120 |                            17.20 |
+| `generated-turtle-large.syntax-to-rdf.chunk-65536`  |      65,536 |           398.49 |                    128,631,288 |                            33.02 |
+| `generated-turtle-large.syntax-to-rdf.chunk-262144` |     262,144 |           350.59 |                    139,936,712 |                            73.08 |
+| `generated-turtle-large.end-to-end`                 |      65,536 |         1,771.10 |                    266,324,104 |                         1,133.96 |
+
+The default remains 65,536 bytes. It is 58.6% faster than the 16 KiB path
+while keeping the measured syntax-adapter scheduling interval below the 50 ms
+cooperative-yield budget. The 256 KiB path gains only another 12.0% throughput
+but produces a 73.08 ms interval and retains substantially more heap, so it is
+not the browser-responsiveness choice. This is a measured default rather than
+an arbitrary buffer size.
+
+The end-to-end delay is not attributed to N3.js or the Turtle adapter: the
+syntax-only path stays at 33.02 ms, while the shared RDF-to-OWL/structural path
+already required approximately 1.16 seconds for this 50,000-axiom shape in the
+accepted Phase 5 benchmark. The end-to-end result records that existing shared
+cost honestly; it does not relax a threshold or weaken the adapter's bounded
+streaming and cooperative-yield contract.
+
+The browser measurement used a Vite 8 programmatic production build with Oxc
+minification, ES2022 target, in-memory output, and no project configuration
+file. The published self-contained N3.js browser entry is conditionally loaded
+only after exact Turtle selection.
+
+| Browser graph      | Chunks | Minified bytes | Gzip bytes |
+| ------------------ | -----: | -------------: | ---------: |
+| Initial manager    |      1 |        214,411 |     53,742 |
+| Lazy Turtle graph  |      1 |        185,923 |     51,873 |
+| Lazy RDF/XML graph |      1 |        163,163 |     46,737 |
+
+N3.js and the retained legacy `src/owl2vowl/js/turtleParser.js` are both absent
+from the initial graph. Relative to the accepted Phase 6 initial-manager graph,
+the registered Turtle descriptor and private adapter add 18,144 minified bytes
+(+9.24%) and 4,276 gzip bytes (+8.64%), both within the unchanged 20% release
+threshold. The RDF/XML lazy graph is byte-for-byte unchanged.
+
+This isolated browser measurement intentionally does not load the project's
+Vite configuration. The first actual application build exposed that its
+blanket `manualChunks` vendor group hoisted N3.js into the statically imported
+initial closure. The approved correction replaces that deprecated rule with an
+entry-aware `codeSplitting` vendor group. The production build is independently
+inspected by `node util/verify-webvowl-lazy-parser-chunks.mjs`:
+
+| Production application graph | Chunks | Minified bytes | Gzip bytes |
+| ---------------------------- | -----: | -------------: | ---------: |
+| Initial static closure       |      3 |        639,028 |    160,232 |
+| Lazy Turtle closure          |      3 |        187,063 |     52,570 |
+
+The verifier follows static imports from `deploy/js/index.js`, proves the N3
+lexer/parser marker is absent from that entire closure, follows the literal
+dynamic Turtle import, and proves the marker is present in its lazy closure.
+The lazy total includes the 1,081-byte shared Rolldown runtime in both graph
+closures; the dedicated N3 implementation chunk is 185,923 minified bytes.
+Stale files are harmless because the verifier follows only reachable imports
+rather than scanning the non-empty `deploy` directory as if every file shipped
+in the initial graph.
+
+### Same-runtime regression controls
+
+The pre-Phase-9 revision was measured from an exact `git archive` on the same
+Node 24.19.0 runtime and machine. This is required because the absolute VOWL
+heap profile on Node 24.19.0 differs materially from the accepted Phase 8 Node
+24.17.0 record even when running unchanged code. The paired control proves that
+runtime shift is not a Phase 9 regression.
+
+| Existing signal                             |   Pre-Phase-9 wall / heap delta |       Phase 9 wall / heap delta | Wall change | Heap-delta change |
+| ------------------------------------------- | ------------------------------: | ------------------------------: | ----------: | ----------------: |
+| `generated-functional-large`                |   455.58 ms / 121,203,296 bytes |   458.18 ms / 117,898,880 bytes |      +0.57% |            -2.73% |
+| `generated-functional-depth`                |    146.88 ms / 49,578,248 bytes |    145.43 ms / 49,594,504 bytes |      -0.99% |            +0.03% |
+| Functional mismatch                         |          6.49 ms / 32,056 bytes |          6.61 ms / 37,288 bytes |      +1.84% |           +16.32% |
+| `generated-manchester-large`                |   498.08 ms / 128,169,952 bytes |   485.74 ms / 135,745,640 bytes |      -2.48% |            +5.91% |
+| Manchester mismatch                         |          6.66 ms / 34,512 bytes |          6.71 ms / 38,888 bytes |      +0.73% |           +12.68% |
+| RDF/XML first use                           |      33.96 ms / 8,642,448 bytes |      33.09 ms / 8,381,576 bytes |      -2.54% |            -3.02% |
+| `generated-rdfxml-large.syntax-to-rdf`      |    303.41 ms / 92,765,488 bytes |    306.08 ms / 92,788,712 bytes |      +0.88% |            +0.03% |
+| `generated-rdfxml-large.end-to-end`         | 1,758.88 ms / 342,136,928 bytes | 1,759.89 ms / 340,838,104 bytes |      +0.06% |            -0.38% |
+| VOWL production first use                   |     34.36 ms / 10,578,360 bytes |     34.54 ms / 10,577,672 bytes |      +0.51% |            -0.01% |
+| `generated-vowl-classes-large.builder-only` |    140.83 ms / 74,207,760 bytes |    145.29 ms / 74,207,296 bytes |      +3.17% |             0.00% |
+| `generated-rdfxml-large.owlapi-to-vowl`     | 2,405.42 ms / 575,594,400 bytes | 2,408.08 ms / 574,673,288 bytes |      +0.11% |            -0.16% |
+
+Every relevant same-runtime wall-time and peak-heap-delta change is within the
+unchanged 20% threshold. No resource ceiling, release threshold, or accepted
+earlier baseline was re-anchored.

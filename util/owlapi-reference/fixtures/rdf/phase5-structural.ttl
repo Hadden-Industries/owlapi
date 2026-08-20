@@ -1,0 +1,45 @@
+@base <https://example.com/phase5> .
+@prefix : <https://example.com/phase5#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<> a owl:Ontology ;
+  owl:versionIRI <https://example.com/phase5/1> ;
+  owl:imports <https://example.com/imported> ;
+  rdfs:label "Phase 5"@en .
+
+:Person a owl:Class ;
+  owl:hasKey ( :hasChild :age ) .
+
+:Parent a owl:Class ;
+  rdfs:subClassOf _:parentRestriction .
+
+:Child a owl:Class .
+:hasChild a owl:ObjectProperty .
+:knows a owl:ObjectProperty .
+:age a owl:DatatypeProperty .
+:source a owl:AnnotationProperty .
+:alice a owl:NamedIndividual, :Parent ;
+  :hasChild :bob ;
+  :age "42"^^xsd:integer .
+:bob a owl:NamedIndividual .
+
+_:parentRestriction a owl:Restriction ;
+  owl:onProperty :hasChild ;
+  owl:someValuesFrom :Child .
+
+[] a owl:Axiom ;
+  owl:annotatedSource :Parent ;
+  owl:annotatedProperty rdfs:subClassOf ;
+  owl:annotatedTarget _:parentRestriction ;
+  :source "fixture" .
+
+[] a owl:AllDisjointClasses ;
+  owl:members ( :Person :Parent :Child ) .
+
+[] a owl:NegativePropertyAssertion ;
+  owl:sourceIndividual :alice ;
+  owl:assertionProperty :knows ;
+  owl:targetIndividual :bob .

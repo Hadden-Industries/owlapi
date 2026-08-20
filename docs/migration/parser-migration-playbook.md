@@ -153,6 +153,32 @@ do not append chronology here.
 - Measure syntax-to-RDF and end-to-end costs separately. Also measure lazy
   browser chunks, first use, Node/browser parity and Node-only fallback leakage.
   Compare regressions with paired measurements on the same runtime and machine.
+- Never infer production laziness from a source-level dynamic import or an
+  isolated adapter build. Build with the real application configuration, follow
+  the complete static import closure from its production entry, prove the
+  dependency implementation is absent there, then follow the format's dynamic
+  import and prove the implementation is present in that lazy closure. Vendor
+  grouping must remain entry-aware so it cannot hoist lazy dependencies.
+- For a multi-format dependency, make the shared implementation private and
+  require each public adapter to pass its exact media type. Register, classify,
+  detect, advertise, and benchmark one format at a time; overlap in accepted
+  bytes never advertises a later format or the dependency's permissive default.
+- Prefer a self-contained browser distribution when a package's Node entry
+  reaches Node stream globals. Keep that choice behind the lazy adapter loader,
+  prove `process` and `Buffer` are unnecessary in a browser contract, and run
+  the complete conformance suite through the same distribution used in the
+  application build.
+- Reconstruct every third-party RDF/JS term with the project factory rather than
+  trusting nominal RDF/JS compatibility. Normalize language tags and base
+  directions to lowercase at that boundary, recurse through RDF 1.2 triple
+  terms, and reject any unknown term kind before it reaches OWL reconstruction.
+- Preserve concrete-syntax prefixes as immutable document context rather than
+  turning them into ontology semantics. A failed parse transaction publishes no
+  prefix context.
+- Benchmark Unicode-safe chunk sizes instead of selecting one by convention.
+  Keep the largest chunk whose measured scheduling interval remains below the
+  cooperative-yield budget; prove `scheduler.yield()` is preferred and retain
+  the zero-delay fallback.
 
 ## Institutionalized application-integration method
 
@@ -236,21 +262,30 @@ do not append chronology here.
   a whole document lets an unanalysed difference pass as governed because a
   different difference in the same document was explained; a stale entry leaves
   a false record in the acceptance ledger.
+- Before interpreting a production differential, prove both sides used the
+  same import closure. A missing exact catalog mapping or a historically fetched
+  version makes every downstream entity difference incomparable; exclude that
+  fixture with evidence until the reference fixture is regenerated against the
+  pinned local closure.
+- Do not reuse a domain/range fallback to represent a generalized class axiom.
+  If a subclass expression has no VOWL node, it has no drawable source endpoint;
+  substituting `owl:Thing` fabricates an axiom the ontology never stated.
 
-## Next migration: Phase 9 private N3.js adapter foundation and strict Turtle
+## Next migration: Phase 10 DL Syntax
 
-- Implement the N3.js-backed Turtle adapter behind one private syntax adapter
-  terminating at canonical RDF/JS quads, composed with the existing shared
-  `RdfToOwlTranslator`. Do not revive `turtleParser.js`, which remains on disk
-  for characterization only.
-- This is the first syntax added after the cutover, so it extends a live
-  production surface. The reachability gate now protects production directly.
-- Rewrite the unsupported-format assertions in `src/owl2vowl/js/index.test.js`
-  deliberately: Turtle moves from rejected to advertised, and those assertions
-  are the record of what the application claims to support.
-- Run the independently owned W3C Turtle classifications at the syntax seam
-  before OWL reconstruction, then shared RDF-to-OWL, Java structural
-  differential, import-closure, WebVOWL, resource, abort, browser/Node, heap and
-  performance acceptance.
-- Measure on an idle machine, corroborate any threshold breach independently,
-  and pause for the Phase 9 Git checkpoint.
+- Implement DL Syntax directly to immutable structural OWL objects. Do not route
+  through RDF, XML, the retained legacy parser, or the private N3.js adapter.
+- Start by inventorying the actual Phase 10 grammar and the public OWLAPI DL
+  parser/format identity, then map every accepted production to existing
+  `OWLDataFactory` constructors before changing emission.
+- Inherit the mature textual-parser contracts: bounded tri-state detection,
+  lazy tokenization/lookahead, UTF-8 token limits, source locations, typed
+  failures, cancellation, monotonic timeout, cooperative scheduling,
+  transactional rollback, and strict/compatible recovery separation.
+- Add project-owned cross-format structural fixtures and the pinned Java
+  differential before production wiring. Turtle and RDF/XML are now available
+  as independent semantic cross-checks where the same ontology can be expressed
+  in those syntaxes.
+- Run complete WebVOWL conversion, import, unsupported-format, reachability,
+  performance, provenance, and learning-gate acceptance, then pause for the
+  Phase 10 Git checkpoint.

@@ -22,6 +22,7 @@
     "PHASE6-2026-08-13": "Repository-owner approval of Phase 6 implementation and the named capability, conformance, dependency, provenance, performance, migration-status, and playbook updates on 13 August 2026",
     "PHASE7-2026-08-18": "Repository-owner approval of Phase 7 implementation and the named capability, conformance, provenance, performance, migration-status, and playbook updates on 18 August 2026",
     "PHASE8-2026-08-18": "Repository-owner approval of Phase 8 implementation and the named capability, provenance, performance, migration-status, and playbook updates on 18 August 2026",
+    "PHASE9-2026-08-20": "Repository-owner approval to implement Phase 9 and its required capability, conformance, dependency, provenance, performance, migration-status, and learning-gate updates on 20 August 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026"
   },
   "provenanceCategories": {
@@ -52,7 +53,10 @@
       "history": [
         {
           "originalRevision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
-          "currentRevision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
+          "supersededCurrentRevisions": [
+            "e33342461117f7c9b3931f9624d9cbca0fef7c5a"
+          ],
+          "currentRevision": "f0dbf623a69adf08bc61f5867c7421fba9c2e750",
           "subject": "fix(owl2vowl): Support XML property attributes and property characteristics",
           "verifiedPath": "src/owl2vowl/js/ontologyConverter.js",
           "verifiedBlob": "b6be72f9f58c686f7c02ff614336ca91c750d20f",
@@ -60,7 +64,10 @@
         },
         {
           "originalRevision": "c279ee48dbaee5020b92d43d1435fe37f7abda1c",
-          "currentRevision": "32827d4aec692af2968dae996fca2169e33bf46b",
+          "supersededCurrentRevisions": [
+            "32827d4aec692af2968dae996fca2169e33bf46b"
+          ],
+          "currentRevision": "5967a0fe0575e03f84e65cb8f18fd4229612b315",
           "subject": "refactor(lint): enforce strict ES2024 standards and resolve all ESLint issues",
           "verifiedPath": "src/owl2vowl/js/turtleParser.js",
           "verifiedBlob": "a0be0c01b77a1d6b48737aa91f3018273a3996a3",
@@ -383,6 +390,20 @@
             "src/owlapi-js/manager/owlOntologyManager.integration.test.js"
           ],
           "decisionRef": "PHASE7-2026-08-18"
+        },
+        {
+          "phase": 9,
+          "scope": "register only the strict Turtle descriptor and preserve immutable Turtle prefix mappings in each successfully committed document context",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/turtle/",
+            "https://rdf.js.org/dataset-spec/",
+            "docs/owlapi-js/implementation-plan.md sections 6.5, 6.7, 9.4-9.6, and 17.16"
+          ],
+          "focusedEvidence": [
+            "src/owlapi-js/parser/turtle/turtle.test.js",
+            "src/owl2vowl/js/index.test.js"
+          ],
+          "decisionRef": "PHASE9-2026-08-20"
         }
       ],
       "thirdPartyDependencies": [],
@@ -949,6 +970,94 @@
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE6-2026-08-13",
       "reviewDate": "2026-08-13"
+    },
+    {
+      "id": "PHASE9-TURTLE-DESCRIPTOR",
+      "path": "src/owlapi-js/parser/turtle/descriptor.js",
+      "phase": 9,
+      "scope": "bounded tri-state Turtle detection and immutable manager-registry metadata without claiming XML, OWL-native syntaxes, N-Triples, N-Quads, TriG, or the broader N3 language",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/importLoader.js",
+        "src/owl2vowl/js/turtleParser.js"
+      ],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/turtle/",
+        "docs/owlapi-js/implementation-plan.md sections 6.7, 9.4-9.6, and 17.16"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public Turtle parser-factory and document-format identities"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/turtle/turtle.test.js",
+        "src/owl2vowl/js/index.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE9-2026-08-20",
+      "reviewDate": "2026-08-20"
+    },
+    {
+      "id": "PHASE9-TURTLE-PARSER",
+      "path": "src/owlapi-js/parser/turtle/parser.js",
+      "phase": 9,
+      "scope": "transactional composition of the Turtle syntax adapter with the existing graph-policy and syntax-independent RDF-to-OWL reconstruction path, including immutable prefix document metadata",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/rdfParser.js",
+        "src/owl2vowl/js/turtleParser.js"
+      ],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification",
+        "https://rdf.js.org/dataset-spec/",
+        "docs/owlapi-js/implementation-plan.md sections 6 and 17.16"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public Turtle loading behavior and the pinned project-owned Java structural snapshot"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/turtle/turtle.test.js",
+        "src/owlapi-js/parser/turtle/turtle.differential.test.js",
+        "src/owl2vowl/js/index.test.js"
+      ],
+      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE9-2026-08-20",
+      "reviewDate": "2026-08-20"
+    },
+    {
+      "id": "PHASE9-N3-SYNTAX-ADAPTER",
+      "path": "src/owlapi-js/parser/rdf/n3SyntaxAdapter.js",
+      "phase": 9,
+      "scope": "private exact-text/turtle N3.js stream adaptation with canonical RDF/JS normalization, Unicode-safe chunking, backpressure, cancellation, watchdog timeouts, finite resource limits, cooperative scheduling, prefix capture, and canonical project errors",
+      "legacyWebVowlSources": ["src/owl2vowl/js/turtleParser.js"],
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/turtle/",
+        "https://www.w3.org/TR/rdf12-turtle/",
+        "https://rdf.js.org/data-model-spec/",
+        "https://rdf.js.org/stream-spec/",
+        "docs/owlapi-js/implementation-plan.md sections 6.7, 17.16, and 21.7-21.8"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public Turtle parser behavior through the pinned black-box reference harness",
+        "Pinned W3C rdf-tests Turtle source revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 387 classified RDF 1.1 and RDF 1.2 syntax entries passing"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "docs/owlapi-js/conformance/generated/w3c-turtle.json",
+        "src/owlapi-js/parser/rdf/n3SyntaxAdapter.test.js",
+        "src/owlapi-js/parser/rdf/n3SyntaxAdapter.resource.test.js",
+        "src/owlapi-js/parser/turtle/turtle.conformance.test.js",
+        "src/owlapi-js/parser/turtle/turtle.browser.test.js",
+        "util/verify-webvowl-lazy-parser-chunks.mjs"
+      ],
+      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE9-2026-08-20",
+      "reviewDate": "2026-08-20"
     }
   ],
   "compatibilityResearch": [
@@ -1173,17 +1282,17 @@
       "revisionDispositions": [
         {
           "selector": "AT_REVISION",
-          "revision": "32827d4aec692af2968dae996fca2169e33bf46b",
+          "revision": "5967a0fe0575e03f84e65cb8f18fd4229612b315",
           "disposition": "REUSE_ALLOWED"
         },
         {
           "selector": "AFTER_REVISION",
-          "revision": "32827d4aec692af2968dae996fca2169e33bf46b",
+          "revision": "5967a0fe0575e03f84e65cb8f18fd4229612b315",
           "disposition": "REIMPLEMENT"
         }
       ],
-      "replacementPhase": 7,
-      "evidence": "the named snapshot may be reused; descendant revisions must be reimplemented as a direct RDF/JS adapter",
+      "replacementPhase": 9,
+      "evidence": "the named snapshot may be reused; descendant revisions must be reimplemented; replaced in production by src/owlapi-js/parser/rdf/n3SyntaxAdapter.js and the strict Turtle descriptor/parser, while this file remains unmoved and production-unreachable until Phase 17",
       "decisionRef": "PROVENANCE-2026-08-11"
     },
     {
@@ -1197,17 +1306,17 @@
       "revisionDispositions": [
         {
           "selector": "AT_REVISION",
-          "revision": "32827d4aec692af2968dae996fca2169e33bf46b",
+          "revision": "5967a0fe0575e03f84e65cb8f18fd4229612b315",
           "disposition": "REUSE_ALLOWED"
         },
         {
           "selector": "AFTER_REVISION",
-          "revision": "32827d4aec692af2968dae996fca2169e33bf46b",
+          "revision": "5967a0fe0575e03f84e65cb8f18fd4229612b315",
           "disposition": "REIMPLEMENT"
         }
       ],
-      "replacementPhase": 7,
-      "evidence": "the named test snapshot may be reused; descendant revisions must be reimplemented with the Turtle adapter",
+      "replacementPhase": 9,
+      "evidence": "the named test snapshot may be reused; descendant revisions must be reimplemented; superseded by the independently authored Phase 9 adapter, conformance, resource, browser, differential, and production tests",
       "decisionRef": "PROVENANCE-2026-08-11"
     },
     {
@@ -1233,12 +1342,12 @@
       "revisionDispositions": [
         {
           "selector": "AT_REVISION",
-          "revision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
+          "revision": "f0dbf623a69adf08bc61f5867c7421fba9c2e750",
           "disposition": "REUSE_ALLOWED"
         },
         {
           "selector": "AFTER_REVISION",
-          "revision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
+          "revision": "f0dbf623a69adf08bc61f5867c7421fba9c2e750",
           "disposition": "REIMPLEMENT"
         }
       ],
@@ -1257,12 +1366,12 @@
       "revisionDispositions": [
         {
           "selector": "AT_REVISION",
-          "revision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
+          "revision": "f0dbf623a69adf08bc61f5867c7421fba9c2e750",
           "disposition": "REUSE_ALLOWED"
         },
         {
           "selector": "AFTER_REVISION",
-          "revision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
+          "revision": "f0dbf623a69adf08bc61f5867c7421fba9c2e750",
           "disposition": "REIMPLEMENT"
         }
       ],
@@ -1365,12 +1474,12 @@
       "revisionDispositions": [
         {
           "selector": "AT_REVISION",
-          "revision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
+          "revision": "f0dbf623a69adf08bc61f5867c7421fba9c2e750",
           "disposition": "REUSE_ALLOWED"
         },
         {
           "selector": "AFTER_REVISION",
-          "revision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
+          "revision": "f0dbf623a69adf08bc61f5867c7421fba9c2e750",
           "disposition": "REIMPLEMENT"
         }
       ],
@@ -1389,12 +1498,12 @@
       "revisionDispositions": [
         {
           "selector": "AT_REVISION",
-          "revision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
+          "revision": "f0dbf623a69adf08bc61f5867c7421fba9c2e750",
           "disposition": "REUSE_ALLOWED"
         },
         {
           "selector": "AFTER_REVISION",
-          "revision": "e33342461117f7c9b3931f9624d9cbca0fef7c5a",
+          "revision": "f0dbf623a69adf08bc61f5867c7421fba9c2e750",
           "disposition": "REIMPLEMENT"
         }
       ],

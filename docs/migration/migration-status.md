@@ -2,37 +2,41 @@
 
 Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 
-| Phase | Scope                                                              | State       | Gate                                                          |
-| ----: | ------------------------------------------------------------------ | ----------- | ------------------------------------------------------------- |
-|     0 | Governance, capability, provenance, conformance, budgets, baseline | Complete    | PASS: artifacts validated; full tests/lint/format/build green |
-|     1 | Structural core and construction seams                             | Complete    | PASS: 9/78 focused; 57/476 full; lint/format/build green      |
-|     2 | Functional Syntax                                                  | Complete    | PASS: 4/65 focused; 61/541 full; lint/format/build green      |
-|     3 | Manchester Syntax                                                  | Complete    | PASS: 4/22 focused; 65/564 full; lint/format/build green      |
-|     4 | OWL/XML                                                            | Complete    | PASS: 5/45 focused; 70/609 full; lint/format/build green      |
-|     5 | Canonical RDF ingestion and shared RDF-to-OWL reconstruction       | Complete    | PASS: 7/363 focused; 77/970 full; 312/312 W3C RDF documents   |
-|     6 | RDF/XML and first-real-adapter hardening                           | Complete    | PASS: 6/201 focused; 84/1178 full; 166/166 W3C RDF/XML        |
-|     7 | Early development-app integration                                  | Complete    | PASS: 10/37 focused; 94/1218 full; lint/format/build green    |
-|     8 | Production WebVOWL cutover                                         | Gate met    | PASS: 116/1439 full; 33/33 differential; lint/format/build green |
-|     9 | Private N3.js adapter foundation and strict Turtle                 | Not started | blocked by Phase 8 cutover gate                               |
-|    10 | DL Syntax                                                          | Not started | blocked by Phase 9 learning gate                              |
-|    11 | KRSS family                                                        | Not started | blocked by Phase 10 learning gate                             |
-|    12 | N-Triples                                                          | Not started | blocked by Phase 11 learning gate                             |
-|    13 | N-Quads                                                            | Not started | blocked by Phase 12 learning gate                             |
-|    14 | TriG                                                               | Not started | blocked by Phase 13 learning gate                             |
-|    15 | JSON-LD                                                            | Not started | blocked by Phase 14 learning gate                             |
-|    16 | OWL-to-RDF                                                         | Not started | blocked by ingestion programme                                |
-|    17 | Physical legacy deletion                                           | Not started | blocked by Phase 16 and retained-reference audit              |
-|    18 | Package/release                                                    | Not started | blocked by all prior gates                                    |
+| Phase | Scope                                                              | State       | Gate                                                             |
+| ----: | ------------------------------------------------------------------ | ----------- | ---------------------------------------------------------------- |
+|     0 | Governance, capability, provenance, conformance, budgets, baseline | Complete    | PASS: artifacts validated; full tests/lint/format/build green    |
+|     1 | Structural core and construction seams                             | Complete    | PASS: 9/78 focused; 57/476 full; lint/format/build green         |
+|     2 | Functional Syntax                                                  | Complete    | PASS: 4/65 focused; 61/541 full; lint/format/build green         |
+|     3 | Manchester Syntax                                                  | Complete    | PASS: 4/22 focused; 65/564 full; lint/format/build green         |
+|     4 | OWL/XML                                                            | Complete    | PASS: 5/45 focused; 70/609 full; lint/format/build green         |
+|     5 | Canonical RDF ingestion and shared RDF-to-OWL reconstruction       | Complete    | PASS: 7/363 focused; 77/970 full; 312/312 W3C RDF documents      |
+|     6 | RDF/XML and first-real-adapter hardening                           | Complete    | PASS: 6/201 focused; 84/1178 full; 166/166 W3C RDF/XML           |
+|     7 | Early development-app integration                                  | Complete    | PASS: 10/37 focused; 94/1218 full; lint/format/build green       |
+|     8 | Production WebVOWL cutover                                         | Complete    | PASS: 116/1439 full; 33/33 differential; lint/format/build green |
+|     9 | Private N3.js adapter foundation and strict Turtle                 | Complete    | PASS: 11/608 focused; 123/1893 full; 387/387 W3C Turtle          |
+|    10 | DL Syntax                                                          | Not started | blocked by Phase 9 learning gate                                 |
+|    11 | KRSS family                                                        | Not started | blocked by Phase 10 learning gate                                |
+|    12 | N-Triples                                                          | Not started | blocked by Phase 11 learning gate                                |
+|    13 | N-Quads                                                            | Not started | blocked by Phase 12 learning gate                                |
+|    14 | TriG                                                               | Not started | blocked by Phase 13 learning gate                                |
+|    15 | JSON-LD                                                            | Not started | blocked by Phase 14 learning gate                                |
+|    16 | OWL-to-RDF                                                         | Not started | blocked by ingestion programme                                   |
+|    17 | Physical legacy deletion                                           | Not started | blocked by Phase 16 and retained-reference audit                 |
+|    18 | Package/release                                                    | Not started | blocked by all prior gates                                       |
 
-Active ingestion migration: Phase 8 passes its gate and awaits the repository
-owner's checkpoint commit. The WIP lock remains held until then.
+Active ingestion migration: none. Phase 9 has passed its implementation,
+learning, and production lazy-bundle gates in the working tree and is paused
+for the requested Git checkpoint. Phase 10 remains blocked until that
+checkpoint is committed and the repository owner explicitly says to proceed.
 
 The structural cutover itself is in place. WebVOWL ingests ontologies only
 through `owlapi-js`, the production graph reaches no retained legacy parser,
-converter or exporter, and a legacy-only syntax such as Turtle fails with the
-canonical unsupported-format diagnostics, including when discovered inside an
-import closure. The legacy modules remain unmoved for characterization until
-the Phase 17 deletion.
+converter or exporter, and Turtle now succeeds both directly and when
+discovered inside an import closure. Functional Syntax, Manchester Syntax,
+OWL/XML, RDF/XML, and Turtle are the advertised production formats; every
+other legacy-only syntax still fails with canonical unsupported-format
+diagnostics. The legacy modules remain unmoved for characterization until the
+Phase 17 deletion.
 
 Real-corpus loading is now green. Finding `M8-006` records that the cutover
 first shipped with only 8 of 29 real RDF/XML-family ontologies loading, and that
@@ -45,9 +49,10 @@ converted successfully must load through the production entry.
 
 The differential gate that blocked Phase 8 is now met.
 `src/owl2vowl/test/productionDifferential.test.js` runs the production path -
-`loadWithImports`, the entry `src/app/js/loadingModule.js` calls - over the 33
-non-Turtle corpus documents and compares each against the pinned OWL2VOWL 0.3.7
-reference output on ten dimensions. The existing 44-fixture suite in
+`loadWithImports`, the entry `src/app/js/loadingModule.js` calls - over 33
+comparable corpus documents, now including Turtle, and compares each against
+the pinned OWL2VOWL 0.3.7 reference output on ten dimensions. The existing
+44-fixture suite in
 `src/owl2vowl/test/differential.test.js` is retained unchanged as the historical
 baseline; it runs the retained legacy pipeline through `legacyPipeline.js`, so
 it measures the engine that was replaced and satisfied section 18.8 only while
@@ -75,8 +80,12 @@ document is uninterpretable: the two sides converted different ontologies.
 `prov.owl` shows how far this goes — its fixture contains entity IRIs beginning
 `file:/C:/Users/...`, the generating machine's own path.
 
-Seven documents are excluded from the corpus differential for this reason,
-listed in `src/owl2vowl/test/productionDifferential.test.js`. Exclusion is the
+Twelve documents are excluded from the corpus differential for this reason,
+listed in `src/owl2vowl/test/productionDifferential.test.js`. Seven were
+identified during Phase 8; Phase 9 added five Turtle/import-closure cases
+covering missing version mappings, absent modular imports, and a historical
+reference run that fetched a different version of the same namespace.
+Exclusion is the
 honest treatment, because a governed difference records a difference in
 _conversion_ and this is a difference in _input_ — but it costs real coverage.
 
@@ -104,7 +113,7 @@ rather than excluded.
 **One fixture was regenerated, and it is not an exception to this deferral.**
 `skos.rdf.java.json` was regenerated against the same pinned 0.3.7 jar after the
 repository owner replaced the corpus's `skos.rdf` with the canonical document it
-advertises. The deferral above concerns aligning *import closures* across all 46
+advertises. The deferral above concerns aligning _import closures_ across all 46
 fixtures, which changes what the oracle converted; this concerns one document
 whose own bytes changed, where leaving the fixture alone would have described a
 file the corpus no longer contains. `skos.rdf` declares no imports, so its

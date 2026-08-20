@@ -6,9 +6,40 @@
       "id": "w3c-rdf-tests",
       "specifications": ["RDF 1.1", "RDF 1.2"],
       "upstream": "https://github.com/w3c/rdf-tests",
-      "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f",
+      "revisionScopes": [
+        {
+          "formats": ["RDF/XML", "N-Triples", "N-Quads", "TriG"],
+          "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f"
+        },
+        {
+          "formats": ["Turtle"],
+          "revision": "12774b0ebb385d17651b396654b19254d0fefbfa"
+        }
+      ],
       "applicable": ["Turtle", "TriG", "N-Triples", "N-Quads", "RDF/XML"],
-      "classificationManifest": "docs/owlapi-js/conformance/classification-manifests.json#w3c-rdf-tests"
+      "classificationManifest": "docs/owlapi-js/conformance/classification-manifests.json#w3c-rdf-tests",
+      "turtle": {
+        "classificationOwnerPhase": 9,
+        "archivedManifests": [
+          {
+            "path": "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-turtle/manifest.ttl",
+            "sha256": "b90a85ee867279b7688033dc18088789580f0bcc2c59600b8c5796889414cf36"
+          },
+          {
+            "path": "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-turtle/syntax/manifest.ttl",
+            "sha256": "cd097ec4c5b312b04897eb9fcf0e7429381967936dfe14194fff9c7027a7203b"
+          }
+        ],
+        "generatedArtifact": "docs/owlapi-js/conformance/generated/w3c-turtle.json",
+        "runner": "src/owlapi-js/parser/turtle/turtle.conformance.test.js",
+        "requiredCounts": {
+          "evaluation": 145,
+          "positiveSyntax": 115,
+          "negativeSyntax": 127,
+          "total": 387
+        },
+        "executionResult": "387/387 REQUIRED upstream entries passed; the runner also passed one project-owned RDF/JS language-tag canonicalization regression"
+      }
     },
     {
       "id": "w3c-json-ld-api",

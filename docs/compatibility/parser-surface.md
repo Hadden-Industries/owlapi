@@ -12,8 +12,8 @@ the Java implementation is not a JavaScript implementation template.
 | `DLSyntaxOWLParser` / `DLSyntaxDocumentFormatFactory`                         | `parser.dl`                  | `REQUIRED_V1`                                |
 | `KRSS2OWLParser` / `KRSS2DocumentFormatFactory`                               | `parser.krss2`               | `REQUIRED_V1`                                |
 | `KRSSOWLParser` / `KRSSDocumentFormatFactory`                                 | `parser.krss1`               | `DEFERRED` implementation; identity required |
-| RDF/XML parser/factories                                                      | `parser.rdfxml`              | `DELEGATED` to `rdfxml-streaming-parser`     |
-| Turtle/Rio Turtle factories                                                   | `parser.turtle`              | `DELEGATED` to N3.js                         |
+| RDF/XML parser/factories                                                      | `parser.rdfxml`              | `DELEGATED`; Phase 6 `COMPLETE`              |
+| Turtle/Rio Turtle factories                                                   | `parser.turtle`              | `DELEGATED`; Phase 9 `COMPLETE` via N3.js    |
 | Rio TriG                                                                      | `parser.trig`                | `DELEGATED` to N3.js                         |
 | Rio N-Triples                                                                 | `parser.ntriples`            | `DELEGATED` to N3.js                         |
 | Rio N-Quads                                                                   | `parser.nquads`              | `DELEGATED` to N3.js                         |
@@ -23,4 +23,7 @@ the Java implementation is not a JavaScript implementation template.
 | RDFa, RDF/JSON, TriX, Binary RDF, HDT                                         | corresponding matrix entries | deferred or unsupported as classified        |
 
 Distinct format descriptors are retained even when one dependency implements
-several formats. `.owl` is only a filename hint and never decides OWL/XML vs RDF/XML.
+several formats. Phase 9 registers only exact `text/turtle`; N-Triples,
+N-Quads, TriG, and the broader N3 language remain unsupported until their
+separate governed scopes say otherwise. `.owl` is only a filename hint and
+never decides OWL/XML vs RDF/XML.
