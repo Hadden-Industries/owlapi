@@ -14,8 +14,8 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |     7 | Early development-app integration                                  | Complete    | PASS: 10/37 focused; 94/1218 full; lint/format/build green       |
 |     8 | Production WebVOWL cutover                                         | Complete    | PASS: 116/1439 full; 33/33 differential; lint/format/build green |
 |     9 | Private N3.js adapter foundation and strict Turtle                 | Complete    | PASS: 11/608 focused; 123/1893 full; 387/387 W3C Turtle          |
-|    10 | DL Syntax                                                          | Not started | blocked by Phase 9 learning gate                                 |
-|    11 | KRSS family                                                        | Not started | blocked by Phase 10 learning gate                                |
+|    10 | DL Syntax                                                          | Complete    | PASS: 7/52 focused; 133/1964 full; Java snapshot 15/15 axioms    |
+|    11 | KRSS family                                                        | Not started | blocked by Phase 10 Git checkpoint                               |
 |    12 | N-Triples                                                          | Not started | blocked by Phase 11 learning gate                                |
 |    13 | N-Quads                                                            | Not started | blocked by Phase 12 learning gate                                |
 |    14 | TriG                                                               | Not started | blocked by Phase 13 learning gate                                |
@@ -24,19 +24,30 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |    17 | Physical legacy deletion                                           | Not started | blocked by Phase 16 and retained-reference audit                 |
 |    18 | Package/release                                                    | Not started | blocked by all prior gates                                       |
 
-Active ingestion migration: none. Phase 9 has passed its implementation,
-learning, and production lazy-bundle gates in the working tree and is paused
-for the requested Git checkpoint. Phase 10 remains blocked until that
-checkpoint is committed and the repository owner explicitly says to proceed.
+Active ingestion migration: none. Phase 10 has passed its implementation,
+learning, conformance, differential, resource, performance, integration, and
+repository gates in the working tree and is paused for the requested Git
+checkpoint. Phase 11 remains blocked until that checkpoint is committed and
+the repository owner explicitly says to proceed.
 
 The structural cutover itself is in place. WebVOWL ingests ontologies only
 through `owlapi-js`, the production graph reaches no retained legacy parser,
 converter or exporter, and Turtle now succeeds both directly and when
 discovered inside an import closure. Functional Syntax, Manchester Syntax,
-OWL/XML, RDF/XML, and Turtle are the advertised production formats; every
-other legacy-only syntax still fails with canonical unsupported-format
+OWL/XML, RDF/XML, Turtle, and DL Syntax are the advertised production formats;
+every other legacy-only syntax still fails with canonical unsupported-format
 diagnostics. The legacy modules remain unmoved for characterization until the
 Phase 17 deletion.
+
+DL Syntax constructs structural objects directly through a bounded pull lexer
+and parser. The shared project fixture agrees across DL, Functional, RDF/XML,
+and Turtle on every non-declaration axiom and the complete signature; its pinned
+OWLAPI 5.5.1 oracle snapshot contains the same 15 reachable axioms. Java parser
+defects outside that shared subset are recorded as controlled corrections, not
+expected-difference rules. The same-revision Phase 9/Phase 10 registry benchmark
+keeps all existing Functional and mismatch signals within the unchanged 20%
+threshold, and Phase 10 adds no dependency, package, configuration, resource
+ceiling, or legacy-production reachability.
 
 Real-corpus loading is now green. Finding `M8-006` records that the cutover
 first shipped with only 8 of 29 real RDF/XML-family ontologies loading, and that

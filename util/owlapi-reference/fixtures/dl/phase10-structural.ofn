@@ -1,0 +1,31 @@
+Prefix( : = <urn:test:phase10#> )
+
+Ontology(
+  SubClassOf( :Person :Agent )
+  EquivalentClasses(
+    :Parent
+    ObjectIntersectionOf( :Person ObjectSomeValuesFrom( :hasChild :Person ) )
+  )
+  SubClassOf(
+    :Person
+    ObjectAllValuesFrom( :hasFriend ObjectUnionOf( :Person :Agent ) )
+  )
+  SubClassOf(
+    :Person
+    ObjectMinCardinality( 1 :hasChild :Person )
+  )
+  SubClassOf( ObjectOneOf( :alice :bob ) :Person )
+  ClassAssertion( :Person :alice )
+  DifferentIndividuals( :alice :bob )
+  SameIndividual( :alice :ally )
+  SubObjectPropertyOf( :hasParent :related )
+  EquivalentObjectProperties( :related :associated )
+  TransitiveObjectProperty( :hasAncestor )
+  SubObjectPropertyOf(
+    ObjectPropertyChain( :hasParent :hasParent )
+    :hasAncestor
+  )
+  ObjectPropertyRange( :hasFriend :Person )
+  ObjectPropertyDomain( :hasChild :Parent )
+  FunctionalObjectProperty( :hasIdentifier )
+)

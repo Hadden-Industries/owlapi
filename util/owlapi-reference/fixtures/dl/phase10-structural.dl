@@ -1,0 +1,15 @@
+Person ⊑ Agent
+Parent ≡ Person ⊓ ∃ hasChild.Person
+Person ⊑ ∀ hasFriend.(Person ⊔ Agent)
+Person ⊑ ≥ 1 hasChild.Person
+{alice bob} ⊑ Person
+Person(alice)
+alice ≠ bob
+alice = ally
+: hasParent ⊑ related
+: related ≡ associated
+: hasAncestor ∈ transitive
+: hasParent ∘ hasParent ⊑ hasAncestor
+top ⊑ ∀ hasFriend.Person
+∃ hasChild.top ⊑ Parent
+top ⊑ ≤ 1 hasIdentifier.top

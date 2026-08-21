@@ -85,6 +85,20 @@
       "roles": ["large RDF input", "RDF quad throughput"]
     },
     {
+      "id": "generated-dl-large",
+      "generator": "owlapi-benchmark-corpus-v1",
+      "kind": "dl",
+      "count": 50000,
+      "roles": ["large DL Syntax", "axiom throughput"]
+    },
+    {
+      "id": "generated-dl-depth",
+      "generator": "owlapi-benchmark-corpus-v1",
+      "kind": "dl-depth",
+      "depth": 256,
+      "roles": ["deeply nested DL expression", "expression depth boundary"]
+    },
+    {
       "id": "generated-functional-depth",
       "generator": "owlapi-benchmark-corpus-v1",
       "kind": "functional-depth",

@@ -55,6 +55,15 @@ const generators = Object.freeze({
     return `@prefix : <urn:owlapi-js:benchmark:> .\n@prefix owl: <http://www.w3.org/2002/07/owl#> .\n${declarations}\n`;
   },
 
+  dl({ count }) {
+    return repeated(count, (index) => `C${index} ⊑ Parent${index}`);
+  },
+
+  "dl-depth"({ depth }) {
+    const normalizedDepth = requireCount(depth, "depth", 100000);
+    return `Root ⊑ ${"∃ p.(".repeat(normalizedDepth)}Leaf${")".repeat(normalizedDepth)}`;
+  },
+
   "functional-depth"({ depth }) {
     const normalizedDepth = requireCount(depth, "depth", 100000);
     return `Prefix(:=<urn:owlapi-js:benchmark:>)\nOntology(SubClassOf(:Root ${"ObjectSomeValuesFrom(:p ".repeat(normalizedDepth)}:Leaf${")".repeat(normalizedDepth)}))`;
@@ -108,7 +117,9 @@ module.exports = Object.freeze({
 if (require.main === module) {
   const [, , kind, amount] = process.argv;
   const numericAmount = Number(amount);
-  const parameterName = kind === "functional-depth" ? "depth" : "count";
+  const parameterName = ["dl-depth", "functional-depth"].includes(kind)
+    ? "depth"
+    : "count";
   const parameters =
     kind === "mismatch"
       ? { bytes: numericAmount }

@@ -85,5 +85,31 @@ that OWLAPI 5.5.1 accepts the two pinned W3C Rational fixtures' malformed
 non-`rdf:nil` collection terminal. It is not a general compatibility fixture
 and does not authorize silent list repair.
 
+The Phase 10 DL reference set is under `fixtures/dl/`. The `.dl`, `.ofn`,
+`.rdf`, and `.ttl` documents are project-owned encodings of the same structural
+ontology; `phase10-structural.java.json` is the pinned Java result for the DL
+document. `GenerateDLSyntaxSnapshot.java` calls the pinned DL parser directly,
+because generic manager selection can choose an unrelated parser for this
+headerless syntax, and supplies the explicit default namespace required by a
+format with no ontology header. It reuses only the structural JSON serializer
+from `GenerateStructuralSnapshot.java`.
+
+Compile both harnesses together, then run the specialized entry point:
+
+```text
+javac -cp "<owlapi-runtime-classpath>" -d util/owlapi-reference/target util/owlapi-reference/GenerateStructuralSnapshot.java util/owlapi-reference/GenerateDLSyntaxSnapshot.java
+java -cp "util/owlapi-reference/target;<owlapi-runtime-classpath>" GenerateDLSyntaxSnapshot util/owlapi-reference/fixtures/dl/phase10-structural.dl urn:test:phase10
+```
+
+The specialized harness removes only terminal CR/LF characters before the
+oracle call. OWLAPI 5.5.1 otherwise rejects an ordinary final line ending; the
+normalization is recorded in the snapshot provenance and does not remove an
+axiom. The shared differential fixture is deliberately restricted to the
+subset accepted through the pinned parser's whole-document entry point. Focused
+JavaScript tests separately cover assertion, inverse-property, numeric
+data-one-of, attached-colon, trailing-whitespace, and unmatched-subclass cases
+where that entry point is internally inconsistent. Those are controlled
+compatibility corrections, not undocumented expected differences.
+
 The harness deliberately has no WebVOWL, npm, or browser dependency. Generated
 snapshots are test evidence and require their own fixture provenance record.

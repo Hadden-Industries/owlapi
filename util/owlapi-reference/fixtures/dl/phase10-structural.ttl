@@ -1,0 +1,36 @@
+@prefix : <urn:test:phase10#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:Person rdfs:subClassOf :Agent, _:allFriends, _:minimumChild .
+:Parent owl:equivalentClass _:parentExpression .
+
+_:parentExpression owl:intersectionOf ( :Person _:someChild ) .
+_:someChild a owl:Restriction ;
+  owl:onProperty :hasChild ;
+  owl:someValuesFrom :Person .
+_:allFriends a owl:Restriction ;
+  owl:onProperty :hasFriend ;
+  owl:allValuesFrom _:personOrAgent .
+_:personOrAgent owl:unionOf ( :Person :Agent ) .
+_:minimumChild a owl:Restriction ;
+  owl:onProperty :hasChild ;
+  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+  owl:onClass :Person .
+_:peopleNominal owl:oneOf ( :alice :bob ) ;
+  rdfs:subClassOf :Person .
+
+:alice a :Person ;
+  owl:differentFrom :bob ;
+  owl:sameAs :ally .
+
+:hasParent a owl:ObjectProperty ;
+  rdfs:subPropertyOf :related .
+:related owl:equivalentProperty :associated .
+:hasChild a owl:ObjectProperty ;
+  rdfs:domain :Parent .
+:hasAncestor a owl:TransitiveProperty ;
+  owl:propertyChainAxiom ( :hasParent :hasParent ) .
+:hasFriend rdfs:range :Person .
+:hasIdentifier a owl:FunctionalProperty .

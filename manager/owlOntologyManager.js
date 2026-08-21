@@ -15,6 +15,7 @@ import {
   OWLOntology,
   StructuralSet,
 } from "../model/index.js";
+import { dlSyntaxParserDescriptor } from "../parser/dl/descriptor.js";
 import { functionalSyntaxParserDescriptor } from "../parser/functional/descriptor.js";
 import { manchesterSyntaxParserDescriptor } from "../parser/manchester/descriptor.js";
 import { owlXmlParserDescriptor } from "../parser/owlxml/descriptor.js";
@@ -270,6 +271,7 @@ export class OWLOntologyManager {
         owlXmlParserDescriptor,
         rdfXmlParserDescriptor,
         turtleParserDescriptor,
+        dlSyntaxParserDescriptor,
         functionalSyntaxParserDescriptor,
         manchesterSyntaxParserDescriptor,
       ]);

@@ -310,7 +310,7 @@ describe("owlapi-js governance artifacts", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(paths).toEqual(productionModules);
     for (const record of records) {
-      expect([1, 2, 3, 4, 5, 6, 9]).toContain(record.phase);
+      expect([1, 2, 3, 4, 5, 6, 9, 10]).toContain(record.phase);
       expect(manifest.provenanceCategories).toHaveProperty(
         record.provenanceCategory,
       );
@@ -501,7 +501,16 @@ describe("owlapi-js governance artifacts", () => {
     const manifest = readJson("../../docs/owlapi-js/conformance/suites.json");
 
     for (const suite of manifest.suites) {
-      for (const path of [suite.runner, suite.harness].filter(Boolean)) {
+      const declaredPaths = [
+        suite.runner,
+        suite.harness,
+        suite.dlSyntax?.specializedHarness,
+        suite.dlSyntax?.fixture,
+        suite.dlSyntax?.snapshot,
+        suite.dlSyntax?.runner,
+        ...(suite.dlSyntax?.crossFormatCounterparts || []),
+      ];
+      for (const path of declaredPaths.filter(Boolean)) {
         expect({
           exists: existsSync(new URL(`../../${path}`, import.meta.url)),
           path,
@@ -867,6 +876,12 @@ describe("owlapi-js governance artifacts", () => {
     );
     expect(generateBenchmarkFixture("turtle", { count: 2 })).toContain(
       ":C1 a owl:Class",
+    );
+    expect(generateBenchmarkFixture("dl", { count: 2 })).toContain(
+      "C1 ⊑ Parent1",
+    );
+    expect(generateBenchmarkFixture("dl-depth", { depth: 2 })).toBe(
+      "Root ⊑ ∃ p.(∃ p.(Leaf))",
     );
     expect(
       generateBenchmarkFixture("functional-depth", { depth: 2 }),

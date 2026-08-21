@@ -192,7 +192,19 @@
       "revision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "version": "5.5.1",
       "runtime": "development and test only",
-      "harness": "util/owlapi-reference/GenerateStructuralSnapshot.java"
+      "harness": "util/owlapi-reference/GenerateStructuralSnapshot.java",
+      "dlSyntax": {
+        "specializedHarness": "util/owlapi-reference/GenerateDLSyntaxSnapshot.java",
+        "fixture": "util/owlapi-reference/fixtures/dl/phase10-structural.dl",
+        "snapshot": "util/owlapi-reference/fixtures/dl/phase10-structural.java.json",
+        "crossFormatCounterparts": [
+          "util/owlapi-reference/fixtures/dl/phase10-structural.ofn",
+          "util/owlapi-reference/fixtures/dl/phase10-structural.rdf",
+          "util/owlapi-reference/fixtures/dl/phase10-structural.ttl"
+        ],
+        "runner": "src/owlapi-js/parser/dl/dlSyntax.conformance.test.js",
+        "executionResult": "15/15 structural axioms matched the pinned Java count and type distribution; the project-owned Functional, RDF/XML, and Turtle counterparts matched every non-declaration structural axiom and the complete signature"
+      }
     },
     {
       "id": "owl2vowl-reference",

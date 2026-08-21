@@ -271,21 +271,50 @@ do not append chronology here.
   If a subclass expression has no VOWL node, it has no drawable source endpoint;
   substituting `owl:Thing` fabricates an axiom the ontology never stated.
 
-## Next migration: Phase 10 DL Syntax
+### Lessons added by Phase 10
 
-- Implement DL Syntax directly to immutable structural OWL objects. Do not route
-  through RDF, XML, the retained legacy parser, or the private N3.js adapter.
-- Start by inventorying the actual Phase 10 grammar and the public OWLAPI DL
-  parser/format identity, then map every accepted production to existing
-  `OWLDataFactory` constructors before changing emission.
-- Inherit the mature textual-parser contracts: bounded tri-state detection,
-  lazy tokenization/lookahead, UTF-8 token limits, source locations, typed
-  failures, cancellation, monotonic timeout, cooperative scheduling,
-  transactional rollback, and strict/compatible recovery separation.
-- Add project-owned cross-format structural fixtures and the pinned Java
-  differential before production wiring. Turtle and RDF/XML are now available
-  as independent semantic cross-checks where the same ontology can be expressed
-  in those syntaxes.
-- Run complete WebVOWL conversion, import, unsupported-format, reachability,
-  performance, provenance, and learning-gate acceptance, then pause for the
-  Phase 10 Git checkpoint.
+- For a non-standardized compatibility syntax, distinguish the grammar
+  inventory from the productions reachable through the reference parser's
+  whole-document dispatcher. Use the reachable subset for a Java snapshot and
+  focused project tests for every inventoried production; do not copy a
+  reference dispatch defect merely to make a differential green.
+- Escalate from public documents and black-box probes to implementation-source
+  inspection only when they cannot answer a concrete grammar question. Record
+  the exact file, revision, unresolved question, limited scope, finding, and
+  no-copy disposition before the result becomes implementation evidence.
+- Apply longest-token matching before keyword/operator aliases. TeX and Unicode
+  operator spellings can also be valid identifier prefixes, and fragmenting
+  them changes entity identity rather than merely producing a syntax error.
+- Give a headerless syntax one isolated, deterministic document namespace.
+  Use the supplied document IRI when present; otherwise allocate a per-load
+  namespace so unrelated anonymous documents cannot collapse their entities.
+- Normalize ordinary transport whitespace at the project boundary when the
+  pinned parser's rejection is an implementation accident. Keep that correction
+  explicit in the oracle harness and test both strict and compatible modes.
+- Cross-format RDF fixtures may need explicit property declarations solely to
+  disambiguate RDF-to-OWL reconstruction. Compare every non-declaration axiom
+  and the complete signature, then assert the exact declaration-only remainder
+  instead of weakening the structural comparison globally.
+- Renderer-shaped rules may map a general class axiom to a concise property
+  axiom only when the complete shape matches. Preserve an unmatched subclass
+  axiom; never copy a reference path that silently returns no axiom.
+
+## Next migration: Phase 11 KRSS family
+
+- Inventory the public `KRSSOWLParser`/KRSS1 and `KRSS2OWLParser`/KRSS2
+  identities separately before designing shared machinery. KRSS2 is
+  `REQUIRED_V1`; KRSS1 remains an explicit `DEFERRED` identity with grammar-gap,
+  fixture, and negative-dialect evidence rather than an accidental alias.
+- Establish the published KRSS-family grammar first, map every required KRSS2
+  production directly to immutable structural OWL objects, and use the pinned
+  Java implementations only as black-box compatibility oracles unless a narrow
+  unresolved question passes the governed source-inspection escalation.
+- Reuse the mature textual-parser contracts and the Phase 10 controls for
+  headerless namespaces, longest-token matching, reachable-oracle subsets,
+  strict/compatible boundaries, resources, diagnostics, scheduling, and
+  transactional rollback.
+- Add project-owned KRSS1 and KRSS2 classifications, dialect negatives,
+  cross-format structural fixtures, pinned Java snapshots, imports, complete
+  WebVOWL conversion, unsupported-format/reachability gates, performance,
+  provenance, and the learning record before pausing for the Phase 11 Git
+  checkpoint.

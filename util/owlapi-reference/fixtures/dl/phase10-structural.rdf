@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+  xmlns:ex="urn:test:phase10#">
+
+  <rdf:Description rdf:about="urn:test:phase10#Person">
+    <rdfs:subClassOf rdf:resource="urn:test:phase10#Agent"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="urn:test:phase10#hasFriend"/>
+        <owl:allValuesFrom>
+          <rdf:Description>
+            <owl:unionOf rdf:parseType="Collection">
+              <rdf:Description rdf:about="urn:test:phase10#Person"/>
+              <rdf:Description rdf:about="urn:test:phase10#Agent"/>
+            </owl:unionOf>
+          </rdf:Description>
+        </owl:allValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="urn:test:phase10#hasChild"/>
+        <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+        <owl:onClass rdf:resource="urn:test:phase10#Person"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="urn:test:phase10#Parent">
+    <owl:equivalentClass>
+      <rdf:Description>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <rdf:Description rdf:about="urn:test:phase10#Person"/>
+          <owl:Restriction>
+            <owl:onProperty rdf:resource="urn:test:phase10#hasChild"/>
+            <owl:someValuesFrom rdf:resource="urn:test:phase10#Person"/>
+          </owl:Restriction>
+        </owl:intersectionOf>
+      </rdf:Description>
+    </owl:equivalentClass>
+  </rdf:Description>
+
+  <rdf:Description>
+    <owl:oneOf rdf:parseType="Collection">
+      <rdf:Description rdf:about="urn:test:phase10#alice"/>
+      <rdf:Description rdf:about="urn:test:phase10#bob"/>
+    </owl:oneOf>
+    <rdfs:subClassOf rdf:resource="urn:test:phase10#Person"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="urn:test:phase10#alice">
+    <rdf:type rdf:resource="urn:test:phase10#Person"/>
+    <owl:differentFrom rdf:resource="urn:test:phase10#bob"/>
+    <owl:sameAs rdf:resource="urn:test:phase10#ally"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="urn:test:phase10#hasParent">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:subPropertyOf rdf:resource="urn:test:phase10#related"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:test:phase10#related">
+    <owl:equivalentProperty rdf:resource="urn:test:phase10#associated"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:test:phase10#hasChild">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="urn:test:phase10#Parent"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:test:phase10#hasAncestor">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+    <owl:propertyChainAxiom rdf:parseType="Collection">
+      <rdf:Description rdf:about="urn:test:phase10#hasParent"/>
+      <rdf:Description rdf:about="urn:test:phase10#hasParent"/>
+    </owl:propertyChainAxiom>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:test:phase10#hasFriend">
+    <rdfs:range rdf:resource="urn:test:phase10#Person"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:test:phase10#hasIdentifier">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </rdf:Description>
+
+</rdf:RDF>

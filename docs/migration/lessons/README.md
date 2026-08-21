@@ -22,3 +22,4 @@ Allowed primary dispositions: `NO_CHANGE`, `PLAYBOOK_UPDATE`,
 - [Phase 7: early development-app integration](006-development-integration.md)
 - [Phase 8: production WebVOWL cutover](007-production-cutover.md)
 - [Phase 9: private N3.js adapter foundation and strict Turtle](008-turtle.md)
+- [Phase 10: DL Syntax](009-dl-syntax.md)

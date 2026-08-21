@@ -40,7 +40,7 @@ public final class GenerateStructuralSnapshot {
         System.out.println(snapshot(ontology));
     }
 
-    private static String snapshot(OWLOntology ontology) {
+    static String snapshot(OWLOntology ontology) {
         OWLOntologyID id = ontology.getOntologyID();
         Map<String, Integer> axiomTypeCounts = new TreeMap<>();
         for (OWLAxiom axiom : ontology.getAxioms()) {

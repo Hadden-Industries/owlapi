@@ -9,7 +9,7 @@ the Java implementation is not a JavaScript implementation template.
 | `OWLFunctionalSyntaxOWLParser` / `FunctionalSyntaxDocumentFormatFactory`      | `parser.functional`          | `REQUIRED_V1`; Phase 2 `COMPLETE`            |
 | `ManchesterOWLSyntaxOntologyParser` / `ManchesterSyntaxDocumentFormatFactory` | `parser.manchester`          | `REQUIRED_V1`; Phase 3 `COMPLETE`            |
 | `OWLXMLParser` / `OWLXMLDocumentFormatFactory`                                | `parser.owlxml`              | `REQUIRED_V1`; Phase 4 `COMPLETE`            |
-| `DLSyntaxOWLParser` / `DLSyntaxDocumentFormatFactory`                         | `parser.dl`                  | `REQUIRED_V1`                                |
+| `DLSyntaxOWLParser` / `DLSyntaxDocumentFormatFactory`                         | `parser.dl`                  | `REQUIRED_V1`; Phase 10 `COMPLETE`           |
 | `KRSS2OWLParser` / `KRSS2DocumentFormatFactory`                               | `parser.krss2`               | `REQUIRED_V1`                                |
 | `KRSSOWLParser` / `KRSSDocumentFormatFactory`                                 | `parser.krss1`               | `DEFERRED` implementation; identity required |
 | RDF/XML parser/factories                                                      | `parser.rdfxml`              | `DELEGATED`; Phase 6 `COMPLETE`              |
@@ -21,6 +21,18 @@ the Java implementation is not a JavaScript implementation template.
 | Rio N3                                                                        | `parser.n3-language`         | `DEFERRED`                                   |
 | OBO/OBO 1.2                                                                   | `parser.obo`                 | `UNSUPPORTED_BY_DESIGN` for v1               |
 | RDFa, RDF/JSON, TriX, Binary RDF, HDT                                         | corresponding matrix entries | deferred or unsupported as classified        |
+
+The Phase 10 DL parser implements the characterized OWLAPI 5.5.1 DL grammar
+directly to structural objects. Because the syntax has no ontology header, a
+supplied document IRI defines its entity namespace and anonymous loads receive
+isolated per-load namespaces. The pinned Java whole-document differential uses
+only productions reachable through that entry point. Focused project tests
+also preserve inventoried assertion, inverse-property and numeric-data
+productions that the Java dispatcher can misroute, accept ordinary terminal
+whitespace and attached property colons, and retain unmatched general subclass
+axioms rather than silently dropping them. These controlled corrections are
+recorded in the Phase 10 provenance research and lesson record; the shared
+oracle fixture itself has no expected structural difference.
 
 Distinct format descriptors are retained even when one dependency implements
 several formats. Phase 9 registers only exact `text/turtle`; N-Triples,

@@ -23,6 +23,7 @@
     "PHASE7-2026-08-18": "Repository-owner approval of Phase 7 implementation and the named capability, conformance, provenance, performance, migration-status, and playbook updates on 18 August 2026",
     "PHASE8-2026-08-18": "Repository-owner approval of Phase 8 implementation and the named capability, provenance, performance, migration-status, and playbook updates on 18 August 2026",
     "PHASE9-2026-08-20": "Repository-owner approval to implement Phase 9 and its required capability, conformance, dependency, provenance, performance, migration-status, and learning-gate updates on 20 August 2026",
+    "PHASE10-2026-08-21": "Repository-owner approval to implement Phase 10 and its required capability, conformance, provenance, performance, migration-status, and learning-gate updates on 21 August 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026"
   },
   "provenanceCategories": {
@@ -404,6 +405,18 @@
             "src/owl2vowl/js/index.test.js"
           ],
           "decisionRef": "PHASE9-2026-08-20"
+        },
+        {
+          "phase": 10,
+          "scope": "register the bounded DL Syntax descriptor for direct loads and import closures while retaining the same transactional manager boundary",
+          "normativePublicSources": [
+            "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.17"
+          ],
+          "focusedEvidence": [
+            "src/owlapi-js/parser/dl/dlSyntax.detection.test.js",
+            "src/owlapi-js/parser/dl/dlSyntax.integration.test.js"
+          ],
+          "decisionRef": "PHASE10-2026-08-21"
         }
       ],
       "thirdPartyDependencies": [],
@@ -1058,6 +1071,84 @@
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE9-2026-08-20",
       "reviewDate": "2026-08-20"
+    },
+    {
+      "id": "PHASE10-DL-DESCRIPTOR",
+      "path": "src/owlapi-js/parser/dl/descriptor.js",
+      "phase": 10,
+      "scope": "immutable DL Syntax identity plus bounded tri-state detection with strong negatives for every already registered OWL and RDF syntax",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/dlSyntaxParser.js",
+        "src/owl2vowl/js/index.js"
+      ],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ sections 8-9",
+        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.17"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public DLSyntaxOWLParser, DLSyntaxOWLParserFactory, and DLSyntaxDocumentFormat identities"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/dl/dlSyntax.detection.test.js",
+        "src/owlapi-js/parser/dl/dlSyntax.integration.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE10-2026-08-21",
+      "reviewDate": "2026-08-21"
+    },
+    {
+      "id": "PHASE10-DL-LEXER",
+      "path": "src/owlapi-js/parser/dl/lexer.js",
+      "phase": 10,
+      "scope": "independently authored lazy pull lexer for the characterized OWLAPI DL dialect, including longest-token alias handling, UTF-8 token limits, source locations, cancellation, monotonic timeout, and token budgets",
+      "legacyWebVowlSources": ["src/owl2vowl/js/dlSyntaxParser.js"],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ sections 8-9",
+        "docs/owlapi-js/implementation-plan.md sections 18.3, 19, and 20.1"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public DL parser behavior captured through the pinned project-owned Java harness and focused fixture probes"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/dl/lexer.test.js",
+        "src/owlapi-js/parser/dl/dlSyntax.resource.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE10-2026-08-21",
+      "reviewDate": "2026-08-21"
+    },
+    {
+      "id": "PHASE10-DL-PARSER",
+      "path": "src/owlapi-js/parser/dl/parser.js",
+      "phase": 10,
+      "scope": "independently authored direct construction of the OWLAPI DL dialect's structural class, assertion, and object-property axiom subset with deterministic document namespaces and no RDF or legacy-parser detour",
+      "legacyWebVowlSources": ["src/owl2vowl/js/dlSyntaxParser.js"],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ sections 8-9",
+        "docs/owlapi-js/implementation-plan.md sections 4, 9, 17.17, and 18"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public DL parser and format APIs plus the pinned project-owned Java structural snapshot"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/dl/dlSyntax.test.js",
+        "src/owlapi-js/parser/dl/dlSyntax.resource.test.js",
+        "src/owlapi-js/parser/dl/dlSyntax.conformance.test.js",
+        "src/owlapi-js/parser/dl/dlSyntax.differential.test.js",
+        "src/owlapi-js/parser/dl/dlSyntax.integration.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE10-2026-08-21",
+      "reviewDate": "2026-08-21"
     }
   ],
   "compatibilityResearch": [
@@ -1208,6 +1299,25 @@
         "src/owl2vowl/js/constants.js",
         "src/owl2vowl/test/vowlDifferential.js"
       ]
+    },
+    {
+      "id": "PHASE10-RESEARCH-DL-DIALECT-GRAMMAR",
+      "question": "Which concrete lexical aliases and document productions belong to OWLAPI 5.5.1's non-standardized DL Syntax dialect when public API documentation and black-box whole-document probes do not expose the grammar",
+      "publicBasis": "W3C OWL 2 structural class-expression and axiom semantics, public OWLAPI DLSyntaxOWLParser/factory/format documentation, and pinned black-box parser probes",
+      "implementationSourcesInspected": [
+        "parsers/src/main/java/org/semanticweb/owlapi/dlsyntax/parser/DLSyntaxParser.jj"
+      ],
+      "sourceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "reason": "After public documentation and black-box probes established the identity and broad behavior but could not enumerate a concrete compatibility grammar, inspection was restricted to this one grammar file to inventory accepted aliases and productions. Production Java classes, semantic implementation code, and the retained legacy JavaScript parser were not used as implementation specifications.",
+      "finding": "The public document entry point has observable inconsistencies beyond its grammar inventory: trailing line endings can fail, attached leading colons can be tokenized as identifiers, object-property assertions can be dispatched as class assertions, inverse-property equivalence and numeric data-one-of expressions can become unreachable through document dispatch, and one renderer-shaped unmatched subclass pattern can be silently dropped. The Java differential fixture therefore uses only the whole-document subset the public entry point accepts. The JS parser preserves the inventoried productions, accepts ordinary trailing whitespace and attached or separated property-axiom colons, constructs assertions and numeric data restrictions directly, and retains unmatched subclass axioms instead of dropping them.",
+      "productionUse": "No implementation text, generated-parser structure, grammar actions, or control flow was copied. The JavaScript lexer and recursive-descent parser are independently structured; project-owned unit, resource, detection, cross-format, Java-oracle, import, and WebVOWL tests define their behavior.",
+      "evidence": [
+        "util/owlapi-reference/fixtures/dl/phase10-structural.dl",
+        "util/owlapi-reference/fixtures/dl/phase10-structural.java.json",
+        "src/owlapi-js/parser/dl/lexer.test.js",
+        "src/owlapi-js/parser/dl/dlSyntax.test.js",
+        "src/owlapi-js/parser/dl/dlSyntax.differential.test.js"
+      ]
     }
   ],
   "items": [
@@ -1255,9 +1365,9 @@
       "origin": "legacy WebVOWL parser",
       "licenseCopyright": "Repository MIT context; historically OWLAPI-derived behavior is replaced, not transplanted",
       "disposition": "REIMPLEMENT",
-      "replacementPhase": 5,
-      "evidence": "characterization fixtures plus public dialect evidence",
-      "decisionRef": "PHASE0-2026-08-10"
+      "replacementPhase": 10,
+      "evidence": "replaced by the independently authored structural parser under src/owlapi-js/parser/dl, with project-owned grammar, resource, detection, cross-format, pinned Java-oracle, import, and WebVOWL evidence",
+      "decisionRef": "PHASE10-2026-08-21"
     },
     {
       "id": "LEGACY-KRSS2",

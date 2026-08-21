@@ -479,3 +479,55 @@ runtime shift is not a Phase 9 regression.
 Every relevant same-runtime wall-time and peak-heap-delta change is within the
 unchanged 20% threshold. No resource ceiling, release threshold, or accepted
 earlier baseline was re-anchored.
+
+## Phase 10 DL Syntax baseline
+
+- Pre-Phase-10 revision:
+  `0a0a57bb6d76cc3e48a89b716c91511164f7c674`.
+- Measurement date: 21 August 2026.
+- Environment: Windows `10.0.26200` x64, Node.js `v24.19.0`, 12th Gen
+  Intel Core i9-12900K (24 logical CPUs), 34,053,869,568 bytes system memory.
+- Dependency identity: `package-lock.json` SHA-256
+  `bbd8a2a632a5b3aa4a9d0c182d7b3176e1c540d5d6bdd47e170c52d7737f93a5`.
+- Command: `node --expose-gc util/benchmark-owlapi-dl.mjs`.
+- Protocol: generator `owlapi-benchmark-corpus-v1`; one warm-up and five
+  measured runs; median aggregation; garbage collection requested before each
+  run; heap sampled every 5 ms. The accepted run passed the idle-machine guard.
+
+The large fixture contains 50,000 DL subclass axioms. The depth fixture
+contains 256 nested quantified restrictions and reaches 512 governed expression
+levels when both the restriction and its filler are counted.
+
+| New Phase 10 signal | Median wall time (ms) | Median peak heap delta (bytes) |
+| --- | ---: | ---: |
+| `generated-dl-large` | 1,934.59 | 207,904,776 |
+| `generated-dl-depth` | 76.03 | 26,372,760 |
+
+These are the first accepted DL Syntax throughput and depth signals, so no
+earlier DL baseline exists for threshold comparison. The parser cooperatively
+yields during the 50,000-axiom run, which produces wider individual wall-time
+samples than the non-yielding depth case. Three independent idle-guarded runs
+produced large-fixture medians of 1,824.99, 1,790.49, and 1,934.59 ms; the
+largest difference between accepted medians is 8.05%, below the unchanged 20%
+threshold. The latest complete paired run above is the accepted baseline.
+
+### Same-revision registry controls
+
+The current lockfile identity differs from the accepted Phase 9 document, so
+historical absolute mismatch medians are not treated as a Phase 10 comparison.
+Instead, the Phase 10 benchmark constructs two registries in the same process:
+the Phase 9 descriptor list and the same list with DL registered in production
+order. Both sides use the current source revision, runtime, dependency tree,
+fixtures, sampling protocol, and process. The only controlled difference is the
+DL descriptor.
+
+| Existing signal | Phase 9 registry wall / heap delta | Phase 10 registry wall / heap delta | Wall change | Heap-delta change |
+| --- | ---: | ---: | ---: | ---: |
+| `generated-functional-large` | 1,084.86 ms / 125,975,024 bytes | 1,094.62 ms / 126,539,728 bytes | +0.90% | +0.45% |
+| `generated-functional-depth` | 337.46 ms / 49,561,384 bytes | 335.03 ms / 49,578,736 bytes | -0.72% | +0.04% |
+| `generated-mismatch-large` | 9.87 ms / 33,656 bytes | 11.16 ms / 34,824 bytes | +13.10% | +3.47% |
+
+Every paired wall-time and peak-heap-delta change is within the unchanged 20%
+release threshold. The mismatch input is 16 MiB of unrelated text and therefore
+also proves that registering DL preserves bounded detection. Phase 10 changes no
+resource ceiling, accepted earlier baseline, or regression threshold.
