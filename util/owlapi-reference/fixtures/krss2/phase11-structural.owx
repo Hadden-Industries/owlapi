@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#">
+  <SubClassOf>
+    <Class IRI="urn:test:phase10#Person" />
+    <Class IRI="urn:test:phase10#Agent" />
+  </SubClassOf>
+  <EquivalentClasses>
+    <Class IRI="urn:test:phase10#Parent" />
+    <ObjectIntersectionOf>
+      <Class IRI="urn:test:phase10#Person" />
+      <ObjectSomeValuesFrom>
+        <ObjectProperty IRI="urn:test:phase10#hasChild" />
+        <Class IRI="urn:test:phase10#Person" />
+      </ObjectSomeValuesFrom>
+    </ObjectIntersectionOf>
+  </EquivalentClasses>
+  <SubClassOf>
+    <Class IRI="urn:test:phase10#Person" />
+    <ObjectAllValuesFrom>
+      <ObjectProperty IRI="urn:test:phase10#hasFriend" />
+      <ObjectUnionOf>
+        <Class IRI="urn:test:phase10#Person" />
+        <Class IRI="urn:test:phase10#Agent" />
+      </ObjectUnionOf>
+    </ObjectAllValuesFrom>
+  </SubClassOf>
+  <SubClassOf>
+    <Class IRI="urn:test:phase10#Person" />
+    <ObjectMinCardinality cardinality="1">
+      <ObjectProperty IRI="urn:test:phase10#hasChild" />
+      <Class IRI="urn:test:phase10#Person" />
+    </ObjectMinCardinality>
+  </SubClassOf>
+  <ClassAssertion>
+    <Class IRI="urn:test:phase10#Person" />
+    <NamedIndividual IRI="urn:test:phase10#alice" />
+  </ClassAssertion>
+  <DifferentIndividuals>
+    <NamedIndividual IRI="urn:test:phase10#alice" />
+    <NamedIndividual IRI="urn:test:phase10#bob" />
+  </DifferentIndividuals>
+  <SameIndividual>
+    <NamedIndividual IRI="urn:test:phase10#alice" />
+    <NamedIndividual IRI="urn:test:phase10#ally" />
+  </SameIndividual>
+  <SubObjectPropertyOf>
+    <ObjectProperty IRI="urn:test:phase10#hasParent" />
+    <ObjectProperty IRI="urn:test:phase10#related" />
+  </SubObjectPropertyOf>
+  <EquivalentObjectProperties>
+    <ObjectProperty IRI="urn:test:phase10#related" />
+    <ObjectProperty IRI="urn:test:phase10#associated" />
+  </EquivalentObjectProperties>
+  <TransitiveObjectProperty>
+    <ObjectProperty IRI="urn:test:phase10#hasAncestor" />
+  </TransitiveObjectProperty>
+  <SubObjectPropertyOf>
+    <ObjectPropertyChain>
+      <ObjectProperty IRI="urn:test:phase10#hasParent" />
+      <ObjectProperty IRI="urn:test:phase10#hasParent" />
+    </ObjectPropertyChain>
+    <ObjectProperty IRI="urn:test:phase10#hasAncestor" />
+  </SubObjectPropertyOf>
+  <ObjectPropertyRange>
+    <ObjectProperty IRI="urn:test:phase10#hasFriend" />
+    <Class IRI="urn:test:phase10#Person" />
+  </ObjectPropertyRange>
+</Ontology>

@@ -531,3 +531,48 @@ Every paired wall-time and peak-heap-delta change is within the unchanged 20%
 release threshold. The mismatch input is 16 MiB of unrelated text and therefore
 also proves that registering DL preserves bounded detection. Phase 10 changes no
 resource ceiling, accepted earlier baseline, or regression threshold.
+
+## Phase 11 KRSS2 baseline
+
+- Pre-Phase-11 revision:
+  `5ec5ccf6` (`refactor(build): Modernize ZIP utility as native ESM`).
+- Measurement date: 21 August 2026.
+- Environment: Windows `10.0.26200` x64, Node.js `v24.19.0`, 12th Gen
+  Intel Core i9-12900K (24 logical CPUs), 34,053,869,568 bytes system memory.
+- Dependency identity: `package-lock.json` SHA-256
+  `bbd8a2a632a5b3aa4a9d0c182d7b3176e1c540d5d6bdd47e170c52d7737f93a5`.
+- Command: `node --expose-gc util/benchmark-owlapi-krss2.mjs`.
+- Protocol: generator `owlapi-benchmark-corpus-v1`; one warm-up and five
+  measured runs; median aggregation; garbage collection requested before each
+  run; heap sampled every 5 ms. The accepted run passed the idle-machine guard.
+
+The large fixture contains 50,000 KRSS2 implication axioms. The depth fixture
+contains 256 nested existential restrictions.
+
+| New Phase 11 signal | Median wall time (ms) | Median peak heap delta (bytes) |
+| --- | ---: | ---: |
+| `generated-krss2-large` | 820.87 | 212,404,960 |
+| `generated-krss2-depth` | 75.19 | 21,017,296 |
+
+These are the first accepted KRSS2 throughput and depth signals, so no earlier
+KRSS2 baseline exists for threshold comparison. The large run also exercises
+cooperative scheduling over sustained input; the separate resource suite proves
+that cancellation interrupts that work before all 50,000 axioms are built.
+
+### Same-revision registry controls
+
+The Phase 11 benchmark constructs the Phase 10 descriptor list and the same
+list with KRSS2 inserted at production priority 16. Both sides use the current
+source revision, runtime, dependency tree, generated fixtures, sampling
+protocol, and process; the KRSS2 descriptor is the only controlled difference.
+
+| Existing signal | Phase 10 registry wall / heap delta | Phase 11 registry wall / heap delta | Wall change | Heap-delta change |
+| --- | ---: | ---: | ---: | ---: |
+| `generated-functional-large` | 1,107.03 ms / 137,390,056 bytes | 496.48 ms / 128,497,136 bytes | -55.15% | -6.47% |
+| `generated-functional-depth` | 152.54 ms / 49,565,824 bytes | 152.96 ms / 49,579,072 bytes | +0.28% | +0.03% |
+| `generated-mismatch-large` | 7.31 ms / 34,408 bytes | 7.38 ms / 35,456 bytes | +0.85% | +3.05% |
+
+Every paired regression is within the unchanged 20% release threshold. The
+16 MiB unrelated-text control also confirms that adding KRSS2 retains bounded
+detection. Phase 11 changes no resource ceiling, historical baseline, or
+regression threshold.

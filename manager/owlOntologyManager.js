@@ -17,6 +17,7 @@ import {
 } from "../model/index.js";
 import { dlSyntaxParserDescriptor } from "../parser/dl/descriptor.js";
 import { functionalSyntaxParserDescriptor } from "../parser/functional/descriptor.js";
+import { krss2ParserDescriptor } from "../parser/krss2/descriptor.js";
 import { manchesterSyntaxParserDescriptor } from "../parser/manchester/descriptor.js";
 import { owlXmlParserDescriptor } from "../parser/owlxml/descriptor.js";
 import { rdfXmlParserDescriptor } from "../parser/rdfxml/descriptor.js";
@@ -272,6 +273,9 @@ export class OWLOntologyManager {
         rdfXmlParserDescriptor,
         turtleParserDescriptor,
         dlSyntaxParserDescriptor,
+        // KRSS1 intentionally has no descriptor until its DEFERRED capability
+        // is promoted; sharing the KRSS lexer must not make it executable.
+        krss2ParserDescriptor,
         functionalSyntaxParserDescriptor,
         manchesterSyntaxParserDescriptor,
       ]);

@@ -15,8 +15,8 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |     8 | Production WebVOWL cutover                                         | Complete    | PASS: 116/1439 full; 33/33 differential; lint/format/build green |
 |     9 | Private N3.js adapter foundation and strict Turtle                 | Complete    | PASS: 11/608 focused; 123/1893 full; 387/387 W3C Turtle          |
 |    10 | DL Syntax                                                          | Complete    | PASS: 7/52 focused; 133/1964 full; Java snapshot 15/15 axioms    |
-|    11 | KRSS family                                                        | Not started | blocked by Phase 10 Git checkpoint                               |
-|    12 | N-Triples                                                          | Not started | blocked by Phase 11 learning gate                                |
+|    11 | KRSS family                                                        | Complete    | PASS: 8/55 focused; 142/2024 full; Java snapshot 12/12 axioms    |
+|    12 | N-Triples                                                          | Not started | blocked by Phase 11 Git checkpoint                               |
 |    13 | N-Quads                                                            | Not started | blocked by Phase 12 learning gate                                |
 |    14 | TriG                                                               | Not started | blocked by Phase 13 learning gate                                |
 |    15 | JSON-LD                                                            | Not started | blocked by Phase 14 learning gate                                |
@@ -24,20 +24,33 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |    17 | Physical legacy deletion                                           | Not started | blocked by Phase 16 and retained-reference audit                 |
 |    18 | Package/release                                                    | Not started | blocked by all prior gates                                       |
 
-Active ingestion migration: none. Phase 10 has passed its implementation,
-learning, conformance, differential, resource, performance, integration, and
-repository gates in the working tree and is paused for the requested Git
-checkpoint. Phase 11 remains blocked until that checkpoint is committed and
-the repository owner explicitly says to proceed.
+Active ingestion migration: none. Phase 11 has passed its implementation,
+learning, grammar-gap, conformance, differential, resource, performance,
+integration, and repository gates in the working tree and is paused for the
+requested Git checkpoint. Phase 12 remains blocked until that checkpoint is
+committed and the repository owner explicitly says to proceed.
 
 The structural cutover itself is in place. WebVOWL ingests ontologies only
 through `owlapi-js`, the production graph reaches no retained legacy parser,
 converter or exporter, and Turtle now succeeds both directly and when
 discovered inside an import closure. Functional Syntax, Manchester Syntax,
-OWL/XML, RDF/XML, Turtle, and DL Syntax are the advertised production formats;
-every other legacy-only syntax still fails with canonical unsupported-format
-diagnostics. The legacy modules remain unmoved for characterization until the
+OWL/XML, RDF/XML, Turtle, DL Syntax, and KRSS2 are the advertised production
+formats; every other legacy-only syntax still fails with canonical
+unsupported-format diagnostics. In particular, KRSS1 retains a distinct format
+identity but no executable descriptor while its parser capability is
+`DEFERRED`. The legacy modules remain unmoved for characterization until the
 Phase 17 deletion.
+
+KRSS2 constructs structural objects directly through a dialect-neutral bounded
+pull lexer and a strict KRSS2 parser. KRSS1 and KRSS2 remain separate
+compatibility identities; shared/extension vocabulary tests and explicit
+non-registration prevent KRSS2 from becoming a KRSS1 alias. The project-owned
+12-axiom subset agrees exactly across KRSS2, DL, Functional, Manchester,
+OWL/XML, RDF/XML, and Turtle, and its pinned OWLAPI 5.5.1 oracle agrees on every
+axiom count and signature category. The same-revision Phase 10/Phase 11 registry
+benchmark remains within the unchanged 20% threshold. Phase 11 adds no
+dependency, package, lockfile, configuration, resource-ceiling, or
+legacy-production-reachability change.
 
 DL Syntax constructs structural objects directly through a bounded pull lexer
 and parser. The shared project fixture agrees across DL, Functional, RDF/XML,

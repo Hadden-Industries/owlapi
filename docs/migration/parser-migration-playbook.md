@@ -299,22 +299,38 @@ do not append chronology here.
   axiom only when the complete shape matches. Preserve an unmatched subclass
   axiom; never copy a reference path that silently returns no axiom.
 
-## Next migration: Phase 11 KRSS family
+## Phase 11 KRSS-family evidence
 
 - Inventory the public `KRSSOWLParser`/KRSS1 and `KRSS2OWLParser`/KRSS2
-  identities separately before designing shared machinery. KRSS2 is
-  `REQUIRED_V1`; KRSS1 remains an explicit `DEFERRED` identity with grammar-gap,
-  fixture, and negative-dialect evidence rather than an accidental alias.
-- Establish the published KRSS-family grammar first, map every required KRSS2
-  production directly to immutable structural OWL objects, and use the pinned
-  Java implementations only as black-box compatibility oracles unless a narrow
-  unresolved question passes the governed source-inspection escalation.
-- Reuse the mature textual-parser contracts and the Phase 10 controls for
-  headerless namespaces, longest-token matching, reachable-oracle subsets,
-  strict/compatible boundaries, resources, diagnostics, scheduling, and
-  transactional rollback.
-- Add project-owned KRSS1 and KRSS2 classifications, dialect negatives,
-  cross-format structural fixtures, pinned Java snapshots, imports, complete
-  WebVOWL conversion, unsupported-format/reachability gates, performance,
-  provenance, and the learning record before pausing for the Phase 11 Git
-  checkpoint.
+  identities separately. Share only dialect-neutral lexing and classification;
+  never infer parser availability from a shared token vocabulary.
+- Give a deferred dialect executable negative evidence: classify its narrower
+  vocabulary, reject extension-only keywords, and prove no descriptor is
+  registered for its format key.
+- Probe whole-document ordering as well as individual productions. KRSS2's
+  public entry point accepts `TBox* ABox*`; an ABox statement changes which
+  statements are legal afterward.
+- Treat reserved keywords as lexical constraints on entity names. Use absolute
+  IRI spellings in shared oracle fixtures when a desired local name is reserved
+  or when a reference parser's bare-name base is defective.
+- A top-level production can expand atomically into several axioms. Route the
+  complete result through the transaction's multi-axiom seam and verify rollback
+  after a later failure.
+- Compare the expressible subset across every implemented OWL-native and RDF
+  syntax, then layer pinned Java counts/signatures over the exact project-owned
+  structural comparison.
+- On Windows, do not assume the `java` and `javac` shims share `java.home`.
+  Long-classpath oracle tooling must select compiler and runtime entry points
+  independently.
+
+## Next migration: Phase 12 N-Triples
+
+- Add a distinct strict N-Triples descriptor over the private N3.js adapter; do
+  not treat Turtle recognition as generic N3-language support.
+- Classify the pinned W3C RDF 1.1 and RDF 1.2 N-Triples corpora independently,
+  preserving exact positive, negative, approval, and manifest evidence.
+- Normalize every parsed statement to the default graph and prove that graph
+  selection/loss policy remains explicit before shared RDF-to-OWL translation.
+- Complete bounded detection, resource/cancellation behavior, direct and import
+  manager paths, WebVOWL conversion, cross-format structure, performance,
+  provenance, and the learning record before the Phase 12 checkpoint.

@@ -84,15 +84,12 @@ export class OWLDocumentFormat {
 const format = (key, mediaTypes, extensions, options = {}) =>
   new OWLDocumentFormat({ key, mediaTypes, extensions, ...options });
 
-// TODO(OWLAPI parity): These objects establish syntax identities only. Phase 1
-// registers no concrete parser descriptors, so loading without an injected
-// registry exhausts with UnparsableOntologyException rather than pretending a
-// format is supported. Phases 2-10 add each REQUIRED_V1/DELEGATED parser with its
-// normative grammar, detector, resource limits, fixtures, and capability update.
-// KRSS1 deliberately retains a distinct format identity while `parser.krss1`
-// remains DEFERRED. OBO is UNSUPPORTED_BY_DESIGN; RDFa, RDF/JSON, TriX, and the
-// broader N3 language remain DEFERRED and therefore have no advertised format
-// object or descriptor. Verification: the `parser.*` and
+// Format identity is intentionally independent from parser availability.
+// Phases 2-11 register each completed REQUIRED_V1/DELEGATED parser through a
+// separate descriptor; KRSS1 retains this public identity while its parser
+// remains DEFERRED and unregistered. OBO is UNSUPPORTED_BY_DESIGN; RDFa,
+// RDF/JSON, TriX, and the broader N3 language remain DEFERRED and therefore have
+// no advertised format object or descriptor. Verification: the `parser.*` and
 // `format.krss1.identity` capability rows plus parserRegistry.test.js.
 export const OWLDocumentFormats = Object.freeze({
   FUNCTIONAL: format("functional", ["text/owl-functional"], ["ofn", "owl"], {

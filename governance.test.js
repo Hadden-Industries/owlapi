@@ -310,7 +310,7 @@ describe("owlapi-js governance artifacts", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(paths).toEqual(productionModules);
     for (const record of records) {
-      expect([1, 2, 3, 4, 5, 6, 9, 10]).toContain(record.phase);
+      expect([1, 2, 3, 4, 5, 6, 9, 10, 11]).toContain(record.phase);
       expect(manifest.provenanceCategories).toHaveProperty(
         record.provenanceCategory,
       );
@@ -882,6 +882,12 @@ describe("owlapi-js governance artifacts", () => {
     );
     expect(generateBenchmarkFixture("dl-depth", { depth: 2 })).toBe(
       "Root ⊑ ∃ p.(∃ p.(Leaf))",
+    );
+    expect(generateBenchmarkFixture("krss2", { count: 2 })).toContain(
+      "(implies C1 Parent1)",
+    );
+    expect(generateBenchmarkFixture("krss2-depth", { depth: 2 })).toBe(
+      "(implies Root (some p (some p Leaf)))",
     );
     expect(
       generateBenchmarkFixture("functional-depth", { depth: 2 }),

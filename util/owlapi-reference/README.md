@@ -111,5 +111,24 @@ data-one-of, attached-colon, trailing-whitespace, and unmatched-subclass cases
 where that entry point is internally inconsistent. Those are controlled
 compatibility corrections, not undocumented expected differences.
 
+The Phase 11 KRSS2 reference set is under `fixtures/krss2/`. Its `.krss2`,
+`.omn`, and `.owx` files plus the Phase 10 `.dl`, `.ofn`, `.rdf`, and `.ttl`
+siblings encode one 12-axiom subset across every implemented syntax that can
+express it; `phase11-structural.java.json` is the pinned KRSS2 result. The specialized
+`GenerateKRSS2SyntaxSnapshot` harness invokes `KRSS2OWLParser` directly so
+generic manager detection cannot select another headerless syntax. Its fixture
+uses absolute names because OWLAPI 5.5.1 constructs malformed `Optional[...]`
+bases for bare names in this oracle setup; JavaScript's document-relative name
+policy is governed separately by focused tests.
+
+On Windows systems where `java` resolves to a JRE but `javac` resolves to a
+separate JDK, compile and run through the classpath launcher:
+
+```text
+javac -d util/owlapi-reference/target util/owlapi-reference/RunWithClasspath.java
+java -cp util/owlapi-reference/target RunWithClasspath <classpath-file> util/owlapi-reference/target com.sun.tools.javac.Main -d util/owlapi-reference/target util/owlapi-reference/GenerateStructuralSnapshot.java util/owlapi-reference/GenerateKRSS2SyntaxSnapshot.java
+java -cp util/owlapi-reference/target RunWithClasspath <classpath-file> util/owlapi-reference/target GenerateKRSS2SyntaxSnapshot util/owlapi-reference/fixtures/krss2/phase11-structural.krss2 urn:test:phase10
+```
+
 The harness deliberately has no WebVOWL, npm, or browser dependency. Generated
 snapshots are test evidence and require their own fixture provenance record.

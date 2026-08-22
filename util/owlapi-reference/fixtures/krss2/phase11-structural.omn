@@ -1,0 +1,27 @@
+Prefix: : <urn:test:phase10#>
+Ontology: <urn:test:phase10>
+
+  Class: :Person
+    SubClassOf: :Agent, :hasFriend only (:Person or :Agent), :hasChild min 1 :Person
+  Class: :Parent
+    EquivalentTo: :Person and :hasChild some :Person
+  Class: :Agent
+
+  ObjectProperty: :hasParent
+    SubPropertyOf: :related
+  ObjectProperty: :related
+    EquivalentTo: :associated
+  ObjectProperty: :associated
+  ObjectProperty: :hasAncestor
+    Characteristics: Transitive
+    SubPropertyChain: :hasParent o :hasParent
+  ObjectProperty: :hasFriend
+    Range: :Person
+  ObjectProperty: :hasChild
+
+  Individual: :alice
+    Types: :Person
+    SameAs: :ally
+    DifferentFrom: :bob
+  Individual: :ally
+  Individual: :bob

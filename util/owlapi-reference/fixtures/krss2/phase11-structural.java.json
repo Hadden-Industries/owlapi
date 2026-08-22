@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "oracle": {
+    "name": "OWLAPI",
+    "version": "5.5.1",
+    "revision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+    "harness": "util/owlapi-reference/GenerateKRSS2SyntaxSnapshot.java",
+    "documentIRI": "urn:test:phase10",
+    "ignoredImports": []
+  },
+  "fixture": "util/owlapi-reference/fixtures/krss2/phase11-structural.krss2",
+  "snapshot": {
+    "ontologyIRI": null,
+    "versionIRI": null,
+    "imports": [],
+    "ontologyAnnotations": [],
+    "axiomTypeCounts": {
+      "ClassAssertion": 1,
+      "DifferentIndividuals": 1,
+      "EquivalentClasses": 1,
+      "EquivalentObjectProperties": 1,
+      "ObjectPropertyRange": 1,
+      "SameIndividual": 1,
+      "SubClassOf": 3,
+      "SubObjectPropertyOf": 1,
+      "SubPropertyChainOf": 1,
+      "TransitiveObjectProperty": 1
+    },
+    "axioms": [
+      "ClassAssertion(<urn:test:phase10#Person> <urn:test:phase10#alice>)",
+      "DifferentIndividuals(<urn:test:phase10#alice> <urn:test:phase10#bob>)",
+      "EquivalentClasses(<urn:test:phase10#Parent> ObjectIntersectionOf(<urn:test:phase10#Person> ObjectSomeValuesFrom(<urn:test:phase10#hasChild> <urn:test:phase10#Person>)))",
+      "EquivalentObjectProperties(<urn:test:phase10#associated> <urn:test:phase10#related>)",
+      "ObjectPropertyRange(<urn:test:phase10#hasFriend> <urn:test:phase10#Person>)",
+      "SameIndividual(<urn:test:phase10#alice> <urn:test:phase10#ally>)",
+      "SubClassOf(<urn:test:phase10#Person> <urn:test:phase10#Agent>)",
+      "SubClassOf(<urn:test:phase10#Person> ObjectAllValuesFrom(<urn:test:phase10#hasFriend> ObjectUnionOf(<urn:test:phase10#Agent> <urn:test:phase10#Person>)))",
+      "SubClassOf(<urn:test:phase10#Person> ObjectMinCardinality(1 <urn:test:phase10#hasChild> <urn:test:phase10#Person>))",
+      "SubObjectPropertyOf(<urn:test:phase10#hasParent> <urn:test:phase10#related>)",
+      "SubObjectPropertyOf(ObjectPropertyChain(<urn:test:phase10#hasParent> <urn:test:phase10#hasParent>) <urn:test:phase10#hasAncestor>)",
+      "TransitiveObjectProperty(<urn:test:phase10#hasAncestor>)"
+    ],
+    "signature": {
+      "classes": [
+        "urn:test:phase10#Agent",
+        "urn:test:phase10#Parent",
+        "urn:test:phase10#Person"
+      ],
+      "objectProperties": [
+        "urn:test:phase10#associated",
+        "urn:test:phase10#hasAncestor",
+        "urn:test:phase10#hasChild",
+        "urn:test:phase10#hasFriend",
+        "urn:test:phase10#hasParent",
+        "urn:test:phase10#related"
+      ],
+      "dataProperties": [],
+      "annotationProperties": [],
+      "individuals": [
+        "urn:test:phase10#alice",
+        "urn:test:phase10#ally",
+        "urn:test:phase10#bob"
+      ],
+      "datatypes": []
+    }
+  }
+}

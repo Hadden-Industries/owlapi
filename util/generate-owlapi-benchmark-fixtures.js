@@ -59,6 +59,18 @@ const generators = Object.freeze({
     return repeated(count, (index) => `C${index} ⊑ Parent${index}`);
   },
 
+  krss2({ count }) {
+    return repeated(
+      count,
+      (index) => `(implies C${index} Parent${index})`,
+    );
+  },
+
+  "krss2-depth"({ depth }) {
+    const normalizedDepth = requireCount(depth, "depth", 100000);
+    return `(implies Root ${"(some p ".repeat(normalizedDepth)}Leaf${")".repeat(normalizedDepth)})`;
+  },
+
   "dl-depth"({ depth }) {
     const normalizedDepth = requireCount(depth, "depth", 100000);
     return `Root ⊑ ${"∃ p.(".repeat(normalizedDepth)}Leaf${")".repeat(normalizedDepth)}`;
@@ -117,7 +129,11 @@ module.exports = Object.freeze({
 if (require.main === module) {
   const [, , kind, amount] = process.argv;
   const numericAmount = Number(amount);
-  const parameterName = ["dl-depth", "functional-depth"].includes(kind)
+  const parameterName = [
+    "dl-depth",
+    "functional-depth",
+    "krss2-depth",
+  ].includes(kind)
     ? "depth"
     : "count";
   const parameters =
