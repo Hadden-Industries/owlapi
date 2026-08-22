@@ -180,9 +180,10 @@ const format = (key, mediaTypes, extensions, options = {}) =>
   new OWLDocumentFormat({ key, mediaTypes, extensions, ...options });
 
 // Format identity is intentionally independent from parser availability.
-// Phases 2-13 register each completed REQUIRED_V1/DELEGATED parser through a
-// separate descriptor; KRSS1 retains this public identity while its parser
-// remains DEFERRED and unregistered. OBO is UNSUPPORTED_BY_DESIGN; RDFa,
+// Phases 2-15 register each completed REQUIRED_V1/DELEGATED parser through a
+// separate descriptor. KRSS1 retains this public identity while its REQUIRED_V1
+// Phase 17 parser is not yet implemented or registered. OBO is
+// UNSUPPORTED_BY_DESIGN; RDFa,
 // RDF/JSON, TriX, and the broader N3 language remain DEFERRED and therefore have
 // no advertised format object or descriptor. Verification: the `parser.*` and
 // `format.krss1.identity` capability rows plus parserRegistry.test.js.

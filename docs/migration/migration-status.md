@@ -21,16 +21,16 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |    14 | TriG                                                               | Complete    | PASS: 10/493 focused; 157/2711 full; 401/401 required W3C        |
 |    15 | JSON-LD                                                            | Complete    | PASS: 10/559 focused; 163/3222 full; 462/462 required W3C        |
 |    16 | OWL-to-RDF                                                         | Complete    | PASS: 8/24 focused; 171/3247 full; graph differential green      |
-|    17 | Physical legacy deletion                                           | Not started | blocked by Phase 16 Git checkpoint and retained-reference audit  |
-|    18 | Package/release                                                    | Not started | blocked by all prior gates                                       |
+|    17 | Original KRSS / KRSS1                                              | Not started | required scope approved; implementation checkpoint pending       |
+|    18 | Physical legacy deletion                                           | Not started | blocked by Phase 17 checkpoint and retained-reference audit      |
+|    19 | Package/release                                                    | Not started | blocked by all prior gates                                       |
 
-Active ingestion migration: none. Phase 16 has passed its implementation,
+Active ingestion migration: none. Phase 16 passed its implementation,
 normative-mapping, exhaustive-taxonomy, round-trip, Java differential,
-resource, performance, browser-contract, and repository gates in the working
-tree and is paused for the requested Git checkpoint. The finite
-ontology-ingestion programme remains complete. Phase 17 remains blocked until
-the Phase 16 checkpoint is committed and the repository owner explicitly says
-to proceed.
+resource, performance, browser-contract, and repository gates and was committed
+at `39d54ff1`. Phase 17 original KRSS/KRSS1 is now the next WIP-locked ingestion
+migration. Its required scope and architecture are approved in the current
+planning update, but implementation has not started.
 
 The structural cutover itself is in place. WebVOWL ingests ontologies only
 through `owlapi-js`, the production graph reaches no retained legacy parser,
@@ -38,10 +38,10 @@ converter or exporter, and Turtle, N-Triples, N-Quads, and TriG now succeed both
 directly and when discovered inside an import closure. Functional Syntax,
 Manchester Syntax, OWL/XML, RDF/XML, Turtle, DL Syntax, KRSS2, N-Triples,
 N-Quads, TriG, and JSON-LD are the advertised production formats; every other
-legacy-only syntax still fails with canonical unsupported-format diagnostics. In particular,
-KRSS1 retains a distinct format identity but no executable descriptor while
-its parser capability is `DEFERRED`. The legacy modules remain unmoved for
-characterization until the Phase 17 deletion.
+legacy-only syntax still fails with canonical unsupported-format diagnostics.
+In particular, KRSS1 retains a distinct format identity but no executable
+descriptor while its `REQUIRED_V1` Phase 17 parser remains `NOT_STARTED`. The
+legacy modules remain unmoved for characterization until the Phase 18 deletion.
 
 N-Quads uses a third exact-format policy over the private N3.js boundary and
 preserves graph terms in the canonical RDF/JS dataset. All four graph policies
@@ -123,6 +123,15 @@ axiom count and signature category. The same-revision Phase 10/Phase 11 registry
 benchmark remains within the unchanged 20% threshold. Phase 11 adds no
 dependency, package, lockfile, configuration, resource-ceiling, or
 legacy-production-reachability change.
+
+Phase 17 will build on that separation rather than relabeling the KRSS2 parser.
+The strict pre-phase provenance review verified no qualifying public,
+first-party-maintained historical ontology artifact for either OWLAPI-style
+KRSS1 or KRSS2. Project-owned grammar fixtures, historical adjacent-dialect
+fixtures, extended-KRSS negatives, converted-real-ontology fixtures, and any
+future first-party strict corpus therefore remain separate evidence classes;
+only the last class may be called a historical KRSS corpus, and it is currently
+empty.
 
 DL Syntax constructs structural objects directly through a bounded pull lexer
 and parser. The shared project fixture agrees across DL, Functional, RDF/XML,

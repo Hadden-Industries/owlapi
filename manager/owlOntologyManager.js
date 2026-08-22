@@ -316,8 +316,8 @@ export class OWLOntologyManager {
         triGParserDescriptor,
         turtleParserDescriptor,
         dlSyntaxParserDescriptor,
-        // KRSS1 intentionally has no descriptor until its DEFERRED capability
-        // is promoted; sharing the KRSS lexer must not make it executable.
+        // KRSS1 intentionally has no descriptor until its REQUIRED_V1 Phase 17
+        // implementation passes its gate; a format identity alone is not executable.
         krss2ParserDescriptor,
         functionalSyntaxParserDescriptor,
         manchesterSyntaxParserDescriptor,

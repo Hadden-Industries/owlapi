@@ -27,7 +27,7 @@ describe("KRSS2 bounded detection", () => {
     expect(detectKRSS2(source(text)).result).toBe("NO_MATCH");
   });
 
-  it("keeps the deferred KRSS1 identity out of the active registry", () => {
+  it("keeps the not-yet-implemented KRSS1 identity out of the active registry", () => {
     const registry = new OWLParserRegistry([krss2ParserDescriptor]);
 
     expect(registry.getDescriptors().map(({ format }) => format.key)).toEqual([

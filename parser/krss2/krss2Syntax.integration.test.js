@@ -23,7 +23,7 @@ describe("KRSS2 manager integration", () => {
     ).toHaveProperty("size", 1);
   });
 
-  it("does not expose the deferred KRSS1 identity as an executable parser", async () => {
+  it("does not expose KRSS1 before its Phase 17 parser is implemented", async () => {
     const manager = OWLManager.createOWLOntologyManager();
 
     await expect(

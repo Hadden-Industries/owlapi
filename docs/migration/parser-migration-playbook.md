@@ -309,9 +309,11 @@ do not append chronology here.
 - Inventory the public `KRSSOWLParser`/KRSS1 and `KRSS2OWLParser`/KRSS2
   identities separately. Share only dialect-neutral lexing and classification;
   never infer parser availability from a shared token vocabulary.
-- Give a deferred dialect executable negative evidence: classify its narrower
-  vocabulary, reject extension-only keywords, and prove no descriptor is
-  registered for its format key.
+- When a dialect is intentionally deferred at a checkpoint, give that state
+  executable negative evidence: classify its narrower vocabulary, reject
+  extension-only keywords, and prove no descriptor is registered. If the
+  dialect is later promoted, retain the dialect negatives and replace the
+  non-registration assertion with descriptor-isolation and routing tests.
 - Probe whole-document ordering as well as individual productions. KRSS2's
   public entry point accepts `TBox* ABox*`; an ABox statement changes which
   statements are legal afterward.
@@ -452,16 +454,56 @@ do not append chronology here.
 - Round-trip through the existing inverse translator. If a valid forward graph
   exposes an inverse-recognition gap, fix it at the shared RDF interpreter seam
   without manufacturing structural declarations or syntax-specific rules.
-- Keep JSON-LD serialization and every other concrete RDF storer out of Phase
-  16. Phase 15's from-RDF register remains explicitly non-applicable.
+- Keep JSON-LD serialization and every other concrete RDF storer out of Phase 16. Phase 15's from-RDF register remains explicitly non-applicable.
 
-## Next migration: Phase 17 physical legacy deletion
+## Next migration: Phase 17 original KRSS / KRSS1
 
-- Re-run the retained-reference and production no-reachability audits before
-  deleting any legacy file; Phase 8 already removed production wiring, so no
-  replacement module should be moved merely to make deletion convenient.
+- Treat `KRSSOWLParser`/KRSS1 and `KRSS2OWLParser`/KRSS2 as separate public
+  parser, descriptor, format, detection, diagnostic, fixture, and oracle
+  surfaces. A shared lexer does not imply one union parser or one public
+  identity.
+- Deepen the KRSS module around genuinely dialect-neutral grammar machinery,
+  then keep thin KRSS1 and KRSS2 adapters responsible for their exact top-level
+  productions, format identity, diagnostics, and detection policy. Refactoring
+  the completed KRSS2 path must be behavior-preserving and protected before new
+  KRSS1 productions are added.
+- Freeze a finite KRSS1 grammar inventory before implementation. Probe public
+  OWLAPI behavior through `KRSSOWLParser`, especially definition consistency,
+  role super-properties and `:right-identity`, TBox-before-ABox ordering,
+  delimiters, reserved words, and optional section terminators; do not copy its
+  implementation algorithm or silently preserve a no-op production.
+- Keep evidence classes explicit: project-owned positive grammar fixtures,
+  historical adjacent-dialect fixtures, extended-KRSS negatives, converted
+  real-ontology fixtures, and a future first-party strict historical corpus.
+  The strict provenance review verified zero qualifying artifacts in the last
+  class for both KRSS1 and KRSS2, so no projection, reconstructed snippet, or
+  adjacent dialect may be presented as an original historical corpus.
+- Record that zero-corpus result in the Phase 17 machine-readable conformance
+  register. An empty qualifying corpus is evidence about availability, not a
+  waiver of grammar, differential, structural-equivalence, security, resource,
+  integration, or performance gates.
+- Explicit format selection is exact. Definite KRSS2-only vocabulary is
+  `NO_MATCH` for KRSS1 and `MATCH` for KRSS2. Shared-only syntax is
+  dialect-ambiguous; for a generic unresolved `.krss` hint, try the narrower
+  KRSS1 descriptor before KRSS2. Once a syntax is claimed, malformed or
+  unsupported input is a recognized-format failure and must not fall through
+  to another ontology syntax.
+- Verify explicit selection, automatic detection, import-closure loading,
+  WebVOWL conversion, cross-syntax structural equivalence, Java structural
+  snapshots, typed diagnostics, resource ceilings, browser/Node execution, and
+  unchanged registry performance. KRSS1 must not be advertised until all gates
+  pass.
+- Complete the Phase 17 lesson record and update this playbook before the Git
+  checkpoint. Keep historical Phase 11 records unchanged; they correctly
+  describe the earlier deferred checkpoint.
+
+## Following repository gates
+
+- Phase 18 re-runs the retained-reference and production no-reachability audits
+  before deleting any legacy file. Phase 8 already removed production wiring,
+  so no replacement module should be moved merely to make deletion convenient.
 - Delete the retained legacy parser/converter/exporter and obsolete bridge tests
-  only after confirming that Phase 16 differential evidence no longer reads
-  them and that every advertised format still enters through `owlapi-js`.
-- Keep deletion changes separate from Phase 18 packaging/publication work so a
+  only after confirming that Phase 17 evidence no longer reads them and that
+  every advertised format still enters through `owlapi-js`.
+- Keep deletion changes separate from Phase 19 packaging/publication work so a
   repository review can distinguish removal from release-surface expansion.

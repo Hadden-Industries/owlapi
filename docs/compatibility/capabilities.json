@@ -47,9 +47,9 @@
     {
       "id": "parser.krss1",
       "category": "parser",
-      "status": "DEFERRED",
+      "status": "REQUIRED_V1",
       "progress": "NOT_STARTED",
-      "phase": null
+      "phase": 17
     },
     {
       "id": "format.krss1.identity",
@@ -385,12 +385,6 @@
     }
   ],
   "knownDeviations": [
-    {
-      "id": "DEV-001",
-      "capability": "parser.krss1",
-      "description": "KRSS1 has a required compatibility identity but no v1 parser implementation.",
-      "authority": "docs/owlapi-js/implementation-plan.md sections 1.3, 9.1.1, and 17.18"
-    },
     {
       "id": "DEV-002",
       "capability": "parser.n3-language",

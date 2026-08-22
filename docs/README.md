@@ -15,6 +15,8 @@ Authoritative machine-readable records:
 - `conformance/classification-manifests.json`: exhaustive upstream-test classification gate.
 - `conformance/rdf-to-owl-mapping.json`: finite, evidenced W3C reverse-mapping
   inventory for Tables 4 through 18.
+- `conformance/owl-to-rdf-mapping.json`: exhaustive canonical structural-model
+  to RDF/JS mapping inventory completed in Phase 16.
 - `compatibility/expected-differences.json`: exact Java/JavaScript differential exceptions.
 - `dependency-governance.json`: selected dependency authority, risk, licence, and replacement records.
 
@@ -70,9 +72,19 @@ explicit graph loss remain document context rather than OWL axiom state.
 Turtle, N-Triples, N-Quads, and TriG share only private syntax machinery and
 the project-owned RDF/JS-to-OWL publication seam. The broader N3 language
 remains unregistered. The retained legacy files remain unmoved and
-production-unreachable until the Phase 17 deletion.
+production-unreachable until the Phase 18 deletion.
 Entry-aware production chunking and a post-build static-import-closure verifier
 prove that N3.js remains outside the application's initial graph.
+
+Phase 14 completes strict TriG, Phase 15 completes JSON-LD ingestion through
+Digital Bazaar `jsonld.js`, and Phase 16 completes the exhaustive shared
+OWL-to-RDF translator. Original KRSS/KRSS1 is now a distinct `REQUIRED_V1`
+parser scheduled for Phase 17; its Phase 11 format identity remains
+unregistered until the complete parser gate passes. The strict provenance
+review found zero qualifying public first-party historical KRSS1/KRSS2 ontology
+artifacts, so Phase 17 keeps project grammar fixtures, adjacent dialects,
+extended-KRSS negatives, converted real ontologies, and any future qualifying
+historical corpus as separate evidence classes.
 
 ADR 0002 prioritizes the shared RDF-to-OWL foundation, RDF/XML, early
 development-app integration, production cutover, and strict Turtle before the

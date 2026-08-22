@@ -165,7 +165,11 @@ describe("owlapi-js governance artifacts", () => {
       matrix.capabilities.map((capability) => [capability.id, capability]),
     );
 
-    expect(byId.get("parser.krss1").status).toBe("DEFERRED");
+    expect(byId.get("parser.krss1")).toMatchObject({
+      status: "REQUIRED_V1",
+      progress: "NOT_STARTED",
+      phase: 17,
+    });
     expect(byId.get("format.krss1.identity").status).toBe("REQUIRED_V1");
     expect(byId.get("parser.krss2").status).toBe("REQUIRED_V1");
   });
