@@ -1,0 +1,12 @@
+<urn:test:phase13> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> <urn:test:phase13:graph> .
+<urn:test:phase13#Agent> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> <urn:test:phase13:graph> .
+<urn:test:phase13#Person> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> <urn:test:phase13:graph> .
+<urn:test:phase13#Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <urn:test:phase13#Agent> <urn:test:phase13:graph> .
+<urn:test:phase13#knows> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> <urn:test:phase13:graph> .
+<urn:test:phase13#knows> <http://www.w3.org/2000/01/rdf-schema#domain> <urn:test:phase13#Person> <urn:test:phase13:graph> .
+<urn:test:phase13#knows> <http://www.w3.org/2000/01/rdf-schema#range> <urn:test:phase13#Agent> <urn:test:phase13:graph> .
+<urn:test:phase13#alice> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> <urn:test:phase13:graph> .
+<urn:test:phase13#alice> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <urn:test:phase13#Person> <urn:test:phase13:graph> .
+<urn:test:phase13#bob> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> <urn:test:phase13:graph> .
+<urn:test:phase13#alice> <urn:test:phase13#knows> <urn:test:phase13#bob> <urn:test:phase13:graph> .
+<urn:test:phase13#Person> <http://www.w3.org/2000/01/rdf-schema#label> "Person"@en <urn:test:phase13:graph> .

@@ -7,6 +7,7 @@ import { rdfDataFactory, rdfDatasetFactory } from "../../rdf/index.js";
 
 const TURTLE_MEDIA_TYPE = "text/turtle";
 const N_TRIPLES_MEDIA_TYPE = "application/n-triples";
+const N_QUADS_MEDIA_TYPE = "application/n-quads";
 const EXACT_FORMAT_POLICIES = Object.freeze(
   new Map([
     [
@@ -23,6 +24,14 @@ const EXACT_FORMAT_POLICIES = Object.freeze(
         implementationFormat: "N-Triples",
         lexerOptions: Object.freeze({ lineMode: true, n3: false }),
         syntaxName: "N-Triples",
+      }),
+    ],
+    [
+      N_QUADS_MEDIA_TYPE,
+      Object.freeze({
+        implementationFormat: "N-Quads",
+        lexerOptions: Object.freeze({ lineMode: true, n3: false }),
+        syntaxName: "N-Quads",
       }),
     ],
   ]),
@@ -521,7 +530,7 @@ export class N3SyntaxAdapter {
       });
       parser.on("prefix", (prefix, iri) => {
         // Prefixes are document metadata only for syntaxes that can declare
-        // them. N-Triples must remain prefix-free even if a replacement
+        // them. The line syntaxes must remain prefix-free even if a replacement
         // implementation emits an unexpected stream event.
         if (this.#mediaType === TURTLE_MEDIA_TYPE) {
           prefixes[prefix] = iri.value;
@@ -606,4 +615,11 @@ export const createNTriplesSyntaxAdapter = (options = {}) =>
     ...options,
     mediaType: N_TRIPLES_MEDIA_TYPE,
     syntaxName: "N-Triples",
+  });
+
+export const createNQuadsSyntaxAdapter = (options = {}) =>
+  new N3SyntaxAdapter({
+    ...options,
+    mediaType: N_QUADS_MEDIA_TYPE,
+    syntaxName: "N-Quads",
   });

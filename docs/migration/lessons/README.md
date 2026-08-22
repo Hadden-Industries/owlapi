@@ -25,3 +25,4 @@ Allowed primary dispositions: `NO_CHANGE`, `PLAYBOOK_UPDATE`,
 - [Phase 10: DL Syntax](009-dl-syntax.md)
 - [Phase 11: KRSS family](010-krss-family.md)
 - [Phase 12: N-Triples](011-ntriples.md)
+- [Phase 13: N-Quads](012-nquads.md)

@@ -26,6 +26,7 @@
     "PHASE10-2026-08-21": "Repository-owner approval to implement Phase 10 and its required capability, conformance, provenance, performance, migration-status, and learning-gate updates on 21 August 2026",
     "PHASE11-2026-08-21": "Repository-owner approval to implement Phase 11 and its required KRSS2 parser, KRSS1 compatibility identity, grammar-gap, conformance, provenance, performance, migration-status, and learning-gate updates on 21 August 2026",
     "PHASE12-2026-08-22": "Repository-owner approval to implement Phase 12 and its strict N-Triples adapter, independent RDF 1.1 and RDF 1.2 conformance classification, default-graph, detection, resource, differential, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
+    "PHASE13-2026-08-22": "Repository-owner approval to implement Phase 13 and its strict N-Quads adapter, independent RDF 1.1 and RDF 1.2 conformance classification, dataset graph-policy, detection, resource, differential, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026"
   },
   "provenanceCategories": {
@@ -419,6 +420,18 @@
             "src/owlapi-js/parser/dl/dlSyntax.integration.test.js"
           ],
           "decisionRef": "PHASE10-2026-08-21"
+        },
+        {
+          "phase": 13,
+          "scope": "register the strict N-Quads descriptor ahead of overlapping graph syntaxes and publish selected-graph or merge metadata in each RDF document context without placing graph membership on OWL axioms",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/rdf11-concepts/#section-dataset",
+            "https://www.w3.org/TR/n-quads/",
+            "https://rdf.js.org/data-model-spec/",
+            "docs/owlapi-js/implementation-plan.md sections 6.4-6.5, 9.4-9.6, and 17.20"
+          ],
+          "focusedEvidence": ["src/owlapi-js/parser/nquads/nQuads.test.js"],
+          "decisionRef": "PHASE13-2026-08-22"
         }
       ],
       "thirdPartyDependencies": [],
@@ -500,6 +513,17 @@
             "src/owlapi-js/rdf/rdfToOwlTranslator.resource.test.js"
           ],
           "decisionRef": "PHASE5-2026-08-13"
+        },
+        {
+          "phase": 13,
+          "scope": "validate every graph-selection and graph-loss policy against real strict N-Quads input while preserving dataset-scoped blank-node identity",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/rdf11-concepts/#section-dataset",
+            "https://www.w3.org/TR/n-quads/",
+            "docs/owlapi-js/implementation-plan.md sections 6.4 and 17.20"
+          ],
+          "focusedEvidence": ["src/owlapi-js/parser/nquads/nQuads.test.js"],
+          "decisionRef": "PHASE13-2026-08-22"
         }
       ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
@@ -1046,7 +1070,7 @@
       "id": "PHASE9-N3-SYNTAX-ADAPTER",
       "path": "src/owlapi-js/parser/rdf/n3SyntaxAdapter.js",
       "phase": 9,
-      "scope": "private exact-format Turtle and N-Triples N3.js stream adaptation with canonical RDF/JS normalization, Unicode-safe chunking, backpressure, cancellation, watchdog timeouts, finite resource limits, cooperative scheduling, syntax-specific errors, prefix isolation, and N-Triples default-graph normalization",
+      "scope": "private exact-format Turtle, N-Triples, and N-Quads N3.js stream adaptation with canonical RDF/JS normalization, Unicode-safe chunking, backpressure, cancellation, watchdog timeouts, finite resource limits, cooperative scheduling, syntax-specific errors, prefix isolation, N-Triples default-graph normalization, and lossless N-Quads graph preservation",
       "legacyWebVowlSources": ["src/owl2vowl/js/turtleParser.js"],
       "provenanceCategory": "B_STANDARDS_ADAPTER",
       "normativePublicSources": [
@@ -1054,19 +1078,23 @@
         "https://www.w3.org/TR/rdf12-turtle/",
         "https://www.w3.org/TR/n-triples/",
         "https://www.w3.org/TR/rdf12-n-triples/",
+        "https://www.w3.org/TR/n-quads/",
+        "https://www.w3.org/TR/rdf12-n-quads/",
         "https://rdf.js.org/data-model-spec/",
         "https://rdf.js.org/stream-spec/",
-        "docs/owlapi-js/implementation-plan.md sections 6.7, 17.16, 17.19, and 21.7-21.8"
+        "docs/owlapi-js/implementation-plan.md sections 6.7, 17.16, 17.19-17.20, and 21.7-21.8"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public Turtle parser behavior through the pinned black-box reference harness",
         "Pinned W3C rdf-tests Turtle source revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 387 classified RDF 1.1 and RDF 1.2 syntax entries passing",
-        "Pinned W3C rdf-tests N-Triples source revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 99 classified RDF 1.1 and RDF 1.2 syntax entries passing"
+        "Pinned W3C rdf-tests N-Triples source revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 99 classified RDF 1.1 and RDF 1.2 syntax entries passing",
+        "Pinned W3C rdf-tests N-Quads source revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 114 classified RDF 1.1 and RDF 1.2 syntax entries passing"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
         "docs/owlapi-js/conformance/generated/w3c-turtle.json",
         "docs/owlapi-js/conformance/generated/w3c-ntriples.json",
+        "docs/owlapi-js/conformance/generated/w3c-nquads.json",
         "src/owlapi-js/parser/rdf/n3SyntaxAdapter.test.js",
         "src/owlapi-js/parser/rdf/n3SyntaxAdapter.resource.test.js",
         "src/owlapi-js/parser/turtle/turtle.conformance.test.js",
@@ -1074,12 +1102,15 @@
         "src/owlapi-js/parser/ntriples/nTriples.conformance.test.js",
         "src/owlapi-js/parser/ntriples/nTriples.browser.test.js",
         "src/owlapi-js/parser/ntriples/nTriples.resource.test.js",
+        "src/owlapi-js/parser/nquads/nQuads.conformance.test.js",
+        "src/owlapi-js/parser/nquads/nQuads.browser.test.js",
+        "src/owlapi-js/parser/nquads/nQuads.resource.test.js",
         "util/verify-webvowl-lazy-parser-chunks.mjs"
       ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE9-2026-08-20",
-      "extensionDecisionRef": "PHASE12-2026-08-22",
+      "extensionDecisionRefs": ["PHASE12-2026-08-22", "PHASE13-2026-08-22"],
       "reviewDate": "2026-08-22"
     },
     {
@@ -1266,7 +1297,7 @@
       "id": "PHASE12-RDF-SYNTAX-PARSER",
       "path": "src/owlapi-js/parser/rdf/rdfSyntaxParser.js",
       "phase": 12,
-      "scope": "independently authored shared transaction seam that translates a format-locked RDF/JS graph into structural OWL and commits ontology identity, annotations, imports, axioms, diagnostics, prefixes, and exact document format atomically",
+      "scope": "independently authored shared transaction seam that applies graph policy to a format-locked RDF/JS graph or dataset, translates the selected graph into structural OWL, and atomically commits ontology content, diagnostics, prefixes, graph-selection context, and exact document format",
       "legacyWebVowlSources": [
         "src/owl2vowl/js/rdfParser.js",
         "src/owl2vowl/js/turtleParser.js"
@@ -1284,11 +1315,14 @@
       "focusedEvidence": [
         "src/owlapi-js/parser/turtle/turtle.test.js",
         "src/owlapi-js/parser/ntriples/nTriples.test.js",
-        "src/owlapi-js/parser/ntriples/nTriples.differential.test.js"
+        "src/owlapi-js/parser/ntriples/nTriples.differential.test.js",
+        "src/owlapi-js/parser/nquads/nQuads.test.js",
+        "src/owlapi-js/parser/nquads/nQuads.differential.test.js"
       ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE12-2026-08-22",
+      "extensionDecisionRef": "PHASE13-2026-08-22",
       "reviewDate": "2026-08-22"
     },
     {
@@ -1346,6 +1380,63 @@
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE12-2026-08-22",
+      "reviewDate": "2026-08-22"
+    },
+    {
+      "id": "PHASE13-NQUADS-DESCRIPTOR",
+      "path": "src/owlapi-js/parser/nquads/descriptor.js",
+      "phase": 13,
+      "scope": "immutable N-Quads dataset identity and bounded tri-state detection that recognizes a decisive fourth graph term ahead of N-Triples and Turtle without performing a full parse",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/turtleParser.js",
+        "src/owl2vowl/js/index.js"
+      ],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/n-quads/",
+        "https://www.w3.org/TR/rdf12-n-quads/",
+        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.20"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public NQuadsDocumentFormat identity and the pinned W3C RDF 1.1/RDF 1.2 syntax inventories"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/nquads/nQuads.test.js",
+        "src/owlapi-js/parser/nquads/nQuads.conformance.test.js"
+      ],
+      "thirdPartyDependencies": ["n3"],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE13-2026-08-22",
+      "reviewDate": "2026-08-22"
+    },
+    {
+      "id": "PHASE13-NQUADS-PARSER",
+      "path": "src/owlapi-js/parser/nquads/parser.js",
+      "phase": 13,
+      "scope": "strict N-Quads parser binding that selects the exact N3.js-backed adapter, preserves complete RDF/JS dataset graph terms, and delegates graph policy plus OWL reconstruction to the shared project-owned pipeline",
+      "legacyWebVowlSources": ["src/owl2vowl/js/turtleParser.js"],
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/n-quads/",
+        "https://www.w3.org/TR/rdf12-n-quads/",
+        "https://rdf.js.org/dataset-spec/",
+        "docs/owlapi-js/implementation-plan.md sections 6.4, 6.7, and 17.20"
+      ],
+      "compatibilityReferences": [
+        "Pinned W3C rdf-tests revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 114 independently classified N-Quads syntax entries passing"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/nquads/nQuads.test.js",
+        "src/owlapi-js/parser/nquads/nQuads.conformance.test.js",
+        "src/owlapi-js/parser/nquads/nQuads.differential.test.js",
+        "src/owlapi-js/parser/nquads/nQuads.resource.test.js",
+        "src/owlapi-js/parser/nquads/nQuads.browser.test.js"
+      ],
+      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE13-2026-08-22",
       "reviewDate": "2026-08-22"
     }
   ],

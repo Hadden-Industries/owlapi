@@ -58,13 +58,17 @@ reconstruction boundary, prefixes remain immutable document metadata, and
 direct/imported Turtle flows through the production WebVOWL entry.
 
 Phases 10 and 11 add independently authored structural DL Syntax and KRSS2
-parsers. Phase 12 extends the same private N3.js boundary with a distinct strict
-N-Triples identity. All 99 independently classified W3C RDF 1.1 and RDF 1.2
-N-Triples entries pass; each statement is normalized to the default graph and
-N-Quads graph labels are rejected during bounded detection. Turtle and
-N-Triples share only the project-owned RDF/JS-to-OWL publication seam. N-Quads,
-TriG, and the broader N3 language remain unregistered. The retained legacy
-files remain unmoved and production-unreachable until the Phase 17 deletion.
+parsers. Phases 12 and 13 extend the same private N3.js boundary with distinct
+strict N-Triples and N-Quads identities. All 99 independently classified
+N-Triples entries and all 114 independently classified N-Quads entries from the
+W3C RDF 1.1 and RDF 1.2 suites pass. N-Triples normalizes every statement to the
+default graph; N-Quads preserves complete dataset graph terms and applies the
+configured graph policy only before shared RDF-to-OWL reconstruction. Selected
+graphs and explicit graph loss remain document context rather than OWL axiom
+state. Turtle, N-Triples, and N-Quads share only private syntax machinery and
+the project-owned RDF/JS-to-OWL publication seam. TriG and the broader N3
+language remain unregistered. The retained legacy files remain unmoved and
+production-unreachable until the Phase 17 deletion.
 Entry-aware production chunking and a post-build static-import-closure verifier
 prove that N3.js remains outside the application's initial graph.
 

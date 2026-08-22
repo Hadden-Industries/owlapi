@@ -343,15 +343,37 @@ do not append chronology here.
   identity, lexer policy, diagnostics, document format, prefix policy, and
   graph policy remain syntax-specific.
 
-## Next migration: Phase 13 N-Quads
+## Phase 13 N-Quads evidence
 
-- Add an independent dataset-format descriptor and classification; do not
-  weaken N-Triples or Turtle in order to accept graph labels.
-- Classify the pinned W3C RDF 1.1 and RDF 1.2 N-Quads corpora independently,
-  including RDF 1.2 triple-term graph cases and exact negative syntax evidence.
-- Define named-graph selection and loss explicitly before RDF-to-OWL
-  reconstruction. Phase 12's forced default-graph normalization is an
-  N-Triples invariant, not a reusable N-Quads policy.
-- Reuse the private N3.js implementation only behind an exact N-Quads format
-  policy and repeat the resource, cancellation, differential, integration,
-  performance, provenance, and learning gates before the Phase 13 checkpoint.
+- Bind `application/n-quads` to an independent exact N3.js `N-Quads` policy
+  with line-mode lexing. Preserve graph terms at the private adapter boundary;
+  N-Triples' forced default graph is a syntax-specific invariant.
+- Apply graph policy only after canonical RDF/JS dataset publication and before
+  RDF-to-OWL reconstruction. Exercise `requireSingleGraph`,
+  `defaultGraphOnly`, `selectGraph`, and `mergeGraphs` over real parsed input,
+  including explicit loss diagnostics, deduplication, and dataset-scoped
+  blank-node identity.
+- Publish the selected-graph and merged-dataset decisions as immutable document
+  context. They describe ingestion, not OWL axioms.
+- Prefer the narrower N-Quads descriptor when a bounded scan finds a decisive
+  fourth-position graph term, including after an RDF 1.2 triple-term object.
+  Do not duplicate the grammar or weaken N-Triples and Turtle validation.
+- Classify the pinned W3C RDF 1.1 and RDF 1.2 N-Quads corpora independently.
+  Phase 13 embeds 114 entries: 60 accepted documents and 54 required syntax
+  failures. Generate positive quad-count and graph-kind expectations before the
+  adapter runs so graph normalization cannot validate itself.
+- Keep RDF 1.2 triple terms at the existing explicit unsupported OWL boundary
+  when reconstruction cannot represent them.
+- Repeat resource, cancellation, differential, integration, browser,
+  performance, provenance, and learning gates for the independent syntax.
+
+## Next migration: Phase 14 TriG
+
+- Combine Turtle's directive, prefix, base, and collection grammar with named
+  graph blocks behind an independent exact TriG policy; do not make N-Quads
+  permissive or treat TriG as a Turtle mode.
+- Retain the Phase 13 dataset-first ordering and all four graph policies, while
+  adding descriptor ambiguity tests that keep N-Triples, N-Quads, and Turtle
+  identities stable.
+- Classify pinned W3C TriG evidence independently and repeat the full parser
+  migration gate set before the Phase 14 checkpoint.

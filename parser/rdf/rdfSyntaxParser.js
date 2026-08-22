@@ -4,7 +4,7 @@ const defaultTranslatorFactory = (dataFactory) =>
   new RdfToOwlTranslator({ dataFactory });
 
 /**
- * Commits one graph-syntax adapter result through the shared RDF-to-OWL seam.
+ * Commits one RDF graph-or-dataset syntax result through the shared RDF-to-OWL seam.
  * Format-specific parsers stay deliberately thin: syntax recognition and RDF
  * parsing belong to their descriptor/adapter, while OWL reconstruction remains
  * identical for Turtle, N-Triples, and later governed RDF syntaxes.
@@ -63,6 +63,10 @@ export class RdfSyntaxParser {
     for (const diagnostic of context.diagnostics) {
       transaction.addDiagnostic(diagnostic);
     }
+    transaction.setRdfDatasetContext({
+      merged: context.merged,
+      selectedGraph: context.selectedGraph,
+    });
     transaction.setPrefixes(prefixes);
     transaction.setDocumentFormat(this.#documentFormat);
     return this.#documentFormat;

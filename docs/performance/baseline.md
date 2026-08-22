@@ -650,3 +650,76 @@ the unchanged 20% threshold. The lazy N3.js closure is effectively unchanged.
 The verifier proves the implementation marker remains absent from every
 statically reachable initial chunk and present only behind the shared dynamic
 RDF-syntax boundary.
+
+## Phase 13 strict N-Quads and dataset-policy baseline
+
+- Pre-Phase-13 revision: `f83a02f7`, the signed Phase 12 checkpoint.
+- Measurement date: 22 August 2026.
+- Environment: Windows `10.0.26200` x64, Node.js `v24.19.0`, 12th Gen
+  Intel Core i9-12900K (24 logical CPUs), 34,053,869,568 bytes system memory.
+- Dependency identity: `package-lock.json` SHA-256
+  `bbd8a2a632a5b3aa4a9d0c182d7b3176e1c540d5d6bdd47e170c52d7737f93a5`.
+- Command: `node --expose-gc util/benchmark-owlapi-nquads.mjs`.
+- Protocol: generator `owlapi-benchmark-corpus-v1`; one warm-up and five
+  measured runs; median aggregation; garbage collection requested before each
+  run; heap and event-loop responsiveness sampled every 5 ms. The accepted run
+  passed the idle-machine guard.
+
+The fixture contains 50,000 N-Quads statements in 8,438,889 bytes, all in one
+named graph. Syntax-only measurements stop before graph selection. The
+end-to-end measurement continues through `requireSingleGraph`, projection to an
+RDF graph, shared RDF-to-OWL reconstruction, and ontology publication.
+
+| Signal                                              | Chunk bytes | Median wall (ms) | Median peak-heap delta (bytes) | Median max event-loop delay (ms) |
+| --------------------------------------------------- | ----------: | ---------------: | -----------------------------: | -------------------------------: |
+| N-Quads first use, 100 declarations                 |      65,536 |            34.49 |                      9,964,456 |                            10.97 |
+| `generated-nquads-large.syntax-to-rdf.chunk-16384`  |      16,384 |         8,518.53 |                    137,002,728 |                            22.24 |
+| `generated-nquads-large.syntax-to-rdf.chunk-65536`  |      65,536 |         1,532.72 |                    172,021,088 |                            18.42 |
+| `generated-nquads-large.syntax-to-rdf.chunk-262144` |     262,144 |           771.80 |                    174,522,360 |                            30.93 |
+| `generated-nquads-large.end-to-end`                 |      65,536 |         2,595.56 |                    341,051,512 |                         1,114.51 |
+
+The retained 65,536-byte default keeps syntax-adapter scheduling at 18.42 ms
+and avoids the 2,501,272-byte additional peak-heap delta of the 256 KiB path.
+The 16 KiB path again has substantially lower throughput for line-oriented
+N3.js parsing. Phase 13 therefore changes no chunk size or resource ceiling.
+
+The end-to-end scheduling interval belongs to the existing synchronous
+RDF-to-OWL publication seam rather than the adapter: syntax-to-RDF stays at
+18.42 ms, while graph selection plus OWL reconstruction add approximately
+1,062.84 ms and the sampled interval is 1,114.51 ms. This is consistent with
+the accepted Turtle and N-Triples publication cost and does not weaken the
+adapter's cooperative-yield contract.
+
+### Same-revision registry controls
+
+The benchmark compares the Phase 12 descriptor list with the same list plus
+N-Quads at production priority 23. Both sides use the current source revision,
+runtime, dependency tree, fixtures, sampling protocol, and process; descriptor
+registration is the only controlled difference.
+
+| Existing signal              | Phase 12 registry wall / heap delta | Phase 13 registry wall / heap delta | Wall change | Heap-delta change |
+| ---------------------------- | ----------------------------------: | ----------------------------------: | ----------: | ----------------: |
+| `generated-functional-large` |       455.30 ms / 122,493,440 bytes |       457.11 ms / 121,593,592 bytes |      +0.40% |            -0.73% |
+| `generated-mismatch-large`   |             14.27 ms / 35,792 bytes |             13.96 ms / 41,328 bytes |      -2.16% |           +15.47% |
+
+Every paired regression is within the unchanged 20% release threshold. The
+16 MiB unrelated-text control also confirms that adding N-Quads retains
+bounded detection. Phase 13 introduces no dependency, resource-ceiling,
+historical-baseline, or regression-threshold change.
+
+### Production application graph
+
+The Phase 13 production build and static-import-closure verifier measure the
+shared lazy implementation after all three completed exact N3.js-backed RDF
+syntax descriptors are registered:
+
+| Production application graph | Chunks | Minified bytes | Gzip bytes |
+| ---------------------------- | -----: | -------------: | ---------: |
+| Initial static closure       |      3 |        671,383 |    169,339 |
+| Lazy RDF-syntax closure      |      3 |        187,021 |     52,560 |
+
+Relative to Phase 12, the initial closure grows by 2,160 minified bytes
+(0.32%) and 434 gzip bytes (0.26%), while the lazy N3.js closure is
+byte-identical. Both changes remain below the unchanged 20% threshold. The
+verifier proves the implementation marker remains absent from the initial
+static closure and present only behind the shared dynamic RDF-syntax boundary.

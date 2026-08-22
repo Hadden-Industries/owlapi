@@ -8,11 +8,11 @@
       "upstream": "https://github.com/w3c/rdf-tests",
       "revisionScopes": [
         {
-          "formats": ["RDF/XML", "N-Triples", "N-Quads", "TriG"],
+          "formats": ["RDF/XML", "TriG"],
           "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f"
         },
         {
-          "formats": ["Turtle"],
+          "formats": ["Turtle", "N-Triples", "N-Quads"],
           "revision": "12774b0ebb385d17651b396654b19254d0fefbfa"
         }
       ],

@@ -120,6 +120,11 @@ describe("owlapi-js governance artifacts", () => {
       progress: "COMPLETE",
       status: "DELEGATED",
     });
+    expect(byId.get("parser.nquads")).toMatchObject({
+      delegate: "n3",
+      progress: "COMPLETE",
+      status: "DELEGATED",
+    });
     expect(byId.get("parser.n3-language")).toMatchObject({
       status: "DEFERRED",
       phase: null,
@@ -310,7 +315,7 @@ describe("owlapi-js governance artifacts", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(paths).toEqual(productionModules);
     for (const record of records) {
-      expect([1, 2, 3, 4, 5, 6, 9, 10, 11, 12]).toContain(record.phase);
+      expect([1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13]).toContain(record.phase);
       expect(manifest.provenanceCategories).toHaveProperty(
         record.provenanceCategory,
       );
@@ -439,7 +444,7 @@ describe("owlapi-js governance artifacts", () => {
     }
   });
 
-  it("keeps RDF/XML and Turtle pinned to the W3C revisions actually ingested", () => {
+  it("keeps each RDF syntax pinned to the W3C revision actually ingested", () => {
     const suites = readJson("../../docs/owlapi-js/conformance/suites.json");
     const classifications = readJson(
       "../../docs/owlapi-js/conformance/classification-manifests.json",
@@ -451,11 +456,11 @@ describe("owlapi-js governance artifacts", () => {
 
     expect(suite.revisionScopes).toEqual([
       {
-        formats: ["RDF/XML", "N-Triples", "N-Quads", "TriG"],
+        formats: ["RDF/XML", "TriG"],
         revision: "ad541a5f0479f0798608c4801369d97b8e08b36f",
       },
       {
-        formats: ["Turtle"],
+        formats: ["Turtle", "N-Triples", "N-Quads"],
         revision: "12774b0ebb385d17651b396654b19254d0fefbfa",
       },
     ]);
@@ -463,6 +468,12 @@ describe("owlapi-js governance artifacts", () => {
       "ad541a5f0479f0798608c4801369d97b8e08b36f",
     );
     expect(manifests.get("w3c-rdf-tests.turtle")?.revision).toBe(
+      "12774b0ebb385d17651b396654b19254d0fefbfa",
+    );
+    expect(manifests.get("w3c-rdf-tests.ntriples")?.revision).toBe(
+      "12774b0ebb385d17651b396654b19254d0fefbfa",
+    );
+    expect(manifests.get("w3c-rdf-tests.nquads")?.revision).toBe(
       "12774b0ebb385d17651b396654b19254d0fefbfa",
     );
   });
@@ -774,6 +785,33 @@ describe("owlapi-js governance artifacts", () => {
       );
     }
 
+    const nQuadsManifest = byId.get("w3c-rdf-tests.nquads");
+    const nQuadsRequired = nQuadsManifest.entries.filter(
+      ({ classification }) => classification === "REQUIRED",
+    );
+    expect(nQuadsManifest).toMatchObject({
+      manifestEntryCount: 114,
+      manifestEntryCounts: { rdf11: 87, rdf12Syntax: 27 },
+      manifestSha256: {
+        rdf11:
+          "aacaf7a803763a09ae68bba75575346847cb62405c7e4f33c8a0a244ffc11847",
+        rdf12Syntax:
+          "53eca8aa5ec0c0662e5b56b90603363e72093425fa9f71fff85e7f3c654b5af3",
+      },
+      negativeSyntaxTestCount: 54,
+      positiveSyntaxTestCount: 60,
+      requiredTestCount: 114,
+      runner: "src/owlapi-js/parser/nquads/nQuads.conformance.test.js",
+      sourceTestCount: 114,
+    });
+    expect(nQuadsManifest.entries).toHaveLength(114);
+    expect(nQuadsRequired).toHaveLength(114);
+    for (const artifact of nQuadsManifest.localManifestArtifacts) {
+      expect(existsSync(new URL(`../../${artifact}`, import.meta.url))).toBe(
+        true,
+      );
+    }
+
     const w3cSuite = suites.suites.find(({ id }) => id === "w3c-owl2");
     const w3cManifest = classifications.manifests.find(
       ({ id }) => id === "w3c-owl2.functional",
@@ -891,6 +929,9 @@ describe("owlapi-js governance artifacts", () => {
     );
     expect(generateBenchmarkFixture("ntriples", { count: 2 })).toContain(
       "<urn:owlapi-js:benchmark:ntriples#C1>",
+    );
+    expect(generateBenchmarkFixture("nquads", { count: 2 })).toContain(
+      "<urn:owlapi-js:benchmark:nquads:graph>",
     );
     expect(
       generateBenchmarkFixture("functional-depth", { depth: 2 }),

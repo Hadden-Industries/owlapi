@@ -19,6 +19,7 @@ import { dlSyntaxParserDescriptor } from "../parser/dl/descriptor.js";
 import { functionalSyntaxParserDescriptor } from "../parser/functional/descriptor.js";
 import { krss2ParserDescriptor } from "../parser/krss2/descriptor.js";
 import { manchesterSyntaxParserDescriptor } from "../parser/manchester/descriptor.js";
+import { nQuadsParserDescriptor } from "../parser/nquads/descriptor.js";
 import { nTriplesParserDescriptor } from "../parser/ntriples/descriptor.js";
 import { owlXmlParserDescriptor } from "../parser/owlxml/descriptor.js";
 import { rdfXmlParserDescriptor } from "../parser/rdfxml/descriptor.js";
@@ -81,6 +82,7 @@ class ParseTransaction {
   #diagnostics = [];
   #documentFormat;
   #imports = new StructuralSet();
+  #rdfDatasetContext;
   #ontologyID;
   #prefixes;
 
@@ -163,6 +165,26 @@ class ParseTransaction {
     this.#prefixes = Object.freeze({ ...prefixes });
   }
 
+  setRdfDatasetContext({ merged, selectedGraph }) {
+    if (typeof merged !== "boolean") {
+      throw new TypeError("RDF dataset context merged must be a boolean");
+    }
+    if (
+      !selectedGraph ||
+      !["BlankNode", "DefaultGraph", "NamedNode"].includes(
+        selectedGraph.termType,
+      )
+    ) {
+      throw new TypeError(
+        "RDF dataset context selectedGraph must be an RDF/JS graph term",
+      );
+    }
+    // Graph selection is document-loading metadata, not OWL semantics. Keep it
+    // on the parse transaction so it survives manager publication without
+    // contaminating axioms or ontology identity.
+    this.#rdfDatasetContext = Object.freeze({ merged, selectedGraph });
+  }
+
   commit(defaultFormat, documentIRI) {
     const ontologyID = this.#ontologyID || this.#dataFactory.getOWLOntologyID();
     return {
@@ -171,6 +193,9 @@ class ParseTransaction {
         documentIRI,
         format: this.#documentFormat || defaultFormat,
         ...(this.#prefixes === undefined ? {} : { prefixes: this.#prefixes }),
+        ...(this.#rdfDatasetContext === undefined
+          ? {}
+          : this.#rdfDatasetContext),
       },
       ontology: new OWLOntology({
         annotations: this.#annotations,
@@ -272,6 +297,7 @@ export class OWLOntologyManager {
       new OWLParserRegistry([
         owlXmlParserDescriptor,
         rdfXmlParserDescriptor,
+        nQuadsParserDescriptor,
         nTriplesParserDescriptor,
         turtleParserDescriptor,
         dlSyntaxParserDescriptor,

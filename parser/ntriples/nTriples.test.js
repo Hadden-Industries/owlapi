@@ -135,20 +135,15 @@ describe("N-Triples manager integration", () => {
     expect(result.diagnostics).toEqual([]);
   });
 
-  it("keeps later N3.js-backed dataset formats unregistered", async () => {
+  it("keeps the later TriG dataset format unregistered", async () => {
     const manager = OWLManager.createOWLOntologyManager();
     const document = source("<urn:s> <urn:p> <urn:o> <urn:g> .");
 
-    for (const format of [
-      OWLDocumentFormats.N_QUADS,
-      OWLDocumentFormats.TRIG,
-    ]) {
-      await expect(
-        manager.loadOntologyFromOntologyDocument(
-          document,
-          new OWLOntologyLoaderConfiguration({ format }),
-        ),
-      ).rejects.toThrow(`No parser is registered for format: ${format.key}`);
-    }
+    await expect(
+      manager.loadOntologyFromOntologyDocument(
+        document,
+        new OWLOntologyLoaderConfiguration({ format: OWLDocumentFormats.TRIG }),
+      ),
+    ).rejects.toThrow("No parser is registered for format: trig");
   });
 });

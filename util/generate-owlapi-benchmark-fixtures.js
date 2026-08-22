@@ -63,6 +63,14 @@ const generators = Object.freeze({
     );
   },
 
+  nquads({ count }) {
+    return repeated(
+      count,
+      (index) =>
+        `<urn:owlapi-js:benchmark:nquads#C${index}> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> <urn:owlapi-js:benchmark:nquads:graph> .`,
+    );
+  },
+
   dl({ count }) {
     return repeated(count, (index) => `C${index} ⊑ Parent${index}`);
   },

@@ -8,6 +8,7 @@ import {
 import { rdfDataFactory } from "../../rdf/index.js";
 
 import {
+  createNQuadsSyntaxAdapter,
   createTurtleSyntaxAdapter,
   N3SyntaxAdapter,
 } from "./n3SyntaxAdapter.js";
@@ -327,5 +328,62 @@ describe("N3SyntaxAdapter N-Triples semantics", () => {
       code: "OWL_SYNTAX_ERROR",
       syntax: "N-Triples",
     });
+  });
+});
+
+describe("N3SyntaxAdapter N-Quads semantics", () => {
+  it("selects strict line mode and preserves every parsed graph term", async () => {
+    const parserOptions = [];
+    let lexerOptions;
+
+    class GraphPreservingParser extends Transform {
+      constructor(options) {
+        super({ readableObjectMode: true });
+        parserOptions.push(options);
+      }
+
+      _transform(chunk, encoding, callback) {
+        callback();
+      }
+
+      _flush(callback) {
+        this.emit("prefix", "unexpected", rdfDataFactory.namedNode("urn:p:"));
+        this.push(
+          rdfDataFactory.quad(
+            rdfDataFactory.namedNode("urn:test:subject"),
+            rdfDataFactory.namedNode("urn:test:predicate"),
+            rdfDataFactory.namedNode("urn:test:object"),
+            rdfDataFactory.namedNode("urn:test:graph"),
+          ),
+        );
+        callback();
+      }
+    }
+
+    const adapter = createNQuadsSyntaxAdapter({
+      loadImplementation: async () => ({
+        Lexer: class GraphPreservingLexer {
+          constructor(options) {
+            lexerOptions = options;
+          }
+
+          tokenize() {}
+        },
+        StreamParser: GraphPreservingParser,
+      }),
+    });
+    const { dataset, prefixes } = await adapter.parse(
+      new StringDocumentSource(
+        "<urn:test:subject> <urn:test:predicate> <urn:test:object> <urn:test:graph> .",
+      ),
+      configuration(),
+    );
+
+    expect(parserOptions[0]).toMatchObject({ format: "N-Quads" });
+    expect(lexerOptions).toEqual({ lineMode: true, n3: false });
+    expect(prefixes).toEqual({});
+    expect([...dataset][0].graph).toEqual(
+      rdfDataFactory.namedNode("urn:test:graph"),
+    );
   });
 });
