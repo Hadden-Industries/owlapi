@@ -189,7 +189,8 @@ do not append chronology here.
 
 - Keep the application builder free of concrete-syntax knowledge. It consumes
   structural OWL objects only, and a fitness test must prove its transitive
-  import graph reaches no parser, RDF, or retained legacy converter module.
+  import graph reaches no parser or RDF module. The separate repository gate
+  proves that no physically retired legacy converter module is present.
 - Dispose of every construct explicitly. Map each canonical axiom kind in the
   dispatch table, and give kinds the application does not visualize a named
   ignore with a stated reason so silence never stands in for omission.
@@ -489,13 +490,38 @@ do not append chronology here.
 - Keep recognized-format failures fatal. Once the narrower KRSS1 candidate
   claims generic `.krss`, malformed content must not be retried under KRSS2.
 
-## Next repository gate: Phase 18 physical legacy deletion
+## Completed repository gate: Phase 18 physical legacy deletion
 
-- Phase 18 re-runs the retained-reference and production no-reachability audits
-  before deleting any legacy file. Phase 8 already removed production wiring,
-  so no replacement module should be moved merely to make deletion convenient.
-- Delete the retained legacy parser/converter/exporter and obsolete bridge tests
-  only after confirming that Phase 17 evidence no longer reads them and that
-  every advertised format still enters through `owlapi-js`.
+- Establish the retirement inventory as an executable filesystem-absence test
+  before deleting anything, and observe it fail for every intended path. Keep a
+  separate production-reachability assertion so physical absence and runtime
+  wiring cannot mask one another.
+- Delete the retired cluster in place; do not move or temporarily rewire it.
+  Remove legacy-only tests and commands, but retain replacement tests, pinned
+  foreign-oracle fixtures, and semantic comparison utilities that remain valid
+  independently of the deleted implementation.
+- Treat a test helper import as a real retained-reference dependency even when
+  production is clean. Replace obsolete helper behavior with the current public
+  seam—in this case exact catalog mapping—before claiming the reference audit
+  is closed.
+- Preserve deleted-artifact provenance rather than deleting its history. Give
+  the manifest an explicit lifecycle state, keep revision-bounded dispositions
+  unchanged, prove exact deleted paths are absent, and exclude only explicit
+  deleted records from the current-source inventory.
+- Remove the dedicated test command and ignore rule together with the suite
+  they served. Keep a runner-scope test that proves every active differential
+  remains discoverable and dependency tests remain excluded.
+- A deletion of already production-unreachable modules does not need a new
+  parser-throughput baseline. It still requires the complete test/lint/build
+  gates and the real production static/lazy-closure verifier.
 - Keep deletion changes separate from Phase 19 packaging/publication work so a
   repository review can distinguish removal from release-surface expansion.
+
+## Next repository gate: Phase 19 package/release
+
+- Start only after the requested Phase 18 Git checkpoint. The package surface
+  must be built from the current `owlapi-js` modules; no retired WebVOWL parser,
+  converter, exporter, or bridge path may be recreated as a packaging shim.
+- Finalize package exports, browser and Node CI, notices/licensing/provenance,
+  dependency records, bundle analysis, compatibility documentation, and release
+  acceptance as one separately reviewable phase.

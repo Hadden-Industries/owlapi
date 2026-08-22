@@ -778,8 +778,8 @@ The broader lesson is critical to the whole extraction: **do not measure parser 
 | `domUtils.js`               | XML helpers                       | Move only generic helpers required by OWL/XML/XML parsing                                                                                                                                                                                            |
 | `xmlUtils.js`               | XML entity resolution             | Move with hard resource limits/security review                                                                                                                                                                                                       |
 | `parserContext.js`          | VOWL state                        | Stay in WebVOWL or disappear into `VOWLBuilder`                                                                                                                                                                                                      |
-| `ontologyConverter.js`      | legacy VOWL conversion            | Retain at its current path for characterization/reference through Phase 17; make it production-unreachable at Phase 8 and delete it in Phase 18                                                                                                      |
-| `jsonExporter.js`           | legacy VOWL-JSON output           | Retain at its current path for characterization/reference through Phase 17; make it production-unreachable at Phase 8 and delete it in Phase 18                                                                                                      |
+| `ontologyConverter.js`      | legacy VOWL conversion            | Made production-unreachable in Phase 8, retained at its original path through the finite Phase 17 reference work, and physically deleted in Phase 18                                                                                                 |
+| `jsonExporter.js`           | legacy VOWL-JSON output           | Made production-unreachable in Phase 8, retained at its original path through the finite Phase 17 reference work, and physically deleted in Phase 18                                                                                                 |
 | `index.js`                  | WebVOWL entry                     | Stay; consume public `owlapi-js` API                                                                                                                                                                                                                 |
 
 ---
@@ -820,9 +820,11 @@ VOWLBuilder result → VOWL-JSON consumed by WebVOWL
 
 After the Phase 8 production cutover, the production graph **MUST NOT** import
 the legacy `ontologyConverter.js`, `jsonExporter.js`, parser, RDF/XML bridge or
-serializer path. Those files remain at their existing paths for finite
-characterization/reference work until Phase 18; retaining a file is not a
-runtime fallback or an authorization to keep it production-reachable.
+serializer path. Those files remained at their existing paths for finite
+characterization/reference work through Phase 17; retaining a file was not a
+runtime fallback or an authorization to keep it production-reachable. Phase 18
+physically deleted that retired implementation and added an executable
+filesystem-absence gate.
 
 ### 4.2 Internal `owlapi-js` architecture
 
@@ -2840,27 +2842,32 @@ temporary development-only routing that would preserve two production paths.
 After that cutover there is no runtime legacy fallback. An architecture test
 and production-bundle/import-graph inspection **MUST** prove that the entry
 graph cannot reach the old parser, RDF/XML interchange, `ontologyConverter.js`
-or `jsonExporter.js`. The legacy files remain unmoved for characterization and
-reference only.
+or `jsonExporter.js`. The legacy files remained unmoved for characterization
+and reference only until their Phase 18 physical deletion.
 
 ---
 
 ## 16. Revised File Operations
 
-### 16.1 Files to delete eventually
+### 16.1 Legacy files retired in Phase 18
 
 | File                                       | Final treatment                                                                                                 |
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
-| `src/owl2vowl/js/rdfXmlSerializer.js`      | **Delete** after no internal caller requires RDF/XML                                                            |
-| `src/owl2vowl/js/rdfXmlSerializer.test.js` | Delete/replace with OWL→RDF semantic tests if relevant                                                          |
-| `src/owl2vowl/js/importLoader.js`          | Delete only after responsibilities have moved to manager + WebVOWL resolver                                     |
-| `src/owl2vowl/js/rdfParser.js`             | Delete only after RDF→OWL + VOWLBuilder parity is complete                                                      |
-| `src/owl2vowl/js/ontologyConverter.js`     | Make production-unreachable in Phase 8; retain in place through remaining reference work and delete in Phase 18 |
-| `src/owl2vowl/js/jsonExporter.js`          | Make production-unreachable in Phase 8; retain in place through remaining reference work and delete in Phase 18 |
+| `src/owl2vowl/js/rdfXmlSerializer.js`      | Deleted in Phase 18 after the shared OWL→RDF translator removed the final reference need                        |
+| `src/owl2vowl/js/rdfXmlSerializer.test.js` | Deleted in Phase 18; canonical OWL→RDF semantic tests remain in `src/owlapi-js/rdf/`                             |
+| `src/owl2vowl/js/importLoader.js`          | Deleted in Phase 18 after manager orchestration and WebVOWL resolver responsibilities had moved                 |
+| `src/owl2vowl/js/rdfParser.js`             | Deleted in Phase 18 after RDF→OWL, `VOWLBuilder`, corpus, and Java differential parity gates passed             |
+| `src/owl2vowl/js/ontologyConverter.js`     | Made production-unreachable in Phase 8, retained through finite reference work, and deleted in Phase 18         |
+| `src/owl2vowl/js/jsonExporter.js`          | Made production-unreachable in Phase 8, retained through finite reference work, and deleted in Phase 18         |
 
 Do not move, rename or delete legacy files at cutover. They remain valuable as
 characterization/reference material during the remaining migrations, but they
 must be absent from the production reachability graph after Phase 8.
+
+Phase 18 followed that sequence exactly: no legacy file was moved or rewired;
+the complete retired cluster and its legacy-only tests were deleted only after
+the final reference gate, while current production tests and pinned Java
+fixtures remained in place.
 
 ### 16.2 Files to create in WebVOWL
 
@@ -3458,8 +3465,8 @@ KRSS1 grammar/detection/differential/resource/integration suite, the preserved
 KRSS2 suite, `GenerateKRSS1SyntaxSnapshot.java`, the finite
 `krss1-behavioral-oracle.json`, `krss-corpus-register.json`, the accepted
 same-revision benchmark in `performance/baseline.md`, and lesson record
-`migration/lessons/016-krss1.md`. The requested Git checkpoint remains the
-boundary before Phase 18.
+`migration/lessons/016-krss1.md`. Signed checkpoint
+`f91ca99deeba3ebad422259ef5514f031477771d` closed the boundary before Phase 18.
 
 ### 17.25 Phase 18 — remove the retained legacy pipeline
 
@@ -3468,6 +3475,35 @@ Delete the legacy parsers, RDF/XML bridge/serializer,
 only after all planned replacement/reference work has passed acceptance and the
 Phase 8 production no-reachability gate remains green. Phase 18 is physical
 deletion, not the production cutover.
+
+Phase 18 closed this gate on 22 August 2026. It deleted 16 legacy implementation
+modules and their paired characterization tests plus the test-only legacy
+pipeline composition and legacy corpus differential: 34 files in total. The
+current `index.js`, `VOWLBuilder`, import resolver, constants, production corpus
+differential, semantic comparison utilities, and pinned Java OWL2VOWL fixtures
+remain. Two legacy-oracle-only cases were removed from the surviving focused
+differential; their structural behavior remains covered by direct builder tests
+and the pinned Java oracle.
+
+`src/productionGraph.architecture.test.js` was observed failing for exactly all
+34 paths before deletion and now proves both physical absence and continued
+production reachability through `owlapi-js`, `VOWLBuilder`, and the WebVOWL
+resolver. Provenance schema v4 preserves every deleted artifact's historical
+disposition—including the approved commit-bounded reuse rules—while excluding
+only explicit `DELETED` records from the live source inventory. The obsolete
+`test:legacy` command and Jest ignore rule were removed, and the corpus helper
+now mirrors the production resolver's exact catalog lookup rather than the
+retired basename heuristic.
+
+Acceptance is green: the post-deletion production/architecture/corpus group
+passes 129 tests, governance passes 22 tests, and the default runner discovers
+and passes 161 suites and 3,146 tests. Formatting, HTML/CSS/JavaScript lint, the
+Vite production build, and the N3.js/jsonld.js lazy-closure verifier pass. No
+dependency, lockfile, public runtime API, resource ceiling, or performance
+threshold changed. Because the deleted modules were already outside the
+production graph, Phase 18 requires build/closure verification rather than a
+new parser-throughput baseline. The requested Git checkpoint remains the
+boundary before Phase 19 packaging/release work.
 
 ### 17.26 Phase 19 — extract/publish standalone package
 
@@ -4086,10 +4122,11 @@ independence policy still applies.
 
 `OWL2VOWL` converts an OWLAPI `OWLOntology` into VOWL-JSON. That is precisely
 the position `VOWLBuilder` occupies, which is what makes its conversion logic
-directly comparable — unlike the retained legacy converter in this repository,
-whose `convertOntology(subjects, languagesSet, resolver, context, header)`
-signature binds it to the legacy parser's private intermediate representation
-rather than to an OWL structural model.
+directly comparable — unlike the now-retired pre-cutover converter recorded in
+this repository's history, whose
+`convertOntology(subjects, languagesSet, resolver, context, header)` signature
+bound it to the legacy parser's private intermediate representation rather than
+to an OWL structural model.
 
 #### What differs from the OWLAPI position, and why
 
@@ -4690,7 +4727,7 @@ Continue the same cumulative ingestion-learning sequence rather than treating RD
 - [ ] Implement RDF-list decoder.
 - [ ] Keep RDF→OWL semantic reconstruction in one shared translator; never patch a syntax adapter with private OWL mapping rules.
 - [x] Implement the shared OWL→RDF translator in Phase 16.
-- [ ] Remove the RDF/XML internal serializer with the retained legacy pipeline in Phase 18.
+- [x] Remove the RDF/XML internal serializer with the retained legacy pipeline in Phase 18.
 
 ### Manager / I/O
 
@@ -4705,12 +4742,12 @@ Continue the same cumulative ingestion-learning sequence rather than treating RD
 
 ### WebVOWL
 
-- [ ] Create `VOWLBuilder` consuming `OWLOntology` and producing VOWL-JSON-compatible structures without legacy converter/exporter imports.
-- [ ] Move WebVOWL catalog/path resolver to injected core interfaces.
-- [ ] Remove XML/RDF syntax awareness from VOWL conversion.
-- [ ] Exercise the new path in the development app in Phase 7, then rewire the existing production entry in Phase 8.
-- [ ] After Phase 8, enforce zero production import/bundle reachability to the legacy parser/converter/exporter path and no runtime fallback.
-- [ ] Leave legacy files unmoved for characterization/reference until physical deletion in Phase 18.
+- [x] Create `VOWLBuilder` consuming `OWLOntology` and producing VOWL-JSON-compatible structures without legacy converter/exporter imports.
+- [x] Move WebVOWL catalog/path resolver to injected core interfaces.
+- [x] Remove XML/RDF syntax awareness from VOWL conversion.
+- [x] Exercise the new path in the development app in Phase 7, then rewire the existing production entry in Phase 8.
+- [x] After Phase 8, enforce zero production import/bundle reachability to the legacy parser/converter/exporter path and no runtime fallback.
+- [x] Leave legacy files unmoved for characterization/reference until physical deletion in Phase 18.
 
 ### Security
 

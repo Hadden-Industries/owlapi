@@ -8,7 +8,7 @@
   the repository owner requested an uncommitted review pause before assigning
   its commit ID.
 - Implementation date: 22 August 2026.
-- Next migration: Phase 17 - physical legacy deletion.
+- Next migration: Phase 17 - original KRSS / KRSS1.
 
 ## Implemented scope
 
@@ -83,13 +83,15 @@ production resource ceiling, or third-party dependency. It uses the existing
 project RDF/JS factories. The Java harness and generated N-Triples graph are
 development-only oracle evidence and never enter a runtime bundle.
 
-## Impact on Phase 17
+## Impact on subsequent phases
 
-Phase 16 was the last planned reason to retain the old RDF/XML bridge and
-syntax-coupled converter/exporter as implementation references. Phase 17 may
-now perform the retained-reference audit and physically delete the already
+Phase 16 was the last RDF-mapping reason to retain the old RDF/XML bridge and
+syntax-coupled converter/exporter as implementation references. ADR 0008 later
+inserted original KRSS/KRSS1 as Phase 17 and renumbered physical deletion and
+package release to Phases 18 and 19. Phase 18 may therefore perform the
+retained-reference audit and physically delete the already
 production-unreachable legacy pipeline. It should not move or rewire those
-files first, and it must keep deletion separate from Phase 18 package-surface
+files first, and it must keep deletion separate from Phase 19 package-surface
 work.
 
 ## Unresolved questions
@@ -113,5 +115,5 @@ round-trip tests, and release decision. They are not Phase 17 deletion work.
   evidence.
 - Resource-budget or regression-threshold changes: none.
 - Unresolved blockers: none.
-- Next migration: Phase 17, blocked until the repository owner creates the
+- Next migration: Phase 17 original KRSS / KRSS1, blocked until the repository owner creates the
   requested Phase 16 checkpoint commit and explicitly says to proceed.

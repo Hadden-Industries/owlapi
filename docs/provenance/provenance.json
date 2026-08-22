@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "referenceOwlapi": {
     "version": "5.5.1",
     "revision": "d7e997a53b470e32700de89cc610d9daf01ea769",
@@ -31,6 +31,7 @@
     "PHASE15-2026-08-22": "Repository-owner approval to implement Phase 15 and the follow-up correction that promotes standards-defined JSON-LD processor profiles into the reusable public format interface, including immutable parameters, JSON-LD 1.0 and 1.1 processing, expansion contexts, RDF direction, canonical rdf:JSON, direct RDF/JS conversion, restricted remote-context loading, exhaustive pinned W3C classification, graph-policy, imports, resource, browser, differential, performance, provenance, migration-status, and final ingestion learning-gate updates; the same authority approved a general 64 KiB absolute alternative for designated bounded parser-selection heap signals only when 1 MiB, 4 MiB, and 16 MiB scaling medians all remain under that fixed ceiling, while retaining the 20% wall limit and ordinary workload budgets, on 22 August 2026",
     "PHASE16-2026-08-22": "Repository-owner approval to implement Phase 16 and its shared exhaustive structural OWL-to-RDF/JS translator, W3C mapping inventory, graph placement, annotation and blank-node rules, RDF-to-OWL round-trip correction, pinned Java graph differential, resource, browser, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
     "PHASE17-2026-08-22": "Repository-owner approval to implement Phase 17 and its distinct original KRSS/KRSS1 parser, shared KRSS core, deterministic dialect selection, finite grammar and controlled-correction inventory, zero-corpus register, Java oracle, cross-format, resource, import, WebVOWL, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
+    "PHASE18-2026-08-22": "Repository-owner approval to implement Phase 18 physical legacy deletion, preserve retired-artifact provenance, remove the obsolete legacy test command and ignore rule, and close the migration gate before Phase 19 packaging on 22 August 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026"
   },
   "provenanceCategories": {
@@ -82,6 +83,14 @@
           "decisionRef": "PHASE7-2026-08-18"
         }
       ]
+    }
+  },
+  "artifactLifecyclePolicy": {
+    "states": ["PRESENT", "DELETED"],
+    "defaultState": "PRESENT",
+    "semantics": {
+      "PRESENT": "The governed path belongs to the current repository inventory unless a more specific record says otherwise.",
+      "DELETED": "The path was physically removed after replacement acceptance; its provenance and revision-bounded dispositions remain historical audit evidence. A grouped historical selector must enumerate the exact retired paths in artifactPaths."
     }
   },
   "implementationRecords": [
@@ -2013,6 +2022,9 @@
     {
       "id": "LEGACY-FUNCTIONAL",
       "path": "src/owl2vowl/js/functionalSyntaxParser.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entire module",
       "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
       "origin": "legacy WebVOWL parser with RDF/XML emission",
@@ -2025,6 +2037,9 @@
     {
       "id": "LEGACY-MANCHESTER",
       "path": "src/owl2vowl/js/manchesterSyntaxParser.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entire module",
       "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
       "origin": "legacy WebVOWL parser",
@@ -2037,6 +2052,9 @@
     {
       "id": "LEGACY-OWLXML",
       "path": "src/owl2vowl/js/owlXmlParser.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entire module",
       "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
       "origin": "legacy WebVOWL OWL/XML-to-RDF/XML converter",
@@ -2049,6 +2067,9 @@
     {
       "id": "LEGACY-DL",
       "path": "src/owl2vowl/js/dlSyntaxParser.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entire module",
       "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
       "origin": "legacy WebVOWL parser",
@@ -2061,6 +2082,9 @@
     {
       "id": "LEGACY-KRSS2",
       "path": "src/owl2vowl/js/krss2SyntaxParser.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entire module",
       "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
       "origin": "legacy WebVOWL parser",
@@ -2073,6 +2097,9 @@
     {
       "id": "LEGACY-TURTLE",
       "path": "src/owl2vowl/js/turtleParser.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entire module",
       "provenanceCategory": "B_STANDARDS_ADAPTER",
       "origin": "legacy N3.js adapter with project triples",
@@ -2091,12 +2118,15 @@
         }
       ],
       "replacementPhase": 9,
-      "evidence": "the named snapshot may be reused; descendant revisions must be reimplemented; replaced in production by src/owlapi-js/parser/rdf/n3SyntaxAdapter.js and the strict Turtle descriptor/parser, while this file remains unmoved and production-unreachable until Phase 18",
+      "evidence": "the named snapshot may be reused; descendant revisions must be reimplemented; replaced in production by src/owlapi-js/parser/rdf/n3SyntaxAdapter.js and the strict Turtle descriptor/parser, then physically deleted in Phase 18",
       "decisionRef": "PROVENANCE-2026-08-11"
     },
     {
       "id": "LEGACY-TURTLE-TEST",
       "path": "src/owl2vowl/js/turtleParser.test.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entire test module",
       "provenanceCategory": "B_STANDARDS_ADAPTER",
       "origin": "legacy project tests for the N3.js Turtle adapter",
@@ -2121,6 +2151,9 @@
     {
       "id": "LEGACY-JSONLD",
       "path": "src/owl2vowl/js/jsonLdParser.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entire module",
       "provenanceCategory": "B_STANDARDS_ADAPTER",
       "origin": "legacy JSON-LD adapter",
@@ -2133,6 +2166,9 @@
     {
       "id": "LEGACY-RDF",
       "path": "src/owl2vowl/js/rdfParser.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entire module",
       "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
       "origin": "RDF/XML, OWL interpretation, and VOWL monolith",
@@ -2157,6 +2193,9 @@
     {
       "id": "LEGACY-RDF-TEST",
       "path": "src/owl2vowl/js/rdfParser.test.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entire test module",
       "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
       "origin": "legacy project tests for the RDF/XML, OWL interpretation, and VOWL monolith",
@@ -2181,6 +2220,9 @@
     {
       "id": "LEGACY-RDFXML-SERIALIZER",
       "path": "src/owl2vowl/js/rdfXmlSerializer.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entire module",
       "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
       "origin": "internal interchange shim",
@@ -2193,6 +2235,9 @@
     {
       "id": "LEGACY-IMPORT-LOADER",
       "path": "src/owl2vowl/js/importLoader.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entire module",
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "origin": "fallback, ambient network loading, and DOM merge",
@@ -2205,6 +2250,9 @@
     {
       "id": "LEGACY-IRI",
       "path": "src/owl2vowl/js/iriResolver.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "generic syntax/base behavior",
       "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
       "origin": "mixed application and syntax rules",
@@ -2217,6 +2265,9 @@
     {
       "id": "LEGACY-XML",
       "path": "src/owl2vowl/js/xmlUtils.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entity processing",
       "provenanceCategory": "C_LEGACY_DERIVED_OR_MIXED",
       "origin": "legacy XML compatibility helper",
@@ -2229,6 +2280,9 @@
     {
       "id": "LEGACY-DOM",
       "path": "src/owl2vowl/js/domUtils.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "generic XML helpers",
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "origin": "legacy DOM helpers",
@@ -2253,18 +2307,24 @@
     {
       "id": "WEBVOWL-PARSER-CONTEXT",
       "path": "src/owl2vowl/js/parserContext.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entire module",
       "provenanceCategory": "E_APPLICATION_SPECIFIC",
       "origin": "WebVOWL state",
       "licenseCopyright": "Repository MIT",
       "disposition": "EXCLUDE",
       "replacementPhase": 12,
-      "evidence": "remains downstream of structural OWL",
+      "evidence": "superseded by VOWLBuilder's structural-OWL conversion state and physically deleted in Phase 18",
       "decisionRef": "PHASE0-2026-08-10"
     },
     {
       "id": "WEBVOWL-CONVERTER",
       "path": "src/owl2vowl/js/ontologyConverter.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entire module",
       "provenanceCategory": "E_APPLICATION_SPECIFIC",
       "origin": "WebVOWL conversion",
@@ -2283,12 +2343,15 @@
         }
       ],
       "replacementPhase": 8,
-      "evidence": "the named snapshot may be reused for downstream WebVOWL conversion; descendant revisions must be reimplemented; production-unreachable since the Phase 8 cutover and retained for characterization until the Phase 18 deletion",
+      "evidence": "the named snapshot may be reused for downstream WebVOWL conversion; descendant revisions must be reimplemented; production-unreachable since the Phase 8 cutover and physically deleted after characterization closed in Phase 18",
       "decisionRef": "PROVENANCE-2026-08-11"
     },
     {
       "id": "WEBVOWL-CONVERTER-TEST",
       "path": "src/owl2vowl/js/ontologyConverter.test.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entire test module",
       "provenanceCategory": "E_APPLICATION_SPECIFIC",
       "origin": "project-owned WebVOWL converter tests",
@@ -2313,13 +2376,16 @@
     {
       "id": "WEBVOWL-EXPORTER",
       "path": "src/owl2vowl/js/jsonExporter.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "scope": "entire module",
       "provenanceCategory": "E_APPLICATION_SPECIFIC",
       "origin": "VOWL-JSON output",
       "licenseCopyright": "Repository MIT",
       "disposition": "EXCLUDE",
       "replacementPhase": 8,
-      "evidence": "not part of owlapi-js; superseded in production by src/owl2vowl/js/vowlBuilder.js at the Phase 8 cutover and retained for characterization until the Phase 18 deletion",
+      "evidence": "not part of owlapi-js; superseded in production by src/owl2vowl/js/vowlBuilder.js at the Phase 8 cutover and physically deleted after characterization closed in Phase 18",
       "decisionRef": "PHASE8-2026-08-18"
     },
     {
@@ -2355,12 +2421,30 @@
       "licenseCopyright": "Repository MIT",
       "disposition": "EXCLUDE",
       "replacementPhase": 8,
-      "evidence": "stays in WebVOWL and consumes the public owlapi-js API; rewritten in place during the Phase 8 cutover to route through OWLOntology and VOWLBuilder, with src/owl2vowl/js/index.test.js and src/productionGraph.architecture.test.js proving it reaches no retained legacy module",
+      "evidence": "stays in WebVOWL and consumes the public owlapi-js API; rewritten in place during the Phase 8 cutover to route through OWLOntology and VOWLBuilder, with src/owl2vowl/js/index.test.js and src/productionGraph.architecture.test.js proving the retired pipeline is absent and unreachable",
       "decisionRef": "PHASE8-2026-08-18"
     },
     {
       "id": "LEGACY-CHARACTERIZATION-TESTS",
       "path": "src/owl2vowl/js/*.test.js",
+      "artifactPaths": [
+        "src/owl2vowl/js/dlSyntaxParser.test.js",
+        "src/owl2vowl/js/domUtils.test.js",
+        "src/owl2vowl/js/functionalSyntaxParser.test.js",
+        "src/owl2vowl/js/importLoader.test.js",
+        "src/owl2vowl/js/iriResolver.test.js",
+        "src/owl2vowl/js/jsonExporter.test.js",
+        "src/owl2vowl/js/jsonLdParser.test.js",
+        "src/owl2vowl/js/krss2SyntaxParser.test.js",
+        "src/owl2vowl/js/manchesterSyntaxParser.test.js",
+        "src/owl2vowl/js/owlXmlParser.test.js",
+        "src/owl2vowl/js/parserContext.test.js",
+        "src/owl2vowl/js/rdfXmlSerializer.test.js",
+        "src/owl2vowl/js/xmlUtils.test.js"
+      ],
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
       "excludedPaths": [
         "src/owl2vowl/js/ontologyConverter.test.js",
         "src/owl2vowl/js/rdfParser.test.js",
@@ -2372,8 +2456,38 @@
       "licenseCopyright": "Repository MIT; behavioral facts do not authorize production implementation copying",
       "disposition": "REFERENCE_ONLY",
       "replacementPhase": null,
-      "evidence": "retained as compatibility evidence until each replacement gate passes",
+      "evidence": "retained through the final parser replacement gate, then physically deleted with the legacy modules in Phase 18",
       "decisionRef": "PHASE0-2026-08-10"
+    },
+    {
+      "id": "LEGACY-PIPELINE-HARNESS",
+      "path": "src/owl2vowl/test/legacyPipeline.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
+      "scope": "test-only composition of the pre-cutover parser, converter and exporter stack",
+      "provenanceCategory": "D_EXTERNAL_REFERENCE",
+      "origin": "project-owned Phase 8 characterization harness for the retired JavaScript pipeline",
+      "licenseCopyright": "Repository MIT",
+      "disposition": "REFERENCE_ONLY",
+      "replacementPhase": 8,
+      "evidence": "superseded by production-entry corpus and pinned Java OWL2VOWL differential evidence; physically deleted in Phase 18",
+      "decisionRef": "PHASE8-2026-08-18"
+    },
+    {
+      "id": "LEGACY-VOWL-DIFFERENTIAL",
+      "path": "src/owl2vowl/test/differential.test.js",
+      "repositoryState": "DELETED",
+      "retiredInPhase": 18,
+      "retirementDecisionRef": "PHASE18-2026-08-22",
+      "scope": "legacy JavaScript-to-Java OWL2VOWL corpus differential",
+      "provenanceCategory": "D_EXTERNAL_REFERENCE",
+      "origin": "project-owned behavioral comparison for the pre-cutover JavaScript pipeline",
+      "licenseCopyright": "Repository MIT harness; generated Java outputs retain their separately recorded oracle provenance",
+      "disposition": "REFERENCE_ONLY",
+      "replacementPhase": 8,
+      "evidence": "superseded by src/owl2vowl/test/productionDifferential.test.js; pinned Java fixtures remain, while the legacy-only executable harness was deleted in Phase 18",
+      "decisionRef": "PHASE8-2026-08-18"
     },
     {
       "id": "JAVA-VOWL-DIFFERENTIAL-EVIDENCE",
@@ -2384,7 +2498,7 @@
       "licenseCopyright": "Repository MIT harness; generated outputs are test evidence with separately recorded oracle provenance",
       "disposition": "REFERENCE_ONLY",
       "replacementPhase": null,
-      "evidence": "44-fixture end-to-end behavioral baseline",
+      "evidence": "pinned Java outputs and the production-entry corpus differential remain as the end-to-end behavioral baseline after the legacy-only harness was deleted in Phase 18",
       "decisionRef": "PHASE0-2026-08-10"
     },
     {

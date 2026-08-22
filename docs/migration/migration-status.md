@@ -22,25 +22,25 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |    15 | JSON-LD                                                            | Complete    | PASS: 10/559 focused; 163/3222 full; 462/462 required W3C        |
 |    16 | OWL-to-RDF                                                         | Complete    | PASS: 8/24 focused; 171/3247 full; graph differential green      |
 |    17 | Original KRSS / KRSS1                                              | Complete    | PASS: 16/113 focused; 177/3278 full; Java/8-format/resource/perf |
-|    18 | Physical legacy deletion                                           | Not started | blocked by Phase 17 Git checkpoint and retained-reference audit  |
-|    19 | Package/release                                                    | Not started | blocked by all prior gates                                       |
+|    18 | Physical legacy deletion                                           | Complete    | PASS: 34/34 absent; 161/3146 full; lint/build/closure green      |
+|    19 | Package/release                                                    | Not started | blocked by the requested Phase 18 Git checkpoint                 |
 
-Active ingestion migration: none. Phase 17 passed its finite grammar, dialect
-selection, pinned Java oracle, eight-format structural, resource/transaction,
-import, production VOWL, zero-corpus provenance, same-revision performance, and
-repository gates. The requested Git checkpoint is now the only boundary before
-Phase 18 physical legacy deletion.
+Active implementation phase: none. Phase 18 physically deleted the retired
+pipeline after the Phase 17 checkpoint and passed its absence, production,
+corpus, provenance, runner-scope, full-suite, lint, build, and lazy-closure
+gates. The requested Git checkpoint is now the only boundary before Phase 19
+package/release work.
 
 The structural cutover itself is in place. WebVOWL ingests ontologies only
-through `owlapi-js`, the production graph reaches no retained legacy parser,
-converter or exporter, and Turtle, N-Triples, N-Quads, and TriG now succeed both
+through `owlapi-js`; the pre-cutover parser, converter, exporter, RDF/XML bridge,
+and syntax-coupled VOWL state have been physically removed. Turtle, N-Triples,
+N-Quads, and TriG succeed both
 directly and when discovered inside an import closure. Functional Syntax,
 Manchester Syntax, OWL/XML, RDF/XML, Turtle, DL Syntax, KRSS1, KRSS2, N-Triples,
 N-Quads, TriG, and JSON-LD are the advertised production formats; every other
 legacy-only syntax still fails with canonical unsupported-format diagnostics.
 KRSS1 is executable through its own descriptor and remains distinct from
-KRSS2. The legacy modules remain unmoved for characterization until the Phase
-18 deletion.
+KRSS2.
 
 N-Quads uses a third exact-format policy over the private N3.js boundary and
 preserves graph terms in the canonical RDF/JS dataset. All four graph policies
@@ -138,6 +138,19 @@ only the last class may be called a historical KRSS corpus, and it is empty.
 The same-revision Phase 16/Phase 17 registry benchmark stays within the
 unchanged 20% threshold and designated 64 KiB mismatch-selection ceiling.
 
+Phase 18 deletes 16 pre-cutover implementation modules and their paired tests,
+plus `legacyPipeline.js` and its legacy-only corpus differential. The retained
+production entry, `VOWLBuilder`, resolver, constants, semantic differential
+utilities, 46 pinned Java output fixtures, and current corpus gates remain.
+`src/productionGraph.architecture.test.js` now makes the 34-file absence
+contract executable as well as proving the structural production path.
+Provenance schema v4 records deleted lifecycle state without erasing historical
+or commit-bounded dispositions. The default runner no longer needs a special
+ignore or `test:legacy` command and discovers all active differential suites.
+No dependency, package lock, runtime API, resource ceiling, or regression
+threshold changes in this phase; the production bundle graph was unchanged in
+kind because every deleted module was already unreachable.
+
 DL Syntax constructs structural objects directly through a bounded pull lexer
 and parser. The shared project fixture agrees across DL, Functional, RDF/XML,
 and Turtle on every non-declaration axiom and the complete signature; its pinned
@@ -157,16 +170,15 @@ pinned OWL2VOWL reference outputs under
 `src/owl2vowl/test/fixtures/java-reference-outputs/`: every source the oracle
 converted successfully must load through the production entry.
 
-The differential gate that blocked Phase 8 is now met.
+The differential gate that blocked Phase 8 remains met.
 `src/owl2vowl/test/productionDifferential.test.js` runs the production path -
 `loadWithImports`, the entry `src/app/js/loadingModule.js` calls - over 33
 comparable corpus documents, now including Turtle, and compares each against
-the pinned OWL2VOWL 0.3.7 reference output on ten dimensions. The existing
-44-fixture suite in
-`src/owl2vowl/test/differential.test.js` is retained unchanged as the historical
-baseline; it runs the retained legacy pipeline through `legacyPipeline.js`, so
-it measures the engine that was replaced and satisfied section 18.8 only while
-the legacy pipeline was the architecture.
+the pinned OWL2VOWL 0.3.7 reference output on ten dimensions. Phase 18 removes
+the second executable differential that ran the pre-cutover JavaScript engine;
+it no longer represented a supported architecture. Its pinned Java outputs
+remain as historical oracle evidence, while the production differential is the
+single executable corpus acceptance gate.
 
 Every remaining difference is justified per dimension in
 `docs/owlapi-js/compatibility/production-corpus-differences.json`, and a
@@ -204,7 +216,9 @@ same local documents this harness serves, so both sides see identical inputs by
 construction. The oracle version does not change; only its inputs align. That
 requires pointing OWLAPI at local copies through a catalog file or OWL2VOWL's
 `necessaryExternals` parameter, and it moves the baseline underneath the legacy
-differential's 44-entry register, which would need re-validating. It was
+differential history and the current production register, which would need
+re-validating. Phase 18 removed the obsolete legacy executable rather than
+preserving an extra validation burden. The regeneration itself was
 deferred because doing it while the corpus register is being built would make it
 impossible to attribute a change to a fix rather than to the regeneration.
 

@@ -119,7 +119,7 @@ describe("owlapi-js governance artifacts", () => {
       ["parser.trig", 14],
       ["parser.jsonld", 15],
       ["mapping.owl-to-rdf", 16],
-      ["packaging.native-esm", 18],
+      ["packaging.native-esm", 19],
     ]);
 
     for (const [id, phase] of expectedPhases) {
@@ -248,12 +248,19 @@ describe("owlapi-js governance artifacts", () => {
     const ids = manifest.items.map(({ id }) => id);
     const paths = manifest.items.map(({ path }) => path);
     const revisionSelectors = manifest.revisionDispositionPolicy.selectors;
+    const lifecycle = manifest.artifactLifecyclePolicy;
 
-    expect(manifest.schemaVersion).toBe(3);
+    expect(manifest.schemaVersion).toBe(4);
     expect(new Set(ids).size).toBe(ids.length);
     expect(new Set(paths).size).toBe(paths.length);
     expect(revisionSelectors).toEqual(["AT_REVISION", "AFTER_REVISION"]);
+    expect(lifecycle).toMatchObject({
+      defaultState: "PRESENT",
+      states: ["PRESENT", "DELETED"],
+    });
     for (const item of manifest.items) {
+      const repositoryState = item.repositoryState ?? lifecycle.defaultState;
+
       expect(manifest.dispositions).toContain(item.disposition);
       expect(item.disposition).not.toBe("REVIEW_EXCEPTION");
       expect(manifest.provenanceCategories).toHaveProperty(
@@ -261,6 +268,21 @@ describe("owlapi-js governance artifacts", () => {
       );
       expect(item.licenseCopyright).toBeTruthy();
       expect(manifest.decisionReferences).toHaveProperty(item.decisionRef);
+      expect(lifecycle.states).toContain(repositoryState);
+      if (repositoryState === "DELETED") {
+        expect(item.retiredInPhase).toBe(18);
+        expect(manifest.decisionReferences).toHaveProperty(
+          item.retirementDecisionRef,
+        );
+        if (item.path.includes("*")) {
+          expect(item.artifactPaths?.length).toBeGreaterThan(0);
+        }
+        for (const retiredPath of item.artifactPaths ?? [item.path]) {
+          expect(
+            existsSync(new URL(`../../${retiredPath}`, import.meta.url)),
+          ).toBe(false);
+        }
+      }
       for (const revisionDisposition of item.revisionDispositions || []) {
         expect(revisionSelectors).toContain(revisionDisposition.selector);
         expect(revisionDisposition.revision).toMatch(/^[0-9a-f]{40}$/);
@@ -279,6 +301,10 @@ describe("owlapi-js governance artifacts", () => {
       .map((fileName) => `src/owl2vowl/js/${fileName}`)
       .sort();
     const inventoriedModules = manifest.items
+      .filter(
+        ({ repositoryState = lifecycle.defaultState }) =>
+          repositoryState === "PRESENT",
+      )
       .map(({ path }) => path)
       .filter(
         (path) =>
@@ -327,6 +353,9 @@ describe("owlapi-js governance artifacts", () => {
       expect(item).toMatchObject({
         disposition: "REIMPLEMENT",
         decisionRef: "PROVENANCE-2026-08-11",
+        repositoryState: "DELETED",
+        retiredInPhase: 18,
+        retirementDecisionRef: "PHASE18-2026-08-22",
       });
       expect(item.revisionDispositions).toEqual([
         {

@@ -84,7 +84,7 @@ if (turtleInInitialGraph) {
   throw new Error("The Turtle implementation leaked into the initial graph");
 }
 if (bundledLegacyTurtle) {
-  throw new Error("The retained legacy Turtle parser leaked into the bundle");
+  throw new Error("The retired legacy Turtle parser leaked into the bundle");
 }
 
 console.log(

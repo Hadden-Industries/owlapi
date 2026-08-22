@@ -47,12 +47,12 @@ evidence.
 Phase 8 performed the production cutover and closed at `136a62a`. WebVOWL
 ingests ontologies only through `owlapi-js`, the development seam is removed,
 and there is no runtime legacy fallback. The legacy parsers,
-`ontologyConverter.js` and `jsonExporter.js` remain unmoved for
-characterization and are proven unreachable from production by
-`src/productionGraph.architecture.test.js` and by bundle inspection. All 44
+`ontologyConverter.js` and `jsonExporter.js` remained unmoved through Phase 17
+for finite characterization work and were proven unreachable from production
+by `src/productionGraph.architecture.test.js` and bundle inspection. All 44
 advertised corpus documents load through the production entry, and the corpus
 differential required by sections 17.15 and 18.8 now runs that entry rather
-than the retained legacy pipeline, with every remaining difference justified
+than the pre-cutover pipeline, with every remaining difference justified
 per dimension in `compatibility/production-corpus-differences.json`.
 
 Phase 9 adds strict Turtle through one private, exact-format N3.js adapter. The
@@ -75,8 +75,8 @@ preserves Turtle-style prefixes and base resolution. Selected graphs and
 explicit graph loss remain document context rather than OWL axiom state.
 Turtle, N-Triples, N-Quads, and TriG share only private syntax machinery and
 the project-owned RDF/JS-to-OWL publication seam. The broader N3 language
-remains unregistered. The retained legacy files remain unmoved and
-production-unreachable until the Phase 18 deletion.
+remains unregistered. Phase 18 physically deletes the already
+production-unreachable legacy files without changing this ingestion graph.
 Entry-aware production chunking and a post-build static-import-closure verifier
 prove that N3.js remains outside the application's initial graph.
 
@@ -90,6 +90,12 @@ public first-party historical KRSS1/KRSS2 ontology artifacts, so project
 grammar fixtures, adjacent dialects, extended-KRSS negatives, converted real
 ontologies, and any future qualifying historical corpus remain separate
 evidence classes.
+
+Phase 18 removes the pre-cutover parser/converter/exporter stack and its
+legacy-only executable differentials. The production corpus gate, pinned Java
+OWL2VOWL fixtures, and all current `owlapi-js` parser evidence remain. Provenance
+schema v4 retains deleted-artifact history and approved revision-bounded reuse
+decisions while distinguishing them from the live source inventory.
 
 ADR 0002 prioritizes the shared RDF-to-OWL foundation, RDF/XML, early
 development-app integration, production cutover, and strict Turtle before the

@@ -47,5 +47,5 @@ and definite KRSS2-only vocabulary excludes KRSS1. The finite Java-oracle
 inventory records four controlled corrections—discarded ABox axioms,
 unreachable integer cardinalities, malformed bare-name bases, and singleton
 Boolean objects outside the OWL 2 structural invariant—plus preserved
-right-identity/no-effect and full-IRI rejection behavior. No KRSS1 path calls
-the retained legacy KRSS2 parser.
+right-identity/no-effect and full-IRI rejection behavior. No KRSS1 path called
+the pre-cutover KRSS2 parser, which Phase 18 subsequently deleted.

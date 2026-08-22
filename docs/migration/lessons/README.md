@@ -31,3 +31,4 @@ Allowed primary dispositions: `NO_CHANGE`, `PLAYBOOK_UPDATE`,
 - [Phase 15: JSON-LD](014-jsonld.md)
 - [Phase 16: shared OWL-to-RDF](015-owl-to-rdf.md)
 - [Phase 17: original KRSS / KRSS1](016-krss1.md)
+- [Phase 18: physical legacy deletion](017-legacy-deletion.md)
