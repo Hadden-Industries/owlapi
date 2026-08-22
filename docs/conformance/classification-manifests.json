@@ -4080,13 +4080,724 @@
     {
       "id": "w3c-rdf-tests.ntriples",
       "suite": "w3c-rdf-tests",
-      "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f",
+      "revision": "12774b0ebb385d17651b396654b19254d0fefbfa",
       "paths": [
         "rdf/rdf11/rdf-n-triples/manifest.ttl",
         "rdf/rdf12/rdf-n-triples/syntax/manifest.ttl"
       ],
       "classificationOwnerPhases": [12],
-      "entries": []
+      "entries": [
+        {
+          "action": "nt-syntax-file-01.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-file-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-file-02.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-file-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-file-03.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-file-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-uri-01.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-uri-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-uri-02.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-uri-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-uri-03.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-uri-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-uri-04.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-uri-04",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-string-01.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-string-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-string-02.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-string-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-string-03.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-string-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-str-esc-01.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-str-esc-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-str-esc-02.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-str-esc-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-str-esc-03.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-str-esc-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bnode-01.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bnode-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bnode-02.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bnode-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bnode-03.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bnode-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-datatypes-01.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-datatypes-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-datatypes-02.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-datatypes-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-uri-01.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-uri-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-uri-02.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-uri-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-uri-03.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-uri-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-uri-04.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-uri-04",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-uri-05.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-uri-05",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-uri-06.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-uri-06",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-uri-07.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-uri-07",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-uri-08.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-uri-08",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-uri-09.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-uri-09",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-prefix-01.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-prefix-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-base-01.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-base-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-bnode-01.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-bnode-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-bnode-02.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-bnode-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-struct-01.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-struct-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-struct-02.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-struct-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-lang-01.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-lang-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-esc-01.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-esc-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-esc-02.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-esc-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-esc-03.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-esc-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-string-01.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-string-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-string-02.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-string-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-string-03.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-string-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-string-04.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-string-04",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-string-05.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-string-05",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-string-06.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-string-06",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-string-07.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-string-07",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-num-01.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-num-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-num-02.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-num-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-bad-num-03.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-bad-num-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "nt-syntax-subm-01.nt",
+          "classification": "REQUIRED",
+          "id": "nt-syntax-subm-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "comment_following_triple.nt",
+          "classification": "REQUIRED",
+          "id": "comment_following_triple",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal.nt",
+          "classification": "REQUIRED",
+          "id": "literal",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_all_controls.nt",
+          "classification": "REQUIRED",
+          "id": "literal_all_controls",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_all_punctuation.nt",
+          "classification": "REQUIRED",
+          "id": "literal_all_punctuation",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_ascii_boundaries.nt",
+          "classification": "REQUIRED",
+          "id": "literal_ascii_boundaries",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_with_2_dquotes.nt",
+          "classification": "REQUIRED",
+          "id": "literal_with_2_dquotes",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_with_2_squotes.nt",
+          "classification": "REQUIRED",
+          "id": "literal_with_2_squotes",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_with_BACKSPACE.nt",
+          "classification": "REQUIRED",
+          "id": "literal_with_BACKSPACE",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_with_CARRIAGE_RETURN.nt",
+          "classification": "REQUIRED",
+          "id": "literal_with_CARRIAGE_RETURN",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_with_CHARACTER_TABULATION.nt",
+          "classification": "REQUIRED",
+          "id": "literal_with_CHARACTER_TABULATION",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_with_dquote.nt",
+          "classification": "REQUIRED",
+          "id": "literal_with_dquote",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_with_FORM_FEED.nt",
+          "classification": "REQUIRED",
+          "id": "literal_with_FORM_FEED",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_with_LINE_FEED.nt",
+          "classification": "REQUIRED",
+          "id": "literal_with_LINE_FEED",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_with_numeric_escape4.nt",
+          "classification": "REQUIRED",
+          "id": "literal_with_numeric_escape4",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_with_numeric_escape8.nt",
+          "classification": "REQUIRED",
+          "id": "literal_with_numeric_escape8",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_with_REVERSE_SOLIDUS.nt",
+          "classification": "REQUIRED",
+          "id": "literal_with_REVERSE_SOLIDUS",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_with_REVERSE_SOLIDUS2.nt",
+          "classification": "REQUIRED",
+          "id": "literal_with_REVERSE_SOLIDUS2",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_with_squote.nt",
+          "classification": "REQUIRED",
+          "id": "literal_with_squote",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "literal_with_UTF8_boundaries.nt",
+          "classification": "REQUIRED",
+          "id": "literal_with_UTF8_boundaries",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "langtagged_string.nt",
+          "classification": "REQUIRED",
+          "id": "langtagged_string",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "lantag_with_subtag.nt",
+          "classification": "REQUIRED",
+          "id": "lantag_with_subtag",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "minimal_whitespace.nt",
+          "classification": "REQUIRED",
+          "id": "minimal_whitespace",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-syntax-01.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-01",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-syntax-02.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-02",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-syntax-03.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-03",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bnode-1.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bnode-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-nested-1.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-nested-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples-langdir-1.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples-langdir-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples-langdir-2.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples-langdir-2",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bad-syntax-01.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bad-01",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bad-syntax-02.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bad-02",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bad-syntax-03.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bad-03",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bad-syntax-04.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bad-04",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bad-syntax-05.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bad-05",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bad-syntax-06.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bad-06",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bad-syntax-07.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bad-07",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bad-syntax-08.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bad-08",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bad-syntax-09.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bad-09",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bad-syntax-10.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bad-10",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bad-iri-1.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bad-iri-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bad-reified-syntax-1.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bad-reified-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bad-reified-syntax-2.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bad-reified-2",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bad-reified-syntax-3.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bad-reified-3",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bad-reified-syntax-4.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bad-reified-4",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bnode-bad-annotated-syntax-1.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bnode-bad-annotated-syntax-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples12-bnode-bad-annotated-syntax-2.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples12-bnode-bad-annotated-syntax-2",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples-langdir-bad-1.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples-langdir-bad-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples-langdir-bad-2.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples-langdir-bad-2",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples-langdir-bad-3.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples-langdir-bad-3",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples-langdir-bad-4.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples-langdir-bad-4",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "ntriples-langdir-bad-5.nt",
+          "classification": "REQUIRED",
+          "id": "ntriples-langdir-bad-5",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        }
+      ],
+      "localManifestArtifacts": [
+        "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-n-triples/manifest.ttl",
+        "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-n-triples/syntax/manifest.ttl"
+      ],
+      "manifestEntryCount": 99,
+      "manifestEntryCounts": { "rdf11": 70, "rdf12Syntax": 29 },
+      "manifestSha256": {
+        "rdf11": "65b748e9e15783c6e9808dad663ee9e139803ceee2fb9a0704fbe00ddbdafc7b",
+        "rdf12Syntax": "cd80d5bd8ae702cafcd78bc238d31a17aba7913b78eecadb5b55683e22feb3d7"
+      },
+      "negativeSyntaxTestCount": 51,
+      "positiveSyntaxTestCount": 48,
+      "requiredTestCount": 99,
+      "runner": "src/owlapi-js/parser/ntriples/nTriples.conformance.test.js",
+      "runnerParsingPolicy": "Every positive-syntax case must parse at the exact N-Triples syntax seam and produce only default-graph RDF/JS quads; every negative-syntax case must reject before RDF-to-OWL reconstruction.",
+      "runnerScope": "Exercise the exact-format N-Triples syntax-to-RDF/JS boundary independently for the pinned RDF 1.1 manifest and RDF 1.2 syntax manifest; OWL reconstruction remains separately governed by the shared RDF-to-OWL translator.",
+      "sourceTestCount": 99
     },
     {
       "id": "w3c-rdf-tests.nquads",

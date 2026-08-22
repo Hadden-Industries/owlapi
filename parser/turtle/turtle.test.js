@@ -185,18 +185,4 @@ describe("Turtle manager integration", () => {
       termType: "Quad",
     });
   });
-
-  it("does not register N-Triples merely because its bytes overlap Turtle", async () => {
-    const manager = OWLManager.createOWLOntologyManager();
-    const configuration = new OWLOntologyLoaderConfiguration({
-      format: OWLDocumentFormats.N_TRIPLES,
-    });
-
-    await expect(
-      manager.loadOntologyFromOntologyDocument(
-        source("<urn:test:s> <urn:test:p> <urn:test:o> ."),
-        configuration,
-      ),
-    ).rejects.toThrow("No parser is registered for format: ntriples");
-  });
 });

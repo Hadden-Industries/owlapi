@@ -23,3 +23,5 @@ Allowed primary dispositions: `NO_CHANGE`, `PLAYBOOK_UPDATE`,
 - [Phase 8: production WebVOWL cutover](007-production-cutover.md)
 - [Phase 9: private N3.js adapter foundation and strict Turtle](008-turtle.md)
 - [Phase 10: DL Syntax](009-dl-syntax.md)
+- [Phase 11: KRSS family](010-krss-family.md)
+- [Phase 12: N-Triples](011-ntriples.md)

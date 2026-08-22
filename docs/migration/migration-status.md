@@ -16,30 +16,40 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |     9 | Private N3.js adapter foundation and strict Turtle                 | Complete    | PASS: 11/608 focused; 123/1893 full; 387/387 W3C Turtle          |
 |    10 | DL Syntax                                                          | Complete    | PASS: 7/52 focused; 133/1964 full; Java snapshot 15/15 axioms    |
 |    11 | KRSS family                                                        | Complete    | PASS: 8/55 focused; 142/2024 full; Java snapshot 12/12 axioms    |
-|    12 | N-Triples                                                          | Not started | blocked by Phase 11 Git checkpoint                               |
-|    13 | N-Quads                                                            | Not started | blocked by Phase 12 learning gate                                |
+|    12 | N-Triples                                                          | Complete    | PASS: 10/180 focused; 147/2147 full; 99/99 W3C N-Triples         |
+|    13 | N-Quads                                                            | Not started | blocked by Phase 12 Git checkpoint                               |
 |    14 | TriG                                                               | Not started | blocked by Phase 13 learning gate                                |
 |    15 | JSON-LD                                                            | Not started | blocked by Phase 14 learning gate                                |
 |    16 | OWL-to-RDF                                                         | Not started | blocked by ingestion programme                                   |
 |    17 | Physical legacy deletion                                           | Not started | blocked by Phase 16 and retained-reference audit                 |
 |    18 | Package/release                                                    | Not started | blocked by all prior gates                                       |
 
-Active ingestion migration: none. Phase 11 has passed its implementation,
-learning, grammar-gap, conformance, differential, resource, performance,
+Active ingestion migration: none. Phase 12 has passed its implementation,
+learning, conformance, graph-policy, differential, resource, performance,
 integration, and repository gates in the working tree and is paused for the
-requested Git checkpoint. Phase 12 remains blocked until that checkpoint is
+requested Git checkpoint. Phase 13 remains blocked until that checkpoint is
 committed and the repository owner explicitly says to proceed.
 
 The structural cutover itself is in place. WebVOWL ingests ontologies only
 through `owlapi-js`, the production graph reaches no retained legacy parser,
-converter or exporter, and Turtle now succeeds both directly and when
-discovered inside an import closure. Functional Syntax, Manchester Syntax,
-OWL/XML, RDF/XML, Turtle, DL Syntax, and KRSS2 are the advertised production
-formats; every other legacy-only syntax still fails with canonical
-unsupported-format diagnostics. In particular, KRSS1 retains a distinct format
-identity but no executable descriptor while its parser capability is
-`DEFERRED`. The legacy modules remain unmoved for characterization until the
-Phase 17 deletion.
+converter or exporter, and Turtle and N-Triples now succeed both directly and
+when discovered inside an import closure. Functional Syntax, Manchester
+Syntax, OWL/XML, RDF/XML, Turtle, DL Syntax, KRSS2, and N-Triples are the
+advertised production formats; every other legacy-only syntax still fails with
+canonical unsupported-format diagnostics. In particular, KRSS1 retains a
+distinct format identity but no executable descriptor while its parser
+capability is `DEFERRED`. The legacy modules remain unmoved for characterization
+until the Phase 17 deletion.
+
+N-Triples uses a distinct exact-format policy over the private N3.js boundary
+introduced for Turtle. Its independent pinned W3C RDF 1.1/RDF 1.2 register is
+green for all 99 entries, every accepted statement is normalized to the RDF/JS
+default graph, and bounded detection rejects Turtle directives, XML markup, and
+N-Quads graph labels. The shared RDF dataset publication seam removes duplicate
+translation logic without sharing syntax identity or graph policy. The
+same-revision Phase 11/Phase 12 registry benchmark remains within the unchanged
+20% threshold. Phase 12 adds no dependency, package, lockfile, configuration,
+resource-ceiling, or legacy-production-reachability change.
 
 KRSS2 constructs structural objects directly through a dialect-neutral bounded
 pull lexer and a strict KRSS2 parser. KRSS1 and KRSS2 remain separate

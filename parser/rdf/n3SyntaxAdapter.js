@@ -6,6 +6,27 @@ import {
 import { rdfDataFactory, rdfDatasetFactory } from "../../rdf/index.js";
 
 const TURTLE_MEDIA_TYPE = "text/turtle";
+const N_TRIPLES_MEDIA_TYPE = "application/n-triples";
+const EXACT_FORMAT_POLICIES = Object.freeze(
+  new Map([
+    [
+      TURTLE_MEDIA_TYPE,
+      Object.freeze({
+        implementationFormat: TURTLE_MEDIA_TYPE,
+        lexerOptions: Object.freeze({ n3: false }),
+        syntaxName: "Turtle",
+      }),
+    ],
+    [
+      N_TRIPLES_MEDIA_TYPE,
+      Object.freeze({
+        implementationFormat: "N-Triples",
+        lexerOptions: Object.freeze({ lineMode: true, n3: false }),
+        syntaxName: "N-Triples",
+      }),
+    ],
+  ]),
+);
 const DEFAULT_CHUNK_SIZE = 65_536;
 const MAIN_THREAD_BUDGET_MS = 50;
 const MAX_TIMER_DELAY_MS = 2_147_483_647;
@@ -29,7 +50,7 @@ const resourceLimit = (message, resource, limit, observed, details = {}) => {
   });
 };
 
-const abortError = (signal) => {
+const abortError = (signal, syntaxName) => {
   if (typeof signal?.throwIfAborted === "function") {
     try {
       signal.throwIfAborted();
@@ -37,7 +58,7 @@ const abortError = (signal) => {
       return error;
     }
   }
-  const error = new Error("The Turtle parse was aborted");
+  const error = new Error(`The ${syntaxName} parse was aborted`);
   error.name = "AbortError";
   return error;
 };
@@ -46,9 +67,11 @@ class ExecutionController {
   #configuration;
   #nextYieldAt;
   #startedAt;
+  #syntaxName;
 
-  constructor(configuration) {
+  constructor(configuration, syntaxName) {
     this.#configuration = configuration;
+    this.#syntaxName = syntaxName;
     this.#startedAt = monotonicNow();
     this.#nextYieldAt = this.#startedAt + MAIN_THREAD_BUDGET_MS;
   }
@@ -62,7 +85,7 @@ class ExecutionController {
   }
 
   timeoutError() {
-    return new ResourceLimitError("The Turtle parsing timeout was exceeded", {
+    return new ResourceLimitError(`${this.#syntaxName} parsing timed out`, {
       limit: this.#configuration.timeoutMs,
       observed: Math.ceil(this.elapsedMs()),
       resource: "timeoutMs",
@@ -72,12 +95,12 @@ class ExecutionController {
   check() {
     const { signal, timeoutMs } = this.#configuration;
     if (signal?.aborted) {
-      throw abortError(signal);
+      throw abortError(signal, this.#syntaxName);
     }
     const elapsed = this.elapsedMs();
     if (elapsed >= timeoutMs) {
       resourceLimit(
-        "The Turtle parsing timeout was exceeded",
+        `${this.#syntaxName} parsing timed out`,
         "timeoutMs",
         timeoutMs,
         Math.ceil(elapsed),
@@ -113,8 +136,13 @@ const tokenByteLength = (token) => {
   return Math.max(valueBytes, lexicalWidth);
 };
 
-const createBudgetedLexer = (Lexer, configuration) => {
-  const lexer = new Lexer({ n3: false });
+const createBudgetedLexer = (
+  Lexer,
+  configuration,
+  lexerOptions,
+  syntaxName,
+) => {
+  const lexer = new Lexer(lexerOptions);
   if (!lexer || typeof lexer.tokenize !== "function") {
     throw new TypeError(
       "The N3 implementation Lexer must implement tokenize()",
@@ -142,7 +170,7 @@ const createBudgetedLexer = (Lexer, configuration) => {
           tokenCount += 1;
           if (tokenCount > configuration.maxTokenCount) {
             resourceLimit(
-              "The Turtle lexer-token limit was exceeded",
+              `The ${syntaxName} lexer-token limit was exceeded`,
               "maxTokenCount",
               configuration.maxTokenCount,
               tokenCount,
@@ -151,7 +179,7 @@ const createBudgetedLexer = (Lexer, configuration) => {
           const observed = tokenByteLength(token);
           if (observed > configuration.maxTokenLength) {
             resourceLimit(
-              "A Turtle token exceeded the token byte limit",
+              `An ${syntaxName} token exceeded the token byte limit`,
               "maxTokenLength",
               configuration.maxTokenLength,
               observed,
@@ -185,7 +213,7 @@ const errorColumn = (cause) => {
   return token.start + 1;
 };
 
-const normalizeParserFailure = (cause, configuration) => {
+const normalizeParserFailure = (cause, configuration, syntaxName) => {
   if (
     cause?.code ||
     cause?.name === "AbortError" ||
@@ -195,18 +223,21 @@ const normalizeParserFailure = (cause, configuration) => {
   }
 
   const column = errorColumn(cause);
-  return new OWLSyntaxError("The Turtle document is not valid Turtle", {
-    ...(configuration.sourceLocations &&
-    Number.isSafeInteger(cause?.context?.line)
-      ? { line: cause.context.line }
-      : {}),
-    ...(configuration.sourceLocations && column !== undefined
-      ? { column }
-      : {}),
-    cause,
-    parserMessage: String(cause?.message || cause),
-    syntax: "Turtle",
-  });
+  return new OWLSyntaxError(
+    `The ${syntaxName} document is not valid ${syntaxName}`,
+    {
+      ...(configuration.sourceLocations &&
+      Number.isSafeInteger(cause?.context?.line)
+        ? { line: cause.context.line }
+        : {}),
+      ...(configuration.sourceLocations && column !== undefined
+        ? { column }
+        : {}),
+      cause,
+      parserMessage: String(cause?.message || cause),
+      syntax: syntaxName,
+    },
+  );
 };
 
 const chunksOf = function* (text, chunkSize) {
@@ -255,21 +286,21 @@ const blankNodeKeys = (term, keys) => {
   }
 };
 
-const validateTermLength = (term, configuration) => {
+const validateTermLength = (term, configuration, syntaxName) => {
   if (!term || term.termType === "DefaultGraph") {
     return;
   }
   if (term.termType === "Quad") {
-    validateTermLength(term.subject, configuration);
-    validateTermLength(term.predicate, configuration);
-    validateTermLength(term.object, configuration);
-    validateTermLength(term.graph, configuration);
+    validateTermLength(term.subject, configuration, syntaxName);
+    validateTermLength(term.predicate, configuration, syntaxName);
+    validateTermLength(term.object, configuration, syntaxName);
+    validateTermLength(term.graph, configuration, syntaxName);
     return;
   }
   const observed = textEncoder.encode(term.value || "").byteLength;
   if (observed > configuration.maxTokenLength) {
     resourceLimit(
-      "An RDF term produced from Turtle exceeded the token byte limit",
+      `An RDF term produced from ${syntaxName} exceeded the token byte limit`,
       "maxTokenLength",
       configuration.maxTokenLength,
       observed,
@@ -277,7 +308,7 @@ const validateTermLength = (term, configuration) => {
     );
   }
   if (term.termType === "Literal") {
-    validateTermLength(term.datatype, configuration);
+    validateTermLength(term.datatype, configuration, syntaxName);
     for (const [termType, value] of [
       ["LanguageTag", term.language],
       ["BaseDirection", term.direction],
@@ -285,7 +316,7 @@ const validateTermLength = (term, configuration) => {
       const componentBytes = textEncoder.encode(value || "").byteLength;
       if (componentBytes > configuration.maxTokenLength) {
         resourceLimit(
-          "A Turtle literal component exceeded the token byte limit",
+          `A ${syntaxName} literal component exceeded the token byte limit`,
           "maxTokenLength",
           configuration.maxTokenLength,
           componentBytes,
@@ -296,7 +327,7 @@ const validateTermLength = (term, configuration) => {
   }
 };
 
-const canonicalTerm = (term) => {
+const canonicalTerm = (term, syntaxName) => {
   switch (term?.termType) {
     case "NamedNode":
       return rdfDataFactory.namedNode(term.value);
@@ -316,38 +347,43 @@ const canonicalTerm = (term) => {
       return rdfDataFactory.defaultGraph();
     case "Quad":
       return rdfDataFactory.quad(
-        canonicalTerm(term.subject),
-        canonicalTerm(term.predicate),
-        canonicalTerm(term.object),
-        canonicalTerm(term.graph),
+        canonicalTerm(term.subject, syntaxName),
+        canonicalTerm(term.predicate, syntaxName),
+        canonicalTerm(term.object, syntaxName),
+        canonicalTerm(term.graph, syntaxName),
       );
     default:
       throw new TypeError(
-        `The Turtle parser emitted an unsupported RDF/JS term: ${term?.termType}`,
+        `The ${syntaxName} parser emitted an unsupported RDF/JS term: ${term?.termType}`,
       );
   }
 };
 
-const canonicalQuad = (quad) => {
+const canonicalQuad = (quad, syntaxName) => {
   if (quad?.termType !== "Quad") {
-    throw new TypeError("The Turtle parser emitted a non-quad value");
+    throw new TypeError(`The ${syntaxName} parser emitted a non-quad value`);
   }
-  return canonicalTerm(quad);
+  return canonicalTerm(quad, syntaxName);
 };
 
 export class N3SyntaxAdapter {
   #chunkSize;
+  #implementationFormat;
+  #lexerOptions;
   #loadImplementation;
   #mediaType;
+  #syntaxName;
 
   constructor({
     chunkSize = DEFAULT_CHUNK_SIZE,
     loadImplementation = defaultImplementationLoader,
     mediaType,
+    syntaxName,
   } = {}) {
-    if (mediaType !== TURTLE_MEDIA_TYPE) {
+    const formatPolicy = EXACT_FORMAT_POLICIES.get(mediaType);
+    if (!formatPolicy || formatPolicy.syntaxName !== syntaxName) {
       throw new RangeError(
-        `The Phase 9 N3 adapter requires the exact format ${TURTLE_MEDIA_TYPE}`,
+        "The N3 adapter requires a supported exact-format policy",
       );
     }
     if (typeof loadImplementation !== "function") {
@@ -357,8 +393,11 @@ export class N3SyntaxAdapter {
       throw new RangeError("chunkSize must be a positive safe integer");
     }
     this.#chunkSize = chunkSize;
+    this.#implementationFormat = formatPolicy.implementationFormat;
+    this.#lexerOptions = formatPolicy.lexerOptions;
     this.#loadImplementation = loadImplementation;
     this.#mediaType = mediaType;
+    this.#syntaxName = syntaxName;
   }
 
   async parse(source, configuration = {}) {
@@ -373,16 +412,19 @@ export class N3SyntaxAdapter {
     }
 
     const normalizedConfiguration = normalizeConfiguration(configuration);
-    const execution = new ExecutionController(normalizedConfiguration);
+    const execution = new ExecutionController(
+      normalizedConfiguration,
+      this.#syntaxName,
+    );
     execution.check();
     const sourceText = source.getText();
     if (typeof sourceText !== "string") {
-      throw new TypeError("Turtle source text must be a string");
+      throw new TypeError(`${this.#syntaxName} source text must be a string`);
     }
     const inputBytes = textEncoder.encode(sourceText).byteLength;
     if (inputBytes > normalizedConfiguration.maxInputBytes) {
       resourceLimit(
-        "The Turtle input byte limit was exceeded",
+        `The ${this.#syntaxName} input byte limit was exceeded`,
         "maxInputBytes",
         normalizedConfiguration.maxInputBytes,
         inputBytes,
@@ -403,8 +445,13 @@ export class N3SyntaxAdapter {
     const parser = new implementation.StreamParser({
       baseIRI: source.getDocumentIRI()?.value || "",
       factory: rdfDataFactory,
-      format: this.#mediaType,
-      lexer: createBudgetedLexer(implementation.Lexer, normalizedConfiguration),
+      format: this.#implementationFormat,
+      lexer: createBudgetedLexer(
+        implementation.Lexer,
+        normalizedConfiguration,
+        this.#lexerOptions,
+        this.#syntaxName,
+      ),
     });
     if (
       !parser ||
@@ -433,25 +480,34 @@ export class N3SyntaxAdapter {
           emittedQuads += 1;
           if (emittedQuads > normalizedConfiguration.maxQuads) {
             resourceLimit(
-              "The Turtle quad limit was exceeded",
+              `The ${this.#syntaxName} quad limit was exceeded`,
               "maxQuads",
               normalizedConfiguration.maxQuads,
               emittedQuads,
             );
           }
-          const normalizedQuad = canonicalQuad(quad);
+          let normalizedQuad = canonicalQuad(quad, this.#syntaxName);
+          if (this.#mediaType === N_TRIPLES_MEDIA_TYPE) {
+            // N-Triples is an RDF graph syntax: dependency-specific stream
+            // behavior must not introduce dataset membership at this seam.
+            normalizedQuad = rdfDataFactory.quad(
+              normalizedQuad.subject,
+              normalizedQuad.predicate,
+              normalizedQuad.object,
+            );
+          }
           for (const term of [
             normalizedQuad.subject,
             normalizedQuad.predicate,
             normalizedQuad.object,
             normalizedQuad.graph,
           ]) {
-            validateTermLength(term, normalizedConfiguration);
+            validateTermLength(term, normalizedConfiguration, this.#syntaxName);
             blankNodeKeys(term, blankNodes);
           }
           if (blankNodes.size > normalizedConfiguration.maxBlankNodes) {
             resourceLimit(
-              "The Turtle blank-node limit was exceeded",
+              `The ${this.#syntaxName} blank-node limit was exceeded`,
               "maxBlankNodes",
               normalizedConfiguration.maxBlankNodes,
               blankNodes.size,
@@ -464,7 +520,12 @@ export class N3SyntaxAdapter {
         }
       });
       parser.on("prefix", (prefix, iri) => {
-        prefixes[prefix] = iri.value;
+        // Prefixes are document metadata only for syntaxes that can declare
+        // them. N-Triples must remain prefix-free even if a replacement
+        // implementation emits an unexpected stream event.
+        if (this.#mediaType === TURTLE_MEDIA_TYPE) {
+          prefixes[prefix] = iri.value;
+        }
       });
       parser.once("error", reject);
       parser.once("end", resolve);
@@ -493,7 +554,7 @@ export class N3SyntaxAdapter {
     scheduleWatchdog();
     const onAbort = () => {
       if (!adapterFailure) {
-        adapterFailure = abortError(signal);
+        adapterFailure = abortError(signal, this.#syntaxName);
         parser.destroy(adapterFailure);
       }
     };
@@ -524,6 +585,7 @@ export class N3SyntaxAdapter {
       throw normalizeParserFailure(
         adapterFailure || cause,
         normalizedConfiguration,
+        this.#syntaxName,
       );
     } finally {
       globalThis.clearTimeout(timeoutId);
@@ -533,4 +595,15 @@ export class N3SyntaxAdapter {
 }
 
 export const createTurtleSyntaxAdapter = (options = {}) =>
-  new N3SyntaxAdapter({ ...options, mediaType: TURTLE_MEDIA_TYPE });
+  new N3SyntaxAdapter({
+    ...options,
+    mediaType: TURTLE_MEDIA_TYPE,
+    syntaxName: "Turtle",
+  });
+
+export const createNTriplesSyntaxAdapter = (options = {}) =>
+  new N3SyntaxAdapter({
+    ...options,
+    mediaType: N_TRIPLES_MEDIA_TYPE,
+    syntaxName: "N-Triples",
+  });

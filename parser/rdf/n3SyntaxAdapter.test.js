@@ -18,13 +18,20 @@ const configuration = (values = {}) =>
   new OWLOntologyLoaderConfiguration(values);
 
 describe("N3SyntaxAdapter replacement boundary", () => {
-  it("requires a format lock instead of exposing N3's permissive default", () => {
+  it("accepts only the independently governed exact-format policies", () => {
     expect(() => new N3SyntaxAdapter()).toThrow(
-      "requires the exact format text/turtle",
+      "requires a supported exact-format policy",
     );
-    expect(() => new N3SyntaxAdapter({ mediaType: "text/n3" })).toThrow(
-      "requires the exact format text/turtle",
-    );
+    expect(
+      () =>
+        new N3SyntaxAdapter({
+          mediaType: "application/n-triples",
+          syntaxName: "N-Triples",
+        }),
+    ).not.toThrow();
+    expect(
+      () => new N3SyntaxAdapter({ mediaType: "text/n3", syntaxName: "N3" }),
+    ).toThrow("requires a supported exact-format policy");
   });
 
   it("loads the implementation lazily and normalizes foreign quads and prefixes", async () => {
@@ -249,6 +256,76 @@ describe("N3SyntaxAdapter Turtle semantics", () => {
       column: 11,
       line: 2,
       syntax: "Turtle",
+    });
+  });
+});
+
+describe("N3SyntaxAdapter N-Triples semantics", () => {
+  it("normalizes dependency output to the default graph", async () => {
+    class NamedGraphParser extends Transform {
+      constructor() {
+        super({ readableObjectMode: true });
+      }
+
+      _transform(chunk, encoding, callback) {
+        callback();
+      }
+
+      _flush(callback) {
+        this.emit("prefix", "unexpected", rdfDataFactory.namedNode("urn:p:"));
+        this.push(
+          rdfDataFactory.quad(
+            rdfDataFactory.namedNode("urn:test:subject"),
+            rdfDataFactory.namedNode("urn:test:predicate"),
+            rdfDataFactory.namedNode("urn:test:object"),
+            rdfDataFactory.namedNode("urn:dependency:unexpected-graph"),
+          ),
+        );
+        callback();
+      }
+    }
+
+    const adapter = new N3SyntaxAdapter({
+      loadImplementation: async () => ({
+        Lexer: class NamedGraphLexer {
+          tokenize() {}
+        },
+        StreamParser: NamedGraphParser,
+      }),
+      mediaType: "application/n-triples",
+      syntaxName: "N-Triples",
+    });
+    const { dataset, prefixes } = await adapter.parse(
+      new StringDocumentSource(
+        "<urn:test:subject> <urn:test:predicate> <urn:test:object> .",
+      ),
+      configuration(),
+    );
+
+    expect(prefixes).toEqual({});
+    expect([...dataset]).toEqual([
+      rdfDataFactory.quad(
+        rdfDataFactory.namedNode("urn:test:subject"),
+        rdfDataFactory.namedNode("urn:test:predicate"),
+        rdfDataFactory.namedNode("urn:test:object"),
+      ),
+    ]);
+  });
+
+  it("reports strict N-Triples failures with the selected syntax identity", async () => {
+    const adapter = new N3SyntaxAdapter({
+      mediaType: "application/n-triples",
+      syntaxName: "N-Triples",
+    });
+
+    await expect(
+      adapter.parse(
+        new StringDocumentSource("@prefix ex: <urn:test:> ."),
+        configuration(),
+      ),
+    ).rejects.toMatchObject({
+      code: "OWL_SYNTAX_ERROR",
+      syntax: "N-Triples",
     });
   });
 });

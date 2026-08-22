@@ -50,16 +50,23 @@ than the retained legacy pipeline, with every remaining difference justified
 per dimension in `compatibility/production-corpus-differences.json`.
 
 Phase 9 adds strict Turtle through one private, exact-format N3.js adapter. The
-dependency is loaded only after Turtle selection and emits only project-owned
-canonical RDF/JS values and errors across the seam. All 387 independently
-classified W3C RDF 1.1 and RDF 1.2 Turtle entries pass, N3-only constructs stay
-rejected, RDF 1.2 triple terms reach the explicit OWL reconstruction boundary,
-prefixes remain immutable document metadata, and direct/imported Turtle now
-flows through the production WebVOWL entry. N-Triples, N-Quads, TriG, and the
-broader N3 language remain unregistered. The legacy Turtle files remain
-unmoved and production-unreachable until the Phase 17 deletion. Entry-aware
-production chunking and a post-build static-import-closure verifier prove that
-N3.js remains outside the application's initial graph.
+dependency is loaded only after exact RDF syntax selection and emits only
+project-owned canonical RDF/JS values and errors across the seam. All 387
+independently classified W3C RDF 1.1 and RDF 1.2 Turtle entries pass, N3-only
+constructs stay rejected, RDF 1.2 triple terms reach the explicit OWL
+reconstruction boundary, prefixes remain immutable document metadata, and
+direct/imported Turtle flows through the production WebVOWL entry.
+
+Phases 10 and 11 add independently authored structural DL Syntax and KRSS2
+parsers. Phase 12 extends the same private N3.js boundary with a distinct strict
+N-Triples identity. All 99 independently classified W3C RDF 1.1 and RDF 1.2
+N-Triples entries pass; each statement is normalized to the default graph and
+N-Quads graph labels are rejected during bounded detection. Turtle and
+N-Triples share only the project-owned RDF/JS-to-OWL publication seam. N-Quads,
+TriG, and the broader N3 language remain unregistered. The retained legacy
+files remain unmoved and production-unreachable until the Phase 17 deletion.
+Entry-aware production chunking and a post-build static-import-closure verifier
+prove that N3.js remains outside the application's initial graph.
 
 ADR 0002 prioritizes the shared RDF-to-OWL foundation, RDF/XML, early
 development-app integration, production cutover, and strict Turtle before the

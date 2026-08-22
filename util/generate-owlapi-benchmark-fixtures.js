@@ -55,15 +55,20 @@ const generators = Object.freeze({
     return `@prefix : <urn:owlapi-js:benchmark:> .\n@prefix owl: <http://www.w3.org/2002/07/owl#> .\n${declarations}\n`;
   },
 
+  ntriples({ count }) {
+    return repeated(
+      count,
+      (index) =>
+        `<urn:owlapi-js:benchmark:ntriples#C${index}> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .`,
+    );
+  },
+
   dl({ count }) {
     return repeated(count, (index) => `C${index} ⊑ Parent${index}`);
   },
 
   krss2({ count }) {
-    return repeated(
-      count,
-      (index) => `(implies C${index} Parent${index})`,
-    );
+    return repeated(count, (index) => `(implies C${index} Parent${index})`);
   },
 
   "krss2-depth"({ depth }) {

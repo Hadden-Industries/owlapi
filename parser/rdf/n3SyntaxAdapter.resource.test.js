@@ -7,7 +7,10 @@ import {
   StringDocumentSource,
 } from "../../io/index.js";
 
-import { createTurtleSyntaxAdapter } from "./n3SyntaxAdapter.js";
+import {
+  createNTriplesSyntaxAdapter,
+  createTurtleSyntaxAdapter,
+} from "./n3SyntaxAdapter.js";
 
 const configuration = (values = {}) =>
   new OWLOntologyLoaderConfiguration(values);
@@ -17,6 +20,17 @@ const twoQuads = `@prefix ex: <urn:test:> .
   ex:s ex:first "one" ; ex:second "two" .`;
 
 describe("N3SyntaxAdapter security and finite resources", () => {
+  it("attributes shared resource failures to the selected syntax", async () => {
+    const adapter = createNTriplesSyntaxAdapter();
+
+    await expect(
+      adapter.parse(
+        source("<urn:s> <urn:p> <urn:o> ."),
+        configuration({ maxInputBytes: 1 }),
+      ),
+    ).rejects.toThrow("The N-Triples input byte limit was exceeded");
+  });
+
   it("enforces input, lexer-token, quad, blank-node, and token-length limits", async () => {
     const adapter = createTurtleSyntaxAdapter();
 

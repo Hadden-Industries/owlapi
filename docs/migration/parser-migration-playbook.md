@@ -323,14 +323,35 @@ do not append chronology here.
   Long-classpath oracle tooling must select compiler and runtime entry points
   independently.
 
-## Next migration: Phase 12 N-Triples
+## Phase 12 N-Triples evidence
 
-- Add a distinct strict N-Triples descriptor over the private N3.js adapter; do
-  not treat Turtle recognition as generic N3-language support.
-- Classify the pinned W3C RDF 1.1 and RDF 1.2 N-Triples corpora independently,
-  preserving exact positive, negative, approval, and manifest evidence.
-- Normalize every parsed statement to the default graph and prove that graph
-  selection/loss policy remains explicit before shared RDF-to-OWL translation.
-- Complete bounded detection, resource/cancellation behavior, direct and import
-  manager paths, WebVOWL conversion, cross-format structure, performance,
-  provenance, and the learning record before the Phase 12 checkpoint.
+- Keep the public media type (`application/n-triples`) distinct from the
+  dependency's exact implementation selector (`N-Triples`). A private adapter
+  must configure both its stream parser and any injected lexer; configuring
+  only the parser can silently re-enable Turtle directives.
+- Classify the pinned W3C RDF 1.1 and RDF 1.2 N-Triples corpora independently.
+  Phase 12 embeds 99 entries: 48 accepted documents and 51 required syntax
+  failures.
+- Normalize every accepted statement to the RDF/JS default graph at the private
+  boundary. Ignore prefix events for this prefix-free syntax and reject
+  N-Quads graph labels, including labels after RDF 1.2 triple-term objects,
+  during bounded detection.
+- Prefer the narrower N-Triples descriptor before Turtle when content matches
+  both grammars, while preserving decisive Turtle-directive negatives. Exact
+  content types still select their declared syntax before heuristic detection.
+- Share only the syntax-independent RDF-dataset publication seam. Parser
+  identity, lexer policy, diagnostics, document format, prefix policy, and
+  graph policy remain syntax-specific.
+
+## Next migration: Phase 13 N-Quads
+
+- Add an independent dataset-format descriptor and classification; do not
+  weaken N-Triples or Turtle in order to accept graph labels.
+- Classify the pinned W3C RDF 1.1 and RDF 1.2 N-Quads corpora independently,
+  including RDF 1.2 triple-term graph cases and exact negative syntax evidence.
+- Define named-graph selection and loss explicitly before RDF-to-OWL
+  reconstruction. Phase 12's forced default-graph normalization is an
+  N-Triples invariant, not a reusable N-Quads policy.
+- Reuse the private N3.js implementation only behind an exact N-Quads format
+  policy and repeat the resource, cancellation, differential, integration,
+  performance, provenance, and learning gates before the Phase 13 checkpoint.

@@ -498,10 +498,10 @@ The large fixture contains 50,000 DL subclass axioms. The depth fixture
 contains 256 nested quantified restrictions and reaches 512 governed expression
 levels when both the restriction and its filler are counted.
 
-| New Phase 10 signal | Median wall time (ms) | Median peak heap delta (bytes) |
-| --- | ---: | ---: |
-| `generated-dl-large` | 1,934.59 | 207,904,776 |
-| `generated-dl-depth` | 76.03 | 26,372,760 |
+| New Phase 10 signal  | Median wall time (ms) | Median peak heap delta (bytes) |
+| -------------------- | --------------------: | -----------------------------: |
+| `generated-dl-large` |              1,934.59 |                    207,904,776 |
+| `generated-dl-depth` |                 76.03 |                     26,372,760 |
 
 These are the first accepted DL Syntax throughput and depth signals, so no
 earlier DL baseline exists for threshold comparison. The parser cooperatively
@@ -521,11 +521,11 @@ order. Both sides use the current source revision, runtime, dependency tree,
 fixtures, sampling protocol, and process. The only controlled difference is the
 DL descriptor.
 
-| Existing signal | Phase 9 registry wall / heap delta | Phase 10 registry wall / heap delta | Wall change | Heap-delta change |
-| --- | ---: | ---: | ---: | ---: |
-| `generated-functional-large` | 1,084.86 ms / 125,975,024 bytes | 1,094.62 ms / 126,539,728 bytes | +0.90% | +0.45% |
-| `generated-functional-depth` | 337.46 ms / 49,561,384 bytes | 335.03 ms / 49,578,736 bytes | -0.72% | +0.04% |
-| `generated-mismatch-large` | 9.87 ms / 33,656 bytes | 11.16 ms / 34,824 bytes | +13.10% | +3.47% |
+| Existing signal              | Phase 9 registry wall / heap delta | Phase 10 registry wall / heap delta | Wall change | Heap-delta change |
+| ---------------------------- | ---------------------------------: | ----------------------------------: | ----------: | ----------------: |
+| `generated-functional-large` |    1,084.86 ms / 125,975,024 bytes |     1,094.62 ms / 126,539,728 bytes |      +0.90% |            +0.45% |
+| `generated-functional-depth` |       337.46 ms / 49,561,384 bytes |        335.03 ms / 49,578,736 bytes |      -0.72% |            +0.04% |
+| `generated-mismatch-large`   |             9.87 ms / 33,656 bytes |             11.16 ms / 34,824 bytes |     +13.10% |            +3.47% |
 
 Every paired wall-time and peak-heap-delta change is within the unchanged 20%
 release threshold. The mismatch input is 16 MiB of unrelated text and therefore
@@ -549,10 +549,10 @@ resource ceiling, accepted earlier baseline, or regression threshold.
 The large fixture contains 50,000 KRSS2 implication axioms. The depth fixture
 contains 256 nested existential restrictions.
 
-| New Phase 11 signal | Median wall time (ms) | Median peak heap delta (bytes) |
-| --- | ---: | ---: |
-| `generated-krss2-large` | 820.87 | 212,404,960 |
-| `generated-krss2-depth` | 75.19 | 21,017,296 |
+| New Phase 11 signal     | Median wall time (ms) | Median peak heap delta (bytes) |
+| ----------------------- | --------------------: | -----------------------------: |
+| `generated-krss2-large` |                820.87 |                    212,404,960 |
+| `generated-krss2-depth` |                 75.19 |                     21,017,296 |
 
 These are the first accepted KRSS2 throughput and depth signals, so no earlier
 KRSS2 baseline exists for threshold comparison. The large run also exercises
@@ -566,13 +566,87 @@ list with KRSS2 inserted at production priority 16. Both sides use the current
 source revision, runtime, dependency tree, generated fixtures, sampling
 protocol, and process; the KRSS2 descriptor is the only controlled difference.
 
-| Existing signal | Phase 10 registry wall / heap delta | Phase 11 registry wall / heap delta | Wall change | Heap-delta change |
-| --- | ---: | ---: | ---: | ---: |
-| `generated-functional-large` | 1,107.03 ms / 137,390,056 bytes | 496.48 ms / 128,497,136 bytes | -55.15% | -6.47% |
-| `generated-functional-depth` | 152.54 ms / 49,565,824 bytes | 152.96 ms / 49,579,072 bytes | +0.28% | +0.03% |
-| `generated-mismatch-large` | 7.31 ms / 34,408 bytes | 7.38 ms / 35,456 bytes | +0.85% | +3.05% |
+| Existing signal              | Phase 10 registry wall / heap delta | Phase 11 registry wall / heap delta | Wall change | Heap-delta change |
+| ---------------------------- | ----------------------------------: | ----------------------------------: | ----------: | ----------------: |
+| `generated-functional-large` |     1,107.03 ms / 137,390,056 bytes |       496.48 ms / 128,497,136 bytes |     -55.15% |            -6.47% |
+| `generated-functional-depth` |        152.54 ms / 49,565,824 bytes |        152.96 ms / 49,579,072 bytes |      +0.28% |            +0.03% |
+| `generated-mismatch-large`   |              7.31 ms / 34,408 bytes |              7.38 ms / 35,456 bytes |      +0.85% |            +3.05% |
 
 Every paired regression is within the unchanged 20% release threshold. The
 16 MiB unrelated-text control also confirms that adding KRSS2 retains bounded
 detection. Phase 11 changes no resource ceiling, historical baseline, or
 regression threshold.
+
+## Phase 12 strict N-Triples baseline
+
+- Pre-Phase-12 revision: `f94bd057`, the signed Phase 11 checkpoint.
+- Measurement date: 22 August 2026.
+- Environment: Windows `10.0.26200` x64, Node.js `v24.19.0`, 12th Gen
+  Intel Core i9-12900K (24 logical CPUs), 34,053,869,568 bytes system memory.
+- Dependency identity: `package-lock.json` SHA-256
+  `bbd8a2a632a5b3aa4a9d0c182d7b3176e1c540d5d6bdd47e170c52d7737f93a5`.
+- Command: `node --expose-gc util/benchmark-owlapi-ntriples.mjs`.
+- Protocol: generator `owlapi-benchmark-corpus-v1`; one warm-up and five
+  measured runs; median aggregation; garbage collection requested before each
+  run; heap and event-loop responsiveness sampled every 5 ms. The accepted run
+  passed the idle-machine guard.
+
+The new fixture contains 50,000 N-Triples statements in 6,588,889 bytes.
+Syntax-only measurements end at the canonical RDF/JS dataset boundary; the
+end-to-end measurement continues through parser selection, forced default-graph
+normalization, shared RDF-to-OWL reconstruction, and ontology publication.
+
+| Signal                                                | Chunk bytes | Median wall (ms) | Median peak-heap delta (bytes) | Median max event-loop delay (ms) |
+| ----------------------------------------------------- | ----------: | ---------------: | -----------------------------: | -------------------------------: |
+| N-Triples first use, 100 declarations                 |      65,536 |            33.09 |                      4,414,880 |                            11.10 |
+| `generated-ntriples-large.syntax-to-rdf.chunk-16384`  |      16,384 |         6,590.69 |                    129,383,936 |                            20.71 |
+| `generated-ntriples-large.syntax-to-rdf.chunk-65536`  |      65,536 |         1,134.20 |                    158,772,064 |                            20.15 |
+| `generated-ntriples-large.syntax-to-rdf.chunk-262144` |     262,144 |           803.45 |                    180,237,856 |                            35.00 |
+| `generated-ntriples-large.end-to-end`                 |      65,536 |         2,296.51 |                    315,912,328 |                         1,127.70 |
+
+The retained 65,536-byte default keeps the measured syntax-adapter scheduling
+interval at 20.15 ms and avoids the 21.5 MiB additional peak-heap delta of the
+256 KiB path. The 16 KiB path has substantially lower throughput for this
+line-oriented implementation. No chunk size or resource limit changes.
+
+As in the Phase 9 Turtle baseline, the end-to-end event-loop delay is not an
+adapter scheduling result. The syntax-only path stays at 20.15 ms, while the
+shared RDF-to-OWL publication step produces a 1,127.70 ms interval, consistent
+with Turtle's accepted 1,133.96 ms interval for the same 50,000-axiom shape.
+Phase 12 therefore records the existing shared cost without weakening the
+adapter's bounded input and cooperative-yield contract.
+
+### Same-revision registry controls
+
+The benchmark constructs the Phase 11 descriptor list and the same list with
+N-Triples inserted at production priority 24. Both sides use the current source
+revision, runtime, dependency tree, generated fixtures, sampling protocol, and
+process; the N-Triples descriptor is the only controlled difference.
+
+| Existing signal              | Phase 11 registry wall / heap delta | Phase 12 registry wall / heap delta | Wall change | Heap-delta change |
+| ---------------------------- | ----------------------------------: | ----------------------------------: | ----------: | ----------------: |
+| `generated-functional-large` |       468.93 ms / 130,666,360 bytes |       467.56 ms / 134,002,760 bytes |      -0.29% |            +2.55% |
+| `generated-mismatch-large`   |             13.17 ms / 35,760 bytes |             13.99 ms / 39,608 bytes |      +6.22% |           +10.76% |
+
+Every paired regression is within the unchanged 20% release threshold. The
+16 MiB unrelated-text control also confirms that adding N-Triples retains
+bounded detection. Phase 12 changes no dependency, resource ceiling,
+historical baseline, or regression threshold.
+
+### Production application graph
+
+The Phase 12 production build and static-import-closure verifier measure the
+shared lazy implementation after both exact RDF syntax descriptors are
+registered:
+
+| Production application graph | Chunks | Minified bytes | Gzip bytes |
+| ---------------------------- | -----: | -------------: | ---------: |
+| Initial static closure       |      3 |        669,223 |    168,905 |
+| Lazy RDF-syntax closure      |      3 |        187,021 |     52,560 |
+
+Relative to the accepted Phase 9 production graph, the initial closure is
+30,195 minified bytes (+4.72%) and 8,673 gzip bytes (+5.41%) larger, both within
+the unchanged 20% threshold. The lazy N3.js closure is effectively unchanged.
+The verifier proves the implementation marker remains absent from every
+statically reachable initial chunk and present only behind the shared dynamic
+RDF-syntax boundary.
