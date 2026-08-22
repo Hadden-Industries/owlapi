@@ -456,48 +456,40 @@ do not append chronology here.
   without manufacturing structural declarations or syntax-specific rules.
 - Keep JSON-LD serialization and every other concrete RDF storer out of Phase 16. Phase 15's from-RDF register remains explicitly non-applicable.
 
-## Next migration: Phase 17 original KRSS / KRSS1
+## Completed Phase 17 method: original KRSS / KRSS1
 
-- Treat `KRSSOWLParser`/KRSS1 and `KRSS2OWLParser`/KRSS2 as separate public
-  parser, descriptor, format, detection, diagnostic, fixture, and oracle
-  surfaces. A shared lexer does not imply one union parser or one public
-  identity.
-- Deepen the KRSS module around genuinely dialect-neutral grammar machinery,
-  then keep thin KRSS1 and KRSS2 adapters responsible for their exact top-level
-  productions, format identity, diagnostics, and detection policy. Refactoring
-  the completed KRSS2 path must be behavior-preserving and protected before new
-  KRSS1 productions are added.
-- Freeze a finite KRSS1 grammar inventory before implementation. Probe public
-  OWLAPI behavior through `KRSSOWLParser`, especially definition consistency,
-  role super-properties and `:right-identity`, TBox-before-ABox ordering,
-  delimiters, reserved words, and optional section terminators; do not copy its
-  implementation algorithm or silently preserve a no-op production.
-- Keep evidence classes explicit: project-owned positive grammar fixtures,
-  historical adjacent-dialect fixtures, extended-KRSS negatives, converted
-  real-ontology fixtures, and a future first-party strict historical corpus.
-  The strict provenance review verified zero qualifying artifacts in the last
-  class for both KRSS1 and KRSS2, so no projection, reconstructed snippet, or
-  adjacent dialect may be presented as an original historical corpus.
-- Record that zero-corpus result in the Phase 17 machine-readable conformance
-  register. An empty qualifying corpus is evidence about availability, not a
-  waiver of grammar, differential, structural-equivalence, security, resource,
-  integration, or performance gates.
-- Explicit format selection is exact. Definite KRSS2-only vocabulary is
-  `NO_MATCH` for KRSS1 and `MATCH` for KRSS2. Shared-only syntax is
-  dialect-ambiguous; for a generic unresolved `.krss` hint, try the narrower
-  KRSS1 descriptor before KRSS2. Once a syntax is claimed, malformed or
-  unsupported input is a recognized-format failure and must not fall through
-  to another ontology syntax.
-- Verify explicit selection, automatic detection, import-closure loading,
-  WebVOWL conversion, cross-syntax structural equivalence, Java structural
-  snapshots, typed diagnostics, resource ceilings, browser/Node execution, and
-  unchanged registry performance. KRSS1 must not be advertised until all gates
-  pass.
-- Complete the Phase 17 lesson record and update this playbook before the Git
-  checkpoint. Keep historical Phase 11 records unchanged; they correctly
-  describe the earlier deferred checkpoint.
+- Treat shared syntax as dialect ambiguity, not positive identification. Give
+  exact media types authority, `.krss2` an exact KRSS2 hint, and a generic
+  `.krss` hint an explicit narrower-first KRSS1 preference. Store that
+  preference as bounded detection evidence so it cannot depend on descriptor
+  insertion order.
+- Preserve completed sibling behavior before extracting a shared core. The
+  KRSS2 grammar, diagnostics, registry, resource, integration, differential,
+  and benchmark controls stayed green before and after the extraction.
+- Separate declared grammar from black-box structural behavior. The pinned
+  KRSS1 parser exposed unreachable integer cardinalities, discarded accepted
+  ABox axioms, malformed bare-name bases, singleton Boolean objects outside the
+  OWL 2 structural invariant, and a consumed/no-effect `:right-identity` clause.
+  Record each observation and decision individually; never turn a Java defect
+  into an undocumented JavaScript quirk.
+- When a legacy production has no justified OWL structural mapping, consuming
+  it without inventing semantics can be the correct compatibility choice.
+  Conversely, when a production explicitly returns an OWL axiom and the
+  whole-document loop merely drops it, retain the intended axiom and govern the
+  correction.
+- Keep project grammar probes, adjacent dialects, extended-dialect negatives,
+  converted real ontologies, and first-party historical corpora as separate
+  evidence classes. A verified zero qualifying corpus is a machine-readable
+  result, not a reason to weaken grammar, oracle, integration, resource, or
+  performance gates.
+- Cross-format structural evidence can use the smallest subset every format
+  expresses cleanly. Filter incidental declarations, then require exact axiom
+  keys across KRSS1, KRSS2, Functional, Manchester, OWL/XML, RDF/XML, Turtle,
+  and DL.
+- Keep recognized-format failures fatal. Once the narrower KRSS1 candidate
+  claims generic `.krss`, malformed content must not be retried under KRSS2.
 
-## Following repository gates
+## Next repository gate: Phase 18 physical legacy deletion
 
 - Phase 18 re-runs the retained-reference and production no-reachability audits
   before deleting any legacy file. Phase 8 already removed production wiring,

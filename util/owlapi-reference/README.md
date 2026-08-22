@@ -130,6 +130,23 @@ java -cp util/owlapi-reference/target RunWithClasspath <classpath-file> util/owl
 java -cp util/owlapi-reference/target RunWithClasspath <classpath-file> util/owlapi-reference/target GenerateKRSS2SyntaxSnapshot util/owlapi-reference/fixtures/krss2/phase11-structural.krss2 urn:test:phase10
 ```
 
+The Phase 17 original-KRSS reference set is under `fixtures/krss1/`.
+`GenerateKRSS1SyntaxSnapshot` invokes `KRSSOWLParser` directly against a named
+ontology so its bare-name behavior is deterministic and observable. The main
+fixture pins the Java-reachable TBox subset; its accepted ABox statements are
+absent from the Java snapshot because OWLAPI 5.5.1 discards their returned
+axioms. Separate project-owned probes preserve evidence for cardinality token
+shadowing, singleton Boolean objects, and the unreachable full-IRI token. Every
+preserved behavior and controlled correction is enumerated in
+`docs/owlapi-js/compatibility/krss1-behavioral-oracle.json`.
+
+Compile and run it through the same long-classpath launcher:
+
+```text
+java -cp util/owlapi-reference/target RunWithClasspath <classpath-file> util/owlapi-reference/target com.sun.tools.javac.Main -d util/owlapi-reference/target util/owlapi-reference/GenerateStructuralSnapshot.java util/owlapi-reference/GenerateKRSS1SyntaxSnapshot.java
+java -cp util/owlapi-reference/target RunWithClasspath <classpath-file> util/owlapi-reference/target GenerateKRSS1SyntaxSnapshot util/owlapi-reference/fixtures/krss1/phase17-structural.krss urn:test:phase17
+```
+
 ## Phase 16 OWL-to-RDF graph oracle
 
 `GenerateRdfGraph.java` loads a structural ontology with the pinned public

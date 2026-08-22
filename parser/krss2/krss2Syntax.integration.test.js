@@ -23,17 +23,17 @@ describe("KRSS2 manager integration", () => {
     ).toHaveProperty("size", 1);
   });
 
-  it("does not expose KRSS1 before its Phase 17 parser is implemented", async () => {
+  it("keeps the KRSS1 explicit format separate from KRSS2", async () => {
     const manager = OWLManager.createOWLOntologyManager();
 
-    await expect(
-      manager.loadOntologyFromOntologyDocument(
-        "(define-concept Person Human)",
-        new OWLOntologyLoaderConfiguration({
-          format: OWLDocumentFormats.KRSS1,
-        }),
-      ),
-    ).rejects.toThrow(/No parser is registered for format: krss1/);
+    const result = await manager.loadOntologyGraphFromOntologyDocument(
+      "(define-concept Person Human)",
+      new OWLOntologyLoaderConfiguration({
+        format: OWLDocumentFormats.KRSS1,
+      }),
+    );
+
+    expect(result.documents[0].context.format).toBe(OWLDocumentFormats.KRSS1);
   });
 
   it("loads KRSS2 inside a Functional Syntax import closure", async () => {

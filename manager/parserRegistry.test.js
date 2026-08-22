@@ -139,4 +139,28 @@ describe("OWLParserRegistry", () => {
       "a_2",
     ]);
   });
+
+  it("honors an explicit semantic preference before static priority", () => {
+    const descriptor = (id, format, priority, selectionPriority) =>
+      new ParserDescriptor({
+        createParser: () => ({}),
+        detect: () => ({
+          ...detection("INDETERMINATE", "AMBIGUOUS_DIALECT"),
+          selectionPriority,
+        }),
+        format,
+        id,
+        priority,
+      });
+    const registry = new OWLParserRegistry([
+      descriptor("static-first", OWLDocumentFormats.MANCHESTER, 1, 1),
+      descriptor("semantic-first", OWLDocumentFormats.FUNCTIONAL, 2, 0),
+    ]);
+
+    expect(
+      registry
+        .resolveCandidates(new StringDocumentSource("ambiguous"))
+        .map(({ descriptor: { id } }) => id),
+    ).toEqual(["semantic-first", "static-first"]);
+  });
 });

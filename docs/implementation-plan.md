@@ -107,7 +107,7 @@ The project has ported or implemented substantial parsing logic for:
 - JSON-LD;
 - RDF/XML processing/fallback logic.
 
-A parser-surface audit against OWLAPI 5 also reveals one important **compatibility gap that WebVOWL has not yet implemented**: original **KRSS / KRSS1**. OWLAPI exposes `KRSSOWLParser` (`org.semanticweb.owlapi.krss1.parser`) and `KRSS2OWLParser` (`org.semanticweb.owlapi.krss2.parser`) as distinct `OWLParser` implementations, with distinct KRSS and KRSS2 document-format factories. `owlapi-js` **MUST** represent and implement KRSS1 explicitly as a `REQUIRED_V1` capability in Phase 17. Its distinct format identity and initial grammar-gap architecture were completed in Phase 11; Phase 17 adds the executable parser without turning KRSS2 into a generic KRSS alias. This gap is a useful warning: the authoritative parser inventory must come from OWLAPI itself, not only from the formats WebVOWL already happens to contain.
+A parser-surface audit against OWLAPI 5 revealed one important **compatibility gap that WebVOWL had not implemented**: original **KRSS / KRSS1**. OWLAPI exposes `KRSSOWLParser` (`org.semanticweb.owlapi.krss1.parser`) and `KRSS2OWLParser` (`org.semanticweb.owlapi.krss2.parser`) as distinct `OWLParser` implementations, with distinct KRSS and KRSS2 document-format factories. `owlapi-js` represents and implements KRSS1 explicitly as a `REQUIRED_V1` capability in Phase 17. Its distinct format identity and initial grammar-gap architecture were completed in Phase 11; Phase 17 adds the executable parser without turning KRSS2 into a generic KRSS alias. This gap is a useful warning: the authoritative parser inventory must come from OWLAPI itself, not only from the formats WebVOWL already happens to contain.
 
 That work contains valuable, hard-won implementation knowledge. In particular, the existing differential corpus exposed silent language-tag loss, permissive-parser false positives, XML parser semantic differences, invalid blank-node serialization, unresolved XML entities, and catastrophic eager-tokenization memory behaviour.
 
@@ -767,7 +767,7 @@ The broader lesson is critical to the whole extraction: **do not measure parser 
 | `owlXmlParser.js`           | OWL/XML → RDF/XML                 | Rewrite emission to structural model; keep XML-specific helpers                                                                                                                                                                                      |
 | `dlSyntaxParser.js`         | DL → RDF/XML                      | Retarget to structural model                                                                                                                                                                                                                         |
 | `krss2SyntaxParser.js`      | KRSS2 → RDF/XML                   | Retarget to shared KRSS structural parser core + strict KRSS2 dialect adapter                                                                                                                                                                        |
-| _(not currently present)_   | original KRSS / KRSS1             | Implement in Phase 17 as a distinct adapter over only genuinely shared KRSS grammar machinery; retain its own format, detection, diagnostics, fixtures and Java behavioural-oracle surface                                                                    |
+| `src/owlapi-js/parser/krss1/` | original KRSS / KRSS1           | Completed in Phase 17 as a distinct adapter over only genuinely shared KRSS machinery, with its own format, detection, diagnostics, fixtures and Java behavioural-oracle surface                                                                               |
 | `turtleParser.js`           | Turtle → triples via N3           | Replace with separate N3.js-backed RDF/JS format identities/adapters for Turtle, TriG, N-Triples and N-Quads; keep broader N3 language ingestion `DEFERRED`                                                                                          |
 | `jsonLdParser.js`           | JSON-LD → triples                 | Replace/thin into Digital Bazaar `jsonld.js` adapter; translate its RDF dataset directly to RDF/JS; inject/restrict remote document loading                                                                                                          |
 | `rdfParser.js`              | RDF/XML + OWL/RDF + VOWL monolith | Decompose; do not move monolith intact                                                                                                                                                                                                               |
@@ -1678,10 +1678,10 @@ KRSS1 and KRSS2 **MUST** remain distinct compatibility identities because Java O
 For v1, the capability matrix **MUST** classify:
 
 ```text
-KRSS1 parser implementation             REQUIRED_V1 — Phase 17
+KRSS1 parser implementation             REQUIRED_V1 — complete in Phase 17
 KRSS1 compatibility identity            REQUIRED_V1 — complete in Phase 11
 KRSS1/KRSS2 grammar-gap analysis        REQUIRED_V1 — Phase 11 evidence revalidated in Phase 17
-KRSS1 fixtures / negative dialect tests REQUIRED_V1 — Phase 17
+KRSS1 fixtures / negative dialect tests REQUIRED_V1 — complete in Phase 17
 shared KRSS core + distinct adapters     REQUIRED_V1 — Phase 17
 ```
 
@@ -3453,6 +3453,14 @@ reachable before the complete gate passes. At gate closure,
 `parser.krss1.progress` changes from `NOT_STARTED` to `COMPLETE`, and the team
 pauses for the requested Git checkpoint before any legacy deletion begins.
 
+Phase 17 closed this gate on 22 August 2026. Its executable evidence is the
+KRSS1 grammar/detection/differential/resource/integration suite, the preserved
+KRSS2 suite, `GenerateKRSS1SyntaxSnapshot.java`, the finite
+`krss1-behavioral-oracle.json`, `krss-corpus-register.json`, the accepted
+same-revision benchmark in `performance/baseline.md`, and lesson record
+`migration/lessons/016-krss1.md`. The requested Git checkpoint remains the
+boundary before Phase 18.
+
 ### 17.25 Phase 18 — remove the retained legacy pipeline
 
 Delete the legacy parsers, RDF/XML bridge/serializer,
@@ -4658,9 +4666,9 @@ the completed OWL/XML batch and the later DL/KRSS batches:
 - [x] KRSS2/KRSS-family → structural model; complete learning gate.
 - [x] Inventory KRSS/KRSS1 as a distinct OWLAPI parser/factory/format compatibility surface.
 - [x] Establish the Phase 11 KRSS1/KRSS2 grammar-gap and negative-dialect evidence.
-- [ ] Implement the distinct `REQUIRED_V1` KRSS1 parser in Phase 17 over only genuinely shared KRSS machinery.
-- [ ] Record the zero qualifying historical-corpus result and keep all five KRSS fixture/evidence classes distinct.
-- [ ] Complete explicit/automatic/dialect-ambiguity, Java differential, structural-equivalence, resource, WebVOWL, performance and learning gates before advertising KRSS1.
+- [x] Implement the distinct `REQUIRED_V1` KRSS1 parser in Phase 17 over only genuinely shared KRSS machinery.
+- [x] Record the zero qualifying historical-corpus result and keep all five KRSS fixture/evidence classes distinct.
+- [x] Complete explicit/automatic/dialect-ambiguity, Java differential, structural-equivalence, resource, WebVOWL, performance and learning gates before advertising KRSS1.
 - [ ] Preserve lazy tokenization.
 - [ ] Preserve exact language-tag/token rules.
 - [ ] Strict unsupported constructs throw typed errors.

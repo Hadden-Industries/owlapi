@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "historicalCorpus": {
+    "status": "NO_QUALIFYING_PUBLIC_ARTIFACT_VERIFIED",
+    "qualifyingArtifactCount": 0,
+    "criteria": [
+      "community value",
+      "preserved source bytes",
+      "first-party maintenance or authorship in the claimed dialect",
+      "exact dialect identification",
+      "credible release history",
+      "lawful public redistribution"
+    ]
+  },
+  "evidenceClasses": [
+    {
+      "id": "PROJECT_OWNED_POSITIVE_GRAMMAR_FIXTURES",
+      "historicalCorpus": false,
+      "artifacts": [
+        "util/owlapi-reference/fixtures/krss1/phase17-structural.krss",
+        "util/owlapi-reference/fixtures/krss1/phase17-cardinality.krss",
+        "util/owlapi-reference/fixtures/krss1/phase17-singleton-boolean.krss",
+        "util/owlapi-reference/fixtures/krss1/phase17-full-iri.krss"
+      ]
+    },
+    {
+      "id": "HISTORICAL_ADJACENT_DIALECT_FIXTURES",
+      "historicalCorpus": false,
+      "artifacts": [],
+      "note": "No adjacent artifact is redistributed merely to populate this class."
+    },
+    {
+      "id": "EXTENDED_KRSS2_NEGATIVE_FIXTURES",
+      "historicalCorpus": false,
+      "artifacts": [
+        "util/owlapi-reference/fixtures/krss1/negative/krss2-implies.krss2"
+      ]
+    },
+    {
+      "id": "CONVERTED_REAL_ONTOLOGY_FIXTURES",
+      "historicalCorpus": false,
+      "artifacts": []
+    },
+    {
+      "id": "FUTURE_FIRST_PARTY_STRICT_HISTORICAL_CORPUS",
+      "historicalCorpus": true,
+      "artifacts": []
+    }
+  ]
+}

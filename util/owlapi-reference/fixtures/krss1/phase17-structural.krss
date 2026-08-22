@@ -1,0 +1,13 @@
+(define-primitive-concept Person Mammal)
+(define-concept Parent (and Person (some hasChild Person)))
+(define-concept Guardian (or Parent (not Robot)))
+(define-concept Responsible (all hasChild Person))
+(define-primitive-role hasChild hasRelative :right-identity identityRole)
+(transitive hasRelative)
+(range hasChild Person)
+end-tbox
+(instance alice Parent)
+(related alice hasChild bob)
+(equal alice aliceAlias)
+(distinct alice bob)
+end-abox

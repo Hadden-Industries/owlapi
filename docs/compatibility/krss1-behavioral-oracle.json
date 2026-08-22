@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "oracle": {
+    "name": "OWLAPI KRSSOWLParser",
+    "version": "5.5.1",
+    "revision": "d7e997a53b470e32700de89cc610d9daf01ea769"
+  },
+  "decisions": [
+    {
+      "id": "KRSS1-RIGHT-IDENTITY-CONSUMED-NO-AXIOM",
+      "javaObservation": "ACCEPTED_NO_STRUCTURAL_EFFECT",
+      "javascriptBehavior": "ACCEPTED_NO_STRUCTURAL_EFFECT",
+      "classification": "COMPATIBILITY_PRESERVED",
+      "fixture": "util/owlapi-reference/fixtures/krss1/phase17-structural.krss",
+      "rationale": "The legacy clause has no justified OWL structural mapping; inventing a property-chain axiom would misrepresent the original parser contract."
+    },
+    {
+      "id": "KRSS1-ABOX-AXIOMS-PRESERVED",
+      "javaObservation": "ACCEPTED_STATEMENTS_DISCARDED",
+      "javascriptBehavior": "ACCEPTED_AXIOMS_EMITTED",
+      "classification": "CONTROLLED_COMPATIBILITY_CORRECTION",
+      "fixture": "util/owlapi-reference/fixtures/krss1/phase17-structural.krss",
+      "rationale": "The public grammar returns ClassAssertion, ObjectPropertyAssertion, SameIndividual and DifferentIndividuals axioms, but the Java whole-document production fails to add them to the ontology."
+    },
+    {
+      "id": "KRSS1-CARDINALITY-INTEGER-TOKEN",
+      "javaObservation": "REJECTED_INTEGER_AS_NAME",
+      "javascriptBehavior": "ACCEPTED_PER_PUBLISHED_GRAMMAR",
+      "classification": "CONTROLLED_COMPATIBILITY_CORRECTION",
+      "fixture": "util/owlapi-reference/fixtures/krss1/phase17-cardinality.krss",
+      "rationale": "OWLAPI's NAME token shadows INT, making all three published cardinality productions unreachable. JavaScript retains the declared at-least, at-most and exactly grammar with required fillers."
+    },
+    {
+      "id": "KRSS1-NAMED-ONTOLOGY-BASE",
+      "javaObservation": "BARE_NAMES_PREFIXED_WITH_OPTIONAL_STRING",
+      "javascriptBehavior": "BARE_NAMES_RESOLVED_AGAINST_DOCUMENT_IRI",
+      "classification": "CONTROLLED_COMPATIBILITY_CORRECTION",
+      "fixture": "util/owlapi-reference/fixtures/krss1/phase17-structural.krss",
+      "rationale": "Document-relative resolution produces valid stable IRIs; the Java Optional[...] prefix is an implementation artifact, not KRSS syntax."
+    },
+    {
+      "id": "KRSS1-SINGLETON-BOOLEAN",
+      "javaObservation": "ACCEPTED_NONCONFORMING_SINGLETON_OBJECT",
+      "javascriptBehavior": "REJECTED_WITH_OWL_SYNTAX_ERROR",
+      "classification": "CONTROLLED_STRUCTURAL_MODEL_CORRECTION",
+      "fixture": "util/owlapi-reference/fixtures/krss1/phase17-singleton-boolean.krss",
+      "rationale": "OWL 2 structural ObjectIntersectionOf and ObjectUnionOf require at least two operands; the Java implementation exposes a singleton object outside that invariant."
+    },
+    {
+      "id": "KRSS1-FULL-IRI-TOKEN-UNREACHABLE",
+      "javaObservation": "REJECTED_BY_NAME_PRODUCTION",
+      "javascriptBehavior": "REJECTED_BY_NAME_PRODUCTION",
+      "classification": "COMPATIBILITY_PRESERVED",
+      "fixture": "util/owlapi-reference/fixtures/krss1/phase17-full-iri.krss",
+      "rationale": "Although the lexer declares an IRI token, original-KRSS entity productions accept only alphanumeric Name tokens."
+    }
+  ]
+}

@@ -87,6 +87,18 @@ const generators = Object.freeze({
     return repeated(count, (index) => `(implies C${index} Parent${index})`);
   },
 
+  krss1({ count }) {
+    return repeated(
+      count,
+      (index) => `(define-primitive-concept C${index} Parent${index})`,
+    );
+  },
+
+  "krss1-depth"({ depth }) {
+    const normalizedDepth = requireCount(depth, "depth", 100000);
+    return `(define-concept Root ${"(some p ".repeat(normalizedDepth)}Leaf${")".repeat(normalizedDepth)})`;
+  },
+
   "krss2-depth"({ depth }) {
     const normalizedDepth = requireCount(depth, "depth", 100000);
     return `(implies Root ${"(some p ".repeat(normalizedDepth)}Leaf${")".repeat(normalizedDepth)})`;

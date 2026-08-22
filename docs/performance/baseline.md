@@ -937,3 +937,41 @@ public translator is intentionally synchronous, the benchmark reports honest
 wall and heap behavior rather than introducing artificial cooperative yields.
 Phase 16 adds no dependency, configuration, registry entry, production
 reachability, resource-ceiling change, or regression-threshold change.
+
+## Phase 17 original KRSS / KRSS1 baseline
+
+- Pre-Phase-17 revision: `6e31c273`, the signed Phase 17 plan checkpoint.
+- Measurement date: 22 August 2026.
+- Environment: Windows `10.0.26200` x64, Node.js `v24.19.0`, 12th Gen
+  Intel Core i9-12900K (24 logical CPUs), 34,053,869,568 bytes system memory.
+- Dependency identity: `package-lock.json` SHA-256
+  `bbd8a2a632a5b3aa4a9d0c182d7b3176e1c540d5d6bdd47e170c52d7737f93a5`.
+- Command: `node --expose-gc util/benchmark-owlapi-krss1.mjs`.
+- Protocol: generator `owlapi-benchmark-corpus-v1`; one warm-up and five
+  measured runs; median aggregation; garbage collection requested before each
+  run; heap sampled every 5 ms. The accepted run passed the idle-machine guard.
+
+| New Phase 17 signal                 | Median wall time | Median peak-heap delta |
+| ----------------------------------- | ---------------: | ---------------------: |
+| 50,000 primitive concepts           |        932.04 ms |      192,888,512 bytes |
+| 256 nested existential restrictions |         74.32 ms |       20,987,128 bytes |
+
+Both accepted KRSS1 workloads remain below the unchanged 30-second ceiling.
+The parser retains lazy tokenization, four-token bounded lookahead,
+cooperative yielding, and the same finite resource policies as KRSS2.
+
+### Same-revision registry controls
+
+The control contains every completed Phase 16 parser descriptor except KRSS1;
+the Phase 17 side adds only `owl-krss1`. Both sides otherwise share the same
+process, sources, dependency tree, generated inputs, and sampling protocol.
+
+| Existing signal              | Phase 16 registry wall / heap delta | Phase 17 registry wall / heap delta | Wall change | Heap-delta change |
+| ---------------------------- | ----------------------------------: | ----------------------------------: | ----------: | ----------------: |
+| `generated-functional-large` |     1,058.26 ms / 123,343,672 bytes |     1,025.88 ms / 123,732,184 bytes |      -3.06% |            +0.32% |
+| `generated-mismatch-large`   |             10.07 ms / 39,632 bytes |             10.27 ms / 40,520 bytes |      +1.96% |            +2.24% |
+
+Every paired signal remains inside the unchanged 20% release threshold. The
+16 MiB unrelated-text control also remains under the designated 64 KiB bounded
+selection heap ceiling. Phase 17 adds no dependency, resource-ceiling,
+historical-baseline, or regression-threshold change.

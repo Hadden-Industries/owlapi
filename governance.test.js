@@ -167,11 +167,34 @@ describe("owlapi-js governance artifacts", () => {
 
     expect(byId.get("parser.krss1")).toMatchObject({
       status: "REQUIRED_V1",
-      progress: "NOT_STARTED",
+      progress: "COMPLETE",
       phase: 17,
     });
     expect(byId.get("format.krss1.identity").status).toBe("REQUIRED_V1");
     expect(byId.get("parser.krss2").status).toBe("REQUIRED_V1");
+  });
+
+  it("keeps KRSS evidence classes separate from the empty historical corpus", () => {
+    const register = readJson(
+      "../../docs/owlapi-js/conformance/krss-corpus-register.json",
+    );
+
+    expect(register.historicalCorpus).toMatchObject({
+      qualifyingArtifactCount: 0,
+      status: "NO_QUALIFYING_PUBLIC_ARTIFACT_VERIFIED",
+    });
+    expect(register.evidenceClasses.map(({ id }) => id)).toEqual([
+      "PROJECT_OWNED_POSITIVE_GRAMMAR_FIXTURES",
+      "HISTORICAL_ADJACENT_DIALECT_FIXTURES",
+      "EXTENDED_KRSS2_NEGATIVE_FIXTURES",
+      "CONVERTED_REAL_ONTOLOGY_FIXTURES",
+      "FUTURE_FIRST_PARTY_STRICT_HISTORICAL_CORPUS",
+    ]);
+    expect(
+      register.evidenceClasses
+        .filter(({ historicalCorpus }) => historicalCorpus)
+        .flatMap(({ artifacts }) => artifacts),
+    ).toEqual([]);
   });
 
   it("defines every mandatory finite resource limit", () => {
@@ -345,7 +368,7 @@ describe("owlapi-js governance artifacts", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(paths).toEqual(productionModules);
     for (const record of records) {
-      expect([1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16]).toContain(
+      expect([1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17]).toContain(
         record.phase,
       );
       expect(manifest.provenanceCategories).toHaveProperty(
@@ -1108,6 +1131,12 @@ describe("owlapi-js governance artifacts", () => {
     );
     expect(generateBenchmarkFixture("krss2-depth", { depth: 2 })).toBe(
       "(implies Root (some p (some p Leaf)))",
+    );
+    expect(generateBenchmarkFixture("krss1", { count: 2 })).toContain(
+      "(define-primitive-concept C1 Parent1)",
+    );
+    expect(generateBenchmarkFixture("krss1-depth", { depth: 2 })).toBe(
+      "(define-concept Root (some p (some p Leaf)))",
     );
     expect(generateBenchmarkFixture("ntriples", { count: 2 })).toContain(
       "<urn:owlapi-js:benchmark:ntriples#C1>",

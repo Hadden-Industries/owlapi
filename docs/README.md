@@ -17,6 +17,10 @@ Authoritative machine-readable records:
   inventory for Tables 4 through 18.
 - `conformance/owl-to-rdf-mapping.json`: exhaustive canonical structural-model
   to RDF/JS mapping inventory completed in Phase 16.
+- `conformance/krss-corpus-register.json`: strict separation of KRSS fixture
+  classes and the verified zero qualifying historical-corpus result.
+- `compatibility/krss1-behavioral-oracle.json`: finite pinned Java observations
+  and controlled KRSS1 compatibility decisions.
 - `compatibility/expected-differences.json`: exact Java/JavaScript differential exceptions.
 - `dependency-governance.json`: selected dependency authority, risk, licence, and replacement records.
 
@@ -77,14 +81,15 @@ Entry-aware production chunking and a post-build static-import-closure verifier
 prove that N3.js remains outside the application's initial graph.
 
 Phase 14 completes strict TriG, Phase 15 completes JSON-LD ingestion through
-Digital Bazaar `jsonld.js`, and Phase 16 completes the exhaustive shared
-OWL-to-RDF translator. Original KRSS/KRSS1 is now a distinct `REQUIRED_V1`
-parser scheduled for Phase 17; its Phase 11 format identity remains
-unregistered until the complete parser gate passes. The strict provenance
-review found zero qualifying public first-party historical KRSS1/KRSS2 ontology
-artifacts, so Phase 17 keeps project grammar fixtures, adjacent dialects,
-extended-KRSS negatives, converted real ontologies, and any future qualifying
-historical corpus as separate evidence classes.
+Digital Bazaar `jsonld.js`, Phase 16 completes the exhaustive shared OWL-to-RDF
+translator, and Phase 17 completes the distinct original KRSS/KRSS1 parser.
+KRSS1 and KRSS2 now use separate adapters over bounded shared machinery;
+generic `.krss` ambiguity is KRSS1-first while exact `.krss2` and KRSS2-only
+vocabulary remain KRSS2. The strict provenance review found zero qualifying
+public first-party historical KRSS1/KRSS2 ontology artifacts, so project
+grammar fixtures, adjacent dialects, extended-KRSS negatives, converted real
+ontologies, and any future qualifying historical corpus remain separate
+evidence classes.
 
 ADR 0002 prioritizes the shared RDF-to-OWL foundation, RDF/XML, early
 development-app integration, production cutover, and strict Turtle before the

@@ -21,27 +21,26 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |    14 | TriG                                                               | Complete    | PASS: 10/493 focused; 157/2711 full; 401/401 required W3C        |
 |    15 | JSON-LD                                                            | Complete    | PASS: 10/559 focused; 163/3222 full; 462/462 required W3C        |
 |    16 | OWL-to-RDF                                                         | Complete    | PASS: 8/24 focused; 171/3247 full; graph differential green      |
-|    17 | Original KRSS / KRSS1                                              | Not started | required scope approved; implementation checkpoint pending       |
-|    18 | Physical legacy deletion                                           | Not started | blocked by Phase 17 checkpoint and retained-reference audit      |
+|    17 | Original KRSS / KRSS1                                              | Complete    | PASS: 16/113 focused; 177/3278 full; Java/8-format/resource/perf |
+|    18 | Physical legacy deletion                                           | Not started | blocked by Phase 17 Git checkpoint and retained-reference audit  |
 |    19 | Package/release                                                    | Not started | blocked by all prior gates                                       |
 
-Active ingestion migration: none. Phase 16 passed its implementation,
-normative-mapping, exhaustive-taxonomy, round-trip, Java differential,
-resource, performance, browser-contract, and repository gates and was committed
-at `39d54ff1`. Phase 17 original KRSS/KRSS1 is now the next WIP-locked ingestion
-migration. Its required scope and architecture are approved in the current
-planning update, but implementation has not started.
+Active ingestion migration: none. Phase 17 passed its finite grammar, dialect
+selection, pinned Java oracle, eight-format structural, resource/transaction,
+import, production VOWL, zero-corpus provenance, same-revision performance, and
+repository gates. The requested Git checkpoint is now the only boundary before
+Phase 18 physical legacy deletion.
 
 The structural cutover itself is in place. WebVOWL ingests ontologies only
 through `owlapi-js`, the production graph reaches no retained legacy parser,
 converter or exporter, and Turtle, N-Triples, N-Quads, and TriG now succeed both
 directly and when discovered inside an import closure. Functional Syntax,
-Manchester Syntax, OWL/XML, RDF/XML, Turtle, DL Syntax, KRSS2, N-Triples,
+Manchester Syntax, OWL/XML, RDF/XML, Turtle, DL Syntax, KRSS1, KRSS2, N-Triples,
 N-Quads, TriG, and JSON-LD are the advertised production formats; every other
 legacy-only syntax still fails with canonical unsupported-format diagnostics.
-In particular, KRSS1 retains a distinct format identity but no executable
-descriptor while its `REQUIRED_V1` Phase 17 parser remains `NOT_STARTED`. The
-legacy modules remain unmoved for characterization until the Phase 18 deletion.
+KRSS1 is executable through its own descriptor and remains distinct from
+KRSS2. The legacy modules remain unmoved for characterization until the Phase
+18 deletion.
 
 N-Quads uses a third exact-format policy over the private N3.js boundary and
 preserves graph terms in the canonical RDF/JS dataset. All four graph policies
@@ -113,10 +112,9 @@ same-revision Phase 11/Phase 12 registry benchmark remains within the unchanged
 20% threshold. Phase 12 adds no dependency, package, lockfile, configuration,
 resource-ceiling, or legacy-production-reachability change.
 
-KRSS2 constructs structural objects directly through a dialect-neutral bounded
-pull lexer and a strict KRSS2 parser. KRSS1 and KRSS2 remain separate
-compatibility identities; shared/extension vocabulary tests and explicit
-non-registration prevent KRSS2 from becoming a KRSS1 alias. The project-owned
+Phase 11 established KRSS2 through a dialect-neutral bounded pull lexer and a
+strict adapter while KRSS1 remained explicitly unregistered at that checkpoint.
+KRSS1 and KRSS2 remain separate compatibility identities. The project-owned
 12-axiom subset agrees exactly across KRSS2, DL, Functional, Manchester,
 OWL/XML, RDF/XML, and Turtle, and its pinned OWLAPI 5.5.1 oracle agrees on every
 axiom count and signature category. The same-revision Phase 10/Phase 11 registry
@@ -124,14 +122,21 @@ benchmark remains within the unchanged 20% threshold. Phase 11 adds no
 dependency, package, lockfile, configuration, resource-ceiling, or
 legacy-production-reachability change.
 
-Phase 17 will build on that separation rather than relabeling the KRSS2 parser.
-The strict pre-phase provenance review verified no qualifying public,
+Phase 17 deepens that separation rather than relabeling KRSS2. Separate public
+adapters now supply exact dialect legality, format, detection and diagnostics to
+the shared bounded core. Generic `.krss` ambiguity selects KRSS1 first; exact
+`.krss2` and exclusive vocabulary select KRSS2, and recognized failures do not
+cross-fallback. The pinned Java fixture and behavioral inventory record the
+right-identity no-effect plus controlled corrections for discarded Java ABox
+axioms, unreachable cardinalities, malformed names and singleton Boolean
+objects. The strict provenance review verified no qualifying public,
 first-party-maintained historical ontology artifact for either OWLAPI-style
 KRSS1 or KRSS2. Project-owned grammar fixtures, historical adjacent-dialect
 fixtures, extended-KRSS negatives, converted-real-ontology fixtures, and any
 future first-party strict corpus therefore remain separate evidence classes;
-only the last class may be called a historical KRSS corpus, and it is currently
-empty.
+only the last class may be called a historical KRSS corpus, and it is empty.
+The same-revision Phase 16/Phase 17 registry benchmark stays within the
+unchanged 20% threshold and designated 64 KiB mismatch-selection ceiling.
 
 DL Syntax constructs structural objects directly through a bounded pull lexer
 and parser. The shared project fixture agrees across DL, Functional, RDF/XML,

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "oracle": {
+    "name": "OWLAPI",
+    "version": "5.5.1",
+    "revision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+    "harness": "util/owlapi-reference/GenerateKRSS1SyntaxSnapshot.java",
+    "ontologyIRI": "urn:test:phase17",
+    "ignoredImports": []
+  },
+  "fixture": "util/owlapi-reference/fixtures/krss1/phase17-structural.krss",
+  "snapshot": {
+    "ontologyIRI": "urn:test:phase17",
+    "versionIRI": null,
+    "imports": [],
+    "ontologyAnnotations": [],
+    "axiomTypeCounts": {
+      "EquivalentClasses": 3,
+      "ObjectPropertyRange": 1,
+      "SubClassOf": 1,
+      "SubObjectPropertyOf": 1,
+      "TransitiveObjectProperty": 1
+    },
+    "axioms": [
+      "EquivalentClasses(<Optional[urn:test:phase17]#Guardian> ObjectUnionOf(<Optional[urn:test:phase17]#Parent> ObjectComplementOf(<Optional[urn:test:phase17]#Robot>)))",
+      "EquivalentClasses(<Optional[urn:test:phase17]#Parent> ObjectIntersectionOf(<Optional[urn:test:phase17]#Person> ObjectSomeValuesFrom(<Optional[urn:test:phase17]#hasChild> <Optional[urn:test:phase17]#Person>)))",
+      "EquivalentClasses(<Optional[urn:test:phase17]#Responsible> ObjectAllValuesFrom(<Optional[urn:test:phase17]#hasChild> <Optional[urn:test:phase17]#Person>))",
+      "ObjectPropertyRange(<Optional[urn:test:phase17]#hasChild> <Optional[urn:test:phase17]#Person>)",
+      "SubClassOf(<Optional[urn:test:phase17]#Person> <Optional[urn:test:phase17]#Mammal>)",
+      "SubObjectPropertyOf(<Optional[urn:test:phase17]#hasChild> <Optional[urn:test:phase17]#hasRelative>)",
+      "TransitiveObjectProperty(<Optional[urn:test:phase17]#hasRelative>)"
+    ],
+    "signature": {
+      "classes": [
+        "Optional[urn:test:phase17]#Guardian",
+        "Optional[urn:test:phase17]#Mammal",
+        "Optional[urn:test:phase17]#Parent",
+        "Optional[urn:test:phase17]#Person",
+        "Optional[urn:test:phase17]#Responsible",
+        "Optional[urn:test:phase17]#Robot"
+      ],
+      "objectProperties": [
+        "Optional[urn:test:phase17]#hasChild",
+        "Optional[urn:test:phase17]#hasRelative"
+      ],
+      "dataProperties": [],
+      "annotationProperties": [],
+      "individuals": [],
+      "datatypes": []
+    }
+  }
+}

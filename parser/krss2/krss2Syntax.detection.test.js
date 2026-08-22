@@ -6,13 +6,22 @@ import { detectKRSS2, krss2ParserDescriptor } from "./descriptor.js";
 const source = (text) => new StringDocumentSource(text);
 
 describe("KRSS2 bounded detection", () => {
+  it.each(["(define-concept Person Human)"])(
+    "keeps a shared top-level signature dialect-ambiguous",
+    (text) => {
+      expect(detectKRSS2(source(text))).toMatchObject({
+        reasonCode: "KRSS2_SHARED_TOP_LEVEL",
+        result: "INDETERMINATE",
+      });
+    },
+  );
+
   it.each([
-    "(define-concept Person Human)",
     "; comment\n(define-role parent ancestor)",
     "(role-inclusion (compose parent parent) ancestor)",
-  ])("matches a KRSS2 top-level signature", (text) => {
+  ])("matches a KRSS2-exclusive top-level signature", (text) => {
     expect(detectKRSS2(source(text))).toMatchObject({
-      reasonCode: "KRSS2_TOP_LEVEL",
+      reasonCode: "KRSS2_EXCLUSIVE_TOP_LEVEL",
       result: "MATCH",
     });
   });
@@ -27,7 +36,7 @@ describe("KRSS2 bounded detection", () => {
     expect(detectKRSS2(source(text)).result).toBe("NO_MATCH");
   });
 
-  it("keeps the not-yet-implemented KRSS1 identity out of the active registry", () => {
+  it("retains a separately constructible KRSS2-only registry", () => {
     const registry = new OWLParserRegistry([krss2ParserDescriptor]);
 
     expect(registry.getDescriptors().map(({ format }) => format.key)).toEqual([

@@ -18,6 +18,7 @@ import {
 import { dlSyntaxParserDescriptor } from "../parser/dl/descriptor.js";
 import { functionalSyntaxParserDescriptor } from "../parser/functional/descriptor.js";
 import { krss2ParserDescriptor } from "../parser/krss2/descriptor.js";
+import { krss1ParserDescriptor } from "../parser/krss1/descriptor.js";
 import { jsonLdParserDescriptor } from "../parser/jsonld/descriptor.js";
 import { manchesterSyntaxParserDescriptor } from "../parser/manchester/descriptor.js";
 import { nQuadsParserDescriptor } from "../parser/nquads/descriptor.js";
@@ -316,8 +317,9 @@ export class OWLOntologyManager {
         triGParserDescriptor,
         turtleParserDescriptor,
         dlSyntaxParserDescriptor,
-        // KRSS1 intentionally has no descriptor until its REQUIRED_V1 Phase 17
-        // implementation passes its gate; a format identity alone is not executable.
+        // The narrower original-KRSS dialect precedes KRSS2 for a generic
+        // `.krss` ambiguity; content evidence and exact hints still outrank it.
+        krss1ParserDescriptor,
         krss2ParserDescriptor,
         functionalSyntaxParserDescriptor,
         manchesterSyntaxParserDescriptor,

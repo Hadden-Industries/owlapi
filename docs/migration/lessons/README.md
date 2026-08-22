@@ -29,3 +29,5 @@ Allowed primary dispositions: `NO_CHANGE`, `PLAYBOOK_UPDATE`,
 - [Phase 13: N-Quads](012-nquads.md)
 - [Phase 14: TriG](013-trig.md)
 - [Phase 15: JSON-LD](014-jsonld.md)
+- [Phase 16: shared OWL-to-RDF](015-owl-to-rdf.md)
+- [Phase 17: original KRSS / KRSS1](016-krss1.md)

@@ -11,7 +11,7 @@ the Java implementation is not a JavaScript implementation template.
 | `OWLXMLParser` / `OWLXMLDocumentFormatFactory`                                | `parser.owlxml`              | `REQUIRED_V1`; Phase 4 `COMPLETE`         |
 | `DLSyntaxOWLParser` / `DLSyntaxDocumentFormatFactory`                         | `parser.dl`                  | `REQUIRED_V1`; Phase 10 `COMPLETE`        |
 | `KRSS2OWLParser` / `KRSS2DocumentFormatFactory`                               | `parser.krss2`               | `REQUIRED_V1`; Phase 11 `COMPLETE`        |
-| `KRSSOWLParser` / `KRSSDocumentFormatFactory`                                 | `parser.krss1`               | `REQUIRED_V1`; Phase 17 `NOT_STARTED`     |
+| `KRSSOWLParser` / `KRSSDocumentFormatFactory`                                 | `parser.krss1`               | `REQUIRED_V1`; Phase 17 `COMPLETE`        |
 | RDF/XML parser/factories                                                      | `parser.rdfxml`              | `DELEGATED`; Phase 6 `COMPLETE`           |
 | Turtle/Rio Turtle factories                                                   | `parser.turtle`              | `DELEGATED`; Phase 9 `COMPLETE` via N3.js |
 | Rio TriG                                                                      | `parser.trig`                | `DELEGATED` to N3.js                      |
@@ -39,3 +39,13 @@ several formats. Phase 9 registers only exact `text/turtle`; N-Triples,
 N-Quads, TriG, and the broader N3 language remain unsupported until their
 separate governed scopes say otherwise. `.owl` is only a filename hint and
 never decides OWL/XML vs RDF/XML.
+
+Phase 17 implements original KRSS through its own descriptor and adapter over
+the bounded KRSS-family core. Shared top-level syntax stays ambiguous: generic
+`.krss` selects the narrower KRSS1 dialect first, exact `.krss2` selects KRSS2,
+and definite KRSS2-only vocabulary excludes KRSS1. The finite Java-oracle
+inventory records four controlled corrections—discarded ABox axioms,
+unreachable integer cardinalities, malformed bare-name bases, and singleton
+Boolean objects outside the OWL 2 structural invariant—plus preserved
+right-identity/no-effect and full-IRI rejection behavior. No KRSS1 path calls
+the retained legacy KRSS2 parser.

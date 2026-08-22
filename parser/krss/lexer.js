@@ -17,8 +17,7 @@ const utf8CodePointBytes = (codePoint) => {
 /**
  * Lazy lexer shared by the KRSS family. It deliberately emits neutral symbols:
  * dialect legality belongs to the KRSS1/KRSS2 policy and parser layers, so
- * sharing tokenization cannot silently turn the not-yet-implemented KRSS1
- * capability into an alias for the active KRSS2 parser.
+ * sharing tokenization cannot silently turn KRSS1 into an alias for KRSS2.
  */
 export class KRSSLexer {
   #column = 1;

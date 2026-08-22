@@ -30,6 +30,7 @@
     "PHASE14-2026-08-22": "Repository-owner approval to implement Phase 14 and its strict TriG adapter, independent RDF 1.1 and RDF 1.2 conformance classification, graph-block detection, dataset graph-policy, resource, differential, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
     "PHASE15-2026-08-22": "Repository-owner approval to implement Phase 15 and the follow-up correction that promotes standards-defined JSON-LD processor profiles into the reusable public format interface, including immutable parameters, JSON-LD 1.0 and 1.1 processing, expansion contexts, RDF direction, canonical rdf:JSON, direct RDF/JS conversion, restricted remote-context loading, exhaustive pinned W3C classification, graph-policy, imports, resource, browser, differential, performance, provenance, migration-status, and final ingestion learning-gate updates; the same authority approved a general 64 KiB absolute alternative for designated bounded parser-selection heap signals only when 1 MiB, 4 MiB, and 16 MiB scaling medians all remain under that fixed ceiling, while retaining the 20% wall limit and ordinary workload budgets, on 22 August 2026",
     "PHASE16-2026-08-22": "Repository-owner approval to implement Phase 16 and its shared exhaustive structural OWL-to-RDF/JS translator, W3C mapping inventory, graph placement, annotation and blank-node rules, RDF-to-OWL round-trip correction, pinned Java graph differential, resource, browser, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
+    "PHASE17-2026-08-22": "Repository-owner approval to implement Phase 17 and its distinct original KRSS/KRSS1 parser, shared KRSS core, deterministic dialect selection, finite grammar and controlled-correction inventory, zero-corpus register, Java oracle, cross-format, resource, import, WebVOWL, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026"
   },
   "provenanceCategories": {
@@ -1233,7 +1234,7 @@
       "id": "PHASE11-KRSS-DIALECT",
       "path": "src/owlapi-js/parser/krss/dialect.js",
       "phase": 11,
-      "scope": "independently authored KRSS-family dialect policy that classifies shared and KRSS2-only top-level vocabulary without exposing the deferred KRSS1 identity as an executable parser",
+      "scope": "independently authored KRSS-family dialect policy that classifies shared and KRSS2-only top-level vocabulary for separate executable adapters",
       "legacyWebVowlSources": ["src/owl2vowl/js/krss2SyntaxParser.js"],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
@@ -1280,7 +1281,7 @@
       "id": "PHASE11-KRSS2-DESCRIPTOR",
       "path": "src/owlapi-js/parser/krss2/descriptor.js",
       "phase": 11,
-      "scope": "immutable KRSS2 identity and bounded tri-state detection registered at priority 16 while KRSS1 remains explicitly unregistered",
+      "scope": "immutable KRSS2 identity and descriptor over the shared Phase 17 bounded dialect detector",
       "legacyWebVowlSources": [
         "src/owl2vowl/js/krss2SyntaxParser.js",
         "src/owl2vowl/js/index.js"
@@ -1307,7 +1308,7 @@
       "id": "PHASE11-KRSS2-PARSER",
       "path": "src/owlapi-js/parser/krss2/parser.js",
       "phase": 11,
-      "scope": "independently authored strict KRSS2 recursive-descent parser that constructs immutable structural OWL class, role, and individual axioms directly without RDF or legacy-parser detours",
+      "scope": "thin public KRSS2 adapter supplying the preserved Phase 11 dialect policy to the Phase 17 shared core",
       "legacyWebVowlSources": ["src/owl2vowl/js/krss2SyntaxParser.js"],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
@@ -1330,6 +1331,113 @@
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE11-2026-08-21",
       "reviewDate": "2026-08-21"
+    },
+    {
+      "id": "PHASE17-KRSS-DETECTION",
+      "path": "src/owlapi-js/parser/krss/detection.js",
+      "phase": 17,
+      "scope": "bounded shared-signature, exclusive-KRSS2, strong-negative, and exact-extension dialect evidence with explicit ambiguity priorities",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss1/parser/KRSSOWLParser.html",
+        "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss2/parser/KRSS2OWLParser.html",
+        "docs/owlapi-js/implementation-plan.md section 17.24.4"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 distinct KRSSDocumentFormat and KRSS2DocumentFormat identities"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/krss1/krss1Syntax.detection.test.js",
+        "src/owlapi-js/parser/krss2/krss2Syntax.detection.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE17-2026-08-22",
+      "reviewDate": "2026-08-22"
+    },
+    {
+      "id": "PHASE17-KRSS-PARSER-CORE",
+      "path": "src/owlapi-js/parser/krss/parserCore.js",
+      "phase": 17,
+      "scope": "dialect-neutral lazy recursive-descent core for common KRSS expressions, construction, document ordering, diagnostics, yielding, and finite resource enforcement",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/",
+        "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss1/parser/KRSSOWLParser.html",
+        "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss2/parser/KRSS2OWLParser.html",
+        "docs/owlapi-js/implementation-plan.md sections 17.24.1-17.24.2"
+      ],
+      "compatibilityReferences": [
+        "pinned project-owned KRSS1 and KRSS2 Java structural snapshots and behavioral inventories"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/krss1/krss1Syntax.test.js",
+        "src/owlapi-js/parser/krss1/krss1Syntax.conformance.test.js",
+        "src/owlapi-js/parser/krss1/krss1Syntax.resource.test.js",
+        "src/owlapi-js/parser/krss2/krss2Syntax.test.js",
+        "src/owlapi-js/parser/krss2/krss2Syntax.conformance.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE17-2026-08-22",
+      "reviewDate": "2026-08-22"
+    },
+    {
+      "id": "PHASE17-KRSS1-DESCRIPTOR",
+      "path": "src/owlapi-js/parser/krss1/descriptor.js",
+      "phase": 17,
+      "scope": "immutable original-KRSS format identity and descriptor over shared bounded dialect detection",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss1/parser/KRSSOWLParser.html",
+        "docs/owlapi-js/implementation-plan.md section 17.24.4"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public KRSSOWLParser, KRSSOWLParserFactory, and KRSSDocumentFormat identities"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/krss1/krss1Syntax.detection.test.js",
+        "src/owlapi-js/parser/krss1/krss1Syntax.integration.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE17-2026-08-22",
+      "reviewDate": "2026-08-22"
+    },
+    {
+      "id": "PHASE17-KRSS1-PARSER",
+      "path": "src/owlapi-js/parser/krss1/parser.js",
+      "phase": 17,
+      "scope": "separate original-KRSS adapter policy that constrains the shared core to the finite KRSS1 production, name, filler, role, and structural boundaries",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/",
+        "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss1/parser/KRSSOWLParser.html",
+        "docs/owlapi-js/implementation-plan.md sections 17.24.1-17.24.2"
+      ],
+      "compatibilityReferences": [
+        "docs/owlapi-js/compatibility/krss1-behavioral-oracle.json",
+        "util/owlapi-reference/fixtures/krss1/phase17-structural.java.json"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/krss1/krss1Syntax.test.js",
+        "src/owlapi-js/parser/krss1/krss1Syntax.conformance.test.js",
+        "src/owlapi-js/parser/krss1/krss1Syntax.differential.test.js",
+        "src/owlapi-js/parser/krss1/krss1Syntax.integration.test.js",
+        "src/owlapi-js/parser/krss1/krss1Syntax.resource.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE17-2026-08-22",
+      "reviewDate": "2026-08-22"
     },
     {
       "id": "PHASE12-RDF-SYNTAX-PARSER",
@@ -1878,6 +1986,26 @@
         "util/owlapi-reference/fixtures/krss2/phase11-structural.java.json",
         "src/owlapi-js/parser/krss2/krss2Syntax.conformance.test.js",
         "src/owlapi-js/parser/krss2/krss2Syntax.differential.test.js"
+      ]
+    },
+    {
+      "id": "PHASE17-RESEARCH-KRSS1-DOCUMENT-GRAMMAR",
+      "question": "Which original-KRSS productions and observable semantics belong to OWLAPI 5.5.1 when public metadata does not expose operand boundaries, ABox commitment, cardinality tokenization, name bases, or right-identity behavior",
+      "publicBasis": "Published KRSS-family grammar material, public OWLAPI KRSSOWLParser/factory/format documentation, W3C OWL 2 structural semantics, and pinned black-box KRSS1 probes",
+      "implementationSourcesInspected": [
+        "parsers/src/main/java/org/semanticweb/owlapi/krss1/parser/KRSSParser.jj",
+        "parsers/src/main/java/org/semanticweb/owlapi/krss1/parser/KRSSOWLParser.java"
+      ],
+      "sourceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "reason": "Inspection was restricted to the public adapter and grammar after public documentation could not freeze the finite grammar. Black-box probes then separated declared grammar from observable structural behavior.",
+      "finding": "The original dialect has a smaller top-level surface than KRSS2, requires primitive concept and role parents, requires cardinality fillers, accepts only alphanumeric Name entities, and accepts right-identity without emitting an axiom. OWLAPI defects make integer cardinalities unreachable, discard all accepted ABox axioms, construct Optional[...] bare-name bases, and expose singleton Boolean objects outside OWL 2 structural invariants. Each preserved behavior or controlled correction is enumerated in krss1-behavioral-oracle.json.",
+      "productionUse": "No implementation text, generated-parser structure, semantic action code, or legacy JavaScript control flow was copied. The shared JavaScript core and separate dialect policies are independently structured and defined by project-owned grammar, differential, detection, resource, import, and WebVOWL tests.",
+      "evidence": [
+        "docs/owlapi-js/compatibility/krss1-behavioral-oracle.json",
+        "util/owlapi-reference/GenerateKRSS1SyntaxSnapshot.java",
+        "util/owlapi-reference/fixtures/krss1/phase17-structural.java.json",
+        "src/owlapi-js/parser/krss1/krss1Syntax.conformance.test.js",
+        "src/owlapi-js/parser/krss1/krss1Syntax.differential.test.js"
       ]
     }
   ],

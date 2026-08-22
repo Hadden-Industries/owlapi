@@ -51,6 +51,15 @@ const validateDetection = (detection, parserId) => {
       `Parser ${parserId} detection requires reasonCode and reason`,
     );
   }
+  if (
+    detection.selectionPriority !== undefined &&
+    (!Number.isFinite(detection.selectionPriority) ||
+      detection.selectionPriority < 0)
+  ) {
+    throw new TypeError(
+      `Parser ${parserId} detection selectionPriority must be a non-negative finite number`,
+    );
+  }
   return Object.freeze({ ...detection });
 };
 
@@ -186,7 +195,12 @@ export class OWLParserRegistry {
       const eligible =
         detection.result === "MATCH" ||
         (detection.result === "INDETERMINATE" &&
-          !descriptor.supportsCompatibleRecovery);
+          // A detector may attach a source-specific semantic preference (for
+          // example, a dialect-bearing extension) without upgrading ambiguous
+          // content to MATCH. Strict descriptors otherwise stay ineligible.
+          (contentTypeMatch ||
+            detection.selectionPriority !== undefined ||
+            !descriptor.supportsCompatibleRecovery));
       return Object.freeze({
         descriptor,
         detection,
@@ -204,6 +218,12 @@ export class OWLParserRegistry {
       }
       if (left.ordering.contentTypeMatch !== right.ordering.contentTypeMatch) {
         return left.ordering.contentTypeMatch ? -1 : 1;
+      }
+      const selectionPriorityDifference =
+        (left.detection.selectionPriority ?? 0) -
+        (right.detection.selectionPriority ?? 0);
+      if (selectionPriorityDifference !== 0) {
+        return selectionPriorityDifference;
       }
       if (left.descriptor.priority !== right.descriptor.priority) {
         return left.descriptor.priority - right.descriptor.priority;

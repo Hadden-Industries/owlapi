@@ -28,9 +28,8 @@ const KRSS2_ONLY_TOP_LEVEL_KEYWORDS = new Set([
 ]);
 
 /**
- * Classifies public grammar vocabulary without claiming parser availability.
- * KRSS1 remains a deferred format: this shared policy exists so a future KRSS1
- * parser can reuse lexical machinery while retaining its narrower grammar.
+ * Classifies public grammar vocabulary for the separate executable adapters.
+ * Sharing this policy cannot widen KRSS1 to the larger KRSS2 production union.
  */
 export function keywordSupportedByDialect(keyword, dialect) {
   const normalizedKeyword =

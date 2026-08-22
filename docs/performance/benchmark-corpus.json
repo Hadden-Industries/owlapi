@@ -99,6 +99,20 @@
       "roles": ["deeply nested DL expression", "expression depth boundary"]
     },
     {
+      "id": "generated-krss1-large",
+      "generator": "owlapi-benchmark-corpus-v1",
+      "kind": "krss1",
+      "count": 50000,
+      "roles": ["large original-KRSS document", "axiom throughput"]
+    },
+    {
+      "id": "generated-krss1-depth",
+      "generator": "owlapi-benchmark-corpus-v1",
+      "kind": "krss1-depth",
+      "depth": 256,
+      "roles": ["deeply nested original-KRSS expression", "expression depth boundary"]
+    },
+    {
       "id": "generated-functional-depth",
       "generator": "owlapi-benchmark-corpus-v1",
       "kind": "functional-depth",
