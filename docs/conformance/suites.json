@@ -8,11 +8,11 @@
       "upstream": "https://github.com/w3c/rdf-tests",
       "revisionScopes": [
         {
-          "formats": ["RDF/XML", "TriG"],
+          "formats": ["RDF/XML"],
           "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f"
         },
         {
-          "formats": ["Turtle", "N-Triples", "N-Quads"],
+          "formats": ["Turtle", "N-Triples", "N-Quads", "TriG"],
           "revision": "12774b0ebb385d17651b396654b19254d0fefbfa"
         }
       ],
@@ -39,6 +39,36 @@
           "total": 387
         },
         "executionResult": "387/387 REQUIRED upstream entries passed; the runner also passed one project-owned RDF/JS language-tag canonicalization regression"
+      },
+      "trig": {
+        "classificationOwnerPhase": 14,
+        "archivedManifests": [
+          {
+            "path": "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl",
+            "sha256": "151cee87899fe6efc049c4ea606c5ea44a7074469e147df8e56df67b69e87ae2"
+          },
+          {
+            "path": "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/syntax/manifest.ttl",
+            "sha256": "dd7edf4f760dc6c30fff3ed874ac1796130a253ebe4abaf37f8ac6b3721f0086"
+          },
+          {
+            "path": "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/eval/manifest.ttl",
+            "sha256": "e341c4f3a810602ca7c26a677735740d5409298d7dba22782b03e878ff41a9d5"
+          }
+        ],
+        "generatedArtifact": "docs/owlapi-js/conformance/generated/w3c-trig.json",
+        "runner": "src/owlapi-js/parser/trig/trig.conformance.test.js",
+        "sourceCounts": {
+          "evaluation": 169,
+          "positiveSyntax": 123,
+          "negativeSyntax": 126,
+          "total": 418
+        },
+        "classificationCounts": {
+          "required": 401,
+          "excludedWithReason": 17
+        },
+        "executionResult": "401/401 REQUIRED upstream entries passed; 17 RDF 1.2 reifier/annotation evaluation cases remain individually EXCLUDED_WITH_REASON for the recorded N3.js 2.2.0 dependency gap"
       }
     },
     {

@@ -18,24 +18,24 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |    11 | KRSS family                                                        | Complete    | PASS: 8/55 focused; 142/2024 full; Java snapshot 12/12 axioms    |
 |    12 | N-Triples                                                          | Complete    | PASS: 10/180 focused; 147/2147 full; 99/99 W3C N-Triples         |
 |    13 | N-Quads                                                            | Complete    | PASS: 8/181 focused; 152/2286 full; 114/114 W3C N-Quads          |
-|    14 | TriG                                                               | Not started | blocked by Phase 13 Git checkpoint                               |
-|    15 | JSON-LD                                                            | Not started | blocked by Phase 14 learning gate                                |
+|    14 | TriG                                                               | Complete    | PASS: 10/493 focused; 157/2711 full; 401/401 required W3C        |
+|    15 | JSON-LD                                                            | Not started | blocked by Phase 14 Git checkpoint                               |
 |    16 | OWL-to-RDF                                                         | Not started | blocked by ingestion programme                                   |
 |    17 | Physical legacy deletion                                           | Not started | blocked by Phase 16 and retained-reference audit                 |
 |    18 | Package/release                                                    | Not started | blocked by all prior gates                                       |
 
-Active ingestion migration: none. Phase 13 has passed its implementation,
+Active ingestion migration: none. Phase 14 has passed its implementation,
 learning, conformance, graph-policy, differential, resource, performance,
 integration, and repository gates in the working tree and is paused for the
-requested Git checkpoint. Phase 14 remains blocked until that checkpoint is
+requested Git checkpoint. Phase 15 remains blocked until that checkpoint is
 committed and the repository owner explicitly says to proceed.
 
 The structural cutover itself is in place. WebVOWL ingests ontologies only
 through `owlapi-js`, the production graph reaches no retained legacy parser,
-converter or exporter, and Turtle, N-Triples, and N-Quads now succeed both
+converter or exporter, and Turtle, N-Triples, N-Quads, and TriG now succeed both
 directly and when discovered inside an import closure. Functional Syntax,
-Manchester Syntax, OWL/XML, RDF/XML, Turtle, DL Syntax, KRSS2, N-Triples, and
-N-Quads are the advertised production formats; every other legacy-only syntax
+Manchester Syntax, OWL/XML, RDF/XML, Turtle, DL Syntax, KRSS2, N-Triples,
+N-Quads, and TriG are the advertised production formats; every other legacy-only syntax
 still fails with canonical unsupported-format diagnostics. In particular,
 KRSS1 retains a distinct format identity but no executable descriptor while
 its parser capability is `DEFERRED`. The legacy modules remain unmoved for
@@ -53,6 +53,19 @@ Turtle. The same-revision Phase 12/Phase 13 registry benchmark remains within
 the unchanged 20% threshold. Phase 13 adds no dependency, package, lockfile,
 build-configuration, resource-ceiling, or legacy-production-reachability
 change; it extends only the governed conformance and provenance registers.
+
+TriG uses its own exact format policy over the private N3.js boundary and
+preserves prefix/base state and every RDF/JS graph term before applying the
+same explicit dataset graph policies as N-Quads. Bounded detection recognizes
+graph-block braces outside comments, strings, and IRI references without
+claiming Turtle, N-Quads, XML, or the broader N3 language. The complete pinned
+W3C RDF 1.1/RDF 1.2 inventory contains 418 entries: all 401 `REQUIRED` cases
+pass, while 17 RDF 1.2 reifier/annotation evaluation cases are individually
+`EXCLUDED_WITH_REASON` for a recorded N3.js 2.2.0 capability gap. No failing
+case is silently omitted. Same-revision registry controls remain within the
+unchanged 20% threshold. Phase 14 adds no dependency, package, lockfile,
+build-configuration, resource-ceiling, or legacy-production-reachability
+change; the existing lazy RDF-syntax closure remains byte-identical.
 
 N-Triples uses a distinct exact-format policy over the private N3.js boundary
 introduced for Turtle. Its independent pinned W3C RDF 1.1/RDF 1.2 register is

@@ -367,13 +367,37 @@ do not append chronology here.
 - Repeat resource, cancellation, differential, integration, browser,
   performance, provenance, and learning gates for the independent syntax.
 
-## Next migration: Phase 14 TriG
+## Phase 14 TriG evidence
 
-- Combine Turtle's directive, prefix, base, and collection grammar with named
-  graph blocks behind an independent exact TriG policy; do not make N-Quads
-  permissive or treat TriG as a Turtle mode.
-- Retain the Phase 13 dataset-first ordering and all four graph policies, while
-  adding descriptor ambiguity tests that keep N-Triples, N-Quads, and Turtle
-  identities stable.
-- Classify pinned W3C TriG evidence independently and repeat the full parser
-  migration gate set before the Phase 14 checkpoint.
+- Bind `application/trig` to an independent exact N3.js `TriG` policy. Preserve
+  Turtle-compatible prefixes and base resolution as well as every RDF/JS graph
+  term; neither Turtle nor N-Quads is a permissive substitute for TriG.
+- Detect only decisive graph-block opening braces outside comments, quoted
+  strings, and IRI references. Keep Turtle directives and line-oriented
+  N-Quads decisive for their narrower descriptors, and leave complete grammar
+  validation to the exact adapter.
+- Retain the dataset-first ordering and exercise all four graph policies over
+  parsed graph blocks. Dataset-scoped blank-node identity and immutable graph
+  decision context have the same meaning in TriG as in N-Quads.
+- Archive and classify the complete pinned W3C RDF 1.1 and RDF 1.2 TriG
+  inventory before executing the adapter. Phase 14 embeds all 418 entries:
+  401 are `REQUIRED` and pass; 17 RDF 1.2 reifier/annotation evaluation cases
+  are individually `EXCLUDED_WITH_REASON` for the recorded N3.js 2.2.0 gap.
+  Dependency gaps must remain enumerable and governed, never disappear from
+  the inventory.
+- Prove that broad Notation3 implication syntax remains unsupported even
+  though the private dependency can parse a wider language.
+- Repeat resource, cancellation, differential, integration, browser,
+  performance, provenance, and learning gates for the independent syntax.
+
+## Next migration: Phase 15 JSON-LD
+
+- Keep JSON-LD behind its existing restricted-loader boundary. Revalidate the
+  adapter's context-loading policy and ensure remote context access remains an
+  explicit caller decision rather than an ambient network side effect.
+- Establish independent JSON-LD conformance classification and preserve the
+  same canonical RDF/JS dataset and graph-policy boundary used by other RDF
+  syntaxes.
+- Repeat the full parser migration gate set, including browser lazy-loading,
+  resource limits, imports, differential evidence, and bundle measurements,
+  before the Phase 15 checkpoint.

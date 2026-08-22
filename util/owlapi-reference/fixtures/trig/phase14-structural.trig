@@ -1,0 +1,13 @@
+@prefix ex: <urn:test:phase14#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<urn:test:phase14:graph> {
+  <urn:test:phase14> a owl:Ontology .
+  ex:Agent a owl:Class .
+  ex:Person a owl:Class ; rdfs:subClassOf ex:Agent ; rdfs:label "Person"@en .
+  ex:knows a owl:ObjectProperty ; rdfs:domain ex:Person ; rdfs:range ex:Agent .
+  ex:alice a owl:NamedIndividual, ex:Person ; ex:knows ex:bob .
+  ex:bob a owl:NamedIndividual .
+}

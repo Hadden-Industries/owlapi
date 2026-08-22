@@ -23,6 +23,7 @@ import { nQuadsParserDescriptor } from "../parser/nquads/descriptor.js";
 import { nTriplesParserDescriptor } from "../parser/ntriples/descriptor.js";
 import { owlXmlParserDescriptor } from "../parser/owlxml/descriptor.js";
 import { rdfXmlParserDescriptor } from "../parser/rdfxml/descriptor.js";
+import { triGParserDescriptor } from "../parser/trig/descriptor.js";
 import { turtleParserDescriptor } from "../parser/turtle/descriptor.js";
 import { OWLParserRegistry } from "./parserRegistry.js";
 
@@ -299,6 +300,7 @@ export class OWLOntologyManager {
         rdfXmlParserDescriptor,
         nQuadsParserDescriptor,
         nTriplesParserDescriptor,
+        triGParserDescriptor,
         turtleParserDescriptor,
         dlSyntaxParserDescriptor,
         // KRSS1 intentionally has no descriptor until its DEFERRED capability

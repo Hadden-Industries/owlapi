@@ -27,6 +27,7 @@
     "PHASE11-2026-08-21": "Repository-owner approval to implement Phase 11 and its required KRSS2 parser, KRSS1 compatibility identity, grammar-gap, conformance, provenance, performance, migration-status, and learning-gate updates on 21 August 2026",
     "PHASE12-2026-08-22": "Repository-owner approval to implement Phase 12 and its strict N-Triples adapter, independent RDF 1.1 and RDF 1.2 conformance classification, default-graph, detection, resource, differential, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
     "PHASE13-2026-08-22": "Repository-owner approval to implement Phase 13 and its strict N-Quads adapter, independent RDF 1.1 and RDF 1.2 conformance classification, dataset graph-policy, detection, resource, differential, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
+    "PHASE14-2026-08-22": "Repository-owner approval to implement Phase 14 and its strict TriG adapter, independent RDF 1.1 and RDF 1.2 conformance classification, graph-block detection, dataset graph-policy, resource, differential, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026"
   },
   "provenanceCategories": {
@@ -1070,7 +1071,7 @@
       "id": "PHASE9-N3-SYNTAX-ADAPTER",
       "path": "src/owlapi-js/parser/rdf/n3SyntaxAdapter.js",
       "phase": 9,
-      "scope": "private exact-format Turtle, N-Triples, and N-Quads N3.js stream adaptation with canonical RDF/JS normalization, Unicode-safe chunking, backpressure, cancellation, watchdog timeouts, finite resource limits, cooperative scheduling, syntax-specific errors, prefix isolation, N-Triples default-graph normalization, and lossless N-Quads graph preservation",
+      "scope": "private exact-format Turtle, N-Triples, N-Quads, and TriG N3.js stream adaptation with canonical RDF/JS normalization, Unicode-safe chunking, backpressure, cancellation, watchdog timeouts, finite resource limits, cooperative scheduling, syntax-specific errors, Turtle/TriG prefix isolation, N-Triples default-graph normalization, and lossless N-Quads/TriG graph preservation",
       "legacyWebVowlSources": ["src/owl2vowl/js/turtleParser.js"],
       "provenanceCategory": "B_STANDARDS_ADAPTER",
       "normativePublicSources": [
@@ -1080,6 +1081,8 @@
         "https://www.w3.org/TR/rdf12-n-triples/",
         "https://www.w3.org/TR/n-quads/",
         "https://www.w3.org/TR/rdf12-n-quads/",
+        "https://www.w3.org/TR/trig/",
+        "https://www.w3.org/TR/rdf12-trig/",
         "https://rdf.js.org/data-model-spec/",
         "https://rdf.js.org/stream-spec/",
         "docs/owlapi-js/implementation-plan.md sections 6.7, 17.16, 17.19-17.20, and 21.7-21.8"
@@ -1088,13 +1091,15 @@
         "OWLAPI 5.5.1 public Turtle parser behavior through the pinned black-box reference harness",
         "Pinned W3C rdf-tests Turtle source revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 387 classified RDF 1.1 and RDF 1.2 syntax entries passing",
         "Pinned W3C rdf-tests N-Triples source revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 99 classified RDF 1.1 and RDF 1.2 syntax entries passing",
-        "Pinned W3C rdf-tests N-Quads source revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 114 classified RDF 1.1 and RDF 1.2 syntax entries passing"
+        "Pinned W3C rdf-tests N-Quads source revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 114 classified RDF 1.1 and RDF 1.2 syntax entries passing",
+        "Pinned W3C rdf-tests TriG source revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 401 REQUIRED entries passing and 17 RDF 1.2 evaluation entries individually excluded for the recorded N3.js 2.2.0 gap"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
         "docs/owlapi-js/conformance/generated/w3c-turtle.json",
         "docs/owlapi-js/conformance/generated/w3c-ntriples.json",
         "docs/owlapi-js/conformance/generated/w3c-nquads.json",
+        "docs/owlapi-js/conformance/generated/w3c-trig.json",
         "src/owlapi-js/parser/rdf/n3SyntaxAdapter.test.js",
         "src/owlapi-js/parser/rdf/n3SyntaxAdapter.resource.test.js",
         "src/owlapi-js/parser/turtle/turtle.conformance.test.js",
@@ -1105,12 +1110,19 @@
         "src/owlapi-js/parser/nquads/nQuads.conformance.test.js",
         "src/owlapi-js/parser/nquads/nQuads.browser.test.js",
         "src/owlapi-js/parser/nquads/nQuads.resource.test.js",
+        "src/owlapi-js/parser/trig/trig.conformance.test.js",
+        "src/owlapi-js/parser/trig/trig.browser.test.js",
+        "src/owlapi-js/parser/trig/trig.resource.test.js",
         "util/verify-webvowl-lazy-parser-chunks.mjs"
       ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE9-2026-08-20",
-      "extensionDecisionRefs": ["PHASE12-2026-08-22", "PHASE13-2026-08-22"],
+      "extensionDecisionRefs": [
+        "PHASE12-2026-08-22",
+        "PHASE13-2026-08-22",
+        "PHASE14-2026-08-22"
+      ],
       "reviewDate": "2026-08-22"
     },
     {
@@ -1437,6 +1449,64 @@
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE13-2026-08-22",
+      "reviewDate": "2026-08-22"
+    },
+    {
+      "id": "PHASE14-TRIG-DESCRIPTOR",
+      "path": "src/owlapi-js/parser/trig/descriptor.js",
+      "phase": 14,
+      "scope": "immutable TriG dataset identity and bounded tri-state detection that recognizes graph-block braces outside comments, string literals, and IRI references without duplicating the complete grammar",
+      "legacyWebVowlSources": [
+        "src/owl2vowl/js/turtleParser.js",
+        "src/owl2vowl/js/index.js"
+      ],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/trig/",
+        "https://www.w3.org/TR/rdf12-trig/",
+        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.21"
+      ],
+      "compatibilityReferences": [
+        "src/owlapi-js/parser/turtle/descriptor.js",
+        "src/owlapi-js/parser/nquads/descriptor.js"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/trig/trig.test.js",
+        "src/owlapi-js/parser/trig/trig.conformance.test.js"
+      ],
+      "thirdPartyDependencies": ["n3"],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE14-2026-08-22",
+      "reviewDate": "2026-08-22"
+    },
+    {
+      "id": "PHASE14-TRIG-PARSER",
+      "path": "src/owlapi-js/parser/trig/parser.js",
+      "phase": 14,
+      "scope": "strict TriG parser binding that preserves prefixes and complete RDF/JS dataset graph terms while delegating graph policy and OWL reconstruction to the shared project-owned pipeline",
+      "legacyWebVowlSources": ["src/owl2vowl/js/turtleParser.js"],
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/trig/",
+        "https://www.w3.org/TR/rdf12-trig/",
+        "https://rdf.js.org/dataset-spec/",
+        "docs/owlapi-js/implementation-plan.md sections 6.4, 6.7, and 17.21"
+      ],
+      "compatibilityReferences": [
+        "Pinned W3C rdf-tests revision 12774b0ebb385d17651b396654b19254d0fefbfa with 401 REQUIRED TriG entries passing and 17 RDF 1.2 evaluation entries individually excluded for the recorded N3.js 2.2.0 gap"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/trig/trig.test.js",
+        "src/owlapi-js/parser/trig/trig.conformance.test.js",
+        "src/owlapi-js/parser/trig/trig.differential.test.js",
+        "src/owlapi-js/parser/trig/trig.resource.test.js",
+        "src/owlapi-js/parser/trig/trig.browser.test.js"
+      ],
+      "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE14-2026-08-22",
       "reviewDate": "2026-08-22"
     }
   ],

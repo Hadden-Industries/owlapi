@@ -723,3 +723,75 @@ Relative to Phase 12, the initial closure grows by 2,160 minified bytes
 byte-identical. Both changes remain below the unchanged 20% threshold. The
 verifier proves the implementation marker remains absent from the initial
 static closure and present only behind the shared dynamic RDF-syntax boundary.
+
+## Phase 14 strict TriG and graph-block baseline
+
+- Pre-Phase-14 revision: `82b4770c`, the signed Phase 13 checkpoint.
+- Measurement date: 22 August 2026.
+- Environment: Windows `10.0.26200` x64, Node.js `v24.19.0`, 12th Gen
+  Intel Core i9-12900K (24 logical CPUs), 34,053,869,568 bytes system memory.
+- Dependency identity: `package-lock.json` SHA-256
+  `bbd8a2a632a5b3aa4a9d0c182d7b3176e1c540d5d6bdd47e170c52d7737f93a5`.
+- Command: `node --expose-gc util/benchmark-owlapi-trig.mjs`.
+- Protocol: generator `owlapi-benchmark-corpus-v1`; one warm-up and five
+  measured runs; median aggregation; garbage collection requested before each
+  run; heap and event-loop responsiveness sampled every 5 ms. The accepted run
+  passed the idle-machine guard.
+
+The fixture contains 50,000 declarations in one TriG named-graph block and
+occupies 1,089,023 bytes. Syntax-only measurements stop before graph policy.
+The end-to-end measurement continues through `requireSingleGraph`, projection
+to an RDF graph, shared RDF-to-OWL reconstruction, and ontology publication.
+
+| Signal                                           | Chunk bytes | Median wall (ms) | Median peak-heap delta (bytes) | Median max event-loop delay (ms) |
+| ------------------------------------------------ | ----------: | ---------------: | -----------------------------: | -------------------------------: |
+| TriG first use, 100 declarations                 |      65,536 |            35.17 |                      8,105,560 |                            10.91 |
+| `generated-trig-large.syntax-to-rdf.chunk-16384` |      16,384 |         1,142.82 |                    112,430,624 |                            26.43 |
+| `generated-trig-large.syntax-to-rdf.chunk-65536` |      65,536 |           839.42 |                    137,943,120 |                            70.77 |
+| `generated-trig-large.syntax-to-rdf.chunk-262144` |     262,144 |           786.54 |                     85,353,512 |                           199.00 |
+| `generated-trig-large.end-to-end`                |      65,536 |         3,659.37 |                    322,763,584 |                         2,235.71 |
+
+The retained 65,536-byte default balances throughput with scheduling. Moving
+to 256 KiB saves only 52.88 ms (6.30%) while increasing the sampled maximum
+event-loop delay from 70.77 ms to 199.00 ms. The 16 KiB path is slower.
+Phase 14 therefore changes no chunk size or resource ceiling.
+
+The end-to-end delay is again dominated by the existing synchronous
+RDF-to-OWL publication seam, not input streaming: syntax-to-RDF stays at a
+70.77 ms sampled interval while graph selection and reconstruction produce the
+2,235.71 ms interval. This result records the shared cost without weakening
+the adapter's cooperative-yield contract.
+
+### Same-revision registry controls
+
+The benchmark compares the Phase 13 descriptor list with the same list plus
+TriG at production priority 22. Both sides use the current source revision,
+runtime, dependency tree, fixtures, sampling protocol, and process;
+descriptor registration is the only controlled difference.
+
+| Existing signal              | Phase 13 registry wall / heap delta | Phase 14 registry wall / heap delta | Wall change | Heap-delta change |
+| ---------------------------- | ----------------------------------: | ----------------------------------: | ----------: | ----------------: |
+| `generated-functional-large` |       952.76 ms / 121,170,120 bytes |       942.45 ms / 126,517,976 bytes |      -1.08% |            +4.41% |
+| `generated-mismatch-large`   |             13.86 ms / 38,936 bytes |             13.34 ms / 42,816 bytes |      -3.74% |            +9.97% |
+
+Every paired regression is within the unchanged 20% release threshold. The
+16 MiB unrelated-text control also confirms that adding TriG retains bounded
+detection. Phase 14 introduces no dependency, resource-ceiling,
+historical-baseline, or regression-threshold change.
+
+### Production application graph
+
+The Phase 14 production build and static-import-closure verifier measure the
+shared lazy implementation after all four completed exact N3.js-backed RDF
+syntax descriptors are registered:
+
+| Production application graph | Chunks | Minified bytes | Gzip bytes |
+| ---------------------------- | -----: | -------------: | ---------: |
+| Initial static closure       |      3 |        673,648 |    169,955 |
+| Lazy RDF-syntax closure      |      3 |        187,021 |     52,560 |
+
+Relative to Phase 13, the initial closure grows by 2,265 minified bytes
+(0.34%) and 616 gzip bytes (0.36%), while the lazy N3.js closure is
+byte-identical. Both changes remain below the unchanged 20% threshold. The
+verifier proves the implementation marker remains absent from the initial
+static closure and present only behind the shared dynamic RDF-syntax boundary.

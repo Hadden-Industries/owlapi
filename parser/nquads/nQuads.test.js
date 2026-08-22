@@ -253,14 +253,23 @@ describe("N-Quads manager integration", () => {
     ]);
   });
 
-  it("keeps TriG unregistered until Phase 14", async () => {
-    await expect(
-      OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
-        source("<urn:s> <urn:p> <urn:o> <urn:g> ."),
+  it("loads strict TriG graph blocks through the shared dataset policy", async () => {
+    const result =
+      await OWLManager.createOWLOntologyManager().loadOntologyGraphFromOntologyDocument(
+        source(`@prefix owl: <http://www.w3.org/2002/07/owl#> .
+          @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+          <urn:test:graph> { <urn:test:TriGClass> rdf:type owl:Class . }`),
         new OWLOntologyLoaderConfiguration({
           format: OWLDocumentFormats.TRIG,
         }),
-      ),
-    ).rejects.toThrow("No parser is registered for format: trig");
+      );
+
+    expect(
+      [...result.ontology.getClassesInSignature()].map(({ iri }) => iri.value),
+    ).toEqual(["urn:test:TriGClass"]);
+    expect(result.documents[0].context).toMatchObject({
+      format: OWLDocumentFormats.TRIG,
+      selectedGraph: { termType: "NamedNode", value: "urn:test:graph" },
+    });
   });
 });

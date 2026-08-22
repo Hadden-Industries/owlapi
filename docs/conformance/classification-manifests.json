@@ -5629,13 +5629,3155 @@
     {
       "id": "w3c-rdf-tests.trig",
       "suite": "w3c-rdf-tests",
-      "revision": "ad541a5f0479f0798608c4801369d97b8e08b36f",
+      "revision": "12774b0ebb385d17651b396654b19254d0fefbfa",
       "paths": [
         "rdf/rdf11/rdf-trig/manifest.ttl",
-        "rdf/rdf12/rdf-trig/syntax/manifest.ttl"
+        "rdf/rdf12/rdf-trig/syntax/manifest.ttl",
+        "rdf/rdf12/rdf-trig/eval/manifest.ttl"
       ],
       "classificationOwnerPhases": [14],
-      "entries": []
+      "entries": [
+        {
+          "action": "anonymous_blank_node_graph.trig",
+          "classification": "REQUIRED",
+          "id": "anonymous_blank_node_graph",
+          "result": "labeled_blank_node_graph.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "labeled_blank_node_graph.trig",
+          "classification": "REQUIRED",
+          "id": "labeled_blank_node_graph",
+          "result": "labeled_blank_node_graph.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "alternating_iri_graphs.trig",
+          "classification": "REQUIRED",
+          "id": "alternating_iri_graphs",
+          "result": "alternating_iri_graphs.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "alternating_bnode_graphs.trig",
+          "classification": "REQUIRED",
+          "id": "alternating_bnode_graphs",
+          "result": "alternating_bnode_graphs.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-syntax-bad-base-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-base-04",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-base-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-base-05",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-prefix-06.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-prefix-06",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-prefix-07.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-prefix-07",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-struct-06.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-struct-06",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-struct-07.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-struct-07",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-minimal-whitespace-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-minimal-whitespace-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "IRI_subject.trig",
+          "classification": "REQUIRED",
+          "id": "IRI_subject",
+          "result": "IRI_spo.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "IRI_with_four_digit_numeric_escape.trig",
+          "classification": "REQUIRED",
+          "id": "IRI_with_four_digit_numeric_escape",
+          "result": "IRI_spo.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "IRI_with_eight_digit_numeric_escape.trig",
+          "classification": "REQUIRED",
+          "id": "IRI_with_eight_digit_numeric_escape",
+          "result": "IRI_spo.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "IRI_with_all_punctuation.trig",
+          "classification": "REQUIRED",
+          "id": "IRI_with_all_punctuation",
+          "result": "IRI_with_all_punctuation.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "bareword_a_predicate.trig",
+          "classification": "REQUIRED",
+          "id": "bareword_a_predicate",
+          "result": "bareword_a_predicate.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "old_style_prefix.trig",
+          "classification": "REQUIRED",
+          "id": "old_style_prefix",
+          "result": "IRI_spo.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "SPARQL_style_prefix.trig",
+          "classification": "REQUIRED",
+          "id": "SPARQL_style_prefix",
+          "result": "IRI_spo.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "prefixed_IRI_predicate.trig",
+          "classification": "REQUIRED",
+          "id": "prefixed_IRI_predicate",
+          "result": "IRI_spo.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "prefixed_IRI_object.trig",
+          "classification": "REQUIRED",
+          "id": "prefixed_IRI_object",
+          "result": "IRI_spo.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "prefix_only_IRI.trig",
+          "classification": "REQUIRED",
+          "id": "prefix_only_IRI",
+          "result": "IRI_spo.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "prefix_with_PN_CHARS_BASE_character_boundaries.trig",
+          "classification": "REQUIRED",
+          "id": "prefix_with_PN_CHARS_BASE_character_boundaries",
+          "result": "IRI_spo.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "prefix_with_non_leading_extras.trig",
+          "classification": "REQUIRED",
+          "id": "prefix_with_non_leading_extras",
+          "result": "IRI_spo.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "default_namespace_IRI.trig",
+          "classification": "REQUIRED",
+          "id": "default_namespace_IRI",
+          "result": "IRI_spo.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "prefix_reassigned_and_used.trig",
+          "classification": "REQUIRED",
+          "id": "prefix_reassigned_and_used",
+          "result": "prefix_reassigned_and_used.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "reserved_escaped_localName.trig",
+          "classification": "REQUIRED",
+          "id": "reserved_escaped_localName",
+          "result": "reserved_escaped_localName.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "percent_escaped_localName.trig",
+          "classification": "REQUIRED",
+          "id": "percent_escaped_localName",
+          "result": "percent_escaped_localName.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "HYPHEN_MINUS_in_localName.trig",
+          "classification": "REQUIRED",
+          "id": "HYPHEN_MINUS_in_localName",
+          "result": "HYPHEN_MINUS_in_localName.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "underscore_in_localName.trig",
+          "classification": "REQUIRED",
+          "id": "underscore_in_localName",
+          "result": "underscore_in_localName.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "localname_with_COLON.trig",
+          "classification": "REQUIRED",
+          "id": "localname_with_COLON",
+          "result": "localname_with_COLON.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "localName_with_assigned_nfc_bmp_PN_CHARS_BASE_character_boundaries.trig",
+          "classification": "REQUIRED",
+          "id": "localName_with_assigned_nfc_bmp_PN_CHARS_BASE_character_boundaries",
+          "result": "localName_with_assigned_nfc_bmp_PN_CHARS_BASE_character_boundaries.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries.trig",
+          "classification": "REQUIRED",
+          "id": "localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries",
+          "result": "localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "localName_with_nfc_PN_CHARS_BASE_character_boundaries.trig",
+          "classification": "REQUIRED",
+          "id": "localName_with_nfc_PN_CHARS_BASE_character_boundaries",
+          "result": "localName_with_nfc_PN_CHARS_BASE_character_boundaries.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "localName_with_leading_underscore.trig",
+          "classification": "REQUIRED",
+          "id": "localName_with_leading_underscore",
+          "result": "localName_with_leading_underscore.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "localName_with_leading_digit.trig",
+          "classification": "REQUIRED",
+          "id": "localName_with_leading_digit",
+          "result": "localName_with_leading_digit.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "localName_with_non_leading_extras.trig",
+          "classification": "REQUIRED",
+          "id": "localName_with_non_leading_extras",
+          "result": "localName_with_non_leading_extras.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "old_style_base.trig",
+          "classification": "REQUIRED",
+          "id": "old_style_base",
+          "result": "IRI_spo.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "SPARQL_style_base.trig",
+          "classification": "REQUIRED",
+          "id": "SPARQL_style_base",
+          "result": "IRI_spo.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "labeled_blank_node_subject.trig",
+          "classification": "REQUIRED",
+          "id": "labeled_blank_node_subject",
+          "result": "labeled_blank_node_subject.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "labeled_blank_node_object.trig",
+          "classification": "REQUIRED",
+          "id": "labeled_blank_node_object",
+          "result": "labeled_blank_node_object.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "labeled_blank_node_with_PN_CHARS_BASE_character_boundaries.trig",
+          "classification": "REQUIRED",
+          "id": "labeled_blank_node_with_PN_CHARS_BASE_character_boundaries",
+          "result": "labeled_blank_node_object.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "labeled_blank_node_with_leading_underscore.trig",
+          "classification": "REQUIRED",
+          "id": "labeled_blank_node_with_leading_underscore",
+          "result": "labeled_blank_node_object.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "labeled_blank_node_with_leading_digit.trig",
+          "classification": "REQUIRED",
+          "id": "labeled_blank_node_with_leading_digit",
+          "result": "labeled_blank_node_object.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "labeled_blank_node_with_non_leading_extras.trig",
+          "classification": "REQUIRED",
+          "id": "labeled_blank_node_with_non_leading_extras",
+          "result": "labeled_blank_node_object.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "anonymous_blank_node_subject.trig",
+          "classification": "REQUIRED",
+          "id": "anonymous_blank_node_subject",
+          "result": "anonymous_blank_node_subject.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "anonymous_blank_node_object.trig",
+          "classification": "REQUIRED",
+          "id": "anonymous_blank_node_object",
+          "result": "anonymous_blank_node_object.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "sole_blankNodePropertyList.trig",
+          "classification": "REQUIRED",
+          "id": "sole_blankNodePropertyList",
+          "result": "sole_blankNodePropertyList.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "blankNodePropertyList_as_subject.trig",
+          "classification": "REQUIRED",
+          "id": "blankNodePropertyList_as_subject",
+          "result": "blankNodePropertyList_as_subject.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "blankNodePropertyList_as_object.trig",
+          "classification": "REQUIRED",
+          "id": "blankNodePropertyList_as_object",
+          "result": "blankNodePropertyList_as_object.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "blankNodePropertyList_as_object_containing_objectList.trig",
+          "classification": "REQUIRED",
+          "id": "blankNodePropertyList_as_object_containing_objectList",
+          "result": "blankNodePropertyList_as_object_containing_objectList.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "blankNodePropertyList_as_object_containing_objectList_of_two_objects.trig",
+          "classification": "REQUIRED",
+          "id": "blankNodePropertyList_as_object_containing_objectList_of_two_objects",
+          "result": "blankNodePropertyList_as_object_containing_objectList_of_two_objects.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "blankNodePropertyList_with_multiple_triples.trig",
+          "classification": "REQUIRED",
+          "id": "blankNodePropertyList_with_multiple_triples",
+          "result": "blankNodePropertyList_with_multiple_triples.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "nested_blankNodePropertyLists.trig",
+          "classification": "REQUIRED",
+          "id": "nested_blankNodePropertyLists",
+          "result": "nested_blankNodePropertyLists.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "blankNodePropertyList_containing_collection.trig",
+          "classification": "REQUIRED",
+          "id": "blankNodePropertyList_containing_collection",
+          "result": "blankNodePropertyList_containing_collection.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "collection_subject.trig",
+          "classification": "REQUIRED",
+          "id": "collection_subject",
+          "result": "collection_subject.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "collection_object.trig",
+          "classification": "REQUIRED",
+          "id": "collection_object",
+          "result": "collection_object.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "empty_collection.trig",
+          "classification": "REQUIRED",
+          "id": "empty_collection",
+          "result": "empty_collection.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "nested_collection.trig",
+          "classification": "REQUIRED",
+          "id": "nested_collection",
+          "result": "nested_collection.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "first.trig",
+          "classification": "REQUIRED",
+          "id": "first",
+          "result": "first.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "last.trig",
+          "classification": "REQUIRED",
+          "id": "last",
+          "result": "last.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL1.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL1",
+          "result": "LITERAL1.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL1_ascii_boundaries.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL1_ascii_boundaries",
+          "result": "LITERAL1_ascii_boundaries.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL1_with_UTF8_boundaries.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL1_with_UTF8_boundaries",
+          "result": "LITERAL_with_UTF8_boundaries.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL1_all_controls.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL1_all_controls",
+          "result": "LITERAL1_all_controls.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL1_all_punctuation.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL1_all_punctuation",
+          "result": "LITERAL1_all_punctuation.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL_LONG1.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL_LONG1",
+          "result": "LITERAL1.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL_LONG1_ascii_boundaries.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL_LONG1_ascii_boundaries",
+          "result": "LITERAL_LONG1_ascii_boundaries.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL_LONG1_with_UTF8_boundaries.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL_LONG1_with_UTF8_boundaries",
+          "result": "LITERAL_with_UTF8_boundaries.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL_LONG1_with_1_squote.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL_LONG1_with_1_squote",
+          "result": "LITERAL_LONG1_with_1_squote.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL_LONG1_with_2_squotes.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL_LONG1_with_2_squotes",
+          "result": "LITERAL_LONG1_with_2_squotes.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL2.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL2",
+          "result": "LITERAL1.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL2_ascii_boundaries.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL2_ascii_boundaries",
+          "result": "LITERAL2_ascii_boundaries.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL2_with_UTF8_boundaries.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL2_with_UTF8_boundaries",
+          "result": "LITERAL_with_UTF8_boundaries.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL_LONG2.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL_LONG2",
+          "result": "LITERAL1.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL_LONG2_ascii_boundaries.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL_LONG2_ascii_boundaries",
+          "result": "LITERAL_LONG2_ascii_boundaries.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL_LONG2_with_UTF8_boundaries.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL_LONG2_with_UTF8_boundaries",
+          "result": "LITERAL_with_UTF8_boundaries.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL_LONG2_with_1_squote.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL_LONG2_with_1_squote",
+          "result": "LITERAL_LONG2_with_1_squote.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL_LONG2_with_2_squotes.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL_LONG2_with_2_squotes",
+          "result": "LITERAL_LONG2_with_2_squotes.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "literal_with_CHARACTER_TABULATION.trig",
+          "classification": "REQUIRED",
+          "id": "literal_with_CHARACTER_TABULATION",
+          "result": "literal_with_CHARACTER_TABULATION.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "literal_with_BACKSPACE.trig",
+          "classification": "REQUIRED",
+          "id": "literal_with_BACKSPACE",
+          "result": "literal_with_BACKSPACE.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "literal_with_LINE_FEED.trig",
+          "classification": "REQUIRED",
+          "id": "literal_with_LINE_FEED",
+          "result": "literal_with_LINE_FEED.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "literal_with_CARRIAGE_RETURN.trig",
+          "classification": "REQUIRED",
+          "id": "literal_with_CARRIAGE_RETURN",
+          "result": "literal_with_CARRIAGE_RETURN.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "literal_with_FORM_FEED.trig",
+          "classification": "REQUIRED",
+          "id": "literal_with_FORM_FEED",
+          "result": "literal_with_FORM_FEED.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "literal_with_REVERSE_SOLIDUS.trig",
+          "classification": "REQUIRED",
+          "id": "literal_with_REVERSE_SOLIDUS",
+          "result": "literal_with_REVERSE_SOLIDUS.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "literal_with_escaped_CHARACTER_TABULATION.trig",
+          "classification": "REQUIRED",
+          "id": "literal_with_escaped_CHARACTER_TABULATION",
+          "result": "literal_with_CHARACTER_TABULATION.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "literal_with_escaped_BACKSPACE.trig",
+          "classification": "REQUIRED",
+          "id": "literal_with_escaped_BACKSPACE",
+          "result": "literal_with_BACKSPACE.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "literal_with_escaped_LINE_FEED.trig",
+          "classification": "REQUIRED",
+          "id": "literal_with_escaped_LINE_FEED",
+          "result": "literal_with_LINE_FEED.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "literal_with_escaped_CARRIAGE_RETURN.trig",
+          "classification": "REQUIRED",
+          "id": "literal_with_escaped_CARRIAGE_RETURN",
+          "result": "literal_with_CARRIAGE_RETURN.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "literal_with_escaped_FORM_FEED.trig",
+          "classification": "REQUIRED",
+          "id": "literal_with_escaped_FORM_FEED",
+          "result": "literal_with_FORM_FEED.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "literal_with_numeric_escape4.trig",
+          "classification": "REQUIRED",
+          "id": "literal_with_numeric_escape4",
+          "result": "literal_with_numeric_escape4.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "literal_with_numeric_escape8.trig",
+          "classification": "REQUIRED",
+          "id": "literal_with_numeric_escape8",
+          "result": "literal_with_numeric_escape4.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "IRIREF_datatype.trig",
+          "classification": "REQUIRED",
+          "id": "IRIREF_datatype",
+          "result": "IRIREF_datatype.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "prefixed_name_datatype.trig",
+          "classification": "REQUIRED",
+          "id": "prefixed_name_datatype",
+          "result": "IRIREF_datatype.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "bareword_integer.trig",
+          "classification": "REQUIRED",
+          "id": "bareword_integer",
+          "result": "IRIREF_datatype.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "bareword_decimal.trig",
+          "classification": "REQUIRED",
+          "id": "bareword_decimal",
+          "result": "bareword_decimal.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "bareword_double.trig",
+          "classification": "REQUIRED",
+          "id": "bareword_double",
+          "result": "bareword_double.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "double_lower_case_e.trig",
+          "classification": "REQUIRED",
+          "id": "double_lower_case_e",
+          "result": "double_lower_case_e.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "negative_numeric.trig",
+          "classification": "REQUIRED",
+          "id": "negative_numeric",
+          "result": "negative_numeric.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "positive_numeric.trig",
+          "classification": "REQUIRED",
+          "id": "positive_numeric",
+          "result": "positive_numeric.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "numeric_with_leading_0.trig",
+          "classification": "REQUIRED",
+          "id": "numeric_with_leading_0",
+          "result": "numeric_with_leading_0.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "literal_true.trig",
+          "classification": "REQUIRED",
+          "id": "literal_true",
+          "result": "literal_true.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "literal_false.trig",
+          "classification": "REQUIRED",
+          "id": "literal_false",
+          "result": "literal_false.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "langtagged_non_LONG.trig",
+          "classification": "REQUIRED",
+          "id": "langtagged_non_LONG",
+          "result": "langtagged_non_LONG.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "langtagged_LONG.trig",
+          "classification": "REQUIRED",
+          "id": "langtagged_LONG",
+          "result": "langtagged_non_LONG.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "lantag_with_subtag.trig",
+          "classification": "REQUIRED",
+          "id": "lantag_with_subtag",
+          "result": "lantag_with_subtag.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "objectList_with_two_objects.trig",
+          "classification": "REQUIRED",
+          "id": "objectList_with_two_objects",
+          "result": "objectList_with_two_objects.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "predicateObjectList_with_two_objectLists.trig",
+          "classification": "REQUIRED",
+          "id": "predicateObjectList_with_two_objectLists",
+          "result": "predicateObjectList_with_two_objectLists.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "predicateObjectList_with_blankNodePropertyList_as_object.trig",
+          "classification": "REQUIRED",
+          "id": "predicateObjectList_with_blankNodePropertyList_as_object",
+          "result": "predicateObjectList_with_blankNodePropertyList_as_object.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "repeated_semis_at_end.trig",
+          "classification": "REQUIRED",
+          "id": "repeated_semis_at_end",
+          "result": "predicateObjectList_with_two_objectLists.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "repeated_semis_not_at_end.trig",
+          "classification": "REQUIRED",
+          "id": "repeated_semis_not_at_end",
+          "result": "repeated_semis_not_at_end.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "comment_following_localName.trig",
+          "classification": "REQUIRED",
+          "id": "comment_following_localName",
+          "result": "IRI_spo.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "number_sign_following_localName.trig",
+          "classification": "REQUIRED",
+          "id": "number_sign_following_localName",
+          "result": "number_sign_following_localName.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "comment_following_PNAME_NS.trig",
+          "classification": "REQUIRED",
+          "id": "comment_following_PNAME_NS",
+          "result": "comment_following_PNAME_NS.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "number_sign_following_PNAME_NS.trig",
+          "classification": "REQUIRED",
+          "id": "number_sign_following_PNAME_NS",
+          "result": "number_sign_following_PNAME_NS.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "LITERAL_LONG2_with_REVERSE_SOLIDUS.trig",
+          "classification": "REQUIRED",
+          "id": "LITERAL_LONG2_with_REVERSE_SOLIDUS",
+          "result": "LITERAL_LONG2_with_REVERSE_SOLIDUS.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-syntax-bad-LITERAL2_with_langtag_and_datatype.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-LITERAL2_with_langtag_and_datatype",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "two_LITERAL_LONG2s.trig",
+          "classification": "REQUIRED",
+          "id": "two_LITERAL_LONG2s",
+          "result": "two_LITERAL_LONG2s.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "langtagged_LONG_with_subtag.trig",
+          "classification": "REQUIRED",
+          "id": "langtagged_LONG_with_subtag",
+          "result": "langtagged_LONG_with_subtag.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-syntax-file-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-file-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-file-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-file-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-file-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-file-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-uri-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-uri-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-uri-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-uri-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-uri-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-uri-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-uri-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-uri-04",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-base-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-base-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-base-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-base-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-base-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-base-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-base-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-base-04",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-prefix-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-prefix-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-prefix-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-prefix-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-prefix-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-prefix-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-prefix-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-prefix-04",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-prefix-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-prefix-05",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-prefix-06.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-prefix-06",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-prefix-07.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-prefix-07",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-prefix-08.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-prefix-08",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-prefix-09.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-prefix-09",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-string-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-string-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-string-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-string-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-string-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-string-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-string-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-string-04",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-string-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-string-05",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-string-06.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-string-06",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-string-07.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-string-07",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-string-08.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-string-08",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-string-09.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-string-09",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-string-10.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-string-10",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-string-11.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-string-11",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-str-esc-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-str-esc-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-str-esc-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-str-esc-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-str-esc-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-str-esc-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-pname-esc-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-pname-esc-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-pname-esc-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-pname-esc-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-pname-esc-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-pname-esc-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bnode-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bnode-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bnode-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bnode-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bnode-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bnode-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bnode-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bnode-04",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bnode-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bnode-05",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bnode-06.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bnode-06",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bnode-07.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bnode-07",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bnode-08.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bnode-08",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bnode-09.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bnode-09",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bnode-10.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bnode-10",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-number-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-number-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-number-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-number-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-number-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-number-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-number-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-number-04",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-number-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-number-05",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-number-06.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-number-06",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-number-07.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-number-07",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-number-08.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-number-08",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-number-09.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-number-09",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-number-10.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-number-10",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-number-11.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-number-11",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-number-12.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-number-12",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-number-13.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-number-13",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-datatypes-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-datatypes-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-datatypes-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-datatypes-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-kw-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-kw-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-kw-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-kw-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-kw-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-kw-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-struct-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-struct-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-struct-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-struct-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-struct-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-struct-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-struct-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-struct-04",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-struct-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-struct-05",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-lists-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-lists-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-lists-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-lists-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-lists-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-lists-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-lists-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-lists-04",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-lists-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-lists-05",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-uri-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-uri-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-uri-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-uri-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-uri-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-uri-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-uri-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-uri-04",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-uri-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-uri-05",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-uri-escape-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-uri-escape-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-uri-escape-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-uri-escape-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-uri-escape-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-uri-escape-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-uri-escape-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-uri-escape-04",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-prefix-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-prefix-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-prefix-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-prefix-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-prefix-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-prefix-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-prefix-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-prefix-04",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-prefix-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-prefix-05",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-base-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-base-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-base-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-base-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-base-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-base-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-bnode-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-bnode-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-bnode-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-bnode-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-struct-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-struct-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-struct-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-struct-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-struct-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-struct-04",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-struct-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-struct-05",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-struct-06.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-struct-06",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-struct-07.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-struct-07",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-kw-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-kw-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-kw-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-kw-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-kw-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-kw-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-kw-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-kw-04",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-kw-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-kw-05",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-n3-extras-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-n3-extras-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-n3-extras-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-n3-extras-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-n3-extras-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-n3-extras-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-n3-extras-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-n3-extras-04",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-n3-extras-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-n3-extras-05",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-n3-extras-06.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-n3-extras-06",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-n3-extras-07.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-n3-extras-07",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-n3-extras-08.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-n3-extras-08",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-n3-extras-09.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-n3-extras-09",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-n3-extras-10.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-n3-extras-10",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-n3-extras-11.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-n3-extras-11",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-n3-extras-12.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-n3-extras-12",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-n3-extras-13.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-n3-extras-13",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-numeric-escape-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-numeric-escape-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-numeric-escape-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-numeric-escape-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-numeric-escape-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-numeric-escape-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-numeric-escape-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-numeric-escape-04",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-numeric-escape-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-numeric-escape-05",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-numeric-escape-06.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-numeric-escape-06",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-numeric-escape-07.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-numeric-escape-07",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-numeric-escape-08.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-numeric-escape-08",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-numeric-escape-09.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-numeric-escape-09",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-numeric-escape-10.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-numeric-escape-10",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-struct-09.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-struct-09",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-struct-10.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-struct-10",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-struct-12.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-struct-12",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-struct-13.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-struct-13",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-struct-14.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-struct-14",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-struct-15.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-struct-15",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-struct-16.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-struct-16",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-struct-17.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-struct-17",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-lang-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-lang-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-esc-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-esc-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-esc-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-esc-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-esc-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-esc-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-esc-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-esc-04",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-pname-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-pname-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-pname-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-pname-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-pname-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-pname-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-string-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-string-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-string-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-string-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-string-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-string-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-string-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-string-04",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-string-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-string-05",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-string-06.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-string-06",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-string-07.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-string-07",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-num-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-num-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-num-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-num-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-num-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-num-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-num-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-num-04",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-num-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-num-05",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-eval-struct-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-eval-struct-01",
+          "result": "trig-eval-struct-01.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-eval-struct-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-eval-struct-02",
+          "result": "trig-eval-struct-02.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-01",
+          "result": "trig-subm-01.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-02",
+          "result": "trig-subm-02.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-03",
+          "result": "trig-subm-03.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-04",
+          "result": "trig-subm-04.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-05",
+          "result": "trig-subm-05.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-06.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-06",
+          "result": "trig-subm-06.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-07.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-07",
+          "result": "trig-subm-07.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-08.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-08",
+          "result": "trig-subm-08.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-09.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-09",
+          "result": "trig-subm-09.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-10.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-10",
+          "result": "trig-subm-10.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-11.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-11",
+          "result": "trig-subm-11.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-12.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-12",
+          "result": "trig-subm-12.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-13.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-13",
+          "result": "trig-subm-13.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-14.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-14",
+          "result": "trig-subm-14.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-15.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-15",
+          "result": "trig-subm-15.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-16.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-16",
+          "result": "trig-subm-16.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-17.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-17",
+          "result": "trig-subm-17.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-18.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-18",
+          "result": "trig-subm-18.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-19.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-19",
+          "result": "trig-subm-19.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-20.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-20",
+          "result": "trig-subm-20.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-21.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-21",
+          "result": "trig-subm-21.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-22.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-22",
+          "result": "trig-subm-22.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-23.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-23",
+          "result": "trig-subm-23.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-24.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-24",
+          "result": "trig-subm-24.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-25.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-25",
+          "result": "trig-subm-25.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-26.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-26",
+          "result": "trig-subm-26.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-subm-27.trig",
+          "classification": "REQUIRED",
+          "id": "trig-subm-27",
+          "result": "trig-subm-27.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig-syntax-bad-blank-label-dot-end.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-blank-label-dot-end",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-ln-dash-start.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-ln-dash-start",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-ln-escape-start.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-ln-escape-start",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-ln-escape.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-ln-escape",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-missing-ns-dot-end.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-missing-ns-dot-end",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-missing-ns-dot-start.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-missing-ns-dot-start",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-ns-dot-end.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-ns-dot-end",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-ns-dot-start.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-ns-dot-start",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-number-dot-in-anon.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-number-dot-in-anon",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-list-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-list-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-list-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-list-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-list-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-list-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-bad-list-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-bad-list-04",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-blank-label.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-blank-label",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-ln-colons.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-ln-colons",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-ln-dots.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-ln-dots",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-syntax-ns-dots.trig",
+          "classification": "REQUIRED",
+          "id": "trig-syntax-ns-dots",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-kw-graph-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-kw-graph-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-kw-graph-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-kw-graph-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-kw-graph-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-kw-graph-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-kw-graph-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-kw-graph-04",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-kw-graph-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-kw-graph-05",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-kw-graph-06.trig",
+          "classification": "REQUIRED",
+          "id": "trig-kw-graph-06",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-kw-graph-07.trig",
+          "classification": "REQUIRED",
+          "id": "trig-kw-graph-07",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-kw-graph-08.trig",
+          "classification": "REQUIRED",
+          "id": "trig-kw-graph-08",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-kw-graph-09.trig",
+          "classification": "REQUIRED",
+          "id": "trig-kw-graph-09",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-kw-graph-10.trig",
+          "classification": "REQUIRED",
+          "id": "trig-kw-graph-10",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-kw-graph-11.trig",
+          "classification": "REQUIRED",
+          "id": "trig-kw-graph-11",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-graph-bad-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-graph-bad-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-graph-bad-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-graph-bad-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-graph-bad-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-graph-bad-03",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-graph-bad-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-graph-bad-04",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-graph-bad-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-graph-bad-05",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-graph-bad-06.trig",
+          "classification": "REQUIRED",
+          "id": "trig-graph-bad-06",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-graph-bad-07.trig",
+          "classification": "REQUIRED",
+          "id": "trig-graph-bad-07",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-graph-bad-08.trig",
+          "classification": "REQUIRED",
+          "id": "trig-graph-bad-08",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-graph-bad-09.trig",
+          "classification": "REQUIRED",
+          "id": "trig-graph-bad-09",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-graph-bad-10.trig",
+          "classification": "REQUIRED",
+          "id": "trig-graph-bad-10",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-graph-bad-11.trig",
+          "classification": "REQUIRED",
+          "id": "trig-graph-bad-11",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-bnodeplist-graph-bad-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-bnodeplist-graph-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-collection-graph-bad-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-collection-graph-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-collection-graph-bad-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-collection-graph-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-turtle-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-turtle-01",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-turtle-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-turtle-02",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-turtle-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig-turtle-03",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-turtle-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig-turtle-04",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-turtle-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig-turtle-05",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-turtle-06.trig",
+          "classification": "REQUIRED",
+          "id": "trig-turtle-06",
+          "sourceManifest": "rdf11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig-turtle-bad-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig-turtle-bad-01",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig-turtle-bad-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig-turtle-bad-02",
+          "sourceManifest": "rdf11",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "IRI-resolution-01.trig",
+          "classification": "REQUIRED",
+          "id": "IRI-resolution-01",
+          "result": "IRI-resolution-01.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "IRI-resolution-02.trig",
+          "classification": "REQUIRED",
+          "id": "IRI-resolution-02",
+          "result": "IRI-resolution-02.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "IRI-resolution-07.trig",
+          "classification": "REQUIRED",
+          "id": "IRI-resolution-07",
+          "result": "IRI-resolution-07.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "IRI-resolution-08.trig",
+          "classification": "REQUIRED",
+          "id": "IRI-resolution-08",
+          "result": "IRI-resolution-08.nq",
+          "sourceManifest": "rdf11",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-syntax-basic-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-basic-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-2",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-basic-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-3",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-basic-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-4",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-inside-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-inside-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-inside-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-inside-2",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-inside-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-inside-3",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-inside-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-inside-4",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-nested-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-nested-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-nested-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-nested-2",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-compound.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-compound-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-bnode-01.trig",
+          "classification": "REQUIRED",
+          "id": "rdf12Syntax:trig12-bnode-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-bnode-02.trig",
+          "classification": "REQUIRED",
+          "id": "rdf12Syntax:trig12-bnode-2",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-bnode-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-bnode-3",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-bad-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-bad-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-bad-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-bad-2",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-bad-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-bad-3",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-bad-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-bad-4",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-bad-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-bad-5",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-bad-06.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-bad-6",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-bad-07.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-bad-7",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-annotation-1.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-ann-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-annotation-2.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-ann-2",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-annotation-3.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-ann-3",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-annotation-4.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-ann-4",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-annotation-5.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-ann-5",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-annotation-6.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-ann-6",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-annotation-7.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-ann-7",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-annotation-8.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-ann-8",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-bad-ann-1.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-bad-ann-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-syntax-bad-ann-2.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-bad-ann-2",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-base-1.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-base-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-base-2.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-base-2",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-base-bad-1.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-base-bad-1",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-base-bad-2.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-base-bad-2",
+          "sourceManifest": "rdf12Syntax",
+          "testType": "NEGATIVE_SYNTAX"
+        },
+        {
+          "action": "trig12-eval-rt-01.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-rt-01",
+          "result": "trig12-eval-rt-01.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-rt-02.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-rt-02",
+          "result": "trig12-eval-rt-02.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-rt-03.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-rt-03",
+          "result": "trig12-eval-rt-03.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-rt-04.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-rt-04",
+          "result": "trig12-eval-rt-04.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-rt-05.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-rt-05",
+          "result": "trig12-eval-rt-05.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-rt-06.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-rt-06",
+          "result": "trig12-eval-rt-06.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-rt-07.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-rt-07",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-rt-07.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-rt-08.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-rt-08",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-rt-08.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-bnode-1.trig",
+          "classification": "REQUIRED",
+          "id": "rdf12Eval:trig12-bnode-1",
+          "result": "trig12-eval-bnode-1.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-bnode-2.trig",
+          "classification": "REQUIRED",
+          "id": "rdf12Eval:trig12-bnode-2",
+          "result": "trig12-eval-bnode-2.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-annotation-01.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-annotation-01",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-annotation-01.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-annotation-02.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-annotation-02",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-annotation-02.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-annotation-03.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-annotation-03",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-annotation-03.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-annotation-04.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-annotation-04",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-annotation-04.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-annotation-05.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-annotation-05",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-annotation-05.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-annotation-06.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-annotation-06",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-annotation-06.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-annotation-07.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-annotation-07",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-annotation-07.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-annotation-08.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-annotation-08",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-annotation-08.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-annotation-09.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-annotation-09",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-annotation-09.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-annotation-10.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-annotation-10",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-annotation-10.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-annotation-11.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-annotation-11",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-annotation-11.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-annotation-12.trig",
+          "classification": "REQUIRED",
+          "id": "trig12-annotation-12",
+          "result": "trig12-eval-annotation-12.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-annotation-13.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-annotation-13",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-annotation-13.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-reified-triples-annotation-01.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-reified-triples-annotation-01",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-reified-triples-annotation-01.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-reified-triples-annotation-02.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-reified-triples-annotation-02",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-reified-triples-annotation-02.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        },
+        {
+          "action": "trig12-eval-reified-triples-annotation-03.trig",
+          "classification": "EXCLUDED_WITH_REASON",
+          "id": "trig12-reified-triples-annotation-03",
+          "reasonCategory": "N3JS_RDF12_TRIG_EVALUATION_GAP",
+          "result": "trig12-eval-reified-triples-annotation-03.nq",
+          "sourceManifest": "rdf12Eval",
+          "testType": "EVALUATION"
+        }
+      ],
+      "evaluationTestCount": 169,
+      "localManifestArtifacts": [
+        "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl",
+        "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/syntax/manifest.ttl",
+        "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/eval/manifest.ttl"
+      ],
+      "manifestEntryCount": 418,
+      "manifestEntryCounts": {
+        "rdf11": 357,
+        "rdf12Syntax": 35,
+        "rdf12Eval": 26
+      },
+      "manifestSha256": {
+        "rdf11": "151cee87899fe6efc049c4ea606c5ea44a7074469e147df8e56df67b69e87ae2",
+        "rdf12Syntax": "dd7edf4f760dc6c30fff3ed874ac1796130a253ebe4abaf37f8ac6b3721f0086",
+        "rdf12Eval": "e341c4f3a810602ca7c26a677735740d5409298d7dba22782b03e878ff41a9d5"
+      },
+      "negativeSyntaxTestCount": 126,
+      "positiveSyntaxTestCount": 123,
+      "requiredTestCount": 401,
+      "runner": "src/owlapi-js/parser/trig/trig.conformance.test.js",
+      "runnerParsingPolicy": "Every RDF 1.1 and RDF 1.2 evaluation case must produce a canonical RDF/JS dataset graph-isomorphic to its N-Quads result; every positive-syntax case must parse at the exact TriG syntax seam; every negative-syntax case must reject before graph selection or RDF-to-OWL reconstruction.",
+      "runnerScope": "Exercise the exact-format TriG syntax-to-RDF/JS boundary independently for the pinned RDF 1.1 manifest and RDF 1.2 syntax and evaluation manifests; OWL reconstruction remains separately governed by the shared RDF-to-OWL translator.",
+      "sourceTestCount": 418,
+      "excludedReasonCategories": {
+        "N3JS_RDF12_TRIG_EVALUATION_GAP": "N3.js 2.2.0 does not yet reproduce the pinned RDF 1.2 TriG reifier/annotation evaluation result; the case remains inventoried for dependency replacement or an upstream fix."
+      },
+      "excludedTestCount": 17
     },
     {
       "id": "w3c-json-ld-api.to-from-rdf",

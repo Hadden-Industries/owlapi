@@ -106,6 +106,7 @@ describe("owlapi-js governance artifacts", () => {
       ["parser.ntriples", 12],
       ["parser.nquads", 13],
       ["parser.trig", 14],
+      ["parser.trig", 14],
       ["parser.jsonld", 15],
       ["mapping.owl-to-rdf", 16],
       ["packaging.native-esm", 18],
@@ -122,6 +123,12 @@ describe("owlapi-js governance artifacts", () => {
     });
     expect(byId.get("parser.nquads")).toMatchObject({
       delegate: "n3",
+      progress: "COMPLETE",
+      status: "DELEGATED",
+    });
+    expect(byId.get("parser.trig")).toMatchObject({
+      delegate: "n3",
+      phase: 14,
       progress: "COMPLETE",
       status: "DELEGATED",
     });
@@ -315,7 +322,7 @@ describe("owlapi-js governance artifacts", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(paths).toEqual(productionModules);
     for (const record of records) {
-      expect([1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13]).toContain(record.phase);
+      expect([1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14]).toContain(record.phase);
       expect(manifest.provenanceCategories).toHaveProperty(
         record.provenanceCategory,
       );
@@ -456,11 +463,11 @@ describe("owlapi-js governance artifacts", () => {
 
     expect(suite.revisionScopes).toEqual([
       {
-        formats: ["RDF/XML", "TriG"],
+        formats: ["RDF/XML"],
         revision: "ad541a5f0479f0798608c4801369d97b8e08b36f",
       },
       {
-        formats: ["Turtle", "N-Triples", "N-Quads"],
+        formats: ["Turtle", "N-Triples", "N-Quads", "TriG"],
         revision: "12774b0ebb385d17651b396654b19254d0fefbfa",
       },
     ]);
@@ -812,6 +819,49 @@ describe("owlapi-js governance artifacts", () => {
       );
     }
 
+    const triGManifest = byId.get("w3c-rdf-tests.trig");
+    const triGRequired = triGManifest.entries.filter(
+      ({ classification }) => classification === "REQUIRED",
+    );
+    const triGExcluded = triGManifest.entries.filter(
+      ({ classification }) => classification === "EXCLUDED_WITH_REASON",
+    );
+    expect(triGManifest).toMatchObject({
+      evaluationTestCount: 169,
+      excludedTestCount: 17,
+      manifestEntryCount: 418,
+      manifestEntryCounts: { rdf11: 357, rdf12Eval: 26, rdf12Syntax: 35 },
+      manifestSha256: {
+        rdf11:
+          "151cee87899fe6efc049c4ea606c5ea44a7074469e147df8e56df67b69e87ae2",
+        rdf12Eval:
+          "e341c4f3a810602ca7c26a677735740d5409298d7dba22782b03e878ff41a9d5",
+        rdf12Syntax:
+          "dd7edf4f760dc6c30fff3ed874ac1796130a253ebe4abaf37f8ac6b3721f0086",
+      },
+      negativeSyntaxTestCount: 126,
+      positiveSyntaxTestCount: 123,
+      requiredTestCount: 401,
+      runner: "src/owlapi-js/parser/trig/trig.conformance.test.js",
+      sourceTestCount: 418,
+    });
+    expect(triGManifest.entries).toHaveLength(418);
+    expect(triGRequired).toHaveLength(401);
+    expect(triGExcluded).toHaveLength(17);
+    expect(
+      triGExcluded.every(
+        ({ reasonCategory, sourceManifest, testType }) =>
+          reasonCategory === "N3JS_RDF12_TRIG_EVALUATION_GAP" &&
+          sourceManifest === "rdf12Eval" &&
+          testType === "EVALUATION",
+      ),
+    ).toBe(true);
+    for (const artifact of triGManifest.localManifestArtifacts) {
+      expect(existsSync(new URL(`../../${artifact}`, import.meta.url))).toBe(
+        true,
+      );
+    }
+
     const w3cSuite = suites.suites.find(({ id }) => id === "w3c-owl2");
     const w3cManifest = classifications.manifests.find(
       ({ id }) => id === "w3c-owl2.functional",
@@ -932,6 +982,9 @@ describe("owlapi-js governance artifacts", () => {
     );
     expect(generateBenchmarkFixture("nquads", { count: 2 })).toContain(
       "<urn:owlapi-js:benchmark:nquads:graph>",
+    );
+    expect(generateBenchmarkFixture("trig", { count: 2 })).toContain(
+      "<urn:owlapi-js:benchmark:trig:graph> {",
     );
     expect(
       generateBenchmarkFixture("functional-depth", { depth: 2 }),

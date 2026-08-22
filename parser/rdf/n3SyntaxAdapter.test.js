@@ -387,3 +387,62 @@ describe("N3SyntaxAdapter N-Quads semantics", () => {
     );
   });
 });
+
+describe("N3SyntaxAdapter TriG semantics", () => {
+  it("selects exact TriG mode while preserving prefixes and graph terms", async () => {
+    const parserOptions = [];
+    let lexerOptions;
+
+    class GraphPreservingParser extends Transform {
+      constructor(options) {
+        super({ readableObjectMode: true });
+        parserOptions.push(options);
+      }
+
+      _transform(chunk, encoding, callback) {
+        callback();
+      }
+
+      _flush(callback) {
+        this.emit("prefix", "ex", rdfDataFactory.namedNode("urn:test:"));
+        this.push(
+          rdfDataFactory.quad(
+            rdfDataFactory.namedNode("urn:test:subject"),
+            rdfDataFactory.namedNode("urn:test:predicate"),
+            rdfDataFactory.namedNode("urn:test:object"),
+            rdfDataFactory.namedNode("urn:test:graph"),
+          ),
+        );
+        callback();
+      }
+    }
+
+    const adapter = new N3SyntaxAdapter({
+      loadImplementation: async () => ({
+        Lexer: class GraphPreservingLexer {
+          constructor(options) {
+            lexerOptions = options;
+          }
+
+          tokenize() {}
+        },
+        StreamParser: GraphPreservingParser,
+      }),
+      mediaType: "application/trig",
+      syntaxName: "TriG",
+    });
+    const { dataset, prefixes } = await adapter.parse(
+      new StringDocumentSource(
+        "@prefix ex: <urn:test:> . ex:graph { ex:subject ex:predicate ex:object . }",
+      ),
+      configuration(),
+    );
+
+    expect(parserOptions[0]).toMatchObject({ format: "TriG" });
+    expect(lexerOptions).toEqual({ lineMode: false, n3: false });
+    expect(prefixes).toEqual({ ex: "urn:test:" });
+    expect([...dataset][0].graph).toEqual(
+      rdfDataFactory.namedNode("urn:test:graph"),
+    );
+  });
+});

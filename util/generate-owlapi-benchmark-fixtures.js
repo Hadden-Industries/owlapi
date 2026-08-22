@@ -71,6 +71,14 @@ const generators = Object.freeze({
     );
   },
 
+  trig({ count }) {
+    const declarations = repeated(
+      count,
+      (index) => `:C${index} a owl:Class .`,
+    );
+    return `@prefix : <urn:owlapi-js:benchmark:trig#> .\n@prefix owl: <http://www.w3.org/2002/07/owl#> .\n<urn:owlapi-js:benchmark:trig:graph> {\n${declarations}\n}\n`;
+  },
+
   dl({ count }) {
     return repeated(count, (index) => `C${index} ⊑ Parent${index}`);
   },

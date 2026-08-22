@@ -135,7 +135,7 @@ describe("N-Triples manager integration", () => {
     expect(result.diagnostics).toEqual([]);
   });
 
-  it("keeps the later TriG dataset format unregistered", async () => {
+  it("does not reinterpret an N-Quads statement as explicit TriG", async () => {
     const manager = OWLManager.createOWLOntologyManager();
     const document = source("<urn:s> <urn:p> <urn:o> <urn:g> .");
 
@@ -144,6 +144,6 @@ describe("N-Triples manager integration", () => {
         document,
         new OWLOntologyLoaderConfiguration({ format: OWLDocumentFormats.TRIG }),
       ),
-    ).rejects.toThrow("No parser is registered for format: trig");
+    ).rejects.toMatchObject({ code: "OWL_SYNTAX_ERROR", syntax: "TriG" });
   });
 });

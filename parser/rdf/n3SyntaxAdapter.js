@@ -8,6 +8,7 @@ import { rdfDataFactory, rdfDatasetFactory } from "../../rdf/index.js";
 const TURTLE_MEDIA_TYPE = "text/turtle";
 const N_TRIPLES_MEDIA_TYPE = "application/n-triples";
 const N_QUADS_MEDIA_TYPE = "application/n-quads";
+const TRIG_MEDIA_TYPE = "application/trig";
 const EXACT_FORMAT_POLICIES = Object.freeze(
   new Map([
     [
@@ -32,6 +33,14 @@ const EXACT_FORMAT_POLICIES = Object.freeze(
         implementationFormat: "N-Quads",
         lexerOptions: Object.freeze({ lineMode: true, n3: false }),
         syntaxName: "N-Quads",
+      }),
+    ],
+    [
+      TRIG_MEDIA_TYPE,
+      Object.freeze({
+        implementationFormat: "TriG",
+        lexerOptions: Object.freeze({ lineMode: false, n3: false }),
+        syntaxName: "TriG",
       }),
     ],
   ]),
@@ -529,10 +538,13 @@ export class N3SyntaxAdapter {
         }
       });
       parser.on("prefix", (prefix, iri) => {
-        // Prefixes are document metadata only for syntaxes that can declare
-        // them. The line syntaxes must remain prefix-free even if a replacement
+        // Prefixes are document metadata only for formats that can declare
+        // them. The line formats must remain prefix-free even if a replacement
         // implementation emits an unexpected stream event.
-        if (this.#mediaType === TURTLE_MEDIA_TYPE) {
+        if (
+          this.#mediaType === TURTLE_MEDIA_TYPE ||
+          this.#mediaType === TRIG_MEDIA_TYPE
+        ) {
           prefixes[prefix] = iri.value;
         }
       });
@@ -622,4 +634,11 @@ export const createNQuadsSyntaxAdapter = (options = {}) =>
     ...options,
     mediaType: N_QUADS_MEDIA_TYPE,
     syntaxName: "N-Quads",
+  });
+
+export const createTriGSyntaxAdapter = (options = {}) =>
+  new N3SyntaxAdapter({
+    ...options,
+    mediaType: TRIG_MEDIA_TYPE,
+    syntaxName: "TriG",
   });
