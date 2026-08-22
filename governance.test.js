@@ -5,6 +5,16 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { OWLOntologyLoaderConfiguration } from "./io/index.js";
+import {
+  ANNOTATION_VALUE_KINDS,
+  AXIOM_KINDS,
+  CLASS_EXPRESSION_KINDS,
+  DATA_PROPERTY_EXPRESSION_KINDS,
+  DATA_RANGE_KINDS,
+  ENTITY_KINDS,
+  INDIVIDUAL_KINDS,
+  OBJECT_PROPERTY_EXPRESSION_KINDS,
+} from "./model/index.js";
 
 const require = createRequire(import.meta.url);
 const {
@@ -331,7 +341,7 @@ describe("owlapi-js governance artifacts", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(paths).toEqual(productionModules);
     for (const record of records) {
-      expect([1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15]).toContain(
+      expect([1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16]).toContain(
         record.phase,
       );
       expect(manifest.provenanceCategories).toHaveProperty(
@@ -968,6 +978,81 @@ describe("owlapi-js governance artifacts", () => {
         expect(rule.evidence.length).toBeGreaterThan(0);
       }
     }
+    for (const evidencePath of evidencePaths) {
+      expect(
+        existsSync(new URL(`../../${evidencePath}`, import.meta.url)),
+      ).toBe(true);
+    }
+  });
+
+  it("keeps a finite, exhaustive Phase 16 inventory for W3C structural-to-RDF mapping", () => {
+    const inventory = readJson(
+      "../../docs/owlapi-js/conformance/owl-to-rdf-mapping.json",
+    );
+    const expectedSections = [
+      "TABLE-1",
+      "TABLE-2",
+      "SECTION-2.3.1",
+      "SECTION-2.3.2",
+      "SECTION-2.3.3",
+    ];
+    const ruleIds = inventory.sections.flatMap(({ rules }) =>
+      rules.map(({ id }) => id),
+    );
+    const evidencePaths = new Set([
+      inventory.implementation,
+      ...inventory.sharedEvidence,
+      ...inventory.sections.flatMap(({ rules }) =>
+        rules.flatMap(({ evidence }) => evidence),
+      ),
+      ...inventory.javaDifferentials.flatMap(({ evidence }) => evidence),
+    ]);
+
+    expect(inventory).toMatchObject({
+      schemaVersion: 1,
+      phase: 16,
+      status: "COMPLETE",
+    });
+    expect(inventory.sections.map(({ id }) => id)).toEqual(expectedSections);
+    expect(new Set(ruleIds).size).toBe(ruleIds.length);
+    expect([...inventory.coverage.entityKinds].sort()).toEqual(
+      [...ENTITY_KINDS].sort(),
+    );
+    expect([...inventory.coverage.axiomKinds].sort()).toEqual(
+      [...AXIOM_KINDS].sort(),
+    );
+    expect([...inventory.coverage.classExpressionKinds].sort()).toEqual(
+      [...CLASS_EXPRESSION_KINDS].sort(),
+    );
+    expect([...inventory.coverage.dataRangeKinds].sort()).toEqual(
+      [...DATA_RANGE_KINDS].sort(),
+    );
+    expect(
+      [...inventory.coverage.objectPropertyExpressionKinds].sort(),
+    ).toEqual([...OBJECT_PROPERTY_EXPRESSION_KINDS].sort());
+    expect([...inventory.coverage.dataPropertyExpressionKinds].sort()).toEqual(
+      [...DATA_PROPERTY_EXPRESSION_KINDS].sort(),
+    );
+    expect([...inventory.coverage.individualKinds].sort()).toEqual(
+      [...INDIVIDUAL_KINDS].sort(),
+    );
+    expect([...inventory.coverage.annotationValueKinds].sort()).toEqual(
+      [...ANNOTATION_VALUE_KINDS].sort(),
+    );
+    for (const section of inventory.sections) {
+      expect(section.status).toBe("COMPLETE");
+      expect(section.rules.length).toBeGreaterThan(0);
+      for (const rule of section.rules) {
+        expect(rule.status).toBe("COMPLETE");
+        expect(rule.constructs.length).toBeGreaterThan(0);
+        expect(rule.evidence.length).toBeGreaterThan(0);
+      }
+    }
+    expect(inventory.javaDifferentials).toHaveLength(1);
+    expect(inventory.javaDifferentials[0]).toMatchObject({
+      exactOccurrences: 3,
+      status: "CONTROLLED_NORMATIVE_DEVIATION",
+    });
     for (const evidencePath of evidencePaths) {
       expect(
         existsSync(new URL(`../../${evidencePath}`, import.meta.url)),

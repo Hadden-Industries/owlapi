@@ -505,6 +505,7 @@ class RdfGraphInterpreter {
     }
 
     this.#resolvePropertyCategoryPunning();
+    this.#inferImplicitPropertyCategories();
     this.#indexReifications();
     for (const { constructorName, currentQuad, subject } of declarations) {
       const entity = this.#dataFactory[constructorName](
@@ -518,6 +519,9 @@ class RdfGraphInterpreter {
       );
       this.#consume(currentQuad);
     }
+    // OWL 1 characteristic types identify their subject as an object property;
+    // retain that declaration recovery while avoiding a duplicate when the OWL
+    // 2 declaration triple is also present.
     for (const iri of inferredObjectPropertyIris) {
       if (explicitObjectPropertyIris.has(iri)) {
         continue;
@@ -1833,6 +1837,73 @@ class RdfGraphInterpreter {
           resolvedCategory,
           severity: "warning",
         });
+      }
+    }
+  }
+
+  // OWL entities need not have Declaration axioms. When an undeclared property
+  // is connected by subPropertyOf or equivalentProperty to a property whose
+  // category is known, that relation provides enough syntactic evidence to
+  // classify it before anonymous restrictions are reconstructed. This bounded
+  // propagation changes only the interpreter's category index: it must not
+  // manufacture a Declaration axiom that was absent from the RDF graph.
+  #inferImplicitPropertyCategories() {
+    const categories = [
+      this.#annotationPropertyIris,
+      this.#dataPropertyIris,
+      this.#objectPropertyIris,
+    ];
+    const relatedByIri = new Map();
+    const relate = (left, right) => {
+      if (!relatedByIri.has(left)) {
+        relatedByIri.set(left, new Set());
+      }
+      relatedByIri.get(left).add(right);
+    };
+    for (const quad of this.#dataset) {
+      if (
+        quad.subject.termType !== "NamedNode" ||
+        quad.object.termType !== "NamedNode" ||
+        ![
+          RDFS_VOCABULARY.subPropertyOf,
+          OWL_VOCABULARY.equivalentProperty,
+        ].includes(quad.predicate.value)
+      ) {
+        continue;
+      }
+      relate(quad.subject.value, quad.object.value);
+      relate(quad.object.value, quad.subject.value);
+    }
+
+    // Classify whole connected components in linear time. A component seeded
+    // by conflicting categories is intentionally left unresolved: choosing a
+    // category by traversal order would make semantics depend on serialization.
+    const visited = new Set();
+    for (const start of relatedByIri.keys()) {
+      if (visited.has(start)) {
+        continue;
+      }
+      const component = [];
+      const pending = [start];
+      visited.add(start);
+      while (pending.length > 0) {
+        const current = pending.pop();
+        component.push(current);
+        for (const related of relatedByIri.get(current) ?? []) {
+          if (!visited.has(related)) {
+            visited.add(related);
+            pending.push(related);
+          }
+        }
+      }
+
+      const seededCategories = categories.filter((values) =>
+        component.some((iri) => values.has(iri)),
+      );
+      if (seededCategories.length === 1) {
+        for (const iri of component) {
+          seededCategories[0].add(iri);
+        }
       }
     }
   }

@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "phase": 16,
+  "status": "COMPLETE",
+  "normativeSource": "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_the_Structural_Specification_to_RDF_Graphs",
+  "implementation": "src/owlapi-js/rdf/owlToRdfTranslator.js",
+  "scope": {
+    "canonicalInput": "owlapi-js structural OWLOntology",
+    "canonicalOutput": "RDF/JS DatasetCore<Quad>",
+    "normativeResult": "one RDF graph",
+    "datasetPlacement": "The optional RDF/JS graph term places every generated triple in one caller-selected dataset graph without changing OWL semantics.",
+    "listRule": "Table 1 SEQ is implemented once by #createList; no non-normative rdf:type rdf:List triples are emitted.",
+    "blankNodeRule": "Generated mapping nodes are fresh for each rule invocation; source anonymous individuals retain stable identity within one translation call.",
+    "serializerBoundary": "Concrete RDF syntax serialization and JSON-LD from-RDF processing remain outside this semantic translator capability."
+  },
+  "coverage": {
+    "entityKinds": [
+      "OWLClass",
+      "OWLObjectProperty",
+      "OWLDataProperty",
+      "OWLAnnotationProperty",
+      "OWLNamedIndividual",
+      "OWLDatatype"
+    ],
+    "axiomKinds": [
+      "OWLDeclarationAxiom",
+      "OWLSubClassOfAxiom",
+      "OWLEquivalentClassesAxiom",
+      "OWLDisjointClassesAxiom",
+      "OWLDisjointUnionAxiom",
+      "OWLSubObjectPropertyOfAxiom",
+      "OWLSubPropertyChainOfAxiom",
+      "OWLEquivalentObjectPropertiesAxiom",
+      "OWLDisjointObjectPropertiesAxiom",
+      "OWLObjectPropertyDomainAxiom",
+      "OWLObjectPropertyRangeAxiom",
+      "OWLInverseObjectPropertiesAxiom",
+      "OWLFunctionalObjectPropertyAxiom",
+      "OWLInverseFunctionalObjectPropertyAxiom",
+      "OWLReflexiveObjectPropertyAxiom",
+      "OWLIrreflexiveObjectPropertyAxiom",
+      "OWLSymmetricObjectPropertyAxiom",
+      "OWLAsymmetricObjectPropertyAxiom",
+      "OWLTransitiveObjectPropertyAxiom",
+      "OWLSubDataPropertyOfAxiom",
+      "OWLEquivalentDataPropertiesAxiom",
+      "OWLDisjointDataPropertiesAxiom",
+      "OWLDataPropertyDomainAxiom",
+      "OWLDataPropertyRangeAxiom",
+      "OWLFunctionalDataPropertyAxiom",
+      "OWLDatatypeDefinitionAxiom",
+      "OWLHasKeyAxiom",
+      "OWLSameIndividualAxiom",
+      "OWLDifferentIndividualsAxiom",
+      "OWLClassAssertionAxiom",
+      "OWLObjectPropertyAssertionAxiom",
+      "OWLNegativeObjectPropertyAssertionAxiom",
+      "OWLDataPropertyAssertionAxiom",
+      "OWLNegativeDataPropertyAssertionAxiom",
+      "OWLAnnotationAssertionAxiom",
+      "OWLSubAnnotationPropertyOfAxiom",
+      "OWLAnnotationPropertyDomainAxiom",
+      "OWLAnnotationPropertyRangeAxiom"
+    ],
+    "classExpressionKinds": [
+      "OWLClass",
+      "OWLObjectIntersectionOf",
+      "OWLObjectUnionOf",
+      "OWLObjectComplementOf",
+      "OWLObjectOneOf",
+      "OWLObjectSomeValuesFrom",
+      "OWLObjectAllValuesFrom",
+      "OWLObjectHasValue",
+      "OWLObjectHasSelf",
+      "OWLObjectMinCardinality",
+      "OWLObjectMaxCardinality",
+      "OWLObjectExactCardinality",
+      "OWLDataSomeValuesFrom",
+      "OWLDataAllValuesFrom",
+      "OWLDataHasValue",
+      "OWLDataMinCardinality",
+      "OWLDataMaxCardinality",
+      "OWLDataExactCardinality"
+    ],
+    "dataRangeKinds": [
+      "OWLDatatype",
+      "OWLDataIntersectionOf",
+      "OWLDataUnionOf",
+      "OWLDataComplementOf",
+      "OWLDataOneOf",
+      "OWLDatatypeRestriction"
+    ],
+    "objectPropertyExpressionKinds": [
+      "OWLObjectProperty",
+      "OWLObjectInverseOf"
+    ],
+    "dataPropertyExpressionKinds": ["OWLDataProperty"],
+    "individualKinds": ["OWLNamedIndividual", "OWLAnonymousIndividual"],
+    "annotationValueKinds": ["IRI", "OWLAnonymousIndividual", "OWLLiteral"]
+  },
+  "sharedEvidence": [
+    "src/owlapi-js/rdf/owlToRdfTranslator.test.js",
+    "src/owlapi-js/rdf/owlToRdfTranslator.expressions.test.js",
+    "src/owlapi-js/rdf/owlToRdfTranslator.axioms.test.js",
+    "src/owlapi-js/rdf/owlToRdfTranslator.annotations.test.js",
+    "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js",
+    "src/owlapi-js/rdf/owlToRdfTranslator.differential.test.js",
+    "src/owlapi-js/rdf/owlToRdfTranslator.resource.test.js",
+    "src/owlapi-js/rdf/owlToRdfTranslator.browser.test.js"
+  ],
+  "sections": [
+    {
+      "id": "TABLE-1",
+      "title": "Transformation to Triples",
+      "status": "COMPLETE",
+      "rules": [
+        {
+          "id": "T01-SEQUENCES",
+          "constructs": [
+            "empty sequence to rdf:nil",
+            "non-empty sequence to fresh rdf:first/rdf:rest cells",
+            "ordered property chains",
+            "keys with object properties before data properties"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/owlToRdfTranslator.axioms.test.js",
+            "src/owlapi-js/rdf/owlToRdfTranslator.resource.test.js"
+          ]
+        },
+        {
+          "id": "T01-ONTOLOGIES",
+          "constructs": [
+            "named and anonymous ontology headers",
+            "optional version IRI",
+            "imports",
+            "ontology annotations",
+            "axioms"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/owlToRdfTranslator.annotations.test.js",
+            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+          ]
+        },
+        {
+          "id": "T01-ATOMIC-TERMS-AND-DECLARATIONS",
+          "constructs": [
+            "IRIs and named entities as main nodes",
+            "stable source anonymous individuals",
+            "rdf:PlainLiteral conversion",
+            "all six declaration entity categories"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/owlToRdfTranslator.test.js",
+            "src/owlapi-js/rdf/owlToRdfTranslator.axioms.test.js",
+            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+          ]
+        },
+        {
+          "id": "T01-PROPERTY-AND-DATA-RANGE-EXPRESSIONS",
+          "constructs": [
+            "object inverse",
+            "data intersection and union",
+            "data complement and enumeration",
+            "datatype restrictions and facet nodes"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/owlToRdfTranslator.expressions.test.js",
+            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+          ]
+        },
+        {
+          "id": "T01-CLASS-EXPRESSIONS",
+          "constructs": [
+            "object intersection, union, complement, and enumeration",
+            "object some, all, value, and self restrictions",
+            "all qualified and unqualified object cardinalities",
+            "single- and multi-property data some/all restrictions",
+            "data value restrictions",
+            "all qualified and unqualified data cardinalities"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/owlToRdfTranslator.expressions.test.js",
+            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+          ]
+        },
+        {
+          "id": "T01-CLASS-AND-PROPERTY-AXIOMS",
+          "constructs": [
+            "class hierarchy, equivalence, disjointness, and disjoint union",
+            "object subproperty and property chain",
+            "object property equivalence, disjointness, domain, range, and inverse",
+            "all seven object property characteristics",
+            "data subproperty, equivalence, disjointness, domain, range, and functionality",
+            "datatype definitions and keys"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js",
+            "src/owlapi-js/rdf/owlToRdfTranslator.axioms.test.js"
+          ]
+        },
+        {
+          "id": "T01-INDIVIDUAL-AND-ANNOTATION-AXIOMS",
+          "constructs": [
+            "same and different individuals",
+            "class assertions",
+            "positive and negative object assertions including inverse normalization",
+            "positive and negative data assertions",
+            "annotation assertions",
+            "annotation subproperty, domain, and range"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/owlToRdfTranslator.axioms.test.js",
+            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "TABLE-2",
+      "title": "Translation of Annotations",
+      "status": "COMPLETE",
+      "rules": [
+        {
+          "id": "T02-DIRECT-ANNOTATION",
+          "constructs": [
+            "direct IRI, anonymous-individual, and literal annotation values"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/owlToRdfTranslator.test.js",
+            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+          ]
+        },
+        {
+          "id": "T02-NESTED-ANNOTATION",
+          "constructs": ["recursive owl:Annotation reification"],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/owlToRdfTranslator.annotations.test.js"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SECTION-2.3.1",
+      "title": "Annotated axioms that generate one main triple",
+      "status": "COMPLETE",
+      "rules": [
+        {
+          "id": "A23-SINGLE-MAIN-TRIPLE",
+          "constructs": [
+            "owl:Axiom reification of the exact main triple",
+            "declaration and assertion annotations",
+            "property-chain, disjoint-union, and key side triples remain unreified"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/owlToRdfTranslator.annotations.test.js",
+            "src/owlapi-js/rdf/owlToRdfTranslator.differential.test.js",
+            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SECTION-2.3.2",
+      "title": "Annotated axioms translated to multiple triples",
+      "status": "COMPLETE",
+      "rules": [
+        {
+          "id": "A23-PAIRWISE-MAIN-TRIPLES",
+          "constructs": [
+            "equivalent classes",
+            "equivalent object properties",
+            "equivalent data properties",
+            "same individuals",
+            "one reification per generated adjacent-pair triple"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/owlToRdfTranslator.annotations.test.js",
+            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SECTION-2.3.3",
+      "title": "Annotated axioms represented by blank nodes",
+      "status": "COMPLETE",
+      "rules": [
+        {
+          "id": "A23-NATIVE-AXIOM-NODES",
+          "constructs": [
+            "n-ary disjoint classes",
+            "n-ary disjoint object and data properties",
+            "n-ary different individuals using owl:members",
+            "negative object and data property assertions",
+            "annotations attached directly to the native axiom node"
+          ],
+          "status": "COMPLETE",
+          "evidence": [
+            "src/owlapi-js/rdf/owlToRdfTranslator.annotations.test.js",
+            "src/owlapi-js/rdf/owlToRdfTranslator.axioms.test.js",
+            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+          ]
+        }
+      ]
+    }
+  ],
+  "javaDifferentials": [
+    {
+      "id": "PHASE16-OWLAPI-RDF-LIST-TYPING",
+      "status": "CONTROLLED_NORMATIVE_DEVIATION",
+      "side": "Java",
+      "fixture": "util/owlapi-reference/fixtures/rdf/phase16-graph.java.nt",
+      "difference": "Java OWLAPI AbstractTranslator emits rdf:type rdf:List once for each RDF list cell; W3C Table 1 SEQ emits only rdf:first and rdf:rest.",
+      "normalization": "Remove only quads whose predicate is rdf:type and object is rdf:List from the pinned Java graph before graph-isomorphism comparison.",
+      "exactOccurrences": 3,
+      "authority": "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_the_Structural_Specification_to_RDF_Graphs",
+      "evidence": [
+        "src/owlapi-js/rdf/owlToRdfTranslator.differential.test.js",
+        "util/owlapi-reference/GenerateRdfGraph.java",
+        "util/owlapi-reference/fixtures/rdf/phase16-graph.ofn",
+        "util/owlapi-reference/fixtures/rdf/phase16-graph.java.nt"
+      ]
+    }
+  ],
+  "exclusions": []
+}

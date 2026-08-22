@@ -130,5 +130,29 @@ java -cp util/owlapi-reference/target RunWithClasspath <classpath-file> util/owl
 java -cp util/owlapi-reference/target RunWithClasspath <classpath-file> util/owlapi-reference/target GenerateKRSS2SyntaxSnapshot util/owlapi-reference/fixtures/krss2/phase11-structural.krss2 urn:test:phase10
 ```
 
+## Phase 16 OWL-to-RDF graph oracle
+
+`GenerateRdfGraph.java` loads a structural ontology with the pinned public
+OWLAPI API and saves it through `NTriplesDocumentFormat`. It sets
+`addMissingTypes` to false so OWLAPI does not manufacture declaration triples
+for every entity in the signature. The resulting N-Triples text is reparsed in
+JavaScript and compared as an RDF graph; neither statement order nor blank-node
+labels are evidence.
+
+The focused reference pair is `fixtures/rdf/phase16-graph.ofn` and
+`fixtures/rdf/phase16-graph.java.nt`. Java OWLAPI adds `rdf:type rdf:List` to
+each list cell although W3C Mapping Table 1 defines only `rdf:first` and
+`rdf:rest`. The differential test removes exactly the three such Java quads in
+this fixture, asserts that exact count, and then requires graph isomorphism. No
+other graph difference is normalized.
+
+Compile and run the harness with the same pinned runtime classpath used by the
+structural snapshot tools:
+
+```text
+java -cp util/owlapi-reference/target RunWithClasspath <classpath-file> util/owlapi-reference/target com.sun.tools.javac.Main -d util/owlapi-reference/target util/owlapi-reference/GenerateRdfGraph.java
+java -cp util/owlapi-reference/target RunWithClasspath <classpath-file> util/owlapi-reference/target GenerateRdfGraph util/owlapi-reference/fixtures/rdf/phase16-graph.ofn
+```
+
 The harness deliberately has no WebVOWL, npm, or browser dependency. Generated
 snapshots are test evidence and require their own fixture provenance record.

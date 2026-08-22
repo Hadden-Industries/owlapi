@@ -4533,7 +4533,7 @@ Continue the same cumulative ingestion-learning sequence rather than treating RD
 - [ ] Implement exact `rdfDatasetGraphPolicy` values: `requireSingleGraph`, `defaultGraphOnly`, `selectGraph`, `merge`.
 - [ ] Implement RDF-list decoder.
 - [ ] Keep RDF→OWL semantic reconstruction in one shared translator; never patch a syntax adapter with private OWL mapping rules.
-- [ ] Implement the shared OWL→RDF translator in Phase 16.
+- [x] Implement the shared OWL→RDF translator in Phase 16.
 - [ ] Remove the RDF/XML internal serializer with the retained legacy pipeline in Phase 17.
 
 ### Manager / I/O
@@ -4573,7 +4573,7 @@ Continue the same cumulative ingestion-learning sequence rather than treating RD
 - [ ] W3C syntax-translation tests.
 - [ ] Java structural differential snapshots.
 - [ ] Machine-readable expected-difference manifest using RFC 9535 JSONPath and exact atomic-difference/cardinality rules; zero unmatched/ambiguous/stale required differences.
-- [ ] OWL→RDF graph equivalence.
+- [x] OWL→RDF graph equivalence.
 - [ ] RDF→OWL round trips.
 - [ ] named graph preservation.
 - [ ] imports/cycles/missing imports.

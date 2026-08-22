@@ -10,7 +10,8 @@ export * from "./model/index.js";
 
 // TODO(OWLAPI parity): Java OWLAPI exposes OWLOntologyStorer and concrete
 // serializer families. owlapi-js v1 deliberately has no `storeOntology` API;
-// the Phase 11 OwlToRdfTranslator will provide semantic RDF/JS mapping without
-// claiming a concrete serialization format. Future storers require explicit
-// format contracts, dependency/provenance review, and round-trip tests.
+// the Phase 16 OwlToRdfTranslator provides semantic RDF/JS mapping through the
+// `owlapi-js/rdf` boundary without claiming a concrete serialization format.
+// Future storers require explicit format contracts, dependency/provenance
+// review, and syntax-specific round-trip tests.
 // Verification: capability `storer.concrete-serializers` (DEFERRED).

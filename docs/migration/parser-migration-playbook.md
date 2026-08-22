@@ -434,12 +434,34 @@ do not append chronology here.
   lazy production chunk. A promise-returning dependency is not evidence of
   cooperative streaming; record observed event-loop delay honestly.
 
-## Next migration: Phase 16 shared OWL-to-RDF translator
+## Completed migration: Phase 16 shared OWL-to-RDF translator
 
-- Implement the inverse W3C mapping from canonical structural OWL to RDF/JS
-  with exhaustive `kind` dispatch.
-- Keep JSON-LD serialization out of scope unless the normative plan promotes a
-  distinct serializer capability; Phase 15's from-RDF inventory remains an
-  explicit non-applicable ingestion register, not an accidental promise.
-- Preserve the completed ingestion adapters and their graph-equivalence
-  fixtures as cross-checks without routing the translator through any parser.
+- Keep one public `translate(ontology, { graph })` seam over a per-call mapping
+  session. The session owns generated blank nodes, stable source anonymous
+  individuals, RDF lists, recursive expressions, annotations, and graph
+  placement; concrete serializers remain a separate capability.
+- Couple the translator mechanically to the canonical model taxonomy. The
+  finite W3C Section 2 inventory, exhaustive expression/axiom fixtures, and
+  constructor guards must all fail when a new structural kind lacks a mapping.
+- Distinguish the three normative annotation patterns: `owl:Axiom` around a
+  single main triple, one reification for each pairwise main triple, and direct
+  annotations on native blank-node axioms.
+- Test standards correctness first, then use Java OWLAPI as a secondary graph
+  oracle. Normalize only the exact counted Java `rdf:type rdf:List` additions;
+  W3C Table 1 does not emit those triples.
+- Round-trip through the existing inverse translator. If a valid forward graph
+  exposes an inverse-recognition gap, fix it at the shared RDF interpreter seam
+  without manufacturing structural declarations or syntax-specific rules.
+- Keep JSON-LD serialization and every other concrete RDF storer out of Phase
+  16. Phase 15's from-RDF register remains explicitly non-applicable.
+
+## Next migration: Phase 17 physical legacy deletion
+
+- Re-run the retained-reference and production no-reachability audits before
+  deleting any legacy file; Phase 8 already removed production wiring, so no
+  replacement module should be moved merely to make deletion convenient.
+- Delete the retained legacy parser/converter/exporter and obsolete bridge tests
+  only after confirming that Phase 16 differential evidence no longer reads
+  them and that every advertised format still enters through `owlapi-js`.
+- Keep deletion changes separate from Phase 18 packaging/publication work so a
+  repository review can distinguish removal from release-surface expansion.

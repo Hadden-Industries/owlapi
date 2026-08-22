@@ -20,16 +20,17 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |    13 | N-Quads                                                            | Complete    | PASS: 8/181 focused; 152/2286 full; 114/114 W3C N-Quads          |
 |    14 | TriG                                                               | Complete    | PASS: 10/493 focused; 157/2711 full; 401/401 required W3C        |
 |    15 | JSON-LD                                                            | Complete    | PASS: 10/559 focused; 163/3222 full; 462/462 required W3C        |
-|    16 | OWL-to-RDF                                                         | Not started | blocked by Phase 15 Git checkpoint                               |
-|    17 | Physical legacy deletion                                           | Not started | blocked by Phase 16 and retained-reference audit                 |
+|    16 | OWL-to-RDF                                                         | Complete    | PASS: 8/24 focused; 171/3247 full; graph differential green      |
+|    17 | Physical legacy deletion                                           | Not started | blocked by Phase 16 Git checkpoint and retained-reference audit  |
 |    18 | Package/release                                                    | Not started | blocked by all prior gates                                       |
 
-Active ingestion migration: none. Phase 15 has passed its implementation,
-learning, conformance, restricted-context, graph-policy, differential,
-resource, performance, integration, and repository gates in the working tree
-and is paused for the requested Git checkpoint. The finite ontology-ingestion
-programme is complete. Phase 16 remains blocked until that checkpoint is
-committed and the repository owner explicitly says to proceed.
+Active ingestion migration: none. Phase 16 has passed its implementation,
+normative-mapping, exhaustive-taxonomy, round-trip, Java differential,
+resource, performance, browser-contract, and repository gates in the working
+tree and is paused for the requested Git checkpoint. The finite
+ontology-ingestion programme remains complete. Phase 17 remains blocked until
+the Phase 16 checkpoint is committed and the repository owner explicitly says
+to proceed.
 
 The structural cutover itself is in place. WebVOWL ingests ontologies only
 through `owlapi-js`, the production graph reaches no retained legacy parser,
@@ -85,6 +86,22 @@ bounded-detection gate retains the 20% wall limit and requires relative heap
 compliance or a 64 KiB ceiling across 1/4/16 MiB inputs; all three scaling
 medians pass. Phase 15 adds no package, lockfile, build-configuration, production
 resource-ceiling, or legacy-production-reachability change.
+
+The shared OWL-to-RDF translator now maps the complete finite structural model
+through one exhaustive dispatch layer into a fresh RDF/JS dataset, including
+ontology metadata, every axiom family, recursive annotations, source anonymous
+individual identity, and qualified and unqualified cardinalities. Its governed
+inventory is aligned mechanically with all model kind arrays. The broad
+structural round trip covers all 38 axiom kinds and compares blank-node-agnostic
+graphs after excluding only nonlogical declaration triples inferred by the
+reverse translator. A pinned OWLAPI 5.5.1 N-Triples oracle agrees after one
+exact controlled standards correction: Java emits three convenience
+`rdf:type rdf:List` triples that the normative sequence mapping does not
+require. The phase also hardened reverse reconstruction so named properties
+connected by subproperty or equivalence axioms acquire the category needed to
+decode restrictions without manufacturing declaration axioms. Phase 16 adds
+no dependency, package, lockfile, build configuration, storer, production
+reachability, or resource-ceiling change.
 
 N-Triples uses a distinct exact-format policy over the private N3.js boundary
 introduced for Turtle. Its independent pinned W3C RDF 1.1/RDF 1.2 register is

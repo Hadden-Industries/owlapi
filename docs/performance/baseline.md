@@ -907,3 +907,33 @@ Relative to Phase 13, the initial closure grows by 2,265 minified bytes
 byte-identical. Both changes remain below the unchanged 20% threshold. The
 verifier proves the implementation marker remains absent from the initial
 static closure and present only behind the shared dynamic RDF-syntax boundary.
+
+## Phase 16 structural OWL-to-RDF baseline
+
+Phase 16 measures the shared synchronous structural-object-to-RDF translator
+before any concrete storer is added. The source ontology is constructed before
+each timed sample, so the measurements isolate translation rather than fixture
+construction. Each workload receives one warm-up followed by five measured
+runs; the table reports median wall time and the median of each run's peak
+sampled heap delta. Explicit garbage collection is requested before every run.
+A benchmark-only dataset wrapper samples heap before the first insertion, every
+256 emitted quads, and after translation; this observes synchronous allocation
+without adding cooperative yields to production code.
+
+The measurements were recorded from source revision `0896f082` on Windows
+10.0.26200 x64, Node.js v24.19.0, an Intel Core i9-12900K (24 logical CPUs),
+and 34,053,869,568 bytes of system memory. The package-lock SHA-256 was
+`bbd8a2a632a5b3aa4a9d0c182d7b3176e1c540d5d6bdd47e170c52d7737f93a5`.
+
+| Workload | Structural input | Output quads | Median wall time | Peak sampled heap delta |
+| -------- | ---------------: | -----------: | ---------------: | ----------------------: |
+| Named declarations | 50,000 axioms | 50,001 | 85.38 ms | 98,392,856 bytes |
+| Long RDF collection | 25,000 individuals | 50,003 | 101.34 ms | 114,785,832 bytes |
+| Deep class expression | 256 complements | 514 | 1.35 ms | 5,249,384 bytes |
+
+All three workloads complete well below the unchanged 30-second release
+ceiling. Output size is exactly linear in each stress dimension. Because the
+public translator is intentionally synchronous, the benchmark reports honest
+wall and heap behavior rather than introducing artificial cooperative yields.
+Phase 16 adds no dependency, configuration, registry entry, production
+reachability, resource-ceiling change, or regression-threshold change.

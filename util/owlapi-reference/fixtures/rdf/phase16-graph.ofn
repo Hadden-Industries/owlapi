@@ -1,0 +1,17 @@
+Prefix(:=<urn:owlapi-js:phase16:>)
+Ontology(<urn:owlapi-js:phase16> <urn:owlapi-js:phase16:v1>
+  Annotation(Annotation(rdfs:comment "nested"@en) rdfs:label "Phase 16 graph"@en)
+
+  Declaration(Annotation(rdfs:comment "declared class") Class(:A))
+  Declaration(ObjectProperty(:p))
+  Declaration(ObjectProperty(:q))
+  Declaration(ObjectProperty(:r))
+  Declaration(DataProperty(:d))
+  Declaration(NamedIndividual(:i))
+
+  SubClassOf(Annotation(rdfs:comment "mapped axiom") :A ObjectSomeValuesFrom(ObjectInverseOf(:p) :B))
+  SubObjectPropertyOf(ObjectPropertyChain(:p :q) :r)
+  DataPropertyRange(:d DatatypeRestriction(xsd:integer xsd:minInclusive "0"^^xsd:integer))
+  ObjectPropertyAssertion(:p :i _:anon)
+  NegativeDataPropertyAssertion(:d _:anon "plain")
+)
