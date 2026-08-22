@@ -132,6 +132,15 @@ describe("owlapi-js governance artifacts", () => {
       progress: "COMPLETE",
       status: "DELEGATED",
     });
+    expect(byId.get("parser.jsonld")).toMatchObject({
+      delegate: "jsonld",
+      formatParameters: ["processingMode", "expandContext", "rdfDirection"],
+      generalizedRdf: "UNSUPPORTED_BY_DESIGN",
+      processingModes: ["json-ld-1.0", "json-ld-1.1"],
+      progress: "COMPLETE",
+      rdfDirectionModes: ["i18n-datatype", "compound-literal"],
+      status: "DELEGATED",
+    });
     expect(byId.get("parser.n3-language")).toMatchObject({
       status: "DEFERRED",
       phase: null,
@@ -322,7 +331,9 @@ describe("owlapi-js governance artifacts", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(paths).toEqual(productionModules);
     for (const record of records) {
-      expect([1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14]).toContain(record.phase);
+      expect([1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15]).toContain(
+        record.phase,
+      );
       expect(manifest.provenanceCategories).toHaveProperty(
         record.provenanceCategory,
       );
@@ -701,6 +712,8 @@ describe("owlapi-js governance artifacts", () => {
       ["w3c-rdf-tests.nquads", [13]],
       ["w3c-rdf-tests.trig", [14]],
       ["w3c-json-ld-api.to-from-rdf", [15]],
+      ["w3c-json-ld-api.to-rdf", [15]],
+      ["w3c-json-ld-api.from-rdf", [15]],
     ]);
     for (const [id, phases] of expectedOwnerPhases) {
       expect(byId.get(id)?.classificationOwnerPhases).toEqual(phases);
@@ -861,6 +874,36 @@ describe("owlapi-js governance artifacts", () => {
         true,
       );
     }
+
+    const jsonLdToRdfManifest = byId.get("w3c-json-ld-api.to-rdf");
+    const jsonLdRequired = jsonLdToRdfManifest.entries.filter(
+      ({ classification }) => classification === "REQUIRED",
+    );
+    const jsonLdExcluded = jsonLdToRdfManifest.entries.filter(
+      ({ classification }) => classification === "EXCLUDED_WITH_REASON",
+    );
+    expect(jsonLdToRdfManifest.entries).toHaveLength(467);
+    expect(jsonLdRequired).toHaveLength(462);
+    expect(jsonLdExcluded).toHaveLength(5);
+    expect(
+      jsonLdExcluded.reduce((counts, { reasonCategory }) => {
+        counts[reasonCategory] = (counts[reasonCategory] || 0) + 1;
+        return counts;
+      }, {}),
+    ).toEqual({
+      JSONLD_GENERALIZED_RDF_OUTSIDE_OWL_INGESTION: 2,
+      JSONLDJS_9_CONFORMANCE_GAP: 3,
+    });
+
+    const jsonLdFromRdfManifest = byId.get("w3c-json-ld-api.from-rdf");
+    expect(jsonLdFromRdfManifest.entries).toHaveLength(54);
+    expect(
+      jsonLdFromRdfManifest.entries.every(
+        ({ classification, reasonCategory }) =>
+          classification === "NOT_APPLICABLE" &&
+          reasonCategory === "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+      ),
+    ).toBe(true);
 
     const w3cSuite = suites.suites.find(({ id }) => id === "w3c-owl2");
     const w3cManifest = classifications.manifests.find(

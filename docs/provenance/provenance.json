@@ -28,6 +28,7 @@
     "PHASE12-2026-08-22": "Repository-owner approval to implement Phase 12 and its strict N-Triples adapter, independent RDF 1.1 and RDF 1.2 conformance classification, default-graph, detection, resource, differential, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
     "PHASE13-2026-08-22": "Repository-owner approval to implement Phase 13 and its strict N-Quads adapter, independent RDF 1.1 and RDF 1.2 conformance classification, dataset graph-policy, detection, resource, differential, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
     "PHASE14-2026-08-22": "Repository-owner approval to implement Phase 14 and its strict TriG adapter, independent RDF 1.1 and RDF 1.2 conformance classification, graph-block detection, dataset graph-policy, resource, differential, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
+    "PHASE15-2026-08-22": "Repository-owner approval to implement Phase 15 and the follow-up correction that promotes standards-defined JSON-LD processor profiles into the reusable public format interface, including immutable parameters, JSON-LD 1.0 and 1.1 processing, expansion contexts, RDF direction, canonical rdf:JSON, direct RDF/JS conversion, restricted remote-context loading, exhaustive pinned W3C classification, graph-policy, imports, resource, browser, differential, performance, provenance, migration-status, and final ingestion learning-gate updates; the same authority approved a general 64 KiB absolute alternative for designated bounded parser-selection heap signals only when 1 MiB, 4 MiB, and 16 MiB scaling medians all remain under that fixed ceiling, while retaining the 20% wall limit and ordinary workload budgets, on 22 August 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026"
   },
   "provenanceCategories": {
@@ -217,7 +218,7 @@
       "id": "PHASE1-IO-DOCUMENT",
       "path": "src/owlapi-js/io/document.js",
       "phase": 1,
-      "scope": "immutable string document sources and format metadata",
+      "scope": "immutable string document sources, format metadata, and JSON-compatible format parameters",
       "legacyWebVowlSources": ["src/owl2vowl/js/importLoader.js"],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
@@ -241,6 +242,15 @@
             "src/owlapi-js/parser/owlxml/owlXml.resource.test.js"
           ],
           "decisionRef": "PHASE4-2026-08-11"
+        },
+        {
+          "phase": 15,
+          "scope": "add immutable JSON-compatible document-format parameters so standards-defined parser profiles can be selected without mutating a shared loader configuration",
+          "normativePublicSources": [
+            "docs/owlapi-js/implementation-plan.md sections 10.8, 11.2, and 17.22"
+          ],
+          "focusedEvidence": ["src/owlapi-js/io/io.test.js"],
+          "decisionRef": "PHASE15-2026-08-22"
         }
       ],
       "thirdPartyDependencies": [],
@@ -1331,6 +1341,17 @@
         "src/owlapi-js/parser/nquads/nQuads.test.js",
         "src/owlapi-js/parser/nquads/nQuads.differential.test.js"
       ],
+      "laterPhaseChanges": [
+        {
+          "phase": 15,
+          "scope": "commit immutable JSON-LD context metadata and preserve the exact caller-selected parameterized document format after RDF-to-OWL reconstruction",
+          "normativePublicSources": [
+            "docs/owlapi-js/implementation-plan.md sections 10.8, 11.2, and 17.22"
+          ],
+          "focusedEvidence": ["src/owlapi-js/parser/jsonld/jsonLd.test.js"],
+          "decisionRef": "PHASE15-2026-08-22"
+        }
+      ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE12-2026-08-22",
@@ -1507,6 +1528,115 @@
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE14-2026-08-22",
+      "reviewDate": "2026-08-22"
+    },
+    {
+      "id": "PHASE15-JSONLD-DESCRIPTOR",
+      "path": "src/owlapi-js/parser/jsonld/descriptor.js",
+      "phase": 15,
+      "scope": "immutable JSON-LD format identity and bounded conservative detection using characteristic JSON-LD keywords while treating the exact application/ld+json media type as authoritative",
+      "legacyWebVowlSources": ["src/owl2vowl/js/jsonLdParser.js"],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/json-ld11/",
+        "https://www.w3.org/TR/json-ld11-api/",
+        "docs/owlapi-js/implementation-plan.md sections 6.7, 9.4-9.6, and 17.22"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 public JSON-LD document-format identity and the project-owned parser registry contract"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/jsonld/jsonLd.test.js",
+        "src/owlapi-js/parser/trig/trig.test.js"
+      ],
+      "thirdPartyDependencies": ["jsonld"],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE15-2026-08-22",
+      "reviewDate": "2026-08-22"
+    },
+    {
+      "id": "PHASE15-JSONLD-ADAPTER",
+      "path": "src/owlapi-js/parser/jsonld/jsonLdSyntaxAdapter.js",
+      "phase": 15,
+      "scope": "Digital Bazaar jsonld.js adapter that converts JSON-LD directly into normalized RDF/JS quads without an N-Quads string round-trip, applies immutable processing-mode, expansion-context, and RDF-direction format parameters, canonicalizes rdf:JSON, and confines remote contexts to the injected resource-limited security boundary",
+      "legacyWebVowlSources": ["src/owl2vowl/js/jsonLdParser.js"],
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2014/REC-json-ld-20140116/",
+        "https://www.w3.org/TR/2014/REC-json-ld-api-20140116/",
+        "https://www.w3.org/TR/json-ld11/",
+        "https://www.w3.org/TR/json-ld11-api/#deserialize-json-ld-to-rdf-algorithm",
+        "https://rdf.js.org/dataset-spec/",
+        "docs/owlapi-js/implementation-plan.md sections 6.7, 10.8, 17.22, and 19.3"
+      ],
+      "compatibilityReferences": [
+        "Pinned W3C JSON-LD API revision ffdb326121ea89b7b8280e76a5caea923834bcef: 462 REQUIRED to-RDF entries pass across JSON-LD 1.0 and 1.1 processing, expansion contexts, both RDF-direction representations, and JCS-canonical rdf:JSON; only two generalized-RDF entries and three enumerated jsonld.js 9.0.0 gaps remain excluded with reasons; all 54 from-RDF entries are explicitly not applicable"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/jsonld/jsonLdSyntaxAdapter.test.js",
+        "src/owlapi-js/parser/jsonld/jsonLdSyntaxAdapter.resource.test.js",
+        "src/owlapi-js/parser/jsonld/jsonLd.conformance.test.js",
+        "src/owlapi-js/parser/jsonld/jsonLd.browser.test.js"
+      ],
+      "thirdPartyDependencies": [
+        "@rdfjs/data-model",
+        "@rdfjs/dataset",
+        "jsonld"
+      ],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE15-2026-08-22",
+      "reviewDate": "2026-08-22"
+    },
+    {
+      "id": "PHASE15-JSONLD10-COMPATIBILITY",
+      "path": "src/owlapi-js/parser/jsonld/jsonLd10Compatibility.js",
+      "phase": 15,
+      "scope": "narrow standards-compatibility boundary for JSON-LD 1.0 context definitions and list-of-lists that jsonld.js 9 no longer provides directly; general expansion and context processing remain delegated",
+      "legacyWebVowlSources": ["src/owl2vowl/js/jsonLdParser.js"],
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2014/REC-json-ld-20140116/",
+        "https://www.w3.org/TR/2014/REC-json-ld-api-20140116/",
+        "docs/owlapi-js/implementation-plan.md sections 10.8, 11.2, and 17.22"
+      ],
+      "compatibilityReferences": [
+        "Pinned W3C JSON-LD API revision ffdb326121ea89b7b8280e76a5caea923834bcef processing-mode and RDF-direction cases exercised through the Phase 15 adapter conformance runner"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/jsonld/jsonLdSyntaxAdapter.test.js",
+        "src/owlapi-js/parser/jsonld/jsonLd.conformance.test.js"
+      ],
+      "thirdPartyDependencies": ["jsonld"],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE15-2026-08-22",
+      "reviewDate": "2026-08-22"
+    },
+    {
+      "id": "PHASE15-JSONLD-PARSER",
+      "path": "src/owlapi-js/parser/jsonld/parser.js",
+      "phase": 15,
+      "scope": "thin JSON-LD parser binding that injects the manager document loader, preserves context metadata, applies the shared RDF dataset graph policy, and delegates OWL reconstruction to the common RDF-to-OWL translator",
+      "legacyWebVowlSources": ["src/owl2vowl/js/jsonLdParser.js"],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/json-ld11-api/",
+        "https://www.w3.org/TR/owl2-mapping-to-rdf/",
+        "docs/owlapi-js/implementation-plan.md sections 6.4, 6.5, and 17.22"
+      ],
+      "compatibilityReferences": [
+        "The Phase 5 RDF-to-OWL translator and Phase 12-14 shared RDF syntax transaction contract"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "src/owlapi-js/parser/jsonld/jsonLd.test.js",
+        "src/owlapi-js/parser/jsonld/jsonLd.differential.test.js"
+      ],
+      "thirdPartyDependencies": ["jsonld"],
+      "legacyDerivedImplementationDisposition": "replaced",
+      "decisionRef": "PHASE15-2026-08-22",
       "reviewDate": "2026-08-22"
     }
   ],

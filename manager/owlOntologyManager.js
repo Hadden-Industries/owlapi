@@ -18,6 +18,7 @@ import {
 import { dlSyntaxParserDescriptor } from "../parser/dl/descriptor.js";
 import { functionalSyntaxParserDescriptor } from "../parser/functional/descriptor.js";
 import { krss2ParserDescriptor } from "../parser/krss2/descriptor.js";
+import { jsonLdParserDescriptor } from "../parser/jsonld/descriptor.js";
 import { manchesterSyntaxParserDescriptor } from "../parser/manchester/descriptor.js";
 import { nQuadsParserDescriptor } from "../parser/nquads/descriptor.js";
 import { nTriplesParserDescriptor } from "../parser/ntriples/descriptor.js";
@@ -83,6 +84,7 @@ class ParseTransaction {
   #diagnostics = [];
   #documentFormat;
   #imports = new StructuralSet();
+  #jsonLdContexts;
   #rdfDatasetContext;
   #ontologyID;
   #prefixes;
@@ -166,6 +168,13 @@ class ParseTransaction {
     this.#prefixes = Object.freeze({ ...prefixes });
   }
 
+  setJsonLdContexts(contexts) {
+    if (!Array.isArray(contexts)) {
+      throw new TypeError("jsonLdContexts must be an array");
+    }
+    this.#jsonLdContexts = Object.freeze([...contexts]);
+  }
+
   setRdfDatasetContext({ merged, selectedGraph }) {
     if (typeof merged !== "boolean") {
       throw new TypeError("RDF dataset context merged must be a boolean");
@@ -194,6 +203,9 @@ class ParseTransaction {
         documentIRI,
         format: this.#documentFormat || defaultFormat,
         ...(this.#prefixes === undefined ? {} : { prefixes: this.#prefixes }),
+        ...(this.#jsonLdContexts === undefined
+          ? {}
+          : { jsonLdContexts: this.#jsonLdContexts }),
         ...(this.#rdfDatasetContext === undefined
           ? {}
           : this.#rdfDatasetContext),
@@ -297,6 +309,7 @@ export class OWLOntologyManager {
       registry ||
       new OWLParserRegistry([
         owlXmlParserDescriptor,
+        jsonLdParserDescriptor,
         rdfXmlParserDescriptor,
         nQuadsParserDescriptor,
         nTriplesParserDescriptor,
@@ -604,7 +617,9 @@ export class OWLOntologyManager {
         continue;
       }
 
-      const parser = candidate.descriptor.createParser();
+      const parser = candidate.descriptor.createParser({
+        documentLoader: this.#documentLoader,
+      });
       if (!parser || typeof parser.parse !== "function") {
         throw new TypeError(
           `Parser ${candidate.descriptor.id} does not implement parse()`,

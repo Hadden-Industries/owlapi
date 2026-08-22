@@ -111,6 +111,13 @@ export const detectTriG = (source) => {
       result: "NO_MATCH",
     };
   }
+  if (/^\{\s*(?:"|\})/u.test(remaining)) {
+    return {
+      reason: "A JSON object signature was found instead of a graph block",
+      reasonCode: "TRIG_JSON",
+      result: "NO_MATCH",
+    };
+  }
   const structuralTokens = scanStructuralTokens(remaining);
   if (structuralTokens.n3Implication) {
     return {

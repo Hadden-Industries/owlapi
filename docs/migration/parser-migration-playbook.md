@@ -24,6 +24,11 @@ do not append chronology here.
 - Keep detection within `maxSniffBytes`. Compatibility recovery is available
   only after a positive detector match; syntax hints do not authorize broad
   fallback.
+- Gate large-input mismatch detection under implementation-plan §20.6. Wall
+  time always retains the 20% relative limit. Peak heap must meet that relative
+  limit or remain below the fixed 64 KiB ceiling across 1 MiB, 4 MiB, and
+  16 MiB inputs. The absolute branch is never available to valid parsing,
+  translation, publication, or rendering workloads.
 - Put every XML syntax behind one `XmlParserAdapter`: browsers use native
   `DOMParser`, Node loads the governed DOM implementation lazily, and neither
   environment-specific nodes nor parser errors cross the adapter boundary.
@@ -390,14 +395,51 @@ do not append chronology here.
 - Repeat resource, cancellation, differential, integration, browser,
   performance, provenance, and learning gates for the independent syntax.
 
-## Next migration: Phase 15 JSON-LD
+## Phase 15 JSON-LD evidence
 
-- Keep JSON-LD behind its existing restricted-loader boundary. Revalidate the
-  adapter's context-loading policy and ensure remote context access remains an
-  explicit caller decision rather than an ambient network side effect.
-- Establish independent JSON-LD conformance classification and preserve the
-  same canonical RDF/JS dataset and graph-policy boundary used by other RDF
-  syntaxes.
-- Repeat the full parser migration gate set, including browser lazy-loading,
-  resource limits, imports, differential evidence, and bundle measurements,
-  before the Phase 15 checkpoint.
+- Bind JSON-LD to Digital Bazaar jsonld.js through one direct RDF/JS adapter;
+  never serialize its result to N-Quads merely to reparse it.
+- Pass an adapter-specific document-loader facade to jsonld.js on every call.
+  `remoteJsonLdContexts: false` must reject before consulting the injected
+  loader. Enabled loads retain URL/scheme/credential/SSRF validation, final
+  redirect revalidation, byte/time/redirect limits, `AbortSignal`, and the
+  caller's immutable configuration.
+- Use `application/ld+json` as an authoritative identity. Otherwise require a
+  characteristic JSON-LD keyword; `.json` remains a weak hint and a JSON object
+  must not be claimed as a TriG graph block.
+- Expose standards-defined processor controls through immutable
+  `OWLDocumentFormat` parameters, not consumer-specific parser arguments.
+  Phase 15 supports JSON-LD 1.0 and 1.1 processing modes, inline and restricted
+  external expansion contexts, and both RDF-direction representations.
+- Normalize dependency terms at the RDF/JS boundary and filter statements that
+  the to-RDF algorithm says are not well-formed RDF. Keep general expansion and
+  context processing delegated to jsonld.js. If a pinned dependency removes a
+  standards version or representation, confine the exact compatibility delta
+  to a named, independently tested module rather than growing a second general
+  JSON-LD processor in project code.
+- Treat JCS-canonical `rdf:JSON` as an output invariant. The W3C `useJCS` flag
+  selects the expected conformance profile; it does not justify exposing
+  non-canonical JSON literals as a separate ingestion mode.
+- Preserve immutable top-level `@context` values as document metadata, then use
+  the same explicit named-graph policy and RDF-to-OWL translator as every other
+  RDF syntax.
+- Archive and classify both pinned W3C JSON-LD API manifests. Phase 15 records
+  all 467 to-RDF cases and all 54 from-RDF cases: 462 to-RDF cases are
+  `REQUIRED` and pass, two generalized-RDF cases and three enumerated jsonld.js
+  9.0.0 gaps are `EXCLUDED_WITH_REASON`, and all 54 reverse-direction cases are
+  `NOT_APPLICABLE` to ingestion. A particular consumer's UI does not justify
+  excluding a standards-defined processor profile from the reusable parser.
+- Verify direct and imported ontology loads, all graph policies, structural
+  equivalence, malformed/resource behavior, browser execution, and an isolated
+  lazy production chunk. A promise-returning dependency is not evidence of
+  cooperative streaming; record observed event-loop delay honestly.
+
+## Next migration: Phase 16 shared OWL-to-RDF translator
+
+- Implement the inverse W3C mapping from canonical structural OWL to RDF/JS
+  with exhaustive `kind` dispatch.
+- Keep JSON-LD serialization out of scope unless the normative plan promotes a
+  distinct serializer capability; Phase 15's from-RDF inventory remains an
+  explicit non-applicable ingestion register, not an accidental promise.
+- Preserve the completed ingestion adapters and their graph-equivalence
+  fixtures as cross-checks without routing the translator through any parser.

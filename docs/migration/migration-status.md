@@ -19,15 +19,16 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |    12 | N-Triples                                                          | Complete    | PASS: 10/180 focused; 147/2147 full; 99/99 W3C N-Triples         |
 |    13 | N-Quads                                                            | Complete    | PASS: 8/181 focused; 152/2286 full; 114/114 W3C N-Quads          |
 |    14 | TriG                                                               | Complete    | PASS: 10/493 focused; 157/2711 full; 401/401 required W3C        |
-|    15 | JSON-LD                                                            | Not started | blocked by Phase 14 Git checkpoint                               |
-|    16 | OWL-to-RDF                                                         | Not started | blocked by ingestion programme                                   |
+|    15 | JSON-LD                                                            | Complete    | PASS: 10/559 focused; 163/3222 full; 462/462 required W3C        |
+|    16 | OWL-to-RDF                                                         | Not started | blocked by Phase 15 Git checkpoint                               |
 |    17 | Physical legacy deletion                                           | Not started | blocked by Phase 16 and retained-reference audit                 |
 |    18 | Package/release                                                    | Not started | blocked by all prior gates                                       |
 
-Active ingestion migration: none. Phase 14 has passed its implementation,
-learning, conformance, graph-policy, differential, resource, performance,
-integration, and repository gates in the working tree and is paused for the
-requested Git checkpoint. Phase 15 remains blocked until that checkpoint is
+Active ingestion migration: none. Phase 15 has passed its implementation,
+learning, conformance, restricted-context, graph-policy, differential,
+resource, performance, integration, and repository gates in the working tree
+and is paused for the requested Git checkpoint. The finite ontology-ingestion
+programme is complete. Phase 16 remains blocked until that checkpoint is
 committed and the repository owner explicitly says to proceed.
 
 The structural cutover itself is in place. WebVOWL ingests ontologies only
@@ -35,8 +36,8 @@ through `owlapi-js`, the production graph reaches no retained legacy parser,
 converter or exporter, and Turtle, N-Triples, N-Quads, and TriG now succeed both
 directly and when discovered inside an import closure. Functional Syntax,
 Manchester Syntax, OWL/XML, RDF/XML, Turtle, DL Syntax, KRSS2, N-Triples,
-N-Quads, and TriG are the advertised production formats; every other legacy-only syntax
-still fails with canonical unsupported-format diagnostics. In particular,
+N-Quads, TriG, and JSON-LD are the advertised production formats; every other
+legacy-only syntax still fails with canonical unsupported-format diagnostics. In particular,
 KRSS1 retains a distinct format identity but no executable descriptor while
 its parser capability is `DEFERRED`. The legacy modules remain unmoved for
 characterization until the Phase 17 deletion.
@@ -66,6 +67,24 @@ case is silently omitted. Same-revision registry controls remain within the
 unchanged 20% threshold. Phase 14 adds no dependency, package, lockfile,
 build-configuration, resource-ceiling, or legacy-production-reachability
 change; the existing lazy RDF-syntax closure remains byte-identical.
+
+JSON-LD uses Digital Bazaar jsonld.js through a direct RDF/JS adapter without
+an N-Quads string round-trip. Remote contexts are default-deny and, when
+enabled, can use only the injected project loader with URL/credential/SSRF,
+redirect, byte, timeout, and cancellation enforcement; ambient Node/browser
+loading is never used. Immutable document-format parameters expose JSON-LD 1.0
+and 1.1 processing, inline or restricted external expansion contexts, and both
+standard RDF-direction representations; canonical `rdf:JSON` is an invariant
+rather than a caller-selected profile. The complete pinned W3C JSON-LD
+inventory contains 521 entries: all 462 `REQUIRED` to-RDF cases pass, only two
+generalized-RDF cases and three exact jsonld.js 9.0.0 gaps remain
+`EXCLUDED_WITH_REASON`, and all 54 from-RDF cases are explicitly
+`NOT_APPLICABLE` to ingestion. The browser-safe processor remains in its own
+lazy closure and is absent from the initial static closure. The approved
+bounded-detection gate retains the 20% wall limit and requires relative heap
+compliance or a 64 KiB ceiling across 1/4/16 MiB inputs; all three scaling
+medians pass. Phase 15 adds no package, lockfile, build-configuration, production
+resource-ceiling, or legacy-production-reachability change.
 
 N-Triples uses a distinct exact-format policy over the private N3.js boundary
 introduced for Turtle. Its independent pinned W3C RDF 1.1/RDF 1.2 register is

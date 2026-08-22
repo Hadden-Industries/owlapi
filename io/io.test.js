@@ -79,6 +79,57 @@ describe("document loading interface", () => {
     ).toThrow(TypeError);
   });
 
+  it("copies immutable document-format parameters without sharing caller data", () => {
+    const expandContext = {
+      "@context": {
+        ex: "urn:before:",
+      },
+    };
+    const base = new OWLDocumentFormat({
+      isRdf: true,
+      key: "jsonld-test",
+      mediaTypes: ["application/ld+json"],
+    });
+    const withContext = base.withParameter("expandContext", expandContext);
+    const withMode = withContext.withParameter("processingMode", "json-ld-1.0");
+
+    expandContext["@context"].ex = "urn:after:";
+
+    expect(base.getParameter("expandContext")).toBeUndefined();
+    expect(withContext.getParameter("processingMode", "json-ld-1.1")).toBe(
+      "json-ld-1.1",
+    );
+    expect(withMode.getParameter("processingMode")).toBe("json-ld-1.0");
+    expect(withMode.getParameter("expandContext")).toEqual({
+      "@context": { ex: "urn:before:" },
+    });
+    expect(Object.isFrozen(withMode.getParameter("expandContext"))).toBe(true);
+    expect(
+      Object.isFrozen(withMode.getParameter("expandContext")["@context"]),
+    ).toBe(true);
+    expect(Object.isFrozen(withMode)).toBe(true);
+  });
+
+  it("rejects invalid document-format parameter keys and mutable-only values", () => {
+    const format = new OWLDocumentFormat({ key: "test" });
+
+    expect(() => format.withParameter("", "value")).toThrow(TypeError);
+    expect(() => format.withParameter("callback", () => {})).toThrow(TypeError);
+
+    const cyclic = {};
+    cyclic.self = cyclic;
+    expect(() => format.withParameter("cyclic", cyclic)).toThrow(TypeError);
+  });
+
+  it("treats prototype-shaped parameter names as ordinary data keys", () => {
+    const format = new OWLDocumentFormat({ key: "test" }).withParameter(
+      "__proto__",
+      "parameter-value",
+    );
+
+    expect(format.getParameter("__proto__")).toBe("parameter-value");
+  });
+
   it("snapshots the selected RDF graph term", () => {
     const selectedGraph = {
       equals(other) {

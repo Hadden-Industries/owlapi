@@ -109,9 +109,13 @@
       "id": "parser.jsonld",
       "category": "parser",
       "status": "DELEGATED",
-      "progress": "NOT_STARTED",
+      "progress": "COMPLETE",
       "phase": 15,
-      "delegate": "jsonld"
+      "delegate": "jsonld",
+      "formatParameters": ["processingMode", "expandContext", "rdfDirection"],
+      "processingModes": ["json-ld-1.0", "json-ld-1.1"],
+      "rdfDirectionModes": ["i18n-datatype", "compound-literal"],
+      "generalizedRdf": "UNSUPPORTED_BY_DESIGN"
     },
     {
       "id": "parser.obo",

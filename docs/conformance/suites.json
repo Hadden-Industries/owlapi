@@ -74,13 +74,39 @@
     {
       "id": "w3c-json-ld-api",
       "specifications": [
+        "JSON-LD 1.0",
+        "JSON-LD 1.0 Processing Algorithms and API",
         "JSON-LD 1.1",
         "JSON-LD 1.1 Processing Algorithms and API"
       ],
       "upstream": "https://github.com/w3c/json-ld-api",
-      "revision": "92f07705a0c0ac27aa9bc6fe1322dcc9fad0114d",
-      "applicable": ["toRdf", "fromRdf", "remote document policy"],
-      "classificationManifest": "docs/owlapi-js/conformance/classification-manifests.json#w3c-json-ld-api"
+      "revision": "ffdb326121ea89b7b8280e76a5caea923834bcef",
+      "applicable": ["toRdf", "remote document policy", "processor options"],
+      "inventoriedNotApplicable": ["fromRdf"],
+      "classificationManifest": "docs/owlapi-js/conformance/classification-manifests.json#w3c-json-ld-api",
+      "sourceArtifacts": [
+        {
+          "path": "tests/toRdf-manifest.jsonld",
+          "sha256": "aeb5b24dd17a3d1b5fae5f39f75f796a9e7fbe7e717dfcb10f47619fbe00e41e"
+        },
+        {
+          "path": "tests/fromRdf-manifest.jsonld",
+          "sha256": "7257466aa9cb9cc4d8cd7e345cd522056b5d2283b6a907783aca118c1afd05c8"
+        }
+      ],
+      "generatedArtifact": "docs/owlapi-js/conformance/generated/w3c-jsonld.json",
+      "runner": "src/owlapi-js/parser/jsonld/jsonLd.conformance.test.js",
+      "sourceCounts": {
+        "toRdf": 467,
+        "fromRdf": 54,
+        "total": 521
+      },
+      "classificationCounts": {
+        "required": 462,
+        "notApplicable": 54,
+        "excludedWithReason": 5
+      },
+      "executionResult": "462/462 REQUIRED to-RDF entries passed across JSON-LD 1.0 and 1.1 processing, external expansion contexts, both RDF-direction representations, and JCS canonical rdf:JSON; two generalized-RDF entries and three enumerated jsonld.js 9.0.0 gaps remain EXCLUDED_WITH_REASON; all 54 from-RDF entries are NOT_APPLICABLE to ingestion"
     },
     {
       "id": "w3c-owl2",

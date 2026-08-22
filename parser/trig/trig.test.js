@@ -46,6 +46,7 @@ describe("TriG parser descriptor", () => {
       "# not { a graph\n<urn:s> <urn:p> <urn:o> .",
     ],
     ["NO_MATCH", "TRIG_XML", '<?xml version="1.0"?><root value="{" />'],
+    ["NO_MATCH", "TRIG_JSON", '{"name":"not a graph block"}'],
     ["INDETERMINATE", "TRIG_EMPTY", "# comments only\n"],
   ])("returns %s with %s", (result, reasonCode, text) => {
     expect(detectTriG(source(text))).toMatchObject({ reasonCode, result });

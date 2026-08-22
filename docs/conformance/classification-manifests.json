@@ -8782,7 +8782,7 @@
     {
       "id": "w3c-json-ld-api.to-from-rdf",
       "suite": "w3c-json-ld-api",
-      "revision": "92f07705a0c0ac27aa9bc6fe1322dcc9fad0114d",
+      "revision": "ffdb326121ea89b7b8280e76a5caea923834bcef",
       "paths": ["tests/toRdf-manifest.jsonld", "tests/fromRdf-manifest.jsonld"],
       "classificationOwnerPhases": [15],
       "entries": []
@@ -12247,6 +12247,3691 @@
           "reasonCategory": "DIFFERENT_SYNTAX"
         }
       ]
+    },
+    {
+      "classificationOwnerPhases": [15],
+      "entries": [
+        {
+          "action": "toRdf/0001-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0001",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0001-out.nq"
+        },
+        {
+          "action": "toRdf/0002-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0002",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0002-out.nq"
+        },
+        {
+          "action": "toRdf/0003-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0003",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0003-out.nq"
+        },
+        {
+          "action": "toRdf/0004-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0004",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0004-out.nq"
+        },
+        {
+          "action": "toRdf/0005-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0005",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0005-out.nq"
+        },
+        {
+          "action": "toRdf/0006-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0006",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0006-out.nq"
+        },
+        {
+          "action": "toRdf/0007-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0007",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0007-out.nq"
+        },
+        {
+          "action": "toRdf/0008-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0008",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0008-out.nq"
+        },
+        {
+          "action": "toRdf/0009-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0009",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0009-out.nq"
+        },
+        {
+          "action": "toRdf/0010-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0010",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0010-out.nq"
+        },
+        {
+          "action": "toRdf/0011-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0011",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0011-out.nq"
+        },
+        {
+          "action": "toRdf/0012-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0012",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0012-out.nq"
+        },
+        {
+          "action": "toRdf/0013-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0013",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0013-out.nq"
+        },
+        {
+          "action": "toRdf/0014-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0014",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0014-out.nq"
+        },
+        {
+          "action": "toRdf/0015-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0015",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0015-out.nq"
+        },
+        {
+          "action": "toRdf/0016-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0016",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0016-out.nq"
+        },
+        {
+          "action": "toRdf/0017-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0017",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0017-out.nq"
+        },
+        {
+          "action": "toRdf/0018-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0018",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0018-out.nq"
+        },
+        {
+          "action": "toRdf/0019-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0019",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0019-out.nq"
+        },
+        {
+          "action": "toRdf/0020-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0020",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0020-out.nq"
+        },
+        {
+          "action": "toRdf/0022-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0022",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0022-out.nq"
+        },
+        {
+          "action": "toRdf/0023-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0023",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0023-out.nq"
+        },
+        {
+          "action": "toRdf/0024-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0024",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0024-out.nq"
+        },
+        {
+          "action": "toRdf/0025-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0025",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0025-out.nq"
+        },
+        {
+          "action": "toRdf/0026-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0026",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0026-out.nq"
+        },
+        {
+          "action": "toRdf/0027-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0027",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0027-out.nq"
+        },
+        {
+          "action": "toRdf/0028-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0028",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0028-out.nq"
+        },
+        {
+          "action": "toRdf/0029-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0029",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0029-out.nq"
+        },
+        {
+          "action": "toRdf/0030-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0030",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0030-out.nq"
+        },
+        {
+          "action": "toRdf/0031-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0031",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0031-out.nq"
+        },
+        {
+          "action": "toRdf/0032-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0032",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0032-out.nq"
+        },
+        {
+          "action": "toRdf/0033-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0033",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0033-out.nq"
+        },
+        {
+          "action": "toRdf/0034-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0034",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0034-out.nq"
+        },
+        {
+          "action": "toRdf/0035-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0035",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0035-out.nq"
+        },
+        {
+          "action": "toRdf/0036-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0036",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0036-out.nq"
+        },
+        {
+          "action": "toRdf/0113-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0113",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0113-out.nq"
+        },
+        {
+          "action": "toRdf/0114-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0114",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0114-out.nq"
+        },
+        {
+          "action": "toRdf/0115-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0115",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0115-out.nq"
+        },
+        {
+          "action": "toRdf/0116-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0116",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0116-out.nq"
+        },
+        {
+          "action": "toRdf/0117-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0117",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0117-out.nq"
+        },
+        {
+          "action": "toRdf/0118-in.jsonld",
+          "classification": "EXCLUDED_WITH_REASON",
+          "exclusionReason": "This test requires generalized RDF with blank-node predicates. Ordinary RDF/JS and the OWL 2 RDF mapping require property predicates to be IRIs, so generalized RDF cannot enter the RDF-to-OWL ingestion boundary.",
+          "reasonCategory": "JSONLD_GENERALIZED_RDF_OUTSIDE_OWL_INGESTION",
+          "id": "0118",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0118-out.nq"
+        },
+        {
+          "action": "toRdf/0119-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0119",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0119-out.nq"
+        },
+        {
+          "action": "toRdf/0120-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0120",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0120-out.nq"
+        },
+        {
+          "action": "toRdf/0121-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0121",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0121-out.nq"
+        },
+        {
+          "action": "toRdf/0122-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0122",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0122-out.nq"
+        },
+        {
+          "action": "toRdf/0123-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0123",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0123-out.nq"
+        },
+        {
+          "action": "toRdf/0124-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0124",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0124-out.nq"
+        },
+        {
+          "action": "toRdf/0125-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0125",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0125-out.nq"
+        },
+        {
+          "action": "toRdf/0126-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0126",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0126-out.nq"
+        },
+        {
+          "action": "toRdf/0127-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0127",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0127-out.nq"
+        },
+        {
+          "action": "toRdf/0128-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0128",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0128-out.nq"
+        },
+        {
+          "action": "toRdf/0129-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0129",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0129-out.nq"
+        },
+        {
+          "action": "toRdf/0130-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0130",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0130-out.nq"
+        },
+        {
+          "action": "toRdf/0131-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0131",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0131-out.nq"
+        },
+        {
+          "action": "toRdf/0132-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0132",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0132-out.nq"
+        },
+        {
+          "action": "toRdf/0133-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "0133",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/0133-out.nq"
+        },
+        {
+          "action": "toRdf/c001-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c001",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c001-out.nq"
+        },
+        {
+          "action": "toRdf/c002-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c002",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c002-out.nq"
+        },
+        {
+          "action": "toRdf/c003-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c003",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c003-out.nq"
+        },
+        {
+          "action": "toRdf/c004-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c004",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c004-out.nq"
+        },
+        {
+          "action": "toRdf/c005-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c005",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c005-out.nq"
+        },
+        {
+          "action": "toRdf/c006-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c006",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c006-out.nq"
+        },
+        {
+          "action": "toRdf/c007-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c007",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c007-out.nq"
+        },
+        {
+          "action": "toRdf/c008-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c008",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c008-out.nq"
+        },
+        {
+          "action": "toRdf/c009-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c009",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c009-out.nq"
+        },
+        {
+          "action": "toRdf/c010-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c010",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c010-out.nq"
+        },
+        {
+          "action": "toRdf/c011-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c011",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c011-out.nq"
+        },
+        {
+          "action": "toRdf/c012-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c012",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c012-out.nq"
+        },
+        {
+          "action": "toRdf/c013-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c013",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c013-out.nq"
+        },
+        {
+          "action": "toRdf/c014-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c014",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c014-out.nq"
+        },
+        {
+          "action": "toRdf/c015-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c015",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c015-out.nq"
+        },
+        {
+          "action": "toRdf/c016-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c016",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c016-out.nq"
+        },
+        {
+          "action": "toRdf/c017-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c017",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c017-out.nq"
+        },
+        {
+          "action": "toRdf/c018-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c018",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c018-out.nq"
+        },
+        {
+          "action": "toRdf/c019-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c019",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c019-out.nq"
+        },
+        {
+          "action": "toRdf/c020-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c020",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c020-out.nq"
+        },
+        {
+          "action": "toRdf/c021-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c021",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c021-out.nq"
+        },
+        {
+          "action": "toRdf/c022-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c022",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c022-out.nq"
+        },
+        {
+          "action": "toRdf/c023-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c023",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c023-out.nq"
+        },
+        {
+          "action": "toRdf/c024-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c024",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c024-out.nq"
+        },
+        {
+          "action": "toRdf/c025-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c025",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c025-out.nq"
+        },
+        {
+          "action": "toRdf/c026-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c026",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c026-out.nq"
+        },
+        {
+          "action": "toRdf/c027-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c027",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c027-out.nq"
+        },
+        {
+          "action": "toRdf/c028-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c028",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c028-out.nq"
+        },
+        {
+          "action": "toRdf/c029-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c029",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/c030-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c030",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/c031-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c031",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c031-out.nq"
+        },
+        {
+          "action": "toRdf/c032-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c032",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/c033-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c033",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/c034-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c034",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c034-out.nq"
+        },
+        {
+          "action": "toRdf/c035-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c035",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c035-out.nq"
+        },
+        {
+          "action": "toRdf/c036-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "c036",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c036-out.nq"
+        },
+        {
+          "action": "toRdf/c037-in.jsonld",
+          "classification": "EXCLUDED_WITH_REASON",
+          "exclusionReason": "jsonld.js 9.0.0 does not apply the pinned property-scoped context when the scoped property is an alias of @nest.",
+          "reasonCategory": "JSONLDJS_9_CONFORMANCE_GAP",
+          "id": "c037",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c037-out.nq"
+        },
+        {
+          "action": "toRdf/c038-in.jsonld",
+          "classification": "EXCLUDED_WITH_REASON",
+          "exclusionReason": "jsonld.js 9.0.0 does not reproduce the pinned nested property-scoped context expansion for the Bibframe case.",
+          "reasonCategory": "JSONLDJS_9_CONFORMANCE_GAP",
+          "id": "c038",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/c038-out.nq"
+        },
+        {
+          "action": "toRdf/di01-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "di01",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/di01-out.nq"
+        },
+        {
+          "action": "toRdf/di02-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "di02",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/di02-out.nq"
+        },
+        {
+          "action": "toRdf/di03-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "di03",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/di03-out.nq"
+        },
+        {
+          "action": "toRdf/di04-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "di04",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/di04-out.nq"
+        },
+        {
+          "action": "toRdf/di05-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "di05",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/di05-out.nq"
+        },
+        {
+          "action": "toRdf/di06-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "di06",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/di06-out.nq"
+        },
+        {
+          "action": "toRdf/di07-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "di07",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/di07-out.nq"
+        },
+        {
+          "action": "toRdf/di08-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "di08",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/di09-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "di09",
+          "parameters": { "rdfDirection": "i18n-datatype" },
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/di09-out.nq"
+        },
+        {
+          "action": "toRdf/di10-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "di10",
+          "parameters": { "rdfDirection": "i18n-datatype" },
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/di10-out.nq"
+        },
+        {
+          "action": "toRdf/di11-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "di11",
+          "parameters": { "rdfDirection": "compound-literal" },
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/di11-out.nq"
+        },
+        {
+          "action": "toRdf/di12-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "di12",
+          "parameters": { "rdfDirection": "compound-literal" },
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/di12-out.nq"
+        },
+        {
+          "action": "toRdf/e001-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e001",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e001-out.nq"
+        },
+        {
+          "action": "toRdf/e002-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e002",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e002-out.nq"
+        },
+        {
+          "action": "toRdf/e003-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e003",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e003-out.nq"
+        },
+        {
+          "action": "toRdf/e004-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e004",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e004-out.nq"
+        },
+        {
+          "action": "toRdf/e005-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e005",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e005-out.nq"
+        },
+        {
+          "action": "toRdf/e006-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e006",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e006-out.nq"
+        },
+        {
+          "action": "toRdf/e007-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e007",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e007-out.nq"
+        },
+        {
+          "action": "toRdf/e008-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e008",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e008-out.nq"
+        },
+        {
+          "action": "toRdf/e009-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e009",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e009-out.nq"
+        },
+        {
+          "action": "toRdf/e010-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e010",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e010-out.nq"
+        },
+        {
+          "action": "toRdf/e011-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e011",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e011-out.nq"
+        },
+        {
+          "action": "toRdf/e012-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e012",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e012-out.nq"
+        },
+        {
+          "action": "toRdf/e013-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e013",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e013-out.nq"
+        },
+        {
+          "action": "toRdf/e014-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e014",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e014-out.nq"
+        },
+        {
+          "action": "toRdf/e015-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e015",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e015-out.nq"
+        },
+        {
+          "action": "toRdf/e016-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e016",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e016-out.nq"
+        },
+        {
+          "action": "toRdf/e017-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e017",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e017-out.nq"
+        },
+        {
+          "action": "toRdf/e018-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e018",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e018-out.nq"
+        },
+        {
+          "action": "toRdf/e019-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e019",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e019-out.nq"
+        },
+        {
+          "action": "toRdf/e020-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e020",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e020-out.nq"
+        },
+        {
+          "action": "toRdf/e021-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e021",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e021-out.nq"
+        },
+        {
+          "action": "toRdf/e022-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e022",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e022-out.nq"
+        },
+        {
+          "action": "toRdf/e023-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e023",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e023-out.nq"
+        },
+        {
+          "action": "toRdf/e024-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e024",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e024-out.nq"
+        },
+        {
+          "action": "toRdf/e025-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e025",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e025-out.nq"
+        },
+        {
+          "action": "toRdf/e026-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e026",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e026-out.nq"
+        },
+        {
+          "action": "toRdf/e027-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e027",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e027-out.nq"
+        },
+        {
+          "action": "toRdf/e028-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e028",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e028-out.nq"
+        },
+        {
+          "action": "toRdf/e029-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e029",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e029-out.nq"
+        },
+        {
+          "action": "toRdf/e030-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e030",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e030-out.nq"
+        },
+        {
+          "action": "toRdf/e031-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e031",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e031-out.nq"
+        },
+        {
+          "action": "toRdf/e032-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e032",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e032-out.nq"
+        },
+        {
+          "action": "toRdf/e033-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e033",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e033-out.nq"
+        },
+        {
+          "action": "toRdf/e034-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e034",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e034-out.nq"
+        },
+        {
+          "action": "toRdf/e035-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e035",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e035-out.nq"
+        },
+        {
+          "action": "toRdf/e036-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e036",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e036-out.nq"
+        },
+        {
+          "action": "toRdf/e037-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e037",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e037-out.nq"
+        },
+        {
+          "action": "toRdf/e038-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e038",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e038-out.nq"
+        },
+        {
+          "action": "toRdf/e039-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e039",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e039-out.nq"
+        },
+        {
+          "action": "toRdf/e040-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e040",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e040-out.nq"
+        },
+        {
+          "action": "toRdf/e041-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e041",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e041-out.nq"
+        },
+        {
+          "action": "toRdf/e042-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e042",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e042-out.nq"
+        },
+        {
+          "action": "toRdf/e043-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e043",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e043-out.nq"
+        },
+        {
+          "action": "toRdf/e044-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e044",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e044-out.nq"
+        },
+        {
+          "action": "toRdf/e045-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e045",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e045-out.nq"
+        },
+        {
+          "action": "toRdf/e046-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e046",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e046-out.nq"
+        },
+        {
+          "action": "toRdf/e047-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e047",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e047-out.nq"
+        },
+        {
+          "action": "toRdf/e048-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e048",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e048-out.nq"
+        },
+        {
+          "action": "toRdf/e049-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e049",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e049-out.nq"
+        },
+        {
+          "action": "toRdf/e050-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e050",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e050-out.nq"
+        },
+        {
+          "action": "toRdf/e051-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e051",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e051-out.nq"
+        },
+        {
+          "action": "toRdf/e052-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e052",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e052-out.nq"
+        },
+        {
+          "action": "toRdf/e053-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e053",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e053-out.nq"
+        },
+        {
+          "action": "toRdf/e054-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e054",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e054-out.nq"
+        },
+        {
+          "action": "toRdf/e055-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e055",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e055-out.nq"
+        },
+        {
+          "action": "toRdf/e056-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e056",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e056-out.nq"
+        },
+        {
+          "action": "toRdf/e057-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e057",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e057-out.nq"
+        },
+        {
+          "action": "toRdf/e058-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e058",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e058-out.nq"
+        },
+        {
+          "action": "toRdf/e059-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e059",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e059-out.nq"
+        },
+        {
+          "action": "toRdf/e060-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e060",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e060-out.nq"
+        },
+        {
+          "action": "toRdf/e061-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e061",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e061-out.nq"
+        },
+        {
+          "action": "toRdf/e062-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e062",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e062-out.nq"
+        },
+        {
+          "action": "toRdf/e063-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e063",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e063-out.nq"
+        },
+        {
+          "action": "toRdf/e064-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e064",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e064-out.nq"
+        },
+        {
+          "action": "toRdf/e065-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e065",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e065-out.nq"
+        },
+        {
+          "action": "toRdf/e066-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e066",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e066-out.nq"
+        },
+        {
+          "action": "toRdf/e067-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e067",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e067-out.nq"
+        },
+        {
+          "action": "toRdf/e068-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e068",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e068-out.nq"
+        },
+        {
+          "action": "toRdf/e069-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e069",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e069-out.nq"
+        },
+        {
+          "action": "toRdf/e070-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e070",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e070-out.nq"
+        },
+        {
+          "action": "toRdf/e071-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e071",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e071-out.nq"
+        },
+        {
+          "action": "toRdf/e072-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e072",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e072-out.nq"
+        },
+        {
+          "action": "toRdf/e073-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e073",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e073-out.nq"
+        },
+        {
+          "action": "toRdf/e074-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e074",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e074-out.nq"
+        },
+        {
+          "action": "toRdf/e075-in.jsonld",
+          "classification": "EXCLUDED_WITH_REASON",
+          "exclusionReason": "This test requires generalized RDF with blank-node predicates. Ordinary RDF/JS and the OWL 2 RDF mapping require property predicates to be IRIs, so generalized RDF cannot enter the RDF-to-OWL ingestion boundary.",
+          "reasonCategory": "JSONLD_GENERALIZED_RDF_OUTSIDE_OWL_INGESTION",
+          "id": "e075",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e075-out.nq"
+        },
+        {
+          "action": "toRdf/e076-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e076",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e076-out.nq"
+        },
+        {
+          "action": "toRdf/e077-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e077",
+          "parameters": {
+            "expandContext": "https://w3c.github.io/json-ld-api/tests/toRdf/e077-context.jsonld"
+          },
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e077-out.nq"
+        },
+        {
+          "action": "toRdf/e078-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e078",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e078-out.nq"
+        },
+        {
+          "action": "toRdf/e079-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e079",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e079-out.nq"
+        },
+        {
+          "action": "toRdf/e080-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e080",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e080-out.nq"
+        },
+        {
+          "action": "toRdf/e081-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e081",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e081-out.nq"
+        },
+        {
+          "action": "toRdf/e082-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e082",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e082-out.nq"
+        },
+        {
+          "action": "toRdf/e083-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e083",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e083-out.nq"
+        },
+        {
+          "action": "toRdf/e084-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e084",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e084-out.nq"
+        },
+        {
+          "action": "toRdf/e085-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e085",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e085-out.nq"
+        },
+        {
+          "action": "toRdf/e086-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e086",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e086-out.nq"
+        },
+        {
+          "action": "toRdf/e087-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e087",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e087-out.nq"
+        },
+        {
+          "action": "toRdf/e088-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e088",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e088-out.nq"
+        },
+        {
+          "action": "toRdf/e089-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e089",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e089-out.nq"
+        },
+        {
+          "action": "toRdf/e090-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e090",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e090-out.nq"
+        },
+        {
+          "action": "toRdf/e091-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e091",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e091-out.nq"
+        },
+        {
+          "action": "toRdf/e092-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e092",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e092-out.nq"
+        },
+        {
+          "action": "toRdf/e093-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e093",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e093-out.nq"
+        },
+        {
+          "action": "toRdf/e094-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e094",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e094-out.nq"
+        },
+        {
+          "action": "toRdf/e095-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e095",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e095-out.nq"
+        },
+        {
+          "action": "toRdf/e096-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e096",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e096-out.nq"
+        },
+        {
+          "action": "toRdf/e097-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e097",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e097-out.nq"
+        },
+        {
+          "action": "toRdf/e098-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e098",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e098-out.nq"
+        },
+        {
+          "action": "toRdf/e099-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e099",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e099-out.nq"
+        },
+        {
+          "action": "toRdf/e100-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e100",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e100-out.nq"
+        },
+        {
+          "action": "toRdf/e101-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e101",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e101-out.nq"
+        },
+        {
+          "action": "toRdf/e102-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e102",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e102-out.nq"
+        },
+        {
+          "action": "toRdf/e103-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e103",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e103-out.nq"
+        },
+        {
+          "action": "toRdf/e104-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e104",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e104-out.nq"
+        },
+        {
+          "action": "toRdf/e105-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e105",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e105-out.nq"
+        },
+        {
+          "action": "toRdf/e106-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e106",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e106-out.nq"
+        },
+        {
+          "action": "toRdf/e107-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e107",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e107-out.nq"
+        },
+        {
+          "action": "toRdf/e108-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e108",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e108-out.nq"
+        },
+        {
+          "action": "toRdf/e109-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e109",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e109-out.nq"
+        },
+        {
+          "action": "toRdf/e110-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e110",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e110-out.nq"
+        },
+        {
+          "action": "toRdf/e111-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e111",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e111-out.nq"
+        },
+        {
+          "action": "toRdf/e112-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e112",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e112-out.nq"
+        },
+        {
+          "action": "toRdf/e113-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e113",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e113-out.nq"
+        },
+        {
+          "action": "toRdf/e114-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e114",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e114-out.nq"
+        },
+        {
+          "action": "toRdf/e115-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e115",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/e116-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e116",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/e117-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e117",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e117-out.nq"
+        },
+        {
+          "action": "toRdf/e118-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e118",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e118-out.nq"
+        },
+        {
+          "action": "toRdf/e119-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e119",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e119-out.nq"
+        },
+        {
+          "action": "toRdf/e120-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e120",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e120-out.nq"
+        },
+        {
+          "action": "toRdf/e121-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e121",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e121-out.nq"
+        },
+        {
+          "action": "toRdf/e122-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e122",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e122-out.nq"
+        },
+        {
+          "action": "toRdf/e123-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e123",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/e124-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e124",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e124-out.nq"
+        },
+        {
+          "action": "toRdf/e125-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e125",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e125-out.nq"
+        },
+        {
+          "action": "toRdf/e126-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e126",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e126-out.nq"
+        },
+        {
+          "action": "toRdf/e127-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e127",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e127-out.nq"
+        },
+        {
+          "action": "toRdf/e128-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e128",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e128-out.nq"
+        },
+        {
+          "action": "toRdf/e129-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e129",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e129-out.nq"
+        },
+        {
+          "action": "toRdf/e130-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "e130",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/e130-out.nq"
+        },
+        {
+          "action": "toRdf/ec01-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "ec01",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/ec02-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "ec02",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/em01-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "em01",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/en01-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "en01",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/en02-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "en02",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/en03-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "en03",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/en04-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "en04",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/en05-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "en05",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/en06-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "en06",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/ep02-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "ep02",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/ep03-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "ep03",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er01-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er01",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er02-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er02",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er03-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er03",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er04-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er04",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er05-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er05",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er06-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er06",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er07-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er07",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er08-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er08",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er09-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er09",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er10-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er10",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er11-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er11",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er12-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er12",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er13-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er13",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er14-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er14",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er15-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er15",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er17-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er17",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er18-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er18",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er19-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er19",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er20-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er20",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er21-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er21",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er22-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er22",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er23-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er23",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er24-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er24",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er25-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er25",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er26-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er26",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er27-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er27",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er28-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er28",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er29-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er29",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er30-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er30",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er31-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er31",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er32-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er32",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er33-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er33",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er34-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er34",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er35-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er35",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er36-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er36",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er37-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er37",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er38-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er38",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er39-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er39",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er40-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er40",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er41-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er41",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er42-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er42",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er43-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er43",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er44-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er44",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er48-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er48",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er49-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er49",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er50-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er50",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er51-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er51",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er52-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er52",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er53-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er53",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er54-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er54",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/er55-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "er55",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "expand/er56-in.jsonld",
+          "classification": "EXCLUDED_WITH_REASON",
+          "exclusionReason": "jsonld.js 9.0.0 accepts the pinned invalid @context keyword redefinition instead of raising the required error.",
+          "reasonCategory": "JSONLDJS_9_CONFORMANCE_GAP",
+          "id": "er56",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/in01-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "in01",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/in01-out.nq"
+        },
+        {
+          "action": "toRdf/in02-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "in02",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/in02-out.nq"
+        },
+        {
+          "action": "toRdf/in03-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "in03",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/in03-out.nq"
+        },
+        {
+          "action": "toRdf/in04-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "in04",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/in04-out.nq"
+        },
+        {
+          "action": "toRdf/in05-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "in05",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/in05-out.nq"
+        },
+        {
+          "action": "toRdf/in06-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "in06",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/in06-out.nq"
+        },
+        {
+          "action": "toRdf/in07-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "in07",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/in08-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "in08",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/in09-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "in09",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/js01-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js01",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js01-out.nq"
+        },
+        {
+          "action": "toRdf/js02-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js02",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js02-out.nq"
+        },
+        {
+          "action": "toRdf/js03-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js03",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js03-out.nq"
+        },
+        {
+          "action": "toRdf/js04-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js04",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js04-out.nq"
+        },
+        {
+          "action": "toRdf/js05-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js05",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js05-out.nq"
+        },
+        {
+          "action": "toRdf/js06-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js06",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js06-out.nq"
+        },
+        {
+          "action": "toRdf/js07-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js07",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js07-out.nq"
+        },
+        {
+          "action": "toRdf/js08-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js08",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js08-out.nq"
+        },
+        {
+          "action": "toRdf/js09-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js09",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js09-out.nq"
+        },
+        {
+          "action": "toRdf/js10-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js10",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js10-out.nq"
+        },
+        {
+          "action": "toRdf/js11-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js11",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js11-out.nq"
+        },
+        {
+          "action": "toRdf/js12-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js12",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js12-out.nq"
+        },
+        {
+          "action": "toRdf/js13-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js13",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js13-out.nq"
+        },
+        {
+          "action": "toRdf/js14-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js14",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js14-out.nq"
+        },
+        {
+          "action": "toRdf/js15-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js15",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js15-out.nq"
+        },
+        {
+          "action": "toRdf/js16-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js16",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js16-out.nq"
+        },
+        {
+          "action": "toRdf/js17-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js17",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js17-out.nq"
+        },
+        {
+          "action": "toRdf/js18-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js18",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js18-out.nq"
+        },
+        {
+          "action": "toRdf/js19-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js19",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js19-out.nq"
+        },
+        {
+          "action": "toRdf/js20-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js20",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js20-out.nq"
+        },
+        {
+          "action": "toRdf/js21-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js21",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js21-out.nq"
+        },
+        {
+          "action": "toRdf/js22-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js22",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js22-out.nq"
+        },
+        {
+          "action": "toRdf/js23-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "js23",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/js23-out.nq"
+        },
+        {
+          "action": "toRdf/li01-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "li01",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/li01-out.nq"
+        },
+        {
+          "action": "toRdf/li02-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "li02",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/li02-out.nq"
+        },
+        {
+          "action": "toRdf/li03-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "li03",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/li03-out.nq"
+        },
+        {
+          "action": "toRdf/li04-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "li04",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/li04-out.nq"
+        },
+        {
+          "action": "toRdf/li05-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "li05",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/li05-out.nq"
+        },
+        {
+          "action": "toRdf/li06-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "li06",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/li06-out.nq"
+        },
+        {
+          "action": "toRdf/li07-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "li07",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/li07-out.nq"
+        },
+        {
+          "action": "toRdf/li08-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "li08",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/li08-out.nq"
+        },
+        {
+          "action": "toRdf/li09-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "li09",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/li09-out.nq"
+        },
+        {
+          "action": "toRdf/li10-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "li10",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/li10-out.nq"
+        },
+        {
+          "action": "toRdf/li11-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "li11",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/li11-out.nq"
+        },
+        {
+          "action": "toRdf/li12-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "li12",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/li12-out.nq"
+        },
+        {
+          "action": "toRdf/li13-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "li13",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/li13-out.nq"
+        },
+        {
+          "action": "toRdf/li14-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "li14",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/li14-out.nq"
+        },
+        {
+          "action": "toRdf/m001-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m001",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m001-out.nq"
+        },
+        {
+          "action": "toRdf/m002-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m002",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m002-out.nq"
+        },
+        {
+          "action": "toRdf/m003-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m003",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m003-out.nq"
+        },
+        {
+          "action": "toRdf/m004-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m004",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m004-out.nq"
+        },
+        {
+          "action": "toRdf/m005-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m005",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m005-out.nq"
+        },
+        {
+          "action": "toRdf/m006-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m006",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m006-out.nq"
+        },
+        {
+          "action": "toRdf/m007-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m007",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m007-out.nq"
+        },
+        {
+          "action": "toRdf/m008-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m008",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m008-out.nq"
+        },
+        {
+          "action": "toRdf/m009-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m009",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m009-out.nq"
+        },
+        {
+          "action": "toRdf/m010-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m010",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m010-out.nq"
+        },
+        {
+          "action": "toRdf/m011-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m011",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m011-out.nq"
+        },
+        {
+          "action": "toRdf/m012-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m012",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m012-out.nq"
+        },
+        {
+          "action": "toRdf/m013-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m013",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m013-out.nq"
+        },
+        {
+          "action": "toRdf/m014-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m014",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m014-out.nq"
+        },
+        {
+          "action": "toRdf/m015-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m015",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m015-out.nq"
+        },
+        {
+          "action": "toRdf/m016-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m016",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m016-out.nq"
+        },
+        {
+          "action": "toRdf/m017-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m017",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m017-out.nq"
+        },
+        {
+          "action": "toRdf/m018-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m018",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m018-out.nq"
+        },
+        {
+          "action": "toRdf/m019-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m019",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/m019-out.nq"
+        },
+        {
+          "action": "toRdf/m020-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "m020",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/n001-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "n001",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/n001-out.nq"
+        },
+        {
+          "action": "toRdf/n002-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "n002",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/n002-out.nq"
+        },
+        {
+          "action": "toRdf/n003-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "n003",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/n003-out.nq"
+        },
+        {
+          "action": "toRdf/n004-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "n004",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/n004-out.nq"
+        },
+        {
+          "action": "toRdf/n005-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "n005",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/n005-out.nq"
+        },
+        {
+          "action": "toRdf/n006-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "n006",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/n006-out.nq"
+        },
+        {
+          "action": "toRdf/n007-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "n007",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/n007-out.nq"
+        },
+        {
+          "action": "toRdf/n008-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "n008",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/n008-out.nq"
+        },
+        {
+          "action": "toRdf/nt01-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "nt01",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "toRdf/nt02-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "nt02",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "toRdf/nt03-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "nt03",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "toRdf/nt04-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "nt04",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "toRdf/nt05-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "nt05",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "toRdf/nt06-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "nt06",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "toRdf/nt07-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "nt07",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "toRdf/nt08-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "nt08",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "toRdf/nt09-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "nt09",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "toRdf/nt10-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "nt10",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "toRdf/nt11-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "nt11",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "toRdf/nt12-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "nt12",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "toRdf/nt13-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "nt13",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "toRdf/nt14-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "nt14",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "toRdf/nt15-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "nt15",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "toRdf/nt16-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "nt16",
+          "testType": "POSITIVE_SYNTAX"
+        },
+        {
+          "action": "toRdf/p001-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "p001",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/p001-out.nq"
+        },
+        {
+          "action": "toRdf/p002-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "p002",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/p002-out.nq"
+        },
+        {
+          "action": "toRdf/p003-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "p003",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/p003-out.nq"
+        },
+        {
+          "action": "toRdf/p004-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "p004",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/p004-out.nq"
+        },
+        {
+          "action": "toRdf/pi01-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pi01",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pi02-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pi02",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pi03-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pi03",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pi04-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pi04",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pi05-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pi05",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pi06-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pi06",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pi06-out.nq"
+        },
+        {
+          "action": "toRdf/pi07-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pi07",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pi07-out.nq"
+        },
+        {
+          "action": "toRdf/pi08-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pi08",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pi08-out.nq"
+        },
+        {
+          "action": "toRdf/pi09-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pi09",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pi09-out.nq"
+        },
+        {
+          "action": "toRdf/pi10-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pi10",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pi10-out.nq"
+        },
+        {
+          "action": "toRdf/pi11-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pi11",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pi11-out.nq"
+        },
+        {
+          "action": "toRdf/pr01-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr01",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr02-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr02",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr02-out.nq"
+        },
+        {
+          "action": "toRdf/pr03-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr03",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr04-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr04",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr05-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr05",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr06-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr06",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr06-out.nq"
+        },
+        {
+          "action": "toRdf/pr08-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr08",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr09-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr09",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr10-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr10",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr10-out.nq"
+        },
+        {
+          "action": "toRdf/pr11-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr11",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr12-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr12",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr13-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr13",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr13-out.nq"
+        },
+        {
+          "action": "toRdf/pr14-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr14",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr14-out.nq"
+        },
+        {
+          "action": "toRdf/pr15-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr15",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr15-out.nq"
+        },
+        {
+          "action": "toRdf/pr16-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr16",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr16-out.nq"
+        },
+        {
+          "action": "toRdf/pr17-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr17",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr18-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr18",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr19-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr19",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr19-out.nq"
+        },
+        {
+          "action": "toRdf/pr20-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr20",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr21-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr21",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr22-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr22",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr22-out.nq"
+        },
+        {
+          "action": "toRdf/pr23-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr23",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr23-out.nq"
+        },
+        {
+          "action": "toRdf/pr24-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr24",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr24-out.nq"
+        },
+        {
+          "action": "toRdf/pr25-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr25",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr25-out.nq"
+        },
+        {
+          "action": "toRdf/pr26-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr26",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr27-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr27",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr27-out.nq"
+        },
+        {
+          "action": "toRdf/pr28-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr28",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr29-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr29",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr29-out.nq"
+        },
+        {
+          "action": "toRdf/pr30-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr30",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr30-out.nq"
+        },
+        {
+          "action": "toRdf/pr31-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr31",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr32-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr32",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr33-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr33",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr34-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr34",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr34-out.nq"
+        },
+        {
+          "action": "toRdf/pr35-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr35",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr35-out.nq"
+        },
+        {
+          "action": "toRdf/pr36-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr36",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr36-out.nq"
+        },
+        {
+          "action": "toRdf/pr37-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr37",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr37-out.nq"
+        },
+        {
+          "action": "toRdf/pr38-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr38",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr38-out.nq"
+        },
+        {
+          "action": "toRdf/pr39-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr39",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr39-out.nq"
+        },
+        {
+          "action": "toRdf/pr40-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr40",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr40-out.nq"
+        },
+        {
+          "action": "toRdf/pr41-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr41",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr41-out.nq"
+        },
+        {
+          "action": "toRdf/pr42-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr42",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/pr43-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "pr43",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/pr43-out.nq"
+        },
+        {
+          "action": "toRdf/rt01-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "rt01",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/rt01-out.nq"
+        },
+        {
+          "action": "toRdf/so01-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "so01",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/so02-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "so02",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/so03-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "so03",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/so05-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "so05",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/so05-out.nq"
+        },
+        {
+          "action": "toRdf/so06-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "so06",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/so06-out.nq"
+        },
+        {
+          "action": "toRdf/so07-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "so07",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/so08-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "so08",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/so08-out.nq"
+        },
+        {
+          "action": "toRdf/so09-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "so09",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/so09-out.nq"
+        },
+        {
+          "action": "toRdf/so10-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "so10",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/so11-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "so11",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/so11-out.nq"
+        },
+        {
+          "action": "toRdf/so12-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "so12",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/so13-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "so13",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/tn01-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "tn01",
+          "parameters": { "processingMode": "json-ld-1.0" },
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "toRdf/tn02-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "tn02",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/tn02-out.nq"
+        },
+        {
+          "action": "toRdf/wf01-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "wf01",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/wf01-out.nq"
+        },
+        {
+          "action": "toRdf/wf02-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "wf02",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/wf02-out.nq"
+        },
+        {
+          "action": "toRdf/wf03-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "wf03",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/wf03-out.nq"
+        },
+        {
+          "action": "toRdf/wf04-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "wf04",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/wf04-out.nq"
+        },
+        {
+          "action": "toRdf/wf05-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "wf05",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/wf05-out.nq"
+        },
+        {
+          "action": "toRdf/wf07-in.jsonld",
+          "classification": "REQUIRED",
+          "id": "wf07",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "toRdf/wf07-out.nq"
+        }
+      ],
+      "id": "w3c-json-ld-api.to-rdf",
+      "paths": ["tests/toRdf-manifest.jsonld"],
+      "revision": "ffdb326121ea89b7b8280e76a5caea923834bcef",
+      "suite": "w3c-json-ld-api"
+    },
+    {
+      "classificationOwnerPhases": [15],
+      "entries": [
+        {
+          "action": "fromRdf/0001-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0001",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0001-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0002-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0002",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0002-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0003-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0003",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0003-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0004-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0004",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0004-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0005-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0005",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0005-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0006-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0006",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0006-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0007-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0007",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0007-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0008-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0008",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0008-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0009-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0009",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0009-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0010-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0010",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0010-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0011-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0011",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0011-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0012-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0012",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0012-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0013-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0013",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0013-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0014-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0014",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0014-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0015-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0015",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0015-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0016-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0016",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0016-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0017-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0017",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0017-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0018-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0018",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0018-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0019-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0019",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0019-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0020-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0020",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0020-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0021-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0021",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0021-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0022-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0022",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0022-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0023-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0023",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0023-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0024-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0024",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0024-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0025-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0025",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0025-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0026-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0026",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0026-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0027-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0027",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0027-out.jsonld"
+        },
+        {
+          "action": "fromRdf/0028-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "0028",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/0028-out.jsonld"
+        },
+        {
+          "action": "fromRdf/di01-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "di01",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/di01-out.jsonld"
+        },
+        {
+          "action": "fromRdf/di02-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "di02",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/di02-out.jsonld"
+        },
+        {
+          "action": "fromRdf/di03-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "di03",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/di03-out.jsonld"
+        },
+        {
+          "action": "fromRdf/di04-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "di04",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/di04-out.jsonld"
+        },
+        {
+          "action": "fromRdf/di05-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "di05",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/di05-out.jsonld"
+        },
+        {
+          "action": "fromRdf/di06-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "di06",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/di06-out.jsonld"
+        },
+        {
+          "action": "fromRdf/di07-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "di07",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/di07-out.jsonld"
+        },
+        {
+          "action": "fromRdf/di08-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "di08",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/di08-out.jsonld"
+        },
+        {
+          "action": "fromRdf/di09-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "di09",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/di09-out.jsonld"
+        },
+        {
+          "action": "fromRdf/di10-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "di10",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/di10-out.jsonld"
+        },
+        {
+          "action": "fromRdf/di11-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "di11",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/di11-out.jsonld"
+        },
+        {
+          "action": "fromRdf/di12-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "di12",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/di12-out.jsonld"
+        },
+        {
+          "action": "fromRdf/js01-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "js01",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/js01-out.jsonld"
+        },
+        {
+          "action": "fromRdf/js02-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "js02",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/js02-out.jsonld"
+        },
+        {
+          "action": "fromRdf/js03-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "js03",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/js03-out.jsonld"
+        },
+        {
+          "action": "fromRdf/js04-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "js04",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/js04-out.jsonld"
+        },
+        {
+          "action": "fromRdf/js05-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "js05",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/js05-out.jsonld"
+        },
+        {
+          "action": "fromRdf/js06-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "js06",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/js06-out.jsonld"
+        },
+        {
+          "action": "fromRdf/js07-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "js07",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/js07-out.jsonld"
+        },
+        {
+          "action": "fromRdf/js08-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "js08",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "fromRdf/js09-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "js09",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "NEGATIVE_EVALUATION"
+        },
+        {
+          "action": "fromRdf/js10-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "js10",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/js10-out.jsonld"
+        },
+        {
+          "action": "fromRdf/js11-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "js11",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/js11-out.jsonld"
+        },
+        {
+          "action": "fromRdf/li01-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "li01",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/li01-out.jsonld"
+        },
+        {
+          "action": "fromRdf/li02-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "li02",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/li02-out.jsonld"
+        },
+        {
+          "action": "fromRdf/li03-in.nq",
+          "classification": "NOT_APPLICABLE",
+          "exclusionReason": "JSON-LD from-RDF serialization is outside the Phase 15 ontology-ingestion adapter; the adapter's governed direction is JSON-LD to RDF/JS.",
+          "id": "li03",
+          "reasonCategory": "JSONLD_FROM_RDF_OUT_OF_SCOPE",
+          "testType": "POSITIVE_EVALUATION",
+          "result": "fromRdf/li03-out.jsonld"
+        }
+      ],
+      "id": "w3c-json-ld-api.from-rdf",
+      "paths": ["tests/fromRdf-manifest.jsonld"],
+      "revision": "ffdb326121ea89b7b8280e76a5caea923834bcef",
+      "suite": "w3c-json-ld-api"
     }
   ]
 }

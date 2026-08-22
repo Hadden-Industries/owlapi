@@ -13,7 +13,11 @@
 - Measurement protocol: one warm-up plus five measured runs, reporting the median.
 - Release threshold: at most 20% regression in median wall time and peak heap
   relative to the last accepted phase baseline, unless the repository decision
-  authority approves evidence and rationale for a new baseline.
+  authority approves evidence and rationale for a new baseline. The bounded
+  parser-selection mismatch exception approved on 22 August 2026 retains the
+  20% wall limit but permits peak heap to satisfy either the relative limit or a
+  64 KiB absolute ceiling, provided 1 MiB, 4 MiB, and 16 MiB scaling medians all
+  remain under the same ceiling; see implementation-plan §20.6.
 
 A phase may establish a new accepted baseline only after its full Definition of
 Done passes. A regression is not grounds to rewrite this baseline.
@@ -724,6 +728,114 @@ byte-identical. Both changes remain below the unchanged 20% threshold. The
 verifier proves the implementation marker remains absent from the initial
 static closure and present only behind the shared dynamic RDF-syntax boundary.
 
+## Phase 15 JSON-LD ingestion baseline
+
+- Pre-Phase-15 revision: `0ad02561`, the signed Phase 14 checkpoint.
+- Measurement date: 22 August 2026.
+- Environment: Windows `10.0.26200` x64, Node.js `v24.19.0`, 12th Gen
+  Intel Core i9-12900K (24 logical CPUs), 34,053,869,568 bytes system memory.
+- Dependency identity: `package-lock.json` SHA-256
+  `bbd8a2a632a5b3aa4a9d0c182d7b3176e1c540d5d6bdd47e170c52d7737f93a5`.
+- Command: `node --expose-gc util/benchmark-owlapi-jsonld.mjs`.
+- Protocol: one warm-up and five measured runs; median aggregation; garbage
+  collection requested before each run; heap and event-loop responsiveness
+  sampled every 5 ms. The accepted run passed the idle-machine guard.
+
+The 4,888,891-byte fixture contains 50,000 JSON-LD class declarations. The
+syntax measurement covers JSON parsing, jsonld.js expansion/to-RDF, and direct
+RDF/JS normalization without an N-Quads serialization. The end-to-end signal
+continues through shared graph policy, RDF-to-OWL reconstruction, and ontology
+publication.
+
+| Signal                                 | Median wall (ms) | Median peak-heap delta (bytes) | Median max event-loop delay (ms) |
+| -------------------------------------- | ---------------: | -----------------------------: | -------------------------------: |
+| JSON-LD first use, 100 declarations    |            39.63 |                      9,983,432 |                            28.85 |
+| `generated-jsonld-large.syntax-to-rdf` |           195.15 |                    116,544,944 |                           190.12 |
+| `generated-jsonld-large.end-to-end`    |         2,780.03 |                    374,866,176 |                         2,069.88 |
+
+jsonld.js exposes a promise API but performs this in-memory expansion largely
+synchronously; the 190.12 ms syntax interval is therefore recorded rather
+than misrepresented as cooperative streaming. The larger end-to-end interval
+is again dominated by the existing synchronous RDF-to-OWL publication seam.
+Both complete well inside the unchanged 30-second ceiling on a fixture more
+than twice the largest measured production ontology. No resource ceiling or
+regression threshold changes.
+
+### Same-revision registry controls
+
+The benchmark compares the Phase 14 production descriptors with the same list
+plus JSON-LD at priority 8. Descriptor registration is the only controlled
+difference.
+
+| Existing signal              | Phase 14 registry wall / heap delta | Phase 15 registry wall / heap delta | Wall change | Heap-delta change |
+| ---------------------------- | ----------------------------------: | ----------------------------------: | ----------: | ----------------: |
+| `generated-functional-large` |     1,030.96 ms / 127,672,864 bytes |       536.36 ms / 121,705,520 bytes |     -47.98% |            -4.67% |
+| `generated-mismatch-large`   |             13.81 ms / 39,208 bytes |             14.12 ms / 42,288 bytes |      +2.27% |            +7.86% |
+
+Every paired regression is within the unchanged 20% threshold. The speedup in
+the ordered Functional control is not claimed as a Phase 15 improvement; it is
+a favorable same-process/JIT measurement. The 16 MiB mismatch control is the
+relevant detection-regression signal and remains within both limits.
+
+### Processor-profile correction revalidation
+
+The accepted table above records the initial Phase 15 implementation. The
+subsequent public processor-profile correction was remeasured on the same idle
+machine because it adds immutable format parameters and a JSON-LD 1.0
+compatibility boundary. Its default JSON-LD path remains within the existing
+resource limits:
+
+| Revalidated signal                        | Median wall (ms) | Median peak-heap delta (bytes) | Median max event-loop delay (ms) |
+| ----------------------------------------- | ---------------: | -----------------------------: | -------------------------------: |
+| JSON-LD first use, 100 declarations       |            41.80 |                      9,985,808 |                            24.71 |
+| `generated-jsonld-large.syntax-to-rdf`    |           189.33 |                    119,331,016 |                           184.07 |
+| `generated-jsonld-large.end-to-end`       |         1,389.59 |                    379,254,992 |                         1,001.91 |
+| Functional Phase 14 same-revision control |           487.06 |                    148,249,584 |                            58.94 |
+| Functional Phase 15 registry              |           484.56 |                    148,429,080 |                            59.03 |
+
+Two earlier idle-machine correction runs measured 51,616 and 53,016 bytes for
+the 16 MiB mismatch heap delta. The first was 237 bytes beyond the old
+percentage-only cap despite an 8,800-byte absolute change; the second
+corroborated that low-denominator behavior. Those measurements are retained as
+the evidence behind the repository-owner-approved §20.6 rule, not discarded as
+unfavorable samples. No benchmark-specific parser-registry change was retained.
+
+Both implementation-validation runs under the approved executable gate passed.
+The final interface-enforced run produced this scale:
+
+| Unrelated input size | Median wall (ms) | Median peak-heap delta (bytes) | Fixed ceiling |
+| -------------------: | ---------------: | -----------------------------: | ------------: |
+|                1 MiB |            14.53 |                         41,760 |   65,536 PASS |
+|                4 MiB |            14.03 |                         37,016 |   65,536 PASS |
+|               16 MiB |            14.25 |                         38,728 |   65,536 PASS |
+
+The largest observed scaling median is 41,760 bytes. Against the accepted Phase
+14 mismatch baseline of 13.34 ms / 42,816 bytes, the 16 MiB result changes by
++6.84% wall and -9.55% heap. This run therefore passes both the original relative
+limits and the new absolute bounded-detection ceiling. The benchmark serializes
+its pair and scale decisions and exits nonzero if either the 20% wall gate or
+the combined heap/scale gate fails. jsonld.js is never dynamically loaded during
+these mismatch samples.
+
+### Production application graph
+
+The production build and extended static-closure verifier measure JSON-LD as
+an independent lazy parser boundary:
+
+| Production application graph | Chunks | Minified bytes | Gzip bytes |
+| ---------------------------- | -----: | -------------: | ---------: |
+| Initial static closure       |      3 |        685,363 |    174,522 |
+| Lazy RDF-syntax closure      |      3 |        187,021 |     52,560 |
+| Lazy JSON-LD closure         |      3 |        204,727 |     50,201 |
+
+The verifier proves both N3.js and jsonld.js implementation markers are absent
+from the initial closure and reachable only through their respective dynamic
+boundaries. JSON-LD therefore adds no eager 204,727-byte processor closure.
+The completed public-parameter and JSON-LD 1.0 compatibility correction adds
+4,507 minified bytes (0.66%) and 1,396 gzip bytes (0.81%) to the initial closure
+relative to the first Phase 15 measurement; both remain within the unchanged
+20% threshold, while both lazy closures remain byte-identical.
+
 ## Phase 14 strict TriG and graph-block baseline
 
 - Pre-Phase-14 revision: `82b4770c`, the signed Phase 13 checkpoint.
@@ -743,13 +855,13 @@ occupies 1,089,023 bytes. Syntax-only measurements stop before graph policy.
 The end-to-end measurement continues through `requireSingleGraph`, projection
 to an RDF graph, shared RDF-to-OWL reconstruction, and ontology publication.
 
-| Signal                                           | Chunk bytes | Median wall (ms) | Median peak-heap delta (bytes) | Median max event-loop delay (ms) |
-| ------------------------------------------------ | ----------: | ---------------: | -----------------------------: | -------------------------------: |
-| TriG first use, 100 declarations                 |      65,536 |            35.17 |                      8,105,560 |                            10.91 |
-| `generated-trig-large.syntax-to-rdf.chunk-16384` |      16,384 |         1,142.82 |                    112,430,624 |                            26.43 |
-| `generated-trig-large.syntax-to-rdf.chunk-65536` |      65,536 |           839.42 |                    137,943,120 |                            70.77 |
+| Signal                                            | Chunk bytes | Median wall (ms) | Median peak-heap delta (bytes) | Median max event-loop delay (ms) |
+| ------------------------------------------------- | ----------: | ---------------: | -----------------------------: | -------------------------------: |
+| TriG first use, 100 declarations                  |      65,536 |            35.17 |                      8,105,560 |                            10.91 |
+| `generated-trig-large.syntax-to-rdf.chunk-16384`  |      16,384 |         1,142.82 |                    112,430,624 |                            26.43 |
+| `generated-trig-large.syntax-to-rdf.chunk-65536`  |      65,536 |           839.42 |                    137,943,120 |                            70.77 |
 | `generated-trig-large.syntax-to-rdf.chunk-262144` |     262,144 |           786.54 |                     85,353,512 |                           199.00 |
-| `generated-trig-large.end-to-end`                |      65,536 |         3,659.37 |                    322,763,584 |                         2,235.71 |
+| `generated-trig-large.end-to-end`                 |      65,536 |         3,659.37 |                    322,763,584 |                         2,235.71 |
 
 The retained 65,536-byte default balances throughput with scheduling. Moving
 to 256 KiB saves only 52.88 ms (6.30%) while increasing the sampled maximum

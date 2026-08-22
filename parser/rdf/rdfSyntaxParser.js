@@ -40,10 +40,8 @@ export class RdfSyntaxParser {
       );
     }
 
-    const { dataset, prefixes } = await this.#syntaxAdapter.parse(
-      source,
-      configuration,
-    );
+    const { dataset, jsonLdContexts, prefixes } =
+      await this.#syntaxAdapter.parse(source, configuration);
     const translator = this.#createTranslator(transaction.getOWLDataFactory());
     if (!translator || typeof translator.translate !== "function") {
       throw new TypeError("createTranslator must return a translator");
@@ -68,7 +66,19 @@ export class RdfSyntaxParser {
       selectedGraph: context.selectedGraph,
     });
     transaction.setPrefixes(prefixes);
-    transaction.setDocumentFormat(this.#documentFormat);
-    return this.#documentFormat;
+    if (jsonLdContexts !== undefined) {
+      transaction.setJsonLdContexts(jsonLdContexts);
+    }
+    // A caller-selected format can carry immutable parser parameters. Preserve
+    // that exact metadata after parsing; replacing it with the registry's base
+    // format would make the completed load impossible to reproduce or inspect.
+    const selectedDocumentFormat =
+      configuration?.format &&
+      typeof configuration.format === "object" &&
+      configuration.format.key === this.#documentFormat.key
+        ? configuration.format
+        : this.#documentFormat;
+    transaction.setDocumentFormat(selectedDocumentFormat);
+    return selectedDocumentFormat;
   }
 }

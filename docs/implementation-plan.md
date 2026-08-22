@@ -2099,6 +2099,13 @@ The canonical configuration properties are:
 
 `rdfDatasetGraphPolicy`, `relaxed`, `silent` and `ignore` are not alternate public spellings.
 
+Format-specific processor settings belong to the immutable
+`OWLDocumentFormat`, not to consumer-specific loader flags. In particular, the
+JSON-LD format exposes `processingMode`, `expandContext`, and `rdfDirection`
+through the copying parameter API in §11.2. WebVOWL may use only their defaults,
+but one consumer's UI **MUST NOT** narrow the reusable library's governed
+capability surface.
+
 `missingImportHandling: "diagnostic"` means continue while emitting a mandatory structured diagnostic; it does not mean silent omission.
 
 Core loading has **no ambient network access by default**. `remoteImports` and `remoteJsonLdContexts` default to `false`. Local/injected IRI mapping may resolve resources, but unresolved imports default to `MissingImportError` through `missingImportHandling: "throw"`.
@@ -2162,6 +2169,27 @@ Format metadata should describe syntax-level details such as:
 - whether it can contain an RDF dataset rather than only a graph.
 
 Prefix maps belong to format/document metadata rather than `OWLOntology` semantics.
+
+Java OWLAPI carries supported parser settings on `OWLDocumentFormat`. The
+JavaScript contract preserves that compatibility seam without mutable Java-style
+state:
+
+```javascript
+const jsonLdFormat = OWLDocumentFormats.JSON_LD.withParameter(
+  "processingMode",
+  "json-ld-1.0",
+)
+  .withParameter("expandContext", { ex: "https://example.com/vocab#" })
+  .withParameter("rdfDirection", "i18n-datatype");
+
+jsonLdFormat.getParameter("processingMode", "json-ld-1.1");
+```
+
+`withParameter(name, value)` **MUST** return a new format, defensively snapshot
+JSON-compatible parameter data, and leave both the original format and caller
+objects unchanged. `getParameter(name, defaultValue)` returns the stored
+snapshot or the supplied default. This prevents an asynchronous ontology load
+from changing meaning after it starts.
 
 ### 11.3 Canonical public error taxonomy
 
@@ -3252,6 +3280,26 @@ cross-format equivalence, conformance, resource/performance and learning gates.
 
 Implement the Digital Bazaar `jsonld.js` adapter with restricted/injected document loading and no N-Quads string round-trip. Complete acceptance and the final ingestion-program learning gate.
 
+The reusable parser surface is not limited by WebVOWL's current controls. The
+JSON-LD document format **MUST** expose JSON-LD 1.0/1.1 `processingMode`, an
+externally supplied `expandContext`, and both JSON-LD 1.1 `rdfDirection`
+representations (`i18n-datatype` and `compound-literal`). External expansion
+contexts use the same injected restricted loader as document `@context`
+references; no second network path is permitted. `rdf:JSON` values **MUST**
+retain their JSON data model and use a JCS-canonical lexical form.
+
+JSON-LD 1.0 compatibility normalization may cover exact normative differences
+that the selected current processor no longer implements, but it **MUST** remain
+isolated before/after delegated expansion and **MUST NOT** become a second
+general context-expansion implementation. Generalized RDF remains outside the
+ontology-ingestion contract because blank-node predicates cannot cross the
+ordinary RDF/JS and OWL-property boundary.
+
+The pinned W3C inventory gate requires 462 applicable to-RDF cases to pass. Only
+the two generalized-RDF cases and individually enumerated dependency defects may
+remain `EXCLUDED_WITH_REASON`; test-runner options or a current consumer's UI
+are not exclusion reasons.
+
 The ingestion programme is complete after this gate unless the normative capability matrix/plan changes through §17.6 governance.
 
 ### 17.23 Phase 16 — shared OWL→RDF translator
@@ -3693,6 +3741,19 @@ The benchmark environment record **MUST** also include the concurrent-load state
 Phase 0 **MUST** establish available legacy baselines. Each completed migration establishes a new accepted baseline after its Definition of Done passes. A baseline **MUST NOT** be updated merely because a regression made the old threshold fail.
 
 Every release-gated benchmark **MUST** have an explicit threshold, expressed as an absolute bound in the pinned environment, a maximum permitted regression relative to approved baseline, or both. Exact thresholds are derived from Phase 0 evidence rather than invented by later teams.
+
+Designated bounded parser-selection mismatch signals use a combined threshold
+because allocator-sized changes dominate percentage comparisons when the entire
+median is only tens of kilobytes. Their wall-time median **MUST** remain within
+20% of the last accepted baseline. Their peak-heap-delta median **MUST** either
+remain within the same 20% relative limit or remain at or below the absolute
+64 KiB (65,536-byte) ceiling. Use of the absolute branch additionally **MUST**
+measure at least three strictly increasing input sizes—1 MiB, 4 MiB, and 16 MiB
+in the current benchmark corpus—and every size **MUST** remain at or below that
+same fixed ceiling. This exception applies only to early-rejection/detection
+signals; valid parsing, translation, publication, and rendering workloads retain
+the ordinary relative budgets. A new parser **MUST NOT** gain a larger absolute
+ceiling merely because its detector fails the scaling check.
 
 Performance gates **MUST** use repeated measurements and a predefined aggregation/noise policy. Re-running a failing benchmark until one favourable sample passes is forbidden. That prohibition forbids **selecting** a favourable sample; it does **NOT** forbid discarding a measurement demonstrated to be invalid, provided the demonstration is evidenced and the discarded measurement and its cause are recorded.
 

@@ -123,11 +123,29 @@
       ]
     },
     {
+      "id": "generated-mismatch-1m",
+      "generator": "owlapi-benchmark-corpus-v1",
+      "kind": "mismatch",
+      "bytes": 1048576,
+      "roles": ["bounded early-rejection scaling", "64 KiB heap ceiling"]
+    },
+    {
+      "id": "generated-mismatch-4m",
+      "generator": "owlapi-benchmark-corpus-v1",
+      "kind": "mismatch",
+      "bytes": 4194304,
+      "roles": ["bounded early-rejection scaling", "64 KiB heap ceiling"]
+    },
+    {
       "id": "generated-mismatch-large",
       "generator": "owlapi-benchmark-corpus-v1",
       "kind": "mismatch",
       "bytes": 16777216,
-      "roles": ["large mismatched input", "bounded early rejection"]
+      "roles": [
+        "large mismatched input",
+        "bounded early rejection",
+        "64 KiB heap ceiling"
+      ]
     }
   ]
 }
