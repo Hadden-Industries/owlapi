@@ -975,3 +975,48 @@ Every paired signal remains inside the unchanged 20% release threshold. The
 16 MiB unrelated-text control also remains under the designated 64 KiB bounded
 selection heap ceiling. Phase 17 adds no dependency, resource-ceiling,
 historical-baseline, or regression-threshold change.
+
+## 24 August 2026 coordinated foundational-dependency qualification
+
+WebVOWL advanced `@xmldom/xmldom` from 0.9.10 to 0.9.12, N3.js from 2.2.0
+to 2.3.0, and `rdfxml-streaming-parser` from 3.2.0 to 3.3.0 in one explicitly
+approved staging change. The measurement environment remained Windows
+10.0.26200 x64, Node.js v24.19.0, an Intel Core i9-12900K (24 logical CPUs),
+and 34,053,869,568 bytes of system memory. The resulting `package-lock.json`
+SHA-256 is `011e92f087c24cc75bc5c5174b6f62f94fee2c7d552ed312b6d20e84f344eb64`.
+This qualification does not re-anchor any historical parser baseline or alter
+the 20% regression threshold.
+
+The strictly guarded `node --expose-gc util/benchmark-owlapi-rdfxml.mjs` run
+reported 38.26 ms / 8,573,712 bytes for first use, 331.50 ms / 92,836,696
+bytes for the 50,000-quad syntax path, and 2,004.61 ms / 316,835,040 bytes for
+the 50,000-axiom end-to-end path. Against the accepted Phase 6 values, their
+wall changes are +4.55%, +8.28%, and +8.70%; their peak-heap-delta changes are
++2.90%, +0.10%, and -7.10%. Every signal remains inside the unchanged gate.
+
+For N3.js, a current-source 2.2.0/2.3.0 diagnostic pair was needed because
+later shared-adapter work makes a direct Phase 9 source comparison invalid.
+The machine's persistent 10–22% ambient load prevented the 2.2.0 control from
+passing the ordinary 10% preflight, so the pair temporarily admitted up to 25%
+busy time and is recorded as corroboration rather than a new release baseline.
+At the production 65,536-byte chunk size, 2.2.0 measured 815.04 ms /
+128,706,872 bytes and 2.3.0 measured 788.28 ms / 132,801,712 bytes: -3.28%
+wall and +3.18% heap. The temporary threshold edit was reversed immediately.
+Phase 19 still reruns the release benchmark with the ordinary idle-machine
+guard; this staging result is sufficient to reject a dependency-attributable
+regression without weakening that future gate.
+
+The in-memory Vite 8/Oxc browser measurements retained both lazy boundaries:
+
+| Current browser graph | Chunks | Minified bytes | Gzip bytes |
+| --------------------- | -----: | -------------: | ---------: |
+| Initial manager | 1 | 266,273 | 69,481 |
+| Lazy N3.js 2.3.0 graph | 1 | 190,412 | 52,938 |
+| Lazy RDF/XML 3.3.0 graph | 1 | 163,134 | 46,775 |
+
+The same-source N3.js 2.2.0 lazy graph was 185,859 minified / 51,859 gzip
+bytes, so 2.3.0 adds 2.45% minified and 2.08% gzip. The production closure
+verifier likewise keeps N3.js behind its 191,574-minified-byte / 53,640-gzip-
+byte lazy closure and outside the 690,542-minified-byte / 175,783-gzip-byte
+initial closure. The Node-only `@xmldom/xmldom` fallback remains absent from
+browser output.

@@ -59,14 +59,16 @@ TriG uses its own exact format policy over the private N3.js boundary and
 preserves prefix/base state and every RDF/JS graph term before applying the
 same explicit dataset graph policies as N-Quads. Bounded detection recognizes
 graph-block braces outside comments, strings, and IRI references without
-claiming Turtle, N-Quads, XML, or the broader N3 language. The complete pinned
-W3C RDF 1.1/RDF 1.2 inventory contains 418 entries: all 401 `REQUIRED` cases
-pass, while 17 RDF 1.2 reifier/annotation evaluation cases are individually
-`EXCLUDED_WITH_REASON` for a recorded N3.js 2.2.0 capability gap. No failing
-case is silently omitted. Same-revision registry controls remain within the
-unchanged 20% threshold. Phase 14 adds no dependency, package, lockfile,
-build-configuration, resource-ceiling, or legacy-production-reachability
-change; the existing lazy RDF-syntax closure remains byte-identical.
+claiming Turtle, N-Quads, XML, or the broader N3 language. The current W3C RDF
+1.1/RDF 1.2 inventory contains 418 entries: all 413
+`REQUIRED` cases pass, while five RDF 1.2 reifier/annotation evaluation cases
+are individually `EXCLUDED_WITH_REASON` for the recorded N3.js 2.3.0
+capability gap. Twelve cases formerly excluded under N3.js 2.2.0 are now
+required and passing; no failing case is silently omitted. Same-source upgrade
+controls remain within the unchanged 20% threshold. Phase 14 itself added no
+dependency, package, lockfile, build-configuration, resource-ceiling, or
+legacy-production-reachability change; the later N3.js 2.3.0 qualification
+changes only the lazy implementation graph and remains within the same gate.
 
 JSON-LD uses Digital Bazaar jsonld.js through a direct RDF/JS adapter without
 an N-Quads string round-trip. Remote contexts are default-deny and, when

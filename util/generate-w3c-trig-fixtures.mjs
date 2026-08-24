@@ -24,26 +24,16 @@ const FIXTURE_URL = new URL(
   import.meta.url,
 );
 const N3JS_RDF12_EVALUATION_GAPS = new Set([
+  // Keep this list exact: every entry was rerun after the N3.js 2.3.0 update,
+  // and all other formerly excluded RDF 1.2 evaluation cases now pass.
   "rdf12Eval:trig12-rt-07",
   "rdf12Eval:trig12-rt-08",
-  "rdf12Eval:trig12-annotation-01",
-  "rdf12Eval:trig12-annotation-02",
   "rdf12Eval:trig12-annotation-03",
   "rdf12Eval:trig12-annotation-04",
-  "rdf12Eval:trig12-annotation-05",
-  "rdf12Eval:trig12-annotation-06",
-  "rdf12Eval:trig12-annotation-07",
-  "rdf12Eval:trig12-annotation-08",
   "rdf12Eval:trig12-annotation-09",
-  "rdf12Eval:trig12-annotation-10",
-  "rdf12Eval:trig12-annotation-11",
-  "rdf12Eval:trig12-annotation-13",
-  "rdf12Eval:trig12-reified-triples-annotation-01",
-  "rdf12Eval:trig12-reified-triples-annotation-02",
-  "rdf12Eval:trig12-reified-triples-annotation-03",
 ]);
 const RDF12_GAP_REASON =
-  "N3.js 2.2.0 does not yet reproduce the pinned RDF 1.2 TriG reifier/annotation evaluation result; the case remains inventoried for dependency replacement or an upstream fix.";
+  "N3.js 2.3.0 does not yet reproduce the pinned RDF 1.2 TriG reifier/annotation evaluation result; the case remains inventoried for dependency replacement or an upstream fix.";
 
 const inputUrl = process.argv[2]
   ? pathToFileURL(`${resolve(process.argv[2])}${sep}`)
@@ -296,10 +286,10 @@ const counts = {
 };
 if (
   counts.evaluation !== 169 ||
-  counts.excluded !== 17 ||
+  counts.excluded !== 5 ||
   counts.negativeSyntax !== 126 ||
   counts.positiveSyntax !== 123 ||
-  counts.required !== 401 ||
+  counts.required !== 413 ||
   counts.source !== 418
 ) {
   throw new Error(

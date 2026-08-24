@@ -70,10 +70,10 @@ describe("pinned W3C TriG syntax conformance", () => {
     expect(fixture).toMatchObject({
       counts: {
         evaluation: 169,
-        excluded: 17,
+        excluded: 5,
         negativeSyntax: 126,
         positiveSyntax: 123,
-        required: 401,
+        required: 413,
         source: 418,
       },
       manifests: {

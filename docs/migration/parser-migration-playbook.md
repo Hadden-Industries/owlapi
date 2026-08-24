@@ -388,9 +388,11 @@ do not append chronology here.
   parsed graph blocks. Dataset-scoped blank-node identity and immutable graph
   decision context have the same meaning in TriG as in N-Quads.
 - Archive and classify the complete pinned W3C RDF 1.1 and RDF 1.2 TriG
-  inventory before executing the adapter. Phase 14 embeds all 418 entries:
-  401 are `REQUIRED` and pass; 17 RDF 1.2 reifier/annotation evaluation cases
-  are individually `EXCLUDED_WITH_REASON` for the recorded N3.js 2.2.0 gap.
+  inventory before executing the adapter. Phase 14 embedded all 418 entries;
+  after the N3.js 2.3.0 dependency qualification, 413 are `REQUIRED` and pass
+  while five RDF 1.2 reifier/annotation evaluation cases are individually
+  `EXCLUDED_WITH_REASON`. The other 12 former N3.js 2.2.0 exclusions are now
+  required regression cases.
   Dependency gaps must remain enumerable and governed, never disappear from
   the inventory.
 - Prove that broad Notation3 implication syntax remains unsupported even

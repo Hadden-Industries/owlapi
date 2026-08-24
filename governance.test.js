@@ -688,7 +688,7 @@ describe("owlapi-js governance artifacts", () => {
         "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.resource.test.js",
       ]),
     );
-    expect(rdfXml.browserCost).toMatch(/163,163-minified-byte/u);
+    expect(rdfXml.browserCost).toMatch(/163,134-minified-byte/u);
     expect(rdfXml.securityReview).toMatchObject({
       advisoryDatabaseResult: "NO_EXACT_PACKAGE_MATCHES",
       reviewedOn: "2026-08-13",
@@ -907,7 +907,7 @@ describe("owlapi-js governance artifacts", () => {
     );
     expect(triGManifest).toMatchObject({
       evaluationTestCount: 169,
-      excludedTestCount: 17,
+      excludedTestCount: 5,
       manifestEntryCount: 418,
       manifestEntryCounts: { rdf11: 357, rdf12Eval: 26, rdf12Syntax: 35 },
       manifestSha256: {
@@ -920,13 +920,22 @@ describe("owlapi-js governance artifacts", () => {
       },
       negativeSyntaxTestCount: 126,
       positiveSyntaxTestCount: 123,
-      requiredTestCount: 401,
+      requiredTestCount: 413,
       runner: "src/owlapi-js/parser/trig/trig.conformance.test.js",
       sourceTestCount: 418,
     });
     expect(triGManifest.entries).toHaveLength(418);
-    expect(triGRequired).toHaveLength(401);
-    expect(triGExcluded).toHaveLength(17);
+    expect(triGRequired).toHaveLength(413);
+    expect(triGExcluded).toHaveLength(5);
+    expect(
+      triGExcluded.map(({ id, sourceManifest }) => `${sourceManifest}:${id}`),
+    ).toEqual([
+      "rdf12Eval:trig12-rt-07",
+      "rdf12Eval:trig12-rt-08",
+      "rdf12Eval:trig12-annotation-03",
+      "rdf12Eval:trig12-annotation-04",
+      "rdf12Eval:trig12-annotation-09",
+    ]);
     expect(
       triGExcluded.every(
         ({ reasonCategory, sourceManifest, testType }) =>

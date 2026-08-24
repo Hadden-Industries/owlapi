@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordedOn": "2026-08-22",
+  "recordedOn": "2026-08-24",
   "transitiveInventoryAuthority": "package-lock.json",
   "upgradeGate": [
     "applicable standards-conformance suites",
@@ -53,7 +53,7 @@
     },
     {
       "name": "n3",
-      "version": "2.2.0",
+      "version": "2.3.0",
       "role": "Private strict-format RDF syntax implementation; Phase 9 enables Turtle, Phase 12 enables N-Triples, Phase 13 enables N-Quads, and Phase 14 enables TriG; broader Notation3 language ingestion remains deferred",
       "standardsGrounding": [
         "W3C Turtle",
@@ -86,12 +86,12 @@
         "src/owlapi-js/parser/trig/trig.differential.test.js"
       ],
       "releaseAuthority": "RDF/JS community; rdfjs/N3.js maintainers",
-      "maintenanceStatus": "Pinned production release; Phase 9 independently passed all 387 classified Turtle entries, Phase 12 all 99 N-Triples entries, Phase 13 all 114 N-Quads entries, and Phase 14 all 401 REQUIRED TriG entries. The complete TriG inventory retains 17 RDF 1.2 reifier/annotation evaluation entries as EXCLUDED_WITH_REASON because N3.js 2.2.0 does not yet reproduce their pinned results.",
+      "maintenanceStatus": "Pinned production release; the 24 August 2026 upgrade qualification independently passed all 387 classified Turtle entries, all 99 N-Triples entries, all 114 N-Quads entries, and all 413 REQUIRED TriG entries. The complete 418-entry TriG inventory retains five enumerated RDF 1.2 reifier/annotation evaluation entries as EXCLUDED_WITH_REASON because N3.js 2.3.0 does not yet reproduce their pinned results; the other 12 former N3.js 2.2.0 exclusions are now REQUIRED and passing.",
       "runtimeDependencies": ["buffer", "readable-stream"],
       "networkBehavior": "Parser APIs consume caller-provided input and do not resolve documents",
-      "browserCost": "Phase 9 Vite 8/Oxc isolated-manager measurement: N3.js is absent from the 214,411-minified-byte / 53,742-gzip-byte initial graph and isolated in one 185,923-minified-byte / 51,873-gzip-byte lazy RDF-syntax graph. The Phase 14 entry-aware WebVOWL production build has a 673,648-minified-byte / 169,955-gzip-byte three-chunk initial static closure and a 187,021-minified-byte / 52,560-gzip-byte three-chunk lazy RDF-syntax closure. Relative to Phase 13, the initial closure changes by +0.34% minified and +0.36% gzip, while the lazy implementation is byte-identical. The adapter loads the published self-contained browser UMD entry only after exact Turtle, N-Triples, N-Quads, or TriG selection, so browser execution does not depend on Node globals; util/verify-webvowl-lazy-parser-chunks.mjs proves the N3 implementation marker is absent from the initial closure and present behind that shared dynamic boundary.",
+      "browserCost": "The 24 August 2026 N3.js 2.3.0 Vite 8/Oxc isolated-manager measurement keeps N3.js absent from the 266,273-minified-byte / 69,481-gzip-byte initial graph and isolates it in one 190,412-minified-byte / 52,938-gzip-byte lazy RDF-syntax graph. The same-source N3.js 2.2.0 control measured 185,859 minified / 51,859 gzip bytes, so the dependency update changes only the lazy graph by +2.45% minified and +2.08% gzip, within the unchanged 20% gate. The entry-aware WebVOWL production build has a 690,542-minified-byte / 175,783-gzip-byte three-chunk initial static closure and a 191,574-minified-byte / 53,640-gzip-byte three-chunk lazy RDF-syntax closure. The adapter loads the published self-contained browser UMD entry only after exact Turtle, N-Triples, N-Quads, or TriG selection, so browser execution does not depend on Node globals; util/verify-webvowl-lazy-parser-chunks.mjs proves the N3 implementation marker is absent from the initial closure and present behind that shared dynamic boundary.",
       "securityReview": {
-        "reviewedOn": "2026-08-20",
+        "reviewedOn": "2026-08-24",
         "source": "npm registry audit service through the installed npm client",
         "command": "npm audit --omit=dev --json",
         "packages": ["n3", "buffer", "readable-stream"],
@@ -115,7 +115,7 @@
     },
     {
       "name": "rdfxml-streaming-parser",
-      "version": "3.2.0",
+      "version": "3.3.0",
       "role": "RDF/XML syntax-to-RDF/JS adapter only",
       "standardsGrounding": ["W3C RDF/XML", "RDF/JS streams and quads"],
       "conformanceEvidence": [
@@ -125,7 +125,7 @@
         "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.resource.test.js"
       ],
       "releaseAuthority": "rdfjs/rdfxml-streaming-parser.js maintainers",
-      "maintenanceStatus": "Pinned production release; Phase 6 independently passed all 166 active W3C RDF/XML manifest entries and the project XML/security/resource contracts",
+      "maintenanceStatus": "Pinned production release; the 24 August 2026 upgrade qualification independently passed all 166 active W3C RDF/XML manifest entries plus the project XML, adapter, security, browser, and finite-resource contracts",
       "runtimeDependencies": [
         "@rubensworks/saxes",
         "@types/readable-stream",
@@ -136,7 +136,7 @@
         "validate-iri"
       ],
       "networkBehavior": "Streaming parser consumes supplied XML; the owlapi-js adapter forbids external-entity retrieval",
-      "browserCost": "Phase 6 Vite 8/Oxc browser production measurement: the third-party implementation is absent from the 196,267-minified-byte / 49,466-gzip-byte initial graph and isolated in a lazy 163,163-minified-byte / 46,737-gzip-byte dependency graph; Node first use through manager, the first conditional dependency load, and the shared translator measured 36.59 ms with an 8,331,688-byte peak-heap delta.",
+      "browserCost": "The 24 August 2026 Vite 8/Oxc isolated-manager measurement keeps the third-party implementation absent from the 266,273-minified-byte / 69,481-gzip-byte initial graph and isolated in a 163,134-minified-byte / 46,775-gzip-byte lazy dependency graph; the Node first-use path through manager, the first conditional dependency load, and shared RDF-to-OWL reconstruction measured 38.26 ms with an 8,573,712-byte peak-heap delta. The 50,000-quad syntax and end-to-end medians remain within the unchanged 20% gate, and the Node-only @xmldom/xmldom fallback remains absent from browser output.",
       "securityReview": {
         "reviewedOn": "2026-08-13",
         "source": "https://github.com/advisories",
@@ -156,7 +156,7 @@
           "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.resource.test.js",
           "src/owlapi-js/parser/rdfxml/rdfXml.browser.test.js"
         ],
-        "toolingNote": "npm 12.0.2 ran `npm audit --omit=dev --json` successfully outside the workspace sandbox on 13 August 2026: the production dependency scope contained 73 dependencies and reported zero info, low, moderate, high, or critical vulnerabilities. The earlier sandboxed `MODULE_NOT_FOUND` was caused by restricted access to the selected user-level npm prefix, not by a broken host npm installation."
+        "toolingNote": "npm 12.0.2 ran `npm audit --omit=dev --json` successfully on 24 August 2026 after the coordinated foundational update: the production dependency scope contained 73 dependencies and reported zero info, low, moderate, high, critical, or total vulnerabilities."
       },
       "license": "MIT",
       "noticeAction": "Retain the dependency and transitive dependency licences in release notices",
@@ -192,7 +192,7 @@
     },
     {
       "name": "@xmldom/xmldom",
-      "version": "0.9.10",
+      "version": "0.9.12",
       "role": "Node-only DOM implementation behind the OWL/XML parser adapter; browsers use the native DOMParser",
       "standardsGrounding": [
         "W3C XML",
@@ -205,7 +205,7 @@
         "src/owlapi-js/parser/owlxml/owlXml.resource.test.js"
       ],
       "releaseAuthority": "xmldom maintainers",
-      "maintenanceStatus": "Pinned production release; revalidate XML error handling, security policy and browser exclusion at every material upgrade",
+      "maintenanceStatus": "Pinned production release; the 24 August 2026 upgrade qualification passed all 12 focused XML, OWL/XML, and RDF/XML suites (248 tests), retained the XML error/security contracts, and confirmed the Node-only fallback remains excluded from browser bundles",
       "runtimeDependencies": [],
       "networkBehavior": "Parses caller-provided XML in memory and performs no document loading or ambient network access",
       "browserCost": "Node-only fallback behind XmlParserAdapter; browser execution uses native DOMParser and the dependency must remain absent from browser bundles",
