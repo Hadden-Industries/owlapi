@@ -1,8 +1,56 @@
-# Extract `owlapi-js` Core Module from WebVOWL
+# Extract and Publish the `owlapi` Core Module from WebVOWL
 
 > **Status:** Final architecture and implementation blueprint  
 > **Research baseline:** 8 August 2026  
-> **Purpose:** Define the standards-grounded, migration-safe extraction of reusable OWL parsing and ontology-model functionality from WebVOWL into a standalone JavaScript `owlapi-js` core, while preserving WebVOWL behaviour and establishing a credible foundation for broader OWLAPI-compatible JavaScript tooling.
+> **Package identity and versioning decision:** 23 August 2026 — publish the unscoped npm package `owlapi`; intend to begin with the useful `0.1.0-alpha.0` prerelease under `next`, target `1.0.1` as the normal first stable release, apply only §2.60's immutable-tag contingency to either coordinate, and document the immutable unrelated npm history and its residual range-resolution risk.<br>
+> **Canonical repository decision:** 23 August 2026 — `https://github.com/Hadden-Industries/owlapi` is the sole canonical source and release repository; WebVOWL consumes registry artefacts and does not retain a second maintained package tree.<br>
+> **Contributor-governance decision:** 23 August 2026 — begin with explicit `AGPL-3.0-only` inbound=outbound; defer any CLA until an external copyrightable contribution exists, but prohibit merging the first such contribution until the contributor-rights model is separately confirmed.<br>
+> **Copyright-ownership and succession decision:** 23 August 2026 — Maksym Shostak retains personal copyright in his existing `owlapi` contributions; assignment to HADDEN INDUSTRIES LTD is optional rather than a publication gate, company stewardship is stated separately from copyright ownership, and this implementation plan explicitly accepts sole-custodian npm/GitHub availability risk rather than pretending company identity transfers account control.<br>
+> **Terminal-scope decision:** 24 August 2026 — this plan targets `owlapi@1.0.1` as the first Hadden Industries stable and normally completes only after that exact version is production-verified and consumed by WebVOWL; solely if §2.60 abandons an immutable tag after an extraordinary post-tag/pre-publication deterministic failure, the next available same-surface coordinate becomes the first stable, while solely if §2.33 is triggered after publication, the first accepted corrective patch becomes the exact production cutover; later semantic features are owned by `post-1.0-capability-implementation-plan.md`, while post-release W3C test-suite reporting is owned by `w3c-test-conformance-reporting-implementation-plan.md`; neither follow-on programme is a completion gate here.<br>
+> **Public-API decision:** 23 August 2026 — `1.0.1` exposes the Java-recognizable `owlapi`, `owlapi/apibinding`, `owlapi/model`, `owlapi/io`, and `owlapi/formats` entry points; RDF/JS parsing, graph policy, and OWL↔RDF translators remain internal engines behind manager, document, and format APIs.<br>
+> **Namespace-registry and source-layout decision:** 23 August 2026 — except for the bare `owlapi` aggregate, every public npm subpath maps exactly to an explicitly approved `org.semanticweb.owlapi` package; public Java-compatible bindings have one canonical definition in that Java-shaped public namespace, while non-public engines use a cohesive JavaScript-oriented `internal/` tree rather than a duplicated Java-package mirror.<br>
+> **Runtime-portability decision:** 23 August 2026 — public exports remain unconditional native ESM; genuine platform differences use source-level capability detection and a lazy private fallback, while package-level environment conditions require a demonstrated supported-runtime need.<br>
+> **Release-integrity decision:** 24 August 2026 — every public version is published from one retained, reviewed tarball built and fully qualified by GitHub Actions at an exact accepted protected-`main` commit before its canonical signed annotated tag is created; that same tarball, its `SHA256SUMS`, the validated reproducible production-only CycloneDX 1.6 library SBOM, and the post-registry release-evidence manifest become immutable GitHub release assets after registry verification.<br>
+> **Security-policy decision:** 24 August 2026 — GitHub private vulnerability reporting is the preferred `owlapi` channel and `security@haddenindustries.com` is the durable company-controlled fallback; public vulnerability reports are prohibited, Maksym Shostak is the sole responder required by this plan, and the project aims to acknowledge private reports within five working days without representing that target as an SLA.<br>
+> **Community-governance decision:** 24 August 2026 — the canonical repository adopts Contributor Covenant 3.0 through a repository-only `CODE_OF_CONDUCT.md`; Maksym Shostak is the sole HADDEN INDUSTRIES LTD-appointed moderator required by this plan, private reports go only to `conduct@haddenindustries.com`, and additional or conflict-substitute moderators are post-plan governance rather than publication gates.<br>
+> **Supported-environment decision:** 24 August 2026 — the initial package supports Node 22 and 24 through native ESM, uses Node 24 for release production, supports current baseline browser applications through both ordinary bundlers and an application-owned document import map, and separately supports bundled dedicated workers; all other runtimes and package managers receive an explicit support status rather than an inferred promise.<br>
+> **Stable-browser-freeze decision:** 24 August 2026 — alpha tracks the moving `baseline widely available` query, while stable `1.0.1` freezes the 1.x JavaScript feature ceiling by appending the actual release-freeze date to `baseline widely available on` and records the resolved browser-data inputs; package source is neither transpiled nor polyfilled.<br>
+> **Package-artefact and stable-contract decision:** 24 August 2026 — publish the canonical readable native-ESM source directly with no duplicate `src/`→`dist/` build, generated JavaScript, minification or source maps; ship the bounded version-matched README/API/changelog/licence/notice/compatibility set; publish no TypeScript declarations for `0.1.0-alpha.0` or `1.0.1`; and make the registry-classified public surface, rather than private paths or incidental implementation details, the stable 1.x SemVer contract.<br>
+> **npm-custody decision:** 24 August 2026 — Maksym Shostak's `maksymshostak` npm account performs the one-time unscoped-package bootstrap and remains the sole natural-person npm custodian required through this plan; the project tests organization-team access without treating it as human redundancy, prohibits shared npm identities, accepts the resulting single-person availability risk, and moves every later release to the exact repository's stage-only OIDC trusted publisher.<br>
+> **Staged-candidate binding decision:** 24 August 2026 — the direct bootstrap uses one explicitly bounded, immediately revoked npm granular access token because staged publishing cannot create a new package; every later release stages the already-retained tarball through OIDC, downloads npm's immutable candidate before approval, proves its SHA-256 is byte-for-byte identical to that retained tarball, and binds the human approval record to the stage ID, package coordinate, distribution tag, source tag/commit and digest.<br>
+> **Release-control toolchain decision:** 24 August 2026 — Phase 19 freezes exact Node 22/24, npm, SemVer, import-map, SBOM, schema, package-lint, Playwright, fixture-bundler, GitHub CLI and history-filter versions; npm tools run only from the repository lockfile through named scripts, non-npm executables are checksum-verified, the SBOM generator is isolated from its production-only subject tree, and any replacement is a separately reviewed exact configuration change.<br>
+> **Workflow-trust-boundary decision:** 24 August 2026 — use separate read-only CI, manually dispatched late-tag release, maintenance and extended-test workflows; keep each release's retained artefact chain inside one serialized `release.yml` run; deny token authority by default; isolate npm OIDC, GitHub-release writes and maintenance issue writes in different least-privilege jobs; and forbid privileged execution or cross-workflow artefact promotion of untrusted pull-request content.<br>
+> **GitHub-Action inventory decision:** 24 August 2026 — allow exactly five GitHub-maintained Actions at reviewed full commit SHAs; disable `setup-node`'s implicit npm cache everywhere; remove persisted checkout credentials; transport the three-file release candidate by exact same-run artefact ID with digest enforcement; and configure dependency review solely for newly introduced high/critical runtime vulnerabilities.<br>
+> **Hosted-runner and shell decision:** 24 August 2026 — use only explicit GA `ubuntu-24.04` x64, `windows-2025` x64 and `macos-15` arm64 GitHub-hosted labels; build every release artefact only on Ubuntu/Node 24; qualify the installed tarball on both Node patches across Windows and macOS; run the three Playwright engines separately on Ubuntu; make Bash/PowerShell Core selection explicit; record each mutable runner-image identity as evidence; and consume no runner-preinstalled release tool.<br>
+> **Automation-failure-semantics decision:** 24 August 2026 — protect `main` with one stable fail-closed `CI / required` aggregate plus CodeQL, place an equivalent `Release / qualified` aggregate directly before npm authority, disable required-matrix fail-fast/allow-failure behavior, give every job and vulnerable step an exact timeout, serialize each workflow with its approved cancellation/queue policy, retry only bounded idempotent reads, and reconcile an ambiguous external write before any renewed explicitly authorized mutation.<br>
+> **Untrusted-contributor execution decision:** 24 August 2026 — require approval for every external contributor’s fork-workflow run; execute proposed code only through unprivileged `pull_request` CI with no secrets, OIDC, environment or write authority; quarantine fork-produced artefacts to that same run; treat event/external text as validated data rather than shell or workflow syntax; and make automatic log masking defense in depth rather than a substitute for narrow credential flow and incident revocation.<br>
+> **Late-tag release-ordering decision:** 24 August 2026 — dispatch `release.yml` manually only at an accepted protected-`main` commit, complete every deterministic candidate gate before creating the immutable canonical tag, and for post-bootstrap releases also stage, download and byte-verify the retained tarball before that tag; the human then signs and pushes `v<version>` at the already-fixed commit, the same run verifies it before draft-release or public-promotion authority, and an extraordinary deterministic failure after that point abandons rather than moves the tag.<br>
+> **Same-run human-handoff decision:** 24 August 2026 — pause the release chain through one no-secret/no-variable/no-OIDC `release-manual` environment restricted to protected `main`, with required reviewer approval, self-review permitted and `deployment: false`; use it once after human tag creation in every release and a second time after interactive staged promotion, retain authenticated review history as evidence, and never occupy a runner with tag/publication polling.<br>
+> **Distribution-tag decision:** 24 August 2026 — prereleases use `next`, stable `1.0.1`—or solely its §2.60 prepublication-abandonment successor—is the first version allowed to establish `latest`, and `next` is removed after stable verification whenever it would otherwise remain a stale pointer to an older prerelease; only the §2.33 bad-release contingency may later move `latest` to the first accepted corrective patch.<br>
+> **Repository-workflow decision:** 24 August 2026 — `main` is the only standing integration branch, short-lived pull requests squash to one curated commit, and branch plus `v*` tag rulesets protect accepted history; no second-person review is a completion gate in this plan, while any future independent-review rule requires a separate post-plan governance/configuration decision.<br>
+> **Release-preparation decision:** 24 August 2026 — humans prepare each public version and its changelog in a dedicated release pull request; automation verifies and publishes the accepted commit but never authors version changes, commits, tags, or release notes.<br>
+> **Dependency-maintenance decision:** 24 August 2026 — foundational runtime dependencies are exact-pinned and updated one at a time through all relevant gates; Dependabot proposes but never auto-merges dependency or full-SHA GitHub Actions updates, and accepted security corrections must reach a published package rather than stop at an update pull request.<br>
+> **Bad-release-recovery decision:** 24 August 2026 — preserve immutable versions and release evidence, contain defective defaults through recorded distribution-tag/deprecation operations, and publish a new corrected version; unpublish only for an extraordinary confidentiality, malware, legal, or registry-directed incident with separate authorization.<br>
+> **Dependency-audit decision:** 24 August 2026 — retain full-graph audit evidence, block high/critical production findings and release-path development findings, permit only demonstrably inapplicable time-bounded exceptions, and never apply an automatic audit fix to release inputs.<br>
+> **Release-approval decision:** 24 August 2026 — every automated registry write waits at `npm-release`, and every human tag/publication continuation waits separately at `release-manual`; during this release programme the workflow initiator may supply either approval, while independent deployment review and GitHub's prevent-self-review control are not required.<br>
+> **Release-signing decision:** 24 August 2026 — release tags are SSH-signed annotated tags verified against a versioned authorized-signer registry and GitHub's verification result; signer keys remain human-controlled and distinct from OIDC publication authority.<br>
+> **Public-intake decision:** 24 August 2026 — GitHub Issues with structured forms and an engineering-focused pull-request template are the ordinary public channels; blank issues, Discussions, a generic support mailbox, and premature `CODEOWNERS` ceremony remain disabled or absent.<br>
+> **Publish-channel-metadata decision:** 24 August 2026 — every release manifest, `npm-release` environment request, and explicit npm command names the same SemVer-derived channel: prereleases use `next`, accepted stable versions use `latest`, and any disagreement blocks publication.<br>
+> **Package-discoverability decision:** 24 August 2026 — publish one accurate OWL/ontology/RDF-focused description and keyword set, omit misleading reasoner/WebVOWL claims, and leave `funding`, contributor, maintainer, and author-email metadata absent until each has a genuine semantic purpose.<br>
+> **Release-evidence-retention decision:** 24 August 2026 — treat Actions logs/artifacts as 90-day diagnostics, place a machine-readable evidence manifest in every immutable GitHub release, retain an append-only repository release record, and add later extended-test observations without rebuilding or rewriting a package release.<br>
+> **Repository-scanning decision:** 24 August 2026 — enable low-maintenance CodeQL default setup plus required high/critical merge protection, secret scanning, and push protection; real secrets are rotated as incidents, and source-analysis exceptions remain distinct, justified, and time-bounded.<br>
+> **No-telemetry decision:** 24 August 2026 — `owlapi` performs no telemetry, analytics, update checks, remote configuration, install pings, or diagnostic uploads; only an explicitly authorized ontology-import or JSON-LD-context request may perform outbound document retrieval.<br>
+> **Package-entry-point decision:** 24 August 2026 — expose the five approved unconditional native-ESM roots through one exact `exports` map, with no `main`, `module`, `browser`, conditional, wildcard, extension-alias or `package.json` export that could create a second or accidental public boundary.<br>
+> **Import-purity decision:** 24 August 2026 — require the complete package-owned production module closure to be side-effect-free on import, publish `sideEffects: false`, and treat any required import-time registration, I/O or global mutation as a release-blocking design defect.<br>
+> **Development-tooling decision:** 24 August 2026 — keep `engines.node` as the consumer contract, use npm-native `devEngines` to require Node as the source runtime and exact npm `12.0.2` as the repository package manager, and introduce neither `engines.npm` nor a separate Corepack/`packageManager` authority.<br>
+> **Reference-import-map-tooling decision:** 24 August 2026 — generate the application-owned reference map with exact `@jspm/generator@2.16.3`, the `jspm.io` provider, `production`/`browser`/`module` conditions and integrity metadata; test an integrity-verified local mirror in all required engines while keeping the provider a replaceable reference rather than a package runtime dependency.<br>
+> **Release-artifact-tooling decision:** 24 August 2026 — generate a validated reproducible production-only CycloneDX 1.6 library SBOM with exact `@cyclonedx/cyclonedx-npm@6.0.1`, validate versioned Draft 2020-12 release evidence with exact `ajv@8.20.0` plus `ajv-formats@3.0.1`, keep tooling outside the production subject tree, and rely on immutable release attestation rather than a redundant evidence signature.<br>
+> **Published-dependency-tree decision:** 24 August 2026 — publish the six exact direct runtime dependencies as ordinary library dependencies, keep `package-lock.json` repository-only, publish no shrinkwrap/bundled/peer/optional/override dependency authority, and verify both the locked release graph and the graph resolved by a lockless fresh consumer.<br>
+> **Independent-package-lint decision:** 24 August 2026 — use exact-pinned `publint@0.3.24` as the present baseline, permit a later exact version only after the same tool-update review, run it in strict mode against the retained tarball before publication and the registry-downloaded tarball afterwards, and permit only narrow versioned, expiring warning exceptions rather than weakening the project-specific package gates.<br>
+> **Third-party-material decision:** 24 August 2026 — maintain a schema-validated, human-reviewed third-party-material inventory for the exact production graph, release-relevant development material and copied/generated third-party files; render `NOTICE` according to what the `owlapi` tarball actually distributes; and require WebVOWL to review its separately bundled deployment scope rather than pretending one package notice covers both distributions.<br>
+> **npm-provenance-verification decision:** 24 August 2026 — verify `owlapi@<version>` itself with npm's signature/attestation JSON, require its registry signature, provenance/publish attestations, subject digest, source/workflow identity and transparency evidence to agree, and retain a normalized root-package record rather than treating a badge or aggregate attestation count as proof.<br>
+> **Immutable-release-verification decision:** 24 August 2026 — define `SHA256SUMS` as sorted lowercase SHA-256 entries for the retained tarball and SBOM, verify exact GitHub CLI `2.98.0` against its official binary checksum, and close each release only after a fresh download passes immutable-release verification, per-asset attestation checks, checksums, evidence-schema validation and independent signed-tag verification.<br>
+> **Purpose:** Define the standards-grounded, migration-safe extraction of reusable OWL parsing and ontology-model functionality from WebVOWL into a standalone JavaScript core, normally publish `owlapi@1.0.1` as its first Hadden Industries stable under the narrowly bounded §2.60 prepublication-tag contingency, and prove the improved WebVOWL fork uses the production-verified stable cutover version from npm without a privileged source-tree path.
 
 ---
 
@@ -62,7 +110,7 @@ The most important consequences for this refactor are:
 - **Use the Java implementation as a behavioural oracle, not as a Java-to-JavaScript transliteration target.** Match OWL semantics and observable behaviour; adopt JavaScript-native async I/O, iterables, ESM packaging, immutable objects/configuration, and RDF/JS interoperability.
 - **Migrate the ontology-ingestion programme sequentially.** Complete one WIP-locked ingestion migration, its acceptance gate and its learning/institutionalization handoff before the next begins; keep the Java differential corpus green subject only to precise approved expected differences.
 
-The proposed end state is therefore a small, reusable OWL core with clean adapters, not a WebVOWL-specific parser bundle wearing an `owlapi-js` name.
+The proposed end state is therefore a small, reusable OWL core with clean adapters, not a WebVOWL-specific parser bundle wearing an `owlapi` name. In this plan, **`owlapi` is the immutable public npm package name and root convenience entry point**. Java-recognizable subpaths expose the supported `apibinding`, `model`, `io`, and `formats` concepts; RDF/JS and OWL↔RDF machinery remains behind those APIs. The existing `src/owlapi-js/` and `docs/owlapi-js/` paths remain internal migration/source labels; they do not define the published package name and need not be renamed merely to make the npm identity match.
 
 ---
 
@@ -267,7 +315,7 @@ The broader **Notation3 (N3) language is `DEFERRED` for v1**. The presence of N3
 
 Do **not** introduce a second universal parser-dispatch framework underneath `OWLOntologyManager`. Parser selection, format hints, bounded detection, priority and fallback semantics are already core responsibilities of `owlapi-js`; duplicating them through `rdf-parse`, Comunica or another nested dispatcher adds indirection without semantic value.
 
-All third-party parsers are replaceable implementation details behind `owlapi-js` adapters. No parser-specific term classes, streams, exceptions, parser instances or configuration objects **MAY** leak into the public OWL or canonical RDF boundary APIs.
+All third-party parsers are replaceable implementation details behind `owlapi-js` adapters. No parser-specific term classes, streams, exceptions, parser instances or configuration objects **MAY** leak into either the public OWL API or the package-internal canonical RDF boundary.
 
 ### 2.3 Decision: OWL and RDF are two models connected by translators
 
@@ -321,7 +369,7 @@ Names that are already idiomatic and useful should align with Java OWLAPI (`OWLM
 - network/document loading should be asynchronous;
 - Java `Stream` APIs should map to JavaScript iterables/sets/arrays where appropriate;
 - immutable configuration should use copy/`with...` patterns;
-- ESM packaging should expose stable entry points instead of Java package mirroring;
+- ESM packaging should expose only registry-approved Java package mappings rather than mirroring the entire Java source tree or its implementation packages;
 - Java interface hierarchies should not be reproduced merely for nominal type ceremony.
 
 The compatibility goal is **semantic and behavioural parity for the `REQUIRED_V1` capability surface**, not line-for-line class hierarchy parity.
@@ -415,6 +463,3532 @@ But OWL-native and RDF syntaxes form **one cumulative ingestion-learning program
 The WIP lock applies to the explicitly enumerated ingestion sequence in §17, including the shared RDF→OWL hardening phase. Non-ingestion work such as CI, fixture acquisition, documentation, provenance work, benchmark tooling and unrelated WebVOWL work **MAY** proceed concurrently, provided it does not pre-implement the production semantics of a later ingestion phase.
 
 Rolling-wave planning **MAY** refine the details or propose reordering of not-yet-started migrations, but it does not change the one-at-a-time WIP rule. Any reordering requires the project decision process defined in §17.
+
+### 2.10 Decision: publish `owlapi`, beginning with `0.1.0-alpha.0` under `next`
+
+The standalone core's public package identity is fixed as follows:
+
+| Property | Normative value |
+| --- | --- |
+| Registry | npm public registry, `https://registry.npmjs.org/` |
+| Package name | unscoped `owlapi` |
+| Canonical source repository | `https://github.com/Hadden-Industries/owlapi` |
+| Intended first public version | `0.1.0-alpha.0`; solely if its immutable tag is abandoned under §2.60 before publication, `0.1.0-alpha.1` |
+| First distribution tag | `next` |
+| Normal first stable version | `1.0.1` only after Phase 20's release-candidate, public-package, WebVOWL-consumer and stable-publication gates; solely if §2.60 abandons immutable `v1.0.1` before publication, `1.0.2` after the same complete gate |
+| First later compatible-feature minor | `1.4.0`, owned by `post-1.0-capability-implementation-plan.md`; the former `1.1.0`, `1.2.0`, `1.2.1` and `1.3.0` coordinates are skipped |
+| First future breaking 2.x version | `2.0.2`; the immutable former `2.0.0` and `2.0.1` coordinates are skipped |
+| `1.0.1` public import roots | `owlapi`, `owlapi/apibinding`, `owlapi/model`, `owlapi/io`, `owlapi/formats` |
+| First-party consumer boundary | WebVOWL declares `owlapi` as a production dependency and imports it only through those public roots |
+| Module system | native ESM |
+
+`owlapi-js` was considered as the public name because it was apparently unused,
+but it is not selected. npm is already a JavaScript package ecosystem, and npm's
+own package-name guidance advises authors not to add `js` or `node` merely to
+identify the implementation language. `owlapi` is shorter, is the semantically
+direct description of the library, and lets documentation use one canonical
+consumer spelling. The `-js` suffix would distinguish the implementation from
+Java OWLAPI in prose but would add no information to an npm import. Prose
+**MUST** use “Java OWLAPI” for the Java project where ambiguity is possible.
+
+The existing capability classification `REQUIRED_V1` continues to mean “required
+for the first standalone release programme.” Its label happens to align with the
+new implementation's first stable 1.x line, but it is not itself an npm version
+authority and does not make the unavailable historical `1.0.0` coordinate part
+of this project. Capability status and package versioning remain explicitly
+separate vocabularies.
+
+Before Phase 19's repository handoff, this WebVOWL repository may continue to
+use `src/owlapi-js/`, `docs/owlapi-js/` and the term “owlapi-js migration” as
+internal historical/staging labels. After the handoff,
+`Hadden-Industries/owlapi` owns the maintained package source and package-facing
+documentation; retained WebVOWL history may still contain the old paths, but
+the WebVOWL working tree **MUST NOT** retain a second maintained package copy.
+Public metadata, examples and consumer tests **MUST NOT** expose `owlapi-js` as
+an alternate package name or import alias. If npm does not initially accept
+publication of `owlapi`, Phase 19 is blocked on diagnosis/namespace resolution;
+an implementer **MUST NOT** switch to `owlapi-js`, a scope, or another spelling
+without a new approved decision that updates every normative artefact.
+
+#### 2.10.1 Prior unrelated npm history and empirical resolution evidence
+
+The name previously identified an unrelated Overwatch-oriented package. Its
+known public versions were:
+
+```text
+1.0.0
+1.1.0
+1.2.0
+1.2.1
+1.3.0
+2.0.0
+2.0.1
+```
+
+All of them have been unpublished. On 23 August 2026, installation probes used
+npm 12.0.2 against the canonical public registry from an isolated prefix, with
+lifecycle scripts, audit/funding output, dependency saving and lockfile creation
+disabled. The observable results were:
+
+| Requested specifier | Public-registry result |
+| --- | --- |
+| `owlapi` | `ENOVERSIONS`: no versions available |
+| `owlapi@latest` | `ETARGET`: no matching `latest` version |
+| each exact version from `1.0.0` through `2.0.1` listed above | `ETARGET`: no matching version |
+| `owlapi@^1.0.0`, `owlapi@^2.0.0`, `owlapi@*` | `ENOVERSIONS`: no versions available |
+
+No former tarball was installed and no live distribution tag resolved. This is
+the evidence that ordinary public-registry consumers cannot currently receive
+the old implementation and that an exact old dependency cannot silently become
+the new OWL library.
+
+Unpublishing does **not** erase npm's immutable `name@version` history. Every
+exact version above is permanently consumed and **MUST NOT** be proposed for
+this project. npm's documented collision rule is the immutable `name@version`
+coordinate; it does not impose a documented monotonic floor above the former
+highest version. The real publication attempt remains the conclusive authority
+and coordinate-availability test.
+
+The missing exact coordinates do not otherwise prevent a coherent new release
+line. Exact requests and lockfiles for an unpublished former version remain
+broken rather than being redirected. New consumers of `owlapi@1.0.1` can use
+ordinary `^1.0.1` compatibility ranges, and a later breaking release can begin
+at the first available 2.x coordinate, `2.0.2`, without weakening major-version
+isolation for consumers of the new 1.x line.
+
+After `1.0.1`, backwards-compatible fixes increment within the unused 1.0.x
+patch coordinates, beginning with `1.0.2`. The first release that semantically
+requires a new minor version is `1.4.0`, not a synthetic `1.1.1`, `1.2.2` or
+`1.3.1` coordinate that would appear to patch an unrelated historical release.
+Subsequent 1.x versions then follow ordinary
+SemVer from the new implementation's live history. Every proposed coordinate is
+still checked against the registry before release because the known historical
+list may be incomplete; an unexpected conflict follows §2.10.2 rather than
+causing an improvised version jump.
+
+There is nevertheless a controlled residual risk from dormant **ranges**, not
+from exact pins. After stable `1.0.1` exists, a former declaration such as
+`^1.0.0`, `~1.0.0` or `1.x` can resolve the new implementation; after `2.0.2`,
+the equivalent former 2.x ranges can do so. npm normally saves caret ranges, so
+this is a real package-identity concern even though no material historical
+consumer has yet been identified. Conversely, very broad ranges such as `*` or
+`>=1.0.0` could also resolve a new `3.0.0`; starting at major 3 would mitigate
+ordinary former-major ranges, not eliminate every possible substitution.
+
+The project deliberately accepts that residual risk in preference to presenting
+a new library as though it already had two maintained generations. Launching at
+`3.0.0` would be registry-safe for normal old-major ranges but would misleadingly
+suggest a mature API/changelog lineage for this implementation. Stable `1.0.1`
+is therefore a documented namespace-discontinuity exception: it is the first
+stable Hadden Industries OWL implementation and **MUST NOT** be described as a
+patch, successor or compatible release of the unrelated former `1.0.0` package.
+The same notice applies to `2.0.2` as the first release of any future new 2.x
+line.
+
+The intended first release is the genuine, functional initial-development prerelease
+`0.1.0-alpha.0`, not the commonly placeholder-like `0.0.0-alpha.0`, a reused
+historical coordinate or a stable release. SemVer's own initial-development
+guidance begins at `0.1.0`. Publishing under `next` requires consumers to opt in
+and leaves `latest` unset; ordinary stable ranges exclude prereleases unless the
+consumer explicitly includes them. The package README and npm metadata **MUST**
+state prominently that the new implementation is unrelated to the formerly
+published Overwatch package and has no code, API or provenance relationship
+with it; the new package's licence applies only to package-owned implementation
+and documentation. Dependencies and deliberately shipped third-party material
+remain under their own recorded terms.
+
+Before stable `1.0.1`, the project **MUST** perform and retain a bounded
+historical-dependency audit covering current public-registry dependents and
+metadata available through supported interfaces, public source manifests and
+lockfiles that name `owlapi`, and any private consumers reported to the project.
+Each hit is classified as an exact coordinate, immutable tarball/lock entry,
+SemVer range or unrelated textual reference, with query, date and result
+recorded. A current published package or maintained project whose declared range
+would accept the new 1.x implementation is material evidence: stable publication
+is then blocked for a separately approved version decision, with `3.0.0` retained
+as the conservative fallback rather than selected automatically. If no such use
+is found, the audit records that absence as bounded evidence—not proof that no
+private consumer exists—and the approved `1.0.1` target stands. The already
+useful 0.x prerelease need not be withdrawn in either branch.
+
+#### 2.10.2 Claim the name through a real release, not a placeholder
+
+Absence from installation does not prove publishing authority. The project
+will test authority through npm's normal publication route before requesting
+npm Support. `npm publish --dry-run` is a required artefact preview but cannot
+prove that a registry write will be authorized because it deliberately makes
+no registry change.
+
+The first write attempt **MUST** use a complete, useful, tested and accurately
+documented alpha tarball that the project intends to leave public if the command
+succeeds. Publishing a content-free reservation or “coming soon” placeholder is
+forbidden: it would create a permanent public coordinate, provide no genuine
+function and conflict with npm's active-use/name-squatting policy. A successful
+write is the desired first release, not a disposable probe; it **MUST NOT** be
+unpublished merely because the attempt was described as a name-availability
+test.
+
+The initial claim cannot use npm staged publishing. `npm stage publish` requires
+the package to exist already and the caller to have write permission, so it
+cannot establish control over this fully unpublished identity. Staged and
+trusted publication **SHOULD** be configured for later releases after the first
+direct publication establishes the package under project control.
+
+The initial publishing account/organization **MUST** be deliberately selected
+as the intended long-term custodian before the write. Public metadata **MUST**
+identify compatibility with Java OWLAPI accurately without implying sponsorship
+or official status that has not been granted. Account authentication, 2FA,
+registry selection and package ownership are release inputs, never credentials
+committed to the repository.
+
+If the write fails, Phase 19 **MUST** preserve the exact command, npm/Node
+versions, registry, timestamp, error code and sanitized output. Authentication,
+2FA and local packaging failures are corrected locally. A namespace/permission
+failure after successful authentication is escalated to npm Support with the
+failed normal-publication evidence and the no-live-version evidence above. A
+version conflict is investigated as additional immutable history rather than
+worked around by repeatedly burning candidate versions.
+
+#### 2.10.3 Canonical repository and first-party consumer boundary
+
+The public organization repository
+`https://github.com/Hadden-Industries/owlapi` is the **sole canonical source and
+release repository** for the package. Its exact owner/repository casing is
+normative because npm trusted-publisher and provenance verification compare the
+package's repository metadata with the configured GitHub repository. The
+repository root is the npm package root and owns:
+
+```text
+package production source and package-owned tests
+package.json and package-lock.json
+README, LICENSE, notices, CHANGELOG and contribution/security policies
+package compatibility, provenance and conformance evidence
+package CI, release workflows, Git tags and GitHub releases
+```
+
+The source currently under WebVOWL's `src/owlapi-js/` is the Phase 19 migration
+input, not the permanent repository architecture. Phase 19 performs a
+history-preserving, hash-verified extraction and records an auditable mapping
+from the accepted WebVOWL source checkpoint to the rewritten canonical history.
+After the handoff marker, package changes occur only in
+`Hadden-Industries/owlapi`. A finite frozen overlap needed to validate the
+handoff is permitted, but it is not a mirror: the WebVOWL copy receives no new
+package commits and is removed as part of the application cutover.
+
+The following arrangements are forbidden because they create two authorities
+or give the first-party consumer a privileged development path:
+
+```text
+a release-only mirror of source maintained in WebVOWL
+a hand-copied or generated second production tree
+a Git submodule or Git subtree in WebVOWL
+a committed file:, link:, Git URL or sibling-directory dependency
+an npm workspace link to the extracted source
+a Vite/Jest resolver alias to an owlapi checkout
+```
+
+WebVOWL itself **MUST** consume `owlapi` through a declared exact registry
+dependency and bare package specifiers—never through relative source-tree
+paths—so every committed application test and build exercises the same public
+entry-point and installed-artefact boundary that external consumers receive.
+The only permitted imports of the core are:
+
+```text
+owlapi
+owlapi/apibinding
+owlapi/model
+owlapi/io
+owlapi/formats
+```
+
+Consequently, WebVOWL production modules, WebVOWL-owned tests and examples
+**MUST NOT** import `../../owlapi-js/...`, `src/owlapi-js/...`, an unexported
+`owlapi/...` deep path, or an alias that resolves a public specifier directly to
+a source file. Package-internal modules and package-owned tests in the canonical
+repository may use relative imports within that repository; that is
+implementation structure, not a consumer bypass.
+
+The private WebVOWL root manifest **MUST** declare `owlapi` in `dependencies`,
+not only in `devDependencies`, and pin the exact accepted registry version:
+
+```json
+{
+  "dependencies": {
+    "owlapi": "0.1.0-alpha.0"
+  }
+}
+```
+
+Phase 19 must still obtain the exact WebVOWL configuration approval required
+before applying this manifest and lockfile change. The committed lockfile
+**MUST** resolve the version from `https://registry.npmjs.org/` with registry
+integrity; it must not record a local tarball, checkout or filesystem link.
+Vite, Jest and other tooling **MUST NOT** receive a compensating `owlapi` source
+alias.
+
+Before a prerelease exists in the registry, the exact retained `npm pack`
+tarball is tested in an isolated, disposable WebVOWL checkout using the proposed
+bare-import/application patch and a no-save/no-lockfile candidate install. That
+procedure may alter only the disposable checkout. After publication, the same
+reviewed WebVOWL changes are applied to the maintained branch, the exact
+registry version is installed normally and the resulting registry lockfile is
+committed. Local tarball testing proves the candidate before a registry write;
+ordinary WebVOWL CI thereafter proves the actual external-consumer path. Both
+gates are mandatory.
+
+#### 2.10.4 Public API Surface Registry and two-zone source layout
+
+The public package boundary is defined by an explicit npm `exports` map and a
+machine-readable **Public API Surface Registry**, not by the mere presence of a
+directory or Java class. Except for the bare aggregate described below, every
+public npm subpath **MUST** map one-to-one to an existing package beneath
+`org.semanticweb.owlapi` in the pinned Java OWLAPI reference version. The npm
+subpath is the Java package suffix with dots replaced by slashes:
+
+```text
+org.semanticweb.owlapi.model.parameters
+                    ↓
+owlapi/model/parameters
+```
+
+The existence of a Java package is **necessary but not sufficient** for a
+public npm subpath. Publication additionally requires an approved registry
+entry, a non-empty explicit named-export inventory, a demonstrated direct
+consumer use, compatibility evidence, package-boundary tests and acceptance of
+the resulting SemVer commitment. Java source visibility, Javadoc inclusion,
+Maven-module placement, package depth and an implementation dependency do not
+create an npm API automatically.
+
+The bare package `owlapi` is the sole structural exception. It is a curated
+JavaScript convenience aggregate and has no claimed one-to-one Java package.
+Every root binding nevertheless **MUST** be an explicit re-export of an approved
+binding from a registered Java-backed subpath. The root may not be used to
+smuggle a JavaScript-only subsystem into the public contract.
+
+The `1.0.1` registry exposes exactly:
+
+| Public specifier | Responsibility | Java OWLAPI relationship |
+| --- | --- | --- |
+| `owlapi` | Curated convenience facade for the supported ordinary workflow | Explicit JavaScript aggregate exception |
+| `owlapi/apibinding` | Manager bootstrap | `org.semanticweb.owlapi.apibinding` |
+| `owlapi/model` | Structural objects, ontology, ontology manager, data factory, model-level loader configuration and document-format base | `org.semanticweb.owlapi.model` |
+| `owlapi/io` | Document sources and I/O/parser diagnostics | `org.semanticweb.owlapi.io` |
+| `owlapi/formats` | Supported ontology-document format identities | `org.semanticweb.owlapi.formats` |
+
+Nested Java packages may later be added at their complete natural depth, for
+example `org.semanticweb.owlapi.model.parameters` as
+`owlapi/model/parameters`. No empty or speculative namespace is created in
+advance. A deep subpath may be exported without making each textual prefix a
+separate importable module; the `exports` map lists exact consumer specifiers.
+
+There is no default export, wildcard subpath, public `package.json`, or invented
+public `manager`, `parser`, `storer`, `rdfjs`, `browser`, `node`, `helpers`,
+`compat`, `structural` or `internal` subpath. Environment-specific
+behavior uses the same Java-backed API through the source-level,
+capability-detecting internal adapters required by §17.26.1.1. A package-level
+environment target requires the separately approved failure evidence and test
+matrix defined there. A genuinely independent JavaScript integration belongs
+inside `internal/` or in a separately governed companion package, not in a new
+core-package namespace that lacks a Java package counterpart.
+
+##### 2.10.4.1 Registry ownership and gap reporting
+
+The existing capability matrix remains authoritative for behavioural scope;
+the new registry is its package/type/method projection, not a competing feature
+status system. During the WebVOWL staging period the normative requirements live
+in this plan. Phase 19 creates the maintained machine-readable registry at:
+
+```text
+Hadden-Industries/owlapi/docs/compatibility/java-api-surface.json
+```
+
+and a generated or mechanically checked human view at:
+
+```text
+Hadden-Industries/owlapi/docs/compatibility/java-api-surface.md
+```
+
+The existing staging capability file moves from
+`docs/owlapi-js/compatibility/capabilities.json` to
+`Hadden-Industries/owlapi/docs/compatibility/capabilities.json`; WebVOWL does
+not retain a second normative copy after handoff.
+
+Support, progress, exposure, relationship, compatibility and public stability
+commitment are independent dimensions. The registry **MUST NOT** call an
+internal but complete capability unsupported, a public nominal binding
+implemented, or a private row deprecated merely because it has no public
+stability commitment. It records:
+
+```text
+capability status  REQUIRED_V1 | DEFERRED | UNSUPPORTED_BY_DESIGN | DELEGATED
+progress           NOT_STARTED | IN_PROGRESS | COMPLETE
+exposure           PUBLIC | INTERNAL_ONLY | NOT_EXPOSED
+relationship       JAVA_ANALOGUE | JS_ADAPTATION | JS_EXTENSION | INTERNAL
+compatibility      COMPATIBLE | ADAPTED | CONTROLLED_DEVIATION | NOT_APPLICABLE
+stability           PRERELEASE | STABLE_1_X | DEPRECATED_1_X | null
+```
+
+`stability` is non-null only for a `PUBLIC` binding. Alpha public bindings use
+`PRERELEASE`; bindings in the accepted stable cutover version transition to
+`STABLE_1_X`, or to
+`DEPRECATED_1_X` only when the retained binding and replacement/migration
+contract satisfy §2.27. `INTERNAL_ONLY` and `NOT_EXPOSED` rows use `null` because
+their exposure—not a fictional public stability promise—governs them.
+
+Every namespace row records the exact Java package, exact npm subpath or `null`,
+exposure, first public release where applicable, rationale and owned symbol IDs.
+Every Java type row records at least its fully qualified Java name and kind,
+linked capability IDs, progress, exposure, stability, JS export or `null`, canonical public
+specifier or `null`, canonical source module or `null`, relationship,
+compatibility classification, supported/omitted public members, verification
+hooks and contribution/issue guidance. A public `JS_EXTENSION` row has no direct
+Java type but **MUST** identify the closest Java authority, justify why the
+language/runtime adaptation is necessary, and live in an already registered
+Java-backed namespace; it cannot authorize a new npm subpath.
+
+The pinned Java API inventory supplies every public
+`org.semanticweb.owlapi` package and public type. Before a stable release, each
+must have a registry disposition and the unclassified count must be zero. The
+registry inventories public members in detail for every mapped public type;
+unmapped types may remain type-level gaps until their namespace/capability is
+promoted. This produces both a compact package summary and drill-down detail so
+developers can see what is public, internally implemented, deferred or excluded
+and can open a correctly scoped issue or pull request.
+
+Executable fitness checks **MUST** prove that:
+
+1. every `exports` subpath except `.` has one exact registry row and exact Java
+   package mapping;
+2. every public registry row has a real facade, non-empty explicit export list,
+   packed-package import test and first-release value;
+3. every public binding is enumerated and its root/subpath duplicates have
+   identical JavaScript identity;
+4. every registry `sourceModule` and verification reference exists;
+5. the registry and capability matrix agree on capability IDs, progress and
+   scope, and every public/private row obeys the stability/exposure invariant;
+6. the generated Markdown summary is current; and
+7. wildcard, unregistered and internal imports fail from an installed tarball.
+
+##### 2.10.4.2 Public compatibility tree and private implementation tree
+
+The standalone source has two intentionally different zones:
+
+1. **Public Java-compatibility tree.** A registered public namespace follows the
+   exact Java package suffix. Every public binding has exactly one canonical
+   definition in that namespace and an `index.js` file with explicit named
+   exports. Closely related immutable types may share one cohesive source module
+   when that is clearer; the registry still maps each binding to that module.
+2. **Private JavaScript implementation tree.** `internal/` contains only engines,
+   algorithms, adapters, indexes, resource/security machinery and platform
+   integration that consumers do not import directly. It is organized by
+   cohesive implementation responsibility and **MUST NOT** mechanically mirror
+   the Java/public package tree.
+
+There is no duplicate `internal/<public-namespace>` implementation layer merely
+to forward the same binding twice. A public Java-compatible class may delegate
+to a deeper private engine, but the public class itself has one definition and
+one binding identity. Internal code uses direct module imports where needed and
+does not depend on root/public barrels in ways that introduce cycles.
+
+The current WebVOWL staging directories therefore do not survive automatically:
+
+| Staging ownership | Canonical standalone ownership |
+| --- | --- |
+| `manager/owlManager.js` | public `apibinding/` namespace |
+| `manager/owlOntologyManager.js` and public loader/model types | public `model/` namespace |
+| private parser registry and document-loading orchestration | `internal/parsing/` and `internal/loading/` by actual responsibility |
+| `parser/**` syntax engines and third-party adapters | `internal/parsing/**` |
+| `rdf/rdfToOwlTranslator.js` and `rdf/owlToRdfTranslator.js` | `internal/mapping/` |
+| RDF/JS factories, datasets and graph policy | `internal/rdfjs/` |
+| future private concrete serialization machinery | `internal/storage/<format>/` |
+| structural equality, indexes and platform/XML helpers | focused `internal/structural/`, `internal/indexing/` or `internal/platform/` ownership |
+
+Names such as `manager`, `parser` and `rdf` are not retained as generic private
+buckets merely because they exist in the staging tree. A JavaScript-specific
+private directory is permitted only when it names one cohesive implementation
+responsibility required by registered capabilities, does not duplicate a public
+type's owner and is absent from `exports`.
+
+For example, if a future approved release directly exposes Java's
+`org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLStorer`, its compatibility
+type belongs at `rdf/rdfxml/renderer/` and the exact public specifier is
+`owlapi/rdf/rdfxml/renderer`. The private RDF/XML serializer may remain under
+`internal/storage/rdfxml/`; no mirrored
+`internal/rdf/rdfxml/renderer/` directory or private-engine move is required.
+That hypothetical publication still requires its own registry decision and does
+not make `owlapi/rdf` or `owlapi/rdf/rdfxml` importable.
+
+For `1.0.1`, no such RDF package is public. RDF-based document loading remains
+fully supported through `OWLManager`, `OWLOntologyManager`, document sources,
+loader configuration and format identities. RDF syntax adapters produce RDF/JS
+quads, the shared `RdfToOwlTranslator` reconstructs structural OWL, and the
+tested `OwlToRdfTranslator` supports round-trip evidence and future storers.
+Those modules are `INTERNAL_ONLY`; the staging `src/owlapi-js/rdf/index.js`
+export does not survive as `owlapi/rdf`.
+
+For each `JAVA_ANALOGUE` or `JS_ADAPTATION`, record the exact public specifier,
+Java class/interface/member and package, supported operations, intentional
+omissions and material JavaScript adaptations. Paired Java/JavaScript examples
+must cover manager creation, document loading, data-factory access, IRI creation
+and ontology querying. The compatibility claim is a JavaScript-native,
+behaviourally compatible **subset** for declared capabilities; it is not Java
+source compatibility, binary compatibility or complete surface parity.
+
+The familiar primary workflow remains:
+
+```javascript
+import { OWLManager } from "owlapi/apibinding";
+import { StringDocumentSource } from "owlapi/io";
+
+const manager = OWLManager.createOWLOntologyManager();
+const ontology = await manager.loadOntologyFromOntologyDocument(
+  new StringDocumentSource(text),
+);
+const dataFactory = manager.getOWLDataFactory();
+```
+
+JavaScript-only manager operations already required by WebVOWL, including the
+document/diagnostic-rich load result, are labelled `JS_EXTENSION`; they do not
+replace or contradict the Java-recognizable
+`loadOntologyFromOntologyDocument` operation.
+
+### 2.11 Decision: alpha and stable productionize the proven Phase 18 capability surface
+
+The first public alpha is a package/release milestone for the capability surface
+already accepted at the Phase 18 source checkpoint
+`b5902e98da94a1ed99da174acea906aa42f9a46b`. Phase 19 may make only the
+packaging-boundary changes required to expose and consume that implementation;
+it **MUST NOT** add ontology semantics, mutation APIs, utilities or storers in
+order to make the first tarball appear more complete.
+
+The useful `0.1.0-alpha.0` claim includes the existing structural OWL model,
+manager/document loading surface, imports loading, internal RDF/JS ingestion
+boundary, shared RDF→OWL reconstruction, tested internal OWL→RDF mapping, and
+the twelve accepted input formats:
+
+```text
+Functional Syntax    Manchester Syntax    OWL/XML
+RDF/XML              Turtle               DL Syntax
+KRSS1                KRSS2                N-Triples
+N-Quads              TriG                 JSON-LD
+```
+
+The alpha does **not** claim the standalone import-closure materialization
+workflow described in
+`docs/owlapi-js/compatibility/standalone-import-closure-prerequisites.md`.
+Specifically, the following coherent capability slice is absent from
+`0.1.0-alpha.0` and **MUST** be stated as unavailable in its README, capability
+documentation and release notes:
+
+```text
+public imports-closure query/copy APIs and closure-set provider
+ontology merger
+manager-backed ontology mutation/change application
+ontology-ID and ontology-annotation changes
+saveOntology and StringDocumentTarget
+Functional Syntax storer
+RDF/XML storer
+strict complete RDF reconstruction required for lossless storage
+```
+
+This limitation does not contradict the existing ability to load ontology
+imports: import loading and exposing a complete public query/mutation/merge/store
+workflow are different contracts. Neither npm metadata nor examples may claim
+that `universal-ontology` can materialize a standalone imports closure with
+`alpha.0`.
+
+The absent slice is owned by
+`docs/owlapi-js/post-1.0-capability-implementation-plan.md`. It is not a
+prerequisite for a production-worthy WebVOWL ingestion package and **MUST NOT**
+be pulled into the current plan merely to broaden the stable version.
+
+Phase 20 productionizes the same declared capability families as the alpha. It
+may correct demonstrated defects, security problems, portability failures,
+diagnostics, documentation, or packaging, but it may not add a parser,
+ontology-operation family, storer, public workflow, or speculative API. Stable
+`1.0.1` is gated by public-package and WebVOWL production evidence—not by the
+post-1.0 imports-closure, mutation, merger, or storage feature programme.
+
+### 2.12 Decision: publish `owlapi` under `AGPL-3.0-only`
+
+The initial `owlapi` prerelease and subsequent stable 1.x package line are
+licensed under the GNU Affero General Public License version 3 only, using the
+exact SPDX identifier
+`AGPL-3.0-only`. This is a deliberate package-governance choice, not a licence
+inherited accidentally from the containing WebVOWL repository. The
+specifications-first reimplementation and provenance controls in §22 made that
+choice available on defensible terms; they did not exist in order to force the
+new core toward a permissive licence.
+
+The decisive policy objective is strong source reciprocity that includes the
+AGPL network-interaction provision. A permissive licence would maximize the
+number of proprietary integrations, while MPL-2.0 would require reciprocity at
+the covered-file level. Neither expresses the selected social contract as
+directly as AGPL-3.0-only. WebVOWL remains AGPL-3.0-only as well, but the
+application and package are still separate copyright/licensing scopes: package
+metadata and a package-local licence establish the terms of `owlapi`; the root
+licence continues to establish the terms of WebVOWL and other root-owned work.
+
+The `only` suffix is intentional. A recipient of an AGPL-3.0-only release is
+not granted an automatic option to apply a future AGPL version. Copyright
+holders with sufficient authority may later publish their own contributions
+under additional or more permissive terms, but doing so would not revoke the
+AGPL-3.0-only rights already granted for earlier releases. The project **MUST
+NOT** describe later permissive relicensing as unconditionally available:
+incorporating an outside contribution can require that contributor's consent
+unless the contribution terms separately grant the project adequate
+relicensing authority. Section 2.14 therefore fixes the initial
+inbound=outbound policy and a mandatory decision gate before the first external
+copyrightable contribution is merged. A contributor agreement for hypothetical
+future contributors is not a first-publication prerequisite while the audited
+package contains no accepted external copyrightable contribution; the first
+affected merge, not the first alpha, is the blocking decision point.
+
+Before the first publication, the licence/provenance gate **MUST**:
+
+1. identify every copyright holder or authorized licensor for the package-owned
+   production and shipped documentation files and record the basis of their
+   licensing authority;
+2. verify the exact retained tarball rather than inferring its licensing surface
+   from the source directory;
+3. distinguish package-owned AGPL-3.0-only material from dependencies and any
+   deliberately shipped third-party material that remains under its own terms;
+4. include the complete package-local AGPLv3 licence text, set package metadata
+   to `AGPL-3.0-only`, and preserve every required third-party notice; and
+5. explain the WebVOWL/`owlapi` licensing boundary in both repository and
+   package-facing documentation without implying that package dependencies have
+   been relicensed under the AGPL.
+
+This is engineering governance rather than legal advice. Publication remains
+blocked if ownership authority or any tarball item's applicable terms cannot be
+established with adequate confidence.
+
+### 2.13 Decision: retain personal copyright and separate title from stewardship
+
+As of this decision, **Maksym Shostak personally owns the copyright in his
+existing project-owned `owlapi` work**. Neither publication of
+`0.1.0-alpha.0` nor publication of stable `1.0.1` is conditional on assigning
+that copyright to HADDEN INDUSTRIES LTD. Unless and until a written assignment
+actually takes effect, package-facing records **MUST** identify Maksym Shostak
+as the copyright owner of his contributions and **MUST NOT** describe HADDEN
+INDUSTRIES LTD as their copyright owner or licensor.
+
+HADDEN INDUSTRIES LTD is instead the institutional **project steward** for the
+canonical repository and package. The complete public identification is
+**HADDEN INDUSTRIES LTD, registered in England and Wales under company number
+07862561**, linked to
+`https://data.companieshouse.gov.uk/doc/company/07862561`. Repository ownership,
+npm access, project stewardship and a copyright notice are distinct facts; none
+of the first three transfers copyright by implication.
+
+This decision keeps three continuity controls separate:
+
+1. **Copyright title and licensing authority.** Maksym Shostak owns and licenses
+   his existing contributions under `AGPL-3.0-only`; each later contributor
+   retains copyright unless a separately approved written agreement says
+   otherwise.
+2. **Durable recipient rights and succession.** A compliant AGPLv3 grant lasts
+   for the copyright term and is irrevocable under its terms. Copyright can pass
+   by testamentary disposition, inheritance or other operation of law, so the
+   original author's death does not withdraw the existing AGPL grant or put
+   published source into a use/maintenance limbo.
+3. **Operational custody.** Continued control of the exact GitHub repository,
+   npm package and trusted-publishing path depends on the actual credentialed
+   account holder, recovery settings and a usable release runbook—not on who
+   owns copyright. For this plan that human account holder is solely Maksym
+   Shostak; the resulting availability risk is accepted rather than described as
+   continuity.
+
+Personal estate planning, including a will that may transfer the relevant
+copyright to HADDEN INDUSTRIES LTD or another chosen successor, is external to
+the software release process and **MUST NOT** be made a Phase 19 or Phase 20
+gate. No will, probate record, signed assignment, address, signature or other
+private estate material belongs in Git, an npm tarball or public release
+evidence.
+
+A lifetime assignment remains an optional future legal and commercial decision.
+If one is later chosen, it must be written and signed as required by applicable
+law, professionally reviewed where appropriate, and scoped against an objective
+source checkpoint/path inventory with third-party material excluded. Public
+ownership notices may change only after the instrument has taken effect; the
+change must preserve original authorship and the separate ownership of any
+outside contributor. A non-sensitive attestation may then record the parties,
+effective date, covered checkpoint/path scope and excluded-material classes,
+but is evidence of—not a substitute for—the private instrument.
+
+The source/package metadata fixed by this decision is:
+
+```json
+{
+  "author": {
+    "name": "Maksym Shostak",
+    "url": "https://github.com/MaksymShostak"
+  },
+  "license": "AGPL-3.0-only"
+}
+```
+
+The SPDX expression remains the machine-readable `license` value; a URL does
+not replace it. Until an assignment actually takes effect, the package README
+uses this role-separated notice:
+
+```markdown
+Originally authored by [Maksym Shostak](https://github.com/MaksymShostak).
+
+Copyright © 2026 Maksym Shostak.
+
+Project stewardship: [HADDEN INDUSTRIES LTD](https://data.companieshouse.gov.uk/doc/company/07862561), registered in England and Wales under company number 07862561.
+
+Licensed under the [GNU Affero General Public License, version 3 only](https://www.gnu.org/licenses/agpl-3.0.html) (`AGPL-3.0-only`). The complete, unmodified licence text is included in [`LICENSE`](./LICENSE).
+```
+
+The plain-text `NOTICE` uses literal URLs rather than relying on Markdown
+rendering:
+
+```text
+owlapi
+
+Originally authored by Maksym Shostak
+https://github.com/MaksymShostak
+
+Copyright © 2026 Maksym Shostak.
+
+Project stewardship: HADDEN INDUSTRIES LTD.
+Registered in England and Wales under company number 07862561.
+https://data.companieshouse.gov.uk/doc/company/07862561
+
+Licensed under the GNU Affero General Public License, version 3 only
+(SPDX: AGPL-3.0-only).
+https://www.gnu.org/licenses/agpl-3.0.html
+
+See LICENSE for the complete, unmodified licence text.
+```
+
+Before publication, Phase 19 **MUST** verify that the retained tarball's rights
+inventory, `package.json`, README, `NOTICE`, `LICENSE`, provenance and
+third-party notices agree with those facts. Separately, it **MUST** establish the
+single named npm/GitHub custody and bounded machine-authority controls specified
+in §17.26.4. Maksym Shostak is the only natural-person custodian required by this
+plan; the npm identities `maksymshostak` and `hadden-industries` remain
+operational registry identities rather than evidence of copyright ownership or
+multi-person continuity.
+
+### 2.14 Decision: begin with inbound=outbound and gate the first external merge
+
+The initial outside-contribution model for `owlapi` is **inbound=outbound under
+`AGPL-3.0-only`**. An outside contributor retains copyright in an accepted
+contribution and grants the contribution under the same `AGPL-3.0-only` terms
+under which the package is distributed. No copyright assignment or separate
+contributor licence agreement (CLA) is required for `0.1.0-alpha.0`, provided
+the Phase 19 rights inventory confirms that all existing package-owned material
+is owned by its identified holder or is otherwise covered by an adequate
+recorded licence.
+
+The project **MUST** state this policy directly in repository contribution
+guidance rather than relying only on GitHub's platform-wide contribution terms.
+The guidance must say that contributors retain copyright, that accepted
+contributions are licensed as `AGPL-3.0-only`, that contributors represent they
+have authority to make that grant, and that no broader relicensing authority or
+copyright transfer is inferred from submitting a pull request. Contributions
+made through a different channel are subject to the same explicit policy.
+
+#### 2.14.1 First-external-contribution trigger
+
+For this gate, an **external copyrightable contribution** is substantive
+authored material outside the then-current first-party copyright inventory that
+is proposed for incorporation into the package-owned implementation or shipped
+package material. Treat substantive production source, public declarations or
+types, package documentation/assets, generated distributable content and any
+test/fixture/helper expression copied or incorporated into production as in
+scope. An issue report, abstract idea, behavioural description or unmerged
+proposal does not by itself cross the gate; an open pull request may be discussed
+and reviewed, but **MUST NOT** be merged while the gate is unresolved. When it
+is genuinely unclear whether a proposed change is copyrightable or who owns it,
+the project **MUST** treat the change as in scope until the uncertainty is
+resolved rather than relying casually on a “trivial contribution” exception.
+
+Immediately before accepting the first such contribution, the project **MUST**
+pause and record one of these two separately approved outcomes:
+
+1. **Confirm pure inbound=outbound.** Accept the contribution only under
+   `AGPL-3.0-only`, record the contributor's/actual copyright holder's authority,
+   and knowingly accept that a later permissive licence for affected material
+   will require additional permission from every relevant holder or exclusion
+   and independent replacement of that material.
+2. **Adopt a contributor-retained-copyright CLA before merge.** Obtain a
+   professionally reviewed agreement that leaves ownership with the
+   contributor while granting the separately approved project counterparty the
+   expressly bounded copyright and patent authority selected at that future
+   checkpoint—for example, continued AGPL distribution plus publication under
+   defined OSI-approved licences. The counterparty, exact agreement, acceptance
+   mechanism, employer authority and record-custody process require their own
+   approval; they are not silently predetermined by this plan.
+
+No later CLA, project-policy edit or package-metadata change may be applied
+retroactively to a contribution without the actual rights holder's agreement.
+A GitHub username or commit author is not necessarily the copyright holder; an
+employer or another entity may need to grant the additional rights.
+
+#### 2.14.2 Later licence changes under the initial model
+
+While every included copyright holder has sufficient authority, those holders
+may later approve an additional or more permissive licence for a precisely
+audited future release. The release process must fix the covered source
+checkpoint and tarball scope, verify ownership and third-party terms, document
+every required holder decision, update every licence/notice/metadata surface
+consistently and publish a clearly versioned new artefact. Earlier AGPL grants
+remain available and irrevocable according to their terms; neither changing
+repository metadata nor unpublishing an npm artefact can retract rights already
+granted.
+
+After a pure inbound=outbound external contribution has been incorporated, a
+permissive licence for the whole affected module requires a sufficient written
+grant from every relevant copyright holder. If a holder refuses or cannot be
+located, the project must keep the affected work under AGPL-compatible terms,
+exclude it, or independently replace all remaining protectable expression and
+record that provenance. Git history, line deletion, squashing and `git blame`
+alone are not proof that an incorporated contribution has ceased to be present.
+Dependencies and separately licensed material remain governed by their own
+terms in every case.
+
+#### 2.14.3 Phase 19 implementation and evidence
+
+Phase 19 **MUST** obtain the exact repository-configuration approval required
+for a new root `CONTRIBUTING.md` in `Hadden-Industries/owlapi`, then publish the
+§2.14 policy there and link it from the package README. The package-repository
+governance test must assert the presence and
+agreement of the package licence, copyright-retention statement,
+inbound=outbound rule and first-external-merge gate. The release evidence must
+also attest that every copyrightable item in the reviewed `0.1.0-alpha.0`
+source/tarball has an identified holder and adequate distribution authority,
+with no unresolved external contribution.
+
+This deliberately avoids building speculative CLA administration before an
+outside contributor exists while preventing the first merge from silently
+fragmenting future licensing authority. The checkpoint concerns acceptance of
+authored material; issue discussion and review can continue while the decision
+is made.
+
+### 2.15 Decision: the public README explains why `owlapi` exists
+
+The `Hadden-Industries/owlapi` README **MUST** contain a concise, prominent
+“Why `owlapi` exists” section. It records the technical need that justified an
+independently governed implementation and why the available alternatives did
+not satisfy that complete need. The project-origin discussion at
+`https://chatgpt.com/g/g-p-6a7b7000aa2481919350a95588536362/c/6a738373-7b6c-83eb-b36b-d675a4a69b43`
+is one source of the rationale to synthesize with the implementation record.
+
+The README rationale **MUST** explain:
+
+1. Java OWLAPI was and remains the compatibility reference, but retaining a JVM
+   does not provide the browser-native/package boundary required by WebVOWL and
+   other JavaScript consumers;
+2. the evaluated alternatives solved different subsets of the problem—such as
+   wrapping Java OWLAPI, exposing a Rust/Wasm model or reasoner, or performing
+   RDF rule reasoning—without constituting a substitutable JavaScript structural
+   API for the required use cases;
+3. the difficult part is not merely parsing RDF/XML or another concrete syntax,
+   but preserving OWL structural distinctions across native syntaxes and the
+   RDF-to-OWL mapping while exposing stable ontology objects;
+4. WebVOWL supplied the first demanding production consumer and differential
+   oracle, but the resulting package deliberately contains no VOWL concepts;
+5. the implementation is specifications-first and independently authored;
+   Java OWLAPI supplies behavioural compatibility evidence rather than a
+   source-transliteration template; and
+6. `0.1.0-alpha.0` is useful but bounded: it documents the exact accepted
+   capability surface and must not claim complete Java OWLAPI parity.
+
+The comparison should name relevant adjacent approaches such as `owljs`,
+OntoLogos, `owlish` and HyLAR where they help explain the design choice, without
+turning the README into a market survey or implying that those projects were
+trying to solve precisely the same problem.
+
+### 2.16 Decision: publish one retained artefact through npm and an immutable GitHub release
+
+Each public version has one release tarball. The bytes reviewed as the release
+candidate, published to npm, attached to the GitHub release and used for final
+consumer verification **MUST** be identical. A release workflow must never run
+`npm pack` again merely because it has crossed an approval, publication or
+verification boundary.
+
+The release set is:
+
+| Item | Normative role |
+| --- | --- |
+| signed annotated `v<version>` Git tag | binds the version to its reviewed canonical source commit |
+| `owlapi-<version>.tgz` | sole installable release artefact |
+| `owlapi-<version>.cdx.json` | §2.47 validated reproducible CycloneDX 1.6 JSON SBOM whose root component is the exact `owlapi@<version>` library and whose unflattened/full-PURL dependency graph contains the production install closure only |
+| `SHA256SUMS` | exact §2.52 sorted lowercase SHA-256 entries for the retained tarball and SBOM, using stable asset basenames and no other entries |
+| `owlapi-<version>.release-evidence.json` | versioned machine-readable publication and verification record generated after fresh-registry checks, including the normalized §2.51 root-package attestation identity, and before release immutability |
+| npm provenance/publish attestations | bind the public registry package to the public GitHub source and publishing workflow |
+| immutable GitHub release and automatic release attestation | bind the tag, source commit and attached release assets, then pass the exact §2.52 fresh-download release/per-asset verification |
+| repository `docs/provenance/releases/<version>/release.json` and notes | append-only post-release index identifying the immutable release/attestation plus source, workflow, registry, test and controlled-deviation evidence without changing package bytes |
+
+The signed annotated tag is release-specific and **MUST NOT** be moved. Under
+§2.60, `release.yml` first builds and fully qualifies the retained candidate at
+the accepted protected-`main` commit while no canonical `v<version>` tag exists.
+For every post-bootstrap release, the same run also stages, downloads and proves
+the byte identity of that retained tarball before the tag is created. A human
+then signs and pushes the canonical tag at the already-fixed commit, and the
+same run verifies its target, signature, authorized signer and GitHub result
+before the staged package may be promoted. The initial bootstrap cannot stage;
+its tag is therefore created after all non-mutating gates and immediately before
+the separately authorized direct publication boundary.
+
+Once the verified tag exists, the GitHub release is created as a draft so the
+retained tarball, SBOM and `SHA256SUMS` can be attached and reviewed before the
+package becomes public. The npm public write occurs only after the applicable
+required gates and human authorization: the protected `npm-release` environment gates the
+bootstrap write or steady-state stage creation, and steady-state promotion also
+requires the exact staged-candidate review plus interactive 2FA. The draft
+remains unpublished while a fresh-cache consumer verifies the registry tarball,
+integrity, provenance, exports and distribution tag. The §2.40 evidence manifest
+is then attached and verified before the draft is published with repository
+release immutability enabled. After publication, the tag, release notes and
+assets are historical evidence and are not edited or replaced; a correction
+requires a new package version.
+
+The initial `0.1.0-alpha.0` claim **MUST** run through a manual dispatch of the
+canonical `.github/workflows/release.yml` at the exact accepted protected-`main`
+commit, with `ubuntu-24.04` x64 as the sole §2.57 artefact-producing host. The
+workflow derives the version, expected canonical tag and channel from reviewed
+repository state rather than a free-form dispatch identity.
+Because an npm trusted
+publisher cannot be configured for a package that does not yet exist, that one
+bootstrap write uses a one-day npm granular access token created in npm's web
+interface with write access, bypass-2FA enabled for the non-interactive workflow
+and the narrowest package selection the registry actually permits. If the
+not-yet-created `owlapi` coordinate cannot be selected, the approval and evidence
+**MUST** call the resulting temporary all-packages write authority by its real
+scope rather than falsely describing it as package-scoped. The token is held
+only in a protected GitHub deployment environment, never passed to untrusted
+pull-request code, logs, release assets or repository files, and is revoked and
+removed immediately after its single authorized attempt; expiration is only a
+backstop. The bootstrap publication job alone uses `contents: read`,
+`id-token: write`, npm's explicit `--provenance` mode and the exact retained
+tarball. After success, a reviewed configuration change removes the dead token
+branch/reference from the same stable workflow path before trusted publishing is
+enabled.
+
+Subsequent releases use the exact case-sensitive
+`Hadden-Industries/owlapi`/`.github/workflows/release.yml`/`npm-release`
+repository/workflow/environment identity configured as the npm OIDC trusted
+publisher. The preferred steady
+state grants that publisher stage-only authority, runs `npm stage publish` for
+the retained tarball before the canonical tag exists, requires npm's
+proof-of-presence review/approval only after the later tag passes §2.60, and
+keeps traditional token publication disabled. The no-authority §2.61
+`release-manual` gates acknowledge the verified tag and later completed
+interactive promotion without entering the trusted-publisher identity or
+occupying a runner. Before signing that tag, an
+interactively authenticated maintainer downloads the staged tarball, proves
+that its SHA-256 is byte-for-byte identical to the retained tarball and
+revalidates the staged candidate under §2.53. npm's automatic provenance under trusted publishing is
+authoritative; the workflow omits `--provenance` and **MUST NOT** add a redundant
+`actions/attest` step merely to duplicate npm provenance or the automatic
+immutable-release attestation. A future additional attestation requires a
+documented consumer or threat-model need and separate workflow approval.
+
+#### 2.16.1 Required and extended browser evidence
+
+The installed-package suite uses exact `@playwright/test@1.62.1` and its managed
+Chromium, Firefox and WebKit revisions in three separate one-worker, cache-free
+`ubuntu-24.04` x64 jobs as a required package check. Every
+engine must pass representative public-manager ingestion through the retained
+tarball in the ordinary bundler document, native document/import-map and bundled
+dedicated-worker consumers fixed by §2.21 before npm publication. A skipped,
+cancelled or infrastructure-invalid required engine or required consumption mode
+is not a passing result.
+
+Branded browser channels, historical browser versions, hosted browser services
+and physical/real-device runs are extended evidence. They are valuable but
+non-blocking because their availability is not controlled by the package release
+workflow. Every release note **MUST** report each planned extended environment
+as exactly one of:
+
+```text
+PASS     — the stated test scope executed and passed
+FAIL     — the stated test scope executed and produced a product-visible failure
+NOT_RUN  — no valid product result exists; record why and the last attempted date
+```
+
+`INFRASTRUCTURE_ERROR` may be used transiently inside a test job for retry and
+diagnosis, but it is not a valid final release-evidence state. An unresolved
+provider/device/infrastructure failure becomes `NOT_RUN` with the concrete
+reason; it must not be misreported as a product `PASS` or `FAIL`. An extended
+`FAIL` is disclosed as a known result/limitation but does not override the
+approved non-blocking classification.
+
+The immutable GitHub release records the matrix as it stood at publication and
+links to the version-specific §2.40 evidence hierarchy in the canonical
+repository. If an extended environment is exercised later, add a new dated,
+append-only observation and update any generated/curated summary in a normal
+signed/traceable documentation commit. Do not overwrite an earlier observation.
+The package tarball, npm version and immutable release assets are not changed
+merely to add later non-blocking evidence.
+
+### 2.17 Decision: private vulnerability reporting and an explicit support window
+
+The canonical repository **MUST** enable GitHub private vulnerability reporting
+and publish a root `SECURITY.md`. Its reporting order is:
+
+1. GitHub private vulnerability reporting for `Hadden-Industries/owlapi` is the
+   preferred channel because it opens the repository's private advisory
+   workflow; and
+2. `security@haddenindustries.com` is the durable company-controlled fallback
+   when that mechanism is unavailable or unsuitable.
+
+The security address is reserved for vulnerabilities and other genuinely
+security-sensitive project correspondence. Suspected vulnerabilities **MUST
+NOT** be submitted through public issues, discussions or pull requests, and the
+address **MUST NOT** be reused for Code of Conduct reports. The package README
+links to the canonical `SECURITY.md` rather than duplicating a policy that can
+change independently of a package release.
+
+HADDEN INDUSTRIES LTD controls the role address. For this implementation plan,
+access is delegated only to Maksym Shostak through an individually authenticated
+account rather than a shared-account password. MFA, least privilege and
+auditable membership are required before stable publication. External delivery,
+reply identity, spam handling and unintended forwarding/recipient behaviour are
+tested before the address is represented as operational. A second responder and
+account-continuity arrangement are desirable post-plan governance improvements,
+not alpha, stable-release or plan-completion gates. Secrets and personal report
+data do not enter public release evidence.
+
+The public support policy is deliberately narrow:
+
+| Release state | Security-supported version |
+| --- | --- |
+| before stable `1.0.1` | only the single prerelease currently designated by `next` |
+| after stable `1.0.1` | only the latest stable 1.x release designated by `latest`; the 0.x prerelease line is no longer supported |
+| older stable or prerelease lines | unsupported unless a future, explicit LTS/security-branch policy names them |
+
+Old versions remain available under npm's immutability rules, but availability
+does not imply security maintenance. `SECURITY.md` **MUST** name the supported
+versions/ranges accurately and may be updated after a release without changing
+that package. The package-version table is distinct from the §2.19 runtime
+matrix: after a supported Node major reaches upstream end of life, continued
+1.x runtime compatibility does not imply that `owlapi` can correct a defect in
+the unmaintained runtime itself. `SECURITY.md` and the README must state that
+limitation rather than silently dropping the declared 1.x floor or overstating
+security coverage.
+
+The project aims to acknowledge a private vulnerability report within five
+working days. This is a target, not an SLA, guaranteed resolution time or
+promise that the report is valid. Triage records affected versions, severity,
+reproduction, embargo/coordination needs and the reporter's preferred contact.
+Confirmed issues use a GitHub security advisory and request/associate a CVE when
+the issue warrants one. Public disclosure is coordinated after a fixed version
+and mitigation are available unless an overriding safety or legal reason is
+recorded.
+
+A security release may be expedited, but it is not exempt from the deterministic
+artefact, required-test, production-dependency, provenance, retained-tarball,
+fresh-registry and consumer-verification gates. Sensitive details may remain in
+the private advisory until coordinated disclosure; the evidence must still show
+that every integrity gate ran without leaking embargoed material.
+
+### 2.18 Decision: separate, private Code of Conduct reporting
+
+The canonical repository **MUST** contain a root `CODE_OF_CONDUCT.md` based on
+Contributor Covenant 3.0, retain its required attribution and permanent version
+link, define the repository/project interaction scope, and state its actual
+enforcement and reporting process. It is repository governance, not package
+runtime documentation, and **MUST** be excluded from the npm tarball.
+
+HADDEN INDUSTRIES LTD appoints the project moderator. Possible violations are
+reported privately to `conduct@haddenindustries.com`. Reports **MUST NOT** be
+filed in public issues or discussions and **MUST NOT** be routed through
+`security@haddenindustries.com` or GitHub's vulnerability-reporting mechanism.
+For this plan, the conduct address is a company-controlled role mailbox delegated
+only to Maksym Shostak through an individually authenticated account; it must not
+forward to a broad maintainer or employee list.
+
+Maksym Shostak is the sole moderator required before stable publication. If he
+is named in a report, directly involved in the reported events or otherwise
+materially conflicted, he **MUST NOT** adjudicate or take enforcement action on
+that report alone. The policy accurately discloses that the initial governance
+model has no independent internal handler; the report remains restricted and
+pending for separately governed post-plan appointment or an applicable external
+legal/platform process. Neither appointing nor retaining a second moderator is a
+release-completion requirement. The policy promises restricted need-to-know
+handling rather than absolute confidentiality, which email and a fair
+investigation cannot guarantee. Public enforcement statements minimize personal
+information and are made only when necessary and proportionate under the
+adopted policy.
+
+`CONTRIBUTING.md` remains the authority for contribution mechanics,
+inbound=outbound licensing, contributor copyright and the first-external-merge
+gate. `CODE_OF_CONDUCT.md` governs behaviour. `SECURITY.md` governs private
+vulnerability disclosure. None of those responsibilities is merged into a
+generic support mailbox, and no public author email is added to `package.json`:
+the author metadata continues to use Maksym Shostak's named GitHub identity.
+
+### 2.19 Decision: support Node 22 and 24, and build releases on Node 24
+
+The alpha and stable package manifests **MUST** declare this exact Node engine
+range:
+
+```json
+{
+  "engines": {
+    "node": "^22.0.0 || ^24.0.0"
+  }
+}
+```
+
+The Phase 19 required package matrix fixes Node `22.23.2` and Node `24.19.0`.
+Both run the full package suite on §2.57 `ubuntu-24.04` x64 and the focused
+installed-tarball suite on its Windows x64 and macOS arm64 representatives. The
+release workflow builds, packs, signs, stages/publishes and performs its
+release-side authoritative verification only on Ubuntu/Node `24.19.0`; the Node
+22 lanes prove the compatibility floor. Workflow configuration uses those literal patches,
+not the `22`, `24`, `lts/*`, `node` or `latest` aliases, and release evidence
+records the actual Node/npm identities. A later patch replacement follows the
+separate exact-tool update rule in §2.54 and does not alter the public engine
+range merely because a CI patch changes.
+
+Node 26 is a non-blocking current-release probe until it becomes LTS. After that
+transition, adding `|| ^26.0.0` and making Node 26 blocking requires the normal
+exact package/CI configuration approval and a passing package, pack/install and
+WebVOWL-consumer matrix. A current-release probe does not silently broaden the
+published `engines` claim.
+
+Node 22 remains the 1.x compatibility floor. Its eventual upstream end of life
+does not itself authorize a breaking floor increase inside 1.x, but the README
+and security policy **MUST** distinguish runtime compatibility from upstream
+security maintenance: once Node 22 is no longer maintained by Node.js, the
+project cannot promise remediation of vulnerabilities that require upstream
+runtime changes. A separately approved support-policy decision is required if a
+concrete security or platform constraint makes continued 1.x compatibility
+untenable.
+
+### 2.20 Decision: freeze the stable 1.x browser feature ceiling
+
+During alpha development, the package uses the moving Browserslist query
+`baseline widely available`. This permits ordinary portability corrections as
+the package is extracted and tested without pretending that an unfinished
+prerelease has already frozen a historical browser set.
+
+At the stable release-freeze gate, replace that moving query with
+`baseline widely available on` followed by the actual UTC calendar date of the
+accepted stable-cutover release freeze. The same evidence commit **MUST** record:
+
+- the exact query string containing that date;
+- the resolved browser/version set;
+- the Browserslist, Baseline/browser-compatibility data and related resolver
+  versions used to calculate it; and
+- the source commit and date on which the public JavaScript feature ceiling was
+  frozen.
+
+That dated query is the maximum JavaScript/web-platform feature level for the
+entire 1.x line. Later dependency or implementation changes may improve older-
+browser behaviour but **MUST NOT** require a feature newer than the frozen
+ceiling without a separately approved major-version support decision.
+
+The ceiling applies to every public entry point and the complete reachable
+production graph, including lazily loaded RDF/XML, N3-family, JSON-LD and XML
+fallback paths. Package production source is distributed as native JavaScript;
+`owlapi` does not transpile syntax, ship browser polyfills, or advertise a
+browser that is reachable only through undeclared consumer transformations.
+The Chromium, Firefox and WebKit revisions installed by exact
+`@playwright/test@1.62.1` remain blocking runtime tests under §§2.16.1 and 2.54.
+Branded, historical and physical-device results remain
+transparent non-blocking evidence and do not redefine the frozen syntax/API
+ceiling.
+
+### 2.21 Decision: support bundlers and document import maps as complementary browser paths
+
+The package supports two browser consumption modes over the same unconditional
+native-ESM source and the same five public package specifiers:
+
+1. **Bundler consumption is primary.** A standards-conforming package-aware
+   bundler resolves the npm `exports` map, direct dependencies and lazy imports.
+   WebVOWL uses this path through Vite.
+2. **Native document ESM with an application-owned import map is secondary but
+   supported.** The consuming HTML document maps `owlapi`,
+   `owlapi/apibinding`, `owlapi/model`, `owlapi/io` and `owlapi/formats`, plus
+   the traced runtime dependency closure, to version-pinned browser-loadable
+   module URLs.
+
+The import map belongs to the application because its base URL, CSP, hosting
+layout, shared dependency versions, caching and integrity policy are
+application-wide decisions. `owlapi` therefore supplies a generated, tested
+reference example but does not install a global map, publish a universal map as
+package metadata, or introduce a sixth public subpath. The example is merged
+inline into the consuming document as required by the HTML import-map model.
+
+Phase 19 uses exact `@jspm/generator@2.16.3` under §2.46 as release/development
+tooling to trace static imports and statically analyzable literal `import()`
+calls from the packed package. Its provider is `jspm.io`, its environment is
+`production`/`browser`/`module`, and integrity metadata is mandatory. The exact
+generator version and development-dependency/configuration diff remain subject
+to the configuration approval in §17.26.1. Neither the generator nor provider
+is a production dependency or a URL hard-coded into package source.
+
+The reference path **MUST** prove the actual accepted capability surface rather
+than a reduced no-build edition. Its Chromium, Firefox and WebKit fixture imports
+all five public specifiers and performs representative public-manager loads for
+an OWL-native syntax, RDF/XML, Turtle and JSON-LD so the principal static and
+lazy dependency paths execute. It also verifies that the reference map is
+version-pinned, contains complete provider integrity metadata, agrees with the
+public-export and production-closure registries, has retrievable public URLs and
+executes through the integrity-verified local mirror without
+`es-module-shims`.
+
+This support claim does not mean that an arbitrary raw npm `node_modules` tree
+can be exposed over HTTP without preparation. In the accepted Phase 18 graph,
+`rdfxml-streaming-parser` and the non-native XML fallback have CommonJS entry
+points, while the selected N3 deep path is its UMD build even though N3 supplies
+an ESM build. Import maps resolve specifiers; they do not translate CommonJS or
+UMD into ESM. Phase 19 may make the minimal tested N3 ESM-path correction. The
+reference map may point the CommonJS-dependent seams at audited ESM conversions
+from the selected provider, but the package **MUST NOT** acquire a hand-vendored
+dependency bundle, a hidden second implementation, or a CDN-specific source
+branch merely to claim raw-tree compatibility. A future CDN-neutral raw-tree
+claim requires its own dependency, licence/SBOM, reproducibility and maintenance
+decision.
+
+Document import maps do not apply to workers or worklets. Dedicated module
+workers are nevertheless part of the 1.0.1 support surface through the primary
+bundler path. The installed-package Playwright app **MUST** exercise
+representative manager ingestion inside a bundled `DedicatedWorker` in all three
+required engines, including XML and a lazy RDF syntax. Because `DOMParser` is a
+Window-only API and the current XML fallback is CommonJS behind a Vite-ignored
+dynamic import, Phase 19 must first preserve a failing worker regression and
+then provide the smallest portable private-adapter correction. Shared workers,
+service workers and worklets are not implied by the dedicated-worker claim.
+
+Neither supported browser mode authorizes environment-conditioned package
+exports, CommonJS, an IIFE/global build, a turnkey CDN distribution, package
+transpilation, or package polyfills. A future delivery form requires a separate
+consumer need and design decision.
+
+### 2.22 Decision: npm is authoritative and every other ecosystem receives an explicit status
+
+npm is the authoritative package manager and registry workflow for 1.0.1. It
+owns deterministic installation, the canonical lockfile, production dependency
+inventory, audit, packing, registry publication, provenance, fresh-cache
+verification and WebVOWL's exact installed dependency. Release evidence uses
+npm commands; a result from another package manager cannot substitute for an npm
+gate.
+
+The README, compatibility data and release notes use exactly these environment
+statuses:
+
+| Status | Meaning |
+| --- | --- |
+| `SUPPORTED` | The named environment and consumption mode are part of the declared contract, run in blocking release verification where applicable, and may block a release for a reproducible package defect. |
+| `PLAUSIBLE_UNVERIFIED` | The standards/package metadata suggest compatibility, but the project runs no complete required matrix and makes no release-blocking runtime promise. |
+| `OUT_OF_SCOPE` | The project makes no 1.0.1 compatibility claim, does not provide environment-specific integration, and does not treat that environment's failure alone as a package defect. |
+
+The initial matrix is:
+
+| Environment or workflow | 1.0.1 status |
+| --- | --- |
+| Node 22 and Node 24 native ESM through npm on the §2.57 Ubuntu x64, Windows x64 and macOS arm64 representatives | `SUPPORTED` |
+| Other upstream-supported Node OS/architecture combinations | `PLAUSIBLE_UNVERIFIED` |
+| Browser `Window`/document through a package-aware bundler | `SUPPORTED` |
+| Browser document through the §2.21 application-owned import-map path | `SUPPORTED` |
+| Bundled dedicated module worker through the §2.21 tested path | `SUPPORTED` |
+| Yarn and pnpm installation of the published ESM package | `PLAUSIBLE_UNVERIFIED` |
+| Node 26 while it remains Current rather than LTS | `PLAUSIBLE_UNVERIFIED` non-blocking probe |
+| Bun, Deno, Cloudflare Workers, React Native and Electron-specific integration | `OUT_OF_SCOPE` |
+| CommonJS `require()`, AMD/UMD globals and classic-script/IIFE loading | `OUT_OF_SCOPE` |
+| Raw HTTP serving of the npm dependency tree without an ESM-capable resolution/conversion preparation step | `OUT_OF_SCOPE` |
+
+Yarn or pnpm can expose a genuine standards-level package defect even though
+their complete workflows are unverified. A report that demonstrates an invalid
+`package.json`, broken `exports`, missing packed file, undeclared dependency or
+other npm/ESM contract violation remains actionable. Package-manager-specific
+lockfile, Plug'n'Play, workspace, lifecycle or resolver behaviour is not a
+1.0.1 release obligation unless the same defect reproduces inside the declared
+contract or the project separately promotes that workflow to `SUPPORTED`.
+
+The status labels describe tested project commitments, not a claim that an
+out-of-scope runtime cannot work. Adding support later requires an environment-
+specific consumer test, documented limitations, maintenance ownership and the
+ordinary configuration approval; it must not be inferred from one successful
+ad hoc execution.
+
+### 2.23 Decision: publish canonical readable ESM source without a duplicate distribution build
+
+The canonical `Hadden-Industries/owlapi` repository root is both the source root
+and the npm package root. The retained tarball **MUST** install the same readable
+native-ESM production modules reviewed at the signed source tag. It **MUST NOT**
+introduce a parallel `src/`→`dist/` compilation or copying pipeline, generated
+production JavaScript, minification, package transpilation or source maps for
+`0.1.0-alpha.0` or `1.0.1`.
+
+The installed production tree therefore has this conceptual shape:
+
+```text
+package.json
+index.js
+apibinding/
+model/
+io/
+formats/
+internal/
+README.md
+API.md
+CHANGELOG.md
+LICENSE
+NOTICE
+docs/compatibility/
+```
+
+The four Java-shaped public directories contain each public binding's sole
+canonical definition and explicit facade. `internal/` contains the readable
+private runtime dependency closure and is present because the exported modules
+need it, but package `exports` does not make it an importable public subpath.
+There is no second compiled copy of either tree. This makes source review,
+debugging, packed-file comparison and AGPL Corresponding Source identification
+direct rather than requiring a generated-to-authored mapping whose only result
+would be equivalent JavaScript.
+
+The root `package.json` `files` field **MUST** be a positive allowlist. It admits
+only the public and private production JavaScript closure plus the exact
+documentation set in §2.24; package-governance tests prove every export target
+and transitive runtime-relative import is included and every forbidden
+development/release artifact in §17.26.2 is excluded. npm's automatic inclusion
+of `package.json`, README and licence does not replace the explicit reviewed
+allowlist or retained-tarball inspection. See the
+[npm `files` contract](https://docs.npmjs.com/cli/v11/configuring-npm/package-json/#files)
+and [Node package-entry-point guidance](https://nodejs.org/api/packages.html#package-entry-points).
+Where production directories retain colocated `*.test.js` files during the
+history-preserving handoff, ordered trailing negations in `files` exclude them;
+the selected release npm/`npm-packlist` version must prove those exact semantics.
+A test-only helper that does not match the reviewed negative patterns must move
+under the repository-only top-level `test/` tree or receive its own explicit
+negative entry. Do not add scattered nested `.npmignore` files as a second,
+harder-to-audit packlist policy.
+
+The repository `package-lock.json`, the §2.50 third-party-material evidence and
+every release/development tool remain outside this allowlist. No publishable
+shrinkwrap or bundled dependency payload is introduced: the package's ordinary
+external runtime-dependency boundary is governed by §2.48 and independently
+checked against both locked and lockless consumer graphs.
+
+Repository scripts may expose explicitly invoked commands such as tests, lint,
+documentation verification and release checks. The published manifest **MUST
+NOT**, however, define automatically invoked install/pack/publish hooks such as
+`preinstall`, `install`, `postinstall`, `prepare`, `prepack`, `postpack`,
+`prepublish` or `prepublishOnly`. The release workflow executes named gates
+explicitly before building the retained tarball; consumer installation and
+packing therefore do not execute package-controlled source generation, network
+access or mutation.
+
+### 2.24 Decision: ship a bounded, version-matched documentation set
+
+The npm tarball **MUST** contain exactly the following public-consumer documents
+in addition to production JavaScript and `package.json`:
+
+```text
+README.md
+API.md
+CHANGELOG.md
+LICENSE
+NOTICE
+docs/compatibility/capabilities.json
+docs/compatibility/java-api-surface.json
+docs/compatibility/java-api-surface.md
+```
+
+Their responsibilities are deliberately non-overlapping:
+
+- `README.md` provides project identity and rationale, installation, supported
+  workflows and environments, representative examples, format/capability
+  summary, known limitations, Java OWLAPI relationship and durable policy links;
+- `API.md` is the exhaustive version-specific consumer reference governed by
+  §2.25;
+- `CHANGELOG.md` is a human-curated account of user-visible changes, controlled
+  corrections/deviations, deprecations and compatibility consequences for each
+  published version;
+- `LICENSE` contains the complete unmodified GNU AGPLv3 text;
+- `NOTICE` is the mechanically checked §2.50 human view of tarball-applicable
+  ownership, stewardship, attribution, embedded/copied-material notices and the
+  separate external-dependency/application distribution boundaries; and
+- the three `docs/compatibility/` files provide the exact machine-readable
+  capability surface, machine-readable Java compatibility/gap projection and
+  its generated or mechanically checked human view for the installed version.
+
+The compatibility files are shipped because they are small, version-specific
+and central to `owlapi`'s declared identity as a JavaScript-native,
+behaviourally compatible Java OWLAPI subset. They let a Java OWLAPI developer or
+tool discover an installed version's exact coverage without consulting the
+canonical repository's later default-branch state. They are package data and
+documentation, not additional JavaScript export paths.
+
+Repository policy, engineering history and release evidence remain canonical
+only in the repository and **MUST NOT** enter the tarball. This includes
+`CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, implementation plans,
+migration playbooks/lessons, detailed provenance/history-partition research,
+conformance and benchmark evidence, extended-environment reports, workflows and
+release runbooks. The README links to the canonical repository versions where
+appropriate. In particular, mutable security-support and conduct/contribution
+policy must not masquerade as updated content inside an immutable old package.
+npm renders the root README belonging to each published version and strongly
+recommends it as the package's primary orientation document; see
+[npm's package README guidance](https://docs.npmjs.com/about-package-readme-files/).
+
+### 2.25 Decision: derive the API reference from registries and executable exports
+
+`API.md` **MUST** be a mechanically governed human view of the same public
+surface proven by the retained package. It is not a manually drifting second API
+inventory and does not create a TypeDoc, generated-JSDoc website, GitHub Pages
+site or other documentation-hosting product for `0.1.0-alpha.0` or `1.0.1`.
+
+Authority remains deliberately layered rather than duplicated:
+
+```text
+capabilities.json
+    semantic capability/status authority
+            │
+            ├──────────────────────┐
+            ▼                      ▼
+java-api-surface.json      package exports + installed tests
+    Java/API projection       executable boundary evidence
+            │                      │
+            └──────────┬───────────┘
+                       ▼
+          API.md + java-api-surface.md
+          generated/mechanically checked views
+```
+
+For every public binding, `API.md` **MUST** identify:
+
+- the exact public package specifier and named export;
+- its JavaScript constructor, function or method call shape in JavaScript
+  notation rather than pseudo-TypeScript;
+- the corresponding Java OWLAPI package/type/method where one exists;
+- the approved compatibility relationship, capability status and stability
+  classification;
+- accepted inputs and observable return-value semantics;
+- relevant identity, equality, mutability, collection, ordering and lifecycle
+  semantics;
+- public error classes/codes and material environment/resource qualifications;
+  and
+- a minimal public-boundary JavaScript example plus the corresponding Java idiom
+  where it materially assists Java OWLAPI users.
+
+Package governance **MUST** prove that every packed named export appears exactly
+once in the API inventory, every API row resolves to the surface registry and
+capability matrix, and no internal-only binding is described as public. Example
+programs used to establish call behaviour must execute against the retained
+tarball through public specifiers; they may not depend on repository-relative,
+workspace or unexported paths. Human behavioural prose may be authored for
+clarity, but an executable inventory/export disagreement or stale registry link
+blocks publication.
+
+### 2.26 Decision: do not ship TypeScript declarations in the initial publication programme
+
+`owlapi@0.1.0-alpha.0` and `owlapi@1.0.1` are deliberately native JavaScript
+packages without an official TypeScript declaration surface. Their package
+manifests **MUST NOT** contain `types` or `typings`; their tarballs **MUST NOT**
+contain `.d.ts` files; and this project **MUST NOT** publish or advertise an
+official `@types/owlapi` substitute for those releases. An empty, partial or
+`any`-based declaration is forbidden because it would create false compile-time
+confidence rather than a supported contract.
+
+JSDoc may continue to explain runtime semantics, but Phase 19/20 **MUST NOT** add
+TypeScript, `tsc`, `checkJs`, TypeDoc, declaration generation or declaration-test
+tooling. The README and environment/capability data must say plainly that
+official TypeScript declarations are not part of the `1.0.1` support surface.
+
+This is not a claim that declarations lack value. TypeScript documents that
+declaration generation from JavaScript requires real JSDoc typing plus a
+TypeScript development dependency, compiler configuration and an emitted
+declaration set; see
+[Creating `.d.ts` files from JavaScript](https://www.typescriptlang.org/docs/handbook/declaration-files/dts-from-js.html)
+and [Publishing declarations](https://www.typescriptlang.org/docs/handbook/declaration-files/publishing.html).
+The present structural API has not undergone that type-design exercise.
+First-party declarations therefore belong to a separately scoped post-1.0
+package-ergonomics decision. Any later proposal must cover all five public roots,
+mirror their exact export layout, test representative consumers and remain
+synchronized with the Public API Surface Registry; it must not be added
+opportunistically as package metadata.
+
+### 2.27 Decision: make the registry-classified public surface the stable 1.x contract
+
+The prerelease surface remains subject to the documented alpha qualification.
+In the accepted stable cutover version, every public binding accepted by
+§17.27.1 **MUST** have the
+`STABLE_1_X` stability commitment in the Public API Surface Registry;
+deprecated retained public bindings use `DEPRECATED_1_X`. Private
+implementation values retain `INTERNAL_ONLY` exposure and a `null` stability
+value. These dimensions are distinct from semantic capability status: a
+capability may be deferred without turning an internal implementation fragment
+into public API.
+
+The stable 1.x SemVer contract comprises:
+
+- the five public package specifiers and their named-export identities;
+- every registry binding classified `STABLE_1_X` or `DEPRECATED_1_X`;
+- documented constructors, methods, accepted argument forms and return-value
+  semantics;
+- documented public `kind` identifiers and structural properties;
+- documented identity, equality, immutability and collection semantics;
+- public error classes, machine-readable error codes and causal-error
+  preservation;
+- documented loader configuration and security/resource defaults; and
+- the standards-conformant semantic behaviour, capability statuses and
+  controlled deviations promised for each supported format.
+
+The following are expressly not stable public contract unless an API row says
+otherwise:
+
+- unexported filesystem paths and all internal classes/functions/adapters;
+- internal dependency, parser-selection, traversal, storage, caching and
+  indexing choices;
+- incidental constructor names or `instanceof` relationships;
+- undocumented properties and implementation-only return details;
+- dependency versions as consumer API;
+- stack traces and exact human diagnostic wording; and
+- blank-node identifiers, iteration order, object-key order or byte-level
+  serialization layout that no public contract explicitly promises.
+
+After `1.0.1`, backwards-compatible corrections use unused patch coordinates
+beginning with `1.0.2`. A new compatible public binding or capability is a minor
+change and begins at the first available semantically correct coordinate,
+`1.4.0`; it is never disguised as a patch merely because historical minor
+coordinates are unavailable. An incompatibly changed or removed protected
+binding requires the first available next-major coordinate, `2.0.2`.
+
+A behaviour already classified as a known deviation, unsupported case or defect
+may be corrected in a patch when the correction restores the documented
+standards/API contract, is protected by a failing regression and normative
+evidence, and is recorded as a controlled correction in `CHANGELOG.md` and the
+release notes. Behaviour that the registry and API reference classified as
+stable cannot be changed incompatibly merely by relabelling the change a bug
+fix; it requires the applicable major-version process.
+
+Deprecation is documentary and registry-visible. A deprecated binding remains
+operational throughout 1.x, identifies its replacement and migration guidance
+in `API.md`, `CHANGELOG.md` and release notes, and may be removed only in the
+next major line. The package **MUST NOT** emit unsolicited `console.warn`
+messages or introduce another import/runtime side effect merely to announce a
+deprecation.
+
+### 2.28 Decision: establish bounded single-custodian npm authority for this plan
+
+The public unscoped coordinate is bootstrapped once by the npm user
+`maksymshostak`. This is an identity fact, not a claim that the package is a
+personal rather than company-stewarded project: HADDEN INDUSTRIES LTD remains
+the project steward and `Hadden-Industries/owlapi` remains the canonical source
+and release repository. The bootstrap **MUST NOT** be performed through a shared
+generic company login.
+
+Immediately after the first successful publication, the project **MUST** test
+whether npm permits the dedicated `@hadden-industries:owlapi-maintainers` team
+to receive read-write access to the unscoped package. The exact command/API,
+registry response, effective-access verification and resulting maintainership
+state **MUST** be retained as release evidence. If the registry supports that
+arrangement, the team receives the least privilege needed for package
+maintenance, but its only required natural-person member for this plan is Maksym
+Shostak. If npm does not support that arrangement, the limitation is recorded
+rather than concealed behind an inaccurate ownership claim.
+
+No second natural-person npm maintainer, GitHub custodian or recovery operator is
+an alpha, stable-release or plan-completion requirement. `maksymshostak` remains
+the sole required human npm identity through `1.0.1`; shared passwords, tokens,
+mailbox-backed pseudo-persons and generic company logins remain prohibited. This
+is a deliberate acceptance of single-person availability and account-recovery
+risk, not evidence of redundancy. Documentation **MUST NOT** say that the npm
+organization or juridical person owns or can recover the coordinate unless npm's
+effective registry state actually establishes that fact. Adding another human
+custodian is separately governed post-plan work.
+
+The bootstrap alpha may use only the single-attempt, one-day granular access
+token authorized by §§2.53 and 17.26.3. Its recorded effective scope must be the
+narrowest npm actually permits for the not-yet-created package, its
+non-interactive bypass-2FA authority ends with immediate revocation after the
+attempt, and its `npm-release` environment secret is removed. Before any later
+public release, npm **MUST** be configured for the exact
+`Hadden-Industries/owlapi` repository, `.github/workflows/release.yml` workflow
+and `npm-release` protected environment
+as a stage-only OIDC trusted publisher, ordinary package-token publication
+**MUST** be disabled, and interactive 2FA approval **MUST** protect promotion of
+the staged release after the §2.53 download-and-digest gate. Custody evidence
+therefore proves the actual single named human authority and bounded machine
+authority; it **MUST NOT** claim organizational or multi-person continuity.
+
+### 2.29 Decision: treat npm distribution tags as explicit release channels
+
+An npm distribution tag is a mutable registry pointer, not a version or a
+historical record. Every tag mutation is therefore a separately authorized and
+recorded release operation whose before/after registry state **MUST** be
+verified.
+
+The initial `0.1.0-alpha.0` and any later alpha or release candidate **MUST** be
+published under `next`; prerelease publication **MUST NOT** create or move
+`latest`. The accepted stable cutover version—normally `1.0.1`, or solely its
+§2.60 same-surface successor—**MUST** be the first Hadden Industries version
+published under `latest`. Once that stable package has passed registry
+re-download and consumer verification, `next` **MUST** be removed if it still
+points at an older prerelease and there is no genuinely newer active prerelease
+channel. It **MUST NOT** be repointed to the stable cutover merely to preserve a second
+alias for the same stable version. Only the §2.33 recovery procedure may later
+move or remove `latest` in response to a verified bad release.
+
+`next` is recreated only when a real future prerelease is published. No
+`alpha`, `beta`, `rc`, `stable`, `legacy` or other speculative tag is created
+until the project has an actual maintained release channel requiring it. This
+keeps ordinary `npm install owlapi`, deliberate prerelease installation and
+historical exact-version installation semantically distinct.
+
+### 2.30 Decision: protect one trunk and immutable release tags without ceremonial process
+
+`main` is the sole default and standing integration branch. Work is performed
+on short-lived topic branches and accepted through pull requests. The
+repository **MUST** use squash merging so each accepted pull request becomes one
+reviewed, human-curated commit with an accurate durable message; force pushes
+and deletion of `main` are prohibited.
+
+The `main` ruleset **MUST** require the exact stable `CI / required` check from
+the GitHub Actions app under §2.58 and require CodeQL separately, plus resolved
+review conversations and linear history. It applies to administrators and
+exposes only a narrow, auditable emergency bypass. It does not enumerate
+matrix-generated job names, accept an unexpected skipped check or use path
+filters to make required automation optional. Maksym Shostak is the only code
+reviewer required throughout this implementation plan, so the ruleset **MUST
+NOT** manufacture independence through self-approval or make the repository
+unusable by demanding an unavailable reviewer. Any later requirement for an
+independent approving review and stale-approval dismissal is a separate
+post-plan governance/configuration decision made only when a genuine second code
+maintainer exists.
+
+A separate `v*` tag ruleset **MUST** prevent release-tag update and deletion and
+restrict tag creation to the release authority. The project initially relies on
+the signed annotated release tag, GitHub Actions provenance and retained
+artefacts for source-release authenticity; it does not impose a blanket
+signed-commit requirement on every contribution. There is no permanent
+`develop`, speculative release branch or pre-created `1.x` branch. A maintenance
+branch is introduced only when concurrent maintained release lines create a
+real need for it.
+
+### 2.31 Decision: humans author releases; automation verifies and transports them
+
+`CHANGELOG.md` is a human-curated release record with an `Unreleased` section,
+dated version sections, compare links, compatibility impact, deprecations and
+controlled deviations. Every public prerelease and stable release starts with a
+dedicated release pull request that selects the exact version and finalizes the
+changelog, API reference, compatibility declarations, evidence index and
+package metadata together.
+
+An implementer may run `npm version <exact-version> --no-git-tag-version` to
+synchronize the manifest and lockfile, but **MUST** review the resulting diff and
+commit it through that pull request. The accepted release commit is then
+dispatched through §2.60's deterministic late-tag gate. Only after that gate
+reaches its prescribed human boundary is the same commit tagged separately with
+the signed annotated tag. Release automation **MUST** verify that the tag,
+manifest, lockfile, documentation and evidence agree and that the tracked tree
+is unchanged; it **MUST NOT** edit tracked files, select or bump a version,
+create a commit or tag, or improvise release notes.
+
+The GitHub release description is curated from the accepted changelog and
+evidence rather than generated as an unreviewed substitute. Changesets,
+release-please, semantic-release, mandatory Conventional Commits and equivalent
+release-authoring machinery are deliberately deferred until demonstrated
+release volume justifies their additional policy surface.
+
+### 2.32 Decision: exact-pin foundational runtime semantics and automate proposals only
+
+The package's direct runtime dependencies—`@rdfjs/data-model`,
+`@rdfjs/dataset`, `@xmldom/xmldom`, `jsonld`, `n3` and
+`rdfxml-streaming-parser`—participate directly in public parsing, RDF or
+document semantics. Their accepted versions **MUST** therefore be exact values
+in `package.json` and the lockfile rather than ranges. The lockfile remains an
+installation/release integrity control; it does not excuse a ranged public
+manifest. Under §2.48 it also remains repository-only: deterministic release
+testing does not turn this reusable library into a shrinkwrapped, bundled or
+peer-supplied dependency deployment.
+
+The Phase 19 initial-package baseline is:
+
+| Runtime dependency | Exact version |
+| --- | --- |
+| `@rdfjs/data-model` | `2.1.2` |
+| `@rdfjs/dataset` | `2.0.3` |
+| `@xmldom/xmldom` | `0.9.12` |
+| `jsonld` | `9.0.0` |
+| `n3` | `2.3.0` |
+| `rdfxml-streaming-parser` | `3.3.0` |
+
+These values replace the earlier staging baselines wherever the initial package
+manifest is illustrated. On 24 August 2026, the three version advances were
+applied to WebVOWL together as one explicitly approved, coordinated staging
+change rather than deferred to package extraction. Acceptance still retained
+dependency-specific conformance, adapter, resource, browser and performance
+evidence inside the combined gate: all focused suites passed, the production
+audit remained clear, the browser boundaries remained lazy, and N3.js 2.3.0
+promoted 12 former TriG exclusions to required passing cases. The table therefore
+records a demonstrated staging baseline, not an unqualified release target.
+
+That one bootstrap qualification does not establish a general batching policy.
+Any later replacement remains an isolated §2.32 dependency update and must
+complete the same gates before changing the literal manifest and lockfile values.
+
+Each foundational runtime update **MUST** be isolated in its own pull request
+and run every relevant conformance, differential, Node, browser, WebVOWL,
+security, resource, performance and packed-consumer gate. It may not be grouped
+with another foundational runtime update merely because both are available.
+Security urgency bypasses any batching or scheduling delay, never the gates or
+human review.
+
+The canonical repository **MUST** enable Dependabot alerts, security updates and
+weekly version-update proposals. Runtime dependencies remain separate;
+compatible development-tool updates may be grouped; development-tool majors
+remain separate; and GitHub Actions updates form their own group. Third-party
+Actions **MUST** be pinned to a full commit SHA with a nearby comment naming the
+human-readable upstream release tag. Dependabot may propose replacement SHAs,
+but no dependency or workflow update is auto-merged, and Renovate is not run in
+parallel for the same responsibility.
+
+The separately approved §2.48 lockless `owlapi@latest` monitor complements
+Dependabot: Dependabot tests proposed declared updates, while the monitor detects
+consumer-visible changes arising from a freshly resolved transitive graph. Both
+may create review work; neither may mutate or publish package state.
+
+Closing an alert or merging an update pull request is not the completion of a
+consumer-affecting security correction. When the installed dependency is part
+of a published vulnerable package, the accepted fixed version, required
+evidence and corrected dependency graph **MUST** reach a new published `owlapi`
+version under the applicable release process.
+
+### 2.33 Decision: correct bad public releases without erasing ordinary history
+
+A published `name@version`, signed source tag and immutable GitHub release are
+historical facts. An ordinary defect, regression, incompatibility or public
+vulnerability **MUST NOT** be handled by replacing release assets, moving or
+deleting the source tag, republishing the coordinate, rewriting its evidence or
+unpublishing a version that consumers may have locked. The correction is a new
+SemVer version built and verified through the complete release process.
+
+For the remainder of this plan, the **stable cutover version** is exactly
+`1.0.1` except for two closed branches. If §2.60 abandons immutable `v1.0.1`
+after a deterministic post-tag/prepublication failure, the lowest available
+same-surface patch, initially `1.0.2`, becomes the first stable. Otherwise, only
+when `1.0.1` has already been published and then fails a mandatory
+post-publication registry, provenance, package or consumer verification may the
+lowest available corrective patch become the stable cutover. Each substitute
+must pass every stable gate. Neither contingency can be used to skip, rename or
+casually replace the approved normal first stable; its activation, reason and
+resulting coordinate are separately authorized and recorded.
+
+The immediate containment action depends on the affected channel:
+
+- when a `next` prerelease is defective, move `next` back to the most recent
+  genuinely supported prerelease, or remove `next` when none exists;
+- when a stable release is defective and a known-good Hadden Industries stable
+  exists, move `latest` back to that exact version while the correction is
+  prepared; and
+- when initial stable `1.0.1` is defective and no earlier Hadden Industries
+  stable exists, remove `latest` temporarily. It **MUST NOT** point to the
+  unrelated historical `1.0.0` or another former Overwatch coordinate.
+
+Deprecate the defective exact version with concise actionable guidance when the
+warning can be public safely. The message identifies the affected version and
+fixed/recommended coordinate or mitigation; it does not make an unsupported
+compatibility claim or prematurely disclose embargoed vulnerability details.
+Once the corrected version passes fresh-registry and consumer verification,
+assign the applicable active tag to it and verify the final channel state.
+
+Every deprecation, undeprecation and distribution-tag change is a separately
+authorized mutable registry operation. Evidence records its reason, actor,
+authorization, UTC timestamp, before/after metadata and related incident/fix.
+The immutable source/tarball/SBOM/checksum/release evidence remains unchanged.
+
+Unpublishing is an extraordinary incident response reserved for accidentally
+published secrets or private/confidential material, malicious contents, a legal
+requirement, or npm/another competent platform authority directing removal. It
+requires case-specific authorization, npm/GitHub Support or legal coordination
+where applicable, and a record that the coordinate remains permanently consumed
+and locked consumers may break. When confidentiality, safety or law requires
+removing otherwise immutable public evidence, that exceptional action and the
+loss of ordinary reproducibility are documented to the maximum safe extent; the
+normal bad-release procedure is never used as a pretext for erasing history.
+
+### 2.34 Decision: separate audit visibility from a strict, reviewable release gate
+
+Every release candidate **MUST** retain both:
+
+1. a full dependency-graph `npm audit --json` result covering production and
+   development dependencies; and
+2. a blocking production-tree result equivalent to
+   `npm audit --omit=dev --audit-level=high` against the exact accepted lockfile.
+
+The first preserves complete visibility; the second gives the release gate a
+deterministic minimum threshold. An unavailable audit service is retried and
+diagnosed but is not converted into a passing or `NOT_RUN` result for a public
+release. Audit output is evidence, not an instruction to mutate the tree.
+`npm audit fix`, `npm audit fix --force` and equivalent automatic remediation
+**MUST NOT** run against release inputs; corrections use the exact-pin,
+one-foundational-runtime-per-pull-request process in §2.32.
+
+The canonical pull-request checks **MUST** also run GitHub dependency review,
+pin its Action to a full commit SHA, and fail when a proposed dependency change
+introduces a known `high` or `critical` runtime vulnerability. The source diff,
+manifest and lockfile still receive human review because the platform may not
+classify every dependency change.
+
+A `high` or `critical` production advisory blocks publication unless the project
+proves it is a false positive or inapplicable to every supported public
+operation. A reachable critical vulnerability has no ordinary risk-acceptance
+exception. A high/critical development advisory also blocks when the affected
+functionality can execute in required CI, tests, packing, SBOM/provenance work,
+publication or another release trust boundary. Moderate/low findings and
+non-release-reachable development findings remain visible and owned but do not
+automatically block.
+
+Every allowed advisory exception is machine-readable and records the GHSA/CVE,
+exact dependency path/version, severity, runtime/development scope, supported-
+operation reachability analysis, input/trust boundary, compensating controls,
+responsible maintainer, linked tracking issue, approval/review date and an expiry
+no later than 30 calendar days. It is revalidated for every release and cannot
+be renewed by silence. Public release evidence identifies an active exception
+without leaking an embargoed report; the private advisory retains sensitive
+details until coordinated disclosure.
+
+### 2.35 Decision: require deliberate single-custodian human release approval
+
+Every automated npm bootstrap publication or steady-state stage creation, plus
+every automated deprecation and distribution-tag write, waits at the protected
+`npm-release` GitHub environment for an explicit human approval of the exact
+package/version, retained tarball SHA-256, fixed source commit, expected or
+existing source tag, registry and requested npm tag/operation. For a steady-state
+release, that environment approval authorizes only creation of the non-public
+stage; the later public promotion requires separate inspection of the immutable
+staged candidate, a now-existing verified canonical tag and interactive npm 2FA.
+
+The no-authority `release-manual` environment in §2.61 supplies two distinct
+continuation acknowledgements without authorizing an npm or GitHub write: one
+after the human has created the signed tag in every release, and one after the
+human has interactively promoted an npm stage in steady state. Automatic
+approval and unattended publication are prohibited. The authenticated review
+history, approving identity and ordering become release evidence together with
+the reviewed coordinate and operation.
+
+For this initial release programme, `MaksymShostak` is the sole required GitHub
+reviewer and may initiate the workflow and approve both `npm-release` and
+`release-manual`; the `maksymshostak` npm identity performs npm's staged
+proof-of-presence approval. GitHub's prevent-self-review control **MUST NOT** be
+enabled as a Phase 19/20 completion requirement. No second-person approval,
+custody or recovery requirement may be inferred elsewhere in this plan.
+
+This choice changes separation of duties, not the number or quality of release
+gates: all checks, the immutable candidate, recorded manual pauses, OIDC authority and
+fresh-registry verification remain required. Moving later to independent
+deployment approval requires a separately approved threat-model and exact
+environment-configuration change; it is not triggered automatically by account
+membership.
+
+### 2.36 Decision: sign release tags with SSH and govern signer-key continuity
+
+Every release tag is an SSH-signed annotated tag made by an authorized natural
+person after the release pull request is accepted and the applicable §2.60
+pre-tag gates have completed. SSH is selected because the current project
+history already demonstrates GitHub-verified SSH signing; Phase
+19 **MUST** reverify the intended key rather than infer authority solely from
+that history. The project does not introduce a parallel GPG release-key system
+without a separately demonstrated need.
+
+The canonical repository **MUST** maintain the repository-only machine-readable
+`docs/provenance/release-signers.json`, excluded from the npm tarball. Its
+versioned schema records for every current or historical signer:
+
+```text
+stable signer identifier
+natural-person name
+GitHub and npm identities
+SSH public key and fingerprint
+valid-from date
+optional valid-until/revocation date
+ACTIVE, RETIRED or REVOKED status
+rotation/revocation rationale and evidence link where applicable
+```
+
+The release workflow builds a temporary SSH allowed-signers file from the
+accepted registry and runs local cryptographic tag verification. It also proves
+that the tag is annotated, targets the exact accepted `main` release commit,
+uses a signer already admitted before the release pull request, and is reported
+as verified by GitHub. A release pull request **MUST NOT** authorize its own new
+signer.
+
+Adding or rotating a signer is a separate reviewed change completed before that
+key is used. Historical entries and validity intervals remain so old releases
+stay verifiable; revocation changes prospective authority and does not rewrite
+old tags. The private key remains individually controlled, passphrase-protected
+or hardware-backed, covered by tested recovery/revocation procedures, and never
+copied into GitHub Actions. OIDC authorizes the workflow's npm write; it does not
+replace the human tag signature, and the tag key is not an npm credential.
+
+### 2.37 Decision: use structured GitHub intake without inventing support machinery
+
+GitHub Issues in `Hadden-Industries/owlapi` are the sole ordinary public support,
+bug, conformance and capability-request channel. The repository does not publish
+a generic support email address and initially leaves GitHub Discussions
+disabled. `security@haddenindustries.com` remains restricted to private
+vulnerability reporting, while `conduct@haddenindustries.com` remains restricted
+to private conduct reports. Ordinary support is best-effort and has no response-
+time SLA.
+
+The repository **MUST** provide structured issue forms for:
+
+1. reproducible bug or regression;
+2. syntax/conformance discrepancy;
+3. Java OWLAPI compatibility or public-surface request;
+4. feature/capability request;
+5. documentation problem; and
+6. a minimal other-project-issue escape hatch.
+
+Completely blank issues are disabled because the final form preserves novel
+reports while still collecting minimum actionable context. Every form warns
+against posting confidential ontologies, credentials, vulnerability details or
+personal conduct information and links to the correct private policy. Bug and
+conformance forms request the exact `owlapi` version, public specifier/call,
+runtime/browser, syntax/format, minimal safe input or reproduction, expected and
+actual result, diagnostic and relevant specification/test identifier. The Java
+compatibility form additionally requests the exact Java OWLAPI version,
+package/type/member, desired JavaScript shape, concrete consumer use case and
+related Public API Surface Registry row.
+
+The pull-request template prompts for test-first or characterization evidence as
+applicable, independent-implementation/provenance confirmation, public-API and
+capability-registry effects, SemVer classification, documentation/changelog and
+controlled-deviation impact, dependency changes and verification commands. Its
+checkboxes are engineering aids, not a CLA, DCO or legal click-wrap substitute.
+
+Phase 19 does not add `CODEOWNERS` while meaningful code ownership and review
+routing remain effectively one person. Add it only when real module ownership or
+an active second code-review responsibility exists. Discussions, another support
+system or a support mailbox likewise require demonstrated demand and a separate
+governance/configuration decision.
+
+### 2.38 Decision: make the reviewed manifest and registry operation agree on the release channel
+
+`publishConfig` is part of the reviewed release input, not a permanent
+prerelease default. Every release pull request **MUST** set all three of these
+values explicitly:
+
+```json
+{
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "<SemVer-derived channel>"
+  }
+}
+```
+
+The channel mapping is exact:
+
+| Version kind | Required `publishConfig.tag` | Required explicit publish/stage `--tag` |
+| --- | --- | --- |
+| alpha, beta or release candidate, including `0.1.0-alpha.0` and `1.0.1-rc.N` | `next` | `next` |
+| accepted stable, including `1.0.1` and any §2.33 corrective stable | `latest` | `latest` |
+
+A required release check derives the expected channel from the package's exact
+SemVer and rejects disagreement among the manifest version,
+`publishConfig.tag`, `npm-release` environment request, explicit command-line
+`--tag`, authorized package coordinate and observed post-publication registry
+state. The check runs before human publication approval and again against the
+fresh registry result. Omitting `--tag` or relying on npm's implicit default is
+not an accepted release path even though the reviewed manifest supplies the
+same value defensively.
+
+For the bootstrap alpha, the explicit command is `npm publish ... --tag next`.
+For the later OIDC flow, the workflow uses
+`npm stage publish ... --tag <channel>`; npm fixes that tag as part of the staged
+candidate, and `npm stage approve` does not change it. A staged tag mismatch
+therefore requires rejection and a new staged attempt from the same still-valid
+retained tarball or, if any release input changed, a new reviewed candidate. It
+is never corrected during proof-of-presence approval.
+
+An approved later distribution-tag mutation under §§2.29 or 2.33 changes only
+the registry pointer. It does not edit, rebuild or republish the immutable
+package whose embedded `publishConfig` correctly records the channel requested
+when that version was first published.
+
+### 2.39 Decision: publish exact, honest discovery metadata without ceremonial fields
+
+Every public package version **MUST** use this description and keyword set:
+
+```json
+{
+  "description": "OWL 2 ontology parsing and structural APIs for Node.js and browsers, designed for practical compatibility with Java OWLAPI concepts.",
+  "keywords": [
+    "owl",
+    "owl2",
+    "owlapi",
+    "ontology",
+    "ontology-parser",
+    "semantic-web",
+    "linked-data",
+    "rdf",
+    "rdfjs",
+    "rdfxml",
+    "turtle",
+    "jsonld"
+  ]
+}
+```
+
+The package is not advertised as a reasoner, knowledge-graph platform or
+WebVOWL-specific library. WebVOWL is the required first-party consumer, not the
+semantic identity of the reusable module.
+
+The initial manifest omits `funding`: an ordinary company, repository or
+profile URL is not represented as an actionable sponsorship destination. It
+also omits `contributors` until accepted external contributions make a curated
+list useful, and omits any invented `maintainers` field because npm registry
+access is authoritative for package maintainership. The §2.13 author object
+continues to identify Maksym Shostak through his public GitHub URL without an
+email. HADDEN INDUSTRIES LTD remains project steward in README/`NOTICE`
+language rather than being substituted as author. Adding any omitted field
+later requires an actual destination/person/role and a separately reviewed
+metadata change.
+
+### 2.40 Decision: keep compact release evidence beyond ephemeral workflow retention
+
+GitHub Actions workflow logs and artifacts are diagnostic transport with a
+90-day public-repository retention setting; they are not the canonical release
+archive. The canonical evidence for every successfully published version is:
+
+1. the immutable source/tag and release assets fixed by §2.16;
+2. an immutable release asset named
+   `owlapi-<version>.release-evidence.json`; and
+3. an append-only repository record at
+   `docs/provenance/releases/<version>/release.json`, excluded from the npm
+   tarball.
+
+The release-evidence asset is generated after npm publication and complete
+fresh-cache verification but before the draft GitHub release becomes
+immutable. Its versioned §2.47 JSON Schema Draft 2020-12 schema records at
+least:
+
+```text
+package coordinate and requested/observed distribution tag
+manual-dispatch ref/commit, captured protected-main head and initial canonical-tag-absence result
+source commit/tree and later-created SSH-signed tag
+authorized signer identity/fingerprint and verification result
+workflow path/blob/commit, run URL/ID/attempt, dispatch actor/ref/commit, later pushed tag/commit and exact Action repositories/release-tag comments/full commit SHAs
+effective root/job permission map, npm-release/release-manual protected-main policies, release-manual deployment:false/no-secret/no-variable result and non-cancelling concurrency identity
+expected job role, applicability reason, final conclusion and timeout class/configured duration
+required-matrix fail-fast/continue policy and aggregate job inventory/result
+workflow concurrency group, cancellation and queue mode
+controlled idempotent-read retry policy and observed retry counts
+each external-mutation attempt plus any read-only reconciliation/result
+proof that no skipped, cancelled or timed-out required job reached publication or release-mutation authority
+pre-tag deterministic-gate completion and, when applicable, stage-download/revalidation completion times
+canonical-tag creation/verification time and proof that no public promotion or draft-release mutation preceded it
+release-manual workflow-review history, reviewer identity, gate count/order/result and corresponding waiting/job-start times
+proof that no runner polling or sleep loop substituted for either release-manual acknowledgement
+workflow trust origin, fork-run applicability/approval identity/time and external-contributor policy
+effective secret-name/OIDC/environment inventory without values and sanitized-output/debug-state result
+same-run untrusted-candidate quarantine and proof no fork-produced byte/output reached privileged authority
+per-job runs-on label, selected shell, runner OS/architecture, ImageOS/ImageVersion, OS build/kernel and label/architecture verification result
+checkout ref/depth/tag/credential-persistence inputs and setup-node exact-version/cache/auth inputs
+same-run candidate artefact name/ID/digest, exact upload/download inputs and independent checksum/inventory results
+confirmation that no candidate came from another workflow or release cache
+Node, npm and all §2.54 npm evidence-tool versions plus lockfile identity
+GitHub CLI source/version/official-checksum result and downloaded SHA-256
+Phase 19 history-filter source/tag/commit/retrieval URL/downloaded SHA-256; later releases reference that immutable extraction record
+separate SBOM tool/subject workspace source, lockfile and production-install identities
+publication mode (DIRECT_BOOTSTRAP or OIDC_STAGED) and non-secret authority identity
+for DIRECT_BOOTSTRAP: granular-token effective scope, one-day expiry, revocation/secret-removal result and reviewed bootstrap-branch removal, never the token
+for OIDC_STAGED: trusted repository/release.yml/npm-release identity, stage ID/view identity, pre-tag staging status and npm-release approving identity/time
+for OIDC_STAGED: staged-download SHA-256, retained-tarball SHA-256/equality result, later canonical-tag/release-manual acceptance result and interactive promoting identity/time
+for OIDC_STAGED: second release-manual approval after promotion and before fresh-registry verification
+tarball filename, SHA-256, npm integrity, byte size and packlist digest
+SBOM and SHA256SUMS filenames/digests
+locked release and lockless fresh-consumer dependency-graph identities
+publint version, input digest, strict result and active exception identifiers
+third-party-material inventory/NOTICE review identity
+required package/Node/browser/WebVOWL test summaries
+extended-test PASS/FAIL/NOT_RUN snapshot
+dependency-audit summaries and active exception identifiers
+WebVOWL source/candidate-patch identity
+npm root-package signature/provenance/publish-attestation and transparency identities
+immutable GitHub release, per-asset, checksum, schema and signed-tag results
+npm-release mutation approval and release-manual continuation approval identities/times, plus controlled deviations
+```
+
+`SHA256SUMS` has exactly the §2.52 entries for the retained tarball and
+production SBOM. The
+immutable GitHub release attestation covers those assets and the evidence
+manifest itself. After the release is published, the repository `release.json`
+records the evidence-manifest digest plus the immutable release URL and
+attestation identity and exact fresh-download/per-asset verification results
+that could not exist beforehand. This post-release record does not change the
+release source tag or package bytes.
+
+Once accepted, that `release.json` is not silently rewritten. A factual
+correction or later fixed-evidence addition is a new dated file under
+`amendments/` that identifies the superseded field, old/new value, reason and
+approving commit. A human/generated current summary may project the append-only
+record, but the original publication claim remains reviewable.
+
+Later branded, historical or real-device results are new dated files under
+`docs/provenance/releases/<version>/extended-tests/`, not rewrites of the
+publication-time evidence. A generated or curated version summary may be
+updated in a traceable documentation commit, but every earlier observation
+remains addressable. Mutable registry operations under §2.33 likewise receive
+new timestamped records under the affected version's `registry-operations/`
+directory.
+
+No durable public record contains credentials, OTPs, private ontology content,
+embargoed advisory material, unrestricted logs, mailbox membership or personal
+report data. The release workflow retains only compact results, stable links,
+digests and non-sensitive diagnostics needed to reproduce or audit the claim.
+
+### 2.41 Decision: require low-maintenance source and secret scanning at the public repository boundary
+
+The canonical public repository **MUST** enable GitHub CodeQL default setup for
+JavaScript with the default query suite. Phase 19 does not introduce a custom
+CodeQL workflow, custom configuration or `security-extended` query suite before
+the default analysis has run and demonstrated a concrete coverage gap. The
+`main` ruleset **MUST** require the CodeQL result and block a pull request when
+analysis is absent/incomplete or the changed source introduces a `high` or
+`critical` alert. Dependency review remains independently required because it
+covers dependency changes and default-setup merge protection does not replace
+that gate.
+
+Before the first alpha release, the extracted repository has no unresolved
+high or critical CodeQL alert on the accepted source commit. A reachable
+critical source finding has no ordinary release exception. A demonstrable
+false positive or finding inapplicable to every supported operation may use a
+repository-only, machine-readable entry in
+`docs/provenance/code-scanning-exceptions.json`, separate from dependency
+advisory exceptions. Each entry records the tool/rule and alert URL, exact
+source location/commit, severity, reachability/trust-boundary analysis,
+false-positive or non-applicability evidence, compensating controls, owner,
+tracking issue, approval date and expiry no later than 30 calendar days. It is
+revalidated for every release and never renewed silently.
+
+Secret scanning and repository push protection **MUST** be enabled. A bypass is
+permitted only for a demonstrated false positive or an intentional non-secret
+test value and records the reason. A real credential is never accepted under a
+“fix later” rationale: rotate or revoke it immediately, remove it from release
+inputs, investigate exposure and follow the applicable incident process.
+Deleting the string in a later commit does not make an exposed credential safe.
+Custom secret patterns are deferred until an actual organization-specific
+credential format requires them.
+
+### 2.42 Decision: make zero telemetry and caller-authorized networking part of the package contract
+
+`owlapi` **MUST NOT** perform telemetry, analytics, usage or crash reporting,
+update checks, remote configuration, install pings or automatic diagnostic
+uploads. Installing or importing the package performs no network I/O. Manager
+creation and parsing local documents perform no network I/O by default.
+
+The only package operation permitted to retrieve a remote document is a
+caller's explicit ontology-import or JSON-LD-context request under the §10.8 and
+§19.3–19.4 controls. `remoteImports` and `remoteJsonLdContexts` remain `false`
+by default; enabled retrieval uses the configured/injected loader, resource
+budgets and SSRF/redirect/scheme restrictions. User-directed document
+resolution is part of the requested parse operation and is not telemetry.
+
+Diagnostics and ontology contents remain in the caller's process unless the
+caller separately transmits them. README/environment documentation **MUST**
+state this contract without creating a standalone privacy policy for a library
+that collects no data. An executable installed-package test denies or records
+the package's network seam and proves that import, manager construction and
+representative local OWL-native, RDF/XML and lazy RDF parsing make no outbound
+request.
+
+The core remains zero-telemetry throughout 1.x. Any future data-collection
+proposal requires explicit opt-in, privacy/legal/security review, separate
+public documentation and a compatibility decision; it cannot arrive silently
+through a patch or transitive dependency. Prefer a consumer-owned integration
+outside the core if such functionality is ever genuinely required.
+
+### 2.43 Decision: make one exact `exports` map the sole package-entry authority
+
+The published manifest **MUST** expose exactly these unconditional native-ESM
+entry points:
+
+```json
+{
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./apibinding": "./apibinding/index.js",
+    "./model": "./model/index.js",
+    "./io": "./io/index.js",
+    "./formats": "./formats/index.js"
+  }
+}
+```
+
+The target files are the readable canonical source modules fixed by §§2.10.4
+and 2.23. The root aggregate may re-export approved bindings from the four
+subpaths, but every repeated binding **MUST** have the same runtime identity;
+the aggregate does not define a duplicate implementation.
+
+The initial manifest **MUST NOT** define `main`, `module`, `browser`, an
+environment condition, a wildcard/pattern export, an extension-bearing alias,
+or `./package.json`. It exposes neither the physical public-source filenames nor
+any `internal/` path. In particular, `owlapi/model.js`,
+`owlapi/model/index.js`, `owlapi/package.json` and `owlapi/*` are not alternate
+public spellings. Supporting old Node/package tooling is outside the declared
+environment contract and does not justify a redundant fallback entry point.
+
+Package-governance tests **MUST** compare the manifest with the Public API
+Surface Registry, import all five exact specifiers, prove the root/subpath
+binding identities and require `ERR_PACKAGE_PATH_NOT_EXPORTED` or the equivalent
+resolver failure for every representative alias, deep path and metadata path.
+Any later public subpath requires a Java-package registry decision and the
+normal SemVer/API process; it cannot be admitted through a pattern.
+
+### 2.44 Decision: require import purity and publish `sideEffects: false`
+
+The canonical manifest **MUST** contain:
+
+```json
+{
+  "sideEffects": false
+}
+```
+
+This is a behavioural assertion, not an optimistic bundler hint. Importing any
+package-owned production module must do nothing externally observable except
+define and expose its bindings. Import evaluation **MUST NOT** perform network
+or file-system I/O, start timers or workers, register event listeners, write to
+the console, read or mutate process environment, mutate a global/prototype,
+install a polyfill, register a parser through ambient state, or trigger a lazy
+third-party implementation. Constructing private immutable constants or
+side-effect-free factories during evaluation is permitted.
+
+Before packing, an instrumented Node test imports every public entry point and
+the complete package-owned transitive production-module closure in fresh
+processes while denying or recording the affected platform seams. A production
+browser-bundler fixture also builds and executes both used-export and
+deliberately unused-export cases so tree shaking cannot silently remove required
+behaviour. The WebVOWL production build remains a real first-party proof of the
+same metadata.
+
+If an import-purity test fails, Phase 19 fixes the source or private adapter and
+reruns the complete gate. It does not omit `sideEffects`, change it to an
+unreviewed exception list or preserve required import-time registration as a
+compatibility shortcut. A future genuinely side-effectful public module would
+require a separate architecture/API decision and exact file allowlist.
+
+### 2.45 Decision: enforce source tooling with npm-native `devEngines`
+
+The consumer-facing `engines.node` contract remains exactly
+`^22.0.0 || ^24.0.0`. The manifest **MUST NOT** add `engines.npm`, because the
+npm release-tool version is a repository/release concern rather than a
+constraint on applications installing `owlapi`.
+
+The Phase 19 manifest approval **MUST** instead provide a literal npm-native
+`devEngines` object with all of these exact properties:
+
+| Path | Required value |
+| --- | --- |
+| `devEngines.runtime.name` | `node` |
+| `devEngines.runtime.onFail` | `error` |
+| `devEngines.runtime.version` | omitted; supported majors remain governed by `engines.node` and the CI matrix |
+| `devEngines.packageManager.name` | `npm` |
+| `devEngines.packageManager.version` | `12.0.2` |
+| `devEngines.packageManager.onFail` | `error` |
+
+The canonical manifest does not add the separate top-level `packageManager`
+field and the project does not require Corepack. npm itself is the authoritative
+workflow and validates `devEngines`; adding a second package-manager bootstrap
+authority would not improve the consumer or release contract.
+
+CI and release jobs establish npm `12.0.2` before project `install`, `ci`, `run`,
+`pack`, audit, stage or publish operations and fail if `npm --version` differs.
+The blocking Node jobs use the exact §2.19 patches; release evidence records the
+actual Node and npm versions. The versionless `devEngines.runtime` check
+deliberately permits the separate non-blocking Node 26 probe to start while
+`engines.node`, CI status and documentation continue to classify it as
+unsupported for 1.0.1.
+
+Every npm-distributed development tool is installed from the reviewed
+`package-lock.json` by `npm ci` and invoked through a named repository
+`npm run ...` script. A release gate **MUST NOT** use remote-resolving `npx`,
+`npm exec --package`, a globally installed npm package, a package-manager shim
+outside the selected Node toolchain or a moving registry tag. An npm script may
+invoke its local `node_modules/.bin` executable through npm's normal script PATH;
+it does not hard-code a platform-specific `.bin` pathname.
+
+Changing the source/release npm patch or either blocking Node patch is a
+dedicated reviewed configuration change: update the literal `devEngines` value
+and/or exact workflow authority together, regenerate the lockfile with that npm
+version, inspect the lockfile/packlist diff and rerun all package/release gates.
+No workflow follows `latest` or silently updates the release CLI.
+
+### 2.46 Decision: use JSPM only as the exact-pinned reference import-map tool and provider
+
+Phase 19 **MUST** add exact `@jspm/generator@2.16.3` as a development dependency
+and configure the named reference-generation npm script with:
+
+```js
+{
+  defaultProvider: "jspm.io",
+  env: ["production", "browser", "module"],
+  integrity: true
+}
+```
+
+The generator links the five entry points from the unpacked retained `owlapi`
+tarball and traces their static and statically analyzable literal dynamic-import
+closure. `owlapi` itself therefore remains the locally inspected candidate;
+only browser-loadable third-party dependency resolutions use the provider. The
+checked reference map names all five public specifiers, exact package versions,
+scopes where required and integrity metadata for every provider asset that can
+carry it. Generation fails on a floating version, missing public root,
+unresolved lazy import, CommonJS/UMD execution leak or integrity omission.
+
+The repository commits the small version-specific reference map and generator
+configuration, not downloaded provider modules or a package-owned universal
+map. The required Playwright job hydrates the exact resolved module closure,
+checks every response against the generated integrity metadata and creates an
+ephemeral, mechanically equivalent local mirror/map for Chromium, Firefox and
+WebKit. It performs no source transformation in that mirroring step. The job
+also verifies the public reference URLs before a release; provider failure is
+diagnosed/retried and must reach a truthful terminal result under §2.16.1, but
+the real-engine semantic suite does not depend on live CDN responses after the
+verified closure has been hydrated.
+
+The reference documentation states that `jspm.io` is a selected replaceable
+example provider, not an `owlapi` production dependency, mandatory application
+host or availability promise. A consumer may host an equivalent exact,
+integrity-pinned ESM closure under its own CSP and cache policy. Provider module
+retrieval is application-directed code loading, not package telemetry, and does
+not weaken §2.42.
+
+No `es-module-shims`, import-map polyfill, CDN client or generated provider
+bundle enters the package runtime or tarball. A future change of generator or
+provider requires an exact configuration/dependency review, regenerated map,
+licence/security review and the complete three-engine map suite.
+
+### 2.47 Decision: fix the SBOM and evidence-schema toolchain
+
+The release toolchain **MUST** use exact
+`@cyclonedx/cyclonedx-npm@6.0.1` as a development dependency to generate
+`owlapi-<version>.cdx.json` from the clean installed production tree. Its
+effective invocation has all of these semantics:
+
+```text
+--omit dev
+--spec-version 1.6
+--output-format JSON
+--output-reproducible
+--validate
+--mc-type library
+--output-file owlapi-<version>.cdx.json
+```
+
+It does not use lockfile-only mode, component flattening, shortened PURLs or
+experimental gathered licence texts. The root component is exactly the packed
+`owlapi@<version>` library. Runtime optional dependencies that are present in
+the production installation remain represented; development-only tooling does
+not.
+
+The development-only generator and the production-only graph it describes
+**MUST** occupy separate clean workspaces from the same accepted source/lockfile
+identity. The **tool workspace** runs full `npm ci` and supplies the exact local
+CycloneDX binary through a named npm script. The **subject workspace** runs
+`npm ci --omit=dev`, contains the package plus only its locked production
+installation and does not contain the generator. The script points the tool
+workspace's binary at the subject package manifest/tree; it does not install the
+generator into the subject, use remote `npx`, pretend a production-only install
+contains a development binary or generate from the tool workspace's full
+`node_modules` graph.
+
+A separate gate compares components, versions, dependency edges and root
+identity with `npm ls --omit=dev --all --json` run in the subject workspace, the
+accepted lockfile and the packed production dependency inventory. Any
+CycloneDX classification or traversal omission is therefore detected rather
+than normalized as truth. Licence/NOTICE completeness remains a separate
+reviewed gate rather than being delegated to experimental SBOM text collection.
+
+All repository-owned machine-readable release/governance records use versioned
+JSON Schema Draft 2020-12 schemas, exact `ajv@8.20.0` and exact
+`ajv-formats@3.0.1` development dependencies. The named validator script uses
+Ajv's Draft 2020-12 mode, registers the standard format vocabulary and treats an
+unknown or ignored format as a validation/configuration failure. This permits
+schemas to enforce their URI and date-time fields rather than merely checking
+that those values are strings. This covers at least release evidence, amendments,
+extended tests, registry operations, dependency-advisory exceptions,
+code-scanning exceptions, authorized signers and history partition/mapping.
+Each schema has a stable project-controlled `$id`, a project schema version,
+closed record objects with `additionalProperties: false` by default and an
+explicit extension object only where forward-compatible private annotations are
+actually required.
+
+Every generated/committed record identifies its schema `$id`/version and the
+validator version, and validation occurs before attachment, commit or use by a
+release gate. Identical logical inputs serialize deterministically, but a
+publication record containing actual timestamps, identities or registry
+observations is not falsely described as reproducible across different release
+events. The accepted bytes and their digest are immutable instead.
+
+The release-evidence manifest receives no redundant detached signature. Its
+digest is recorded in the append-only repository release record and GitHub's
+immutable release attestation covers the retained asset under §2.40. SBOM,
+schema or validator tool upgrades are isolated exact dependency/configuration
+changes whose output diff and release-gate compatibility are reviewed before
+acceptance.
+
+### 2.48 Decision: publish an ordinary library dependency graph, not a locked deployment tree
+
+The six §2.32 foundational runtime packages **MUST** remain ordinary exact
+direct entries in `dependencies`. The initial package **MUST NOT** contain an
+`npm-shrinkwrap.json`, and its manifest **MUST NOT** contain
+`bundleDependencies`/`bundledDependencies`, `peerDependencies`,
+`optionalDependencies` or `overrides`. None of those mechanisms may be inferred
+from the requirement to test a deterministic release graph. These dependencies
+are private implementation engines rather than consumer-selected plugins,
+optional capabilities or embedded package payloads.
+
+The canonical `package-lock.json` remains committed, reviewed and authoritative
+for source development, CI, release construction, the §2.47 SBOM and the locked
+candidate graph. It is repository-only and absent from the npm tarball. The
+release record therefore describes that exact tested graph without claiming
+that a reusable library's downstream installation inherits the repository
+lockfile.
+
+Every candidate also receives a deliberately independent consumer-resolution
+test. In a new directory with an empty npm cache and no pre-existing manifest,
+lockfile, workspace or overrides, initialize an ordinary consumer and install
+the retained tarball. After registry publication, repeat with the exact public
+coordinate. Record the resulting lockfile and full production inventory, prove
+that every direct dependency still has the exact manifest version, run the
+installed-package semantic/browser gates, audit and signature checks, and
+account for every difference from the locked release graph. A transitive
+difference is not automatically a defect; an undeclared dependency, forbidden
+source, incompatible resolution, failed gate or unexplained identity difference
+is.
+
+Before stable completion, create the separately approved §§2.55–2.61
+`maintenance.yml` weekly/manual monitor. Its `contents: read` health job installs
+`owlapi@latest` into a clean lockless consumer and runs the public smoke,
+production-audit and §2.51 signature gates with the exact cache-disabled Action
+inventory. Only a separate reporter job receives
+`issues: write` to create or update one structured maintenance finding when a
+newly resolved graph fails. Neither job has npm, release or source-write
+authority, and the workflow **MUST NOT** modify dependencies, source,
+distribution tags or releases. A correction follows the ordinary reviewed
+dependency-update and new-version process; it never mutates an existing package
+coordinate.
+
+### 2.49 Decision: independently lint the exact tarball with exact-pinned `publint`
+
+Phase 19 **MUST** add one exact-pinned `publint` development dependency. The
+present approved baseline is exactly `0.3.24`. A later version satisfies the
+requested `0.3.24`-or-greater floor only when its release notes/rules and output
+have been separately reviewed and the literal replacement is accepted through
+the Phase 19 configuration gate. The manifest and lockfile **MUST NOT** encode
+`>=0.3.24`, a caret/tilde range, `latest` or another floating selector.
+
+After the retained tarball exists, invoke the installed binary against that
+file—not the source directory and not a second pack operation—with semantics
+equivalent to:
+
+```text
+publint owlapi-<version>.tgz --strict
+```
+
+Errors and warnings are release-blocking; suggestions are recorded for human
+review but do not become requirements merely because the generic tool prefers a
+different package style. Run the same pinned validator against the independently
+downloaded registry tarball after publication and require identical relevant
+findings. Release evidence records the exact validator version, command, input
+digest and structured or normalized result.
+
+`publint` is an independent ecosystem check, not the authority for this
+project's deliberate API. It supplements rather than replaces the exact
+export/negative-path, packlist, binding-identity, import-purity, consumer and
+browser gates. If a future warning demonstrably conflicts with an intentional
+contract, a release may proceed only with a §2.47-schema-valid exception naming
+the exact tool version, rule, affected package versions, evidence, rationale,
+reviewer and expiry. Blanket suppression, an unversioned exception, a floating
+`npx` invocation or an exception to an actual error is forbidden.
+
+### 2.50 Decision: govern third-party material according to the distribution that contains it
+
+The canonical repository **MUST** maintain a versioned, Draft 2020-12-validated
+`docs/provenance/third-party-material.json` record for the complete release
+production graph, release/evidence development tools and every third-party file
+deliberately copied or generated into the package. Automation may derive the
+candidate inventory, but a human reviewer remains responsible for the
+distribution/licence conclusion. Each record includes at least:
+
+- exact component name/version and dependency path;
+- relationship (`EXTERNAL_RUNTIME_DEPENDENCY`, `EMBEDDED_OR_COPIED`,
+  `GENERATED_FROM_THIRD_PARTY`, or `DEVELOPMENT_ONLY`);
+- declared SPDX expression and any independently detected qualification;
+- inspected licence/notice filenames, byte digests and source/registry URLs;
+- applicable copyright/attribution/notice text;
+- package-tarball and deployed-application distribution scope;
+- compatibility and notice disposition with rationale; and
+- reviewer, review date and evidence/schema versions.
+
+The production-scoped subset of the lockfile, §2.47 SBOM, installed production
+inventory and third-party-material record must agree on components and versions;
+development-only rows reconcile separately with the release toolchain and full
+lockfile. Package metadata alone cannot establish the actual licence/notice files
+or resolve an ambiguous expression, and the CycloneDX generator's deliberately
+disabled experimental licence-text gathering does not replace this review.
+
+The packed `NOTICE` is a mechanically checked human view of the material that
+the `owlapi` tarball actually distributes, together with a clear statement that
+ordinary external npm dependencies remain separately licensed. It preserves
+every notice required by embedded/copied material but does not concatenate every
+licence in the externally installed dependency graph. `LICENSE` remains the
+complete unmodified AGPLv3 text governing package-owned material; neither file
+purports to relicense dependencies.
+
+WebVOWL's production bundle is a distinct distribution scope because its build
+may physically incorporate `owlapi` and third-party dependency code. Phase 20
+must independently inventory the deployed bundle, reconcile it with its own
+lockfile/build manifest and preserve all applicable notices. Passing the
+`owlapi` tarball notice gate is not evidence that the WebVOWL bundle's separate
+review passed.
+
+### 2.51 Decision: verify the exact npm package attestation, not a badge or aggregate count
+
+After every registry publication, the fresh consumer **MUST** use the exact
+§2.45-approved npm patch to run:
+
+```text
+npm audit signatures --json --include-attestations
+```
+
+A project-owned validator then identifies the exact root `owlapi@<version>`
+coordinate and proves all of the following:
+
+- its npm registry signature verifies against the exact registry integrity;
+- the required provenance and publish attestations are present and valid;
+- the attested subject digest equals the downloaded registry tarball;
+- the source identity is exactly the case-sensitive public
+  `Hadden-Industries/owlapi` repository;
+- the workflow, Git tag, source commit, hosted build identity and public
+  transparency-log evidence match the authorized release; and
+- no attestation belonging only to another package/version is counted as
+  `owlapi` evidence.
+
+The bootstrap alpha explicitly requests npm provenance because it uses the
+one-day, single-attempt granular access token defined by §2.53. Releases from
+the trusted publisher rely on npm's
+automatic provenance and do not add a duplicate attestation step or flag merely
+for symmetry. A runtime dependency without its own provenance is assessed under
+§§2.32 and 2.34; it does not excuse `owlapi` from its own mandatory attestation
+and is not silently reported as an `owlapi` provenance failure.
+
+The immutable release evidence retains a normalized root-package record:
+coordinate, registry integrity, subject/attestation digests, certificate/source/
+workflow identity, transparency-log references, validator/npm versions and the
+result. The raw all-dependency DSSE response remains diagnostic evidence rather
+than a fifth permanent release asset. If the approved npm patch cannot validate
+the registry's current attestation format, the release blocks until the
+controlled §2.45 npm-update process is completed; the workflow never switches
+to `latest` during a release.
+
+### 2.52 Decision: close immutable releases with exact checksums and per-asset verification
+
+`SHA256SUMS` **MUST** be UTF-8 text with LF line endings, exactly one lowercase
+64-hex-character SHA-256 followed by two ASCII spaces and the stable basename,
+sorted bytewise by filename, for precisely:
+
+```text
+owlapi-<version>.cdx.json
+owlapi-<version>.tgz
+```
+
+It contains no path, timestamp, evidence JSON entry or self-entry. These are the
+two artefacts fixed before the npm registry write. The later-generated release
+evidence cannot be added without changing the already reviewed checksum file;
+its bytes are instead covered by the immutable GitHub release attestation and
+its digest in the append-only repository release record.
+
+The Phase 19 workflow **MUST** download GitHub CLI `2.98.0`, validate the exact
+binary against the official `2.98.0` release checksum, and record its source,
+version and digest. The release job may not silently inherit a different
+runner-provided `gh` version. After the draft
+release has received the validated evidence JSON and becomes immutable, a fresh
+job with no retained release workspace must:
+
+1. download the tarball, SBOM, `SHA256SUMS` and release-evidence JSON;
+2. run `gh release verify v<version>` against the exact canonical repository;
+3. run `gh release verify-asset v<version> <local-file>` separately for all four
+   downloaded assets;
+4. run a strict checksum verification over the tarball and SBOM and reject any
+   extra/missing/unsorted/malformed checksum entry;
+5. validate the evidence JSON through the exact §2.47 Ajv/schema toolchain;
+6. independently verify the SSH-signed annotated tag, authorized signer,
+   expected source commit and GitHub verification result; and
+7. write the exact GitHub CLI/checksum/schema/tag results and attestation/asset
+   identities into the append-only repository release record.
+
+The release is not complete because the GitHub page displays an `Immutable`
+badge, because one asset verifies, or because locally retained pre-release bytes
+still hash correctly. Every downloaded asset and every independent binding in
+the chain must pass. A failed verification preserves the immutable evidence and
+enters §2.33; it is never repaired by replacing a release asset or moving its
+tag.
+
+### 2.53 Decision: bind npm's staged candidate to the retained tarball before approval
+
+Staged publication is the mandatory steady-state registry path after the direct
+`0.1.0-alpha.0` bootstrap. The release workflow **MUST** use Node and npm versions
+that satisfy npm's staged-publishing floors (Node 22.14.0 or newer and npm
+11.15.0 or newer) as well as the stricter exact §2.45 release-toolchain pin. It
+publishes only the already-retained tarball—never a directory or a newly packed
+copy—with this fully explicit shape:
+
+```text
+npm stage publish owlapi-<version>.tgz --tag <next-or-latest> --access public --registry=https://registry.npmjs.org/
+```
+
+The stage operation uses the exact case-sensitive `Hadden-Industries/owlapi`
+repository/workflow/`npm-release`-environment OIDC identity, stage-only authority
+and npm's automatic provenance. Traditional publication tokens are disabled;
+the command omits the bootstrap-only `--provenance` flag. The workflow records
+the returned stage ID and stops before promotion. Under §2.60, this non-public
+stage is deliberately created while the canonical `v<version>` tag is absent;
+the captured dispatch commit is already fixed and becomes the only permitted
+target of the later tag.
+
+An interactively authenticated authorized maintainer must then use the pinned
+npm toolchain to run both:
+
+```text
+npm stage view <stage-id> --json
+npm stage download <stage-id> --json
+```
+
+The review **MUST** verify the stage ID, package name, exact version, fixed
+distribution tag, public access, captured source-commit identity and staging status.
+It hashes the downloaded candidate and requires its SHA-256 to equal the
+retained `owlapi-<version>.tgz` digest byte for byte. It then reruns the
+coordinate/version check, exact packlist and manifest checks, strict §2.49
+`publint` gate, and the applicable checksum/material/provenance checks against
+the downloaded candidate. After those checks pass, the authorized human creates
+the canonical signed source tag at that captured commit, approves §2.61's
+waiting `Release / tag accepted` job and the same release run verifies it under
+§2.60. Approval evidence binds the stage ID, coordinate, fixed npm tag, registry,
+retained/staged digest, later signed source tag, source commit and authenticated
+`release-manual` review to the approving identity and time.
+
+Only after every check and the later canonical-tag verification pass may the
+maintainer use interactive 2FA to run:
+
+```text
+npm stage approve <stage-id>
+```
+
+After that interactive command completes, the human approves §2.61's second
+`Release / publication confirmed` job; the workflow performs only read-only
+reconciliation and verification from that point.
+
+npm's cited staged-publishing documentation does not promise a project-usable
+minimum retention period for a pending stage. The workflow therefore **MUST NOT**
+encode or report an assumed stage lifetime. It records every available creation/
+update timestamp and status from `stage view`, re-runs `stage view` immediately
+before tag creation and again immediately before interactive approval, and
+requires the exact stage to remain pending with the same coordinate, immutable
+tag and downloadable digest. A missing, expired, rejected or otherwise non-
+pending stage enters §2.58 read-only reconciliation; it is never treated as
+permission to re-stage blindly. If the canonical tag is still absent and npm
+proves the version available, the unchanged-input reuse rule below applies. If
+the tag already exists, any correction that changes the candidate follows
+§2.60's immutable-tag/version-abandonment branch. GitHub's separate 30-day
+environment-wait limit is not evidence of npm stage retention.
+
+A metadata, tag, source or digest mismatch **MUST** run
+`npm stage reject <stage-id>`, preserve the sanitized failure evidence, and
+verify through fresh registry/stage state that the rejected candidate no longer
+occupies the version before any restaging attempt. Restaging may reuse the same
+version only when npm reports it available, every retained input is unchanged
+and the canonical tag has not yet been created. If source, package metadata,
+distribution tag, tarball bytes or any other release input changes before the
+tag exists, create a new reviewed source candidate as the applicable release
+policy requires. If such a correction becomes necessary after the canonical tag
+exists, apply §2.60's immutable-tag/version-abandonment branch. Staged approval
+never repairs or substitutes for a mismatched candidate.
+
+### 2.54 Decision: freeze and isolate the release-control toolchain
+
+Phase 19 begins from this exact release-control baseline:
+
+| Responsibility | Exact version | Authority/installation boundary |
+| --- | --- | --- |
+| blocking Node 22 compatibility lane | `22.23.2` | literal workflow runtime; not a consumer package dependency |
+| blocking Node 24 and release lane | `24.19.0` | literal workflow runtime; sole release-production Node patch |
+| source/release package manager | npm `12.0.2` | literal §2.45 `devEngines` and workflow value |
+| SemVer/channel policy | `semver@7.8.5` | exact development dependency |
+| reference import-map generation | `@jspm/generator@2.16.3` | exact development dependency |
+| CycloneDX SBOM generation | `@cyclonedx/cyclonedx-npm@6.0.1` | exact development dependency in the separate tool workspace |
+| Draft 2020-12 schema validation | `ajv@8.20.0` | exact development dependency |
+| standard schema formats | `ajv-formats@3.0.1` | exact development dependency registered with Ajv |
+| independent package lint | `publint@0.3.24` | exact development dependency |
+| blocking browser automation/engines | `@playwright/test@1.62.1` | exact development dependency and its matching installed browser revisions |
+| standalone browser-fixture bundler | `vite@8.2.2` | exact development dependency |
+| immutable GitHub-release verification | GitHub CLI `2.98.0` | external exact binary verified against its official published checksum |
+| one-time history extraction | `git-filter-repo@2.47.0` | migration-only external tool with downloaded-file SHA-256 recorded |
+
+The exact `semver` dependency is the sole parser for release-version/channel
+decisions; project scripts do not approximate SemVer with string splitting or a
+regular expression. The exact Playwright package supplies the Chromium,
+Firefox and WebKit revisions used by the required evidence matrix, and the
+browser-install/run operations are repository npm scripts over that local
+installation under the three-job Ubuntu-host §2.57 policy. The exact Vite version builds
+only the standalone package's bundler and dedicated-worker fixtures.
+
+WebVOWL remains an independent real consumer. Phase 19 does not modify
+WebVOWL's Vite dependency merely to synchronize it with the package fixture: the
+consumer gate uses the exact Vite version in WebVOWL's separately accepted
+lockfile (`8.1.5` at this decision) and records the observed version. If that
+repository has already accepted another Vite version before the gate, its own
+reviewed lockfile is authoritative. Exercising two genuine consumer-tool
+versions is useful evidence; making both repositories share one toolchain is not
+a package requirement.
+
+GitHub CLI and `git-filter-repo` are not npm dependencies and are not inherited
+from a developer workstation or GitHub runner image. Their jobs download the
+exact approved release artefact into an ephemeral tool directory, calculate its
+SHA-256, compare it with the authoritative published checksum when the upstream
+provides one, and record the source URL/version/digest before execution. For
+`git-filter-repo`, whose upstream distribution evidence may not provide a
+separate signed checksum for the selected single-file artefact, the plan records
+the reviewed upstream tag/commit, retrieval URL and calculated digest and then
+reuses only those bytes in the disposable extraction clone. This recorded
+digest is an internal reproducibility pin, not a false claim of upstream
+signature verification.
+
+Every npm tool in the table is called through a named `npm run` script and the
+local lockfile installation required by §2.45. No release or evidence command
+may obtain an executable through remote `npx`, `npm exec --package`, a global
+development-tool install, an unpinned download or a runner-preinstalled binary.
+The selected npm executable itself is the §2.45 package-manager authority and is
+verified separately as exactly `12.0.2`.
+
+An exact replacement is permitted only through a separately presented
+configuration change that identifies the literal old/new value, reviews release
+notes plus licence/security/runtime implications, regenerates and reviews the
+lockfile, compares generated evidence and browser/bundle output, and reruns every
+gate governed by that tool. A security update may accelerate that review but
+never substitutes a moving tag/range or silent workflow upgrade. The approved
+values above remain normative until such a replacement is explicitly accepted.
+
+### 2.55 Decision: separate workflow trust boundaries and retain one manually dispatched late-tag release chain
+
+The independent repository **MUST** use these four purpose-specific workflow
+files:
+
+| Workflow | Exact trigger | Responsibility |
+| --- | --- | --- |
+| `.github/workflows/ci.yml` | `pull_request` targeting `main`; `push` to `main` | required package, Node, browser, dependency-review and ordinary quality gates |
+| `.github/workflows/release.yml` | manual `workflow_dispatch` accepted only at the exact release commit on protected `main` | build, qualify, perform the §§2.60–2.61 late-tag/manual-handoff boundary, publish, registry-verify and finalize one public version |
+| `.github/workflows/maintenance.yml` | scheduled and manual default-branch runs | lockless `owlapi@latest` and other read-only dependency-health monitors, with separate failure reporting |
+| `.github/workflows/extended-tests.yml` | scheduled and manual default-branch runs | non-blocking branded, historical and extended-environment evidence |
+
+`ci.yml` exposes one stable, unprivileged `CI / required` aggregate and
+`release.yml` exposes one stable, unprivileged pre-publication
+`Release / qualified` aggregate under §2.58. Each aggregate runs after all of
+its mandatory jobs, inventories them explicitly and rejects every non-success
+conclusion. The protected npm job depends directly on `Release / qualified`.
+Required matrix jobs use `fail-fast: false`, never opt into
+`continue-on-error`, and remain honestly red when they fail.
+
+Dependabot, secret scanning and CodeQL default setup remain GitHub-native
+facilities rather than additional workflow or publication authorities. No
+workflow uses `pull_request_target`. No privileged job is triggered through
+`workflow_run`, checks out untrusted pull-request content or consumes a cache or
+artefact produced by a different workflow. Re-running the same failed manually
+dispatched release run is permitted, but its idempotency checks never republish an existing
+coordinate. If the exact coordinate already exists, the run may resume only
+post-publication verification/finalization after proving the registry bytes,
+attestation, tag and retained digest are identical; any inconsistent or
+unexplained registry state fails closed.
+
+Each workflow declares `permissions: {}` at the top level. A job then names only
+the authority it actually requires; all omitted permissions remain `none`:
+
+| Job boundary | Maximum `GITHUB_TOKEN`/OIDC authority |
+| --- | --- |
+| CI, build, package, browser and semantic tests | `contents: read` |
+| npm bootstrap or stage-only publication | `contents: read`, `id-token: write`; protected `npm-release` environment |
+| signed-tag acceptance, post-promotion confirmation and approval-evidence collation | `contents: read`, `actions: read`; `release-manual` with `deployment: false`; no write, secret or OIDC authority |
+| post-registry package/provenance verification | `contents: read` |
+| draft/final immutable GitHub-release mutation | `contents: write`; no `id-token`, npm token or npm environment secret |
+| final immutable-release verification | `contents: read` |
+| maintenance health check and extended tests | `contents: read` |
+| maintenance finding reporter | `issues: write` only |
+
+The repository default `GITHUB_TOKEN` is read-only. The npm-publication job never
+receives `contents: write`; a GitHub-release mutation job never receives npm
+credentials or npm OIDC authority; and an issue-reporting job never receives
+release authority. Environment secrets are unavailable until the publication
+job reaches and passes the `npm-release` protection gate. That exact environment
+permits only protected `main`, requires the §2.35 explicit human approval and
+deliberately retains the approved self-review setting for this release programme.
+The separate `release-manual` environment also permits only protected `main` and
+the same approved reviewer/self-review model, but has no secret, variable, OIDC
+or write authority and every reference sets `deployment: false` under §2.61.
+
+The immutable release identity is the conjunction of the captured manual-
+dispatch commit, the repository-derived package version and the later verified
+canonical tag—not free-form dispatch text. At startup, `release.yml` rejects any
+ref other than `refs/heads/main`, records `github.sha` and the then-current
+protected-`main` head, proves they are equal, proves the canonical `v<version>`
+tag is absent and derives that tag and the SemVer channel from the reviewed
+manifest. A later `main` advance does not change the fixed run commit. Under
+§2.60, the human creates the canonical tag only after the applicable pre-tag
+gates, then acknowledges the waiting `release-manual` tag gate; the same run
+then verifies that it is annotated, its SSH signature belongs
+to an already admitted §2.36 signer, its target is the captured release commit,
+and its tag, manifest, changelog, SemVer-derived channel and requested operation
+agree. The workflow never authors, moves or deletes that tag. A second
+`release-manual` gate acknowledges completed interactive npm-stage promotion
+before steady-state registry verification; it does not perform or authorize the
+promotion.
+
+One repository-wide `owlapi-release` concurrency group uses
+`cancel-in-progress: false` and `queue: max`: a run that may already have created
+a stage, tag, draft or public registry operation is never cancelled, and up to
+GitHub's documented 100 pending runs are retained instead of replacing an older
+pending attempt. Queue processing order is based on when a run starts waiting,
+not dispatch time, and is not guaranteed; no release run may rely on relative
+queue order, and each must revalidate the current tag and registry state before
+mutation. Ordinarily, a maintainer dispatches no second release while one is
+outstanding.
+
+One `release.yml` run owns the complete candidate chain. It builds the retained
+tarball, SBOM and checksums; transfers those bytes only among its own jobs through
+the exact §2.56 full-SHA-pinned GitHub artefact actions and input policy;
+independently verifies SHA-256 after
+every upload/download boundary; runs the exact Node/browser/lockless-consumer/
+WebVOWL gates; performs the applicable registry operation; downloads and
+verifies the public package; and only then finalizes and independently verifies
+the immutable GitHub release. The same run performs every §2.60 pre-tag gate,
+uses §2.61's no-runner manual gates to acknowledge and verify the separately
+created canonical tag and completed staged promotion, and records the ordering
+without rebuilding the candidate. The privileged release workflow does not restore
+an Actions dependency/browser/build cache. A CI, maintenance, extended-test or
+earlier release artefact can be evidence to inspect, but can never become the
+publishable subject.
+
+Runner allocation follows §2.57. Every artefact-producing, privileged,
+browser, WebVOWL and final-verification job in `release.yml` uses explicit
+`ubuntu-24.04` x64; the four required Windows/macOS jobs only qualify the
+already-uploaded candidate and have read-only authority. Each job records its
+actual hosted-image identity and uses the platform-explicit shell while all
+nontrivial policy remains in repository-owned Node scripts.
+
+The one-time `owlapi@0.1.0-alpha.0` direct bootstrap and every later stage-only
+OIDC release use the same stable manually dispatched
+`.github/workflows/release.yml` path. The
+bootstrap branch is executable only for that exact absent coordinate and uses
+the `npm-release` environment's one-day token plus `id-token: write` for explicit
+npm provenance. Immediately after successful verification, revoke the token,
+delete its environment secret and accept a reviewed workflow/configuration
+change that removes the dead token-publication branch and secret reference.
+Then register npm's trusted publisher against the unchanged repository,
+`release.yml` path and `npm-release` environment. Every later version reaches npm
+only through the remaining stage-only OIDC path under §§2.28 and 2.53.
+
+Repository Actions settings **MUST** require a full 40-character commit SHA for
+every external Action, including GitHub-authored Actions, and allow only the five
+Action repositories and exact roles selected in §2.56. Each `uses:` reference
+has an adjacent comment naming its reviewed human-readable upstream release tag.
+Dependabot may propose replacement SHAs but cannot merge them.
+Third-party reusable workflows are absent; repository-owned npm scripts express
+project logic. The workflow references are the execution authority, so release
+evidence derives and records their paths, blob/commit identity, run ID/attempt,
+manual-dispatch ref/commit, later tag/commit, effective job permissions, environment/concurrency identity,
+exact Action SHAs, artefact IDs/digests and independent checksum results rather
+than maintaining a second hand-edited Action lock.
+
+The other workflow queues are equally explicit under §2.58. CI groups by
+workflow identity plus pull-request number/ref and cancels superseded runs only
+for that change. Maintenance and extended testing each use their own
+non-cancelling, single-pending group so a running observation finishes while
+only the newest pending observation remains. Every job/step uses its exact
+timeout class; only bounded idempotent reads may retry, while every external
+write receives one automatic attempt followed by read-only reconciliation of an
+ambiguous result.
+
+### 2.56 Decision: freeze a five-Action allowlist and every security-relevant input
+
+The initial repository **MUST** permit exactly these GitHub-maintained Actions.
+Every `uses:` reference names the complete 40-character commit SHA shown below
+and has the reviewed release tag in an adjacent comment:
+
+| Action | Reviewed release | Required full commit SHA | Sole approved role |
+| --- | --- | --- | --- |
+| `actions/checkout` | `v7.0.1` | `3d3c42e5aac5ba805825da76410c181273ba90b1` | read the captured accepted source and later verify its signed tag |
+| `actions/setup-node` | `v7.0.0` | `820762786026740c76f36085b0efc47a31fe5020` | install an exact approved Node patch |
+| `actions/upload-artifact` | `v7.0.1` | `043fb46d1a93c77aae656e7c1c64a875d1fc6a0a` | retain the exact same-run candidate bundle |
+| `actions/download-artifact` | `v8.0.1` | `3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c` | retrieve that bundle by immutable artefact ID |
+| `actions/dependency-review-action` | `v5.0.0` | `a1d282b36b6f3519aa1f3fc636f609c47dddb294` | block introduced high/critical runtime vulnerabilities |
+
+Those tag-to-commit mappings were resolved directly from the five official Git
+repositories on 24 August 2026. The repository selected-Action allowlist names
+only those five repositories and the repository requires full-SHA references.
+GitHub authorship does not exempt an Action from the immutable-pin rule. There is
+no separate Action lockfile: each workflow reference is the authority and the
+adjacent tag is a review aid.
+
+Every `actions/checkout` use **MUST** set `persist-credentials: false`. Ordinary
+CI, maintenance and extended-test jobs use `fetch-depth: 1`; the release source
+job instead uses the captured `${{ github.sha }}`, `fetch-depth: 0` and
+`fetch-tags: true` so it can first verify protected-`main` ancestry and later
+fetch/verify the annotated tag object, signer and exact target. The npm OIDC publication job does not check out source
+at all; it receives only the qualified candidate artefact. No workflow enables
+`allow-unsafe-pr-checkout`.
+
+Every `actions/setup-node` use **MUST** name literal Node `22.23.2` or
+`24.19.0`, as assigned by §§2.19 and 2.54, and set:
+
+```yaml
+check-latest: false
+package-manager-cache: false
+```
+
+The explicit cache setting applies to all four workflows. `setup-node@v7.0.0`
+otherwise automatically enables npm caching when `devEngines.packageManager`
+declares npm, as this package is required to do. No workflow supplies `cache` or
+`cache-dependency-path`, and no release job restores a dependency, browser or
+build cache indirectly through `setup-node`.
+
+The steady OIDC path also omits `registry-url`, `scope` and `NODE_AUTH_TOKEN`:
+trusted publishing neither requires nor receives token-authentication
+configuration. Solely in the temporary `DIRECT_BOOTSTRAP` branch,
+`setup-node` may set `registry-url: https://registry.npmjs.org/`; the protected
+bootstrap secret is then exposed as `NODE_AUTH_TOKEN` only to the exact publish
+step. The reviewed post-bootstrap configuration change removes that input,
+secret reference and dead branch together. The removed `always-auth` input is
+forbidden in every path.
+
+The Ubuntu Node 24 candidate-build job in each qualifying `ci.yml` or
+`release.yml` run uploads one candidate bundle containing exactly:
+
+```text
+owlapi-<version>.tgz
+owlapi-<version>.cdx.json
+SHA256SUMS
+```
+
+It uses exact file paths rather than a directory or wildcard and fixes the
+following upload semantics:
+
+```yaml
+name: owlapi-<version>-candidate-${{ github.run_id }}-${{ github.run_attempt }}
+if-no-files-found: error
+retention-days: 90
+compression-level: 0
+overwrite: false
+include-hidden-files: false
+archive: true
+```
+
+The run/attempt-qualified name prevents a rerun collision; `overwrite: false`
+prevents replacement; and zero compression avoids pointlessly recompressing the
+already compressed package while the ordinary archive carries all three files
+together. Release evidence records the release run's returned `artifact-id` and
+`artifact-digest`; the CI identity remains diagnostic and can never be promoted
+into a later release workflow.
+
+Every downstream job passes that exact same-run `artifact-id` output to
+`actions/download-artifact`, writes into a new fixed candidate directory, and
+sets `merge-multiple: false`, `skip-decompress: false` and
+`digest-mismatch: error`. It does not set `name`, `pattern`, `github-token`,
+`repository` or `run-id`; therefore it cannot broaden lookup to another
+artefact, run, workflow or repository. After extraction, the job rejects any
+inventory other than the three files above, verifies `SHA256SUMS` strictly and
+recomputes the tarball/SBOM digests independently of the Action's own artefact-
+archive digest check.
+
+`actions/dependency-review-action` runs only for `pull_request` and has only
+`contents: read`. Its exact policy inputs are:
+
+```yaml
+fail-on-severity: high
+fail-on-scopes: runtime
+vulnerability-check: true
+license-check: false
+comment-summary-in-pr: never
+retry-on-snapshot-warnings: true
+retry-on-snapshot-warnings-timeout: 120
+warn-only: false
+show-openssf-scorecard: false
+show-patched-versions: false
+```
+
+It uses the job's default `github.token`, not a PAT or external-repository token.
+The Action's sole gate is the §2.34 introduced-runtime-vulnerability rule.
+Licence authority remains the exact-graph, inspected-file, human-reviewed §2.50
+material register; OpenSSF scores are not an approved release threshold; and PR
+comments do not justify `pull-requests: write`. Snapshot warnings receive the
+bounded retry recommended for dependency-graph timing rather than being ignored
+immediately.
+
+No `actions/cache`, `actions/github-script`, npm-publish, GitHub-release,
+Playwright-installation, SBOM, provenance or `actions/attest-*` Action is
+permitted. No external reusable workflow or local composite wrapper hides
+project commands. Repository-owned named npm scripts run package gates;
+checksum-verified GitHub CLI performs release operations; npm trusted publishing
+supplies npm provenance; and GitHub immutable releases supply release
+attestation.
+
+Dependabot may propose a new full Action SHA, but it cannot merge the change. A
+replacement requires a separate reviewed configuration change that proves the
+human release tag resolves to the proposed SHA; reviews upstream release and
+signature status, licence/ownership, bundled runtime, minimum runner,
+`action.yml` inputs/defaults/outputs, permissions, credentials, caching and
+network effects; rechecks upload/download compatibility; and reruns every
+affected gate. A major Action update remains separate from other tooling work.
+Security urgency may reduce scheduling delay, never this review or the gates.
+
+### 2.57 Decision: fix hosted OS families, qualify cross-platform tarball use and record image drift
+
+Every required job **MUST** use one of these explicit generally available
+standard GitHub-hosted runner labels and **MUST** verify that the observed
+architecture matches the table:
+
+| Runner label | Required architecture | Approved role |
+| --- | --- | --- |
+| `ubuntu-24.04` | `x64` | authoritative source/build/release environment; full Node matrix; required browser, WebVOWL, maintenance and ordinary extended-test host |
+| `windows-2025` | `x64` | blocking installed-tarball Node portability qualification only |
+| `macos-15` | `arm64` | blocking installed-tarball Node portability qualification only |
+
+`ubuntu-latest`, `windows-latest`, `macos-latest`, preview, `ubuntu-slim`, larger
+and self-hosted runners are forbidden in the required package/release path. A
+new OS-family label or architecture is a separately reviewed configuration
+change. The versioned label fixes the OS family—not a specific hosted-image
+build. GitHub updates those images independently, so the plan observes image
+identity rather than falsely treating `runs-on` as an immutable VM digest.
+
+`ubuntu-24.04` is the sole artefact-producing environment. The complete package
+suite runs there on both Node `22.23.2` and `24.19.0`; only the latter may pack
+the retained tarball, generate its SBOM/checksums, run release-side WebVOWL,
+stage/publish to npm, verify the registry result, mutate/finalize the GitHub
+release or execute the final immutable-release check. Windows and macOS jobs
+download the already-fixed same-run §2.56 candidate by artefact ID and **MUST
+NOT** rebuild, repack, normalize or publish it.
+
+The blocking portability matrix runs that installed tarball on all four of:
+
+```text
+windows-2025 / x64 / Node 22.23.2
+windows-2025 / x64 / Node 24.19.0
+macos-15     / arm64 / Node 22.23.2
+macos-15     / arm64 / Node 24.19.0
+```
+
+This is a focused public-boundary suite rather than a duplicate conformance
+corpus. It installs with the same consumer rules, imports all five public
+specifiers, constructs the manager and data factory, loads representative
+OWL-native, RDF/XML, Turtle and JSON-LD documents, exercises diagnostics/errors,
+proves import purity and no automatic network access, and detects path-separator,
+filename-case, line-ending, encoding and architecture assumptions. Every lane is
+required in `ci.yml` and against the retained candidate in `release.yml`. A
+failure is a portability defect or an explicitly reviewed support-contract
+decision; it cannot be relabelled as extended evidence.
+
+In `ci.yml`, the Ubuntu Node 24 job constructs an ephemeral non-publishable
+tarball/SBOM/`SHA256SUMS` candidate through the same exact §2.56 closed bundle,
+ID-only download and checksum/inventory policy used by release; the portability
+jobs consume those bytes. That CI artefact is diagnostic, is never accepted by
+`release.yml`, and cannot cross the workflow boundary. In `release.yml`, the
+equivalent jobs consume only the separately rebuilt retained candidate from the
+captured protected-`main` commit in that manually dispatched release run.
+
+The required Chromium, Firefox and WebKit checks run as three separately
+reported `ubuntu-24.04` jobs. Each installs only its matching revision and Linux
+system dependencies through the lockfile-owned exact Playwright CLI invoked by a
+named npm script, then runs that one Playwright project with one worker. The
+conceptual invocations are:
+
+```text
+npm run playwright:install -- --with-deps <chromium|firefox|webkit>
+npm run test:browser -- --project=<chromium|firefox|webkit> --workers=1
+```
+
+The eventual exact script names are reviewed manifest configuration, but their
+executables **MUST** resolve from the local lockfile installation—never remote
+`npx`, an Action wrapper, a runner browser or a Playwright container. Browser
+binaries and browser/build/dependency outputs are not cached. Linux WebKit is the
+required engine-level browser contract for this ontology-processing suite;
+Safari-branded, media/platform-specific and physical-device checks remain the
+transparent non-blocking evidence governed by §2.16.1.
+
+Every Ubuntu/macOS `run` step selects explicit `bash`; every Windows `run` step
+selects explicit `pwsh`. Repository workflow logic beyond short orchestration
+commands belongs in cross-platform `.mjs` files reached through named npm
+scripts. There are no independently maintained Bash and PowerShell
+implementations of the release policy. Explicit Bash is required for its
+no-profile, error and pipeline-failure semantics; PowerShell Core is required on
+Windows for its modern UTF-8 behavior. The portability jobs therefore exercise
+the native Windows command host without moving semantic policy into YAML.
+
+Every required job emits a machine-readable runner record containing at least:
+
+```text
+requested runs-on label
+selected run-step shell
+runner.os and runner.arch
+GitHub ImageOS and ImageVersion values
+operating-system name/version/build and kernel release
+actual Node and npm versions
+for browser jobs: Playwright package, project and managed browser revision
+```
+
+The job rejects a label/OS/architecture mismatch. Section 2.40 release evidence
+stores these records per job, including the exact image-version/included-software
+identity exposed by GitHub's setup metadata. Different image revisions during a
+multi-job rollout are allowed only when each is recorded and every required gate
+passes; an unexplained or unavailable identity blocks release evidence. A later
+weekly image change does not by itself require a package release, but a resulting
+mandatory failure blocks the candidate until diagnosed.
+
+No required gate consumes runner-preinstalled Node, npm, browser, GitHub CLI,
+package tool or release executable. Node comes from exact §2.56 setup-node; npm
+and every npm tool come from §§2.45/2.54; Playwright browsers come from the local
+exact Playwright install; and GitHub CLI/history-filter binaries follow §2.54's
+independent download/digest policy. The hosted VM supplies only the declared OS,
+shell and basic execution substrate. Containers would add another mutable image,
+registry, base-OS and privilege boundary without improving this readable-source
+package's artefact identity and are therefore absent from the initial release
+programme.
+
+### 2.58 Decision: make required outcomes, deadlines, queues and external mutations fail closed
+
+The branch-protection interface is one stable GitHub-Actions check named
+`CI / required`, not every matrix-generated job name. The `required` job has no
+write permission, environment or release credential; runs with
+`if: ${{ always() }}`; declares every mandatory CI job in its explicit `needs`
+inventory; and rejects every required conclusion other than `success`, including
+`failure`, `cancelled`, `skipped`, `timed_out` and a missing result. Its only
+evaluation step has a five-minute timeout and the job has a ten-minute timeout.
+The package-governance suite mechanically compares the mandatory-job registry,
+the workflow dependency graph and the aggregate evaluator so adding, removing or
+renaming a required lane cannot silently leave branch protection green.
+
+Dependency review is applicable only to `pull_request`. Its job nevertheless
+has a deterministic conclusion on both CI triggers: on a pull request, the exact
+§2.56 Action must execute and succeed; on a `push` to `main`, a project-owned
+applicability step emits the closed `NOT_APPLICABLE_ON_PUSH` reason and succeeds.
+An unexpected skipped dependency-review job is never an accepted
+not-applicable result. The `main` ruleset requires the exact `CI / required`
+check produced by the GitHub Actions app and requires CodeQL separately. It does
+not protect volatile matrix check names. `ci.yml` has no path filter, and the
+project does not support a commit-message workflow-skip convention: if GitHub
+does not create the required check, the ruleset remains unsatisfied and blocks
+merge.
+
+`release.yml` has a corresponding unprivileged `Release / qualified` job. It
+runs with `if: ${{ always() }}` only after every mandatory pre-publication job,
+lists each one through explicit `needs`, and rejects every conclusion other than
+`success`. The protected `npm-release` publication job depends directly on this
+aggregate; no environment approval or npm authority is requested before it
+passes. `Release / qualified` is a small ten-minute job whose evaluation step
+has a five-minute timeout. `always()` belongs on these two aggregate evaluators,
+not on long-running build, test, download or publication jobs where it could
+keep executing after a failed prerequisite.
+
+Every required matrix declares `strategy.fail-fast: false`: all blocking lanes
+finish and produce independently reviewable evidence. Required jobs have an
+effective `continue-on-error: false`. Workflow commands and report adapters must
+not use `|| true`, swallow exit status, mark a required lane allow-failure, or
+convert a test failure into a neutral/success conclusion. Node 26 Current probes
+and extended environments remain outside the required aggregate, but their own
+workflows report real failure when a check fails; non-blocking means “not a
+release prerequisite”, not “rewrite red as green”.
+
+Workflow concurrency is literal and responsibility-specific:
+
+| Workflow | Concurrency group | Cancellation and queue contract |
+| --- | --- | --- |
+| `ci.yml` | workflow identity plus pull-request number, otherwise full ref | `cancel-in-progress: true`; superseded work for the same change is cancelled |
+| `release.yml` | `owlapi-release` | `cancel-in-progress: false`; `queue: max` retains up to 100 pending runs without cancelling the active run; ordering is not relied upon |
+| `maintenance.yml` | `owlapi-maintenance` | `cancel-in-progress: false`; single-pending queue lets the running check finish and retains only the newest pending run |
+| `extended-tests.yml` | `owlapi-extended-tests` | `cancel-in-progress: false`; single-pending queue lets the running evidence run finish and retains only the newest pending run |
+
+For CI, the group expression includes the workflow identity to avoid collision
+with another workflow and uses the pull-request number/ref to cancel only an
+older run for the same change. For release, `cancel-in-progress: false` alone is
+insufficient because the default single-pending behavior may replace an older
+queued release dispatch; explicit `queue: max` is therefore part of release
+integrity. GitHub documents a 100-pending-run bound and processing by time of
+entering the queue rather than dispatch time, with ordering not guaranteed.
+Every queued run therefore retains its own fixed identity and performs fresh
+preflight/reconciliation instead of assuming an earlier run's outcome.
+Maintenance and extended tests intentionally coalesce pending schedules because
+only the newest observation remains useful, while never cancelling a running
+observation.
+
+Every workflow job sets the exact `timeout-minutes` class below; no job relies
+on GitHub's much larger default:
+
+| Job role | Job timeout |
+| --- | ---: |
+| aggregate evaluator, metadata reporter or channel-policy check | 10 minutes |
+| dependency review, signer/tag verification, release preflight, npm/GitHub mutation or maintenance issue reporter | 20 minutes |
+| each Windows/macOS portability job | 30 minutes |
+| full Ubuntu suite, candidate pack/SBOM/audit, lockless consumer, registry verification or maintenance health check | 60 minutes |
+| each Playwright engine job and isolated WebVOWL job | 60 minutes |
+| final immutable-release verification | 45 minutes |
+| extended-environment job | 120 minutes |
+
+The two §2.61 `release-manual` acknowledgements are environment-protection
+waits, not allocated-runner jobs or substitutes for `timeout-minutes`. GitHub
+does not send the job to a runner before approval and automatically fails an
+environment-waiting job left unapproved for 30 days. The workflow adds no sleep,
+polling loop or keepalive. Once approved and started, each gate job uses the
+twenty-minute signer/tag-verification or registry-verification timeout class as
+applicable. Rejection or expiry follows §2.61's read-only reconciliation path;
+it never authorizes a second write or permits a changed candidate to reuse an
+immutable tag.
+
+Within those jobs, an individual network install/download step has a twenty-
+minute timeout, an external mutation command has ten minutes, a test/build step
+inside a sixty-minute job has forty-five minutes, and an aggregate evaluation
+step has five minutes. A timeout is a failed required result; it is never
+`NOT_RUN`, neutral or success. Changing any timeout, concurrency group,
+cancellation flag or queue mode is a separately presented exact configuration
+change before the affected release workflow is dispatched.
+
+All npm registry/package reads use this bounded configuration, supplied
+explicitly through the workflow environment or equivalent reviewed npm config
+and recorded as non-secret evidence:
+
+```text
+fetch-retries=2
+fetch-retry-factor=10
+fetch-retry-mintimeout=10000
+fetch-retry-maxtimeout=60000
+fetch-timeout=300000
+```
+
+npm may apply those retries only to its idempotent read operations. A
+project-owned HTTP/checksum retrieval helper permits three total attempts, a
+120-second timeout per request and retry only for `GET`/`HEAD` after a transport
+failure, timeout, HTTP 408, HTTP 429 or HTTP 5xx. It honors `Retry-After` only up
+to sixty seconds. It never retries an ordinary HTTP 4xx, checksum/schema/
+identity failure, test failure or provenance mismatch. Generic shell retry
+loops are forbidden because they obscure which operation is safe to repeat.
+
+Every external write receives exactly one automatic attempt: the bootstrap npm
+publish, npm staged publish, npm staged approval, distribution-tag mutation,
+deprecation, GitHub draft/release mutation, release-asset upload, maintenance
+issue write and Git-ref write. When a write returns an ambiguous response, the
+workflow stops and uses only read-only queries to reconcile the exact remote
+coordinate/object and expected digest/state. It may resume verification without
+a second write only when the remote operation is already complete and identical.
+An absent, partial, conflicting or unprovable remote state fails closed. A
+genuinely new write attempt requires renewed explicit authorization; a blind
+second stage, approval, publish, tag mutation, asset upload or issue mutation is
+forbidden.
+
+Section 2.40 evidence records, per job/operation, the expected role and final
+conclusion, applicability reason, timeout class and configured duration, matrix
+fail-fast/continue policy, aggregate dependency inventory/result, concurrency
+group/cancellation/queue policy, controlled-read retry configuration, every
+external-mutation attempt and any reconciliation result. Publication evidence
+must positively prove that no skipped, cancelled or timed-out required job
+reached npm or GitHub-release mutation authority.
+
+### 2.59 Decision: execute every external contribution as untrusted code and keep sensitive data out of its path
+
+The public repository **MUST** set GitHub's fork-workflow approval policy to
+`all_external_contributors`. Every workflow run initiated by a user who is not
+an organization member, repository owner or authorized collaborator waits for a
+write-authorized maintainer to inspect the proposed tree and explicitly approve
+that run. A later push creates a new run and therefore a new approval boundary.
+The approval means only that the tree may consume the unprivileged CI budget; it
+is not review approval, contributor trust, acceptance for merge or authority for
+later runs. Before approving, the maintainer inspects `.github/workflows/` and
+all other executable inputs the change can alter, including package scripts,
+lockfile dependencies, tests/configuration, download definitions and
+repository-owned workflow helpers.
+
+External-fork and Dependabot code executes only through `ci.yml`'s
+`pull_request` event and checked-out merge commit. It never executes through
+`pull_request_target`, `issue_comment`, a privileged `workflow_run` or another
+trusted event that fetches/downloads the proposed code. The workflow retains
+root `permissions: {}`; an applicable CI job receives at most
+`contents: read`; checkout does not persist credentials; and no pull-request job
+receives an Actions/repository/organization/environment secret, OIDC authority,
+npm authentication, write-capable token, protected environment or mutation
+permission. Dependabot receives no exception. The repository keeps “Allow
+GitHub Actions to create and approve pull requests” disabled. Repository and
+organization variables are non-sensitive public configuration and **MUST NOT**
+contain credentials or embargoed data.
+
+The ephemeral CI candidate required by §2.57 may travel by exact artefact ID
+only among unprivileged jobs in the same `ci.yml` run and attempt. It is marked
+untrusted diagnostic material and cannot cross into `release.yml`, another
+workflow/run, a release cache, canonical release evidence, npm, or a GitHub
+release. A maintainer approval or rerun does not promote its trust. The
+candidate may be installed by the same run's ephemeral Windows/macOS/browser
+jobs because those jobs have the same no-secret/no-write boundary; its bytes are
+never consumed by a privileged job.
+
+Every contributor-influenced value is untrusted data. This includes pull-request
+titles/bodies/labels/comments/authors, branch names and refs, commit messages and
+email metadata, issue text, repository-derived matrix values, ontology/test
+content, dependency/tool output, downloaded HTTP bodies/headers and filenames or
+identifiers parsed from an external service. Such a value **MUST NOT** be
+interpolated directly as `${{ ... }}` inside `run:`, used to select an
+executable/checkout/artefact/environment/concurrency group/API mutation target,
+or interpreted as shell/workflow syntax. A shell step that genuinely needs it
+receives it through a step-scoped environment variable and quotes it as data;
+preferably, a repository-owned Node script reads the event/data file and
+validates type, length, allowed characters/enum and intended use. Privileged
+names and paths derive only from already validated SemVer, commit SHA, run ID
+and run attempt—not free-form contributor text.
+
+Raw external or contributor-controlled text **MUST NOT** be written directly to
+`GITHUB_ENV`, `GITHUB_OUTPUT`, `GITHUB_PATH`, `GITHUB_STEP_SUMMARY`, workflow
+annotations, artefact names or job outputs. Repository-owned helpers emit only
+closed, length-bounded, schema/format-validated control values such as a
+SHA-256 digest, integer artefact ID, exact SemVer, allowed enum or sanitized
+relative filename; a consumer validates a security-relevant output again.
+Arbitrary/multiline content remains an ordinary file handled as data. This
+prevents command-file delimiter/control injection and a diagnostic becoming
+release policy.
+
+No workflow dumps a complete `github`, `env`, `secrets`, job, runner,
+npm-config, OIDC-response or process-environment context. A credential-bearing
+job does not enable shell/PowerShell tracing, Actions runner/step debug, or npm
+authentication-level verbose diagnostics during a real external operation.
+Secrets are not command-line arguments or evidence values; they are exposed
+only through the exact action input or step-scoped environment that needs them.
+GitHub automatic redaction is defense in depth and is not assumed to cover a
+transformed value or a secret unavailable to the current job. A sensitive
+runtime value not already registered as a GitHub secret is masked with
+`::add-mask::` before further handling, but masking never authorizes printing or
+retaining it. Public audit identifiers—coordinate, stage ID, digest, run ID,
+tag and commit—remain visible because they are not credentials.
+
+Privileged diagnosis is reproduced first in a new unprivileged job with
+sanitized fixture values. A real publication job is not rerun with tracing,
+broad logging, a temporary PAT or enlarged permissions. Any required logging or
+authority expansion is a separately approved exact configuration change. Job
+summaries, diagnostics, artefacts and evidence are schema/allowlist-limited and
+checked for known credential patterns before upload; raw environment/HTTP auth,
+private advisory/report/ontology material and unrestricted subprocess logs are
+not retained.
+
+A suspected log/artefact exposure is an incident even if GitHub displayed a
+mask. Stop the affected workflow; revoke/rotate the credential immediately;
+remove exposed logs/artefacts where the platform permits; inspect downstream
+use; preserve only sanitized incident metadata; and resume only with new
+credentials and fresh authorization. No release claim relies on retrospective
+redaction.
+
+Package governance **MUST** verify the trigger, permission, secret/OIDC/
+environment and artefact-flow boundaries above; reject direct untrusted
+expression interpolation into shell; reject arbitrary writes to workflow
+command files; and keep the approved external-contributor setting, disabled
+workflow-PR-approval setting and no-secret/no-write fork result in repository
+configuration evidence. Section 2.40 evidence records the trust origin,
+applicable fork-run approval identity/time, effective permissions/environment/
+secret names without values, sanitized-output result and proof that no
+fork-produced byte or output reached privileged publication authority.
+
+### 2.60 Decision: qualify and, where possible, stage before creating the immutable canonical release tag
+
+`release.yml` **MUST** use `workflow_dispatch`, not a tag push, as its sole
+release trigger. GitHub may offer a branch/tag selector for a manual dispatch,
+but the workflow accepts only `refs/heads/main`. Its first unprivileged job
+records `github.ref`, `github.sha`, the then-current protected-`main` head and the
+workflow blob/commit; requires the dispatch SHA to equal that captured head;
+verifies that the commit has the required `CI / required` and CodeQL results;
+derives the exact package version, canonical `v<version>` tag and `next`/`latest`
+channel from reviewed repository files; and fails if that canonical tag or npm
+coordinate already exists unexpectedly. A later advance of `main` does not
+retarget the already-running release. Free-form version, tag, commit, registry,
+channel or package-name dispatch inputs are forbidden.
+
+The same serialized, cache-free run then completes every deterministic §17.26.2
+gate and produces the one retained tarball, SBOM and `SHA256SUMS`. `Release /
+qualified` must pass before any environment or registry authority is requested.
+The workflow records that no canonical release tag exists at this point and
+keeps the candidate within the exact same-run/attempt artefact-ID boundary in
+§2.56. CI output, an earlier release run, a release cache or a manually rebuilt
+tarball cannot replace it.
+
+The late-tag sequence has exactly two publication modes:
+
+| Mode | Required ordering |
+| --- | --- |
+| `DIRECT_BOOTSTRAP` for the still-absent `owlapi@0.1.0-alpha.0` package | fully qualify the retained candidate without npm/GitHub mutation; let the tag-acceptance job wait at `release-manual`; have the authorized human create and push the SSH-signed annotated `v0.1.0-alpha.0` tag at the captured commit and then approve that waiting job; verify the tag locally and through GitHub; create and populate the draft release; then separately approve `npm-release` and perform the one authorized direct npm write |
+| `OIDC_STAGED` for every later release | after `Release / qualified`, use the protected `npm-release` environment and stage-only OIDC to stage the retained tarball while the canonical tag is still absent; have an interactively authenticated maintainer run `stage view`/`stage download`, prove byte identity and rerun the required tarball checks; only then create and push the SSH-signed annotated `v<version>` tag at the captured commit and approve the first `release-manual` job; have the same run verify it and create/populate the draft release; after interactive 2FA promotion of that exact stage, approve the second `release-manual` job so the same run performs fresh-registry verification |
+
+The `npm-release` environment's deployment policy therefore permits only the
+protected `main` branch, because the run's `GITHUB_REF` is `refs/heads/main`; it
+does not pretend that a not-yet-created tag triggered the run. The environment
+still requires §2.35's explicit named-human approval, and only the exact stage or
+bootstrap job receives its npm authority. npm trusted-publisher identity remains
+the exact repository, `release.yml` filename and `npm-release` environment.
+Before any package becomes public, the workflow must additionally prove that the
+later tag exists, targets the captured dispatch SHA, is annotated and SSH-signed
+by an already authorized signer, is GitHub-verified, is protected against update/
+deletion and agrees with the manifest, changelog, channel and staged or direct
+coordinate. GitHub-release mutation cannot precede that proof. The workflow does
+not create, push, move or delete the tag.
+
+For `OIDC_STAGED`, the protected stage-creation job ends after returning the
+stage ID. The first later `release-manual` job in the same run remains without
+npm or GitHub-write authority and is not sent to a runner until the human has
+completed staged-byte review, pushed the canonical tag and explicitly approved
+that job. After it verifies the tag and a separate job creates the draft, the
+human performs `npm stage approve <stage-id>` with 2FA and then approves the
+second `release-manual` job. That job starts only to reconcile and verify the now-
+public coordinate with bounded idempotent reads. Neither manual gate polls from
+an allocated runner. If a gate is rejected or expires, the run fails without a
+second mutation; a rerun may resume only after §2.58/§2.61 read-only
+reconciliation proves the exact stage, tag, draft or public coordinate is
+identical. It never creates a replacement stage blindly. The bootstrap path has
+no pre-tag registry write because npm cannot stage a package that does not yet
+exist.
+
+Failure handling is ordered by the irreversible boundary:
+
+1. **Before canonical-tag creation:** no release tag or public npm version is
+   consumed. Reject any staged candidate when its bytes, metadata or intended
+   channel are invalid; verify that npm again reports the version available;
+   correct tracked inputs through a new reviewed release pull request; and
+   dispatch a new run. The same intended package version may be reused only when
+   registry and tag queries prove it remains unused.
+2. **Ambiguous external response with unchanged inputs:** perform only §2.58's
+   exact read-only reconciliation. An already-complete identical stage, tag,
+   draft, asset or public package may resume at verification; an absent,
+   conflicting or unprovable result requires renewed authorization before any
+   new write.
+3. **Deterministic correction required after the immutable canonical tag exists
+   but before npm publication:** do not move, delete or recreate the tag, and do
+   not publish known-defective bytes merely to satisfy the planned version.
+   Reject a pending stage, preserve a sanitized append-only failed-attempt record
+   at `docs/provenance/release-attempts/<version>/<run-id>-<attempt>.json`, and
+   permanently abandon that package version under project policy even if npm has
+   not consumed it. The next reviewed prerelease normally advances
+   `0.1.0-alpha.0` to `0.1.0-alpha.1`; an abandoned stable `v1.0.1` advances the
+   same frozen stable surface to the next available patch, normally `1.0.2`,
+   which becomes the first Hadden Industries stable and WebVOWL cutover only
+   after the complete RC/stable gate. This is the sole prepublication exception
+   to the plan's normal exact-version terminal target.
+4. **After npm publication:** preserve the coordinate, tag and evidence and use
+   §2.33's bad-release containment/corrective-version process. The prepublication
+   abandoned-tag rule cannot be invoked retroactively to erase a public release.
+
+The failed-attempt record identifies the dispatch/run/attempt, fixed commit,
+intended coordinate/channel, retained candidate and stage digests when present,
+tag/signer verification, completed gates, exact failure boundary, remote-state
+reconciliation, rejection result, abandonment decision and successor version;
+it contains no credential or private report data and is excluded from the npm
+tarball. Successful §2.40 evidence records the dispatch and initial tag-absence
+state, completion of deterministic qualification, pre-tag stage identity and
+byte equality where applicable, later tag creation/verification, draft creation,
+public promotion and final verification as an ordered timeline. Governance tests
+must fail if a canonical tag is required before candidate qualification, if a
+public promotion or GitHub draft can precede tag verification, if the environment
+admits a ref other than protected `main`, or if a corrected commit can reuse an
+already-created canonical version tag.
+
+### 2.61 Decision: pause human hand-offs through one no-authority `release-manual` environment
+
+The same `release.yml` run **MUST** use one GitHub environment named exactly
+`release-manual` for human continuation points that do not themselves authorize
+an external write. Its repository configuration is exact:
+
+```text
+deployment branch policy: protected main only
+required reviewer: MaksymShostak
+prevent self-review: false
+wait timer: none
+environment secrets: none
+environment variables: none
+custom deployment protection rules: none
+```
+
+Every workflow reference uses this shape:
+
+```yaml
+environment:
+  name: release-manual
+  deployment: false
+```
+
+`deployment: false` prevents a human coordination checkpoint from being
+misrepresented as a software deployment while retaining the environment's
+required-reviewer and protected-branch rules. A waiting job is not sent to a
+runner and receives no secret. The job has only `contents: read` and
+`actions: read`; it has no `contents: write`, `id-token: write`, npm token,
+environment secret or registry/Git-ref/GitHub-release mutation path. The
+`npm-release` environment remains the sole automated npm-authority boundary and
+the sole environment named in npm's trusted-publisher identity.
+
+The workflow uses `release-manual` at exactly these sequential gates:
+
+1. **`Release / tag accepted` — every release.** After all applicable pre-tag
+   qualification has passed—and, for `OIDC_STAGED`, after the human has viewed,
+   downloaded, byte-compared and revalidated the exact npm stage—the job waits
+   without a runner. The authorized human creates and pushes the SSH-signed
+   annotated canonical tag at the captured commit and only then approves this
+   waiting job. Once started, the job downloads the same-run candidate by exact
+   artefact ID, rechecks its closed inventory and hashes, fetches and verifies
+   the tag locally and through GitHub, validates its signer/target/version/
+   channel, reads the current run's approval history and records the approving
+   GitHub identity. Only its success can unlock the separate `contents: write`
+   draft-release job.
+2. **`Release / publication confirmed` — `OIDC_STAGED` only.** After the verified
+   tag and draft exist, this second job waits at the same environment without a
+   runner. The human separately runs `npm stage approve <stage-id>` through an
+   interactive npm session with 2FA and only then approves the waiting GitHub
+   job. Once started, the job has read-only authority: it reconciles the exact
+   coordinate/stage/digest and applies only §2.58's bounded idempotent registry
+   reads before downstream provenance, consumer and immutable-release
+   verification. It never performs or retries the npm promotion. The direct
+   bootstrap does not use this second gate because its separately approved
+   `npm-release` job performs the one direct write and can continue directly to
+   read-only verification.
+
+The release-evidence job calls GitHub's read-only
+`GET /repos/{owner}/{repo}/actions/runs/{run_id}/approvals` endpoint and retains
+the complete sanitized review history together with the two gate job identities,
+run and attempt identifiers, waiting/started/conclusion states, the authorized
+reviewer registry and the stage/tag/publication timeline. For a normal staged release the workflow
+graph proves two sequential `release-manual` approvals; for direct bootstrap it
+proves one. Re-runs retain every review record and explain rather than erase an
+extra rejected, expired or premature approval. An optional human review comment
+may add context but is not parsed as release authority.
+
+The signed annotated tag message remains an ordinary human-readable release
+annotation. The workflow **MUST NOT** require bespoke stage-ID/digest trailers or
+an exact approval-comment string: the fixed same-run artefact ID, candidate
+digest, stage record, protected manual gate, signed tag and evidence timeline
+already provide the binding, while a typographical error in ceremonial text must
+not consume an otherwise valid immutable version. Repository-owned validators
+check the real identifiers directly.
+
+No release job may wait for a human by occupying a runner, sleeping, polling for
+a tag/public coordinate or installing an approval Action. GitHub's environment
+wait is the sole pause mechanism; after approval, ordinary bounded reads may
+handle registry/GitHub propagation. If a gate is rejected, approved prematurely
+or expires after GitHub's 30-day maximum, the run fails closed. When no release
+input changed, read-only reconciliation may resume the same exact stage, tag,
+draft or already-public coordinate after renewed approval; rejection/expiry alone
+does not abandon an otherwise valid signed tag. If a corrected commit or
+candidate is required after tag creation, §2.60 still requires immutable version
+abandonment. If npm promotion already succeeded, recovery verifies that exact
+public result and never performs a second approval write.
+
+Governance tests **MUST** reject a missing or differently named manual
+environment, a secret/variable/custom rule, a ref other than protected `main`,
+`deployment: true` or omitted `deployment: false`, prevent-self-review, an
+unauthorized reviewer, write/OIDC authority, an allocated-runner polling loop, a
+draft before `Release / tag accepted`, public verification before
+`Release / publication confirmed`, or any attempt to treat a `release-manual`
+approval as npm publication authority.
 
 ---
 
@@ -663,7 +4237,7 @@ Use OWLAPI to answer behavioural questions such as:
 
 **Do not translate Java OWLAPI implementation algorithms, branch structure, parser handlers or source comments into new `owlapi-js` production code.** The implementation source may need to be inspected during the one-time provenance audit of legacy WebVOWL code, but it is not the design source for the replacement implementation. Where compatibility facts are not stated by a public specification, obtain them by black-box differential fixtures wherever practical and record the resulting behaviour in project-owned compatibility notes/tests.
 
-Normative/public syntax specifications remain authoritative for language semantics. Java OWLAPI is a behavioural compatibility oracle, not a production-code template. This separation is an architectural requirement independent of which licence `owlapi-js` eventually adopts; it keeps the new implementation's provenance and licence choice from becoming unnecessarily coupled to OWLAPI's implementation terms.
+Normative/public syntax specifications remain authoritative for language semantics. Java OWLAPI is a behavioural compatibility oracle, not a production-code template. This separation is an architectural requirement independent of the selected `AGPL-3.0-only` licence; it keeps the new implementation's provenance and licensing authority from becoming unnecessarily coupled to OWLAPI's implementation terms.
 
 **8. Convert every discovered gap into the smallest possible fixture before refactoring it.**
 
@@ -780,7 +4354,7 @@ The broader lesson is critical to the whole extraction: **do not measure parser 
 | `parserContext.js`          | VOWL state                        | Stay in WebVOWL or disappear into `VOWLBuilder`                                                                                                                                                                                                      |
 | `ontologyConverter.js`      | legacy VOWL conversion            | Made production-unreachable in Phase 8, retained at its original path through the finite Phase 17 reference work, and physically deleted in Phase 18                                                                                                 |
 | `jsonExporter.js`           | legacy VOWL-JSON output           | Made production-unreachable in Phase 8, retained at its original path through the finite Phase 17 reference work, and physically deleted in Phase 18                                                                                                 |
-| `index.js`                  | WebVOWL entry                     | Stay; consume public `owlapi-js` API                                                                                                                                                                                                                 |
+| `index.js`                  | WebVOWL entry                     | Stay; consume the public `owlapi` API                                                                                                                                                                                                                |
 
 ---
 
@@ -793,7 +4367,7 @@ Input / ontology document
         │
         ▼
 ┌────────────────────────────────────────────────────────────┐
-│ owlapi-js: OWLOntologyManager                              │
+│ owlapi (source: src/owlapi-js): OWLOntologyManager         │
 │                                                            │
 │  format hint/sniff → parser factory → parser               │
 │        │                                                   │
@@ -817,6 +4391,15 @@ Input / ontology document
                                 ▼
 VOWLBuilder result → VOWL-JSON consumed by WebVOWL
 ```
+
+The boundary drawn above is also a package-resolution boundary. WebVOWL reaches
+the upper box only through the applicable declared `owlapi`,
+`owlapi/apibinding`, `owlapi/model`, `owlapi/io`, or `owlapi/formats` entry
+points. It does not reach across the box through a relative path into
+`src/owlapi-js/`, and build/test aliases do not erase the boundary. This makes
+every ordinary application test and Vite build a first-party consumer check of
+the package's public `exports` contract. RDF/JS datasets and translators remain
+inside the upper box rather than becoming a WebVOWL import surface.
 
 After the Phase 8 production cutover, the production graph **MUST NOT** import
 the legacy `ontologyConverter.js`, `jsonExporter.js`, parser, RDF/XML bridge or
@@ -1914,15 +5497,32 @@ Build incrementally and avoid duplicate derived state unless measurements justif
 
 ### 10.3 Normative public v1 API surface
 
-The public API **MUST** remain narrow, explicit and capability-matrix-driven. An API is public only when the authoritative matrix classifies it as part of the v1 public surface.
+The public API **MUST** remain narrow, explicit and governed jointly by the
+authoritative capability matrix and Public API Surface Registry. A binding is
+public only when the capability matrix permits the capability and the registry
+approves its exact Java-package mapping, npm subpath, export name and canonical
+source module for the release.
 
-Conceptual package entry points are:
+The exact public package entry points for the stable 1.x cutover are:
 
 ```text
-owlapi-js
-owlapi-js/model
-owlapi-js/rdf
+owlapi
+owlapi/apibinding
+owlapi/model
+owlapi/io
+owlapi/formats
 ```
+
+`owlapi` is the curated convenience facade. `owlapi/apibinding` owns
+`OWLManager`; `owlapi/model` owns the structural model, ontology, manager, data
+factory, loader configuration and base document-format concepts; `owlapi/io`
+owns document sources and I/O/parser diagnostics; and `owlapi/formats` owns the
+supported concrete format identities. Except for the deliberately curated bare
+aggregate, each subpath is the exact suffix of its approved
+`org.semanticweb.owlapi` package. Its matching source namespace owns the sole
+canonical definition of each public binding; private implementation engines do
+not acquire public placement by residing nearby and are not copied into a
+mirrored Java-shaped `internal/` tree.
 
 `OWLManager` exposes:
 
@@ -1970,9 +5570,16 @@ Structural objects are immutable. Structural equality is **not** JavaScript `===
 
 Concrete parser implementations **SHOULD NOT** be root-package API. They may become an advanced public surface only when the capability matrix explicitly requires it.
 
-`RdfToOwlTranslator` and `OwlToRdfTranslator` **MAY** be exposed through the `owlapi-js/rdf` public entry point once their corresponding `REQUIRED_V1` capability contracts are complete; they **MUST** consume/produce only the canonical OWL structural and RDF/JS boundaries.
+`RdfToOwlTranslator`, `OwlToRdfTranslator`, RDF/JS factory wiring and graph
+selection are internal. Public RDF-syntax ingestion occurs through the manager,
+document source, loader-configuration and format APIs. A future storer may use
+`OwlToRdfTranslator` internally, but that does not make the translator a public
+entry point. Any later direct RDF/JS dataset API requires a separately approved
+consumer contract; it is not reserved through a nominal `owlapi/rdf` export.
 
 The public API **MUST NOT** be enlarged merely for implementation convenience.
+Every binding is explicitly named by its public facade and classified under
+§2.10.4; unrestricted public-barrel `export *` chains are forbidden.
 
 ### 10.4 `OWLOntologyManager` responsibilities
 
@@ -1990,14 +5597,14 @@ The manager **MUST** coordinate the responsibilities required by the normative v
 
 Additional Java OWLAPI lifecycle/listener APIs are outside v1 unless explicitly classified in the capability matrix.
 
-### 10.5 Generic import resolution belongs in `owlapi-js`; WebVOWL policy does not
+### 10.5 Generic import resolution belongs in `owlapi`; WebVOWL policy does not
 
 The earlier plan put import resolution entirely outside the core. That is too coarse. OWL ontology loading inherently includes `owl:imports`; OWLAPI parsers are expected to request import loading through the manager.
 
 The correct split is:
 
 ```text
-owlapi-js
+owlapi
   defines generic import/document loading protocol
   handles import closure and cycles
   accepts IRI mappers/resolvers
@@ -2387,7 +5994,14 @@ WebVOWL/VOWLBuilder integration
 
 Third-party parser APIs **MUST NOT** leak through canonical model, translator, manager or public-package boundaries. WebVOWL-specific behaviour **MUST NOT** leak into generic `owlapi-js` core.
 
-Exact filenames, class-to-file ratios and directory nesting are non-normative unless explicitly part of a public export contract. The team **MUST** choose structures that maximize cohesion, minimize unnecessary coupling, make navigation/testing clear and avoid gratuitously mirroring Java OWLAPI or legacy WebVOWL package layouts.
+Registered public namespace paths and canonical public binding ownership are
+normative under §2.10.4. Within those namespaces, exact filenames and
+class-to-file ratios remain non-normative unless the registry names a canonical
+source module. Private `internal/` nesting is responsibility-oriented and may be
+refactored without changing the public contract. The team **MUST** maximize
+cohesion, minimize unnecessary coupling, make navigation/testing clear and avoid
+gratuitously mirroring Java OWLAPI implementation packages or legacy WebVOWL
+layout beneath `internal/`.
 
 Production code **MUST** use modern standards-based ECMAScript and native ESM appropriate to the supported browser/Node baseline. New CommonJS/AMD/UMD-style internals, namespace-as-module substitutes, unnecessary transpilation or compilation machinery **MUST NOT** be introduced.
 
@@ -2421,112 +6035,94 @@ Engineering quality is part of Definition of Done. Review **MUST** consider arch
 
 ### 13.1 Illustrative directory/package structure
 
-The original proposed directory is too shallow because it lacks the structural model and the two RDF mapping layers. A stronger structure is:
+Before Phase 19, `src/owlapi-js/` remains the WebVOWL staging tree. It is not the
+canonical standalone layout. The history-preserving extraction places package
+source at the root of `Hadden-Industries/owlapi` and applies the §2.10.4
+two-zone rule. The following structure is illustrative below the public
+namespace level but normative about ownership and dependency direction:
 
 ```text
-src/owlapi-js/
+Hadden-Industries/owlapi/
 ├── index.js
 │
 ├── apibinding/
+│   ├── index.js
 │   └── owlManager.js
 │
 ├── model/
+│   ├── index.js
 │   ├── iri.js
 │   ├── owlDataFactory.js
-│   ├── structuralKey.js
-│   ├── structuralSet.js
-│   ├── ontology/
-│   │   ├── owlOntology.js
-│   │   ├── owlOntologyID.js
-│   │   └── owlImportsDeclaration.js
-│   ├── values/
-│   │   ├── owlLiteral.js
-│   │   ├── owlAnonymousIndividual.js
-│   │   └── owlAnnotation.js
-│   ├── entities/
-│   │   ├── owlClass.js
-│   │   ├── owlDatatype.js
-│   │   ├── owlObjectProperty.js
-│   │   ├── owlDataProperty.js
-│   │   ├── owlAnnotationProperty.js
-│   │   └── owlNamedIndividual.js
-│   ├── expressions/
-│   │   ├── objectSomeValuesFrom.js
-│   │   ├── objectAllValuesFrom.js
-│   │   ├── objectIntersectionOf.js
-│   │   ├── objectUnionOf.js
-│   │   ├── ...
-│   └── axioms/
-│       ├── declarationAxiom.js
-│       ├── subClassOfAxiom.js
-│       ├── equivalentClassesAxiom.js
-│       ├── ...
-│
-├── manager/
 │   ├── owlOntologyManager.js
 │   ├── owlOntologyLoaderConfiguration.js
-│   ├── owlParserRegistry.js
-│   ├── ontologyDocumentLoader.js
-│   └── ontologyIriMapper.js
+│   ├── owlOntology.js
+│   ├── structural.js
+│   ├── kinds.js
+│   ├── dispatch.js
+│   └── ...
 │
 ├── io/
-│   ├── owlOntologyDocumentSource.js
+│   ├── index.js
 │   ├── stringDocumentSource.js
-│   ├── ontologyDocumentContext.js
-│   ├── owlDocumentFormat.js
-│   ├── formats.js
-│   ├── owlParser.js
-│   ├── owlParserFactory.js
-│   └── errors/
-│       ├── unparsableOntologyException.js
-│       ├── owlParserError.js
-│       ├── unsupportedConstructError.js
-│       ├── resourceLimitError.js
-│       └── ...
+│   ├── errors.js
+│   └── ...
 │
-├── parsers/
-│   ├── functional/
-│   │   ├── functionalLexer.js
-│   │   ├── functionalParser.js
-│   │   └── functionalParserFactory.js
-│   ├── manchester/
-│   │   ├── manchesterLexer.js
-│   │   ├── manchesterParser.js
-│   │   └── manchesterParserFactory.js
-│   ├── owlxml/
-│   │   ├── owlXmlParser.js
-│   │   └── owlXmlParserFactory.js
-│   ├── dlsyntax/
-│   ├── krss/
-│   │   ├── krssLexer.js
-│   │   ├── krssParser.js
-│   │   ├── krssDialects.js
-│   │   ├── krssOWLParser.js
-│   │   ├── krssOWLParserFactory.js
-│   │   ├── krss2OWLParser.js
-│   │   └── krss2OWLParserFactory.js
-│   └── rdf/
-│       └── rdfOntologyParser.js
+├── formats/
+│   ├── index.js
+│   ├── functionalSyntaxDocumentFormat.js
+│   ├── rdfXmlDocumentFormat.js
+│   └── ...
 │
-├── rdf/
-│   ├── rdfEnvironment.js
-│   ├── rdfDatasetParser.js
-│   ├── rdfDatasetGraphPolicy.js
-│   ├── rdfList.js
-│   ├── owlToRdfTranslator.js
-│   ├── rdfToOwlTranslator.js
-│   └── vocabulary.js
+├── internal/
+│   ├── loading/
+│   │   ├── ontologyDocumentLoader.js
+│   │   ├── documentContext.js
+│   │   └── ...
+│   ├── parsing/
+│   │   ├── parserRegistry.js
+│   │   ├── detection/
+│   │   ├── functional/
+│   │   ├── manchester/
+│   │   ├── owlxml/
+│   │   ├── rdfxml/
+│   │   ├── turtle/
+│   │   ├── trig/
+│   │   ├── ntriples/
+│   │   ├── nquads/
+│   │   ├── jsonld/
+│   │   ├── dlsyntax/
+│   │   ├── krss1/
+│   │   ├── krss2/
+│   │   └── xml/
+│   ├── mapping/
+│   │   ├── rdfToOwlTranslator.js
+│   │   ├── owlToRdfTranslator.js
+│   │   └── ...
+│   ├── rdfjs/
+│   │   ├── environment.js
+│   │   ├── graphPolicy.js
+│   │   └── ...
+│   ├── structural/
+│   ├── indexing/
+│   └── platform/
 │
-├── xml/
-│   ├── xmlParserAdapter.js
-│   ├── xmlEntities.js
-│   └── xmlBase.js
-│
-└── util/
-    ├── constants.js
-    ├── diagnostics.js
-    └── resourceLimits.js
+└── docs/
+    └── compatibility/
+        ├── capabilities.json
+        ├── java-api-surface.json
+        └── java-api-surface.md
 ```
+
+The public namespace directories contain the canonical definitions of public
+bindings plus their explicit `index.js` facades. They are not a second wrapper
+tree over `internal/<same-path>`. Private parsers, translators, RDF/JS wiring,
+loading orchestration and platform adapters live only under `internal/` and are
+reachable from public operations through direct, acyclic dependencies.
+
+The displayed internal subdirectories are created only when they own retained
+production modules; do not add empty placeholders. Phase 19 records every
+staging-to-canonical path move in the history-partition/path manifest so a
+reviewer can distinguish relocation from semantic modification.
 
 ### 13.2 Repository-resident migration knowledge is a first-class project artefact
 
@@ -2571,7 +6167,12 @@ This structure is intentionally general software-engineering process documentati
 
 ### 13.3 Avoid a class-per-file explosion where it adds no value
 
-The tree above describes logical ownership, not a mandate that every trivial OWL type must live in an isolated file. If multiple simple immutable axiom classes are clearer in one cohesive module, group them. Optimize for maintainability and tree-shakable public boundaries, not ceremonial mirroring of Java packages.
+The tree above describes canonical namespace ownership, not a mandate that every
+trivial OWL type live in an isolated file. Multiple tightly related immutable
+types may share one cohesive module, provided the Public API Surface Registry
+maps each binding to that single canonical module and no duplicate definition
+exists beneath `internal/`. Optimize for maintainability and explicit package
+boundaries, not ceremonial replication of Java compilation units.
 
 ### 13.4 Tests colocated with implementation
 
@@ -2671,24 +6272,38 @@ Do not emulate Java method overload ambiguity in dynamic JS. For example, instea
 
 Similarly, expose iterable collections rather than creating a custom Java-Stream facsimile.
 
-### 14.9 Method parity matrix
+### 14.9 Public API Surface Registry and Java gap view
 
-Maintain a machine-readable or Markdown parity matrix throughout development:
+Maintain the §2.10.4 machine-readable Public API Surface Registry throughout
+development. It supersedes an informal hand-maintained method-parity table and
+must answer, for any Java OWLAPI package or public type, whether the corresponding
+capability is publicly available, implemented only behind another public API,
+deferred, delegated or unsupported by design.
 
-| Java type/method                      | JS status            | Behavioural parity     | Required by WebVOWL | Tests |
-| ------------------------------------- | -------------------- | ---------------------- | ------------------- | ----- |
-| `OWLManager.createOWLOntologyManager` | planned              | targeted               | yes                 | —     |
-| `OWLOntology.getAxioms`               | planned              | targeted subset        | yes                 | —     |
-| `OWLOntology.getClassesInSignature`   | planned              | targeted               | yes                 | —     |
-| `OWLRDFConsumer` behaviour            | phased               | construct subset first | yes for RDF inputs  | —     |
-| storers/renderers                     | deferred             | no                     | no                  | —     |
-| reasoner interfaces                   | out of initial scope | no                     | no                  | —     |
+The complete pinned Java package/type inventory is the left side of the
+comparison; the capability matrix, public namespace registry and JS binding
+inventory are the right side. The human-readable view is derived from those
+sources and reports package-level totals with drill-down type/member rows. A
+missing row is an error, not an implicit “not supported” classification.
 
-This prevents the project from casually claiming “OWLAPI compatible” where only names match.
+Representative rows include:
+
+| Java authority | Capability status | Progress | Exposure | Compatibility |
+| --- | --- | --- | --- | --- |
+| `OWLManager#createOWLOntologyManager` | `REQUIRED_V1` | `COMPLETE` | `PUBLIC` through `owlapi/apibinding` | `ADAPTED` JavaScript signature |
+| `OWLOntology#getAxioms` | `REQUIRED_V1` | `COMPLETE` | `PUBLIC` through `owlapi/model` | declared compatible subset |
+| `OWLRDFConsumer` observable reconstruction behavior | linked RDF→OWL capability rows | `COMPLETE` | `INTERNAL_ONLY` | behaviorally verified mapping engine |
+| concrete storer/renderer families | capability-specific | capability-specific | registry-specific | no implicit exposure from Java source location |
+| reasoner interfaces | `UNSUPPORTED_BY_DESIGN` for the initial line | `NOT_STARTED` | `NOT_EXPOSED` | explicit gap |
+
+This prevents the project from claiming “OWLAPI compatible” where only names
+match, while also making contribution opportunities discoverable without
+requiring a developer to reconstruct omissions from source comments or commit
+history.
 
 ### 14.10 Mandatory source-code annotations for deferred or unimplemented OWLAPI behaviour
 
-The parity matrix is necessary but **not sufficient**. During this refactor, the implementer must also leave **detailed source-code annotations at the exact point where an OWLAPI capability is intentionally not implemented, only partially implemented, or behaviourally divergent**. The next engineer reading a parser, translator, manager or model class should be able to discover the limitation from the code without first reading the project plan or reverse-engineering Java OWLAPI.
+The Public API Surface Registry is necessary but **not sufficient**. During this refactor, the implementer must also leave **detailed source-code annotations at the exact point where an OWLAPI capability is intentionally not implemented, only partially implemented, or behaviourally divergent**. The next engineer reading a parser, translator, manager or model class should be able to discover the limitation from the code without first reading the project plan or reverse-engineering Java OWLAPI.
 
 This requirement applies to all OWLAPI-derived or OWLAPI-compatible surfaces, including:
 
@@ -2735,7 +6350,7 @@ A good annotation therefore looks like:
 // TODO(OWLAPI parity): Support ObjectHasSelf in OWL/XML.
 // Java compatibility reference: pinned OWLAPI OWL/XML parser via the
 // `owlxml/object-has-self.owl` structural differential fixture; public
-// OWL/XML parser/format API identity recorded in the parity matrix.
+// OWL/XML parser/format API identity recorded in the API surface registry.
 // Normative semantics: OWL 2 Structural Specification ObjectHasSelf and
 // Mapping to RDF Graphs for ObjectHasSelf.
 // Current behaviour: strict parsing throws UnsupportedConstructError;
@@ -2743,7 +6358,7 @@ A good annotation therefore looks like:
 // Deferred because OwlObjectHasSelf and its OwlToRdfTranslator mapping are
 // not yet present in the structural core. Implement those first; do not
 // synthesize RDF/XML directly in this parser.
-// Verification: parity matrix `ObjectHasSelf`; fixture
+// Verification: API surface registry `ObjectHasSelf`; fixture
 // `owlxml/object-has-self.owl`; Java structural differential test.
 ```
 
@@ -2753,7 +6368,7 @@ For an intentional scope boundary:
 // UNSUPPORTED(OWLAPI parity): Java OWLAPI exposes <specific API/behaviour>,
 // but owlapi-js initial scope deliberately excludes it because <reason>.
 // Keep this explicit so future OWLAPI-surface audits do not mistake the
-// absence for an accidental omission. See parity matrix: <row/key>.
+// absence for an accidental omission. See API surface registry: <row/key>.
 ```
 
 #### Placement rules
@@ -2766,7 +6381,7 @@ The comment must be placed **at the nearest stable implementation point where a 
 - beside the public model/query surface for an intentionally omitted OWLAPI method;
 - beside a dialect capability table when a production is legal in KRSS2 but intentionally rejected in KRSS1.
 
-Do not collect all such comments in one central “missing features” source file. The parity matrix remains the project-level inventory; **source comments provide local discoverability**. Both must agree.
+Do not collect all such comments in one central “missing features” source file. The Public API Surface Registry remains the project-level Java API inventory and gap view; **source comments provide local discoverability**. Both must agree.
 
 #### How this integrates with the parser gap-analysis process
 
@@ -2782,7 +6397,7 @@ A discovered OWLAPI capability must never remain only in research notes or a rev
 
 Parity annotations are documentation of a known boundary, not permission to silently discard input. If a parser encounters a known unimplemented construct, §2.8 still applies: strict mode must throw a typed error and any supported `compatible` recovery must match an explicitly documented recovery rule and emit its required diagnostic.
 
-Likewise, remove or rewrite the parity annotation when the feature is implemented, and update the parity matrix and focused tests in the **same change**. Stale `TODO(OWLAPI parity)` comments are themselves compatibility defects.
+Likewise, remove or rewrite the parity annotation when the feature is implemented, and update the Public API Surface Registry and focused tests in the **same change**. Stale `TODO(OWLAPI parity)` comments are themselves compatibility defects.
 
 Finally, describe behaviour in the project's own words. Do not paste or translate Java OWLAPI implementation code, implementation comments or control-flow descriptions into production comments. Compatibility annotations should point to public API identities, normative specifications and project-owned behavioural fixtures. Keep the implementation-independence and source-provenance requirements from §22 intact.
 
@@ -2854,7 +6469,7 @@ and reference only until their Phase 18 physical deletion.
 | File                                       | Final treatment                                                                                                 |
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
 | `src/owl2vowl/js/rdfXmlSerializer.js`      | Deleted in Phase 18 after the shared OWL→RDF translator removed the final reference need                        |
-| `src/owl2vowl/js/rdfXmlSerializer.test.js` | Deleted in Phase 18; canonical OWL→RDF semantic tests remain in `src/owlapi-js/rdf/`                             |
+| `src/owl2vowl/js/rdfXmlSerializer.test.js` | Deleted in Phase 18; OWL→RDF semantic tests remain in the Phase 18 `src/owlapi-js/rdf/` staging tree, while Phase 19 relocates their production subjects to cohesive private owners such as `internal/mapping/` and `internal/rdfjs/` |
 | `src/owl2vowl/js/importLoader.js`          | Deleted in Phase 18 after manager orchestration and WebVOWL resolver responsibilities had moved                 |
 | `src/owl2vowl/js/rdfParser.js`             | Deleted in Phase 18 after RDF→OWL, `VOWLBuilder`, corpus, and Java differential parity gates passed             |
 | `src/owl2vowl/js/ontologyConverter.js`     | Made production-unreachable in Phase 8, retained through finite reference work, and deleted in Phase 18         |
@@ -2937,13 +6552,27 @@ original KRSS / KRSS1
         ↓
 physical legacy deletion
         ↓
-standalone package / release
+standalone `owlapi@0.1.0-alpha.0` package / `next` release
+        ↓
+stable-contract verification / production corrections / `1.0.1-rc.N`
+        ↓
+public `owlapi@1.0.1` / normally `latest` / exact stable-cutover WebVOWL dependency
 ```
 
 Each numbered phase **MUST** complete its Definition of Done and applicable
 learning or acceptance gate, then pause for the requested Git checkpoint. The
 next phase **MUST NOT** begin until that checkpoint is committed and the
 repository owner explicitly instructs the implementation to proceed.
+
+Phase 20 is not another ingestion-format migration or a semantic feature phase.
+It follows the same checkpoint rule because it freezes the stable public
+contract, corrects only demonstrated failures in the accepted surface, and
+performs external publication. It begins only after the Phase 19 alpha
+publication checkpoint and completes with verified stable `1.0.1` and the exact
+WebVOWL production dependency, except that §2.33 replaces the cutover coordinate
+with the first corrective patch only when published `1.0.1` fails mandatory
+post-publication verification. The separate post-1.0 plan owns subsequent
+semantic feature work.
 
 For v1, the following are normatively classified as major ontology-ingestion migrations:
 
@@ -3505,9 +7134,1980 @@ production graph, Phase 18 requires build/closure verification rather than a
 new parser-throughput baseline. The requested Git checkpoint remains the
 boundary before Phase 19 packaging/release work.
 
-### 17.26 Phase 19 — extract/publish standalone package
+### 17.26 Phase 19 — extract canonical repository and publish standalone package
 
-Finalize package exports, browser/Node CI, notices/licensing/provenance, dependency records, bundle analysis, compatibility documentation and release acceptance.
+Phase 19 turns the already production-used core into the independently
+governed, installable package decided in §2.10. It creates the independent
+public `Hadden-Industries/owlapi` repository, transfers the package's curated
+history and continuing documentation to it, publishes the reviewed artefact,
+and converts WebVOWL from source owner to ordinary exact-version consumer. It is
+release engineering, not another semantic migration: parser/model/translator
+behaviour may change only through the ordinary test-first defect/capability
+process, never merely to make extraction or packing convenient. The phase
+starts only from the committed Phase 18 state and keeps retired WebVOWL
+parser/converter/bridge code absent.
+
+The public API and semantic capability inventory for `0.1.0-alpha.0` are frozen
+by §2.11. Packaging work may reveal a genuine defect in an already accepted
+capability; correcting it requires the ordinary failing regression,
+compatibility/provenance update and review path. It does not authorize pulling
+any post-1.0 query, mutation, merger or storer capability into this phase.
+
+#### 17.26.1 History partition, repository handoff and configuration approval
+
+The current `feature/ui-ux-enhancements` lineage contains interleaved package
+migration, WebVOWL integration, UI/UX and general repository changes. A simple
+whole-repository fork or single-path snapshot would therefore be both too broad
+and too weak. Before creating the canonical repository, freeze the approved
+source commit and create a machine-readable history-partition manifest covering
+every commit from the selected common WebVOWL base through the Phase 18
+checkpoint. Each commit has exactly one primary classification:
+
+```text
+OWLAPI_PACKAGE
+WEBVOWL_INTEGRATION
+WEBVOWL_UI_UX
+SHARED_BUILD_OR_DEPENDENCY
+UNRELATED
+MIXED_REQUIRES_SPLIT
+```
+
+The manifest records original commit ID, parents, subject, classification,
+selected/excluded paths, rationale and—after rewriting—each resulting canonical
+commit ID. `MIXED_REQUIRES_SPLIT` commits are partitioned by reviewed changes,
+not accepted wholesale merely because they touch one package file. A split
+result may map one original commit to an `owlapi` commit, a clean WebVOWL UI/UX
+replay commit and/or a WebVOWL integration replay commit. An excluded original
+commit still receives an explicit reason; no commit silently disappears from
+the accounting.
+
+The original mixed remote branch **MUST** remain unchanged as reconstruction
+evidence until all extracted/replayed histories pass their gates. Do not force-
+rewrite or delete it during extraction. Reconstruct unrelated UI/UX work on a
+separately named branch in the existing `Hadden-Industries/webvowl` repository,
+not in `owlapi` and not in another maintained WebVOWL repository. The exact
+branch creation/push is a separate external-state action. It must replay only
+the UI/UX changes and genuinely required shared build changes from the chosen
+WebVOWL base, with mixed commits split and behaviour verified. Package-consumer
+integration remains a distinct WebVOWL change applied after registry
+publication.
+
+Create `Hadden-Industries/owlapi` as a new, public, independent repository—not
+through GitHub's fork operation and not as a mirror. Perform the history rewrite
+only in a disposable clone. Use exact `git-filter-repo@2.47.0` under the §2.54
+download/tag/commit/digest controls and reviewed
+path/commit selection to:
+
+1. retain package implementation and package-owned tests;
+2. retain reusable package conformance/reference/benchmark infrastructure and
+   continuing package documentation selected by the ownership inventory;
+3. rename the contents of `src/owlapi-js/` to the single-package repository
+   root rather than nesting the package under a WebVOWL-era path;
+4. rename continuing `docs/owlapi-js/` material into the package repository's
+   `docs/` hierarchy—including moving the deferred W3C reporting plan to
+   `docs/plans/w3c-test-conformance-reporting.md`—while leaving
+   application-specific integration material in WebVOWL; and
+5. exclude WebVOWL UI, graph, VOWL conversion, deployment and application code
+   from the `owlapi` history and current tree.
+
+Because filtering changes commit trees and therefore commit IDs, retain the
+tool-generated original-to-rewritten commit map as repository provenance. Also
+record the source repository URL, its upstream relationship, source checkpoint,
+included/excluded path rules, tool/version, exact commands, source/destination
+tree IDs and a path-normalized SHA-256 manifest proving that every admitted file
+is byte-identical before deliberate repository-layout/packaging edits. Preserve
+original author and author-date metadata. An unsplit commit retains its accurate
+original subject/body; a split commit receives a scope-accurate message plus an
+`Origin-Commit: <webvowl-sha>` trailer, while the partition manifest retains the
+original subject. Do not let rename/copy heuristics or a whole-commit subject
+misrepresent a selectively replayed change. The public origin statement links
+to the exact source checkpoint; GitHub's fork badge is not used as a substitute
+for this evidence.
+
+Before the handoff, run a mechanically checked package-boundary audit against
+the WebVOWL staging tree. Production modules under `src/owlapi-js/` may import
+only files inside that tree or declared external runtime dependencies. Package
+tests and supporting tools/fixtures must be classified by repository ownership;
+everything required for package CI is transferred or deliberately replaced so
+the new repository can clone, install and test without any WebVOWL checkout.
+If core production or package-test imports escape through an unowned WebVOWL
+path, repair the isolation leak; do not publish the path or hide it by copying
+unclassified material.
+
+The canonical-repository handoff occurs only after the filtered checkout passes
+the full package suite and the normalized source/hash manifests agree. Record
+the exact final WebVOWL source commit and first canonical `owlapi` commit. From
+that marker onward, package changes occur only in `Hadden-Industries/owlapi`.
+The frozen WebVOWL staging copy may exist only for the finite candidate/cutover
+window and receives no new package work; it is deleted from the WebVOWL working
+tree when the registry dependency is integrated. Historical Git objects remain
+available as provenance.
+
+Before changing configuration, the implementer **MUST** present for explicit
+approval the exact proposed contents/setting changes for:
+
+- creation of the public independent `Hadden-Industries/owlapi` repository,
+  including description, visibility, `main` as the sole default/integration
+  branch, organization roles, squash-only merge settings, the exact §2.30
+  `main` and `v*` rulesets, the exact GitHub-Actions-owned `CI / required`
+  aggregate plus separately required CodeQL check, conditional-review transition,
+  emergency bypass, the §2.59 `all_external_contributors` fork-workflow approval
+  policy, disabled “Allow GitHub Actions to create and approve pull requests”,
+  public/non-sensitive-only repository/organization variables, enabled Issues,
+  disabled Discussions, 90-day Actions
+  artifact/log retention, CodeQL JavaScript default setup/default query suite,
+  required high/critical code-scanning results, secret scanning, push protection
+  and security features;
+- the canonical root `package.json` and package lockfile, including `name`,
+  `version`, §2.39 description/keywords and deliberately omitted metadata,
+  `type`, the exact §2.43 direct `exports` targets and prohibited fallback/
+  pattern/metadata exports, the §2.24 exact `files` allowlist,
+  absence of the §2.23 automatic lifecycle hooks and §2.26 TypeScript metadata,
+  §2.44-required `sideEffects: false`, the §2.45 literal npm-native
+  `devEngines` values and deliberate absence of `engines.npm`/top-level
+  `packageManager`, the exact-pinned §2.32 direct runtime dependencies, the
+  §2.48 absence of shrinkwrap/bundled/peer/optional/override dependency
+  authority and repository-only lockfile, the §2.19-fixed Node engine range,
+  the alpha Browserslist query, the exact §2.54 development dependencies
+  `semver@7.8.5`, `@jspm/generator@2.16.3`,
+  `@cyclonedx/cyclonedx-npm@6.0.1`, `ajv@8.20.0`,
+  `ajv-formats@3.0.1`, `publint@0.3.24`,
+  `@playwright/test@1.62.1` and `vite@8.2.2`, the named npm scripts that invoke
+  those local binaries without remote `npx`/`npm exec --package`, the
+  §2.12-fixed `AGPL-3.0-only` licence, the §2.13-fixed author identity and URL,
+  exact case-sensitive repository/bugs/homepage values and the §2.38
+  release-specific publish settings;
+- the WebVOWL root `package.json` exact production dependency
+  `"owlapi": "0.1.0-alpha.0"`, removal of any obsolete workspace/source-package
+  setting, any script change needed to verify the consumer boundary, and the
+  resulting registry-backed root `package-lock.json` entries;
+- a new root `CONTRIBUTING.md` in `Hadden-Industries/owlapi`, including its
+  exact §2.14
+  `AGPL-3.0-only` inbound=outbound terms, copyright-retention/authority
+  statements and first-external-copyrightable-merge gate;
+- root `SECURITY.md`, including GitHub private vulnerability reporting,
+  `security@haddenindustries.com`, supported-version policy and the
+  five-working-day acknowledgement target;
+- root `CODE_OF_CONDUCT.md`, including Contributor Covenant 3.0 attribution,
+  `conduct@haddenindustries.com`, moderator access/conflict rules and tarball
+  exclusion;
+- the exact §§2.55–2.61 `.github/workflows/ci.yml`, `release.yml`,
+  `maintenance.yml` and `extended-tests.yml` files, including their literal
+  triggers, root `permissions: {}`, job-level permissions, read-only repository
+  token default, the exact five-repository selected-Action allowlist and five
+  reviewed full-SHA/release-tag references, `checkout` credential/ref/depth/tag
+  inputs, literal `setup-node` patches with `check-latest: false` and
+  `package-manager-cache: false`, the temporary bootstrap-only npm registry/auth
+  input and its steady-state absence, exact candidate artefact upload/download
+  inputs and exact dependency-review policy, protected
+  `npm-release` environment/protected-`main` restriction; the exact no-secret,
+  no-variable, no-custom-rule `release-manual` environment with protected
+  `main`, required reviewer `MaksymShostak`, prevent-self-review disabled and
+  every job reference using `deployment: false`; release concurrency with
+  cancellation disabled, manual-dispatch ref/SHA/tag-absence validation,
+  pre-tag deterministic qualification and staged-byte verification, later
+  signed-tag verification, same-run retained-artefact
+  flow and cross-workflow/cache prohibitions, Node 22/24 and
+  browser/import-map/worker matrices, initial npm
+  credential/OIDC transition, proof that the workflow cannot mutate tracked
+  release inputs, §2.34 full/production audit and dependency-review gates,
+  §2.35 single-person/self-review approval setting, §2.36 SSH signer-registry
+  verification, §2.38 version/channel agreement, §2.40 evidence-manifest flow,
+  §2.42 no-network installed-package test, §2.43 export-map enforcement,
+  §2.44 import-purity/tree-shaking proof, §2.45 exact npm enforcement, §2.46
+  reference-map hydration/mirroring, §2.47 SBOM/evidence validation, §2.48
+  locked/lockless graph separation, §2.49 retained/registry-tarball linting,
+  §2.50 third-party-material/NOTICE reconciliation, §2.51 root npm-attestation
+  validation, §2.52 exact checksum/fresh immutable-release verification and
+  §2.53 bootstrap-token/stage-only-OIDC/staged-download/digest/approval flow,
+  the §2.54 exact Node `22.23.2`/`24.19.0`, npm `12.0.2`, Playwright/Vite,
+  two-workspace SBOM and checksum-verified external-tool controls, and the
+  §2.55 separation of npm OIDC, GitHub-release write and maintenance-reporting
+  authority, and the §2.56 prohibition on every unselected/cache/release/
+  attestation wrapper Action, plus the §2.57 literal GA runner labels,
+  architecture assertions, authoritative-Ubuntu/portable-tarball job allocation,
+  explicit Bash/PowerShell Core selection, three one-worker Ubuntu browser jobs,
+  four blocking Windows/macOS Node lanes and per-job runner-image evidence,
+  plus the §2.58 literal aggregate dependency inventories and check names,
+  `fail-fast: false`/no-allow-failure contract, workflow concurrency groups/
+  cancellation/queue modes, exact job/step timeouts, npm/project-owned read
+  retries—including npm `fetch-retries=2`, factor `10`, min/max delay
+  `10000`/`60000` ms and fetch timeout `300000` ms—the three-attempt,
+  120-second `GET`/`HEAD` helper policy, one-attempt external-mutation/
+  reconciliation policy and evidence fields, plus the §2.59 external-fork/
+  Dependabot no-secret/no-OIDC/no-environment/read-only boundary, direct
+  untrusted-expression/workflow-command prohibitions, same-run diagnostic-
+  artefact quarantine, sensitive-log/debug restrictions, sanitization/incident
+  requirements and governance checks, plus the §2.60 bootstrap/steady-state
+  late-tag ordering, no-free-form-release-input rule, failed-attempt evidence and
+  immutable-tag/version-abandonment branches, plus the §2.61 one-gate bootstrap/
+  two-gate staged-release graph, `actions: read` review-history evidence,
+  ordinary tag-message policy, no-runner-polling rule and reconciliation paths;
+- `.github/dependabot.yml` and repository dependency-security settings,
+  including weekly proposal groups, one-PR-per-foundational-runtime isolation,
+  full-SHA Actions pins, disabled auto-merge, alerts and security updates;
+- the §2.48 weekly lockless `owlapi@latest` dependency-resolution monitor,
+  including its read-only npm authority, clean-consumer inputs, public smoke/
+  audit/signature gates, single structured maintenance-finding behavior and
+  deliberate lack of automatic source/dependency/tag/release mutation;
+- CodeQL/default-setup and secret-protection repository settings, including the
+  §2.41 default query suite, `main` merge threshold, secret scanning,
+  push-protection/bypass policy and deliberate absence of custom CodeQL workflow,
+  extended queries and custom secret patterns;
+- the repository-only `docs/provenance/release-signers.json` schema and initial
+  signer/public-key/fingerprint record, plus any machine-readable §2.34 advisory-
+  exception registry used by a required check, the distinct §2.41
+  `docs/provenance/code-scanning-exceptions.json` schema, and the §2.40 release,
+  amendment, extended-test and registry-operation evidence schemas, the §2.49
+  package-lint exception schema and §2.50
+  `docs/provenance/third-party-material.json`, all under the §2.47 Draft
+  2020-12/Ajv contract;
+- every `.github/ISSUE_TEMPLATE/*.yml`, the issue-chooser `config.yml` and
+  `.github/pull_request_template.md`, including the six §2.37 forms, disabled
+  blank issues, private-report links and deliberate absence of `CODEOWNERS`; and
+- any npm-specific inclusion/exclusion or release-policy file.
+
+The approved repository settings **MUST** implement §§2.30, 2.58, 2.59, 2.60 and
+2.61, not merely
+name them in policy prose. The evidence records the effective ruleset JSON/
+screenshots, the exact `CI / required` GitHub Actions identity and separate
+CodeQL requirement, merge methods, bypass actors and proof that the
+independent-review requirement remains deliberately inactive throughout this
+plan. Any later activation is a separately approved post-plan configuration
+change made only when a second genuine code maintainer exists; adding a nominal
+account purely to satisfy a counter is forbidden.
+
+The effective Actions settings also prove that every external-contributor run
+requires per-run maintainer approval, workflow-created/approved pull requests
+are disabled, default authority is read-only and no sensitive value is stored in
+a repository/organization variable. That execution approval is recorded as
+permission to spend unprivileged CI only; it neither satisfies code review nor
+changes the first-external-contribution rights gate in §2.14.
+
+That conditional code-review rule does not change §2.35. Both `npm-release` and
+`release-manual` require an explicit reviewer click but deliberately permit the
+initiating named release custodian to supply it; both leave prevent-self-review
+disabled. `release-manual` additionally has no secrets or variables and every
+job reference sets `deployment: false`. A future independent deployment gate is
+a separate approval from activating independent pull-request review.
+
+The approved package manifest **MUST** give all six §2.32 foundational runtime
+dependencies exact versions, and the lockfile **MUST** resolve those same
+versions. The approved Dependabot configuration proposes updates under §2.32
+without introducing Renovate or auto-merge. Every Action reference in an
+approved workflow is one of the five exact §2.56 repository/release/full-SHA
+rows, with its reviewed release tag in an adjacent comment. The repository
+setting requires full-SHA pins and restricts Actions to those five repositories;
+no external reusable workflow is an additional release authority.
+
+The approved workflow configuration has exactly the §§2.55, 2.60 and 2.61 trust and
+ordering boundaries. `ci.yml` is read-only on pull requests and `main`;
+`release.yml` starts only from a manual dispatch whose captured ref/SHA is the
+then-current protected-`main` head, derives rather than accepts the release
+identity, and keeps the complete candidate chain in one serialized non-cancelling
+`queue: max` run; `maintenance.yml` separates its
+read-only health check from its `issues: write` reporter; and
+`extended-tests.yml` has no release authority. CI cancels only superseded work
+for the same PR/ref, while maintenance and extended testing finish a running
+observation and retain only the newest pending run. Every workflow denies token
+permissions at its root and grants the minimum named permission per job. The
+`release.yml` npm job alone receives
+`id-token: write` and the `npm-release` environment; the two manual-handoff jobs
+alone add `actions: read` to `contents: read` and use `release-manual` with
+`deployment: false`; separate GitHub-release jobs alone receive
+`contents: write`. No privileged workflow uses
+`pull_request_target`, `workflow_run`, a cross-workflow candidate or a release
+cache. The `npm-release` environment admits protected `main`, not `v*` tags; the
+canonical tag does not exist when the run begins and is created by the human
+only at §2.60's late boundary. No runner polls for that tag or for staged
+promotion: §2.61's `release-manual` reviews resume those jobs.
+
+External-fork and Dependabot runs use that same `pull_request` CI without any
+secret, OIDC, environment, write permission or privileged follow-on. Their
+same-run ephemeral candidate remains quarantined to unprivileged CI jobs and is
+never an input to `release.yml`. Governance rejects direct contributor/external
+text interpolation into `run:`, arbitrary workflow-command-file output, context
+dumps and credential-job tracing, and verifies the §2.59 sanitization and
+incident boundary.
+
+The same approved files expose `CI / required` and `Release / qualified` exactly
+as §2.58 defines them. Their project-owned mandatory-job inventory is checked by
+governance tests, every required matrix uses `fail-fast: false` and no required
+failure is neutralized. The npm job depends directly on `Release / qualified`.
+Every job and vulnerable step uses the exact timeout class, every permitted read
+retry is bounded and classified, and every external write has one automatic
+attempt with fail-closed read-only reconciliation of an ambiguous response.
+
+Every required workflow job also has the exact §2.57 host contract. Only
+`ubuntu-24.04` x64 produces or publishes release bytes; its Node 22/24 lanes run
+the full suite, and the release/browser/WebVOWL/maintenance jobs remain on that
+explicit label. `windows-2025` x64 and `macos-15` arm64 each run the focused
+installed-tarball suite on both exact Node patches and cannot rebuild the
+candidate. Chromium, Firefox and WebKit are separate Ubuntu jobs with one worker
+and locally installed matching revisions. Linux/macOS commands select `bash`,
+Windows commands select `pwsh`, and each required job emits and validates the
+label/OS/architecture/image-version record required by §§2.40 and 2.57. No
+`*-latest`, preview/slim/larger/self-hosted runner or container is admitted.
+Skipped, cancelled and timed-out lanes remain failures under §2.58 and cannot
+contribute qualifying release evidence.
+
+Every checkout disables persisted credentials; only the release source/tag-
+verification job checks out the captured `github.sha` and fetches complete
+history/tags, and the npm OIDC job performs no checkout. Every
+Node setup uses the literal approved patch, disables `check-latest` and
+`package-manager-cache`, and supplies no other cache input. Only the temporary
+direct-bootstrap branch configures the public npm registry and exposes
+`NODE_AUTH_TOKEN` at its publish step; the steady OIDC path contains neither.
+The release candidate is the exact three-file §2.56 bundle uploaded with
+no-overwrite/hidden-file exclusion/90-day retention and passed by same-run
+artefact ID to digest-enforcing downloads that cannot broaden to another
+run/repository. No unselected cache/script/publish/release/attestation Action or
+local composite wrapper is admitted.
+
+The approved dependency-review Action runs only on pull requests with
+`contents: read`, the exact §2.56 vulnerability-only/high/runtime/no-comment/
+bounded-snapshot-retry inputs and no PAT. It fails on newly introduced high or
+critical runtime findings, while the release workflow retains both §2.34 npm
+audit reports and validates every active exception's schema and expiry. The
+approved signer-registry gate validates SSH public keys/fingerprints, rejects a
+signer introduced by the release pull request itself and excludes the registry
+from the package packlist. The approved community configuration keeps Issues
+structured, Discussions and blank issues disabled, and does not create
+`CODEOWNERS` at this phase.
+
+The approved CodeQL default setup analyzes JavaScript with the default query
+suite and the `main` ruleset blocks incomplete analysis and introduced
+high/critical findings. It coexists with dependency review rather than replacing
+it. Secret scanning and push protection are enabled, the approved exception
+schemas are repository-only, and release evidence records the clean/accepted
+state without copying sensitive alert contents. Actions logs and workflow
+artifacts use the §2.40 90-day diagnostic retention setting but are never the
+sole durable evidence for a release.
+
+The approved tooling configuration pins Node `22.23.2` and `24.19.0`, npm
+`12.0.2` in `devEngines.packageManager.version` and every workflow setup/gate,
+the eight literal §2.54 npm development-tool versions, GitHub CLI `2.98.0` plus
+its official binary checksum, and migration-only `git-filter-repo@2.47.0` plus
+its recorded upstream tag/commit/retrieval URL/file digest. The import-map
+configuration names `jspm.io`, `production`/`browser`/`module` and integrity;
+the SBOM configuration names CycloneDX JSON 1.6, reproducible validated library
+output and the isolated production-only subject graph; the package lint runs
+strictly against tarball bytes; the evidence validator names Draft 2020-12 plus
+registered standard formats; and the browser fixture names exact Playwright and
+Vite inputs. None of these tools is a runtime dependency.
+
+The approved canonical package manifest **MUST** encode:
+
+```json
+{
+  "name": "owlapi",
+  "version": "0.1.0-alpha.0",
+  "description": "OWL 2 ontology parsing and structural APIs for Node.js and browsers, designed for practical compatibility with Java OWLAPI concepts.",
+  "keywords": [
+    "owl",
+    "owl2",
+    "owlapi",
+    "ontology",
+    "ontology-parser",
+    "semantic-web",
+    "linked-data",
+    "rdf",
+    "rdfjs",
+    "rdfxml",
+    "turtle",
+    "jsonld"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./apibinding": "./apibinding/index.js",
+    "./model": "./model/index.js",
+    "./io": "./io/index.js",
+    "./formats": "./formats/index.js"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": "^22.0.0 || ^24.0.0"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "npm",
+      "version": "12.0.2",
+      "onFail": "error"
+    }
+  },
+  "browserslist": "baseline widely available",
+  "dependencies": {
+    "@rdfjs/data-model": "2.1.2",
+    "@rdfjs/dataset": "2.0.3",
+    "@xmldom/xmldom": "0.9.12",
+    "jsonld": "9.0.0",
+    "n3": "2.3.0",
+    "rdfxml-streaming-parser": "3.3.0"
+  },
+  "devDependencies": {
+    "@cyclonedx/cyclonedx-npm": "6.0.1",
+    "@jspm/generator": "2.16.3",
+    "@playwright/test": "1.62.1",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "publint": "0.3.24",
+    "semver": "7.8.5",
+    "vite": "8.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hadden-Industries/owlapi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hadden-Industries/owlapi/issues"
+  },
+  "homepage": "https://github.com/Hadden-Industries/owlapi#readme",
+  "author": {
+    "name": "Maksym Shostak",
+    "url": "https://github.com/MaksymShostak"
+  },
+  "license": "AGPL-3.0-only",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "next"
+  }
+}
+```
+
+This alpha manifest intentionally omits `funding`, `contributors`, an author
+email and any invented maintainer metadata under §2.39. Its `publishConfig.tag`
+is `next` because the exact version is a prerelease; Phase 20 changes the field
+to `latest` only in an accepted stable release pull request and the §2.38 gate
+checks the explicit command and requested registry operation against it. The
+configuration proposal inserts the §2.45 `devEngines` object with the literal
+reviewed npm patch `12.0.2`; the manifest, lockfile, workflows and release
+evidence must all agree on that value. It adds no `main`, `module`, `browser`,
+`engines.npm` or top-level `packageManager` field. Under §2.48 it also has no
+`bundleDependencies`/`bundledDependencies`, `peerDependencies`,
+`optionalDependencies` or `overrides`, and the tarball contains neither
+`package-lock.json` nor `npm-shrinkwrap.json`.
+
+The owner/repository casing **MUST** remain identical in GitHub, npm metadata,
+release evidence and later trusted-publisher configuration. Native ESM exposes
+only these public exports:
+
+```text
+owlapi            → ./index.js
+owlapi/apibinding → public facade for OWLManager/bootstrap
+owlapi/model      → public structural/model/manager facade
+owlapi/io         → public document-source and I/O-diagnostic facade
+owlapi/formats    → public document-format facade
+```
+
+The final facade target paths are part of the exact package-manifest approval.
+Phase 19 places each public binding's sole canonical definition in the matching
+§2.10.4 Java-compatible public namespace; the facade names every binding
+explicitly. Private engines move to cohesive `internal/` responsibilities and
+are not duplicated under a mirrored Java-shaped internal tree. The facade,
+package `exports`, Public API Surface Registry and packed artefact must agree.
+The target files are the readable canonical source modules required by §2.23;
+there is no `dist/` indirection, generated production tree or source-map layer.
+
+As part of the same repository handoff, create
+`docs/compatibility/java-api-surface.json`, generate or mechanically verify
+`docs/compatibility/java-api-surface.md`, and move the authoritative capability
+matrix to `docs/compatibility/capabilities.json`. The history/path manifest must
+account for every public-namespace relocation and every `manager/`, `parser/` or
+`rdf/` staging module placed under its final public or private owner. No
+semantic behavior is changed merely to complete that relocation.
+
+Prepare the WebVOWL cutover test-first in an isolated candidate checkout. Add a
+failing consumer-boundary architecture test at
+`src/owlapiConsumerBoundary.architecture.test.js`. It must discover static and
+dynamic module specifiers in all WebVOWL source/tests and fail on:
+
+- any retained `src/owlapi-js/` production tree or any relative, absolute or
+  repository-root import that resolves to the pre-extraction source;
+- any `owlapi/...` specifier other than `owlapi/apibinding`, `owlapi/model`,
+  `owlapi/io`, or `owlapi/formats`;
+- package metadata, test-helper or other unexported deep imports;
+- an `owlapi` resolver alias in Vite or Jest configuration;
+- `owlapi` being absent from root `dependencies`, present only in
+  `devDependencies`, declared with a range/local/Git specifier, or resolved by
+  npm/lockfile to a workspace, filesystem, Git or non-registry source.
+
+Then replace the current reach-ins in
+`src/owl2vowl/js/index.js`, `src/owl2vowl/js/importResolver.js` and
+`src/owl2vowl/js/vowlBuilder.js`, plus their WebVOWL-side tests, with the
+smallest appropriate public specifier. `owlapi/apibinding` supplies
+`OWLManager`; `owlapi/model` supplies `IRI`, structural/model values, manager
+types and loader configuration; `owlapi/io` supplies `StringDocumentSource`
+and I/O diagnostics; and `owlapi/formats` supplies format identities when an
+application selects one explicitly. WebVOWL does not import RDF translators or
+RDF/JS factory wiring. Tests that currently reach into `model/structural.js`
+must construct their fixtures through supported public APIs; an internal helper
+is not promoted to a public export merely to make a WebVOWL test convenient.
+
+Before publication, apply those proposed WebVOWL source/manifest changes only
+inside the disposable checkout and install the retained candidate tarball with
+no save and no lockfile mutation. Jest and Vite must use ordinary Node/package
+resolution through `node_modules/owlapi` and the packed package's `exports`
+map. The maintained WebVOWL branch and lockfile are changed only after the exact
+version is available from the registry; their committed resolution must then be
+the registry artefact, never the candidate path.
+
+This consumer gate uses WebVOWL's own accepted lockfile toolchain—Vite `8.1.5`
+at the §2.54 decision—not the standalone fixture's `vite@8.2.2`. Do not update
+or alias WebVOWL's bundler merely to make the versions match. If WebVOWL has
+separately accepted a later version before the gate, record and use that exact
+lockfile value instead.
+
+Internal parser paths, package metadata and test helpers are not public
+subpath exports. The §2.44 import-purity and tree-shaking tests are release
+gates for the required `sideEffects: false`; a failure is corrected rather than
+papered over by weakening the manifest. The Node engine floor, release runtime
+and alpha browser query **MUST** be exactly those fixed by §§2.19–2.20 and 2.54:
+Node `22.23.2` and `24.19.0` are blocking, Node `24.19.0` produces the release,
+and alpha uses moving
+`baseline widely available`. Phase 19 may not advertise an untested range or
+silently turn a non-blocking Node 26 probe into a published support claim.
+
+The runtime dependency list is derived from the production import closure and
+must contain every and only directly imported runtime package. Versions remain
+governed as required by §6.8 and §21.7. Development/reference dependencies,
+Java OWLAPI tooling, OWL2VOWL fixtures, W3C conformance corpora, benchmarks,
+WebVOWL, `VOWLBuilder` and release tooling **MUST NOT** enter the installed
+runtime dependency graph. All eight exact §2.54 npm release-control tools belong
+only in `devDependencies`; neither they nor the reference ESM provider are part of the
+installed production closure. The six runtime packages remain ordinary exact
+`dependencies` under §2.48, with none recast as a peer, optional or bundled
+payload merely to alter consumer resolution.
+
+Create `docs/provenance/third-party-material.json` and its closed §2.47 schema
+from the complete production install, release/evidence development toolchain and
+copied/generated third-party-file inventory, then inspect the actual declared
+licence/notice files and approve every §2.50 relationship, scope and disposition.
+The package `NOTICE` is mechanically checked against the tarball-applicable
+rows. The record, schema and review evidence remain repository-only; the compact
+package notice and §2.47 SBOM are their consumer-facing projections.
+
+##### 17.26.1.1 Runtime portability and package-condition policy
+
+The five approved public exports **MUST** resolve to unconditional native-ESM
+targets. Phase 19 **MUST NOT** introduce `node`, `browser` or other
+environment-conditioned package `exports`, or a package `imports` field for
+platform selection, merely because `owlapi` supports both Node and browsers.
+Those package mechanisms are appropriate only when supported environments
+genuinely require different module targets; they are not a substitute for a
+portable implementation or a narrow environment adapter. This decision follows
+the §13 portability rules and Node's distinction between ordinary exports and
+[private conditional package imports](https://nodejs.org/api/packages.html#subpath-imports).
+
+Where a real platform difference exists, production source **MUST** own it at
+the smallest cohesive adapter seam. The adapter must:
+
+1. detect the required capability directly rather than infer a runtime from a
+   user agent, `process`, or a `window`/`global` name;
+2. prefer the standards-based native capability when it is present;
+3. dynamically import a declared production fallback only when the capability
+   is absent;
+4. keep the fallback and its third-party types behind the private adapter; and
+5. throw the applicable typed public error, preserving the cause, if neither
+   path is available.
+
+The pre-extraction staging implementation demonstrates the intended shape.
+`parser/xml/xmlParserAdapter.js` tests for `globalThis.DOMParser`, uses the
+native browser implementation when available, and otherwise lazily imports
+`@xmldom/xmldom`. Its adapter tests cover both branches and normalize their
+failure semantics. RDF/XML, N3-family and JSON-LD adapters do not maintain
+parallel Node/browser implementations: they lazily load one selected
+browser-compatible dependency surface (`rdfxml-streaming-parser`,
+`n3/browser/n3.min.js`, and `jsonld/dist/jsonld.esm.js`, respectively) that is
+also exercised in Node. The portable production graph contains no direct
+dependency on Node built-ins, `require`, `__dirname` or `__filename`, and does
+not use `process` or `Buffer` as an application-level runtime discriminator.
+
+The XML adapter's staging Vite build deliberately leaves the dormant
+`import("@xmldom/xmldom")` expression behind `/* @vite-ignore */` while keeping
+the fallback implementation bytes out of the browser bundle. A supported
+browser has native `DOMParser`, so it must never evaluate that fallback import.
+This is a behavior to verify in installed-package browser tests, not evidence
+that a package-level condition is required. Phase 19 **MUST** fail if the Node
+fallback implementation enters the browser bundle or if a supported browser
+requests or evaluates it during ordinary XML ingestion.
+
+The Q15 decision was informed by the following bounded probe on 23 August 2026.
+These are historical staging results and rationale, not substitutes for the
+clean-tarball release gates:
+
+| Probe | Observed staging result | What it establishes |
+|---|---:|---|
+| Focused browser-contract Jest tests for OWL-to-RDF, RDF/XML, Turtle, TriG, N-Triples, N-Quads and JSON-LD | 7 suites and 7 tests passed | The adapters tolerate browser capability contracts and keep Node application globals out of their public behavior. |
+| `xmlParserAdapter`, RDF/XML implementation-adapter, N3 implementation-adapter and JSON-LD implementation-adapter tests | 4 suites and 38 tests passed | Native-DOM selection, Node fallback selection, typed failure normalization and the three lazy dependency seams work in Node. |
+| Manager-level RDF/XML, Turtle, JSON-LD and OWL/XML tests | 4 suites and 66 tests passed | Representative formats work end to end through `OWLManager`, rather than only through isolated third-party adapters. |
+| `npm run build` in WebVOWL | 474 modules transformed; production build passed | Vite resolved the portable graph and emitted separate lazy N3, RDF/XML and JSON-LD chunks without adding tracked build changes. |
+
+The browser-contract Jest tests simulate browser capabilities under Node, and a
+successful Vite build proves bundling rather than real-engine execution. Neither
+may be described as Chromium, Firefox or WebKit runtime evidence. The
+installed-tarball `@playwright/test@1.62.1` suite required by §§17.26.2 and
+17.26.4 therefore
+remains a mandatory independent gate. It must ingest representative XML and
+lazy RDF syntaxes through public `owlapi` specifiers in local Chromium, Firefox
+and WebKit, while the Node package suite exercises the fallback branch.
+
+The package-governance test **MUST** assert that the approved public exports
+remain direct, unconditional ESM targets and that no environment-conditioned
+`exports` or platform-selecting `imports` mapping has appeared. A future
+conditional package mapping requires all of the following before adoption:
+
+- a reproducible failure in a supported installed-package runtime or consumer
+  build;
+- evidence that source-level capability selection cannot correct the failure
+  without resolution failure or material dependency leakage;
+- an explicit design decision identifying the distinct module targets and
+  fallback order; and
+- Node, browser-bundle and real-engine tests for every resulting condition.
+
+##### 17.26.1.2 Browser-consumer and environment-status proofs
+
+Implement the §§2.21–2.22 browser contracts against the packed package, not the
+canonical source tree. Keep three deliberately distinct consumers under
+`test/consumers/browser/` in the canonical repository:
+
+```text
+test/consumers/browser/bundler/    ordinary Vite application using public package specifiers
+test/consumers/browser/import-map/ native document modules with the generated inline reference map
+test/consumers/browser/worker/     Vite-built DedicatedWorker using public package specifiers
+```
+
+The package repository installs exact `vite@8.2.2` to build the bundler and
+worker fixtures and exact `@playwright/test@1.62.1` to install and drive its
+matching Chromium, Firefox and WebKit revisions. Installation and execution use
+named npm scripts over those local dependencies; a test command may not download
+a different Playwright/Vite package through `npx`, inherit a global binary or
+use a Playwright container. Under §2.57, three separate `ubuntu-24.04` jobs each
+install only the selected engine and its Linux dependencies without a browser
+cache, run one matching project with one worker, and capture the runner image,
+package version and actual browser revision.
+
+All three fixtures install the retained tarball as an ordinary dependency. They
+must not use a workspace, source alias, repository-relative package import or
+unexported path. The import-map fixture additionally uses
+`scripts/generate-reference-import-map.mjs` to trace the five public roots and
+their static/literal-dynamic production closure with exact
+`@jspm/generator@2.16.3` and the §2.46
+`jspm.io`/`production`+`browser`+`module`/integrity
+configuration. Link the five roots from the unpacked retained tarball and use
+the provider only for the browser-loadable external closure. Commit a
+human-reviewable version-pinned map example for the current package version,
+inject its JSON inline before the first dependent module, and make the
+generated-vs-reviewed comparison a package gate. Do not inject
+`es-module-shims`. Fail on an unpinned package URL, missing integrity metadata,
+an omitted public root, an unresolved lazy import, a CommonJS/UMD execution
+leak, or a stale mapping.
+
+Before browser execution, hydrate every referenced provider module, validate
+its bytes against the generated integrity metadata and build the ephemeral
+local mirror/map required by §2.46 without transforming sources. Run the native
+document test against that local mirror in every required engine and separately
+verify that the public reference URLs remain retrievable. The mirror is a test
+transport artefact, not committed package source or a second supported build.
+
+Write the runtime tests before portability corrections. The initial native-map
+test is expected to expose the selected N3 UMD deep path and the CommonJS
+RDF/XML implementation boundary. Correct the N3 path to its maintained ESM
+artefact if the focused adapter, Node and browser tests prove equivalent. Let the
+approved ESM provider perform any reference-consumer CommonJS conversion; do not
+check generated third-party bundles into package source or turn them into
+public exports. The worker test is expected to expose the Window-only
+`DOMParser`/ignored CommonJS fallback seam. Correct that seam behind the private
+XML adapter and verify that the fallback remains lazy in ordinary Window builds,
+works inside the bundled worker, and preserves the normalized public error
+contract in Node and browsers.
+
+Each Playwright engine must then prove:
+
+- all five public package specifiers import with identical binding identities
+  where the root re-exports a subpath value;
+- the ordinary bundled document loads representative OWL-native, RDF/XML,
+  Turtle and JSON-LD documents through `OWLManager`;
+- the native import-map document performs the same representative loads without
+  a bundler-owned application module graph, using the integrity-verified local
+  mirror of the exact public reference-provider graph;
+- the bundled dedicated worker loads at least one XML document and one lazy RDF
+  document, returns only structured-clone-safe result/evidence values, and emits
+  no unresolved bare-specifier, CommonJS-global or missing-`DOMParser` failure;
+  and
+- no browser path requests the Node XML fallback unless the tested global
+  actually lacks the native capability.
+
+Separately, the four blocking §2.57 Windows/macOS × Node lanes install the exact
+packed candidate and run their focused public-boundary portability suite. They
+do not substitute for any browser project, repeat the complete semantic corpus
+or produce another tarball. The README environment table names the three tested
+OS/architecture representatives as `SUPPORTED` and leaves other upstream-
+supported Node OS/architecture combinations `PLAUSIBLE_UNVERIFIED` rather than
+silently generalizing from one Linux job.
+
+Add a package-governance assertion that the README's environment table uses
+only the three §2.22 status values and contains every initial matrix row with the
+approved status. The test must also reject CommonJS entry metadata, a
+turnkey-global build, an environment-conditioned public export, or wording that
+promotes Yarn, pnpm, Node 26 Current, workers other than the tested dedicated
+worker, or any out-of-scope runtime to `SUPPORTED` without its separately
+approved blocking evidence.
+
+Create a package-local README, the complete unmodified GNU AGPLv3 licence text,
+all applicable notices, and changelog/release notes consistent with §§2.12–2.27
+and the §2.13 rights-inventory/role-separation gate. The initial copyright notice
+**MUST** identify Maksym Shostak as owner of his contributions and HADDEN
+INDUSTRIES LTD separately as project steward, using the exact linked wording in
+§2.13. It **MUST NOT** imply an unexecuted transfer. The README **MUST** include:
+
+- the new-package identity/discontinuity notice required by §2.10;
+- the §2.15 “Why `owlapi` exists” rationale, including why the evaluated
+  adjacent projects did not satisfy the project's complete requirements;
+- installation as `npm install owlapi@next` for the alpha;
+- ESM examples using only the five supported specifiers, including paired
+  Java/JavaScript manager, document-loading, data-factory, IRI and ontology-
+  query examples;
+- supported formats, the exact §2.22 environment-status table, capability
+  status and known limitations, including npm as the authoritative workflow,
+  Yarn/pnpm as `PLAUSIBLE_UNVERIFIED`, CommonJS and the named alternative
+  runtimes as `OUT_OF_SCOPE`, and the Node 22/24 distinction between runtime
+  compatibility and upstream security maintenance, with the §2.57 tested
+  Ubuntu x64/Windows x64/macOS arm64 representatives distinguished from other
+  `PLAUSIBLE_UNVERIFIED` Node OS/architecture combinations;
+- the §2.11 `alpha.0` capability freeze, including the absence of public
+  closure-query/materialization, mutation, merger, save and concrete-storer
+  APIs and the resulting lack of `universal-ontology` workflow support;
+- the relationship to, and compatibility objective with, Java OWLAPI, including
+  a clear statement that this is an independent JavaScript implementation not
+  affiliated with or endorsed by the Java OWLAPI project;
+- browser and Node usage, including separate bundler, native-document import-map
+  and bundled-dedicated-worker examples, the application ownership of import-map
+  URLs/CSP/integrity, `jspm.io`'s replaceable reference-provider status, the
+  absence of raw-`node_modules`, `es-module-shims`, worker-import-map and IIFE
+  guarantees, plus security/network defaults and resource limits;
+- links to source, ordinary issue reporting, private security reporting, the
+  Code of Conduct, licence, provenance, the detailed alternatives review and
+  compatibility data; and
+- an accurate `AGPL-3.0-only` statement without suggesting an automatic
+  “or-later” option or relicensing separately licensed dependencies.
+
+Create and pack the complete §2.24 version-matched documentation set alongside
+the README. Enrich the Public API Surface Registry with the data required by
+§2.25, then generate or mechanically check `API.md` so every packed public
+binding, Java counterpart, call shape, capability/stability classification,
+public error and material semantic qualification is covered exactly once.
+Execute its designated examples against the retained tarball. Generate or
+verify `docs/compatibility/java-api-surface.md` from the same registry and
+capability sources, and fail on disagreement among either human view, the
+machine-readable registries, explicit facades, package exports or installed
+runtime inventory.
+
+Create a human-curated `CHANGELOG.md` whose prerelease and stable entries record
+only user-visible package changes, controlled corrections/deviations,
+deprecations and compatibility consequences. Do not copy raw commit history or
+release-workflow evidence into it. Keep detailed test/provenance evidence in the
+canonical repository and immutable release record. Package governance must also
+prove that neither the manifest nor tarball advertises or contains official
+TypeScript declarations and that the README discloses the §2.26 status without
+suggesting that partial or third-party declarations are project-supported.
+
+Phase 19 also creates the canonical
+`docs/provenance/npm-historical-dependency-audit.json` evidence record required
+by §2.10.1 and performs its first baseline search before the alpha publication.
+The record contains the schema version, audit timestamp, registry and public-
+search interfaces used, exact query/specifier, result URL or package/repository
+identity, observed dependency text, classification (`EXACT_UNAVAILABLE`,
+`LOCK_OR_TARBALL`, `COMPATIBLE_RANGE`, `BROAD_RANGE`, or `UNRELATED_TEXT`),
+maintenance evidence, whether the declaration would resolve `1.0.1`, and the
+materiality decision with rationale. Sanitized evidence may be stored alongside
+the record; credentials, private source content and personal data may not. The
+baseline does not block the 0.x alpha merely because absence cannot prove that
+no private consumer exists. The audit is rerun no more than seven calendar days
+before stable `1.0.1`; any material accepting range triggers the blocking branch
+defined in §2.10.1.
+
+After its exact repository-policy contents have been approved, create the root
+`CONTRIBUTING.md` required by §2.14 and link it from the package README. It must
+make the following distinctions conspicuous:
+
+- issue reports, proposals and review do not themselves authorize incorporation
+  of contributed expression;
+- accepted outside contributions use `AGPL-3.0-only` inbound=outbound and retain
+  their contributor's copyright unless a separately approved agreement says
+  otherwise;
+- the contributor must have authority to grant the applicable rights, including
+  any authority required from an employer or other actual owner; and
+- the first external copyrightable contribution affecting the package may be
+  reviewed but cannot be merged until the §2.14.1 checkpoint records whether
+  pure inbound=outbound is retained or a contributor-retained CLA is adopted.
+
+After extraction, extend the canonical repository's `governance.test.js` to
+fail if the root contribution policy, package README and package metadata
+disagree about the licence, repository identity or project relationship, or if
+the contribution policy omits copyright retention, authority-to-submit,
+inbound=outbound or the first-external-merge gate. This test verifies published
+policy consistency; it is not evidence that a particular person owns a
+particular contribution.
+
+After their exact contents receive the repository's required configuration/
+policy approval, create the root `SECURITY.md` and enable GitHub private
+vulnerability reporting. `SECURITY.md` must implement §2.17 verbatim in
+substance: private GitHub reporting first,
+`security@haddenindustries.com` second, no public vulnerability reports, the
+current supported-version table, a five-working-day acknowledgement target
+expressly identified as non-SLA, and the advisory/CVE and integrity-gate policy.
+Test the company-controlled role mailbox from an unrelated external provider
+before declaring the channel operational. The README links to the canonical
+repository policy rather than copying its mutable support table.
+
+Create the root `CODE_OF_CONDUCT.md` from Contributor Covenant 3.0 with its
+required attribution and permanent version URL. Replace every template
+placeholder with the actual §2.18 process:
+`conduct@haddenindustries.com`, Maksym Shostak as the sole initial HADDEN
+INDUSTRIES LTD-appointed moderator, need-to-know handling, non-adjudication when
+he is conflicted, honest disclosure that independent handling is post-plan, and
+no public/security-channel reports. Verify the address externally and
+its single individually authenticated recipient. Keep `CONTRIBUTING.md`, `SECURITY.md` and
+`CODE_OF_CONDUCT.md` linked but responsibility-specific; no document may imply
+that conduct enforcement decides contribution licensing or that vulnerability
+responders automatically receive interpersonal reports.
+
+Extend package governance/packlist tests to assert that the README exposes the
+canonical security and conduct policy URLs, the policy files contain the exact
+approved role addresses, and `CODE_OF_CONDUCT.md` is absent from the npm
+tarball. The test may verify policy shape and links; it must not copy confidential
+mailbox membership, report content or private moderation/security records into
+the repository.
+
+#### 17.26.2 Deterministic artefact gate
+
+The package is published from an exact reviewed tarball, never directly from an
+unreviewed working directory. Before the sequence begins, prepare the exact
+version and all version-matched release documentation in a dedicated release
+pull request. `npm version 0.1.0-alpha.0 --no-git-tag-version` may be used to
+synchronize the manifest and lockfile, but its complete diff is reviewed and
+accepted through that pull request. The workflow does not select the version or
+write those files. All mandatory matrix work below runs with
+`strategy.fail-fast: false`, no allow-failure path and the exact §2.58
+job/step timeouts. The release-candidate sequence is:
+
+1. merge the accepted release pull request so every tracked source, policy,
+   dependency and workflow input belongs to one curated protected-`main` commit;
+   manually dispatch `release.yml` at `main`; reject any dispatch ref other than
+   `refs/heads/main`; capture `github.sha` and the then-current `main` head;
+   require them to agree; derive the version/tag/channel from reviewed files;
+   and prove that neither the canonical `v<version>` tag nor an unexpected public
+   coordinate already exists;
+2. start from a clean checkout of that exact captured commit, establish and
+   verify npm `12.0.2`, run its approved `npm ci`, and verify that no WebVOWL
+   checkout/path is needed;
+3. run package formatting, lint, architecture, governance, conformance,
+   differential, resource and accepted benchmark gates on blocking Node
+   `22.23.2` and `24.19.0` on `ubuntu-24.04` x64 as assigned by the approved
+   matrix, with the complete release-side gate and packing job on Node
+   `24.19.0`; retain the §2.34 full-graph JSON audit and
+   blocking production audit against the accepted lockfile, validate every
+   active advisory exception, verify the accepted commit's required §2.41 CodeQL
+   result and absence/accepted state of source/secret alerts, and record any Node
+   26 Current probe separately as non-blocking;
+4. run package-specific export, dependency-closure and packlist tests, then run
+   `npm pack --dry-run --json` and retain its manifest as pre-tag review
+   evidence; prove the public/private production modules are the canonical
+   readable source rather than generated `dist/` output, prove all and only the
+   §2.24 documents are admitted, prove §2.38 version/channel agreement, the
+   exact §2.43 exports-only map and §2.44 import-purity/tree-shaking contract,
+   the §2.48 absence of shrinkwrap/bundled/peer/optional/override authority and
+   the §2.50 third-party-material/`NOTICE` agreement, and run the §2.42
+   installed-package no-network scenarios;
+5. on an explicit `ubuntu-24.04` x64 GitHub-hosted runner whose §2.57 image
+   identity is recorded, checked out through the exact §2.56
+   `actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1` captured-SHA/full-history/
+   no-persisted-credentials policy and exact cache-disabled Node `24.19.0`,
+   repeat the required clean install and release gates and build the actual
+   tarball exactly once with `npm pack --json`;
+6. use the separate §2.47/§2.54 tool and production-only subject workspaces to
+   generate and validate the reproducible CycloneDX 1.6 JSON library SBOM with
+   exact `@cyclonedx/cyclonedx-npm@6.0.1`, compare its unflattened/full-PURL
+   graph with `npm ls --omit=dev --all --json` from the subject and the packed inventory, then
+   generate the exact sorted §2.52 `SHA256SUMS` over only the tarball and SBOM,
+   strictly reparse/verify it and record the workflow/tool versions;
+7. inspect the tarball itself, not merely the source tree or dry-run output, and
+   verify its filename, package identity, byte size, SHA-256 and packlist; run
+   local exact `publint@0.3.24` against those tarball bytes in strict
+   mode and validate any narrow active exception;
+8. install that retained tarball into new lockless, cache-empty temporary
+   consumer projects with lifecycle scripts disabled for the inspection
+   install, then repeat the supported normal consumer install path; preserve
+   the newly resolved lockfile/full production graph, compare it with the
+   locked release/SBOM graph under §2.48 and explain every difference;
+9. run the public API and Node smoke suites only through `owlapi`,
+   `owlapi/apibinding`, `owlapi/model`, `owlapi/io`, and `owlapi/formats`
+   imports on Ubuntu, then download and install that same candidate in all four
+   blocking §2.57 Windows/macOS × Node portability lanes and require their
+   focused public-boundary, representative-load, diagnostics, import-purity and
+   no-network checks to pass without rebuilding it;
+10. install the same retained tarball into all three §17.26.1.2 exact
+   `@playwright/test@1.62.1` consumers, building the package-owned fixtures with
+   exact `vite@8.2.2`, and require the bundled document, generated native-document
+   import-map over the integrity-verified §2.46 local mirror and bundled
+   dedicated-worker public-manager scenarios to pass in three separate
+   one-worker `ubuntu-24.04` jobs using locally installed Playwright-managed
+   Chromium, Firefox and WebKit without caches or containers, while separately
+   verifying the public reference URLs;
+11. on `ubuntu-24.04` x64, create an isolated WebVOWL checkout at the recorded source commit, run its
+    existing clean install before applying the reviewed consumer-cutover patch,
+    install the retained tarball with no save and no lockfile mutation, and run
+    the normal WebVOWL Jest suites plus development and production Vite builds;
+12. verify in that checkout that the boundary architecture test is green, no
+    source package tree/alias/local dependency remains, and the installed
+    candidate's identity, version and exports match the tarball;
+13. record the §2.16.1 extended-browser/device matrix as `PASS`, `FAIL` or
+    reasoned `NOT_RUN`, never as a terminal `INFRASTRUCTURE_ERROR`;
+14. archive the exact WebVOWL base commit, candidate-patch digest, commands and
+    results so the post-publication WebVOWL commit can be compared with the
+    prepublication application trial;
+15. run the unprivileged `Release / qualified` aggregate and require every
+    mandatory prepublication job above to have concluded `success`; and
+16. execute §§2.60–2.61's mode-specific late-tag/manual-handoff boundary without
+    rebuilding: for `DIRECT_BOOTSTRAP`, wait at `Release / tag accepted`, have
+    the human create/push the canonical signed tag and approve that
+    `release-manual` job, verify the tag, create the draft, and only then request
+    the direct npm write at `npm-release`; for `OIDC_STAGED`, first stage the
+    retained tarball under the separately approved `npm-release` environment,
+    require the human's staged-download byte-equality/revalidation evidence,
+    then create/push the tag and approve `Release / tag accepted`, verify the tag
+    and create the draft, obtain interactive 2FA promotion, and approve
+    `Release / publication confirmed` before fresh-registry verification. Attach
+    only the exact retained tarball, SBOM and `SHA256SUMS` to the draft and make
+    the required and extended test status reviewable in its release notes.
+
+Every job in this sequence uses the §2.57 explicit shell, validates the expected
+OS/architecture and contributes its runner/image/runtime record to the §2.40
+evidence. It also contributes its §2.58 expected role/applicability,
+conclusion, timeout and retry record. No passing result may depend on a
+runner-preinstalled Node, npm, browser, package tool or release CLI, and no
+skipped, cancelled or timed-out required job is qualifying evidence.
+
+After step 7 and before any downstream consumer/publication job, upload exactly
+the tarball, SBOM and `SHA256SUMS` as the run/attempt-qualified §2.56 candidate
+bundle. The exact pinned upload Action uses explicit three-file paths,
+`if-no-files-found: error`, 90-day retention, compression level zero, no
+overwrite, hidden-file exclusion and ordinary archive mode. Export its artefact
+ID/digest as job outputs. Every later job downloads only that ID through the
+exact pinned download Action with digest mismatch set to error and no name,
+pattern, token, repository or run override; rejects extra/missing files; and
+rechecks the two file hashes independently. A rerun creates a distinct
+attempt-qualified artifact and never overwrites prior diagnostic evidence.
+
+The single manually dispatched `release.yml` run must pass the retained files only between
+its own jobs without repacking, use only the exact §2.56 artefact ID path, verify
+their SHA-256 values after every artefact upload/download boundary, and enforce
+the separate `npm-release` mutation and `release-manual` continuation gates. In
+steady state it stops at `npm-release` until the user authorizes the exact pre-tag
+stage; in bootstrap it reaches `npm-release` only after tag acceptance and draft
+creation. It must then enforce §§2.60–2.61's human tag and public-promotion
+boundaries without runner polling. It must not restore a dependency, browser or
+build cache, accept a candidate from another workflow or use
+`pull_request_target`/`workflow_run` to cross an untrusted-content boundary. A
+source,
+dependency, metadata, policy or packed-file correction invalidates the candidate
+and requires a new reviewed source candidate before the canonical tag exists; if
+that correction becomes necessary after tag creation, the version is abandoned
+under §2.60. The workflow must not patch a draft release asset in place and
+continue.
+
+The workflow has root `permissions: {}` and grants authority only at the job
+that needs it. Read-only build/test jobs receive `contents: read`; the protected
+npm job receives `contents: read` plus `id-token: write` but never
+`contents: write`; the `release-manual` gate/evidence jobs receive only
+`contents: read` plus `actions: read`; the separate draft/final GitHub-release jobs receive
+`contents: write` but no npm token, npm environment secret or OIDC authority;
+and the final fresh verification job returns to `contents: read`. A single
+repository-wide `owlapi-release` concurrency group has
+`cancel-in-progress: false` and `queue: max`, so a later manual dispatch can
+neither cancel a run that may already have created external state nor displace
+an older pending release attempt within GitHub's documented 100-run pending
+limit. It cannot assume dispatch-order execution and must pass the same fresh
+remote-state checks when it starts.
+
+Before exposing that approval, the unprivileged `Release / qualified` aggregate
+**MUST** prove that every mandatory pre-publication job concluded `success` and
+the workflow **MUST** prove that the SemVer,
+`publishConfig.tag`, explicit `--tag` and `npm-release` environment request agree
+under §2.38 and that the running npm patch equals §2.45. After the registry
+write and fresh-cache checks, it generates, Draft 2020-12/Ajv-validates and
+attaches—not source-commits—the §§2.40/2.47 release-evidence asset. Only that
+new post-publication evidence asset may be added to the draft; the retained
+tarball, SBOM and `SHA256SUMS` remain byte-identical.
+
+The protected-environment pauses are intentionally one-person human gates for
+this programme. The initiating named release custodian may approve both
+`npm-release` and `release-manual` because prevent-self-review is disabled under
+§2.35. The former authorizes only its exact registry mutation; the latter only
+acknowledges completed human work and resumes a read-only verification job. Each
+approval remains an explicit recorded action after its subject is known;
+workflow success never approves itself.
+
+The §2.58 retry and mutation contract applies to the whole sequence. npm and
+project-owned download helpers may repeat only their specifically classified
+idempotent reads within the approved counts and timeouts. Every npm, GitHub,
+issue or Git-ref write receives one automatic attempt. An ambiguous result
+stops the chain for exact read-only remote-state/digest reconciliation; only an
+already-complete identical operation may resume at verification, while any new
+write requires renewed explicit authorization.
+
+The workflow **MUST** compare the tracked tree with the captured dispatch commit
+after every
+step that can run project or third-party code and fail on any difference. It may
+verify or transport the human-authored version, changelog and release notes, but
+it **MUST NOT** run a mutating version command, commit, tag, push a source change
+or generate unreviewed substitute release notes.
+
+The packed-file allowlist **MUST** admit only the canonical readable production
+JavaScript closure, required package metadata and the exact §2.24 documentation
+set. The tarball must not contain a duplicate source/distribution tree,
+generated JavaScript, minified package code, source maps or TypeScript
+declarations. Its manifest must not define an automatic install/pack/publish
+lifecycle hook prohibited by §2.23.
+The following are forbidden in the tarball and protected by an executable
+negative assertion:
+
+```text
+*.test.js and test-only helpers/fixtures
+WebVOWL or VOWLBuilder code
+Java reference harnesses, JARs and generated oracle fixtures
+W3C/upstream conformance corpora
+benchmarks and local performance output
+repository governance/migration internals
+package-lock.json and npm-shrinkwrap.json
+docs/provenance/third-party-material.json and release/signer/security/lint-exception records
+CODE_OF_CONDUCT.md and confidential security/conduct records
+development configuration and credentials
+.phase*-input, deploy output and temporary/cache files
+dist/build output, generated/minified production JavaScript and source maps
+TypeScript declaration files and TypeScript documentation/build artefacts
+```
+
+Consumer verification **MUST** cover at least:
+
+- the isolated WebVOWL candidate application's ordinary test/build workflows
+  resolving all core imports through the installed retained tarball and public
+  package exports, followed after publication by the same workflows against the
+  exact registry dependency;
+- an approved public-export/capability snapshot for the §2.11 Phase 18 freeze,
+  including negative assertions that post-1.0 merger, mutation and storer
+  features and internal RDF translators/factories have not been nominally
+  exposed;
+- named exports and binding-identity checks for all five public entry points,
+  exact §2.43 target agreement, plus rejection of `main`/`module`/`browser`,
+  conditions, patterns, extension aliases, `./package.json`, unexported deep
+  imports and `owlapi/rdf`;
+- exact agreement among the installed README, `API.md`, `CHANGELOG.md`, the
+  three shipped compatibility documents, the Public API Surface Registry,
+  capability matrix and executable export inventory;
+- exact §2.39 description/keywords, omission of `funding`/`contributors`/author
+  email/invented maintainer metadata, and §2.38 agreement among version,
+  `publishConfig`, authorized command and requested channel;
+- exact §2.45 npm-native `devEngines` values, the running approved npm patch and
+  absence of `engines.npm` and top-level `packageManager`;
+- all six §2.32 packages as exact ordinary `dependencies`, with no package lock,
+  shrinkwrap, bundled/peer/optional/override authority or embedded dependency
+  payload in the retained tarball;
+- preservation and reconciliation of both the repository-locked release/SBOM
+  graph and the independent cache-empty lockless consumer graph under §2.48;
+- local exact `publint@0.3.24` strict success against the retained tarball and
+  validation of any narrowly authorized warning exception;
+- exact agreement among the §2.50 production-scoped third-party-material rows,
+  production graph, licence evidence, packed `NOTICE` and actual tarball bytes,
+  with the development-only rows separately reconciled to the release toolchain;
+- execution of the §2.25 public examples from the retained tarball and negative
+  proof that no API/documentation example uses a source-tree or internal path;
+- absence of `types`/`typings`, `.d.ts` files, duplicate `dist/` code, source
+  maps and automatic install/pack/publish hooks;
+- one representative OWL-native document and one RDF/XML document through the
+  public manager API in blocking Node `22.23.2` and `24.19.0` and in each exact
+  `@playwright/test@1.62.1` engine's bundled and native-document-import-map
+  consumers;
+- lazy Turtle and JSON-LD paths so dynamically loaded runtime dependencies are
+  proven present without moving them into the initial browser closure, including
+  representative execution in Chromium, Firefox and WebKit through both
+  document consumption modes;
+- bundled dedicated-worker XML and lazy-RDF ingestion in Chromium, Firefox and
+  WebKit, with no implication that document import maps apply to workers;
+- exact agreement among `engines`, the alpha browser query, the README's
+  §2.22 environment statuses, CI matrix and recorded required/extended results;
+- regeneration of the version-pinned reference import map from the retained
+  package with the exact §2.46 generator/provider/environment configuration,
+  including closure/public-root agreement, complete integrity metadata, public-
+  URL verification and the mechanically equivalent local-mirror execution;
+- the §2.44 instrumented complete-closure import-purity and production tree-
+  shaking proofs, plus no network request during package import, manager
+  construction or representative local OWL-native, RDF/XML, Turtle and JSON-LD
+  parsing under §2.42;
+- production-only dependency installation plus the blocking §2.34 audit, the
+  retained full dependency-graph JSON audit and validated active exceptions;
+- the exact §2.47/§2.54 separate-workspace, reproducible, validated,
+  unflattened/full-PURL CycloneDX 1.6 library SBOM whose dependency graph agrees
+  with the installed production subject inventory, lockfile, packed inventory
+  and licence/notices, plus Draft 2020-12 validation through exact
+  `ajv@8.20.0`/`ajv-formats@3.0.1` of every release/governance record;
+- installed size plus initial and lazy browser bundle sizes against the approved
+  budgets; and
+- absence of any undeclared file-system, Java, WebVOWL or network dependency.
+
+The release candidate **MUST** be committed and pushed to
+`Hadden-Industries/owlapi` before the release tag and external publication
+authorization. Every tracked source/configuration input used to build the
+retained tarball must correspond to that exact reviewed canonical commit. The
+generated tarball, SBOM and `SHA256SUMS` are release-workflow outputs and GitHub
+release assets, not source commits. Record the canonical commit, signed tag,
+original WebVOWL checkpoint/commit map, WebVOWL candidate-patch digest, retained
+asset digests, same-run artefact IDs/digests, effective job permissions,
+environment/concurrency identity and release-workflow path/blob/run/attempt so
+the registry result can be tied back to both source and real-consumer evidence
+even though the first package claim
+cannot yet use an already-configured npm trusted publisher.
+
+#### 17.26.3 Initial npm publication
+
+Publication is an explicit external-state gate and requires separate approval
+for the exact retained tarball digest, publishing custodian, package coordinate,
+distribution tag and registry. The protected `npm-release` environment in the
+same manually dispatched `release.yml` run is the npm-write approval boundary.
+Before reaching it, a read-only Node `24.19.0` preflight job downloads the exact §2.56
+same-run artefact ID, records Node `24.19.0`/npm `12.0.2`, rejects any other
+value, verifies the captured dispatch commit and initial canonical-tag absence,
+`SHA256SUMS`, configured public registry and package name/version, and runs the
+final dry-run without registry credentials. `Release / tag accepted` then waits
+at `release-manual` without a runner. The human creates and pushes the signed
+`v0.1.0-alpha.0` tag at that exact commit and approves that waiting job; once
+started, it verifies the target/signature/authorized signer/GitHub result and
+review history. The separate release-write job creates and checks the draft
+assets before the later `npm-release` job requests npm authority.
+No organization-labelled or shared login may stand in for the authorized
+`maksymshostak` bootstrap identity. The `maksymshostak` workflow initiator may
+also provide both explicit environment approvals; no second-person approval is
+implied.
+
+For the initial package claim, create the one-day npm granular access token in
+the npm web interface with write access and bypass-2FA enabled, and select only
+`owlapi` if npm permits selecting the not-yet-created coordinate. If npm does
+not, record the temporary all-packages write scope explicitly and require a new
+approval of that real effective authority; do not misrepresent the token as
+package-scoped. Store it only as the protected `npm-release` environment's
+Actions secret; `release-manual` remains empty.
+The publication job has only `contents: read` and `id-token: write`; it never
+receives `contents: write` or checks out source. The temporary bootstrap branch
+uses exact cache-disabled `actions/setup-node` with
+`registry-url: https://registry.npmjs.org/`, then exposes the secret as
+`NODE_AUTH_TOKEN` only to the exact publish step. The earlier non-mutating
+preflight runs against the retained tarball as:
+
+```text
+npm publish owlapi-0.1.0-alpha.0.tgz --dry-run --provenance --tag next --access public --registry=https://registry.npmjs.org/
+```
+
+After its output matches the reviewed pack manifest, the signed-tag gate and
+draft pass, and `npm-release` has been separately approved, the GitHub-hosted release job uses
+the identical artefact-ID-downloaded retained tarball and options without
+`--dry-run`:
+
+```text
+npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/
+```
+
+Do not publish the directory, rebuild the tarball, omit `--tag next`, set
+`latest`, publish from a developer workstation, or try a succession of alternate
+versions. No authentication token or OTP is written into commands retained in
+repository evidence, and untrusted pull-request code must never run in a job
+that can access the publication environment. The workflow's bootstrap branch
+must also reject every coordinate except an as-yet-absent
+`owlapi@0.1.0-alpha.0`. Immediately after the single
+authorized publish attempt, revoke the granular access token in npm and remove
+the `npm-release` environment secret; the one-day expiration is not a substitute.
+An ambiguous response is first reconciled through read-only registry queries
+against the exact coordinate, integrity, provenance and retained digest. If an
+identical public result already exists, continue only with verification; if the
+coordinate is absent, partial, conflicting or unprovable, fail closed. Any
+genuinely new publish attempt requires a newly created token, renewed exact
+approval and a fresh digest/coordinate check.
+
+The outcome branches are normative:
+
+- **Success:** keep `owlapi@0.1.0-alpha.0` public under `next`; do not unpublish
+  it as a probe and do not assign it to `latest`.
+- **Authentication/2FA failure:** correct the account/session control and make a
+  new attempt at the same reviewed coordinate only after reconfirming the
+  artefact digest and obtaining renewed explicit authorization.
+- **Manifest/tarball/workflow failure before canonical-tag creation:** no draft
+  or tag exists; return to the release gate, make the reviewable correction and
+  create a new source candidate at the same still-unused version after fresh tag/
+  registry checks; do not mutate retained assets or weaken validation.
+- **Deterministic correction required after canonical-tag creation but before a
+  successful registry write:** leave the tag untouched, keep any draft
+  unpublished while preserving its failed-attempt meaning, record and abandon
+  `0.1.0-alpha.0` under §2.60, and prepare
+  `0.1.0-alpha.1`; never move the tag or publish known-defective bytes.
+- **Namespace/permission failure after successful authentication:** preserve
+  sanitized evidence and contact npm Support before changing the public name.
+- **Version conflict:** investigate previously undiscovered immutable registry
+  history; do not increment candidate versions until the conflict is explained
+  and the plan is amended if necessary.
+
+If a defect is discovered only after a successful registry write, preserve that
+published version and execute §2.33. For the initial alpha, remove `next` when no
+known-good prerelease exists, deprecate the defective coordinate when public
+wording is safe, and prepare a new prerelease version through the full gate. Do
+not use unpublish as routine rollback or mutate the draft/immutable artefact to
+pretend the original write did not occur.
+
+#### 17.26.4 Post-publication verification, WebVOWL cutover and custody
+
+Registry success text alone does not close the phase. From a fresh npm cache and
+consumer directory, verify all of the following against the public registry:
+
+```text
+npm metadata exposes exactly owlapi@0.1.0-alpha.0
+the next tag points exactly to 0.1.0-alpha.0
+no latest tag exists
+npm install owlapi@next installs the expected public dependency closure
+the fresh lockless consumer graph is recorded and every difference from the locked release/SBOM graph is explained
+the registry integrity/tarball content agrees with the retained artefact
+the exact root owlapi coordinate passes npm registry-signature, provenance, publish-attestation, subject, repository, tag/commit/workflow and transparency validation
+the installed manifest has the exact description/keywords, the deliberately omitted metadata fields are absent, and publishConfig.tag=next
+the installed manifest has only the exact unconditional exports map, sideEffects=false and the approved devEngines npm patch, with no forbidden fallback/package-manager fields
+the manifest/tarball has no shrinkwrap, bundled, peer, optional or override dependency authority and no package lock
+all five public import specifiers pass the installed-package smoke suite
+the installed files are canonical readable source plus exactly the approved documentation set
+API.md and the compatibility registries agree with the executable public inventory
+local publint@0.3.24 passes the registry-downloaded tarball in strict mode
+the production-scoped third-party-material inventory, production graph, SBOM and tarball NOTICE agree
+no dist/generated/minified/source-map/TypeScript-declaration or automatic lifecycle surface exists
+Node 22.23.2 and Node 24.19.0 with npm 12.0.2 pass the full Ubuntu suite and all four blocking Windows/macOS installed-package lanes
+the @jspm/generator@2.16.3 reference map has complete integrity metadata, its public URLs verify, and its local mirror passes
+the three one-worker ubuntu-24.04 @playwright/test@1.62.1 Chromium/Firefox/WebKit jobs pass the vite@8.2.2 bundled and dedicated-worker fixtures
+every required job's requested label, OS/architecture, runner-image version, shell and actual runtime identity is recorded and valid under §2.57
+CI / required and Release / qualified inventories agree with governance and every applicable mandatory conclusion is success
+required matrices used fail-fast=false with no effective continue-on-error, swallowed status or neutralized report
+every job/critical step used its §2.58 timeout and every workflow used its approved concurrency/cancellation/queue mode
+controlled-read retries and every external-mutation attempt/reconciliation are recorded, with no skipped/cancelled/timed-out prerequisite reaching publication authority
+the complete package-owned production closure is import-pure, its tree-shaking fixture passes, and package import, manager creation and local parsing produce no outbound request
+the @cyclonedx/cyclonedx-npm@6.0.1 tool/subject workspaces and graph reconciliation pass
+every Draft 2020-12 release record passes ajv@8.20.0 plus ajv-formats@3.0.1 validation
+bare npm install owlapi does not silently select the prerelease
+```
+
+Re-download the registry tarball without relying on the release workflow's npm
+cache, compare its SHA-256 with `SHA256SUMS`, regenerate/compare the production
+dependency inventory against the retained §2.47 CycloneDX 1.6 SBOM, and rerun
+the strict §2.49 tarball lint, §2.50 material/notice reconciliation and exact
+§2.51 npm signature/attestation validation. Preserve and compare the fresh
+lockless consumer graph under §2.48, then rerun the required Ubuntu Node 22/24,
+four Windows/macOS portability, three Ubuntu Chromium/Firefox/WebKit, import-map
+document, dedicated-worker and isolated WebVOWL checks against the registry
+installation.
+Registry success text or matching metadata alone is insufficient.
+
+After those checks pass, generate
+`owlapi-0.1.0-alpha.0.release-evidence.json` from the verified workflow state,
+validate it with the exact §2.47 Ajv/Draft 2020-12 toolchain against the §2.40
+schema, attach it to the draft and verify its recorded
+tarball/SBOM/checksum/tool identities. Then publish the draft GitHub release
+with release immutability enabled. Verify that GitHub reports the release as
+immutable and that its automatic release attestation covers the signed
+tag/commit and all four retained assets: tarball, SBOM, `SHA256SUMS` and release
+evidence. Do not add a redundant manual artifact attestation for the same
+subjects. In a fresh job, perform every exact §2.52 release, per-asset,
+checksum, schema and signed-tag verification before recording the immutable
+release as accepted. The release notes preserve the required results and the
+`PASS`/`FAIL`/`NOT_RUN` extended-test matrix as of that moment; later
+non-blocking executions add dated append-only repository evidence as required
+by §§2.16.1 and 2.40.
+
+Inspect the public npm page for correct README rendering, the exact
+`AGPL-3.0-only` licence identity, canonical repository, issue URL, maintainers,
+identity-discontinuity notice, independent-Java-OWLAPI relationship statement
+and §2.15 rationale, plus the exact §2.39 description/keywords and §2.42
+zero-telemetry statement. Confirm the deliberately omitted manifest fields are
+absent and the §§2.43–2.45 exports/import-purity/development-tool metadata is
+exact, then confirm the §§2.48–2.51 dependency-shape, strict-lint,
+third-party-material and root-provenance results. From the installed registry
+tarball also inspect `API.md`,
+`CHANGELOG.md`, `NOTICE` and all three compatibility documents for the exact
+§§2.24–2.26 contents and links. Record the publication
+timestamp, npm/Node versions, publishing custodian, source commit, release tag,
+tarball URL, registry integrity, npm provenance, GitHub release-attestation
+verification and all verification commands/results in the canonical
+repository's append-only
+`docs/provenance/releases/0.1.0-alpha.0/release.json`. That record includes the
+immutable evidence-asset digest and release/attestation URLs and remains outside
+the npm tarball. The already-pushed signed `v0.1.0-alpha.0` tag must still
+resolve to the exact release source commit.
+
+After registry verification and the exact WebVOWL configuration approval, apply
+the reviewed consumer-cutover patch to the maintained WebVOWL branch, remove the
+frozen `src/owlapi-js/` staging tree and any transferred package-only working-
+tree documentation/tooling, and install `owlapi@0.1.0-alpha.0` with exact-save
+semantics from the public registry. The committed WebVOWL lockfile must contain
+the registry tarball URL/integrity and no workspace, local tarball, filesystem,
+Git or link resolution. Compare the final diff with the recorded candidate patch
+apart from the deliberately post-publication registry lockfile and source-tree
+deletion, then repeat the boundary, Jest and development/production build gates.
+Commit and push that WebVOWL consumer checkpoint only with their separately
+required authorizations.
+
+The same cutover includes a direct-dependency ownership audit of WebVOWL's root
+manifest. For each of `@rdfjs/data-model`, `@rdfjs/dataset`,
+`@xmldom/xmldom`, `jsonld`, `n3`, and `rdfxml-streaming-parser`, prove whether a
+retained WebVOWL production module or build responsibility imports it after the
+package staging tree is removed. Remove every dependency used only by
+`owlapi`; retain a dependency only with a recorded WebVOWL-owned consumer.
+Present the exact `package.json` removals and resulting lockfile change for the
+repository's required configuration approval before applying them. A clean
+install, production-dependency inventory, Jest run, and development/production
+Vite builds must remain green after the cleanup.
+
+As part of that production build, create or update WebVOWL's own deployment-
+scope third-party inventory from the exact emitted bundle/asset graph. Reconcile
+it with WebVOWL's registry-backed lockfile and preserve all notices applicable to
+code physically redistributed by the application. The §2.50 `owlapi` tarball
+record is an input to this review, not a substitute for it; package-external
+dependencies may become embedded application code only at this later bundling
+boundary.
+
+After npm package access exists, require 2FA for package changes and perform the
+§2.28 empirical organization-team test: attempt to give the dedicated
+`@hadden-industries:owlapi-maintainers` team read-write access, verify effective
+access through registry state and a non-publication permission check, and retain
+the exact sanitized result. Use the team if npm supports it, but do not describe
+the npm organization or company as coordinate owner if the effective registry
+state does not establish that relationship. Maksym Shostak remains the only
+natural-person npm and GitHub custodian required through this plan; record that
+the organization/team test does not create human redundancy or an independently
+tested recovery path. A shared generic npm identity is prohibited.
+
+After the alpha and immutable-release checks pass, accept the reviewed
+configuration change that removes the bootstrap-token branch/reference from
+`.github/workflows/release.yml`; its path remains stable. Configure a GitHub
+Actions OIDC trusted publisher for subsequent releases from the exact
+case-sensitive `Hadden-Industries/owlapi` repository,
+`.github/workflows/release.yml` path and `npm-release` protected environment.
+Require `id-token: write` only in its publication job, use a GitHub-hosted
+runner and a supported Node/npm publication toolchain, and verify automatic public
+provenance. Grant that publisher only stage authority, disallow traditional
+token publication, remove the already-revoked bootstrap secret, and require the
+complete §2.53 `stage view`/`stage download`/SHA-256/revalidation/interactive-2FA
+approval path. The OIDC staging command omits `--provenance` because trusted
+publishing supplies it automatically. Do not retain a redundant
+`actions/attest` step. Have Maksym Shostak rehearse and record the recovery and
+release procedures against the real configured identities. Verify that
+`security@haddenindustries.com` and `conduct@haddenindustries.com` are delivered
+only to his individually authenticated, MFA-protected access for this plan,
+without publishing private recipient details. The evidence explicitly records
+that no independent substitute custodian, security responder or ordinary conduct
+moderator is required before completion. These operational controls neither
+transfer copyright nor depend on a copyright assignment, and they must not alter
+the retained first-release artefact.
+
+That accepted configuration change also removes every temporary
+`registry-url`, `NODE_AUTH_TOKEN` and bootstrap-secret reference. The surviving
+steady-state publication job performs no checkout, gives the exact §2.56
+`actions/setup-node` invocation neither registry nor cache configuration, and
+obtains npm authority only through the `npm-release` environment's short-lived OIDC
+exchange. A dead bootstrap input, dormant secret lookup or setup-node-generated
+`.npmrc` is a release-blocking credential path, not harmless historical
+scaffolding.
+
+Phase 19 completes only when the public install and package-content gates are
+green, the §2.19 Node matrix and both §2.21 document modes plus the bundled
+dedicated-worker matrix are green, the README/environment-status and generated
+reference-map checks agree with §§2.20–2.22, the direct-readable-source,
+bounded-documentation, mechanically governed API and no-TypeScript gates agree
+with §§2.23–2.26, the exact dependency and update-policy controls agree with
+§2.32, the `main` and `v*` rulesets and squash-only merge policy agree with
+§2.30, the release pull request and non-mutating workflow agree with §2.31, the
+full/production audit evidence and any unexpired exceptions agree with §2.34,
+the explicit self-approvable human release gate agrees with §2.35, the SSH tag
+and signer registry agree with §2.36, the structured issue/PR intake and absent
+Discussions/blank issues/`CODEOWNERS` agree with §2.37, release-channel metadata
+agrees with §2.38, npm discovery metadata agrees with §2.39, durable evidence
+and 90-day diagnostic retention agree with §2.40, CodeQL/secret protection and
+any unexpired source exceptions agree with §2.41, the no-telemetry/network test
+and README promise agree with §2.42, the sole exact exports map agrees with
+§2.43, complete-closure import purity/tree shaking and `sideEffects: false`
+agree with §2.44, the literal npm `devEngines`/workflow version and forbidden-
+field checks agree with §2.45, reference-map generation/public-URL verification/
+local-mirror execution agree with §2.46, the CycloneDX 1.6 production graph and
+Draft 2020-12/Ajv evidence validation agree with §2.47, and the release evidence
+records both locked and lockless graphs and the read-only monitor agrees with
+§2.48, strict retained/registry tarball lint and any narrow exception agree with
+§2.49, the reviewed material inventory/package notice/WebVOWL distribution
+review agree with §2.50, exact root npm signature/attestation validation agrees
+with §2.51, the checksum plus fresh immutable-release/per-asset/tag checks agree
+with §2.52, steady-state publisher configuration plus staged-candidate
+download/digest/review procedures agree with §2.53, the exact local/external
+tool versions plus SBOM-workspace isolation agree with §2.54, and the four
+workflow triggers, same-run candidate chain, least-privilege job separation,
+protected environment, non-cancelling release concurrency and Action controls
+agree with §2.55, and the exact five-Action tag/SHA inventory, checkout and
+setup-node inputs, cache/credential exclusions, artefact-ID transfer and narrow
+dependency-review policy agree with §2.56, and the explicit GA host labels,
+authoritative Ubuntu release construction, four blocking portability lanes,
+three Ubuntu browser jobs, shell policy and per-job image records agree with
+§2.57, and the exact aggregate checks, fail-fast/allow-failure policy,
+concurrency queues, timeouts, controlled read retries, one-attempt mutation and
+ambiguous-result reconciliation evidence agree with §2.58, and the all-external
+per-run approval, no-secret/no-write fork/Dependabot execution, same-run
+artefact quarantine, untrusted-data/workflow-command validation, sensitive-log/
+debug restrictions and incident evidence agree with §2.59, and the protected-
+`main` manual dispatch, pre-tag deterministic/staged-byte gates, later signed-tag
+verification, failed-attempt record and immutable-tag abandonment policy agree
+with §2.60, and the exact no-authority `release-manual` configuration, one-gate
+bootstrap/two-gate staged graph, authenticated review history, no-polling rule
+and reconciliation behavior agree with §2.61; the compatibility/provenance
+records are committed,
+the GitHub release is immutable and its tag/assets verify, the root security and
+conduct policies expose the tested `security@haddenindustries.com` and
+`conduct@haddenindustries.com` channels with their approved separation,
+the §2.13 rights inventory and owner/author/steward metadata agree with the
+retained tarball, the §2.28 organization-team experiment is recorded, and the
+actual sole-custodian `MaksymShostak`/`maksymshostak` authority is verified and
+accurately disclosed without a shared npm login or false redundancy claim,
+the approved §2.14 inbound=outbound contribution policy and executable
+policy-consistency gate are present, the release evidence confirms no unresolved
+external copyrightable contribution in the reviewed alpha scope, the history
+partition/commit-map/hash evidence is complete, the independent repository is
+the only maintained package source, and WebVOWL consumes the exact public
+registry alpha—normally `0.1.0-alpha.0`, or solely after §2.60 abandonment its
+successor—only through the applicable declared `owlapi`,
+`owlapi/apibinding`, `owlapi/model`, `owlapi/io`, and `owlapi/formats`
+specifiers. No relative source-tree import, `owlapi/rdf`, unexported deep
+import, workspace/local/Git dependency, copied package tree, package-only
+WebVOWL dependency, or resolver alias may remain.
+If npm namespace control remains unresolved, the phase is blocked rather than
+renamed or reported complete. Pause at this gate for the requested Git
+checkpoint. Promotion to the normal stable `owlapi@1.0.1` target is a later separately approved
+release gate; the alpha **MUST NOT** be converted into a stable release merely
+by moving its distribution tag to `latest`.
+
+### 17.27 Phase 20 — stabilize and publish `owlapi@1.0.1`
+
+Phase 20 begins only after Phase 19 has published and verified the accepted
+alpha—normally `owlapi@0.1.0-alpha.0`, or solely after §2.60 abandonment its next
+prerelease—and WebVOWL consumes that exact public-registry package; the Phase 19
+checkpoint must also have been committed and pushed. It runs release work in
+`Hadden-Industries/owlapi` and consumer verification in
+`Hadden-Industries/webvowl`.
+
+This is a productionization and release phase. It does not implement the
+imports-closure query, mutation, merger, save, Functional Syntax storer, or
+RDF/XML storer capabilities formerly assigned to this phase. Those features are
+owned by `post-1.0-capability-implementation-plan.md` and target a later
+compatible feature release.
+
+W3C test-suite result completion, EARL generation, upstream eligibility
+consultation, and implementation-report submission are likewise owned by
+`w3c-test-conformance-reporting-implementation-plan.md`. That programme starts
+only after this plan completes. No W3C reply, submission, merge, or report
+publication is a Phase 20 or accepted-stable acceptance criterion.
+
+Allowed changes between the accepted alpha and stable release are limited to:
+
+```text
+test-proven defects in an already declared capability
+security or finite-resource corrections
+supported-environment portability corrections
+diagnostic and error-contract corrections
+public-facade, package, documentation, provenance, or release-process defects
+```
+
+A new parser, ontology-operation family, storer, public workflow, direct RDF
+translator/factory API, or speculative compatibility type is a feature and
+cannot enter the `1.0.1` stable target or its §2.60 same-surface successor. A discovered requirement for one of those capabilities
+moves to the post-1.0 plan; it does not silently expand this phase.
+
+#### 17.27.1 Freeze and verify the stable public contract
+
+Turn §2.10.4 into executable release evidence before preparing a stable
+candidate:
+
+1. regenerate the pinned Java package/type inventory, reconcile every row and
+   prove the Public API Surface Registry has zero unclassified Java public
+   types;
+2. enumerate every binding exported from `owlapi`, `owlapi/apibinding`,
+   `owlapi/model`, `owlapi/io`, and `owlapi/formats` and reconcile that set
+   exactly with the registry and package `exports`;
+3. classify each binding's capability status, progress, exposure, relationship
+   and compatibility while recording its exact Java authority or approved
+   JavaScript adaptation, canonical source module, intentional omissions and
+   verification; classify every accepted stable public binding as `STABLE_1_X`,
+   every retained deprecated binding as `DEPRECATED_1_X`, and private values as
+   `INTERNAL_ONLY` under §2.27;
+4. classify direct RDF translators, RDF/JS factories, graph policy, parser
+   adapters, registries, test helpers and implementation engines as
+   `INTERNAL_ONLY`, and prove none is duplicated as a nominal public binding;
+5. prove every public binding has one canonical definition in its Java-shaped
+   public namespace while private engines use cohesive, non-mirrored
+   `internal/` ownership;
+6. replace unrestricted public `export *` chains with explicit named facades
+   and prove root/subpath re-exports of the same value have identical binding
+   identity;
+7. execute paired Java/JavaScript examples for manager creation, document
+   loading, data-factory access, IRI creation and ontology queries;
+8. regenerate or verify the human-readable Java compatibility/gap view and
+   `API.md`, then prove both agree with the registry, capability matrix and
+   executable export inventory; and
+9. prove `owlapi/rdf`, wildcard paths, package metadata, syntax-specific parser
+   paths and all other unexported deep imports fail.
+
+The README and API reference use this exact compatibility statement: the
+package is a JavaScript-native, behaviourally compatible subset of Java OWLAPI
+for its declared capabilities. They do not claim Java source, binary, or
+complete-surface compatibility and do not imply affiliation or endorsement.
+The stable registry and `API.md` also identify the exact §2.27 protected and
+non-contract surfaces. A deprecation test must prove that a `DEPRECATED_1_X`
+binding remains operational through its public path, names its replacement and
+does not emit an unsolicited runtime warning.
+
+##### 17.27.1.1 Freeze and reconcile the stable environment contract
+
+On the accepted stable 1.x release-freeze date, replace the alpha manifest's moving
+`baseline widely available` value with the §2.20 dated query containing that
+actual UTC date. Commit the query, resolved browser/version set, resolver/data
+versions and generation command before creating `1.0.1-rc.0`. Add an executable
+ceiling check that scans the complete static and lazy production closure and
+fails if package source or a selected browser entry requires a feature newer
+than the freeze. Do not satisfy the check by adding package transpilation or a
+polyfill.
+
+Keep `engines.node` exactly `^22.0.0 || ^24.0.0`, keep Node 22 and 24 blocking,
+and keep the release job on Node 24. Retain the exact §2.57 host topology:
+full-suite/release construction on `ubuntu-24.04` x64, candidate qualification on
+both Node patches across `windows-2025` x64 and `macos-15` arm64, and no moving,
+preview, self-hosted or container runner. If Node 26 has become LTS by this gate,
+present the exact manifest/CI expansion for separate configuration approval and
+make it blocking only after all package, retained-tarball and WebVOWL-consumer
+gates pass; otherwise retain it only as a disclosed non-blocking Current probe.
+
+Regenerate the native-document reference import map for the release-candidate
+coordinate with the unchanged exact §2.46 generator/provider/environment/
+integrity configuration, rehydrate and verify the provider closure, and rerun
+all three §17.26.1.2 browser consumers—including the local mirror—in Chromium,
+Firefox and WebKit as separate one-worker `ubuntu-24.04` jobs, and rerun the four
+blocking installed-tarball portability lanes. Reconcile the observed matrix with the README's exact
+`SUPPORTED`, `PLAUSIBLE_UNVERIFIED` and `OUT_OF_SCOPE` rows. Stable publication
+is blocked by an unsupported feature in a claimed environment, a stale or
+unpinned reference map, a failed supported document mode, or a failed bundled
+dedicated-worker scenario; it is not blocked merely because an explicitly
+unverified/out-of-scope runtime has no result.
+
+#### 17.27.2 Stabilize the accepted capability surface
+
+Run the complete package suite and the exact public-registry WebVOWL consumer
+suite against the alpha. Each failure is handled test-first:
+
+1. preserve the minimal failing ontology, environment, public call, and
+   observed result;
+2. prove the regression fails against the packed/installed package boundary;
+3. implement the smallest correction without adding a capability family;
+4. rerun focused, Java differential or standards conformance, full package,
+   resource/security, and WebVOWL consumer gates as applicable; and
+5. update expected differences, provenance, compatibility documentation, and
+   `CHANGELOG.md`/release notes only when the correction changes an observable
+   result or controlled deviation, and classify its §2.27 SemVer consequence
+   before accepting it.
+
+Representative RDF/XML, Turtle, OWL/XML, Functional Syntax, Manchester, DL,
+KRSS1, KRSS2, N-Triples, N-Quads, TriG, and JSON-LD loads remain green through
+the manager API. The production WebVOWL corpus, imports loading, VOWL output,
+development server build, and production build remain green through installed
+package specifiers only. The Node `22.23.2`/`24.19.0` matrix and bundled-document,
+native-document-import-map and bundled-dedicated-worker browser consumers, plus
+the §2.57 Windows/macOS installed-tarball lanes, remain green under the stable
+environment contract; a portability correction must not
+silently narrow a syntax to only one consumption mode.
+
+#### 17.27.3 Complete the stable-version safety gates
+
+No more than seven calendar days before the stable publication attempt, rerun
+and retain the bounded historical-dependency audit in §2.10.1. A material
+maintained consumer whose range accepts the new 1.x implementation blocks this
+phase for the separately approved version decision. Exact unavailable pins,
+immutable old lock/tarball entries, and unrelated textual references are
+recorded but do not by themselves block publication.
+
+Reconfirm the rights inventory, owner/author/steward role attribution,
+contribution-rights, dependency licence/notice, security, package-custody,
+repository-policy, trusted-publication, provenance, and recovery controls
+required by §§2.10–2.18 and §§2.28–2.61. A control previously verified
+for the alpha is rechecked where its state can change; evidence is referenced
+rather than duplicated where it is immutable.
+
+Regenerate the §2.34 full dependency-graph audit and blocking production audit
+from the exact stable-candidate lockfile. Revalidate the reachability, owner and
+expiry of every active advisory exception; reject expired, silent-renewal or
+schema-invalid entries. A required audit endpoint that has not produced a valid
+result blocks the release rather than becoming extended `NOT_RUN` evidence.
+
+Require the accepted stable-candidate commit's §2.41 CodeQL result, reject any
+unresolved high/critical source or secret alert, and revalidate every active
+code-scanning exception independently from dependency advisories. Re-run the
+§2.42 installed-package no-network scenarios against the exact candidate
+tarball; a new transitive request is a release-blocking regression.
+
+Re-run the exact §§2.43–2.61 gates against the stable candidate: the sole
+exports map and negative paths, complete-closure import purity and production
+tree shaking, literal npm `devEngines`/workflow version, JSPM reference/public-
+URL/local-mirror checks, CycloneDX production graph and every Draft 2020-12/Ajv
+evidence validation, locked/lockless dependency resolution, strict tarball lint,
+third-party-material/distribution notices, exact npm root attestation,
+checksum/immutable-release tooling and the manually dispatched, late-tag,
+same-run least-privilege workflow boundary, including the currently approved Action SHAs and exact
+security-relevant inputs, runner labels/architectures, shell allocation and
+per-job image evidence, both aggregate dependency inventories/results,
+`fail-fast: false` required matrices, exact concurrency queues and timeouts,
+controlled-read retry records, and single-attempt mutation/reconciliation
+evidence, plus the external-fork approval/no-secret boundary, quarantined
+same-run CI artefact flow, validated workflow input/output and sanitized
+credential-job logging contract. Stable publication cannot inherit an alpha
+result for candidate bytes or mutable tooling/provider/registry state.
+
+Audit WebVOWL's direct dependencies after the source-tree extraction. Every
+package used only by `owlapi` is absent from WebVOWL's manifest and lockfile;
+every retained dependency has a WebVOWL-owned production or build consumer.
+Repeat the clean production-dependency inventory, Jest, development-build, and
+production-build gates after the exact approved cleanup.
+
+#### 17.27.4 Publish and verify a `1.0.1` release candidate
+
+Prepare `1.0.1-rc.0` as the first stable-line candidate under the approved
+prerelease policy. If a candidate fails, correct the defect and increment only
+the prerelease component (`1.0.1-rc.1`, and so on); do not burn stable or
+historical coordinates. Each candidate is prepared in its own §2.31 release
+pull request; its version, changelog, compatibility/evidence set and package
+metadata are reviewed before the accepted protected-`main` commit is manually
+dispatched through §§2.60–2.61. Its `publishConfig.tag` and explicit authorized
+`npm stage publish --tag next` command both name `next` under §2.38, while its
+§2.39 description/keywords and omitted metadata remain unchanged. The release
+workflow derives the expected tag, fully qualifies and stages the candidate,
+and only after staged-byte review permits the human to create the SSH-signed
+annotated tag and approve `Release / tag accepted`; it then verifies the pre-authorized signer, captured target commit
+and GitHub verification result and transports that state without modifying it.
+
+Apply the Phase 19 deterministic-artefact gate to the candidate: clean canonical
+clone, deterministic install, full tests, production dependency audit,
+packlist inspection, one retained tarball, the exact §2.47 validated
+reproducible CycloneDX 1.6 production-only library SBOM, `SHA256SUMS`, required
+§2.46 Chromium/Firefox/WebKit installed-package checks, clean Node consumers,
+§2.48 locked/lockless inventories, strict §2.49 tarball lint, §2.50 material/
+notice review, post-registry §2.51 root-attestation validation, exact §2.52
+immutable-release verification, §2.53 staged-candidate binding and an isolated
+WebVOWL candidate installation, with the exact §2.57 Ubuntu construction,
+Windows/macOS qualification and browser-host topology. Report every extended browser/device result
+under §2.16.1.
+
+The same §2.58 failure contract is re-evaluated for every RC and stable
+candidate. `Release / qualified` must succeed before npm authority is exposed;
+every required matrix finishes without allow-failure; and every timeout remains
+a blocking failure. Stage creation and stage approval each receive one
+automatic attempt. Each `release-manual` gate has no mutation attempt and only
+starts after its explicit review. An ambiguous response is reconciled read-only against the
+exact stage/coordinate/digest, and a new stage or approval write requires
+renewed explicit authorization rather than a blind retry.
+
+After the deterministic pre-tag gates and separate `npm-release` environment
+authorization pass, run the exact
+§2.53 command against the retained `owlapi-1.0.1-rc.N.tgz` with `--tag next`,
+record its stage ID and stop. An interactively authenticated maintainer then
+runs `npm stage view` and `npm stage download`, verifies the fixed `next` tag and
+all candidate metadata, proves that the staged tarball's SHA-256 exactly equals
+the retained digest and reruns the required tarball checks. Reject any mismatch
+before a canonical tag exists. Only after that review may the human create and
+push the candidate's signed annotated tag at the captured commit and approve the
+waiting `Release / tag accepted` job. The same run must verify the tag/review
+history and populate the draft GitHub release. Bind the stage review and tag
+result to the source commit. Only then may the passing candidate receive
+`npm stage approve <stage-id>` with 2FA; after that command completes, the human
+approves `Release / publication confirmed`. Never create or move `latest` for a
+release candidate. Once that read-only job starts, repeat all checks from a fresh registry
+cache and publish the draft GitHub release as immutable only after registry
+verification. Record the `next` tag's exact before/after values as part of the
+separately authorized registry operation. The initiating named release
+custodian may provide the explicit `npm-release`/`release-manual` approvals and
+npm proof-of-presence approval under §2.35; a second-person approval is not required.
+
+Before making that release immutable, generate and attach its §2.40
+`owlapi-1.0.1-rc.N.release-evidence.json`, validate it against the observed
+registry state and the §2.47 Draft 2020-12 schema with the exact Ajv toolchain,
+include the §§2.48–2.61 graph/lint/material/provenance, staged-candidate/manual-handoff,
+toolchain, workflow and release-verification identities, and preserve the repository post-release
+record. A later extended
+test adds a dated repository observation; it does not alter the release assets.
+
+Update an isolated WebVOWL checkout to the exact public release-candidate
+version and run the ordinary Jest, development Vite, and production Vite
+workflows plus representative production RDF/XML and imports-aware workloads.
+No local package, tarball, workspace, Git dependency, source alias, or
+unexported path may participate. Preserve the candidate source commit, tag,
+tarball digest, registry integrity, WebVOWL patch digest, commands, and results.
+
+#### 17.27.5 Publish stable and make WebVOWL prove it
+
+Once a release candidate is accepted, freeze observable behaviour. The stable
+release pull request may change only the version and approved release
+documentation or metadata. Its accepted squash commit becomes the stable source
+commit and is manually dispatched through §§2.60–2.61; only after deterministic and
+staged-candidate qualification is it tagged separately by the human. The
+workflow must not author either change.
+Any implementation or dependency change returns the process to a new release
+candidate and repeats the candidate gate.
+
+The stable documentation and package surface freeze with the implementation.
+`API.md`, `CHANGELOG.md`, the shipped compatibility documents, public exports
+and registry stability rows must describe the same retained tarball. The stable
+manifest continues to point directly at canonical readable ESM, contains no
+TypeScript metadata or automatic lifecycle hooks, and introduces no `dist/`,
+generated-code or source-map difference from the accepted candidate. The stable
+release pull request changes `publishConfig.tag` from the candidate's `next` to
+`latest`, keeps the exact §2.39 discovery metadata/omissions, and proves the
+version, `npm-release` environment request and explicit
+`npm stage publish --tag latest` agree under §2.38. The proof-of-presence
+approval verifies the already-fixed staged tag; it cannot repair a mismatch.
+The §2.43 exports map, §2.44 `sideEffects: false`, §2.45 literal npm
+`devEngines` patch and §§2.46–2.61 exact tooling, dependency shape, material,
+workflow, Action-input, runner and verification contracts remain unchanged unless a
+separate fully gated configuration change forced a new release candidate.
+
+Build one retained `owlapi-1.0.1.tgz` from the reviewed stable commit through the
+approved manually dispatched same-run `release.yml` chain while the canonical
+tag is absent.
+Generate its
+§2.47 validated reproducible CycloneDX 1.6 production-only library SBOM and
+the exact §2.52 `SHA256SUMS`, compare the package/SBOM, locked/lockless graph,
+strict-lint and third-party-material outputs with the accepted release candidate
+and account for every difference. Run the
+complete deterministic-artefact, required multi-engine Playwright and isolated
+WebVOWL-candidate gates against that stable tarball before requesting separate
+authorization for the registry write.
+
+After separate `npm-release` environment authorization, stage the exact retained tarball through §2.53 as
+`owlapi@1.0.1` with `--tag latest`, record the returned stage ID and stop before
+promotion. An interactively authenticated maintainer must inspect and download
+that immutable candidate, verify the fixed `latest` tag and all metadata, prove
+its SHA-256 is byte-for-byte identical to the retained tarball, rerun the
+required tarball gates and bind the review evidence to the captured source
+commit. Reject any mismatch while the canonical tag is still absent. Only after
+that review may the human create and push `v1.0.1` at the captured commit and
+approve the waiting `Release / tag accepted` job. The same run must verify its
+signature, signer, target, GitHub result and review history and create/populate
+the draft release. Bind the approval evidence to that source tag and commit.
+Only then may `npm stage approve <stage-id>` assign `latest` through interactive
+2FA as part of the separately authorized stable operation. After that command
+completes, approve `Release / publication confirmed`; only when this read-only
+job starts may the workflow record the distribution-tag state before/after and
+verify from a fresh cache:
+
+```text
+owlapi@1.0.1 resolves to the retained artefact
+owlapi@latest resolves exactly to 1.0.1
+owlapi@next still resolves to the accepted release candidate until cleanup
+registry integrity and tarball contents match the retained evidence
+the lockless fresh-consumer graph is recorded and reconciled with the locked release/SBOM graph
+all five public entry points work in clean Node and browser-bundle consumers
+all forbidden deep/RDF implementation paths fail
+production dependency installation and audit pass
+the installed manifest records publishConfig.tag=latest and the exact discovery metadata
+the installed manifest has the exact sole exports map, sideEffects=false and approved npm devEngines patch, with no forbidden fallback/package-manager fields
+the manifest/tarball contains no shrinkwrap, bundled, peer, optional, override or package-lock authority
+local publint@0.3.24 passes the registry-downloaded tarball in strict mode
+the production graph, third-party-material record, SBOM, package NOTICE and WebVOWL deployment-scope notices reconcile
+the exact root owlapi coordinate passes registry-signature, provenance, publish-attestation, subject, repository, tag/commit/workflow and transparency validation
+the @jspm/generator@2.16.3 reference/public-URL/local-mirror browser gate passes
+the @playwright/test@1.62.1/vite@8.2.2 package-fixture matrix passes
+the separate-workspace @cyclonedx/cyclonedx-npm@6.0.1 production graph validates and reconciles independently
+the Draft 2020-12 evidence schemas validate with ajv@8.20.0 plus ajv-formats@3.0.1
+the no-telemetry/local-parsing network-denial suite passes
+```
+
+Also run the exact §2.51 npm signature/attestation gate, verify the registry
+tarball's SHA-256 and retained SBOM against the draft release assets, and run
+the registry tarball through strict §2.49 lint. Generate and attach
+`owlapi-1.0.1.release-evidence.json` only after those fresh-registry checks,
+validate its §2.40 fields and identities through the §2.47
+Draft 2020-12/Ajv gate, and then publish that draft as an
+immutable GitHub release. Verify its automatic release attestation covers all
+four retained assets, execute the complete fresh-download §2.52 release/per-
+asset/checksum/schema/signed-tag sequence, and commit the post-release repository
+record containing the immutable evidence digest, release URL and attestation/
+verification identities. At this
+point
+`SECURITY.md` changes its support table to the latest stable 1.x line; the 0.x
+prerelease ceases to be supported without being unpublished. Stable release
+notes preserve the required browser results and publication-time extended-test
+matrix, with later extended evidence added only as dated append-only canonical
+repository observations.
+
+If a deterministic correction becomes necessary after immutable `v1.0.1` has
+been pushed but before `owlapi@1.0.1` becomes public, do not approve the staged
+candidate and do not move or delete the tag. Reject the stage, preserve the
+§2.60 failed-attempt record, and prepare the same frozen stable surface as
+`1.0.2` through a new release pull request and complete RC/stable gate. In that
+extraordinary branch, public `owlapi@1.0.1` remains absent, `1.0.2` becomes the
+first Hadden Industries stable and exact WebVOWL cutover, and the plan must not
+later reuse `1.0.1` merely because npm still reports that coordinate available.
+Authentication, availability or ambiguous-write failures that require no input
+change follow §2.58 reconciliation/retry rules and do not alone abandon the
+version.
+
+If any mandatory post-publication check rejects `1.0.1`, stop before the WebVOWL
+stable cutover and execute §2.33: remove `latest` because no earlier Hadden
+Industries stable exists, deprecate `1.0.1` when safe, and prepare the first
+corrective patch through a new release pull request, RC where implementation or
+dependency behaviour changed, SSH-signed tag and complete retained-artefact
+gate. Only that separately accepted patch may then become `latest` and the stable
+cutover version. The failed `1.0.1` release and evidence remain immutable.
+Every removal of `latest`, exact-version deprecation and later reassignment is
+recorded as a new timestamped §2.40 `registry-operations/` entry; it never
+rewrites `1.0.1`'s original release record.
+
+After stable registry, provenance and consumer verification succeeds, inspect
+the channel state once more. Under this plan there is no newer active
+prerelease, so remove the stale pointer with the separately authorized
+equivalent of:
+
+```text
+npm dist-tag rm owlapi next --registry=https://registry.npmjs.org/
+```
+
+Verify from a fresh registry query that `latest` still resolves exactly to the
+stable cutover version (normally `1.0.1`), `next` is absent, no unapproved
+distribution tag exists, and bare `npm install owlapi` selects that exact
+version. Do not repoint `next` to the stable version or leave it pointing to a
+release candidate. A future release programme recreates
+`next` only by publishing a genuine newer prerelease. Retain the authorized tag
+removal and its before/after result in stable release evidence.
+
+Then change the maintained WebVOWL manifest from the exact alpha/prerelease to
+the exact registry dependency for the stable cutover version—normally
+`"owlapi": "1.0.1"`—regenerate the registry-backed lockfile, and verify its
+tarball URL/integrity. Run the boundary test,
+complete Jest suite, development build, production build, production ontology
+corpus, and representative RDF/XML/imports workloads. Inspect the deployed
+bundle to prove no removed package source or duplicate parser dependency was
+reintroduced, regenerate WebVOWL's deployment-scope third-party inventory and
+prove its bundled notices satisfy §2.50 independently from `owlapi`'s package
+`NOTICE`.
+
+#### 17.27.6 Completion
+
+Phase 20 and this implementation plan complete only when:
+
+- normally, public `owlapi@1.0.1` exists as the first Hadden Industries stable
+  and either it is the accepted stable cutover artefact or the separately
+  recorded §2.33 branch has deprecated it and made the first fully verified
+  corrective patch the `latest` stable cutover artefact; solely if §2.60's
+  post-tag/prepublication abandonment branch was activated, `1.0.1` remains
+  unpublished and the next available fully gated same-surface patch—normally
+  `1.0.2`—is the first stable and exact cutover;
+- the obsolete Phase 20 `next` prerelease pointer has been separately removed,
+  no unapproved distribution tag exists, and all tag mutations have durable
+  before/after evidence;
+- the stable source commit, signed tag, tarball digest, registry integrity,
+  SBOM, exact `SHA256SUMS`, normalized §2.51 npm root attestation, immutable
+  GitHub release and all §2.52 per-asset/tag/checksum verification, plus the
+  §2.53 stage ID/download/digest/approval binding and §2.61 authenticated
+  manual-gate review history,
+  `owlapi-<version>.release-evidence.json`, append-only repository release
+  record, publication identity, and verification record are durable without
+  depending on expired Actions logs;
+- all five public entry points and every approved Java-compatible example pass
+  from the installed package, the exact §2.43 exports map is the sole entry
+  authority, and `owlapi/rdf`, metadata/extension aliases and deep imports fail;
+- the §2.24 installed documentation set is complete and internally consistent,
+  `API.md` exhaustively covers the executable public inventory, every stable
+  binding has its §2.27 classification, and no TypeScript declaration or
+  duplicate/generated production tree is published;
+- the installed stable manifest has the §2.39 description/keywords and omissions
+  and its version, `publishConfig.tag`, authorized `--tag` and registry channel
+  agree under §2.38;
+- the installed stable manifest has `sideEffects: false`, the complete
+  package-owned closure passes §2.44 import-purity/tree-shaking checks, and its exact
+  npm-native `devEngines` value is `12.0.2` and agrees with every §2.45
+  workflow/evidence value; blocking jobs record Node `22.23.2`/`24.19.0`,
+  while `engines.npm` and top-level `packageManager` remain absent;
+- `ubuntu-24.04` x64 alone produced and published the retained artefact, the full
+  Ubuntu Node matrix and all four `windows-2025` x64/`macos-15` arm64 installed-
+  tarball lanes pass, every required job used the §2.57 explicit shell and
+  supplied a valid label/OS/architecture/image record, and no moving, preview,
+  self-hosted, container or runner-preinstalled-tool path supplied evidence;
+- the exact `CI / required` and `Release / qualified` inventories are
+  governance-verified, every mandatory conclusion is `success`, required
+  matrices used `fail-fast: false` without neutralized failures, and the exact
+  §2.58 timeout, workflow concurrency/cancellation/queue, controlled-read retry,
+  one-attempt external-mutation and ambiguous-response reconciliation records
+  prove that no skipped, cancelled or timed-out required job reached
+  publication authority;
+- the successful release evidence proves manual dispatch at the captured
+  protected-`main` head, initial canonical-tag absence, completion of every
+  deterministic gate before tag creation, pre-tag stage/download byte equality
+  for the steady-state path, later human tag creation and verification before
+  draft/public promotion, and any §2.60 failed-attempt/version-abandonment record
+  is complete and append-only;
+- `release-manual` has the exact protected-`main`, required-reviewer,
+  no-secret/no-variable/no-custom-rule, self-review and `deployment: false`
+  contract; the accepted tag gate and staged-only publication-confirmation gate
+  occur in order without runner polling or mutation authority; and rejected,
+  premature or expired reviews reconcile under §2.61 without duplicate writes;
+- every external contributor’s fork run required maintainer execution approval
+  without elevating code trust; fork and Dependabot CI had no secret, OIDC,
+  environment or write authority; its candidate remained same-run diagnostic
+  material; and the §2.59 untrusted-input/output, sensitive-log/debug,
+  sanitization and exposure-incident controls are executable and evidenced;
+- the exact `@jspm/generator@2.16.3` §2.46 reference map, integrity-verified
+  provider URLs and local mirror pass through `@playwright/test@1.62.1` and its
+  managed Chromium, Firefox and WebKit revisions in three separate cache-free,
+  one-worker Ubuntu jobs without adding provider/shim code to the package; exact
+  `vite@8.2.2` fixtures pass; and the separated
+  `@cyclonedx/cyclonedx-npm@6.0.1` §2.47 production graph plus Draft 2020-12
+  `ajv@8.20.0`/`ajv-formats@3.0.1` evidence records are durable;
+- every npm release-control tool ran from the accepted lockfile through a named
+  local npm script, GitHub CLI `2.98.0` passed its official checksum,
+  `git-filter-repo@2.47.0` extraction identity/digest remains recorded, and no
+  remote `npx`, global development tool or runner-preinstalled release CLI
+  supplied evidence authority;
+- the §2.48 ordinary exact-dependency manifest, locked/lockless graph records
+  and read-only weekly monitor are active; strict retained/registry-tarball
+  `publint` agrees with §2.49; and the §2.50 reviewed material inventory,
+  package `NOTICE` and independently checked WebVOWL bundled notices agree with
+  their actual distribution scopes;
+- WebVOWL declares exactly `owlapi@1.0.1` when that is the stable cutover
+  version, or declares the exact recorded same-surface patch only when §2.60 or §2.33 was
+  activated; in either branch it resolves from the public npm registry, contains
+  no maintained package copy/alias/local dependency, and passes its complete
+  production gates;
+- WebVOWL contains no dependency used only by the extracted package and its
+  deployment-scope third-party inventory/notices cover the emitted bundle;
+- the bounded historical-dependency audit and all legal/governance/security
+  release gates are accepted, including valid §2.34 audit/exception evidence,
+  §2.35 approval evidence, §2.36 signer evidence, the stable support-window
+  update, §2.41 CodeQL/secret-protection state and any unexpired source
+  exceptions, operational private security/conduct channels, and a passing
+  §2.42 zero-telemetry/local-network-denial gate, with no unresolved
+  §§2.43–2.61 package/tooling/dependency/material/workflow/Action/runner/integrity
+  gate; and
+- the post-1.0 capability and W3C test-suite reporting programmes are linked as
+  independent future work rather than represented as unfinished work in this
+  plan.
+
+Pause for the requested Git checkpoint before the stable external publication
+and again after the final package/WebVOWL evidence is committed. No required
+work remains in this plan after that final checkpoint.
 
 ## 18. Testing and Verification Strategy
 
@@ -3808,6 +9408,136 @@ A reusable lesson **MUST NOT** be considered captured merely because it appears 
 
 Executable institutionalization is **RECOMMENDED** whenever the lesson can be expressed reliably as an automated invariant.
 
+### 18.15 Release browser matrix and evidence states
+
+The package release suite **MUST** install the retained tarball and execute the
+same representative public-manager workflows through exact
+`@playwright/test@1.62.1` and its managed Chromium, Firefox and WebKit revisions
+as three separately reported, one-worker, cache-free `ubuntu-24.04` x64 jobs
+under §2.57. Browser installation uses the locally locked Playwright CLI and no
+container or runner browser. Package-owned bundler/worker fixtures use exact
+`vite@8.2.2`. This is a blocking browser-engine gate,
+not merely a build or DOM-contract simulation. All three results must be valid
+and passing for each published package version. The three required jobs use
+`strategy.fail-fast: false`, do not use `continue-on-error`, and feed their real
+conclusions into the §2.58 aggregate; one failure does not cancel the other
+engine evidence and no failure is rewritten as success.
+
+The distinct Node OS/architecture gate installs the same retained tarball into
+both approved Node patches on `windows-2025` x64 and `macos-15` arm64. It is
+blocking but focused: it proves the public boundary and representative loads do
+not depend on Linux path, shell, encoding or architecture behavior without
+duplicating the full Ubuntu semantic/conformance suite.
+These required portability lanes use the same fail-fast-disabled, no-allow-
+failure and aggregate-conclusion contract.
+
+Branded channels, historical versions, hosted services and real-device runs use
+the non-blocking evidence contract in §2.16.1 through the read-only scheduled or
+manual default-branch `extended-tests.yml` workflow. It has no `npm-release`,
+OIDC, repository-write or cross-workflow release-candidate authority. Their
+public matrix permits only
+`PASS`, `FAIL` and reasoned/date-stamped `NOT_RUN`; infrastructure errors are
+transient diagnostic events and never terminal release states. A later run
+updates the version-specific repository report without rebuilding, republishing
+or altering the immutable package release.
+
+### 18.16 Workflow trust-boundary and hostile-metadata tests
+
+The governance suite **MUST** parse the effective workflow files and approved
+repository-settings snapshot rather than rely on text search alone. It proves
+that `pull_request` is the only untrusted-code trigger; no path reaches a secret,
+OIDC, environment or write permission; the external-contributor approval policy
+is exact; workflow PR creation/approval is disabled; and every fork-produced
+artefact consumer belongs to the same unprivileged CI run/attempt.
+
+Project-owned workflow-data helpers receive hostile fixtures covering quotes,
+shell metacharacters, expression-like text, Unicode controls, newlines,
+workflow-command delimiters, path traversal, oversized fields and malicious but
+valid branch/title/email shapes. Tests prove each value is rejected or preserved
+only as bounded data, cannot change a command/output/path/selector and cannot
+forge `GITHUB_ENV`/`GITHUB_OUTPUT`/summary content. Security-relevant consumers
+must independently reject malformed producer output.
+
+A fixture-level workflow audit proves that context/environment dumps, trace/
+debug switches, credential command-line arguments and unsanitized retained logs
+are absent from privileged jobs. A non-mutating incident rehearsal exercises
+stop/revoke-or-rotate/remove/inspect/fresh-authorization state transitions using
+fake credentials and fixture artefacts; it never intentionally exposes a real
+secret merely to test masking.
+
+### 18.17 Late-tag release-ordering and immutable-boundary tests
+
+The workflow-governance suite **MUST** parse `release.yml` and prove that
+`workflow_dispatch` is its sole trigger; a tag push cannot start it; the initial
+guard accepts only `refs/heads/main`; the captured `github.sha` must equal the
+queried protected-`main` head at dispatch; release identity is derived from the
+reviewed manifest; and no free-form version, tag, commit, registry, channel or
+package-name input exists. Fixtures cover a branch dispatch, a tag dispatch, a
+stale/non-head commit, an existing canonical tag, an unexpectedly existing npm
+coordinate, a later harmless advance of `main` after capture and malformed
+SemVer/channel metadata.
+
+A project-owned release-state-machine test executes both `DIRECT_BOOTSTRAP` and
+`OIDC_STAGED` with mocked GitHub/npm boundaries and asserts an exact ordered event
+ledger. Every deterministic build/test/package/consumer conclusion and `Release
+/ qualified` must precede tag creation. In `OIDC_STAGED`, stage creation, stage
+view/download, retained-versus-staged SHA-256 equality and staged-candidate
+revalidation must additionally precede canonical-tag creation. In both modes,
+local/GitHub tag verification must precede draft-release mutation and every
+public npm write or promotion. No state transition may repack or substitute the
+same-run artefact ID.
+
+Negative tests attempt to stage before `Release / qualified`, create a tag before
+qualification or staged-byte review, create/populate a draft before tag
+verification, approve a stage without interactive-review evidence, run the npm
+job from a non-`main` ref, move/delete/recreate an existing canonical tag, or
+reuse that version from a corrected commit. Each must fail before the forbidden
+mutation. Ambiguous remote results exercise only read-only reconciliation.
+Stage-lifecycle fixtures cover a missing/expired/rejected/non-pending stage at
+both the pre-tag and pre-approval reads, changed stage identity/tag/digest, absent
+timestamp fields and an undocumented retention assumption. They require fresh
+`stage view` checks at both boundaries, never infer npm retention from GitHub's
+30-day wait, and route recovery through the applicable pre-tag reuse or post-tag
+abandonment rule without blind restaging.
+Failure fixtures distinguish pre-tag correction, unchanged-input transient
+failure, post-tag/prepublication deterministic abandonment and post-publication
+§2.33 containment; they validate the append-only failed-attempt schema and the
+exact `0.1.0-alpha.1`/`1.0.2` successor rules without making a real registry or
+Git-ref write.
+
+### 18.18 Same-run manual-handoff and review-history tests
+
+The workflow/repository-governance suite **MUST** prove that exactly one
+`release-manual` environment exists; it permits only protected `main`, names
+`MaksymShostak` as required reviewer, leaves prevent-self-review disabled and has
+no wait timer, custom protection rule, secret or variable. Every referencing job
+must spell `deployment: false`, have only `contents: read` plus `actions: read`
+and be unreachable from pull-request, Dependabot, maintenance or extended-test
+execution. `npm-release` remains the only trusted-publisher/registry-authority
+environment.
+
+State-machine fixtures assert the exact graph. `DIRECT_BOOTSTRAP` has one
+`Release / tag accepted` wait after deterministic qualification/tag creation and
+before tag verification, draft mutation or npm authority. `OIDC_STAGED` has that
+same gate only after stage view/download/digest revalidation, then a distinct
+`Release / publication confirmed` wait after draft creation and interactive
+stage promotion but before registry verification. No gate is represented as the
+npm write itself, no bootstrap-only second gate exists, and no candidate is
+rebuilt across either boundary.
+
+Mocked `GET /actions/runs/{run_id}/approvals` responses cover the authorized
+single bootstrap review, two ordered staged-release reviews, rejection,
+premature approval, unexpected reviewer, extra re-run history and the 30-day
+expiry/reconciliation path. Evidence validation preserves every review and
+correlates it with run/attempt and gate job state without parsing an approval
+comment or requiring custom Git-tag trailers. Negative source/workflow scans
+reject any `sleep` or polling loop used to wait for human tag creation or
+publication confirmation in either manual-handoff job, approval Actions,
+environment secrets/variables, write/OIDC permission on either manual job, a
+draft before tag acceptance, and public verification before publication
+confirmation. Bounded propagation reads after an approved gate remain allowed
+under §2.58.
+
 ---
 
 ## 19. Security and Resource-Safety Requirements
@@ -3893,6 +9623,35 @@ Ontology syntax parsing **MUST NOT** use `eval`, the `Function` constructor, sou
 
 Avoid echoing arbitrarily large source chunks into errors/logs. Truncate diagnostic excerpts and avoid exposing sensitive import credentials/authorization headers.
 
+### 19.9 Vulnerability disclosure is private and release-integrity preserving
+
+Operational vulnerability handling follows §2.17. GitHub private vulnerability
+reporting is preferred; `security@haddenindustries.com` is the fallback. Public
+issues, discussions and pull requests are not vulnerability channels. Embargoed
+reports, proof-of-concept material, mailbox membership and reporter identity are
+never copied into ordinary diagnostics, public CI logs or release evidence.
+
+Security urgency may shorten scheduling and review latency, but it does not
+authorize an unverified package build. Every security release still uses the
+single retained tarball, required multi-engine tests, production audit, SBOM,
+checksums, provenance, registry re-download and immutable-release gates.
+
+### 19.10 No telemetry or ambient package networking
+
+The §2.42 zero-telemetry contract is a security and privacy boundary, not merely
+a README preference. Package import, manager construction, format registration,
+local parsing, diagnostics and lifecycle handling perform no outbound request.
+The package contains no analytics/telemetry endpoint, update service, remote
+configuration service, crash uploader or install/publish callback.
+
+Remote ontology imports and JSON-LD contexts remain the only caller-authorized
+network cases and continue to require their explicit disabled-by-default
+configuration, injected loader and §19.3–19.4 controls. Tests instrument or deny
+the same private network seam used by production code and fail on any request
+outside an explicitly enabled document-resolution scenario. A dependency update
+that introduces an undeclared request is a security/contract regression even if
+the package's own source did not add a direct `fetch` call.
+
 ---
 
 ## 20. Performance and Browser Architecture
@@ -3909,7 +9668,15 @@ Build indexes required by measured high-value queries. Do not duplicate derived 
 
 ### 20.3 Web Worker compatibility
 
-Portable parsing/model/translation code **SHOULD** avoid DOM/UI/global assumptions so it can execute in worker contexts where supported. Worker transfer representations **MUST** preserve canonical structural `kind` identities and semantics.
+Portable parsing/model/translation code **MUST** avoid Window/UI assumptions so
+the declared 1.0.1 surface can execute in a bundler-resolved dedicated module
+worker. XML capability selection supplies a private worker-safe fallback because
+`DOMParser` is Window-only. Worker transfer representations **MUST** preserve
+canonical structural `kind` identities and semantics or expose an explicitly
+documented structured-clone-safe projection; no test may accidentally pass by
+returning only a success boolean while discarding the parsed result. Document
+import maps do not apply in the worker and are not part of this compatibility
+mechanism. Shared/service workers and worklets remain outside the 1.0.1 claim.
 
 ### 20.4 Dynamic parser loading
 
@@ -3982,25 +9749,227 @@ Example:
 
 ```json
 {
+  "name": "owlapi",
+  "version": "0.1.0-alpha.0",
+  "description": "OWL 2 ontology parsing and structural APIs for Node.js and browsers, designed for practical compatibility with Java OWLAPI concepts.",
+  "keywords": [
+    "owl",
+    "owl2",
+    "owlapi",
+    "ontology",
+    "ontology-parser",
+    "semantic-web",
+    "linked-data",
+    "rdf",
+    "rdfjs",
+    "rdfxml",
+    "turtle",
+    "jsonld"
+  ],
+  "license": "AGPL-3.0-only",
   "type": "module",
-  "exports": {
-    ".": "./src/index.js",
-    "./model": "./src/model/index.js",
-    "./rdf": "./src/rdf/index.js"
+  "engines": {
+    "node": "^22.0.0 || ^24.0.0"
   },
-  "sideEffects": false
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "npm",
+      "version": "12.0.2",
+      "onFail": "error"
+    }
+  },
+  "browserslist": "baseline widely available",
+  "dependencies": {
+    "@rdfjs/data-model": "2.1.2",
+    "@rdfjs/dataset": "2.0.3",
+    "@xmldom/xmldom": "0.9.12",
+    "jsonld": "9.0.0",
+    "n3": "2.3.0",
+    "rdfxml-streaming-parser": "3.3.0"
+  },
+  "devDependencies": {
+    "@cyclonedx/cyclonedx-npm": "6.0.1",
+    "@jspm/generator": "2.16.3",
+    "@playwright/test": "1.62.1",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "publint": "0.3.24",
+    "semver": "7.8.5",
+    "vite": "8.2.2"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./apibinding": "./apibinding/index.js",
+    "./model": "./model/index.js",
+    "./io": "./io/index.js",
+    "./formats": "./formats/index.js"
+  },
+  "files": [
+    "index.js",
+    "apibinding/",
+    "model/",
+    "io/",
+    "formats/",
+    "internal/",
+    "README.md",
+    "API.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "NOTICE",
+    "docs/compatibility/capabilities.json",
+    "docs/compatibility/java-api-surface.json",
+    "docs/compatibility/java-api-surface.md",
+    "!**/*.test.js",
+    "!**/*.test.mjs",
+    "!**/__tests__/**",
+    "!**/test/**",
+    "!**/fixtures/**"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "next"
+  }
 }
 ```
 
-Do not expose every internal parser/utility file as an accidental public API.
+Before Phase 19, `src/owlapi-js/` is the WebVOWL staging root. After the
+history-preserving handoff, the root of the independent
+`Hadden-Industries/owlapi` repository is both the canonical source root and npm
+package root. The public compatibility tree follows the registered Java package
+suffixes and owns the sole canonical definitions of public bindings. Private
+engines use the non-exported, responsibility-oriented `internal/` tree; do not
+create a duplicated `internal/apibinding`, `internal/model`, `internal/io` or
+`internal/formats` mirror merely to add forwarding barrels.
+
+Do not expose every internal parser/utility file as accidental API. Except for
+`.`, any later export key is permitted only when its exact suffix is an existing
+`org.semanticweb.owlapi` package and the Public API Surface Registry authorizes
+it. Use explicit keys rather than wildcard export patterns. The first-release
+`publishConfig` repeats the registry/tag decision defensively; it does not
+replace the explicit reviewed-tarball command or its external authorization.
+Every later release pull request changes its tag only as required by §2.38 and
+the executable channel-consistency gate. Description and keywords are the exact
+§2.39 discovery metadata; `funding`, `contributors`, author email and invented
+maintainer metadata remain absent.
+`sideEffects: false` is required by §2.44 and its complete-closure import-purity/
+tree-shaking gate in §17.26 is release-blocking. The five export keys shown
+above are the sole §2.43 entry authority; their target
+filenames, registry rows, named facades, source modules and retained tarball
+must agree. The Browserslist value shown is the alpha value; Phase 20 replaces
+it with the §2.20 dated stable-freeze query before the first release candidate.
+The six `dependencies` values and eight release-control `devDependencies` values
+shown are the exact Phase 19 targets under §§2.32 and 2.54. The six runtime
+dependencies are ordinary external runtime dependencies under §§2.32 and 2.48. Their
+coordinated WebVOWL staging qualification was completed on 24 August 2026 with
+dependency-specific evidence inside one approved gate; Phase 19 must preserve
+and rerun that accepted baseline rather than repeat the version-selection work.
+The repository `package-lock.json` records the accepted release graph but is not
+a package file. The manifest has no
+`bundleDependencies`/`bundledDependencies`, `peerDependencies`,
+`optionalDependencies` or `overrides`, and the package has no
+`npm-shrinkwrap.json`. Other package-owned test/lint/format development
+dependencies retained by the extraction are separately inventoried and approved;
+they do not weaken or replace the eight exact release-control authorities, and
+no development dependency becomes a runtime dependency.
+
+The `files` value is the §2.23–2.24 approved shape, subject only to the final
+exact package-manifest/configuration approval and proof that every transitive
+runtime-relative import is covered. README and licence are listed deliberately
+even though npm also includes them automatically. No `main`, `browser`,
+`module`, `engines.npm`, top-level `packageManager`, `types`, `typings`,
+package-level condition, wildcard/metadata/extension-alias export or automatic
+lifecycle hook is implied by omitted illustrative fields. The exact §2.45
+`devEngines` object uses the frozen npm `12.0.2` value; the manifest, lockfile,
+workflows and release evidence must agree on it and must not substitute a range.
+The negative
+patterns intentionally follow all positive entries because current
+`npm-packlist` evaluates negations in order; the release gate verifies that
+behaviour rather than assuming it.
+
+#### 21.2.1 WebVOWL must use the external package boundary
+
+After Phase 19, WebVOWL and `owlapi` do not share a repository or package-manager
+workspace. WebVOWL declares an exact registry version in production
+dependencies and imports the same public specifiers documented for third
+parties. Node, Jest and Vite select entry points through the installed package's
+`exports` map. The committed lockfile resolves the npm registry artefact and its
+integrity, not a mutable branch, sibling checkout, local tarball or link.
+
+Do not add a convenience alias such as
+`owlapi → ../owlapi/index.js`: it would make application builds pass even if
+the published manifest were missing an export or the tarball omitted a file.
+Do not make WebVOWL tests privileged consumers of deep internals either.
+Package-internal tests may test internals in `Hadden-Industries/owlapi`;
+WebVOWL tests demonstrate only what a real installed-package consumer can
+construct and observe.
+
+This is intentionally a three-part verification model:
+
+1. package-repository CI verifies implementation, conformance and packability;
+2. the retained tarball is exercised in isolated generic consumers and an
+   isolated WebVOWL candidate checkout before publication; and
+3. normal WebVOWL installs, tests and builds continuously verify the exact
+   public-registry artefact after publication.
+
+No gate substitutes for another. Local exploratory tools may unpack the
+candidate in disposable directories, but no committed consumer configuration
+may encode a development-only route.
+
+#### 21.2.2 Browser resolution has two supported owners
+
+Bundlers and document import maps consume the same explicit public exports but
+own resolution differently. A package-aware bundler reads npm metadata and
+constructs an optimized application graph. A browser import map belongs to the
+HTML document and maps public and transitive bare specifiers to URLs chosen by
+that application. Package source remains ordinary native ESM in both cases.
+
+Generate the version-pinned reference map from the packed artefact and its
+literal dynamic imports with exact §2.46 `@jspm/generator@2.16.3`,
+`jspm.io`, `production`/`browser`/`module` and integrity configuration; do not
+hand-maintain a second export registry. The reference is evidence and a
+consumer example, not a universal package setting or availability promise.
+Before real-engine testing, integrity-check and locally mirror the exact
+provider graph without transforming it, while separately verifying the public
+reference URLs. It must not hard-code a provider into production source,
+bypass public exports, inject `es-module-shims`, or suggest that import maps
+themselves transform CommonJS. Document maps do not propagate to workers, so
+dedicated-worker support is verified independently through the bundler fixture.
+See §§2.21, 2.46 and 17.26.1.2 for the normative acceptance matrix.
+
+#### 21.2.3 Dependency authority remains explicit and one-layered
+
+The published manifest tells consumers which external runtime packages the
+implementation requires; it does not prescribe every transitive version in a
+future application. All six direct runtime packages therefore appear once, as
+exact ordinary `dependencies`. They are not repeated as peers or optionals,
+embedded with the tarball, redirected through root-only overrides or frozen for
+downstream consumers by a publishable shrinkwrap.
+
+The source repository's lockfile and the fresh lockless-consumer graph answer
+different questions. The former makes development, CI, SBOM generation and the
+reviewed release graph reproducible. The latter proves that the public manifest
+still resolves and works as an ordinary library when a consumer does not inherit
+that lock. Both are release evidence; only `package.json` is dependency authority
+inside the npm tarball. See §§2.32, 2.48 and 17.26.2.
 
 ### 21.3 Named exports
 
-Prefer named exports for domain classes/functions. A single public barrel can re-export stable APIs while internal modules use direct relative imports to avoid barrel cycles.
+Prefer named exports for domain classes/functions. Each registered namespace has
+an explicit `index.js` facade, and the root aggregate explicitly re-exports only
+the approved ordinary-workflow subset. Every public binding has one canonical
+definition in its Java-shaped namespace; cohesive public types may share a
+module, but no binding is redefined beneath `internal/`. Private modules use
+direct relative imports to avoid barrel cycles.
 
-### 21.4 Native JavaScript only; TypeScript is outside the v1 migration
+### 21.4 Native JavaScript only; TypeScript declarations are outside the initial publication programme
 
-`owlapi-js` v1 **MUST** be authored as native ESM JavaScript.
+The initial `owlapi` release line **MUST** be authored as native ESM JavaScript.
 
 The core migration **MUST NOT** introduce:
 
@@ -4017,7 +9986,12 @@ Structural exhaustiveness **MUST** be enforced through the canonical `kind` voca
 
 The v1 build/test workflow **MUST** execute directly from JavaScript without a TypeScript compilation stage.
 
-TypeScript declaration files are **NOT REQUIRED** for v1. Introducing TypeScript source/tooling or generated `.d.ts` declarations is a separate future project decision and **MUST NOT** occur opportunistically during this migration.
+Under §2.26, TypeScript declaration files are not merely optional: the
+`0.1.0-alpha.0` and `1.0.1` manifests and retained tarballs **MUST NOT** claim or
+ship an official declaration surface. Introducing TypeScript source/tooling,
+generated or hand-maintained `.d.ts` declarations, a `types`/`typings` field or
+an official `@types/owlapi` package is a separate post-1.0 package-ergonomics
+decision and **MUST NOT** occur opportunistically during this migration.
 
 ### 21.5 No import side effects
 
@@ -4030,9 +10004,10 @@ The selected foundational dependencies are:
 ```text
 @rdfjs/data-model
 @rdfjs/dataset
+@xmldom/xmldom
+jsonld
 n3
 rdfxml-streaming-parser
-jsonld
 ```
 
 They **MUST** be used for the roles defined in §6 unless an approved replacement decision changes the normative plan. Exact versions are pinned when introduced.
@@ -4041,13 +10016,40 @@ They **MUST** be used for the roles defined in §6 unless an approved replacemen
 
 ### 21.7 Dependency-governance policy
 
-For each foundational dependency, record standards grounding, conformance evidence, governance/release authority, maintenance status, transitive supply-chain surface, runtime/browser cost, security/network behaviour, licence/notice obligations and replaceable adapter boundary.
+For each foundational dependency, record standards grounding, conformance
+evidence, governance/release authority, maintenance status, transitive
+supply-chain surface, runtime/browser cost, security/network behaviour,
+licence/notice obligations and replaceable adapter boundary. The package
+manifest, repository lockfile, production SBOM and §2.50 material inventory must
+identify the same six direct runtime components and accepted versions.
 
-A dependency replacement or material upgrade **MUST** rerun the applicable conformance, adapter-contract, differential, security/resource, browser/Node and performance gates. A phase **MUST NOT** silently upgrade a foundational dependency while doing unrelated semantic migration work.
+A dependency replacement or material upgrade **MUST** rerun the applicable
+conformance, adapter-contract, differential, security/resource, browser/Node and
+performance gates. A phase **MUST NOT** silently upgrade a foundational
+dependency while doing unrelated semantic migration work. The update is tested
+both in the repository-locked graph and in the independent lockless consumer
+graph defined by §2.48; an exact direct pin does not justify publishing a
+shrinkwrap, bundling the dependency or recasting an implementation engine as a
+peer.
+
+The weekly `owlapi@latest` monitor detects later transitive-resolution drift
+without creating a second update authority. It may open or update one structured
+finding, but only the ordinary reviewed dependency pull request and new-version
+release process may change package state. Licence/notice review follows the
+bytes actually distributed: the package record and `NOTICE` cover the npm
+tarball, while the WebVOWL build separately inventories code embedded in its
+deployment bundle.
 
 ### 21.8 Browser/Node XML adapter
 
 Rather than scattering environment checks through OWL/XML parser code, normalize XML parsing behind one `XmlParserAdapter` using native browser `DOMParser` where appropriate and the chosen Node implementation in Node/tests.
+
+The adapter selects by capability, not by runtime name. Because `DOMParser` is
+not exposed in a dedicated worker, its private fallback must also be reachable
+through the supported bundled-worker graph without making that fallback eager
+in ordinary Window bundles. Node, Window and dedicated-worker tests normalize
+the same public parse/error semantics; import maps are not used as a worker
+resolution mechanism.
 
 ---
 
@@ -4087,7 +10089,11 @@ legacy WebVOWL parser
 
 The second path can remain useful temporarily for characterization and regression comparison, but it should not be the default provenance path of the standalone core.
 
-This strategy remains correct **regardless of the final licence direction**. A future decision between MIT, Apache-2.0, MPL-2.0, LGPL/GPL/AGPL or another compatible licence should be a project-governance choice, not something forced by avoidable source-code derivation.
+This strategy remains correct after selecting `AGPL-3.0-only`. Strong copyleft
+is a project-governance choice, not an obligation forced by avoidable
+source-code derivation. The same provenance boundary preserves confidence that
+the project has authority to make that choice and preserves whatever later
+licensing options its copyright and contribution arrangements actually permit.
 
 ### 22.2 Non-negotiable independent-implementation policy
 
@@ -4315,9 +10321,12 @@ Any such exception requires:
 
 No implementer should infer from an OWLAPI-compatible class/method name, an existing WebVOWL port or a parity TODO that source translation is authorized.
 
-### 22.8 Licence decision comes after provenance control
+### 22.8 Provenance control makes the selected licence deliberate
 
-The implementation blueprint should **not hard-code a final project licence merely to solve historical provenance**. First make the production core independently authored and keep the runtime dependency graph compatible with the project's licensing policy. Then choose the eventual project licence according to the desired governance/social contract.
+The implementation blueprint did **not** choose a licence merely to paper over
+historical provenance. It first required an independently authored production
+core and a controlled runtime dependency graph, then selected
+`AGPL-3.0-only` in §2.12 according to the desired governance/social contract.
 
 This order preserves optionality:
 
@@ -4326,10 +10335,15 @@ independent implementation + controlled dependencies
                     ↓
           broad licence-choice freedom
                     ↓
-       project governance selects licence
+       project governance selects AGPL-3.0-only
 ```
 
-The chosen licence can then be stronger or weaker in reciprocity without being dictated by avoidable dependence on Java OWLAPI implementation terms.
+The selected strong reciprocity is therefore intentional rather than dictated
+by avoidable dependence on Java OWLAPI implementation terms. A later
+more-permissive release is a separate governance act that is possible only to
+the extent that the project's copyright and contribution arrangements grant
+the necessary authority; it cannot withdraw rights already granted under the
+AGPL for an earlier release.
 
 This document is engineering guidance, not legal advice. Before first public release, perform an appropriate licensing review; if a formal legal clean-room conclusion is important, obtain specialist counsel rather than treating this engineering process as a substitute.
 
@@ -4338,7 +10352,7 @@ This document is engineering guidance, not legal advice. Before first public rel
 The final WebVOWL call site should become simple:
 
 ```javascript
-import { OWLManager, StringDocumentSource } from "owlapi-js";
+import { OWLManager, StringDocumentSource } from "owlapi";
 
 import { VOWLBuilder } from "./vowlBuilder.js";
 
@@ -4361,7 +10375,6 @@ export default async function owl2vowl(inputString, options = {}) {
 
   const vowlData = new VOWLBuilder(ontology).build();
 
-  // Existing converter/exporter stages can remain while they are still useful.
   return vowlData;
 }
 ```
@@ -4475,8 +10488,8 @@ The syntax adapter and OWL interpreter are deliberately separate components. RDF
 | unresolved/unbounded XML entities                                                                | data loss or entity-expansion DoS                                                                                                | bounded internal entity resolver                                                                                              |
 | JSON-LD may fetch arbitrary contexts                                                             | uncontrolled network/SSRF-like behaviour in some environments                                                                    | injected restricted document loader                                                                                           |
 | VOWL builder traverses XML/RDF directly                                                          | couples visualization to syntax                                                                                                  | consume OWL structural objects                                                                                                |
-| claim “100% OWLAPI parity” from a few fixtures                                                   | creates misleading compatibility contract                                                                                        | explicit parity matrix + conformance/differential tests                                                                       |
-| leave unimplemented OWLAPI behaviour only in planning docs or generic `TODO`s                    | local code hides known compatibility gaps and future refactors rediscover them by accident                                       | mandatory `TODO(OWLAPI parity)` / `UNSUPPORTED(OWLAPI parity)` annotations linked to parity matrix and focused tests (§14.10) |
+| claim “100% OWLAPI parity” from a few fixtures                                                   | creates misleading compatibility contract                                                                                        | complete Public API Surface Registry + conformance/differential tests                                                                       |
+| leave unimplemented OWLAPI behaviour only in planning docs or generic `TODO`s                    | local code hides known compatibility gaps and future refactors rediscover them by accident                                       | mandatory `TODO(OWLAPI parity)` / `UNSUPPORTED(OWLAPI parity)` annotations linked to the API surface registry and focused tests (§14.10) |
 | derive the supported-format list only from WebVOWL's current files                               | hides OWLAPI compatibility surfaces such as original KRSS/KRSS1                                                                  | inventory OWLAPI parser + factory + document-format identities first, then classify each explicitly                           |
 | treat KRSS2 as a generic KRSS parser                                                             | loses dialect identity and can accept extended KRSS2 constructs when validating KRSS1                                            | separate KRSS/KRSS1 and KRSS2 adapters over a shared core only where grammar audit justifies reuse                            |
 | put `rdf-parse`/Comunica beneath `OWLOntologyManager` as another universal dispatcher            | duplicates format selection/fallback and expands dependency authority                                                            | direct format-specific adapters terminating at RDF/JS                                                                         |
@@ -4568,9 +10581,372 @@ An append-only archive can eventually recreate the same cognitive-load problem i
 
 **Mitigation:** separate immutable-ish historical lesson records from the continuously curated current playbook; tag lesson applicability; retire superseded playbook guidance; promote important lessons into tests/contracts/ADRs; keep the playbook small enough to be a practical pre-flight document for the next migration.
 
+### 27.11 Risk: the `owlapi` namespace is unavailable or confused with its prior use
+
+**Risk:** the absence of live npm versions is mistaken for publishing authority,
+or a successful new release causes consumers with broad historical ranges to
+receive an unrelated OWL implementation without understanding the identity
+change.
+
+**Mitigation:** publish only the genuine reviewed `0.1.0-alpha.0` under `next`;
+preserve the first authenticated write result; escalate a namespace failure
+rather than silently renaming; never reuse the seven immutable historical exact
+coordinates; and keep `latest` unset until stable acceptance. Before stable
+`1.0.1`, run and retain the bounded historical-dependency audit in §2.10.1. The
+README and npm-rendered metadata disclose that exact old pins remain unavailable
+while compatible former 1.x ranges may resolve the new stable line; that outcome
+is a controlled residual risk, never evidence of API compatibility. Material
+active range use blocks stable publication for a separately approved version
+decision.
+
+### 27.12 Risk: WebVOWL bypasses the package it is meant to validate
+
+**Risk:** repository-local relative imports or resolver aliases let WebVOWL use
+files that are absent from the `exports` map or packed artefact. Application
+tests/builds remain green while an external `owlapi` consumer fails, and private
+module paths become accidental dependencies that prevent safe refactoring.
+
+**Mitigation:** declare `owlapi` as a WebVOWL production dependency; route every
+WebVOWL import and test through the applicable `owlapi`, `owlapi/apibinding`,
+`owlapi/model`, `owlapi/io`, or `owlapi/formats` entry point; reject
+`owlapi/rdf`, relative/deep imports and resolver aliases with an architecture
+test; run the ordinary Jest/Vite workflows after a clean exact-registry install;
+and retain separate candidate-tarball and registry-consumer gates for
+packaged-file completeness.
+
+### 27.13 Risk: release scope expansion hides future semantic work inside packaging
+
+**Risk:** publication exposes a desired future consumer, so Phase 19 or the
+stable-release phase adds nominal mutation, merger or storer APIs without the
+design, parity, conformance and round-trip evidence those capabilities require.
+The release boundary becomes unreviewable and the resulting API becomes
+technical debt before the package has its first stable external contract.
+
+**Mitigation:** freeze `0.1.0-alpha.0` and `1.0.1` to the accepted Phase 18
+capability families plus test-proven corrections; make post-1.0 capabilities
+explicit in package metadata; prohibit nominal/stub exports; and implement the
+entire query/mutation/merge/store slice under the separate
+`post-1.0-capability-implementation-plan.md`. Stable `1.0.1` is blocked by
+production-package and WebVOWL evidence, not by unrelated feature breadth.
+
+### 27.14 Risk: contribution terms silently eliminate later licensing options
+
+**Risk:** the project assumes that beginning under `AGPL-3.0-only` means it can
+always issue a future permissive release, then accepts contributions whose
+authors granted only the AGPL rights available to every recipient. A later
+licence change would require locating and obtaining consent from every affected
+copyright holder, or excluding and independently replacing their work.
+
+**Mitigation:** fix and publish the contributor-rights policy before accepting
+outside package contributions. Phase 19 publishes the explicit
+`AGPL-3.0-only` inbound=outbound baseline but does not build a speculative CLA
+before an external copyrightable contribution exists. Before the first such
+contribution is merged, the §2.14.1 gate must either confirm pure
+inbound=outbound and consciously accept contributor-by-contributor relicensing,
+or adopt and obtain a reviewed contributor-retained CLA. Make the inbound terms
+conspicuous, record the actual rights holder and authority for each accepted
+contribution, and never describe relicensing as a guaranteed project power
+unless the actual grants support it. Any later licence change is separately
+approved, versioned and audited, and cannot revoke the terms of an already
+published AGPL release.
+
+### 27.15 Risk: confusing project stewardship, copyright and operational custody
+
+**Risk:** package metadata or notices name HADDEN INDUSTRIES LTD as copyright
+owner/licensor merely because it stewards the repository, or assume that a
+copyright assignment would by itself preserve the exact GitHub and npm release
+paths. The former misstates present title; the latter leaves a practical
+single-account bus factor unresolved. Conversely, treating personal copyright
+as a publication blocker would add an unnecessary legal gate even though
+published AGPL grants and copyright succession remain available.
+
+**Treatment:** identify Maksym Shostak as owner of his contributions until an
+optional written assignment actually takes effect; identify HADDEN INDUSTRIES
+LTD separately as project steward with its complete registered-company wording;
+verify the retained tarball's rights inventory; and use his individually
+authenticated GitHub/npm accounts, MFA, least privilege, trusted publishing and
+a rehearsed release/recovery runbook. This plan knowingly accepts that those
+controls do not remove the single-person availability and account-recovery risk;
+adding another human custodian is post-plan governance. Keep personal estate
+planning external to the release and never treat a company registration, npm
+organization or repository setting as evidence of copyright transfer or human
+redundancy.
+
+### 27.16 Risk: extraction either imports unrelated history or erases lineage
+
+**Risk:** a whole-repository GitHub fork makes `owlapi` appear to be a WebVOWL
+variant and imports years of unrelated UI/application history, while a fresh
+snapshot or simplistic path copy discards the actual migration authorship and
+evolution. Interleaved or mixed commits can also leak UI/UX changes into the
+package history or lose package-relevant changes during replay.
+
+**Mitigation:** create an independent repository; freeze the original mixed
+branch; classify every commit in a machine-readable partition manifest; split
+mixed commits by reviewed change; perform the rewrite in a disposable clone;
+retain original metadata and an original-to-rewritten commit map; prove
+path-normalized file-hash equivalence at handoff; reconstruct UI/UX work on a
+separate branch in `Hadden-Industries/webvowl`; and keep the original branch
+until both histories pass tests and complete accounting.
+
+### 27.17 Risk: redundant entry metadata or false side-effect claims create production-only package failures
+
+**Risk:** `main`, `browser`, conditional/pattern exports or filesystem aliases
+give different tools different public surfaces, while an unverified
+`sideEffects: false` lets optimized bundlers discard required initialization.
+Node/package tests can remain green even though a real application resolves a
+different target or loses behaviour only in production.
+
+**Mitigation:** make the exact §2.43 `exports` object the sole entry authority;
+reject every alternate/deep/metadata path; require one canonical binding
+identity; instrument the complete package-owned import closure; execute used
+and unused production tree-shaking fixtures; and treat either mismatch as a
+release-blocking source/manifest defect under §2.44.
+
+### 27.18 Risk: a reference CDN becomes an undeclared runtime or CI authority
+
+**Risk:** native-import-map evidence depends directly on a live third-party
+provider, so an outage is confused with a package defect, a provider rewrite is
+accepted without integrity checking, or documentation accidentally implies that
+every `owlapi` application must trust one CDN.
+
+**Mitigation:** exact-pin the §2.46 generator/configuration, include integrity
+metadata, verify the public URLs, hydrate and check every module, run the
+required engines against an untransformed ephemeral local mirror, keep provider
+bytes out of package source, and state that `jspm.io` is a replaceable reference
+whose graph may be application-hosted.
+
+### 27.19 Risk: release-tool or evidence-schema drift produces authoritative-looking false evidence
+
+**Risk:** a floating or host-global npm/SBOM/validator/browser/bundler/release
+tool silently changes lockfile, component classification, browser evidence,
+package bytes or accepted record fields; development packages enter the SBOM;
+or an unvalidated JSON record is attached immutably and later treated as proof.
+
+**Mitigation:** enforce the complete exact §2.54 baseline through local npm
+scripts and checksum/digest-verified external tools; keep the CycloneDX binary
+in a clean tool workspace and its production-only subject in another; reconcile
+the generated graph independently with npm, lockfile and pack inventory;
+validate closed versioned Draft 2020-12 evidence with registered standard
+formats before use; reject remote `npx` and runner-global authority; and review
+every tool update plus lock/evidence/browser/bundle output diff as a separate
+configuration/dependency change.
+
+### 27.20 Risk: release reproducibility is confused with forcing a library consumer's transitive tree
+
+**Risk:** a shrinkwrap or bundled dependency set makes one installation look
+deterministic while preventing ordinary deduplication/security updates,
+misrepresenting private parser engines as consumer-controlled peers or becoming
+ineffective under a newer npm resolver. Conversely, testing only the repository
+lockfile misses a consumer-visible transitive resolution failure.
+
+**Mitigation:** implement §2.48: publish ordinary exact direct dependencies and
+no shrinkwrap/bundle/peer/optional/override authority; retain the source lockfile
+only for reviewed CI/release construction; test and record both locked and fresh
+lockless consumer graphs; and run the read-only weekly `owlapi@latest` monitor
+without automatic mutation or publication.
+
+### 27.21 Risk: project-specific package tests encode the same mistaken assumption as the manifest
+
+**Risk:** export/packlist governance tests pass because they reproduce the
+project's design, while a broadly used Node/bundler resolver rule still rejects
+or misinterprets the packed package.
+
+**Mitigation:** run local exact `publint@0.3.24` in strict mode against the actual
+retained tarball and registry-downloaded bytes; retain suggestions for review;
+and allow only exact-rule, exact-tool, evidence-backed, expiring warning
+exceptions without replacing the project's stronger semantic gates.
+
+### 27.22 Risk: one NOTICE file falsely claims to cover two different distributions
+
+**Risk:** dependency manifest strings are treated as complete licence evidence,
+all external dependency licences are dumped indiscriminately into the package,
+or WebVOWL assumes that `owlapi`'s notice covers third-party code physically
+embedded into the application bundle.
+
+**Mitigation:** use the §2.50 schema-validated, human-reviewed material registry;
+hash and inspect actual licence/notice files; render the package `NOTICE` only
+for its real tarball scope and boundary; and independently reconcile WebVOWL's
+emitted bundle with its deployment-scope inventory and notices.
+
+### 27.23 Risk: a provenance badge or aggregate count is accepted for the wrong package
+
+**Risk:** the npm page looks provenanced or `npm audit signatures` reports some
+verified attestations, but the evidence belongs to a dependency, different
+version, source repository or workflow and is nevertheless recorded as proof of
+the published `owlapi` coordinate.
+
+**Mitigation:** implement §2.51 with the exact approved npm patch and attestation
+JSON; identify the root coordinate; validate registry signature, provenance and
+publish attestations, subject digest, case-sensitive source/workflow/tag/commit
+identity and transparency evidence; and retain the normalized root result.
+
+### 27.24 Risk: an immutable-release badge hides an unverified or mismatched asset
+
+**Risk:** the GitHub release is marked immutable but one asset was omitted from
+verification, the checksum file is malformed or covers different bytes, the
+release evidence was attached later than the reviewed checksums, or the tag/
+source binding is assumed rather than independently verified.
+
+**Mitigation:** require the exact §2.52 two-entry checksum format; verify GitHub
+CLI `2.98.0` against its official checksum; download all four assets in a fresh job; verify the release
+and each asset separately; validate checksums/evidence schema; independently
+verify the authorized SSH-signed tag/commit; and preserve every resulting
+identity in the append-only release record.
+
+### 27.25 Risk: staged approval promotes bytes other than the reviewed tarball
+
+**Risk:** a workflow stages a directory, repacks after review, targets the wrong
+tag or produces a candidate whose metadata looks correct while its bytes differ
+from the retained tarball that passed the release gates. An approver who reviews
+only a workflow URL or stage summary could then promote the wrong immutable
+version.
+
+**Mitigation:** permit only `npm stage publish` of the retained tarball; record
+the stage ID; require an interactively authenticated maintainer to view and
+download that exact stage; compare its SHA-256 byte for byte with the retained
+digest; rerun the required candidate gates; bind the approval record to stage,
+coordinate, tag, source and digest; and reject rather than repair every mismatch
+before interactive 2FA approval under §2.53.
+
+### 27.26 Risk: workflow convenience collapses untrusted, npm and repository-write boundaries
+
+**Risk:** one broadly privileged workflow or cross-workflow artefact promotion
+lets pull-request code, a poisoned cache, an unrelated run or one compromised
+Action reach npm OIDC, the bootstrap token, GitHub-release writes or issue-write
+authority. A cancellation race can also interrupt a release after external state
+was created and allow a later run to proceed from an ambiguous candidate.
+
+**Mitigation:** implement the exact §2.55 four-workflow topology; deny root token
+permissions; avoid `pull_request_target` and privileged `workflow_run`; keep the
+complete manually dispatched late-tag candidate chain within one cache-free
+`release.yml` run;
+hash every same-run artefact transfer; separate npm OIDC, GitHub-release write
+and issue-report jobs; serialize releases without cancellation; restrict allowed
+Actions; require full-SHA pins; and record the effective workflow/job/artefact
+identities in release evidence.
+
+### 27.27 Risk: an immutable Action pin preserves unsafe defaults as faithfully as safe ones
+
+**Risk:** a full commit SHA prevents upstream tag movement, but does not make the
+selected Action, role or inputs least-privilege. Checkout can persist a write-
+capable credential, setup-node can enable dependency caching implicitly from
+package metadata, broad artefact selectors can retrieve the wrong candidate,
+overwrite/merge behavior can hide an unexpected file, and a convenience Action
+can quietly add another network, token or supply-chain authority. A dependency-
+review job with write/comment or licence policy outside the approved release
+gate can likewise expand scope while appearing security-oriented.
+
+**Mitigation:** enforce the complete §2.56 contract as one review unit: exactly
+five official Action repositories at the recorded tag-to-SHA mappings; explicit
+checkout depth/tag/credential inputs per role; exact Node patches with both
+setup-node cache switches disabled; no steady-state registry/token setup;
+candidate upload/download by immutable artefact ID with closed inventories,
+independent checksums and non-merging/non-overwriting behavior; and a read-only,
+runtime-vulnerability-only dependency review. Review every Action upgrade as an
+executable policy change—including defaults, inputs, outputs, runtime and
+permissions—not as a mechanical SHA refresh.
+
+### 27.28 Risk: a moving runner image or Linux-only gate masquerades as a portable deterministic build
+
+**Risk:** `*-latest` can change OS generation, while even a versioned hosted
+label receives new image builds and preinstalled software. Treating either as an
+immutable environment makes later evidence irreproducible. Consuming an image's
+ambient Node/browser/CLI can silently change release behavior, and a Linux-only
+test can miss Windows path/case/encoding or macOS/arm64 assumptions even though
+the manifest publishes no OS exclusion. Unspecified shell behavior can also let
+a failing pipeline segment pass or make equivalent workflow text behave
+differently on Windows.
+
+**Mitigation:** implement §2.57: use only the three explicit GA labels and verify
+their expected architectures; let Ubuntu 24.04 x64 alone build/publish; run the
+complete Ubuntu Node matrix plus the four blocking Windows/macOS installed-
+tarball lanes and three one-worker Ubuntu Playwright jobs; select Bash or
+PowerShell Core explicitly while keeping policy in cross-platform Node scripts;
+record every job's actual image/OS/kernel/runtime identity; and obtain every
+release tool independently of the runner image. Treat image builds as observed
+mutable evidence and a resulting required failure as a blocker, not as permission
+to weaken the matrix or swap silently to a container/self-hosted runner.
+
+### 27.29 Risk: skipped work appears green or an automatic retry duplicates external state
+
+**Risk:** branch protection over volatile matrix names can overlook a newly
+added lane, while a skipped, cancelled or timed-out prerequisite may be hidden
+by `always()`, `continue-on-error`, fail-fast cancellation or a report adapter
+that exits successfully. Unbounded network retries can turn an outage into a
+multi-hour release, and blindly retrying a publish, stage approval, tag change,
+asset upload or issue mutation after an ambiguous response can create duplicate
+or contradictory external state. A non-cancelling release group without a
+preserved pending queue can also silently displace an older signed tag.
+
+**Mitigation:** implement §2.58 as one fail-closed contract: governance-verify
+the complete mandatory-job inventory behind stable `CI / required` and
+`Release / qualified` aggregates; require success—not skip/cancel/timeout—from
+every prerequisite; disable required-matrix fail-fast and allow-failure paths;
+set the exact job/step deadlines; preserve every release tag with
+`queue: max`; coalesce only observational schedules; retry only bounded
+idempotent reads; and give external writes one automatic attempt followed by
+exact read-only reconciliation and renewed authorization for any genuinely new
+mutation.
+
+### 27.30 Risk: fork code or attacker-controlled metadata crosses a credential or workflow-command boundary
+
+**Risk:** an external pull request can alter scripts, dependencies, tests and
+workflow helpers even when `.github/workflows/` itself looks harmless. Running
+that tree automatically wastes the expensive matrix and, in a privileged event,
+can exfiltrate secrets or mutate the repository. Direct interpolation of a PR
+title/ref or remote response into `run:` can become shell source; raw writes to
+workflow command files can forge outputs/environment; a fork artefact promoted
+into release can become a supply-chain input. Context dumps, tracing and faith
+in automatic masking can also turn a diagnostic into a credential incident.
+
+**Mitigation:** implement §2.59: require per-run approval for every external
+contributor after inspecting all executable inputs; run fork and Dependabot code
+only in no-secret/no-OIDC/no-environment/read-only `pull_request` CI; quarantine
+its artefacts to unprivileged jobs in that run; validate contributor/external
+values as data through closed project-owned helpers; forbid raw workflow-command
+output and sensitive context/trace logging; scan retained outputs; and revoke/
+rotate on suspected exposure regardless of displayed masking.
+
+### 27.31 Risk: an immutable version tag is consumed before release-only qualification discovers a correctable defect
+
+**Risk:** a tag-push-triggered workflow must create `v<version>` before it can
+exercise release-only packaging, browser, WebVOWL, SBOM, stage and registry
+paths. If a deterministic defect then requires a corrected commit, preserving
+the tag makes the planned npm version unpublishable from the correction, while
+moving/deleting the tag destroys the source identity consumers may already have
+observed. For the planned `v1.0.1`, that would silently force a choice between
+the exact terminal version and immutable release history.
+
+**Mitigation:** implement §2.60's manually dispatched late-tag state machine.
+Capture the accepted protected-`main` commit, complete all deterministic gates,
+and for steady-state releases stage/download/byte-verify the retained tarball
+before a human creates the canonical tag. Verify that later tag before draft or
+public-promotion authority. Correct freely through review while no tag exists;
+after the tag, reconcile unchanged-input failures but abandon rather than move
+the version if a deterministic correction is required. Preserve a failed-attempt
+record and run the next exact version through the complete gate.
+
+### 27.32 Risk: an implicit human hand-off races the workflow or occupies a runner
+
+**Risk:** after qualification or stage creation, an immediately scheduled tag-
+verification job can run before the human finishes candidate review and pushes
+the tag. A shell polling loop instead consumes hosted-runner time, introduces an
+arbitrary deadline and supplies no durable authenticated acknowledgement that
+the human completed the prerequisite. Splitting continuation into another
+workflow weakens the approved same-run artefact boundary.
+
+**Mitigation:** implement §2.61's single no-authority `release-manual`
+environment with `deployment: false`. Its required review pauses the job before
+runner allocation; its first gate follows tag creation and precedes draft
+mutation, while its second staged-release gate follows interactive 2FA promotion
+and precedes public verification. Retain GitHub's authenticated run-review
+history with the gate job timeline, keep all mutation authority in
+`npm-release`/separate write jobs and reconcile rejected, premature or expired
+gates without blind retry or bespoke tag-message authority.
+
 ## 28. Scope: Initial Release vs Future Work
 
-### 28.1 Initial `owlapi-js` core target
+### 28.1 `owlapi@0.1.0-alpha.0` package target
 
 **In scope:**
 
@@ -4585,9 +10961,16 @@ An append-only archive can eventually recreate the same cognitive-load problem i
 - imports/document resolver abstractions;
 - diagnostics/resource policies;
 - browser + Node support;
-- high-quality public API and semantic documentation.
+- high-quality public API and semantic documentation;
+- WebVOWL as a declared production consumer using only `owlapi`,
+  `owlapi/apibinding`, `owlapi/model`, `owlapi/io`, and `owlapi/formats`, with
+  no relative source-tree reach-in or package-bypassing resolver alias;
+- the unscoped npm identity `owlapi` with only the five §2.10.4 public entry
+  points; and
+- a genuine `0.1.0-alpha.0` release under `next` with the exact Phase 18
+  capability freeze in §2.11.
 
-### 28.2 Explicitly not required for initial extraction
+### 28.2 Explicitly not required for `0.1.0-alpha.0`
 
 - **Notation3 (N3) language ingestion** — `DEFERRED`; N3.js is used only for Turtle, TriG, N-Triples and N-Quads in v1.
 
@@ -4596,21 +10979,74 @@ An append-only archive can eventually recreate the same cognitive-load problem i
 - every OWLAPI utility/search helper;
 - ontology change listeners/events unless WebVOWL needs them;
 - profiles/checkers unless needed for correctness diagnostics;
-- concrete ontology storers/serializers;
+- public closure-query/materialization, mutation, merger, save and concrete
+  storer APIs—the coherent post-1.0 capability programme, not packaging or
+  stable-release work;
 - OBO parser unless current scope requires it;
 - SWRL completeness unless test corpus requires it;
 - byte-for-byte serializer parity with Java OWLAPI.
 
-### 28.3 Why OWL→RDF belongs in core even though storers do not
+### 28.3 Stable `1.0.1` target
 
-`OwlToRdfTranslator` is a semantic mapping layer, not a concrete storer. It should be included because it:
+Stable `1.0.1` productionizes the accepted ingestion/model surface rather than
+adding a second semantic programme. It requires the §2.10.4 Public API Surface
+Registry and the §17.27 release-candidate, deterministic-artefact,
+stable-publication, historical-range and exact-registry WebVOWL gates.
+Test-proven defect, security, portability, diagnostic, documentation and
+packaging corrections are permitted; new parser, mutation, merger, storage or
+public-workflow families are deferred to
+`post-1.0-capability-implementation-plan.md`.
+
+The production cutover remains exactly `1.0.1` unless either §2.60's
+extraordinary post-tag/prepublication deterministic-abandonment branch makes the
+next available same-surface patch the first stable, or that already-published
+coordinate fails mandatory post-publication verification. Only those two
+explicit branches may substitute a fully gated patch; that patch corrects the
+same frozen surface and does not expand this scope.
+
+Stable productionization also changes the reviewed publish channel from `next`
+to `latest` under §2.38 while retaining the exact §2.39 discovery metadata. Its
+release is durable through the §2.40 evidence asset/repository index, accepted
+only with the §2.41 source/secret-scanning state and required to preserve the
+§2.42 zero-telemetry contract. It retains the sole §2.43 exports map,
+§2.44 import purity/`sideEffects: false`, §2.45 exact npm `devEngines` tool
+identity, §2.46 JSPM reference-map contract and §2.47 validated CycloneDX/
+Draft 2020-12 evidence toolchain proven by the accepted release candidate. It
+also retains §2.48 ordinary dependency resolution and dual-graph evidence,
+§2.49 strict independent tarball lint, §2.50 distribution-scoped material/
+notice governance, §2.51 exact npm root-attestation proof and §2.52 fresh
+immutable-release/per-asset verification. Staged publication remains bound to
+the retained tarball under §2.53, the release-control toolchain remains exact
+and isolated under §2.54, the four trust-separated workflows remain governed by
+§2.55, and every selected Action and security-relevant input is revalidated
+under §2.56 rather than inherited by assumption from the alpha. The exact
+Ubuntu-authoritative/Windows-and-macOS-qualifying runner, shell, browser-host and
+image-evidence contract in §2.57 is likewise rerun against the stable candidate.
+The §2.58 aggregate-check, required-conclusion, timeout, concurrency-queue,
+controlled-read-retry and one-attempt external-mutation contract is likewise
+rerun and retained as stable-release evidence.
+The §2.59 per-run external-contributor approval, unprivileged fork/Dependabot
+execution, artefact quarantine, validated workflow-data flow and log/secret
+hygiene contract also remains part of stable repository and release acceptance.
+The §2.60 protected-`main` manual dispatch, pre-tag deterministic qualification,
+pre-tag staged-byte proof, later immutable tag and failed-attempt/version-
+abandonment contract is likewise part of stable acceptance rather than optional
+release ceremony.
+
+### 28.4 Why internal OWL→RDF belongs in the repository before storers do
+
+`OwlToRdfTranslator` is a semantic mapping layer, not a concrete storer. It
+remains rigorously tested internal source because it:
 
 - completes the model boundary;
 - enables round-trip tests;
 - supports future RDF serializers without coupling to any format;
 - mirrors normative OWL architecture.
 
-Concrete `RDFXMLStorer`, Turtle writer, etc. can be added later on top of RDF/JS serializers.
+The post-1.0 plan adds `RDFXMLStorer` on top of this internal mapping and
+RDF/XML serialization. No translator or RDF/JS factory becomes public merely
+because a future storer uses it. Turtle and other concrete writer families
+remain later optional capabilities.
 
 ---
 
@@ -4621,8 +11057,13 @@ The extraction is successful when all of the following are true:
 ### Separation
 
 - WebVOWL has no ontology syntax parsing logic.
-- `owlapi-js` has no VOWL concepts.
+- the `owlapi` production package has no VOWL concepts.
+- `Hadden-Industries/owlapi` is the sole maintained package source; WebVOWL
+  retains neither a package copy nor a workspace/submodule/subtree.
 - RDF/XML is absent as an internal interchange format.
+- WebVOWL imports the core only through the applicable five declared §2.10.4
+  package entry points; no `owlapi/rdf`, source-tree reach-in, or resolver alias
+  bypasses the package.
 
 ### Semantics
 
@@ -4635,6 +11076,10 @@ The extraction is successful when all of the following are true:
 ### Compatibility
 
 - current Java differential corpus is green;
+- every public binding is classified and documented as a Java analogue,
+  JavaScript adaptation, or expressly approved extension;
+- paired Java/JavaScript primary-workflow examples pass through the installed
+  package;
 - WebVOWL output is unchanged except for explicitly approved bug fixes;
 - malformed/unsupported input fails explicitly rather than silently losing semantic content.
 
@@ -4642,15 +11087,157 @@ The extraction is successful when all of the following are true:
 
 - large input does not cause eager-token OOM;
 - parsing/imports have resource and network limits;
-- package is ESM-first with defined exports and types;
+- package is native-ESM-first with exactly `owlapi`, `owlapi/apibinding`,
+  `owlapi/model`, `owlapi/io`, and `owlapi/formats` exported in the stable
+  cutover version;
+- one unconditional `exports` object is the sole package-entry authority; no
+  fallback field, condition, pattern, metadata export, extension alias or deep
+  path creates a second public surface;
+- the installed runtime is the canonical readable tagged source, with no
+  generated `dist/` duplicate, minification, source maps, TypeScript declaration
+  surface or automatic install/pack/publish hooks;
+- a clean WebVOWL root install, test run and Vite build resolve those specifiers
+  through the exact npm-registry production dependency and installed package
+  `exports` map;
 - parser factories are explicit and tree-shaking-friendly;
+- every package-owned production module is import-pure, production tree
+  shaking is verified, and `sideEffects: false` is an enforced contract rather
+  than an untested optimization;
+- import, manager construction and local parsing perform no network request,
+  and the package contains no telemetry, analytics, update or diagnostic-upload
+  channel;
 - tests compare structural/RDF semantics rather than serializer accidents.
+
+### Publication
+
+- a clean consumer can install both the retained alpha/prerelease and, normally,
+  stable `owlapi@1.0.1` from the public npm registry; solely after a documented
+  §2.60 prepublication tag abandonment, the next fully gated same-surface
+  coordinate is the first stable instead;
+- the npm metadata points exactly to the independent public
+  `Hadden-Industries/owlapi` source repository and later trusted publication
+  produces verifiable provenance from that repository;
+- every installed manifest uses the exact §2.39 description/keywords without
+  misleading capability or ceremonial metadata, and its SemVer,
+  `publishConfig.tag`, authorized command and observed registry channel agree
+  under §2.38;
+- every installed manifest has the exact §2.43 exports-only shape,
+  §2.44 `sideEffects: false` and §2.45 npm-native `devEngines` value; it has no
+  `engines.npm` or top-level `packageManager`, and the release evidence records
+  Node `22.23.2`/`24.19.0` and npm `12.0.2` actually used;
+- `latest` resolves exactly to the accepted stable cutover artefact—normally
+  `1.0.1`, the next same-surface patch after an activated §2.60 prepublication
+  tag-abandonment branch, or the first corrective patch after §2.33;
+  after stable verification the now-stale `next` pointer is absent and its
+  removal is recorded, while immutable prerelease versions remain installable
+  exactly;
+- the installed tarball and runtime dependency closure match the reviewed
+  release artefact and contain no WebVOWL/reference/test material;
+- the installed README/API/changelog/licence/notice/compatibility set is exact,
+  version-matched and internally consistent; `API.md` covers every executable
+  public binding and no internal value;
+- stable registry rows distinguish the protected `STABLE_1_X` and retained
+  `DEPRECATED_1_X` surface from `INTERNAL_ONLY` implementation details, and the
+  package's version/deprecation practice enforces §2.27;
+- the package manifest, package-local licence, packed notices and npm page all
+  identify `AGPL-3.0-only`, while the retained-tarball inventory records any
+  separately licensed third-party material and the authority to license every
+  package-owned file;
+- the repository publishes the approved §2.14 inbound=outbound contribution
+  policy, its governance test is green, and no external copyrightable
+  contribution can cross the first-merge checkpoint by assumption or accident;
+- the public README explains the unrelated historical package identity and the
+  reason for building `owlapi`, explains its independent relationship to Java
+  OWLAPI, states the exact supported Phase 18 alpha surface, explicitly
+  places closure/mutation/merger/storage work in the post-1.0 plan and makes no
+  `universal-ontology` materialization claim;
+- the history-partition manifest accounts for every original mixed-branch
+  commit, the commit map and hash manifests establish the extracted lineage,
+  and unrelated UI/UX work lives only in the separately reconstructed WebVOWL
+  branch;
+- the registry coordinate, source commit, Git tag, integrity, custodian and
+  verification evidence are durably recorded through the immutable §2.40
+  release-evidence asset and append-only repository hierarchy rather than
+  depending on expiring workflow logs;
+- the exact `@jspm/generator@2.16.3` §2.46 reference map has complete integrity metadata,
+  retrievable reference URLs and a passing locally mirrored three-engine suite
+  without becoming package runtime code, and the separate-workspace §2.47
+  `@cyclonedx/cyclonedx-npm@6.0.1` production graph plus Draft 2020-12
+  `ajv@8.20.0`/`ajv-formats@3.0.1` records agree with the
+  retained package and dependency inventory;
+- `main` and `v*` rulesets, squash-only release pull requests, non-mutating
+  release automation, exact runtime pins and proposal-only dependency updates
+  implement §§2.30–2.32;
+- the organization-team access experiment and verified sole
+  `MaksymShostak`/`maksymshostak` human custody implement §2.28 without any
+  shared npm identity or false multi-person-continuity claim;
+- bad-release containment, full/production audit evidence, one-person explicit
+  publication approval, SSH signer continuity and structured GitHub intake
+  implement §§2.33–2.37;
+- channel-consistent publication metadata, honest npm discovery metadata,
+  durable release evidence, CodeQL/secret protection and zero telemetry
+  implement §§2.38–2.42;
+- exact entry metadata, import purity, npm-native source-tool enforcement,
+  replaceable reference-map tooling and validated release-artifact schemas
+  implement §§2.43–2.47;
+- ordinary library dependency resolution plus locked/lockless evidence, strict
+  independent tarball lint, distribution-scoped material/notice review, exact
+  npm root-attestation validation, fresh per-asset immutable-release proof and
+  staged-candidate download/digest binding implement §§2.48–2.53;
+- exact local npm-tool versions/scripts, blocking Node/npm patches,
+  Playwright-managed browser revisions, standalone Vite fixtures, separated
+  SBOM tool/subject workspaces and checksum/digest-pinned external tools
+  implement §2.54;
+- the exact four-workflow topology, root-denied/job-minimal permissions,
+  manually dispatched same-run candidate chain, protected environments, serialized
+  non-cancelling releases and full-SHA selected-Action policy implement §2.55;
+- exactly the five §2.56 Action tag/SHA pairs are executable, checkout never
+  persists credentials, setup-node never creates an implicit dependency cache,
+  steady OIDC publication has no checkout/registry/token configuration, the
+  three-file candidate travels by immutable artefact ID with independent digest
+  and inventory checks, dependency review is read-only and runtime-
+  vulnerability-only, and no wrapper/cache/release/attestation Action supplies a
+  second authority;
+- only `ubuntu-24.04` x64 produces release bytes; the full Ubuntu Node matrix,
+  four blocking `windows-2025` x64/`macos-15` arm64 installed-tarball lanes and
+  three separate one-worker Ubuntu browser jobs pass; explicit Bash/PowerShell
+  Core selection and per-job runner-image records implement §2.57; and no
+  moving/preview/slim/larger/self-hosted/container or runner-preinstalled-tool
+  path supplies release evidence;
+- `main` is protected by the exact GitHub-Actions-owned `CI / required`
+  aggregate plus CodeQL, npm authority depends directly on
+  `Release / qualified`, and governance proves both aggregate inventories match
+  every mandatory job; required matrices finish with honest conclusions, exact
+  timeouts and the §2.58 queue policy, while bounded read retries and
+  reconciled single-attempt writes prove no skipped/cancelled/timed-out or
+  ambiguous operation crossed the publication boundary;
+- every external fork run is maintainer-approved only for unprivileged
+  execution; external/Dependabot code receives no secret, OIDC, environment or
+  write authority; its candidate remains in the same CI run; contributor/
+  external metadata crosses only validated data channels; and §2.59 log,
+  workflow-command, sanitization and exposure-response controls are enforced;
+- `release.yml` accepts only a manual dispatch at the captured protected-`main`
+  head, derives the release identity, completes every deterministic gate and the
+  steady-state staged-byte proof before the human creates the immutable tag,
+  verifies that tag before draft/public promotion, and enforces §2.60's
+  append-only abandonment branch rather than moving a tag;
+- `release-manual` supplies the same run's no-secret/no-write/no-OIDC,
+  `deployment: false` reviewer gates after tag creation and after staged
+  promotion; authenticated approval history is retained, no runner polls while
+  waiting, and §2.61 recovery never duplicates an external write;
+- WebVOWL declares the exact public stable cutover version—normally
+  `owlapi@1.0.1`, with a same-surface patch permitted only by §2.60 or §2.33—and has removed
+  every direct dependency owned only by the extracted package; and
+- the post-1.0 capability plan is linked as future work rather than reported as
+  incomplete work in this finished plan.
 
 ### Reuse
 
 A non-WebVOWL consumer can do:
 
 ```javascript
+import { OWLManager } from "owlapi";
+
 const manager = OWLManager.createOWLOntologyManager();
 const ontology = await manager.loadOntologyFromOntologyDocument(source);
 
@@ -4748,6 +11335,11 @@ Continue the same cumulative ingestion-learning sequence rather than treating RD
 - [x] Exercise the new path in the development app in Phase 7, then rewire the existing production entry in Phase 8.
 - [x] After Phase 8, enforce zero production import/bundle reachability to the legacy parser/converter/exporter path and no runtime fallback.
 - [x] Leave legacy files unmoved for characterization/reference until physical deletion in Phase 18.
+- [ ] In Phase 19, make WebVOWL a declared production consumer and replace
+  every relative/deep core import in its production modules and tests with
+  the applicable `owlapi`, `owlapi/apibinding`, `owlapi/model`, `owlapi/io`, or
+  `owlapi/formats` entry point; install the exact public-registry version and
+  remove the frozen in-repository package staging tree.
 
 ### Security
 
@@ -4758,6 +11350,17 @@ Continue the same cumulative ingestion-learning sequence rather than treating RD
 - [ ] Establish Phase 0 machine-readable finite resource-safety limits and enforce them through `ResourceLimitError`.
 - [ ] Add timeout/redirect/byte limits.
 - [ ] Avoid broad parser fallback catches.
+- [ ] Enable CodeQL JavaScript default setup/default query suite and require its
+  result on `main`; block introduced high/critical findings, prohibit ordinary
+  exceptions for reachable critical findings, and validate any bounded source-
+  analysis exception separately from dependency advisories.
+- [ ] Enable secret scanning and repository push protection; permit only
+  reasoned false-positive/non-secret-test-value bypasses and rotate/revoke any
+  real exposed credential as an incident.
+- [ ] Enforce the zero-telemetry contract: no analytics, crash upload, update
+  check, remote configuration or install ping; an installed-package network-
+  denial test proves import, manager construction and local representative
+  parsing make no request.
 
 ### Tests
 
@@ -4781,22 +11384,545 @@ Continue the same cumulative ingestion-learning sequence rather than treating RD
 
 ### Packaging / compliance
 
+- [ ] Public manifest is unscoped `owlapi`; the intended first version is
+  `0.1.0-alpha.0`, with only §2.60 permitting `0.1.0-alpha.1` after an immutable
+  prepublication tag abandonment; `publishConfig` and the explicit authorized command target
+  the npm public registry with `next`, never `latest`, and the executable §2.38
+  check rejects any version/manifest/request/command disagreement.
+- [ ] Every manifest has the exact §2.39 description and keywords, advertises no
+  reasoner/knowledge-graph/WebVOWL-specific identity, and omits `funding`,
+  `contributors`, author email and invented maintainer metadata until each has a
+  genuine approved purpose.
+- [ ] Freeze `0.1.0-alpha.0` to the accepted Phase 18 public capability
+  snapshot; negative tests prove no nominal post-1.0 mutation, merger, save or
+  storer API and no direct RDF translator/factory export leaked into packaging
+  work.
+- [ ] Create public `Hadden-Industries/owlapi` as an independent repository—not
+  a GitHub fork or mirror—with exact case-consistent package metadata, issues,
+  homepage and later trusted-publisher identity.
+- [ ] Configure `main` as the sole standing integration branch with squash-only
+  pull-request merges, required CI/resolved conversations/linear history,
+  `MaksymShostak` administrator coverage and a narrow audited bypass; do not
+  require a second-person approving review anywhere in this plan. Any later
+  independent-review rule is a separately approved post-plan configuration
+  change.
+- [ ] Configure a separate `v*` tag ruleset that restricts creation and prevents
+  update/deletion; do not create a ceremonial `develop`, release or `1.x`
+  branch, and do not require every ordinary commit to be signed.
+- [ ] Enable GitHub Issues with the six approved structured forms and an
+  engineering-focused pull-request template; disable blank issues and
+  Discussions, publish no generic support mailbox, and omit `CODEOWNERS` until
+  real ownership/review routing exists.
+- [ ] Configure 90-day Actions artifact/log retention as diagnostic only, enable
+  CodeQL JavaScript default setup/default query suite with required
+  high/critical `main` merge protection, and enable secret scanning plus push
+  protection without a custom CodeQL workflow or speculative custom patterns.
+- [ ] Freeze the original mixed WebVOWL branch; classify every relevant commit
+  in the history-partition manifest; split mixed commits; and retain the exact
+  original-to-rewritten commit map, extraction commands/tool version and
+  path-normalized before/after SHA-256 manifest.
+- [ ] Reconstruct unrelated UI/UX work on a separately named branch in
+  `Hadden-Industries/webvowl`; keep UI/UX history out of `owlapi` and keep the
+  original mixed branch until both rewritten histories pass verification.
+- [ ] The root of `Hadden-Industries/owlapi` is the single canonical package
+  source; its clean clone/install/test requires no WebVOWL checkout, and
+  production import-closure checks prove no WebVOWL path or copied second source
+  tree exists.
+- [ ] After public alpha verification, WebVOWL root `dependencies` pins
+  `"owlapi": "0.1.0-alpha.0"`, has no package workspace/local/Git specifier,
+  removes the staging source tree, and records the exact registry tarball and
+  integrity in its lockfile.
+- [ ] Audit the extracted WebVOWL manifest and remove every direct dependency
+  used only by `owlapi`; retain a candidate RDF/JSON-LD/XML dependency only with
+  a recorded WebVOWL-owned production or build consumer and re-run clean
+  install/test/build gates after the approved manifest/lockfile change.
 - [ ] ESM `type: module`.
-- [ ] `exports` map.
-- [ ] `sideEffects: false` only after verifying modules truly have no side effects.
+- [ ] Publish the canonical readable ESM modules directly from the package root;
+  no parallel `src/`→`dist/` copy, generated/minified production JavaScript,
+  package transpilation or source maps exist in source, exports or tarball.
+- [ ] `exports` exposes exactly `owlapi`, `owlapi/apibinding`, `owlapi/model`,
+  `owlapi/io`, and `owlapi/formats` through the exact unconditional §2.43
+  targets; the manifest has no `main`, `module`, `browser`, condition, wildcard,
+  extension alias or `./package.json` export, and installed-consumer tests prove
+  every representative alternate/deep path fails.
+- [ ] The positive `files` allowlist contains every public facade and transitive
+  private runtime module plus exactly README, API, changelog, licence, notice and
+  the three approved compatibility documents; executable negatives reject all
+  other documentation/development/release artefacts.
+- [ ] Keep the six exact foundational packages as ordinary `dependencies`;
+  publish no `npm-shrinkwrap.json`, package lock, bundled/bundle, peer, optional
+  or override dependency authority; and record both the locked release graph
+  and a newly resolved lockless/cache-empty consumer graph under §2.48.
+- [ ] No `preinstall`, `install`, `postinstall`, `prepare`, `prepack`,
+  `postpack`, `prepublish` or `prepublishOnly` hook can execute during consumer
+  installation, packing or publication; the release workflow invokes named
+  verification commands explicitly.
+- [ ] `docs/compatibility/java-api-surface.json` accounts for every pinned Java
+  public package/type with zero unclassified rows; its generated human gap view,
+  capability links, `exports` map, source-module paths and packed-package tests
+  agree.
+- [ ] Every public binding has an approved §2.10.4 classification and Java API
+  mapping, one canonical definition in its Java-shaped public namespace and no
+  mirrored duplicate beneath `internal/`; explicit facades prevent accidental
+  exports, paired primary-workflow examples pass, and duplicate root/subpath
+  exports have identical identity.
+- [ ] `src/owlapiConsumerBoundary.architecture.test.js` rejects WebVOWL
+  retention/reach-in to `src/owlapi-js/`, unexported `owlapi/*` imports,
+  dev-only/ranged/non-registry dependency declarations and Vite/Jest aliases
+  that bypass package `exports`.
+- [ ] Publish the required `sideEffects: false`; instrumented fresh-process
+  imports prove the complete package-owned production closure performs no
+  registration/I/O/global mutation, and used/unused production-bundler fixtures
+  prove tree shaking preserves required behaviour. Fix any failure rather than
+  weakening the field.
+- [ ] Add npm-native `devEngines` with `runtime.name=node`, no runtime version,
+  and exact npm `12.0.2` with `onFail=error`; make every workflow use and record
+  that patch, while omitting `engines.npm` and top-level
+  `packageManager`.
+- [ ] Exact-pin `publint@0.3.24` as the present baseline, or a separately
+  reviewed later exact version satisfying the `0.3.24`-or-greater floor; reject
+  ranges and floating tags; run its installed binary in strict mode against the
+  retained tarball and registry-downloaded bytes; retain suggestions for review;
+  and allow only schema-valid exact-rule/tool/version warning exceptions with
+  evidence, reviewer and expiry.
 - [ ] Native ESM JavaScript build/test/release path with no TypeScript/`tsc`/`checkJs` dependency.
-- [ ] JSDoc only where useful for documentation; no TypeScript-driven `.d.ts` requirement.
-- [ ] browser and Node CI.
+- [ ] JSDoc only where useful for documentation; the manifest has no
+  `types`/`typings`, the tarball has no `.d.ts`, and README/package metadata make
+  no official TypeScript-support claim for `0.1.0-alpha.0` or `1.0.1`.
+- [ ] browser and Node CI covers the exact advertised engine/browser floor;
+  ordinary WebVOWL Jest and development/production Vite builds use
+  package-installed—not source-relative—imports.
+- [ ] Exact-pin `@jspm/generator@2.16.3` as development tooling; generate with
+  `jspm.io`, `production`/`browser`/`module` and complete integrity metadata;
+  verify reference URLs, hydrate/check the closure, run its untransformed local
+  mirror in Chromium/Firefox/WebKit and ship no provider module,
+  `es-module-shims` or package-owned universal map.
+- [ ] package README identifies the new OWL implementation as unrelated
+  to the fully unpublished historical Overwatch package and as independent of
+  and not endorsed by Java OWLAPI; documents `npm install owlapi@next`;
+  enumerates the Phase 18 alpha surface; accurately describes a JavaScript-
+  native compatible subset; and explicitly places the
+  `universal-ontology` workflow capabilities in the post-1.0 plan.
+- [ ] README contains the §2.15 “Why `owlapi` exists” section, including the
+  practical gap between the project's complete requirements and the adjacent
+  implementations evaluated when the work began.
+- [ ] README states the §2.42 zero-telemetry/no-automatic-network contract,
+  distinguishes caller-enabled imports/context retrieval from telemetry, and
+  makes no unnecessary standalone privacy-policy claim for a package that
+  collects no data.
+- [ ] `API.md` covers every public binding exactly once with public specifier,
+  JavaScript call shape, Java OWLAPI relationship, capability/stability status,
+  observable semantics, errors and material qualifications; its examples run
+  against the retained tarball and it agrees with both machine registries and
+  the executable export inventory.
+- [ ] `CHANGELOG.md` is human-curated by version and records user-visible
+  changes, controlled corrections/deviations, deprecations and compatibility
+  consequences rather than raw commits or release-workflow logs.
+- [ ] Prepare every public version through a dedicated release pull request that
+  synchronizes exact manifest/lockfile version, changelog, API, compatibility
+  and evidence; tag only its accepted squash commit, and prove the release
+  workflow neither edits tracked files nor authors a version, commit, tag or
+  release notes.
+- [ ] Enable GitHub private vulnerability reporting and publish root
+  `SECURITY.md` with `security@haddenindustries.com` as fallback, no-public-
+  report guidance, the exact supported-version table, the five-working-day
+  acknowledgement target as non-SLA, and advisory/CVE handling; verify external
+  delivery and sole individually authenticated, MFA-protected access by Maksym
+  Shostak.
+- [ ] Publish Contributor Covenant 3.0-based root `CODE_OF_CONDUCT.md` with
+  `conduct@haddenindustries.com`, Maksym Shostak as the sole initial HADDEN
+  INDUSTRIES LTD-appointed moderator, restricted handling and non-adjudication
+  when he is conflicted; verify external delivery, separation from the security
+  channel and exclusion from the npm tarball. Do not make a second moderator a
+  release gate.
+- [ ] historical versions `1.0.0`, `1.1.0`, `1.2.0`, `1.2.1`, `1.3.0`,
+  `2.0.0` and `2.0.1` are treated as permanently consumed and never reused.
+- [ ] After stable `1.0.1`, use `1.0.2` as the first patch coordinate and
+  `1.4.0` as the first compatible-feature minor; do not manufacture patch
+  surrogates for the unrelated historical 1.1–1.3 releases. Reserve `2.0.2` as
+  the first coordinate of a future breaking 2.x line.
+- [ ] Before stable `1.0.1`, complete the bounded historical-dependency audit
+  in §2.10.1; classify exact, lockfile/tarball, range and unrelated hits; retain
+  the dated queries/results; and block for a separate version decision if a
+  current published or maintained consumer has a range that accepts the new
+  1.x line.
 - [ ] complete §22 source-provenance audit and machine-readable provenance manifest.
 - [ ] every relevant legacy module/fragment has exactly one provenance disposition: `REUSE_ALLOWED`, `REFERENCE_ONLY`, `REIMPLEMENT`, `EXCLUDE`, or `REVIEW_EXCEPTION`.
 - [ ] no new production module was mechanically translated from Java OWLAPI implementation source/comments/control flow.
 - [ ] Java OWLAPI compatibility tooling is isolated to development/test infrastructure and absent from runtime/package bundles.
 - [ ] public/normative implementation sources and project-owned differential fixtures are recorded for each semantic module.
-- [ ] final project licence is selected **after** provenance/dependency review, so the choice is not dictated by avoidable OWLAPI implementation derivation.
-- [ ] required third-party notices/licenses.
-- [ ] compatibility/parity matrix.
+- [x] select `AGPL-3.0-only` as the `owlapi` package licence after provenance
+  separation, for deliberate network-aware source reciprocity rather than
+  because of avoidable OWLAPI implementation derivation.
+- [x] identify Maksym Shostak as the current personal copyright owner of his
+  existing contributions and HADDEN INDUSTRIES LTD, registered in England and
+  Wales under company number 07862561, separately as project steward; do not
+  infer copyright title from the company, repository or npm identity.
+- [x] record that assignment to HADDEN INDUSTRIES LTD is optional and is not an
+  alpha, stable-release or implementation-plan completion gate; keep any estate
+  planning or private legal instrument outside Git/npm.
+- [ ] make `package.json`, README, `NOTICE`, `LICENSE`, provenance and the exact
+  retained tarball agree on the §2.13 author URL, personal copyright ownership,
+  company-stewardship boilerplate and authoritative AGPLv3 link.
+- [ ] complete a tarball-scoped rights inventory identifying each copyright
+  holder or authorized licensor and the basis for distribution authority.
+- [x] select `AGPL-3.0-only` inbound=outbound as the initial
+  outside-contribution model, with no speculative CLA required before an
+  external copyrightable contribution exists and a mandatory decision gate
+  before the first such contribution is merged.
+- [ ] obtain exact approval for and publish the root `CONTRIBUTING.md`; link it
+  from the package README and make the policy-consistency governance test green.
+- [ ] attest that every copyrightable item in the reviewed alpha scope has an
+  identified holder and adequate distribution authority, with no unresolved
+  external contribution.
+- [ ] Generate and human-review the complete §2.50
+  `docs/provenance/third-party-material.json` inventory for the production graph,
+  release-relevant development material and copied/generated third-party files,
+  with inspected licence/notice-file digests, SPDX expressions, relationships
+  and distribution scopes; mechanically reconcile the tarball `NOTICE`, and
+  separately reconcile WebVOWL's emitted bundle with its own deployment-scope
+  inventory/notices.
+- [ ] complete Public API Surface Registry and generated Java compatibility/gap view.
 - [ ] dependency-governance/conformance manifest for foundational syntax parsers.
-- [ ] Vite bundle-size report for mandatory and optional syntax adapters.
+- [ ] Pin `@rdfjs/data-model@2.1.2`, `@rdfjs/dataset@2.0.3`,
+  `@xmldom/xmldom@0.9.12`, `jsonld@9.0.0`, `n3@2.3.0` and
+  `rdfxml-streaming-parser@3.3.0` in the initial manifest/lockfile by carrying
+  forward the qualified 24 August 2026 WebVOWL staging baseline; isolate every
+  later foundational runtime update in its own fully gated pull request.
+- [ ] Enable Dependabot alerts, security updates and weekly proposal-only version
+  updates with the §2.32 grouping; allow exactly the five §2.56 Action
+  repositories, pin each recorded release to its exact full SHA with an adjacent
+  tag comment, require full-SHA pins in repository settings, prohibit
+  auto-merge, and do not run Renovate for the same responsibility.
+- [ ] Create exactly `ci.yml`, `release.yml`, `maintenance.yml` and
+  `extended-tests.yml` under `.github/workflows/` with the §§2.55–2.61 triggers,
+  trust boundaries and Action/input contract. Each has root `permissions: {}`
+  and job-minimal authority;
+  none uses `pull_request_target`, privileged `workflow_run`, a cross-workflow
+  release candidate or an external reusable workflow.
+- [ ] Every checkout uses exact `actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1`
+  (`v7.0.1`) with `persist-credentials: false`; ordinary jobs use depth one,
+  while only the release source/tag-verification job checks out the captured
+  `github.sha` with full history and tags. The npm publication job performs no
+  checkout.
+- [ ] Every Node setup uses exact
+  `actions/setup-node@820762786026740c76f36085b0efc47a31fe5020`
+  (`v7.0.0`), a literal approved Node patch, `check-latest: false` and
+  `package-manager-cache: false`, with neither `cache` nor
+  `cache-dependency-path`; steady OIDC publication has no `registry-url`, scope,
+  `always-auth` or `NODE_AUTH_TOKEN`, and the temporary bootstrap credential is
+  exposed only to its one publish step before that branch is removed.
+- [ ] The exact §2.56 upload/download Actions move only the tarball, CycloneDX
+  SBOM and `SHA256SUMS` under a version/run/attempt-specific candidate name.
+  Upload records its ID/digest and uses the closed retention/compression/
+  overwrite/hidden-file policy; download selects that immutable ID into a new
+  fixed directory without merge, broad selectors or cross-run credentials, then
+  rejects an unexpected inventory and independently verifies every checksum.
+- [ ] Every required job uses and validates exactly `ubuntu-24.04` x64,
+  `windows-2025` x64 or `macos-15` arm64 according to §2.57; no moving, preview,
+  slim, larger, self-hosted or container runner appears. Ubuntu alone builds,
+  packs, publishes and finalizes; Windows/macOS can qualify only the downloaded
+  candidate.
+- [ ] Run the complete package suite on Ubuntu under Node `22.23.2` and
+  `24.19.0`; run the focused installed-tarball public-boundary/representative-
+  load/import-purity/no-network suite on both patches under Windows and macOS;
+  and make all six Node/host combinations blocking in CI and release.
+- [ ] Select explicit `bash` for Ubuntu/macOS and `pwsh` for Windows, keep
+  nontrivial workflow policy in cross-platform repository `.mjs` scripts, and
+  emit the requested label, OS/architecture, ImageOS/ImageVersion, OS/kernel,
+  Node/npm and applicable browser identity for every required job.
+- [ ] `release.yml` uses the repository-wide `owlapi-release` concurrency group
+  with `cancel-in-progress: false` and `queue: max`; CI cancels only superseded
+  work for the same PR/ref, while maintenance and extended workflows use their
+  distinct non-cancelling single-pending groups. Only the `npm-release`
+  publication job has `contents: read` plus `id-token: write`; only the
+  `release-manual` tag/publication-confirmation and evidence jobs add
+  `actions: read` to `contents: read`; only separate GitHub-release mutation
+  jobs have `contents: write`; and no job combines those authorities. The maintenance
+  health check is read-only and its separate reporter has only `issues: write`.
+- [ ] Expose exactly one GitHub-Actions-owned `CI / required` branch-protection
+  aggregate plus separately required CodeQL, and one pre-publication
+  `Release / qualified` aggregate on which the protected npm job directly
+  depends. Governance checks keep each explicit `needs` inventory synchronized;
+  `if: always()` is confined to the small aggregate evaluators; dependency
+  review emits its closed push-only non-applicability reason; and every skipped,
+  cancelled, timed-out, missing or otherwise non-success mandatory conclusion
+  fails closed.
+- [ ] Every required matrix uses `strategy.fail-fast: false` with no effective
+  `continue-on-error`, swallowed status or neutralized report; every job/step
+  has the exact §2.58 timeout; npm and project-owned HTTP reads use only the
+  approved bounded retry settings; every external write receives one automatic
+  attempt; and any ambiguous response is reconciled read-only against the exact
+  remote identity/digest before either verification resumes or renewed explicit
+  authorization is requested for a new write.
+- [ ] Set fork workflow approval to `all_external_contributors`, keep Actions
+  creation/approval of pull requests disabled, and prove every external-fork and
+  Dependabot run uses only `pull_request` with root-denied/job-read-only
+  permission, no secret/OIDC/environment/write authority and a new maintainer
+  execution approval for each run; the approval is not represented as code
+  review or continuing contributor trust.
+- [ ] Governance proves the ephemeral fork candidate stays inside unprivileged
+  jobs of the same CI run/attempt; no privileged event fetches or executes fork
+  code/output; contributor/external values are validated as data rather than
+  interpolated into shell or written raw to workflow-command files; credential
+  jobs prohibit context dumps/tracing/debug authentication output; retained
+  outputs are sanitized; and suspected exposure triggers immediate revoke/
+  rotate/removal/inspection rather than reliance on masking.
+- [ ] Configure the read-only weekly §2.48 `owlapi@latest` monitor to create or
+  update one structured finding when a clean lockless consumer's smoke,
+  production-audit or signature gate fails; grant it no npm-write or automatic
+  source/dependency/tag/release mutation authority.
+- [ ] Require a full `npm audit --json`, blocking
+  `npm audit --omit=dev --audit-level=high` and exact
+  `actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294`
+  (`v5.0.0`) on pull requests with `contents: read`, runtime scope, high severity,
+  vulnerability checks on, licence checks/comments/Scorecard/patched-version
+  display off, snapshot-warning retry on, 120-second timeout and
+  `warn-only: false`;
+  validate every false-positive/inapplicability exception against the §2.34
+  fields and 30-day maximum, block reachable critical findings and never run an
+  automatic audit fix on release inputs.
+- [ ] The source manifest and lockfile contain the exact §2.54 development-tool
+  versions, `devEngines.packageManager.version` is `12.0.2`, blocking workflows
+  use Node `22.23.2`/`24.19.0`, every npm tool runs through a named local
+  `npm run` script, and executable negatives reject remote `npx`,
+  `npm exec --package`, global-development-tool and runner-preinstalled-tool
+  release paths.
+- [ ] Exact `vite@8.2.2` produces the package-fixture bundle-size report for
+  mandatory and optional syntax adapters; the isolated WebVOWL consumer records
+  and uses its own independently accepted Vite lockfile version without a
+  synchronization update.
+- [ ] `npm pack --dry-run --json` packlist and actual tarball contents agree;
+  executable negatives exclude tests, corpora, JARs, oracle fixtures,
+  benchmarks, WebVOWL/VOWLBuilder, credentials, duplicate/generated/minified
+  code, source maps, TypeScript declarations and non-shipped repository docs.
+- [ ] The actual retained tarball and the independent registry download both
+  pass local exact `publint@0.3.24` in strict mode with identical relevant findings.
+- [ ] The GitHub-hosted, manually dispatched `release.yml` run accepts only the
+  captured protected-`main` head, derives version/tag/channel from reviewed
+  files, proves the canonical tag is initially absent, and builds one retained
+  tarball before that tag exists. At §§2.60–2.61's late boundary it waits without
+  a runner at `Release / tag accepted`, then verifies the
+  human-created SSH-signed annotated tag's already-authorized signer and exact
+  captured-commit target through `docs/provenance/release-signers.json`, and uses
+  separate clean full-tool and `npm ci --omit=dev` subject workspaces to generate
+  a validated reproducible CycloneDX 1.6 JSON library SBOM with exact
+  `@cyclonedx/cyclonedx-npm@6.0.1`. It independently reconciles
+  the subject's unflattened/full-PURL graph with `npm ls`, the lockfile and packed
+  inventory, generates the exact sorted two-entry §2.52 `SHA256SUMS`, passes the
+  files unchanged only between jobs in that run through the exact §2.56
+  upload/download SHAs and closed input maps, records the candidate artefact ID
+  and archive digest, retrieves only that ID, rejects extra/missing files and
+  verifies each transfer's SHA-256 without consuming a release cache,
+  installs/audits them in clean consumers, smoke-tests all five public
+  specifiers in Node, and fails if any release step changes the captured source
+  tree. A rerun never republishes an existing coordinate and can resume
+  verification only after proving the public bytes/attestation/tag match the
+  retained subject.
+- [ ] After npm fresh-cache verification, generate and schema-check
+  `owlapi-<version>.release-evidence.json` with exact `ajv@8.20.0` plus
+  `ajv-formats@3.0.1` against its versioned Draft 2020-12 schema, attach it before
+  immutable release publication, then use checksum-verified GitHub CLI `2.98.0`
+  under §2.52 in a fresh job to verify the
+  immutable release and each of the four downloaded assets, strictly check the
+  tarball/SBOM checksums and independently verify the signed tag/commit without
+  adding a redundant detached evidence signature. Commit the append-only
+  repository `release.json` with evidence digest, immutable release URL and all
+  attestation/verification identities; do not treat expiring Actions logs/
+  artifacts as the canonical record.
+- [ ] the retained tarball passes exact `@playwright/test@1.62.1` in its matching
+  Chromium, Firefox and WebKit revisions as three separate, one-worker,
+  cache-free `ubuntu-24.04` jobs against exact `vite@8.2.2` package fixtures;
+  install each engine/dependency set through the lockfile-owned CLI and a named
+  npm script, never `npx`, an Action, runner browser or container; extended
+  branded/historical/real-device
+  evidence is reported only as `PASS`, `FAIL` or reasoned/date-stamped `NOT_RUN`,
+  never terminal `INFRASTRUCTURE_ERROR`.
+- [ ] Later extended-environment executions add dated files beneath
+  `docs/provenance/releases/<version>/extended-tests/` and may regenerate a
+  summary, but never overwrite an earlier observation or rebuild the package.
+- [ ] The reviewed release pull request is squash-merged and manually dispatched
+  at its accepted protected-`main` commit. Every deterministic gate and, for
+  steady-state publication, stage download/byte equality/revalidation completes
+  before the human creates the immutable release-specific SSH-signed annotated
+  tag and approves `Release / tag accepted`; tag verification then precedes
+  draft-release mutation. In steady state, interactive 2FA promotion completes
+  before the second `Release / publication confirmed` approval and fresh-
+  registry verification.
+- [ ] `npm-release` always requires explicit human approval of the exact
+  registry operation, permits only protected `main` and contains the bootstrap-
+  only secret until removal. The separate `release-manual` environment permits
+  only protected `main`, names `MaksymShostak` as required reviewer, has no wait
+  timer/custom rule/secret/variable, and every job reference sets
+  `deployment: false`. Both permit the initiating named custodian to approve and
+  leave prevent-self-review disabled; independent deployment approval is not a
+  Phase 19/20 gate unless separately approved later.
+- [ ] The `maksymshostak` npm account's first direct write either succeeds as
+  retained `owlapi@0.1.0-alpha.0` under `next`, uses the explicitly recorded
+  §2.60 `0.1.0-alpha.1` successor after immutable prepublication abandonment, or
+  produces preserved classified evidence for npm Support; no shared login or
+  unrecorded fallback name/version is used.
+- [ ] fresh-cache post-publication verification proves `next` resolution,
+  registry integrity/content equality, exact root-package registry signature/
+  provenance/publish-attestation/source-workflow/transparency identity under
+  §2.51, absence of `latest`,
+  working exact exports and rejected alternates, exact discovery/channel/
+  `devEngines` metadata, import purity/tree shaking, the JSPM reference/local-
+  mirror gate, locked/lockless graph reconciliation, strict registry-tarball
+  lint, material/NOTICE agreement, CycloneDX/evidence validation, zero-telemetry
+  local parsing and
+  expected failure of an unqualified prerelease install; only then publish and
+  verify the immutable GitHub release and every automatic tag/asset binding.
+- [ ] Exercise the §2.33 bad-release procedure as a non-mutating rehearsal over
+  fixture metadata: select/remove the affected channel, construct an exact-
+  version deprecation record, preserve immutable evidence and reject routine
+  unpublish or any unrelated historical fallback coordinate.
+- [ ] Exercise §2.60's four failure boundaries with fixture state: correct and
+  reuse an untouched version before tag creation; reconcile an unchanged-input
+  ambiguous write without duplicating it; reject the stage, preserve the signed
+  tag and emit the append-only failed-attempt record when a deterministic
+  correction is required after tag creation; and advance an abandoned alpha to
+  `0.1.0-alpha.1` or stable to `1.0.2` without ever reusing/moving that tag.
+- [ ] Exercise §2.61's manual hand-offs with workflow/API fixtures: bootstrap
+  requires one `release-manual` approval after tag creation and before draft/npm
+  authority; staged release requires that gate plus a second approval after 2FA
+  promotion and before registry verification; rejection, premature approval,
+  30-day expiry and re-run reconciliation fail closed without polling, duplicate
+  mutation or bespoke tag/comment trailers. Retain and schema-validate the
+  read-only workflow-review history and authorized reviewer identity.
+- [ ] Test and record whether `@hadden-industries:owlapi-maintainers` can receive
+  verified read-write access to the unscoped package with Maksym Shostak as its
+  only required natural-person member; regardless of that result, npm
+  custodianship remains solely `maksymshostak`, with no generic/shared account or
+  claim that the team supplies human redundancy.
+- [ ] Maksym Shostak's GitHub organization/repository authority, 2FA/package-access
+  controls and subsequent GitHub Actions OIDC trusted publishing are configured
+  for exact `Hadden-Industries/owlapi`, `.github/workflows/release.yml` and
+  `npm-release` identities;
+  automatic provenance is verified, the publisher is restricted to stage-only
+  authority, traditional token publication is disabled, and the §2.53 staged
+  candidate's pre-tag and pre-approval `stage view`, download/digest and
+  interactive-2FA approval path is rehearsed without a public write. The
+  rehearsal handles missing/non-pending stages without assuming a retention
+  period or blindly restaging. Maksym Shostak rehearses and records the release/recovery
+  runbook; the one-day, bypass-2FA bootstrap token's actual npm scope and single
+  attempted use are recorded, that token and `npm-release` environment secret are
+  revoked/removed immediately, a reviewed configuration change removes the dead
+  bootstrap branch/reference, and no redundant `actions/attest` step exists.
+- [ ] canonical source commit, `v0.1.0-alpha.0` Git tag, WebVOWL-origin commit
+  map, tarball/SBOM checksums, registry integrity, normalized npm root
+  attestation, immutable GitHub release/per-asset verification,
+  `owlapi-0.1.0-alpha.0.release-evidence.json`,
+  append-only repository release record, public URLs, tool versions, workflow
+  path/blob/run/attempt, effective permissions/environment/concurrency,
+  `release-manual` review history/gate ordering/no-polling result, same-run
+  artefact IDs/digests, custodian and verification evidence are recorded before
+  the Phase 19 checkpoint.
+
+### Stable `1.0.1` completion
+
+- [ ] Stabilize only the accepted capability families through test-proven
+  defect, security, portability, diagnostic, documentation, and packaging
+  corrections; direct all new semantic feature families to
+  `post-1.0-capability-implementation-plan.md`.
+- [ ] Complete the bounded historical-dependency audit no more than seven days
+  before stable publication and follow its material-range blocking branch.
+- [ ] Publish and verify at least one exact `1.0.1-rc.N` retained tarball through
+  all package, four required Windows/macOS portability, three required Ubuntu
+  Chromium/Firefox/WebKit, immutable-release and isolated public-registry
+  WebVOWL gates in one serialized manually dispatched late-tag `release.yml` run,
+  using a dedicated release pull request and
+  `publishConfig.tag=next` plus explicit `npm stage publish ... --tag next`;
+  record the stage ID, inspect/download the candidate, prove its SHA-256 equals
+  the retained tarball, rerun its required checks, create the signed tag, approve
+  `Release / tag accepted`, verify/populate the draft, and only then approve the
+  stage with interactive 2FA followed by `Release / publication confirmed`,
+  without creating or moving `latest`.
+- [ ] Freeze observable behaviour after the accepted release candidate, account
+  for every stable-tarball difference, and publish only the separately
+  authorized retained `owlapi@1.0.1` artefact through the same §§2.55–2.61
+  workflow/Action/runner boundary after changing and validating
+  `publishConfig.tag=latest` plus explicit `npm stage publish ... --tag latest`;
+  bind the stage ID, downloaded candidate's matching SHA-256, source tag/commit,
+  fixed tag, both ordered `release-manual` review records and interactive-2FA
+  approval before verification/finalization.
+- [ ] Mark every accepted public binding `STABLE_1_X`, every retained deprecated
+  binding `DEPRECATED_1_X` and every private engine `INTERNAL_ONLY`; reconcile
+  those rows with `API.md`, compatibility data and executable exports.
+- [ ] Enforce §2.27 SemVer/deprecation rules: compatible fixes begin at `1.0.2`,
+  additive features at `1.4.0`, incompatible removal/change at `2.0.2`, and a
+  deprecated 1.x binding remains operational without unsolicited console output.
+- [ ] Verify from a fresh cache that `latest` resolves exactly to the stable
+  cutover version—normally `1.0.1`—all five public entry points work,
+  internal/deep/metadata/alias paths fail, discovery/channel metadata and the
+  exact npm `12.0.2` `devEngines` value agree, import purity/tree shaking and the
+  exact `@jspm/generator@2.16.3`
+  reference/public-URL/local-mirror suite pass, locked/lockless graphs reconcile,
+  strict registry-tarball lint passes, package/WebVOWL material inventories and
+  notices agree with their distribution scopes, the exact npm root attestation
+  validates, the separate-workspace `@cyclonedx/cyclonedx-npm@6.0.1` graph and
+  Draft 2020-12 `ajv@8.20.0`/`ajv-formats@3.0.1` evidence validate, the exact
+  Playwright/Vite, Ubuntu Node/npm and Windows/macOS installed-tarball matrices
+  pass with their exact runner-image records,
+  local parsing is zero-telemetry/no-network, CodeQL/secret state is accepted,
+  and registry integrity/content match the retained evidence.
+- [ ] After stable verification, separately authorize removal of the stale
+  `next` pointer; verify that `latest` remains the stable cutover version,
+  `next` is absent, no unapproved tag exists and bare `npm install owlapi`
+  selects stable. Recreate `next` only for a genuine future prerelease.
+- [ ] Update WebVOWL to exact public-registry `owlapi@1.0.1`, or only after a
+  recorded §2.60 or §2.33 activation the exact applicable same-surface patch, regenerate its
+  registry-backed lockfile, and pass its boundary, Jest, development/production
+  build, corpus, RDF/XML, imports-aware workload and deployment-scope third-
+  party-material/notice gates.
+- [ ] If `1.0.1` fails a mandatory check after publication, preserve it,
+  remove `latest`, deprecate it when safe, run the full RC/stable process for
+  the first corrective patch and record why that patch became the cutover;
+  never unpublish or silently substitute a version as ordinary rollback.
+- [ ] If deterministic correction becomes necessary only after immutable
+  `v1.0.1` exists but before npm publication, reject the stage, leave the tag
+  untouched, retain the §2.60 failed-attempt record, and run the same frozen
+  surface through the complete `1.0.2` RC/stable gate; record that this—not a
+  post-publication rollback—made `1.0.2` the first stable and WebVOWL cutover.
+- [ ] Record the stable source commit, signed tag, tarball digest, registry
+  integrity, validated reproducible CycloneDX 1.6 SBOM, `SHA256SUMS`, npm
+  root-package attestation, stage ID/view/download/status/timestamp metadata at
+  both required boundaries, retained-versus-staged
+  digest proof, `release-manual` review history/two-gate ordering and approving
+  identities/times, immutable GitHub release and
+  per-asset/checksum/tag verification, `owlapi-<stable>.release-evidence.json`,
+  append-only Draft
+  2020-12-validated
+  repository release/extended-test/registry-operation records, required/
+  extended browser matrix, every §2.54 local/external tool version and digest,
+  every §2.55 workflow/job-permission/environment/concurrency identity, every
+  §2.56 Action tag/SHA/input/cache/credential/artefact/dependency-review result,
+  every §2.57 requested/observed runner, OS/architecture, image, shell,
+  portability and browser-host result, every §2.58 aggregate inventory/result,
+  mandatory-job conclusion/applicability/timeout, matrix failure policy,
+  concurrency queue, controlled-read retry and external-mutation/reconciliation
+  result, every §2.59 fork-run approval/trust origin/effective-authority,
+  same-run quarantine, validated input/output, sanitized logging/debug and
+  exposure-response result, every §2.60 late-tag/abandonment result, every §2.61
+  no-authority environment/no-runner-polling/manual-gate result, custodian,
+  WebVOWL consumer commit, security
+  support-window update and final verification evidence before declaring this
+  plan complete.
+
+### Event-triggered contributor-governance checkpoint
+
+This checkpoint is dormant while no external copyrightable contribution is
+proposed for merge and is not an unfinished Phase 19 or stable-release task. At
+the first such merge boundary:
+
+- [ ] identify the actual rights holder and submission authority before
+  incorporation;
+- [ ] separately approve either continued pure `AGPL-3.0-only`
+  inbound=outbound or the exact contributor-retained CLA described in §2.14.1;
+- [ ] obtain any additional agreement before merge, never by retroactive
+  presumption; and
+- [ ] preserve the decision and contribution-specific evidence without
+  committing private signatures or personal information.
 
 ---
 
@@ -4861,9 +11987,16 @@ OWLAPI's long history and continuing parser/round-trip fixes demonstrate that ed
 
 The 2014 `owljs` project explicitly used JVM calls to OWLAPI from JavaScript rather than reimplementing the stack. Combined with the later success of RDF/JS, this explains why JavaScript gained excellent RDF infrastructure without a comparably mature structural OWLAPI.
 
-### 31.12 Licence choice should be decoupled from implementation provenance
+### 31.12 Licence choice is decoupled from implementation provenance
 
-The project may ultimately prefer a permissive licence or a reciprocal/copyleft licence; that governance decision is separate from how the implementation is authored. A specifications-first independent implementation with permissively compatible production dependencies preserves the broadest choice. Historical OWLAPI-derived code therefore belongs in the migration/provenance audit and characterization harness, not automatically in the new production core.
+The project selected the reciprocal `AGPL-3.0-only` licence as a governance
+choice separate from how the implementation was authored. A
+specifications-first independent implementation with permissively compatible
+production dependencies preserved that choice rather than forcing it.
+Historical OWLAPI-derived code therefore belongs in the migration/provenance
+audit and characterization harness, not automatically in the new production
+core. The resulting independence matters just as much for confidently applying
+strong copyleft as it would have mattered for choosing a permissive licence.
 
 ### 31.13 Sequential ingestion migration is the selected delivery contract
 
@@ -4882,6 +12015,1009 @@ The architecture, semantic invariants, release scope and acceptance criteria sho
 ### 31.16 OWL-native and RDF syntaxes are separate semantic architectures but one cumulative sequential implementation-learning programme
 
 The code must maintain the strict semantic boundary—OWL-native parsers construct structural OWL; RDF parsers construct RDF/JS datasets and rely on `RdfToOwlTranslator`. The delivery process should nevertheless carry cross-cutting lessons across that boundary. N3-family, RDF/XML and JSON-LD adapter work should inherit prior knowledge about parser selection, diagnostics, source/document IRIs, resource safety, environment differences, differential testing and provenance while adding RDF-specific lessons of their own.
+
+### 31.17 `owlapi` is the clearest npm identity despite immutable unrelated history
+
+The npm context already identifies JavaScript, and npm's package-name guidance
+specifically recommends against adding `js` or `node` for that reason. The
+short unscoped name `owlapi` is therefore more semantically direct than
+`owlapi-js` for consumers, while “Java OWLAPI” remains sufficient to distinguish
+the reference implementation in prose.
+
+The unrelated former `owlapi` releases create a permanent exact-coordinate cost
+but not a live-artifact collision. Real npm 12.0.2 installation probes against
+the public registry found no installable version, exact historical coordinate,
+range or `latest` tag. npm's immutable-registry policy means only the seven known
+`name@version` coordinates are permanently unavailable; it does not document a
+requirement that a reclaimed package begin above the former highest version.
+That makes `0.1.0-alpha.0` a valid candidate for the registry's normal write path
+to accept or reject.
+
+Starting at `3.0.0` would avoid satisfying ordinary dormant `^1` and `^2`
+dependencies and would express a complete break from the old 2.x API in strict
+SemVer terms. It would not protect against `*` or sufficiently broad lower-
+bounded ranges, and it would make a new implementation appear to possess two
+earlier maintained generations. The chosen sequence instead uses a conventional
+initial-development `0.1.0-alpha.0` under `next`, then targets the first available
+stable 1.x coordinate, `1.0.1`. It accepts and documents that former compatible
+1.x ranges can resolve the new stable package. A future new 2.x line analogously
+begins at `2.0.2` because `2.0.0` and `2.0.1` are immutable.
+
+Section 2.60 does not revise that version choice in advance. It supplies only
+the explicit successor rule if an already-observable immutable release tag must
+be preserved after a deterministic prepublication failure.
+
+That is a deliberate namespace-discontinuity exception, not a claim that the new
+`1.0.1` patches or preserves the old `1.0.0`. Transparent README, changelog and
+release-note disclosure is stronger than pretending the historical identity
+never existed. A bounded pre-stable dependency audit tests whether the dormant-
+range concern has any observable material footprint. Any current maintained
+consumer whose range would accept the new line blocks stable publication for a
+new decision; absent such evidence, developer-facing version clarity outweighs
+the residual unproven range risk.
+
+An actual reviewed prerelease is the correct availability test because success
+is a desired release. A placeholder is not: it burns a public coordinate,
+provides no function and conflicts with npm's active-use policy. `--dry-run`
+validates the artefact but not write authority, and staged publication cannot
+bootstrap a new package because npm requires the package and write permission
+to exist already. If the direct authenticated write is rejected for namespace
+control, its exact error becomes the evidence for npm Support; it is not a
+licence to silently choose another name.
+
+### 31.18 A first-party consumer should not have a privileged import path
+
+An application that reaches directly into a sibling source tree proves only
+that those files exist in the repository. It does not prove that the package
+declares the entry point, that Node/Vite can resolve it, or that the intended
+encapsulation is usable. A bundler alias has the same defect: it can conceal a
+broken or missing `exports` entry.
+
+Making WebVOWL declare and import the exact registry `owlapi` package turns the
+principal real-world consumer into a continuous external contract test. Bare
+specifier resolution exercises the named public surface; registry integrity and
+the installed tarball additionally prove the artefact and dependency closure
+that outside consumers receive. A retained-tarball WebVOWL trial provides the
+prepublication gate without committing a local development route.
+
+### 31.19 A useful first alpha and stable consumer readiness are separate gates
+
+The accepted Phase 18 core already performs substantial standards-grounded work
+and is useful to WebVOWL and other ingestion consumers. Requiring every known
+future workflow before publishing it would turn package release engineering
+into an unbounded semantic phase and delay the namespace claim without making
+the added APIs more rigorous.
+
+The stronger sequence is to publish that proven surface honestly as
+`0.1.0-alpha.0`, with precise limitations, exercise it through the public
+registry and WebVOWL, correct demonstrated production failures, and freeze that
+surface through a `1.0.1` release candidate before stable publication. This
+avoids both extremes: a content-free reservation package and an indefinitely
+unstable package blocked by workflows its first production consumer does not
+need. The mutually dependent closure-query, mutation, merger and storage
+capabilities remain one coherent later feature programme; they do not define
+whether the accepted ingestion package is production-ready.
+
+### 31.20 Start with network-aware strong copyleft; preserve later options explicitly
+
+The first public `owlapi` release uses `AGPL-3.0-only`. Its network-interaction
+source provision expresses the project's reason for performing a
+specifications-first reimplementation rather than merely repackaging legacy
+derived code: downstream freedom and reciprocal access are part of the product
+contract, including when modified software is operated for users across a
+network.
+
+Starting with strong copyleft preserves the possibility that authorized
+copyright holders may later offer their work under additional or more
+permissive terms, whereas rights already granted in a permissive release cannot
+be retroactively narrowed for its recipients. That future option is not
+automatic, however. Outside contributions can divide relicensing authority, so
+the selected initial policy is explicit `AGPL-3.0-only` inbound=outbound before
+any external copyrightable contribution exists. A speculative CLA is
+unnecessary for the first alpha, but the project cannot merge its first such
+contribution on autopilot. At that boundary it must either preserve adequate
+project authority through a contributor-retained CLA or knowingly accept that
+later relicensing will require contributor-by-contributor consent. Deferring the
+decision until that contributor exists avoids unused administration; deferring
+it until after merge gives the project no right to assume a broader grant.
+
+### 31.21 Personal copyright, succession and operational custody are distinct
+
+An npm account, organization slug or copyright notice can identify an operator
+without transferring copyright. The project therefore separates legal title,
+durable recipient permissions and registry/repository custody. Maksym Shostak
+currently owns his existing project-owned contributions personally; HADDEN
+INDUSTRIES LTD is the project steward rather than their copyright owner or
+licensor.
+
+UK copyright law treats a computer program as a literary work, ordinarily
+protects human-authored literary work for 70 years from the end of the calendar
+year in which the author dies, and permits copyright to pass by assignment,
+testamentary disposition or operation of law. The official GNU AGPLv3 text also
+makes compliant grants irrevocable for the copyright term and automatically
+licenses downstream recipients. The author's death therefore neither retracts
+already published AGPL rights nor prevents continued compliant maintenance.
+
+The approved release path does not require a lifetime assignment. A will or
+later written assignment may direct ownership to HADDEN INDUSTRIES LTD or
+another chosen successor, but that private estate/legal decision is not a
+software-release gate. If an assignment later takes effect, notices and
+attestations are updated prospectively without erasing authorship or outside
+contributors' ownership.
+
+Personal ownership does not by itself make the project operationally survivable.
+Independent natural-person account redundancy would address availability more
+directly than copyright assignment, but it is deliberately outside this
+implementation plan. Through `1.0.1`, Maksym Shostak remains the sole human
+custodian; GitHub organization authority, MFA, trusted publishing, recovery
+material and a tested runbook bound compromise and operator error without being
+misrepresented as bus-factor elimination. Copyright succession remains a
+separate legal control.
+
+### 31.22 Java OWLAPI's contributor model is informative but not equivalent
+
+At the 23 August 2026 review point, Java OWLAPI's current `version5` repository
+published its incorporated work under both LGPLv3 and Apache-2.0 but exposed no
+repository- or OWLCS-organization-level CLA, DCO, copyright assignment or
+contributor-rights guide. GitHub's repository-licence terms therefore supply an
+inbound=outbound baseline for GitHub submissions, while Apache-2.0 §5 expressly
+places an intentionally submitted contribution under Apache-2.0 unless the
+submitter states otherwise. Contributors retain their copyright; the project
+and downstream recipients receive the applicable licence and patent grants.
+
+That is not a precedent for assuming that an AGPL-only project can later make
+outside code permissive. Java OWLAPI includes the permissive Apache-2.0 option
+in its inbound and outbound terms from the outset. By contrast, an outside
+`owlapi` contribution accepted solely under `AGPL-3.0-only` supplies no general
+permission to publish that contribution later as MIT or Apache-2.0. The project
+would need an additional grant from the actual holder or would need to exclude
+and independently replace the affected expression. This distinction supports
+the §2.14 first-external-merge checkpoint without requiring CLA administration
+before any such contributor exists.
+
+### 31.23 Independent filtered history is stronger provenance than a fork badge
+
+A GitHub fork records an ongoing repository-network relationship; it does not
+identify the source checkpoint, admitted paths, excluded changes or byte-level
+equivalence of an extracted module. Here it would also make a separately
+governed library appear to remain a variant of the WebVOWL application and
+would carry unrelated application history into the new project's public
+context.
+
+The stronger evidence is a reproducible history-preserving filter from a fixed
+public WebVOWL commit, coupled with complete commit partitioning, an original-
+to-rewritten commit map and before/after hash manifests. This retains relevant
+authorship/evolution while letting the package repository own only its actual
+product boundary. Keeping the original mixed branch unchanged until the
+rewritten package and UI/UX histories verify makes the transformation auditable
+without leaving two maintained source trees.
+
+### 31.24 The origin story is the unmet combination, not raw parser availability
+
+The initiating landscape discussion found useful adjacent projects but no
+evaluated implementation that combined an ordinary JavaScript Node/browser
+package, a broad structural OWL model, required syntax/RDF mapping behaviour and
+the asserted ontology access needed by OWL2VOWL without retaining the JVM or
+adopting a materially different model/reasoner surface. That combination—not a
+claim that every alternative was deficient—justified building the library.
+
+This finding is valuable public context because it explains the architectural
+choices: OWL structures rather than raw triples alone, RDF/JS as an interop
+boundary, Java OWLAPI as behavioural oracle, WebVOWL as first demanding consumer
+and VOWL concepts excluded from the package. The README should carry that
+reasoning alongside an honest alpha capability statement so readers understand
+both why the package was built and what it currently promises.
+
+### 31.25 Java-recognizable entry points are stronger than exposing RDF implementation seams
+
+Node's explicit subpath exports provide a closed, evolvable public interface,
+but the subpath names still need to express domain responsibilities. Java
+OWLAPI developers ordinarily meet `OWLManager` through `apibinding`, structural
+objects and the manager through `model`, document sources through `io`, and
+format identities through `formats`. Mapping those concepts to explicit npm
+subpaths makes primary workflows recognizable without mechanically copying the
+entire Java package tree.
+
+RDF reconstruction and translation are different. Java OWLAPI contains RDF
+consumer/translator implementation packages, but ordinary loading and storage
+are manager/document/format operations. The JavaScript implementation follows
+that user-facing architecture: RDF/JS datasets remain the correct internal
+interoperability boundary, while manager-mediated calls remain the public OWL
+API. This preserves all current WebVOWL ingestion behaviour, reduces the stable
+surface, and leaves room for a later use-case-driven RDF/JS document-source or
+target adaptation without pre-committing an `owlapi/rdf` namespace.
+
+### 31.26 Cross-language API fidelity does not require a mirrored private tree
+
+The Java language maps package names naturally to directory paths, but its
+specification also makes clear that similarly prefixed packages do not gain a
+special access relationship merely from that hierarchy. Node's package
+`exports` mechanism independently maps stable consumer specifiers to physical
+modules and encapsulates every unlisted subpath. Cross-language library guidance
+likewise combines a uniform external model with language-idiomatic private
+implementation.
+
+The strongest arrangement for this project is therefore neither wholesale Java
+transliteration nor an unrelated JavaScript facade. Public binding ownership
+follows each deliberately exposed Java package at its complete path, making the
+API recognizable and the Java-to-JavaScript mapping auditable. The private
+parser, mapping, loading, storage and platform engines follow their cohesive
+JavaScript responsibilities. A public compatibility type may delegate to one of
+those engines, but it is not duplicated in a mirrored `internal/` namespace.
+
+The Public API Surface Registry provides the missing traceability: it joins the
+pinned Java package/type inventory, behavioral capability matrix, npm specifier,
+JS export, canonical source module, compatibility classification, progress and
+verification evidence. This supports honest subset claims, exposes gaps to
+prospective contributors and prevents either the source tree or an accidental
+barrel export from becoming the API authority.
+
+### 31.27 A no-transform ESM library should publish one readable production tree
+
+npm's positive `files` allowlist controls which repository files become the
+installed artefact, while Node's explicit `exports` map defines which installed
+modules are public. Neither mechanism requires a `dist/` directory. When package
+source is already supported native ESM and undergoes no compatibility transform,
+copying it into a generated distribution tree adds a second representation and
+trust boundary without changing what consumers execute.
+
+For `owlapi`, publishing the tagged readable source directly therefore improves
+packed-file auditability, debugging, deterministic comparison and AGPL source
+identification. The same reasoning removes source maps: there is no minified or
+transformed generated program that needs mapping back to a different authored
+program. Explicit release commands remain preferable to automatic lifecycle
+hooks because the retained-tarball workflow must make each gate and mutation
+visible.
+
+### 31.28 Version-matched API and compatibility documents belong with this package
+
+npm renders the root README from the published version, while the `files`
+allowlist can deliberately include additional consumer documentation. Most
+repository history and policy does not belong in an installed library, but this
+project's API and Java compatibility registries are part of its central claim:
+they distinguish implemented Java-compatible public bindings, private engines,
+deferred capabilities and known deviations.
+
+Shipping the bounded README/API/changelog/licence/notice/compatibility set makes
+those claims inspectable for the exact installed bytes and avoids silently
+redirecting a user to documentation for a later default branch. Generating or
+mechanically checking the human API view against the machine registries and
+installed exports preserves one authority while still providing usable prose.
+It does not justify a separate documentation website before a consumer need
+exists.
+
+### 31.29 Type declarations are a separate API-design product, not a metadata toggle
+
+TypeScript can emit declarations from JavaScript, but its documented workflow
+requires TypeScript tooling, compiler configuration, type-bearing JSDoc and a
+published declaration layout. `owlapi`'s large structural surface has not been
+designed or verified under that contract. A partial declaration would therefore
+create a second, inaccurate public API precisely when `1.0.1` is freezing the
+runtime one.
+
+The rigorous initial choice is to publish honest native JavaScript with no
+official declarations and to state that boundary. A later declarations project
+can remain runtime-compatible, but it must type all five public roots, mirror
+their export paths, verify representative consumers and remain synchronized
+with the Public API Surface Registry.
+
+### 31.30 Stable SemVer needs an explicit observable-contract boundary
+
+Node's `exports` encapsulation supplies a strong module boundary but does not by
+itself say which methods, structural fields, errors or ordering properties are
+stable. Conversely, JavaScript lets consumers observe many private accidents
+that should not become guarantees. The surface registry and API reference must
+therefore distinguish protected public behaviour from unexported paths,
+dependency choices and incidental representation details.
+
+This classification makes the unusual available-version sequence manageable:
+compatible fixes begin at `1.0.2`, compatible feature additions at `1.4.0`, and
+breaking change at `2.0.2`, while the semantic meaning remains ordinary SemVer.
+Documentary deprecation without unsolicited runtime logging gives consumers a
+migration path and preserves import-side-effect guarantees throughout 1.x.
+
+### 31.31 Bounded automation narrows custody authority but does not create human redundancy
+
+npm's documented model is clearest for a user publishing an unscoped public
+package and for organization teams controlling organization-scoped packages.
+That distinction makes it unsafe to infer that an organization team can own or
+administer this reclaimed unscoped coordinate merely because the GitHub
+repository lives in an organization. The first publication therefore uses the
+known natural-person npm identity, then tests the unscoped package's real access
+controls and records the result.
+
+An organization team, when supported, may provide an accurate registry-level
+relationship but does not eliminate the bus factor when its only required human
+member is the same person. The selected implementation-plan model therefore
+records the team experiment while retaining Maksym Shostak as sole human
+custodian and combines that explicit limitation with an exact-repository,
+exact-workflow OIDC trusted publisher whose stage-only authority and interactive
+approval are narrower than a reusable publication token. A shared generic
+account would weaken attribution without adding genuine human redundancy and is
+therefore prohibited. A future additional natural-person custodian requires a
+separate post-plan governance decision.
+
+### 31.32 A dormant `next` tag is misleading mutable state, not useful history
+
+npm distribution tags are named mutable pointers used by ordinary install
+resolution; immutable versions and retained release artefacts already preserve
+history. `next` is useful while it deliberately selects a live prerelease and
+`latest` is withheld. After stable verification, leaving `next` on an older RC
+suggests an actively recommended alternate channel, while pointing both tags at
+stable adds no information. Removing `next` until the next real prerelease keeps
+the registry's channel semantics honest without deleting any version.
+
+### 31.33 A protected trunk should match the project's actual reviewer capacity
+
+GitHub rulesets can protect branches and tags, require checks and reviews, apply
+to administrators and expose auditable bypasses. The strongest initial policy is
+not the most ceremonial one: requiring a nonexistent independent reviewer would
+either deadlock the repository or normalize bypass. One protected `main`, short-
+lived pull requests, squash merges and immutable release tags protect real
+history now. If a second active code maintainer later makes independent review
+truthful, activating it still requires a separately approved post-plan
+configuration change; it does not happen inside this plan merely because an
+account appears.
+
+Signed annotated release tags plus workflow provenance identify release source
+without imposing a signed-commit burden on every contributor. Long-lived
+`develop`, release and maintenance branches similarly add merge surfaces before
+concurrent release lines create a need for them.
+
+### 31.34 Release automation should validate accepted intent, not invent it
+
+A version number, compatibility statement, controlled deviation and release
+note are product decisions. Encoding them in a dedicated reviewed release pull
+request makes the complete proposed release visible before the immutable tag and
+registry write. `npm version --no-git-tag-version` remains a useful mechanical
+synchronization tool, but its output is an input to review rather than authority
+to commit or publish.
+
+The release workflow consequently has one simpler trust role: reproduce and
+validate the accepted commit, build one artefact and transport it through
+approval to registries. If the workflow edits tracked state, makes its own
+commit/tag or synthesizes authoritative notes, the reviewed source and published
+release can diverge. Human-curated changelog and release text avoid that hidden
+second author while release volume is low.
+
+### 31.35 Semantic runtime dependencies deserve exact, independently reviewed updates
+
+The six direct runtime packages parse XML/RDF syntaxes, construct RDF terms and
+datasets, or implement JSON-LD algorithms. A nominally compatible update can
+therefore change ontology acceptance, reconstruction, diagnostics, resource use
+or browser closure without an `owlapi` source edit. Exact public pins make that
+semantic input reviewable and reproducible; the lockfile alone governs the
+maintainer install but would still let downstream consumers resolve a different
+version from a ranged public manifest.
+
+Dependabot is useful here as discovery and proposal automation, not as release
+authority. Isolating foundational runtime updates preserves causal evidence;
+grouping compatible development tooling reduces noise; full-SHA Action pins
+bound workflow code; and human-reviewed, fully gated updates prevent automation
+from silently redefining parser behaviour. A merged security update protects no
+existing registry consumer until the fixed graph is shipped in a new package
+version.
+
+### 31.36 Deprecation and channel containment are safer than routine unpublish
+
+npm deliberately makes published coordinates immutable and recommends
+deprecation when removal would break dependents. That makes a bad release two
+different facts: its bytes/history must remain auditable, while mutable guidance
+and default-install routing may need immediate correction. An exact-version
+deprecation plus a recorded `latest`/`next` rollback or removal contains new use
+without pretending the release never existed.
+
+Initial `1.0.1` has no legitimate earlier Hadden Industries stable fallback.
+The unrelated former `1.0.0` cannot become one merely because its coordinate is
+numerically convenient. A deterministic failure after immutable `v1.0.1` but
+before npm publication is the distinct §2.60 abandonment case: `1.0.1` remains
+absent rather than being routed or deprecated. If the first stable fails only after publication,
+temporarily removing `latest` and publishing the fully gated `1.0.2` correction
+is less misleading than either routing users to unrelated history or declaring
+a failed artefact production-ready. Extraordinary confidentiality, malware and
+legal cases remain removal incidents because their safety objective can override
+ordinary reproducibility.
+
+### 31.37 Audit severity is a gate input, not an automatic remediation policy
+
+`npm audit` can report the full dependency graph and separately fail at a chosen
+severity threshold; GitHub dependency review focuses on what a pull request
+introduces. Using both prevents a PR-only check from overlooking existing risk
+and prevents a release-only scan from accepting a newly introduced issue without
+review context.
+
+Severity alone cannot prove reachability or non-applicability, but ontology
+parsers routinely process untrusted input, so high/critical production findings
+cannot be downgraded casually. A bounded machine-readable exception makes a
+genuine false positive reviewable without becoming a permanent invisible
+allowlist. Automatic audit fixes are unsuitable because they mutate the exact
+semantic dependency graph outside the approved one-update-per-PR evidence path.
+
+### 31.38 Manual authorization and independent authorization are separate controls
+
+GitHub environments independently support a required reviewer and an optional
+prevent-self-review rule. Requiring an explicit click after the artefact digest
+and registry operation are known prevents unattended publication even when the
+initiator supplies that click. It does not provide separation of duties, and the
+plan does not describe it as doing so.
+
+For the present maintainer model, that deliberate one-person gate avoids making
+release availability depend on a second person's schedule while preserving the
+entire technical and evidentiary pipeline. It does not solve account/recovery
+continuity, and this plan explicitly accepts that limitation. If post-plan
+governance later appoints another genuine custodian or the threat model justifies
+independent approval, prevent-self-review can be enabled through an explicit
+policy/configuration change rather than inferred from mere account membership.
+
+### 31.39 Existing verified SSH signing is the smallest coherent release-tag trust root
+
+GitHub verifies signed tags made with SSH, GPG or S/MIME. The current WebVOWL
+history already contains GitHub-verified SSH signatures, so using SSH for
+release tags avoids introducing a second personal key toolchain merely for
+ceremony. OIDC provenance still proves which workflow published the package;
+the SSH tag separately proves which authorized human fixed the release source.
+
+A versioned signer registry and pre-release key-admission rule solve the
+continuity problem that “verified” alone does not: they say which verified keys
+the project authorized, for whom and during what interval. Retaining historical
+keys and revocation dates preserves old verification while letting prospective
+authority rotate. Keeping private keys outside CI prevents the workflow from
+manufacturing the human authorization it is supposed to verify.
+
+### 31.40 Structured intake should reduce ambiguity without pretending to be a support desk
+
+Issue forms can require the package version, syntax, reproduction and
+specification/Java compatibility identity that a parser report needs. Providing
+an “other” form retains an escape hatch, so blank issues add little except
+missing context. A pull-request template can similarly surface provenance,
+SemVer, registry and test implications without turning checkboxes into a
+contributor licence agreement.
+
+GitHub Issues are sufficient while community volume is unknown. A generic
+support mailbox or Discussions instance would create another moderation and
+response surface before demand exists; security and conduct already have
+purpose-specific private channels. `CODEOWNERS` becomes valuable when ownership
+or review routing is real, not when it points every path back to the sole current
+reviewer.
+
+### 31.41 Publish-channel metadata is useful only when every authority agrees
+
+npm applies `publishConfig` at publication time and both direct and staged
+publication accept an explicit command-line tag. A staged package's tag cannot
+be changed during approval. A prerelease-safe `tag: next` therefore becomes a
+stable-release defect if it survives unchanged into `1.0.1`; omitting the field
+entirely loses a useful guard against accidentally assigning a prerelease to
+`latest`. The stronger design makes the reviewed per-version manifest and
+explicit registry operation redundant assertions and fails closed when they
+disagree.
+
+Deriving the expected channel mechanically from SemVer avoids a second policy
+table hidden in workflow conditionals. Post-publication verification is still
+necessary because neither a correct manifest nor a correct command proves the
+mutable registry pointer ended in the authorized state.
+
+### 31.42 Discovery metadata should describe capability, not aspiration or project ancestry
+
+npm uses `description` and `keywords` for search/discovery. Precise OWL 2,
+ontology, RDF/JS and supported-syntax terms help an intended consumer find the
+package without claiming a reasoner, general knowledge-graph platform or
+WebVOWL-specific API. The qualified Java-compatibility wording is consistent
+with the bounded Public API Surface Registry rather than implying complete Java
+source/binary parity.
+
+Optional package fields are not badges. `funding` should lead to a real funding
+destination, `contributors` should represent actual curated contributor
+metadata, and npm access state—not an invented manifest field—governs
+maintainers. Omitting semantically empty fields is more accurate than filling
+them with company/repository URLs already represented elsewhere.
+
+### 31.43 Workflow retention and release retention solve different problems
+
+Public-repository Actions logs and artifacts expire after at most the configured
+90-day period, so a workflow URL alone cannot support a durable release claim.
+Immutable GitHub release assets and their automatic attestation protect the
+fixed publication snapshot; a compact repository record can then add the
+post-release URL/attestation identity and later append new non-blocking evidence
+without changing the package.
+
+Separating immutable publication-time evidence from append-only later
+observations preserves both truths: what was known when the version shipped and
+what was learned afterward. It also avoids retaining sensitive or enormous raw
+logs merely to keep a few reproducible commands, versions, digests and results.
+
+### 31.44 Default CodeQL and push protection add useful security without a second workflow product
+
+GitHub's CodeQL default setup supports JavaScript without a special build and is
+the lowest-maintenance starting point. Requiring its high/critical result on the
+protected trunk prevents a public hostile-input parser from merging an obvious
+new source vulnerability, while dependency review remains necessary for its
+different dependency-diff responsibility. A separate advanced CodeQL workflow
+or lower-precision extended suite has no demonstrated value before default
+coverage is evaluated.
+
+Secret scanning detects existing exposures; push protection can stop supported
+credentials before they enter the public history. A bypass record cannot make a
+real credential safe, so actual exposure always requires rotation/revocation
+and incident handling. Distinct, expiring source-analysis exceptions preserve
+reviewability without pretending a CodeQL rule and a GHSA dependency advisory
+are the same evidence type.
+
+### 31.45 Zero telemetry must include transitive behaviour and user-directed network clarity
+
+Ontologies may contain confidential terms, identifiers, internal IRIs or
+unpublished research. A library that silently uploads errors or checks a remote
+service would violate the trust boundary even if it did not upload the complete
+document. Testing the installed dependency closure matters because a transitive
+package can introduce the same request without a direct `fetch` in `owlapi`.
+
+Caller-enabled import/context loading is different: it retrieves a document the
+caller expressly asked the manager to resolve under bounded security policy.
+Naming that distinction allows the package to promise zero telemetry without
+falsely promising that every deliberately network-enabled ontology load remains
+offline.
+
+### 31.46 One explicit `exports` map is a stronger compatibility boundary than redundant entry fields
+
+Node recommends `exports` for new packages targeting supported runtimes because
+it defines multiple entry points while encapsulating every unlisted subpath.
+`main` is primarily an older-tool fallback and becomes subordinate when both
+exist. `module` and `browser` are ecosystem conventions with different
+resolution semantics, while conditional branches would contradict the proven
+portable-source design.
+
+The five Java-recognizable specifiers are already the approved contract. One
+literal map therefore gives tools and humans the same finite inventory, makes a
+new public path an intentional SemVer event and prevents metadata/deep-file
+reach-in from becoming accidental API. Adding redundant aliases would expand
+Hyrum-law exposure without serving a supported consumer.
+
+### 31.47 `sideEffects: false` is safe only when import purity is an enforced architecture property
+
+Bundlers may discard an entire module/subtree when package metadata says it has
+no side effects. That is valuable for a parser package with many optional/lazy
+format paths, but a false assertion can remove registration, polyfill or setup
+code only in optimized builds. Development imports alone would not expose that
+failure.
+
+`owlapi` already prohibits ambient parser registration, global mutation,
+telemetry and import-time I/O. Making the whole package-owned closure pure and
+testing both instrumented import and optimized used/unused consumers is thus
+more coherent than omitting the field defensively. If source requires an import
+side effect, the architecture—not the metadata—has regressed.
+
+### 31.48 `devEngines` separates repository tooling from consumer runtime promises
+
+npm distinguishes `engines`, which communicates package runtime compatibility
+to installers, from `devEngines`, which validates the environment operating the
+source repository before npm install/CI/run commands. Putting the release npm
+patch in `engines.npm` would warn consumers even though their npm version does
+not execute `owlapi` at runtime.
+
+An exact npm-native `devEngines.packageManager` value makes lockfile and release
+tool identity reviewable without adding Corepack or a second top-level
+`packageManager` authority. Keeping the development runtime name as `node` but
+leaving its version to the existing engine/CI matrix also permits the deliberate
+non-blocking Node Current probe without silently expanding support.
+
+### 31.49 A JSPM reference provider can prove native import maps without becoming package infrastructure
+
+`@jspm/generator` can link local entry modules, trace static and literal dynamic
+imports, resolve an exact browser/production/module graph through a named
+provider and emit integrity metadata. That matches the application-owned map
+contract more directly than a hand-maintained map or a new package export.
+
+The provider still represents an external delivery system. Hydrating and
+integrity-checking its exact graph, then running an untransformed local mirror,
+separates semantic/browser evidence from transient CDN availability while a
+separate URL check keeps the published reference honest. Keeping provider URLs
+out of production source lets another application self-host the same graph and
+keeps `jspm.io` replaceable.
+
+### 31.50 SBOM reproducibility and evidence validity require explicit, independently checked tools
+
+The CycloneDX npm generator can produce JSON 1.6, identify the root as a
+library, omit development dependencies, validate its output and remove
+time/random values for reproducibility. Generating from the installed production
+tree is stronger than lockfile-only inference, but its result is still checked
+against npm's own installed graph, the lockfile and packed inventory so one tool
+does not become the sole dependency authority.
+
+Release/governance evidence has a different problem: structural drift. JSON
+Schema Draft 2020-12 plus a pinned Ajv validator can reject missing, mistyped or
+silently invented fields before a record is trusted. Stable `$id`/schema
+versions and closed records make changes explicit. Publication observations are
+necessarily event-specific rather than reproducible, so preserving and
+attesting their accepted bytes is more honest than adding a redundant detached
+signature or claiming two release events should serialize identically.
+
+### 31.51 A library lockfile proves its release graph, not every future consumer graph
+
+`package-lock.json` makes the canonical source/CI installation reviewable and
+repeatable, but npm cannot publish that lockfile as dependency-resolution
+authority and ignores one below the consumer root. npm can instead publish an
+`npm-shrinkwrap.json` and apply its dependency tree from the point encountered,
+but expressly does not recommend that mechanism unless publication is producing
+a deployed CLI or another production package. A shrinkwrap or bundled payload
+does not fit a reusable, browser-deduplicated semantic API whose parser engines
+remain separately resolved packages.
+
+Exact direct dependency versions therefore protect `owlapi`'s selected semantic
+engines without pretending to freeze their entire future transitive closure.
+Testing both the locked release graph and a new lockless consumer graph makes
+that distinction observable. A read-only fresh-resolution monitor detects later
+registry drift without turning an immutable version into a mutable deployment.
+
+### 31.52 Independent tarball lint catches packaging assumptions that custom tests can share
+
+Project governance tests are strongest for project-specific policy, but they can
+repeat the same mistaken model as the manifest they validate. `publint` checks
+actual package/tarball metadata and files against Node and common bundler
+resolution conventions, including missing published targets, invalid ESM format,
+local dependency leakage and repository/export problems.
+
+Passing the retained `.tgz` directly avoids a second pack and makes the input
+identical to the release artefact. Exact pinning and strict warning handling make
+the result reviewable, while suggestions remain advice and a narrow expiring
+exception prevents a generic tool from silently overruling a deliberate,
+better-tested package contract.
+
+The 24 August 2026 registry check found `0.3.24` to be the current `publint`
+release. Recording it as the present baseline makes the plan executable without
+turning `0.3.24`-or-greater into a floating install. A later exact release remains
+eligible, but only after its changed rules and output have been reviewed as a
+tooling update.
+
+### 31.53 Licence evidence follows the bytes in each distribution
+
+An SPDX expression provides precise standardized vocabulary, but a package
+manifest string alone does not prove which licence/notice files or embedded
+third-party fragments are actually present. Conversely, ordinary npm
+dependencies are not copied into the `owlapi` tarball merely because the
+manifest causes a consumer to install their separate tarballs.
+
+A component/file relationship inventory therefore distinguishes external
+dependencies from copied, embedded or generated material and keeps the package
+`NOTICE` aligned with the bytes it accompanies. WebVOWL's bundler can later
+embed those external modules into an application distribution, so that emitted
+bundle receives its own inventory/notice review rather than inheriting an
+inapplicable package-level conclusion.
+
+### 31.54 npm provenance must be validated at the exact root coordinate
+
+npm provenance supplies provenance and publish attestations, backed by Sigstore
+verification material and public transparency evidence. The
+`npm audit signatures --json --include-attestations` command exposes the data
+needed to verify installed packages, but an aggregate count cannot establish
+that the required attestation belongs to `owlapi@<version>` or names the intended
+repository/workflow.
+
+The release validator must therefore select the root coordinate and compare its
+registry integrity, subject digest, source/workflow/tag/commit identity and
+transparency evidence. This proves origin rather than benevolence or semantic
+correctness; the independent source, test, audit and consumer gates remain
+necessary.
+
+### 31.55 GitHub release immutability becomes evidence only when every asset is verified
+
+GitHub's immutable release attestation binds the tag, commit and attached
+assets, and the GitHub CLI exposes separate release and local-asset verification
+commands. The UI badge alone does not prove that a locally downloaded file is
+one of those assets or that every member of the release set was checked.
+
+The two pre-registry artefacts can share a conventional sorted checksum file;
+the post-registry evidence record cannot be added to that already reviewed file
+without mutation. Per-asset immutable-release verification covers all four
+downloads, while the repository record preserves the evidence JSON digest and
+verification identities. Independent SSH-tag verification keeps the human
+source authorization distinct from GitHub's release attestation.
+
+### 31.56 npm staged approval is trustworthy only when the reviewed candidate is the retained artefact
+
+npm staged publishing deliberately separates an automated candidate upload from
+an interactive proof-of-presence approval. The stage ID, fixed distribution tag,
+`stage view` metadata and downloadable candidate provide a stronger review seam
+than approving only a workflow run or a local filename. Hashing that download
+against the retained release tarball closes the otherwise unproven gap between
+the bytes that passed package gates and the bytes npm will promote.
+
+That path cannot create a previously unpublished package: a package and write
+permission must already exist before `npm stage publish` can succeed. The useful
+alpha therefore remains the one direct bootstrap write. A one-day granular
+access token with non-interactive bypass-2FA is an acknowledged bootstrap
+exception, not the steady-state design; its real effective scope is recorded,
+it permits one approved attempt, and immediate revocation is required. Once the
+coordinate exists, exact-repository/workflow/environment OIDC, stage-only
+authority, disabled token publishing, automatic provenance, digest equality for
+the downloaded candidate and interactive 2FA approval provide the bounded
+normal release path.
+
+### 31.57 Release evidence needs a visible exact toolchain and an uncontaminated subject
+
+A committed lockfile fixes the transitive development graph used by `npm ci`,
+but the direct tools that interpret SemVer, construct browser fixtures, select
+browser revisions, generate an SBOM, validate evidence or verify an immutable
+release are themselves evidence authorities. Exact direct versions make those
+authorities reviewable in the manifest and release record; named local npm
+scripts prevent a remote `npx` fetch or host-global executable from silently
+selecting another implementation.
+
+The SBOM generator illustrates why version pinning alone is insufficient. It is
+a development dependency and therefore cannot truthfully be present in the
+production-only installation it describes. A full tool workspace and a separate
+`npm ci --omit=dev` subject workspace let the exact generator inspect the real
+subject without contaminating it. Independent npm/lockfile/pack reconciliation
+then catches a generator classification or traversal omission instead of making
+the tool's output self-authenticating.
+
+Ajv deliberately leaves standard URI/date-time format implementations to the
+separate `ajv-formats` package, so both must be fixed and registered if the
+evidence schema is intended to validate more than string shape. Playwright
+likewise couples its package to managed browser revisions, while Vite controls
+the standalone bundler/worker fixture graph. The actual WebVOWL lockfile remains
+an independent consumer authority rather than being synchronized for cosmetic
+version equality.
+
+GitHub CLI and `git-filter-repo` sit outside npm's lockfile. Fixing their release
+versions and downloaded-file digests prevents a runner image or workstation PATH
+from becoming undeclared release/provenance authority. A later security or
+compatibility correction remains possible through an explicit exact replacement
+and full affected-output review; reproducibility requires controlled change, not
+permanent use of an obsolete tool.
+
+### 31.58 Workflow topology is part of the release subject, not incidental CI plumbing
+
+GitHub Actions code runs inside a token and artefact trust boundary. A broad
+workflow-level permission silently grants that authority to every Action and
+project command in every job, while a privileged follow-on workflow can turn an
+untrusted checkout, cache or uploaded file into a repository or registry write.
+Starting at `permissions: {}` and granting one job only its required capability
+therefore reduces both accidental authority and the blast radius of a
+compromised dependency.
+
+A manual dispatch accepted only when its captured SHA equals the then-current
+protected-`main` head supplies the objective pre-tag source commit; the version,
+channel and expected tag are derived from reviewed repository state rather than
+mutable dispatch text. The later protected signed tag independently anchors the
+already-qualified public release at that same commit. Keeping build,
+qualification, late-tag verification, publication and final verification in one
+serialized `release.yml` run avoids the weaker pattern in which a privileged
+workflow accepts an artefact built under another trigger. Independent hashes
+still protect every same-run transfer. Disabling release cancellation matters
+because a staged candidate, tag, npm version or draft release may already exist
+even when the runner has not reached its final success state.
+
+npm trusted publishing binds authority to the repository, workflow path and
+environment. Reusing `release.yml` for the unavoidable direct bootstrap and the
+steady OIDC path keeps that identity understandable; deleting the token secret
+and then removing the dead bootstrap branch makes the continuing workflow
+strictly less privileged without obscuring the bootstrap in history. A separate
+GitHub-release job with `contents: write` cannot publish to npm, and the npm job
+with `id-token: write` cannot mutate repository contents.
+
+GitHub identifies a full commit SHA as the immutable Action reference. Enforcing
+that policy in repository settings and restricting the allowed Action
+repositories makes a forgotten floating `uses:` line fail closed. The workflow
+references remain the sole execution authority; deriving their exact SHAs and
+permissions into release evidence avoids creating a second manually synchronized
+Action lock.
+
+### 31.59 Full-SHA pinning is necessary; exact inputs complete the Action trust decision
+
+The five selected GitHub-maintained Actions have deliberately useful defaults,
+but a release workflow cannot treat those defaults as timeless security policy.
+Checkout normally persists its authentication token for later Git commands;
+release-source jobs also need different history/tag depth from ordinary test
+jobs. Setup-node can infer npm dependency caching from package metadata even
+when no explicit `cache` input appears, and its registry inputs create npm
+authentication configuration. Those behaviors are reasonable for general CI
+and wrong for this cache-free, OIDC-separated release chain unless explicitly
+disabled or confined to the one temporary bootstrap step.
+
+Artefact Actions likewise protect an archive transfer, not the semantic identity
+of the release candidate on their own. Upload must close the file inventory and
+record the returned artefact ID/digest; download must select that immutable ID
+within the same run, refuse merge/overwrite broadening, and be followed by
+independent file-count and SHA-256 verification. Dependency review is valuable
+at the pull-request boundary only when it remains read-only and narrowly blocks
+new high/critical runtime vulnerabilities; package licensing remains the exact
+human-reviewed §2.50 inventory rather than an unrelated Action policy.
+
+The smallest coherent inventory is therefore the five roles in §2.56. Repository
+scripts, npm provenance, checksum-verified GitHub CLI and immutable-release
+attestation already own publication, SBOM, checksum, provenance and release
+verification. Adding cache, script, publishing, attestation or release-wrapper
+Actions would duplicate those authorities and enlarge the reviewed supply chain
+without deepening the release guarantee. A later Action update must consequently
+review tag-to-SHA identity and every relevant default/input/output/runtime/
+permission behavior together.
+
+### 31.60 Versioned runner labels stabilize the OS family, not the hosted image
+
+GitHub's `*-latest` labels identify the newest generally available image family,
+not a permanent operating-system version. Explicit `ubuntu-24.04`,
+`windows-2025` and `macos-15` labels remove that avoidable family migration, but
+the images behind them still receive regular software updates. GitHub exposes
+the actual runner-image identity in job setup metadata precisely because a label
+does not freeze the VM. Honest release evidence must therefore record the image
+that ran each gate instead of presenting the label as content-addressed
+infrastructure.
+
+That mutable substrate is acceptable for a readable-source JavaScript package
+when artefact authority is narrow: exact Node/npm/tool versions create the
+tarball on one Ubuntu family, the tarball itself is retained and hashed, and
+other hosts test those same bytes rather than rebuilding. Windows x64 catches
+the dominant alternate path/shell/encoding semantics; macOS arm64 adds both a
+second OS and architecture. Running both declared Node patches on each converts
+the manifest's broad Node promise into a small but meaningful blocking matrix
+without repeating the full standards corpus six times.
+
+GitHub's explicit `bash` mode has stricter error/pipeline behavior than its
+unspecified non-Windows default, while PowerShell Core supplies the native modern
+Windows command host and UTF-8 behavior. Keeping substantive checks in `.mjs`
+files makes those shells thin orchestration layers rather than parallel policy
+implementations. This is more maintainable and more genuinely portable than
+forcing Git Bash everywhere or writing complex equivalent YAML scripts twice.
+
+Playwright supports Ubuntu 24.04 and installs version-matched Chromium, Firefox
+and WebKit plus their Linux dependencies. Its CI guidance prioritizes one worker
+for stability; Linux WebKit is an appropriate engine-level check, while macOS is
+mainly necessary when the subject depends on Safari-adjacent platform facilities
+such as media codecs. This package tests module loading and ontology processing,
+so three separate one-worker Ubuntu jobs deepen the browser contract without
+adding a Docker image or converting branded Safari/device testing into a release
+gate.
+
+### 31.61 Aggregate checks and mutation-aware retry make automation failure explicit
+
+GitHub required checks are name-based contracts, while matrix-generated names
+and conditional jobs are implementation details that can drift. A small stable
+aggregate is therefore safer than protecting every lane directly—but only when
+its `needs` inventory is mechanically synchronized and it treats every skipped,
+cancelled, timed-out, missing or failed prerequisite as failure. GitHub's
+`always()` is appropriate for that evaluator because it must inspect failed
+dependencies; applying it indiscriminately to substantive jobs would instead
+encourage work to continue after a prerequisite failure. Dependency review is
+event-specific, so the job must report a closed, checked push-only
+non-applicability reason rather than vanish as an unexplained skip.
+
+Matrix `fail-fast` optimizes feedback by cancelling sibling work, but release
+evidence needs the complete host/browser picture. Disabling it on required
+matrices does not weaken the gate: each lane still fails honestly and the
+aggregate requires every conclusion to be `success`. Exact job and step
+timeouts similarly convert hangs into finite failures rather than subjective
+operator decisions.
+
+GitHub concurrency has two separate questions: whether to cancel a running job
+and how many pending runs to preserve. Release work answers “no” and uses the
+documented `queue: max` bound of 100, because a run with external state must not
+be cancelled and an older pending release attempt must not be silently replaced.
+GitHub processes that queue according to when runs start waiting—not dispatch
+time—and does not guarantee ordering, so each fixed-identity run must revalidate
+remote state and never depend on a predecessor. Observational maintenance/
+extended schedules can safely retain only the newest pending run. CI may cancel
+only a superseded execution of the same change.
+
+Retries are safe only when operation semantics are known. npm's bounded fetch
+configuration and a project-owned `GET`/`HEAD` helper can repeat idempotent
+reads after transient transport/408/429/5xx failures. Publication, approval,
+tag, release, asset, issue and Git-ref mutations cannot be blindly repeated:
+an interrupted response may hide a successful remote write. The safe recovery
+is read-only reconciliation of the exact remote identity and digest, followed
+by verification if already complete or renewed authorization for a genuinely
+new mutation.
+
+### 31.62 Fork approval controls compute; isolation and data-flow rules control trust
+
+GitHub intentionally executes public-fork `pull_request` code with a read-only
+token and without repository secrets, while allowing maintainers to require a
+manual approval before spending compute. Requiring all external contributors is
+stronger than first-contribution-only trust: GitHub warns that an innocuous
+merged change can otherwise exempt a later malicious run. Because approval is
+per workflow run, a new externally triggered revision returns to the execution
+gate. That click does not make the proposed tree trustworthy; the no-secret,
+no-write, ephemeral-run boundary remains necessary after approval.
+
+`pull_request_target` reverses the default trust context and is safe only while
+it does not fetch and execute the fork. Running the fork's script, dependency or
+artefact from that or another privileged event creates the same pwn-request
+shape regardless of which checkout/download command obtained it. This package
+needs no privileged PR automation, so ordinary `pull_request` is both simpler
+and safer. The same-run diagnostic candidate still permits real portability
+testing without creating a promotion path to release.
+
+GitHub expressions are substituted into generated shell source before
+execution. Titles, refs and other flexible context fields can therefore become
+commands when interpolated directly. Passing them through an environment
+variable—or preferably a validating Node data boundary—keeps them values.
+Workflow command files deserve the same treatment because an arbitrary newline
+or delimiter can forge an output, environment variable or summary. Closed,
+double-validated control values and ordinary data files make the boundary
+reviewable.
+
+GitHub masks registered and recognized secrets, but transformations and
+job-local visibility make masking incomplete by design. Avoiding context dumps,
+tracing and command-line credentials is the primary control; explicit masking
+is additional containment. Once exposure is plausible, rotation/revocation is
+the corrective action—editing evidence or trusting a displayed mask cannot
+invalidate a credential that may already have escaped.
+
+### 31.63 A canonical release tag should record a qualified decision, not be consumed to discover whether the candidate qualifies
+
+A tag-push workflow is simple, but it must publish the permanent source label
+before exercising release-only paths. That ordering is harmless only when the
+project is willing to move/delete a failed tag or advance the package version
+after every deterministic release-automation defect. Neither assumption fits an
+immutable signed-tag policy plus the deliberately selected `1.0.1` terminal
+coordinate.
+
+GitHub's `workflow_dispatch` fixes a branch/tag ref and commit for a manual run,
+while environment deployment restrictions evaluate that run's `GITHUB_REF`.
+Dispatching only the captured protected-`main` head therefore supplies a stable
+pre-tag source identity; the environment must honestly allow protected `main`
+rather than a tag that did not trigger the run. npm trusted publishing binds the
+repository, workflow filename and optional environment and explicitly supports
+manual workflows. npm provenance exposes the exact source commit and workflow,
+so source traceability does not depend on using a tag-push event.
+
+Staged publishing gives the steady-state path a stronger reversible seam. The
+non-public candidate can be viewed, downloaded, byte-compared and rejected before
+the canonical Git tag exists; rejection permits a corrected candidate to reuse
+the still-unpublished version only while no immutable source tag has consumed
+that identity. The later human-signed tag still anchors the public release and
+must exist and verify before staged promotion. The bootstrap package cannot use
+that seam, so it delays the tag until every non-mutating qualification succeeds.
+
+This ordering cannot make the interval after tag creation mathematically
+failure-free. Its correct response is therefore explicit: reconcile transient or
+ambiguous unchanged-input operations, but if a corrected commit is required,
+preserve the observed signed tag, abandon the version and advance through the
+full gate. That rare visible version gap is less misleading than either moving a
+supply-chain identity or publishing bytes known not to be the qualified release.
+
+### 31.64 A protected no-authority environment is the native same-run human hand-off
+
+GitHub environment protection is job admission, not merely secret delivery. A
+job that references an environment with required reviewers remains waiting and
+is not sent to a runner until a reviewer approves it; an unapproved job
+automatically fails after 30 days. Current GitHub Actions also permits
+`deployment: false`: required reviewers and wait rules still apply, but the
+coordination job does not create a misleading deployment object. This is a
+cleaner release pause than spending runner minutes on a tag/registry polling
+loop or introducing a cross-workflow continuation token.
+
+The workflow-run approvals endpoint exposes the authenticated review history to
+read-authorized code. Capturing that response alongside the fixed run/attempt,
+gate jobs, stage/digest and signed-tag timeline supplies durable evidence of who
+continued the run without granting the checkpoint npm, OIDC, Git-ref or GitHub-
+release write authority. Reusing one `release-manual` environment for two
+sequential jobs keeps configuration small; each job still receives its own
+required review because every environment-referencing job is independently
+admitted.
+
+npm staged publishing already assigns public mutation to a different human
+proof-of-presence step: the maintainer inspects the stage and later approves it
+with 2FA. The GitHub gate should therefore acknowledge that completed work and
+start read-only verification, not duplicate or automate the npm write. The
+same-run artefact/stage/tag/evidence graph provides the substantive binding;
+requiring ceremonial digest trailers in the immutable tag message would add a
+new typo-driven failure mode without strengthening the verified identifiers.
+
+### 31.65 A pending npm stage is remote mutable state, not a retained release asset
+
+npm documents stage creation, listing, inspection, download, approval and
+rejection, including the stage's shared version index and immutable requested
+distribution tag. It does not currently promise a minimum pending-stage
+retention period on which this project can base a release invariant. Silence is
+not an infinite-retention guarantee, and GitHub's separate 30-day environment
+expiry says nothing about npm's registry state.
+
+The retained tarball and its digest are therefore the durable candidate; the npm
+stage is a repeatedly reconciled remote binding. A fresh `stage view` immediately
+before the irreversible Git-tag boundary and another immediately before 2FA
+promotion prove that the same pending stage still exists. Missing or changed
+state fails closed into the existing pre-tag reuse or post-tag abandonment
+contract. This gives the workflow deterministic behavior if npm later documents
+or changes stage retention without inventing a project guarantee today.
 
 ---
 
@@ -4958,6 +13094,15 @@ The following sources should be treated as the architectural/behavioural hierarc
 20. **OWLAPI repository / source** — use for upstream version/licence/provenance audit and conceptual architecture research; **not as a source-to-source implementation template for new production modules**. Behavioural parity should preferentially be captured through the pinned Java reference harness, public Javadocs and project-owned differential fixtures.  
     https://github.com/owlcs/owlapi
 
+20a. **Java OWLAPI `version5` contributor/licensing evidence at reviewed HEAD
+     `d7e997a53b470e32700de89cc610d9daf01ea769`** — dual LGPLv3/Apache-2.0
+     project statement and metadata, Apache-2.0 contribution clause and absence
+     of published repository contribution guidance at the review point.<br>
+     https://github.com/owlcs/owlapi/blob/d7e997a53b470e32700de89cc610d9daf01ea769/README.md<br>
+     https://github.com/owlcs/owlapi/blob/d7e997a53b470e32700de89cc610d9daf01ea769/pom.xml<br>
+     https://github.com/owlcs/owlapi/blob/d7e997a53b470e32700de89cc610d9daf01ea769/etc/LICENSE.txt<br>
+     https://github.com/owlcs/owlapi/community
+
 21. **OWLAPI `OWLParser` Javadocs**  
     https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/io/OWLParser.html
 
@@ -5014,8 +13159,528 @@ https://owlcs.github.io/owlapi/apidocs_5/overview-tree.html
 34. **Node.js package documentation (`type`, `exports`)**  
     https://nodejs.org/api/packages.html
 
-35. **Chris Mungall — `owljs`, a JavaScript library for OWL hacking**  
+35. **npm package metadata and naming guidance** — package names need not add
+    `js` or `node`; `name`, `version`, `files`, `exports`-adjacent metadata and
+    publishing fields define the consumer artefact.<br>
+    https://docs.npmjs.com/cli/configuring-npm/package-json
+
+35a. **npm trusted publishers and provenance** — GitHub Actions OIDC publication
+     avoids long-lived registry tokens; the package repository metadata and
+     configured GitHub owner/repository/workflow must match exactly; trusted
+     publication from a public repository supplies automatic npm provenance and
+     may be restricted to stage-only authority.<br>
+     https://docs.npmjs.com/trusted-publishers/<br>
+     https://docs.npmjs.com/generating-provenance-statements/
+
+36. **npm publish and pack documentation** — immutable coordinates,
+    `--dry-run`, tarball contents and distribution-tag behaviour.<br>
+    https://docs.npmjs.com/cli/commands/npm-publish/<br>
+    https://docs.npmjs.com/cli/pack/
+
+37. **npm unpublish policy** — an unpublished `name@version` coordinate remains
+    permanently unavailable for reuse.<br>
+    https://docs.npmjs.com/policies/unpublish/
+
+38. **npm distribution-tag documentation** — unqualified installs use
+    `latest`; prereleases can be deliberately published under `next`.<br>
+    https://docs.npmjs.com/cli/dist-tag/
+
+38a. **npm install and dependency-range documentation** — exact unpublished
+     versions fail; compatible ranges resolve an available version; ordinary
+     stable ranges exclude prereleases unless the consumer opts in.<br>
+     https://docs.npmjs.com/cli/install/<br>
+     https://github.com/npm/node-semver#ranges
+
+38b. **npm saved-range configuration and Semantic Versioning 2.0.0** — npm's
+     default saved prefix is `^`; SemVer defines initial development, stable
+     public APIs and major/minor/patch meaning, and recommends beginning initial
+     development at `0.1.0`.<br>
+     https://docs.npmjs.com/cli/v11/using-npm/config/#save-prefix<br>
+     https://semver.org/
+
+39. **npm package-name dispute/active-use policy** — names are first-come,
+    first-served for immediate active use; packages with no genuine function
+    may be treated as squatting.<br>
+    https://docs.npmjs.com/policies/disputes/
+
+40. **npm staged-publishing and `npm stage` documentation** — staging requires
+    Node 22.14.0/npm 11.15.0 or newer plus an existing package and write
+    permission, so it cannot establish the initial `owlapi` identity; the CLI
+    supplies separate publish/list/view/download/approve/reject operations, and
+    the distribution tag is fixed in the staged candidate before approval. The
+    cited documentation does not promise a minimum pending-stage retention
+    period.<br>
+    https://docs.npmjs.com/staged-publishing/<br>
+    https://docs.npmjs.com/cli/v11/commands/npm-stage/
+
+40a. **npm granular access tokens** — token permissions, package selection,
+     expiration and bypass-2FA are explicit credential properties; a temporary
+     bootstrap token does not become the steady-state publishing design.<br>
+     https://docs.npmjs.com/about-access-tokens/
+
+40b. **npm 2FA requirements for publishing and settings** — interactive
+     publishing is protected by 2FA, while non-interactive token publication of
+     a 2FA-protected package requires a granular token configured to bypass
+     2FA.<br>
+     https://docs.npmjs.com/requiring-2fa-for-package-publishing-and-settings-modification/
+
+41. **Chris Mungall — `owljs`, a JavaScript interface that uses Java OWLAPI**<br>
+    https://github.com/cmungall/owljs<br>
     https://douroucouli.wordpress.com/2014/03/30/owljs-a-javascript-library-for-owl-hacking/
+
+42. **GNU Affero General Public License version 3** — authoritative licence
+    text, including §2's copyright-term/irrevocability rule, §10's automatic
+    downstream licensing and §13's remote-network-interaction source
+    provision.<br>
+    https://www.gnu.org/licenses/agpl-3.0.html
+
+43. **GNU licence FAQ — AGPLv3 application, compatibility, multiple-licensing
+    and copyright-holder permission guidance**<br>
+    https://www.gnu.org/licenses/gpl-faq.html
+
+44. **Companies House — HADDEN INDUSTRIES LTD, registered in England and Wales
+    under company number 07862561** — authoritative registered entity identity
+    and status.<br>
+    https://data.companieshouse.gov.uk/doc/company/07862561
+
+45. **Copyright, Designs and Patents Act 1988, §§3, 11–12 and 90–91** — computer
+    programs as literary works, first ownership, ordinary duration, transfer by
+    assignment/testamentary disposition/operation of law, written assignment and
+    prospective ownership of copyright.<br>
+    https://www.legislation.gov.uk/ukpga/1988/48/section/3<br>
+    https://www.legislation.gov.uk/ukpga/1988/48/section/11<br>
+    https://www.legislation.gov.uk/ukpga/1988/48/section/12<br>
+    https://www.legislation.gov.uk/ukpga/1988/48/section/90<br>
+    https://www.legislation.gov.uk/ukpga/1988/48/section/91
+
+46. **UK Intellectual Property Office — ownership of copyright works** —
+    practical official guidance on creator, employee and commissioned-work
+    ownership.<br>
+    https://www.gov.uk/guidance/ownership-of-copyright-works
+
+47. **Companies House — preparing for the death of a director** — continuity
+    implications and appointment routes for successor directors.<br>
+    https://companieshouse.blog.gov.uk/2019/11/14/how-to-prepare-for-the-death-of-a-director/
+
+48. **GitHub Terms of Service, §D.3 and §D.6** — contributors retain ownership;
+    contributions to a licensed repository use the same terms unless a separate
+    contributor agreement supersedes them (“inbound=outbound”).<br>
+    https://docs.github.com/en/site-policy/github-terms/github-terms-of-service#6-contributions-under-repository-license
+
+49. **GOV.UK — licensing, transferring and inheriting copyright** — copyright
+    owners choose how to license their work; a lifetime transfer requires a
+    written, signed assignment, while copyright can also transfer by
+    inheritance.<br>
+    https://www.gov.uk/copyright/license-and-sell-your-copyright
+
+49a. **GOV.UK — probate where there is no will** — without an effective will,
+     applicable law rather than a project maintainer's preference determines
+     who inherits estate assets.<br>
+     https://www.gov.uk/applying-for-probate/if-theres-not-a-will
+
+50. **GitHub fork model and detachment** — a fork remains part of an upstream
+    repository network; independent products can instead use a standalone
+    repository with their own governance and history transformation evidence.<br>
+    https://docs.github.com/en/pull-requests/reference/forks<br>
+    https://docs.github.com/en/pull-requests/how-tos/work-with-forks/detaching-a-fork
+
+51. **GitHub repository best practices, organization roles and rulesets** —
+    public project documentation, least-privilege institutional access and
+    protected release-source branches for the canonical repository.<br>
+    https://docs.github.com/en/repositories/creating-and-managing-repositories/best-practices-for-repositories<br>
+    https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/repository-roles-for-an-organization<br>
+    https://docs.github.com/en/organizations/managing-organization-settings/creating-rulesets-for-repositories-in-your-organization
+
+52. **`git-filter-repo` 2.47.0** — history-filtering implementation and
+    documentation used only through the version/tag/commit/retrieval URL and
+    file-digest-pinned disposable-clone extraction process.<br>
+    https://github.com/newren/git-filter-repo/releases/tag/v2.47.0<br>
+    https://github.com/newren/git-filter-repo
+
+53. **Adjacent implementation approaches considered in the project rationale**
+    — current project documentation for the Node/Wasm OntoLogos bindings,
+    `owlish`'s Rust/Wasm OWL structures, and the JavaScript HyLAR reasoner.<br>
+    https://ontologos.readthedocs.io/en/latest/<br>
+    https://docs.rs/crate/owlish/latest<br>
+    https://github.com/ucbl/HyLAR-Reasoner
+
+54. **Java Language Specification, §7.1 package members** — Java package names
+    are hierarchical for organization, but similarly prefixed packages have no
+    inherent access relationship; Java package paths therefore inform the
+    compatibility surface without dictating private JavaScript architecture.<br>
+    https://docs.oracle.com/javase/specs/jls/se26/html/jls-7.html#jls-7.1
+
+55. **OpenTelemetry cross-language client and package-layout guidance** — a
+    cross-language API should remain uniform and clearly separated from its
+    implementation while internal components follow language-idiomatic
+    organization.<br>
+    https://opentelemetry.io/docs/specs/otel/library-guidelines/<br>
+    https://opentelemetry.io/docs/specs/otel/library-layout/
+
+56. **Google Cloud client-library guidance** — cross-language libraries combine
+    a consistent developer model with idiomatic code in each target language.<br>
+    https://docs.cloud.google.com/apis/docs/client-libraries-explained
+
+57. **GitHub immutable releases and release-integrity verification** — attach
+    every asset while the release is a draft; publication locks the release tag
+    and assets and creates an automatic release attestation.<br>
+    https://docs.github.com/en/code-security/concepts/supply-chain-security/immutable-releases<br>
+    https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/verify-release-integrity
+
+58. **RFC 2142 and RFC 9116** — `SECURITY@domain` is the conventional security
+    role mailbox; `security.txt` builds on that address convention for
+    vulnerability-disclosure contacts.<br>
+    https://www.rfc-editor.org/info/rfc2142/<br>
+    https://www.rfc-editor.org/rfc/rfc9116.html
+
+59. **GitHub private vulnerability reporting** — repository owners can enable a
+    private advisory channel; private reporting and `SECURITY.md` are distinct,
+    complementary mechanisms.<br>
+    https://docs.github.com/en/code-security/how-tos/report-and-fix-vulnerabilities/report-privately<br>
+    https://docs.github.com/en/code-security/how-tos/report-and-fix-vulnerabilities/configure-vulnerability-reporting/configure-for-a-repository
+
+60. **Contributor Covenant 3.0** — version-pinned Code of Conduct basis and
+    adoption attribution for the canonical repository.<br>
+    https://www.contributor-covenant.org/version/3/0/<br>
+    https://www.contributor-covenant.org/adopt/
+
+61. **Node.js release schedule and package documentation** — Current/LTS status,
+    maintenance dates, native ESM package semantics and the distinction between
+    public `exports` and private conditional `imports`.<br>
+    https://nodejs.org/en/about/previous-releases<br>
+    https://nodejs.org/api/packages.html
+
+62. **Browserslist Baseline queries** — moving `baseline widely available` and
+    date-frozen `baseline widely available on YYYY-MM-DD` query semantics used
+    to distinguish alpha evolution from the stable 1.x feature ceiling.<br>
+    https://github.com/browserslist/browserslist#baseline<br>
+    https://web-platform-dx.github.io/web-features/
+
+63. **WHATWG HTML Standard — import maps** — document-owned mapping of bare and
+    URL-like static/dynamic module specifiers, scopes, merging and integrity
+    metadata.<br>
+    https://html.spec.whatwg.org/multipage/webappapis.html#import-maps
+
+64. **MDN import-map reference and JavaScript modules guide** — current browser
+    availability, inline document integration and the explicit absence of
+    import-map application to workers/worklets.<br>
+    https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script/type/importmap<br>
+    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#importing_modules_using_import_maps
+
+65. **JSPM Generator and provider documentation** — generated import maps,
+    static/literal-dynamic graph linking, exact provider resolutions, integrity
+    metadata and ESM conversion for CommonJS npm packages.<br>
+    https://jspm.org/docs/generator/<br>
+    https://jspm.org/getting-started
+
+66. **npm package-file and README documentation** — positive tarball `files`
+    selection, ordered package-file negations, automatic README/licence
+    inclusion and the version-owned root README rendered on the npm package
+    page.<br>
+    https://docs.npmjs.com/cli/v11/configuring-npm/package-json/#files<br>
+    https://docs.npmjs.com/about-package-readme-files/<br>
+    https://github.com/npm/npm-packlist#interpretation-of-the-files-list
+
+67. **TypeScript declaration generation and publication guidance** — generating
+    declarations from JavaScript requires TypeScript tooling, compiler
+    configuration and type-bearing JSDoc; bundled declarations then form a
+    separately published package/type-resolution surface.<br>
+    https://www.typescriptlang.org/docs/handbook/declaration-files/dts-from-js.html<br>
+    https://www.typescriptlang.org/docs/handbook/declaration-files/publishing.html
+
+68. **npm unscoped-package, scope and organization guidance** — user publication
+    of unscoped public packages, the distinction between scoped/unscoped package
+    visibility, and organization membership/team administration.<br>
+    https://docs.npmjs.com/creating-and-publishing-unscoped-public-packages/<br>
+    https://docs.npmjs.com/package-scope-access-level-and-visibility/<br>
+    https://docs.npmjs.com/about-organization-scopes-and-packages/<br>
+    https://docs.npmjs.com/adding-members-to-your-organization/
+
+69. **GitHub repository and tag rulesets** — available branch/tag protections,
+    pull-request requirements, bypass controls and organization/repository
+    ruleset configuration.<br>
+    https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets<br>
+    https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository
+
+70. **npm version command** — exact version selection, manifest/lockfile
+    synchronization and `--no-git-tag-version` behaviour used only as a reviewed
+    release-preparation aid.<br>
+    https://docs.npmjs.com/cli/v11/commands/npm-version/
+
+71. **GitHub Dependabot version/security updates** — proposal configuration,
+    update grouping and security-update operation for repository dependencies.<br>
+    https://docs.github.com/en/code-security/concepts/supply-chain-security/dependabot-version-updates<br>
+    https://docs.github.com/en/code-security/concepts/supply-chain-security/dependabot-security-updates<br>
+    https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+72. **GitHub Actions secure-use, permission and repository-policy guidance** —
+    full commit SHAs are the immutable Action reference; workflow/job permissions
+    should be explicit and least-privilege; repository policy can require full
+    SHAs and restrict the permitted Action set.<br>
+    https://docs.github.com/en/actions/reference/security/secure-use<br>
+    https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#permissions<br>
+    https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository
+
+72a. **GitHub workflow-trigger, concurrency and cache-trust guidance** —
+     privileged `workflow_run`/`pull_request_target` contexts must not execute
+     untrusted content; concurrency can serialize deployments; caches are not
+     signed evidence and require trust-boundary care.<br>
+     https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows<br>
+     https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/control-deployments<br>
+     https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching
+
+72b. **Exact selected GitHub Action releases** — official release records for
+     the five tag-to-full-SHA mappings frozen on 24 August 2026.<br>
+     https://github.com/actions/checkout/releases/tag/v7.0.1<br>
+     https://github.com/actions/setup-node/releases/tag/v7.0.0<br>
+     https://github.com/actions/upload-artifact/releases/tag/v7.0.1<br>
+     https://github.com/actions/download-artifact/releases/tag/v8.0.1<br>
+     https://github.com/actions/dependency-review-action/releases/tag/v5.0.0
+
+72c. **Selected Action input and output contracts** — authoritative definitions
+     for checkout credential/history behavior, setup-node cache/registry
+     behavior, closed artefact upload/download and dependency-review policy.<br>
+     https://github.com/actions/checkout/blob/v7.0.1/README.md<br>
+     https://github.com/actions/setup-node/blob/v7.0.0/README.md<br>
+     https://github.com/actions/upload-artifact/blob/v7.0.1/action.yml<br>
+     https://github.com/actions/download-artifact/blob/v8.0.1/action.yml<br>
+     https://github.com/actions/dependency-review-action/blob/v5.0.0/README.md
+
+72d. **GitHub-hosted runner labels and mutable image identity** — explicit GA
+     OS-family/architecture labels, fresh hosted VMs, image-version visibility
+     and the regular preinstalled-software update process.<br>
+     https://docs.github.com/en/actions/reference/runners/github-hosted-runners<br>
+     https://docs.github.com/en/actions/concepts/runners/github-hosted-runners<br>
+     https://github.com/actions/runner-images
+
+72e. **GitHub shell and Playwright host guidance** — explicit shell invocation
+     semantics, Ubuntu 24.04 support, version-matched browser installation,
+     one-worker CI guidance and Linux WebKit's role.<br>
+     https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_iddefaultsrunshell<br>
+     https://playwright.dev/docs/intro<br>
+     https://playwright.dev/docs/ci<br>
+     https://playwright.dev/docs/browsers
+
+72f. **GitHub required-check, dependency, matrix and timeout semantics** —
+     required checks must report a successful conclusion; prerequisite results
+     can be inspected by an `always()` aggregate; matrix fail-fast is
+     configurable; and jobs/steps support explicit deadlines.<br>
+     https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks<br>
+     https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-jobs#defining-prerequisite-jobs<br>
+     https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/run-job-variations#handling-failures<br>
+     https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idtimeout-minutes
+
+72g. **GitHub concurrency/cancellation and npm read/staged-operation
+     controls** — workflow groups independently define running cancellation and
+     pending-queue behavior; npm exposes bounded fetch retry/timeouts; staged
+     publication separates candidate creation, inspection/download and
+     approval.<br>
+     https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency<br>
+     https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-cancellation<br>
+     https://docs.npmjs.com/using-npm/config/<br>
+     https://docs.npmjs.com/staged-publishing/
+
+72h. **GitHub public-fork execution, script-injection and secret-log guidance**
+     — public repositories can require every external contributor's workflow
+     run to receive maintainer approval; ordinary fork `pull_request` runs are
+     read-only and secretless; privileged execution of fetched fork code is
+     unsafe; untrusted contexts belong in data variables rather than generated
+     shell; and automatic masking is not guaranteed.<br>
+     https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository<br>
+     https://docs.github.com/en/actions/how-tos/manage-workflow-runs/approve-runs-from-forks<br>
+     https://docs.github.com/en/actions/reference/security/securely-using-pull_request_target<br>
+     https://docs.github.com/en/actions/concepts/security/script-injections<br>
+     https://docs.github.com/en/actions/reference/security/secure-use<br>
+     https://docs.github.com/en/actions/concepts/security/secrets
+
+72i. **GitHub manual-dispatch/environment identity and npm late-tag publication
+     guidance** — a manually dispatched workflow runs at its selected branch or
+     tag ref/commit; environment branch/tag restrictions match `GITHUB_REF`; npm
+     trusted publishers bind repository/workflow/environment and support manual
+     workflows; provenance exposes source commit/workflow; and a staged package
+     can be inspected, downloaded and rejected before interactive promotion.<br>
+     https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_dispatch<br>
+     https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments#deployment-branches-and-tags<br>
+     https://docs.npmjs.com/trusted-publishers/<br>
+     https://docs.npmjs.com/viewing-package-provenance/<br>
+     https://docs.npmjs.com/staged-publishing/<br>
+     https://docs.npmjs.com/cli/v11/commands/npm-stage/
+
+72j. **GitHub no-deployment environment gates and workflow-review evidence** —
+     every job referencing a required-reviewer environment waits before runner
+     allocation; `deployment: false` retains reviewer/wait protection without a
+     deployment object; an unapproved job fails after 30 days; and the read-only
+     workflow-run approvals endpoint exposes authenticated review history.<br>
+     https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow#using-environments-to-manually-trigger-workflow-jobs<br>
+     https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/control-deployments#using-environments-without-deployments<br>
+     https://docs.github.com/en/rest/actions/workflow-runs#get-the-review-history-for-a-workflow-run
+
+73. **npm deprecation and unpublish guidance** — exact-version warning messages
+    preserve installability, while unpublish is irreversible, can break
+    dependents and never frees the consumed coordinate.<br>
+    https://docs.npmjs.com/deprecating-and-undeprecating-packages-or-package-versions/<br>
+    https://docs.npmjs.com/policies/unpublish/
+
+74. **npm audit and GitHub dependency-review guidance** — full JSON reporting,
+    severity-based failure thresholds, production/development scope and
+    pull-request checks for introduced dependency risk.<br>
+    https://docs.npmjs.com/cli/v11/commands/npm-audit/<br>
+    https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/manage-your-dependency-security/configure-dependency-review-action
+
+75. **GitHub protected-environment review controls** — required human review,
+    optional prevention of initiator self-review, delayed secret access and
+    auditable deployment approval.<br>
+    https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments<br>
+    https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/review-deployments
+
+76. **GitHub signed-tag guidance** — SSH/GPG/S/MIME tag signing, local
+    cryptographic verification and GitHub's verified-tag status.<br>
+    https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-tags<br>
+    https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification
+
+77. **GitHub issue-form and pull-request-template guidance** — structured
+    contributor inputs, issue chooser configuration and default-branch template
+    placement.<br>
+    https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/about-issue-and-pull-request-templates
+
+78. **npm package metadata and `publishConfig` guidance** — `description` and
+    `keywords` support discovery; `funding` has an actionable `npm fund`
+    meaning; publish-time registry/access/tag configuration can defend the
+    intended channel; direct and staged publication accept explicit tags, and a
+    staged candidate's tag is immutable through approval.<br>
+    https://docs.npmjs.com/files/package.json/<br>
+    https://docs.npmjs.com/staged-publishing/<br>
+    https://docs.npmjs.com/cli/v11/commands/npm-stage/
+
+79. **GitHub Actions retention and immutable-release evidence guidance** —
+    public workflow artifacts/logs have bounded retention, whereas immutable
+    release assets and the automatic release attestation protect a durable
+    publication snapshot.<br>
+    https://docs.github.com/en/organizations/managing-organization-settings/configuring-the-retention-period-for-github-actions-artifacts-and-logs-in-your-organization<br>
+    https://docs.github.com/en/actions/concepts/workflows-and-actions/workflow-artifacts<br>
+    https://docs.github.com/en/code-security/concepts/supply-chain-security/immutable-releases<br>
+    https://docs.github.com/en/code-security/how-tos/secure-your-dependencies/verify-release-integrity
+
+80. **GitHub CodeQL default setup and merge protection guidance** — JavaScript
+    requires no special build configuration under default setup, and rulesets
+    can block missing/incomplete analysis or findings at configured severity.<br>
+    https://docs.github.com/en/code-security/how-tos/find-and-fix-code-vulnerabilities/configure-code-scanning/configure-code-scanning<br>
+    https://docs.github.com/en/code-security/concepts/code-scanning/merge-protection
+
+81. **GitHub secret scanning and push-protection guidance** — public-repository
+    detection, pre-push blocking, bypass evidence and required handling of real
+    exposed credentials.<br>
+    https://docs.github.com/en/code-security/concepts/secret-security/about-alerts<br>
+    https://docs.github.com/en/code-security/concepts/secret-security/push-protection
+
+82. **Node.js package entry-point guidance** — `exports` is the recommended
+    modern entry authority for supported Node versions, explicitly encapsulates
+    unlisted subpaths and takes precedence over the older `main` fallback.<br>
+    https://nodejs.org/api/packages.html#package-entry-points
+
+83. **webpack package-side-effect guidance** — `sideEffects: false` permits
+    whole unused module subtrees to be removed and is unsafe when import-time
+    initialization is actually required.<br>
+    https://webpack.js.org/guides/tree-shaking/#mark-the-file-as-side-effect-free
+
+84. **npm `devEngines` guidance** — source-repository runtime/package-manager
+    checks run before npm install/CI/run operations and are distinct from the
+    package-consumer `engines` contract.<br>
+    https://docs.npmjs.com/files/package.json/#devengines
+
+84a. **Node.js release archives** — authoritative release identities and
+     signed checksum material for the exact blocking `22.23.2` and `24.19.0`
+     workflow runtimes.<br>
+     https://nodejs.org/download/release/v22.23.2/<br>
+     https://nodejs.org/download/release/v24.19.0/
+
+84b. **npm `12.0.2` registry record** — exact package-manager release selected
+     for `devEngines`, lockfile generation and every npm CI/release operation.<br>
+     https://registry.npmjs.org/npm/12.0.2
+
+85. **JSPM Generator 2.16.3 documentation** — exact import-map generation,
+    local linking, provider/environment selection and integrity-bearing map
+    output.<br>
+    https://registry.npmjs.org/@jspm/generator/2.16.3<br>
+    https://jspm.org/docs/generator/<br>
+    https://jspm.org/docs/generator/interfaces/GeneratorOptions.html
+
+86. **CycloneDX npm SBOM generator 6.0.1** — installed npm-graph collection,
+    production omission, CycloneDX 1.6 JSON, reproducible output, validation,
+    library-root options and external-subject invocation used by the separated
+    tool/subject release gate.<br>
+    https://registry.npmjs.org/@cyclonedx/cyclonedx-npm/6.0.1<br>
+    https://github.com/CycloneDX/cyclonedx-node-npm
+
+87. **JSON Schema Draft 2020-12, Ajv 8.20.0 and `ajv-formats` 3.0.1** —
+    versioned schema vocabulary, the dedicated Ajv Draft 2020-12 validator mode
+    and explicit standard URI/date-time format implementations for repository/
+    release evidence.<br>
+    https://json-schema.org/draft/2020-12<br>
+    https://ajv.js.org/json-schema.html<br>
+    https://ajv.js.org/guide/formats.html<br>
+    https://registry.npmjs.org/ajv/8.20.0<br>
+    https://registry.npmjs.org/ajv-formats/3.0.1
+
+88. **npm lockfile and published dependency-resolution guidance** — repository
+    `package-lock.json` files describe a repeatable source/CI tree, cannot be
+    published and are ignored below the consumer root; publishable
+    `npm-shrinkwrap.json` files can define the dependency tree from the point
+    encountered, but npm does not recommend them for reusable libraries.<br>
+    https://docs.npmjs.com/cli/v11/configuring-npm/package-lock-json/<br>
+    https://docs.npmjs.com/cli/v11/configuring-npm/npm-shrinkwrap-json/
+
+89. **npm dependency-field guidance** — ordinary, peer, optional, bundled and
+    override dependencies have distinct consumer-resolution semantics; root
+    overrides are not a reusable installed-package policy substitute.<br>
+    https://docs.npmjs.com/files/package.json/#dependencies
+
+90. **publint package/tarball validation** — `0.3.24` is the present exact
+    baseline; direct tarball input, strict warning handling and resolver/
+    metadata/file-publication rules are used as the independent package-lint
+    gate.<br>
+    https://registry.npmjs.org/publint/0.3.24<br>
+    https://publint.dev/docs/cli<br>
+    https://publint.dev/rules
+
+90a. **`semver` 7.8.5** — exact SemVer parsing/range/prerelease authority used
+     by the version/channel gate rather than project-owned approximation.<br>
+     https://registry.npmjs.org/semver/7.8.5<br>
+     https://github.com/npm/node-semver
+
+90b. **Playwright Test 1.62.1 and managed browsers** — exact test package plus
+     its coupled Chromium, Firefox and WebKit installation/execution model used
+     by the blocking browser evidence matrix.<br>
+     https://registry.npmjs.org/@playwright/test/1.62.1<br>
+     https://playwright.dev/docs/browsers
+
+90c. **Vite 8.2.2** — exact standalone browser/worker consumer-fixture bundler;
+     WebVOWL's independent lockfile remains a separate consumer authority.<br>
+     https://registry.npmjs.org/vite/8.2.2<br>
+     https://vite.dev/guide/
+
+91. **SPDX licence-information guidance** — standardized identifiers,
+    expressions, canonical licence identities and the distinction between
+    licensing information and copyright notices.<br>
+    https://spdx.dev/learn/handling-license-info/
+
+92. **REUSE Specification 3.3** — distribution/file-oriented preservation of
+    licensing information and corresponding licence material.<br>
+    https://reuse.software/spec/
+
+93. **npm provenance and signature verification** — provenance/publish
+    attestations, Sigstore transparency evidence and the attestation-bearing
+    `npm audit signatures --json --include-attestations` result.<br>
+    https://docs.npmjs.com/generating-provenance-statements/<br>
+    https://docs.npmjs.com/cli/v11/commands/npm-audit/#audit-signatures
+
+94. **GitHub immutable-release and GitHub CLI 2.98.0 verification guidance** —
+    automatic tag/commit/asset release attestations plus the exact checksummed
+    CLI providing separate `gh release verify` and `gh release verify-asset`
+    commands.<br>
+    https://docs.github.com/en/code-security/concepts/supply-chain-security/immutable-releases<br>
+    https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/verify-release-integrity<br>
+    https://github.com/cli/cli/releases/tag/v2.98.0
 
 ---
 
@@ -5031,7 +13696,95 @@ The final architectural rules are:
 
 > **The complete finite v1 ontology-ingestion programme is WIP-locked to one major migration at a time. Every completed parser/adapter/ingestion-hardening phase verifies, integrates, learns, institutionalizes and hands off before the next begins. There is no later parallel parser-migration mode.**
 
-> **Implementation discretion is constrained by modern JavaScript engineering best practice, the repository's engineering standards and the normative logical/module boundaries in this plan. `owlapi-js` v1 remains native ESM JavaScript with no TypeScript/`tsc`/`checkJs` requirement.**
+> **Implementation discretion is constrained by modern JavaScript engineering best practice, the repository's engineering standards and the normative logical/module boundaries in this plan. The initial `owlapi` release line remains native ESM JavaScript with no TypeScript/`tsc`/`checkJs` requirement.**
+
+> **The canonical repository root is also the package root: the retained tarball installs one readable native-ESM production tree directly, with no duplicate `src/`→`dist/` build, generated/minified code, source maps or automatic install/pack/publish hooks. It ships the version-matched README, exhaustive API reference, human changelog, licence, notice and compatibility registries, but no official TypeScript declarations or `types`/`typings` claim for `0.1.0-alpha.0` or `1.0.1`.**
+
+> **One unconditional `exports` map is the sole package-entry authority: `.`, `./apibinding`, `./model`, `./io` and `./formats` point directly to their canonical `index.js` modules. There is no `main`, `module`, `browser`, condition, wildcard, extension alias, `./package.json` export or deep-path escape hatch. Root/subpath re-exports preserve binding identity and every representative alternate spelling fails.**
+
+> **Every package-owned production module is pure on import and the manifest therefore requires `sideEffects: false`. Fresh-process instrumentation and optimized used/unused consumer builds prove that import performs no registration, I/O or global mutation and that tree shaking preserves required behaviour. A failure is corrected in source rather than hidden by weakening the metadata.**
+
+> **The first stable environment contract is explicit: `engines.node` is `^22.0.0 || ^24.0.0`; Phase 19 fixes blocking Node `22.23.2` and `24.19.0`, with `24.19.0` alone producing releases; and Node 26 remains a non-blocking Current probe until its LTS promotion and separately approved matrix expansion. Alpha tracks moving `baseline widely available`; stable `1.0.1` freezes the 1.x feature ceiling to the actual dated Baseline query with its resolved data inputs. Package source is neither transpiled nor polyfilled.**
+
+> **Repository tooling uses npm-native `devEngines`: runtime name `node`, package-manager name `npm`, exact version `12.0.2` and `onFail: error`. npm `12.0.2` creates the lockfile and runs every CI/release npm operation. Every npm development tool is exact in the manifest, installed by lockfile-backed `npm ci` and invoked through a named local `npm run` script; remote `npx`, `npm exec --package`, global development tools and runner-preinstalled release tools are forbidden. `engines.npm`, top-level `packageManager`, Corepack and floating CLI tags are absent because npm tool identity is not a consumer-runtime promise or a second package-manager authority.**
+
+> **Browser bundlers and native document ESM with an application-owned import map are complementary supported paths over the same five public exports. Exact `@jspm/generator@2.16.3` uses `jspm.io`, `production`/`browser`/`module` and integrity metadata to generate the version-pinned reference; public URLs are verified and an untransformed integrity-checked local mirror executes OWL-native, RDF/XML, Turtle and JSON-LD paths through exact `@playwright/test@1.62.1` and its managed Chromium, Firefox and WebKit revisions. Exact `vite@8.2.2` builds the package's bundler/worker fixtures, while WebVOWL retains its independently accepted lockfile toolchain. The provider remains replaceable reference infrastructure, not package runtime. Import maps do not apply to workers; bundled dedicated-worker ingestion is a separate required path. No `es-module-shims`, CommonJS, IIFE, universal package-owned map, environment-conditioned export or turnkey CDN build is introduced.**
+
+> **npm is the authoritative install, lock, audit, pack, publish and provenance workflow. Yarn and pnpm are `PLAUSIBLE_UNVERIFIED` while genuine package-metadata defects they expose remain actionable. Bun, Deno, Cloudflare Workers, React Native, Electron-specific integration and CommonJS are `OUT_OF_SCOPE` for `1.0.1`; the README distinguishes those statuses from the exact `SUPPORTED` Node, browser-document and bundled-dedicated-worker paths.**
+
+> **The six exact runtime packages remain ordinary library `dependencies`. `package-lock.json` governs source/CI/release construction but is not published; no shrinkwrap, bundled, peer, optional or override dependency authority enters the manifest/tarball. Every candidate records both its locked SBOM graph and a cache-empty lockless consumer resolution, while a read-only weekly `owlapi@latest` monitor detects later transitive drift without changing source, tags or releases.**
+
+> **Exact-pinned `publint@0.3.24` is the present independent package-lint baseline; a later exact version is permitted only after the same tool-update review, never through a floating range or tag. It checks the retained and registry-downloaded tarballs in strict mode. Project-specific export, packlist, identity, semantic and browser gates remain authoritative for deliberate `owlapi` contracts; only an exact-tool/rule/version, evidence-backed, expiring warning exception may qualify a generic lint disagreement.**
+
+> **The public package is the unscoped npm package `owlapi`. Its intended first release is the useful, retained `owlapi@0.1.0-alpha.0` prerelease under `next`, published from one reviewed and consumer-tested tarball. The seven exact coordinates in the unrelated fully unpublished history are never reused. Stable `1.0.1` is the documented normal first Hadden Industries release—not a patch of the former `1.0.0`—and `latest` remains unset until its separately accepted stable gate. Solely if §2.60 requires an immutable post-tag/prepublication abandonment, the next prerelease or same-surface stable patch becomes the first public release at that level; otherwise compatible fixes begin at `1.0.2`, the first later feature minor is `1.4.0`, and a future breaking 2.x line begins at `2.0.2`.**
+
+> **Distribution tags name active channels rather than preserve history. Alpha and release candidates use `next`; stable `1.0.1` first establishes `latest`; after stable verification, the obsolete `next` pointer is removed rather than left on an older RC or duplicated onto stable. Every tag change is separately authorized, recorded and verified, and `next` returns only with a genuine newer prerelease. Only the bad-release procedure may later move or remove `latest` to contain a defective stable.**
+
+> **The reviewed manifest and registry operation redundantly name the same SemVer-derived channel. Every prerelease has `publishConfig.tag=next` and an explicit `--tag next`; every accepted stable has `publishConfig.tag=latest` and an explicit `--tag latest`. Any disagreement among version, manifest, `npm-release` environment request, command or observed registry state blocks publication.**
+
+> **npm discovery metadata is precise and stable: the package describes OWL 2 ontology parsing and structural APIs for Node.js/browsers with practical Java OWLAPI conceptual compatibility, and uses the approved OWL/ontology/RDF-focused keywords. It does not claim a reasoner, knowledge-graph platform or WebVOWL-specific identity, and does not fill `funding`, contributor, maintainer or author-email fields without a real semantic purpose.**
+
+> **At `1.0.1`, the five public specifiers, registry-classified bindings, documented call/structural/error contracts and declared semantic capabilities become the protected 1.x surface. Unexported paths, dependencies and incidental representations do not. Deprecations remain operational and silent throughout 1.x; controlled corrections are patches only when they restore rather than contradict the documented contract, compatible additions are minor, and incompatible protected-surface changes wait for `2.0.2`.**
+
+> **Before stable `1.0.1`, a dated bounded audit classifies historical exact, lockfile/tarball, SemVer-range and unrelated references to `owlapi`. The project knowingly accepts the residual possibility that dormant compatible 1.x ranges could resolve the new stable package, but any current published or maintained consumer with such a range blocks publication for a separately approved version decision; `3.0.0` remains the conservative fallback, not the default.**
+
+> **The sole canonical source and release repository is the independent public `Hadden-Industries/owlapi` repository. It is not a GitHub fork or mirror of WebVOWL. Its relevant lineage is preserved through a reviewed migration-only history extraction using digest-recorded `git-filter-repo@2.47.0`, a complete original-to-rewritten commit map and file-hash evidence; unrelated UI/UX work is reconstructed separately in `Hadden-Industries/webvowl`.**
+
+> **That repository uses one protected `main` trunk, short-lived pull requests and squash-only curated commits. Required checks, resolved conversations, linear history, `MaksymShostak` administrator coverage and a narrow auditable bypass apply immediately; no second-person approval is required anywhere in this implementation plan. A future independent-review rule requires a separately approved post-plan governance/configuration change. A separate `v*` ruleset makes release tags immutable, while SSH-signed annotated release tags—not a blanket signed-commit rule—anchor release source.**
+
+> **Every public version is human-authored in a dedicated release pull request that reconciles the exact version, changelog, API, compatibility metadata and evidence. Release automation verifies the accepted squash commit, creates no tracked change/commit/tag or improvised notes, and manually dispatches one retained-artefact chain at that protected-`main` commit. It completes all deterministic gates—and steady-state stage/download byte proof—before the human creates the canonical SSH-signed tag, then verifies that tag before draft/public promotion. Heavy release-authoring frameworks and mandatory Conventional Commits are deferred until actual release volume justifies them.**
+
+> **GitHub Actions uses exactly four trust-separated workflow files: read-only `ci.yml`, protected-`main` manually dispatched late-tag `release.yml`, `maintenance.yml` and non-blocking `extended-tests.yml`. Each denies token authority at its root and grants only job-minimal permissions. One serialized, non-cancelling, cache-free `release.yml` run owns the complete retained candidate; npm OIDC, no-authority `release-manual` review jobs, GitHub-release writes and maintenance issue writes remain separate. Privileged `pull_request_target`/`workflow_run`, cross-workflow candidate promotion, runner-based human-wait polling, external reusable workflows, floating Actions and unselected Action repositories are forbidden.**
+
+> **Exactly five GitHub-maintained Action releases are executable, each by the §2.56 full SHA with its reviewed tag beside it: checkout v7.0.1, setup-node v7.0.0, upload-artifact v7.0.1, download-artifact v8.0.1 and dependency-review-action v5.0.0. Checkout never persists credentials; setup-node uses literal Node patches with both implicit and explicit dependency caching disabled; steady OIDC publication performs no checkout and receives no registry/token setup; the three-file candidate is uploaded once, recorded and downloaded by immutable artefact ID with closed inventory and independent hashes; dependency review is read-only and blocks only introduced high/critical runtime vulnerabilities. Cache, script, publish, release, SBOM, provenance and attestation wrapper Actions are absent. An update proposal must revalidate the tag-to-SHA mapping and every relevant runtime/default/input/output/permission behavior, never merely replace a hash.**
+
+> **Required automation uses only explicit GA `ubuntu-24.04` x64, `windows-2025` x64 and `macos-15` arm64 hosted labels. Ubuntu alone builds and publishes; its complete Node 22/24 suite is joined by four blocking Windows/macOS installed-tarball lanes and three separate one-worker, cache-free Ubuntu Playwright-engine jobs. Linux/macOS use explicit Bash, Windows uses PowerShell Core, and substantive policy stays in cross-platform `.mjs` scripts. Each job validates and records the requested label, OS/architecture, mutable GitHub image version, OS/kernel and actual runtime/browser identities. Moving/latest, preview, slim, larger, self-hosted and container runners are absent, as is every runner-preinstalled release tool.**
+
+> **Automation fails closed through two governance-verified stable aggregates: the GitHub-Actions-owned `CI / required` check plus separate CodeQL protects `main`, and the protected npm job directly needs `Release / qualified`. Every required matrix uses `fail-fast: false` without allow-failure or swallowed status; every job/critical step has its exact timeout; release concurrency is non-cancelling `queue: max`, while CI cancels only superseded work and observational schedules coalesce only pending runs. Bounded retries apply solely to classified idempotent reads. Every npm/GitHub/issue/Git-ref write receives one automatic attempt; an ambiguous response is reconciled read-only against exact remote identity and digest, and any genuinely new mutation requires renewed explicit authorization.**
+
+> **Every external contributor's fork-workflow run requires per-run maintainer approval after inspection of all executable inputs, but that click authorizes only unprivileged compute. External and Dependabot code runs solely through read-only, no-secret/no-OIDC/no-environment `pull_request` CI; its candidate is quarantined to unprivileged jobs in that same run and can never enter release. Contributor/external strings are validated as data rather than interpolated into shell or written raw to workflow-command files. Credential jobs prohibit context dumps, tracing and authentication debug output; automatic masking is defense in depth, and suspected exposure triggers immediate revoke/rotate and sanitized incident handling.**
+
+> **Every public version is one retained GitHub-Actions-built tarball plus a validated reproducible CycloneDX 1.6 JSON library SBOM and an exact sorted two-entry `SHA256SUMS`. Exact `@cyclonedx/cyclonedx-npm@6.0.1` runs from a full tool workspace against a separate production-only subject workspace; independent npm/lockfile/pack inventories confirm its unflattened/full-PURL graph. The same tarball passes exact Node, `@playwright/test@1.62.1` Chromium/Firefox/WebKit and independently tooled WebVOWL consumer gates, is published to npm with provenance, is re-downloaded and verified from a fresh cache, and only then joins a machine-readable release-evidence manifest in the published immutable GitHub release. Exact `ajv@8.20.0` plus `ajv-formats@3.0.1` validates every evidence family; exact npm attestation JSON proves the root coordinate's signature, subject, repository/workflow and transparency identity; and checksum-verified GitHub CLI `2.98.0` verifies the immutable release plus each of four freshly downloaded assets and the independent signed tag. A repository-only append-only record preserves those identities and later dated extended evidence; 90-day Actions logs/artifacts are diagnostic, not canonical, and immutable release attestation replaces a redundant detached evidence signature. The bootstrap alpha uses a one-day, single-attempt, immediately revoked granular token with its real effective scope recorded. Subsequent releases use stage-only OIDC: npm's staged tarball is downloaded and required to match the retained SHA-256 before interactive approval, automatic provenance replaces an explicit provenance flag, traditional token publishing is disabled, and no redundant attestation step is added.**
+
+> **The named `maksymshostak` npm account performs the unscoped-coordinate bootstrap and remains the sole natural-person npm custodian required through this implementation plan. The project then empirically tests `@hadden-industries:owlapi-maintainers` team access and records rather than assumes the result, but does not misrepresent a one-person team as human redundancy. Shared npm logins are prohibited; subsequent publication is limited to the exact `Hadden-Industries/owlapi`/`.github/workflows/release.yml`/`npm-release` stage-only OIDC trusted publisher with traditional publication tokens disabled. The bootstrap token and secret are revoked/deleted and the dead workflow branch is removed before that transition. Every staged candidate is identified, inspected, downloaded, revalidated and matched byte-for-byte to the retained tarball before Maksym Shostak approves that exact stage with interactive 2FA. The plan knowingly accepts sole-custodian availability and recovery risk; adding another human custodian is post-plan governance.**
+
+> **All six semantic runtime foundations are exact-pinned in the initial manifest and source lockfile: `@rdfjs/data-model@2.1.2`, `@rdfjs/dataset@2.0.3`, `@xmldom/xmldom@0.9.12`, `jsonld@9.0.0`, `n3@2.3.0` and `rdfxml-streaming-parser@3.3.0`. The three advances from the earlier staging pins were qualified together in WebVOWL on 24 August 2026 through one explicitly approved combined gate that retained dependency-specific evidence; Phase 19 carries that proven baseline forward. Dependabot supplies weekly and security proposals, not auto-merges: every later foundational runtime update is isolated and fully gated, compatible development tooling may be grouped, major tooling and full-SHA Action updates remain separately reviewable, and no parallel Renovate authority is introduced.**
+
+> **Every candidate retains a full dependency-graph audit and passes the high/critical production threshold; pull requests receive the exact §2.56 full-SHA dependency-review Action with runtime scope, high severity, read-only/no-comment policy and no Action-level licence gate. Reachable critical findings cannot be waived, false-positive/non-applicability exceptions are machine-readable and expire within 30 days, release-path development findings block, and no automatic audit fix mutates reviewed inputs.**
+
+> **The public repository enables CodeQL JavaScript default setup/default queries, requires complete high/critical code-scanning results on `main`, and separately retains dependency review. Secret scanning and push protection prevent supported credentials entering public history; a real exposure is rotated/revoked as an incident. Source-analysis exceptions are distinct, machine-readable and expire within 30 days, while reachable critical findings have no ordinary waiver.**
+
+> **A bad public release is contained without rewriting history: deprecate its exact coordinate, roll back or remove its active distribution tag, and publish a fully gated corrective version. Unpublish is reserved for separately authorized confidentiality, malware, legal or registry-directed incidents. `1.0.1` remains the normal required first stable; only §2.60's extraordinary immutable post-tag/prepublication abandonment may make `1.0.2` the first stable, while only a mandatory post-publication failure may make the first corrective patch the production-verified cutover consumed by WebVOWL.**
+
+> **The protected `npm-release` environment permits only protected `main`, because the manually dispatched run precedes the canonical tag, and always requires explicit human approval of the exact registry operation. The separate `release-manual` environment also permits only protected `main`, but has no secret, variable, custom rule, OIDC or write authority and is always referenced with `deployment: false`: it admits `Release / tag accepted` after human tag creation and, for staged publication, `Release / publication confirmed` after interactive 2FA promotion. The initiating named custodian may approve all three human boundaries during this programme; authenticated review history is retained, no runner polls while waiting, and prevent-self-review/independent deployment approval remain deliberately unnecessary until a separately approved threat-model change.**
+
+> **Release tags use SSH and a repository-only versioned authorized-signer registry. The workflow verifies the annotated tag locally, its already-admitted signer, exact protected-`main` target and GitHub verification result. Human private keys never enter CI; OIDC publication authority remains a distinct control.**
+
+> **Ordinary public intake uses GitHub Issues with six structured forms and an engineering-focused pull-request template. Blank issues and Discussions are disabled, no generic support mailbox is created, security and conduct retain their private role addresses, and `CODEOWNERS` waits for genuine ownership/review routing.**
+
+> **`owlapi` is zero-telemetry: installation, import, manager creation, local parsing and diagnostics make no outbound request or automatic report. Only explicitly enabled ontology-import or JSON-LD-context resolution may retrieve a caller-requested document through the bounded loader/security policy. The installed dependency closure is tested so a transitive package cannot silently weaken that promise.**
+
+> **Security reports use GitHub private vulnerability reporting first and `security@haddenindustries.com` second, never a public issue or the conduct channel. The project aims to acknowledge reports within five working days without offering an SLA, supports only the current `next` prerelease before stable and the latest stable 1.x afterward, and preserves every release-integrity gate for security fixes.**
+
+> **Contributor Covenant 3.0 governs repository conduct separately from contribution licensing and vulnerability disclosure. Maksym Shostak is the sole HADDEN INDUSTRIES LTD-appointed moderator required by this plan; reports go privately to `conduct@haddenindustries.com`, he may not adjudicate a report in which he is materially conflicted, and the policy honestly discloses that any independent substitute requires separately governed post-plan appointment. A second moderator is not a publication gate, and the repository-only Code of Conduct is excluded from the npm tarball.**
+
+> **`owlapi` is licensed under `AGPL-3.0-only` to require strong, network-aware source reciprocity. The choice is deliberate rather than inherited from avoidable implementation provenance; WebVOWL remains AGPL-3.0-only while package and application licensing scopes are documented separately. Any future more-permissive release requires demonstrable authority over every included contribution and does not revoke rights in earlier AGPL releases.**
+
+> **A schema-validated, human-reviewed third-party-material registry records the exact production graph, release-relevant development material, copied/generated third-party files, inspected licence/notice-file hashes, SPDX expressions, relationships and distribution scopes. The package `NOTICE` covers material actually distributed in the `owlapi` tarball and identifies ordinary external dependency boundaries; WebVOWL separately reconciles the code physically embedded into its emitted application bundle and preserves that distribution's applicable notices.**
+
+> **Maksym Shostak retains personal copyright in his existing `owlapi` contributions and is identified as their owner until any optional written assignment actually takes effect. HADDEN INDUSTRIES LTD, registered in England and Wales under company number 07862561, is identified separately as project steward. Assignment and private estate planning are not alpha, stable-release or plan-completion gates. This plan requires accurate tarball-scoped rights evidence and verified sole `MaksymShostak`/`maksymshostak` operational authority, explicitly accepts the resulting single-person availability/recovery risk, and does not claim that company stewardship supplies human account continuity.**
+
+> **The initial outside-contribution model is `AGPL-3.0-only` inbound=outbound with contributor-retained copyright. Phase 19 publishes that policy but does not create speculative CLA administration before an external copyrightable contribution exists. Before the first such contribution is merged, the project must separately approve either continued pure inbound=outbound—accepting contributor-by-contributor consent for later permissive relicensing—or a reviewed contributor-retained CLA that grants the selected additional authority before merge.**
+
+> **`0.1.0-alpha.0` is the intended package of the accepted Phase 18 capability surface; Phase 19 does not absorb new semantic APIs. Phase 20 stabilizes that same capability family, verifies a `1.0.1` release candidate and normally publishes stable `1.0.1`; WebVOWL normally consumes that exact version, while only §2.60's prepublication immutable-tag contingency or an activated §2.33 bad-release branch permits the applicable same-surface patch to become its production cutover. Imports-closure queries, mutation, merger, saving, Functional Syntax storage and RDF/XML storage belong to the separate post-1.0 capability plan and target a later feature release.**
+
+> **Complete W3C result ledgers, EARL generation, layered-implementation eligibility consultation and optional upstream implementation-report submissions belong to the separate `w3c-test-conformance-reporting-implementation-plan.md`. That programme begins only after this plan completes and no response, submission, merge or publication under it gates `owlapi@1.0.1` or WebVOWL's registry-package cutover.**
+
+> **The package README explains why `owlapi` was built: no evaluated adjacent implementation satisfied the complete JavaScript/browser, structural-OWL, syntax/mapping and OWL2VOWL access requirements, while the difficult work extended well beyond raw RDF parsing. It also states the independent Java OWLAPI relationship and the alpha's exact limits.**
+
+> **The Public API Surface Registry is the release-versioned Java compatibility and gap authority. Except for the bare aggregate, every public npm subpath maps exactly to an approved `org.semanticweb.owlapi` package; a Java package's existence is necessary but does not itself authorize exposure. Public bindings have one canonical definition in the matching Java-shaped namespace. Private engines use cohesive JavaScript-oriented `internal/` ownership and are never duplicated into a mirrored public-package tree.**
+
+> **WebVOWL is a required first-party consumer of `owlapi`: its production code, tests and builds use an exact npm-registry dependency and only the applicable declared `owlapi`, `owlapi/apibinding`, `owlapi/model`, `owlapi/io` and `owlapi/formats` package specifiers. RDF translators/factories are internal. Relative source-tree imports, workspaces/local dependencies, `owlapi/rdf`, unexported deep imports and resolver aliases that bypass package `exports` are forbidden.**
 
 The normative delivery sequence is:
 
@@ -5068,7 +13821,53 @@ shared OWL→RDF
    ↓
 original KRSS/KRSS1
    ↓ final ingestion learning gate
-physical legacy deletion → release
+physical legacy deletion
+   ↓ history partition / canonical repository gate
+independent Hadden-Industries/owlapi extraction
+   ↓ protected main/v* rulesets + Issues + CodeQL/secret protection + exact ordinary dependencies/tooling/Dependabot/audit
+four-workflow trust split + root-denied/job-minimal permissions + exact five-Action SHA/input allowlist + explicit hosted-OS/shell/image-evidence matrix
+   ↓ stable CI/release aggregates + complete required conclusions + exact timeouts/concurrency queues + read-only retry/single-write reconciliation policy
+   ↓ all-external fork-run approval + no-secret/read-only PR execution + same-run artefact quarantine + validated workflow data/log hygiene
+dedicated alpha release PR → accepted squash commit
+   ↓ manual release.yml dispatch at captured protected-main head
+exact exports/sideEffects/devEngines + publishConfig/next agreement + retained tarball/CycloneDX-1.6/exact checksums
+required Node/Chromium/Firefox/WebKit + JSPM local mirror + locked/lockless graphs + strict publint + material/NOTICE + import-purity/zero-telemetry + isolated WebVOWL candidate gate
+   ↓ separately SSH-signed v0.1.0-alpha.0 tag → release-manual tag acceptance → same-run verification → draft release
+   ↓ explicit self-approvable protected npm publication authorization
+owlapi@0.1.0-alpha.0 under next
+   ↓ exact npm root-attestation + fresh-registry verification + Draft 2020-12/Ajv release evidence + per-asset immutable GitHub release verification
+exact public-registry WebVOWL consumer cutover
+remove WebVOWL package staging tree
+   ↓ WebVOWL deployed-bundle third-party-material/notice reconciliation
+   ↓ public API inventory / stability corrections
+dedicated owlapi@1.0.1-rc.N release PR → protected-main dispatch → exact package/tooling/dependency/material/integrity contract + publishConfig/next + retained tarball
+   ↓ stage-only OIDC under next → stage ID/view/download → retained/staged SHA-256 equality
+   ↓ separately signed canonical RC tag → release-manual tag acceptance → same-run verification/draft
+   ↓ interactive 2FA approval → release-manual publication confirmation
+public owlapi@1.0.1-rc.N → fresh-registry + public-registry WebVOWL candidate gate
+   ↓ accepted candidate / stable release PR / stable artefact authorization
+protected-main dispatch → retained owlapi@1.0.1 tarball with publishConfig/latest
+   ↓ stage-only OIDC under latest → stage ID/view/download → retained/staged SHA-256 equality
+   ↓ separately signed v1.0.1 → release-manual tag acceptance → same-run verification/draft
+   ├── deterministic correction now required before npm promotion
+   │      ↓ reject stage + preserve tag/failed-attempt record + full 1.0.2 gate
+   │   public owlapi@1.0.2 under latest as first stable/cutover → fresh-cache verification
+   └── unchanged retained candidate → interactive 2FA approval → release-manual publication confirmation → public owlapi@1.0.1 under latest → fresh-cache verification
+   ├── mandatory post-publication checks pass
+   │      ↓ remove stale next tag / exact accepted-stable WebVOWL dependency
+   └── mandatory post-publication check fails
+          ↓ remove latest + deprecate accepted stable + full corrective-patch release gate
+       first accepted corrective patch under latest / exact WebVOWL dependency
+   ↓ package-only WebVOWL dependency cleanup
+current implementation plan complete
+
+   ├── separate W3C test-suite conformance-reporting plan
+   │      ↓ versioned result ledgers / EARL / optional upstream submissions
+   │   locally published post-release evidence
+   │
+   └── separate post-1.0 capability plan
+          ↓ imports-closure query / mutation / merger / Functional + RDF/XML storage
+       later compatible feature release
 ```
 
 KRSS1 and KRSS2 are distinct required parser/format surfaces implemented through separate adapters over only genuinely shared KRSS machinery. Phase 17 completes original KRSS/KRSS1 and records that no qualifying public first-party historical KRSS1/KRSS2 corpus was verified. N3.js is the selected parser library for the four standard RDF syntaxes above; each has an independent strict descriptor and phase, while broader N3-language ingestion is independently `DEFERRED`.
@@ -5079,7 +13878,7 @@ Concretely:
 
 ```text
                      ┌──────────────────────────┐
-                     │        owlapi-js         │
+                     │          owlapi          │
                      │                          │
 OWL/XML ─────────────►│                          │
 Functional ──────────►│  OWL structural model   │◄─────────┐
@@ -5124,7 +13923,20 @@ This architecture and delivery contract provides:
 - selected but replaceable standards-parser dependencies;
 - Java OWLAPI behavioural compatibility without source transliteration;
 - explicit provenance dispositions;
+- independently governed canonical package source with traceable migration-only
+  history and no duplicated maintained WebVOWL tree;
 - modern native-JavaScript engineering without TypeScript tooling;
+- continuous first-party verification of the public package boundary by
+  WebVOWL itself;
+- immutable bad-release recovery, severity/reachability-aware dependency gates,
+  explicit human publication approval, governed SSH release signing and
+  structured public intake;
+- version/channel-consistent and honestly discoverable package metadata,
+  durable release-evidence manifests, CodeQL/secret protection and a tested
+  zero-telemetry contract;
+- a sole explicit entry-point map, verified import purity, exact npm source
+  tooling, integrity-mirrored reference import maps, independently reconciled
+  CycloneDX 1.6 SBOMs and Draft 2020-12-validated evidence; and
 - cumulative sequential migration learning with deterministic handoff.
 
-Most importantly, it makes `owlapi-js` a genuine **OWL abstraction**, not merely a relocated collection of format converters.
+Most importantly, it makes `owlapi` a genuine **OWL abstraction**, not merely a relocated collection of format converters.

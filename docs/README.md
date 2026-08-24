@@ -1,8 +1,11 @@
 # owlapi-js migration
 
 This directory contains the executable governance and delivery records for the
-`owlapi-js` extraction described by `docs/owlapi-js/implementation-plan.md`.
-The implementation plan remains the highest-authority normative document.
+`owlapi-js` migration described by `docs/owlapi-js/implementation-plan.md`.
+`owlapi-js` remains the historical WebVOWL staging/path name; the final public
+npm package is `owlapi`, maintained only in
+`https://github.com/Hadden-Industries/owlapi` after extraction. The
+implementation plan remains the highest-authority normative document.
 
 Authoritative machine-readable records:
 
@@ -23,6 +26,15 @@ Authoritative machine-readable records:
   and controlled KRSS1 compatibility decisions.
 - `compatibility/expected-differences.json`: exact Java/JavaScript differential exceptions.
 - `dependency-governance.json`: selected dependency authority, risk, licence, and replacement records.
+- `post-1.0-capability-implementation-plan.md`: the separate imports-closure,
+  mutation, merger, and storage feature programme that begins only after the
+  verified public `owlapi@1.0.1` release.
+- `w3c-test-conformance-reporting-implementation-plan.md`: the independent
+  post-release programme for complete versioned W3C result ledgers, EARL
+  generation, and appropriately disclosed upstream implementation-report
+  submissions; it is not a gate for `owlapi@1.0.1` or WebVOWL's package cutover.
+- `compatibility/standalone-import-closure-prerequisites.md`: the bounded
+  Java-compatible library surface required by the external consumer contract.
 
 Repository implementation conventions are frozen in `engineering-conventions.md`.
 The isolated Java structural reference harness lives under
@@ -96,6 +108,18 @@ legacy-only executable differentials. The production corpus gate, pinned Java
 OWL2VOWL fixtures, and all current `owlapi-js` parser evidence remain. Provenance
 schema v4 retains deleted-artifact history and approved revision-bounded reuse
 decisions while distinguishing them from the live source inventory.
+
+Phase 19 extracts the accepted Phase 18 source into the sole canonical
+`Hadden-Industries/owlapi` repository and publishes the useful
+`0.1.0-alpha.0` artefact under `next`; Phase 20 stabilizes the same capability
+family as `1.0.1` and proves WebVOWL consumes that exact public npm package.
+The Public API Surface Registry created during extraction is the package/type
+gap map against pinned Java OWLAPI. Except for the curated bare `owlapi`
+aggregate, every public npm subpath must map exactly to a separately approved
+`org.semanticweb.owlapi` package. Each public binding has one canonical
+definition in that Java-shaped source namespace, while private engines use
+cohesive, non-mirrored `internal/` directories. The staging RDF barrel is not a
+published `owlapi/rdf` API.
 
 ADR 0002 prioritizes the shared RDF-to-OWL foundation, RDF/XML, early
 development-app integration, production cutover, and strict Turtle before the

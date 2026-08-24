@@ -5,10 +5,10 @@
 - Migration: Phase 18 - physical legacy deletion.
 - Baseline revision: `f91ca99deeba3ebad422259ef5514f031477771d`, the
   signed Phase 17 checkpoint.
-- Completion revision: the requested Phase 18 checkpoint commit containing
-  this record; its ID is intentionally unknown at the review pause.
+- Completion revision: `b5902e98da94a1ed99da174acea906aa42f9a46b`, the
+  signed Phase 18 checkpoint containing this record.
 - Implementation date: 22 August 2026.
-- Next phase: Phase 19 - standalone package/release.
+- Next phase: Phase 19 - canonical repository extraction and alpha publication.
 
 ## Implemented scope
 
@@ -84,14 +84,16 @@ variation rather than the deletion. The accepted production build and static
 closure traversal instead prove that the live graph remains structurally
 unchanged and that N3.js/jsonld.js remain lazy.
 
-## Phase 19 handoff
+## Phase 19/20 handoff
 
-Phase 19 may finalize package exports and release surfaces only after the
-requested Phase 18 Git checkpoint. Packaging must expose the current
-`owlapi-js` API directly and must not recreate a compatibility shim around any
-deleted WebVOWL parser, RDF/XML bridge, converter or exporter. Browser/Node CI,
-notices and licences, package dependency records, bundle analysis,
-compatibility documentation and release acceptance remain Phase 19 work.
+The required Phase 18 checkpoint now exists at
+`b5902e98da94a1ed99da174acea906aa42f9a46b`. Phase 19 may therefore extract the
+canonical package repository, establish the registry-governed public surface,
+and publish the retained alpha artefact. Packaging must expose the accepted
+structural capability surface without recreating a compatibility shim around
+any deleted WebVOWL parser, RDF/XML bridge, converter or exporter. Phase 20,
+not Phase 19, owns stable `1.0.1` productionization and the final exact-registry
+WebVOWL verification.
 
 ## Unresolved questions
 
@@ -113,5 +115,6 @@ and no unfinished `LOCAL_PHASE_FOLLOW_UP`.
 - Normative-change proposals: none.
 - Dependency, resource-budget or regression-threshold changes: none.
 - Unresolved blockers: none.
-- Next phase: Phase 19, blocked until the repository owner creates the requested
-  Phase 18 checkpoint and explicitly instructs implementation to proceed.
+- Next phase: Phase 19 canonical repository extraction and alpha publication;
+  the Phase 18 Git prerequisite is satisfied, and implementation awaits the
+  repository owner's explicit instruction to proceed.

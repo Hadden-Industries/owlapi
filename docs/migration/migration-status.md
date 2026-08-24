@@ -23,13 +23,17 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |    16 | OWL-to-RDF                                                         | Complete    | PASS: 8/24 focused; 171/3247 full; graph differential green      |
 |    17 | Original KRSS / KRSS1                                              | Complete    | PASS: 16/113 focused; 177/3278 full; Java/8-format/resource/perf |
 |    18 | Physical legacy deletion                                           | Complete    | PASS: 34/34 absent; 161/3146 full; lint/build/closure green      |
-|    19 | Package/release                                                    | Not started | blocked by the requested Phase 18 Git checkpoint                 |
+|    19 | Canonical repository extraction and alpha publication              | Not started | PENDING DESIGN: Phase 18 fixed at `b5902e98`                     |
+|    20 | Stable `owlapi@1.0.1` publication and WebVOWL package verification  | Not started | blocked by accepted Phase 19 alpha and public-package evidence   |
 
 Active implementation phase: none. Phase 18 physically deleted the retired
 pipeline after the Phase 17 checkpoint and passed its absence, production,
 corpus, provenance, runner-scope, full-suite, lint, build, and lazy-closure
-gates. The requested Git checkpoint is now the only boundary before Phase 19
-package/release work.
+gates. Its signed checkpoint is
+`b5902e98da94a1ed99da174acea906aa42f9a46b`. Phase 19 is the next implementation
+phase once its package-boundary design review is complete and the repository
+owner explicitly says to proceed; Phase 20 follows only after the accepted
+alpha and public-package gates.
 
 The structural cutover itself is in place. WebVOWL ingests ontologies only
 through `owlapi-js`; the pre-cutover parser, converter, exporter, RDF/XML bridge,

@@ -12,12 +12,14 @@
 
 ## Implemented scope
 
-Phase 16 adds `OwlToRdfTranslator` at the public `owlapi-js/rdf` boundary. Its
-single synchronous `translate(ontology, { graph })` operation maps the canonical
-structural ontology to a fresh RDF/JS `DatasetCore`. A private per-call session
-owns generated blank nodes, stable source anonymous-individual terms, recursive
-main-node mapping, RDF lists, axiom annotations, and placement of every quad in
-the selected dataset graph.
+Phase 16 adds `OwlToRdfTranslator` through the then-public
+`src/owlapi-js/rdf/index.js` **WebVOWL staging barrel**. “Public” at that
+checkpoint described an in-repository migration seam, not an approved npm
+subpath. Its single synchronous `translate(ontology, { graph })` operation maps
+the canonical structural ontology to a fresh RDF/JS `DatasetCore`. A private
+per-call session owns generated blank nodes, stable source
+anonymous-individual terms, recursive main-node mapping, RDF lists, axiom
+annotations, and placement of every quad in the selected dataset graph.
 
 The mapping covers every canonical entity, object- and data-property
 expression, individual, annotation value, data range, class expression, and all
@@ -26,6 +28,11 @@ exhaustive tests make model growth fail until the new kind has an explicit RDF
 disposition. The translator remains a semantic mapping layer: it does not
 expose a concrete RDF storer, JSON-LD from-RDF mode, or serialization-specific
 option.
+
+The later package-surface decision classifies the translator as
+`INTERNAL_ONLY`: Phase 19 relocates it to `internal/mapping/`, and the staging
+barrel does not survive as `owlapi/rdf`. This changes publication placement,
+not the accepted Phase 16 semantics or evidence.
 
 ## Acceptance evidence
 

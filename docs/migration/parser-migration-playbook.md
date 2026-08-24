@@ -516,14 +516,24 @@ do not append chronology here.
 - A deletion of already production-unreachable modules does not need a new
   parser-throughput baseline. It still requires the complete test/lint/build
   gates and the real production static/lazy-closure verifier.
-- Keep deletion changes separate from Phase 19 packaging/publication work so a
-  repository review can distinguish removal from release-surface expansion.
+- Keep deletion changes separate from Phase 19 extraction/publication work so
+  a repository review can distinguish removal from release-surface expansion.
 
-## Next repository gate: Phase 19 package/release
+## Next repository gates: Phase 19 alpha, then Phase 20 stable
 
-- Start only after the requested Phase 18 Git checkpoint. The package surface
-  must be built from the current `owlapi-js` modules; no retired WebVOWL parser,
-  converter, exporter, or bridge path may be recreated as a packaging shim.
-- Finalize package exports, browser and Node CI, notices/licensing/provenance,
-  dependency records, bundle analysis, compatibility documentation, and release
-  acceptance as one separately reviewable phase.
+- Phase 18 is fixed by accepted checkpoint
+  `b5902e98da94a1ed99da174acea906aa42f9a46b`. Build the package from those
+  current `owlapi-js` modules; no retired WebVOWL parser, converter, exporter,
+  or bridge path may be recreated as a packaging shim.
+- Phase 19 performs the history-preserving move to
+  `Hadden-Industries/owlapi`, creates the Public API Surface Registry, applies
+  the two-zone source layout, verifies one retained tarball, and publishes the
+  useful `0.1.0-alpha.0` under `next`. It adds no ontology semantics.
+- Except for the bare aggregate, every public npm subpath must be an explicitly
+  approved exact mapping of an existing `org.semanticweb.owlapi` package.
+  Public bindings have one canonical definition in that Java-shaped namespace;
+  private parsing, mapping, RDF/JS, loading, storage, and platform engines use
+  cohesive non-mirrored `internal/` ownership.
+- Phase 20 stabilizes that same capability family, publishes `1.0.1`, and proves
+  WebVOWL consumes the exact public registry package. Post-1.0 feature work does
+  not enter either release phase.
