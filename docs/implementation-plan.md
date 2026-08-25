@@ -4,6 +4,7 @@
 > **Research baseline:** 8 August 2026  
 > **Package identity and versioning decision:** 25 August 2026 — publish the unscoped npm package `owlapi`; begin with the useful `0.1.0-alpha.0` prerelease under `next`; publish another alpha or an `0.1.0-rc.N` only when it supplies material public validation rather than as ceremony; target the production-recommended initial-development `0.1.0` under `latest`; apply only §2.60's immutable-tag contingency to a consumed coordinate; permanently avoid every consumed historical coordinate; and defer any post-zero version choice to a future stability-promotion decision.<br>
 > **Canonical repository decision:** 23 August 2026 — `https://github.com/Hadden-Industries/owlapi` is the sole canonical source and release repository; WebVOWL consumes registry artefacts and does not retain a second maintained package tree.<br>
+> **History-reconstruction ordering decision:** 25 August 2026 — before any ref movement, freeze and catalogue the exact original graph outside that graph, approve immutable partition decisions, initialize the ref journal and verify the pre-rewrite bundle; then advance `refactor/java-to-javascript` only by an ancestry-checked expected-old-OID fast-forward, reconstruct and map new identities separately, and repoint/rebuild `feature/ui-ux-enhancements` only after reconstructed WebVOWL `main` passes its final-tree gates.<br>
 > **Contributor-governance decision:** 23 August 2026 — begin with explicit `AGPL-3.0-only` inbound=outbound; defer any CLA until an external copyrightable contribution exists, but prohibit merging the first such contribution until the contributor-rights model is separately confirmed.<br>
 > **Copyright-ownership and succession decision:** 23 August 2026 — Maksym Shostak retains personal copyright in his existing `owlapi` contributions; assignment to HADDEN INDUSTRIES LTD is optional rather than a publication gate, company stewardship is stated separately from copyright ownership, and this implementation plan explicitly accepts sole-custodian npm/GitHub availability risk rather than pretending company identity transfers account control.<br>
 > **Terminal-scope decision:** 25 August 2026 — this plan targets `owlapi@0.1.0` as the first Hadden Industries production release and normally completes only after that exact version is registry-verified and consumed by WebVOWL; solely if §2.60 abandons an immutable tag after an extraordinary post-tag/pre-publication deterministic failure, the next available same-surface patch becomes the first production release, while solely if §2.33 is triggered after publication, the first accepted corrective patch becomes the exact production cutover; the expected `0.2.0` semantic feature line is owned by `ontology-lifecycle-capability-implementation-plan.md`, while post-release W3C test-suite reporting is owned by `w3c-test-conformance-reporting-implementation-plan.md`; neither follow-on programme is a completion gate here.<br>
@@ -4197,12 +4198,18 @@ semantic package failure.
 
 Create encrypted off-platform, non-authoritative backups immediately before the
 history rewrite, after accepted reconstruction and around each public release.
-They include Git bundles with all relevant refs/tags, original/reconstructed hash
-and lineage maps, release/provenance records, non-secret settings inventories and
-the signer registry. Credentials, account recovery codes and private key recovery
-material are stored separately under appropriate human control, never inside a
-repository bundle or release artefact. Record an inventory, SHA-256 digests and
-successful `git bundle verify`; do not expose secret locations or values.
+The pre-rewrite backup occurs only after the frozen commit inventory and
+partition decisions are finalized and before the first ref movement. It includes
+the exact frozen refs/tags, the immutable pre-rewrite inventory, immutable
+partition-decisions record and initialized ref-operation journal. The accepted-
+reconstruction backup additionally includes the completed ref journal,
+`git-filter-repo`'s unchanged native commit map, the project-owned 1:N lineage
+map and reconstructed refs. Release/provenance records, non-secret settings
+inventories and the signer registry accompany the applicable backups.
+Credentials, account recovery codes and private key recovery material are stored
+separately under appropriate human control, never inside a repository bundle or
+release artefact. Record an inventory, SHA-256 digests and successful
+`git bundle verify`; do not expose secret locations or values.
 
 The backup has no development, merge, publication or canonical-source authority
 and therefore is not a second maintained repository. This implementation plan
@@ -6424,8 +6431,10 @@ reachable from public operations through direct, acyclic dependencies.
 
 The displayed internal subdirectories are created only when they own retained
 production modules; do not add empty placeholders. Phase 19 records every
-staging-to-canonical path move in the history-partition/path manifest so a
-reviewer can distinguish relocation from semantic modification.
+intended staging-to-canonical path disposition in the immutable history-
+partition decisions and every realized move in the post-reconstruction
+lineage/path map so a reviewer can distinguish relocation from semantic
+modification.
 
 ### 13.2 Repository-resident migration knowledge is a first-class project artefact
 
@@ -7461,14 +7470,33 @@ any follow-on query, mutation, merger or storer capability into this phase.
 The current `feature/ui-ux-enhancements` lineage contains interleaved package
 migration, WebVOWL integration, UI/UX and general repository changes. A simple
 whole-repository fork or single-path snapshot would therefore be both too broad
-and too weak. Before any rebase, ref update, branch rename, filtering or replay,
-freeze the approved source commit and create two independently checkable records:
+and too weak. Before any rebase, ref update, branch rename, filtering, replay or
+other history mutation, freeze the exact approved source checkpoint and every
+relevant original ref tip. A post-freeze commit is not silently admitted: any
+source-tip or ancestry drift stops the operation until the records below are
+regenerated and reviewed against a newly approved checkpoint.
 
-1. a complete pre-rewrite commit inventory mapping every relevant full original
-   hash to its subject/body, parents, tree, author/committer identities, author/
-   committer dates, signature state and source refs; and
-2. a machine-readable history-partition manifest covering every commit from the
-   selected common WebVOWL base through the Phase 18 checkpoint.
+Generate the pre-operation evidence outside the frozen source graph so creating
+the evidence does not itself advance the checkpoint it describes. Before the
+first ref movement, create, schema-validate and digest these independently
+checkable records:
+
+1. an immutable pre-rewrite commit inventory mapping every relevant full
+   original hash to its subject/body, parents, tree, author/committer identities,
+   author/committer dates, signature state and original source-ref reachability;
+2. an immutable history-partition decisions manifest covering every relevant
+   commit from the selected common WebVOWL base through the frozen source
+   checkpoint; and
+3. an initialized append-only ref-operation journal recording the exact local
+   and remote refs before mutation, each operation's expected old and intended
+   new OIDs, authorization, observed result and any ambiguity/reconciliation.
+
+The post-reconstruction 1:N lineage map is a fourth, separate record. It cannot
+be completed before the rewritten commits exist and **MUST NOT** be represented
+by mutating the original inventory or retrofitting result identities into the
+partition-decisions record. After validation, copy the content-addressed
+pre-operation evidence into the appropriate reconstructed provenance history;
+that later provenance commit is not part of the frozen original source graph.
 
 Each partition row has exactly one primary classification:
 
@@ -7481,28 +7509,57 @@ UNRELATED
 MIXED_REQUIRES_SPLIT
 ```
 
-The manifest records original commit ID, parents, subject, classification,
-selected/excluded paths, rationale and—after rewriting—every resulting canonical
-commit ID. `MIXED_REQUIRES_SPLIT` commits are partitioned by reviewed changes,
-not accepted wholesale merely because they touch one package file. A split may
-map one original commit to an `owlapi` commit, a clean WebVOWL UI/UX replay
-commit and/or a WebVOWL integration replay commit. Because `git-filter-repo`'s
-native commit map cannot express one-to-many lineage, preserve it unchanged as
-tool evidence and maintain a separate project-owned, schema-validated 1:N
-lineage map. An excluded original commit still receives an explicit reason; no
-commit silently disappears from the accounting.
+The partition-decisions manifest records original commit ID, parents, subject,
+classification, selected/excluded paths, rationale and any required split; it
+does not contain not-yet-existing rewritten IDs. `MIXED_REQUIRES_SPLIT` commits
+are partitioned by reviewed changes, not accepted wholesale merely because they
+touch one package file. A split may map one original commit to an `owlapi`
+commit, a clean WebVOWL UI/UX replay commit and/or a WebVOWL integration replay
+commit. After reconstruction, the project-owned, schema-validated 1:N lineage
+map records every resulting canonical commit or explicit exclusion reason.
+Because `git-filter-repo`'s native commit map cannot express one-to-many lineage,
+preserve that native map unchanged as separate tool evidence and reconcile it
+with—but never substitute it for—the project lineage map. No original commit
+silently disappears from the accounting.
 
-First make `refactor/java-to-javascript` the complete reconstruction source by
-absorbing the entire existing `feature/ui-ux-enhancements` tip. Preserve the
-pre-operation refs and off-platform bundle under §2.65 before changing either
-remote branch. `feature/ui-ux-enhancements` then returns to its intended role: a
-clean branch based on the reconstructed WebVOWL `main`, containing only the
-reviewed UI/UX commit changes replayed from the combined source and available
-for future UI/UX work. The package history is extracted from the combined
-`refactor/java-to-javascript` source; package-consumer integration remains a
-distinct WebVOWL change applied after registry publication. Exact ref updates,
-default-branch changes and pushes are separately authorized external-state
-actions.
+The pre-mutation sequence is mandatory:
+
+1. verify the frozen full OIDs, original ref reachability and ancestry;
+2. finalize and digest the immutable inventory and partition decisions;
+3. create the §2.65 encrypted off-platform Git bundle and inventories, run
+   `git bundle verify`, and compare its admitted refs/objects and SHA-256 digests
+   with the frozen records without performing the out-of-scope restore rehearsal;
+4. only then make `refactor/java-to-javascript` the complete reconstruction
+   source by a strict compare-and-swap fast-forward from its recorded old OID to
+   the exact frozen `feature/ui-ux-enhancements` tip; and
+5. record and reconcile that ref-only result in the ref-operation journal before
+   any reconstruction begins.
+
+The fast-forward **MUST NOT** create a merge commit, rebase, cherry-pick, amend,
+re-sign or otherwise recreate an original commit. Verify immediately before the
+operation that the recorded refactor tip remains an ancestor of the frozen
+feature tip and that neither ref moved. If fast-forward ancestry or either
+expected OID no longer agrees, stop: do not merge around the discrepancy, and do
+not apply the old catalogue to a changed graph. Moving the refactor pointer in
+this guarded way changes no existing commit hash. Retain
+`refactor/java-to-javascript` at the complete frozen source tip as the original-
+history reachability anchor until both reconstructed histories, lineage records
+and backups are accepted.
+
+Do not clear, delete or repoint `feature/ui-ux-enhancements` merely because the
+refactor fast-forward completed. Only after the reconstructed WebVOWL `main` tip
+passes its applicable final-tree gates and the original lineage remains reachable
+through `refactor/java-to-javascript` and the verified bundle may
+`feature/ui-ux-enhancements` return to its intended role: a clean branch based on
+that reconstructed `main`, containing only the reviewed UI/UX changes replayed
+from the frozen source and available for future UI/UX work. Repoint it through a
+separately authorized expected-old-OID update, then record every replayed commit's
+new hash in the 1:N lineage map; changed parents, splits and honest new signatures
+make those new identities expected rather than an inventory defect. The package
+history is extracted from the complete frozen `refactor/java-to-javascript`
+source; package-consumer integration remains a distinct WebVOWL change applied
+after registry publication. Exact ref updates, default-branch changes and pushes
+are separately authorized external-state actions.
 
 Rename the Hadden Industries WebVOWL fork's primary/default branch from `master`
 to `main` as part of the reconstruction. Do not rename or rewrite the upstream
@@ -7541,11 +7598,11 @@ history retains its real chronology. Newly signing a reconstructed commit
 authenticates the new object; it **MUST NOT** be represented as preservation of
 an original signature over a different hash. An unsplit commit retains its
 accurate original subject/body; a split commit receives a scope-accurate message
-plus an `Origin-Commit: <webvowl-sha>` trailer, while the partition manifest
-retains the original subject. Do not let rename/copy heuristics or a whole-commit
-subject misrepresent a selectively replayed change. The public origin statement
-links to the exact source checkpoint; GitHub's fork badge is not used as a
-substitute for this evidence.
+plus an `Origin-Commit: <webvowl-sha>` trailer, while the immutable pre-rewrite
+inventory and partition decisions retain the original subject. Do not let
+rename/copy heuristics or a whole-commit subject misrepresent a selectively
+replayed change. The public origin statement links to the exact source
+checkpoint; GitHub's fork badge is not used as a substitute for this evidence.
 
 Every reconstructed commit **MUST** pass mechanical tree, parent/genealogy,
 lineage-map, authorship/date and subject-scope validation against the recorded
@@ -7969,10 +8026,11 @@ there is no `dist/` indirection, generated production tree or source-map layer.
 As part of the same repository handoff, create
 `docs/compatibility/java-api-surface.json`, generate or mechanically verify
 `docs/compatibility/java-api-surface.md`, and move the authoritative capability
-matrix to `docs/compatibility/capabilities.json`. The history/path manifest must
-account for every public-namespace relocation and every `manager/`, `parser/` or
-`rdf/` staging module placed under its final public or private owner. No
-semantic behavior is changed merely to complete that relocation.
+matrix to `docs/compatibility/capabilities.json`. The immutable partition
+decisions must classify every intended public-namespace relocation, and the
+post-reconstruction lineage/path map must account for every realized move of a
+`manager/`, `parser/` or `rdf/` staging module to its final public or private
+owner. No semantic behavior is changed merely to complete that relocation.
 
 Prepare the WebVOWL cutover test-first in an isolated candidate checkout. Add a
 failing consumer-boundary architecture test at
@@ -8381,7 +8439,9 @@ the first public write. Reconcile its approved public wording with README/npm
 metadata and the Public API Surface Registry; fail on an endorsement, official-
 status or organizational-continuity implication. Also create and verify the
 pre-rewrite/post-reconstruction §2.65 encrypted-backup inventories and Git-
-bundle digests before the canonical repository handoff is treated as accepted.
+bundle digests, immutable original inventory and partition decisions, completed
+ref-operation journal, unchanged native filter map and reconciled project 1:N
+lineage map before the canonical repository handoff is treated as accepted.
 
 #### 17.26.2 Deterministic artefact gate
 
@@ -9035,8 +9095,10 @@ actual sole-custodian `MaksymShostak`/`maksymshostak` authority is verified and
 accurately disclosed without a shared npm login or false redundancy claim,
 the approved §2.14 inbound=outbound contribution policy and executable
 policy-consistency gate are present, the release evidence confirms no unresolved
-external copyrightable contribution in the reviewed alpha scope, the history
-partition/commit-map/hash evidence is complete, the independent repository is
+external copyrightable contribution in the reviewed alpha scope, the immutable
+pre-rewrite inventory/partition decisions, ref-operation journal, native filter
+map, project 1:N lineage map and before/after hash evidence are complete and
+reconciled, the independent repository is
 the only maintained package source, and WebVOWL consumes the exact public
 registry alpha—normally `0.1.0-alpha.0`, or solely after §2.60 abandonment its
 successor—only through the applicable declared `owlapi`,
@@ -11274,13 +11336,18 @@ snapshot or simplistic path copy discards the actual migration authorship and
 evolution. Interleaved or mixed commits can also leak UI/UX changes into the
 package history or lose package-relevant changes during replay.
 
-**Mitigation:** create an independent repository; freeze the original mixed
-branch; classify every commit in a machine-readable partition manifest; split
-mixed commits by reviewed change; perform the rewrite in a disposable clone;
-retain original metadata and an original-to-rewritten commit map; prove
-path-normalized file-hash equivalence at handoff; reconstruct UI/UX work on a
-separate branch in `Hadden-Industries/webvowl`; and keep the original branch
-until both histories pass tests and complete accounting.
+**Mitigation:** create an independent repository; freeze every original ref and
+the exact source checkpoint before mutation; create immutable commit-inventory
+and partition-decision records outside that frozen graph; verify the pre-rewrite
+bundle; then guard the refactor consolidation with an ancestry-checked,
+expected-old-OID fast-forward that creates no new commit. Split mixed commits by
+reviewed change in a disposable clone; retain original metadata, the unchanged
+native filter map, a separate project 1:N lineage map and an append-only ref-
+operation journal; prove path-normalized file-hash equivalence at handoff;
+reconstruct UI/UX work on a separate branch in
+`Hadden-Industries/webvowl`; and retain the complete frozen source through the
+refactor anchor and bundle until both histories pass tests and complete
+accounting.
 
 ### 27.17 Risk: redundant entry metadata or false side-effect claims create production-only package failures
 
@@ -11747,10 +11814,12 @@ The extraction is successful when all of the following are true:
   OWLAPI, states the exact supported Phase 18 alpha surface, explicitly
   places closure/mutation/merger/storage work in the follow-on plan and makes no
   `universal-ontology` materialization claim;
-- the history-partition manifest accounts for every original mixed-branch
-  commit, the commit map and hash manifests establish the extracted lineage,
-  and unrelated UI/UX work lives only in the separately reconstructed WebVOWL
-  branch;
+- the immutable pre-rewrite inventory and partition decisions account for every
+  original mixed-branch commit before any ref movement; the verified bundle and
+  ref-operation journal prove the guarded fast-forward/repoint sequence; the
+  unchanged native filter map, project 1:N lineage map and hash manifests
+  establish every extracted, split, replayed or excluded outcome; and unrelated
+  UI/UX work lives only in the separately reconstructed WebVOWL branch;
 - the registry coordinate, source commit, Git tag, integrity, custodian and
   verification evidence are durably recorded through the immutable §2.40
   release-evidence asset and append-only repository hierarchy rather than
@@ -12013,13 +12082,25 @@ Continue the same cumulative ingestion-learning sequence rather than treating RD
   CodeQL JavaScript default setup/default query suite with required
   high/critical `main` merge protection, and enable secret scanning plus push
   protection without a custom CodeQL workflow or speculative custom patterns.
-- [ ] Freeze the original mixed WebVOWL branch; classify every relevant commit
-  in the history-partition manifest; split mixed commits; and retain the exact
-  original-to-rewritten commit map, extraction commands/tool version and
-  path-normalized before/after SHA-256 manifest.
-- [ ] Reconstruct unrelated UI/UX work on a separately named branch in
-  `Hadden-Industries/webvowl`; keep UI/UX history out of `owlapi` and keep the
-  original mixed branch until both rewritten histories pass verification.
+- [ ] Freeze the exact original WebVOWL source checkpoint and relevant ref tips;
+  before any ref movement, create and digest the immutable pre-rewrite commit
+  inventory and history-partition decisions outside the frozen graph, initialize
+  the ref-operation journal, and regenerate/re-review them on any tip or ancestry
+  drift.
+- [ ] Create and verify the §2.65 pre-rewrite bundle, then consolidate
+  `refactor/java-to-javascript` only through an ancestry-checked,
+  expected-old-OID fast-forward to the exact frozen
+  `feature/ui-ux-enhancements` tip; create no merge/rebase/replay commit and
+  retain the refactor tip plus bundle as original-history reachability anchors.
+- [ ] Split mixed commits in disposable reconstruction clones; retain the exact
+  unchanged native filter map, extraction commands/tool version,
+  path-normalized before/after SHA-256 manifest and separate schema-validated
+  project 1:N lineage map without modifying the original inventory or partition
+  decisions.
+- [ ] Only after reconstructed WebVOWL `main` passes its final-tree gates,
+  repoint `feature/ui-ux-enhancements` through an authorized expected-old-OID
+  update and replay only classified UI/UX changes; record every new replay hash
+  and keep UI/UX history out of `owlapi`.
 - [ ] The root of `Hadden-Industries/owlapi` is the single canonical package
   source; its clean clone/install/test requires no WebVOWL checkout, and
   production import-closure checks prove no WebVOWL path or copied second source
@@ -12823,12 +12904,14 @@ would carry unrelated application history into the new project's public
 context.
 
 The stronger evidence is a reproducible history-preserving filter from a fixed
-public WebVOWL commit, coupled with complete commit partitioning, an original-
-to-rewritten commit map and before/after hash manifests. This retains relevant
-authorship/evolution while letting the package repository own only its actual
-product boundary. Keeping the original mixed branch unchanged until the
-rewritten package and UI/UX histories verify makes the transformation auditable
-without leaving two maintained source trees.
+public WebVOWL commit, coupled with an immutable pre-rewrite inventory and
+partition decisions, a guarded ref-only consolidation journal, the filter's
+unchanged native map, a project-owned 1:N lineage map and before/after hash
+manifests. This retains relevant authorship/evolution while letting the package
+repository own only its actual product boundary. Keeping the complete frozen
+source reachable through `refactor/java-to-javascript` and the verified bundle
+until the rewritten package and UI/UX histories verify makes the transformation
+auditable without leaving two maintained source trees.
 
 ### 31.24 The origin story is the unmet combination, not raw parser availability
 
@@ -14377,7 +14460,7 @@ The final architectural rules are:
 
 > **Before production `0.1.0`, dated registry evidence refreshes the package identity and every known immutable coordinate; an unexpected conflict blocks publication for a separately approved version decision. Ordinary former 1.x and 2.x ranges cannot select the new 0.x line. The comprehensive exact/range consumer audit is deferred until a separately authorized post-zero stability-promotion decision, which may then choose an available coordinate such as `1.0.1` or the more isolated `3.0.0`; neither is reserved here.**
 
-> **The sole canonical source and release repository is the independent public `Hadden-Industries/owlapi` repository. It is not a GitHub fork or mirror of WebVOWL. Before rewriting, the project records full hashes, subjects, parents, trees, author/committer identities and dates, and signature state. `refactor/java-to-javascript` first absorbs the complete existing `feature/ui-ux-enhancements` lineage; digest-recorded `git-filter-repo@2.47.0` then supplies its native map, while a separate schema-validated 1:N lineage map accounts for split commits. Reconstructed commits preserve chronology, use honest new signatures and pass mechanical tree/genealogy/lineage checks; only reconstructed tips/candidates rerun full suites. WebVOWL's default branch becomes `main` while upstream `master` remains unchanged, and a clean `feature/ui-ux-enhancements` branch is rebuilt only from UI/UX changes.**
+> **The sole canonical source and release repository is the independent public `Hadden-Industries/owlapi` repository. It is not a GitHub fork or mirror of WebVOWL. Before any ref movement, the project freezes exact original tips; records immutable full hashes, subjects, parents, trees, author/committer identities and dates, signature state, reachability and partition decisions outside that graph; initializes the ref-operation journal; and verifies the pre-rewrite bundle. `refactor/java-to-javascript` then advances to the exact frozen `feature/ui-ux-enhancements` tip only by an ancestry-checked, expected-old-OID fast-forward that changes no commit hash. Digest-recorded `git-filter-repo@2.47.0` supplies its unchanged native map, while a separate schema-validated 1:N lineage map accounts for every split, replayed or excluded outcome without mutating the original evidence. Reconstructed commits preserve chronology, use honest new signatures and pass mechanical tree/genealogy/lineage checks; only reconstructed tips/candidates rerun full suites. WebVOWL's default branch becomes `main` while upstream `master` remains unchanged, and only after that reconstructed tip passes its gates is a clean `feature/ui-ux-enhancements` branch repointed and rebuilt from classified UI/UX changes.**
 
 > **That repository uses one protected `main` trunk, short-lived pull requests and squash-only curated commits. Required checks, resolved conversations, linear history, `MaksymShostak` administrator coverage and a narrow auditable bypass apply immediately; no second-person approval is required anywhere in this implementation plan. A future independent-review rule requires a separately approved post-plan governance/configuration change. A separate `v*` ruleset makes release tags immutable, while SSH-signed annotated release tags—not a blanket signed-commit rule—anchor release source.**
 
@@ -14475,7 +14558,7 @@ shared OWL→RDF
 original KRSS/KRSS1
    ↓ final ingestion learning gate
 physical legacy deletion
-   ↓ history partition / canonical repository gate
+   ↓ frozen-history inventory / partition / canonical repository gate
 independent Hadden-Industries/owlapi extraction
    ↓ protected main/v* rulesets + Issues + CodeQL/secret protection + exact ordinary dependencies/tooling/Dependabot/audit
 four-workflow trust split + root-denied/job-minimal permissions + exact five-Action SHA/input allowlist + explicit hosted-OS/shell/image-evidence matrix
