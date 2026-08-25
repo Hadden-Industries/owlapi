@@ -24,7 +24,7 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |    17 | Original KRSS / KRSS1                                              | Complete    | PASS: 16/113 focused; 177/3278 full; Java/8-format/resource/perf |
 |    18 | Physical legacy deletion                                           | Complete    | PASS: 34/34 absent; 161/3146 full; lint/build/closure green      |
 |    19 | Canonical repository extraction and alpha publication              | Not started | PENDING DESIGN: Phase 18 fixed at `b5902e98`                     |
-|    20 | Stable `owlapi@1.0.1` publication and WebVOWL package verification  | Not started | blocked by accepted Phase 19 alpha and public-package evidence   |
+|    20 | Production `owlapi@0.1.0` publication and WebVOWL package verification | Not started | blocked by accepted Phase 19 alpha and public-package evidence   |
 
 Active implementation phase: none. Phase 18 physically deleted the retired
 pipeline after the Phase 17 checkpoint and passed its absence, production,

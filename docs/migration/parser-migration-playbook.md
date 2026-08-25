@@ -519,7 +519,7 @@ do not append chronology here.
 - Keep deletion changes separate from Phase 19 extraction/publication work so
   a repository review can distinguish removal from release-surface expansion.
 
-## Next repository gates: Phase 19 alpha, then Phase 20 stable
+## Next repository gates: Phase 19 alpha, then Phase 20 production
 
 - Phase 18 is fixed by accepted checkpoint
   `b5902e98da94a1ed99da174acea906aa42f9a46b`. Build the package from those
@@ -534,6 +534,8 @@ do not append chronology here.
   Public bindings have one canonical definition in that Java-shaped namespace;
   private parsing, mapping, RDF/JS, loading, storage, and platform engines use
   cohesive non-mirrored `internal/` ownership.
-- Phase 20 stabilizes that same capability family, publishes `1.0.1`, and proves
-  WebVOWL consumes the exact public registry package. Post-1.0 feature work does
-  not enter either release phase.
+- Phase 20 qualifies that same capability family, normally publishes
+  production-recommended initial-development `0.1.0`, and proves WebVOWL
+  consumes the exact public registry package. The separate ontology-lifecycle
+  feature programme normally targets `0.2.0` and does not enter either release
+  phase.

@@ -9,7 +9,8 @@ implementation plan remains the highest-authority normative document.
 
 Authoritative machine-readable records:
 
-- `compatibility/capabilities.json`: v1 capability and release-status matrix.
+- `compatibility/capabilities.json`: `REQUIRED_V1` migration-capability and
+  release-status matrix; the historical label is not an npm major-version promise.
 - `performance/resource-budgets.json`: finite resource limits and benchmark policy.
 - `performance/benchmark-corpus.json`: pinned real-world and generated benchmark inputs.
 - `provenance/provenance.json`: legacy-source dispositions, new-module
@@ -26,13 +27,15 @@ Authoritative machine-readable records:
   and controlled KRSS1 compatibility decisions.
 - `compatibility/expected-differences.json`: exact Java/JavaScript differential exceptions.
 - `dependency-governance.json`: selected dependency authority, risk, licence, and replacement records.
-- `post-1.0-capability-implementation-plan.md`: the separate imports-closure,
-  mutation, merger, and storage feature programme that begins only after the
-  verified public `owlapi@1.0.1` release.
+- `ontology-lifecycle-capability-implementation-plan.md`: the separate
+  imports-closure, mutation, merger, and storage feature programme that begins
+  only after the verified public production cutover—normally `owlapi@0.1.0`—and
+  normally targets the next zero-minor feature line, `owlapi@0.2.0`.
 - `w3c-test-conformance-reporting-implementation-plan.md`: the independent
   post-release programme for complete versioned W3C result ledgers, EARL
   generation, and appropriately disclosed upstream implementation-report
-  submissions; it is not a gate for `owlapi@1.0.1` or WebVOWL's package cutover.
+  submissions; it is not a gate for `owlapi@0.1.0`, its recorded cutover patch,
+  or WebVOWL's package cutover.
 - `compatibility/standalone-import-closure-prerequisites.md`: the bounded
   Java-compatible library surface required by the external consumer contract.
 
@@ -111,8 +114,10 @@ decisions while distinguishing them from the live source inventory.
 
 Phase 19 extracts the accepted Phase 18 source into the sole canonical
 `Hadden-Industries/owlapi` repository and publishes the useful
-`0.1.0-alpha.0` artefact under `next`; Phase 20 stabilizes the same capability
-family as `1.0.1` and proves WebVOWL consumes that exact public npm package.
+`0.1.0-alpha.0` artefact under `next`; Phase 20 qualifies the same capability
+family as production-recommended initial-development `0.1.0` and proves
+WebVOWL consumes that exact public npm package (or only the recorded
+same-surface cutover patch if a defined contingency is activated).
 The Public API Surface Registry created during extraction is the package/type
 gap map against pinned Java OWLAPI. Except for the curated bare `owlapi`
 aggregate, every public npm subpath must map exactly to a separately approved

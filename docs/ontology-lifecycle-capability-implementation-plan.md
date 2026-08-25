@@ -1,29 +1,33 @@
-# Post-1.0 `owlapi` Capability Implementation Plan
+# `owlapi` Ontology-Lifecycle Capability Implementation Plan
 
-> **Status:** Deferred feature programme; implementation begins only after the
-> extraction-and-publication plan has completed with a verified public
-> `owlapi@1.0.1` release.<br>
+> **Status:** Deferred zero-major feature programme; implementation begins only
+> after the extraction-and-publication plan has completed with a verified
+> public `owlapi@0.1.0` production release, or the exact corrective/contingency
+> patch recorded by that plan.<br>
 > **Predecessor:** `docs/owlapi-js/implementation-plan.md`.<br>
 > **Starting checkpoint:** The canonical `Hadden-Industries/owlapi` repository
 > is the sole maintained package source, npm `latest` resolves to the accepted
-> `owlapi@1.0.1` artefact, and WebVOWL consumes that exact registry package.<br>
-> **First release target:** `owlapi@1.4.0`; the unrelated historical `1.1.0`,
-> `1.2.0`, `1.2.1`, and `1.3.0` coordinates remain unavailable and are never
-> reused.<br>
+> `owlapi@0.1.0` artefact—or only its recorded same-surface patch—and WebVOWL
+> consumes that exact registry package.<br>
+> **Expected release target:** the next available zero-major feature line,
+> normally `owlapi@0.2.0`; an intervening incompatible correction may consume
+> that coordinate and mechanically advances this programme to the next
+> available `0.minor.0` rather than causing unrelated work to be combined.<br>
 > **Goal:** Add the coherent Java-OWLAPI-compatible imports-closure, mutation,
 > merger, and ontology-storage capability slice without retroactively delaying
-> or broadening the production-ready `1.0.1` release.
+> or broadening the production-ready `0.1.x` release.
 
 ---
 
 ## 1. Responsibility and ownership
 
-This document owns deferred feature development after `owlapi@1.0.1`. Its main
-programme is the coherent semantic slice in §§3–8; §9 separately owns the
-future package-ergonomics decision for official TypeScript declarations so that
-work cannot leak back into the initial publication phase or be added
-opportunistically to the semantic release. The predecessor plan owns extraction,
-packaging, publication, WebVOWL's managed npm dependency, and the first stable
+This document owns the first deferred semantic feature programme after
+`owlapi@0.1.x`. Its deliverable is exclusively the coherent lifecycle slice in
+§§3–8. Section 9 records a non-authorizing exploration possibility concerning
+TypeScript consumer ergonomics; it is not part of this programme, is not an
+implementation backlog item, reserves no package version, and cannot be added
+opportunistically. The predecessor plan owns extraction, packaging,
+publication, WebVOWL's managed npm dependency, and the first production
 release; it is complete before this plan starts.
 
 The maintained copy of this plan moves with the package-owned documentation to
@@ -31,9 +35,9 @@ the canonical `Hadden-Industries/owlapi` repository during extraction. The
 WebVOWL repository does not retain a second normative copy after handoff.
 
 This plan begins with the complete, tested source present at the accepted
-`1.0.1` tag. It does not reopen parser migration, legacy WebVOWL wiring,
+`0.1.x` production tag. It does not reopen parser migration, legacy WebVOWL wiring,
 package-name selection, licensing, provenance dispositions, or the five-entry
-`1.0.1` export map. It inherits the predecessor plan's Public API Surface
+`0.1.x` export map. It inherits the predecessor plan's Public API Surface
 Registry, Java-backed npm-subpath rule and two-zone source architecture:
 public Java-compatible bindings have one canonical definition in their exact
 Java-shaped namespace, while private engines remain in cohesive, non-mirrored
@@ -43,7 +47,7 @@ Java-shaped namespace, while private engines remain in cohesive, non-mirrored
 
 Implementation must reconcile all of the following at the starting checkpoint:
 
-- the accepted `owlapi@1.0.1` public API and capability inventory;
+- the accepted `owlapi@0.1.x` public API and capability inventory;
 - `docs/compatibility/java-api-surface.json` and its generated or mechanically
   checked Java compatibility/gap view;
 - `docs/compatibility/standalone-import-closure-prerequisites.md` after its
@@ -97,13 +101,14 @@ atomic distribution-artifact publication
 
 Those responsibilities remain in `universal-ontology` or another consumer.
 
-Official TypeScript declarations are also outside this semantic slice. They do
-not become part of `1.4.0` merely because both are post-1.0 work; their separate
-scope and approval gate are defined in §9.
+TypeScript source, compiler-driven development, and official declaration files
+are outside this semantic slice. Section 9 merely records what a future
+research question would need to examine if the repository owner ever asks for
+that exploration; it does not authorize implementation or publication.
 
 ## 4. Public API placement
 
-The stable `1.0.1` public entry points remain valid. New exports are additive
+The accepted `0.1.x` public entry points remain valid. New exports are additive
 and follow the same registry-governed Java boundary. Except for the inherited
 bare `owlapi` aggregate, a new npm subpath is permitted only when it is the exact
 slash-form of an existing package beneath `org.semanticweb.owlapi`; existence of
@@ -114,7 +119,7 @@ the Java package remains necessary but does not itself approve exposure.
 | Manager closure queries, change application, and saving | `owlapi/model` and the root convenience facade where approved by the registry | Methods and model/change types corresponding to `org.semanticweb.owlapi.model` |
 | `StringDocumentTarget` and storage diagnostics | `owlapi/io` | Corresponds to `org.semanticweb.owlapi.io` |
 | Functional Syntax and RDF/XML format identities | `owlapi/formats` | Corresponds to `org.semanticweb.owlapi.formats` |
-| `OWLOntologyImportsClosureSetProvider` and `OWLOntologyMerger` | new explicit `owlapi/util` entry point | Corresponds to `org.semanticweb.owlapi.util`; adding this subpath is part of the `1.4.0` feature release |
+| `OWLOntologyImportsClosureSetProvider` and `OWLOntologyMerger` | new explicit `owlapi/util` entry point | Corresponds to `org.semanticweb.owlapi.util`; adding this subpath is part of the expected `0.2.0` feature release |
 
 RDF reconstruction and OWL→RDF mapping remain internal semantic engines. The
 RDF/XML storer composes the internal `OwlToRdfTranslator` with a
@@ -161,7 +166,7 @@ factory wiring, graph-selection helpers and storage engines remain
 The entire slice is one feature-release programme because closure
 materialization is not useful or safely testable through nominal, disconnected
 classes. Each task has its own review checkpoint, but no partially implemented
-surface is published as stable.
+surface is published as a production release.
 
 ### 5.1 Imports-closure queries
 
@@ -367,10 +372,16 @@ complete source-compatible or binary-compatible port.
 
 ## 8. Release and completion gate
 
-The complete accepted slice is released at `owlapi@1.4.0`, the first available
-compatible feature-minor coordinate in the new package lineage. Pre-release
-coordinates may be used under the repository's approved release policy, but no
-partial surface receives `latest`.
+The complete accepted slice is released at the next available zero-major
+feature coordinate, expected to be `owlapi@0.2.0`. Under the project's
+disciplined initial-development policy, `0.1.x` patches restore the documented
+`0.1` contract, while this substantial additive lifecycle surface advances the
+minor component and requires deliberate consumer adoption. If an intervening
+incompatible correction has already consumed `0.2.0`, the release-preparation
+decision records the next available `0.minor.0`; the programme does not combine
+unrelated work merely to preserve a planned number. Pre-release coordinates may
+be used under the repository's approved release policy, but no partial surface
+receives `latest`.
 
 This plan completes only when:
 
@@ -379,7 +390,8 @@ This plan completes only when:
   canonical source-module mapping and verification hook, with zero unclassified
   rows in the release inventory;
 - all implementation and cross-cutting verification gates are green;
-- the installed `1.4.0` artefact exposes the approved additive entry points and
+- the installed selected feature artefact—normally `0.2.0`, or the recorded
+  next available zero-minor—exposes the approved additive entry points and
   rejects internal deep imports;
 - every added public subpath exactly maps an approved Java package, every public
   binding has one definition in that Java-shaped namespace, and private storage,
@@ -394,45 +406,26 @@ This plan completes only when:
 Pause at each task checkpoint and again before any external publication so the
 changes can be reviewed and committed under the repository's normal controls.
 
-## 9. Separately gated package-ergonomics capability: TypeScript declarations
+## 9. Optional future exploration: TypeScript consumer ergonomics
 
-The predecessor plan intentionally publishes `0.1.0-alpha.0` and `1.0.1`
-without `.d.ts` files, `types`/`typings` metadata or TypeScript tooling. An
-official declaration surface is a useful possible post-1.0 capability, but it
-is a second public API representation and therefore requires its own approved
-execution and release decision. It is not an unfinished requirement for the
-semantic `1.4.0` programme and **MUST NOT** be folded into one of §§5.1–5.7 as
-incidental documentation work.
+This implementation plan has **no TypeScript deliverable**. The package remains
+native ESM JavaScript and this programme does not add TypeScript source,
+`tsc`/`checkJs`, type-bearing JSDoc as a shadow type system, `.d.ts` files,
+`types`/`typings` metadata, an `@types/owlapi` package, TypeDoc, declaration-test
+tooling, or TypeScript configuration. No package coordinate is assigned or
+reserved for any of those things.
 
-Before implementation, present the exact TypeScript/compiler version,
-development dependencies, configuration files, declaration-generation or
-hand-authoring strategy, package `exports`/`types` mapping and type-test tooling
-for the repository's required configuration approval. The selected design must:
+If demonstrated external demand later makes TypeScript consumer ergonomics
+worth investigating, the repository owner may authorize a separate,
+non-implementing research exercise. That exploration could compare handwritten
+declarations, declarations derived from the existing JavaScript documentation,
+and community-maintained external typings; examine how any candidate would stay
+reconciled with the Public API Surface Registry and every public package
+specifier; and identify compiler, package-metadata, maintenance, compatibility,
+and semver risks. Its output would be options and a recommendation—not source,
+configuration, declarations, a release promise, or permission to implement.
 
-- cover `owlapi`, `owlapi/apibinding`, `owlapi/model`, `owlapi/io` and
-  `owlapi/formats` together, plus every public subpath added by an already
-  released compatible feature version;
-- mirror the exact runtime export layout without declaring an internal or
-  unexported path;
-- derive from or be mechanically reconciled with the Public API Surface
-  Registry and version-matched `API.md` rather than forming an independent API
-  inventory;
-- model the structural `kind` taxonomy, documented immutability/equality,
-  asynchronous loading, configuration, errors and environment-neutral contracts
-  without exposing private dependency types;
-- contain no placeholder, blanket-`any`, partial-root or Java-signature fiction;
-- pass declaration-resolution and representative compile-only consumer tests
-  for every public specifier under the supported Node ESM module-resolution
-  modes;
-- prove the emitted/maintained declarations are included in the retained
-  tarball, reachable through approved package metadata, and absent for every
-  private path; and
-- define how declaration changes are classified under the stable SemVer
-  contract, including when a type-only narrowing is breaking despite unchanged
-  runtime JavaScript.
-
-The proposal must separately choose the first compatible package coordinate and
-release train after inspecting the then-current published lineage. It may share
-a release with an independently accepted runtime feature only when the exact
-combined scope, configuration and regression matrix are approved in advance;
-coincidental scheduling does not merge their acceptance criteria.
+Any later decision to ship official declarations would require a new explicit
+architecture decision, configuration approval, implementation plan, and version
+decision based on the then-current public lineage. Nothing in this section
+places that work in the roadmap or permits it to share this lifecycle release.

@@ -92,8 +92,8 @@ canonical package repository, establish the registry-governed public surface,
 and publish the retained alpha artefact. Packaging must expose the accepted
 structural capability surface without recreating a compatibility shim around
 any deleted WebVOWL parser, RDF/XML bridge, converter or exporter. Phase 20,
-not Phase 19, owns stable `1.0.1` productionization and the final exact-registry
-WebVOWL verification.
+not Phase 19, owns production-recommended initial-development `0.1.0`
+qualification/publication and the final exact-registry WebVOWL verification.
 
 ## Unresolved questions
 

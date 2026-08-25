@@ -1,12 +1,13 @@
-# Post-1.0 W3C Test-Suite Conformance Reporting Implementation Plan
+# Post-Publication W3C Test-Suite Conformance Reporting Implementation Plan
 
 > **For implementing agents:** Execute this plan task by task in the primary
 > task. Do not use subagents unless the repository owner later authorizes them
 > explicitly.<br>
 > **Status:** Deferred, independently actionable post-release programme.<br>
 > **Activation gate:** Begin only after
-> `docs/owlapi-js/implementation-plan.md` has completed with public
-> `owlapi@1.0.1` under `latest`, the canonical
+> `docs/owlapi-js/implementation-plan.md` has completed with the accepted public
+> production cutover version—normally `owlapi@0.1.0`, or only the recorded
+> same-surface contingency/corrective patch—under `latest`, the canonical
 > `Hadden-Industries/owlapi` repository established, and WebVOWL consuming the
 > exact public-registry package.<br>
 > **Goal:** Produce reproducible, version-specific W3C test-suite results for
@@ -39,15 +40,18 @@ publication plan.
 The following boundary is normative:
 
 - Phase 20 and `docs/owlapi-js/implementation-plan.md` complete when their own
-  `owlapi@1.0.1` and WebVOWL-consumer gates pass. They do not wait for this plan
+  accepted production cutover and WebVOWL-consumer gates pass. They do not wait
+  for this plan
   to start, for a W3C maintainer to reply, for an upstream pull request, or for
   an implementation-report merge.
 - A later test failure is evidence about the exact tested release. It may create
-  a normal issue and patch-release obligation, but it does not retroactively
+  a normal issue and package-release obligation under the zero-major policy, but
+  it does not retroactively
   make the predecessor plan incomplete.
-- This programme may run before, after, or alongside the separate post-1.0
-  semantic-capability programme once both have passed their common `1.0.1`
-  activation gate. Neither programme is a prerequisite for the other.
+- This programme may run before, after, or alongside the separate
+  ontology-lifecycle capability programme once both have passed their common
+  accepted-production activation gate. Neither programme is a prerequisite for
+  the other.
 - External W3C eligibility, review, merge, and publication remain controlled by
   W3C maintainers. Local completion requires an accurate report and a recorded
   upstream disposition; it does not require a favourable or timely external
@@ -70,7 +74,8 @@ second normative copy after the repository handoff.
 
 ### 2.1 Versioned test subject
 
-The default first subject is the exact public `owlapi@1.0.1` artefact. The
+The default first subject is the exact accepted public production-cutover
+artefact, normally `owlapi@0.1.0`. The
 report identifies all of the following:
 
 - the exact npm version URL;
@@ -82,11 +87,16 @@ report identifies all of the following:
 - the exact installed versions of relevant parser dependencies; and
 - the UTC execution time.
 
-`1.0.1` may be named only if the tested production bytes are those published as
-`owlapi@1.0.1`. Test-harness-only changes may report on that unchanged artefact.
+`0.1.0` may be named only if the tested production bytes are those published as
+`owlapi@0.1.0`; if the predecessor plan activated a recorded same-surface patch,
+the report names that exact patch instead. Test-harness-only changes may report
+on that unchanged artefact.
 If satisfying a test requires any production-source or runtime-dependency
-change, publish and verify the appropriate later `owlapi` patch release first,
-then report that exact version. Never attribute a later fix to `1.0.1`.
+change, publish and verify the appropriate later `owlapi` release under the
+zero-major compatibility policy first, then report that exact version. A
+compatible correction normally uses the current zero-minor's next patch; an
+incompatible protected-contract correction requires the next available
+zero-minor. Never attribute a later fix to `0.1.0` or an earlier subject.
 
 ### 2.2 RDF report scope
 
@@ -365,13 +375,16 @@ For every recursively included upstream manifest root selected for a report:
 
 **Steps:**
 
-- [ ] Prove public `owlapi@1.0.1` and `latest` resolve to the accepted artefact.
+- [ ] Prove `latest` and the exact accepted production-cutover coordinate—normally
+  `owlapi@0.1.0`, or only its recorded same-surface patch—resolve to the same
+  accepted artefact.
 - [ ] Prove WebVOWL consumes that exact registry version and the predecessor
   implementation plan is recorded complete.
 - [ ] Work only in `Hadden-Industries/owlapi`; do not resume package development
   under WebVOWL's historical `src/owlapi-js/` tree.
-- [ ] Select the exact released subject. Keep `1.0.1` if its production bytes
-  remain the intended subject; otherwise select the exact later public version
+- [ ] Select the exact released subject. Keep `0.1.0` when it is the accepted
+  production cutover and its bytes remain the intended subject; otherwise select
+  the recorded cutover patch or exact later public version
   whose behaviour will be reported.
 - [ ] Record tag, commit, registry integrity, tarball digest, and relevant
   runtime dependency versions before writing result code.
@@ -533,8 +546,10 @@ For every recursively included upstream manifest root selected for a report:
 - [ ] Run the complete ordinary `npm test` suite to prove report plumbing did
   not change package behaviour.
 - [ ] If a runtime defect is discovered, preserve the failing test, follow the
-  package's ordinary patch-release process, and restart subject identity against
-  the corrected public version before generating a passing result.
+  package's zero-major release policy—patch for a compatible contract-restoring
+  correction, next zero-minor for an incompatible protected-contract
+  correction—and restart subject identity against the corrected public version
+  before generating a passing result.
 - [ ] Pause for the RDF-result Git checkpoint.
 
 ### Phase 6 — complete and run the separate JSON-LD result surface
@@ -630,7 +645,7 @@ For every recursively included upstream manifest root selected for a report:
 - [ ] Add a non-release-gating GitHub Actions workflow dedicated to
   conformance-report reproduction after obtaining exact configuration approval.
   It may gate changes to the harness, ledgers, or reports, but must not become a
-  retroactive condition of the already completed `1.0.1` publication plan.
+  retroactive condition of the already completed production-cutover publication plan.
 - [ ] Prove the dedicated workflow succeeds from a clean checkout and that
   regenerating reports leaves the tree unchanged.
 - [ ] Pause for the upstream-validation Git checkpoint.
@@ -700,7 +715,7 @@ expected to require a later exact proposal for:
 | `package.json` | Add `conformance:w3c:rdf`, `conformance:w3c:jsonld`, `conformance:w3c:generate`, and `conformance:w3c:verify` scripts | Gives maintainers stable names for the repository-only harness; does not add a public export or lifecycle hook |
 | `package-lock.json` | Regenerate only if an approved tooling dependency actually changes | Pins the harness dependency graph; must not alter runtime dependencies silently |
 | `test/conformance/w3c/subject/package.json` and its `package-lock.json` | Declare exactly one public `owlapi` subject version and retain its isolated resolved dependency graph | Makes the versioned report reproducible without turning private paths into package exports |
-| `.github/workflows/w3c-conformance.yml` | Add a dedicated reproducibility workflow scoped to relevant paths plus manual dispatch | Reproduces reports in CI without making upstream W3C acceptance or this follow-on programme a `1.0.1` release gate |
+| `.github/workflows/w3c-conformance.yml` | Add a dedicated reproducibility workflow scoped to relevant paths plus manual dispatch | Reproduces reports in CI without making upstream W3C acceptance or this follow-on programme a production-cutover release gate |
 
 Prefer existing dependencies and small project-owned validators. Any proposed
 new package must pass the package's dependency-governance review before the
@@ -719,8 +734,9 @@ A fresh conformance failure follows one of four paths:
    precise subject definition excludes that capability and upstream accepts
    that interpretation.
 4. **Package or dependency defect:** report `FAILED` for the tested version,
-   open a normal package issue, fix test-first, publish a later patch if
-   appropriate, and create a new version-specific report after release.
+   open a normal package issue, fix test-first, publish a later release if
+   appropriate under the zero-major compatibility policy, and create a new
+   version-specific report after release.
 
 Do not silently patch the unpacked subject, monkey-patch a dependency, relax
 strict parsing, flatten named graphs, normalize away RDF 1.2 terms, or route
