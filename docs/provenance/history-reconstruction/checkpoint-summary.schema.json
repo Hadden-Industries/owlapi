@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haddenindustries.com/schemas/owlapi/history-reconstruction/phase19A-checkpoint.v1.schema.json",
+  "title": "Phase 19A reconstruction checkpoint summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "checkpoint",
+    "recordedAt",
+    "source",
+    "acceptedTargets",
+    "lineage",
+    "signatureVerification",
+    "runtimeGates",
+    "refState",
+    "backups",
+    "excludedMutations"
+  ],
+  "properties": {
+    "$schema": { "const": "./checkpoint-summary.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "checkpoint": { "const": "PHASE_19A_PROVENANCE_PRESERVING_RECONSTRUCTION" },
+    "recordedAt": { "type": "string", "format": "date-time" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseOid", "sharedHistoryAnchorOid", "frozenTipOid", "treeOid", "fileCount", "normalizedTreeSha256"],
+      "properties": {
+        "baseOid": { "$ref": "#/$defs/gitSha1" },
+        "sharedHistoryAnchorOid": { "$ref": "#/$defs/gitSha1" },
+        "frozenTipOid": { "$ref": "#/$defs/gitSha1" },
+        "treeOid": { "$ref": "#/$defs/gitSha1" },
+        "fileCount": { "const": 614 },
+        "normalizedTreeSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "acceptedTargets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owlapi", "webvowlMain", "webvowlUi"],
+      "properties": {
+        "owlapi": { "$ref": "#/$defs/target" },
+        "webvowlMain": { "$ref": "#/$defs/target" },
+        "webvowlUi": { "$ref": "#/$defs/target" }
+      }
+    },
+    "lineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["verification", "originalCommitCount", "resultCommitIdentityCount", "outcomes", "silentExclusionCount", "issueReferenceCandidateCount"],
+      "properties": {
+        "verification": { "const": "PASS" },
+        "originalCommitCount": { "const": 275 },
+        "resultCommitIdentityCount": { "const": 305 },
+        "outcomes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mappedOneToOne", "mappedSplit", "prunedBecameEmpty"],
+          "properties": {
+            "mappedOneToOne": { "const": 241 },
+            "mappedSplit": { "const": 32 },
+            "prunedBecameEmpty": { "const": 2 }
+          }
+        },
+        "silentExclusionCount": { "const": 0 },
+        "issueReferenceCandidateCount": { "const": 1 }
+      }
+    },
+    "signatureVerification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["verification", "expectedSignerFingerprint", "verifiedCommitCount", "targetCounts"],
+      "properties": {
+        "verification": { "const": "PASS" },
+        "expectedSignerFingerprint": { "const": "SHA256:0lELaqBbgGHdSctv4GOpPmROX56wNCaii2PLZI5pXCU" },
+        "verifiedCommitCount": { "const": 234 },
+        "targetCounts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["owlapi", "webvowlMain", "webvowlUi"],
+          "properties": {
+            "owlapi": { "const": 32 },
+            "webvowlMain": { "const": 120 },
+            "webvowlUi": { "const": 82 }
+          }
+        }
+      }
+    },
+    "runtimeGates": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["target", "gate", "result", "detail"],
+        "properties": {
+          "target": { "enum": ["webvowlMain", "webvowlUi"] },
+          "gate": { "type": "string", "minLength": 1 },
+          "result": { "const": "PASS" },
+          "detail": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "refState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["journalVerification", "journalRecordCount", "journalTailSha256", "local", "remoteTracking", "remoteMutations"],
+      "properties": {
+        "journalVerification": { "const": "PASS" },
+        "journalRecordCount": { "const": 16 },
+        "journalTailSha256": { "$ref": "#/$defs/sha256" },
+        "local": { "$ref": "#/$defs/refMap" },
+        "remoteTracking": { "$ref": "#/$defs/refMap" },
+        "remoteMutations": { "const": "DEFERRED_SEPARATE_PUSH_AUTHORIZATION_REQUIRED" }
+      }
+    },
+    "backups": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["preRewrite", "acceptedReconstruction", "restoreRehearsal"],
+      "properties": {
+        "preRewrite": { "$ref": "#/$defs/backup" },
+        "acceptedReconstruction": { "$ref": "#/$defs/backup" },
+        "restoreRehearsal": { "const": "NOT_RUN_OUT_OF_SCOPE" }
+      }
+    },
+    "excludedMutations": {
+      "type": "array",
+      "minItems": 3,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "NO_NPM_WRITE",
+          "NO_RELEASE_TAG",
+          "NO_PUBLIC_PACKAGE",
+          "NO_REMOTE_REF_UPDATE",
+          "NO_GITHUB_DEFAULT_BRANCH_CHANGE"
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "gitSha1": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tipOid", "treeOid", "fileCount", "normalizedTreeSha256"],
+      "properties": {
+        "tipOid": { "$ref": "#/$defs/gitSha1" },
+        "treeOid": { "$ref": "#/$defs/gitSha1" },
+        "fileCount": { "type": "integer", "minimum": 1 },
+        "normalizedTreeSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "refMap": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/gitSha1" }
+    },
+    "backup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["encryptedArchiveSha256", "offPlatformCopy", "authority"],
+      "properties": {
+        "encryptedArchiveSha256": { "$ref": "#/$defs/sha256" },
+        "offPlatformCopy": { "const": "CONFIRMED_DIGEST_MATCH" },
+        "authority": { "const": "NON_AUTHORITATIVE_RECOVERY_COPY" }
+      }
+    }
+  }
+}

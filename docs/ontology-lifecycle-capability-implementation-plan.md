@@ -114,12 +114,12 @@ bare `owlapi` aggregate, a new npm subpath is permitted only when it is the exac
 slash-form of an existing package beneath `org.semanticweb.owlapi`; existence of
 the Java package remains necessary but does not itself approve exposure.
 
-| Capability | Public location | Java OWLAPI relationship |
-| --- | --- | --- |
-| Manager closure queries, change application, and saving | `owlapi/model` and the root convenience facade where approved by the registry | Methods and model/change types corresponding to `org.semanticweb.owlapi.model` |
-| `StringDocumentTarget` and storage diagnostics | `owlapi/io` | Corresponds to `org.semanticweb.owlapi.io` |
-| Functional Syntax and RDF/XML format identities | `owlapi/formats` | Corresponds to `org.semanticweb.owlapi.formats` |
-| `OWLOntologyImportsClosureSetProvider` and `OWLOntologyMerger` | new explicit `owlapi/util` entry point | Corresponds to `org.semanticweb.owlapi.util`; adding this subpath is part of the expected `0.2.0` feature release |
+| Capability                                                     | Public location                                                               | Java OWLAPI relationship                                                                                          |
+| -------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Manager closure queries, change application, and saving        | `owlapi/model` and the root convenience facade where approved by the registry | Methods and model/change types corresponding to `org.semanticweb.owlapi.model`                                    |
+| `StringDocumentTarget` and storage diagnostics                 | `owlapi/io`                                                                   | Corresponds to `org.semanticweb.owlapi.io`                                                                        |
+| Functional Syntax and RDF/XML format identities                | `owlapi/formats`                                                              | Corresponds to `org.semanticweb.owlapi.formats`                                                                   |
+| `OWLOntologyImportsClosureSetProvider` and `OWLOntologyMerger` | new explicit `owlapi/util` entry point                                        | Corresponds to `org.semanticweb.owlapi.util`; adding this subpath is part of the expected `0.2.0` feature release |
 
 RDF reconstruction and OWL→RDF mapping remain internal semantic engines. The
 RDF/XML storer composes the internal `OwlToRdfTranslator` with a
@@ -180,7 +180,7 @@ recreate the staging `manager/` bucket.
 Implement:
 
 ```javascript
-manager.importsClosure(ontology);    // cycle-safe iterable including the root
+manager.importsClosure(ontology); // cycle-safe iterable including the root
 manager.getImportsClosure(ontology); // defensive Set copy
 ```
 

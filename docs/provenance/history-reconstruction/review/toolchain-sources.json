@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-08-25T21:46:16.225Z",
+  "tools": [
+    {
+      "id": "age",
+      "version": "v1.3.1",
+      "releaseUrl": "https://github.com/FiloSottile/age/releases/tag/v1.3.1",
+      "tag": "v1.3.1",
+      "tagObjectOid": null,
+      "sourceCommitOid": "b8564adb6d58329b8a3e267360ca2b0abc4efe1d",
+      "tagVerification": {
+        "state": "VERIFIED",
+        "reason": "The lightweight tag resolves to the recorded commit; GitHub CLI 2.98.0 successfully verified the official release-asset attestation."
+      },
+      "archive": {
+        "name": "age-v1.3.1-windows-amd64.zip",
+        "size": 10741348,
+        "sha256": "c56e8ce22f7e80cb85ad946cc82d198767b056366201d3e1a2b93d865be38154",
+        "digestAuthority": "Matches the digest published by GitHub for release asset 333752673."
+      },
+      "executable": {
+        "name": "age.exe",
+        "sha256": "90f5cc37249c06e0b302e476a8a63bcefeecd9437c192b8af33e6ff2d69558dd",
+        "identity": "v1.3.1",
+        "verification": [
+          "The containing archive matches GitHub's published SHA-256 digest.",
+          "gh attestation verify completed successfully against FiloSottile/age.",
+          "age.exe --version returned v1.3.1."
+        ]
+      }
+    },
+    {
+      "id": "git-filter-repo",
+      "version": "v2.47.0",
+      "releaseUrl": "https://github.com/newren/git-filter-repo/releases/tag/v2.47.0",
+      "tag": "v2.47.0",
+      "tagObjectOid": "cbad6503f5de690c9d5a376d900136691c330793",
+      "sourceCommitOid": "6f79afc8c90c592a3052e6cc53c2ca8907515bca",
+      "tagVerification": {
+        "state": "UNSIGNED",
+        "reason": "GitHub reports the annotated upstream tag as unsigned; no stronger signature claim is made."
+      },
+      "archive": {
+        "name": "git-filter-repo-2.47.0.tar.xz",
+        "size": 186836,
+        "sha256": "4662cbe5918196a9f1b5b3e1211a32e61cff1812419c21df4f47c5439f09e902",
+        "digestAuthority": "Locally observed digest of the official GitHub release asset; executable identity is independently bound to the tagged Git blob."
+      },
+      "executable": {
+        "name": "git-filter-repo",
+        "sha256": "67447413e273fc76809289111748870b6f6072f08b17efe94863a92d810b7d94",
+        "identity": "a40bce548d2c",
+        "gitBlobOid": "a40bce548d2c0bd0b8d5e233e8930d462e35e495",
+        "verification": [
+          "The extracted script's full Git blob OID exactly matches the file at refs/tags/v2.47.0.",
+          "git-filter-repo --version returned the expected twelve-character executable blob prefix a40bce548d2c."
+        ]
+      }
+    }
+  ]
+}

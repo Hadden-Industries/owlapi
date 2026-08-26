@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haddenindustries.com/schemas/owlapi/history-reconstruction/accepted-off-platform-backup.v1.schema.json",
+  "title": "Phase 19A accepted-reconstruction off-platform backup evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "backupKind",
+    "authority",
+    "copiedAt",
+    "acceptedTips",
+    "sourceEvidence",
+    "uncompressedArchive",
+    "encryptedArchive",
+    "encryption",
+    "destination",
+    "verification",
+    "restoreRehearsal"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "backupKind": { "const": "ACCEPTED_RECONSTRUCTION_TIPS" },
+    "authority": { "const": "NON_AUTHORITATIVE_RECOVERY_COPY" },
+    "copiedAt": { "type": "string", "format": "date-time" },
+    "acceptedTips": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["packageTipOid", "webvowlMainTipOid", "webvowlUiTipOid"],
+      "properties": {
+        "packageTipOid": { "$ref": "#/$defs/gitSha1" },
+        "webvowlMainTipOid": { "$ref": "#/$defs/gitSha1" },
+        "webvowlUiTipOid": { "$ref": "#/$defs/gitSha1" }
+      }
+    },
+    "sourceEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "backupManifestSha256",
+        "sha256SumsSha256",
+        "packageBundleSha256",
+        "webvowlBundleSha256"
+      ],
+      "properties": {
+        "backupManifestSha256": { "$ref": "#/$defs/sha256" },
+        "sha256SumsSha256": { "$ref": "#/$defs/sha256" },
+        "packageBundleSha256": { "$ref": "#/$defs/sha256" },
+        "webvowlBundleSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "uncompressedArchive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fileName", "size", "sha256"],
+      "properties": {
+        "fileName": { "const": "owlapi-phase19A-accepted-reconstruction.tar" },
+        "size": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "encryptedArchive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fileName", "size", "sha256"],
+      "properties": {
+        "fileName": { "const": "owlapi-phase19A-accepted-reconstruction.tar.age" },
+        "size": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "encryption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["format", "recipientType", "recipientPublicKey", "recipientFingerprint"],
+      "properties": {
+        "format": { "const": "age-v1" },
+        "recipientType": { "const": "ssh-ed25519" },
+        "recipientPublicKey": { "type": "string", "pattern": "^ssh-ed25519 " },
+        "recipientFingerprint": { "type": "string", "pattern": "^SHA256:" }
+      }
+    },
+    "destination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "destinationId", "authority"],
+      "properties": {
+        "provider": { "const": "Microsoft OneDrive" },
+        "destinationId": { "const": "hadden-industries-software-owlapi-backups-phase19A" },
+        "authority": { "const": "NO_DEVELOPMENT_MERGE_PUBLICATION_OR_CANONICAL_SOURCE_AUTHORITY" }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["copyState", "sourceSha256", "destinationSha256", "digestMatch"],
+      "properties": {
+        "copyState": { "const": "CONFIRMED" },
+        "sourceSha256": { "$ref": "#/$defs/sha256" },
+        "destinationSha256": { "$ref": "#/$defs/sha256" },
+        "digestMatch": { "const": true }
+      }
+    },
+    "restoreRehearsal": { "const": "NOT_RUN_OUT_OF_SCOPE" }
+  },
+  "$defs": {
+    "gitSha1": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

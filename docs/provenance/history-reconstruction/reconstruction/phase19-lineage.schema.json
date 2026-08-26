@@ -1,0 +1,359 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haddenindustries.com/schemas/owlapi/phase19/reconstruction-lineage.v1.schema.json",
+  "title": "Phase 19A project-owned reconstruction lineage",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "source",
+    "filterPolicy",
+    "targets",
+    "evidenceDigests",
+    "referenceQualification",
+    "summary",
+    "records"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseOid", "tipOid", "sharedHistoryAnchorOid"],
+      "properties": {
+        "baseOid": { "$ref": "#/$defs/oid" },
+        "tipOid": { "$ref": "#/$defs/oid" },
+        "sharedHistoryAnchorOid": { "$ref": "#/$defs/oid" }
+      }
+    },
+    "filterPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owlapi", "webvowlMain", "webvowlUi"],
+      "properties": {
+        "owlapi": { "$ref": "#/$defs/filterRepoPolicy" },
+        "webvowlMain": { "$ref": "#/$defs/filterRepoPolicy" },
+        "webvowlUi": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pruneEmpty"],
+          "properties": {
+            "pruneEmpty": { "const": "NOT_APPLICABLE_INTERACTIVE_REBASE" }
+          }
+        }
+      }
+    },
+    "targets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owlapi", "webvowlMain", "webvowlUi"],
+      "properties": {
+        "owlapi": { "$ref": "#/$defs/target" },
+        "webvowlMain": { "$ref": "#/$defs/target" },
+        "webvowlUi": { "$ref": "#/$defs/target" }
+      }
+    },
+    "evidenceDigests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inventorySha256",
+        "partitionDecisionsSha256",
+        "packageNativeMapSha256",
+        "packageSigningMapSha256",
+        "webvowlMainSigningMapSha256",
+        "webvowlUiReplayReportSha256",
+        "webvowlUiSigningMapSha256",
+        "referenceCandidatesSha256"
+      ],
+      "properties": {
+        "inventorySha256": { "$ref": "#/$defs/sha256" },
+        "partitionDecisionsSha256": { "$ref": "#/$defs/sha256" },
+        "packageNativeMapSha256": { "$ref": "#/$defs/sha256" },
+        "packageSigningMapSha256": { "$ref": "#/$defs/sha256" },
+        "webvowlMainSigningMapSha256": { "$ref": "#/$defs/sha256" },
+        "webvowlUiReplayReportSha256": { "$ref": "#/$defs/sha256" },
+        "webvowlUiSigningMapSha256": { "$ref": "#/$defs/sha256" },
+        "referenceCandidatesSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "referenceQualification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidateCount", "resolutions"],
+      "properties": {
+        "candidateCount": { "type": "integer", "minimum": 0 },
+        "resolutions": {
+          "type": "object",
+          "additionalProperties": {
+            "enum": ["QUALIFIED_REFERENCE", "NOT_A_REFERENCE", "UNRESOLVED"]
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["originalCommitCount", "resultCommitIdentityCount", "outcomes"],
+      "properties": {
+        "originalCommitCount": { "type": "integer", "minimum": 1 },
+        "resultCommitIdentityCount": { "type": "integer", "minimum": 0 },
+        "outcomes": {
+          "type": "object",
+          "propertyNames": { "$ref": "#/$defs/outcome" },
+          "additionalProperties": { "type": "integer", "minimum": 1 }
+        }
+      }
+    },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/record" }
+    }
+  },
+  "$defs": {
+    "oid": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "outcome": {
+      "enum": [
+        "MAPPED_ONE_TO_ONE",
+        "MAPPED_SPLIT",
+        "MAPPED_SQUASHED",
+        "EXCLUDED_OUT_OF_SCOPE",
+        "PRUNED_BECAME_EMPTY",
+        "PRUNED_DEGENERATE",
+        "MANUAL_RECONSTRUCTION_REQUIRED"
+      ]
+    },
+    "filterRepoPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pruneEmpty", "pruneDegenerate"],
+      "properties": {
+        "pruneEmpty": { "const": "always" },
+        "pruneDegenerate": { "const": "always" }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tipOid", "treeOid"],
+      "properties": {
+        "tipOid": { "$ref": "#/$defs/oid" },
+        "treeOid": { "$ref": "#/$defs/oid" }
+      }
+    },
+    "mappingChain": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "originalOid": { "$ref": "#/$defs/oid" },
+        "gitFilterRepoOid": { "$ref": "#/$defs/oid" },
+        "replayOid": { "$ref": "#/$defs/oid" },
+        "signedOid": { "$ref": "#/$defs/oid" }
+      },
+      "oneOf": [
+        {
+          "required": ["originalOid"],
+          "properties": { "originalOid": { "$ref": "#/$defs/oid" } }
+        },
+        {
+          "required": ["gitFilterRepoOid", "signedOid"],
+          "properties": {
+            "gitFilterRepoOid": { "$ref": "#/$defs/oid" },
+            "signedOid": { "$ref": "#/$defs/oid" }
+          }
+        },
+        {
+          "required": ["replayOid", "signedOid"],
+          "properties": {
+            "replayOid": { "$ref": "#/$defs/oid" },
+            "signedOid": { "$ref": "#/$defs/oid" }
+          }
+        }
+      ]
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "commitOid",
+        "treeOid",
+        "resultKind",
+        "reachableFrom",
+        "mappingChain"
+      ],
+      "properties": {
+        "repository": { "enum": ["Hadden-Industries/owlapi", "Hadden-Industries/WebVOWL"] },
+        "commitOid": { "$ref": "#/$defs/oid" },
+        "treeOid": { "$ref": "#/$defs/oid" },
+        "resultKind": {
+          "enum": [
+            "REWRITTEN_PACKAGE_COMMIT",
+            "UNCHANGED_WEBVOWL_COMMIT",
+            "RECONSTRUCTED_WEBVOWL_MAIN_COMMIT",
+            "REPLAYED_WEBVOWL_UI_COMMIT"
+          ]
+        },
+        "reachableFrom": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "owlapi:main",
+              "webvowl:main",
+              "webvowl:feature/ui-ux-enhancements"
+            ]
+          }
+        },
+        "mappingChain": { "$ref": "#/$defs/mappingChain" }
+      }
+    },
+    "referenceQualification": {
+      "type": "object",
+      "required": [
+        "candidateId",
+        "commitOid",
+        "token",
+        "resolution",
+        "canonicalReference",
+        "rationale"
+      ],
+      "properties": {
+        "byteEnd": { "type": "integer", "minimum": 0 },
+        "byteStart": { "type": "integer", "minimum": 0 },
+        "candidateId": { "type": "string", "minLength": 1 },
+        "canonicalReference": { "type": ["string", "null"] },
+        "commitOid": { "$ref": "#/$defs/oid" },
+        "githubKind": { "type": ["string", "null"] },
+        "kind": { "type": "string" },
+        "number": { "type": "integer", "minimum": 0 },
+        "rationale": { "type": "string", "minLength": 1 },
+        "repository": { "type": ["string", "null"] },
+        "resolution": {
+          "enum": ["QUALIFIED_REFERENCE", "NOT_A_REFERENCE", "UNRESOLVED"]
+        },
+        "resolvedRepository": { "type": ["string", "null"] },
+        "token": { "type": "string", "minLength": 1 }
+      }
+    },
+    "zeroResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tool",
+        "rule",
+        "observedReplayOid",
+        "originalParents",
+        "parentResultCommitOids",
+        "rationale"
+      ],
+      "properties": {
+        "tool": { "type": "string", "minLength": 1 },
+        "rule": {
+          "enum": [
+            "DUPLICATE_REWRITTEN_OID_EMPTY_REPLAY",
+            "EXCLUDED_BY_APPROVED_UNRELATED_CLASSIFICATION"
+          ]
+        },
+        "observedReplayOid": {
+          "oneOf": [{ "$ref": "#/$defs/oid" }, { "type": "null" }]
+        },
+        "originalParents": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/oid" },
+          "uniqueItems": true
+        },
+        "parentResultCommitOids": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/oid" },
+          "uniqueItems": true
+        },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "originalCommitOid",
+        "originalParents",
+        "originalTreeOid",
+        "originalSubject",
+        "classification",
+        "splitRequired",
+        "outcome",
+        "results",
+        "issueReferenceQualifications"
+      ],
+      "properties": {
+        "originalCommitOid": { "$ref": "#/$defs/oid" },
+        "originalParents": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/oid" },
+          "uniqueItems": true
+        },
+        "originalTreeOid": { "$ref": "#/$defs/oid" },
+        "originalSubject": { "type": "string" },
+        "classification": {
+          "enum": [
+            "OWLAPI_PACKAGE",
+            "WEBVOWL_INTEGRATION",
+            "WEBVOWL_UI_UX",
+            "SHARED_BUILD_OR_DEPENDENCY",
+            "UNRELATED",
+            "MIXED_REQUIRES_SPLIT"
+          ]
+        },
+        "splitRequired": { "type": "boolean" },
+        "outcome": { "$ref": "#/$defs/outcome" },
+        "results": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/result" }
+        },
+        "issueReferenceQualifications": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/referenceQualification" }
+        },
+        "zeroResult": { "$ref": "#/$defs/zeroResult" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "outcome": { "const": "MAPPED_ONE_TO_ONE" } } },
+          "then": {
+            "properties": { "results": { "type": "array", "minItems": 1, "maxItems": 1 } }
+          }
+        },
+        {
+          "if": { "properties": { "outcome": { "const": "MAPPED_SPLIT" } } },
+          "then": { "properties": { "results": { "type": "array", "minItems": 2 } } }
+        },
+        {
+          "if": {
+            "properties": {
+              "outcome": {
+                "enum": [
+                  "EXCLUDED_OUT_OF_SCOPE",
+                  "PRUNED_BECAME_EMPTY",
+                  "PRUNED_DEGENERATE",
+                  "MANUAL_RECONSTRUCTION_REQUIRED"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": ["zeroResult"],
+            "properties": {
+              "results": { "type": "array", "maxItems": 0 },
+              "zeroResult": { "$ref": "#/$defs/zeroResult" }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

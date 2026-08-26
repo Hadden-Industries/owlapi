@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "baseOid": "28e7dd9540622e8cb723dc000824b5eef5ae775f",
+    "tipOid": "8a40694950d4997141fcb039b4ac45bc19a224e3",
+    "partitionDraftSha256": "76345de472ae267850cc3c5e258caa9b8e38cd0d7ba5a70daac44e8191ba17e9"
+  },
+  "defaultDecision": "ACCEPT_PROPOSED_CLASSIFICATION_AFTER_SUBJECT_PATH_AND_DIFF_REVIEW",
+  "reviewMethod": "Each commit subject and ownership-signal summary was reviewed in original chronological order. Ambiguous or mechanically mixed rows were checked against the original name-status change set, and semantically ambiguous package/application rows were checked against their original patch or file content. These overrides correct path-location signals that do not describe the change's actual ownership.",
+  "classificationRationales": {
+    "OWLAPI_PACKAGE": "The change is wholly owned by the standalone owlapi implementation, its package tests, reference tooling, conformance evidence, or continuing package documentation.",
+    "WEBVOWL_INTEGRATION": "The change belongs to WebVOWL ontology ingestion, VOWL conversion, application output, corpus/reference integration, or another non-visual application seam; its path location does not make it package-owned or UI/UX work.",
+    "WEBVOWL_UI_UX": "The change alters WebVOWL's user-visible interface, interaction, accessibility, editing experience, visual assets, or UI-specific tests and belongs on the reconstructed UI/UX lineage.",
+    "SHARED_BUILD_OR_DEPENDENCY": "The change is repository-wide build, dependency, lint, formatting, test-runner, or licence infrastructure rather than a semantic package or UI capability.",
+    "UNRELATED": "The change is useful WebVOWL repository history but is outside the owlapi package, application integration, UI/UX, and shared build/dependency partitions.",
+    "MIXED_REQUIRES_SPLIT": "The original commit combines package-owned changes with WebVOWL-only integration, root configuration, or other application-owned changes and therefore requires a reviewed package/non-package split."
+  },
+  "overrides": {
+    "OWLAPI_PACKAGE": [
+      "6090e0a29a1d697842e0982e5218f72659f4e296",
+      "5e6ea0ee33463df1ec7f8c7b6b96f494826857af",
+      "6e31c2731b1a21494a7012c5f2d884d8db706ce3"
+    ],
+    "WEBVOWL_INTEGRATION": [
+      "5bfbce41f4156933bc8354b74786930134a4e984",
+      "d6be086beec2c0267a35f24a5d6d968a37f215e8",
+      "3f32d85c018b5e30941a2645301e0c2faa438d6f",
+      "195649402b73147056cc40380da9ef2d00f73abb",
+      "9f3ab509a6aed5b4699a064175bc2da94fc9d7f9",
+      "9ff1b861bcfbe774796dd7cac388dc610a8431ae",
+      "b945e968f03728a226916ae4b812d046f304c785",
+      "d638d2399739633002494a70dcc4dec36ae257cb",
+      "09215d874bb6c8e3704d5755701d194dc8d606a2",
+      "8588ba4963632c3f6a405571818d4900083f9fc8",
+      "5aac49d53ee3b7ebb1ae21bd4bd7a553c3fcf9ce",
+      "fd1c021da2d18a2013deda5bd3f588a62de17bb2",
+      "15cc043c0a2a930c484ff4e73fe55bec8a7b9a7c",
+      "93e59edfd2d2ddd62dfdb6e5338f767864f960c7",
+      "77e8b5878d9eba0c0ea7161eb14fddc09deae89e",
+      "deda9a2cb22a814279aba9257a5509b0ef851d1e",
+      "187178b95a9080f59e3f19553b7ff154c2701859",
+      "a44b625ee102850027adbb14771d3f6fb00a3c14",
+      "94cac13b470634ccd9679604c381b5bb991ab6c1",
+      "e9fd356472e6dbcf9a021f6383d74581940efc77",
+      "036fd7a17eda6c7a5eea8ea8482755d02e3ac158",
+      "b804591ad8a48e2049ad0d0949237d14bf9162c4",
+      "b0d75f3fc99a9d5ff5221787018f84a53750e9e5",
+      "8de8bff4c8cffecd059a6c6b8554e62ddbdb207d",
+      "6567d26058f600159e1f622ee87a829a11402f12",
+      "882006c131ffaa1f072512871e48a6728f54e57c",
+      "10a235a03b64de5fa3a38de3b1feb6c23e61ddeb",
+      "125c0ea6de6a141eece84a95272a4a5a74b801ab",
+      "fcf4a2b6a9015a91cf8034cbdf9eb9fffaafab33",
+      "ebdd0d937add14c6a2b593591a97c260c8e17ea5",
+      "7a7196c6bfce2411b63d3e8268b52bda19fda23d",
+      "91c52d9dfcb4340546baf75ab2b4f3fa7643840f",
+      "b93574efccb4d23d6027ce41dcb4db32a0f0a3bc",
+      "ae32066ea6e1d4a1c6f5bd95b9b0ca05f9a108aa",
+      "dc2d4028c01276e9066da1ca91817004b4761558",
+      "02035ccca0b7ccc582d73a3efaf2701576ea1cbc",
+      "ad4bc718fd367fcab83b43ab423f650f5e3b542f",
+      "71d9534f8259411f60fd1ae22d369f4e118e7f84",
+      "e9050865bd955e104ac446732b66074005beba34",
+      "a9a9d65ff145e1b47ebcf3021308e5dea38a8b2a",
+      "6b5f811fb820ac18725281c2b579347296ffa49e",
+      "7cd4f62c34787ba2b5eaf95a33293f98c6a5423b",
+      "aaf137aca7c7f90d0362d371f8f6bb7eedb027f3",
+      "136a62a1851eaa77b71bba6ac5dcd2de27cf4776",
+      "cbc862a3613e1491c1d76ecdcee55c49957a15d6"
+    ],
+    "WEBVOWL_UI_UX": [
+      "cd720343bb8012f9749e39fffdfd0fec70497ff3",
+      "b2895f2727e65f30fa211ca4e185f626b710b0cb",
+      "b197460091bde42120bb92ef3e61985e1ab94dd1",
+      "de8ae92375e988fe4d4946c1771d995fe85209f5",
+      "080a0994a1580efcbfba0af1d58718743c5d2bdd",
+      "7d2e02096e3ddd2f999d04b189da70b148f6c9bd",
+      "89f3a1fd59cb9d029fd748a3bd059e330d2ae9ee",
+      "494a9ed7219a08df5462a109bb53322f8b417299",
+      "9309b5db0fa07792689b665e8c1420631c339da0",
+      "4d1ce4a85420bcb9fb7f65dafdf75a540943db29",
+      "e3ea16667b7d5c5fa78e06ab12236a773e0d4545",
+      "0e745373b388b49f8ddbf14fbb37ffa983d8f49c",
+      "11e91e771aed06e54c59e87f94b6e967dcf28799",
+      "9790bde0b7c472ebcd34e82b4dabb3bcadc9768b",
+      "fd6fb7ab46f1b64773dfb1eaa526f18d62515a7d",
+      "065f4d12c09263da7751f65e238787e731f68aa1",
+      "1b2c82e99887d546c6b16456396cf609987e6f73",
+      "c4e2ba539142c8908f3238900407dfa078987813",
+      "55734f8ce11c539a176d3599a3ada607936086a4",
+      "4047cd067948021581e33b5a307c4bbb788ab549",
+      "5a830ba31cba10cd2e2857548a82314606c87f23",
+      "c188faa07bccc981e38058065a62d852031b3cbc",
+      "6640e598478c9b3bfd07eda7753f313386e4bbe2",
+      "c32707aada70cbbd2c9d8f1e444c9fdb2ca1ea6b",
+      "f1ee9419022507ada396100d62c80ed546009475",
+      "aae21db920f62c8c2db902be27bd9cf69297a175",
+      "39790debb0c7eae1c4677ac76f3ad81929577c3b",
+      "c23bc7b263385cd723e8c5bee13edba04edb3c44",
+      "3c9f8a8bc3d42fc75bdd64d7c4476eab0399fedf",
+      "6c189c50313a4ef1e7d4e0b3a21588bdade3139c",
+      "5a96f449c3ab561da5c0941641e664f1df6fa856",
+      "394bfd7cbdbb6490739337cabbe80972ec8ee82a"
+    ],
+    "SHARED_BUILD_OR_DEPENDENCY": [
+      "ba789525e87d3936d298f1e76b4e6fe931b74eb0",
+      "ccbd8e46609adf7c3af20ebc9499100dc3e9b4fa",
+      "2301d7e489ea5420b8816fb81f8e269680afd821",
+      "c066fb0a245f74e792953403bf68a7329ea85d43",
+      "b48117ea67d3415b02886a0e01e0aee04c328240",
+      "a3223d8e01019ce07dc1b49d1602bc06b9c06785",
+      "c61bdc4a68971f4ca70b00a80fcc5c2a1c1c7432",
+      "28aae57bf432282e02a4792a6f0363b8e89a0f29",
+      "92f0a980f615bb3a474670341b22eb5f30060dc0",
+      "f182bd92e2f158d5a6bae2d529f35137e3479f49",
+      "5967a0fe0575e03f84e65cb8f18fd4229612b315",
+      "717eb4d230a427ea2cc3a220f2d6743c26f70a3c",
+      "f52381be6e22501ef0594e4fbede4e34863b89e5",
+      "c903025de890514e4978f1950c60daabbecb9c3d",
+      "0d0e26ca73e6d988118a935365baef9bd50cbb8c",
+      "4a0d6ba738dac8ffe5b5063d107aa1f80a0bc54a",
+      "80f560233bdcc280f1bbeff29e3e015a0b091069",
+      "863641af8cc8596d95af92413905b8e734d49f8b",
+      "ad44b32ddd673480c98b1d93a01d869a9964bc94",
+      "29909bb0397d4734e89a535ba3f30fb4620c2977",
+      "ff40dd15e7be3d2acf065e86baf774309d8f06f7",
+      "5ec5ccf6308c360156133406b2d3409487e22814"
+    ],
+    "UNRELATED": [],
+    "MIXED_REQUIRES_SPLIT": [
+      "d6371c586761597b5a37144e6320e56dbd85cbd1"
+    ]
+  },
+  "pathDispositionOverrides": {
+    "715b6b0d0f4d068919139a2cc467499129e52da3": {
+      "include": [],
+      "exclude": [
+        "docs/owlapi-js/migration/lessons/006-development-integration.md"
+      ],
+      "rationale": "The Phase 7 lesson is wholly about WebVOWL's development-only VOWL conversion and application route. Its historical staging directory does not make it continuing owlapi package documentation."
+    },
+    "d6371c586761597b5a37144e6320e56dbd85cbd1": {
+      "include": [],
+      "exclude": [
+        "docs/owlapi-js/migration/lessons/006-development-integration.md",
+        "docs/owlapi-js/performance/baseline.md"
+      ],
+      "rationale": "This correction has reusable benchmark-isolation rules in the migration status and playbook, but its Phase 7 lesson and baseline edits govern WebVOWL/VOWL-builder measurements only."
+    },
+    "dff9e8ab98d246d5e46b8103e5e389363d416f94": {
+      "include": [],
+      "exclude": [
+        "docs/owlapi-js/migration/lessons/006-development-integration.md",
+        "docs/owlapi-js/performance/baseline.md"
+      ],
+      "rationale": "The reusable benchmark-environment implementation and general rules belong to owlapi; the changed Phase 7 lesson and baseline passage describe WebVOWL/VOWL-builder measurements."
+    },
+    "afd4298684e5b909707940d2acff4ac35100b114": {
+      "include": [],
+      "exclude": [
+        "docs/owlapi-js/migration/lessons/007-production-cutover.md"
+      ],
+      "rationale": "The Phase 8 lesson is wholly about WebVOWL's production ingestion cutover. The same commit's parser and RDF-to-OWL corrections are independently package-owned and remain selected."
+    },
+    "413ebef652bf999bbe8d2bd5e473d648329f9b06": {
+      "include": [],
+      "exclude": [
+        "docs/owlapi-js/compatibility/production-corpus-differences.json",
+        "docs/owlapi-js/migration/lessons/007-production-cutover.md"
+      ],
+      "rationale": "The production-corpus difference registry and Phase 8 closure lesson govern VOWL-JSON application output; the shared translator fixes in this commit remain owlapi package changes."
+    },
+    "5966c5ae454a89b724f6b368e48137c1034b0ad0": {
+      "include": [],
+      "exclude": [
+        "docs/owlapi-js/compatibility/production-corpus-differences.json"
+      ],
+      "rationale": "The Turtle parser, conformance evidence and package benchmarks are package-owned; the production-corpus differences file governs WebVOWL's VOWL-JSON comparison only."
+    }
+  }
+}

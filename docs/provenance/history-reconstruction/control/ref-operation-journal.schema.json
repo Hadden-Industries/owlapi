@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haddenindustries.com/schemas/owlapi/phase19/ref-operation-journal-record.v1.schema.json",
+  "title": "Phase 19 append-only ref-operation journal record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "sequence", "previousRecordSha256", "event", "recordSha256"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "sequence": { "type": "integer", "minimum": 0 },
+    "previousRecordSha256": {
+      "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/sha256" }]
+    },
+    "event": { "$ref": "#/$defs/event" },
+    "recordSha256": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "oid": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "objectOid", "commitOid", "objectType", "observation"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "objectOid": { "$ref": "#/$defs/oid" },
+        "commitOid": { "$ref": "#/$defs/oid" },
+        "objectType": { "enum": ["commit", "tag"] },
+        "observation": { "enum": ["EXPLICIT", "LOCAL_GIT"] }
+      }
+    },
+    "initialEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "observedAt",
+        "authorizationState",
+        "baseOid",
+        "tipOid",
+        "refs",
+        "commitInventorySha256",
+        "partitionDecisionsSha256",
+        "referenceCandidatesSha256"
+      ],
+      "properties": {
+        "type": { "const": "INITIAL_STATE" },
+        "observedAt": { "type": "string", "format": "date-time" },
+        "authorizationState": { "const": "NOT_AUTHORIZED" },
+        "baseOid": { "$ref": "#/$defs/oid" },
+        "tipOid": { "$ref": "#/$defs/oid" },
+        "refs": { "type": "array", "items": { "$ref": "#/$defs/ref" } },
+        "commitInventorySha256": { "$ref": "#/$defs/sha256" },
+        "partitionDecisionsSha256": { "$ref": "#/$defs/sha256" },
+        "referenceCandidatesSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "plannedEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "observedAt", "ref", "expectedOldOid", "intendedNewOid"],
+      "properties": {
+        "type": { "const": "REF_UPDATE_PLANNED" },
+        "observedAt": { "type": "string", "format": "date-time" },
+        "ref": { "type": "string", "minLength": 1 },
+        "expectedOldOid": { "$ref": "#/$defs/oid" },
+        "intendedNewOid": { "$ref": "#/$defs/oid" }
+      }
+    },
+    "event": {
+      "oneOf": [
+        { "$ref": "#/$defs/initialEvent" },
+        { "$ref": "#/$defs/plannedEvent" }
+      ]
+    }
+  }
+}

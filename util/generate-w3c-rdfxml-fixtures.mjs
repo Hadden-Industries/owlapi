@@ -13,15 +13,15 @@ const DEFAULT_INPUT_URL = new URL(
   import.meta.url,
 );
 const UPSTREAM_MANIFEST_URL = new URL(
-  "../docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl",
+  "../docs/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl",
   import.meta.url,
 );
 const CLASSIFICATIONS_URL = new URL(
-  "../docs/owlapi-js/conformance/classification-manifests.json",
+  "../docs/conformance/classification-manifests.json",
   import.meta.url,
 );
 const FIXTURE_URL = new URL(
-  "../docs/owlapi-js/conformance/generated/w3c-rdfxml.json",
+  "../docs/conformance/generated/w3c-rdfxml.json",
   import.meta.url,
 );
 
@@ -236,12 +236,12 @@ Object.assign(classification, {
   },
   excludedSourceDefinitions,
   localManifestArtifact:
-    "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl",
+    "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl",
   manifestEntryCount: tests.length,
   manifestSha256,
   negativeSyntaxTestCount,
   requiredTestCount: tests.length,
-  runner: "src/owlapi-js/parser/rdfxml/rdfXml.conformance.test.js",
+  runner: "internal/parsing/rdfxml/rdfXml.conformance.test.js",
   runnerParsingPolicy:
     "Every active evaluation case must produce an RDF/JS dataset graph-isomorphic to its N-Triples result; every active negative-syntax case must reject before RDF-to-OWL reconstruction.",
   runnerScope:

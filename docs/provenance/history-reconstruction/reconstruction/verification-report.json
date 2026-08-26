@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "verification": "PASS",
+  "lineageSha256": "5ba7442cc014d04d215642d1e4e5a5ce9139ff1fdf274ddb5f0c54bacb5ff897",
+  "lineageSchemaSha256": "b212eb63726fceb9cfe927cdee3274ab14acb061e722cc597be45d846e667c6f",
+  "expectedSigningFingerprint": "SHA256:0lELaqBbgGHdSctv4GOpPmROX56wNCaii2PLZI5pXCU",
+  "acceptedTargets": {
+    "owlapi": {
+      "tipOid": "739e988b6b3196c626247713a6f3d2801a57d210",
+      "treeOid": "850f1289f254d174ef05080c2378e2e3497c00b6"
+    },
+    "webvowlMain": {
+      "tipOid": "81b4cff89cece60ff5b8c30255658fbd770d01cc",
+      "treeOid": "772eee3afac9b71f72ca634ca4b397a1b5d17acb"
+    },
+    "webvowlUi": {
+      "tipOid": "fde346f09e1f395646d6e3577930d23875a2a2c2",
+      "treeOid": "cf03115fc5269d95c7cee3f568b061281b82b970"
+    }
+  },
+  "checks": {
+    "schema": "PASS",
+    "evidenceDigests": "PASS",
+    "immutableOriginalObjects": "PASS",
+    "resultObjectsAndTrees": "PASS",
+    "resultReachability": "PASS",
+    "authorCommitterChronology": "PASS",
+    "messageAndOriginTrailers": "PASS",
+    "parentTopology": "PASS",
+    "zeroResultTopology": "PASS",
+    "issueReferenceQualification": "PASS",
+    "acceptedTipTrees": "PASS",
+    "signedRanges": "PASS"
+  },
+  "summary": {
+    "originalCommitCount": 275,
+    "resultCommitIdentityCount": 305,
+    "signedCommitCount": 234,
+    "signedCommitCounts": {
+      "owlapi": 32,
+      "webvowlMain": 120,
+      "webvowlUi": 82
+    },
+    "issueReferenceCandidateCount": 1,
+    "messageModes": {
+      "EXACT_ORIGINAL_MESSAGE": 283,
+      "SPLIT_MESSAGE_WITH_ORIGIN_TRAILER": 22
+    },
+    "outcomes": {
+      "MAPPED_ONE_TO_ONE": 241,
+      "PRUNED_BECAME_EMPTY": 2,
+      "MAPPED_SPLIT": 32
+    }
+  }
+}

@@ -1,0 +1,296 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Hadden-Industries/owlapi/main/docs/compatibility/java-api-surface.schema.json",
+  "title": "owlapi public API surface and Java OWLAPI gap registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "packageName",
+    "packageVersion",
+    "javaReference",
+    "vocabularies",
+    "namespaces",
+    "bindings",
+    "javaTypes",
+    "summary"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "minLength": 1 },
+    "schemaVersion": { "const": 1 },
+    "packageName": { "const": "owlapi" },
+    "packageVersion": { "$ref": "#/$defs/nonEmptyString" },
+    "javaReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "revision", "source", "inventoryRule"],
+      "properties": {
+        "version": { "const": "5.5.1" },
+        "revision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "source": { "$ref": "#/$defs/nonEmptyString" },
+        "inventoryRule": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "vocabularies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capabilityStatus",
+        "progress",
+        "exposure",
+        "relationship",
+        "compatibility",
+        "stability",
+        "javaDisposition"
+      ],
+      "properties": {
+        "capabilityStatus": { "$ref": "#/$defs/stringArray" },
+        "progress": { "$ref": "#/$defs/stringArray" },
+        "exposure": { "$ref": "#/$defs/stringArray" },
+        "relationship": { "$ref": "#/$defs/stringArray" },
+        "compatibility": { "$ref": "#/$defs/stringArray" },
+        "stability": { "$ref": "#/$defs/stringArray" },
+        "javaDisposition": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "namespaces": {
+      "type": "array",
+      "minItems": 5,
+      "items": { "$ref": "#/$defs/namespace" }
+    },
+    "bindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/binding" }
+    },
+    "javaTypes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/javaType" }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "namespaceCount",
+        "publicBindingCount",
+        "javaTypeCount",
+        "javaDispositionCounts",
+        "unclassifiedJavaTypeCount"
+      ],
+      "properties": {
+        "namespaceCount": { "type": "integer", "minimum": 1 },
+        "publicBindingCount": { "type": "integer", "minimum": 1 },
+        "javaTypeCount": { "type": "integer", "minimum": 1 },
+        "javaDispositionCounts": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        },
+        "unclassifiedJavaTypeCount": { "const": 0 }
+      }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "nullableString": {
+      "oneOf": [{ "$ref": "#/$defs/nonEmptyString" }, { "type": "null" }]
+    },
+    "stringArray": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/nonEmptyString" }
+    },
+    "namespace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "javaPackage",
+        "npmSpecifier",
+        "exposure",
+        "firstPublicRelease",
+        "rationale",
+        "ownedBindingIds"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "javaPackage": { "$ref": "#/$defs/nullableString" },
+        "npmSpecifier": { "$ref": "#/$defs/nonEmptyString" },
+        "exposure": { "const": "PUBLIC" },
+        "firstPublicRelease": { "const": "0.1.0-alpha.0" },
+        "rationale": { "$ref": "#/$defs/nonEmptyString" },
+        "ownedBindingIds": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "jsExport",
+        "kind",
+        "summary",
+        "capabilityIds",
+        "capabilityStatus",
+        "progress",
+        "exposure",
+        "stability",
+        "firstPublicRelease",
+        "publicSpecifier",
+        "sourceModule",
+        "javaPackage",
+        "javaType",
+        "closestJavaAuthority",
+        "relationship",
+        "compatibility",
+        "callShapes",
+        "supportedMembers",
+        "omittedMembers",
+        "publicErrors",
+        "semanticQualifications",
+        "verification",
+        "guidance"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "jsExport": { "$ref": "#/$defs/nonEmptyString" },
+        "kind": { "enum": ["CLASS", "FUNCTION", "CONSTANT"] },
+        "summary": { "$ref": "#/$defs/nonEmptyString" },
+        "capabilityIds": { "$ref": "#/$defs/stringArray" },
+        "capabilityStatus": {
+          "enum": [
+            "REQUIRED_V1",
+            "DEFERRED",
+            "UNSUPPORTED_BY_DESIGN",
+            "DELEGATED"
+          ]
+        },
+        "progress": { "enum": ["NOT_STARTED", "IN_PROGRESS", "COMPLETE"] },
+        "exposure": { "const": "PUBLIC" },
+        "stability": { "const": "PRERELEASE" },
+        "firstPublicRelease": { "const": "0.1.0-alpha.0" },
+        "publicSpecifier": { "$ref": "#/$defs/nonEmptyString" },
+        "sourceModule": { "$ref": "#/$defs/nonEmptyString" },
+        "javaPackage": { "$ref": "#/$defs/nonEmptyString" },
+        "javaType": { "$ref": "#/$defs/nullableString" },
+        "closestJavaAuthority": { "$ref": "#/$defs/nonEmptyString" },
+        "relationship": {
+          "enum": ["JAVA_ANALOGUE", "JS_ADAPTATION", "JS_EXTENSION"]
+        },
+        "compatibility": {
+          "enum": [
+            "COMPATIBLE",
+            "ADAPTED",
+            "CONTROLLED_DEVIATION",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "callShapes": { "$ref": "#/$defs/stringArray" },
+        "supportedMembers": { "$ref": "#/$defs/stringArray" },
+        "omittedMembers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        },
+        "publicErrors": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        },
+        "semanticQualifications": { "$ref": "#/$defs/stringArray" },
+        "verification": { "$ref": "#/$defs/stringArray" },
+        "guidance": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "javaType": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "javaName",
+        "javaPackage",
+        "simpleName",
+        "kind",
+        "capabilityIds",
+        "progress",
+        "exposure",
+        "stability",
+        "jsExport",
+        "publicSpecifier",
+        "sourceModule",
+        "relationship",
+        "compatibility",
+        "disposition",
+        "supportedMembers",
+        "omittedMembers",
+        "verification",
+        "guidance"
+      ],
+      "properties": {
+        "javaName": { "$ref": "#/$defs/nonEmptyString" },
+        "javaPackage": { "$ref": "#/$defs/nonEmptyString" },
+        "simpleName": { "$ref": "#/$defs/nonEmptyString" },
+        "kind": {
+          "enum": ["CLASS", "INTERFACE", "ENUM", "ANNOTATION", "RECORD"]
+        },
+        "capabilityIds": { "$ref": "#/$defs/stringArray" },
+        "progress": { "enum": ["NOT_STARTED", "IN_PROGRESS", "COMPLETE"] },
+        "exposure": { "enum": ["PUBLIC", "INTERNAL_ONLY", "NOT_EXPOSED"] },
+        "stability": {
+          "oneOf": [
+            {
+              "enum": [
+                "PRERELEASE",
+                "INITIAL_DEVELOPMENT",
+                "DEPRECATED_INITIAL_DEVELOPMENT"
+              ]
+            },
+            { "type": "null" }
+          ]
+        },
+        "jsExport": { "$ref": "#/$defs/nullableString" },
+        "publicSpecifier": { "$ref": "#/$defs/nullableString" },
+        "sourceModule": { "$ref": "#/$defs/nullableString" },
+        "relationship": {
+          "enum": ["JAVA_ANALOGUE", "JS_ADAPTATION", "INTERNAL"]
+        },
+        "compatibility": {
+          "enum": [
+            "COMPATIBLE",
+            "ADAPTED",
+            "CONTROLLED_DEVIATION",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "disposition": {
+          "enum": [
+            "PUBLIC_MAPPED",
+            "STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT",
+            "FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT",
+            "INTERNAL_IMPLEMENTATION_ONLY",
+            "DEFERRED_NOT_EXPOSED",
+            "UNSUPPORTED_BY_DESIGN",
+            "UNCLASSIFIED"
+          ]
+        },
+        "supportedMembers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        },
+        "omittedMembers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        },
+        "verification": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        },
+        "guidance": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    }
+  }
+}

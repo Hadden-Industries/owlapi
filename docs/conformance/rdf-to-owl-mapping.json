@@ -3,7 +3,7 @@
   "phase": 5,
   "status": "COMPLETE",
   "normativeSource": "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification",
-  "implementation": "src/owlapi-js/rdf/rdfToOwlTranslator.js",
+  "implementation": "internal/mapping/rdfToOwlTranslator.js",
   "scope": {
     "firstTable": 4,
     "lastTable": 18,
@@ -13,12 +13,12 @@
     "importResolutionBoundary": "Section 3.1.1 document retrieval and include resolution remain OWLOntologyManager responsibilities; this syntax-independent translator reconstructs owl:imports declarations from its selected dataset graph."
   },
   "sharedEvidence": [
-    "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
-    "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js",
-    "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
-    "src/owlapi-js/rdf/rdfToOwlTranslator.resource.test.js",
-    "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js",
-    "src/owlapi-js/rdf/rdfToOwlTranslator.differential.test.js"
+    "internal/mapping/rdfToOwlTranslator.test.js",
+    "internal/mapping/rdfToOwlTranslator.expressions.test.js",
+    "internal/mapping/rdfToOwlTranslator.axioms.test.js",
+    "internal/mapping/rdfToOwlTranslator.resource.test.js",
+    "internal/mapping/rdfToOwlTranslator.conformance.test.js",
+    "internal/mapping/rdfToOwlTranslator.differential.test.js"
   ],
   "tables": [
     {
@@ -35,13 +35,13 @@
             "zero or more imports"
           ],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.test.js"]
         },
         {
           "id": "T04-ANONYMOUS-HEADER",
           "constructs": ["anonymous ontology", "zero or more imports"],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.test.js"]
         },
         {
           "id": "T04-REFERENCED-ONTOLOGY",
@@ -50,8 +50,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
-            "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js"
+            "internal/mapping/rdfToOwlTranslator.test.js",
+            "internal/mapping/rdfToOwlTranslator.conformance.test.js"
           ]
         }
       ]
@@ -70,7 +70,7 @@
           "id": "T05-ONTOLOGY-TYPE",
           "constructs": ["owl:Ontology type consumption"],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.test.js"]
         },
         {
           "id": "T05-REDUNDANT-RDFS-CLASS",
@@ -81,15 +81,15 @@
             "owl:Restriction plus rdfs:Class"
           ],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
         },
         {
           "id": "T05-REDUNDANT-OWL-CLASS",
           "constructs": ["owl:Restriction plus owl:Class"],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js",
-            "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js"
+            "internal/mapping/rdfToOwlTranslator.expressions.test.js",
+            "internal/mapping/rdfToOwlTranslator.conformance.test.js"
           ]
         },
         {
@@ -104,7 +104,7 @@
             "owl:OntologyProperty"
           ],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
         },
         {
           "id": "T05-REDUNDANT-RDF-LIST",
@@ -112,7 +112,7 @@
             "rdf:List type on a node with exactly one rdf:first and rdf:rest"
           ],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
         }
       ]
     },
@@ -128,7 +128,7 @@
             "owl:OntologyProperty to annotation-property declaration"
           ],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
         },
         {
           "id": "T06-OWL1-OBJECT-PROPERTY-INFERENCE",
@@ -138,7 +138,7 @@
             "owl:SymmetricProperty"
           ],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
         }
       ]
     },
@@ -164,8 +164,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
-            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"
+            "internal/mapping/rdfToOwlTranslator.test.js",
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
           ]
         },
         {
@@ -180,8 +180,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
-            "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js"
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js",
+            "internal/mapping/rdfToOwlTranslator.conformance.test.js"
           ]
         }
       ]
@@ -208,7 +208,7 @@
             "owl:NegativePropertyAssertion"
           ],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
         }
       ]
     },
@@ -238,8 +238,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
-            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+            "internal/mapping/rdfToOwlTranslator.test.js",
+            "internal/mapping/rdfToOwlTranslator.expressions.test.js"
           ]
         }
       ]
@@ -263,8 +263,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
-            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"
+            "internal/mapping/rdfToOwlTranslator.test.js",
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
           ]
         },
         {
@@ -276,8 +276,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
-            "src/owlapi-js/rdf/rdfToOwlTranslator.resource.test.js"
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js",
+            "internal/mapping/rdfToOwlTranslator.resource.test.js"
           ]
         },
         {
@@ -289,8 +289,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
-            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"
+            "internal/mapping/rdfToOwlTranslator.test.js",
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
           ]
         }
       ]
@@ -310,8 +310,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js",
-            "src/owlapi-js/rdf/rdfToOwlTranslator.resource.test.js"
+            "internal/mapping/rdfToOwlTranslator.expressions.test.js",
+            "internal/mapping/rdfToOwlTranslator.resource.test.js"
           ]
         }
       ]
@@ -331,7 +331,7 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+            "internal/mapping/rdfToOwlTranslator.expressions.test.js"
           ]
         },
         {
@@ -339,7 +339,7 @@
           "constructs": ["DataOneOf with one or more literals"],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+            "internal/mapping/rdfToOwlTranslator.expressions.test.js"
           ]
         },
         {
@@ -350,7 +350,7 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+            "internal/mapping/rdfToOwlTranslator.expressions.test.js"
           ]
         }
       ]
@@ -376,7 +376,7 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+            "internal/mapping/rdfToOwlTranslator.expressions.test.js"
           ]
         },
         {
@@ -389,7 +389,7 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+            "internal/mapping/rdfToOwlTranslator.expressions.test.js"
           ]
         },
         {
@@ -405,7 +405,7 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+            "internal/mapping/rdfToOwlTranslator.expressions.test.js"
           ]
         },
         {
@@ -419,7 +419,7 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+            "internal/mapping/rdfToOwlTranslator.expressions.test.js"
           ]
         },
         {
@@ -435,7 +435,7 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+            "internal/mapping/rdfToOwlTranslator.expressions.test.js"
           ]
         }
       ]
@@ -454,7 +454,7 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js"
+            "internal/mapping/rdfToOwlTranslator.expressions.test.js"
           ]
         }
       ]
@@ -476,8 +476,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js",
-            "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js"
+            "internal/mapping/rdfToOwlTranslator.expressions.test.js",
+            "internal/mapping/rdfToOwlTranslator.conformance.test.js"
           ]
         }
       ]
@@ -509,8 +509,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
-            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"
+            "internal/mapping/rdfToOwlTranslator.test.js",
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js"
           ]
         },
         {
@@ -523,7 +523,7 @@
             "DisjointUnion"
           ],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
         },
         {
           "id": "T16-OBJECT-PROPERTY-AXIOMS",
@@ -545,7 +545,7 @@
             "TransitiveObjectProperty"
           ],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
         },
         {
           "id": "T16-DATA-PROPERTY-AXIOMS",
@@ -559,7 +559,7 @@
             "FunctionalDataProperty"
           ],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
         },
         {
           "id": "T16-DATATYPE-AND-KEY-AXIOMS",
@@ -568,7 +568,7 @@
             "HasKey with object and data property partition"
           ],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
         },
         {
           "id": "T16-INDIVIDUAL-AXIOMS",
@@ -584,7 +584,7 @@
             "NegativeDataPropertyAssertion"
           ],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
         },
         {
           "id": "T16-OWL1-DEPRECATION-AXIOMS",
@@ -593,7 +593,7 @@
             "owl:DeprecatedProperty to owl:deprecated true"
           ],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
         },
         {
           "id": "T16-ANNOTATION-PROPERTY-AXIOMS",
@@ -603,7 +603,7 @@
             "AnnotationPropertyRange"
           ],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
         }
       ]
     },
@@ -625,8 +625,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
-            "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js"
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js",
+            "internal/mapping/rdfToOwlTranslator.conformance.test.js"
           ]
         },
         {
@@ -638,7 +638,7 @@
             "NegativePropertyAssertion annotations"
           ],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
         }
       ]
     },
@@ -656,15 +656,15 @@
           "id": "T18-NAMED-CLASS-COMPLEMENT",
           "constructs": ["named class owl:complementOf to EquivalentClasses"],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
         },
         {
           "id": "T18-NAMED-CLASS-UNION",
           "constructs": ["empty union", "singleton union", "n-ary union"],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
-            "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js"
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js",
+            "internal/mapping/rdfToOwlTranslator.conformance.test.js"
           ]
         },
         {
@@ -676,15 +676,15 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
-            "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js"
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js",
+            "internal/mapping/rdfToOwlTranslator.conformance.test.js"
           ]
         },
         {
           "id": "T18-NAMED-CLASS-ONE-OF",
           "constructs": ["empty oneOf", "nonempty named-individual oneOf"],
           "status": "COMPLETE",
-          "evidence": ["src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"]
+          "evidence": ["internal/mapping/rdfToOwlTranslator.axioms.test.js"]
         }
       ]
     }

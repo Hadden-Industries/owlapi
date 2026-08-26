@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haddenindustries.com/schemas/owlapi/phase19/partition-decisions.v1.schema.json",
+  "title": "Phase 19 history partition decisions",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "state", "source", "decisions"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "state": { "enum": ["DRAFT", "FINAL"] },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["inventorySha256", "baseOid", "tipOid"],
+      "properties": {
+        "inventorySha256": { "$ref": "#/$defs/sha256" },
+        "baseOid": { "$ref": "#/$defs/oid" },
+        "tipOid": { "$ref": "#/$defs/oid" }
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/decision" }
+    }
+  },
+  "$defs": {
+    "oid": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "base64": { "type": "string", "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$" },
+    "classification": {
+      "enum": [
+        "OWLAPI_PACKAGE",
+        "WEBVOWL_INTEGRATION",
+        "WEBVOWL_UI_UX",
+        "SHARED_BUILD_OR_DEPENDENCY",
+        "UNRELATED",
+        "MIXED_REQUIRES_SPLIT"
+      ]
+    },
+    "path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rawBase64", "utf8"],
+      "properties": {
+        "rawBase64": { "$ref": "#/$defs/base64" },
+        "utf8": { "type": ["string", "null"] }
+      }
+    },
+    "pathSignal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "status", "signal"],
+      "properties": {
+        "path": { "$ref": "#/$defs/path" },
+        "status": { "enum": ["A", "C", "D", "M", "R", "T", "U", "X", "B"] },
+        "signal": { "$ref": "#/$defs/classification" }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "originalCommitOid",
+        "originalParents",
+        "originalSubject",
+        "proposedClassification",
+        "classification",
+        "selectedPaths",
+        "excludedPaths",
+        "splitRequired",
+        "rationale",
+        "reviewState",
+        "pathSignals"
+      ],
+      "properties": {
+        "originalCommitOid": { "$ref": "#/$defs/oid" },
+        "originalParents": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/oid" },
+          "uniqueItems": true
+        },
+        "originalSubject": { "type": ["string", "null"] },
+        "proposedClassification": { "$ref": "#/$defs/classification" },
+        "classification": {
+          "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/classification" }]
+        },
+        "selectedPaths": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/path" },
+          "uniqueItems": true
+        },
+        "excludedPaths": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/path" },
+          "uniqueItems": true
+        },
+        "splitRequired": { "type": ["boolean", "null"] },
+        "rationale": { "type": ["string", "null"] },
+        "reviewState": { "enum": ["PENDING", "APPROVED"] },
+        "pathSignals": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/pathSignal" }
+        }
+      }
+    }
+  }
+}

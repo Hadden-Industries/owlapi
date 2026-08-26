@@ -1,0 +1,414 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haddenindustries.com/schemas/owlapi/third-party-material.v1.schema.json",
+  "title": "owlapi third-party material inventory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "generatedBy",
+    "package",
+    "review",
+    "summary",
+    "components",
+    "materials"
+  ],
+  "properties": {
+    "$schema": { "const": "./third-party-material.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "generatedBy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "version", "authorities"],
+      "properties": {
+        "path": { "const": "util/generate-third-party-material.mjs" },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "authorities": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "lockfile",
+        "lockfileVersion",
+        "lockfileSha256",
+        "tarballDependenciesBundled"
+      ],
+      "properties": {
+        "name": { "const": "owlapi" },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+        },
+        "lockfile": { "const": "package-lock.json" },
+        "lockfileVersion": { "type": "integer", "minimum": 3 },
+        "lockfileSha256": { "$ref": "#/$defs/sha256" },
+        "tarballDependenciesBundled": { "type": "boolean" }
+      }
+    },
+    "review": { "$ref": "#/$defs/review" },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "componentCount",
+        "productionComponentCount",
+        "developmentComponentCount",
+        "installedInspectionCount",
+        "metadataOnlyInspectionCount",
+        "metadataOnlyProductionComponentCount",
+        "metadataOnlyDevelopmentComponentCount",
+        "inspectedLicenceFileCount",
+        "inspectedNoticeFileCount",
+        "productionInspectedLicenceFileCount",
+        "productionInspectedNoticeFileCount",
+        "productionComponentsWithoutInspectedLicence",
+        "productionComponentsWithoutLicenceEvidence",
+        "metadataOnlyDevelopmentComponents",
+        "licenceDeclarationMismatchCount",
+        "noAssertionCount",
+        "declaredLicenseCounts",
+        "productionDeclaredLicenseCounts",
+        "developmentDeclaredLicenseCounts",
+        "materialCount"
+      ],
+      "properties": {
+        "componentCount": { "type": "integer", "minimum": 0 },
+        "productionComponentCount": { "type": "integer", "minimum": 0 },
+        "developmentComponentCount": { "type": "integer", "minimum": 0 },
+        "installedInspectionCount": { "type": "integer", "minimum": 0 },
+        "metadataOnlyInspectionCount": { "type": "integer", "minimum": 0 },
+        "metadataOnlyProductionComponentCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "metadataOnlyDevelopmentComponentCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "inspectedLicenceFileCount": { "type": "integer", "minimum": 0 },
+        "inspectedNoticeFileCount": { "type": "integer", "minimum": 0 },
+        "productionInspectedLicenceFileCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "productionInspectedNoticeFileCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "productionComponentsWithoutInspectedLicence": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^node_modules/" }
+        },
+        "productionComponentsWithoutLicenceEvidence": {
+          "type": "array",
+          "maxItems": 0
+        },
+        "metadataOnlyDevelopmentComponents": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^node_modules/" }
+        },
+        "licenceDeclarationMismatchCount": { "type": "integer", "minimum": 0 },
+        "noAssertionCount": { "type": "integer", "minimum": 0 },
+        "declaredLicenseCounts": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": "integer", "minimum": 1 }
+        },
+        "productionDeclaredLicenseCounts": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": "integer", "minimum": 1 }
+        },
+        "developmentDeclaredLicenseCounts": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": "integer", "minimum": 1 }
+        },
+        "materialCount": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "components": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/component" }
+    },
+    "materials": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/material" }
+    }
+  },
+  "$defs": {
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+    },
+    "nullableString": { "type": ["string", "null"] },
+    "nullableNonemptyString": {
+      "oneOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }]
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "factsSha256",
+        "reviewer",
+        "reviewedOn",
+        "capacity",
+        "conclusion"
+      ],
+      "properties": {
+        "status": { "enum": ["PENDING_HUMAN_REVIEW", "REVIEWED"] },
+        "factsSha256": { "$ref": "#/$defs/sha256" },
+        "reviewer": { "$ref": "#/$defs/nullableNonemptyString" },
+        "reviewedOn": {
+          "oneOf": [{ "type": "string", "format": "date" }, { "type": "null" }]
+        },
+        "capacity": { "$ref": "#/$defs/nullableNonemptyString" },
+        "conclusion": { "$ref": "#/$defs/nullableNonemptyString" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "status": { "const": "PENDING_HUMAN_REVIEW" } }
+          },
+          "then": {
+            "properties": {
+              "reviewer": { "type": "null" },
+              "reviewedOn": { "type": "null" },
+              "capacity": { "type": "null" },
+              "conclusion": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "status": { "const": "REVIEWED" } } },
+          "then": {
+            "properties": {
+              "reviewer": { "type": "string", "minLength": 1 },
+              "reviewedOn": { "type": "string", "format": "date" },
+              "capacity": { "type": "string", "minLength": 1 },
+              "conclusion": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      ]
+    },
+    "inspectedFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "kind", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "kind": { "enum": ["LICENCE", "NOTICE"] },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dependencyPath",
+        "name",
+        "version",
+        "relationship",
+        "declaredLicenseExpression",
+        "concludedLicenseExpression",
+        "licenseQualification",
+        "licenseConclusionRationale",
+        "distributionDisposition",
+        "inspectionBasis",
+        "inspectedFiles",
+        "externalLicenseEvidence",
+        "registryUrl",
+        "sourceReference",
+        "sourceUrl",
+        "packageAuthor",
+        "packageTarballScope",
+        "noticeDisposition",
+        "rationale",
+        "optional",
+        "platformSelectors"
+      ],
+      "properties": {
+        "dependencyPath": { "type": "string", "pattern": "^node_modules/" },
+        "name": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 },
+        "relationship": {
+          "enum": ["EXTERNAL_RUNTIME_DEPENDENCY", "DEVELOPMENT_ONLY"]
+        },
+        "declaredLicenseExpression": { "type": "string", "minLength": 1 },
+        "concludedLicenseExpression": { "type": "string", "minLength": 1 },
+        "licenseQualification": { "type": "string", "minLength": 1 },
+        "licenseConclusionRationale": { "type": "string", "minLength": 1 },
+        "distributionDisposition": {
+          "enum": [
+            "ALLOWED_SEPARATELY_INSTALLED_EXTERNAL_RUNTIME",
+            "DEVELOPMENT_ONLY_NOT_DISTRIBUTED",
+            "REQUIRES_HUMAN_REVIEW"
+          ]
+        },
+        "inspectionBasis": {
+          "enum": ["INSTALLED_PACKAGE_FILES", "LOCKFILE_METADATA_ONLY"]
+        },
+        "inspectedFiles": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/inspectedFile" }
+        },
+        "externalLicenseEvidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["url", "filename", "sha256", "observedOn", "reason"],
+            "properties": {
+              "url": { "type": "string", "minLength": 1 },
+              "filename": { "type": "string", "minLength": 1 },
+              "sha256": { "$ref": "#/$defs/sha256" },
+              "observedOn": {
+                "type": "string",
+                "format": "date"
+              },
+              "reason": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "registryUrl": { "type": "string", "minLength": 1 },
+        "sourceReference": { "$ref": "#/$defs/nullableString" },
+        "sourceUrl": {
+          "oneOf": [
+            { "type": "string", "pattern": "^https://" },
+            { "type": "null" }
+          ]
+        },
+        "packageAuthor": { "$ref": "#/$defs/nullableString" },
+        "packageTarballScope": { "const": false },
+        "noticeDisposition": {
+          "enum": [
+            "EXTERNAL_DEPENDENCY_RECORDED_NOT_PACKED",
+            "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED"
+          ]
+        },
+        "rationale": { "type": "string", "minLength": 1 },
+        "optional": { "type": "boolean" },
+        "platformSelectors": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["cpu", "os", "libc"],
+          "properties": {
+            "cpu": { "type": "array", "items": { "type": "string" } },
+            "os": { "type": "array", "items": { "type": "string" } },
+            "libc": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "licenseAssessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "declaredLicenseExpression",
+        "concludedLicenseExpression",
+        "licenseConclusionRationale",
+        "distributionDisposition"
+      ],
+      "properties": {
+        "scope": { "type": "string", "minLength": 1 },
+        "declaredLicenseExpression": { "type": "string", "minLength": 1 },
+        "concludedLicenseExpression": { "type": "string", "minLength": 1 },
+        "licenseConclusionRationale": { "type": "string", "minLength": 1 },
+        "distributionDisposition": {
+          "enum": [
+            "PACKED_UNDER_RECORDED_BASIS",
+            "REPOSITORY_ONLY_NOT_IN_PACKAGE"
+          ]
+        }
+      }
+    },
+    "evidenceFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "treeEvidence": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["root", "fileCount", "manifestSha256"],
+      "properties": {
+        "root": { "type": "string", "minLength": 1 },
+        "fileCount": { "type": "integer", "minimum": 1 },
+        "manifestSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "material": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "relationship",
+        "name",
+        "versionOrRevision",
+        "licenseAssessments",
+        "sourceUrl",
+        "evidenceFiles",
+        "treeEvidence",
+        "attributionText",
+        "packageTarballScope",
+        "deployedApplicationScope",
+        "noticeDisposition",
+        "rationale"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9.-]*$" },
+        "relationship": {
+          "enum": [
+            "EMBEDDED_OR_COPIED",
+            "GENERATED_FROM_THIRD_PARTY",
+            "DEVELOPMENT_ONLY"
+          ]
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "versionOrRevision": { "type": "string", "minLength": 1 },
+        "licenseAssessments": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/licenseAssessment" }
+        },
+        "sourceUrl": { "type": "string", "pattern": "^https://" },
+        "evidenceFiles": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidenceFile" }
+        },
+        "treeEvidence": { "$ref": "#/$defs/treeEvidence" },
+        "attributionText": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "packageTarballScope": { "type": "boolean" },
+        "deployedApplicationScope": {
+          "enum": ["REVIEW_REQUIRED_BY_CONSUMER", "NOT_APPLICABLE"]
+        },
+        "noticeDisposition": { "type": "string", "minLength": 1 },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

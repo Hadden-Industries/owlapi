@@ -1,7 +1,7 @@
 export const OWLObjectKind = Object.freeze({
   // TODO(OWLAPI parity): SWRL rules, atoms, arguments, and built-ins exposed by
   // Java OWLAPI 5.5.1 are deferred as one explicit family. They are not valid
-  // `OWLObjectKind` values in v1, and OWLDataFactory therefore has no silent or
+  // `OWLObjectKind` values in the initial 0.1 package, so OWLDataFactory has no silent or
   // partial SWRL construction path. Implement the public SWRL structural model,
   // equality, dispatch, factory, parser/mapping support, and differential tests
   // together before adding kinds. Verification: capability `swrl` (DEFERRED).

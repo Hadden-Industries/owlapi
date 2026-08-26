@@ -32,6 +32,7 @@
     "PHASE16-2026-08-22": "Repository-owner approval to implement Phase 16 and its shared exhaustive structural OWL-to-RDF/JS translator, W3C mapping inventory, graph placement, annotation and blank-node rules, RDF-to-OWL round-trip correction, pinned Java graph differential, resource, browser, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
     "PHASE17-2026-08-22": "Repository-owner approval to implement Phase 17 and its distinct original KRSS/KRSS1 parser, shared KRSS core, deterministic dialect selection, finite grammar and controlled-correction inventory, zero-corpus register, Java oracle, cross-format, resource, import, WebVOWL, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
     "PHASE18-2026-08-22": "Repository-owner approval to implement Phase 18 physical legacy deletion, preserve retired-artifact provenance, remove the obsolete legacy test command and ignore rule, and close the migration gate before Phase 19 packaging on 22 August 2026",
+    "PHASE19B-2026-08-26": "Repository-owner approval of the Phase 19B standalone package manifest, public package boundary, canonical Java-compatible namespaces, private implementation ownership, and associated configuration changes on 26 August 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026"
   },
   "provenanceCategories": {
@@ -58,7 +59,7 @@
     "reanchoring": {
       "reason": "The migration branch was rebased after the boundaries were first recorded, which orphaned the original commits: they remained reachable as objects but were no longer ancestors of any branch, so the AT_REVISION and AFTER_REVISION selectors could not be evaluated.",
       "verification": "Each replacement was confirmed by comparing the Git blob hash of the governed path at the original and replacement commits; both pairs were byte-identical.",
-      "gate": "src/owlapi-js/governance.test.js asserts that every recorded reuse-boundary revision is an ancestor of HEAD, so a future rebase fails the suite instead of silently invalidating these selectors.",
+      "gate": "governance.test.js reconciles every original reuse-boundary revision and governed path with the immutable Phase 19A project and boundary lineage records, then asserts that every reconstructed Hadden-Industries/owlapi result commit remains an ancestor of the canonical package HEAD whenever complete Git history is available.",
       "history": [
         {
           "originalRevision": "383325bfb7747f4e1eb25f2cc7872787f7c2ac83",
@@ -96,23 +97,20 @@
   "implementationRecords": [
     {
       "id": "PHASE1-MODEL-KINDS",
-      "path": "src/owlapi-js/model/kinds.js",
+      "path": "model/kinds.js",
       "phase": 1,
       "scope": "canonical OWL object-kind taxonomy and category memberships",
       "legacyWebVowlSources": ["src/owl2vowl/js/constants.js"],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/ sections 5-10",
-        "docs/owlapi-js/implementation-plan.md sections 4.1-4.2"
+        "docs/implementation-plan.md sections 4.1-4.2"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public model interfaces and pinned black-box reference harness"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": [
-        "src/owlapi-js/model/dispatch.test.js",
-        "src/owlapi-js/model/factory.test.js"
-      ],
+      "focusedEvidence": ["model/dispatch.test.js", "model/factory.test.js"],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE0-2026-08-10",
@@ -120,20 +118,20 @@
     },
     {
       "id": "PHASE1-MODEL-STRUCTURAL",
-      "path": "src/owlapi-js/model/structural.js",
+      "path": "model/structural.js",
       "phase": 1,
       "scope": "immutable structural objects, canonical keys, equality, and structural sets",
       "legacyWebVowlSources": [],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/ section 2.1",
-        "docs/owlapi-js/implementation-plan.md sections 4.3 and 31.2"
+        "docs/implementation-plan.md sections 4.3 and 31.2"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public OWLObject equality behavior and pinned black-box reference harness"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["src/owlapi-js/model/model.test.js"],
+      "focusedEvidence": ["model/model.test.js"],
       "laterPhaseChanges": [
         {
           "phase": 3,
@@ -145,8 +143,8 @@
             "OWLAPI 5.5.1 pinned Phase 3 structural snapshot"
           ],
           "focusedEvidence": [
-            "src/owlapi-js/model/model.test.js",
-            "src/owlapi-js/parser/manchester/manchesterSyntax.differential.test.js"
+            "model/model.test.js",
+            "internal/parsing/manchester/manchesterSyntax.differential.test.js"
           ],
           "decisionRef": "PHASE3-2026-08-11"
         }
@@ -158,20 +156,20 @@
     },
     {
       "id": "PHASE1-MODEL-DISPATCH",
-      "path": "src/owlapi-js/model/dispatch.js",
+      "path": "model/dispatch.js",
       "phase": 1,
       "scope": "mechanically exhaustive kind-based dispatch for structural categories",
       "legacyWebVowlSources": [],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/ sections 5-10",
-        "docs/owlapi-js/implementation-plan.md section 4.2"
+        "docs/implementation-plan.md section 4.2"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public OWLObjectVisitor interface family"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["src/owlapi-js/model/dispatch.test.js"],
+      "focusedEvidence": ["model/dispatch.test.js"],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE0-2026-08-10",
@@ -179,7 +177,7 @@
     },
     {
       "id": "PHASE1-MODEL-DATA-FACTORY",
-      "path": "src/owlapi-js/model/owlDataFactory.js",
+      "path": "model/owlDataFactory.js",
       "phase": 1,
       "scope": "required-v1 structural constructors and operand validation",
       "legacyWebVowlSources": [
@@ -189,16 +187,13 @@
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/ sections 5-10",
-        "docs/owlapi-js/implementation-plan.md sections 4.1-4.3 and 10.3"
+        "docs/implementation-plan.md sections 4.1-4.3 and 10.3"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public OWLDataFactory and model interfaces plus pinned black-box reference harness"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": [
-        "src/owlapi-js/model/factory.test.js",
-        "src/owlapi-js/model/model.test.js"
-      ],
+      "focusedEvidence": ["model/factory.test.js", "model/model.test.js"],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE0-2026-08-10",
@@ -206,20 +201,20 @@
     },
     {
       "id": "PHASE1-MODEL-ONTOLOGY",
-      "path": "src/owlapi-js/model/owlOntology.js",
+      "path": "model/owlOntology.js",
       "phase": 1,
       "scope": "ontology identity/content ownership and direct query indexes",
       "legacyWebVowlSources": [],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/#Ontologies",
-        "docs/owlapi-js/implementation-plan.md sections 10.1-10.2"
+        "docs/implementation-plan.md sections 10.1-10.2"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public OWLOntology and OWLOntologyID interfaces plus pinned black-box reference harness"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["src/owlapi-js/model/model.test.js"],
+      "focusedEvidence": ["model/model.test.js"],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE0-2026-08-10",
@@ -227,30 +222,30 @@
     },
     {
       "id": "PHASE1-IO-DOCUMENT",
-      "path": "src/owlapi-js/io/document.js",
+      "path": "io/stringDocumentSource.js",
       "phase": 1,
       "scope": "immutable string document sources, format metadata, and JSON-compatible format parameters",
       "legacyWebVowlSources": ["src/owl2vowl/js/importLoader.js"],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
-        "docs/owlapi-js/implementation-plan.md sections 11.1-11.2"
+        "docs/implementation-plan.md sections 11.1-11.2"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public OWLOntologyDocumentSource and OWLDocumentFormat interfaces"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["src/owlapi-js/io/io.test.js"],
+      "focusedEvidence": ["io/io.test.js"],
       "laterPhaseChanges": [
         {
           "phase": 4,
           "scope": "add the public XmlParseError used for deterministic XML well-formedness and environment failures",
           "normativePublicSources": [
             "https://www.w3.org/TR/xml/",
-            "docs/owlapi-js/implementation-plan.md sections 11.3-11.4 and 17.11"
+            "docs/implementation-plan.md sections 11.3-11.4 and 17.11"
           ],
           "focusedEvidence": [
-            "src/owlapi-js/parser/xml/xmlParserAdapter.test.js",
-            "src/owlapi-js/parser/owlxml/owlXml.resource.test.js"
+            "internal/parsing/xml/xmlParserAdapter.test.js",
+            "internal/parsing/owlxml/owlXml.resource.test.js"
           ],
           "decisionRef": "PHASE4-2026-08-11"
         },
@@ -258,9 +253,9 @@
           "phase": 15,
           "scope": "add immutable JSON-compatible document-format parameters so standards-defined parser profiles can be selected without mutating a shared loader configuration",
           "normativePublicSources": [
-            "docs/owlapi-js/implementation-plan.md sections 10.8, 11.2, and 17.22"
+            "docs/implementation-plan.md sections 10.8, 11.2, and 17.22"
           ],
-          "focusedEvidence": ["src/owlapi-js/io/io.test.js"],
+          "focusedEvidence": ["io/io.test.js"],
           "decisionRef": "PHASE15-2026-08-22"
         }
       ],
@@ -271,20 +266,20 @@
     },
     {
       "id": "PHASE1-IO-LOADER-CONFIGURATION",
-      "path": "src/owlapi-js/io/loaderConfiguration.js",
+      "path": "model/owlOntologyLoaderConfiguration.js",
       "phase": 1,
       "scope": "immutable loader/security/resource configuration",
       "legacyWebVowlSources": ["src/owl2vowl/js/importLoader.js"],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://dom.spec.whatwg.org/#abortsignal",
-        "docs/owlapi-js/implementation-plan.md sections 10.7-10.9"
+        "docs/implementation-plan.md sections 10.7-10.9"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public OWLOntologyLoaderConfiguration API"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["src/owlapi-js/io/io.test.js"],
+      "focusedEvidence": ["io/io.test.js"],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE0-2026-08-10",
@@ -292,20 +287,20 @@
     },
     {
       "id": "PHASE1-IO-ERRORS",
-      "path": "src/owlapi-js/io/errors.js",
+      "path": "io/errors.js",
       "phase": 1,
       "scope": "canonical typed public error taxonomy",
       "legacyWebVowlSources": [],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://tc39.es/ecma262/#sec-error-objects",
-        "docs/owlapi-js/implementation-plan.md sections 11.3-11.4"
+        "docs/implementation-plan.md sections 11.3-11.4"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public ontology-creation and parser exception APIs"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["src/owlapi-js/io/io.test.js"],
+      "focusedEvidence": ["io/io.test.js"],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE0-2026-08-10",
@@ -313,22 +308,22 @@
     },
     {
       "id": "PHASE1-MANAGER-PARSER-REGISTRY",
-      "path": "src/owlapi-js/manager/parserRegistry.js",
+      "path": "internal/parsing/parserRegistry.js",
       "phase": 1,
       "scope": "immutable parser descriptors, bounded tri-state detection, and deterministic candidate ordering",
       "legacyWebVowlSources": ["src/owl2vowl/js/index.js"],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://encoding.spec.whatwg.org/#interface-textencoder",
-        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6"
+        "docs/implementation-plan.md sections 9.4-9.6"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public OWLParserFactory and OWLDocumentFormat identities"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/manager/parserRegistry.test.js",
-        "src/owlapi-js/manager/owlOntologyManager.test.js"
+        "internal/parsing/parserRegistry.test.js",
+        "model/owlOntologyManager.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -337,7 +332,7 @@
     },
     {
       "id": "PHASE1-MANAGER-ONTOLOGY-MANAGER",
-      "path": "src/owlapi-js/manager/owlOntologyManager.js",
+      "path": "model/owlOntologyManager.js",
       "phase": 1,
       "scope": "narrow manager API, transactional parser attempts, import closure, cancellation, diagnostics, and registration",
       "legacyWebVowlSources": [
@@ -348,22 +343,22 @@
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://dom.spec.whatwg.org/#abortsignal",
-        "docs/owlapi-js/implementation-plan.md sections 9.4, 10.4-10.9, and 11.3-11.5"
+        "docs/implementation-plan.md sections 9.4, 10.4-10.9, and 11.3-11.5"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public OWLOntologyManager loading API plus pinned black-box reference harness"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["src/owlapi-js/manager/owlOntologyManager.test.js"],
+      "focusedEvidence": ["model/owlOntologyManager.test.js"],
       "laterPhaseChanges": [
         {
           "phase": 2,
           "scope": "register the Functional Syntax descriptor in the default manager while preserving injected registries",
           "normativePublicSources": [
-            "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.9"
+            "docs/implementation-plan.md sections 9.4-9.6 and 17.9"
           ],
           "focusedEvidence": [
-            "src/owlapi-js/parser/functional/functionalSyntax.test.js"
+            "internal/parsing/functional/functionalSyntax.test.js"
           ],
           "decisionRef": "PHASE2-2026-08-10"
         },
@@ -372,11 +367,11 @@
           "scope": "register the Manchester Syntax descriptor after Functional Syntax in the default manager while preserving injected registries",
           "normativePublicSources": [
             "https://www.w3.org/TR/owl2-manchester-syntax/",
-            "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.10"
+            "docs/implementation-plan.md sections 9.4-9.6 and 17.10"
           ],
           "focusedEvidence": [
-            "src/owlapi-js/parser/manchester/manchesterSyntax.test.js",
-            "src/owlapi-js/parser/manchester/manchesterSyntax.conformance.test.js"
+            "internal/parsing/manchester/manchesterSyntax.test.js",
+            "internal/parsing/manchester/manchesterSyntax.conformance.test.js"
           ],
           "decisionRef": "PHASE3-2026-08-11"
         },
@@ -385,11 +380,11 @@
           "scope": "register the OWL/XML descriptor before the textual syntaxes in the default manager while preserving injected registries",
           "normativePublicSources": [
             "https://www.w3.org/TR/owl2-xml-serialization/",
-            "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.11"
+            "docs/implementation-plan.md sections 9.4-9.6 and 17.11"
           ],
           "focusedEvidence": [
-            "src/owlapi-js/parser/owlxml/owlXml.test.js",
-            "src/owlapi-js/parser/owlxml/owlXml.differential.test.js"
+            "internal/parsing/owlxml/owlXml.test.js",
+            "internal/parsing/owlxml/owlXml.differential.test.js"
           ],
           "decisionRef": "PHASE4-2026-08-11"
         },
@@ -398,11 +393,11 @@
           "scope": "register the RDF/XML descriptor after OWL/XML and before textual syntaxes while preserving injected registries and transactional import loading",
           "normativePublicSources": [
             "https://www.w3.org/TR/rdf-syntax-grammar/",
-            "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.13"
+            "docs/implementation-plan.md sections 9.4-9.6 and 17.13"
           ],
           "focusedEvidence": [
-            "src/owlapi-js/parser/rdfxml/rdfXml.test.js",
-            "src/owlapi-js/parser/rdfxml/rdfXml.differential.test.js"
+            "internal/parsing/rdfxml/rdfXml.test.js",
+            "internal/parsing/rdfxml/rdfXml.differential.test.js"
           ],
           "decisionRef": "PHASE6-2026-08-13"
         },
@@ -410,11 +405,9 @@
           "phase": 7,
           "scope": "add loadOntologyGraphFromOntologyDocument, returning the frozen root ontology, imports closure, and per-document contexts so a consumer can reach parser diagnostics without re-walking the closure",
           "normativePublicSources": [
-            "docs/owlapi-js/implementation-plan.md sections 10.3-10.6, 11.5, and 17.14"
+            "docs/implementation-plan.md sections 10.3-10.6, 11.5, and 17.14"
           ],
-          "focusedEvidence": [
-            "src/owlapi-js/manager/owlOntologyManager.integration.test.js"
-          ],
+          "focusedEvidence": ["model/owlOntologyManager.integration.test.js"],
           "decisionRef": "PHASE7-2026-08-18"
         },
         {
@@ -423,10 +416,10 @@
           "normativePublicSources": [
             "https://www.w3.org/TR/turtle/",
             "https://rdf.js.org/dataset-spec/",
-            "docs/owlapi-js/implementation-plan.md sections 6.5, 6.7, 9.4-9.6, and 17.16"
+            "docs/implementation-plan.md sections 6.5, 6.7, 9.4-9.6, and 17.16"
           ],
           "focusedEvidence": [
-            "src/owlapi-js/parser/turtle/turtle.test.js",
+            "internal/parsing/turtle/turtle.test.js",
             "src/owl2vowl/js/index.test.js"
           ],
           "decisionRef": "PHASE9-2026-08-20"
@@ -435,11 +428,11 @@
           "phase": 10,
           "scope": "register the bounded DL Syntax descriptor for direct loads and import closures while retaining the same transactional manager boundary",
           "normativePublicSources": [
-            "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.17"
+            "docs/implementation-plan.md sections 9.4-9.6 and 17.17"
           ],
           "focusedEvidence": [
-            "src/owlapi-js/parser/dl/dlSyntax.detection.test.js",
-            "src/owlapi-js/parser/dl/dlSyntax.integration.test.js"
+            "internal/parsing/dl/dlSyntax.detection.test.js",
+            "internal/parsing/dl/dlSyntax.integration.test.js"
           ],
           "decisionRef": "PHASE10-2026-08-21"
         },
@@ -450,9 +443,9 @@
             "https://www.w3.org/TR/rdf11-concepts/#section-dataset",
             "https://www.w3.org/TR/n-quads/",
             "https://rdf.js.org/data-model-spec/",
-            "docs/owlapi-js/implementation-plan.md sections 6.4-6.5, 9.4-9.6, and 17.20"
+            "docs/implementation-plan.md sections 6.4-6.5, 9.4-9.6, and 17.20"
           ],
-          "focusedEvidence": ["src/owlapi-js/parser/nquads/nQuads.test.js"],
+          "focusedEvidence": ["internal/parsing/nquads/nQuads.test.js"],
           "decisionRef": "PHASE13-2026-08-22"
         }
       ],
@@ -463,19 +456,19 @@
     },
     {
       "id": "PHASE1-MANAGER-OWL-MANAGER",
-      "path": "src/owlapi-js/manager/owlManager.js",
+      "path": "apibinding/owlManager.js",
       "phase": 1,
       "scope": "JavaScript-native manager construction entry point",
       "legacyWebVowlSources": [],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
-        "docs/owlapi-js/implementation-plan.md sections 10.2 and 14.2"
+        "docs/implementation-plan.md sections 10.2 and 14.2"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public OWLManager.createOWLOntologyManager API"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["src/owlapi-js/manager/managerApi.test.js"],
+      "focusedEvidence": ["apibinding/owlManager.test.js"],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE0-2026-08-10",
@@ -483,7 +476,7 @@
     },
     {
       "id": "PHASE1-RDF-ENVIRONMENT",
-      "path": "src/owlapi-js/rdf/environment.js",
+      "path": "internal/rdfjs/environment.js",
       "phase": 1,
       "scope": "canonical RDF/JS data-factory and DatasetCore boundary",
       "legacyWebVowlSources": ["src/owl2vowl/js/turtleParser.js"],
@@ -491,13 +484,13 @@
       "normativePublicSources": [
         "https://rdf.js.org/data-model-spec/",
         "https://rdf.js.org/dataset-spec/",
-        "docs/owlapi-js/implementation-plan.md section 5"
+        "docs/implementation-plan.md section 5"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public RDF parser boundary used only as behavioral context"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["src/owlapi-js/rdf/graphPolicy.test.js"],
+      "focusedEvidence": ["internal/rdfjs/graphPolicy.test.js"],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE0-2026-08-10",
@@ -505,7 +498,7 @@
     },
     {
       "id": "PHASE1-RDF-GRAPH-POLICY",
-      "path": "src/owlapi-js/rdf/graphPolicy.js",
+      "path": "internal/rdfjs/graphPolicy.js",
       "phase": 1,
       "scope": "dataset graph analysis and explicit selection-policy foundation",
       "legacyWebVowlSources": ["src/owl2vowl/js/rdfParser.js"],
@@ -513,13 +506,13 @@
       "normativePublicSources": [
         "https://www.w3.org/TR/rdf11-concepts/#section-dataset",
         "https://rdf.js.org/dataset-spec/",
-        "docs/owlapi-js/implementation-plan.md section 5.4"
+        "docs/implementation-plan.md section 5.4"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public RDF-loading behavior used only as behavioral context"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["src/owlapi-js/rdf/graphPolicy.test.js"],
+      "focusedEvidence": ["internal/rdfjs/graphPolicy.test.js"],
       "laterPhaseChanges": [
         {
           "phase": 5,
@@ -527,12 +520,12 @@
           "normativePublicSources": [
             "https://www.w3.org/TR/rdf11-concepts/#section-dataset",
             "https://rdf.js.org/dataset-spec/",
-            "docs/owlapi-js/implementation-plan.md sections 6 and 17.12"
+            "docs/implementation-plan.md sections 6 and 17.12"
           ],
           "focusedEvidence": [
-            "src/owlapi-js/rdf/graphPolicy.test.js",
-            "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
-            "src/owlapi-js/rdf/rdfToOwlTranslator.resource.test.js"
+            "internal/rdfjs/graphPolicy.test.js",
+            "internal/mapping/rdfToOwlTranslator.test.js",
+            "internal/mapping/rdfToOwlTranslator.resource.test.js"
           ],
           "decisionRef": "PHASE5-2026-08-13"
         },
@@ -542,9 +535,9 @@
           "normativePublicSources": [
             "https://www.w3.org/TR/rdf11-concepts/#section-dataset",
             "https://www.w3.org/TR/n-quads/",
-            "docs/owlapi-js/implementation-plan.md sections 6.4 and 17.20"
+            "docs/implementation-plan.md sections 6.4 and 17.20"
           ],
-          "focusedEvidence": ["src/owlapi-js/parser/nquads/nQuads.test.js"],
+          "focusedEvidence": ["internal/parsing/nquads/nQuads.test.js"],
           "decisionRef": "PHASE13-2026-08-22"
         }
       ],
@@ -555,7 +548,7 @@
     },
     {
       "id": "PHASE2-FUNCTIONAL-DESCRIPTOR",
-      "path": "src/owlapi-js/parser/functional/descriptor.js",
+      "path": "internal/parsing/functional/descriptor.js",
       "phase": 2,
       "scope": "immutable Functional Syntax identity, format metadata, and bounded tri-state detection",
       "legacyWebVowlSources": [
@@ -565,15 +558,15 @@
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/ section 2.3",
-        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.9"
+        "docs/implementation-plan.md sections 9.4-9.6 and 17.9"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public FunctionalSyntaxDocumentFormat and OWLParserFactory identities"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/functional/functionalSyntax.test.js",
-        "src/owlapi-js/parser/functional/functionalSyntax.resource.test.js"
+        "internal/parsing/functional/functionalSyntax.test.js",
+        "internal/parsing/functional/functionalSyntax.resource.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -582,7 +575,7 @@
     },
     {
       "id": "PHASE2-FUNCTIONAL-LEXER",
-      "path": "src/owlapi-js/parser/functional/lexer.js",
+      "path": "internal/parsing/functional/lexer.js",
       "phase": 2,
       "scope": "lazy pull lexer for Functional tokens, exact lexical values, source locations, cancellation, timeout, and token budgets",
       "legacyWebVowlSources": ["src/owl2vowl/js/functionalSyntaxParser.js"],
@@ -590,16 +583,16 @@
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/ sections 2.2-2.3 and 5.7",
         "https://www.rfc-editor.org/rfc/rfc3987",
-        "docs/owlapi-js/implementation-plan.md sections 18.3, 19, and 20.1"
+        "docs/implementation-plan.md sections 18.3, 19, and 20.1"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 accepted/rejected input observed only through the pinned black-box harness and project-owned fixtures"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/functional/functionalSyntax.test.js",
-        "src/owlapi-js/parser/functional/functionalSyntax.resource.test.js",
-        "src/owlapi-js/parser/functional/functionalSyntax.conformance.test.js"
+        "internal/parsing/functional/functionalSyntax.test.js",
+        "internal/parsing/functional/functionalSyntax.resource.test.js",
+        "internal/parsing/functional/functionalSyntax.conformance.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -608,7 +601,7 @@
     },
     {
       "id": "PHASE2-FUNCTIONAL-PARSER",
-      "path": "src/owlapi-js/parser/functional/parser.js",
+      "path": "internal/parsing/functional/parser.js",
       "phase": 2,
       "scope": "complete required-v1 Functional ontology, expression, data-range, annotation, and 38-axiom construction into the structural model",
       "legacyWebVowlSources": [
@@ -618,17 +611,17 @@
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/ sections 3-10",
-        "docs/owlapi-js/implementation-plan.md sections 4, 9, 17.9, and 18"
+        "docs/implementation-plan.md sections 4, 9, 17.9, and 18"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 pinned Java structural snapshots and the pinned 338-case W3C manifest copy"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/functional/functionalSyntax.test.js",
-        "src/owlapi-js/parser/functional/functionalSyntax.resource.test.js",
-        "src/owlapi-js/parser/functional/functionalSyntax.conformance.test.js",
-        "src/owlapi-js/parser/functional/functionalSyntax.differential.test.js"
+        "internal/parsing/functional/functionalSyntax.test.js",
+        "internal/parsing/functional/functionalSyntax.resource.test.js",
+        "internal/parsing/functional/functionalSyntax.conformance.test.js",
+        "internal/parsing/functional/functionalSyntax.differential.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -637,7 +630,7 @@
     },
     {
       "id": "PHASE3-MANCHESTER-DESCRIPTOR",
-      "path": "src/owlapi-js/parser/manchester/descriptor.js",
+      "path": "internal/parsing/manchester/descriptor.js",
       "phase": 3,
       "scope": "immutable Manchester Syntax identity, format metadata, and bounded tri-state Prefix:/Ontology: detection",
       "legacyWebVowlSources": [
@@ -647,15 +640,15 @@
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-manchester-syntax/",
-        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.10"
+        "docs/implementation-plan.md sections 9.4-9.6 and 17.10"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public ManchesterSyntaxDocumentFormat and ManchesterOWLSyntaxOntologyParserFactory identities"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/manchester/manchesterSyntax.test.js",
-        "src/owlapi-js/parser/manchester/manchesterSyntax.resource.test.js"
+        "internal/parsing/manchester/manchesterSyntax.test.js",
+        "internal/parsing/manchester/manchesterSyntax.resource.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -664,7 +657,7 @@
     },
     {
       "id": "PHASE3-MANCHESTER-LEXER",
-      "path": "src/owlapi-js/parser/manchester/lexer.js",
+      "path": "internal/parsing/manchester/lexer.js",
       "phase": 3,
       "scope": "lazy pull lexer for Manchester tokens, exact lexical values and adjacency, SPARQL-style names, source locations, cancellation, timeout, and token budgets",
       "legacyWebVowlSources": ["src/owl2vowl/js/manchesterSyntaxParser.js"],
@@ -674,16 +667,16 @@
         "https://www.w3.org/TR/sparql11-query/#rPN_PREFIX",
         "https://www.rfc-editor.org/rfc/rfc3987",
         "https://www.rfc-editor.org/rfc/bcp/bcp47.txt",
-        "docs/owlapi-js/implementation-plan.md sections 18.3, 19, and 20.1"
+        "docs/implementation-plan.md sections 18.3, 19, and 20.1"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 accepted/rejected input observed only through the pinned black-box harness and project-owned fixtures"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/manchester/manchesterSyntax.test.js",
-        "src/owlapi-js/parser/manchester/manchesterSyntax.resource.test.js",
-        "src/owlapi-js/parser/manchester/manchesterSyntax.conformance.test.js"
+        "internal/parsing/manchester/manchesterSyntax.test.js",
+        "internal/parsing/manchester/manchesterSyntax.resource.test.js",
+        "internal/parsing/manchester/manchesterSyntax.conformance.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -692,7 +685,7 @@
     },
     {
       "id": "PHASE3-MANCHESTER-PARSER",
-      "path": "src/owlapi-js/parser/manchester/parser.js",
+      "path": "internal/parsing/manchester/parser.js",
       "phase": 3,
       "scope": "complete required-v1 Manchester ontology, frame, expression, data-range, annotation, and 38-axiom construction into the structural model",
       "legacyWebVowlSources": [
@@ -703,17 +696,17 @@
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-manchester-syntax/",
         "https://www.w3.org/TR/owl2-syntax/",
-        "docs/owlapi-js/implementation-plan.md sections 4, 9, 17.10, and 18"
+        "docs/implementation-plan.md sections 4, 9, 17.10, and 18"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 pinned Java Manchester structural snapshot and project-owned Manchester/Functional structural pair"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/manchester/manchesterSyntax.test.js",
-        "src/owlapi-js/parser/manchester/manchesterSyntax.resource.test.js",
-        "src/owlapi-js/parser/manchester/manchesterSyntax.conformance.test.js",
-        "src/owlapi-js/parser/manchester/manchesterSyntax.differential.test.js"
+        "internal/parsing/manchester/manchesterSyntax.test.js",
+        "internal/parsing/manchester/manchesterSyntax.resource.test.js",
+        "internal/parsing/manchester/manchesterSyntax.conformance.test.js",
+        "internal/parsing/manchester/manchesterSyntax.differential.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -722,7 +715,7 @@
     },
     {
       "id": "PHASE4-OWLXML-DESCRIPTOR",
-      "path": "src/owlapi-js/parser/owlxml/descriptor.js",
+      "path": "internal/parsing/owlxml/descriptor.js",
       "phase": 4,
       "scope": "immutable OWL/XML identity, format metadata, and bounded namespace-aware tri-state detection",
       "legacyWebVowlSources": [
@@ -732,15 +725,15 @@
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-xml-serialization/",
-        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.11"
+        "docs/implementation-plan.md sections 9.4-9.6 and 17.11"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public OWLXMLDocumentFormat and OWLXMLParserFactory identities"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/owlxml/owlXml.test.js",
-        "src/owlapi-js/parser/owlxml/owlXml.resource.test.js"
+        "internal/parsing/owlxml/owlXml.test.js",
+        "internal/parsing/owlxml/owlXml.resource.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -749,7 +742,7 @@
     },
     {
       "id": "PHASE4-OWLXML-GRAMMAR",
-      "path": "src/owlapi-js/parser/owlxml/grammar.js",
+      "path": "internal/parsing/owlxml/grammar.js",
       "phase": 4,
       "scope": "immutable complete finite inventory of OWL/XML ontology, entity, expression, data-range, annotation, and axiom productions",
       "legacyWebVowlSources": ["src/owl2vowl/js/owlXmlParser.js"],
@@ -757,15 +750,13 @@
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-xml-serialization/#sec-xml-schema",
         "https://www.w3.org/TR/owl2-syntax/",
-        "docs/owlapi-js/implementation-plan.md sections 3.2.5 and 17.11"
+        "docs/implementation-plan.md sections 3.2.5 and 17.11"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public OWL/XML parser surface and pinned Phase 4 fixture inventory"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": [
-        "src/owlapi-js/parser/owlxml/owlXml.conformance.test.js"
-      ],
+      "focusedEvidence": ["internal/parsing/owlxml/owlXml.conformance.test.js"],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE4-2026-08-11",
@@ -773,7 +764,7 @@
     },
     {
       "id": "PHASE4-OWLXML-PARSER",
-      "path": "src/owlapi-js/parser/owlxml/parser.js",
+      "path": "internal/parsing/owlxml/parser.js",
       "phase": 4,
       "scope": "complete required-v1 OWL/XML ontology, expression, data-range, annotation, and 38-axiom construction directly into the structural model",
       "legacyWebVowlSources": [
@@ -785,17 +776,17 @@
         "https://www.w3.org/TR/owl2-xml-serialization/",
         "https://www.w3.org/TR/owl2-syntax/",
         "https://www.w3.org/TR/xmlbase/",
-        "docs/owlapi-js/implementation-plan.md sections 3.2.5, 4, 9, 17.11, and 18"
+        "docs/implementation-plan.md sections 3.2.5, 4, 9, 17.11, and 18"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 pinned Java OWL/XML structural snapshot and project-owned OWL/XML/Functional structural pair"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/owlxml/owlXml.test.js",
-        "src/owlapi-js/parser/owlxml/owlXml.resource.test.js",
-        "src/owlapi-js/parser/owlxml/owlXml.conformance.test.js",
-        "src/owlapi-js/parser/owlxml/owlXml.differential.test.js"
+        "internal/parsing/owlxml/owlXml.test.js",
+        "internal/parsing/owlxml/owlXml.resource.test.js",
+        "internal/parsing/owlxml/owlXml.conformance.test.js",
+        "internal/parsing/owlxml/owlXml.differential.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -804,22 +795,22 @@
     },
     {
       "id": "PHASE4-XML-ENTITY-POLICY",
-      "path": "src/owlapi-js/parser/xml/xmlEntityPolicy.js",
+      "path": "internal/parsing/xml/xmlEntityPolicy.js",
       "phase": 4,
       "scope": "default-deny external XML resource policy and bounded internal general-entity validation and expansion",
       "legacyWebVowlSources": ["src/owl2vowl/js/xmlUtils.js"],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/xml/",
-        "docs/owlapi-js/implementation-plan.md sections 10.8, 17.11, 20, and 21"
+        "docs/implementation-plan.md sections 10.8, 17.11, 20, and 21"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 pinned OWL/XML behavioral fixture; external-resource behavior is governed by the stricter project security policy"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/owlxml/owlXml.resource.test.js",
-        "src/owlapi-js/parser/xml/xmlParserAdapter.test.js"
+        "internal/parsing/owlxml/owlXml.resource.test.js",
+        "internal/parsing/xml/xmlParserAdapter.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -828,7 +819,7 @@
     },
     {
       "id": "PHASE4-XML-PARSER-ADAPTER",
-      "path": "src/owlapi-js/parser/xml/xmlParserAdapter.js",
+      "path": "internal/parsing/xml/xmlParserAdapter.js",
       "phase": 4,
       "scope": "environment-neutral XML parsing boundary using native browser DOMParser and a lazily loaded Node DOM implementation",
       "legacyWebVowlSources": [
@@ -839,15 +830,15 @@
       "normativePublicSources": [
         "https://dom.spec.whatwg.org/",
         "https://www.w3.org/TR/xml/",
-        "docs/owlapi-js/implementation-plan.md sections 17.11, 20, and 21"
+        "docs/implementation-plan.md sections 17.11, 20, and 21"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 pinned OWL/XML structural snapshot; environment behavior is defined by project-owned adapter contracts"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/xml/xmlParserAdapter.test.js",
-        "src/owlapi-js/parser/owlxml/owlXml.test.js"
+        "internal/parsing/xml/xmlParserAdapter.test.js",
+        "internal/parsing/owlxml/owlXml.test.js"
       ],
       "thirdPartyDependencies": [
         "@xmldom/xmldom 0.9.10 (Node-only DOM implementation behind XmlParserAdapter)"
@@ -858,7 +849,7 @@
     },
     {
       "id": "PHASE5-RDF-VOCABULARY",
-      "path": "src/owlapi-js/rdf/vocabulary.js",
+      "path": "internal/rdfjs/vocabulary.js",
       "phase": 5,
       "scope": "authoritative RDF, RDFS, OWL, and XSD vocabulary constants and built-in OWL annotation-property classification used by the shared mapping boundary",
       "legacyWebVowlSources": [
@@ -870,16 +861,16 @@
         "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification",
         "https://www.w3.org/TR/owl2-syntax/#Annotation_Properties",
         "https://www.w3.org/TR/rdf11-concepts/",
-        "docs/owlapi-js/implementation-plan.md sections 6 and 17.12"
+        "docs/implementation-plan.md sections 6 and 17.12"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public vocabulary identities and pinned Phase 5 black-box structural snapshot"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
-        "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js",
-        "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js"
+        "internal/mapping/rdfToOwlTranslator.test.js",
+        "internal/mapping/rdfToOwlTranslator.expressions.test.js",
+        "internal/mapping/rdfToOwlTranslator.axioms.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -888,7 +879,7 @@
     },
     {
       "id": "PHASE5-RDF-TO-OWL-TRANSLATOR",
-      "path": "src/owlapi-js/rdf/rdfToOwlTranslator.js",
+      "path": "internal/mapping/rdfToOwlTranslator.js",
       "phase": 5,
       "scope": "syntax-independent RDF/JS DatasetCore to structural OWLOntology reconstruction for the complete finite W3C reverse-mapping inventory, OWL 1 compatibility rules, annotations, graph policy, diagnostics, resource limits, and transactional rollback",
       "legacyWebVowlSources": [
@@ -901,7 +892,7 @@
         "https://www.w3.org/TR/owl2-syntax/",
         "https://rdf.js.org/data-model-spec/",
         "https://rdf.js.org/dataset-spec/",
-        "docs/owlapi-js/implementation-plan.md sections 6, 8, and 17.12"
+        "docs/implementation-plan.md sections 6, 8, and 17.12"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 pinned Phase 5 Java structural snapshot and malformed-list black-box probe",
@@ -909,13 +900,13 @@
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "docs/owlapi-js/conformance/rdf-to-owl-mapping.json",
-        "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
-        "src/owlapi-js/rdf/rdfToOwlTranslator.expressions.test.js",
-        "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
-        "src/owlapi-js/rdf/rdfToOwlTranslator.resource.test.js",
-        "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js",
-        "src/owlapi-js/rdf/rdfToOwlTranslator.differential.test.js"
+        "docs/conformance/rdf-to-owl-mapping.json",
+        "internal/mapping/rdfToOwlTranslator.test.js",
+        "internal/mapping/rdfToOwlTranslator.expressions.test.js",
+        "internal/mapping/rdfToOwlTranslator.axioms.test.js",
+        "internal/mapping/rdfToOwlTranslator.resource.test.js",
+        "internal/mapping/rdfToOwlTranslator.conformance.test.js",
+        "internal/mapping/rdfToOwlTranslator.differential.test.js"
       ],
       "laterPhaseChanges": [
         {
@@ -924,13 +915,13 @@
           "normativePublicSources": [
             "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification",
             "https://www.w3.org/TR/owl2-syntax/#Entities_Declarations_and_Typing",
-            "docs/owlapi-js/implementation-plan.md sections 17.13 and 22"
+            "docs/implementation-plan.md sections 17.13 and 22"
           ],
           "compatibilityReferences": [
             "OWLAPI 5.5.1 lax RDF-consumer behavior for cross-category property use observed through focused source inspection after a public Schema.org fixture exposed the compatibility case"
           ],
           "focusedEvidence": [
-            "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
+            "internal/mapping/rdfToOwlTranslator.axioms.test.js",
             "util/verify-owlapi-rdfxml-corpus.mjs"
           ],
           "decisionRef": "PHASE6-2026-08-13"
@@ -940,13 +931,13 @@
           "scope": "classify undeclared property IRIs by bounded propagation across rdfs:subPropertyOf and owl:equivalentProperty before expression reconstruction, without manufacturing declaration axioms, so normative OWL-to-RDF output remains invertible when a data restriction uses an undeclared property",
           "normativePublicSources": [
             "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification",
-            "docs/owlapi-js/implementation-plan.md sections 17.23 and 18.7"
+            "docs/implementation-plan.md sections 17.23 and 18.7"
           ],
           "compatibilityReferences": [
             "The exhaustive Phase 2 structural fixture uses an undeclared data property connected to a declared data property and exposed the ordering-sensitive inverse-reader gap"
           ],
           "focusedEvidence": [
-            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+            "internal/mapping/owlToRdfTranslator.roundTrip.test.js"
           ],
           "decisionRef": "PHASE16-2026-08-22"
         }
@@ -958,22 +949,22 @@
     },
     {
       "id": "PHASE6-RDFXML-DESCRIPTOR",
-      "path": "src/owlapi-js/parser/rdfxml/descriptor.js",
+      "path": "internal/parsing/rdfxml/descriptor.js",
       "phase": 6,
       "scope": "bounded tri-state RDF/XML detection and immutable manager-registry metadata without claiming OWL/XML documents",
       "legacyWebVowlSources": ["src/owl2vowl/js/importLoader.js"],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/rdf-syntax-grammar/",
-        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.13"
+        "docs/implementation-plan.md sections 9.4-9.6 and 17.13"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public RDF/XML document-format and parser-factory identities"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/rdfxml/rdfXml.test.js",
-        "src/owlapi-js/parser/rdfxml/rdfXml.browser.test.js"
+        "internal/parsing/rdfxml/rdfXml.test.js",
+        "internal/parsing/rdfxml/rdfXml.browser.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -982,7 +973,7 @@
     },
     {
       "id": "PHASE6-RDFXML-PARSER",
-      "path": "src/owlapi-js/parser/rdfxml/parser.js",
+      "path": "internal/parsing/rdfxml/parser.js",
       "phase": 6,
       "scope": "transactional composition of the RDF/XML syntax adapter with the shared syntax-independent RDF-to-OWL translator",
       "legacyWebVowlSources": [
@@ -993,15 +984,15 @@
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification",
         "https://rdf.js.org/dataset-spec/",
-        "docs/owlapi-js/implementation-plan.md sections 6 and 17.13"
+        "docs/implementation-plan.md sections 6 and 17.13"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 pinned Phase 5 structural snapshot loaded through RDF/XML"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/rdfxml/rdfXml.test.js",
-        "src/owlapi-js/parser/rdfxml/rdfXml.differential.test.js"
+        "internal/parsing/rdfxml/rdfXml.test.js",
+        "internal/parsing/rdfxml/rdfXml.differential.test.js"
       ],
       "thirdPartyDependencies": [
         "@rdfjs/data-model",
@@ -1014,7 +1005,7 @@
     },
     {
       "id": "PHASE6-RDFXML-SYNTAX-ADAPTER",
-      "path": "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.js",
+      "path": "internal/parsing/rdfxml/rdfXmlSyntaxAdapter.js",
       "phase": 6,
       "scope": "private streaming RDF/XML-to-RDF/JS normalization with bounded XML security, chunking, cancellation, error normalization, and source-aware XMLLiteral canonicalization",
       "legacyWebVowlSources": ["src/owl2vowl/js/rdfParser.js"],
@@ -1025,18 +1016,18 @@
         "https://www.w3.org/TR/xml-exc-c14n/",
         "https://rdf.js.org/data-model-spec/",
         "https://rdf.js.org/dataset-spec/",
-        "docs/owlapi-js/implementation-plan.md sections 17.13 and 21.7-21.8"
+        "docs/implementation-plan.md sections 17.13 and 21.7-21.8"
       ],
       "compatibilityReferences": [
         "Pinned W3C rdf-tests revision ad541a5f0479f0798608c4801369d97b8e08b36f with all 166 active RDF/XML manifest entries passing"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "docs/owlapi-js/conformance/generated/w3c-rdfxml.json",
-        "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.test.js",
-        "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.resource.test.js",
-        "src/owlapi-js/parser/rdfxml/rdfXml.conformance.test.js",
-        "src/owlapi-js/parser/rdfxml/rdfXml.browser.test.js"
+        "docs/conformance/generated/w3c-rdfxml.json",
+        "internal/parsing/rdfxml/rdfXmlSyntaxAdapter.test.js",
+        "internal/parsing/rdfxml/rdfXmlSyntaxAdapter.resource.test.js",
+        "internal/parsing/rdfxml/rdfXml.conformance.test.js",
+        "internal/parsing/rdfxml/rdfXml.browser.test.js"
       ],
       "thirdPartyDependencies": [
         "@rdfjs/data-model",
@@ -1049,7 +1040,7 @@
     },
     {
       "id": "PHASE9-TURTLE-DESCRIPTOR",
-      "path": "src/owlapi-js/parser/turtle/descriptor.js",
+      "path": "internal/parsing/turtle/descriptor.js",
       "phase": 9,
       "scope": "bounded tri-state Turtle detection and immutable manager-registry metadata without claiming XML, OWL-native syntaxes, N-Triples, N-Quads, TriG, or the broader N3 language",
       "legacyWebVowlSources": [
@@ -1059,14 +1050,14 @@
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/turtle/",
-        "docs/owlapi-js/implementation-plan.md sections 6.7, 9.4-9.6, and 17.16"
+        "docs/implementation-plan.md sections 6.7, 9.4-9.6, and 17.16"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public Turtle parser-factory and document-format identities"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/turtle/turtle.test.js",
+        "internal/parsing/turtle/turtle.test.js",
         "src/owl2vowl/js/index.test.js"
       ],
       "thirdPartyDependencies": [],
@@ -1076,7 +1067,7 @@
     },
     {
       "id": "PHASE9-TURTLE-PARSER",
-      "path": "src/owlapi-js/parser/turtle/parser.js",
+      "path": "internal/parsing/turtle/parser.js",
       "phase": 9,
       "scope": "transactional composition of the Turtle syntax adapter with the existing graph-policy and syntax-independent RDF-to-OWL reconstruction path, including immutable prefix document metadata",
       "legacyWebVowlSources": [
@@ -1087,15 +1078,15 @@
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification",
         "https://rdf.js.org/dataset-spec/",
-        "docs/owlapi-js/implementation-plan.md sections 6 and 17.16"
+        "docs/implementation-plan.md sections 6 and 17.16"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public Turtle loading behavior and the pinned project-owned Java structural snapshot"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/turtle/turtle.test.js",
-        "src/owlapi-js/parser/turtle/turtle.differential.test.js",
+        "internal/parsing/turtle/turtle.test.js",
+        "internal/parsing/turtle/turtle.differential.test.js",
         "src/owl2vowl/js/index.test.js"
       ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
@@ -1105,7 +1096,7 @@
     },
     {
       "id": "PHASE9-N3-SYNTAX-ADAPTER",
-      "path": "src/owlapi-js/parser/rdf/n3SyntaxAdapter.js",
+      "path": "internal/parsing/rdf/n3SyntaxAdapter.js",
       "phase": 9,
       "scope": "private exact-format Turtle, N-Triples, N-Quads, and TriG N3.js stream adaptation with canonical RDF/JS normalization, Unicode-safe chunking, backpressure, cancellation, watchdog timeouts, finite resource limits, cooperative scheduling, syntax-specific errors, Turtle/TriG prefix isolation, N-Triples default-graph normalization, and lossless N-Quads/TriG graph preservation",
       "legacyWebVowlSources": ["src/owl2vowl/js/turtleParser.js"],
@@ -1121,7 +1112,7 @@
         "https://www.w3.org/TR/rdf12-trig/",
         "https://rdf.js.org/data-model-spec/",
         "https://rdf.js.org/stream-spec/",
-        "docs/owlapi-js/implementation-plan.md sections 6.7, 17.16, 17.19-17.20, and 21.7-21.8"
+        "docs/implementation-plan.md sections 6.7, 17.16, 17.19-17.20, and 21.7-21.8"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public Turtle parser behavior through the pinned black-box reference harness",
@@ -1132,23 +1123,23 @@
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "docs/owlapi-js/conformance/generated/w3c-turtle.json",
-        "docs/owlapi-js/conformance/generated/w3c-ntriples.json",
-        "docs/owlapi-js/conformance/generated/w3c-nquads.json",
-        "docs/owlapi-js/conformance/generated/w3c-trig.json",
-        "src/owlapi-js/parser/rdf/n3SyntaxAdapter.test.js",
-        "src/owlapi-js/parser/rdf/n3SyntaxAdapter.resource.test.js",
-        "src/owlapi-js/parser/turtle/turtle.conformance.test.js",
-        "src/owlapi-js/parser/turtle/turtle.browser.test.js",
-        "src/owlapi-js/parser/ntriples/nTriples.conformance.test.js",
-        "src/owlapi-js/parser/ntriples/nTriples.browser.test.js",
-        "src/owlapi-js/parser/ntriples/nTriples.resource.test.js",
-        "src/owlapi-js/parser/nquads/nQuads.conformance.test.js",
-        "src/owlapi-js/parser/nquads/nQuads.browser.test.js",
-        "src/owlapi-js/parser/nquads/nQuads.resource.test.js",
-        "src/owlapi-js/parser/trig/trig.conformance.test.js",
-        "src/owlapi-js/parser/trig/trig.browser.test.js",
-        "src/owlapi-js/parser/trig/trig.resource.test.js",
+        "docs/conformance/generated/w3c-turtle.json",
+        "docs/conformance/generated/w3c-ntriples.json",
+        "docs/conformance/generated/w3c-nquads.json",
+        "docs/conformance/generated/w3c-trig.json",
+        "internal/parsing/rdf/n3SyntaxAdapter.test.js",
+        "internal/parsing/rdf/n3SyntaxAdapter.resource.test.js",
+        "internal/parsing/turtle/turtle.conformance.test.js",
+        "internal/parsing/turtle/turtle.browser.test.js",
+        "internal/parsing/ntriples/nTriples.conformance.test.js",
+        "internal/parsing/ntriples/nTriples.browser.test.js",
+        "internal/parsing/ntriples/nTriples.resource.test.js",
+        "internal/parsing/nquads/nQuads.conformance.test.js",
+        "internal/parsing/nquads/nQuads.browser.test.js",
+        "internal/parsing/nquads/nQuads.resource.test.js",
+        "internal/parsing/trig/trig.conformance.test.js",
+        "internal/parsing/trig/trig.browser.test.js",
+        "internal/parsing/trig/trig.resource.test.js",
         "util/verify-webvowl-lazy-parser-chunks.mjs"
       ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
@@ -1163,7 +1154,7 @@
     },
     {
       "id": "PHASE10-DL-DESCRIPTOR",
-      "path": "src/owlapi-js/parser/dl/descriptor.js",
+      "path": "internal/parsing/dl/descriptor.js",
       "phase": 10,
       "scope": "immutable DL Syntax identity plus bounded tri-state detection with strong negatives for every already registered OWL and RDF syntax",
       "legacyWebVowlSources": [
@@ -1173,15 +1164,15 @@
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/ sections 8-9",
-        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.17"
+        "docs/implementation-plan.md sections 9.4-9.6 and 17.17"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public DLSyntaxOWLParser, DLSyntaxOWLParserFactory, and DLSyntaxDocumentFormat identities"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/dl/dlSyntax.detection.test.js",
-        "src/owlapi-js/parser/dl/dlSyntax.integration.test.js"
+        "internal/parsing/dl/dlSyntax.detection.test.js",
+        "internal/parsing/dl/dlSyntax.integration.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1190,22 +1181,22 @@
     },
     {
       "id": "PHASE10-DL-LEXER",
-      "path": "src/owlapi-js/parser/dl/lexer.js",
+      "path": "internal/parsing/dl/lexer.js",
       "phase": 10,
       "scope": "independently authored lazy pull lexer for the characterized OWLAPI DL dialect, including longest-token alias handling, UTF-8 token limits, source locations, cancellation, monotonic timeout, and token budgets",
       "legacyWebVowlSources": ["src/owl2vowl/js/dlSyntaxParser.js"],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/ sections 8-9",
-        "docs/owlapi-js/implementation-plan.md sections 18.3, 19, and 20.1"
+        "docs/implementation-plan.md sections 18.3, 19, and 20.1"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public DL parser behavior captured through the pinned project-owned Java harness and focused fixture probes"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/dl/lexer.test.js",
-        "src/owlapi-js/parser/dl/dlSyntax.resource.test.js"
+        "internal/parsing/dl/lexer.test.js",
+        "internal/parsing/dl/dlSyntax.resource.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1214,25 +1205,25 @@
     },
     {
       "id": "PHASE10-DL-PARSER",
-      "path": "src/owlapi-js/parser/dl/parser.js",
+      "path": "internal/parsing/dl/parser.js",
       "phase": 10,
       "scope": "independently authored direct construction of the OWLAPI DL dialect's structural class, assertion, and object-property axiom subset with deterministic document namespaces and no RDF or legacy-parser detour",
       "legacyWebVowlSources": ["src/owl2vowl/js/dlSyntaxParser.js"],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/ sections 8-9",
-        "docs/owlapi-js/implementation-plan.md sections 4, 9, 17.17, and 18"
+        "docs/implementation-plan.md sections 4, 9, 17.17, and 18"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public DL parser and format APIs plus the pinned project-owned Java structural snapshot"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/dl/dlSyntax.test.js",
-        "src/owlapi-js/parser/dl/dlSyntax.resource.test.js",
-        "src/owlapi-js/parser/dl/dlSyntax.conformance.test.js",
-        "src/owlapi-js/parser/dl/dlSyntax.differential.test.js",
-        "src/owlapi-js/parser/dl/dlSyntax.integration.test.js"
+        "internal/parsing/dl/dlSyntax.test.js",
+        "internal/parsing/dl/dlSyntax.resource.test.js",
+        "internal/parsing/dl/dlSyntax.conformance.test.js",
+        "internal/parsing/dl/dlSyntax.differential.test.js",
+        "internal/parsing/dl/dlSyntax.integration.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1241,7 +1232,7 @@
     },
     {
       "id": "PHASE11-KRSS-DIALECT",
-      "path": "src/owlapi-js/parser/krss/dialect.js",
+      "path": "internal/parsing/krss/dialect.js",
       "phase": 11,
       "scope": "independently authored KRSS-family dialect policy that classifies shared and KRSS2-only top-level vocabulary for separate executable adapters",
       "legacyWebVowlSources": ["src/owl2vowl/js/krss2SyntaxParser.js"],
@@ -1249,13 +1240,13 @@
       "normativePublicSources": [
         "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss1/parser/KRSSOWLParser.html",
         "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss2/parser/KRSS2OWLParser.html",
-        "docs/owlapi-js/implementation-plan.md sections 9.1.1 and 17.18"
+        "docs/implementation-plan.md sections 9.1.1 and 17.18"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public KRSSOWLParser/KRSSDocumentFormat and KRSS2OWLParser/KRSS2DocumentFormat identities"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
-      "focusedEvidence": ["src/owlapi-js/parser/krss/dialect.test.js"],
+      "focusedEvidence": ["internal/parsing/krss/dialect.test.js"],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE11-2026-08-21",
@@ -1263,7 +1254,7 @@
     },
     {
       "id": "PHASE11-KRSS-LEXER",
-      "path": "src/owlapi-js/parser/krss/lexer.js",
+      "path": "internal/parsing/krss/lexer.js",
       "phase": 11,
       "scope": "independently authored dialect-neutral lazy KRSS-family lexer with bounded lookahead, semicolon comments, UTF-8 limits, locations, cancellation, and monotonic timeout",
       "legacyWebVowlSources": ["src/owl2vowl/js/krss2SyntaxParser.js"],
@@ -1271,15 +1262,15 @@
       "normativePublicSources": [
         "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss1/parser/KRSSOWLParser.html",
         "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss2/parser/KRSS2OWLParser.html",
-        "docs/owlapi-js/implementation-plan.md sections 18.3, 19, and 20.1"
+        "docs/implementation-plan.md sections 18.3, 19, and 20.1"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public KRSS-family parser behavior plus the pinned project-owned KRSS2 Java harness"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/krss/lexer.test.js",
-        "src/owlapi-js/parser/krss2/krss2Syntax.resource.test.js"
+        "internal/parsing/krss/lexer.test.js",
+        "internal/parsing/krss2/krss2Syntax.resource.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1288,7 +1279,7 @@
     },
     {
       "id": "PHASE11-KRSS2-DESCRIPTOR",
-      "path": "src/owlapi-js/parser/krss2/descriptor.js",
+      "path": "internal/parsing/krss2/descriptor.js",
       "phase": 11,
       "scope": "immutable KRSS2 identity and descriptor over the shared Phase 17 bounded dialect detector",
       "legacyWebVowlSources": [
@@ -1298,15 +1289,15 @@
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss2/parser/KRSS2OWLParser.html",
-        "docs/owlapi-js/implementation-plan.md sections 9.1.1, 9.4-9.6, and 17.18"
+        "docs/implementation-plan.md sections 9.1.1, 9.4-9.6, and 17.18"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public KRSS2OWLParser, KRSS2OWLParserFactory, and KRSS2DocumentFormat identities"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/krss2/krss2Syntax.detection.test.js",
-        "src/owlapi-js/parser/krss2/krss2Syntax.integration.test.js"
+        "internal/parsing/krss2/krss2Syntax.detection.test.js",
+        "internal/parsing/krss2/krss2Syntax.integration.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1315,7 +1306,7 @@
     },
     {
       "id": "PHASE11-KRSS2-PARSER",
-      "path": "src/owlapi-js/parser/krss2/parser.js",
+      "path": "internal/parsing/krss2/parser.js",
       "phase": 11,
       "scope": "thin public KRSS2 adapter supplying the preserved Phase 11 dialect policy to the Phase 17 shared core",
       "legacyWebVowlSources": ["src/owl2vowl/js/krss2SyntaxParser.js"],
@@ -1323,18 +1314,18 @@
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/ sections 8-9",
         "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss2/parser/KRSS2OWLParser.html",
-        "docs/owlapi-js/implementation-plan.md sections 4, 9.1.1, 17.18, and 18"
+        "docs/implementation-plan.md sections 4, 9.1.1, 17.18, and 18"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public KRSS2 parser and format APIs plus the pinned project-owned Java structural snapshot"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/krss2/krss2Syntax.test.js",
-        "src/owlapi-js/parser/krss2/krss2Syntax.conformance.test.js",
-        "src/owlapi-js/parser/krss2/krss2Syntax.differential.test.js",
-        "src/owlapi-js/parser/krss2/krss2Syntax.integration.test.js",
-        "src/owlapi-js/parser/krss2/krss2Syntax.resource.test.js"
+        "internal/parsing/krss2/krss2Syntax.test.js",
+        "internal/parsing/krss2/krss2Syntax.conformance.test.js",
+        "internal/parsing/krss2/krss2Syntax.differential.test.js",
+        "internal/parsing/krss2/krss2Syntax.integration.test.js",
+        "internal/parsing/krss2/krss2Syntax.resource.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1343,7 +1334,7 @@
     },
     {
       "id": "PHASE17-KRSS-DETECTION",
-      "path": "src/owlapi-js/parser/krss/detection.js",
+      "path": "internal/parsing/krss/detection.js",
       "phase": 17,
       "scope": "bounded shared-signature, exclusive-KRSS2, strong-negative, and exact-extension dialect evidence with explicit ambiguity priorities",
       "legacyWebVowlSources": [],
@@ -1351,15 +1342,15 @@
       "normativePublicSources": [
         "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss1/parser/KRSSOWLParser.html",
         "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss2/parser/KRSS2OWLParser.html",
-        "docs/owlapi-js/implementation-plan.md section 17.24.4"
+        "docs/implementation-plan.md section 17.24.4"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 distinct KRSSDocumentFormat and KRSS2DocumentFormat identities"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/krss1/krss1Syntax.detection.test.js",
-        "src/owlapi-js/parser/krss2/krss2Syntax.detection.test.js"
+        "internal/parsing/krss1/krss1Syntax.detection.test.js",
+        "internal/parsing/krss2/krss2Syntax.detection.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1368,7 +1359,7 @@
     },
     {
       "id": "PHASE17-KRSS-PARSER-CORE",
-      "path": "src/owlapi-js/parser/krss/parserCore.js",
+      "path": "internal/parsing/krss/parserCore.js",
       "phase": 17,
       "scope": "dialect-neutral lazy recursive-descent core for common KRSS expressions, construction, document ordering, diagnostics, yielding, and finite resource enforcement",
       "legacyWebVowlSources": [],
@@ -1377,18 +1368,18 @@
         "https://www.w3.org/TR/owl2-syntax/",
         "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss1/parser/KRSSOWLParser.html",
         "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss2/parser/KRSS2OWLParser.html",
-        "docs/owlapi-js/implementation-plan.md sections 17.24.1-17.24.2"
+        "docs/implementation-plan.md sections 17.24.1-17.24.2"
       ],
       "compatibilityReferences": [
         "pinned project-owned KRSS1 and KRSS2 Java structural snapshots and behavioral inventories"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/krss1/krss1Syntax.test.js",
-        "src/owlapi-js/parser/krss1/krss1Syntax.conformance.test.js",
-        "src/owlapi-js/parser/krss1/krss1Syntax.resource.test.js",
-        "src/owlapi-js/parser/krss2/krss2Syntax.test.js",
-        "src/owlapi-js/parser/krss2/krss2Syntax.conformance.test.js"
+        "internal/parsing/krss1/krss1Syntax.test.js",
+        "internal/parsing/krss1/krss1Syntax.conformance.test.js",
+        "internal/parsing/krss1/krss1Syntax.resource.test.js",
+        "internal/parsing/krss2/krss2Syntax.test.js",
+        "internal/parsing/krss2/krss2Syntax.conformance.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1397,22 +1388,22 @@
     },
     {
       "id": "PHASE17-KRSS1-DESCRIPTOR",
-      "path": "src/owlapi-js/parser/krss1/descriptor.js",
+      "path": "internal/parsing/krss1/descriptor.js",
       "phase": 17,
       "scope": "immutable original-KRSS format identity and descriptor over shared bounded dialect detection",
       "legacyWebVowlSources": [],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss1/parser/KRSSOWLParser.html",
-        "docs/owlapi-js/implementation-plan.md section 17.24.4"
+        "docs/implementation-plan.md section 17.24.4"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public KRSSOWLParser, KRSSOWLParserFactory, and KRSSDocumentFormat identities"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/krss1/krss1Syntax.detection.test.js",
-        "src/owlapi-js/parser/krss1/krss1Syntax.integration.test.js"
+        "internal/parsing/krss1/krss1Syntax.detection.test.js",
+        "internal/parsing/krss1/krss1Syntax.integration.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1421,7 +1412,7 @@
     },
     {
       "id": "PHASE17-KRSS1-PARSER",
-      "path": "src/owlapi-js/parser/krss1/parser.js",
+      "path": "internal/parsing/krss1/parser.js",
       "phase": 17,
       "scope": "separate original-KRSS adapter policy that constrains the shared core to the finite KRSS1 production, name, filler, role, and structural boundaries",
       "legacyWebVowlSources": [],
@@ -1429,19 +1420,19 @@
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/",
         "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/krss1/parser/KRSSOWLParser.html",
-        "docs/owlapi-js/implementation-plan.md sections 17.24.1-17.24.2"
+        "docs/implementation-plan.md sections 17.24.1-17.24.2"
       ],
       "compatibilityReferences": [
-        "docs/owlapi-js/compatibility/krss1-behavioral-oracle.json",
+        "docs/compatibility/krss1-behavioral-oracle.json",
         "util/owlapi-reference/fixtures/krss1/phase17-structural.java.json"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/krss1/krss1Syntax.test.js",
-        "src/owlapi-js/parser/krss1/krss1Syntax.conformance.test.js",
-        "src/owlapi-js/parser/krss1/krss1Syntax.differential.test.js",
-        "src/owlapi-js/parser/krss1/krss1Syntax.integration.test.js",
-        "src/owlapi-js/parser/krss1/krss1Syntax.resource.test.js"
+        "internal/parsing/krss1/krss1Syntax.test.js",
+        "internal/parsing/krss1/krss1Syntax.conformance.test.js",
+        "internal/parsing/krss1/krss1Syntax.differential.test.js",
+        "internal/parsing/krss1/krss1Syntax.integration.test.js",
+        "internal/parsing/krss1/krss1Syntax.resource.test.js"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1450,7 +1441,7 @@
     },
     {
       "id": "PHASE12-RDF-SYNTAX-PARSER",
-      "path": "src/owlapi-js/parser/rdf/rdfSyntaxParser.js",
+      "path": "internal/parsing/rdf/rdfSyntaxParser.js",
       "phase": 12,
       "scope": "independently authored shared transaction seam that applies graph policy to a format-locked RDF/JS graph or dataset, translates the selected graph into structural OWL, and atomically commits ontology content, diagnostics, prefixes, graph-selection context, and exact document format",
       "legacyWebVowlSources": [
@@ -1461,27 +1452,27 @@
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-mapping-to-rdf/",
         "https://rdf.js.org/dataset-spec/",
-        "docs/owlapi-js/implementation-plan.md sections 4, 6, 17.19, and 18"
+        "docs/implementation-plan.md sections 4, 6, 17.19, and 18"
       ],
       "compatibilityReferences": [
         "Existing Phase 5 shared RDF-to-OWL transaction behavior and Phase 9 Turtle production behavior"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/turtle/turtle.test.js",
-        "src/owlapi-js/parser/ntriples/nTriples.test.js",
-        "src/owlapi-js/parser/ntriples/nTriples.differential.test.js",
-        "src/owlapi-js/parser/nquads/nQuads.test.js",
-        "src/owlapi-js/parser/nquads/nQuads.differential.test.js"
+        "internal/parsing/turtle/turtle.test.js",
+        "internal/parsing/ntriples/nTriples.test.js",
+        "internal/parsing/ntriples/nTriples.differential.test.js",
+        "internal/parsing/nquads/nQuads.test.js",
+        "internal/parsing/nquads/nQuads.differential.test.js"
       ],
       "laterPhaseChanges": [
         {
           "phase": 15,
           "scope": "commit immutable JSON-LD context metadata and preserve the exact caller-selected parameterized document format after RDF-to-OWL reconstruction",
           "normativePublicSources": [
-            "docs/owlapi-js/implementation-plan.md sections 10.8, 11.2, and 17.22"
+            "docs/implementation-plan.md sections 10.8, 11.2, and 17.22"
           ],
-          "focusedEvidence": ["src/owlapi-js/parser/jsonld/jsonLd.test.js"],
+          "focusedEvidence": ["internal/parsing/jsonld/jsonLd.test.js"],
           "decisionRef": "PHASE15-2026-08-22"
         }
       ],
@@ -1493,7 +1484,7 @@
     },
     {
       "id": "PHASE12-NTRIPLES-DESCRIPTOR",
-      "path": "src/owlapi-js/parser/ntriples/descriptor.js",
+      "path": "internal/parsing/ntriples/descriptor.js",
       "phase": 12,
       "scope": "immutable N-Triples identity and bounded tri-state detection that recognizes the strict line syntax ahead of overlapping Turtle while rejecting Turtle directives and N-Quads graph terms",
       "legacyWebVowlSources": [
@@ -1504,15 +1495,15 @@
       "normativePublicSources": [
         "https://www.w3.org/TR/n-triples/",
         "https://www.w3.org/TR/rdf12-n-triples/",
-        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.19"
+        "docs/implementation-plan.md sections 9.4-9.6 and 17.19"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public NTriplesDocumentFormat identity and the pinned W3C RDF 1.1/RDF 1.2 syntax inventories"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/ntriples/nTriples.test.js",
-        "src/owlapi-js/parser/ntriples/nTriples.conformance.test.js"
+        "internal/parsing/ntriples/nTriples.test.js",
+        "internal/parsing/ntriples/nTriples.conformance.test.js"
       ],
       "thirdPartyDependencies": ["n3"],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1521,7 +1512,7 @@
     },
     {
       "id": "PHASE12-NTRIPLES-PARSER",
-      "path": "src/owlapi-js/parser/ntriples/parser.js",
+      "path": "internal/parsing/ntriples/parser.js",
       "phase": 12,
       "scope": "strict N-Triples parser binding that selects the exact N3.js-backed adapter, normalizes graph-only RDF/JS output, and delegates all OWL reconstruction to the shared structural translator",
       "legacyWebVowlSources": ["src/owl2vowl/js/turtleParser.js"],
@@ -1530,18 +1521,18 @@
         "https://www.w3.org/TR/n-triples/",
         "https://www.w3.org/TR/rdf12-n-triples/",
         "https://rdf.js.org/dataset-spec/",
-        "docs/owlapi-js/implementation-plan.md sections 6.7 and 17.19"
+        "docs/implementation-plan.md sections 6.7 and 17.19"
       ],
       "compatibilityReferences": [
         "Pinned W3C rdf-tests revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 99 independently classified N-Triples syntax entries passing"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/ntriples/nTriples.test.js",
-        "src/owlapi-js/parser/ntriples/nTriples.conformance.test.js",
-        "src/owlapi-js/parser/ntriples/nTriples.differential.test.js",
-        "src/owlapi-js/parser/ntriples/nTriples.resource.test.js",
-        "src/owlapi-js/parser/ntriples/nTriples.browser.test.js"
+        "internal/parsing/ntriples/nTriples.test.js",
+        "internal/parsing/ntriples/nTriples.conformance.test.js",
+        "internal/parsing/ntriples/nTriples.differential.test.js",
+        "internal/parsing/ntriples/nTriples.resource.test.js",
+        "internal/parsing/ntriples/nTriples.browser.test.js"
       ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1550,7 +1541,7 @@
     },
     {
       "id": "PHASE13-NQUADS-DESCRIPTOR",
-      "path": "src/owlapi-js/parser/nquads/descriptor.js",
+      "path": "internal/parsing/nquads/descriptor.js",
       "phase": 13,
       "scope": "immutable N-Quads dataset identity and bounded tri-state detection that recognizes a decisive fourth graph term ahead of N-Triples and Turtle without performing a full parse",
       "legacyWebVowlSources": [
@@ -1561,15 +1552,15 @@
       "normativePublicSources": [
         "https://www.w3.org/TR/n-quads/",
         "https://www.w3.org/TR/rdf12-n-quads/",
-        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.20"
+        "docs/implementation-plan.md sections 9.4-9.6 and 17.20"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public NQuadsDocumentFormat identity and the pinned W3C RDF 1.1/RDF 1.2 syntax inventories"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/nquads/nQuads.test.js",
-        "src/owlapi-js/parser/nquads/nQuads.conformance.test.js"
+        "internal/parsing/nquads/nQuads.test.js",
+        "internal/parsing/nquads/nQuads.conformance.test.js"
       ],
       "thirdPartyDependencies": ["n3"],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1578,7 +1569,7 @@
     },
     {
       "id": "PHASE13-NQUADS-PARSER",
-      "path": "src/owlapi-js/parser/nquads/parser.js",
+      "path": "internal/parsing/nquads/parser.js",
       "phase": 13,
       "scope": "strict N-Quads parser binding that selects the exact N3.js-backed adapter, preserves complete RDF/JS dataset graph terms, and delegates graph policy plus OWL reconstruction to the shared project-owned pipeline",
       "legacyWebVowlSources": ["src/owl2vowl/js/turtleParser.js"],
@@ -1587,18 +1578,18 @@
         "https://www.w3.org/TR/n-quads/",
         "https://www.w3.org/TR/rdf12-n-quads/",
         "https://rdf.js.org/dataset-spec/",
-        "docs/owlapi-js/implementation-plan.md sections 6.4, 6.7, and 17.20"
+        "docs/implementation-plan.md sections 6.4, 6.7, and 17.20"
       ],
       "compatibilityReferences": [
         "Pinned W3C rdf-tests revision 12774b0ebb385d17651b396654b19254d0fefbfa with all 114 independently classified N-Quads syntax entries passing"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/nquads/nQuads.test.js",
-        "src/owlapi-js/parser/nquads/nQuads.conformance.test.js",
-        "src/owlapi-js/parser/nquads/nQuads.differential.test.js",
-        "src/owlapi-js/parser/nquads/nQuads.resource.test.js",
-        "src/owlapi-js/parser/nquads/nQuads.browser.test.js"
+        "internal/parsing/nquads/nQuads.test.js",
+        "internal/parsing/nquads/nQuads.conformance.test.js",
+        "internal/parsing/nquads/nQuads.differential.test.js",
+        "internal/parsing/nquads/nQuads.resource.test.js",
+        "internal/parsing/nquads/nQuads.browser.test.js"
       ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1607,7 +1598,7 @@
     },
     {
       "id": "PHASE14-TRIG-DESCRIPTOR",
-      "path": "src/owlapi-js/parser/trig/descriptor.js",
+      "path": "internal/parsing/trig/descriptor.js",
       "phase": 14,
       "scope": "immutable TriG dataset identity and bounded tri-state detection that recognizes graph-block braces outside comments, string literals, and IRI references without duplicating the complete grammar",
       "legacyWebVowlSources": [
@@ -1618,16 +1609,16 @@
       "normativePublicSources": [
         "https://www.w3.org/TR/trig/",
         "https://www.w3.org/TR/rdf12-trig/",
-        "docs/owlapi-js/implementation-plan.md sections 9.4-9.6 and 17.21"
+        "docs/implementation-plan.md sections 9.4-9.6 and 17.21"
       ],
       "compatibilityReferences": [
-        "src/owlapi-js/parser/turtle/descriptor.js",
-        "src/owlapi-js/parser/nquads/descriptor.js"
+        "internal/parsing/turtle/descriptor.js",
+        "internal/parsing/nquads/descriptor.js"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/trig/trig.test.js",
-        "src/owlapi-js/parser/trig/trig.conformance.test.js"
+        "internal/parsing/trig/trig.test.js",
+        "internal/parsing/trig/trig.conformance.test.js"
       ],
       "thirdPartyDependencies": ["n3"],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1636,7 +1627,7 @@
     },
     {
       "id": "PHASE14-TRIG-PARSER",
-      "path": "src/owlapi-js/parser/trig/parser.js",
+      "path": "internal/parsing/trig/parser.js",
       "phase": 14,
       "scope": "strict TriG parser binding that preserves prefixes and complete RDF/JS dataset graph terms while delegating graph policy and OWL reconstruction to the shared project-owned pipeline",
       "legacyWebVowlSources": ["src/owl2vowl/js/turtleParser.js"],
@@ -1645,18 +1636,18 @@
         "https://www.w3.org/TR/trig/",
         "https://www.w3.org/TR/rdf12-trig/",
         "https://rdf.js.org/dataset-spec/",
-        "docs/owlapi-js/implementation-plan.md sections 6.4, 6.7, and 17.21"
+        "docs/implementation-plan.md sections 6.4, 6.7, and 17.21"
       ],
       "compatibilityReferences": [
         "Pinned W3C rdf-tests revision 12774b0ebb385d17651b396654b19254d0fefbfa with 401 REQUIRED TriG entries passing and 17 RDF 1.2 evaluation entries individually excluded for the recorded N3.js 2.2.0 gap"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/trig/trig.test.js",
-        "src/owlapi-js/parser/trig/trig.conformance.test.js",
-        "src/owlapi-js/parser/trig/trig.differential.test.js",
-        "src/owlapi-js/parser/trig/trig.resource.test.js",
-        "src/owlapi-js/parser/trig/trig.browser.test.js"
+        "internal/parsing/trig/trig.test.js",
+        "internal/parsing/trig/trig.conformance.test.js",
+        "internal/parsing/trig/trig.differential.test.js",
+        "internal/parsing/trig/trig.resource.test.js",
+        "internal/parsing/trig/trig.browser.test.js"
       ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset", "n3"],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1665,7 +1656,7 @@
     },
     {
       "id": "PHASE15-JSONLD-DESCRIPTOR",
-      "path": "src/owlapi-js/parser/jsonld/descriptor.js",
+      "path": "internal/parsing/jsonld/descriptor.js",
       "phase": 15,
       "scope": "immutable JSON-LD format identity and bounded conservative detection using characteristic JSON-LD keywords while treating the exact application/ld+json media type as authoritative",
       "legacyWebVowlSources": ["src/owl2vowl/js/jsonLdParser.js"],
@@ -1673,15 +1664,15 @@
       "normativePublicSources": [
         "https://www.w3.org/TR/json-ld11/",
         "https://www.w3.org/TR/json-ld11-api/",
-        "docs/owlapi-js/implementation-plan.md sections 6.7, 9.4-9.6, and 17.22"
+        "docs/implementation-plan.md sections 6.7, 9.4-9.6, and 17.22"
       ],
       "compatibilityReferences": [
         "OWLAPI 5.5.1 public JSON-LD document-format identity and the project-owned parser registry contract"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/jsonld/jsonLd.test.js",
-        "src/owlapi-js/parser/trig/trig.test.js"
+        "internal/parsing/jsonld/jsonLd.test.js",
+        "internal/parsing/trig/trig.test.js"
       ],
       "thirdPartyDependencies": ["jsonld"],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1690,7 +1681,7 @@
     },
     {
       "id": "PHASE15-JSONLD-ADAPTER",
-      "path": "src/owlapi-js/parser/jsonld/jsonLdSyntaxAdapter.js",
+      "path": "internal/parsing/jsonld/jsonLdSyntaxAdapter.js",
       "phase": 15,
       "scope": "Digital Bazaar jsonld.js adapter that converts JSON-LD directly into normalized RDF/JS quads without an N-Quads string round-trip, applies immutable processing-mode, expansion-context, and RDF-direction format parameters, canonicalizes rdf:JSON, and confines remote contexts to the injected resource-limited security boundary",
       "legacyWebVowlSources": ["src/owl2vowl/js/jsonLdParser.js"],
@@ -1701,17 +1692,17 @@
         "https://www.w3.org/TR/json-ld11/",
         "https://www.w3.org/TR/json-ld11-api/#deserialize-json-ld-to-rdf-algorithm",
         "https://rdf.js.org/dataset-spec/",
-        "docs/owlapi-js/implementation-plan.md sections 6.7, 10.8, 17.22, and 19.3"
+        "docs/implementation-plan.md sections 6.7, 10.8, 17.22, and 19.3"
       ],
       "compatibilityReferences": [
         "Pinned W3C JSON-LD API revision ffdb326121ea89b7b8280e76a5caea923834bcef: 462 REQUIRED to-RDF entries pass across JSON-LD 1.0 and 1.1 processing, expansion contexts, both RDF-direction representations, and JCS-canonical rdf:JSON; only two generalized-RDF entries and three enumerated jsonld.js 9.0.0 gaps remain excluded with reasons; all 54 from-RDF entries are explicitly not applicable"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/jsonld/jsonLdSyntaxAdapter.test.js",
-        "src/owlapi-js/parser/jsonld/jsonLdSyntaxAdapter.resource.test.js",
-        "src/owlapi-js/parser/jsonld/jsonLd.conformance.test.js",
-        "src/owlapi-js/parser/jsonld/jsonLd.browser.test.js"
+        "internal/parsing/jsonld/jsonLdSyntaxAdapter.test.js",
+        "internal/parsing/jsonld/jsonLdSyntaxAdapter.resource.test.js",
+        "internal/parsing/jsonld/jsonLd.conformance.test.js",
+        "internal/parsing/jsonld/jsonLd.browser.test.js"
       ],
       "thirdPartyDependencies": [
         "@rdfjs/data-model",
@@ -1724,7 +1715,7 @@
     },
     {
       "id": "PHASE15-JSONLD10-COMPATIBILITY",
-      "path": "src/owlapi-js/parser/jsonld/jsonLd10Compatibility.js",
+      "path": "internal/parsing/jsonld/jsonLd10Compatibility.js",
       "phase": 15,
       "scope": "narrow standards-compatibility boundary for JSON-LD 1.0 context definitions and list-of-lists that jsonld.js 9 no longer provides directly; general expansion and context processing remain delegated",
       "legacyWebVowlSources": ["src/owl2vowl/js/jsonLdParser.js"],
@@ -1732,15 +1723,15 @@
       "normativePublicSources": [
         "https://www.w3.org/TR/2014/REC-json-ld-20140116/",
         "https://www.w3.org/TR/2014/REC-json-ld-api-20140116/",
-        "docs/owlapi-js/implementation-plan.md sections 10.8, 11.2, and 17.22"
+        "docs/implementation-plan.md sections 10.8, 11.2, and 17.22"
       ],
       "compatibilityReferences": [
         "Pinned W3C JSON-LD API revision ffdb326121ea89b7b8280e76a5caea923834bcef processing-mode and RDF-direction cases exercised through the Phase 15 adapter conformance runner"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/jsonld/jsonLdSyntaxAdapter.test.js",
-        "src/owlapi-js/parser/jsonld/jsonLd.conformance.test.js"
+        "internal/parsing/jsonld/jsonLdSyntaxAdapter.test.js",
+        "internal/parsing/jsonld/jsonLd.conformance.test.js"
       ],
       "thirdPartyDependencies": ["jsonld"],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1749,7 +1740,7 @@
     },
     {
       "id": "PHASE15-JSONLD-PARSER",
-      "path": "src/owlapi-js/parser/jsonld/parser.js",
+      "path": "internal/parsing/jsonld/parser.js",
       "phase": 15,
       "scope": "thin JSON-LD parser binding that injects the manager document loader, preserves context metadata, applies the shared RDF dataset graph policy, and delegates OWL reconstruction to the common RDF-to-OWL translator",
       "legacyWebVowlSources": ["src/owl2vowl/js/jsonLdParser.js"],
@@ -1757,15 +1748,15 @@
       "normativePublicSources": [
         "https://www.w3.org/TR/json-ld11-api/",
         "https://www.w3.org/TR/owl2-mapping-to-rdf/",
-        "docs/owlapi-js/implementation-plan.md sections 6.4, 6.5, and 17.22"
+        "docs/implementation-plan.md sections 6.4, 6.5, and 17.22"
       ],
       "compatibilityReferences": [
         "The Phase 5 RDF-to-OWL translator and Phase 12-14 shared RDF syntax transaction contract"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "src/owlapi-js/parser/jsonld/jsonLd.test.js",
-        "src/owlapi-js/parser/jsonld/jsonLd.differential.test.js"
+        "internal/parsing/jsonld/jsonLd.test.js",
+        "internal/parsing/jsonld/jsonLd.differential.test.js"
       ],
       "thirdPartyDependencies": ["jsonld"],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -1774,7 +1765,7 @@
     },
     {
       "id": "PHASE16-OWL-TO-RDF-TRANSLATOR",
-      "path": "src/owlapi-js/rdf/owlToRdfTranslator.js",
+      "path": "internal/mapping/owlToRdfTranslator.js",
       "phase": 16,
       "scope": "exhaustive synchronous W3C structural OWL-to-RDF mapping into a fresh RDF/JS DatasetCore, including recursive expressions, shared RDF lists, graph placement, source anonymous-individual identity, every canonical axiom kind, and all three annotated-axiom patterns",
       "legacyWebVowlSources": [],
@@ -1784,22 +1775,22 @@
         "https://www.w3.org/TR/owl2-syntax/",
         "https://rdf.js.org/data-model-spec/",
         "https://rdf.js.org/dataset-spec/",
-        "docs/owlapi-js/implementation-plan.md sections 7, 17.23, 18.6, and 18.7"
+        "docs/implementation-plan.md sections 7, 17.23, 18.6, and 18.7"
       ],
       "compatibilityReferences": [
         "Pinned OWLAPI 5.5.1 public N-Triples storer result generated from revision d7e997a53b470e32700de89cc610d9daf01ea769 with addMissingTypes disabled; the exact three rdf:type rdf:List extras are retained as a counted controlled Java deviation"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
-        "docs/owlapi-js/conformance/owl-to-rdf-mapping.json",
-        "src/owlapi-js/rdf/owlToRdfTranslator.test.js",
-        "src/owlapi-js/rdf/owlToRdfTranslator.expressions.test.js",
-        "src/owlapi-js/rdf/owlToRdfTranslator.axioms.test.js",
-        "src/owlapi-js/rdf/owlToRdfTranslator.annotations.test.js",
-        "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js",
-        "src/owlapi-js/rdf/owlToRdfTranslator.differential.test.js",
-        "src/owlapi-js/rdf/owlToRdfTranslator.resource.test.js",
-        "src/owlapi-js/rdf/owlToRdfTranslator.browser.test.js",
+        "docs/conformance/owl-to-rdf-mapping.json",
+        "internal/mapping/owlToRdfTranslator.test.js",
+        "internal/mapping/owlToRdfTranslator.expressions.test.js",
+        "internal/mapping/owlToRdfTranslator.axioms.test.js",
+        "internal/mapping/owlToRdfTranslator.annotations.test.js",
+        "internal/mapping/owlToRdfTranslator.roundTrip.test.js",
+        "internal/mapping/owlToRdfTranslator.differential.test.js",
+        "internal/mapping/owlToRdfTranslator.resource.test.js",
+        "internal/mapping/owlToRdfTranslator.browser.test.js",
         "util/owlapi-reference/GenerateRdfGraph.java",
         "util/owlapi-reference/fixtures/rdf/phase16-graph.ofn",
         "util/owlapi-reference/fixtures/rdf/phase16-graph.java.nt"
@@ -1808,6 +1799,48 @@
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE16-2026-08-22",
       "reviewDate": "2026-08-22"
+    },
+    {
+      "id": "PHASE19B-DOCUMENT-FORMAT",
+      "path": "model/owlDocumentFormat.js",
+      "phase": 19,
+      "scope": "immutable Java-compatible document-format identity and parser-parameter value object at the public model boundary",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/model/OWLDocumentFormat.html",
+        "docs/implementation-plan.md sections 2.43 and 17.26.1"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 OWLDocumentFormat public API identity and the approved package Public API Surface Registry contract"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["io/io.test.js", "test/package-boundary.test.mjs"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "PHASE19B-2026-08-26",
+      "reviewDate": "2026-08-26"
+    },
+    {
+      "id": "PHASE19B-DOCUMENT-FORMAT-REGISTRY",
+      "path": "formats/owlDocumentFormats.js",
+      "phase": 19,
+      "scope": "immutable named document-format registry separated from private parser discovery and adapter implementation details",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://owlcs.github.io/owlapi/apidocs_5/org/semanticweb/owlapi/formats/package-summary.html",
+        "docs/implementation-plan.md sections 2.43 and 17.26.1"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 document-format namespace and the approved package Public API Surface Registry contract"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["io/io.test.js", "test/package-boundary.test.mjs"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "PHASE19B-2026-08-26",
+      "reviewDate": "2026-08-26"
     }
   ],
   "compatibilityResearch": [
@@ -1823,7 +1856,7 @@
       "sourceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "reason": "Source inspection followed public-specification research to resolve a narrow observable compatibility edge case.",
       "productionUse": "No implementation text or control flow was copied; the project-owned regression test defines the independently authored behavior.",
-      "evidence": "src/owlapi-js/model/factory.test.js"
+      "evidence": "model/factory.test.js"
     },
     {
       "id": "PHASE1-RESEARCH-ANONYMOUS-ONTOLOGY-ID",
@@ -1836,10 +1869,7 @@
       "sourceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "reason": "Source inspection resolved a narrow compatibility question after the plan established that no semantic ontology IRI may be invented.",
       "productionUse": "No implementation text or control flow was copied; project-owned model and manager regressions establish the behavior.",
-      "evidence": [
-        "src/owlapi-js/model/model.test.js",
-        "src/owlapi-js/manager/owlOntologyManager.test.js"
-      ]
+      "evidence": ["model/model.test.js", "model/owlOntologyManager.test.js"]
     },
     {
       "id": "PHASE1-RESEARCH-LITERAL-DATATYPE",
@@ -1852,7 +1882,7 @@
       "sourceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "reason": "Source search corroborated the public API shape while auditing the independently authored structural model.",
       "productionUse": "No implementation text or control flow was copied; the public structural contract and project test define behavior.",
-      "evidence": "src/owlapi-js/model/factory.test.js"
+      "evidence": "model/factory.test.js"
     },
     {
       "id": "PHASE2-RESEARCH-FUNCTIONAL-COMPATIBILITY",
@@ -1870,8 +1900,8 @@
       "evidence": [
         "util/owlapi-reference/fixtures/functional/phase2-structural.ofn",
         "util/owlapi-reference/fixtures/functional/phase2-structural.java.json",
-        "src/owlapi-js/parser/functional/functionalSyntax.conformance.test.js",
-        "src/owlapi-js/parser/functional/functionalSyntax.differential.test.js"
+        "internal/parsing/functional/functionalSyntax.conformance.test.js",
+        "internal/parsing/functional/functionalSyntax.differential.test.js"
       ]
     },
     {
@@ -1887,7 +1917,7 @@
       "evidence": [
         "util/owlapi-reference/fixtures/owlxml/phase4-structural.owx",
         "util/owlapi-reference/fixtures/owlxml/phase4-structural.java.json",
-        "src/owlapi-js/parser/owlxml/owlXml.differential.test.js"
+        "internal/parsing/owlxml/owlXml.differential.test.js"
       ]
     },
     {
@@ -1902,7 +1932,7 @@
       "reason": "Focused source inspection followed the standards analysis and a failing public Schema.org fixture to confirm the observable scope of OWLAPI's lax RDF-consumer behavior.",
       "productionUse": "No implementation text or control flow was copied; the independently authored compatibility rule is localized, diagnostic, and defined by project-owned regression and corpus tests.",
       "evidence": [
-        "src/owlapi-js/rdf/rdfToOwlTranslator.axioms.test.js",
+        "internal/mapping/rdfToOwlTranslator.axioms.test.js",
         "util/verify-owlapi-rdfxml-corpus.mjs"
       ]
     },
@@ -1973,9 +2003,9 @@
       "evidence": [
         "util/owlapi-reference/fixtures/dl/phase10-structural.dl",
         "util/owlapi-reference/fixtures/dl/phase10-structural.java.json",
-        "src/owlapi-js/parser/dl/lexer.test.js",
-        "src/owlapi-js/parser/dl/dlSyntax.test.js",
-        "src/owlapi-js/parser/dl/dlSyntax.differential.test.js"
+        "internal/parsing/dl/lexer.test.js",
+        "internal/parsing/dl/dlSyntax.test.js",
+        "internal/parsing/dl/dlSyntax.differential.test.js"
       ]
     },
     {
@@ -1993,8 +2023,8 @@
       "evidence": [
         "util/owlapi-reference/GenerateKRSS2SyntaxSnapshot.java",
         "util/owlapi-reference/fixtures/krss2/phase11-structural.java.json",
-        "src/owlapi-js/parser/krss2/krss2Syntax.conformance.test.js",
-        "src/owlapi-js/parser/krss2/krss2Syntax.differential.test.js"
+        "internal/parsing/krss2/krss2Syntax.conformance.test.js",
+        "internal/parsing/krss2/krss2Syntax.differential.test.js"
       ]
     },
     {
@@ -2010,11 +2040,11 @@
       "finding": "The original dialect has a smaller top-level surface than KRSS2, requires primitive concept and role parents, requires cardinality fillers, accepts only alphanumeric Name entities, and accepts right-identity without emitting an axiom. OWLAPI defects make integer cardinalities unreachable, discard all accepted ABox axioms, construct Optional[...] bare-name bases, and expose singleton Boolean objects outside OWL 2 structural invariants. Each preserved behavior or controlled correction is enumerated in krss1-behavioral-oracle.json.",
       "productionUse": "No implementation text, generated-parser structure, semantic action code, or legacy JavaScript control flow was copied. The shared JavaScript core and separate dialect policies are independently structured and defined by project-owned grammar, differential, detection, resource, import, and WebVOWL tests.",
       "evidence": [
-        "docs/owlapi-js/compatibility/krss1-behavioral-oracle.json",
+        "docs/compatibility/krss1-behavioral-oracle.json",
         "util/owlapi-reference/GenerateKRSS1SyntaxSnapshot.java",
         "util/owlapi-reference/fixtures/krss1/phase17-structural.java.json",
-        "src/owlapi-js/parser/krss1/krss1Syntax.conformance.test.js",
-        "src/owlapi-js/parser/krss1/krss1Syntax.differential.test.js"
+        "internal/parsing/krss1/krss1Syntax.conformance.test.js",
+        "internal/parsing/krss1/krss1Syntax.differential.test.js"
       ]
     }
   ],
@@ -2076,7 +2106,7 @@
       "licenseCopyright": "Repository MIT context; historically OWLAPI-derived behavior is replaced, not transplanted",
       "disposition": "REIMPLEMENT",
       "replacementPhase": 10,
-      "evidence": "replaced by the independently authored structural parser under src/owlapi-js/parser/dl, with project-owned grammar, resource, detection, cross-format, pinned Java-oracle, import, and WebVOWL evidence",
+      "evidence": "replaced by the independently authored structural parser under internal/parsing/dl, with project-owned grammar, resource, detection, cross-format, pinned Java-oracle, import, and WebVOWL evidence",
       "decisionRef": "PHASE10-2026-08-21"
     },
     {
@@ -2118,7 +2148,7 @@
         }
       ],
       "replacementPhase": 9,
-      "evidence": "the named snapshot may be reused; descendant revisions must be reimplemented; replaced in production by src/owlapi-js/parser/rdf/n3SyntaxAdapter.js and the strict Turtle descriptor/parser, then physically deleted in Phase 18",
+      "evidence": "the named snapshot may be reused; descendant revisions must be reimplemented; replaced in production by internal/parsing/rdf/n3SyntaxAdapter.js and the strict Turtle descriptor/parser, then physically deleted in Phase 18",
       "decisionRef": "PROVENANCE-2026-08-11"
     },
     {

@@ -1,11 +1,38 @@
 {
+  "$schema": "./dependency-governance.schema.json",
   "schemaVersion": 1,
-  "recordedOn": "2026-08-24",
-  "transitiveInventoryAuthority": "package-lock.json",
+  "package": {
+    "name": "owlapi",
+    "version": "0.1.0-alpha.0"
+  },
+  "recordedOn": "2026-08-26",
+  "review": {
+    "status": "PENDING_HUMAN_REVIEW",
+    "factsSha256": "af58d805c977fb8c358a95711481b66202206c4ad42435610563e93938c15adc",
+    "reviewer": null,
+    "reviewedOn": null,
+    "capacity": null,
+    "conclusion": null
+  },
+  "productionAudit": {
+    "performedOn": "2026-08-26",
+    "command": "npm audit --omit=dev --json",
+    "npmVersion": "12.0.2",
+    "productionPackageCount": 34,
+    "vulnerabilityCounts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "transitiveInventoryAuthority": "package-lock.json and docs/provenance/third-party-material.json",
   "upgradeGate": [
     "applicable standards-conformance suites",
     "adapter-contract tests",
-    "Java/WebVOWL differential tests",
+    "Java structural differential tests and separately owned WebVOWL consumer differentials where applicable",
     "security and finite-resource tests",
     "browser and Node tests",
     "bundle-size and parser-performance benchmarks",
@@ -18,18 +45,40 @@
       "role": "Canonical RDF/JS term and quad factory",
       "standardsGrounding": ["RDF/JS Data Model specification"],
       "conformanceEvidence": [
-        "src/owlapi-js/rdf/graphPolicy.test.js",
-        "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
-        "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js"
+        "internal/rdfjs/graphPolicy.test.js",
+        "internal/mapping/rdfToOwlTranslator.test.js",
+        "internal/mapping/rdfToOwlTranslator.conformance.test.js"
       ],
       "releaseAuthority": "RDF/JS community; rdfjs-base/data-model maintainers",
       "maintenanceStatus": "Pinned production release; reassess at every material upgrade",
       "runtimeDependencies": [],
       "networkBehavior": "No document loading or ambient network access",
-      "browserCost": "Phase 5 Vite 8/Oxc browser production measurement: 2,581 minified bytes and 828 gzip bytes standalone; @rdfjs/data-model plus @rdfjs/dataset is 6,885 minified bytes and 2,208 gzip bytes.",
-      "license": "MIT",
-      "noticeAction": "Retain the dependency licence in release notices",
-      "adapterBoundary": "src/owlapi-js/rdf/environment.js"
+      "browserCost": {
+        "disposition": "MEASURED_BROWSER_GRAPH",
+        "initialStaticClosureIncluded": true,
+        "measurementReference": "Phase 5 Vite 8/Oxc standalone browser production measurement",
+        "minifiedBytes": 2581,
+        "gzipBytes": 828,
+        "fileCount": 1,
+        "comparisonContext": "@rdfjs/data-model plus @rdfjs/dataset measured 6,885 minified bytes and 2,208 gzip bytes."
+      },
+      "securityDisposition": {
+        "assessedOn": "2026-08-26",
+        "riskClass": "LOW_LEVEL_DATA_MODEL",
+        "controls": [
+          "Caller-supplied RDF terms only",
+          "No document loading or ambient network access",
+          "RDF/JS graph-policy and mapping contract tests"
+        ],
+        "rationale": "The dependency is a small deterministic term factory behind the private RDF/JS environment seam; the production audit reported no known vulnerabilities.",
+        "evidence": [
+          "internal/rdfjs/graphPolicy.test.js",
+          "internal/mapping/rdfToOwlTranslator.test.js"
+        ]
+      },
+      "declaredLicenseExpression": "MIT",
+      "noticeAction": "Record the separately licensed external dependency and its inspected licence evidence in the repository third-party-material inventory; do not copy its licence into the owlapi tarball NOTICE because npm installs it separately",
+      "adapterBoundary": "internal/rdfjs/environment.js"
     },
     {
       "name": "@rdfjs/dataset",
@@ -37,19 +86,41 @@
       "role": "Canonical indexed RDF/JS DatasetCore implementation",
       "standardsGrounding": ["RDF/JS Dataset specification"],
       "conformanceEvidence": [
-        "src/owlapi-js/rdf/graphPolicy.test.js",
-        "src/owlapi-js/rdf/rdfToOwlTranslator.test.js",
-        "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js",
-        "src/owlapi-js/rdf/rdfToOwlTranslator.resource.test.js"
+        "internal/rdfjs/graphPolicy.test.js",
+        "internal/mapping/rdfToOwlTranslator.test.js",
+        "internal/mapping/rdfToOwlTranslator.conformance.test.js",
+        "internal/mapping/rdfToOwlTranslator.resource.test.js"
       ],
       "releaseAuthority": "RDF/JS community; rdfjs-base/dataset maintainers",
       "maintenanceStatus": "Pinned production release; reassess at every material upgrade",
       "runtimeDependencies": [],
       "networkBehavior": "No document loading or ambient network access",
-      "browserCost": "Phase 5 Vite 8/Oxc browser production measurement: 4,296 minified bytes and 1,611 gzip bytes standalone; @rdfjs/data-model plus @rdfjs/dataset is 6,885 minified bytes and 2,208 gzip bytes.",
-      "license": "MIT",
-      "noticeAction": "Retain the dependency licence in release notices",
-      "adapterBoundary": "src/owlapi-js/rdf/environment.js"
+      "browserCost": {
+        "disposition": "MEASURED_BROWSER_GRAPH",
+        "initialStaticClosureIncluded": true,
+        "measurementReference": "Phase 5 Vite 8/Oxc standalone browser production measurement",
+        "minifiedBytes": 4296,
+        "gzipBytes": 1611,
+        "fileCount": 1,
+        "comparisonContext": "@rdfjs/data-model plus @rdfjs/dataset measured 6,885 minified bytes and 2,208 gzip bytes."
+      },
+      "securityDisposition": {
+        "assessedOn": "2026-08-26",
+        "riskClass": "IN_MEMORY_DATASET",
+        "controls": [
+          "Caller-supplied quads only",
+          "No document loading or ambient network access",
+          "RDF/JS graph-policy and resource-contract tests"
+        ],
+        "rationale": "The dependency supplies an in-memory DatasetCore implementation behind the private RDF/JS seam; the production audit reported no known vulnerabilities.",
+        "evidence": [
+          "internal/rdfjs/graphPolicy.test.js",
+          "internal/mapping/rdfToOwlTranslator.resource.test.js"
+        ]
+      },
+      "declaredLicenseExpression": "MIT",
+      "noticeAction": "Record the separately licensed external dependency and its inspected licence evidence in the repository third-party-material inventory; do not copy its licence into the owlapi tarball NOTICE because npm installs it separately",
+      "adapterBoundary": "internal/rdfjs/environment.js"
     },
     {
       "name": "n3",
@@ -62,56 +133,64 @@
         "W3C N-Quads"
       ],
       "conformanceEvidence": [
-        "docs/owlapi-js/conformance/classification-manifests.json#w3c-rdf-tests.turtle",
-        "docs/owlapi-js/conformance/generated/w3c-turtle.json",
-        "docs/owlapi-js/conformance/classification-manifests.json#w3c-rdf-tests.ntriples",
-        "docs/owlapi-js/conformance/generated/w3c-ntriples.json",
-        "docs/owlapi-js/conformance/classification-manifests.json#w3c-rdf-tests.nquads",
-        "docs/owlapi-js/conformance/generated/w3c-nquads.json",
-        "docs/owlapi-js/conformance/classification-manifests.json#w3c-rdf-tests.trig",
-        "docs/owlapi-js/conformance/generated/w3c-trig.json",
-        "src/owlapi-js/parser/turtle/turtle.conformance.test.js",
-        "src/owlapi-js/parser/ntriples/nTriples.conformance.test.js",
-        "src/owlapi-js/parser/nquads/nQuads.conformance.test.js",
-        "src/owlapi-js/parser/trig/trig.conformance.test.js",
-        "src/owlapi-js/parser/rdf/n3SyntaxAdapter.test.js",
-        "src/owlapi-js/parser/rdf/n3SyntaxAdapter.resource.test.js",
-        "src/owlapi-js/parser/turtle/turtle.browser.test.js",
-        "src/owlapi-js/parser/ntriples/nTriples.browser.test.js",
-        "src/owlapi-js/parser/nquads/nQuads.browser.test.js",
-        "src/owlapi-js/parser/trig/trig.browser.test.js",
-        "src/owlapi-js/parser/turtle/turtle.differential.test.js",
-        "src/owlapi-js/parser/ntriples/nTriples.differential.test.js",
-        "src/owlapi-js/parser/nquads/nQuads.differential.test.js",
-        "src/owlapi-js/parser/trig/trig.differential.test.js"
+        "docs/conformance/classification-manifests.json#w3c-rdf-tests.turtle",
+        "docs/conformance/generated/w3c-turtle.json",
+        "docs/conformance/classification-manifests.json#w3c-rdf-tests.ntriples",
+        "docs/conformance/generated/w3c-ntriples.json",
+        "docs/conformance/classification-manifests.json#w3c-rdf-tests.nquads",
+        "docs/conformance/generated/w3c-nquads.json",
+        "docs/conformance/classification-manifests.json#w3c-rdf-tests.trig",
+        "docs/conformance/generated/w3c-trig.json",
+        "internal/parsing/turtle/turtle.conformance.test.js",
+        "internal/parsing/ntriples/nTriples.conformance.test.js",
+        "internal/parsing/nquads/nQuads.conformance.test.js",
+        "internal/parsing/trig/trig.conformance.test.js",
+        "internal/parsing/rdf/n3SyntaxAdapter.test.js",
+        "internal/parsing/rdf/n3SyntaxAdapter.resource.test.js",
+        "internal/parsing/turtle/turtle.browser.test.js",
+        "internal/parsing/ntriples/nTriples.browser.test.js",
+        "internal/parsing/nquads/nQuads.browser.test.js",
+        "internal/parsing/trig/trig.browser.test.js",
+        "internal/parsing/turtle/turtle.differential.test.js",
+        "internal/parsing/ntriples/nTriples.differential.test.js",
+        "internal/parsing/nquads/nQuads.differential.test.js",
+        "internal/parsing/trig/trig.differential.test.js"
       ],
       "releaseAuthority": "RDF/JS community; rdfjs/N3.js maintainers",
       "maintenanceStatus": "Pinned production release; the 24 August 2026 upgrade qualification independently passed all 387 classified Turtle entries, all 99 N-Triples entries, all 114 N-Quads entries, and all 413 REQUIRED TriG entries. The complete 418-entry TriG inventory retains five enumerated RDF 1.2 reifier/annotation evaluation entries as EXCLUDED_WITH_REASON because N3.js 2.3.0 does not yet reproduce their pinned results; the other 12 former N3.js 2.2.0 exclusions are now REQUIRED and passing.",
       "runtimeDependencies": ["buffer", "readable-stream"],
       "networkBehavior": "Parser APIs consume caller-provided input and do not resolve documents",
-      "browserCost": "The 24 August 2026 N3.js 2.3.0 Vite 8/Oxc isolated-manager measurement keeps N3.js absent from the 266,273-minified-byte / 69,481-gzip-byte initial graph and isolates it in one 190,412-minified-byte / 52,938-gzip-byte lazy RDF-syntax graph. The same-source N3.js 2.2.0 control measured 185,859 minified / 51,859 gzip bytes, so the dependency update changes only the lazy graph by +2.45% minified and +2.08% gzip, within the unchanged 20% gate. The entry-aware WebVOWL production build has a 690,542-minified-byte / 175,783-gzip-byte three-chunk initial static closure and a 191,574-minified-byte / 53,640-gzip-byte three-chunk lazy RDF-syntax closure. The adapter loads the published self-contained browser UMD entry only after exact Turtle, N-Triples, N-Quads, or TriG selection, so browser execution does not depend on Node globals; util/verify-webvowl-lazy-parser-chunks.mjs proves the N3 implementation marker is absent from the initial closure and present behind that shared dynamic boundary.",
-      "securityReview": {
-        "reviewedOn": "2026-08-24",
-        "source": "npm registry audit service through the installed npm client",
-        "command": "npm audit --omit=dev --json",
-        "packages": ["n3", "buffer", "readable-stream"],
-        "result": "The complete production scope contained 73 dependencies and reported zero info, low, moderate, high, critical, or total vulnerabilities.",
-        "executableEvidence": [
-          "src/owlapi-js/parser/rdf/n3SyntaxAdapter.resource.test.js",
-          "src/owlapi-js/parser/ntriples/nTriples.resource.test.js",
-          "src/owlapi-js/parser/ntriples/nTriples.browser.test.js",
-          "src/owlapi-js/parser/nquads/nQuads.resource.test.js",
-          "src/owlapi-js/parser/nquads/nQuads.browser.test.js",
-          "src/owlapi-js/parser/trig/trig.resource.test.js",
-          "src/owlapi-js/parser/trig/trig.browser.test.js",
-          "src/owlapi-js/parser/turtle/turtle.browser.test.js",
-          "src/owlapi-js/parser/turtle/turtle.test.js",
-          "util/verify-webvowl-lazy-parser-chunks.mjs"
+      "browserCost": {
+        "disposition": "MEASURED_LAZY_CLOSURE",
+        "initialStaticClosureIncluded": false,
+        "measurementReference": "24 August 2026 Vite 8/Oxc isolated-manager measurement",
+        "minifiedBytes": 190412,
+        "gzipBytes": 52938,
+        "fileCount": 1,
+        "comparisonContext": "N3.js 2.2.0 measured 185,859 minified and 51,859 gzip bytes; 2.3.0 changed only the lazy graph by +2.45% minified and +2.08% gzip, within the 20% gate."
+      },
+      "securityDisposition": {
+        "assessedOn": "2026-08-26",
+        "riskClass": "COMPLEX_SYNTAX_PARSER",
+        "controls": [
+          "Exact syntax selection before lazy loading",
+          "Caller-provided input only with no document resolution",
+          "Pinned W3C conformance classifications",
+          "Browser, resource, and differential contract suites",
+          "Production audit for the direct and transitive runtime graph"
+        ],
+        "rationale": "N3.js parses four externally supplied RDF syntaxes, so it receives parser-grade validation and resource controls even though its implementation remains outside the initial browser closure.",
+        "evidence": [
+          "internal/parsing/rdf/n3SyntaxAdapter.resource.test.js",
+          "internal/parsing/turtle/turtle.browser.test.js",
+          "internal/parsing/ntriples/nTriples.resource.test.js",
+          "internal/parsing/nquads/nQuads.resource.test.js",
+          "internal/parsing/trig/trig.resource.test.js"
         ]
       },
-      "license": "MIT",
-      "noticeAction": "Retain the MIT licences for N3.js, buffer, and readable-stream in release notices",
-      "adapterBoundary": "src/owlapi-js/parser/rdf/n3SyntaxAdapter.js"
+      "declaredLicenseExpression": "MIT",
+      "noticeAction": "Record N3.js and its separately installed transitive dependencies in the repository third-party-material inventory; do not copy their licences into the owlapi tarball NOTICE because npm installs them separately",
+      "adapterBoundary": "internal/parsing/rdf/n3SyntaxAdapter.js"
     },
     {
       "name": "rdfxml-streaming-parser",
@@ -119,10 +198,10 @@
       "role": "RDF/XML syntax-to-RDF/JS adapter only",
       "standardsGrounding": ["W3C RDF/XML", "RDF/JS streams and quads"],
       "conformanceEvidence": [
-        "docs/owlapi-js/conformance/classification-manifests.json#w3c-rdf-tests.rdfxml",
-        "src/owlapi-js/parser/rdfxml/rdfXml.conformance.test.js",
-        "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.test.js",
-        "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.resource.test.js"
+        "docs/conformance/classification-manifests.json#w3c-rdf-tests.rdfxml",
+        "internal/parsing/rdfxml/rdfXml.conformance.test.js",
+        "internal/parsing/rdfxml/rdfXmlSyntaxAdapter.test.js",
+        "internal/parsing/rdfxml/rdfXmlSyntaxAdapter.resource.test.js"
       ],
       "releaseAuthority": "rdfjs/rdfxml-streaming-parser.js maintainers",
       "maintenanceStatus": "Pinned production release; the 24 August 2026 upgrade qualification independently passed all 166 active W3C RDF/XML manifest entries plus the project XML, adapter, security, browser, and finite-resource contracts",
@@ -135,32 +214,38 @@
         "relative-to-absolute-iri",
         "validate-iri"
       ],
-      "networkBehavior": "Streaming parser consumes supplied XML; the owlapi-js adapter forbids external-entity retrieval",
-      "browserCost": "The 24 August 2026 Vite 8/Oxc isolated-manager measurement keeps the third-party implementation absent from the 266,273-minified-byte / 69,481-gzip-byte initial graph and isolated in a 163,134-minified-byte / 46,775-gzip-byte lazy dependency graph; the Node first-use path through manager, the first conditional dependency load, and shared RDF-to-OWL reconstruction measured 38.26 ms with an 8,573,712-byte peak-heap delta. The 50,000-quad syntax and end-to-end medians remain within the unchanged 20% gate, and the Node-only @xmldom/xmldom fallback remains absent from browser output.",
-      "securityReview": {
-        "reviewedOn": "2026-08-13",
-        "source": "https://github.com/advisories",
-        "queryPolicy": "Exact npm package-name searches for the direct dependency and every package in runtimeDependencies",
-        "packages": [
-          "rdfxml-streaming-parser",
-          "@rubensworks/saxes",
-          "@types/readable-stream",
-          "buffer",
-          "rdf-data-factory",
-          "readable-stream",
-          "relative-to-absolute-iri",
-          "validate-iri"
-        ],
-        "advisoryDatabaseResult": "NO_EXACT_PACKAGE_MATCHES",
-        "executableEvidence": [
-          "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.resource.test.js",
-          "src/owlapi-js/parser/rdfxml/rdfXml.browser.test.js"
-        ],
-        "toolingNote": "npm 12.0.2 ran `npm audit --omit=dev --json` successfully on 24 August 2026 after the coordinated foundational update: the production dependency scope contained 73 dependencies and reported zero info, low, moderate, high, critical, or total vulnerabilities."
+      "networkBehavior": "Streaming parser consumes supplied XML; the owlapi adapter forbids external-entity retrieval",
+      "browserCost": {
+        "disposition": "MEASURED_LAZY_CLOSURE",
+        "initialStaticClosureIncluded": false,
+        "measurementReference": "24 August 2026 Vite 8/Oxc isolated-manager measurement",
+        "minifiedBytes": 163134,
+        "gzipBytes": 46775,
+        "fileCount": 1,
+        "comparisonContext": "The Node first-use manager, conditional dependency load, and RDF-to-OWL reconstruction measured 38.26 ms with an 8,573,712-byte peak-heap delta; the 50,000-quad medians remained within the 20% gate."
       },
-      "license": "MIT",
-      "noticeAction": "Retain the dependency and transitive dependency licences in release notices",
-      "adapterBoundary": "src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.js"
+      "securityDisposition": {
+        "assessedOn": "2026-08-26",
+        "riskClass": "COMPLEX_SYNTAX_PARSER",
+        "controls": [
+          "External-entity retrieval is forbidden by the owlapi adapter",
+          "Finite-resource and 50,000-quad workload contracts",
+          "All 166 active W3C RDF/XML manifest entries",
+          "Browser and adapter security tests",
+          "Production audit for the direct and transitive runtime graph"
+        ],
+        "rationale": "RDF/XML accepts hostile XML-shaped input and has a nontrivial streaming dependency graph, so default-deny entity handling, finite-resource tests, standards conformance, and production-audit evidence are all retained as upgrade gates.",
+        "evidence": [
+          "internal/parsing/rdfxml/rdfXml.conformance.test.js",
+          "internal/parsing/rdfxml/rdfXmlSyntaxAdapter.resource.test.js",
+          "internal/parsing/rdfxml/rdfXml.browser.test.js",
+          "26 August 2026 npm production audit: 34 packages, zero vulnerabilities",
+          "13 August 2026 exact GitHub Advisory package-name review: no exact matches for the eight recorded runtime packages"
+        ]
+      },
+      "declaredLicenseExpression": "MIT",
+      "noticeAction": "Record the separately installed dependency graph in the repository third-party-material inventory; do not copy its licences into the owlapi tarball NOTICE because npm installs it separately",
+      "adapterBoundary": "internal/parsing/rdfxml/rdfXmlSyntaxAdapter.js"
     },
     {
       "name": "jsonld",
@@ -177,18 +262,44 @@
         "462/462 REQUIRED to-RDF entries pass through the owlapi-js adapter; only two generalized-RDF cases and three enumerated dependency gaps remain excluded"
       ],
       "releaseAuthority": "Digital Bazaar jsonld.js maintainers",
-      "maintenanceStatus": "Pinned production release; restricted-loader behavior and the isolated JSON-LD 1.0 compatibility boundary are revalidated in Phase 15",
+      "maintenanceStatus": "Pinned production release; all 462 REQUIRED to-RDF cases pass through the adapter, and the restricted-loader, JSON-LD 1.0 compatibility, browser, differential, and finite-resource boundaries are passing release evidence",
       "runtimeDependencies": [
         "@digitalbazaar/http-client",
         "canonicalize",
         "lru-cache",
         "rdf-canonize"
       ],
-      "networkBehavior": "Upstream supports document loading; owlapi-js must always inject its default-deny controlled loader",
-      "browserCost": "Largest selected adapter surface; lazy loading and a Phase 15 bundle baseline are mandatory",
-      "license": "BSD-3-Clause",
-      "noticeAction": "Retain the dependency and transitive dependency licences in release notices",
-      "adapterBoundary": "src/owlapi-js/parser/jsonld/jsonLdSyntaxAdapter.js"
+      "networkBehavior": "Upstream supports document loading; owlapi must always inject its default-deny controlled loader",
+      "browserCost": {
+        "disposition": "MEASURED_LAZY_CLOSURE",
+        "initialStaticClosureIncluded": false,
+        "measurementReference": "Phase 15 Vite 8/Oxc JSON-LD lazy-closure baseline",
+        "minifiedBytes": 204727,
+        "gzipBytes": 50201,
+        "fileCount": 3,
+        "comparisonContext": "The measured JSON-LD implementation remains excluded from the initial static closure and is admitted only through the exact JSON-LD syntax boundary."
+      },
+      "securityDisposition": {
+        "assessedOn": "2026-08-26",
+        "riskClass": "NETWORK_CAPABLE_JSONLD_PROCESSOR",
+        "controls": [
+          "owlapi always injects a default-deny document loader",
+          "Externally supplied contexts require explicit caller authority",
+          "JSON-LD 1.0 compatibility is isolated behind a dedicated boundary",
+          "Finite-resource, browser, differential, and W3C conformance tests",
+          "Production audit for the direct and transitive runtime graph"
+        ],
+        "rationale": "Upstream jsonld.js can load remote documents, so owlapi treats uncontrolled network access as forbidden and verifies that policy at the private adapter boundary before accepting the dependency.",
+        "evidence": [
+          "internal/parsing/jsonld/jsonLdSyntaxAdapter.test.js",
+          "internal/parsing/jsonld/jsonLdSyntaxAdapter.resource.test.js",
+          "internal/parsing/jsonld/jsonLd.conformance.test.js",
+          "internal/parsing/jsonld/jsonLd.browser.test.js"
+        ]
+      },
+      "declaredLicenseExpression": "BSD-3-Clause",
+      "noticeAction": "Record the separately installed dependency graph in the repository third-party-material inventory; do not copy its licences into the owlapi tarball NOTICE because npm installs it separately",
+      "adapterBoundary": "internal/parsing/jsonld/jsonLdSyntaxAdapter.js"
     },
     {
       "name": "@xmldom/xmldom",
@@ -200,18 +311,43 @@
         "W3C OWL 2 XML Serialization"
       ],
       "conformanceEvidence": [
-        "src/owlapi-js/parser/xml/xmlParserAdapter.test.js",
-        "src/owlapi-js/parser/owlxml/owlXml.conformance.test.js",
-        "src/owlapi-js/parser/owlxml/owlXml.resource.test.js"
+        "internal/parsing/xml/xmlParserAdapter.test.js",
+        "internal/parsing/owlxml/owlXml.conformance.test.js",
+        "internal/parsing/owlxml/owlXml.resource.test.js"
       ],
       "releaseAuthority": "xmldom maintainers",
       "maintenanceStatus": "Pinned production release; the 24 August 2026 upgrade qualification passed all 12 focused XML, OWL/XML, and RDF/XML suites (248 tests), retained the XML error/security contracts, and confirmed the Node-only fallback remains excluded from browser bundles",
       "runtimeDependencies": [],
       "networkBehavior": "Parses caller-provided XML in memory and performs no document loading or ambient network access",
-      "browserCost": "Node-only fallback behind XmlParserAdapter; browser execution uses native DOMParser and the dependency must remain absent from browser bundles",
-      "license": "MIT",
-      "noticeAction": "Retain the dependency licence in release notices",
-      "adapterBoundary": "src/owlapi-js/parser/xml/xmlParserAdapter.js"
+      "browserCost": {
+        "disposition": "NODE_ONLY_EXCLUDED",
+        "initialStaticClosureIncluded": false,
+        "measurementReference": "24 August 2026 browser-build exclusion verification",
+        "minifiedBytes": null,
+        "gzipBytes": null,
+        "fileCount": null,
+        "comparisonContext": "Browsers use native DOMParser; the Node-only fallback must remain absent from every browser closure."
+      },
+      "securityDisposition": {
+        "assessedOn": "2026-08-26",
+        "riskClass": "NODE_ONLY_XML_PARSER",
+        "controls": [
+          "Loaded only when native DOMParser is unavailable",
+          "No document loading or ambient network access",
+          "XML parser error and security contracts",
+          "Browser-build exclusion verification",
+          "Production audit for the direct dependency"
+        ],
+        "rationale": "The fallback parses hostile XML-shaped input in Node, but it is isolated behind XmlParserAdapter, performs no retrieval, and is forbidden from browser bundles.",
+        "evidence": [
+          "internal/parsing/xml/xmlParserAdapter.test.js",
+          "internal/parsing/owlxml/owlXml.conformance.test.js",
+          "internal/parsing/owlxml/owlXml.resource.test.js"
+        ]
+      },
+      "declaredLicenseExpression": "MIT",
+      "noticeAction": "Record the separately licensed external dependency and its inspected licence evidence in the repository third-party-material inventory; do not copy its licence into the owlapi tarball NOTICE because npm installs it separately",
+      "adapterBoundary": "internal/parsing/xml/xmlParserAdapter.js"
     }
   ]
 }

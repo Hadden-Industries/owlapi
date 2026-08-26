@@ -3,7 +3,7 @@
   "phase": 16,
   "status": "COMPLETE",
   "normativeSource": "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_the_Structural_Specification_to_RDF_Graphs",
-  "implementation": "src/owlapi-js/rdf/owlToRdfTranslator.js",
+  "implementation": "internal/mapping/owlToRdfTranslator.js",
   "scope": {
     "canonicalInput": "owlapi-js structural OWLOntology",
     "canonicalOutput": "RDF/JS DatasetCore<Quad>",
@@ -99,14 +99,14 @@
     "annotationValueKinds": ["IRI", "OWLAnonymousIndividual", "OWLLiteral"]
   },
   "sharedEvidence": [
-    "src/owlapi-js/rdf/owlToRdfTranslator.test.js",
-    "src/owlapi-js/rdf/owlToRdfTranslator.expressions.test.js",
-    "src/owlapi-js/rdf/owlToRdfTranslator.axioms.test.js",
-    "src/owlapi-js/rdf/owlToRdfTranslator.annotations.test.js",
-    "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js",
-    "src/owlapi-js/rdf/owlToRdfTranslator.differential.test.js",
-    "src/owlapi-js/rdf/owlToRdfTranslator.resource.test.js",
-    "src/owlapi-js/rdf/owlToRdfTranslator.browser.test.js"
+    "internal/mapping/owlToRdfTranslator.test.js",
+    "internal/mapping/owlToRdfTranslator.expressions.test.js",
+    "internal/mapping/owlToRdfTranslator.axioms.test.js",
+    "internal/mapping/owlToRdfTranslator.annotations.test.js",
+    "internal/mapping/owlToRdfTranslator.roundTrip.test.js",
+    "internal/mapping/owlToRdfTranslator.differential.test.js",
+    "internal/mapping/owlToRdfTranslator.resource.test.js",
+    "internal/mapping/owlToRdfTranslator.browser.test.js"
   ],
   "sections": [
     {
@@ -124,8 +124,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/owlToRdfTranslator.axioms.test.js",
-            "src/owlapi-js/rdf/owlToRdfTranslator.resource.test.js"
+            "internal/mapping/owlToRdfTranslator.axioms.test.js",
+            "internal/mapping/owlToRdfTranslator.resource.test.js"
           ]
         },
         {
@@ -139,8 +139,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/owlToRdfTranslator.annotations.test.js",
-            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+            "internal/mapping/owlToRdfTranslator.annotations.test.js",
+            "internal/mapping/owlToRdfTranslator.roundTrip.test.js"
           ]
         },
         {
@@ -153,9 +153,9 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/owlToRdfTranslator.test.js",
-            "src/owlapi-js/rdf/owlToRdfTranslator.axioms.test.js",
-            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+            "internal/mapping/owlToRdfTranslator.test.js",
+            "internal/mapping/owlToRdfTranslator.axioms.test.js",
+            "internal/mapping/owlToRdfTranslator.roundTrip.test.js"
           ]
         },
         {
@@ -168,8 +168,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/owlToRdfTranslator.expressions.test.js",
-            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+            "internal/mapping/owlToRdfTranslator.expressions.test.js",
+            "internal/mapping/owlToRdfTranslator.roundTrip.test.js"
           ]
         },
         {
@@ -184,8 +184,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/owlToRdfTranslator.expressions.test.js",
-            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+            "internal/mapping/owlToRdfTranslator.expressions.test.js",
+            "internal/mapping/owlToRdfTranslator.roundTrip.test.js"
           ]
         },
         {
@@ -200,8 +200,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js",
-            "src/owlapi-js/rdf/owlToRdfTranslator.axioms.test.js"
+            "internal/mapping/owlToRdfTranslator.roundTrip.test.js",
+            "internal/mapping/owlToRdfTranslator.axioms.test.js"
           ]
         },
         {
@@ -216,8 +216,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/owlToRdfTranslator.axioms.test.js",
-            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+            "internal/mapping/owlToRdfTranslator.axioms.test.js",
+            "internal/mapping/owlToRdfTranslator.roundTrip.test.js"
           ]
         }
       ]
@@ -234,8 +234,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/owlToRdfTranslator.test.js",
-            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+            "internal/mapping/owlToRdfTranslator.test.js",
+            "internal/mapping/owlToRdfTranslator.roundTrip.test.js"
           ]
         },
         {
@@ -243,7 +243,7 @@
           "constructs": ["recursive owl:Annotation reification"],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/owlToRdfTranslator.annotations.test.js"
+            "internal/mapping/owlToRdfTranslator.annotations.test.js"
           ]
         }
       ]
@@ -262,9 +262,9 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/owlToRdfTranslator.annotations.test.js",
-            "src/owlapi-js/rdf/owlToRdfTranslator.differential.test.js",
-            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+            "internal/mapping/owlToRdfTranslator.annotations.test.js",
+            "internal/mapping/owlToRdfTranslator.differential.test.js",
+            "internal/mapping/owlToRdfTranslator.roundTrip.test.js"
           ]
         }
       ]
@@ -285,8 +285,8 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/owlToRdfTranslator.annotations.test.js",
-            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+            "internal/mapping/owlToRdfTranslator.annotations.test.js",
+            "internal/mapping/owlToRdfTranslator.roundTrip.test.js"
           ]
         }
       ]
@@ -307,9 +307,9 @@
           ],
           "status": "COMPLETE",
           "evidence": [
-            "src/owlapi-js/rdf/owlToRdfTranslator.annotations.test.js",
-            "src/owlapi-js/rdf/owlToRdfTranslator.axioms.test.js",
-            "src/owlapi-js/rdf/owlToRdfTranslator.roundTrip.test.js"
+            "internal/mapping/owlToRdfTranslator.annotations.test.js",
+            "internal/mapping/owlToRdfTranslator.axioms.test.js",
+            "internal/mapping/owlToRdfTranslator.roundTrip.test.js"
           ]
         }
       ]
@@ -326,7 +326,7 @@
       "exactOccurrences": 3,
       "authority": "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_the_Structural_Specification_to_RDF_Graphs",
       "evidence": [
-        "src/owlapi-js/rdf/owlToRdfTranslator.differential.test.js",
+        "internal/mapping/owlToRdfTranslator.differential.test.js",
         "util/owlapi-reference/GenerateRdfGraph.java",
         "util/owlapi-reference/fixtures/rdf/phase16-graph.ofn",
         "util/owlapi-reference/fixtures/rdf/phase16-graph.java.nt"

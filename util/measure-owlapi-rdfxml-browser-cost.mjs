@@ -5,9 +5,7 @@ import { gzipSync } from "node:zlib";
 
 import { build } from "vite";
 
-const input = fileURLToPath(
-  new URL("../src/owlapi-js/manager/index.js", import.meta.url),
-);
+const input = fileURLToPath(new URL("../index.js", import.meta.url));
 const output = await build({
   configFile: false,
   logLevel: "silent",
@@ -100,7 +98,7 @@ console.log(
       node: process.version,
       protocol: {
         configFile: false,
-        entry: "src/owlapi-js/manager/index.js",
+        entry: "index.js",
         format: "es",
         minifier: "oxc",
         target: "es2022",

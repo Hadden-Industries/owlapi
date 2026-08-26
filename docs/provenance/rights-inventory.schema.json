@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haddenindustries.com/schemas/owlapi/rights-inventory.v1.schema.json",
+  "title": "owlapi tarball rights inventory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "package",
+    "review",
+    "contributors",
+    "materialClasses",
+    "externalDependencies",
+    "unresolvedExternalContributions",
+    "conclusion"
+  ],
+  "properties": {
+    "$schema": { "const": "./rights-inventory.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "repository", "scopeAuthority"],
+      "properties": {
+        "name": { "const": "owlapi" },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+        },
+        "repository": {
+          "const": "https://github.com/Hadden-Industries/owlapi"
+        },
+        "scopeAuthority": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["method", "fileCount", "sourceManifestSha256"],
+          "properties": {
+            "method": {
+              "const": "npm pack --dry-run --json plus local source-byte hashing"
+            },
+            "fileCount": { "type": "integer", "minimum": 1 },
+            "sourceManifestSha256": { "$ref": "#/$defs/sha256" }
+          }
+        }
+      }
+    },
+    "review": { "$ref": "#/$defs/review" },
+    "contributors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "identity",
+          "role",
+          "copyrightStatement",
+          "licence",
+          "evidence"
+        ],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "identity": { "type": "string", "minLength": 1 },
+          "role": { "type": "string", "minLength": 1 },
+          "copyrightStatement": { "type": "string", "minLength": 1 },
+          "licence": { "const": "AGPL-3.0-only" },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "materialClasses": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "relationship",
+          "paths",
+          "packageTarball",
+          "rightsHolder",
+          "licenceBasis",
+          "source",
+          "distributionAuthority",
+          "rationale"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9.-]*$" },
+          "relationship": {
+            "enum": [
+              "PROJECT_OWNED",
+              "EMBEDDED_OR_COPIED",
+              "GENERATED_FROM_THIRD_PARTY"
+            ]
+          },
+          "paths": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "packageTarball": { "const": true },
+          "rightsHolder": { "type": "string", "minLength": 1 },
+          "licenceBasis": { "type": "string", "minLength": 1 },
+          "source": { "type": "string", "minLength": 1 },
+          "distributionAuthority": { "type": "string", "minLength": 1 },
+          "rationale": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "externalDependencies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bundled",
+        "authority",
+        "inventoryFactsSha256",
+        "noticeRule"
+      ],
+      "properties": {
+        "bundled": { "const": false },
+        "authority": {
+          "const": "docs/provenance/third-party-material.json"
+        },
+        "inventoryFactsSha256": { "$ref": "#/$defs/sha256" },
+        "noticeRule": { "type": "string", "minLength": 1 }
+      }
+    },
+    "unresolvedExternalContributions": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "conclusion": { "type": "string", "minLength": 1 }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+    },
+    "nullableNonemptyString": {
+      "oneOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }]
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "factsSha256",
+        "reviewer",
+        "reviewedOn",
+        "capacity",
+        "conclusion"
+      ],
+      "properties": {
+        "status": { "enum": ["PENDING_HUMAN_REVIEW", "REVIEWED"] },
+        "factsSha256": { "$ref": "#/$defs/sha256" },
+        "reviewer": { "$ref": "#/$defs/nullableNonemptyString" },
+        "reviewedOn": {
+          "oneOf": [{ "type": "string", "format": "date" }, { "type": "null" }]
+        },
+        "capacity": { "$ref": "#/$defs/nullableNonemptyString" },
+        "conclusion": { "$ref": "#/$defs/nullableNonemptyString" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "status": { "const": "PENDING_HUMAN_REVIEW" } }
+          },
+          "then": {
+            "properties": {
+              "reviewer": { "type": "null" },
+              "reviewedOn": { "type": "null" },
+              "capacity": { "type": "null" },
+              "conclusion": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "status": { "const": "REVIEWED" } } },
+          "then": {
+            "properties": {
+              "reviewer": { "type": "string", "minLength": 1 },
+              "reviewedOn": { "type": "string", "format": "date" },
+              "capacity": { "type": "string", "minLength": 1 },
+              "conclusion": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

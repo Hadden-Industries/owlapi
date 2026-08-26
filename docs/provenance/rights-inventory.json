@@ -1,0 +1,95 @@
+{
+  "$schema": "./rights-inventory.schema.json",
+  "schemaVersion": 1,
+  "package": {
+    "name": "owlapi",
+    "version": "0.1.0-alpha.0",
+    "repository": "https://github.com/Hadden-Industries/owlapi",
+    "scopeAuthority": {
+      "method": "npm pack --dry-run --json plus local source-byte hashing",
+      "fileCount": 71,
+      "sourceManifestSha256": "7067d33f5b5af0a766057e9cddd832a517690478f9189c075aa928df324981ee"
+    }
+  },
+  "review": {
+    "status": "PENDING_HUMAN_REVIEW",
+    "factsSha256": "6d38ba8fb1892faab2d592972056c69b512e9841128e73d365596e7c66fdb5d6",
+    "reviewer": null,
+    "reviewedOn": null,
+    "capacity": null,
+    "conclusion": null
+  },
+  "contributors": [
+    {
+      "name": "Maksym Shostak",
+      "identity": "https://github.com/MaksymShostak",
+      "role": "Original author and current sole identified contributor of package-owned expression in the reconstructed release scope",
+      "copyrightStatement": "Copyright © 2026 Maksym Shostak. HADDEN INDUSTRIES LTD is project steward and is not represented as copyright owner or licensor.",
+      "licence": "AGPL-3.0-only",
+      "evidence": [
+        "git shortlog over the reconstructed owlapi history",
+        "docs/provenance/history-reconstruction/reconstruction/project-lineage.json",
+        "docs/provenance/history-reconstruction/checkpoint-summary.json"
+      ]
+    }
+  ],
+  "materialClasses": [
+    {
+      "id": "package-owned-source-and-metadata",
+      "relationship": "PROJECT_OWNED",
+      "paths": [
+        "package.json",
+        "index.js",
+        "apibinding/",
+        "model/",
+        "io/",
+        "formats/",
+        "internal/",
+        "README.md",
+        "CHANGELOG.md",
+        "NOTICE",
+        "docs/compatibility/capabilities.json"
+      ],
+      "packageTarball": true,
+      "rightsHolder": "Maksym Shostak for his contributions",
+      "licenceBasis": "AGPL-3.0-only",
+      "source": "https://github.com/Hadden-Industries/owlapi",
+      "distributionAuthority": "Copyright-owner publication under AGPL-3.0-only",
+      "rationale": "This class contains the independently authored JavaScript implementation, package metadata, and project-authored consumer documentation other than the separately classified generated Java compatibility views."
+    },
+    {
+      "id": "gnu-agpl-3.0-only-licence-text",
+      "relationship": "EMBEDDED_OR_COPIED",
+      "paths": ["LICENSE"],
+      "packageTarball": true,
+      "rightsHolder": "Free Software Foundation, Inc. and contributors to the licence text",
+      "licenceBasis": "Unmodified GNU Affero General Public License version 3 text, redistributed as the package licence notice",
+      "source": "https://raw.githubusercontent.com/spdx/license-list-data/main/text/AGPL-3.0-only.txt",
+      "distributionAuthority": "The licence text expressly permits verbatim copying and distribution; its byte identity is governed by the package governance test.",
+      "rationale": "LICENSE is a legal notice artifact rather than package implementation expression."
+    },
+    {
+      "id": "java-owlapi-compatibility-metadata",
+      "relationship": "GENERATED_FROM_THIRD_PARTY",
+      "paths": [
+        "API.md",
+        "docs/compatibility/java-api-surface.json",
+        "docs/compatibility/java-api-surface.md"
+      ],
+      "packageTarball": true,
+      "rightsHolder": "Maksym Shostak for project-authored compatibility analysis; Java OWLAPI public API identifiers are attributed to the owlcs/owlapi project and its contributors",
+      "licenceBasis": "Project-authored analysis is AGPL-3.0-only. Public API identity and declaration facts are used for interoperability; the pinned Java source declares LGPL-3.0 and Apache-2.0 alternatives as provenance context.",
+      "source": "https://github.com/owlcs/owlapi/tree/d7e997a53b470e32700de89cc610d9daf01ea769",
+      "distributionAuthority": "The generated output records public package/type/declaration facts and independently authored mappings; it contains no Java implementation bodies or copied Java documentation.",
+      "rationale": "The classification acknowledges the exact third-party source consulted without implying source transliteration, organizational continuity, affiliation, endorsement, or Java implementation-code incorporation."
+    }
+  ],
+  "externalDependencies": {
+    "bundled": false,
+    "authority": "docs/provenance/third-party-material.json",
+    "inventoryFactsSha256": "576bacc588633b3b9e70656aa699d26e9716c9ba179a790865056d3f3c24dda0",
+    "noticeRule": "Ordinary npm dependencies are installed separately and remain under their own licences. Their licence texts are not copied into the owlapi tarball merely because they appear in the installed dependency graph."
+  },
+  "unresolvedExternalContributions": [],
+  "conclusion": "Every material class in the machine-defined 0.1.0-alpha.0 tarball scope has an identified candidate distribution basis and no unresolved external copyrightable contribution is recorded; human review of this exact facts digest remains required before release."
+}

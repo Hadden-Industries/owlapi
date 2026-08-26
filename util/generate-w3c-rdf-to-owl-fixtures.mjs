@@ -6,20 +6,19 @@ import { format as formatWithPrettier } from "prettier";
 import { RdfXmlParser } from "rdfxml-streaming-parser";
 
 const SOURCE_URL = new URL(
-  "../docs/owlapi-js/conformance/upstream/w3c-owl2/all.rdf",
+  "../docs/conformance/upstream/w3c-owl2/all.rdf",
   import.meta.url,
 );
 const CLASSIFICATIONS_URL = new URL(
-  "../docs/owlapi-js/conformance/classification-manifests.json",
+  "../docs/conformance/classification-manifests.json",
   import.meta.url,
 );
 const FIXTURE_URL = new URL(
-  "../docs/owlapi-js/conformance/generated/w3c-owl2-rdf-to-owl.json",
+  "../docs/conformance/generated/w3c-owl2-rdf-to-owl.json",
   import.meta.url,
 );
 const EXPECTED_SOURCE_SHA256 =
   "986ce4f9df655b1f44aec86a5753530d295355a8e9a16700e0253ac30759c4e1";
-const TEST_NAMESPACE = "http://www.w3.org/2007/OWL/testOntology#";
 const RDF_PROPERTIES = Object.freeze([
   "rdfXmlPremiseOntology",
   "rdfXmlConclusionOntology",
@@ -184,7 +183,7 @@ Object.assign(manifest, {
   },
   requiredDocumentCount: documents.length,
   requiredTestCount: requiredEntries.length,
-  runner: "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js",
+  runner: "internal/mapping/rdfToOwlTranslator.conformance.test.js",
   runnerParsingPolicy:
     "Strict for 310 documents; the two declared source-defect documents use the narrow Java-compatible non-rdf:nil terminal recovery and assert its warning.",
   sourceTestCount: cases.length,

@@ -26,31 +26,31 @@ translation, or retained legacy-parser call.
 
 ## Acceptance evidence
 
-| Gate | Result | Primary evidence |
-| --- | --- | --- |
-| Dialect separation | Shared and KRSS2-only vocabulary is classified independently; KRSS2-only forms are invalid KRSS1 and no KRSS1 parser is registered | `krss/dialect.test.js`; `krss2Syntax.detection.test.js` |
-| Grammar | All required KRSS2 expressions, role attributes, role chains, assertions, keyword case rules, reserved names, and TBox/ABox ordering are covered | `krss2Syntax.test.js`; `krss2Syntax.conformance.test.js` |
-| Resources/security | UTF-8 input/token accounting, token and axiom counts, bounded lookahead, depth, timeout, abort/yield, locations, and rollback are governed | `krss/lexer.test.js`; `krss2Syntax.resource.test.js` |
-| Structural differential | One 12-axiom subset agrees exactly across KRSS2, DL, Functional, Manchester, OWL/XML, RDF/XML, and Turtle | `krss2Syntax.differential.test.js` |
-| Java oracle | The pinned OWLAPI 5.5.1 KRSS2 parser agrees on all 12 reachable axiom counts and signature categories | `GenerateKRSS2SyntaxSnapshot.java`; `phase11-structural.java.json` |
-| Production integration | Default-manager direct loads, import closures, and WebVOWL conversion use the new structural parser; legacy reachability remains prohibited | `krss2Syntax.integration.test.js`; `productionGraph.architecture.test.js` |
-| Performance | Accepted 50,000-axiom and 256-level signals; same-revision registry regressions stay within the unchanged 20% threshold | `performance/baseline.md`; `benchmark-owlapi-krss2.mjs` |
-| Provenance | Every new production module and the narrow grammar inspection are recorded against the pinned revision | `provenance/provenance.json`; `governance.test.js` |
+| Gate                    | Result                                                                                                                                           | Primary evidence                                                          |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
+| Dialect separation      | Shared and KRSS2-only vocabulary is classified independently; KRSS2-only forms are invalid KRSS1 and no KRSS1 parser is registered               | `krss/dialect.test.js`; `krss2Syntax.detection.test.js`                   |
+| Grammar                 | All required KRSS2 expressions, role attributes, role chains, assertions, keyword case rules, reserved names, and TBox/ABox ordering are covered | `krss2Syntax.test.js`; `krss2Syntax.conformance.test.js`                  |
+| Resources/security      | UTF-8 input/token accounting, token and axiom counts, bounded lookahead, depth, timeout, abort/yield, locations, and rollback are governed       | `krss/lexer.test.js`; `krss2Syntax.resource.test.js`                      |
+| Structural differential | One 12-axiom subset agrees exactly across KRSS2, DL, Functional, Manchester, OWL/XML, RDF/XML, and Turtle                                        | `krss2Syntax.differential.test.js`                                        |
+| Java oracle             | The pinned OWLAPI 5.5.1 KRSS2 parser agrees on all 12 reachable axiom counts and signature categories                                            | `GenerateKRSS2SyntaxSnapshot.java`; `phase11-structural.java.json`        |
+| Production integration  | Default-manager direct loads, import closures, and WebVOWL conversion use the new structural parser; legacy reachability remains prohibited      | `krss2Syntax.integration.test.js`; `productionGraph.architecture.test.js` |
+| Performance             | Accepted 50,000-axiom and 256-level signals; same-revision registry regressions stay within the unchanged 20% threshold                          | `performance/baseline.md`; `benchmark-owlapi-krss2.mjs`                   |
+| Provenance              | Every new production module and the narrow grammar inspection are recorded against the pinned revision                                           | `provenance/provenance.json`; `governance.test.js`                        |
 
 ## Findings and dispositions
 
-| ID | Applicability | Primary disposition | Finding |
-| --- | --- | --- | --- |
-| `M11-001` | `OWL_NATIVE`, `ARCHITECTURE` | `PLAYBOOK_UPDATE` | Shared lexical machinery must remain dialect-neutral; parser registration, format identity, and grammar legality stay dialect-specific. |
-| `M11-002` | `OWL_NATIVE`, `TESTING` | `TEST_OR_FITNESS_UPDATE` | A deferred compatibility identity needs executable negative evidence: format metadata alone does not prove that no parser alias exists. |
-| `M11-003` | `TEXTUAL_PARSER`, `COMPATIBILITY` | `TEST_OR_FITNESS_UPDATE` | Per-production documentation can omit a whole-document phase rule; the pinned parser requires all TBox statements before ABox statements. |
-| `M11-004` | `TEXTUAL_PARSER`, `COMPATIBILITY` | `TEST_OR_FITNESS_UPDATE` | KRSS keywords are reserved lexical tokens, so a keyword-valued entity must use an absolute IRI spelling rather than a bare name. |
-| `M11-005` | `OWL_NATIVE`, `PROVENANCE` | `PLAYBOOK_UPDATE` | Absolute-IRI oracle fixtures isolate axiom semantics from a pinned parser's malformed `Optional[...]` bare-name base. Independent tests must still govern the project namespace policy. |
-| `M11-006` | `OWL_NATIVE`, `MODEL` | `TEST_OR_FITNESS_UPDATE` | One primitive-role statement can yield several axioms; parser transactions need an atomic multi-axiom seam and rollback evidence. |
-| `M11-007` | `TEXTUAL_PARSER`, `SECURITY` | `TEST_OR_FITNESS_UPDATE` | A small lookahead bound and code-point UTF-8 accounting keep shared lexing safe without eager token arrays. |
-| `M11-008` | `TESTING`, `CROSS_CUTTING` | `PLAYBOOK_UPDATE` | Cross-format claims should include every implemented OWL-native and RDF syntax that can express the chosen subset, not only convenient existing pairs. |
-| `M11-009` | `TOOLING`, `PROVENANCE` | `PLAYBOOK_UPDATE` | On Windows, `java` and `javac` can resolve from different installations; the long-classpath launcher must invoke compiler mode independently of the runtime's `java.home`. |
-| `M11-010` | `PERFORMANCE`, `TESTING` | `NO_CHANGE` | Same-revision descriptor-list pairs continue to isolate bounded detector overhead without re-anchoring historical baselines or thresholds. |
+| ID        | Applicability                     | Primary disposition      | Finding                                                                                                                                                                                 |
+| --------- | --------------------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `M11-001` | `OWL_NATIVE`, `ARCHITECTURE`      | `PLAYBOOK_UPDATE`        | Shared lexical machinery must remain dialect-neutral; parser registration, format identity, and grammar legality stay dialect-specific.                                                 |
+| `M11-002` | `OWL_NATIVE`, `TESTING`           | `TEST_OR_FITNESS_UPDATE` | A deferred compatibility identity needs executable negative evidence: format metadata alone does not prove that no parser alias exists.                                                 |
+| `M11-003` | `TEXTUAL_PARSER`, `COMPATIBILITY` | `TEST_OR_FITNESS_UPDATE` | Per-production documentation can omit a whole-document phase rule; the pinned parser requires all TBox statements before ABox statements.                                               |
+| `M11-004` | `TEXTUAL_PARSER`, `COMPATIBILITY` | `TEST_OR_FITNESS_UPDATE` | KRSS keywords are reserved lexical tokens, so a keyword-valued entity must use an absolute IRI spelling rather than a bare name.                                                        |
+| `M11-005` | `OWL_NATIVE`, `PROVENANCE`        | `PLAYBOOK_UPDATE`        | Absolute-IRI oracle fixtures isolate axiom semantics from a pinned parser's malformed `Optional[...]` bare-name base. Independent tests must still govern the project namespace policy. |
+| `M11-006` | `OWL_NATIVE`, `MODEL`             | `TEST_OR_FITNESS_UPDATE` | One primitive-role statement can yield several axioms; parser transactions need an atomic multi-axiom seam and rollback evidence.                                                       |
+| `M11-007` | `TEXTUAL_PARSER`, `SECURITY`      | `TEST_OR_FITNESS_UPDATE` | A small lookahead bound and code-point UTF-8 accounting keep shared lexing safe without eager token arrays.                                                                             |
+| `M11-008` | `TESTING`, `CROSS_CUTTING`        | `PLAYBOOK_UPDATE`        | Cross-format claims should include every implemented OWL-native and RDF syntax that can express the chosen subset, not only convenient existing pairs.                                  |
+| `M11-009` | `TOOLING`, `PROVENANCE`           | `PLAYBOOK_UPDATE`        | On Windows, `java` and `javac` can resolve from different installations; the long-classpath launcher must invoke compiler mode independently of the runtime's `java.home`.              |
+| `M11-010` | `PERFORMANCE`, `TESTING`          | `NO_CHANGE`              | Same-revision descriptor-list pairs continue to isolate bounded detector overhead without re-anchoring historical baselines or thresholds.                                              |
 
 ## KRSS1/KRSS2 grammar gap
 

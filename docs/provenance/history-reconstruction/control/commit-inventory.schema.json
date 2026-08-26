@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haddenindustries.com/schemas/owlapi/phase19/commit-inventory.v1.schema.json",
+  "title": "Phase 19 pre-rewrite commit inventory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "base", "commits"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "base": { "$ref": "#/$defs/commit" },
+    "commits": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/commit" }
+    }
+  },
+  "$defs": {
+    "oid": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "base64": { "type": "string", "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$" },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "email", "timestamp", "timezone"],
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "timestamp": { "type": "integer" },
+        "timezone": { "type": "string", "pattern": "^[+-][0-9]{4}$" }
+      }
+    },
+    "signature": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["header", "rawBase64"],
+          "properties": {
+            "header": { "enum": ["gpgsig", "gpgsig-sha256"] },
+            "rawBase64": { "$ref": "#/$defs/base64" }
+          }
+        }
+      ]
+    },
+    "message": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rawBase64", "sha256", "decoding", "utf8", "subject", "body"],
+      "properties": {
+        "rawBase64": { "$ref": "#/$defs/base64" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "decoding": { "enum": ["UTF8", "INVALID_UTF8"] },
+        "utf8": { "type": ["string", "null"] },
+        "subject": { "type": ["string", "null"] },
+        "body": { "type": ["string", "null"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "decoding": { "const": "UTF8" } }, "required": ["decoding"] },
+          "then": {
+            "properties": {
+              "utf8": { "type": "string" },
+              "subject": { "type": "string" },
+              "body": { "type": "string" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "decoding": { "const": "INVALID_UTF8" } }, "required": ["decoding"] },
+          "then": {
+            "properties": {
+              "utf8": { "type": "null" },
+              "subject": { "type": "null" },
+              "body": { "type": "null" }
+            }
+          }
+        }
+      ]
+    },
+    "path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rawBase64", "utf8"],
+      "properties": {
+        "rawBase64": { "$ref": "#/$defs/base64" },
+        "utf8": { "type": ["string", "null"] }
+      }
+    },
+    "change": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "path"],
+      "properties": {
+        "status": { "enum": ["A", "C", "D", "M", "R", "T", "U", "X", "B"] },
+        "path": { "$ref": "#/$defs/path" }
+      }
+    },
+    "commit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "oid",
+        "tree",
+        "parents",
+        "author",
+        "committer",
+        "encoding",
+        "signature",
+        "signatureVerification",
+        "message",
+        "reachableFrom",
+        "rawCommitSha256",
+        "changes"
+      ],
+      "properties": {
+        "oid": { "$ref": "#/$defs/oid" },
+        "tree": { "$ref": "#/$defs/oid" },
+        "parents": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/oid" },
+          "uniqueItems": true
+        },
+        "author": { "$ref": "#/$defs/identity" },
+        "committer": { "$ref": "#/$defs/identity" },
+        "encoding": { "type": ["string", "null"] },
+        "signature": { "$ref": "#/$defs/signature" },
+        "signatureVerification": { "$ref": "#/$defs/signatureVerification" },
+        "message": { "$ref": "#/$defs/message" },
+        "reachableFrom": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "rawCommitSha256": { "$ref": "#/$defs/sha256" },
+        "changes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/change" }
+        }
+      }
+    },
+    "signatureVerification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "verifier",
+        "exitCode",
+        "stdoutBase64",
+        "stdoutSha256",
+        "stderrBase64",
+        "stderrSha256"
+      ],
+      "properties": {
+        "status": { "enum": ["NOT_PRESENT", "VERIFIED", "FAILED"] },
+        "verifier": { "const": "git verify-commit --raw" },
+        "exitCode": { "type": ["integer", "null"] },
+        "stdoutBase64": { "$ref": "#/$defs/base64" },
+        "stdoutSha256": { "$ref": "#/$defs/sha256" },
+        "stderrBase64": { "$ref": "#/$defs/base64" },
+        "stderrSha256": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  }
+}

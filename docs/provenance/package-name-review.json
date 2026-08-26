@@ -1,0 +1,47 @@
+{
+  "$schema": "./package-name-review.schema.json",
+  "schemaVersion": 1,
+  "review": {
+    "status": "REVIEWED",
+    "reviewedOn": "2026-08-26",
+    "reviewer": "Maksym Shostak",
+    "authority": "Authorized representative of project steward HADDEN INDUSTRIES LTD"
+  },
+  "identity": "owlapi",
+  "purpose": "A native-ESM JavaScript package for loading OWL 2 ontologies into a structural object model with deliberately registered compatibility to selected Java OWLAPI concepts.",
+  "compatibilityWording": "The package may describe compatibility with Java OWLAPI concepts and registered Java mappings, but it must identify itself as an independently maintained JavaScript implementation and must not imply official status, sponsorship, endorsement, or organizational continuity.",
+  "knownPriorUse": "The npm name previously identified an unrelated Overwatch-oriented package. Its seven known public versions were unpublished in 2021, remain permanently consumed coordinates, and have no code, API, ownership, or provenance relationship with this implementation.",
+  "evidence": [
+    "docs/provenance/npm-package-identity-history.json",
+    "README.md",
+    "package.json",
+    "docs/compatibility/java-api-surface.json",
+    "docs/provenance/provenance.json"
+  ],
+  "risks": [
+    "A user who remembers the unrelated historical package could initially assume continuity.",
+    "The unscoped name resembles the established Java OWLAPI project and could be misunderstood as an official JavaScript edition.",
+    "Permanently consumed 1.x and 2.x coordinates constrain a future post-zero stability-promotion decision.",
+    "A very broad or unusual dormant dependency range may select a future publication even though ordinary former 1.x and 2.x ranges cannot select 0.1.x.",
+    "Read-only registry availability does not establish authority to publish a reclaimed or historically used name."
+  ],
+  "mitigations": [
+    "Begin with the genuine useful 0.1.0-alpha.0 release under next and leave latest unset during the alpha.",
+    "Never reuse the known historical version coordinates.",
+    "Publish prominent discontinuity and non-affiliation statements in package-facing metadata and documentation.",
+    "Expose an exact compatibility registry that distinguishes mapped, adapted, deferred, and unsupported Java API concepts.",
+    "Use the complete qualified real publication path as the decisive namespace-authority test and retain sanitized evidence of any failure.",
+    "Revisit historical exact/range risk before a separately approved post-zero stability promotion."
+  ],
+  "publicWording": "This project is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project. The package name was formerly used for an unrelated, now-unpublished Overwatch package; this implementation has no code, API, ownership, or provenance relationship with it and does not reuse its historical versions.",
+  "externalLegalAdviceObtained": false,
+  "decision": {
+    "outcome": "APPROVED_WITH_MITIGATIONS",
+    "rationale": "The short ecosystem-recognizable name accurately describes the intended API compatibility objective, while the zero-major prerelease line, immutable-coordinate separation, explicit discontinuity, compatibility registry, and non-affiliation wording materially reduce confusion without claiming official Java OWLAPI status.",
+    "conditions": [
+      "The first registry write must be the complete qualified 0.1.0-alpha.0 package or a later fully qualified alpha if an earlier candidate is abandoned before publication.",
+      "A namespace or authorization failure must be recorded and resolved through the approved npm support/identity process rather than by publishing a placeholder or silently renaming the package.",
+      "The evidence and public wording must be refreshed before production 0.1.0 and before any post-zero stability promotion."
+    ]
+  }
+}

@@ -1,15 +1,15 @@
 import { readFile } from "node:fs/promises";
 
-import { OWLOntologyLoaderConfiguration } from "../src/owlapi-js/io/index.js";
-import { IRI } from "../src/owlapi-js/model/index.js";
+import { OWLOntologyLoaderConfiguration } from "../io/index.js";
+import { IRI } from "../model/index.js";
+import { RdfToOwlTranslator } from "../internal/mapping/rdfToOwlTranslator.js";
 import {
   rdfDataFactory,
   rdfDatasetFactory,
-  RdfToOwlTranslator,
-} from "../src/owlapi-js/rdf/index.js";
+} from "../internal/rdfjs/environment.js";
 
 const FIXTURE_URL = new URL(
-  "../docs/owlapi-js/conformance/generated/w3c-owl2-rdf-to-owl.json",
+  "../docs/conformance/generated/w3c-owl2-rdf-to-owl.json",
   import.meta.url,
 );
 

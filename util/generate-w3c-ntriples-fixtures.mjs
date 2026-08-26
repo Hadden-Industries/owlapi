@@ -16,11 +16,11 @@ const DEFAULT_INPUT_URL = new URL(
   import.meta.url,
 );
 const CLASSIFICATIONS_URL = new URL(
-  "../docs/owlapi-js/conformance/classification-manifests.json",
+  "../docs/conformance/classification-manifests.json",
   import.meta.url,
 );
 const FIXTURE_URL = new URL(
-  "../docs/owlapi-js/conformance/generated/w3c-ntriples.json",
+  "../docs/conformance/generated/w3c-ntriples.json",
   import.meta.url,
 );
 
@@ -32,7 +32,7 @@ const suites = [
   {
     assumedBase: "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-triples/",
     archiveUrl: new URL(
-      "../docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-n-triples/manifest.ttl",
+      "../docs/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-n-triples/manifest.ttl",
       import.meta.url,
     ),
     expectedCount: 70,
@@ -46,7 +46,7 @@ const suites = [
     assumedBase:
       "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-triples/syntax/",
     archiveUrl: new URL(
-      "../docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-n-triples/syntax/manifest.ttl",
+      "../docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-n-triples/syntax/manifest.ttl",
       import.meta.url,
     ),
     expectedCount: 29,
@@ -205,7 +205,7 @@ Object.assign(classification, {
   })),
   localManifestArtifacts: suites.map(
     ({ manifestPath }) =>
-      `docs/owlapi-js/conformance/upstream/w3c-rdf-tests/${manifestPath}`,
+      `docs/conformance/upstream/w3c-rdf-tests/${manifestPath}`,
   ),
   manifestEntryCount: counts.required,
   manifestEntryCounts,
@@ -214,7 +214,7 @@ Object.assign(classification, {
   positiveSyntaxTestCount: counts.positiveSyntax,
   requiredTestCount: counts.required,
   revision: REVISION,
-  runner: "src/owlapi-js/parser/ntriples/nTriples.conformance.test.js",
+  runner: "internal/parsing/ntriples/nTriples.conformance.test.js",
   runnerParsingPolicy:
     "Every positive-syntax case must parse at the exact N-Triples syntax seam and produce only default-graph RDF/JS quads; every negative-syntax case must reject before RDF-to-OWL reconstruction.",
   runnerScope:

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haddenindustries.com/schemas/owlapi/history-reconstruction/off-platform-backup.v1.schema.json",
+  "title": "Phase 19A off-platform backup evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "backupKind",
+    "authority",
+    "copiedAt",
+    "source",
+    "encryptedArchive",
+    "encryption",
+    "destination",
+    "verification",
+    "restoreRehearsal"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "backupKind": { "const": "PRE_REWRITE" },
+    "authority": { "const": "NON_AUTHORITATIVE_RECOVERY_COPY" },
+    "copiedAt": { "type": "string", "format": "date-time" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseOid", "tipOid", "bundleSha256"],
+      "properties": {
+        "baseOid": { "$ref": "#/$defs/gitSha1" },
+        "tipOid": { "$ref": "#/$defs/gitSha1" },
+        "bundleSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "encryptedArchive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fileName", "size", "sha256"],
+      "properties": {
+        "fileName": { "const": "webvowl-phase19A-pre-rewrite.tar.age" },
+        "size": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "encryption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["format", "recipientType", "recipientPublicKey", "recipientFingerprint"],
+      "properties": {
+        "format": { "const": "age-v1" },
+        "recipientType": { "const": "ssh-ed25519" },
+        "recipientPublicKey": { "type": "string", "pattern": "^ssh-ed25519 " },
+        "recipientFingerprint": { "type": "string", "pattern": "^SHA256:" }
+      }
+    },
+    "destination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "destinationId", "authority"],
+      "properties": {
+        "provider": { "const": "Microsoft OneDrive" },
+        "destinationId": { "const": "hadden-industries-software-owlapi-backups-phase19A" },
+        "authority": { "const": "NO_DEVELOPMENT_MERGE_PUBLICATION_OR_CANONICAL_SOURCE_AUTHORITY" }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["copyState", "sourceSha256", "destinationSha256", "digestMatch"],
+      "properties": {
+        "copyState": { "const": "CONFIRMED" },
+        "sourceSha256": { "$ref": "#/$defs/sha256" },
+        "destinationSha256": { "$ref": "#/$defs/sha256" },
+        "digestMatch": { "const": true }
+      }
+    },
+    "restoreRehearsal": { "const": "NOT_RUN_OUT_OF_SCOPE" }
+  },
+  "$defs": {
+    "gitSha1": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

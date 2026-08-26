@@ -3,11 +3,11 @@ import { readFileSync } from "node:fs";
 import { cpus, release, totalmem } from "node:os";
 import { performance } from "node:perf_hooks";
 
+import { RdfToOwlTranslator } from "../internal/mapping/rdfToOwlTranslator.js";
 import {
   rdfDataFactory,
   rdfDatasetFactory,
-  RdfToOwlTranslator,
-} from "../src/owlapi-js/rdf/index.js";
+} from "../internal/rdfjs/environment.js";
 
 import { assertQuiescentMachine } from "./benchmarkEnvironment.mjs";
 

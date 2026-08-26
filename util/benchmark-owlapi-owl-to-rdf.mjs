@@ -3,15 +3,9 @@ import { readFileSync } from "node:fs";
 import { cpus, release, totalmem } from "node:os";
 import { performance } from "node:perf_hooks";
 
-import {
-  IRI,
-  OWLDataFactory,
-  OWLOntology,
-} from "../src/owlapi-js/model/index.js";
-import {
-  OwlToRdfTranslator,
-  rdfDatasetFactory,
-} from "../src/owlapi-js/rdf/index.js";
+import { IRI, OWLDataFactory, OWLOntology } from "../model/index.js";
+import { OwlToRdfTranslator } from "../internal/mapping/owlToRdfTranslator.js";
+import { rdfDatasetFactory } from "../internal/rdfjs/environment.js";
 import { assertQuiescentMachine } from "./benchmarkEnvironment.mjs";
 
 await assertQuiescentMachine();

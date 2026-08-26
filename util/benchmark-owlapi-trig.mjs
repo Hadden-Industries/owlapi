@@ -6,20 +6,20 @@ import { cpus, release, totalmem } from "node:os";
 import { performance } from "node:perf_hooks";
 import process from "node:process";
 
-import { StringDocumentSource } from "../src/owlapi-js/io/index.js";
-import { OWLOntologyManager } from "../src/owlapi-js/manager/owlOntologyManager.js";
-import { OWLParserRegistry } from "../src/owlapi-js/manager/parserRegistry.js";
-import { dlSyntaxParserDescriptor } from "../src/owlapi-js/parser/dl/descriptor.js";
-import { functionalSyntaxParserDescriptor } from "../src/owlapi-js/parser/functional/descriptor.js";
-import { krss2ParserDescriptor } from "../src/owlapi-js/parser/krss2/descriptor.js";
-import { manchesterSyntaxParserDescriptor } from "../src/owlapi-js/parser/manchester/descriptor.js";
-import { nQuadsParserDescriptor } from "../src/owlapi-js/parser/nquads/descriptor.js";
-import { nTriplesParserDescriptor } from "../src/owlapi-js/parser/ntriples/descriptor.js";
-import { triGParserDescriptor } from "../src/owlapi-js/parser/trig/descriptor.js";
-import { owlXmlParserDescriptor } from "../src/owlapi-js/parser/owlxml/descriptor.js";
-import { createTriGSyntaxAdapter } from "../src/owlapi-js/parser/rdf/n3SyntaxAdapter.js";
-import { rdfXmlParserDescriptor } from "../src/owlapi-js/parser/rdfxml/descriptor.js";
-import { turtleParserDescriptor } from "../src/owlapi-js/parser/turtle/descriptor.js";
+import { StringDocumentSource } from "../io/index.js";
+import { OWLOntologyManager } from "../model/owlOntologyManager.js";
+import { OWLParserRegistry } from "../internal/parsing/parserRegistry.js";
+import { dlSyntaxParserDescriptor } from "../internal/parsing/dl/descriptor.js";
+import { functionalSyntaxParserDescriptor } from "../internal/parsing/functional/descriptor.js";
+import { krss2ParserDescriptor } from "../internal/parsing/krss2/descriptor.js";
+import { manchesterSyntaxParserDescriptor } from "../internal/parsing/manchester/descriptor.js";
+import { nQuadsParserDescriptor } from "../internal/parsing/nquads/descriptor.js";
+import { nTriplesParserDescriptor } from "../internal/parsing/ntriples/descriptor.js";
+import { triGParserDescriptor } from "../internal/parsing/trig/descriptor.js";
+import { owlXmlParserDescriptor } from "../internal/parsing/owlxml/descriptor.js";
+import { createTriGSyntaxAdapter } from "../internal/parsing/rdf/n3SyntaxAdapter.js";
+import { rdfXmlParserDescriptor } from "../internal/parsing/rdfxml/descriptor.js";
+import { turtleParserDescriptor } from "../internal/parsing/turtle/descriptor.js";
 
 import { assertQuiescentMachine } from "./benchmarkEnvironment.mjs";
 
@@ -29,7 +29,7 @@ const require = createRequire(import.meta.url);
 const {
   GENERATOR_VERSION,
   generateBenchmarkFixture,
-} = require("./generate-owlapi-benchmark-fixtures.js");
+} = require("./generate-owlapi-benchmark-fixtures.cjs");
 const RUN_COUNT = 5;
 const SAMPLE_INTERVAL_MS = 5;
 const WARMUP_COUNT = 1;

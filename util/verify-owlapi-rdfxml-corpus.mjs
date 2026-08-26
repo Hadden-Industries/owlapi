@@ -4,16 +4,13 @@ import { existsSync, readFileSync } from "node:fs";
 import {
   OWLOntologyLoaderConfiguration,
   StringDocumentSource,
-} from "../src/owlapi-js/io/index.js";
-import { RdfXmlSyntaxAdapter } from "../src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.js";
-import { RdfToOwlTranslator } from "../src/owlapi-js/rdf/index.js";
+} from "../io/index.js";
+import { RdfXmlSyntaxAdapter } from "../internal/parsing/rdfxml/rdfXmlSyntaxAdapter.js";
+import { RdfToOwlTranslator } from "../internal/mapping/rdfToOwlTranslator.js";
 
 const benchmarkCorpus = JSON.parse(
   readFileSync(
-    new URL(
-      "../docs/owlapi-js/performance/benchmark-corpus.json",
-      import.meta.url,
-    ),
+    new URL("../docs/performance/benchmark-corpus.json", import.meta.url),
     "utf8",
   ),
 );
@@ -180,7 +177,7 @@ for (const fixture of rdfXmlFixtures) {
 console.log(
   JSON.stringify(
     {
-      corpus: "docs/owlapi-js/performance/benchmark-corpus.json",
+      corpus: "docs/performance/benchmark-corpus.json",
       measuredOn: new Date().toISOString(),
       results,
       schemaVersion: 1,

@@ -1182,12 +1182,12 @@
           "testType": "EVALUATION"
         }
       ],
-      "localManifestArtifact": "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl",
+      "localManifestArtifact": "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl",
       "manifestEntryCount": 166,
       "manifestSha256": "027679cf7d460cdc401ccf2aab3546dfbdfad64badcdd15f225948f5643f6370",
       "negativeSyntaxTestCount": 40,
       "requiredTestCount": 166,
-      "runner": "src/owlapi-js/parser/rdfxml/rdfXml.conformance.test.js",
+      "runner": "internal/parsing/rdfxml/rdfXml.conformance.test.js",
       "runnerParsingPolicy": "Every active evaluation case must produce an RDF/JS dataset graph-isomorphic to its N-Triples result; every active negative-syntax case must reject before RDF-to-OWL reconstruction.",
       "runnerScope": "Exercise the RDF/XML syntax-to-RDF/JS boundary independently; accepted syntax may then proceed through the separately governed shared RDF-to-OWL translator.",
       "sourceDefinitionCount": 173,
@@ -4060,8 +4060,8 @@
       ],
       "evaluationTestCount": 145,
       "localManifestArtifacts": [
-        "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-turtle/manifest.ttl",
-        "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-turtle/syntax/manifest.ttl"
+        "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-turtle/manifest.ttl",
+        "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-turtle/syntax/manifest.ttl"
       ],
       "manifestEntryCount": 387,
       "manifestEntryCounts": { "rdf11": 313, "rdf12Syntax": 74 },
@@ -4072,7 +4072,7 @@
       "negativeSyntaxTestCount": 127,
       "positiveSyntaxTestCount": 115,
       "requiredTestCount": 387,
-      "runner": "src/owlapi-js/parser/turtle/turtle.conformance.test.js",
+      "runner": "internal/parsing/turtle/turtle.conformance.test.js",
       "runnerParsingPolicy": "Every RDF 1.1 evaluation case must produce a canonical RDF/JS dataset graph-isomorphic to its N-Triples result; every positive-syntax case must parse at the Turtle syntax seam; every negative-syntax case must reject before RDF-to-OWL reconstruction.",
       "runnerScope": "Exercise the exact-format Turtle syntax-to-RDF/JS boundary independently for the pinned RDF 1.1 manifest and RDF 1.2 syntax manifest; OWL reconstruction remains separately governed by the shared RDF-to-OWL translator.",
       "sourceTestCount": 387
@@ -4782,8 +4782,8 @@
         }
       ],
       "localManifestArtifacts": [
-        "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-n-triples/manifest.ttl",
-        "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-n-triples/syntax/manifest.ttl"
+        "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-n-triples/manifest.ttl",
+        "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-n-triples/syntax/manifest.ttl"
       ],
       "manifestEntryCount": 99,
       "manifestEntryCounts": { "rdf11": 70, "rdf12Syntax": 29 },
@@ -4794,7 +4794,7 @@
       "negativeSyntaxTestCount": 51,
       "positiveSyntaxTestCount": 48,
       "requiredTestCount": 99,
-      "runner": "src/owlapi-js/parser/ntriples/nTriples.conformance.test.js",
+      "runner": "internal/parsing/ntriples/nTriples.conformance.test.js",
       "runnerParsingPolicy": "Every positive-syntax case must parse at the exact N-Triples syntax seam and produce only default-graph RDF/JS quads; every negative-syntax case must reject before RDF-to-OWL reconstruction.",
       "runnerScope": "Exercise the exact-format N-Triples syntax-to-RDF/JS boundary independently for the pinned RDF 1.1 manifest and RDF 1.2 syntax manifest; OWL reconstruction remains separately governed by the shared RDF-to-OWL translator.",
       "sourceTestCount": 99
@@ -5609,8 +5609,8 @@
         }
       ],
       "localManifestArtifacts": [
-        "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-n-quads/manifest.ttl",
-        "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-n-quads/syntax/manifest.ttl"
+        "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-n-quads/manifest.ttl",
+        "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-n-quads/syntax/manifest.ttl"
       ],
       "manifestEntryCount": 114,
       "manifestEntryCounts": { "rdf11": 87, "rdf12Syntax": 27 },
@@ -5621,7 +5621,7 @@
       "negativeSyntaxTestCount": 54,
       "positiveSyntaxTestCount": 60,
       "requiredTestCount": 114,
-      "runner": "src/owlapi-js/parser/nquads/nQuads.conformance.test.js",
+      "runner": "internal/parsing/nquads/nQuads.conformance.test.js",
       "runnerParsingPolicy": "Every positive-syntax case must parse at the exact N-Quads syntax seam while preserving RDF/JS graph terms; every negative-syntax case must reject before graph selection or RDF-to-OWL reconstruction.",
       "runnerScope": "Exercise the exact-format N-Quads syntax-to-RDF/JS boundary independently for the pinned RDF 1.1 manifest and RDF 1.2 syntax manifest; dataset graph selection and OWL reconstruction remain separately governed.",
       "sourceTestCount": 114
@@ -8740,9 +8740,9 @@
       ],
       "evaluationTestCount": 169,
       "localManifestArtifacts": [
-        "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl",
-        "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/syntax/manifest.ttl",
-        "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/eval/manifest.ttl"
+        "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl",
+        "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/syntax/manifest.ttl",
+        "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/eval/manifest.ttl"
       ],
       "manifestEntryCount": 418,
       "manifestEntryCounts": {
@@ -8758,7 +8758,7 @@
       "negativeSyntaxTestCount": 126,
       "positiveSyntaxTestCount": 123,
       "requiredTestCount": 413,
-      "runner": "src/owlapi-js/parser/trig/trig.conformance.test.js",
+      "runner": "internal/parsing/trig/trig.conformance.test.js",
       "runnerParsingPolicy": "Every RDF 1.1 and RDF 1.2 evaluation case must produce a canonical RDF/JS dataset graph-isomorphic to its N-Quads result; every positive-syntax case must parse at the exact TriG syntax seam; every negative-syntax case must reject before graph selection or RDF-to-OWL reconstruction.",
       "runnerScope": "Exercise the exact-format TriG syntax-to-RDF/JS boundary independently for the pinned RDF 1.1 manifest and RDF 1.2 syntax and evaluation manifests; OWL reconstruction remains separately governed by the shared RDF-to-OWL translator.",
       "sourceTestCount": 418,
@@ -8779,7 +8779,7 @@
       "id": "w3c-owl2.rdf-to-owl",
       "suite": "w3c-owl2",
       "revision": "sha256:986ce4f9df655b1f44aec86a5753530d295355a8e9a16700e0253ac30759c4e1",
-      "paths": ["docs/owlapi-js/conformance/upstream/w3c-owl2/all.rdf"],
+      "paths": ["docs/conformance/upstream/w3c-owl2/all.rdf"],
       "classificationOwnerPhases": [5],
       "runnerScope": "Classify and reconstruct every applicable RDF premise, conclusion, and non-conclusion document at the RDF-to-OWL mapping seam; semantic entailment/profile outcomes remain outside this phase.",
       "entries": [
@@ -10507,7 +10507,7 @@
       },
       "requiredDocumentCount": 312,
       "requiredTestCount": 233,
-      "runner": "src/owlapi-js/rdf/rdfToOwlTranslator.conformance.test.js",
+      "runner": "internal/mapping/rdfToOwlTranslator.conformance.test.js",
       "sourceTestCount": 338,
       "knownSourceDefects": [
         {
@@ -10525,13 +10525,13 @@
       "id": "w3c-owl2.functional",
       "suite": "w3c-owl2",
       "revision": "sha256:986ce4f9df655b1f44aec86a5753530d295355a8e9a16700e0253ac30759c4e1",
-      "paths": ["docs/owlapi-js/conformance/upstream/w3c-owl2/all.rdf"],
+      "paths": ["docs/conformance/upstream/w3c-owl2/all.rdf"],
       "classificationOwnerPhases": [2],
       "sourceTestCount": 338,
       "requiredTestCount": 46,
       "requiredDocumentCount": 62,
       "compatibleRecoveryDocumentCount": 24,
-      "runner": "src/owlapi-js/parser/functional/functionalSyntax.conformance.test.js",
+      "runner": "internal/parsing/functional/functionalSyntax.conformance.test.js",
       "runnerScope": "Parse every Functional premise, conclusion, and non-conclusion document; semantic entailment/profile outcomes are outside the parser phase.",
       "runnerParsingMode": "compatible, solely for exact redundant declarations of predefined standard prefixes in the archived manifest; strict rejection remains separately tested",
       "notApplicableReasonCategories": {

@@ -6,9 +6,9 @@ import { cpus, release, totalmem } from "node:os";
 import { performance } from "node:perf_hooks";
 import process from "node:process";
 
-import { StringDocumentSource } from "../src/owlapi-js/io/index.js";
-import { OWLManager } from "../src/owlapi-js/manager/index.js";
-import { RdfXmlSyntaxAdapter } from "../src/owlapi-js/parser/rdfxml/rdfXmlSyntaxAdapter.js";
+import { StringDocumentSource } from "../io/index.js";
+import { OWLManager } from "../index.js";
+import { RdfXmlSyntaxAdapter } from "../internal/parsing/rdfxml/rdfXmlSyntaxAdapter.js";
 
 import { assertQuiescentMachine } from "./benchmarkEnvironment.mjs";
 
@@ -18,7 +18,7 @@ const require = createRequire(import.meta.url);
 const {
   GENERATOR_VERSION,
   generateBenchmarkFixture,
-} = require("./generate-owlapi-benchmark-fixtures.js");
+} = require("./generate-owlapi-benchmark-fixtures.cjs");
 const RUN_COUNT = 5;
 const SAMPLE_INTERVAL_MS = 5;
 const WARMUP_COUNT = 1;

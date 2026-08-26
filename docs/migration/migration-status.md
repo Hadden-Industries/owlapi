@@ -2,28 +2,28 @@
 
 Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 
-| Phase | Scope                                                              | State       | Gate                                                             |
-| ----: | ------------------------------------------------------------------ | ----------- | ---------------------------------------------------------------- |
-|     0 | Governance, capability, provenance, conformance, budgets, baseline | Complete    | PASS: artifacts validated; full tests/lint/format/build green    |
-|     1 | Structural core and construction seams                             | Complete    | PASS: 9/78 focused; 57/476 full; lint/format/build green         |
-|     2 | Functional Syntax                                                  | Complete    | PASS: 4/65 focused; 61/541 full; lint/format/build green         |
-|     3 | Manchester Syntax                                                  | Complete    | PASS: 4/22 focused; 65/564 full; lint/format/build green         |
-|     4 | OWL/XML                                                            | Complete    | PASS: 5/45 focused; 70/609 full; lint/format/build green         |
-|     5 | Canonical RDF ingestion and shared RDF-to-OWL reconstruction       | Complete    | PASS: 7/363 focused; 77/970 full; 312/312 W3C RDF documents      |
-|     6 | RDF/XML and first-real-adapter hardening                           | Complete    | PASS: 6/201 focused; 84/1178 full; 166/166 W3C RDF/XML           |
-|     7 | Early development-app integration                                  | Complete    | PASS: 10/37 focused; 94/1218 full; lint/format/build green       |
-|     8 | Production WebVOWL cutover                                         | Complete    | PASS: 116/1439 full; 33/33 differential; lint/format/build green |
-|     9 | Private N3.js adapter foundation and strict Turtle                 | Complete    | PASS: 11/608 focused; 123/1893 full; 387/387 W3C Turtle          |
-|    10 | DL Syntax                                                          | Complete    | PASS: 7/52 focused; 133/1964 full; Java snapshot 15/15 axioms    |
-|    11 | KRSS family                                                        | Complete    | PASS: 8/55 focused; 142/2024 full; Java snapshot 12/12 axioms    |
-|    12 | N-Triples                                                          | Complete    | PASS: 10/180 focused; 147/2147 full; 99/99 W3C N-Triples         |
-|    13 | N-Quads                                                            | Complete    | PASS: 8/181 focused; 152/2286 full; 114/114 W3C N-Quads          |
-|    14 | TriG                                                               | Complete    | PASS: 10/493 focused; 157/2711 full; 401/401 required W3C        |
-|    15 | JSON-LD                                                            | Complete    | PASS: 10/559 focused; 163/3222 full; 462/462 required W3C        |
-|    16 | OWL-to-RDF                                                         | Complete    | PASS: 8/24 focused; 171/3247 full; graph differential green      |
-|    17 | Original KRSS / KRSS1                                              | Complete    | PASS: 16/113 focused; 177/3278 full; Java/8-format/resource/perf |
-|    18 | Physical legacy deletion                                           | Complete    | PASS: 34/34 absent; 161/3146 full; lint/build/closure green      |
-|    19 | Canonical repository extraction and alpha publication              | Not started | PENDING DESIGN: Phase 18 fixed at `b5902e98`                     |
+| Phase | Scope                                                                  | State       | Gate                                                             |
+| ----: | ---------------------------------------------------------------------- | ----------- | ---------------------------------------------------------------- |
+|     0 | Governance, capability, provenance, conformance, budgets, baseline     | Complete    | PASS: artifacts validated; full tests/lint/format/build green    |
+|     1 | Structural core and construction seams                                 | Complete    | PASS: 9/78 focused; 57/476 full; lint/format/build green         |
+|     2 | Functional Syntax                                                      | Complete    | PASS: 4/65 focused; 61/541 full; lint/format/build green         |
+|     3 | Manchester Syntax                                                      | Complete    | PASS: 4/22 focused; 65/564 full; lint/format/build green         |
+|     4 | OWL/XML                                                                | Complete    | PASS: 5/45 focused; 70/609 full; lint/format/build green         |
+|     5 | Canonical RDF ingestion and shared RDF-to-OWL reconstruction           | Complete    | PASS: 7/363 focused; 77/970 full; 312/312 W3C RDF documents      |
+|     6 | RDF/XML and first-real-adapter hardening                               | Complete    | PASS: 6/201 focused; 84/1178 full; 166/166 W3C RDF/XML           |
+|     7 | Early development-app integration                                      | Complete    | PASS: 10/37 focused; 94/1218 full; lint/format/build green       |
+|     8 | Production WebVOWL cutover                                             | Complete    | PASS: 116/1439 full; 33/33 differential; lint/format/build green |
+|     9 | Private N3.js adapter foundation and strict Turtle                     | Complete    | PASS: 11/608 focused; 123/1893 full; 387/387 W3C Turtle          |
+|    10 | DL Syntax                                                              | Complete    | PASS: 7/52 focused; 133/1964 full; Java snapshot 15/15 axioms    |
+|    11 | KRSS family                                                            | Complete    | PASS: 8/55 focused; 142/2024 full; Java snapshot 12/12 axioms    |
+|    12 | N-Triples                                                              | Complete    | PASS: 10/180 focused; 147/2147 full; 99/99 W3C N-Triples         |
+|    13 | N-Quads                                                                | Complete    | PASS: 8/181 focused; 152/2286 full; 114/114 W3C N-Quads          |
+|    14 | TriG                                                                   | Complete    | PASS: 10/493 focused; 157/2711 full; 401/401 required W3C        |
+|    15 | JSON-LD                                                                | Complete    | PASS: 10/559 focused; 163/3222 full; 462/462 required W3C        |
+|    16 | OWL-to-RDF                                                             | Complete    | PASS: 8/24 focused; 171/3247 full; graph differential green      |
+|    17 | Original KRSS / KRSS1                                                  | Complete    | PASS: 16/113 focused; 177/3278 full; Java/8-format/resource/perf |
+|    18 | Physical legacy deletion                                               | Complete    | PASS: 34/34 absent; 161/3146 full; lint/build/closure green      |
+|    19 | Canonical repository extraction and alpha publication                  | Not started | PENDING DESIGN: Phase 18 fixed at `b5902e98`                     |
 |    20 | Production `owlapi@0.1.0` publication and WebVOWL package verification | Not started | blocked by accepted Phase 19 alpha and public-package evidence   |
 
 Active implementation phase: none. Phase 18 physically deleted the retired

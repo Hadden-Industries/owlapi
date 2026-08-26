@@ -30,15 +30,23 @@ const sourceFiles = (directory) =>
 const relative = (absolutePath) =>
   path.relative(LIBRARY_ROOT, absolutePath).replaceAll("\\", "/");
 
-const allFiles = sourceFiles(LIBRARY_ROOT);
+const SHIPPED_SOURCE_ROOTS = [
+  "apibinding",
+  "formats",
+  "internal",
+  "io",
+  "model",
+];
 
-// Governance and architecture tests legitimately name VOWL: they validate
-// repository-wide artifacts such as the capability matrix and the conformance
-// suites, which cover the whole project rather than this library. The rule that
-// matters is that no shipped module mentions it.
-const productionFiles = allFiles.filter(
-  (filePath) => !filePath.endsWith(".test.js"),
-);
+// Scan exactly the JavaScript admitted by the package manifest. Repository
+// tooling, fixtures and installed dependencies are not package source; the root
+// facade is included explicitly because it sits outside the namespace roots.
+const productionFiles = [
+  path.join(LIBRARY_ROOT, "index.js"),
+  ...SHIPPED_SOURCE_ROOTS.flatMap((directory) =>
+    sourceFiles(path.join(LIBRARY_ROOT, directory)),
+  ),
+].filter((filePath) => !filePath.endsWith(".test.js"));
 
 const escapesLibrary = (filePath, specifier) => {
   const resolved = path.resolve(path.dirname(filePath), specifier);

@@ -16,11 +16,11 @@ const DEFAULT_INPUT_URL = new URL(
   import.meta.url,
 );
 const CLASSIFICATIONS_URL = new URL(
-  "../docs/owlapi-js/conformance/classification-manifests.json",
+  "../docs/conformance/classification-manifests.json",
   import.meta.url,
 );
 const FIXTURE_URL = new URL(
-  "../docs/owlapi-js/conformance/generated/w3c-turtle.json",
+  "../docs/conformance/generated/w3c-turtle.json",
   import.meta.url,
 );
 
@@ -31,7 +31,7 @@ const inputUrl = process.argv[2]
 const suites = [
   {
     archiveUrl: new URL(
-      "../docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-turtle/manifest.ttl",
+      "../docs/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-turtle/manifest.ttl",
       import.meta.url,
     ),
     expectedCount: 313,
@@ -43,7 +43,7 @@ const suites = [
   },
   {
     archiveUrl: new URL(
-      "../docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-turtle/syntax/manifest.ttl",
+      "../docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-turtle/syntax/manifest.ttl",
       import.meta.url,
     ),
     expectedCount: 74,
@@ -262,7 +262,7 @@ Object.assign(classification, {
   evaluationTestCount: counts.evaluation,
   localManifestArtifacts: suites.map(
     ({ manifestPath }) =>
-      `docs/owlapi-js/conformance/upstream/w3c-rdf-tests/${manifestPath}`,
+      `docs/conformance/upstream/w3c-rdf-tests/${manifestPath}`,
   ),
   manifestEntryCount: counts.required,
   manifestEntryCounts,
@@ -271,7 +271,7 @@ Object.assign(classification, {
   positiveSyntaxTestCount: counts.positiveSyntax,
   requiredTestCount: counts.required,
   revision: REVISION,
-  runner: "src/owlapi-js/parser/turtle/turtle.conformance.test.js",
+  runner: "internal/parsing/turtle/turtle.conformance.test.js",
   runnerParsingPolicy:
     "Every RDF 1.1 evaluation case must produce a canonical RDF/JS dataset graph-isomorphic to its N-Triples result; every positive-syntax case must parse at the Turtle syntax seam; every negative-syntax case must reject before RDF-to-OWL reconstruction.",
   runnerScope:

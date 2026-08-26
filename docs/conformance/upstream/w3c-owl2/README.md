@@ -23,5 +23,5 @@ immutable digest, complete reclassification, and the repository-owner approval
 process.
 
 The machine-readable classification is
-`docs/owlapi-js/conformance/classification-manifests.json`; the Phase 2 runner is
-`src/owlapi-js/parser/functional/functionalSyntax.conformance.test.js`.
+`docs/conformance/classification-manifests.json`; the Phase 2 runner is
+`internal/parsing/functional/functionalSyntax.conformance.test.js`.

@@ -4,16 +4,16 @@ import { createRequire } from "node:module";
 import { cpus, release, totalmem } from "node:os";
 import { performance } from "node:perf_hooks";
 
-import { OWLManager } from "../src/owlapi-js/manager/index.js";
-import { OWLOntologyManager } from "../src/owlapi-js/manager/owlOntologyManager.js";
-import { OWLParserRegistry } from "../src/owlapi-js/manager/parserRegistry.js";
-import { dlSyntaxParserDescriptor } from "../src/owlapi-js/parser/dl/descriptor.js";
-import { functionalSyntaxParserDescriptor } from "../src/owlapi-js/parser/functional/descriptor.js";
-import { krss2ParserDescriptor } from "../src/owlapi-js/parser/krss2/descriptor.js";
-import { manchesterSyntaxParserDescriptor } from "../src/owlapi-js/parser/manchester/descriptor.js";
-import { owlXmlParserDescriptor } from "../src/owlapi-js/parser/owlxml/descriptor.js";
-import { rdfXmlParserDescriptor } from "../src/owlapi-js/parser/rdfxml/descriptor.js";
-import { turtleParserDescriptor } from "../src/owlapi-js/parser/turtle/descriptor.js";
+import { OWLManager } from "../index.js";
+import { OWLOntologyManager } from "../model/owlOntologyManager.js";
+import { OWLParserRegistry } from "../internal/parsing/parserRegistry.js";
+import { dlSyntaxParserDescriptor } from "../internal/parsing/dl/descriptor.js";
+import { functionalSyntaxParserDescriptor } from "../internal/parsing/functional/descriptor.js";
+import { krss2ParserDescriptor } from "../internal/parsing/krss2/descriptor.js";
+import { manchesterSyntaxParserDescriptor } from "../internal/parsing/manchester/descriptor.js";
+import { owlXmlParserDescriptor } from "../internal/parsing/owlxml/descriptor.js";
+import { rdfXmlParserDescriptor } from "../internal/parsing/rdfxml/descriptor.js";
+import { turtleParserDescriptor } from "../internal/parsing/turtle/descriptor.js";
 
 import { assertQuiescentMachine } from "./benchmarkEnvironment.mjs";
 
@@ -23,7 +23,7 @@ const require = createRequire(import.meta.url);
 const {
   GENERATOR_VERSION,
   generateBenchmarkFixture,
-} = require("./generate-owlapi-benchmark-fixtures.js");
+} = require("./generate-owlapi-benchmark-fixtures.cjs");
 const RUN_COUNT = 5;
 const WARMUP_COUNT = 1;
 const SAMPLE_INTERVAL_MS = 5;
@@ -163,14 +163,18 @@ for (const benchmark of benchmarks) {
         measurements.map(({ peakHeapDeltaBytes }) => peakHeapDeltaBytes),
       ),
       retainedHeapDeltaBytes: median(
-        measurements.map(({ retainedHeapDeltaBytes }) => retainedHeapDeltaBytes),
+        measurements.map(
+          ({ retainedHeapDeltaBytes }) => retainedHeapDeltaBytes,
+        ),
       ),
     },
     measurements,
   });
 }
 
-const packageLock = readFileSync(new URL("../package-lock.json", import.meta.url));
+const packageLock = readFileSync(
+  new URL("../package-lock.json", import.meta.url),
+);
 console.log(
   JSON.stringify(
     {

@@ -1,7 +1,7 @@
-# owlapi-js migration
+# `owlapi` engineering records
 
 This directory contains the executable governance and delivery records for the
-`owlapi-js` migration described by `docs/owlapi-js/implementation-plan.md`.
+`owlapi-js` migration described by `docs/implementation-plan.md`.
 `owlapi-js` remains the historical WebVOWL staging/path name; the final public
 npm package is `owlapi`, maintained only in
 `https://github.com/Hadden-Industries/owlapi` after extraction. The
@@ -31,7 +31,7 @@ Authoritative machine-readable records:
   imports-closure, mutation, merger, and storage feature programme that begins
   only after the verified public production cutover—normally `owlapi@0.1.0`—and
   normally targets the next zero-minor feature line, `owlapi@0.2.0`.
-- `w3c-test-conformance-reporting-implementation-plan.md`: the independent
+- `plans/w3c-test-conformance-reporting.md`: the independent
   post-release programme for complete versioned W3C result ledgers, EARL
   generation, and appropriately disclosed upstream implementation-report
   submissions; it is not a gate for `owlapi@0.1.0`, its recorded cutover patch,

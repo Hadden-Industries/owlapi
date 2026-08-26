@@ -17,21 +17,21 @@
         }
       ],
       "applicable": ["Turtle", "TriG", "N-Triples", "N-Quads", "RDF/XML"],
-      "classificationManifest": "docs/owlapi-js/conformance/classification-manifests.json#w3c-rdf-tests",
+      "classificationManifest": "docs/conformance/classification-manifests.json#w3c-rdf-tests",
       "turtle": {
         "classificationOwnerPhase": 9,
         "archivedManifests": [
           {
-            "path": "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-turtle/manifest.ttl",
+            "path": "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-turtle/manifest.ttl",
             "sha256": "b90a85ee867279b7688033dc18088789580f0bcc2c59600b8c5796889414cf36"
           },
           {
-            "path": "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-turtle/syntax/manifest.ttl",
+            "path": "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-turtle/syntax/manifest.ttl",
             "sha256": "cd097ec4c5b312b04897eb9fcf0e7429381967936dfe14194fff9c7027a7203b"
           }
         ],
-        "generatedArtifact": "docs/owlapi-js/conformance/generated/w3c-turtle.json",
-        "runner": "src/owlapi-js/parser/turtle/turtle.conformance.test.js",
+        "generatedArtifact": "docs/conformance/generated/w3c-turtle.json",
+        "runner": "internal/parsing/turtle/turtle.conformance.test.js",
         "requiredCounts": {
           "evaluation": 145,
           "positiveSyntax": 115,
@@ -44,20 +44,20 @@
         "classificationOwnerPhase": 14,
         "archivedManifests": [
           {
-            "path": "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl",
+            "path": "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl",
             "sha256": "151cee87899fe6efc049c4ea606c5ea44a7074469e147df8e56df67b69e87ae2"
           },
           {
-            "path": "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/syntax/manifest.ttl",
+            "path": "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/syntax/manifest.ttl",
             "sha256": "dd7edf4f760dc6c30fff3ed874ac1796130a253ebe4abaf37f8ac6b3721f0086"
           },
           {
-            "path": "docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/eval/manifest.ttl",
+            "path": "docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/eval/manifest.ttl",
             "sha256": "e341c4f3a810602ca7c26a677735740d5409298d7dba22782b03e878ff41a9d5"
           }
         ],
-        "generatedArtifact": "docs/owlapi-js/conformance/generated/w3c-trig.json",
-        "runner": "src/owlapi-js/parser/trig/trig.conformance.test.js",
+        "generatedArtifact": "docs/conformance/generated/w3c-trig.json",
+        "runner": "internal/parsing/trig/trig.conformance.test.js",
         "sourceCounts": {
           "evaluation": 169,
           "positiveSyntax": 123,
@@ -83,7 +83,7 @@
       "revision": "ffdb326121ea89b7b8280e76a5caea923834bcef",
       "applicable": ["toRdf", "remote document policy", "processor options"],
       "inventoriedNotApplicable": ["fromRdf"],
-      "classificationManifest": "docs/owlapi-js/conformance/classification-manifests.json#w3c-json-ld-api",
+      "classificationManifest": "docs/conformance/classification-manifests.json#w3c-json-ld-api",
       "sourceArtifacts": [
         {
           "path": "tests/toRdf-manifest.jsonld",
@@ -94,8 +94,8 @@
           "sha256": "7257466aa9cb9cc4d8cd7e345cd522056b5d2283b6a907783aca118c1afd05c8"
         }
       ],
-      "generatedArtifact": "docs/owlapi-js/conformance/generated/w3c-jsonld.json",
-      "runner": "src/owlapi-js/parser/jsonld/jsonLd.conformance.test.js",
+      "generatedArtifact": "docs/conformance/generated/w3c-jsonld.json",
+      "runner": "internal/parsing/jsonld/jsonLd.conformance.test.js",
       "sourceCounts": {
         "toRdf": 467,
         "fromRdf": 54,
@@ -120,7 +120,7 @@
       "governingSpecificationRevision": "W3C Recommendation 11 December 2012",
       "artifactSource": "OWLAPI 5.5.1 contract/src/test/resources/all.rdf at d7e997a53b470e32700de89cc610d9daf01ea769",
       "retrievedOn": "2026-08-10",
-      "manifestArtifact": "docs/owlapi-js/conformance/upstream/w3c-owl2/all.rdf",
+      "manifestArtifact": "docs/conformance/upstream/w3c-owl2/all.rdf",
       "manifestSha256": "986ce4f9df655b1f44aec86a5753530d295355a8e9a16700e0253ac30759c4e1",
       "sourceTestCount": 338,
       "applicable": [
@@ -129,8 +129,8 @@
         "OWL to RDF",
         "RDF to OWL"
       ],
-      "classificationManifest": "docs/owlapi-js/conformance/classification-manifests.json#w3c-owl2",
-      "runner": "src/owlapi-js/parser/functional/functionalSyntax.conformance.test.js"
+      "classificationManifest": "docs/conformance/classification-manifests.json#w3c-owl2",
+      "runner": "internal/parsing/functional/functionalSyntax.conformance.test.js"
     },
     {
       "id": "w3c-owl2-xml-serialization",
@@ -141,10 +141,11 @@
       "revision": "W3C Recommendation 11 December 2012",
       "retrievedOn": "2026-08-11",
       "applicable": ["complete finite OWL/XML structural-production inventory"],
-      "runner": "src/owlapi-js/parser/owlxml/owlXml.conformance.test.js"
+      "runner": "internal/parsing/owlxml/owlXml.conformance.test.js"
     },
     {
       "id": "vowl-2",
+      "repositoryOwner": "Hadden-Industries/WebVOWL",
       "specifications": [
         "VOWL: Visual Notation for OWL Ontologies, Specification of Version 2.0"
       ],
@@ -156,8 +157,8 @@
       "upstream": "https://github.com/neon12345/WebVOWL",
       "revision": "61abca1ad6aeb5108be7f06e9590c702d4013e7a",
       "retrievedOn": "2026-08-18",
-      "manifestArtifact": "docs/owlapi-js/conformance/upstream/vowl-2",
-      "hashManifest": "docs/owlapi-js/conformance/upstream/vowl-2/SHA256SUMS",
+      "manifestArtifact": "docs/conformance/upstream/vowl-2",
+      "hashManifest": "docs/conformance/upstream/vowl-2/SHA256SUMS",
       "primaryFile": "index.orig",
       "provenance": "Third-party recovery of the original specification site, added by the unmerged draft pull request VisualDataWeb/WebVOWL#210. Content identity is corroborated by the document's own title, version, date and PURL identifiers, and by the authors' May 2014 publication announcement. Byte identity with the 2014 origin server is NOT established. index.orig preserves the original absolute hyperlinks; index.html is the recoverer's copy with dead links rewritten to '#'. Their tag-stripped text is identical, so the difference is link rewriting only.",
       "applicable": [
@@ -258,12 +259,13 @@
           "util/owlapi-reference/fixtures/dl/phase10-structural.rdf",
           "util/owlapi-reference/fixtures/dl/phase10-structural.ttl"
         ],
-        "runner": "src/owlapi-js/parser/dl/dlSyntax.conformance.test.js",
+        "runner": "internal/parsing/dl/dlSyntax.conformance.test.js",
         "executionResult": "15/15 structural axioms matched the pinned Java count and type distribution; the project-owned Functional, RDF/XML, and Turtle counterparts matched every non-declaration structural axiom and the complete signature"
       }
     },
     {
       "id": "owl2vowl-reference",
+      "repositoryOwner": "Hadden-Industries/WebVOWL",
       "specifications": ["legacy WebVOWL behavioral characterization"],
       "upstream": "C:/Users/maksy/GitHub/VisualDataWeb/OWL2VOWL/target/OWL2VOWL-0.3.7-shaded.jar",
       "revision": "sha256:4bd16f5b953fa27bd7bded24da329d574b8c9114732e9c56379ee2eb905800de",

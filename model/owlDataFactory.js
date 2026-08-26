@@ -191,7 +191,7 @@ const createNaryAxiom = (
 
 export class OWLDataFactory {
   // UNSUPPORTED(OWLAPI parity): The Java OWLDataFactory overload matrix is not
-  // reproduced mechanically. v1 exposes one unambiguous JavaScript signature
+  // reproduced mechanically. The initial 0.1 package exposes one unambiguous JavaScript signature
   // for each REQUIRED_V1 OWL 2 structural construct, accepts iterables where
   // appropriate, and rejects category-invalid operands. This is the intentional
   // JavaScript API rule in implementation-plan section 14.8; any additional

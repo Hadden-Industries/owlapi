@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haddenindustries.com/schemas/owlapi/phase19/reference-candidates.v1.schema.json",
+  "title": "Phase 19 issue and pull-request reference candidates",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "candidates"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "candidates": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/candidate" }
+    }
+  },
+  "$defs": {
+    "oid": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidateId",
+        "commitOid",
+        "token",
+        "kind",
+        "repository",
+        "githubKind",
+        "number",
+        "byteStart",
+        "byteEnd",
+        "resolution",
+        "resolvedRepository",
+        "canonicalReference",
+        "rationale"
+      ],
+      "properties": {
+        "candidateId": { "type": "string", "pattern": "^[0-9a-f]{40}:[0-9]+:[0-9]+$" },
+        "commitOid": { "$ref": "#/$defs/oid" },
+        "token": { "type": "string", "minLength": 2 },
+        "kind": { "enum": ["BARE", "QUALIFIED", "GITHUB_URL"] },
+        "repository": {
+          "type": ["string", "null"],
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        },
+        "githubKind": { "type": ["string", "null"], "enum": ["ISSUE", "PULL_REQUEST", null] },
+        "number": { "type": "integer", "minimum": 1 },
+        "byteStart": { "type": "integer", "minimum": 0 },
+        "byteEnd": { "type": "integer", "minimum": 1 },
+        "resolution": { "enum": ["PENDING", "VERIFIED", "NOT_A_REFERENCE", "AMBIGUOUS"] },
+        "resolvedRepository": {
+          "type": ["string", "null"],
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        },
+        "canonicalReference": { "type": ["string", "null"] },
+        "rationale": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

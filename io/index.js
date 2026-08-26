@@ -1,9 +1,4 @@
-export {
-  OWLDocumentFormat,
-  OWLDocumentFormats,
-  StringDocumentSource,
-} from "./document.js";
-export { OWLOntologyLoaderConfiguration } from "./loaderConfiguration.js";
+export { StringDocumentSource } from "./stringDocumentSource.js";
 export {
   AmbiguousRdfDatasetError,
   DocumentLoadError,

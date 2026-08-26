@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "backupKind": "ACCEPTED_RECONSTRUCTION_TIPS",
+  "authority": "NON_AUTHORITATIVE_RECOVERY_COPY",
+  "createdAt": "2026-08-26T08:03:53.955Z",
+  "acceptedTips": {
+    "packageTipOid": "739e988b6b3196c626247713a6f3d2801a57d210",
+    "webvowlMainTipOid": "81b4cff89cece60ff5b8c30255658fbd770d01cc",
+    "webvowlUiTipOid": "fde346f09e1f395646d6e3577930d23875a2a2c2"
+  },
+  "bundles": {
+    "owlapi": {
+      "path": "owlapi-accepted.bundle",
+      "size": 1449084,
+      "sha256": "5bc8413336984f63749278d360058e75063ad25c1b472b89de2ffa961a170f63",
+      "refs": [
+        {
+          "objectOid": "739e988b6b3196c626247713a6f3d2801a57d210",
+          "name": "refs/heads/main"
+        }
+      ]
+    },
+    "webvowl": {
+      "path": "webvowl-accepted.bundle",
+      "size": 16973405,
+      "sha256": "b685e228412f45e0346081578d3d0539935cf7adf7f39ab0720f213d75fb5022",
+      "refs": [
+        {
+          "objectOid": "fde346f09e1f395646d6e3577930d23875a2a2c2",
+          "name": "refs/heads/feature/ui-ux-enhancements"
+        },
+        {
+          "objectOid": "81b4cff89cece60ff5b8c30255658fbd770d01cc",
+          "name": "refs/heads/main"
+        }
+      ]
+    }
+  },
+  "evidence": {
+    "controlDirectory": "control",
+    "reconstructionDirectory": "reconstruction",
+    "reviewDirectory": "review",
+    "operationsDirectory": "operations",
+    "preRewriteOffPlatformManifest": "pre-rewrite/off-platform-manifest.json"
+  },
+  "restoreRehearsal": "NOT_RUN_OUT_OF_SCOPE"
+}

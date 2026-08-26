@@ -1,8 +1,8 @@
 # Java OWLAPI reference harness
 
-This directory is development/test tooling only. It is never imported by
-`src/owlapi-js`, bundled into WebVOWL, or shipped as an `owlapi-js` runtime
-dependency.
+This directory is development/test tooling only. It is never imported by the
+package production graph, bundled into WebVOWL, or shipped as an `owlapi`
+runtime dependency.
 
 `GenerateStructuralSnapshot.java` loads one ontology through the pinned Java
 OWLAPI revision and emits a project-owned JSON snapshot containing ontology ID,
@@ -55,7 +55,7 @@ The Phase 3 Java reference pair is
 cross-syntax structural conformance. The Java snapshot deliberately preserves
 OWLAPI 5.5.1's comparison-facet result; the two standards-correct JavaScript
 differences are matched only by the exact fixture-scoped rules in
-`docs/owlapi-js/compatibility/expected-differences.json`.
+`docs/compatibility/expected-differences.json`.
 
 The Phase 4 OWL/XML reference pair is
 `fixtures/owlxml/phase4-structural.owx` and
@@ -138,7 +138,7 @@ absent from the Java snapshot because OWLAPI 5.5.1 discards their returned
 axioms. Separate project-owned probes preserve evidence for cardinality token
 shadowing, singleton Boolean objects, and the unreachable full-IRI token. Every
 preserved behavior and controlled correction is enumerated in
-`docs/owlapi-js/compatibility/krss1-behavioral-oracle.json`.
+`docs/compatibility/krss1-behavioral-oracle.json`.
 
 Compile and run it through the same long-classpath launcher:
 

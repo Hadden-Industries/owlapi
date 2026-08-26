@@ -16,11 +16,11 @@ const DEFAULT_INPUT_URL = new URL(
   import.meta.url,
 );
 const CLASSIFICATIONS_URL = new URL(
-  "../docs/owlapi-js/conformance/classification-manifests.json",
+  "../docs/conformance/classification-manifests.json",
   import.meta.url,
 );
 const FIXTURE_URL = new URL(
-  "../docs/owlapi-js/conformance/generated/w3c-trig.json",
+  "../docs/conformance/generated/w3c-trig.json",
   import.meta.url,
 );
 const N3JS_RDF12_EVALUATION_GAPS = new Set([
@@ -42,7 +42,7 @@ const inputUrl = process.argv[2]
 const suites = [
   {
     archiveUrl: new URL(
-      "../docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl",
+      "../docs/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-trig/manifest.ttl",
       import.meta.url,
     ),
     expectedCount: 357,
@@ -54,7 +54,7 @@ const suites = [
   },
   {
     archiveUrl: new URL(
-      "../docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/syntax/manifest.ttl",
+      "../docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/syntax/manifest.ttl",
       import.meta.url,
     ),
     expectedCount: 35,
@@ -66,7 +66,7 @@ const suites = [
   },
   {
     archiveUrl: new URL(
-      "../docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/eval/manifest.ttl",
+      "../docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-trig/eval/manifest.ttl",
       import.meta.url,
     ),
     expectedCount: 26,
@@ -211,9 +211,7 @@ for (const suite of suites) {
     const actionTerm = objectFor(quads, entry, `${MF}action`);
     const action = relativeReference(actionTerm, assumedBase, "mf:action");
     const source = await readFile(new URL(action, suite.inputUrl), "utf8");
-    const classification = N3JS_RDF12_EVALUATION_GAPS.has(
-      `${suite.key}:${id}`,
-    )
+    const classification = N3JS_RDF12_EVALUATION_GAPS.has(`${suite.key}:${id}`)
       ? "EXCLUDED_WITH_REASON"
       : "REQUIRED";
     const test = {
@@ -307,13 +305,13 @@ if (!classification) {
 Object.assign(classification, {
   entries: tests.map(
     ({ action, classification, id, reasonCategory, result, suite, type }) => ({
-    action,
-    classification,
-    id,
-    ...(reasonCategory === undefined ? {} : { reasonCategory }),
-    ...(result === undefined ? {} : { result }),
-    sourceManifest: suite,
-    testType: type,
+      action,
+      classification,
+      id,
+      ...(reasonCategory === undefined ? {} : { reasonCategory }),
+      ...(result === undefined ? {} : { result }),
+      sourceManifest: suite,
+      testType: type,
     }),
   ),
   evaluationTestCount: counts.evaluation,
@@ -323,7 +321,7 @@ Object.assign(classification, {
   excludedTestCount: counts.excluded,
   localManifestArtifacts: suites.map(
     ({ manifestPath }) =>
-      `docs/owlapi-js/conformance/upstream/w3c-rdf-tests/${manifestPath}`,
+      `docs/conformance/upstream/w3c-rdf-tests/${manifestPath}`,
   ),
   manifestEntryCount: counts.source,
   manifestEntryCounts,
@@ -332,7 +330,7 @@ Object.assign(classification, {
   positiveSyntaxTestCount: counts.positiveSyntax,
   requiredTestCount: counts.required,
   revision: REVISION,
-  runner: "src/owlapi-js/parser/trig/trig.conformance.test.js",
+  runner: "internal/parsing/trig/trig.conformance.test.js",
   runnerParsingPolicy:
     "Every RDF 1.1 and RDF 1.2 evaluation case must produce a canonical RDF/JS dataset graph-isomorphic to its N-Quads result; every positive-syntax case must parse at the exact TriG syntax seam; every negative-syntax case must reject before graph selection or RDF-to-OWL reconstruction.",
   runnerScope:

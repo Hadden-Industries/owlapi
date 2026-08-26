@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "release": "v1",
+  "release": "0.1.0-alpha.0",
   "normativeStatuses": [
     "REQUIRED_V1",
     "DEFERRED",
@@ -314,27 +314,6 @@
       "phase": null
     },
     {
-      "id": "webvowl.vowl-builder",
-      "category": "integration",
-      "status": "REQUIRED_V1",
-      "progress": "COMPLETE",
-      "phase": 7
-    },
-    {
-      "id": "webvowl.legacy-output-parity",
-      "category": "compatibility",
-      "status": "REQUIRED_V1",
-      "progress": "COMPLETE",
-      "phase": 7
-    },
-    {
-      "id": "webvowl.production-cutover",
-      "category": "integration",
-      "status": "REQUIRED_V1",
-      "progress": "COMPLETE",
-      "phase": 8
-    },
-    {
       "id": "compatibility.owlapi-5.5.1",
       "category": "compatibility",
       "status": "REQUIRED_V1",
@@ -349,10 +328,17 @@
       "phase": 0
     },
     {
+      "id": "compatibility.java-api-gaps",
+      "category": "compatibility",
+      "status": "DEFERRED",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
       "id": "packaging.native-esm",
       "category": "packaging",
       "status": "REQUIRED_V1",
-      "progress": "NOT_STARTED",
+      "progress": "COMPLETE",
       "phase": 19
     },
     {
@@ -389,7 +375,7 @@
       "id": "DEV-002",
       "capability": "parser.n3-language",
       "description": "N3.js is used for four RDF syntaxes; the broader N3 language is not claimed.",
-      "authority": "docs/owlapi-js/implementation-plan.md sections 2.2 and 6.7"
+      "authority": "docs/implementation-plan.md sections 2.2 and 6.7"
     }
   ]
 }

@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Hadden-Industries/owlapi/main/docs/compatibility/dependency-seams.schema.json",
+  "title": "owlapi private runtime dependency seams",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "packageVersion", "seams"],
+  "properties": {
+    "$schema": { "type": "string", "minLength": 1 },
+    "schemaVersion": { "const": 1 },
+    "packageVersion": { "type": "string", "minLength": 1 },
+    "seams": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/seam" }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "seam": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "package",
+        "version",
+        "literalSpecifier",
+        "dependencySurface",
+        "reason",
+        "consumers",
+        "expectedResolvedSuffix",
+        "moduleFormat",
+        "releaseDisposition",
+        "requiredNamespacePaths",
+        "fallbackBehavior",
+        "sourceModule",
+        "evidence"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "package": { "$ref": "#/$defs/nonEmptyString" },
+        "version": { "$ref": "#/$defs/nonEmptyString" },
+        "literalSpecifier": { "$ref": "#/$defs/nonEmptyString" },
+        "dependencySurface": {
+          "enum": ["DOCUMENTED_PUBLIC", "PUBLISHED_UNEXPORTED"]
+        },
+        "reason": { "$ref": "#/$defs/nonEmptyString" },
+        "consumers": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["NODE", "BROWSER_BUNDLER", "NATIVE_IMPORT_MAP"]
+          }
+        },
+        "expectedResolvedSuffix": { "$ref": "#/$defs/nonEmptyString" },
+        "moduleFormat": { "enum": ["ESM", "UMD"] },
+        "releaseDisposition": {
+          "enum": ["RETAIN_QUALIFIED", "REPLACE_BEFORE_PUBLICATION"]
+        },
+        "requiredNamespacePaths": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        },
+        "fallbackBehavior": { "$ref": "#/$defs/nonEmptyString" },
+        "sourceModule": { "$ref": "#/$defs/nonEmptyString" },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        }
+      }
+    }
+  }
+}

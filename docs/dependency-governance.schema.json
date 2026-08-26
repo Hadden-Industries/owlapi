@@ -1,0 +1,249 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haddenindustries.com/schemas/owlapi/dependency-governance.v1.schema.json",
+  "title": "owlapi direct production dependency governance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "package",
+    "recordedOn",
+    "review",
+    "productionAudit",
+    "transitiveInventoryAuthority",
+    "upgradeGate",
+    "dependencies"
+  ],
+  "properties": {
+    "$schema": { "const": "./dependency-governance.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "const": "owlapi" },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+        }
+      }
+    },
+    "recordedOn": { "type": "string", "format": "date" },
+    "review": { "$ref": "#/$defs/review" },
+    "productionAudit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "performedOn",
+        "command",
+        "npmVersion",
+        "productionPackageCount",
+        "vulnerabilityCounts"
+      ],
+      "properties": {
+        "performedOn": { "type": "string", "format": "date" },
+        "command": { "const": "npm audit --omit=dev --json" },
+        "npmVersion": { "type": "string", "minLength": 1 },
+        "productionPackageCount": { "type": "integer", "minimum": 0 },
+        "vulnerabilityCounts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["info", "low", "moderate", "high", "critical", "total"],
+          "properties": {
+            "info": { "type": "integer", "minimum": 0 },
+            "low": { "type": "integer", "minimum": 0 },
+            "moderate": { "type": "integer", "minimum": 0 },
+            "high": { "type": "integer", "minimum": 0 },
+            "critical": { "type": "integer", "minimum": 0 },
+            "total": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "transitiveInventoryAuthority": {
+      "const": "package-lock.json and docs/provenance/third-party-material.json"
+    },
+    "upgradeGate": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "dependencies": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": { "$ref": "#/$defs/dependency" }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+    },
+    "nullableNonemptyString": {
+      "oneOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }]
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "factsSha256",
+        "reviewer",
+        "reviewedOn",
+        "capacity",
+        "conclusion"
+      ],
+      "properties": {
+        "status": { "enum": ["PENDING_HUMAN_REVIEW", "REVIEWED"] },
+        "factsSha256": { "$ref": "#/$defs/sha256" },
+        "reviewer": { "$ref": "#/$defs/nullableNonemptyString" },
+        "reviewedOn": {
+          "oneOf": [{ "type": "string", "format": "date" }, { "type": "null" }]
+        },
+        "capacity": { "$ref": "#/$defs/nullableNonemptyString" },
+        "conclusion": { "$ref": "#/$defs/nullableNonemptyString" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "status": { "const": "PENDING_HUMAN_REVIEW" } }
+          },
+          "then": {
+            "properties": {
+              "reviewer": { "type": "null" },
+              "reviewedOn": { "type": "null" },
+              "capacity": { "type": "null" },
+              "conclusion": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "status": { "const": "REVIEWED" } } },
+          "then": {
+            "properties": {
+              "reviewer": { "type": "string", "minLength": 1 },
+              "reviewedOn": { "type": "string", "format": "date" },
+              "capacity": { "type": "string", "minLength": 1 },
+              "conclusion": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      ]
+    },
+    "browserCost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "disposition",
+        "initialStaticClosureIncluded",
+        "measurementReference",
+        "minifiedBytes",
+        "gzipBytes",
+        "fileCount",
+        "comparisonContext"
+      ],
+      "properties": {
+        "disposition": {
+          "enum": [
+            "MEASURED_BROWSER_GRAPH",
+            "MEASURED_LAZY_CLOSURE",
+            "NODE_ONLY_EXCLUDED"
+          ]
+        },
+        "initialStaticClosureIncluded": { "type": "boolean" },
+        "measurementReference": { "type": "string", "minLength": 1 },
+        "minifiedBytes": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "gzipBytes": { "type": ["integer", "null"], "minimum": 0 },
+        "fileCount": { "type": ["integer", "null"], "minimum": 1 },
+        "comparisonContext": { "$ref": "#/$defs/nullableNonemptyString" }
+      }
+    },
+    "securityDisposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assessedOn",
+        "riskClass",
+        "controls",
+        "rationale",
+        "evidence"
+      ],
+      "properties": {
+        "assessedOn": { "type": "string", "format": "date" },
+        "riskClass": {
+          "enum": [
+            "LOW_LEVEL_DATA_MODEL",
+            "IN_MEMORY_DATASET",
+            "COMPLEX_SYNTAX_PARSER",
+            "NETWORK_CAPABLE_JSONLD_PROCESSOR",
+            "NODE_ONLY_XML_PARSER"
+          ]
+        },
+        "controls": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "rationale": { "type": "string", "minLength": 1 },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "dependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "role",
+        "standardsGrounding",
+        "conformanceEvidence",
+        "releaseAuthority",
+        "maintenanceStatus",
+        "runtimeDependencies",
+        "networkBehavior",
+        "browserCost",
+        "securityDisposition",
+        "declaredLicenseExpression",
+        "noticeAction",
+        "adapterBoundary"
+      ],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 },
+        "role": { "type": "string", "minLength": 1 },
+        "standardsGrounding": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "conformanceEvidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "releaseAuthority": { "type": "string", "minLength": 1 },
+        "maintenanceStatus": { "type": "string", "minLength": 1 },
+        "runtimeDependencies": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "networkBehavior": { "type": "string", "minLength": 1 },
+        "browserCost": { "$ref": "#/$defs/browserCost" },
+        "securityDisposition": { "$ref": "#/$defs/securityDisposition" },
+        "declaredLicenseExpression": { "type": "string", "minLength": 1 },
+        "noticeAction": { "type": "string", "minLength": 1 },
+        "adapterBoundary": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

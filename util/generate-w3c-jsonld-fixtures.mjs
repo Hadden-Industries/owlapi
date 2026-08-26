@@ -13,15 +13,15 @@ const DEFAULT_INPUT_URL = new URL(
   import.meta.url,
 );
 const CLASSIFICATIONS_URL = new URL(
-  "../docs/owlapi-js/conformance/classification-manifests.json",
+  "../docs/conformance/classification-manifests.json",
   import.meta.url,
 );
 const GENERATED_URL = new URL(
-  "../docs/owlapi-js/conformance/generated/w3c-jsonld.json",
+  "../docs/conformance/generated/w3c-jsonld.json",
   import.meta.url,
 );
 const ARCHIVE_URL = new URL(
-  "../docs/owlapi-js/conformance/upstream/w3c-json-ld-api/tests/",
+  "../docs/conformance/upstream/w3c-json-ld-api/tests/",
   import.meta.url,
 );
 const EXPECTED_HASHES = Object.freeze({

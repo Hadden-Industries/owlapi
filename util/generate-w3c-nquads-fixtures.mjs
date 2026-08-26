@@ -16,11 +16,11 @@ const DEFAULT_INPUT_URL = new URL(
   import.meta.url,
 );
 const CLASSIFICATIONS_URL = new URL(
-  "../docs/owlapi-js/conformance/classification-manifests.json",
+  "../docs/conformance/classification-manifests.json",
   import.meta.url,
 );
 const FIXTURE_URL = new URL(
-  "../docs/owlapi-js/conformance/generated/w3c-nquads.json",
+  "../docs/conformance/generated/w3c-nquads.json",
   import.meta.url,
 );
 
@@ -32,7 +32,7 @@ const suites = [
   {
     assumedBase: "https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-n-quads/",
     archiveUrl: new URL(
-      "../docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-n-quads/manifest.ttl",
+      "../docs/conformance/upstream/w3c-rdf-tests/rdf/rdf11/rdf-n-quads/manifest.ttl",
       import.meta.url,
     ),
     expectedCount: 87,
@@ -46,7 +46,7 @@ const suites = [
     assumedBase:
       "https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-n-quads/syntax/",
     archiveUrl: new URL(
-      "../docs/owlapi-js/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-n-quads/syntax/manifest.ttl",
+      "../docs/conformance/upstream/w3c-rdf-tests/rdf/rdf12/rdf-n-quads/syntax/manifest.ttl",
       import.meta.url,
     ),
     expectedCount: 27,
@@ -216,7 +216,7 @@ Object.assign(classification, {
   })),
   localManifestArtifacts: suites.map(
     ({ manifestPath }) =>
-      `docs/owlapi-js/conformance/upstream/w3c-rdf-tests/${manifestPath}`,
+      `docs/conformance/upstream/w3c-rdf-tests/${manifestPath}`,
   ),
   manifestEntryCount: counts.required,
   manifestEntryCounts,
@@ -225,7 +225,7 @@ Object.assign(classification, {
   positiveSyntaxTestCount: counts.positiveSyntax,
   requiredTestCount: counts.required,
   revision: REVISION,
-  runner: "src/owlapi-js/parser/nquads/nQuads.conformance.test.js",
+  runner: "internal/parsing/nquads/nQuads.conformance.test.js",
   runnerParsingPolicy:
     "Every positive-syntax case must parse at the exact N-Quads syntax seam while preserving RDF/JS graph terms; every negative-syntax case must reject before graph selection or RDF-to-OWL reconstruction.",
   runnerScope:

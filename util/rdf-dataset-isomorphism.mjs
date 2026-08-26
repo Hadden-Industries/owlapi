@@ -13,7 +13,7 @@ const literalKey = (term) =>
     term.datatype?.value || "",
   ]);
 
-const termKey = (term, blankNode) => {
+function termKey(term, blankNode) {
   switch (term?.termType) {
     case "NamedNode":
       return `N${JSON.stringify(term.value)}`;
@@ -30,12 +30,13 @@ const termKey = (term, blankNode) => {
     default:
       throw new TypeError(`Unsupported RDF/JS term type: ${term?.termType}`);
   }
-};
+}
 
-const quadKey = (quad, blankNode) =>
-  [quad.subject, quad.predicate, quad.object, quad.graph]
+function quadKey(quad, blankNode) {
+  return [quad.subject, quad.predicate, quad.object, quad.graph]
     .map((term) => termKey(term, blankNode))
     .join(" ");
+}
 
 const collectBlankNodes = (term, values) => {
   if (term?.termType === "BlankNode") {

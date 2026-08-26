@@ -100,7 +100,7 @@ export class StructuralSet {
 
 export class OWLStructuralObject {
   // UNSUPPORTED(OWLAPI parity): Java OWLAPI exposes a concrete interface/class
-  // hierarchy for each structural type. owlapi-js v1 deliberately exposes
+  // hierarchy for each structural type. The initial 0.1 package deliberately exposes
   // immutable objects identified by canonical `kind` values plus the exhaustive
   // dispatch helpers instead, so type-specific Java `instanceof` checks and
   // visitor interfaces are not available. This JavaScript-native representation

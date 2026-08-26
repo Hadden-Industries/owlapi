@@ -1,0 +1,80 @@
+{
+  "$schema": "./npm-package-identity-history.schema.json",
+  "schemaVersion": 1,
+  "review": {
+    "status": "REVIEWED",
+    "reviewedOn": "2026-08-26",
+    "reviewer": "Maksym Shostak",
+    "capacity": "Authorized representative of project steward HADDEN INDUSTRIES LTD"
+  },
+  "registry": "https://registry.npmjs.org/",
+  "packageName": "owlapi",
+  "intendedCoordinate": "owlapi@0.1.0-alpha.0",
+  "knownConsumedVersions": [
+    "1.0.0",
+    "1.1.0",
+    "1.2.0",
+    "1.2.1",
+    "1.3.0",
+    "2.0.0",
+    "2.0.1"
+  ],
+  "observations": [
+    {
+      "observedAt": "2026-08-23",
+      "toolchain": "Node.js 24.19.0 and npm 12.0.2 against the canonical public registry from an isolated prefix",
+      "commandShape": "Lifecycle scripts, audit/funding output, dependency saving, and lockfile creation disabled for isolated installation probes",
+      "requestedSpecifiers": [
+        "owlapi",
+        "owlapi@latest",
+        "owlapi@1.0.0",
+        "owlapi@1.1.0",
+        "owlapi@1.2.0",
+        "owlapi@1.2.1",
+        "owlapi@1.3.0",
+        "owlapi@2.0.0",
+        "owlapi@2.0.1",
+        "owlapi@^1.0.0",
+        "owlapi@^2.0.0",
+        "owlapi@*"
+      ],
+      "resultCode": "ENOVERSIONS_OR_ETARGET",
+      "summary": "No live distribution tag, exact historical coordinate, or ordinary historical range resolved, and no former tarball was installed.",
+      "interpretation": "The probes establish observable non-resolution, not publication authority and not the absence of every private or historical consumer."
+    },
+    {
+      "observedAt": "2026-08-26T14:38:50Z",
+      "toolchain": "Node.js 24.19.0 and npm 12.0.2",
+      "commandShape": "npm view owlapi versions --json --registry=https://registry.npmjs.org/",
+      "requestedSpecifiers": ["owlapi"],
+      "resultCode": "E404",
+      "summary": "The registry reported that owlapi was unpublished on 2021-12-21T07:06:27.732Z and returned no available version inventory.",
+      "interpretation": "The name has historical registry state but no currently viewable versions; the result does not prove publish permission."
+    },
+    {
+      "observedAt": "2026-08-26T14:38:57Z",
+      "toolchain": "Node.js 24.19.0 and npm 12.0.2",
+      "commandShape": "npm view owlapi dist-tags --json --registry=https://registry.npmjs.org/",
+      "requestedSpecifiers": ["owlapi"],
+      "resultCode": "E404",
+      "summary": "The registry returned no live distribution-tag document and repeated the 2021-12-21 unpublication fact.",
+      "interpretation": "No live latest or next tag was observable; the qualified publication path remains the authority for whether a new tag can be created."
+    },
+    {
+      "observedAt": "2026-08-26T14:39:05Z",
+      "toolchain": "Node.js 24.19.0 and npm 12.0.2",
+      "commandShape": "npm view owlapi@0.1.0-alpha.0 version --json --registry=https://registry.npmjs.org/",
+      "requestedSpecifiers": ["owlapi@0.1.0-alpha.0"],
+      "resultCode": "E404",
+      "summary": "The intended first coordinate did not resolve and the registry repeated the package unpublication response.",
+      "interpretation": "The result is consistent with an unused coordinate but cannot reserve it or prove authority to publish it."
+    }
+  ],
+  "conclusions": [
+    "The known 1.0.0, 1.1.0, 1.2.0, 1.2.1, 1.3.0, 2.0.0, and 2.0.1 coordinates are permanently consumed by unrelated historical publication and must never be reused.",
+    "A 0.1.x version does not satisfy ordinary former 1.x or 2.x semantic-version ranges.",
+    "The new package has no code, API, ownership, or provenance relationship with the unpublished Overwatch package.",
+    "Read-only registry and installation probes cannot prove publishing authority; the complete qualified real publication attempt remains decisive.",
+    "The bounded evidence does not claim that no private consumer or unusually broad historical range exists."
+  ]
+}

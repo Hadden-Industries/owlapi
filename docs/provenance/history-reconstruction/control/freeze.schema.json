@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haddenindustries.com/schemas/owlapi/phase19/freeze.v1.schema.json",
+  "title": "Phase 19 frozen source record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "observedAt", "source", "tools", "artifacts"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseOid", "tipOid", "commitCount", "mergeCommitCount", "objectFormat", "refs"],
+      "properties": {
+        "baseOid": { "$ref": "#/$defs/oid" },
+        "tipOid": { "$ref": "#/$defs/oid" },
+        "commitCount": { "type": "integer", "minimum": 0 },
+        "mergeCommitCount": { "type": "integer", "minimum": 0 },
+        "objectFormat": { "const": "sha1" },
+        "refs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ref" }
+        }
+      }
+    },
+    "tools": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["git", "node", "signatureVerification"],
+      "properties": {
+        "git": { "type": "string", "minLength": 1 },
+        "node": { "type": "string", "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+" },
+        "signatureVerification": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["format", "trustSource"],
+          "properties": {
+            "format": { "const": "ssh" },
+            "trustSource": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["path", "sha256", "sourceConfigurationKey"],
+              "properties": {
+                "path": { "const": "signature-trust-source.txt" },
+                "sha256": { "$ref": "#/$defs/sha256" },
+                "sourceConfigurationKey": { "const": "gpg.ssh.allowedSignersFile" }
+              }
+            }
+          }
+        },
+        "decisionReview": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["approvedAt", "approvedBy", "scope"],
+          "properties": {
+            "approvedAt": { "type": "string", "format": "date-time" },
+            "approvedBy": { "type": "string", "minLength": 1 },
+            "scope": { "const": "PARTITION_AND_REFERENCE_DECISIONS" }
+          }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commitInventory", "partitionDecisions", "referenceCandidates", "refOperationJournal", "schemas"],
+      "properties": {
+        "commitInventory": { "$ref": "#/$defs/artifact" },
+        "referenceCandidates": { "$ref": "#/$defs/artifact" },
+        "partitionDecisions": { "$ref": "#/$defs/partitionArtifact" },
+        "refOperationJournal": { "$ref": "#/$defs/journalArtifact" },
+        "schemas": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/artifact" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "oid": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "objectOid", "commitOid", "objectType", "observation"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "objectOid": { "$ref": "#/$defs/oid" },
+        "commitOid": { "$ref": "#/$defs/oid" },
+        "objectType": { "enum": ["commit", "tag"] },
+        "observation": { "enum": ["EXPLICIT", "LOCAL_GIT"] }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$" },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "partitionArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "state"],
+      "properties": {
+        "path": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "state": { "enum": ["DRAFT", "FINAL"] }
+      }
+    },
+    "journalArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "lastRecordSha256"],
+      "properties": {
+        "path": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "lastRecordSha256": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  }
+}

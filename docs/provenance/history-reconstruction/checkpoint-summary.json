@@ -1,0 +1,137 @@
+{
+  "$schema": "./checkpoint-summary.schema.json",
+  "schemaVersion": 1,
+  "checkpoint": "PHASE_19A_PROVENANCE_PRESERVING_RECONSTRUCTION",
+  "recordedAt": "2026-08-26T08:14:00.924Z",
+  "source": {
+    "baseOid": "28e7dd9540622e8cb723dc000824b5eef5ae775f",
+    "sharedHistoryAnchorOid": "a3223d8e01019ce07dc1b49d1602bc06b9c06785",
+    "frozenTipOid": "8a40694950d4997141fcb039b4ac45bc19a224e3",
+    "treeOid": "41bc8712efd5b3c4bfbfa72e50ff8bf1528b758b",
+    "fileCount": 614,
+    "normalizedTreeSha256": "38e3297c3f180e529c69a5ce64f6febc670ab250b336845389c5ba3ad25d3930"
+  },
+  "acceptedTargets": {
+    "owlapi": {
+      "tipOid": "739e988b6b3196c626247713a6f3d2801a57d210",
+      "treeOid": "850f1289f254d174ef05080c2378e2e3497c00b6",
+      "fileCount": 304,
+      "normalizedTreeSha256": "c44b5a13f5406a858c261a9e0e98c922c7c251086c79181115c834c024f6b28e"
+    },
+    "webvowlMain": {
+      "tipOid": "81b4cff89cece60ff5b8c30255658fbd770d01cc",
+      "treeOid": "772eee3afac9b71f72ca634ca4b397a1b5d17acb",
+      "fileCount": 573,
+      "normalizedTreeSha256": "0b7afca2d7631c42ee7aaf0d8561646632fa5fd11c036cffd65a4a44079a1332"
+    },
+    "webvowlUi": {
+      "tipOid": "fde346f09e1f395646d6e3577930d23875a2a2c2",
+      "treeOid": "cf03115fc5269d95c7cee3f568b061281b82b970",
+      "fileCount": 615,
+      "normalizedTreeSha256": "e61c95e10d340e4c4eb73e184914cdbdc2aa70224e40b2b3a5e7fa5e7ada61f6"
+    }
+  },
+  "lineage": {
+    "verification": "PASS",
+    "originalCommitCount": 275,
+    "resultCommitIdentityCount": 305,
+    "outcomes": {
+      "mappedOneToOne": 241,
+      "mappedSplit": 32,
+      "prunedBecameEmpty": 2
+    },
+    "silentExclusionCount": 0,
+    "issueReferenceCandidateCount": 1
+  },
+  "signatureVerification": {
+    "verification": "PASS",
+    "expectedSignerFingerprint": "SHA256:0lELaqBbgGHdSctv4GOpPmROX56wNCaii2PLZI5pXCU",
+    "verifiedCommitCount": 234,
+    "targetCounts": {
+      "owlapi": 32,
+      "webvowlMain": 120,
+      "webvowlUi": 82
+    }
+  },
+  "runtimeGates": [
+    {
+      "target": "webvowlMain",
+      "gate": "npm test -- --runInBand",
+      "result": "PASS",
+      "detail": "134 suites and 2,935 tests passed"
+    },
+    {
+      "target": "webvowlMain",
+      "gate": "npm run build",
+      "result": "PASS",
+      "detail": "format, HTML/CSS/JavaScript lint and production build passed; d3.min.js was verified at 279706 bytes"
+    },
+    {
+      "target": "webvowlMain",
+      "gate": "production corpus differential",
+      "result": "PASS",
+      "detail": "33 of 33 ontology cases passed"
+    },
+    {
+      "target": "webvowlMain",
+      "gate": "production corpus ingestion",
+      "result": "PASS",
+      "detail": "89 of 89 ontology cases passed"
+    },
+    {
+      "target": "webvowlMain",
+      "gate": "VOWL differential",
+      "result": "PASS",
+      "detail": "16 of 16 comparison cases passed"
+    },
+    {
+      "target": "webvowlUi",
+      "gate": "npm test -- --runInBand",
+      "result": "PASS",
+      "detail": "164 suites and 3,193 tests passed"
+    },
+    {
+      "target": "webvowlUi",
+      "gate": "npm run build",
+      "result": "PASS",
+      "detail": "format, HTML/CSS/JavaScript lint and production build passed; 13 static-copy items and d3.min.js were verified"
+    }
+  ],
+  "refState": {
+    "journalVerification": "PASS",
+    "journalRecordCount": 16,
+    "journalTailSha256": "5fe11123ec294bbd22c21b17700b6fe516aa750e657325dc49224d297fa74490",
+    "local": {
+      "refs/heads/main": "81b4cff89cece60ff5b8c30255658fbd770d01cc",
+      "refs/heads/feature/ui-ux-enhancements": "fde346f09e1f395646d6e3577930d23875a2a2c2",
+      "refs/heads/refactor/java-to-javascript": "8a40694950d4997141fcb039b4ac45bc19a224e3"
+    },
+    "remoteTracking": {
+      "refs/remotes/origin/master": "28e7dd9540622e8cb723dc000824b5eef5ae775f",
+      "refs/remotes/origin/feature/ui-ux-enhancements": "8a40694950d4997141fcb039b4ac45bc19a224e3",
+      "refs/remotes/origin/refactor/java-to-javascript": "a3223d8e01019ce07dc1b49d1602bc06b9c06785",
+      "refs/remotes/upstream/master": "28e7dd9540622e8cb723dc000824b5eef5ae775f"
+    },
+    "remoteMutations": "DEFERRED_SEPARATE_PUSH_AUTHORIZATION_REQUIRED"
+  },
+  "backups": {
+    "preRewrite": {
+      "encryptedArchiveSha256": "bc5c8fa0a9dbb7ebe2f07a7d492bb082f092143ca302c1391c0272f639abad97",
+      "offPlatformCopy": "CONFIRMED_DIGEST_MATCH",
+      "authority": "NON_AUTHORITATIVE_RECOVERY_COPY"
+    },
+    "acceptedReconstruction": {
+      "encryptedArchiveSha256": "6e0d8313fc512ab57ce3c8bc5e813f5ebe394e0f24f0cfbd957e8bf66d3431e2",
+      "offPlatformCopy": "CONFIRMED_DIGEST_MATCH",
+      "authority": "NON_AUTHORITATIVE_RECOVERY_COPY"
+    },
+    "restoreRehearsal": "NOT_RUN_OUT_OF_SCOPE"
+  },
+  "excludedMutations": [
+    "NO_NPM_WRITE",
+    "NO_RELEASE_TAG",
+    "NO_PUBLIC_PACKAGE",
+    "NO_REMOTE_REF_UPDATE",
+    "NO_GITHUB_DEFAULT_BRANCH_CHANGE"
+  ]
+}

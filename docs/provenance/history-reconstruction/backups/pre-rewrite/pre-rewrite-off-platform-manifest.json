@@ -1,0 +1,35 @@
+{
+  "$schema": "./pre-rewrite-off-platform-manifest.schema.json",
+  "schemaVersion": 1,
+  "backupKind": "PRE_REWRITE",
+  "authority": "NON_AUTHORITATIVE_RECOVERY_COPY",
+  "copiedAt": "2026-08-25T21:57:50.142Z",
+  "source": {
+    "baseOid": "28e7dd9540622e8cb723dc000824b5eef5ae775f",
+    "tipOid": "8a40694950d4997141fcb039b4ac45bc19a224e3",
+    "bundleSha256": "efe6fc48252064db7fa221ac6969cda06515e0aa777fc061af8c2d7b38cb4c2f"
+  },
+  "encryptedArchive": {
+    "fileName": "webvowl-phase19A-pre-rewrite.tar.age",
+    "size": 22056916,
+    "sha256": "bc5c8fa0a9dbb7ebe2f07a7d492bb082f092143ca302c1391c0272f639abad97"
+  },
+  "encryption": {
+    "format": "age-v1",
+    "recipientType": "ssh-ed25519",
+    "recipientPublicKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGpqSjJMHCFWXzxM8jB87C66pKkTWLNi4a7scQ/KSDo/",
+    "recipientFingerprint": "SHA256:0lELaqBbgGHdSctv4GOpPmROX56wNCaii2PLZI5pXCU"
+  },
+  "destination": {
+    "provider": "Microsoft OneDrive",
+    "destinationId": "hadden-industries-software-owlapi-backups-phase19A",
+    "authority": "NO_DEVELOPMENT_MERGE_PUBLICATION_OR_CANONICAL_SOURCE_AUTHORITY"
+  },
+  "verification": {
+    "copyState": "CONFIRMED",
+    "sourceSha256": "bc5c8fa0a9dbb7ebe2f07a7d492bb082f092143ca302c1391c0272f639abad97",
+    "destinationSha256": "bc5c8fa0a9dbb7ebe2f07a7d492bb082f092143ca302c1391c0272f639abad97",
+    "digestMatch": true
+  },
+  "restoreRehearsal": "NOT_RUN_OUT_OF_SCOPE"
+}

@@ -925,11 +925,11 @@ The measurements were recorded from source revision `0896f082` on Windows
 and 34,053,869,568 bytes of system memory. The package-lock SHA-256 was
 `bbd8a2a632a5b3aa4a9d0c182d7b3176e1c540d5d6bdd47e170c52d7737f93a5`.
 
-| Workload | Structural input | Output quads | Median wall time | Peak sampled heap delta |
-| -------- | ---------------: | -----------: | ---------------: | ----------------------: |
-| Named declarations | 50,000 axioms | 50,001 | 85.38 ms | 98,392,856 bytes |
-| Long RDF collection | 25,000 individuals | 50,003 | 101.34 ms | 114,785,832 bytes |
-| Deep class expression | 256 complements | 514 | 1.35 ms | 5,249,384 bytes |
+| Workload              |   Structural input | Output quads | Median wall time | Peak sampled heap delta |
+| --------------------- | -----------------: | -----------: | ---------------: | ----------------------: |
+| Named declarations    |      50,000 axioms |       50,001 |         85.38 ms |        98,392,856 bytes |
+| Long RDF collection   | 25,000 individuals |       50,003 |        101.34 ms |       114,785,832 bytes |
+| Deep class expression |    256 complements |          514 |          1.35 ms |         5,249,384 bytes |
 
 All three workloads complete well below the unchanged 30-second release
 ceiling. Output size is exactly linear in each stress dimension. Because the
@@ -1008,11 +1008,11 @@ regression without weakening that future gate.
 
 The in-memory Vite 8/Oxc browser measurements retained both lazy boundaries:
 
-| Current browser graph | Chunks | Minified bytes | Gzip bytes |
-| --------------------- | -----: | -------------: | ---------: |
-| Initial manager | 1 | 266,273 | 69,481 |
-| Lazy N3.js 2.3.0 graph | 1 | 190,412 | 52,938 |
-| Lazy RDF/XML 3.3.0 graph | 1 | 163,134 | 46,775 |
+| Current browser graph    | Chunks | Minified bytes | Gzip bytes |
+| ------------------------ | -----: | -------------: | ---------: |
+| Initial manager          |      1 |        266,273 |     69,481 |
+| Lazy N3.js 2.3.0 graph   |      1 |        190,412 |     52,938 |
+| Lazy RDF/XML 3.3.0 graph |      1 |        163,134 |     46,775 |
 
 The same-source N3.js 2.2.0 lazy graph was 185,859 minified / 51,859 gzip
 bytes, so 2.3.0 adds 2.45% minified and 2.08% gzip. The production closure

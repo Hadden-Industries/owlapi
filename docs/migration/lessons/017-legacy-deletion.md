@@ -35,29 +35,29 @@ active differential is discovered and dependency tests remain excluded.
 
 ## Acceptance evidence
 
-| Gate | Result | Primary evidence |
-| --- | --- | --- |
-| Pre-deletion production baseline | 5 suites and 130 tests passed before any file was removed | production graph, builder architecture/differential, production corpus and production differential suites |
-| Physical retirement RED/GREEN | The new gate failed for exactly 34 present paths, then passed 3/3 assertions after deletion | `src/productionGraph.architecture.test.js` |
-| Post-deletion production acceptance | 5 suites and 129 tests passed with the current production entry and pinned oracle | production graph, builder architecture/differential, production corpus and production differential suites |
-| Provenance lifecycle | 22/22 governance tests pass; deleted records remain auditable and current inventory contains only live modules | `docs/owlapi-js/provenance/provenance.json`; `src/owlapi-js/governance.test.js` |
-| Runner scope | All active differential suites remain discoverable; `node_modules` remains excluded | `src/testRunnerScope.architecture.test.js` |
-| Complete regression | 161/161 suites and 3,146/3,146 tests pass | `npm test -- --runInBand` |
-| Static quality | Prettier, HTML validation, Stylelint and ESLint pass | `npm run format:check`; `npm run lint` |
-| Production build | Vite production build passes and verifies copied D3; only the existing large-chunk advisory remains | `npm run build` |
-| Lazy dependency closure | N3.js and jsonld.js remain outside the three-chunk initial closure and inside only their respective lazy closures | `node util/verify-webvowl-lazy-parser-chunks.mjs` |
+| Gate                                | Result                                                                                                            | Primary evidence                                                                                          |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Pre-deletion production baseline    | 5 suites and 130 tests passed before any file was removed                                                         | production graph, builder architecture/differential, production corpus and production differential suites |
+| Physical retirement RED/GREEN       | The new gate failed for exactly 34 present paths, then passed 3/3 assertions after deletion                       | `src/productionGraph.architecture.test.js`                                                                |
+| Post-deletion production acceptance | 5 suites and 129 tests passed with the current production entry and pinned oracle                                 | production graph, builder architecture/differential, production corpus and production differential suites |
+| Provenance lifecycle                | 22/22 governance tests pass; deleted records remain auditable and current inventory contains only live modules    | `docs/owlapi-js/provenance/provenance.json`; `src/owlapi-js/governance.test.js`                           |
+| Runner scope                        | All active differential suites remain discoverable; `node_modules` remains excluded                               | `src/testRunnerScope.architecture.test.js`                                                                |
+| Complete regression                 | 161/161 suites and 3,146/3,146 tests pass                                                                         | `npm test -- --runInBand`                                                                                 |
+| Static quality                      | Prettier, HTML validation, Stylelint and ESLint pass                                                              | `npm run format:check`; `npm run lint`                                                                    |
+| Production build                    | Vite production build passes and verifies copied D3; only the existing large-chunk advisory remains               | `npm run build`                                                                                           |
+| Lazy dependency closure             | N3.js and jsonld.js remain outside the three-chunk initial closure and inside only their respective lazy closures | `node util/verify-webvowl-lazy-parser-chunks.mjs`                                                         |
 
 ## Findings and dispositions
 
-| ID | Applicability | Primary disposition | Finding |
-| --- | --- | --- | --- |
-| `M18-001` | `CROSS_CUTTING`, `TESTING` | `TEST_OR_FITNESS_UPDATE` | A no-reachability gate cannot prove physical retirement. An explicit 34-path absence test was added and observed failing before deletion. |
-| `M18-002` | `CROSS_CUTTING`, `TESTING` | `PLAYBOOK_UPDATE` | Delete legacy-only executable comparisons only after production-entry, direct structural and pinned foreign-oracle evidence independently covers the supported architecture. |
-| `M18-003` | `PROVENANCE`, `CROSS_CUTTING` | `PLAYBOOK_UPDATE` | Deleting a governed file must not erase its origin or revision-bounded dispositions. Provenance needs a lifecycle dimension separate from reuse disposition. |
-| `M18-004` | `API_COMPATIBILITY`, `TESTING` | `TEST_OR_FITNESS_UPDATE` | A test helper can retain an obsolete implementation dependency even when the production graph is clean; the corpus helper still imported the retired loader solely for catalog resolution. |
-| `M18-005` | `CROSS_CUTTING`, `TESTING` | `TEST_OR_FITNESS_UPDATE` | A deleted exceptional suite requires simultaneous removal of its dedicated command, ignore rule and assertions that it remains discoverable; active-suite discovery must remain protected. |
-| `M18-006` | `PERFORMANCE`, `CROSS_CUTTING` | `NO_CHANGE` | Files already absent from the production graph cannot change parser throughput or initial bundle composition merely by being deleted; full build and closure verification is the proportionate gate. |
-| `M18-007` | `CROSS_CUTTING`, `PROVENANCE` | `TEST_OR_FITNESS_UPDATE` | Phase insertion must update both machine-readable capability metadata and its independent expected-order assertion; package release still carried the pre-KRSS1 Phase 18 number. |
+| ID        | Applicability                  | Primary disposition      | Finding                                                                                                                                                                                              |
+| --------- | ------------------------------ | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `M18-001` | `CROSS_CUTTING`, `TESTING`     | `TEST_OR_FITNESS_UPDATE` | A no-reachability gate cannot prove physical retirement. An explicit 34-path absence test was added and observed failing before deletion.                                                            |
+| `M18-002` | `CROSS_CUTTING`, `TESTING`     | `PLAYBOOK_UPDATE`        | Delete legacy-only executable comparisons only after production-entry, direct structural and pinned foreign-oracle evidence independently covers the supported architecture.                         |
+| `M18-003` | `PROVENANCE`, `CROSS_CUTTING`  | `PLAYBOOK_UPDATE`        | Deleting a governed file must not erase its origin or revision-bounded dispositions. Provenance needs a lifecycle dimension separate from reuse disposition.                                         |
+| `M18-004` | `API_COMPATIBILITY`, `TESTING` | `TEST_OR_FITNESS_UPDATE` | A test helper can retain an obsolete implementation dependency even when the production graph is clean; the corpus helper still imported the retired loader solely for catalog resolution.           |
+| `M18-005` | `CROSS_CUTTING`, `TESTING`     | `TEST_OR_FITNESS_UPDATE` | A deleted exceptional suite requires simultaneous removal of its dedicated command, ignore rule and assertions that it remains discoverable; active-suite discovery must remain protected.           |
+| `M18-006` | `PERFORMANCE`, `CROSS_CUTTING` | `NO_CHANGE`              | Files already absent from the production graph cannot change parser throughput or initial bundle composition merely by being deleted; full build and closure verification is the proportionate gate. |
+| `M18-007` | `CROSS_CUTTING`, `PROVENANCE`  | `TEST_OR_FITNESS_UPDATE` | Phase insertion must update both machine-readable capability metadata and its independent expected-order assertion; package release still carried the pre-KRSS1 Phase 18 number.                     |
 
 ## Provenance lifecycle decision
 

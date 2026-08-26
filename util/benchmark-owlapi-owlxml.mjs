@@ -4,7 +4,7 @@ import { createRequire } from "node:module";
 import { cpus, release, totalmem } from "node:os";
 import { performance } from "node:perf_hooks";
 
-import { OWLManager } from "../src/owlapi-js/manager/index.js";
+import { OWLManager } from "../index.js";
 
 import { assertQuiescentMachine } from "./benchmarkEnvironment.mjs";
 
@@ -14,7 +14,7 @@ const require = createRequire(import.meta.url);
 const {
   GENERATOR_VERSION,
   generateBenchmarkFixture,
-} = require("./generate-owlapi-benchmark-fixtures.js");
+} = require("./generate-owlapi-benchmark-fixtures.cjs");
 const RUN_COUNT = 5;
 const WARMUP_COUNT = 1;
 const SAMPLE_INTERVAL_MS = 5;

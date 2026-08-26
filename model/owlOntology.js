@@ -61,8 +61,8 @@ const references = (container, targetKey) => {
 
 export class OWLOntology {
   // UNSUPPORTED(OWLAPI parity): Java OWLOntology exposes a much broader query,
-  // imports-closure, mutation, and manager-callback surface. owlapi-js v1 is an
-  // immutable direct-ontology view with only the query methods implemented below;
+  // imports-closure, mutation, and manager-callback surface. The initial 0.1
+  // package is an immutable direct-ontology view with only the query methods below;
   // callers cannot mutate axioms through this object or accidentally receive
   // imports-closure results. Expanding the surface requires an approved capability
   // change, indexes with explicit direct/closure semantics, and focused parity

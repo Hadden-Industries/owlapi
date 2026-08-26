@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "sourceTipOid": "8a40694950d4997141fcb039b4ac45bc19a224e3",
+  "reconstructedReplayTipOid": "64808451313d6f9e9dbd8455d6fa0e7d3716da5a",
+  "records": [
+    {
+      "originalCommitOid": "5967a0fe0575e03f84e65cb8f18fd4229612b315",
+      "reconstructedCommitOid": "2877555a1b8bad33b2de9d307393261583a3e19d",
+      "resultBranch": "main",
+      "governedPaths": [
+        "src/owl2vowl/js/turtleParser.js",
+        "src/owl2vowl/js/turtleParser.test.js"
+      ]
+    },
+    {
+      "originalCommitOid": "f0dbf623a69adf08bc61f5867c7421fba9c2e750",
+      "reconstructedCommitOid": "f050d154f5aaa1ddf19e1206f39dffcaf6c58bcd",
+      "resultBranch": "main",
+      "governedPaths": [
+        "src/owl2vowl/js/ontologyConverter.js",
+        "src/owl2vowl/js/ontologyConverter.test.js",
+        "src/owl2vowl/js/rdfParser.js",
+        "src/owl2vowl/js/rdfParser.test.js"
+      ]
+    }
+  ]
+}

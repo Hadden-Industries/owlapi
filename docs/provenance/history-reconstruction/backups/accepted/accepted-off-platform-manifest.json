@@ -1,0 +1,46 @@
+{
+  "$schema": "./accepted-off-platform-manifest.schema.json",
+  "schemaVersion": 1,
+  "backupKind": "ACCEPTED_RECONSTRUCTION_TIPS",
+  "authority": "NON_AUTHORITATIVE_RECOVERY_COPY",
+  "copiedAt": "2026-08-26T08:05:33.314Z",
+  "acceptedTips": {
+    "packageTipOid": "739e988b6b3196c626247713a6f3d2801a57d210",
+    "webvowlMainTipOid": "81b4cff89cece60ff5b8c30255658fbd770d01cc",
+    "webvowlUiTipOid": "fde346f09e1f395646d6e3577930d23875a2a2c2"
+  },
+  "sourceEvidence": {
+    "backupManifestSha256": "c992b70e527c1dc6a0bd2d2d7239026b7ebe0e310beac68ea777af09c48c1111",
+    "sha256SumsSha256": "6de77420cb8b18bda5ba4b8edef9667bf1aa21c45bba429b2f6ea93e56f47088",
+    "packageBundleSha256": "5bc8413336984f63749278d360058e75063ad25c1b472b89de2ffa961a170f63",
+    "webvowlBundleSha256": "b685e228412f45e0346081578d3d0539935cf7adf7f39ab0720f213d75fb5022"
+  },
+  "uncompressedArchive": {
+    "fileName": "owlapi-phase19A-accepted-reconstruction.tar",
+    "size": 28690432,
+    "sha256": "2a04d67e74604fa187cfeb7631d11706dd32d94f294690310368e581853ce27e"
+  },
+  "encryptedArchive": {
+    "fileName": "owlapi-phase19A-accepted-reconstruction.tar.age",
+    "size": 28697636,
+    "sha256": "6e0d8313fc512ab57ce3c8bc5e813f5ebe394e0f24f0cfbd957e8bf66d3431e2"
+  },
+  "encryption": {
+    "format": "age-v1",
+    "recipientType": "ssh-ed25519",
+    "recipientPublicKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGpqSjJMHCFWXzxM8jB87C66pKkTWLNi4a7scQ/KSDo/",
+    "recipientFingerprint": "SHA256:0lELaqBbgGHdSctv4GOpPmROX56wNCaii2PLZI5pXCU"
+  },
+  "destination": {
+    "provider": "Microsoft OneDrive",
+    "destinationId": "hadden-industries-software-owlapi-backups-phase19A",
+    "authority": "NO_DEVELOPMENT_MERGE_PUBLICATION_OR_CANONICAL_SOURCE_AUTHORITY"
+  },
+  "verification": {
+    "copyState": "CONFIRMED",
+    "sourceSha256": "6e0d8313fc512ab57ce3c8bc5e813f5ebe394e0f24f0cfbd957e8bf66d3431e2",
+    "destinationSha256": "6e0d8313fc512ab57ce3c8bc5e813f5ebe394e0f24f0cfbd957e8bf66d3431e2",
+    "digestMatch": true
+  },
+  "restoreRehearsal": "NOT_RUN_OUT_OF_SCOPE"
+}
