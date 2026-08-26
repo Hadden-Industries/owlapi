@@ -7,17 +7,17 @@
     "repository": "https://github.com/Hadden-Industries/owlapi",
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
-      "fileCount": 71,
-      "sourceManifestSha256": "7067d33f5b5af0a766057e9cddd832a517690478f9189c075aa928df324981ee"
+      "fileCount": 72,
+      "sourceManifestSha256": "8fc146bae847c6cf63c71448094a597d152cd9cd297fd06ad096d355c6424a61"
     }
   },
   "review": {
-    "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "6d38ba8fb1892faab2d592972056c69b512e9841128e73d365596e7c66fdb5d6",
-    "reviewer": null,
-    "reviewedOn": null,
-    "capacity": null,
-    "conclusion": null
+    "status": "REVIEWED",
+    "factsSha256": "c4d252b826adc707562f7a782e8582fc2802e5138d86c7b216acd1b7ec9c96a0",
+    "reviewer": "Maksym Shostak",
+    "reviewedOn": "2026-08-26",
+    "capacity": "Original author, project maintainer, and release reviewer",
+    "conclusion": "Reviewed and approved the exact tarball scope, contributor, material-class, external-dependency, unresolved-contribution, and distribution-authority facts bound to this digest."
   },
   "contributors": [
     {
@@ -69,6 +69,17 @@
       "rationale": "LICENSE is a legal notice artifact rather than package implementation expression."
     },
     {
+      "id": "apache-2.0-licence-text",
+      "relationship": "EMBEDDED_OR_COPIED",
+      "paths": ["LICENSES/Apache-2.0.txt"],
+      "packageTarball": true,
+      "rightsHolder": "Apache Software Foundation and contributors to the Apache License text",
+      "licenceBasis": "Complete Apache License version 2.0 wording accompanying the elected Apache-2.0 distribution basis for Java OWLAPI compatibility facts",
+      "source": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+      "distributionAuthority": "The Apache-2.0 terms permit copying and distribution of the licence wording; the packed text is byte-identical to the authoritative Apache-hosted text and matches the pinned Java source wording.",
+      "rationale": "The third-party licence text is classified separately from both package-owned expression and generated Java compatibility metadata."
+    },
+    {
       "id": "java-owlapi-compatibility-metadata",
       "relationship": "GENERATED_FROM_THIRD_PARTY",
       "paths": [
@@ -78,16 +89,16 @@
       ],
       "packageTarball": true,
       "rightsHolder": "Maksym Shostak for project-authored compatibility analysis; Java OWLAPI public API identifiers are attributed to the owlcs/owlapi project and its contributors",
-      "licenceBasis": "Project-authored analysis is AGPL-3.0-only. Public API identity and declaration facts are used for interoperability; the pinned Java source declares LGPL-3.0 and Apache-2.0 alternatives as provenance context.",
+      "licenceBasis": "Project-authored analysis is AGPL-3.0-only. Public API identity and declaration facts are distributed under the Apache-2.0 alternative elected from the pinned Java source's Apache-2.0 OR LGPL-3.0 declaration; the complete elected licence text is packed at LICENSES/Apache-2.0.txt.",
       "source": "https://github.com/owlcs/owlapi/tree/d7e997a53b470e32700de89cc610d9daf01ea769",
-      "distributionAuthority": "The generated output records public package/type/declaration facts and independently authored mappings; it contains no Java implementation bodies or copied Java documentation.",
+      "distributionAuthority": "The generated output records public package/type/declaration facts under the elected Apache-2.0 basis and independently authored mappings under AGPL-3.0-only; it contains no Java implementation bodies or copied Java documentation.",
       "rationale": "The classification acknowledges the exact third-party source consulted without implying source transliteration, organizational continuity, affiliation, endorsement, or Java implementation-code incorporation."
     }
   ],
   "externalDependencies": {
     "bundled": false,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "576bacc588633b3b9e70656aa699d26e9716c9ba179a790865056d3f3c24dda0",
+    "inventoryFactsSha256": "218bdf15e604c58a5f0a053f036b05c0c0e6b2200ff94e8fd16e605f8a7a80cb",
     "noticeRule": "Ordinary npm dependencies are installed separately and remain under their own licences. Their licence texts are not copied into the owlapi tarball merely because they appear in the installed dependency graph."
   },
   "unresolvedExternalContributions": [],

@@ -20,12 +20,12 @@
     "tarballDependenciesBundled": false
   },
   "review": {
-    "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "576bacc588633b3b9e70656aa699d26e9716c9ba179a790865056d3f3c24dda0",
-    "reviewer": null,
-    "reviewedOn": null,
-    "capacity": null,
-    "conclusion": null
+    "status": "REVIEWED",
+    "factsSha256": "218bdf15e604c58a5f0a053f036b05c0c0e6b2200ff94e8fd16e605f8a7a80cb",
+    "reviewer": "Maksym Shostak",
+    "reviewedOn": "2026-08-26",
+    "capacity": "Original author, project maintainer, and release reviewer",
+    "conclusion": "Reviewed and approved the exact dependency-component, copied/generated-material, licensing, distribution-scope, notice-disposition, and supporting-evidence facts bound to this digest."
   },
   "summary": {
     "componentCount": 618,
@@ -142,7 +142,7 @@
       "MPL-2.0": 12,
       "Python-2.0": 1
     },
-    "materialCount": 8
+    "materialCount": 9
   },
   "components": [
     {
@@ -20159,6 +20159,36 @@
   ],
   "materials": [
     {
+      "id": "apache-2.0-license-text",
+      "relationship": "EMBEDDED_OR_COPIED",
+      "name": "Apache License version 2.0 text",
+      "versionOrRevision": "Authoritative Apache License 2.0 text retrieved 2026-08-26; wording matches OWLAPI 5.5.1 at d7e997a53b470e32700de89cc610d9daf01ea769",
+      "licenseAssessments": [
+        {
+          "scope": "Unmodified Apache License 2.0 wording",
+          "declaredLicenseExpression": "Apache-2.0",
+          "concludedLicenseExpression": "Apache-2.0",
+          "licenseConclusionRationale": "The packed file is byte-identical to the authoritative Apache License 2.0 text; the pinned Java OWLAPI source contains the same wording without the terminal LF.",
+          "distributionDisposition": "PACKED_UNDER_RECORDED_BASIS"
+        }
+      ],
+      "sourceUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+      "evidenceFiles": [
+        {
+          "path": "LICENSES/Apache-2.0.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        }
+      ],
+      "treeEvidence": null,
+      "attributionText": [
+        "The complete Apache License 2.0 text accompanies the elected licence basis for the packed Java OWLAPI compatibility facts."
+      ],
+      "packageTarballScope": true,
+      "deployedApplicationScope": "REVIEW_REQUIRED_BY_CONSUMER",
+      "noticeDisposition": "PACKED_AS_THIRD_PARTY_LICENSE",
+      "rationale": "The separately classified licence text accompanies the compatibility metadata without being conflated with its generated or project-authored expression."
+    },
+    {
       "id": "contributor-covenant-3.0",
       "relationship": "EMBEDDED_OR_COPIED",
       "name": "Contributor Covenant",
@@ -20264,8 +20294,8 @@
         {
           "scope": "Java OWLAPI public API identity and declaration facts",
           "declaredLicenseExpression": "Apache-2.0 OR LGPL-3.0",
-          "concludedLicenseExpression": "Apache-2.0 OR LGPL-3.0",
-          "licenseConclusionRationale": "The conclusion preserves the dual-licence expression declared by the pinned Java OWLAPI source consulted for interoperability facts.",
+          "concludedLicenseExpression": "Apache-2.0",
+          "licenseConclusionRationale": "The package elects the Apache-2.0 alternative declared by the pinned Java OWLAPI source for the public API identity and declaration facts distributed in the compatibility views.",
           "distributionDisposition": "PACKED_UNDER_RECORDED_BASIS"
         },
         {
@@ -20294,6 +20324,7 @@
       "treeEvidence": null,
       "attributionText": [
         "Java OWLAPI public package/type/declaration identities are attributed to the owlcs/owlapi project and its contributors.",
+        "The Apache-2.0 alternative is elected for those compatibility facts, and its complete text is packed at LICENSES/Apache-2.0.txt.",
         "owlapi is independently maintained and is not affiliated with or endorsed by the Java OWLAPI project."
       ],
       "packageTarballScope": true,
@@ -20391,18 +20422,23 @@
         }
       ],
       "sourceUrl": "https://www.w3.org/2007/OWL/wiki/Test_Suite_Status",
-      "evidenceFiles": [],
+      "evidenceFiles": [
+        {
+          "path": "docs/conformance/upstream/w3c-owl2/README.md",
+          "sha256": "a1557b818ed1aedb54a4e0fd4b9d62ca53510d4c55a06f79149ef6b580b1c2e7"
+        }
+      ],
       "treeEvidence": {
         "root": "docs/conformance/upstream/w3c-owl2",
         "fileCount": 2,
-        "manifestSha256": "773bcc31be3c2527f164316ce0327996df832f2522318b4c28569b785ffacf4c"
+        "manifestSha256": "b55528aaf6f249f9ad1efefe04522d967eaee579f79fa24b3244d640363211a4"
       },
       "attributionText": [
         "W3C OWL 2 test-suite material retained for standards conformance evidence; the recovery path and digest are recorded in docs/conformance/suites.json."
       ],
       "packageTarballScope": false,
       "deployedApplicationScope": "NOT_APPLICABLE",
-      "noticeDisposition": "REPOSITORY_ONLY_SOURCE_REVISION_AND_DIGEST",
+      "noticeDisposition": "REPOSITORY_ONLY_RETAINED_LICENSE_SOURCE_REVISION_AND_DIGEST",
       "rationale": "The artifact is development/test evidence and is excluded from the npm tarball and deployed application."
     },
     {
@@ -20420,18 +20456,23 @@
         }
       ],
       "sourceUrl": "https://github.com/w3c/rdf-tests",
-      "evidenceFiles": [],
+      "evidenceFiles": [
+        {
+          "path": "docs/conformance/upstream/w3c-rdf-tests/LICENSE.md",
+          "sha256": "7fa36904d5d6d32848307af7b22d416b708aaa0b98f5c719b26adb5ed3594b2a"
+        }
+      ],
       "treeEvidence": {
         "root": "docs/conformance/upstream/w3c-rdf-tests",
-        "fileCount": 11,
-        "manifestSha256": "94a9342f6ac3013979c38a0e2278cf5e70538ba9bd717d4721bb9b21be45e4eb"
+        "fileCount": 12,
+        "manifestSha256": "d80e0d1b124367b29da8bd050e41648571611fa3b6f804363fa4f35260b06819"
       },
       "attributionText": [
         "W3C RDF test-suite files retained at the exact format-specific revisions recorded in docs/conformance/suites.json."
       ],
       "packageTarballScope": false,
       "deployedApplicationScope": "NOT_APPLICABLE",
-      "noticeDisposition": "REPOSITORY_ONLY_SOURCE_AND_REVISION_ATTRIBUTION",
+      "noticeDisposition": "REPOSITORY_ONLY_RETAINED_LICENSE_SOURCE_AND_REVISION",
       "rationale": "These copied tests provide release-relevant standards evidence but are excluded from the npm tarball and deployed application."
     }
   ]

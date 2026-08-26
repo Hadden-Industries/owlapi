@@ -15,6 +15,15 @@
 - Upstream status authority:
   <https://www.w3.org/2007/OWL/wiki/Test_Suite_Status>.
 
+## Licensing
+
+W3C test suites use the dual-licensing approach documented in
+[Licenses for W3C Test Suites](https://www.w3.org/Consortium/Legal/2008/04-testsuite-copyright.html).
+This repository therefore records the retained test artifact as
+`W3C-20150513 OR BSD-3-Clause`; it does not globally elect one alternative
+because W3C directs users to choose according to the intended use. The artifact
+is repository-only test evidence and is excluded from the npm package.
+
 The archived W3C status page reports 355 approved cases, while the historical
 batch-export service is no longer used here as a reproducible artifact endpoint.
 This repository claims conformance only for the exact 338-case byte sequence it

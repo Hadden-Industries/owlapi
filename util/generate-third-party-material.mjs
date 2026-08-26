@@ -363,6 +363,33 @@ const createMaterialFacts = () => [
       "The LICENSE bytes are pinned separately from implementation and are required in the npm tarball.",
   },
   {
+    id: "apache-2.0-license-text",
+    relationship: "EMBEDDED_OR_COPIED",
+    name: "Apache License version 2.0 text",
+    versionOrRevision:
+      "Authoritative Apache License 2.0 text retrieved 2026-08-26; wording matches OWLAPI 5.5.1 at d7e997a53b470e32700de89cc610d9daf01ea769",
+    licenseAssessments: [
+      licenseAssessment({
+        scope: "Unmodified Apache License 2.0 wording",
+        declaredLicenseExpression: "Apache-2.0",
+        licenseConclusionRationale:
+          "The packed file is byte-identical to the authoritative Apache License 2.0 text; the pinned Java OWLAPI source contains the same wording without the terminal LF.",
+        distributionDisposition: "PACKED_UNDER_RECORDED_BASIS",
+      }),
+    ],
+    sourceUrl: "https://www.apache.org/licenses/LICENSE-2.0.txt",
+    evidenceFiles: [evidenceFile("LICENSES/Apache-2.0.txt")],
+    treeEvidence: null,
+    attributionText: [
+      "The complete Apache License 2.0 text accompanies the elected licence basis for the packed Java OWLAPI compatibility facts.",
+    ],
+    packageTarballScope: true,
+    deployedApplicationScope: "REVIEW_REQUIRED_BY_CONSUMER",
+    noticeDisposition: "PACKED_AS_THIRD_PARTY_LICENSE",
+    rationale:
+      "The separately classified licence text accompanies the compatibility metadata without being conflated with its generated or project-authored expression.",
+  },
+  {
     id: "java-owlapi-api-identity-metadata",
     relationship: "GENERATED_FROM_THIRD_PARTY",
     name: "Java OWLAPI public API identity inventory",
@@ -372,8 +399,9 @@ const createMaterialFacts = () => [
       licenseAssessment({
         scope: "Java OWLAPI public API identity and declaration facts",
         declaredLicenseExpression: "Apache-2.0 OR LGPL-3.0",
+        concludedLicenseExpression: "Apache-2.0",
         licenseConclusionRationale:
-          "The conclusion preserves the dual-licence expression declared by the pinned Java OWLAPI source consulted for interoperability facts.",
+          "The package elects the Apache-2.0 alternative declared by the pinned Java OWLAPI source for the public API identity and declaration facts distributed in the compatibility views.",
         distributionDisposition: "PACKED_UNDER_RECORDED_BASIS",
       }),
       licenseAssessment({
@@ -394,6 +422,7 @@ const createMaterialFacts = () => [
     treeEvidence: null,
     attributionText: [
       "Java OWLAPI public package/type/declaration identities are attributed to the owlcs/owlapi project and its contributors.",
+      "The Apache-2.0 alternative is elected for those compatibility facts, and its complete text is packed at LICENSES/Apache-2.0.txt.",
       "owlapi is independently maintained and is not affiliated with or endorsed by the Java OWLAPI project.",
     ],
     packageTarballScope: true,
@@ -445,14 +474,16 @@ const createMaterialFacts = () => [
       }),
     ],
     sourceUrl: "https://github.com/w3c/rdf-tests",
-    evidenceFiles: [],
+    evidenceFiles: [
+      evidenceFile("docs/conformance/upstream/w3c-rdf-tests/LICENSE.md"),
+    ],
     treeEvidence: treeEvidence("docs/conformance/upstream/w3c-rdf-tests"),
     attributionText: [
       "W3C RDF test-suite files retained at the exact format-specific revisions recorded in docs/conformance/suites.json.",
     ],
     packageTarballScope: false,
     deployedApplicationScope: "NOT_APPLICABLE",
-    noticeDisposition: "REPOSITORY_ONLY_SOURCE_AND_REVISION_ATTRIBUTION",
+    noticeDisposition: "REPOSITORY_ONLY_RETAINED_LICENSE_SOURCE_AND_REVISION",
     rationale:
       "These copied tests provide release-relevant standards evidence but are excluded from the npm tarball and deployed application.",
   },
@@ -502,14 +533,17 @@ const createMaterialFacts = () => [
       }),
     ],
     sourceUrl: "https://www.w3.org/2007/OWL/wiki/Test_Suite_Status",
-    evidenceFiles: [],
+    evidenceFiles: [
+      evidenceFile("docs/conformance/upstream/w3c-owl2/README.md"),
+    ],
     treeEvidence: treeEvidence("docs/conformance/upstream/w3c-owl2"),
     attributionText: [
       "W3C OWL 2 test-suite material retained for standards conformance evidence; the recovery path and digest are recorded in docs/conformance/suites.json.",
     ],
     packageTarballScope: false,
     deployedApplicationScope: "NOT_APPLICABLE",
-    noticeDisposition: "REPOSITORY_ONLY_SOURCE_REVISION_AND_DIGEST",
+    noticeDisposition:
+      "REPOSITORY_ONLY_RETAINED_LICENSE_SOURCE_REVISION_AND_DIGEST",
     rationale:
       "The artifact is development/test evidence and is excluded from the npm tarball and deployed application.",
   },

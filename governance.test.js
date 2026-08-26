@@ -972,6 +972,10 @@ Java OWLAPI names and package identities appear in compatibility documentation
 generated from the pinned Java OWLAPI reference. owlapi is independently
 maintained and is not affiliated with or endorsed by the Java OWLAPI project.
 
+For Java OWLAPI public API identity and declaration metadata, this package elects
+the Apache License 2.0 alternative offered by the pinned Java OWLAPI source.
+See LICENSES/Apache-2.0.txt for the complete licence text.
+
 WebVOWL is a separate downstream distribution and maintains its own deployed-
 bundle licence and notice review.
 `);
@@ -1155,6 +1159,7 @@ bundle licence and notice review.
       inventory.materials.map((material) => [material.id, material]),
     );
     expect([...materialsById.keys()].sort(compareCodeUnits)).toEqual([
+      "apache-2.0-license-text",
       "contributor-covenant-3.0",
       "generated-w3c-conformance-manifests",
       "gnu-agpl-3.0-only-license-text",
@@ -1184,6 +1189,113 @@ bundle licence and notice review.
     expect(
       materialsById.get("java-owlapi-reference-fixtures").licenseAssessments,
     ).toHaveLength(2);
+  });
+
+  it("ships the elected Apache-2.0 basis for Java OWLAPI compatibility metadata", () => {
+    const packageJson = readJson("./package.json");
+    const inventory = readJson("./docs/provenance/third-party-material.json");
+    const javaMaterial = inventory.materials.find(
+      ({ id }) => id === "java-owlapi-api-identity-metadata",
+    );
+    const apacheMaterial = inventory.materials.find(
+      ({ id }) => id === "apache-2.0-license-text",
+    );
+    const assessment = javaMaterial.licenseAssessments.find(
+      ({ scope }) =>
+        scope === "Java OWLAPI public API identity and declaration facts",
+    );
+    const evidenceByPath = new Map(
+      apacheMaterial.evidenceFiles.map(({ path, sha256: digest }) => [
+        path,
+        digest,
+      ]),
+    );
+    const apacheLicense = readFileSync(
+      new URL("./LICENSES/Apache-2.0.txt", import.meta.url),
+    );
+    const notice = readFileSync(new URL("./NOTICE", import.meta.url), "utf8");
+
+    expect(assessment).toMatchObject({
+      declaredLicenseExpression: "Apache-2.0 OR LGPL-3.0",
+      concludedLicenseExpression: "Apache-2.0",
+      distributionDisposition: "PACKED_UNDER_RECORDED_BASIS",
+    });
+    expect(assessment.licenseConclusionRationale).toContain(
+      "Apache-2.0 alternative",
+    );
+    expect(apacheMaterial).toMatchObject({
+      relationship: "EMBEDDED_OR_COPIED",
+      packageTarballScope: true,
+      noticeDisposition: "PACKED_AS_THIRD_PARTY_LICENSE",
+    });
+    expect(packageJson.files).toContain("LICENSES/Apache-2.0.txt");
+    // These are the authoritative Apache-hosted bytes. The pinned Java OWLAPI
+    // copy has the same wording but omits the final LF.
+    expect(sha256(apacheLicense)).toBe(
+      "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    );
+    expect(evidenceByPath.get("LICENSES/Apache-2.0.txt")).toBe(
+      "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    );
+    expect(notice).toMatch(
+      /this package elects\s+the Apache License 2\.0 alternative/u,
+    );
+    expect(notice).toContain("See LICENSES/Apache-2.0.txt");
+  });
+
+  it("retains licence evidence beside repository-distributed W3C test material", () => {
+    const inventory = readJson("./docs/provenance/third-party-material.json");
+    const materialsById = new Map(
+      inventory.materials.map((material) => [material.id, material]),
+    );
+    const rdfMaterial = materialsById.get("w3c-rdf-tests");
+    const owlMaterial = materialsById.get("w3c-owl2-test-artifact");
+    const rdfLicensePath = "docs/conformance/upstream/w3c-rdf-tests/LICENSE.md";
+    const owlReadmePath = "docs/conformance/upstream/w3c-owl2/README.md";
+    const rdfLicense = readFileSync(
+      new URL(`./${rdfLicensePath}`, import.meta.url),
+    );
+    const owlReadme = readFileSync(
+      new URL(`./${owlReadmePath}`, import.meta.url),
+    );
+    const evidenceDigest = (material, path) =>
+      material.evidenceFiles.find((evidence) => evidence.path === path)?.sha256;
+
+    expect(sha256(rdfLicense)).toBe(
+      "7fa36904d5d6d32848307af7b22d416b708aaa0b98f5c719b26adb5ed3594b2a",
+    );
+    expect(evidenceDigest(rdfMaterial, rdfLicensePath)).toBe(
+      sha256(rdfLicense),
+    );
+    expect(evidenceDigest(owlMaterial, owlReadmePath)).toBe(sha256(owlReadme));
+    for (const material of [rdfMaterial, owlMaterial]) {
+      expect(material.licenseAssessments[0]).toMatchObject({
+        declaredLicenseExpression: "W3C-20150513 OR BSD-3-Clause",
+        concludedLicenseExpression: "W3C-20150513 OR BSD-3-Clause",
+        distributionDisposition: "REPOSITORY_ONLY_NOT_IN_PACKAGE",
+      });
+    }
+    expect(rdfMaterial.noticeDisposition).toBe(
+      "REPOSITORY_ONLY_RETAINED_LICENSE_SOURCE_AND_REVISION",
+    );
+    expect(owlMaterial.noticeDisposition).toBe(
+      "REPOSITORY_ONLY_RETAINED_LICENSE_SOURCE_REVISION_AND_DIGEST",
+    );
+  });
+
+  it("binds the approved dependency-governance review to its unchanged facts", () => {
+    const governance = readJson("./docs/dependency-governance.json");
+
+    expect(governance.review).toEqual({
+      status: "REVIEWED",
+      factsSha256:
+        "60ccbac9295657fcdd69120ba77e2fc1838c022ceeab9bb60256d772d75708eb",
+      reviewer: "Maksym Shostak",
+      reviewedOn: "2026-08-26",
+      capacity: "Original author, project maintainer, and release reviewer",
+      conclusion:
+        "Reviewed and approved the exact dependency graph, production audit, strict dependency lifecycle-script policy, upgrade gates, and supporting evidence bound to this facts digest.",
+    });
   });
 
   it("schema-validates structured dependency governance against the package and inventory", () => {
@@ -1263,6 +1375,75 @@ bundle licence and notice review.
       initialStaticClosureIncluded: false,
       minifiedBytes: 204727,
     });
+  });
+
+  it("fails closed unless every locked dependency install script has an explicit decision", () => {
+    const npmCli = process.env.npm_execpath;
+    expect(typeof npmCli).toBe("string");
+    const strictAllowScripts = execFileSync(
+      process.execPath,
+      [npmCli, "config", "get", "strict-allow-scripts", "--location=project"],
+      {
+        cwd: REPOSITORY_ROOT,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"],
+      },
+    ).trim();
+
+    // npm 12 blocks unreviewed dependency lifecycle scripts by default, while
+    // strict mode turns a future uncovered script into an installation error.
+    // Reading the effective npm configuration tests the policy npm actually
+    // consumes instead of merely checking that an .npmrc line exists.
+    expect(strictAllowScripts).toBe("true");
+    expect(
+      readFileSync(new URL("./.npmrc", import.meta.url), "utf8").replaceAll(
+        "\r\n",
+        "\n",
+      ),
+    ).toBe("strict-allow-scripts=true\n");
+
+    const packageJson = readJson("./package.json");
+    const lockfile = readJson("./package-lock.json");
+    const lockedInstallScripts = [
+      ...new Set(
+        Object.entries(lockfile.packages)
+          .filter(
+            ([dependencyPath, dependency]) =>
+              dependencyPath !== "" && dependency.hasInstallScript === true,
+          )
+          .map(([dependencyPath, dependency]) => {
+            const packageName = dependencyPath.split("node_modules/").at(-1);
+            return `${packageName}@${dependency.version}`;
+          }),
+      ),
+    ].sort(compareCodeUnits);
+
+    expect(packageJson.allowScripts).toEqual({
+      "fsevents@2.3.2": false,
+      "fsevents@2.3.3": false,
+      "libxmljs2@0.37.0": false,
+      "unrs-resolver@1.12.2": false,
+    });
+    expect(
+      Object.keys(packageJson.allowScripts).sort(compareCodeUnits),
+    ).toEqual(lockedInstallScripts);
+
+    const dependencyGovernance = readJson("./docs/dependency-governance.json");
+    expect(dependencyGovernance.installScriptPolicy).toEqual(
+      expect.objectContaining({
+        mode: "STRICT_EXPLICIT_DECISIONS",
+        npmVersion: "12.0.2",
+        projectConfig: ".npmrc",
+      }),
+    );
+    const governedDecisionEntries = (
+      dependencyGovernance.installScriptPolicy?.decisions ?? []
+    ).map(({ allowed, name, version }) => [`${name}@${version}`, allowed]);
+    expect(new Set(governedDecisionEntries.map(([key]) => key)).size).toBe(
+      governedDecisionEntries.length,
+    );
+    const governedDecisions = Object.fromEntries(governedDecisionEntries);
+    expect(governedDecisions).toEqual(packageJson.allowScripts);
   });
 
   it("pins the rights scope to an exact, singly classified packlist", () => {
@@ -1445,6 +1626,7 @@ bundle licence and notice review.
           package: dependencyGovernance.package,
           recordedOn: dependencyGovernance.recordedOn,
           productionAudit: dependencyGovernance.productionAudit,
+          installScriptPolicy: dependencyGovernance.installScriptPolicy,
           transitiveInventoryAuthority:
             dependencyGovernance.transitiveInventoryAuthority,
           upgradeGate: dependencyGovernance.upgradeGate,

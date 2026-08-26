@@ -43,12 +43,12 @@
 > **No-telemetry decision:** 24 August 2026 — `owlapi` performs no telemetry, analytics, update checks, remote configuration, install pings, or diagnostic uploads; only an explicitly authorized ontology-import or JSON-LD-context request may perform outbound document retrieval.<br>
 > **Package-entry-point decision:** 24 August 2026 — expose the five approved unconditional native-ESM roots through one exact `exports` map, with no `main`, `module`, `browser`, conditional, wildcard, extension-alias or `package.json` export that could create a second or accidental public boundary.<br>
 > **Import-purity decision:** 24 August 2026 — require the complete package-owned production module closure to be side-effect-free on import, publish `sideEffects: false`, and treat any required import-time registration, I/O or global mutation as a release-blocking design defect.<br>
-> **Development-tooling decision:** 24 August 2026, hardened 25 August 2026 — declare `engines.node` exactly `>=22.23.2 <23 || >=24.19.0 <25` so each admitted minimum is a blocking consumer floor; use npm-native `devEngines` to require Node as the source runtime and exact npm `12.0.2` as the repository package manager; and introduce neither `engines.npm` nor a separate Corepack/`packageManager` authority.<br>
+> **Development-tooling decision:** 24 August 2026, hardened 26 August 2026 — declare `engines.node` exactly `>=22.23.2 <23 || >=24.19.0 <25` so each admitted minimum is a blocking consumer floor; use npm-native `devEngines` to require Node as the source runtime and exact npm `12.0.2` as the repository package manager; make npm 12's default-deny dependency lifecycle policy fail closed through project-local `strict-allow-scripts=true` and an exact-version `allowScripts` decision for every locked install script; and introduce neither `engines.npm` nor a separate Corepack/`packageManager` authority.<br>
 > **Reference-import-map-tooling decision:** 24 August 2026, hardened 25 August 2026 — generate the application-owned reference map with exact `@jspm/generator@2.16.3`, the `jspm.io` provider, `production`/`browser`/`module` conditions and integrity metadata; test an integrity-verified local mirror in all required engines and retain its content-addressed hydrated closure as candidate evidence while keeping the provider a replaceable reference rather than a package runtime dependency or second canonical source tree.<br>
 > **Release-artifact-tooling decision:** 24 August 2026 — generate a validated reproducible production-only CycloneDX 1.6 library SBOM with exact `@cyclonedx/cyclonedx-npm@6.0.1`, validate versioned Draft 2020-12 release evidence with exact `ajv@8.20.0` plus `ajv-formats@3.0.1`, keep tooling outside the production subject tree, and rely on immutable release attestation rather than a redundant evidence signature.<br>
 > **Published-dependency-tree decision:** 24 August 2026 — publish the six exact direct runtime dependencies as ordinary library dependencies, keep `package-lock.json` repository-only, publish no shrinkwrap/bundled/peer/optional/override dependency authority, and verify both the locked release graph and the graph resolved by a lockless fresh consumer.<br>
 > **Independent-package-lint decision:** 24 August 2026 — use exact-pinned `publint@0.3.24` as the present baseline, permit a later exact version only after the same tool-update review, run it in strict mode against the retained tarball before publication and the registry-downloaded tarball afterwards, and permit only narrow versioned, expiring warning exceptions rather than weakening the project-specific package gates.<br>
-> **Third-party-material decision:** 24 August 2026 — maintain a schema-validated, human-reviewed third-party-material inventory for the exact production graph, release-relevant development material and copied/generated third-party files; render `NOTICE` according to what the `owlapi` tarball actually distributes; and require WebVOWL to review its separately bundled deployment scope rather than pretending one package notice covers both distributions.<br>
+> **Third-party-material decision:** 24 August 2026, hardened 26 August 2026 — maintain a schema-validated, human-reviewed third-party-material inventory for the exact production graph, release-relevant development material and copied/generated third-party files; explicitly elect Apache-2.0 for the packed Java OWLAPI public-identity/declaration facts while preserving their upstream dual-licence declaration and packing the elected licence text; preserve the W3C test-suite dual-licence expression with retained repository-only licence evidence rather than making a use-independent election; render `NOTICE` according to what the `owlapi` tarball actually distributes; and require WebVOWL to review its separately bundled deployment scope rather than pretending one package notice covers both distributions.<br>
 > **npm-provenance-verification decision:** 25 August 2026 — verify `owlapi@<version>` itself with npm's signature/attestation JSON; bind its registry signature, provenance/publish attestations, subject digest, repository, authorized workflow, actual triggering ref/run and captured source commit; verify the subsequently created signed canonical tag independently against that same commit; and never claim that an attestation generated before tag creation retroactively contains the later tag as its triggering ref.<br>
 > **Conditional-prerelease decision:** 25 August 2026 — at least one useful public alpha is required, but an additional alpha or public release candidate is required only when material behavior, public API, dependency, environment, security, networking or resource semantics need another public observation period; otherwise Phase 20 fully qualifies the actual retained/staged `0.1.0` candidate and may proceed directly from the accepted alpha to production.<br>
 > **Executable-release-gate decision:** 25 August 2026, hardened 25 August 2026 — make §§17.26.5 and 17.27.6 the sole authoritative Phase 19/20 acceptance catalogues; assign every requirement a stable anchored ID and explicit decision-section coverage; make §30 a derived marked checklist rather than a fictitious phase or second authority; reconcile catalogue IDs, checklist coverage and the versioned machine-readable gate registry mechanically; accept required gates only as `PASS` or validated `NOT_APPLICABLE`; and distinguish unresolved product, control and external-service failures without permitting any of them to reach publication authority.<br>
@@ -2895,6 +2895,31 @@ outside the selected Node toolchain or a moving registry tag. An npm script may
 invoke its local `node_modules/.bin` executable through npm's normal script PATH;
 it does not hard-code a platform-specific `.bin` pathname.
 
+npm 12's default-deny dependency lifecycle-script policy is made explicit and
+fail-closed rather than left as a host-dependent warning. The project root
+`.npmrc` contains exactly `strict-allow-scripts=true`, and the root
+`package.json` `allowScripts` object contains one exact `name@version` boolean
+decision for every non-root lockfile entry with `hasInstallScript: true`.
+`npm ci` fails when a newly introduced script lacks a decision; stale,
+unversioned or floating decisions fail governance reconciliation. A `true`
+decision requires separate review of the exact script, inputs, outputs,
+network/native-build behavior and release-boundary necessity. User/global npm
+configuration is not repository policy and cannot silently widen these
+decisions.
+
+For the accepted Phase 19B graph, the four exact decisions are denials:
+`fsevents@2.3.2`, `fsevents@2.3.3`, `libxmljs2@0.37.0` and
+`unrs-resolver@1.12.2`. The two Darwin-only optional `fsevents` builds accelerate
+watch mode, which no blocking workflow uses; the optional `libxmljs2` native
+build serves XML validation while the governed CycloneDX path is validated JSON;
+and the locked platform binding plus complete test suite make
+`unrs-resolver`'s fallback postinstall unnecessary. The dependency-governance
+record binds each denial to its exact script, scope, rationale and evidence.
+Every clean install runs `npm install-scripts ls` and the governance test derives
+the complete expected decision set from the lockfile, so a platform-skipped
+optional package cannot evade review merely because it was absent on the host
+performing the inspection.
+
 Changing the source/release npm patch or either blocking Node patch is a
 dedicated reviewed configuration change: update the literal `devEngines` value
 and/or exact workflow authority together, regenerate the lockfile with that npm
@@ -3151,6 +3176,28 @@ every notice required by embedded/copied material but does not concatenate every
 licence in the externally installed dependency graph. `LICENSE` remains the
 complete unmodified AGPLv3 text governing package-owned material; neither file
 purports to relicense dependencies.
+
+For the Java OWLAPI public API identity and declaration facts in the packed
+compatibility views, the inventory **MUST** preserve the pinned source's declared
+`Apache-2.0 OR LGPL-3.0` expression while concluding `Apache-2.0` for that exact
+scope. The tarball **MUST** include the complete, unmodified Apache License 2.0
+wording at `LICENSES/Apache-2.0.txt`, and `NOTICE` **MUST** state the election and
+point to that file. The retained file uses the authoritative Apache-hosted bytes;
+the pinned Java OWLAPI copy has the same wording but omits their terminal LF.
+This scoped election neither changes the
+`AGPL-3.0-only` licence governing package-owned expression nor represents an
+upstream `NOTICE` file: the pinned Java OWLAPI revision contains no such file, so
+the project must not invent or imply one.
+
+Copied W3C RDF, JSON-LD and OWL 2 test material remains repository-only and
+retains `W3C-20150513 OR BSD-3-Clause`. Its inventory evidence **MUST** include
+the retained upstream licence pointer or the local provenance document that
+records the W3C dual-licensing approach. No global alternative is elected merely
+to simplify the inventory because W3C makes the applicable choice depend on the
+intended use. Ordinary npm dependencies, including a parser later embedded by a
+downstream application build, remain external to the `owlapi` tarball and do not
+enter its packed `NOTICE`; the distribution that actually bundles them owns that
+separate notice review.
 
 WebVOWL's production bundle is a distinct distribution scope because its build
 may physically incorporate `owlapi` and third-party dependency code. Phase 20
@@ -7912,7 +7959,9 @@ approval the exact proposed contents/setting changes for:
   absence of the §2.23 automatic lifecycle hooks and §2.26 TypeScript metadata,
   §2.44-required `sideEffects: false`, the §2.45 literal npm-native
   `devEngines` values and deliberate absence of `engines.npm`/top-level
-  `packageManager`, the exact-pinned §2.32 direct runtime dependencies, the
+  `packageManager`, the project-local `strict-allow-scripts=true` setting and
+  exact-version `allowScripts` decision for every locked dependency lifecycle
+  script, the exact-pinned §2.32 direct runtime dependencies, the
   §2.48 absence of shrinkwrap/bundled/peer/optional/override dependency
   authority and repository-only lockfile, the §2.19-fixed Node engine range,
   the release-date-pinned §2.20 alpha Browserslist query, the exact §2.54 development dependencies
@@ -12780,7 +12829,10 @@ precise subset; this summary is not the machine mapping.
       automatic audit fix on release inputs.
 - [ ] The source manifest and lockfile contain the exact §2.54 development-tool
       versions, `devEngines.packageManager.version` is `12.0.2`, blocking workflows
-      use Node `22.23.2`/`24.19.0`, every npm tool runs through a named local
+      use Node `22.23.2`/`24.19.0`, project-local
+      `strict-allow-scripts=true` makes any uncovered dependency lifecycle script
+      fatal, every lockfile `hasInstallScript` entry has one exact-version
+      reviewed `allowScripts` decision, every npm tool runs through a named local
       `npm run` script, and executable negatives reject remote `npx`,
       `npm exec --package`, global-development-tool and runner-preinstalled-tool
       release paths.
@@ -14852,6 +14904,11 @@ https://nodejs.org/download/release/v24.19.0/
 for `devEngines`, lockfile generation and every npm CI/release operation.<br>
 https://registry.npmjs.org/npm/12.0.2
 
+84c. **npm CLI 12.0.2 lifecycle-script policy** — exact release changelog for
+the npm 12 default-deny `allowScripts` model, strict enforcement and namespaced
+install-script review tooling used by the project policy.<br>
+https://github.com/npm/cli/blob/v12.0.2/CHANGELOG.md
+
 85. **JSPM Generator 2.16.3 documentation** — exact import-map generation,
     local linking, provider/environment selection and integrity-bearing map
     output.<br>
@@ -15028,7 +15085,7 @@ The final architectural rules are:
 
 > **`owlapi` is licensed under `AGPL-3.0-only` to require strong, network-aware source reciprocity. The choice is deliberate rather than inherited from avoidable implementation provenance; WebVOWL remains AGPL-3.0-only while package and application licensing scopes are documented separately. Any future more-permissive release requires demonstrable authority over every included contribution and does not revoke rights in earlier AGPL releases.**
 
-> **A schema-validated, human-reviewed third-party-material registry records the exact production graph, release-relevant development material, copied/generated third-party files, inspected licence/notice-file hashes, SPDX expressions, relationships and distribution scopes. The package `NOTICE` covers material actually distributed in the `owlapi` tarball and identifies ordinary external dependency boundaries; WebVOWL separately reconciles the code physically embedded into its emitted application bundle and preserves that distribution's applicable notices.**
+> **A schema-validated, human-reviewed third-party-material registry records the exact production graph, release-relevant development material, copied/generated third-party files, inspected licence/notice-file hashes, SPDX expressions, relationships and distribution scopes. The packed Java OWLAPI identity/declaration facts preserve their declared `Apache-2.0 OR LGPL-3.0` provenance while electing Apache-2.0 and packing its complete text; repository-only W3C test artifacts preserve their use-dependent dual-licence expression and retained licence evidence. The package `NOTICE` covers material actually distributed in the `owlapi` tarball and identifies ordinary external dependency boundaries; WebVOWL separately reconciles the code physically embedded into its emitted application bundle and preserves that distribution's applicable notices.**
 
 > **Maksym Shostak retains personal copyright in his existing `owlapi` contributions and is identified as their owner until any optional written assignment actually takes effect. HADDEN INDUSTRIES LTD, registered in England and Wales under company number 07862561, is identified separately as project steward. Assignment and private estate planning are not alpha, production-release or plan-completion gates. This plan requires accurate tarball-scoped rights evidence and verified sole `MaksymShostak`/`maksymshostak` operational authority, explicitly accepts the resulting single-person availability/recovery risk, and does not claim that company stewardship supplies human account continuity.**
 

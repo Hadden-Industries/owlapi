@@ -7,12 +7,12 @@
   },
   "recordedOn": "2026-08-26",
   "review": {
-    "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "af58d805c977fb8c358a95711481b66202206c4ad42435610563e93938c15adc",
-    "reviewer": null,
-    "reviewedOn": null,
-    "capacity": null,
-    "conclusion": null
+    "status": "REVIEWED",
+    "factsSha256": "60ccbac9295657fcdd69120ba77e2fc1838c022ceeab9bb60256d772d75708eb",
+    "reviewer": "Maksym Shostak",
+    "reviewedOn": "2026-08-26",
+    "capacity": "Original author, project maintainer, and release reviewer",
+    "conclusion": "Reviewed and approved the exact dependency graph, production audit, strict dependency lifecycle-script policy, upgrade gates, and supporting evidence bound to this facts digest."
   },
   "productionAudit": {
     "performedOn": "2026-08-26",
@@ -27,6 +27,69 @@
       "critical": 0,
       "total": 0
     }
+  },
+  "installScriptPolicy": {
+    "npmVersion": "12.0.2",
+    "mode": "STRICT_EXPLICIT_DECISIONS",
+    "projectConfig": ".npmrc",
+    "decisions": [
+      {
+        "name": "fsevents",
+        "version": "2.3.2",
+        "allowed": false,
+        "dependencyScope": "DEVELOPMENT_OPTIONAL_DARWIN",
+        "lifecycleScript": "install: node-gyp rebuild",
+        "requiredForBlockingWorkflows": false,
+        "rationale": "This Darwin-only optional Playwright dependency accelerates file watching, while the blocking Playwright jobs execute fixed non-watch browser suites. Denial avoids unnecessary install-time native compilation; the required macOS installed-package qualification must continue to pass with this policy.",
+        "evidence": [
+          "package-lock.json#node_modules/playwright/node_modules/fsevents",
+          "https://registry.npmjs.org/fsevents/2.3.2",
+          "docs/implementation-plan.md §2.54"
+        ]
+      },
+      {
+        "name": "fsevents",
+        "version": "2.3.3",
+        "allowed": false,
+        "dependencyScope": "DEVELOPMENT_OPTIONAL_DARWIN",
+        "lifecycleScript": "install: node-gyp rebuild",
+        "requiredForBlockingWorkflows": false,
+        "rationale": "This Darwin-only optional Jest/Vite dependency accelerates watch mode, which is outside the fixed non-watch lint, test, build, and release commands. Denial avoids unnecessary install-time native compilation; the required macOS qualification must continue to pass with this policy.",
+        "evidence": [
+          "package-lock.json#node_modules/fsevents",
+          "https://registry.npmjs.org/fsevents/2.3.3",
+          "docs/implementation-plan.md §§2.45, 2.54"
+        ]
+      },
+      {
+        "name": "libxmljs2",
+        "version": "0.37.0",
+        "allowed": false,
+        "dependencyScope": "DEVELOPMENT_OPTIONAL_SBOM_XML_VALIDATOR",
+        "lifecycleScript": "install: prebuild-install || node-gyp rebuild",
+        "requiredForBlockingWorkflows": false,
+        "rationale": "The release emits and validates CycloneDX 1.6 JSON with Ajv; libxmljs2 is an optional XML-validation dependency and is not required by that governed path. The exact generator successfully produced and validated the required JSON library SBOM while this script remained blocked.",
+        "evidence": [
+          "package-lock.json#node_modules/libxmljs2",
+          "node_modules/@cyclonedx/cyclonedx-npm/package.json#optionalDependencies",
+          "Phase 19B validated CycloneDX 1.6 JSON library SBOM smoke test on 2026-08-26"
+        ]
+      },
+      {
+        "name": "unrs-resolver",
+        "version": "1.12.2",
+        "allowed": false,
+        "dependencyScope": "DEVELOPMENT_TEST_RESOLVER",
+        "lifecycleScript": "postinstall: node postinstall.js",
+        "requiredForBlockingWorkflows": false,
+        "rationale": "The lockfile installs the supported platform bindings directly; the postinstall is a fallback binding check/retrieval rather than required package construction. Denial prevents ambient install-time retrieval, and the complete blocking Jest suite passed through the installed resolver graph with the script blocked.",
+        "evidence": [
+          "package-lock.json#node_modules/unrs-resolver",
+          "Phase 19B strict-policy full Jest suite: 103 suites, 2645 passed, 1 skipped",
+          "governance.test.js"
+        ]
+      }
+    ]
   },
   "transitiveInventoryAuthority": "package-lock.json and docs/provenance/third-party-material.json",
   "upgradeGate": [

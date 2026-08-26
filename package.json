@@ -35,6 +35,7 @@
     "API.md",
     "CHANGELOG.md",
     "LICENSE",
+    "LICENSES/Apache-2.0.txt",
     "NOTICE",
     "docs/compatibility/capabilities.json",
     "docs/compatibility/java-api-surface.json",
@@ -59,6 +60,12 @@
       "version": "12.0.2",
       "onFail": "error"
     }
+  },
+  "allowScripts": {
+    "fsevents@2.3.2": false,
+    "fsevents@2.3.3": false,
+    "libxmljs2@0.37.0": false,
+    "unrs-resolver@1.12.2": false
   },
   "browserslist": "baseline widely available",
   "scripts": {
