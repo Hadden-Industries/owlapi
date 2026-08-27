@@ -9,8 +9,6 @@ import {
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import pacote from "pacote";
-
 import { downloadLockedRegistryTarball } from "./acquire-npm-package-evidence.mjs";
 import {
   inspectPackageTarball,
@@ -183,7 +181,10 @@ export const completeArchiveEvidenceAggregate = async ({
   outputRoot,
   downloadTarball = downloadLockedRegistryTarball,
   fetchImpl = fetch,
-  pacoteClient = pacote,
+  // The default downloader resolves Pacote lazily. Keeping this sentinel here
+  // also lets injected transports run on supported Node/Jest combinations
+  // without evaluating Pacote's mixed CommonJS and ESM dependency tree.
+  pacoteClient = null,
 } = {}) => {
   if (typeof inputRoot !== "string" || inputRoot.length === 0) {
     throw new TypeError("Archive completion requires an input root");
