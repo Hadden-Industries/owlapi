@@ -14,8 +14,6 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify, TextDecoder } from "node:util";
 
-import pacote from "pacote";
-
 import {
   ARCHIVE_LIMITS,
   inspectPackageTarball,
@@ -70,6 +68,20 @@ const PACOTE_NETWORK_OPTIONS = Object.freeze({
   fetchRetryMaxtimeout: REGISTRY_RETRY_MAXIMUM_MS,
   fetchTimeout: 300_000,
 });
+let defaultPacoteClientPromise = null;
+
+// Pacote is needed only for live registry operations. Keeping it behind that
+// boundary lets pure helpers and injected transports load under every supported
+// Node/Jest combination without evaluating Pacote's mixed CJS/ESM dependency tree.
+const resolvePacoteClient = (pacoteClient) => {
+  if (pacoteClient !== null && pacoteClient !== undefined) {
+    return Promise.resolve(pacoteClient);
+  }
+  defaultPacoteClientPromise ??= import("pacote").then(
+    ({ default: importedPacoteClient }) => importedPacoteClient,
+  );
+  return defaultPacoteClientPromise;
+};
 const TRANSIENT_NETWORK_CODES = new Set([
   "EAI_AGAIN",
   "ECONNABORTED",
@@ -419,8 +431,9 @@ const defaultVerifyPackageMetadata = async ({
   registryKeys,
   cache,
   pacoteClient,
-}) =>
-  pacoteClient.manifest(`${identity.name}@${identity.version}`, {
+}) => {
+  const resolvedPacoteClient = await resolvePacoteClient(pacoteClient);
+  return resolvedPacoteClient.manifest(`${identity.name}@${identity.version}`, {
     registry: PUBLIC_REGISTRY,
     cache,
     resolved: identity.resolved,
@@ -432,14 +445,16 @@ const defaultVerifyPackageMetadata = async ({
     "//registry.npmjs.org/:_keys": registryKeysForPacote(registryKeys),
     ...PACOTE_NETWORK_OPTIONS,
   });
+};
 
 export const downloadLockedRegistryTarball = async ({
   identity,
   destination,
   cache,
   pacoteClient,
-}) =>
-  pacoteClient.tarball.file(
+}) => {
+  const resolvedPacoteClient = await resolvePacoteClient(pacoteClient);
+  return resolvedPacoteClient.tarball.file(
     `${identity.name}@${identity.version}`,
     destination,
     {
@@ -451,6 +466,7 @@ export const downloadLockedRegistryTarball = async ({
       ...PACOTE_NETWORK_OPTIONS,
     },
   );
+};
 
 const defaultScanArtifact = async ({ scancode, inputRoot, outputPath }) => {
   if (typeof scancode !== "string" || scancode.length === 0) {
@@ -1130,7 +1146,7 @@ export const acquireEvidence = async ({
   downloadTarball = downloadLockedRegistryTarball,
   verifyPackageMetadata = defaultVerifyPackageMetadata,
   scanArtifact = defaultScanArtifact,
-  pacoteClient = pacote,
+  pacoteClient = null,
   scancode = null,
   registryKeySnapshot = null,
   registryKeysPath = null,
