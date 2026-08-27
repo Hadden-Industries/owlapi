@@ -1,0 +1,106 @@
+{
+  "artifactId": "605e540ae660cef597a9f7345893f4de7e1cfbfa7041ef8bd0b9f3dec05128d4",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 10384,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "c8695ddb503d13b5a671b01f855c8badef445b250105c2d84e7fff502db59c27",
+        "size": 334,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "313711c78293dfc83beb2ce5d6846a539235fc48fdd507361b59db8aaba2b186",
+        "size": 7193,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "1694cdf5e607583c1628d9317e0456d36837972615dad351599a05eafcb14576",
+        "size": 25092,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "f9cccb2e601db93851f10935b4e723c95a730c467f187462eb54b16bb353b036",
+        "size": 907,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 34632,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-code-frame",
+      "license": "MIT",
+      "name": "@babel/code-frame",
+      "repository": {
+        "directory": "packages/babel-code-frame",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "bugs": "https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen",
+      "dependencies": {
+        "@babel/helper-validator-identifier": "^7.29.7",
+        "js-tokens": "^4.0.0",
+        "picocolors": "^1.1.1"
+      },
+      "description": "Generate errors that contain a code frame that point to source locations.",
+      "devDependencies": {
+        "charcodes": "^0.2.0",
+        "import-meta-resolve": "^4.1.0",
+        "strip-ansi": "^4.0.0"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-code-frame",
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/code-frame",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-code-frame",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 10384,
+      "sha256": "fa8b176fa0b5d1d72b41ad33443f1f4f75933157a45010dffb51719f40c19c67"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

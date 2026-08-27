@@ -1,0 +1,105 @@
+{
+  "artifactId": "cebc78e329735a0f5eaaf3e7a0b345eb22620533e747c21f688c3bc7e0a99433",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8383,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "3de867b681c9c54aae76d6211dd50b2d271d6475ef394954e935f050bb0b2636",
+        "size": 335,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "c1b1b25a48d3b44710984b894db71f5e8c335ca52c35da43e73967c20cf18bfd",
+        "size": 7860,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "8d49df564003e81b15c27acfc2cf3f7bd87813584e36955b709b4dcbbbfd84b2",
+        "size": 21757,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "ecbd1aaffa9ad000d3bc5a526067b89244cb3ec64c738fbae8b64a9e805f401b",
+        "size": 758,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 31816,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-string-parser",
+      "license": "MIT",
+      "name": "@babel/helper-string-parser",
+      "repository": {
+        "directory": "packages/babel-helper-string-parser",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "description": "A utility package to parse strings",
+      "devDependencies": {
+        "charcodes": "^0.2.0"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./lib/index.js",
+          "types": "./lib/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-string-parser",
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/helper-string-parser",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-helper-string-parser",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 8383,
+      "sha256": "124565ecd300d7187973060ba6b1d1c4f296e55f0489ddfd6af794f516fed127"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

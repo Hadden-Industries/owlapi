@@ -1,0 +1,197 @@
+{
+  "artifactId": "297d4534975d92c2ee1a2159c4cf3011f0c6b77af0cd38acafe96690151ce81a",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8198,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.travis.yml",
+        "sha256": "b25e86de0cae4aa7a00c17c10c5d3ad2a3f6c8591618672952a7882ebb693429",
+        "size": 54,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6",
+        "size": 1078,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ebaf8360a94df232e303e84f92caba0493a7a60c71ebcc67daea681c9dd4641b",
+        "size": 4897,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "6ee0f6dd9da9e4824dc6876ef8b251c1dbab6e3b20a77605ef0f5d5fd1bbd3b1",
+        "size": 11275,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e67abc8620e8c93860c69d522ffba271a045f6271bc689fdfe400d8d1f14b749",
+        "size": 896,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/fixtures/a/hello.txt",
+        "sha256": "a948904f2f0f479b8f8197694b30184b0d2ed1c1cd2a1ec0fb85d299a192a447",
+        "size": 12,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/fixtures/b/a/test.txt",
+        "sha256": "f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2",
+        "size": 5,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/fixtures/d/file1",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/fixtures/d/file2",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/fixtures/d/sub-dir/file5",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/fixtures/d/sub-files/file3",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/fixtures/d/sub-files/file4",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/fixtures/e/directory/.ignore",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/fixtures/e/file",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/fixtures/invalid.tar",
+        "sha256": "698c75699d13ae8ef9bc32e951c363553ffc7253014fe7152a8452bcbe598d0c",
+        "size": 2560,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "6221c1b2ccc61331f29b9c1ac6025850bfbd743661e483447d38c17d1eb20fdf",
+        "size": 12015,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1078,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/3f/3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6",
+          "sha256": "3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6",
+        "size": 1078
+      },
+      {
+        "blob": {
+          "bytes": 4897,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/eb/ebaf8360a94df232e303e84f92caba0493a7a60c71ebcc67daea681c9dd4641b",
+          "sha256": "ebaf8360a94df232e303e84f92caba0493a7a60c71ebcc67daea681c9dd4641b"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "ebaf8360a94df232e303e84f92caba0493a7a60c71ebcc67daea681c9dd4641b",
+        "size": 4897
+      }
+    ],
+    "expandedBytes": 32792,
+    "packageIdentity": {
+      "author": "Mathias Buus",
+      "homepage": "https://github.com/mafintosh/tar-fs",
+      "license": "MIT",
+      "name": "tar-fs",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mafintosh/tar-fs.git"
+      },
+      "version": "2.1.5"
+    },
+    "packageMetadata": {
+      "author": "Mathias Buus",
+      "bugs": {
+        "url": "https://github.com/mafintosh/tar-fs/issues"
+      },
+      "dependencies": {
+        "chownr": "^1.1.1",
+        "mkdirp-classic": "^0.5.2",
+        "pump": "^3.0.0",
+        "tar-stream": "^2.1.4"
+      },
+      "description": "filesystem bindings for tar-stream",
+      "devDependencies": {
+        "rimraf": "^2.6.3",
+        "standard": "^13.0.1",
+        "tape": "^4.9.2"
+      },
+      "directories": {
+        "test": "test"
+      },
+      "homepage": "https://github.com/mafintosh/tar-fs",
+      "keywords": [
+        "tar",
+        "fs",
+        "file",
+        "tarball",
+        "directory",
+        "stream"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "tar-fs",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mafintosh/tar-fs.git"
+      },
+      "scripts": {
+        "test": "standard && tape test/index.js"
+      },
+      "standard": {
+        "ignore": [
+          "test/fixtures/**"
+        ]
+      },
+      "version": "2.1.5"
+    },
+    "physicalEntryCount": 16,
+    "tarball": {
+      "bytes": 8198,
+      "sha256": "ad3283c3f1f444bbe1b8d807373b682bebf0e145893cca164bb3b6a27135e5e0"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

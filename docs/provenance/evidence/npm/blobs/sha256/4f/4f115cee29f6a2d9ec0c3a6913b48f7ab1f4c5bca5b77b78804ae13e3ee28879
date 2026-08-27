@@ -1,0 +1,186 @@
+{
+  "artifactId": "568c15f19b8dd5f4ab816c0d5ab5da1a6c379c3a7a0ee8ce4cb7be1b757f4411",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 11398,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "64159d26334b1b7c13a4cc6157fbb09f575217306422e4174cec23b776b23bfd",
+        "size": 4267,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/retrier.cjs",
+        "sha256": "0bd28a14bfa1287ac6ed01aca902130872e0cf2cdb23e1742e4d52c441b12c3e",
+        "size": 13766,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/retrier.d.cts",
+        "sha256": "862a7c7bf64360472b2c573181646503d2d9ba85dd1a3fcfeac9f9963ad8d03b",
+        "size": 1889,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/retrier.d.ts",
+        "sha256": "862a7c7bf64360472b2c573181646503d2d9ba85dd1a3fcfeac9f9963ad8d03b",
+        "size": 1889,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/retrier.js",
+        "sha256": "86a1ccc63d7cce261886d404d4e3aa38dd40bbf802d9c3e9340ca047e5e86e66",
+        "size": 13779,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/retrier.min.js",
+        "sha256": "7944f114eefee52eef86ae29a8de82bf4706cea3ea24a7a8135e00d674323341",
+        "size": 3103,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/retrier.mjs",
+        "sha256": "e9023f77e317c600aee3916f85b792d3be90c31f0ddb65460e4afca63200bcd6",
+        "size": 13744,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8e18a261a246f3e65a25664362cf367e18567ae214b1094b297fc1d056c48211",
+        "size": 1917,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11357,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357
+      },
+      {
+        "blob": {
+          "bytes": 4267,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/64/64159d26334b1b7c13a4cc6157fbb09f575217306422e4174cec23b776b23bfd",
+          "sha256": "64159d26334b1b7c13a4cc6157fbb09f575217306422e4174cec23b776b23bfd"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "64159d26334b1b7c13a4cc6157fbb09f575217306422e4174cec23b776b23bfd",
+        "size": 4267
+      }
+    ],
+    "expandedBytes": 65711,
+    "packageIdentity": {
+      "author": "Nicholas C. Zaks",
+      "homepage": null,
+      "license": "Apache-2.0",
+      "name": "@humanwhocodes/retry",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/humanwhocodes/retry.git"
+      },
+      "version": "0.4.3"
+    },
+    "packageMetadata": {
+      "author": "Nicholas C. Zaks",
+      "description": "A utility to retry failed async methods.",
+      "devDependencies": {
+        "@eslint/js": "^8.49.0",
+        "@rollup/plugin-terser": "0.4.4",
+        "@tsconfig/node16": "^16.1.1",
+        "@types/mocha": "^10.0.3",
+        "@types/node": "20.12.6",
+        "eslint": "^8.21.0",
+        "lint-staged": "15.2.1",
+        "mocha": "^10.3.0",
+        "rollup": "3.29.4",
+        "typescript": "5.4.4",
+        "yorkie": "2.0.0"
+      },
+      "engines": {
+        "node": ">=18.18"
+      },
+      "exports": {
+        "import": {
+          "default": "./dist/retrier.js",
+          "types": "./dist/retrier.d.ts"
+        },
+        "require": {
+          "default": "./dist/retrier.cjs",
+          "types": "./dist/retrier.d.cts"
+        }
+      },
+      "files": [
+        "dist"
+      ],
+      "funding": {
+        "type": "github",
+        "url": "https://github.com/sponsors/nzakas"
+      },
+      "gitHooks": {
+        "pre-commit": "lint-staged"
+      },
+      "keywords": [
+        "nodejs",
+        "retry",
+        "async",
+        "promises"
+      ],
+      "license": "Apache-2.0",
+      "lint-staged": {
+        "*.js": [
+          "eslint --fix"
+        ]
+      },
+      "main": "dist/retrier.cjs",
+      "module": "dist/retrier.js",
+      "name": "@humanwhocodes/retry",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/humanwhocodes/retry.git"
+      },
+      "scripts": {
+        "build": "rollup -c && tsc && npm run build:cts-types",
+        "build:cts-types": "node -e \"fs.copyFileSync('dist/retrier.d.ts', 'dist/retrier.d.cts')\"",
+        "lint": "eslint src/ tests/",
+        "prepare": "npm run build",
+        "pretest": "npm run build",
+        "test": "npm run test:unit && npm run test:build",
+        "test:build": "node tests/pkg.test.cjs && node tests/pkg.test.mjs",
+        "test:emfile": "node tools/check-emfile-handling.js",
+        "test:jsr": "npx jsr@latest publish --dry-run",
+        "test:unit": "mocha tests/retrier.test.js"
+      },
+      "type": "module",
+      "types": "dist/retrier.d.ts",
+      "version": "0.4.3"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 11398,
+      "sha256": "7774adde8013a91e5502d550f071ab61b1077ce5cc3c4933fb853bba55a02280"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

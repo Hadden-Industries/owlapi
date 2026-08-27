@@ -1,0 +1,145 @@
+{
+  "artifactId": "bfcc393adc398aed8026e6dfd264da0f35a7108f765e97500a712a5eaefed087",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 11552,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "3749709146345fa15546aaba4e3ab1b3b92a4d930077b5bc32d90815cb63afaf",
+        "size": 760,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d2378a8edf9eee5fe7cd8ef386e74448032a9c517b53a7a14f61d603c936a36c",
+        "size": 20405,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "263feacb5262ab2932638958f593cfab6f9085c78a27847ac5e6c57437351fe2",
+        "size": 16057,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "5c18917c39afce09b6ebdfd212c736c390d74d1a72db8bd1561117f949669252",
+        "size": 1538,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 760,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/37/3749709146345fa15546aaba4e3ab1b3b92a4d930077b5bc32d90815cb63afaf",
+          "sha256": "3749709146345fa15546aaba4e3ab1b3b92a4d930077b5bc32d90815cb63afaf"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "3749709146345fa15546aaba4e3ab1b3b92a4d930077b5bc32d90815cb63afaf",
+        "size": 760
+      },
+      {
+        "blob": {
+          "bytes": 20405,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d2/d2378a8edf9eee5fe7cd8ef386e74448032a9c517b53a7a14f61d603c936a36c",
+          "sha256": "d2378a8edf9eee5fe7cd8ef386e74448032a9c517b53a7a14f61d603c936a36c"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "d2378a8edf9eee5fe7cd8ef386e74448032a9c517b53a7a14f61d603c936a36c",
+        "size": 20405
+      }
+    ],
+    "expandedBytes": 38760,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "ssri",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/ssri.git"
+      },
+      "version": "12.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "dependencies": {
+        "minipass": "^7.0.3"
+      },
+      "description": "Standard Subresource Integrity library -- parses, serializes, generates, and verifies integrity metadata according to the SRI spec.",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^5.0.0",
+        "@npmcli/template-oss": "4.23.3",
+        "tap": "^16.0.1"
+      },
+      "engines": {
+        "node": "^18.17.0 || >=20.5.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "keywords": [
+        "w3c",
+        "web",
+        "security",
+        "integrity",
+        "checksum",
+        "hashing",
+        "subresource integrity",
+        "sri",
+        "sri hash",
+        "sri string",
+        "sri generator",
+        "html"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "ssri",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/ssri.git"
+      },
+      "scripts": {
+        "coverage": "tap",
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "postrelease": "npm publish",
+        "posttest": "npm run lint",
+        "prerelease": "npm t",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "check-coverage": true,
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": "true",
+        "version": "4.23.3"
+      },
+      "version": "12.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 11552,
+      "sha256": "297827efbadb2fe81794ae8bdf4b29d5ab05e62bb0c9f49cdedd6304dfb2ada7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

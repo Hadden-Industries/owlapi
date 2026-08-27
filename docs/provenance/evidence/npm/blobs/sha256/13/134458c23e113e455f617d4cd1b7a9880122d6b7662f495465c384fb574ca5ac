@@ -1,0 +1,97 @@
+{
+  "artifactId": "f7b6bdcb773c6b633fa4811f21553a014ad60b49cee7b199a42e08374d2e3ba0",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1953,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "a255b85c1a510ecfe660c4d442ecdbc1e9d07f4b4d3d7f90443f7e5570591e0a",
+        "size": 1118,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "944ac66177fb5184eac21a41832441b8ab9e7dd443608e0e78dc5cf9d5f79970",
+        "size": 279,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "6e4f5d6d26baf194cf4bbb4d82110046ed6215205b412c57a7b5097dc1623eac",
+        "size": 2630,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "dd81e4703dc7005247e7c2dc056c67c936923a40b4dc9b266cf8acf3442ba89c",
+        "size": 471,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1118,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a2/a255b85c1a510ecfe660c4d442ecdbc1e9d07f4b4d3d7f90443f7e5570591e0a",
+          "sha256": "a255b85c1a510ecfe660c4d442ecdbc1e9d07f4b4d3d7f90443f7e5570591e0a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "a255b85c1a510ecfe660c4d442ecdbc1e9d07f4b4d3d7f90443f7e5570591e0a",
+        "size": 1118
+      },
+      {
+        "blob": {
+          "bytes": 279,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/94/944ac66177fb5184eac21a41832441b8ab9e7dd443608e0e78dc5cf9d5f79970",
+          "sha256": "944ac66177fb5184eac21a41832441b8ab9e7dd443608e0e78dc5cf9d5f79970"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "944ac66177fb5184eac21a41832441b8ab9e7dd443608e0e78dc5cf9d5f79970",
+        "size": 279
+      }
+    ],
+    "expandedBytes": 4498,
+    "packageIdentity": {
+      "author": "Mathias Buus (@mafintosh)",
+      "homepage": "https://github.com/mafintosh/mkdirp-classic",
+      "license": "MIT",
+      "name": "mkdirp-classic",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mafintosh/mkdirp-classic.git"
+      },
+      "version": "0.5.3"
+    },
+    "packageMetadata": {
+      "author": "Mathias Buus (@mafintosh)",
+      "bugs": {
+        "url": "https://github.com/mafintosh/mkdirp-classic/issues"
+      },
+      "dependencies": {},
+      "description": "Mirror of mkdirp 0.5.2",
+      "devDependencies": {},
+      "homepage": "https://github.com/mafintosh/mkdirp-classic",
+      "license": "MIT",
+      "main": "index.js",
+      "name": "mkdirp-classic",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mafintosh/mkdirp-classic.git"
+      },
+      "version": "0.5.3"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1953,
+      "sha256": "29bcb44df9b5cc4a5b4c3f44f16ec48c53389d2f3892c95c779e31a980075246"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

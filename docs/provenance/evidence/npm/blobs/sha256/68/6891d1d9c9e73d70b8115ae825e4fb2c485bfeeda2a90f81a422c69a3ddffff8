@@ -1,0 +1,193 @@
+{
+  "artifactId": "e885f78978841a6bd2e4f360ee6caadf32dad081baadf145f46e17723e5ad9e3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6528,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "6620e60fde4c888f80b519997a4c482d8c8059772eece811ff082d65db265cf4",
+        "size": 1482,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "66a5c5f52cba4706dc18451b6f74ae5972f2484535fbe52e60c9bab0f4f35930",
+        "size": 2964,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/cjs/index.cjs",
+        "sha256": "8d5b38ec6572132d3e8d0209c4ef27607eeded856dca7954a01e55d72e09dc4c",
+        "size": 9599,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/agentCompatibility-browser.js",
+        "sha256": "34ee674edaab79d82a40cc4595288f498773a3529da4e22b137a14d3209b7e56",
+        "size": 138,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/agentCompatibility.js",
+        "sha256": "76b93191b44017f46169270500ed6edeac6023635cb1772a5c33fd49b8fe34d3",
+        "size": 4692,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/deferred.js",
+        "sha256": "6597f44cdac63dc8006817ec02efcaa31ada05d90b75efa885e5d649833fecfb",
+        "size": 397,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/httpClient.js",
+        "sha256": "fd7c8ed2b9181320ceb8876423564fd5a3507ad90e27f395fce951a281a8f11d",
+        "size": 4433,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "e446b97999237ccc4daa44d7c87d7f7ec3ac774484c9d8881d15a923707301bc",
+        "size": 252,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "191c3e52ab37da11cda559b0753c3dcbd068bf2c0bbd37966773f5a1f246ff2e",
+        "size": 2872,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1482,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/66/6620e60fde4c888f80b519997a4c482d8c8059772eece811ff082d65db265cf4",
+          "sha256": "6620e60fde4c888f80b519997a4c482d8c8059772eece811ff082d65db265cf4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "6620e60fde4c888f80b519997a4c482d8c8059772eece811ff082d65db265cf4",
+        "size": 1482
+      }
+    ],
+    "expandedBytes": 26829,
+    "packageIdentity": {
+      "author": {
+        "email": "support@digitalbazaar.com",
+        "name": "Digital Bazaar, Inc.",
+        "url": "https://digitalbazaar.com/"
+      },
+      "homepage": "https://github.com/digitalbazaar/http-client",
+      "license": "BSD-3-Clause",
+      "name": "@digitalbazaar/http-client",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/digitalbazaar/http-client"
+      },
+      "version": "4.4.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "support@digitalbazaar.com",
+        "name": "Digital Bazaar, Inc.",
+        "url": "https://digitalbazaar.com/"
+      },
+      "browser": {
+        "./lib/agentCompatibility.js": "./lib/agentCompatibility-browser.js",
+        "./tests/utils.cjs": "./tests/utils-browser.cjs"
+      },
+      "bugs": {
+        "url": "https://github.com/digitalbazaar/http-client/issues"
+      },
+      "c8": {
+        "reporter": [
+          "lcov",
+          "text-summary",
+          "text"
+        ]
+      },
+      "dependencies": {
+        "ky": "^1.14.3",
+        "undici": "^6.28.0"
+      },
+      "description": "An opinionated, isomorphic HTTP client.",
+      "devDependencies": {
+        "@digitalbazaar/eslint-config": "^7.0.1",
+        "c8": "^10.1.3",
+        "chai": "^4.5.0",
+        "cors": "^2.8.6",
+        "cross-env": "^10.1.0",
+        "detect-node": "^2.1.0",
+        "eslint": "^9.39.5",
+        "express": "^5.2.1",
+        "karma": "^6.4.4",
+        "karma-chai": "^0.1.0",
+        "karma-chrome-launcher": "^3.2.0",
+        "karma-mocha": "^2.0.1",
+        "karma-mocha-reporter": "^2.2.5",
+        "karma-sourcemap-loader": "^0.4.0",
+        "karma-webpack": "^5.0.1",
+        "mocha": "^11.7.6",
+        "rimraf": "^6.1.3",
+        "rollup": "^4.62.3",
+        "webpack": "^5.109.2"
+      },
+      "engines": {
+        "node": ">=18.0"
+      },
+      "exports": {
+        "import": "./lib/index.js",
+        "require": "./dist/cjs/index.cjs"
+      },
+      "files": [
+        "lib/*",
+        "dist/*"
+      ],
+      "homepage": "https://github.com/digitalbazaar/http-client",
+      "keywords": [
+        "http",
+        "isomorphic",
+        "http client"
+      ],
+      "license": "BSD-3-Clause",
+      "main": "./dist/cjs/index.cjs",
+      "name": "@digitalbazaar/http-client",
+      "react-native": {
+        "./lib/agentCompatibility.js": "./lib/agentCompatibility-browser.js"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/digitalbazaar/http-client"
+      },
+      "scripts": {
+        "build": "npm run clear && npm run rollup",
+        "clear": "rimraf dist/ && mkdir dist",
+        "coverage": "cross-env NODE_ENV=test c8 npm run test-node",
+        "coverage-ci": "cross-env NODE_ENV=test c8 --reporter=lcovonly --reporter=text-summary --reporter=text npm run test-node",
+        "coverage-report": "c8 report",
+        "lint": "eslint",
+        "prepare": "npm run build",
+        "rebuild": "npm run clear && npm run build",
+        "rollup": "rollup -c rollup.config.js",
+        "test": "npm run test-node && npm run test-node-cjs",
+        "test-karma": "karma start karma.conf.cjs",
+        "test-node": "cross-env NODE_ENV=test mocha --preserve-symlinks -t 30000 -A -R ${REPORTER:-spec} --require tests/test-mocha.js tests/*.spec.js",
+        "test-node-cjs": "cross-env NODE_ENV=test mocha --preserve-symlinks -t 30000 -A -R ${REPORTER:-spec} --require tests/test-mocha.cjs tests/*.spec.cjs",
+        "test-watch": "cross-env NODE_ENV=test mocha --watch --parallel --preserve-symlinks -t 30000 -A -R ${REPORTER:-spec} --require tests/test-mocha.js tests/*.spec.js"
+      },
+      "type": "module",
+      "version": "4.4.0"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 6528,
+      "sha256": "6bccab96e7ee7b2dd6d85e5d6b41da11eb04a91b180e9a3e6cca7e06ce74f01f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

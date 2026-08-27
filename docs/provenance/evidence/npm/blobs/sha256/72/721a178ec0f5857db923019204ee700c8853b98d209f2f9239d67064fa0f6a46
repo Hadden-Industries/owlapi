@@ -1,0 +1,96 @@
+{
+  "artifactId": "65c6f2270c33078f47b99b899494964aa19bdd29983c4277c25ab03dd054a1fd",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2226,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "cafe18aeaf5d10a590bc8ffdcfb2f4e6120438a2364964aba4d8968693124984",
+        "size": 59,
+        "type": "FILE"
+      },
+      {
+        "path": "package/chownr.js",
+        "sha256": "529b285703d29b8ab31ead64bd1f64146bac12147cc09ceb4b25f0db87a12c96",
+        "size": 4275,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7c18e85ac9eff99dc6cb6c5626e11ebea658e69119e0bc8cb4bd799c2b48125a",
+        "size": 610,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 5709,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "homepage": null,
+      "license": "ISC",
+      "name": "chownr",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/isaacs/chownr.git"
+      },
+      "version": "1.1.4"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "description": "like `chown -R`",
+      "devDependencies": {
+        "mkdirp": "0.3",
+        "rimraf": "^2.7.1",
+        "tap": "^14.10.6"
+      },
+      "files": [
+        "chownr.js"
+      ],
+      "license": "ISC",
+      "main": "chownr.js",
+      "name": "chownr",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/isaacs/chownr.git"
+      },
+      "scripts": {
+        "postversion": "npm publish",
+        "prepublishOnly": "git push origin --follow-tags",
+        "preversion": "npm test",
+        "test": "tap"
+      },
+      "tap": {
+        "check-coverage": true
+      },
+      "version": "1.1.4"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 2226,
+      "sha256": "72863e05d34d031def689cbc3609aff0443fab0c64e0e6e81bf86d885d59833e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

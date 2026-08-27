@@ -1,0 +1,752 @@
+{
+  "artifactId": "d8fe9dbc1d8e90fdc0d1c60562f91b38eca2ab125be479b341f5d7aaecfa04ba",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 4,
+      "digestVerifiedFileCount": 4,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 4
+    },
+    "artifactId": "d8fe9dbc1d8e90fdc0d1c60562f91b38eca2ab125be479b341f5d7aaecfa04ba",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "4.14.1",
+        "for_package_purl": "pkg:npm/write-file-atomic@5.0.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40npmcli/template-oss",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.1.4",
+        "for_package_purl": "pkg:npm/write-file-atomic@5.0.1",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/imurmurhash",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^16.0.1",
+        "for_package_purl": "pkg:npm/write-file-atomic@5.0.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/tap",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.0.0",
+        "for_package_purl": "pkg:npm/write-file-atomic@5.0.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40npmcli/eslint-config",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.0.1",
+        "for_package_purl": "pkg:npm/write-file-atomic@5.0.1",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/signal-exit",
+        "resolved_package": {},
+        "scope": "dependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "GitHub Inc",
+            "end_line": 23,
+            "start_line": 23
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "isc",
+        "detected_license_expression_spdx": "ISC",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/write-file-atomic@5.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "isc-8444467e-911b-70d7-8f49-a86dcf33ac8f",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "matches": [
+              {
+                "end_line": 24,
+                "from_file": "d8fe9dbc1d8e90fdc0d1c60562f91b38eca2ab125be479b341f5d7aaecfa04ba/package/package.json",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"ISC\",",
+                "matcher": "2-aho",
+                "rule_identifier": "isc_38.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_38.RULE",
+                "score": 100,
+                "start_line": 24
+              }
+            ]
+          }
+        ],
+        "md5": "ee1483630e0faf99e6d07a0e7a419046",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/write-file-atomic/5.0.1",
+            "bug_tracking_url": "https://github.com/npm/write-file-atomic/issues",
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "isc",
+            "declared_license_expression_spdx": "ISC",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "4.14.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40npmcli/template-oss",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.1.4",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/imurmurhash",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^16.0.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/tap",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40npmcli/eslint-config",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.0.1",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/signal-exit",
+                "resolved_package": {},
+                "scope": "dependencies"
+              }
+            ],
+            "description": "Write files in an atomic fashion w/configurable ownership",
+            "download_url": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-5.0.1.tgz",
+            "extra_data": {
+              "engines": {
+                "node": "^14.17.0 || ^16.13.0 || >=18.0.0"
+              }
+            },
+            "extracted_license_statement": "- ISC\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://github.com/npm/write-file-atomic",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "atomic",
+              "writeFile"
+            ],
+            "license_detections": [
+              {
+                "identifier": "isc-6c4320cc-eb5b-3792-8c56-b8565fff1119",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "d8fe9dbc1d8e90fdc0d1c60562f91b38eca2ab125be479b341f5d7aaecfa04ba/package/package.json",
+                    "license_expression": "isc",
+                    "license_expression_spdx": "ISC",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "ISC",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "write-file-atomic",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": null,
+                "name": "GitHub Inc.",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/write-file-atomic@5.0.1",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-5.0.1.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/write-file-atomic",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/npm/write-file-atomic.git",
+            "version": "5.0.1"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 1.25,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "f63bd8648b29f236b284a47575c39e485d31dd51",
+        "sha1_git": "54d58d7eeb984d683df9e4a2c75dd06d1a4e279c",
+        "sha256": "95fdab5aecffa4b17cb5969185027d95787d92a332b3b1e429b7841d98f569bd",
+        "size": 1362,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2015, Rebecca Turner",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "isc",
+        "detected_license_expression_spdx": "ISC",
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/write-file-atomic@5.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Rebecca Turner",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "isc-58175475-cc81-cb6a-8921-4daa3f26b3e8",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "matches": [
+              {
+                "end_line": 5,
+                "from_file": "d8fe9dbc1d8e90fdc0d1c60562f91b38eca2ab125be479b341f5d7aaecfa04ba/package/LICENSE.md",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 112,
+                "matched_text": "Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "isc.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "68705ba56afdf6710c9187ed9a9cdd03",
+        "name": "LICENSE.md",
+        "package_data": [],
+        "path": "package/LICENSE.md",
+        "percentage_of_license_text": 95.73,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "0ba6dbc8adaacd7fc37822316c56d92036a952ad",
+        "sha1_git": "95e65a7706e0e9702fa110e3e59fcf001cda2daa",
+        "sha256": "ea7f376fe7a1fc28572b83ac8f806d92effb31852b9981bc9ba9d5266caa6b28",
+        "size": 734,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/write-file-atomic@5.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "8e8ad012fec8302c152bf969ed3938ac",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "a620b5d8bf917f548bf111975d88db17581f707d",
+        "sha1_git": "2d9ef6024559fb8b1c57e359120dd38416111244",
+        "sha256": "d0727025b629e8fed711a826cb28df7d6ead6ff1274faccb9ed6c6bcd244a712",
+        "size": 3309,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/write-file-atomic@5.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "3ef40edb254c2fbbd3a30f5974e4b083",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/lib/index.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "c3932bd09855dda641afaff5546c27debea068a3",
+        "sha1_git": "6013894cd1f4fc0d87d4b1979d8d60c15adf3a98",
+        "sha256": "50ee058cef60c7cf037ba09c9d03a8025cf62ce0c09a8ec66ae2bb2a91591915",
+        "size": 6750,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "isc-58175475-cc81-cb6a-8921-4daa3f26b3e8",
+        "license_expression": "isc",
+        "license_expression_spdx": "ISC",
+        "reference_matches": [
+          {
+            "end_line": 5,
+            "from_file": "d8fe9dbc1d8e90fdc0d1c60562f91b38eca2ab125be479b341f5d7aaecfa04ba/package/LICENSE.md",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 112,
+            "matched_text": "Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "isc.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+            "score": 100,
+            "start_line": 3
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "isc-6c4320cc-eb5b-3792-8c56-b8565fff1119",
+        "license_expression": "isc",
+        "license_expression_spdx": "ISC",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "d8fe9dbc1d8e90fdc0d1c60562f91b38eca2ab125be479b341f5d7aaecfa04ba/package/package.json",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "ISC",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "isc-8444467e-911b-70d7-8f49-a86dcf33ac8f",
+        "license_expression": "isc",
+        "license_expression_spdx": "ISC",
+        "reference_matches": [
+          {
+            "end_line": 24,
+            "from_file": "d8fe9dbc1d8e90fdc0d1c60562f91b38eca2ab125be479b341f5d7aaecfa04ba/package/package.json",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "  \"license\": \"ISC\",",
+            "matcher": "2-aho",
+            "rule_identifier": "isc_38.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_38.RULE",
+            "score": 100,
+            "start_line": 24
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "https://www.isc.org/licenses/",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "isc",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/isc",
+        "minimum_coverage": 0,
+        "name": "ISC License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://opensource.org/licenses/isc-license.txt",
+        "other_spdx_license_keys": [],
+        "other_urls": [
+          "http://openbsd.wikia.com/wiki/OpenBSD%27s_BSD_license",
+          "http://www.isc.org/software/license",
+          "http://www.opensource.org/licenses/ISC",
+          "https://opensource.org/licenses/ISC",
+          "https://www.isc.org/downloads/software-support-policy/isc-license/",
+          "https://www.isc.org/isc-license-1.0.html",
+          "https://www.isc.org/software/license"
+        ],
+        "owner": "ISC - Internet Systems Consortium",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+        "short_name": "ISC License",
+        "spdx_license_key": "ISC",
+        "spdx_url": "https://spdx.org/licenses/ISC",
+        "standard_notice": null,
+        "text": "Permission to use, copy, modify, and/or distribute this software for any purpose\nwith or without fee is hereby granted, provided that the above copyright notice\nand this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH\nREGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND\nFITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS\nOF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER\nTORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF\nTHIS SOFTWARE.",
+        "text_urls": [
+          "http://fedoraproject.org/wiki/Licensing:MIT#Old_Style_with_legal_disclaimer_2",
+          "http://openbsd.wikia.com/wiki/OpenBSD%27s_BSD_license",
+          "http://opensource.org/licenses/isc-license.txt",
+          "https://www.isc.org/software/license"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "isc.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 112,
+        "license_expression": "isc",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission to use, copy, modify, and/or distribute this software for any purpose\nwith or without fee is hereby granted, provided that the above copyright notice\nand this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH\nREGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND\nFITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS\nOF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER\nTORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF\nTHIS SOFTWARE."
+      },
+      {
+        "identifier": "isc_38.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "isc",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_38.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "\"license\": \"ISC\","
+      },
+      {
+        "identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "isc",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "ISC"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/write-file-atomic/5.0.1",
+        "bug_tracking_url": "https://github.com/npm/write-file-atomic/issues",
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "isc",
+        "declared_license_expression_spdx": "ISC",
+        "description": "Write files in an atomic fashion w/configurable ownership",
+        "download_url": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-5.0.1.tgz",
+        "extra_data": {
+          "engines": {
+            "node": "^14.17.0 || ^16.13.0 || >=18.0.0"
+          }
+        },
+        "extracted_license_statement": "- ISC\n",
+        "holder": null,
+        "homepage_url": "https://github.com/npm/write-file-atomic",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "atomic",
+          "writeFile"
+        ],
+        "license_detections": [
+          {
+            "identifier": "isc-6c4320cc-eb5b-3792-8c56-b8565fff1119",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "d8fe9dbc1d8e90fdc0d1c60562f91b38eca2ab125be479b341f5d7aaecfa04ba/package/package.json",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "ISC",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "write-file-atomic",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": null,
+            "name": "GitHub Inc.",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/write-file-atomic@5.0.1",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-5.0.1.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/write-file-atomic",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/npm/write-file-atomic.git",
+        "version": "5.0.1"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

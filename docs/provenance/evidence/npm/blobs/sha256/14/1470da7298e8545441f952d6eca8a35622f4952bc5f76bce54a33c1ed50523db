@@ -1,0 +1,122 @@
+{
+  "artifactId": "0bf3e74a5e4cfb7970a89c0a514e750d8b118f62f03f3050ba5671e575f3f39d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3756,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.npmignore",
+        "sha256": "ca06e7ce01ccdd1f477910e1cd1339c23119ecf2386350b8ad876983e1da92ea",
+        "size": 23,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ab12ff031a831156ebd4f4253c2e8047d37547fb95fde416be524c8b8cfe4c74",
+        "size": 1395,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "7af7a68708317ab2b8743b44591d98ca6f5ca787e89e7c289154471fd2f67331",
+        "size": 1192,
+        "type": "FILE"
+      },
+      {
+        "path": "package/mode.js",
+        "sha256": "0381513485dd6d0799b160a5c0bf7b4a79d1ece5c32182de44aa73f756a7ac54",
+        "size": 909,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "395c2af9abeeaafe7391974c1eacfb2a2bdeef187f21c3f5582c49e0368e59bf",
+        "size": 786,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/basic.js",
+        "sha256": "7fa5ce613b782cb924483bccd775a56f129b9b381df4d346a9c951a789b31a90",
+        "size": 4996,
+        "type": "FILE"
+      },
+      {
+        "path": "package/windows.js",
+        "sha256": "b422b8fbb7815542dfbd1b3adaec5700249a1934c44a1d994654329c06fc1018",
+        "size": 890,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 10956,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "homepage": "https://github.com/isaacs/isexe#readme",
+      "license": "ISC",
+      "name": "isexe",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/isexe.git"
+      },
+      "version": "2.0.0"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "bugs": {
+        "url": "https://github.com/isaacs/isexe/issues"
+      },
+      "description": "Minimal module to check if a file is executable.",
+      "devDependencies": {
+        "mkdirp": "^0.5.1",
+        "rimraf": "^2.5.0",
+        "tap": "^10.3.0"
+      },
+      "directories": {
+        "test": "test"
+      },
+      "homepage": "https://github.com/isaacs/isexe#readme",
+      "keywords": [],
+      "license": "ISC",
+      "main": "index.js",
+      "name": "isexe",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/isexe.git"
+      },
+      "scripts": {
+        "postpublish": "git push origin --all; git push origin --tags",
+        "postversion": "npm publish",
+        "preversion": "npm test",
+        "test": "tap test/*.js --100"
+      },
+      "version": "2.0.0"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 3756,
+      "sha256": "47cfe872e088e28c53b736fef305324b57cc1cfc9f72a9b0f769f92731cb8359"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

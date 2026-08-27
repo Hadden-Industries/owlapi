@@ -1,0 +1,106 @@
+{
+  "artifactId": "b733ccc36e3929b3ee9942165860470fb3003166995f3f37515430f5a0746163",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9154,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "8df38d08dca8dd732cc62b76a90973c4a236c2a6aafb404447ab457f277f29a6",
+        "size": 339,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "9d6e498b351fbc1333afe2ccc95458f6e5941dec675e15aef78feb915f9d4307",
+        "size": 10732,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "97585c7066913aed99ef489ef8ac83ee85fae2a05b134b251cdc8bf79de6d704",
+        "size": 30263,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "db3dc19e66e98de4d12d83e03a83e616a561d2f687041bce5fc0b1780d8f221c",
+        "size": 852,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 43292,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-replace-supers",
+      "license": "MIT",
+      "name": "@babel/helper-replace-supers",
+      "repository": {
+        "directory": "packages/babel-helper-replace-supers",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/helper-member-expression-to-functions": "^7.29.7",
+        "@babel/helper-optimise-call-expression": "^7.29.7",
+        "@babel/traverse": "^7.29.7"
+      },
+      "description": "Helper function to replace supers",
+      "devDependencies": {
+        "@babel/core": "^7.29.7"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-replace-supers",
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/helper-replace-supers",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-helper-replace-supers",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 9154,
+      "sha256": "cd070ae564316796df48ff2476ce0448b87dd9d682a17197e60b706ebee5f1aa"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

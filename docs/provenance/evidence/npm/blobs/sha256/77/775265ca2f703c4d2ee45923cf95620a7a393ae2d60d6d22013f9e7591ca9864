@@ -1,0 +1,155 @@
+{
+  "artifactId": "4d9f0fadf25a10439262877846479ad268bdf1d702c36d9589b2eb38eeb6a368",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5630,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "553d4d20029a24e315b428a1a54a9e109eaa340f2e958a4f50a92362c2c4070b",
+        "size": 1177,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "82d293bdedc3a666bb9631fdb752d237cc681855d31d63e258021d2ff2ad5a02",
+        "size": 5330,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "55a4073302ef1e581a74027daa054d53ab8a1b8a0c42551e0b50699a6c0de254",
+        "size": 2516,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/accept.js",
+        "sha256": "160d139207a12ebb6e1051d8e6600efac13c84314b30992dc0be091d0c36ccfb",
+        "size": 969,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/charset.js",
+        "sha256": "3ddc456f69fa4d8c911ec3953d77f1b80686f1c18686e28f6ea724f1e51dae1b",
+        "size": 2713,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/encoding.js",
+        "sha256": "d42e909e2bdef8d9e1386546b72428fb6e26a1743ca0d24f004ff15bbf82587b",
+        "size": 3794,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/language.js",
+        "sha256": "f23a3876355965202d16ca9a655462ffeeb7b9ecd6a4dcf523ab67f82230b9ac",
+        "size": 3240,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/mediaType.js",
+        "sha256": "b50ecadd7e030f0e024c875ac5a4a97ea62079856ed43309ba4fececf257e045",
+        "size": 3436,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "2bc164db19aca1e7af967b7211f7d728940f48ff22d56aa75be587f3bb13ee56",
+        "size": 1232,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1177,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/55/553d4d20029a24e315b428a1a54a9e109eaa340f2e958a4f50a92362c2c4070b",
+          "sha256": "553d4d20029a24e315b428a1a54a9e109eaa340f2e958a4f50a92362c2c4070b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "553d4d20029a24e315b428a1a54a9e109eaa340f2e958a4f50a92362c2c4070b",
+        "size": 1177
+      },
+      {
+        "blob": {
+          "bytes": 5330,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/82/82d293bdedc3a666bb9631fdb752d237cc681855d31d63e258021d2ff2ad5a02",
+          "sha256": "82d293bdedc3a666bb9631fdb752d237cc681855d31d63e258021d2ff2ad5a02"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "82d293bdedc3a666bb9631fdb752d237cc681855d31d63e258021d2ff2ad5a02",
+        "size": 5330
+      }
+    ],
+    "expandedBytes": 24407,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "negotiator",
+      "repository": "jshttp/negotiator",
+      "version": "1.1.0"
+    },
+    "packageMetadata": {
+      "contributors": [
+        "Douglas Christopher Wilson <doug@somethingdoug.com>",
+        "Federico Romero <federico.romero@outboxlabs.com>",
+        "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)"
+      ],
+      "dependencies": {
+        "content-type": "^2.1.0"
+      },
+      "description": "HTTP content negotiation",
+      "devDependencies": {
+        "eslint": "7.32.0",
+        "eslint-plugin-markdown": "2.2.1",
+        "mocha": "^11.7.0",
+        "nyc": "^17.1.0",
+        "vitest": "3.2.4"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "files": [
+        "lib/",
+        "index.js"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/express"
+      },
+      "keywords": [
+        "http",
+        "content negotiation",
+        "accept",
+        "accept-language",
+        "accept-encoding",
+        "accept-charset"
+      ],
+      "license": "MIT",
+      "name": "negotiator",
+      "repository": "jshttp/negotiator",
+      "scripts": {
+        "bench": "vitest bench",
+        "lint": "eslint .",
+        "test": "mocha --reporter spec --check-leaks test/",
+        "test-ci": "nyc --reporter=lcovonly --reporter=text npm test",
+        "test-cov": "nyc --reporter=html --reporter=text npm test",
+        "test:debug": "mocha --reporter spec --check-leaks --inspect --inspect-brk test/"
+      },
+      "version": "1.1.0"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 5630,
+      "sha256": "04ada283b29ea69189a5eac97fa3815f20480255fa4667258366c31e1d92ced4"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

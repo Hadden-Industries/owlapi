@@ -1,0 +1,238 @@
+{
+  "artifactId": "5d801139daded14d49b1750b382a5d9194b25692d813deb593bea30aa2ae1b59",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 19625,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "f0fcba18e7d0bc4c22f58a33566f27a0f26184d4e02827371a0ed84ea56a26e9",
+        "size": 1123,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "9bd464a121b0c109a11e56679fbe43d2722117ca6d2e7025b7625ee704c4d9d5",
+        "size": 3428,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/nearley-railroad.js",
+        "sha256": "6f9d83994539b2b8f0dced456285464b8719489b05f2e6ec8d798d2f0e691445",
+        "size": 4015,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/nearley-test.js",
+        "sha256": "d6568497c06ca6df95254241dca33f12411e4835f5a21d01241a5474349cc36e",
+        "size": 2408,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/nearley-unparse.js",
+        "sha256": "ab4d5a870ad82997043659e3421ac745aaac7c2421dd7ff3ae47f54e68b9cc44",
+        "size": 1249,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/nearleyc.js",
+        "sha256": "c86f8c50b122449e83548cb1128d00ed267c12deeda0b427efd1a1bb0b8cd448",
+        "size": 1368,
+        "type": "FILE"
+      },
+      {
+        "path": "package/builtin/cow.ne",
+        "sha256": "47f0d5eb1acf4dd5739e1b0bc414698dad397e5500ff95b68f9ede2d9c3b2b7b",
+        "size": 37,
+        "type": "FILE"
+      },
+      {
+        "path": "package/builtin/number.ne",
+        "sha256": "9325173fc092d94663a8960e7b235281b19dc78530539e9dba4df37ce13180e8",
+        "size": 1085,
+        "type": "FILE"
+      },
+      {
+        "path": "package/builtin/postprocessors.ne",
+        "sha256": "fb9576f250330d0efa508470eedfc6053695d26a2706544f75add04b50cb470e",
+        "size": 770,
+        "type": "FILE"
+      },
+      {
+        "path": "package/builtin/string.ne",
+        "sha256": "2aaab7bcf1cd829c87a0f123497ffc496bea3a84176030e505fece3e693a5d63",
+        "size": 751,
+        "type": "FILE"
+      },
+      {
+        "path": "package/builtin/whitespace.ne",
+        "sha256": "592168aecfabac6ddf64e3d55e6173d5029c63c21ee243a5b546316dd0e9c489",
+        "size": 178,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/compile.js",
+        "sha256": "6bb2e027e53daf19a473ac3a04fb70348a03a2c287854ba49b023e3aded69a1f",
+        "size": 10537,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/generate.js",
+        "sha256": "ca24841b3a4b5335ab6ffbff8af5e23b90655f3870de42ddbc8e4872f3676c7b",
+        "size": 9322,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/lint.js",
+        "sha256": "4a848dd2afb15f1af0426dfae3cad8f093507d2556128fbadaa249ea0ebbe3fa",
+        "size": 699,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/nearley-language-bootstrapped.js",
+        "sha256": "f8e35be4146e473b43fad9c04867c1225652a140ed825218256e14128e69f09a",
+        "size": 7418,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/nearley-language-bootstrapped.ne",
+        "sha256": "c1a4b8e04b0e20c8619fa655f83e82da58a24dd469141ba3ad3897b8f5a06ade",
+        "size": 4142,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/nearley.js",
+        "sha256": "17a3b68b8888291ee265ccf7d155d942fb404341f3567b370ae06134ec79e407",
+        "size": 20116,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/stream.js",
+        "sha256": "0f8537ca217abd5fc68c32454ebd9c2dd4a77b995765428a23310cff59766cdd",
+        "size": 385,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/unparse.js",
+        "sha256": "f3a614122859fdc5a2f2640ee47c2250574e9ce3172e96e442a123006c72fbb5",
+        "size": 5037,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4e7c035229a9fa1140a1b9da61f6b298faf7c53d307c69f0089fdb5bca131c36",
+        "size": 1745,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1123,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/f0/f0fcba18e7d0bc4c22f58a33566f27a0f26184d4e02827371a0ed84ea56a26e9",
+          "sha256": "f0fcba18e7d0bc4c22f58a33566f27a0f26184d4e02827371a0ed84ea56a26e9"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.txt",
+        "sha256": "f0fcba18e7d0bc4c22f58a33566f27a0f26184d4e02827371a0ed84ea56a26e9",
+        "size": 1123
+      },
+      {
+        "blob": {
+          "bytes": 3428,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9b/9bd464a121b0c109a11e56679fbe43d2722117ca6d2e7025b7625ee704c4d9d5",
+          "sha256": "9bd464a121b0c109a11e56679fbe43d2722117ca6d2e7025b7625ee704c4d9d5"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "9bd464a121b0c109a11e56679fbe43d2722117ca6d2e7025b7625ee704c4d9d5",
+        "size": 3428
+      }
+    ],
+    "expandedBytes": 75813,
+    "packageIdentity": {
+      "author": "Hardmath123",
+      "homepage": null,
+      "license": "MIT",
+      "name": "nearley",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/hardmath123/nearley.git"
+      },
+      "version": "2.20.1"
+    },
+    "packageMetadata": {
+      "author": "Hardmath123",
+      "bin": {
+        "nearley-railroad": "bin/nearley-railroad.js",
+        "nearley-test": "bin/nearley-test.js",
+        "nearley-unparse": "bin/nearley-unparse.js",
+        "nearleyc": "bin/nearleyc.js"
+      },
+      "contributors": "https://github.com/Hardmath123/nearley/graphs/contributors",
+      "dependencies": {
+        "commander": "^2.19.0",
+        "moo": "^0.5.0",
+        "railroad-diagrams": "^1.0.0",
+        "randexp": "0.4.6"
+      },
+      "description": "Simple, fast, powerful parser toolkit for JavaScript.",
+      "devDependencies": {
+        "@types/moo": "^0.3.0",
+        "@types/node": "^7.0.27",
+        "babel-cli": "^6.18.0",
+        "babel-preset-env": "^1.6.0",
+        "benchr": "^3.2.0",
+        "coffee-script": "^1.10.0",
+        "doctoc": "^1.3.0",
+        "expect": "^1.20.2",
+        "microtime": "^2.1.2",
+        "mocha": "^8.2.1",
+        "typescript": "^2.6.1"
+      },
+      "files": [
+        "bin/",
+        "lib/",
+        "builtin/"
+      ],
+      "funding": {
+        "type": "individual",
+        "url": "https://nearley.js.org/#give-to-nearley"
+      },
+      "keywords": [
+        "parser",
+        "parse",
+        "generator",
+        "compiler",
+        "compile",
+        "grammar",
+        "language"
+      ],
+      "license": "MIT",
+      "main": "lib/nearley.js",
+      "name": "nearley",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/hardmath123/nearley.git"
+      },
+      "scripts": {
+        "benchmark": "benchr test/benchmark.js",
+        "bootstrap": "mocha test/bootstrap.test.js && bin/nearleyc.js lib/nearley-language-bootstrapped.ne > tmp && mv tmp lib/nearley-language-bootstrapped.js && echo bootstrapped ok",
+        "doctoc": "doctoc --notitle README.md",
+        "profile": "bin/nearleyc.js test/grammars/parens.ne > test/grammars/parens.js && node test/profile.js",
+        "test": "mocha test/*.test.js"
+      },
+      "version": "2.20.1"
+    },
+    "physicalEntryCount": 20,
+    "tarball": {
+      "bytes": 19625,
+      "sha256": "e81c548b679ef33375709b92be78175139bbebc866c8a9eeb2e34eede953ee9e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

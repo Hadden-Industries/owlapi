@@ -1,0 +1,234 @@
+{
+  "artifactId": "1de7ed56df67f5a3b7bf8540efb84f8d00055a871048f3fdae51c57e0b9ff6bc",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7692,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4fd5a00dd96519f5015d7a749a8683d66d3b520deb84197c1debb0579c5dd749",
+        "size": 1084,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "9a1a7a679cd251227149ae8331b50a64dcc002edf5a4e2aa64cff0f49879f8fd",
+        "size": 6956,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/bin/cross-env-shell.d.ts",
+        "sha256": "43e818adf60173644896298637f47b01d5819b17eda46eaa32d0c7d64724d012",
+        "size": 31,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/bin/cross-env-shell.js",
+        "sha256": "6cef8c8cf054154432f9598bda470354c0e5dc815e0df9d2f67e8ac3a91c363c",
+        "size": 110,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/bin/cross-env.d.ts",
+        "sha256": "43e818adf60173644896298637f47b01d5819b17eda46eaa32d0c7d64724d012",
+        "size": 31,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/bin/cross-env.js",
+        "sha256": "a5ce61604403f6fc106b5afbc8bcade300dd7a7c6178ffa2186d41397f138951",
+        "size": 93,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/command.d.ts",
+        "sha256": "674f630488ee12e2c85933ec21ee23f7243c66df98b7f9a93718abe9aa67303e",
+        "size": 427,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/command.js",
+        "sha256": "5b79a45fffddeace042b7fa5cf5c35b8b0d0cbc33d943b58743c1572b195380a",
+        "size": 1994,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "f811255c663cc925d32a2ce610fada13ef4fbda35da6bd2345bc5c6cca184c5f",
+        "size": 245,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "9330a9c708c15a45dab11521435a611ea5830fa0db4b095be119c77c2251beda",
+        "size": 3584,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/is-windows.d.ts",
+        "sha256": "4a08d2481bb9513f8de306bbe74f62e530b23a9a33a4058ea67d48a3bd8e66f1",
+        "size": 159,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/is-windows.js",
+        "sha256": "9b2df57ecef8ef21723bdd56a158eca8aace06c4b761b7d07101400983f71ff3",
+        "size": 248,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/variable.d.ts",
+        "sha256": "ce36916c01e4f1ed08685c82c0029b1d1599b84e61d21fcc03cc0da55ebd5cce",
+        "size": 326,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/variable.js",
+        "sha256": "d91dab82c34ad38ed0f51dae09a8f64c637aff38c7017e2027753b05c47f6dff",
+        "size": 2462,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9713a4eb2d553643a8df26ca9c5f6ae9773cf68446da77cc59db77682ca4dd35",
+        "size": 2483,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1084,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4f/4fd5a00dd96519f5015d7a749a8683d66d3b520deb84197c1debb0579c5dd749",
+          "sha256": "4fd5a00dd96519f5015d7a749a8683d66d3b520deb84197c1debb0579c5dd749"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4fd5a00dd96519f5015d7a749a8683d66d3b520deb84197c1debb0579c5dd749",
+        "size": 1084
+      },
+      {
+        "blob": {
+          "bytes": 6956,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9a/9a1a7a679cd251227149ae8331b50a64dcc002edf5a4e2aa64cff0f49879f8fd",
+          "sha256": "9a1a7a679cd251227149ae8331b50a64dcc002edf5a4e2aa64cff0f49879f8fd"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "9a1a7a679cd251227149ae8331b50a64dcc002edf5a4e2aa64cff0f49879f8fd",
+        "size": 6956
+      }
+    ],
+    "expandedBytes": 20233,
+    "packageIdentity": {
+      "author": "Kent C. Dodds <me@kentcdodds.com> (https://kentcdodds.com)",
+      "homepage": "https://github.com/kentcdodds/cross-env#readme",
+      "license": "MIT",
+      "name": "cross-env",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/kentcdodds/cross-env.git"
+      },
+      "version": "10.1.0"
+    },
+    "packageMetadata": {
+      "author": "Kent C. Dodds <me@kentcdodds.com> (https://kentcdodds.com)",
+      "bin": {
+        "cross-env": "./dist/bin/cross-env.js",
+        "cross-env-shell": "./dist/bin/cross-env-shell.js"
+      },
+      "bugs": {
+        "url": "https://github.com/kentcdodds/cross-env/issues"
+      },
+      "dependencies": {
+        "@epic-web/invariant": "^1.0.0",
+        "cross-spawn": "^7.0.6"
+      },
+      "description": "Run scripts that set and use environment variables across platforms",
+      "devDependencies": {
+        "@epic-web/config": "^1.21.1",
+        "@types/cross-spawn": "^6.0.6",
+        "@types/node": "^24.1.0",
+        "@vitest/coverage-v8": "^3.2.4",
+        "@vitest/ui": "^3.2.4",
+        "eslint": "^9.32.0",
+        "prettier": "^3.6.2",
+        "typescript": "^5.8.3",
+        "vitest": "^3.2.4",
+        "zshy": "^0.3.0"
+      },
+      "engines": {
+        "node": ">=20"
+      },
+      "exports": {
+        ".": {
+          "import": "./dist/index.js",
+          "types": "./dist/index.d.ts"
+        },
+        "./bin/cross-env": {
+          "import": "./dist/bin/cross-env.js",
+          "types": "./dist/bin/cross-env.d.ts"
+        },
+        "./bin/cross-env-shell": {
+          "import": "./dist/bin/cross-env-shell.js",
+          "types": "./dist/bin/cross-env-shell.d.ts"
+        }
+      },
+      "files": [
+        "dist"
+      ],
+      "homepage": "https://github.com/kentcdodds/cross-env#readme",
+      "keywords": [
+        "cross-environment",
+        "environment variable",
+        "windows",
+        "cross-platform"
+      ],
+      "license": "MIT",
+      "main": "./dist/index.js",
+      "module": "./dist/index.js",
+      "name": "cross-env",
+      "prettier": "@epic-web/config/prettier",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/kentcdodds/cross-env.git"
+      },
+      "scripts": {
+        "build": "zshy",
+        "dev": "zshy --watch",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "test": "vitest",
+        "test:coverage": "vitest run --coverage",
+        "test:e2e": "node e2e/test-cross-env.js && node e2e/test-cross-env-shell.js && node e2e/test-default-values.js",
+        "test:run": "vitest run",
+        "test:ui": "vitest --ui",
+        "typecheck": "tsc --noEmit",
+        "validate": "npm run build && npm run typecheck && npm run lint && npm run format:check && npm run test:run"
+      },
+      "type": "module",
+      "types": "./dist/index.d.ts",
+      "version": "10.1.0",
+      "zshy": {
+        "cjs": false,
+        "exports": {
+          ".": "./src/index.ts",
+          "./bin/cross-env": "./src/bin/cross-env.ts",
+          "./bin/cross-env-shell": "./src/bin/cross-env-shell.ts"
+        }
+      }
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 7692,
+      "sha256": "f6fa0919bb0deb7d4f1727d7f8b7c402f7dc9fd387af732bdd602d76897a90d8"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

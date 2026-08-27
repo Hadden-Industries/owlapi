@@ -1,0 +1,168 @@
+{
+  "artifactId": "25dfc4362138b927ee4fc5227eaa04f0301d093f0fa1f5322774687f6334da59",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 18168,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "364a130d2ca340bd56eb1e6d045fc6929bb0f9d0aa018f2c1949b29517e1cdd0",
+        "size": 11351,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "e58b6190db936bd32c0afbd531a051a375c4bc28cf1864dbcc754d604dd82399",
+        "size": 3682,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/appdata.d.ts",
+        "sha256": "2cce880a4f8692688b50acca7845941ecc3a3ad151bfcffe61742b4c0b577715",
+        "size": 59,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/appdata.js",
+        "sha256": "78166a2b1f15e101d3514cd2f2dd5890deb25198002897ce2e071a2e3ef8e36e",
+        "size": 1726,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/client.d.ts",
+        "sha256": "c3ba24d481b98790bb3c23abe61d0acd377434aa1e41ecc7f8f82b5852e509b6",
+        "size": 626,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/client.js",
+        "sha256": "aa22c2566d352ba76503a79be356a0ad684b67c9f4c2a85dc50d01f9373046d9",
+        "size": 4690,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/error.d.ts",
+        "sha256": "630bc6e1d51e2dde9bbad9469971151ab0ee9553808f1b607e321850753189a2",
+        "size": 395,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/error.js",
+        "sha256": "68760a11e53001666cc71d0d1820d1531bf8bd0531964a202cab41f1196767ab",
+        "size": 359,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "be1a6c2e438e50d60dfd37d3a115c96bcd5b149f612d04c44efc9886396c28bb",
+        "size": 508,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "c19e0089a40d91ee5dfd279793cd8a515383f9c6e99dfb56c1113d0a5acdfc9c",
+        "size": 2259,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/target.d.ts",
+        "sha256": "acb63962dd17e4a436887201be4b5895cce098ac5b23e80e86a3db9d87ec9f75",
+        "size": 121,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/target.js",
+        "sha256": "789883a86c8c5c6a87e98ac259e61c0102c6fe30093f4f211190e17d40e31b9e",
+        "size": 2737,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d9744179103dd60c3c8d63caf6ecc3acfb1f8b040a0ae4e3adc790833a12ba59",
+        "size": 999,
+        "type": "FILE"
+      },
+      {
+        "path": "package/seeds.json",
+        "sha256": "24faf8050565d16e44691e501440c436cbae6bd3b93e9d4bdfae6a329f492d49",
+        "size": 19514,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11351,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/36/364a130d2ca340bd56eb1e6d045fc6929bb0f9d0aa018f2c1949b29517e1cdd0",
+          "sha256": "364a130d2ca340bd56eb1e6d045fc6929bb0f9d0aa018f2c1949b29517e1cdd0"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "364a130d2ca340bd56eb1e6d045fc6929bb0f9d0aa018f2c1949b29517e1cdd0",
+        "size": 11351
+      }
+    ],
+    "expandedBytes": 49026,
+    "packageIdentity": {
+      "author": "bdehamer@github.com",
+      "homepage": "https://github.com/sigstore/sigstore-js/tree/main/packages/tuf#readme",
+      "license": "Apache-2.0",
+      "name": "@sigstore/tuf",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sigstore/sigstore-js.git"
+      },
+      "version": "5.0.0"
+    },
+    "packageMetadata": {
+      "author": "bdehamer@github.com",
+      "bugs": {
+        "url": "https://github.com/sigstore/sigstore-js/issues"
+      },
+      "dependencies": {
+        "@sigstore/protobuf-specs": "^0.5.0",
+        "tuf-js": "^6.0.0"
+      },
+      "description": "Client for the Sigstore TUF repository",
+      "devDependencies": {
+        "@sigstore/jest": "^0.0.0",
+        "@tufjs/repo-mock": "^5.0.0",
+        "@types/make-fetch-happen": "^10.0.4"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "dist",
+        "seeds.json"
+      ],
+      "homepage": "https://github.com/sigstore/sigstore-js/tree/main/packages/tuf#readme",
+      "license": "Apache-2.0",
+      "main": "dist/index.js",
+      "name": "@sigstore/tuf",
+      "publishConfig": {
+        "provenance": true
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sigstore/sigstore-js.git"
+      },
+      "scripts": {
+        "build": "tsc --build",
+        "clean": "shx rm -rf dist *.tsbuildinfo",
+        "test": "jest"
+      },
+      "types": "dist/index.d.ts",
+      "version": "5.0.0"
+    },
+    "physicalEntryCount": 14,
+    "tarball": {
+      "bytes": 18168,
+      "sha256": "6f0b6678bf9e2ea0105e7e87116cdf5736f3b200382b85348a41cd3c63c3294b"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

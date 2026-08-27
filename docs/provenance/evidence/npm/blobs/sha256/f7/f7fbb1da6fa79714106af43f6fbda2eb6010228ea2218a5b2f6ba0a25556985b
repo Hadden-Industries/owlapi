@@ -1,0 +1,113 @@
+{
+  "artifactId": "c3ce8356f4acaefb39eac08054478796a4fc0fcf1bfb02f7e1ecb05e740c7851",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4110,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "dc32a0dee275e0a9aeffbc974dbf4899a30dcdc2e5ffa8934aecb69261065864",
+        "size": 742,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "8fccd88a2a9550b54bd06efea2c3ba10de709d920d1b4f2744f02836fb88b944",
+        "size": 7102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "2251aa02ae472e0174b94f37bcbf433f7f2decc77edb5c7b6c56a4a3d90f7c72",
+        "size": 3597,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7238052df3a59ae915652dd280efb74d5020ec4e414ec4f4d8356ae3325ab96a",
+        "size": 1142,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 742,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dc/dc32a0dee275e0a9aeffbc974dbf4899a30dcdc2e5ffa8934aecb69261065864",
+          "sha256": "dc32a0dee275e0a9aeffbc974dbf4899a30dcdc2e5ffa8934aecb69261065864"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "dc32a0dee275e0a9aeffbc974dbf4899a30dcdc2e5ffa8934aecb69261065864",
+        "size": 742
+      }
+    ],
+    "expandedBytes": 12583,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "proc-log",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/proc-log.git"
+      },
+      "version": "7.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "description": "just emit 'log' events on the process object",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^6.0.0",
+        "@npmcli/template-oss": "5.0.0",
+        "tap": "^16.0.1"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "proc-log",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/proc-log.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "postsnap": "eslint index.js test/*.js --fix",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": true,
+        "version": "5.0.0"
+      },
+      "version": "7.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 4110,
+      "sha256": "2d8452c200cf3a92b6596008e0ba8e7360d4267cce61517a06fc9dba7b4d7a9f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

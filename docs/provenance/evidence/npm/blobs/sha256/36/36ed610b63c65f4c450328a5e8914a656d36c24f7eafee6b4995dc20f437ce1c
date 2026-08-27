@@ -1,0 +1,138 @@
+{
+  "artifactId": "9e6cc20d31fa88afe160a6da98476d731d5a3aa9742788041f60b2504cf3abba",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3265,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "9f91eee81fda27d38d60963fe1de2f050a5cfb241af56b7e7ee6d9aa8522a058",
+        "size": 1418,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "ec25b742450df200d287bd9790451e203e2a99066f615b43f034e731afa0697f",
+        "size": 1521,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0de84d3e2ad5bc3a7bac54354fe6f049ce7b351d67fcc57eda6660f9fa2e83b5",
+        "size": 928,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "20c5386b5a6d769b0d0a54652870dea0f004b2588239bd731fca53721d674291",
+        "size": 2770,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      },
+      {
+        "blob": {
+          "bytes": 2770,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/20/20c5386b5a6d769b0d0a54652870dea0f004b2588239bd731fca53721d674291",
+          "sha256": "20c5386b5a6d769b0d0a54652870dea0f004b2588239bd731fca53721d674291"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "20c5386b5a6d769b0d0a54652870dea0f004b2588239bd731fca53721d674291",
+        "size": 2770
+      }
+    ],
+    "expandedBytes": 7754,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "p-limit",
+      "repository": "sindresorhus/p-limit",
+      "version": "3.1.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "dependencies": {
+        "yocto-queue": "^0.1.0"
+      },
+      "description": "Run multiple promise-returning & async functions with limited concurrency",
+      "devDependencies": {
+        "ava": "^2.4.0",
+        "delay": "^4.4.0",
+        "in-range": "^2.0.0",
+        "random-int": "^2.0.1",
+        "time-span": "^4.0.0",
+        "tsd": "^0.13.1",
+        "xo": "^0.35.0"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "promise",
+        "limit",
+        "limited",
+        "concurrency",
+        "throttle",
+        "throat",
+        "rate",
+        "batch",
+        "ratelimit",
+        "task",
+        "queue",
+        "async",
+        "await",
+        "promises",
+        "bluebird"
+      ],
+      "license": "MIT",
+      "name": "p-limit",
+      "repository": "sindresorhus/p-limit",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "3.1.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3265,
+      "sha256": "36e6519736cafaa158dc1bca8137683f5bf1bc1c476d40519028b3f3a96bc9e0"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

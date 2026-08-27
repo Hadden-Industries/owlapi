@@ -1,0 +1,189 @@
+{
+  "artifactId": "0140354df0d675b27a22f44ce9953df57db161d4b92dd669a10631c9e1c6116b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4199,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "d408f38ffa3355c5faec517153295338892eb0f1ea43f57874bb23c6075979b5",
+        "size": 1155,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "68b91fa8a0b154665cf2142ed45bd1561d4a137115aaa9cd7277be93103180fc",
+        "size": 1740,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts",
+        "sha256": "1ba52b275da70d08b5e1d9441ede6f776610f1a560f1d948f2d8225209efe5ce",
+        "size": 334,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts.map",
+        "sha256": "02f6451d2b2e59833af8a854f46eb420c59dcbeb299b02626d42dead25320ee2",
+        "size": 323,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js",
+        "sha256": "180549ef6f34f31e245f3060395dc453a602849558fd6657d11c28509b33347c",
+        "size": 1779,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js.map",
+        "sha256": "125220b59e2d5ce2aa29233e0f294644eecade69400aa56be8774726ccb9ff23",
+        "size": 4189,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/package.json",
+        "sha256": "8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a",
+        "size": 25,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts",
+        "sha256": "1ba52b275da70d08b5e1d9441ede6f776610f1a560f1d948f2d8225209efe5ce",
+        "size": 334,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts.map",
+        "sha256": "02f6451d2b2e59833af8a854f46eb420c59dcbeb299b02626d42dead25320ee2",
+        "size": 323,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js",
+        "sha256": "3070c820855fe9e6596fc2a00effd7a18882dff166d6326903e1940d6eb4082a",
+        "size": 1608,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js.map",
+        "sha256": "5ff71c6661e1b4a20fbaf5b048a6a9d9e659861ce4b77fedc49a07f40ec4c236",
+        "size": 4155,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/package.json",
+        "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+        "size": 23,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "c984e6ae5c41fac085a07a732b665b22e0a26f28b61c692ba18ff458a8ecc95a",
+        "size": 1596,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1155,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d4/d408f38ffa3355c5faec517153295338892eb0f1ea43f57874bb23c6075979b5",
+          "sha256": "d408f38ffa3355c5faec517153295338892eb0f1ea43f57874bb23c6075979b5"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "d408f38ffa3355c5faec517153295338892eb0f1ea43f57874bb23c6075979b5",
+        "size": 1155
+      }
+    ],
+    "expandedBytes": 17584,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "balanced-match",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/juliangruber/balanced-match.git"
+      },
+      "version": "4.0.4"
+    },
+    "packageMetadata": {
+      "description": "Match balanced character pairs, like \"{\" and \"}\"",
+      "devDependencies": {
+        "@types/brace-expansion": "^1.1.2",
+        "@types/node": "^25.2.1",
+        "mkdirp": "^3.0.1",
+        "prettier": "^3.3.2",
+        "tap": "^21.6.2",
+        "tshy": "^3.0.2",
+        "typedoc": "^0.28.5"
+      },
+      "engines": {
+        "node": "18 || 20 || >=22"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./dist/esm/index.js",
+            "types": "./dist/esm/index.d.ts"
+          },
+          "require": {
+            "default": "./dist/commonjs/index.js",
+            "types": "./dist/commonjs/index.d.ts"
+          }
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "dist"
+      ],
+      "keywords": [
+        "match",
+        "regexp",
+        "test",
+        "balanced",
+        "parse"
+      ],
+      "license": "MIT",
+      "main": "./dist/commonjs/index.js",
+      "module": "./dist/esm/index.js",
+      "name": "balanced-match",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/juliangruber/balanced-match.git"
+      },
+      "scripts": {
+        "benchmark": "node benchmark/index.js",
+        "format": "prettier --write .",
+        "postversion": "npm publish",
+        "prepare": "tshy",
+        "prepublishOnly": "git push origin --follow-tags",
+        "presnap": "npm run prepare",
+        "pretest": "npm run prepare",
+        "preversion": "npm test",
+        "snap": "tap",
+        "test": "tap",
+        "typedoc": "typedoc --tsconfig .tshy/esm.json ./src/*.ts"
+      },
+      "tshy": {
+        "exports": {
+          ".": "./src/index.ts",
+          "./package.json": "./package.json"
+        }
+      },
+      "type": "module",
+      "types": "./dist/commonjs/index.d.ts",
+      "version": "4.0.4"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 4199,
+      "sha256": "9025508d9125eee531bbc49ce3ae560183975ad595f058c378bd56af4152fb16"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

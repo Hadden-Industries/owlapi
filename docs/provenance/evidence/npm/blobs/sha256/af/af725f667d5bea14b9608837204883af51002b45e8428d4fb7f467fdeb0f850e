@@ -1,0 +1,135 @@
+{
+  "artifactId": "50defcc2232be17748087a170afeec27bd072c0ca60e864fd68c4b887d5de20e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8452,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "8ed4b8761744e45c6b8653e672516fe29aa82b2db5c4cca46f5cbb3cb22fb17f",
+        "size": 14318,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "1d2a433d41382f0cda1422131bd67c98d4818c678b58526913a6e16e1a8aa5ec",
+        "size": 2862,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "2efbb7982d44ab97a6f834a095999919f0e5a6f0dbd44c45dc5552a4a4e752fe",
+        "size": 16347,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "4e53867e6b4e5c5614a67a685a7de93c0a7805f5664632b0c5126490983b8fec",
+        "size": 107,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "04e94a8aebba90cfe89fa257bb63e47efbe93494febf8f720e5f888ace3f9893",
+        "size": 1004,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      },
+      {
+        "blob": {
+          "bytes": 14318,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8e/8ed4b8761744e45c6b8653e672516fe29aa82b2db5c4cca46f5cbb3cb22fb17f",
+          "sha256": "8ed4b8761744e45c6b8653e672516fe29aa82b2db5c4cca46f5cbb3cb22fb17f"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "8ed4b8761744e45c6b8653e672516fe29aa82b2db5c4cca46f5cbb3cb22fb17f",
+        "size": 14318
+      }
+    ],
+    "expandedBytes": 35770,
+    "packageIdentity": {
+      "author": "Matt Phillips (mattphillips)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "jest-each",
+      "repository": {
+        "directory": "packages/jest-each",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.4.1"
+    },
+    "packageMetadata": {
+      "author": "Matt Phillips (mattphillips)",
+      "dependencies": {
+        "@jest/get-type": "30.1.0",
+        "@jest/types": "30.4.1",
+        "chalk": "^4.1.2",
+        "jest-util": "30.4.1",
+        "pretty-format": "30.4.1"
+      },
+      "description": "Parameterised tests for Jest",
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "b3b4a09ed3005369dacc7466d1d2122797283785",
+      "keywords": [
+        "jest",
+        "parameterised",
+        "test",
+        "each"
+      ],
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "jest-each",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-each",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.4.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 8452,
+      "sha256": "39b5b07d707d8dd68bc0c5ae34f5628e9169db29a683053371106d1d105df06c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

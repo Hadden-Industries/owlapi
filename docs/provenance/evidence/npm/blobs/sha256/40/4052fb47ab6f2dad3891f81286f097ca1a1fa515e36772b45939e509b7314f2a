@@ -1,0 +1,137 @@
+{
+  "artifactId": "ac1dc27d9f95c6d137d511f06456563b8e4cdaae823f9cc970abbc1ce3247a25",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2668,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "dda068232e4c62c70475945b843a5e1158cb6f1dd0cf64262db6b9e5a14b74cc",
+        "size": 53,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "a1bd5deadb6a06dd74efa852c1b8b23f63b67f2214fbe9c8bd591da51da69268",
+        "size": 1096,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "428832d502fb64fc3a5c1b58e55d7aae4cceb97418f6e3813b2a923e4905b07e",
+        "size": 3502,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "06e4d0037715251cb3be2b2db063662f555b3538d9e30a9c517a54374d941cbc",
+        "size": 1219,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b30c328501dead1870b894ad604405b2284b571c1f12664cdc61d92a2e3397c2",
+        "size": 1069,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1096,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a1/a1bd5deadb6a06dd74efa852c1b8b23f63b67f2214fbe9c8bd591da51da69268",
+          "sha256": "a1bd5deadb6a06dd74efa852c1b8b23f63b67f2214fbe9c8bd591da51da69268"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "a1bd5deadb6a06dd74efa852c1b8b23f63b67f2214fbe9c8bd591da51da69268",
+        "size": 1096
+      },
+      {
+        "blob": {
+          "bytes": 3502,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/42/428832d502fb64fc3a5c1b58e55d7aae4cceb97418f6e3813b2a923e4905b07e",
+          "sha256": "428832d502fb64fc3a5c1b58e55d7aae4cceb97418f6e3813b2a923e4905b07e"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "428832d502fb64fc3a5c1b58e55d7aae4cceb97418f6e3813b2a923e4905b07e",
+        "size": 3502
+      }
+    ],
+    "expandedBytes": 6939,
+    "packageIdentity": {
+      "author": {
+        "email": "mail@juliangruber.com",
+        "name": "Julian Gruber",
+        "url": "http://juliangruber.com"
+      },
+      "homepage": "https://github.com/juliangruber/balanced-match",
+      "license": "MIT",
+      "name": "balanced-match",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/juliangruber/balanced-match.git"
+      },
+      "version": "1.0.2"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "mail@juliangruber.com",
+        "name": "Julian Gruber",
+        "url": "http://juliangruber.com"
+      },
+      "description": "Match balanced character pairs, like \"{\" and \"}\"",
+      "devDependencies": {
+        "matcha": "^0.7.0",
+        "tape": "^4.6.0"
+      },
+      "homepage": "https://github.com/juliangruber/balanced-match",
+      "keywords": [
+        "match",
+        "regexp",
+        "test",
+        "balanced",
+        "parse"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "balanced-match",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/juliangruber/balanced-match.git"
+      },
+      "scripts": {
+        "bench": "matcha test/bench.js",
+        "test": "tape test/test.js"
+      },
+      "testling": {
+        "browsers": [
+          "ie/8..latest",
+          "firefox/20..latest",
+          "firefox/nightly",
+          "chrome/25..latest",
+          "chrome/canary",
+          "opera/12..latest",
+          "opera/next",
+          "safari/5.1..latest",
+          "ipad/6.0..latest",
+          "iphone/6.0..latest",
+          "android-browser/4.2..latest"
+        ],
+        "files": "test/*.js"
+      },
+      "version": "1.0.2"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2668,
+      "sha256": "d854f7abdd0c7a8120cf381e0ad5f972cbd0255f5d987424bd672c8c4fcebcc1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

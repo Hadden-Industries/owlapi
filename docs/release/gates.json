@@ -9,7 +9,10 @@
     "checklistSection": "30"
   },
   "policy": {
-    "successfulFinalResults": ["PASS", "NOT_APPLICABLE"],
+    "successfulFinalResults": [
+      "PASS",
+      "NOT_APPLICABLE"
+    ],
     "failureClasses": [
       "PRODUCT_FAILURE",
       "CONTROL_FAILURE",
@@ -38,14 +41,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-SCOPE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-SCOPE-001-VERIFY"]
+      "childGateIds": [
+        "P19-SCOPE-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-HISTORY-001",
@@ -66,14 +73,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-HISTORY-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-HISTORY-001-VERIFY"]
+      "childGateIds": [
+        "P19-HISTORY-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-REPOSITORY-001",
@@ -94,14 +105,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-REPOSITORY-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-REPOSITORY-001-VERIFY"]
+      "childGateIds": [
+        "P19-REPOSITORY-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-RIGHTS-001",
@@ -122,14 +137,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-RIGHTS-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-RIGHTS-001-VERIFY"]
+      "childGateIds": [
+        "P19-RIGHTS-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-PACKAGE-001",
@@ -150,14 +169,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-PACKAGE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-PACKAGE-001-VERIFY"]
+      "childGateIds": [
+        "P19-PACKAGE-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-DEPENDENCIES-001",
@@ -178,14 +201,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-DEPENDENCIES-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-DEPENDENCIES-001-VERIFY"]
+      "childGateIds": [
+        "P19-DEPENDENCIES-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-DOCUMENTATION-001",
@@ -206,14 +233,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-DOCUMENTATION-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-DOCUMENTATION-001-VERIFY"]
+      "childGateIds": [
+        "P19-DOCUMENTATION-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-SECURITY-GOVERNANCE-001",
@@ -234,14 +265,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-SECURITY-GOVERNANCE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-SECURITY-GOVERNANCE-001-VERIFY"]
+      "childGateIds": [
+        "P19-SECURITY-GOVERNANCE-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-TOOLCHAIN-001",
@@ -262,14 +297,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-TOOLCHAIN-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-TOOLCHAIN-001-VERIFY"]
+      "childGateIds": [
+        "P19-TOOLCHAIN-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-CI-CONTROLS-001",
@@ -290,14 +329,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-CI-CONTROLS-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-CI-CONTROLS-001-VERIFY"]
+      "childGateIds": [
+        "P19-CI-CONTROLS-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-NODE-001",
@@ -318,14 +361,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-NODE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-NODE-001-VERIFY"]
+      "childGateIds": [
+        "P19-NODE-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-BROWSER-001",
@@ -346,14 +393,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-BROWSER-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-BROWSER-001-VERIFY"]
+      "childGateIds": [
+        "P19-BROWSER-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-EVIDENCE-001",
@@ -374,14 +425,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-EVIDENCE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-EVIDENCE-001-VERIFY"]
+      "childGateIds": [
+        "P19-EVIDENCE-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-GATES-001",
@@ -402,14 +457,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-GATES-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-GATES-001-VERIFY"]
+      "childGateIds": [
+        "P19-GATES-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-NAMESPACE-001",
@@ -430,14 +489,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-NAMESPACE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-NAMESPACE-001-VERIFY"]
+      "childGateIds": [
+        "P19-NAMESPACE-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-PUBLICATION-001",
@@ -458,14 +521,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-PUBLICATION-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-PUBLICATION-001-VERIFY"]
+      "childGateIds": [
+        "P19-PUBLICATION-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-PUBLIC-VERIFICATION-001",
@@ -486,14 +553,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-PUBLIC-VERIFICATION-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-PUBLIC-VERIFICATION-001-VERIFY"]
+      "childGateIds": [
+        "P19-PUBLIC-VERIFICATION-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-WEBVOWL-001",
@@ -514,14 +585,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-WEBVOWL-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-WEBVOWL-001-VERIFY"]
+      "childGateIds": [
+        "P19-WEBVOWL-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-CUSTODY-001",
@@ -542,14 +617,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-CUSTODY-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-CUSTODY-001-VERIFY"]
+      "childGateIds": [
+        "P19-CUSTODY-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P19-CHECKPOINT-001",
@@ -570,14 +649,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-CHECKPOINT-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P19-CHECKPOINT-001-VERIFY"]
+      "childGateIds": [
+        "P19-CHECKPOINT-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-RELEASE-001",
@@ -598,14 +681,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-RELEASE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-RELEASE-001-VERIFY"]
+      "childGateIds": [
+        "P20-RELEASE-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-PATH-001",
@@ -626,14 +713,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-PATH-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-PATH-001-VERIFY"]
+      "childGateIds": [
+        "P20-PATH-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-CHANNEL-001",
@@ -654,14 +745,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-CHANNEL-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-CHANNEL-001-VERIFY"]
+      "childGateIds": [
+        "P20-CHANNEL-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-EVIDENCE-001",
@@ -682,14 +777,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-EVIDENCE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-EVIDENCE-001-VERIFY"]
+      "childGateIds": [
+        "P20-EVIDENCE-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-PROVENANCE-001",
@@ -710,14 +809,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-PROVENANCE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-PROVENANCE-001-VERIFY"]
+      "childGateIds": [
+        "P20-PROVENANCE-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-PACKAGE-001",
@@ -738,14 +841,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-PACKAGE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-PACKAGE-001-VERIFY"]
+      "childGateIds": [
+        "P20-PACKAGE-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-DOCUMENTATION-001",
@@ -766,14 +873,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-DOCUMENTATION-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-DOCUMENTATION-001-VERIFY"]
+      "childGateIds": [
+        "P20-DOCUMENTATION-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-METADATA-001",
@@ -794,14 +905,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-METADATA-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-METADATA-001-VERIFY"]
+      "childGateIds": [
+        "P20-METADATA-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-RUNTIME-001",
@@ -822,14 +937,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-RUNTIME-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-RUNTIME-001-VERIFY"]
+      "childGateIds": [
+        "P20-RUNTIME-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-PORTABILITY-001",
@@ -850,14 +969,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-PORTABILITY-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-PORTABILITY-001-VERIFY"]
+      "childGateIds": [
+        "P20-PORTABILITY-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-CI-001",
@@ -878,14 +1001,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-CI-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-CI-001-VERIFY"]
+      "childGateIds": [
+        "P20-CI-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-LATE-TAG-001",
@@ -906,14 +1033,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-LATE-TAG-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-LATE-TAG-001-VERIFY"]
+      "childGateIds": [
+        "P20-LATE-TAG-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-MANUAL-001",
@@ -934,14 +1065,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-MANUAL-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-MANUAL-001-VERIFY"]
+      "childGateIds": [
+        "P20-MANUAL-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-UNTRUSTED-001",
@@ -962,14 +1097,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-UNTRUSTED-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-UNTRUSTED-001-VERIFY"]
+      "childGateIds": [
+        "P20-UNTRUSTED-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-BROWSER-001",
@@ -990,14 +1129,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-BROWSER-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-BROWSER-001-VERIFY"]
+      "childGateIds": [
+        "P20-BROWSER-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-RESOURCES-001",
@@ -1018,14 +1161,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-RESOURCES-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-RESOURCES-001-VERIFY"]
+      "childGateIds": [
+        "P20-RESOURCES-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-GATES-001",
@@ -1046,14 +1193,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-GATES-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-GATES-001-VERIFY"]
+      "childGateIds": [
+        "P20-GATES-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-TOOLCHAIN-001",
@@ -1074,14 +1225,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-TOOLCHAIN-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-TOOLCHAIN-001-VERIFY"]
+      "childGateIds": [
+        "P20-TOOLCHAIN-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-DEPENDENCIES-001",
@@ -1102,14 +1257,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-DEPENDENCIES-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-DEPENDENCIES-001-VERIFY"]
+      "childGateIds": [
+        "P20-DEPENDENCIES-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-WEBVOWL-001",
@@ -1130,14 +1289,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-WEBVOWL-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-WEBVOWL-001-VERIFY"]
+      "childGateIds": [
+        "P20-WEBVOWL-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-WEBVOWL-DEPENDENCIES-001",
@@ -1158,14 +1321,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-WEBVOWL-DEPENDENCIES-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-WEBVOWL-DEPENDENCIES-001-VERIFY"]
+      "childGateIds": [
+        "P20-WEBVOWL-DEPENDENCIES-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-BACKUP-001",
@@ -1186,14 +1353,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-BACKUP-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-BACKUP-001-VERIFY"]
+      "childGateIds": [
+        "P20-BACKUP-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-GOVERNANCE-001",
@@ -1214,14 +1385,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-GOVERNANCE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-GOVERNANCE-001-VERIFY"]
+      "childGateIds": [
+        "P20-GOVERNANCE-001-VERIFY"
+      ]
     },
     {
       "requirementId": "P20-FUTURE-001",
@@ -1242,14 +1417,18 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-FUTURE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
         "EXTERNAL_BLOCKED"
       ],
       "waiverPolicy": "NO_ORDINARY_WAIVER",
-      "childGateIds": ["P20-FUTURE-001-VERIFY"]
+      "childGateIds": [
+        "P20-FUTURE-001-VERIFY"
+      ]
     }
   ],
   "checklistGates": [
@@ -1267,31 +1446,41 @@
       "gateId": "P19-CHECK-002",
       "phase": 19,
       "rowDigest": "sha256:4a6ed40f4eada4247cac1fa84497b108cc9f0ac0d77fa3966343e5506d1fa610",
-      "coveredRequirementIds": ["P19-DOCUMENTATION-001"]
+      "coveredRequirementIds": [
+        "P19-DOCUMENTATION-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-003",
       "phase": 19,
       "rowDigest": "sha256:be6d76807755dab5f9863fea5cde3515071960d6dfd74f9ba3a4d1fce52a5ff5",
-      "coveredRequirementIds": ["P19-SCOPE-001"]
+      "coveredRequirementIds": [
+        "P19-SCOPE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-004",
       "phase": 19,
       "rowDigest": "sha256:3abd7094b893b58c301c3f7ecc9c9128038dbee3a852ddcdcf8443c545baf7c6",
-      "coveredRequirementIds": ["P19-REPOSITORY-001"]
+      "coveredRequirementIds": [
+        "P19-REPOSITORY-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-005",
       "phase": 19,
       "rowDigest": "sha256:1009a40aa436704de0196bee6b46c387773ebae987a1e3632b371035e10d7875",
-      "coveredRequirementIds": ["P19-REPOSITORY-001"]
+      "coveredRequirementIds": [
+        "P19-REPOSITORY-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-006",
       "phase": 19,
       "rowDigest": "sha256:2b03bf75b5af2fb984e907e0685088fea0537c875d78b34161dce017c1288de3",
-      "coveredRequirementIds": ["P19-REPOSITORY-001"]
+      "coveredRequirementIds": [
+        "P19-REPOSITORY-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-007",
@@ -1315,115 +1504,158 @@
       "gateId": "P19-CHECK-009",
       "phase": 19,
       "rowDigest": "sha256:5a30250ddfc24ceff98431d0d77a05c522850bff5680f04d958b64656db4b7ca",
-      "coveredRequirementIds": ["P19-HISTORY-001"]
+      "coveredRequirementIds": [
+        "P19-HISTORY-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-010",
       "phase": 19,
       "rowDigest": "sha256:28ccd8a2398031727a82fa0e489df928de55f2ef93bc7a367a37107d584fedd2",
-      "coveredRequirementIds": ["P19-HISTORY-001"]
+      "coveredRequirementIds": [
+        "P19-HISTORY-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-011",
       "phase": 19,
       "rowDigest": "sha256:5d7a8148429c460fcf7a26d111117547f3d9cb7074917997d3d44b69cc891eca",
-      "coveredRequirementIds": ["P19-HISTORY-001"]
+      "coveredRequirementIds": [
+        "P19-HISTORY-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-012",
       "phase": 19,
       "rowDigest": "sha256:425400986330cf8e7c80c743f3b0fbda241c1b76403024c05c7275ac00e6029b",
-      "coveredRequirementIds": ["P19-HISTORY-001", "P19-REPOSITORY-001"]
+      "coveredRequirementIds": [
+        "P19-HISTORY-001",
+        "P19-REPOSITORY-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-013",
       "phase": 19,
       "rowDigest": "sha256:15ad769203fb282f9fc07cfcde398ee1056ff4f12773dd1a6e5e30e10ef6a195",
-      "coveredRequirementIds": ["P19-REPOSITORY-001"]
+      "coveredRequirementIds": [
+        "P19-REPOSITORY-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-014",
       "phase": 19,
       "rowDigest": "sha256:1eb0153a290797ad5ffba8215b3bd6cd651604271917eab275b89a45a8817ff1",
-      "coveredRequirementIds": ["P19-WEBVOWL-001"]
+      "coveredRequirementIds": [
+        "P19-WEBVOWL-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-015",
       "phase": 19,
       "rowDigest": "sha256:d4d34e5e2dd3fd9f13536c8a84813e15bb0a77c04f51b95364e7aceac25ef09b",
-      "coveredRequirementIds": ["P19-WEBVOWL-001", "P19-DEPENDENCIES-001"]
+      "coveredRequirementIds": [
+        "P19-WEBVOWL-001",
+        "P19-DEPENDENCIES-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-016",
       "phase": 19,
       "rowDigest": "sha256:3683dc0547467f47d8f38adff75f6d2a8610e2aeccb15a2e6919991651df9a95",
-      "coveredRequirementIds": ["P19-PACKAGE-001"]
+      "coveredRequirementIds": [
+        "P19-PACKAGE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-017",
       "phase": 19,
       "rowDigest": "sha256:4ef49dc382127a7d43f06cc4994a5487bf6dd6ed5f95b5d73ad1c244d233ee28",
-      "coveredRequirementIds": ["P19-PACKAGE-001"]
+      "coveredRequirementIds": [
+        "P19-PACKAGE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-018",
       "phase": 19,
       "rowDigest": "sha256:5922f214ccccd899a892c5ae0fb2f0b8770c8130a24ac98b82126f02a27e4579",
-      "coveredRequirementIds": ["P19-PACKAGE-001"]
+      "coveredRequirementIds": [
+        "P19-PACKAGE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-019",
       "phase": 19,
       "rowDigest": "sha256:10be0a6fc19e4bed0a93cbf4a5312921dc89946b248f5784f907a725c3beea59",
-      "coveredRequirementIds": ["P19-PACKAGE-001"]
+      "coveredRequirementIds": [
+        "P19-PACKAGE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-020",
       "phase": 19,
       "rowDigest": "sha256:0b75150d1b51b2e5681694abde8a2067e2c3d2a1b5fc13739d9a36b8e9f0aa0c",
-      "coveredRequirementIds": ["P19-DEPENDENCIES-001"]
+      "coveredRequirementIds": [
+        "P19-DEPENDENCIES-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-021",
       "phase": 19,
       "rowDigest": "sha256:809745510e7bb00bc7caac55cc4fa22bb2ec707e52aa024175563cf5ffc8dfcc",
-      "coveredRequirementIds": ["P19-DEPENDENCIES-001", "P19-BROWSER-001"]
+      "coveredRequirementIds": [
+        "P19-DEPENDENCIES-001",
+        "P19-BROWSER-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-022",
       "phase": 19,
       "rowDigest": "sha256:34d08b53cf4c8ce0ed60cd59acb37cfd971546668f959dae59065a630cbfe796",
-      "coveredRequirementIds": ["P19-PACKAGE-001"]
+      "coveredRequirementIds": [
+        "P19-PACKAGE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-023",
       "phase": 19,
       "rowDigest": "sha256:079eee9f4b32711bef89d58423881475086a8f523d36a017064b46bb627b2a35",
-      "coveredRequirementIds": ["P19-PACKAGE-001", "P19-DOCUMENTATION-001"]
+      "coveredRequirementIds": [
+        "P19-PACKAGE-001",
+        "P19-DOCUMENTATION-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-024",
       "phase": 19,
       "rowDigest": "sha256:49466cc5239620570f64616e74656118ac8f25c56d6f99097161ea699030a1ea",
-      "coveredRequirementIds": ["P19-PACKAGE-001"]
+      "coveredRequirementIds": [
+        "P19-PACKAGE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-025",
       "phase": 19,
       "rowDigest": "sha256:5bea9792c79720a11ad6c0613502f76b5c129e0ea871bbc4decfc5b3509f6ed7",
-      "coveredRequirementIds": ["P19-WEBVOWL-001"]
+      "coveredRequirementIds": [
+        "P19-WEBVOWL-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-026",
       "phase": 19,
       "rowDigest": "sha256:15dffe1b2124b3439ea5f21d0a30be76ee21bf2231750f4b0657e334367f6309",
-      "coveredRequirementIds": ["P19-PACKAGE-001"]
+      "coveredRequirementIds": [
+        "P19-PACKAGE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-027",
       "phase": 19,
       "rowDigest": "sha256:d2adfe5f9733c1fdacf67851d5aba5e951f5d77124941bb0edbab67d681c5956",
-      "coveredRequirementIds": ["P19-NODE-001", "P19-TOOLCHAIN-001"]
+      "coveredRequirementIds": [
+        "P19-NODE-001",
+        "P19-TOOLCHAIN-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-028",
@@ -1439,37 +1671,53 @@
       "gateId": "P19-CHECK-029",
       "phase": 19,
       "rowDigest": "sha256:cce65549b01fbba896bc646700cedf6110b5d665d2fc23748eef5e18e3ff43a0",
-      "coveredRequirementIds": ["P19-PACKAGE-001", "P19-TOOLCHAIN-001"]
+      "coveredRequirementIds": [
+        "P19-PACKAGE-001",
+        "P19-TOOLCHAIN-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-030",
       "phase": 19,
       "rowDigest": "sha256:173bc730704c5a6ad921c0c9542ffa734c7d1afcfbd7ea84a607ef32e83f38ce",
-      "coveredRequirementIds": ["P19-DOCUMENTATION-001", "P19-PACKAGE-001"]
+      "coveredRequirementIds": [
+        "P19-DOCUMENTATION-001",
+        "P19-PACKAGE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-031",
       "phase": 19,
       "rowDigest": "sha256:170d34cd2c40414e66082485fce08d49c08f3da1412ee7ad489bf042cc3d7392",
-      "coveredRequirementIds": ["P19-NODE-001", "P19-BROWSER-001"]
+      "coveredRequirementIds": [
+        "P19-NODE-001",
+        "P19-BROWSER-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-032",
       "phase": 19,
       "rowDigest": "sha256:54b71f2e58f2538f4526fadf95201c11c61122f1435b9426788639267ae517fb",
-      "coveredRequirementIds": ["P19-BROWSER-001", "P19-TOOLCHAIN-001"]
+      "coveredRequirementIds": [
+        "P19-BROWSER-001",
+        "P19-TOOLCHAIN-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-033",
       "phase": 19,
       "rowDigest": "sha256:2a9f889ee0cdd60ed1666982ed2f63fc2e7e673dbfb1652037c783b96c4d0aa2",
-      "coveredRequirementIds": ["P19-DOCUMENTATION-001"]
+      "coveredRequirementIds": [
+        "P19-DOCUMENTATION-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-034",
       "phase": 19,
       "rowDigest": "sha256:4546daeb4854d2da3f53f5033fca4e013e3ec5845aa9bf49302131d73a4f3079",
-      "coveredRequirementIds": ["P19-DOCUMENTATION-001"]
+      "coveredRequirementIds": [
+        "P19-DOCUMENTATION-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-035",
@@ -1484,127 +1732,175 @@
       "gateId": "P19-CHECK-036",
       "phase": 19,
       "rowDigest": "sha256:37cd82a187769e0693c650c1ce9676f725dca397ffb79dd50a0ddd9742639176",
-      "coveredRequirementIds": ["P19-DOCUMENTATION-001", "P19-PACKAGE-001"]
+      "coveredRequirementIds": [
+        "P19-DOCUMENTATION-001",
+        "P19-PACKAGE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-037",
       "phase": 19,
       "rowDigest": "sha256:3f4df8fb3afd4e5c2f587c4e0e2adbb90db0009c8173ab38344ac65078efe449",
-      "coveredRequirementIds": ["P19-DOCUMENTATION-001"]
+      "coveredRequirementIds": [
+        "P19-DOCUMENTATION-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-038",
       "phase": 19,
       "rowDigest": "sha256:e19d04ad74821a1628263a6abf60cebeea5f61979f5050702c81f94031fc76a3",
-      "coveredRequirementIds": ["P19-PUBLICATION-001", "P19-CI-CONTROLS-001"]
+      "coveredRequirementIds": [
+        "P19-PUBLICATION-001",
+        "P19-CI-CONTROLS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-039",
       "phase": 19,
       "rowDigest": "sha256:7ade4e5b0a82ca35e775c37893b45421a7ae0fd8b9b4d895547aefc4f8157962",
-      "coveredRequirementIds": ["P19-SECURITY-GOVERNANCE-001"]
+      "coveredRequirementIds": [
+        "P19-SECURITY-GOVERNANCE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-040",
       "phase": 19,
       "rowDigest": "sha256:047e7e3a9c06c265e9668447542932ce2c7b246b883ca99c4d71740793b023c1",
-      "coveredRequirementIds": ["P19-SECURITY-GOVERNANCE-001"]
+      "coveredRequirementIds": [
+        "P19-SECURITY-GOVERNANCE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-041",
       "phase": 19,
       "rowDigest": "sha256:4ab31f70dd797c96e07eede5d33ed77c26031b71f5b65156d2fd5fb3c05638c0",
-      "coveredRequirementIds": ["P19-NAMESPACE-001"]
+      "coveredRequirementIds": [
+        "P19-NAMESPACE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-042",
       "phase": 19,
       "rowDigest": "sha256:b0ddbf99bbb307e59e6d24fce4ead178aebc472fb6b1af1483c98481b7cd2a4f",
-      "coveredRequirementIds": ["P19-NAMESPACE-001", "P19-DOCUMENTATION-001"]
+      "coveredRequirementIds": [
+        "P19-NAMESPACE-001",
+        "P19-DOCUMENTATION-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-043",
       "phase": 19,
       "rowDigest": "sha256:dba3e578a8d13b7299ef2fa4f46944b0a118bd4ae0bbc877c59418f1d5ae45cd",
-      "coveredRequirementIds": ["P19-NAMESPACE-001"]
+      "coveredRequirementIds": [
+        "P19-NAMESPACE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-044",
       "phase": 19,
       "rowDigest": "sha256:dbd108b253afc5962848d8e8924bd61fd07cc4bd2d628875db207cbf097515e1",
-      "coveredRequirementIds": ["P19-RIGHTS-001"]
+      "coveredRequirementIds": [
+        "P19-RIGHTS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-045",
       "phase": 19,
       "rowDigest": "sha256:4685c86ec6bcb8b7ab200ff02402734417349f4070256c63975238d53278299a",
-      "coveredRequirementIds": ["P19-RIGHTS-001"]
+      "coveredRequirementIds": [
+        "P19-RIGHTS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-046",
       "phase": 19,
       "rowDigest": "sha256:9949936948b5ff3bbb010e9bd3b0905612e7126e8e2adc2be1d49b7a915b4d43",
-      "coveredRequirementIds": ["P19-RIGHTS-001"]
+      "coveredRequirementIds": [
+        "P19-RIGHTS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-047",
       "phase": 19,
       "rowDigest": "sha256:b5ebc38767c641043c2f9c54d19ec13c501c4d01cacfffd0cba3291f825e7955",
-      "coveredRequirementIds": ["P19-RIGHTS-001", "P19-PACKAGE-001"]
+      "coveredRequirementIds": [
+        "P19-RIGHTS-001",
+        "P19-PACKAGE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-048",
       "phase": 19,
       "rowDigest": "sha256:62947f6da334d8584811544e0f7589904886975e15bae52f902a3ef89d5f16f6",
-      "coveredRequirementIds": ["P19-RIGHTS-001"]
+      "coveredRequirementIds": [
+        "P19-RIGHTS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-049",
       "phase": 19,
       "rowDigest": "sha256:594dcab02a1b912aeb1347d421ba1449f19929b3ed0d53593fa977fc1b5229c8",
-      "coveredRequirementIds": ["P19-RIGHTS-001"]
+      "coveredRequirementIds": [
+        "P19-RIGHTS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-050",
       "phase": 19,
       "rowDigest": "sha256:201be49891aace747dac4cb932b764fbadc2dda6ba1e54a11c64b6622820198c",
-      "coveredRequirementIds": ["P19-RIGHTS-001"]
+      "coveredRequirementIds": [
+        "P19-RIGHTS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-051",
       "phase": 19,
       "rowDigest": "sha256:cbe8095a112e90c07bea5eb56d7965a48ffcc82de27bb3cae28f73de9eb3326d",
-      "coveredRequirementIds": ["P19-RIGHTS-001"]
+      "coveredRequirementIds": [
+        "P19-RIGHTS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-052",
       "phase": 19,
       "rowDigest": "sha256:de5a1fdffdd2aefea08472185328737a0135cc0088d1edeb8a7e8883f242f8c3",
-      "coveredRequirementIds": ["P19-RIGHTS-001", "P19-DOCUMENTATION-001"]
+      "coveredRequirementIds": [
+        "P19-RIGHTS-001",
+        "P19-DOCUMENTATION-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-053",
       "phase": 19,
       "rowDigest": "sha256:2379f4cebe70dfe6a2a8802bb963000413d243ea0d3a804c93bbb49cd921bcf4",
-      "coveredRequirementIds": ["P19-RIGHTS-001"]
+      "coveredRequirementIds": [
+        "P19-RIGHTS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-054",
       "phase": 19,
       "rowDigest": "sha256:2b5bb614d4b0647a5181722561448b3dea9c819368a2b393c447b92b99b74d64",
-      "coveredRequirementIds": ["P19-RIGHTS-001"]
+      "coveredRequirementIds": [
+        "P19-RIGHTS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-055",
       "phase": 19,
       "rowDigest": "sha256:09943adb4b34db617fd14caaa72d1ef76587c6e8074113d0e249df9091c84a94",
-      "coveredRequirementIds": ["P19-RIGHTS-001", "P19-DOCUMENTATION-001"]
+      "coveredRequirementIds": [
+        "P19-RIGHTS-001",
+        "P19-DOCUMENTATION-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-056",
       "phase": 19,
       "rowDigest": "sha256:0445319f52b43c8708124a8883cbc4f27fcafb24d809ff48bae24d8057ac34bd",
-      "coveredRequirementIds": ["P19-RIGHTS-001"]
+      "coveredRequirementIds": [
+        "P19-RIGHTS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-057",
@@ -1620,19 +1916,26 @@
       "gateId": "P19-CHECK-058",
       "phase": 19,
       "rowDigest": "sha256:2ef80de1fdc38e81fe8ed80b9f5a4840c7479514946c3f6d8cafc26970566695",
-      "coveredRequirementIds": ["P19-PACKAGE-001", "P19-DOCUMENTATION-001"]
+      "coveredRequirementIds": [
+        "P19-PACKAGE-001",
+        "P19-DOCUMENTATION-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-059",
       "phase": 19,
       "rowDigest": "sha256:aef7b3a8ae46e7b21534aed621d28f59da186c55cb1242f2ef1e53c36b42ade5",
-      "coveredRequirementIds": ["P19-DEPENDENCIES-001"]
+      "coveredRequirementIds": [
+        "P19-DEPENDENCIES-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-060",
       "phase": 19,
       "rowDigest": "sha256:b25153aa37a0228487f10ded36a0490f32c6f40e362d318f3840cea5b3c2b580",
-      "coveredRequirementIds": ["P19-DEPENDENCIES-001"]
+      "coveredRequirementIds": [
+        "P19-DEPENDENCIES-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-061",
@@ -1648,67 +1951,95 @@
       "gateId": "P19-CHECK-062",
       "phase": 19,
       "rowDigest": "sha256:09155b98c0ce1f983b8ea0e529c1eeb626afad5e3d9b54783d19068d338b908d",
-      "coveredRequirementIds": ["P19-CI-CONTROLS-001"]
+      "coveredRequirementIds": [
+        "P19-CI-CONTROLS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-063",
       "phase": 19,
       "rowDigest": "sha256:5c061abc6e4c77bcd394804f5bd35d96b8241d6cdc1251eb555931fe32b893c5",
-      "coveredRequirementIds": ["P19-CI-CONTROLS-001"]
+      "coveredRequirementIds": [
+        "P19-CI-CONTROLS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-064",
       "phase": 19,
       "rowDigest": "sha256:a5752df47a138a66d08c68a68e66747f694a5719f1390dfcde9909b25d7b69bd",
-      "coveredRequirementIds": ["P19-CI-CONTROLS-001", "P19-NODE-001"]
+      "coveredRequirementIds": [
+        "P19-CI-CONTROLS-001",
+        "P19-NODE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-065",
       "phase": 19,
-      "rowDigest": "sha256:ba99ed23804e9cb37727d92c4a4a3a63d343a453b0dea26f653482f78597b6e7",
-      "coveredRequirementIds": ["P19-CI-CONTROLS-001", "P19-EVIDENCE-001"]
+      "rowDigest": "sha256:3504977bcc2b01522e888f7d549f2a070fe0137e110a531d52e6ec8598e33663",
+      "coveredRequirementIds": [
+        "P19-CI-CONTROLS-001",
+        "P19-EVIDENCE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-066",
       "phase": 19,
       "rowDigest": "sha256:41788d0a0060e5db04f384f4777bde40f56efdce7470dfb48ebd908b481724ac",
-      "coveredRequirementIds": ["P19-CI-CONTROLS-001", "P19-NODE-001"]
+      "coveredRequirementIds": [
+        "P19-CI-CONTROLS-001",
+        "P19-NODE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-067",
       "phase": 19,
       "rowDigest": "sha256:7f82d24cfe47b0465e1139bcf17506f7741c8e14c2780427fd3929b54d9ff034",
-      "coveredRequirementIds": ["P19-NODE-001", "P19-CI-CONTROLS-001"]
+      "coveredRequirementIds": [
+        "P19-NODE-001",
+        "P19-CI-CONTROLS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-068",
       "phase": 19,
       "rowDigest": "sha256:2e18eae3dab76345db9ecfdb27fad465bb6835ebe18b58511a6be2a48ce2a642",
-      "coveredRequirementIds": ["P19-CI-CONTROLS-001", "P19-TOOLCHAIN-001"]
+      "coveredRequirementIds": [
+        "P19-CI-CONTROLS-001",
+        "P19-TOOLCHAIN-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-069",
       "phase": 19,
       "rowDigest": "sha256:efbbc74f305cc0937fa8d9c45b462549f460312ef704e970fa2b37607468700f",
-      "coveredRequirementIds": ["P19-CI-CONTROLS-001"]
+      "coveredRequirementIds": [
+        "P19-CI-CONTROLS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-070",
       "phase": 19,
-      "rowDigest": "sha256:3ab1ca1da54ee7890ec9672bd466bee02ea8b85533d9da7111c2151aa9100571",
-      "coveredRequirementIds": ["P19-CI-CONTROLS-001", "P19-GATES-001"]
+      "rowDigest": "sha256:b0db3aaa4d0897ef2d2934356f274da052c805772767fa6c8e846a4bfecd9b51",
+      "coveredRequirementIds": [
+        "P19-CI-CONTROLS-001",
+        "P19-GATES-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-071",
       "phase": 19,
       "rowDigest": "sha256:d61168359c6f50420f2a4deb6e13ab0316718c946a096df0dc9d441398cafaa6",
-      "coveredRequirementIds": ["P19-CI-CONTROLS-001"]
+      "coveredRequirementIds": [
+        "P19-CI-CONTROLS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-072",
       "phase": 19,
       "rowDigest": "sha256:db9457cfc9548db67b93a9e4b5609da2cd40c3153d20820e5475dad9ccfe4f3e",
-      "coveredRequirementIds": ["P19-CI-CONTROLS-001"]
+      "coveredRequirementIds": [
+        "P19-CI-CONTROLS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-073",
@@ -1723,7 +2054,10 @@
       "gateId": "P19-CHECK-074",
       "phase": 19,
       "rowDigest": "sha256:94de1f47ef04d08e5924fe795cb9787bfb19f7747e918a856a78f928548a82b8",
-      "coveredRequirementIds": ["P19-DEPENDENCIES-001", "P19-CI-CONTROLS-001"]
+      "coveredRequirementIds": [
+        "P19-DEPENDENCIES-001",
+        "P19-CI-CONTROLS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-075",
@@ -1739,25 +2073,37 @@
       "gateId": "P19-CHECK-076",
       "phase": 19,
       "rowDigest": "sha256:615728f821bc803fa1c9d072aa1cd205336a54e1d8e90de8cf9543f04c821c4e",
-      "coveredRequirementIds": ["P19-TOOLCHAIN-001", "P19-CI-CONTROLS-001"]
+      "coveredRequirementIds": [
+        "P19-TOOLCHAIN-001",
+        "P19-CI-CONTROLS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-077",
       "phase": 19,
       "rowDigest": "sha256:76d833a1181aaaa908e65b30bdb1f706a73ff586806da8e440064f6229cb8160",
-      "coveredRequirementIds": ["P19-PACKAGE-001", "P19-BROWSER-001"]
+      "coveredRequirementIds": [
+        "P19-PACKAGE-001",
+        "P19-BROWSER-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-078",
       "phase": 19,
       "rowDigest": "sha256:275a3eec656e54863694053360a8464622087ec83489929a660d4b3cffa70ace",
-      "coveredRequirementIds": ["P19-PACKAGE-001", "P19-EVIDENCE-001"]
+      "coveredRequirementIds": [
+        "P19-PACKAGE-001",
+        "P19-EVIDENCE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-079",
       "phase": 19,
       "rowDigest": "sha256:7939bf5c0ecd7b4c2e0aaa8f5675135f46465b6e9d9b81ce6510eae0d5f7e431",
-      "coveredRequirementIds": ["P19-PACKAGE-001", "P19-EVIDENCE-001"]
+      "coveredRequirementIds": [
+        "P19-PACKAGE-001",
+        "P19-EVIDENCE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-080",
@@ -1773,37 +2119,53 @@
       "gateId": "P19-CHECK-081",
       "phase": 19,
       "rowDigest": "sha256:feffe065418a63380d9575aa4d2d478fb1db61df345d7905a0339afde250cd18",
-      "coveredRequirementIds": ["P19-EVIDENCE-001"]
+      "coveredRequirementIds": [
+        "P19-EVIDENCE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-082",
       "phase": 19,
       "rowDigest": "sha256:691a00f3720bcd1dfab735c6f7b27f8f13051ffa2298725fa13b364d9212958a",
-      "coveredRequirementIds": ["P19-BROWSER-001"]
+      "coveredRequirementIds": [
+        "P19-BROWSER-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-083",
       "phase": 19,
       "rowDigest": "sha256:c268d95c244044efa082f05657742912c7bd07e6f36fc636a15e7b511068cbd8",
-      "coveredRequirementIds": ["P19-BROWSER-001", "P19-EVIDENCE-001"]
+      "coveredRequirementIds": [
+        "P19-BROWSER-001",
+        "P19-EVIDENCE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-084",
       "phase": 19,
       "rowDigest": "sha256:edf3ff4a556eb4d82482f3316472e416712532a898d3e31871c8dc47bbac40e8",
-      "coveredRequirementIds": ["P19-PUBLICATION-001", "P19-CI-CONTROLS-001"]
+      "coveredRequirementIds": [
+        "P19-PUBLICATION-001",
+        "P19-CI-CONTROLS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-085",
       "phase": 19,
       "rowDigest": "sha256:a8d51e409f495c110154b8a0c801bab33cbd006a13fddea124e392a22d5cd269",
-      "coveredRequirementIds": ["P19-PUBLICATION-001", "P19-CI-CONTROLS-001"]
+      "coveredRequirementIds": [
+        "P19-PUBLICATION-001",
+        "P19-CI-CONTROLS-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-086",
       "phase": 19,
       "rowDigest": "sha256:a5f38ea9a654889e5404b0f88efbd082d89f44e67b37243f39388b254e99aa61",
-      "coveredRequirementIds": ["P19-PUBLICATION-001", "P19-NAMESPACE-001"]
+      "coveredRequirementIds": [
+        "P19-PUBLICATION-001",
+        "P19-NAMESPACE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-087",
@@ -1818,31 +2180,43 @@
       "gateId": "P19-CHECK-088",
       "phase": 19,
       "rowDigest": "sha256:6ca37e354c2b41cca5ffc3bbef438b6ce7aee0aa485069d918d6279cf3a96a79",
-      "coveredRequirementIds": ["P19-PUBLICATION-001"]
+      "coveredRequirementIds": [
+        "P19-PUBLICATION-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-089",
       "phase": 19,
       "rowDigest": "sha256:16dd16f6bf4818ba86a627b8b6f3d82ea2921fae3f63514ba2ef5fd1d0a63876",
-      "coveredRequirementIds": ["P19-PUBLICATION-001"]
+      "coveredRequirementIds": [
+        "P19-PUBLICATION-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-090",
       "phase": 19,
       "rowDigest": "sha256:8f9e7f5209bf6c80c33261779dd26ca6d43a23a7b7c07d9211ea77ab2be129b8",
-      "coveredRequirementIds": ["P19-CI-CONTROLS-001", "P19-PUBLICATION-001"]
+      "coveredRequirementIds": [
+        "P19-CI-CONTROLS-001",
+        "P19-PUBLICATION-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-091",
       "phase": 19,
       "rowDigest": "sha256:583579b1730c58d0a3881567a4e9585c2c8370341c49a4e615b2daf8b663c8f7",
-      "coveredRequirementIds": ["P19-CUSTODY-001"]
+      "coveredRequirementIds": [
+        "P19-CUSTODY-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-092",
       "phase": 19,
       "rowDigest": "sha256:e8f415fcefdbc3a86b1b5cc398f768c1e830e2af535b22a2515772e7977d0d8e",
-      "coveredRequirementIds": ["P19-CUSTODY-001", "P19-NAMESPACE-001"]
+      "coveredRequirementIds": [
+        "P19-CUSTODY-001",
+        "P19-NAMESPACE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-093",
@@ -1858,19 +2232,27 @@
       "gateId": "P20-CHECK-001",
       "phase": 20,
       "rowDigest": "sha256:f2e8a65254c08806806505b3988450e7b6498d2f9d5fefb99d5ecc8de8c876e3",
-      "coveredRequirementIds": ["P20-FUTURE-001", "P20-RELEASE-001"]
+      "coveredRequirementIds": [
+        "P20-FUTURE-001",
+        "P20-RELEASE-001"
+      ]
     },
     {
       "gateId": "P20-CHECK-002",
       "phase": 20,
       "rowDigest": "sha256:49f439d2ea3a8589c117916be31be87600929571fe04a103057da06dd89c3ecb",
-      "coveredRequirementIds": ["P20-GOVERNANCE-001", "P20-METADATA-001"]
+      "coveredRequirementIds": [
+        "P20-GOVERNANCE-001",
+        "P20-METADATA-001"
+      ]
     },
     {
       "gateId": "P20-CHECK-003",
       "phase": 20,
       "rowDigest": "sha256:a4b1f6a42f945fdc2f7b6656f269cc50017a683e16c405159df409196403dfd9",
-      "coveredRequirementIds": ["P20-PATH-001"]
+      "coveredRequirementIds": [
+        "P20-PATH-001"
+      ]
     },
     {
       "gateId": "P20-CHECK-004",
@@ -1897,7 +2279,10 @@
       "gateId": "P20-CHECK-006",
       "phase": 20,
       "rowDigest": "sha256:047b98c501e3e32716103e66f11097728b18b7f6ce2a5bcc6afb437bcd3d6cfb",
-      "coveredRequirementIds": ["P20-DOCUMENTATION-001", "P20-PACKAGE-001"]
+      "coveredRequirementIds": [
+        "P20-DOCUMENTATION-001",
+        "P20-PACKAGE-001"
+      ]
     },
     {
       "gateId": "P20-CHECK-007",
@@ -1932,25 +2317,34 @@
       "gateId": "P20-CHECK-009",
       "phase": 20,
       "rowDigest": "sha256:714b0f37193196f33cbf91e3e135a0c69f371036be6cf8d3153494f957949997",
-      "coveredRequirementIds": ["P20-RESOURCES-001"]
+      "coveredRequirementIds": [
+        "P20-RESOURCES-001"
+      ]
     },
     {
       "gateId": "P20-CHECK-010",
       "phase": 20,
       "rowDigest": "sha256:25401db426a011b3cf6485007924417e582beba6c769c1d22f9635a325db1bd6",
-      "coveredRequirementIds": ["P20-GATES-001"]
+      "coveredRequirementIds": [
+        "P20-GATES-001"
+      ]
     },
     {
       "gateId": "P20-CHECK-011",
       "phase": 20,
       "rowDigest": "sha256:d0eee8f0a6ba83a4d67887ebb710799c8cb3a6ad223af7a921cd3c4e45650ff9",
-      "coveredRequirementIds": ["P20-GOVERNANCE-001"]
+      "coveredRequirementIds": [
+        "P20-GOVERNANCE-001"
+      ]
     },
     {
       "gateId": "P20-CHECK-012",
       "phase": 20,
       "rowDigest": "sha256:96e324ad9dafa28bd24dc10577121665c398d2fef2bc2f2c1cdda9c6039ce2f8",
-      "coveredRequirementIds": ["P20-CHANNEL-001", "P20-DOCUMENTATION-001"]
+      "coveredRequirementIds": [
+        "P20-CHANNEL-001",
+        "P20-DOCUMENTATION-001"
+      ]
     },
     {
       "gateId": "P20-CHECK-013",
@@ -1965,13 +2359,18 @@
       "gateId": "P20-CHECK-014",
       "phase": 20,
       "rowDigest": "sha256:914231ca3125dabf3689b2b8f10d28111670d7e025926fc3ba086e987405a67f",
-      "coveredRequirementIds": ["P20-BACKUP-001"]
+      "coveredRequirementIds": [
+        "P20-BACKUP-001"
+      ]
     },
     {
       "gateId": "P20-CHECK-015",
       "phase": 20,
       "rowDigest": "sha256:6a0671aff6090ee70f41551666c888e9f7abf7933bdd9ad7f73f6940af34bd60",
-      "coveredRequirementIds": ["P20-RELEASE-001", "P20-PATH-001"]
+      "coveredRequirementIds": [
+        "P20-RELEASE-001",
+        "P20-PATH-001"
+      ]
     },
     {
       "gateId": "P20-CHECK-016",
@@ -2002,14 +2401,18 @@
       "gateId": "P20-CHECK-018",
       "phase": 20,
       "rowDigest": "sha256:776862e0e89846858defe7d352ef3fb75f56a273b9cf7914880d713163f66d17",
-      "coveredRequirementIds": ["P20-PROVENANCE-001"]
+      "coveredRequirementIds": [
+        "P20-PROVENANCE-001"
+      ]
     }
   ],
   "leafGates": [
     {
       "gateId": "P19-SCOPE-001-VERIFY",
       "ownerRequirementId": "P19-SCOPE-001",
-      "checklistGateIds": ["P19-CHECK-003"],
+      "checklistGateIds": [
+        "P19-CHECK-003"
+      ],
       "owner": "PACKAGE_MAINTAINER",
       "applicability": {
         "mode": "ALWAYS"
@@ -2023,7 +2426,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-SCOPE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2053,7 +2458,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-HISTORY-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2085,7 +2492,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-REPOSITORY-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2125,7 +2534,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-RIGHTS-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2169,7 +2580,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-PACKAGE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2204,7 +2617,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-DEPENDENCIES-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2242,7 +2657,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-DOCUMENTATION-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2276,7 +2693,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-SECURITY-GOVERNANCE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2308,7 +2727,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-TOOLCHAIN-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2356,7 +2777,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-CI-CONTROLS-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2387,7 +2810,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-NODE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2419,7 +2844,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-BROWSER-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2455,7 +2882,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-EVIDENCE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2466,7 +2895,10 @@
     {
       "gateId": "P19-GATES-001-VERIFY",
       "ownerRequirementId": "P19-GATES-001",
-      "checklistGateIds": ["P19-CHECK-070", "P19-CHECK-093"],
+      "checklistGateIds": [
+        "P19-CHECK-070",
+        "P19-CHECK-093"
+      ],
       "owner": "RELEASE_CUSTODIAN",
       "applicability": {
         "mode": "ALWAYS"
@@ -2480,7 +2912,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-GATES-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2512,7 +2946,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-NAMESPACE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2547,7 +2983,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-PUBLICATION-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2558,7 +2996,9 @@
     {
       "gateId": "P19-PUBLIC-VERIFICATION-001-VERIFY",
       "ownerRequirementId": "P19-PUBLIC-VERIFICATION-001",
-      "checklistGateIds": ["P19-CHECK-087"],
+      "checklistGateIds": [
+        "P19-CHECK-087"
+      ],
       "owner": "RELEASE_CUSTODIAN",
       "applicability": {
         "mode": "ALWAYS"
@@ -2572,7 +3012,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-PUBLIC-VERIFICATION-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2583,7 +3025,11 @@
     {
       "gateId": "P19-WEBVOWL-001-VERIFY",
       "ownerRequirementId": "P19-WEBVOWL-001",
-      "checklistGateIds": ["P19-CHECK-014", "P19-CHECK-015", "P19-CHECK-025"],
+      "checklistGateIds": [
+        "P19-CHECK-014",
+        "P19-CHECK-015",
+        "P19-CHECK-025"
+      ],
       "owner": "CONSUMER_MAINTAINER",
       "applicability": {
         "mode": "ALWAYS"
@@ -2597,7 +3043,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-WEBVOWL-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2608,7 +3056,10 @@
     {
       "gateId": "P19-CUSTODY-001-VERIFY",
       "ownerRequirementId": "P19-CUSTODY-001",
-      "checklistGateIds": ["P19-CHECK-091", "P19-CHECK-092"],
+      "checklistGateIds": [
+        "P19-CHECK-091",
+        "P19-CHECK-092"
+      ],
       "owner": "RELEASE_CUSTODIAN",
       "applicability": {
         "mode": "ALWAYS"
@@ -2622,7 +3073,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-CUSTODY-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2633,7 +3086,9 @@
     {
       "gateId": "P19-CHECKPOINT-001-VERIFY",
       "ownerRequirementId": "P19-CHECKPOINT-001",
-      "checklistGateIds": ["P19-CHECK-093"],
+      "checklistGateIds": [
+        "P19-CHECK-093"
+      ],
       "owner": "RELEASE_CUSTODIAN",
       "applicability": {
         "mode": "ALWAYS"
@@ -2647,7 +3102,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P19-CHECKPOINT-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2680,7 +3137,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-RELEASE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2712,7 +3171,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-PATH-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2723,7 +3184,10 @@
     {
       "gateId": "P20-CHANNEL-001-VERIFY",
       "ownerRequirementId": "P20-CHANNEL-001",
-      "checklistGateIds": ["P20-CHECK-008", "P20-CHECK-012"],
+      "checklistGateIds": [
+        "P20-CHECK-008",
+        "P20-CHECK-012"
+      ],
       "owner": "RELEASE_CUSTODIAN",
       "applicability": {
         "mode": "ALWAYS"
@@ -2737,7 +3201,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-CHANNEL-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2748,7 +3214,10 @@
     {
       "gateId": "P20-EVIDENCE-001-VERIFY",
       "ownerRequirementId": "P20-EVIDENCE-001",
-      "checklistGateIds": ["P20-CHECK-008", "P20-CHECK-017"],
+      "checklistGateIds": [
+        "P20-CHECK-008",
+        "P20-CHECK-017"
+      ],
       "owner": "RELEASE_CUSTODIAN",
       "applicability": {
         "mode": "ALWAYS"
@@ -2762,7 +3231,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-EVIDENCE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2773,7 +3244,9 @@
     {
       "gateId": "P20-PROVENANCE-001-VERIFY",
       "ownerRequirementId": "P20-PROVENANCE-001",
-      "checklistGateIds": ["P20-CHECK-018"],
+      "checklistGateIds": [
+        "P20-CHECK-018"
+      ],
       "owner": "RELEASE_CUSTODIAN",
       "applicability": {
         "mode": "ALWAYS"
@@ -2787,7 +3260,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-PROVENANCE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2798,7 +3273,10 @@
     {
       "gateId": "P20-PACKAGE-001-VERIFY",
       "ownerRequirementId": "P20-PACKAGE-001",
-      "checklistGateIds": ["P20-CHECK-006", "P20-CHECK-008"],
+      "checklistGateIds": [
+        "P20-CHECK-006",
+        "P20-CHECK-008"
+      ],
       "owner": "PACKAGE_MAINTAINER",
       "applicability": {
         "mode": "ALWAYS"
@@ -2812,7 +3290,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-PACKAGE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2823,7 +3303,11 @@
     {
       "gateId": "P20-DOCUMENTATION-001-VERIFY",
       "ownerRequirementId": "P20-DOCUMENTATION-001",
-      "checklistGateIds": ["P20-CHECK-006", "P20-CHECK-007", "P20-CHECK-012"],
+      "checklistGateIds": [
+        "P20-CHECK-006",
+        "P20-CHECK-007",
+        "P20-CHECK-012"
+      ],
       "owner": "PACKAGE_MAINTAINER",
       "applicability": {
         "mode": "ALWAYS"
@@ -2837,7 +3321,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-DOCUMENTATION-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2848,7 +3334,10 @@
     {
       "gateId": "P20-METADATA-001-VERIFY",
       "ownerRequirementId": "P20-METADATA-001",
-      "checklistGateIds": ["P20-CHECK-002", "P20-CHECK-008"],
+      "checklistGateIds": [
+        "P20-CHECK-002",
+        "P20-CHECK-008"
+      ],
       "owner": "PACKAGE_MAINTAINER",
       "applicability": {
         "mode": "ALWAYS"
@@ -2862,7 +3351,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-METADATA-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2873,7 +3364,9 @@
     {
       "gateId": "P20-RUNTIME-001-VERIFY",
       "ownerRequirementId": "P20-RUNTIME-001",
-      "checklistGateIds": ["P20-CHECK-008"],
+      "checklistGateIds": [
+        "P20-CHECK-008"
+      ],
       "owner": "PACKAGE_MAINTAINER",
       "applicability": {
         "mode": "ALWAYS"
@@ -2887,7 +3380,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-RUNTIME-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2898,7 +3393,10 @@
     {
       "gateId": "P20-PORTABILITY-001-VERIFY",
       "ownerRequirementId": "P20-PORTABILITY-001",
-      "checklistGateIds": ["P20-CHECK-008", "P20-CHECK-017"],
+      "checklistGateIds": [
+        "P20-CHECK-008",
+        "P20-CHECK-017"
+      ],
       "owner": "PACKAGE_MAINTAINER",
       "applicability": {
         "mode": "ALWAYS"
@@ -2912,7 +3410,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-PORTABILITY-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2923,7 +3423,10 @@
     {
       "gateId": "P20-CI-001-VERIFY",
       "ownerRequirementId": "P20-CI-001",
-      "checklistGateIds": ["P20-CHECK-008", "P20-CHECK-017"],
+      "checklistGateIds": [
+        "P20-CHECK-008",
+        "P20-CHECK-017"
+      ],
       "owner": "RELEASE_ENGINEER",
       "applicability": {
         "mode": "ALWAYS"
@@ -2937,7 +3440,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-CI-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2948,7 +3453,11 @@
     {
       "gateId": "P20-LATE-TAG-001-VERIFY",
       "ownerRequirementId": "P20-LATE-TAG-001",
-      "checklistGateIds": ["P20-CHECK-004", "P20-CHECK-005", "P20-CHECK-016"],
+      "checklistGateIds": [
+        "P20-CHECK-004",
+        "P20-CHECK-005",
+        "P20-CHECK-016"
+      ],
       "owner": "RELEASE_CUSTODIAN",
       "applicability": {
         "mode": "ALWAYS"
@@ -2962,7 +3471,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-LATE-TAG-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2973,7 +3484,10 @@
     {
       "gateId": "P20-MANUAL-001-VERIFY",
       "ownerRequirementId": "P20-MANUAL-001",
-      "checklistGateIds": ["P20-CHECK-004", "P20-CHECK-017"],
+      "checklistGateIds": [
+        "P20-CHECK-004",
+        "P20-CHECK-017"
+      ],
       "owner": "RELEASE_CUSTODIAN",
       "applicability": {
         "mode": "ALWAYS"
@@ -2987,7 +3501,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-MANUAL-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -2998,7 +3514,9 @@
     {
       "gateId": "P20-UNTRUSTED-001-VERIFY",
       "ownerRequirementId": "P20-UNTRUSTED-001",
-      "checklistGateIds": ["P20-CHECK-017"],
+      "checklistGateIds": [
+        "P20-CHECK-017"
+      ],
       "owner": "RELEASE_ENGINEER",
       "applicability": {
         "mode": "ALWAYS"
@@ -3012,7 +3530,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-UNTRUSTED-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -3023,7 +3543,10 @@
     {
       "gateId": "P20-BROWSER-001-VERIFY",
       "ownerRequirementId": "P20-BROWSER-001",
-      "checklistGateIds": ["P20-CHECK-008", "P20-CHECK-017"],
+      "checklistGateIds": [
+        "P20-CHECK-008",
+        "P20-CHECK-017"
+      ],
       "owner": "PACKAGE_MAINTAINER",
       "applicability": {
         "mode": "ALWAYS"
@@ -3037,7 +3560,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-BROWSER-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -3048,7 +3573,9 @@
     {
       "gateId": "P20-RESOURCES-001-VERIFY",
       "ownerRequirementId": "P20-RESOURCES-001",
-      "checklistGateIds": ["P20-CHECK-009"],
+      "checklistGateIds": [
+        "P20-CHECK-009"
+      ],
       "owner": "PACKAGE_MAINTAINER",
       "applicability": {
         "mode": "ALWAYS"
@@ -3062,7 +3589,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-RESOURCES-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -3073,7 +3602,9 @@
     {
       "gateId": "P20-GATES-001-VERIFY",
       "ownerRequirementId": "P20-GATES-001",
-      "checklistGateIds": ["P20-CHECK-010"],
+      "checklistGateIds": [
+        "P20-CHECK-010"
+      ],
       "owner": "PACKAGE_MAINTAINER",
       "applicability": {
         "mode": "ALWAYS"
@@ -3087,7 +3618,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-GATES-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -3098,7 +3631,10 @@
     {
       "gateId": "P20-TOOLCHAIN-001-VERIFY",
       "ownerRequirementId": "P20-TOOLCHAIN-001",
-      "checklistGateIds": ["P20-CHECK-008", "P20-CHECK-017"],
+      "checklistGateIds": [
+        "P20-CHECK-008",
+        "P20-CHECK-017"
+      ],
       "owner": "RELEASE_ENGINEER",
       "applicability": {
         "mode": "ALWAYS"
@@ -3112,7 +3648,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-TOOLCHAIN-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -3123,7 +3661,9 @@
     {
       "gateId": "P20-DEPENDENCIES-001-VERIFY",
       "ownerRequirementId": "P20-DEPENDENCIES-001",
-      "checklistGateIds": ["P20-CHECK-008"],
+      "checklistGateIds": [
+        "P20-CHECK-008"
+      ],
       "owner": "DEPENDENCY_MAINTAINER",
       "applicability": {
         "mode": "ALWAYS"
@@ -3137,7 +3677,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-DEPENDENCIES-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -3148,7 +3690,9 @@
     {
       "gateId": "P20-WEBVOWL-001-VERIFY",
       "ownerRequirementId": "P20-WEBVOWL-001",
-      "checklistGateIds": ["P20-CHECK-013"],
+      "checklistGateIds": [
+        "P20-CHECK-013"
+      ],
       "owner": "CONSUMER_MAINTAINER",
       "applicability": {
         "mode": "ALWAYS"
@@ -3162,7 +3706,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-WEBVOWL-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -3173,7 +3719,9 @@
     {
       "gateId": "P20-WEBVOWL-DEPENDENCIES-001-VERIFY",
       "ownerRequirementId": "P20-WEBVOWL-DEPENDENCIES-001",
-      "checklistGateIds": ["P20-CHECK-013"],
+      "checklistGateIds": [
+        "P20-CHECK-013"
+      ],
       "owner": "CONSUMER_MAINTAINER",
       "applicability": {
         "mode": "ALWAYS"
@@ -3187,7 +3735,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-WEBVOWL-DEPENDENCIES-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -3198,7 +3748,9 @@
     {
       "gateId": "P20-BACKUP-001-VERIFY",
       "ownerRequirementId": "P20-BACKUP-001",
-      "checklistGateIds": ["P20-CHECK-014"],
+      "checklistGateIds": [
+        "P20-CHECK-014"
+      ],
       "owner": "RELEASE_CUSTODIAN",
       "applicability": {
         "mode": "ALWAYS"
@@ -3212,7 +3764,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-BACKUP-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -3242,7 +3796,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-GOVERNANCE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",
@@ -3253,7 +3809,9 @@
     {
       "gateId": "P20-FUTURE-001-VERIFY",
       "ownerRequirementId": "P20-FUTURE-001",
-      "checklistGateIds": ["P20-CHECK-001"],
+      "checklistGateIds": [
+        "P20-CHECK-001"
+      ],
       "owner": "PACKAGE_MAINTAINER",
       "applicability": {
         "mode": "ALWAYS"
@@ -3267,7 +3825,9 @@
         "recordPath": "docs/provenance/releases/<version>/gates.json",
         "jsonPointer": "/requirements/P20-FUTURE-001"
       },
-      "permittedFinalResults": ["PASS"],
+      "permittedFinalResults": [
+        "PASS"
+      ],
       "failureClasses": [
         "PRODUCT_FAILURE",
         "CONTROL_FAILURE",

@@ -1,0 +1,162 @@
+{
+  "artifactId": "15fe4c0ee36c914f3107503ed65abc4598e83f8a641837058c172ee1d9b52537",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5530,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.github/dependabot.yml",
+        "sha256": "c4982ac89f48fbd97008135057e2768adcdc8bb1581197e3dc2ba87ded910277",
+        "size": 300,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/workflows/ci.yml",
+        "sha256": "81797e1b59d82968b131bf5d086fb900a6a0e9b7e733048cec1d630d358156ec",
+        "size": 483,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "d4c2065e2b936e62a4eb400efb4576edec9ca1388a9f78aa288e147275e7bc8b",
+        "size": 1081,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "2659d199c76750c6a4b1d865c3fd685f07d89c5d0a65a3e967750aed7deec764",
+        "size": 7606,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "99f995e5d499ad052b9a03a0f1e0d5c24a9705a64d1ac025463ffcbe9522aff6",
+        "size": 4057,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8337ba9774d6d8199a5861c6dfa57058f162bfb6210362c01db38f0a593f96d6",
+        "size": 1444,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1081,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d4/d4c2065e2b936e62a4eb400efb4576edec9ca1388a9f78aa288e147275e7bc8b",
+          "sha256": "d4c2065e2b936e62a4eb400efb4576edec9ca1388a9f78aa288e147275e7bc8b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "d4c2065e2b936e62a4eb400efb4576edec9ca1388a9f78aa288e147275e7bc8b",
+        "size": 1081
+      },
+      {
+        "blob": {
+          "bytes": 7606,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/26/2659d199c76750c6a4b1d865c3fd685f07d89c5d0a65a3e967750aed7deec764",
+          "sha256": "2659d199c76750c6a4b1d865c3fd685f07d89c5d0a65a3e967750aed7deec764"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "2659d199c76750c6a4b1d865c3fd685f07d89c5d0a65a3e967750aed7deec764",
+        "size": 7606
+      }
+    ],
+    "expandedBytes": 14971,
+    "packageIdentity": {
+      "author": {
+        "email": "feross@feross.org",
+        "name": "Feross Aboukhadijeh",
+        "url": "https://feross.org"
+      },
+      "homepage": "https://github.com/feross/simple-get",
+      "license": "MIT",
+      "name": "simple-get",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/feross/simple-get.git"
+      },
+      "version": "4.0.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "feross@feross.org",
+        "name": "Feross Aboukhadijeh",
+        "url": "https://feross.org"
+      },
+      "browser": {
+        "decompress-response": false
+      },
+      "bugs": {
+        "url": "https://github.com/feross/simple-get/issues"
+      },
+      "dependencies": {
+        "decompress-response": "^6.0.0",
+        "once": "^1.3.1",
+        "simple-concat": "^1.0.0"
+      },
+      "description": "Simplest way to make http get requests. Supports HTTPS, redirects, gzip/deflate, streams in < 100 lines.",
+      "devDependencies": {
+        "self-signed-https": "^1.0.5",
+        "standard": "*",
+        "string-to-stream": "^3.0.0",
+        "tape": "^5.0.0"
+      },
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/feross"
+        },
+        {
+          "type": "patreon",
+          "url": "https://www.patreon.com/feross"
+        },
+        {
+          "type": "consulting",
+          "url": "https://feross.org/support"
+        }
+      ],
+      "homepage": "https://github.com/feross/simple-get",
+      "keywords": [
+        "request",
+        "http",
+        "GET",
+        "get request",
+        "http.get",
+        "redirects",
+        "follow redirects",
+        "gzip",
+        "deflate",
+        "https",
+        "http-https",
+        "stream",
+        "simple request",
+        "simple get"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "simple-get",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/feross/simple-get.git"
+      },
+      "scripts": {
+        "test": "standard && tape test/*.js"
+      },
+      "version": "4.0.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 5530,
+      "sha256": "f902a1ee61bb7c404b631914833ddcd480dfc20350b275a7e72d45c589459754"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

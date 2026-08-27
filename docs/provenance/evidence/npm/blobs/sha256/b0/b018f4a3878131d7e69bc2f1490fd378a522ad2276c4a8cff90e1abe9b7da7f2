@@ -1,0 +1,97 @@
+{
+  "artifactId": "1dbf6d2bea3854f46dc5e0f277b13158ea9f76dcc89356c6de5d0a5ab0fdc586",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1624,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "be4c598d31f0fed3ebf20b02f2145254056119235e96d99c151532ba3f22937b",
+        "size": 516,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "b8e61330204f996498568005c3e08e0ce30aabf897582a4cd35ebf97a99cee45",
+        "size": 466,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "24806d8f93ae2b844db068a73cb06333a61276bea2ba22d68ee2645c6d2cc292",
+        "size": 693,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 2807,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "babel-preset-jest",
+      "repository": {
+        "directory": "packages/babel-preset-jest",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.4.0"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "babel-plugin-jest-hoist": "30.4.0",
+        "babel-preset-current-node-syntax": "^1.2.0"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./package.json": "./package.json"
+      },
+      "gitHead": "5cbb21e0b3037edb42e503ec1a1ce80efad40c20",
+      "license": "MIT",
+      "main": "./index.js",
+      "name": "babel-preset-jest",
+      "peerDependencies": {
+        "@babel/core": "^7.11.0 || ^8.0.0-beta.1"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-preset-jest",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.4.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1624,
+      "sha256": "90a32bd912ee31e41237b559821dc8f99becf9bd2210af508fa5f0b52066fd9a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

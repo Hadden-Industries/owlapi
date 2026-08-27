@@ -1,0 +1,193 @@
+{
+  "artifactId": "54d1b0ae0cfec21bcaa48a1d85ebcdb90c2feca087b242f4568f5c60e2fdf8a4",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 101468,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+        "size": 1552,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "13bde511569d6d63643b1fe051d0c0984636447c482a7a3f9f96e87d1957c390",
+        "size": 22018,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts",
+        "sha256": "de323e6e2d30c548683c4c0a44f46f06f1f38d361a4c58c0e36bf7db3caa4e30",
+        "size": 39739,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts.map",
+        "sha256": "4c2908a2190cce5a6d58046be2638dee091c59e00c2feb94351e245e8e591e07",
+        "size": 18206,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js",
+        "sha256": "b990d527652fd2e29f01da33a3a6e68a2ac5ec93a6d6a64f410b220358ccef00",
+        "size": 66265,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js.map",
+        "sha256": "4bf49eef944d424173ae8dcddec33f827ee0d2bb7ee25938b296692f5c9a3cba",
+        "size": 131780,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/package.json",
+        "sha256": "8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a",
+        "size": 25,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts",
+        "sha256": "de323e6e2d30c548683c4c0a44f46f06f1f38d361a4c58c0e36bf7db3caa4e30",
+        "size": 39739,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts.map",
+        "sha256": "4c2908a2190cce5a6d58046be2638dee091c59e00c2feb94351e245e8e591e07",
+        "size": 18206,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js",
+        "sha256": "c7085c9ef717c6f4d856059317aad3d41639baff791acf2cb80502b0109fc31f",
+        "size": 64436,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js.map",
+        "sha256": "9f0024f070b2b163c1ef9afc31e4c2edc20a2d5304831a5cd1118c2cd3fe4820",
+        "size": 131907,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/package.json",
+        "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+        "size": 23,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "fb54fe908dbe5f288bd1c5d7429f033c4f527f435c3d3a583ee0ce9e78992087",
+        "size": 1784,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1552,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8a/8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+          "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+        "size": 1552
+      }
+    ],
+    "expandedBytes": 535680,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (https://blog.izs.me)",
+      "homepage": null,
+      "license": "BlueOak-1.0.0",
+      "name": "path-scurry",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/path-scurry"
+      },
+      "version": "2.0.2"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (https://blog.izs.me)",
+      "dependencies": {
+        "lru-cache": "^11.0.0",
+        "minipass": "^7.1.2"
+      },
+      "description": "walk paths fast and efficiently",
+      "devDependencies": {
+        "@nodelib/fs.walk": "^3.0.1",
+        "@types/node": "^25.3.0",
+        "mkdirp": "^3.0.0",
+        "prettier": "^3.3.2",
+        "rimraf": "^6.1.3",
+        "tap": "^21.6.1",
+        "ts-node": "^10.9.2",
+        "tshy": "^3.3.2",
+        "typedoc": "^0.28.17"
+      },
+      "engines": {
+        "node": "18 || 20 || >=22"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./dist/esm/index.js",
+            "types": "./dist/esm/index.d.ts"
+          },
+          "require": {
+            "default": "./dist/commonjs/index.js",
+            "types": "./dist/commonjs/index.d.ts"
+          }
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "dist"
+      ],
+      "funding": {
+        "url": "https://github.com/sponsors/isaacs"
+      },
+      "license": "BlueOak-1.0.0",
+      "main": "./dist/commonjs/index.js",
+      "module": "./dist/esm/index.js",
+      "name": "path-scurry",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/path-scurry"
+      },
+      "scripts": {
+        "bench": "bash ./scripts/bench.sh",
+        "format": "prettier --write . --log-level warn",
+        "postversion": "npm publish",
+        "prepare": "tshy",
+        "prepublishOnly": "git push origin --follow-tags",
+        "presnap": "npm run prepare",
+        "pretest": "npm run prepare",
+        "preversion": "npm test",
+        "snap": "tap",
+        "test": "tap",
+        "typedoc": "typedoc --tsconfig tsconfig-esm.json ./src/*.ts"
+      },
+      "tshy": {
+        "exports": {
+          ".": "./src/index.ts",
+          "./package.json": "./package.json"
+        },
+        "selfLink": false
+      },
+      "type": "module",
+      "types": "./dist/commonjs/index.d.ts",
+      "version": "2.0.2"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 101468,
+      "sha256": "dea3e3dab1c00c28fcb5871b1133b02050c7e110dde2dbe31e14067922c23ec1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

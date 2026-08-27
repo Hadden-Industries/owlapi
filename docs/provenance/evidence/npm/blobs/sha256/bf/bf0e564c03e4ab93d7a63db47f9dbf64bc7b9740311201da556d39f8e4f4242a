@@ -1,0 +1,125 @@
+{
+  "artifactId": "865d08539aeabfa1807ff66d0f68fee646fbb569e592859f0d0549a9f0550d6a",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4384,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "e6de0639f2b9ca634e7a3febf2611085c4b6ca1439f9ebed1cad4f1489bdf7c2",
+        "size": 346,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/find-suggestion.js",
+        "sha256": "57310ed660b1f93412ffde3c5d00ccc0bf7b5e6881925dbbfeaeab248ed18d3d",
+        "size": 743,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/find-suggestion.js.map",
+        "sha256": "c24df255f28dba402715a4a02a0b27e68f5af3aef92d77d723750a0038f0e46f",
+        "size": 2691,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "f88b48887e540ba645aee55b29dbfe810b9318a8b757748cddab83fc948e562b",
+        "size": 497,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "56a8c38ff0a8820e7458e2816441d0899f199debdc24a71fd72656358b408bd0",
+        "size": 327,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/validator.js",
+        "sha256": "9ef8ae61b61c1fafe80d4a2dae260e64f2eccdf4ac0b9c72f3bd1df4ff157c43",
+        "size": 1428,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/validator.js.map",
+        "sha256": "8deb17b24ab7acdfeb7bb1f4aeb735389c9441117798716a524d3de9bfb96622",
+        "size": 4006,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b2d7eca451e536f18f4757a54be48df604385ad978508e32ce8f2edb4973f257",
+        "size": 631,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 11775,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/helper-validator-option",
+      "repository": {
+        "directory": "packages/babel-helper-validator-option",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "description": "Validate plugin/preset options",
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./lib/index.js",
+          "types": "./lib/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/helper-validator-option",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-helper-validator-option",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 4384,
+      "sha256": "e32d8ff2cc0455c5210f92f0844d2cb6e1d61b83ee17d7b328fe410f9021e4cd"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

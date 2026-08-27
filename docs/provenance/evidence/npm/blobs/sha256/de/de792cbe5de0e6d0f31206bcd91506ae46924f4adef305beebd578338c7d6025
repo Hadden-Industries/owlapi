@@ -1,0 +1,1783 @@
+{
+  "artifactId": "71c336deca9bbdd1489439ccb2f15d6d6bbcb8af7d012dc1d5978af2c7001cb7",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 5,
+      "digestVerifiedFileCount": 5,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 5
+    },
+    "artifactId": "71c336deca9bbdd1489439ccb2f15d6d6bbcb8af7d012dc1d5978af2c7001cb7",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "0.0.6",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-safaritechpreview-launcher",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.14.3",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/husky",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.16.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/buble",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.16.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/rollup-plugin-buble",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.4.2",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-edge-launcher",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.50.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/rollup",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.0.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-ie-launcher",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.0.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-opera-launcher",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.0.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-safari-launcher",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.0.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/simple-assert",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.0.1",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-firefox-launcher",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.1.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/rollup-plugin-istanbul",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.1.1",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-coverage",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.2.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint-plugin-filenames",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.2.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-sauce-launcher",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.3.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-mocha",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.7.1",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^11.3.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/nyc",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^14.0.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint-config-strict",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.1.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/benchmark",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.2.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-chrome-launcher",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.2.5",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-detect-browsers",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.0.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/codecov",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.0.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/rollup-plugin-node-resolve",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.0.1",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/mocha",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.10.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.2.1",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/commitlint-config-angular",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.2.2",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40commitlint/cli",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.1.1",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/cross-env",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^8.2.0",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/semantic-release",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^8.2.6",
+        "for_package_purl": "pkg:npm/type-detect@4.0.8",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/rollup-plugin-commonjs",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2013 Jake Luer <jake@alogicalparadox.com> (http://alogicalparadox.com)",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/type-detect@4.0.8"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Jake Luer",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-cacd5c0c-204a-85c2-affc-e4c125b2492a",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 19,
+                "from_file": "71c336deca9bbdd1489439ccb2f15d6d6bbcb8af7d012dc1d5978af2c7001cb7/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "4b2ce66eeab3484b3213e85ab6c0564d",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 93.6,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "341b2db2dd3692ecbc088a425617076dd3bfb7e6",
+        "sha1_git": "7ea799f0ef4a80112178975b5f15d97c4863e09e",
+        "sha256": "e5aee0714b6ecc416454b968d1017570ef609f20d8722ab84b07acd550b78198",
+        "size": 1109,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/type-detect@4.0.8"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-ea7bfcbd-d217-ed9e-4992-949d411af7ec",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 14,
+                "from_file": "71c336deca9bbdd1489439ccb2f15d6d6bbcb8af7d012dc1d5978af2c7001cb7/package/README.md",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "license:mit\"",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 14
+              },
+              {
+                "end_line": 15,
+                "from_file": "71c336deca9bbdd1489439ccb2f15d6d6bbcb8af7d012dc1d5978af2c7001cb7/package/README.md",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "license-mit-",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 15
+              }
+            ]
+          }
+        ],
+        "md5": "9a53d23eb710690bec3e7b05634eacd1",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0.48,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "ba6b2c15d2e9175fa47ecbbb19f4a190ae28e977",
+        "sha1_git": "d2c4cb7e5402d7224c9ce55afc6a1b654ccb26d3",
+        "sha256": "8171237d5b99480a61636bd9d6664263728d97a0580777a6683fef732d90fd53",
+        "size": 7428,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2013 jake luer <jake@alogicalparadox.com>",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/type-detect@4.0.8"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "jake luer",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-4e7803e6-e54b-c9ca-bcd2-bee9755c0dd7",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 4,
+                "from_file": "71c336deca9bbdd1489439ccb2f15d6d6bbcb8af7d012dc1d5978af2c7001cb7/package/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT Licensed",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_126.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_126.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "61f1fa14b40ade12393f1bdd021388ec",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/index.js",
+        "percentage_of_license_text": 0.11,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "36361a419d8c2e0aefed735cea628703b3488093",
+        "sha1_git": "98a1e031cd270b5658cdfe2ed966e2e5c4c5f825",
+        "sha256": "6d9b21a4a917fe748b61102f2026b3af6b9a22b8ce8ac0d87466c815112ccd41",
+        "size": 15307,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/type-detect@4.0.8"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "71c336deca9bbdd1489439ccb2f15d6d6bbcb8af7d012dc1d5978af2c7001cb7/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "{\"name\":\"type-detect\",\"description\":\"Improved typeof detection for node.js and the browser.\",\"keywords\":[\"type\",\"typeof\",\"types\"],\"license\":\"MIT\",\"author\":\"Jake Luer <jake@alogicalparadox.com> (http://alogicalparadox.com)\",\"contributors\":[\"Keith Cirkel (https://github.com/keithamus)\",\"David Losert (https://github.com/davelosert)\",\"Aleksey Shvayka (https://github.com/shvaikalesh)\",\"Lucas Fernandes da Costa (https://github.com/lucasfcosta)\",\"Grant Snodgrass (https://github.com/meeber)\",\"Jeremy Tice (https://github.com/jetpacmonkey)\",\"Edward Betts (https://github.com/EdwardBetts)\",\"dvlsg (https://github.com/dvlsg)\",\"Amila Welihinda (https://github.com/amilajack)\",\"Jake Champion (https://github.com/JakeChampion)\",\"Miroslav Bajtoš (https://github.com/bajtos)\"],\"files\":[\"index.js\",\"type-detect.js\"],\"main\":\"./type-detect.js\",\"repository\":{\"type\":\"git\",\"url\":\"git+ssh://git@github.com/chaijs/type-detect.git\"},\"scripts\":{\"bench\":\"node bench\",\"build\":\"rollup -c rollup.conf.js\",\"commit-msg\":\"commitlint -x angular\",\"lint\":\"eslint --ignore-path .gitignore .\",\"prepare\":\"cross-env NODE_ENV=production npm run build\",\"semantic-release\":\"semantic-release pre && npm publish && semantic-release post\",\"pretest:node\":\"cross-env NODE_ENV=test npm run build\",\"pretest:browser\":\"cross-env NODE_ENV=test npm run build\",\"test\":\"npm run test:node && npm run test:browser\",\"test:browser\":\"karma start --singleRun=true\",\"test:node\":\"nyc mocha type-detect.test.js\",\"posttest:node\":\"nyc report --report-dir \\\"coverage/node-$(node --version)\\\" --reporter=lcovonly && npm run upload-coverage\",\"posttest:browser\":\"npm run upload-coverage\",\"upload-coverage\":\"codecov\"},\"eslintConfig\":{\"env\":{\"es6\":true},\"extends\":[\"strict/es6\"],\"globals\":{\"HTMLElement\":false},\"rules\":{\"complexity\":0,\"max-statements\":0,\"prefer-rest-params\":0}},\"devDependencies\":{\"@commitlint/cli\":\"^4.2.2\",\"benchmark\":\"^2.1.0\",\"buble\":\"^0.16.0\",\"codecov\":\"^3.0.0\",\"commitlint-config-angular\":\"^4.2.1\",\"cross-env\":\"^5.1.1\",\"eslint\":\"^4.10.0\",\"eslint-config-strict\":\"^14.0.0\",\"eslint-plugin-filenames\":\"^1.2.0\",\"husky\":\"^0.14.3\",\"karma\":\"^1.7.1\",\"karma-chrome-launcher\":\"^2.2.0\",\"karma-coverage\":\"^1.1.1\",\"karma-detect-browsers\":\"^2.2.5\",\"karma-edge-launcher\":\"^0.4.2\",\"karma-firefox-launcher\":\"^1.0.1\",\"karma-ie-launcher\":\"^1.0.0\",\"karma-mocha\":\"^1.3.0\",\"karma-opera-launcher\":\"^1.0.0\",\"karma-safari-launcher\":\"^1.0.0\",\"karma-safaritechpreview-launcher\":\"0.0.6\",\"karma-sauce-launcher\":\"^1.2.0\",\"mocha\":\"^4.0.1\",\"nyc\":\"^11.3.0\",\"rollup\":\"^0.50.0\",\"rollup-plugin-buble\":\"^0.16.0\",\"rollup-plugin-commonjs\":\"^8.2.6\",\"rollup-plugin-istanbul\":\"^1.1.0\",\"rollup-plugin-node-resolve\":\"^3.0.0\",\"semantic-release\":\"^8.2.0\",\"simple-assert\":\"^1.0.0\"},\"engines\":{\"node\":\">=4\"},\"version\":\"4.0.8\"}",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": "16a9e172bcdf037032c31ace21179b27",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/type-detect/4.0.8",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "mit",
+            "declared_license_expression_spdx": "MIT",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "0.0.6",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-safaritechpreview-launcher",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.14.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/husky",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.16.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/buble",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.16.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/rollup-plugin-buble",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.4.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-edge-launcher",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.50.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/rollup",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-ie-launcher",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-opera-launcher",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-safari-launcher",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/simple-assert",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.0.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-firefox-launcher",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/rollup-plugin-istanbul",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.1.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-coverage",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.2.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint-plugin-filenames",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.2.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-sauce-launcher",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.3.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-mocha",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.7.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^11.3.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/nyc",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^14.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint-config-strict",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/benchmark",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.2.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-chrome-launcher",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.2.5",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-detect-browsers",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/codecov",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/rollup-plugin-node-resolve",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.0.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/mocha",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.10.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.2.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/commitlint-config-angular",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.2.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40commitlint/cli",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.1.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/cross-env",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^8.2.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/semantic-release",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^8.2.6",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/rollup-plugin-commonjs",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "Improved typeof detection for node.js and the browser.",
+            "download_url": "https://registry.npmjs.org/type-detect/-/type-detect-4.0.8.tgz",
+            "extra_data": {
+              "engines": {
+                "node": ">=4"
+              }
+            },
+            "extracted_license_statement": "- MIT\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "type",
+              "typeof",
+              "types"
+            ],
+            "license_detections": [
+              {
+                "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "71c336deca9bbdd1489439ccb2f15d6d6bbcb8af7d012dc1d5978af2c7001cb7/package/package.json",
+                    "license_expression": "mit",
+                    "license_expression_spdx": "MIT",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "MIT",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "type-detect",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "jake@alogicalparadox.com",
+                "name": "Jake Luer",
+                "role": "author",
+                "type": "person",
+                "url": "http://alogicalparadox.com"
+              },
+              {
+                "email": null,
+                "name": "Aleksey Shvayka",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/shvaikalesh"
+              },
+              {
+                "email": null,
+                "name": "Amila Welihinda",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/amilajack"
+              },
+              {
+                "email": null,
+                "name": "David Losert",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/davelosert"
+              },
+              {
+                "email": null,
+                "name": "Edward Betts",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/EdwardBetts"
+              },
+              {
+                "email": null,
+                "name": "Grant Snodgrass",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/meeber"
+              },
+              {
+                "email": null,
+                "name": "Jake Champion",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/JakeChampion"
+              },
+              {
+                "email": null,
+                "name": "Jeremy Tice",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/jetpacmonkey"
+              },
+              {
+                "email": null,
+                "name": "Keith Cirkel",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/keithamus"
+              },
+              {
+                "email": null,
+                "name": "Lucas Fernandes da Costa",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/lucasfcosta"
+              },
+              {
+                "email": null,
+                "name": "Miroslav Bajtoš",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/bajtos"
+              },
+              {
+                "email": null,
+                "name": "dvlsg",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/dvlsg"
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/type-detect@4.0.8",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/type-detect/-/type-detect-4.0.8.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/type-detect",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+ssh://git@github.com/chaijs/type-detect.git",
+            "version": "4.0.8"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 0.48,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "d68107cbc4b31ffd0c729b60228939cce4a6de81",
+        "sha1_git": "bebf2d865879fdb3f580ee539d3210cb1ca91901",
+        "sha256": "fed6c9bd465b75aaf925af935a3f160f0443720da5daa164db87771bbab95f44",
+        "size": 2734,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "type-detect",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2013 jake luer <jake@alogicalparadox.com>",
+            "end_line": 9,
+            "start_line": 9
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/type-detect@4.0.8"
+        ],
+        "holders": [
+          {
+            "end_line": 9,
+            "holder": "jake luer",
+            "start_line": 9
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-4e7803e6-e54b-c9ca-bcd2-bee9755c0dd7",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 10,
+                "from_file": "71c336deca9bbdd1489439ccb2f15d6d6bbcb8af7d012dc1d5978af2c7001cb7/package/type-detect.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT Licensed",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_126.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_126.RULE",
+                "score": 100,
+                "start_line": 10
+              }
+            ]
+          }
+        ],
+        "md5": "1bf0893ec8455ad65269f76e786c7830",
+        "name": "type-detect.js",
+        "package_data": [],
+        "path": "package/type-detect.js",
+        "percentage_of_license_text": 0.11,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "088819ab5ac69c4b333bf51c238333496311265c",
+        "sha1_git": "2f55525258c7ce69ef928573f077294993bd7703",
+        "sha256": "ba7f43d661694211065f96d7dfeffdb14c00dca933173d2db73c92a2f4f2bcf3",
+        "size": 15532,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "71c336deca9bbdd1489439ccb2f15d6d6bbcb8af7d012dc1d5978af2c7001cb7/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "{\"name\":\"type-detect\",\"description\":\"Improved typeof detection for node.js and the browser.\",\"keywords\":[\"type\",\"typeof\",\"types\"],\"license\":\"MIT\",\"author\":\"Jake Luer <jake@alogicalparadox.com> (http://alogicalparadox.com)\",\"contributors\":[\"Keith Cirkel (https://github.com/keithamus)\",\"David Losert (https://github.com/davelosert)\",\"Aleksey Shvayka (https://github.com/shvaikalesh)\",\"Lucas Fernandes da Costa (https://github.com/lucasfcosta)\",\"Grant Snodgrass (https://github.com/meeber)\",\"Jeremy Tice (https://github.com/jetpacmonkey)\",\"Edward Betts (https://github.com/EdwardBetts)\",\"dvlsg (https://github.com/dvlsg)\",\"Amila Welihinda (https://github.com/amilajack)\",\"Jake Champion (https://github.com/JakeChampion)\",\"Miroslav Bajtoš (https://github.com/bajtos)\"],\"files\":[\"index.js\",\"type-detect.js\"],\"main\":\"./type-detect.js\",\"repository\":{\"type\":\"git\",\"url\":\"git+ssh://git@github.com/chaijs/type-detect.git\"},\"scripts\":{\"bench\":\"node bench\",\"build\":\"rollup -c rollup.conf.js\",\"commit-msg\":\"commitlint -x angular\",\"lint\":\"eslint --ignore-path .gitignore .\",\"prepare\":\"cross-env NODE_ENV=production npm run build\",\"semantic-release\":\"semantic-release pre && npm publish && semantic-release post\",\"pretest:node\":\"cross-env NODE_ENV=test npm run build\",\"pretest:browser\":\"cross-env NODE_ENV=test npm run build\",\"test\":\"npm run test:node && npm run test:browser\",\"test:browser\":\"karma start --singleRun=true\",\"test:node\":\"nyc mocha type-detect.test.js\",\"posttest:node\":\"nyc report --report-dir \\\"coverage/node-$(node --version)\\\" --reporter=lcovonly && npm run upload-coverage\",\"posttest:browser\":\"npm run upload-coverage\",\"upload-coverage\":\"codecov\"},\"eslintConfig\":{\"env\":{\"es6\":true},\"extends\":[\"strict/es6\"],\"globals\":{\"HTMLElement\":false},\"rules\":{\"complexity\":0,\"max-statements\":0,\"prefer-rest-params\":0}},\"devDependencies\":{\"@commitlint/cli\":\"^4.2.2\",\"benchmark\":\"^2.1.0\",\"buble\":\"^0.16.0\",\"codecov\":\"^3.0.0\",\"commitlint-config-angular\":\"^4.2.1\",\"cross-env\":\"^5.1.1\",\"eslint\":\"^4.10.0\",\"eslint-config-strict\":\"^14.0.0\",\"eslint-plugin-filenames\":\"^1.2.0\",\"husky\":\"^0.14.3\",\"karma\":\"^1.7.1\",\"karma-chrome-launcher\":\"^2.2.0\",\"karma-coverage\":\"^1.1.1\",\"karma-detect-browsers\":\"^2.2.5\",\"karma-edge-launcher\":\"^0.4.2\",\"karma-firefox-launcher\":\"^1.0.1\",\"karma-ie-launcher\":\"^1.0.0\",\"karma-mocha\":\"^1.3.0\",\"karma-opera-launcher\":\"^1.0.0\",\"karma-safari-launcher\":\"^1.0.0\",\"karma-safaritechpreview-launcher\":\"0.0.6\",\"karma-sauce-launcher\":\"^1.2.0\",\"mocha\":\"^4.0.1\",\"nyc\":\"^11.3.0\",\"rollup\":\"^0.50.0\",\"rollup-plugin-buble\":\"^0.16.0\",\"rollup-plugin-commonjs\":\"^8.2.6\",\"rollup-plugin-istanbul\":\"^1.1.0\",\"rollup-plugin-node-resolve\":\"^3.0.0\",\"semantic-release\":\"^8.2.0\",\"simple-assert\":\"^1.0.0\"},\"engines\":{\"node\":\">=4\"},\"version\":\"4.0.8\"}",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_30.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "71c336deca9bbdd1489439ccb2f15d6d6bbcb8af7d012dc1d5978af2c7001cb7/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "MIT",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-cacd5c0c-204a-85c2-affc-e4c125b2492a",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 19,
+            "from_file": "71c336deca9bbdd1489439ccb2f15d6d6bbcb8af7d012dc1d5978af2c7001cb7/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 161,
+            "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+            "score": 100,
+            "start_line": 3
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-ea7bfcbd-d217-ed9e-4992-949d411af7ec",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 14,
+            "from_file": "71c336deca9bbdd1489439ccb2f15d6d6bbcb8af7d012dc1d5978af2c7001cb7/package/README.md",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "license:mit\"",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_30.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+            "score": 100,
+            "start_line": 14
+          },
+          {
+            "end_line": 15,
+            "from_file": "71c336deca9bbdd1489439ccb2f15d6d6bbcb8af7d012dc1d5978af2c7001cb7/package/README.md",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "license-mit-",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_30.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+            "score": 100,
+            "start_line": 15
+          }
+        ]
+      },
+      {
+        "detection_count": 2,
+        "identifier": "mit-4e7803e6-e54b-c9ca-bcd2-bee9755c0dd7",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 4,
+            "from_file": "71c336deca9bbdd1489439ccb2f15d6d6bbcb8af7d012dc1d5978af2c7001cb7/package/index.js",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": " * MIT Licensed",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_126.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_126.RULE",
+            "score": 100,
+            "start_line": 4
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "mit.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 161,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+      },
+      {
+        "identifier": "mit_126.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_126.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT Licensed"
+      },
+      {
+        "identifier": "mit_30.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: MIT"
+      },
+      {
+        "identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/type-detect/4.0.8",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "mit",
+        "declared_license_expression_spdx": "MIT",
+        "description": "Improved typeof detection for node.js and the browser.",
+        "download_url": "https://registry.npmjs.org/type-detect/-/type-detect-4.0.8.tgz",
+        "extra_data": {
+          "engines": {
+            "node": ">=4"
+          }
+        },
+        "extracted_license_statement": "- MIT\n",
+        "holder": null,
+        "homepage_url": null,
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "type",
+          "typeof",
+          "types"
+        ],
+        "license_detections": [
+          {
+            "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "71c336deca9bbdd1489439ccb2f15d6d6bbcb8af7d012dc1d5978af2c7001cb7/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "MIT",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "type-detect",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "jake@alogicalparadox.com",
+            "name": "Jake Luer",
+            "role": "author",
+            "type": "person",
+            "url": "http://alogicalparadox.com"
+          },
+          {
+            "email": null,
+            "name": "Aleksey Shvayka",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/shvaikalesh"
+          },
+          {
+            "email": null,
+            "name": "Amila Welihinda",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/amilajack"
+          },
+          {
+            "email": null,
+            "name": "David Losert",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/davelosert"
+          },
+          {
+            "email": null,
+            "name": "Edward Betts",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/EdwardBetts"
+          },
+          {
+            "email": null,
+            "name": "Grant Snodgrass",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/meeber"
+          },
+          {
+            "email": null,
+            "name": "Jake Champion",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/JakeChampion"
+          },
+          {
+            "email": null,
+            "name": "Jeremy Tice",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/jetpacmonkey"
+          },
+          {
+            "email": null,
+            "name": "Keith Cirkel",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/keithamus"
+          },
+          {
+            "email": null,
+            "name": "Lucas Fernandes da Costa",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/lucasfcosta"
+          },
+          {
+            "email": null,
+            "name": "Miroslav Bajtoš",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/bajtos"
+          },
+          {
+            "email": null,
+            "name": "dvlsg",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/dvlsg"
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/type-detect@4.0.8",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/type-detect/-/type-detect-4.0.8.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/type-detect",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+ssh://git@github.com/chaijs/type-detect.git",
+        "version": "4.0.8"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

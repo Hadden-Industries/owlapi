@@ -1,0 +1,191 @@
+{
+  "artifactId": "3c0119a497f8e379b5d70f3d9f098b4f96f763584106f3d212fe20f83e8441a4",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 80357,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "fcf6eabf68ca96988a6b506b4fdc6cc32535d80eb2e11c79724af5ac6f50262b",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "f6031d35a72fafcb0950c02c39481a666e27d80bd36d1a1ca8ebd26aad19264c",
+        "size": 1684,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.mts",
+        "sha256": "c00b143e0bbd2b2b41747fc8c42490b616e067c1dbd25d33a99319ed0fff6aef",
+        "size": 9832,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "c00b143e0bbd2b2b41747fc8c42490b616e067c1dbd25d33a99319ed0fff6aef",
+        "size": 9832,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "ccf0636091a35ef90ccc61c159659831e4764d335f812cea91949e72525534da",
+        "size": 88345,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js.map",
+        "sha256": "9082f1602faa1f124ad68b49aabe596b2a7a9fe904c069f0493199db1226e476",
+        "size": 152466,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.mjs",
+        "sha256": "46d42d262b8938622a23192f3aed3da162834c5736a323a6f0e6e266e8476a33",
+        "size": 87220,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.mjs.map",
+        "sha256": "1f8c1780947603cb2f9e145f0ec50c1f7357ef462b7f40017086964096dc1b56",
+        "size": 152406,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d30a772ab56a2fd981086e6bda0288db650c35628b1114e7bd877e366a3c2fac",
+        "size": 3263,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/fc/fcf6eabf68ca96988a6b506b4fdc6cc32535d80eb2e11c79724af5ac6f50262b",
+          "sha256": "fcf6eabf68ca96988a6b506b4fdc6cc32535d80eb2e11c79724af5ac6f50262b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "fcf6eabf68ca96988a6b506b4fdc6cc32535d80eb2e11c79724af5ac6f50262b",
+        "size": 1071
+      }
+    ],
+    "expandedBytes": 506119,
+    "packageIdentity": {
+      "author": "Toru Nagashima",
+      "homepage": "https://github.com/eslint-community/eslint-utils#readme",
+      "license": "MIT",
+      "name": "@eslint-community/eslint-utils",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/eslint-community/eslint-utils"
+      },
+      "version": "4.10.1"
+    },
+    "packageMetadata": {
+      "author": "Toru Nagashima",
+      "bugs": {
+        "url": "https://github.com/eslint-community/eslint-utils/issues"
+      },
+      "dependencies": {
+        "eslint-visitor-keys": "^3.4.3"
+      },
+      "description": "Utilities for ESLint plugins.",
+      "devDependencies": {
+        "@eslint-community/eslint-plugin-eslint-comments": "^4.5.0",
+        "@types/eslint": "^9.6.1",
+        "@types/estree": "^1.0.8",
+        "@types/node": "^20.19.43",
+        "@typescript-eslint/parser": "^5.62.0",
+        "@typescript-eslint/types": "^5.62.0",
+        "c8": "^8.0.1",
+        "dot-prop": "^7.2.0",
+        "eslint": "^8.57.1",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-n": "^15.7.0",
+        "eslint-plugin-prettier": "^4.2.5",
+        "globals": "^13.24.0",
+        "installed-check": "^8.0.1",
+        "knip": "^5.80.2",
+        "mocha": "^9.2.2",
+        "npm-run-all2": "^6.2.6",
+        "opener": "^1.5.2",
+        "prettier": "2.8.8",
+        "rimraf": "^3.0.2",
+        "rollup": "^2.79.2",
+        "rollup-plugin-dts": "^4.2.3",
+        "rollup-plugin-sourcemaps": "^0.6.3",
+        "semver": "^7.7.3",
+        "typescript": "^4.9.5",
+        "vitepress": "^1.6.4",
+        "warun": "^1.0.0"
+      },
+      "engines": {
+        "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
+      },
+      "exports": {
+        ".": {
+          "import": "./index.mjs",
+          "require": "./index.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "index.*"
+      ],
+      "funding": "https://opencollective.com/eslint",
+      "homepage": "https://github.com/eslint-community/eslint-utils#readme",
+      "keywords": [
+        "eslint"
+      ],
+      "license": "MIT",
+      "main": "index",
+      "module": "index.mjs",
+      "name": "@eslint-community/eslint-utils",
+      "peerDependencies": {
+        "eslint": "^6.0.0 || ^7.0.0 || >=8.0.0"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/eslint-community/eslint-utils"
+      },
+      "scripts": {
+        "build": "npm run build:dts && npm run build:rollup",
+        "build:dts": "tsc -p tsconfig.build.json",
+        "build:rollup": "rollup -c",
+        "clean": "rimraf .nyc_output coverage index.* dist",
+        "coverage": "opener ./coverage/lcov-report/index.html",
+        "docs:build": "vitepress build docs",
+        "docs:watch": "vitepress dev docs",
+        "format": "npm run -s format:prettier -- --write",
+        "format:check": "npm run -s format:prettier -- --check",
+        "format:prettier": "prettier .",
+        "lint": "run-p lint:*",
+        "lint:eslint": "eslint .",
+        "lint:format": "npm run -s format:check",
+        "lint:installed-check": "installed-check -v -i installed-check -i npm-run-all2 -i knip -i rollup-plugin-dts",
+        "lint:knip": "knip",
+        "postversion": "git push && git push --tags",
+        "prebuild": "npm run -s clean",
+        "preversion": "npm run test-coverage && npm run -s build",
+        "prewatch": "npm run -s clean",
+        "test": "mocha --reporter dot \"test/*.mjs\"",
+        "test-coverage": "c8 mocha --reporter dot \"test/*.mjs\"",
+        "watch": "warun \"{src,test}/**/*.mjs\" -- npm run -s test:mocha"
+      },
+      "sideEffects": false,
+      "version": "4.10.1"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 80357,
+      "sha256": "23bf153cb8d21f3a21e79cbf2654a2b9bfec73d6ce1c5827b53f810d0590e1fc"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,122 @@
+{
+  "artifactId": "66e2c8338b76863eafd59a8ebe79095986318a5ef2014956e9ce972a5eff811d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2270,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.js",
+        "sha256": "3fe8c034bfc649c8e80452f4c7052153a49c89a579f3f87a4df6af8bab5ce2b9",
+        "size": 1700,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "6fb9754611c20f6649f68805e8c990e83261f29316e29de9e6cedae607b8634c",
+        "size": 1119,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "52fba89a1d2724dfeafa21ec58f8c4a8a210103cc6b65b4468ab3fb973ad1753",
+        "size": 749,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "94092712ac3a26191c967ab828e66cc4c9db56e9e7963fdf37e469488fe4c3e5",
+        "size": 1493,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1119,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6f/6fb9754611c20f6649f68805e8c990e83261f29316e29de9e6cedae607b8634c",
+          "sha256": "6fb9754611c20f6649f68805e8c990e83261f29316e29de9e6cedae607b8634c"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "6fb9754611c20f6649f68805e8c990e83261f29316e29de9e6cedae607b8634c",
+        "size": 1119
+      },
+      {
+        "blob": {
+          "bytes": 1493,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/94/94092712ac3a26191c967ab828e66cc4c9db56e9e7963fdf37e469488fe4c3e5",
+          "sha256": "94092712ac3a26191c967ab828e66cc4c9db56e9e7963fdf37e469488fe4c3e5"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "94092712ac3a26191c967ab828e66cc4c9db56e9e7963fdf37e469488fe4c3e5",
+        "size": 1493
+      }
+    ],
+    "expandedBytes": 5061,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "strip-json-comments",
+      "repository": "sindresorhus/strip-json-comments",
+      "version": "2.0.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "description": "Strip comments from JSON. Lets you use comments in your JSON files!",
+      "devDependencies": {
+        "ava": "*",
+        "xo": "*"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      },
+      "files": [
+        "index.js"
+      ],
+      "keywords": [
+        "json",
+        "strip",
+        "remove",
+        "delete",
+        "trim",
+        "comments",
+        "multiline",
+        "parse",
+        "config",
+        "configuration",
+        "conf",
+        "settings",
+        "util",
+        "env",
+        "environment"
+      ],
+      "license": "MIT",
+      "name": "strip-json-comments",
+      "repository": "sindresorhus/strip-json-comments",
+      "scripts": {
+        "test": "xo && ava"
+      },
+      "version": "2.0.1"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 2270,
+      "sha256": "dbe45febaf1bf7265c25733242bc0e7ac38b632db6a8e19f0341af4770425899"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

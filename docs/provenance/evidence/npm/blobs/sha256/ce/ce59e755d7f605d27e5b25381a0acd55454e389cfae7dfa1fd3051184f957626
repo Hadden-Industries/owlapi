@@ -1,0 +1,114 @@
+{
+  "artifactId": "bdc561454742d870c12fae15cb7354fd3d1100b4732f7929b9b8c18c6d987a6e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7244,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "71d2888e48408bd62b30e749e87262b0aca73ab843834a44313124422544f137",
+        "size": 481,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "e14d93d3b154e52a04a3c32df7fdc0aa46e97bc4b0a94117da7061f5aeb9732c",
+        "size": 5811,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "63595985a43d26de716bd087751d072668b3f15d0810739e5cc2360f737990a9",
+        "size": 17152,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4d45522dfb94af14047b0b53fa8ef3010be7519ea9a4ae330b56159907fd2bb8",
+        "size": 1165,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 25715,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-preset-typescript",
+      "license": "MIT",
+      "name": "@babel/preset-typescript",
+      "repository": {
+        "directory": "packages/babel-preset-typescript",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "bugs": "https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22area%3A%20typescript%22+is%3Aopen",
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.29.7",
+        "@babel/helper-validator-option": "^7.29.7",
+        "@babel/plugin-syntax-jsx": "^7.29.7",
+        "@babel/plugin-transform-modules-commonjs": "^7.29.7",
+        "@babel/plugin-transform-typescript": "^7.29.7"
+      },
+      "description": "Babel preset for TypeScript.",
+      "devDependencies": {
+        "@babel/core": "^7.29.7",
+        "@babel/helper-plugin-test-runner": "^7.29.7"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-preset-typescript",
+      "keywords": [
+        "babel-preset",
+        "typescript"
+      ],
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/preset-typescript",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-preset-typescript",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 7244,
+      "sha256": "65a3814c87e6eabb40454d0e822f757fb460bc6154d35c3c3ebcf3b7a3996508"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

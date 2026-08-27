@@ -1,0 +1,94 @@
+{
+  "artifactId": "54d47de550d2dd08c409c587fd15f3480d34dd7d5538e1813c966807a02e7efa",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7708,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "95ced5ecf1133fbf41d409b5555c86c344f83f3b019926057ddbc07cfdcc27b3",
+        "size": 1119,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a6d02a8c1016c2305e8cd9eeab91ad1b1d9c614b2b361edef0d0da3816a0775a",
+        "size": 55,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "cdc378bf4422ee30707c966d3010e8a1f80b5d15db5d497b8997c1ef6eb02c65",
+        "size": 577,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types.d.ts",
+        "sha256": "f76d2226b20ec0d3e884114cfbbb933cb4d25d26cc306e8315e21a0e3afafc39",
+        "size": 42840,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1119,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/95/95ced5ecf1133fbf41d409b5555c86c344f83f3b019926057ddbc07cfdcc27b3",
+          "sha256": "95ced5ecf1133fbf41d409b5555c86c344f83f3b019926057ddbc07cfdcc27b3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "95ced5ecf1133fbf41d409b5555c86c344f83f3b019926057ddbc07cfdcc27b3",
+        "size": 1119
+      }
+    ],
+    "expandedBytes": 44591,
+    "packageIdentity": {
+      "author": "Boshen and oxc contributors",
+      "homepage": "https://oxc.rs",
+      "license": "MIT",
+      "name": "@oxc-project/types",
+      "repository": {
+        "directory": "npm/oxc-types",
+        "type": "git",
+        "url": "git+https://github.com/oxc-project/oxc.git"
+      },
+      "version": "0.147.0"
+    },
+    "packageMetadata": {
+      "author": "Boshen and oxc contributors",
+      "bugs": "https://github.com/oxc-project/oxc/issues",
+      "description": "Types for Oxc AST nodes",
+      "files": [
+        "types.d.ts"
+      ],
+      "funding": {
+        "url": "https://github.com/sponsors/Boshen"
+      },
+      "homepage": "https://oxc.rs",
+      "keywords": [
+        "AST",
+        "Parser"
+      ],
+      "license": "MIT",
+      "name": "@oxc-project/types",
+      "repository": {
+        "directory": "npm/oxc-types",
+        "type": "git",
+        "url": "git+https://github.com/oxc-project/oxc.git"
+      },
+      "type": "module",
+      "types": "types.d.ts",
+      "version": "0.147.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 7708,
+      "sha256": "0fff413ee57f92766c75baf86c6a8fa1fc0ae56e528533586d12873a27da5e5f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,168 @@
+{
+  "artifactId": "1f0deb9439f02de36d99fc251c2fc63bb3098d8e47b269b2e666ea338dcce3dc",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 11371,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "059674343f991fa562138ec008a9654044ed434113ef42f974992692317f7b26",
+        "size": 22079,
+        "type": "FILE"
+      },
+      {
+        "path": "package/browser.js",
+        "sha256": "82a8459e5fcf7e3b1648fcbc69bf508dd0f1614d03c67d35edbfb0779cf39b71",
+        "size": 51,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "2e36248ff3cc1b0b20adc82e596d519539cd892bd98d8338c4bd4a1ed625634d",
+        "size": 10238,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "27d182dbbaf5eefe65230cf8ab257037197376ca3da067adae26530401ccd19f",
+        "size": 25000,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "3ef3f74675fe31a88dc490e4136178a5fd8f96142df0c565d66be9a894543adf",
+        "size": 2909,
+        "type": "FILE"
+      },
+      {
+        "path": "package/postinstall.js",
+        "sha256": "446a0aeed55eeb28eadd9ac31f0b71654265aba8ca5a99dbc22dab0b26a02469",
+        "size": 156,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 22079,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/05/059674343f991fa562138ec008a9654044ed434113ef42f974992692317f7b26",
+          "sha256": "059674343f991fa562138ec008a9654044ed434113ef42f974992692317f7b26"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "059674343f991fa562138ec008a9654044ed434113ef42f974992692317f7b26",
+        "size": 22079
+      }
+    ],
+    "expandedBytes": 60433,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "license": "MIT",
+      "name": "unrs-resolver",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.12.2"
+    },
+    "packageMetadata": {
+      "browser": "browser.js",
+      "dependencies": {
+        "napi-postinstall": "^0.3.4"
+      },
+      "description": "UnRS Resolver Node API",
+      "files": [
+        "browser.js",
+        "index.d.ts",
+        "index.js",
+        "postinstall.js"
+      ],
+      "funding": {
+        "url": "https://opencollective.com/unrs-resolver"
+      },
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "license": "MIT",
+      "main": "index.js",
+      "name": "unrs-resolver",
+      "napi": {
+        "binaryName": "resolver",
+        "packageName": "@unrs/resolver-binding",
+        "targets": [
+          "aarch64-apple-darwin",
+          "aarch64-linux-android",
+          "aarch64-pc-windows-msvc",
+          "aarch64-unknown-linux-gnu",
+          "aarch64-unknown-linux-musl",
+          "aarch64-unknown-linux-ohos",
+          "armv7-linux-androideabi",
+          "armv7-unknown-linux-gnueabihf",
+          "armv7-unknown-linux-musleabihf",
+          "i686-pc-windows-msvc",
+          "loongarch64-unknown-linux-gnu",
+          "loongarch64-unknown-linux-musl",
+          "powerpc64le-unknown-linux-gnu",
+          "riscv64gc-unknown-linux-gnu",
+          "riscv64gc-unknown-linux-musl",
+          "s390x-unknown-linux-gnu",
+          "wasm32-wasip1-threads",
+          "x86_64-apple-darwin",
+          "x86_64-pc-windows-msvc",
+          "x86_64-unknown-freebsd",
+          "x86_64-unknown-linux-gnu",
+          "x86_64-unknown-linux-musl"
+        ],
+        "wasm": {
+          "browser": {
+            "fs": true
+          }
+        }
+      },
+      "optionalDependencies": {
+        "@unrs/resolver-binding-android-arm-eabi": "1.12.2",
+        "@unrs/resolver-binding-android-arm64": "1.12.2",
+        "@unrs/resolver-binding-darwin-arm64": "1.12.2",
+        "@unrs/resolver-binding-darwin-x64": "1.12.2",
+        "@unrs/resolver-binding-freebsd-x64": "1.12.2",
+        "@unrs/resolver-binding-linux-arm-gnueabihf": "1.12.2",
+        "@unrs/resolver-binding-linux-arm-musleabihf": "1.12.2",
+        "@unrs/resolver-binding-linux-arm64-gnu": "1.12.2",
+        "@unrs/resolver-binding-linux-arm64-musl": "1.12.2",
+        "@unrs/resolver-binding-linux-loong64-gnu": "1.12.2",
+        "@unrs/resolver-binding-linux-loong64-musl": "1.12.2",
+        "@unrs/resolver-binding-linux-ppc64-gnu": "1.12.2",
+        "@unrs/resolver-binding-linux-riscv64-gnu": "1.12.2",
+        "@unrs/resolver-binding-linux-riscv64-musl": "1.12.2",
+        "@unrs/resolver-binding-linux-s390x-gnu": "1.12.2",
+        "@unrs/resolver-binding-linux-x64-gnu": "1.12.2",
+        "@unrs/resolver-binding-linux-x64-musl": "1.12.2",
+        "@unrs/resolver-binding-openharmony-arm64": "1.12.2",
+        "@unrs/resolver-binding-wasm32-wasi": "1.12.2",
+        "@unrs/resolver-binding-win32-arm64-msvc": "1.12.2",
+        "@unrs/resolver-binding-win32-ia32-msvc": "1.12.2",
+        "@unrs/resolver-binding-win32-x64-msvc": "1.12.2"
+      },
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "scripts": {
+        "postinstall": "node postinstall.js"
+      },
+      "version": "1.12.2"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 11371,
+      "sha256": "22203fe39b7626e2679fa74d6c2e9985e52b5cbf79ed27f8dc0439b3255c9778"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

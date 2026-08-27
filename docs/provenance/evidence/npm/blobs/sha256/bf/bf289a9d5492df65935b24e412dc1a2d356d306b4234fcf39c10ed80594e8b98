@@ -1,0 +1,118 @@
+{
+  "artifactId": "79f2a4d261778b5966171b60a13b2a558f006934a9306565f3d2a39b1b846270",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7635,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "cfa72b62b9ae173078823a3796b25c027a9071046a263beddf966df67018ce06",
+        "size": 1068,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "719df4045e9d259909523bbca9885a6029a1f1bb244133095341c8c293c39346",
+        "size": 1929,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "d6cafc03e244c41ef5a4cb90f72f98117ded1342f79269dc1fa330889f894e61",
+        "size": 262,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "5ab23edca59b840bc26ba711131a5b649540b70da53d70ae1bbcdb13480c1aa1",
+        "size": 15827,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "5e123a5ee3b16fd10fe4b44ef70ff7885f05117fb9ae75f72a0d821f919d423d",
+        "size": 581,
+        "type": "FILE"
+      },
+      {
+        "path": "package/xhtml.js",
+        "sha256": "caf07cbe00acbbb762e60ee83dc6e1927fb2709c960bd6cca85d8a5cf77c2886",
+        "size": 4718,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1068,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/cf/cfa72b62b9ae173078823a3796b25c027a9071046a263beddf966df67018ce06",
+          "sha256": "cfa72b62b9ae173078823a3796b25c027a9071046a263beddf966df67018ce06"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "cfa72b62b9ae173078823a3796b25c027a9071046a263beddf966df67018ce06",
+        "size": 1068
+      },
+      {
+        "blob": {
+          "bytes": 1929,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/71/719df4045e9d259909523bbca9885a6029a1f1bb244133095341c8c293c39346",
+          "sha256": "719df4045e9d259909523bbca9885a6029a1f1bb244133095341c8c293c39346"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "719df4045e9d259909523bbca9885a6029a1f1bb244133095341c8c293c39346",
+        "size": 1929
+      }
+    ],
+    "expandedBytes": 24385,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/acornjs/acorn-jsx",
+      "license": "MIT",
+      "name": "acorn-jsx",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/acornjs/acorn-jsx"
+      },
+      "version": "5.3.2"
+    },
+    "packageMetadata": {
+      "description": "Modern, fast React.js JSX parser",
+      "devDependencies": {
+        "acorn": "^8.0.1"
+      },
+      "homepage": "https://github.com/acornjs/acorn-jsx",
+      "license": "MIT",
+      "maintainers": [
+        {
+          "email": "me@rreverser.com",
+          "name": "Ingvar Stepanyan",
+          "web": "http://rreverser.com/"
+        }
+      ],
+      "name": "acorn-jsx",
+      "peerDependencies": {
+        "acorn": "^6.0.0 || ^7.0.0 || ^8.0.0"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/acornjs/acorn-jsx"
+      },
+      "scripts": {
+        "test": "node test/run.js"
+      },
+      "version": "5.3.2"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 7635,
+      "sha256": "d967b05e40c5396a56d70e0d3150477b969cb6cc1058d68bc2b95ab0159158cc"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

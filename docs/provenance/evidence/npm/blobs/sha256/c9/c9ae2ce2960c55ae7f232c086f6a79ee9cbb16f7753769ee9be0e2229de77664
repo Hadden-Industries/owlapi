@@ -1,0 +1,138 @@
+{
+  "artifactId": "369e6ce4b6440027704a960dd503e01a4013cb1e05eebbf839e3d71455760d69",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6025,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c7b6718db5ace1d13eb030d29c53eb2b02f90e84ba21ba59eee63dfd4fcbefee",
+        "size": 1061,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "3c8fd456b4043df596cc7f2d5fa6e63634ff01bb89b2b84b8553c7dc5a13b291",
+        "size": 4241,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "7f4e43a837db3aa55e8581450840e7500a6205d58c8918aabcc818226604ac45",
+        "size": 6555,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/positions.js",
+        "sha256": "700c595c67ae4f191aa36ef4df2f5b786527e3aab480755533bf6fc72428f040",
+        "size": 367,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/sets.js",
+        "sha256": "577984b52dd9e5ccb11a4f03baebfb43ca78c9512c608187907e6b838841187b",
+        "size": 2230,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/types.js",
+        "sha256": "8928ca5d5008b5c2a18a18792832a6a017a5d7c29817197b09a59021dd43986e",
+        "size": 166,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util.js",
+        "sha256": "3d461b6393cffc8e81bb9605de7be12d42468e2b877be58d06d2eed6fc70d0dc",
+        "size": 2616,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "72c2758011f7536ae91bd5b059587226903f8cd50b0e5046b57039f0cd23ce98",
+        "size": 671,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1061,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c7b6718db5ace1d13eb030d29c53eb2b02f90e84ba21ba59eee63dfd4fcbefee",
+          "sha256": "c7b6718db5ace1d13eb030d29c53eb2b02f90e84ba21ba59eee63dfd4fcbefee"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c7b6718db5ace1d13eb030d29c53eb2b02f90e84ba21ba59eee63dfd4fcbefee",
+        "size": 1061
+      },
+      {
+        "blob": {
+          "bytes": 4241,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/3c/3c8fd456b4043df596cc7f2d5fa6e63634ff01bb89b2b84b8553c7dc5a13b291",
+          "sha256": "3c8fd456b4043df596cc7f2d5fa6e63634ff01bb89b2b84b8553c7dc5a13b291"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "3c8fd456b4043df596cc7f2d5fa6e63634ff01bb89b2b84b8553c7dc5a13b291",
+        "size": 4241
+      }
+    ],
+    "expandedBytes": 17907,
+    "packageIdentity": {
+      "author": "Roly Fentanes (https://github.com/fent)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "ret",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/fent/ret.js.git"
+      },
+      "version": "0.1.15"
+    },
+    "packageMetadata": {
+      "author": "Roly Fentanes (https://github.com/fent)",
+      "description": "Tokenizes a string that represents a regular expression.",
+      "devDependencies": {
+        "istanbul": "*",
+        "vows": "*"
+      },
+      "directories": {
+        "lib": "./lib"
+      },
+      "engines": {
+        "node": ">=0.12"
+      },
+      "files": [
+        "lib"
+      ],
+      "keywords": [
+        "regex",
+        "regexp",
+        "regular expression",
+        "parser",
+        "tokenizer"
+      ],
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "ret",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/fent/ret.js.git"
+      },
+      "scripts": {
+        "test": "istanbul cover vows -- --spec test/*-test.js"
+      },
+      "version": "0.1.15"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 6025,
+      "sha256": "4a7462b50b3184e14d3518cc0438624ad20aa21bafeb30568aede82f07ef69fe"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

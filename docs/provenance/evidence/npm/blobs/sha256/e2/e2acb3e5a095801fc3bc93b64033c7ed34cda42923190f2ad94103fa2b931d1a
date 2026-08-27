@@ -1,0 +1,123 @@
+{
+  "artifactId": "53b0ec8e6a5ea3b035c9fb8cd8405dcf74de9f585755faa478280470b0f0d20f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5660,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "08c868ccc4efeee00c7b08d8b227ceea10b1e6101ab32d44ad9dd6c38dc58910",
+        "size": 3049,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "5a547aafe7b171c859ec64de1dd3c3363689f830133f508d043c83da12a6d0a2",
+        "size": 1068,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "12fc366ea99239a2c9e1639de9de2d3bc603c1c08aeb62c4ea6c835bd55c9ca3",
+        "size": 1542,
+        "type": "FILE"
+      },
+      {
+        "path": "package/default-exclude.js",
+        "sha256": "48b7e7a8750f88d79db5b55265f61048a13cb5d3eb30f70bd2e1332d9c6d4b7e",
+        "size": 578,
+        "type": "FILE"
+      },
+      {
+        "path": "package/default-extension.js",
+        "sha256": "e9a2a8f061acdee83a7fd9ac9b137556aec9632d3ef1ab9739adb5c04bdb6ddb",
+        "size": 88,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "197006c28b6b2073a3d379536fdeb5fde36359307725af2f531bb23b92b8e945",
+        "size": 10972,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "367862db179f876aaac676a88017949ef7b6159fbe4fccecfe61abe7e8a585cd",
+        "size": 652,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1068,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5a/5a547aafe7b171c859ec64de1dd3c3363689f830133f508d043c83da12a6d0a2",
+          "sha256": "5a547aafe7b171c859ec64de1dd3c3363689f830133f508d043c83da12a6d0a2"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5a547aafe7b171c859ec64de1dd3c3363689f830133f508d043c83da12a6d0a2",
+        "size": 1068
+      },
+      {
+        "blob": {
+          "bytes": 1542,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/12/12fc366ea99239a2c9e1639de9de2d3bc603c1c08aeb62c4ea6c835bd55c9ca3",
+          "sha256": "12fc366ea99239a2c9e1639de9de2d3bc603c1c08aeb62c4ea6c835bd55c9ca3"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "12fc366ea99239a2c9e1639de9de2d3bc603c1c08aeb62c4ea6c835bd55c9ca3",
+        "size": 1542
+      }
+    ],
+    "expandedBytes": 17949,
+    "packageIdentity": {
+      "author": "Corey Farrell",
+      "homepage": "https://github.com/istanbuljs/schema#readme",
+      "license": "MIT",
+      "name": "@istanbuljs/schema",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/istanbuljs/schema.git"
+      },
+      "version": "0.1.6"
+    },
+    "packageMetadata": {
+      "author": "Corey Farrell",
+      "bugs": {
+        "url": "https://github.com/istanbuljs/schema/issues"
+      },
+      "description": "Schemas describing various structures used by nyc and istanbuljs",
+      "devDependencies": {
+        "nyc": "^18.0.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "homepage": "https://github.com/istanbuljs/schema#readme",
+      "license": "MIT",
+      "main": "index.js",
+      "name": "@istanbuljs/schema",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/istanbuljs/schema.git"
+      },
+      "scripts": {
+        "test": "nyc node --test test/test.js",
+        "test:update-snapshots": "nyc node --test --test-update-snapshots test/test.js"
+      },
+      "version": "0.1.6"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 5660,
+      "sha256": "686e2155f59489709b36c324cc01ce179d9616a625349efa8cf1ba8ff4ae2456"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

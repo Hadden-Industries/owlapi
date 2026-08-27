@@ -1,0 +1,123 @@
+{
+  "artifactId": "4bbbbde8a4dd300971107a29824c7cc8cf523bd7980d1b7ccd7ab7767eeb86f4",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1882,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.js",
+        "sha256": "4eb1119c3eeccc4d8e8841b77d062abaf4572b332801f5b16175bc3311b5d8f1",
+        "size": 611,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "6fb9754611c20f6649f68805e8c990e83261f29316e29de9e6cedae607b8634c",
+        "size": 1119,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "be5b83877f6998b840b9365d7ab77e885f0d583337826c22daccaeb6e303fd4c",
+        "size": 733,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "18fc7bbc65c9a84e2f15b6b24302cbd0d0d6cb8ba90d6f55d1c8c7bb52da95b5",
+        "size": 1153,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1119,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6f/6fb9754611c20f6649f68805e8c990e83261f29316e29de9e6cedae607b8634c",
+          "sha256": "6fb9754611c20f6649f68805e8c990e83261f29316e29de9e6cedae607b8634c"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "6fb9754611c20f6649f68805e8c990e83261f29316e29de9e6cedae607b8634c",
+        "size": 1119
+      },
+      {
+        "blob": {
+          "bytes": 1153,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/18/18fc7bbc65c9a84e2f15b6b24302cbd0d0d6cb8ba90d6f55d1c8c7bb52da95b5",
+          "sha256": "18fc7bbc65c9a84e2f15b6b24302cbd0d0d6cb8ba90d6f55d1c8c7bb52da95b5"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "18fc7bbc65c9a84e2f15b6b24302cbd0d0d6cb8ba90d6f55d1c8c7bb52da95b5",
+        "size": 1153
+      }
+    ],
+    "expandedBytes": 3616,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "path-is-absolute",
+      "repository": "sindresorhus/path-is-absolute",
+      "version": "1.0.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "description": "Node.js 0.12 path.isAbsolute() ponyfill",
+      "devDependencies": {
+        "xo": "^0.16.0"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      },
+      "files": [
+        "index.js"
+      ],
+      "keywords": [
+        "path",
+        "paths",
+        "file",
+        "dir",
+        "absolute",
+        "isabsolute",
+        "is-absolute",
+        "built-in",
+        "util",
+        "utils",
+        "core",
+        "ponyfill",
+        "polyfill",
+        "shim",
+        "is",
+        "detect",
+        "check"
+      ],
+      "license": "MIT",
+      "name": "path-is-absolute",
+      "repository": "sindresorhus/path-is-absolute",
+      "scripts": {
+        "test": "xo && node test.js"
+      },
+      "version": "1.0.1"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1882,
+      "sha256": "6e6d709f1a56942514e4e2c2709b30c7b1ffa46fbed70e714904a3d63b01f75c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

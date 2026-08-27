@@ -1,0 +1,131 @@
+{
+  "artifactId": "58b9ed205919c5c6056c0ed0f34754e53cb27526d38eef65eaa49397c8066886",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1990,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "45719855f154dc941aca9545e0b43f013bbd2e6efda8be058f4f62f4a9e7121e",
+        "size": 583,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "06161e3160585fcb272e536b874d464178a30ff5df95ccd6878f11d677eaa173",
+        "size": 343,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "a8df52545b24dbba6ef033e6f0c439c69e54e052b3d5f310d046b72f497a97a8",
+        "size": 801,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "e8ca0e5954255767aca58ce36b1419a038da1763283299919f505982ab56a8cb",
+        "size": 1208,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      },
+      {
+        "blob": {
+          "bytes": 1208,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e8/e8ca0e5954255767aca58ce36b1419a038da1763283299919f505982ab56a8cb",
+          "sha256": "e8ca0e5954255767aca58ce36b1419a038da1763283299919f505982ab56a8cb"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "e8ca0e5954255767aca58ce36b1419a038da1763283299919f505982ab56a8cb",
+        "size": 1208
+      }
+    ],
+    "expandedBytes": 4052,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "string-length",
+      "repository": "sindresorhus/string-length",
+      "version": "4.0.2"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "dependencies": {
+        "char-regex": "^1.0.2",
+        "strip-ansi": "^6.0.0"
+      },
+      "description": "Get the real length of a string - by correctly counting astral symbols and ignoring ansi escape codes",
+      "devDependencies": {
+        "ava": "^3.1.0",
+        "tsd": "^0.11.0",
+        "xo": "^0.25.3"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "unicode",
+        "string",
+        "length",
+        "size",
+        "count",
+        "astral",
+        "symbol",
+        "surrogates",
+        "codepoints",
+        "ansi",
+        "escape",
+        "codes"
+      ],
+      "license": "MIT",
+      "name": "string-length",
+      "repository": "sindresorhus/string-length",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "4.0.2"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 1990,
+      "sha256": "da27dde093c18cc76e73c59fe371bc058f48353a70618d6feb8c3e341486a1ed"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

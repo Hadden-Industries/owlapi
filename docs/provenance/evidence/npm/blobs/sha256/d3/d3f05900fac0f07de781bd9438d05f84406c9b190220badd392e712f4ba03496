@@ -1,0 +1,186 @@
+{
+  "artifactId": "4604a4a28a064e78aaf300a6ef86a1d2abcab5699c580ff331d1e6d8c608c0e4",
+  "evidence": {
+    "archiveRoot": "yargs",
+    "compressedBytes": 14621,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "yargs",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "yargs/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "yargs/README.md",
+        "sha256": "28bc4e53dd02e1990f027aa0098c485a083be958989974c3ffd51e402c9f3bf3",
+        "size": 916,
+        "type": "FILE"
+      },
+      {
+        "path": "yargs/helpers.d.mts",
+        "sha256": "059b7930d2e7946e2b7cacdb256f5d1ccaa24f073e557b511295fb3af7d876d8",
+        "size": 30,
+        "type": "FILE"
+      },
+      {
+        "path": "yargs/helpers.d.ts",
+        "sha256": "7f1fbc2170f86615a5c1527db124f8ab0391661e0792f692c4a70de3eb1a23ef",
+        "size": 228,
+        "type": "FILE"
+      },
+      {
+        "path": "yargs/index.d.mts",
+        "sha256": "dd5115b329c19c4385af13eda13e3ab03355e711c3f313173fd54ed7d08cfd39",
+        "size": 1027,
+        "type": "FILE"
+      },
+      {
+        "path": "yargs/index.d.ts",
+        "sha256": "26a770cec4bd2e7dbba95c6e536390fffe83c6268b78974a93727903b515c4e7",
+        "size": 54369,
+        "type": "FILE"
+      },
+      {
+        "path": "yargs/package.json",
+        "sha256": "268f6df5f4729f58cf9c45d8f220dee30d8b1f41de8da5bf873f58147fef9a7f",
+        "size": 2549,
+        "type": "FILE"
+      },
+      {
+        "path": "yargs/yargs.d.ts",
+        "sha256": "91588a3dd73f612fbedc314406ba98d079b55034c2055777f36e7a4f09039207",
+        "size": 177,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1141,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c2/c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        "kind": "LICENCE",
+        "path": "yargs/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141
+      }
+    ],
+    "expandedBytes": 60437,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/yargs",
+      "license": "MIT",
+      "name": "@types/yargs",
+      "repository": {
+        "directory": "types/yargs",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "version": "17.0.35"
+    },
+    "packageMetadata": {
+      "contributors": [
+        {
+          "githubUsername": "poelstra",
+          "name": "Martin Poelstra",
+          "url": "https://github.com/poelstra"
+        },
+        {
+          "githubUsername": "mizunashi-mana",
+          "name": "Mizunashi Mana",
+          "url": "https://github.com/mizunashi-mana"
+        },
+        {
+          "githubUsername": "pushplay",
+          "name": "Jeffery Grajkowski",
+          "url": "https://github.com/pushplay"
+        },
+        {
+          "githubUsername": "JimiC",
+          "name": "Jimi (Dimitris) Charalampidis",
+          "url": "https://github.com/JimiC"
+        },
+        {
+          "githubUsername": "steffenvv",
+          "name": "Steffen Viken Valvåg",
+          "url": "https://github.com/steffenvv"
+        },
+        {
+          "githubUsername": "forivall",
+          "name": "Emily Marigold Klassen",
+          "url": "https://github.com/forivall"
+        },
+        {
+          "githubUsername": "ExE-Boss",
+          "name": "ExE Boss",
+          "url": "https://github.com/ExE-Boss"
+        },
+        {
+          "githubUsername": "Aankhen",
+          "name": "Aankhen",
+          "url": "https://github.com/Aankhen"
+        },
+        {
+          "githubUsername": "bcoe",
+          "name": "Ben Coe",
+          "url": "https://github.com/bcoe"
+        }
+      ],
+      "dependencies": {
+        "@types/yargs-parser": "*"
+      },
+      "description": "TypeScript definitions for yargs",
+      "exports": {
+        ".": {
+          "types": {
+            "default": "./index.d.ts",
+            "import": "./index.d.mts"
+          }
+        },
+        "./helpers": {
+          "types": {
+            "default": "./helpers.d.ts",
+            "import": "./helpers.d.mts"
+          }
+        },
+        "./package.json": "./package.json",
+        "./yargs": {
+          "types": {
+            "default": "./yargs.d.ts"
+          }
+        }
+      },
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/yargs",
+      "license": "MIT",
+      "main": "",
+      "name": "@types/yargs",
+      "peerDependencies": {},
+      "repository": {
+        "directory": "types/yargs",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "scripts": {},
+      "typeScriptVersion": "5.2",
+      "types": "index.d.ts",
+      "typesPublisherContentHash": "97aedf9e2626357f7e4f88f32eea281bf257c4028e16386c3582cf0d7669ab86",
+      "version": "17.0.35"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 14621,
+      "sha256": "8ca571949467db8741f33f9c8658cc1ede25f1b036b25f7841aa3bd21dd87910"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

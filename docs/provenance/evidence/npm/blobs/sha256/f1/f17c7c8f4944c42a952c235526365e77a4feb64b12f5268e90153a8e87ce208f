@@ -1,0 +1,129 @@
+{
+  "artifactId": "ce2f1956c16c50520275593850cef9cfde2b76729f1340a3172fb7648dd0616d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 19093,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "c7d817091c6747e4f4fb7006bf60bd2040fd955ab7c37520f834c2af265876c6",
+        "size": 16974,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/semver.js",
+        "sha256": "a3ed56435cbd4b3f07a80c4a343edd86d787f89bf2cee0105bdf68cb653ba2a0",
+        "size": 4717,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "aa906c5bf8a2fa68683cae07d18553ae2538ed0d5a567911980b2ef25ee8b9ba",
+        "size": 981,
+        "type": "FILE"
+      },
+      {
+        "path": "package/range.bnf",
+        "sha256": "ed628fdaff64be366d07f6cc4559eae4de109826f743ea7f5e1588c370bca49a",
+        "size": 619,
+        "type": "FILE"
+      },
+      {
+        "path": "package/semver.js",
+        "sha256": "d89ed53251e85463bf4300ae9a3e258dc75eb73eb2820d524bd05f4451bed3d4",
+        "size": 44287,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      },
+      {
+        "blob": {
+          "bytes": 16974,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c7d817091c6747e4f4fb7006bf60bd2040fd955ab7c37520f834c2af265876c6",
+          "sha256": "c7d817091c6747e4f4fb7006bf60bd2040fd955ab7c37520f834c2af265876c6"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "c7d817091c6747e4f4fb7006bf60bd2040fd955ab7c37520f834c2af265876c6",
+        "size": 16974
+      }
+    ],
+    "expandedBytes": 68343,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "semver",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/npm/node-semver.git"
+      },
+      "version": "6.3.1"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "bin": {
+        "semver": "./bin/semver.js"
+      },
+      "description": "The semantic version parser used by npm.",
+      "devDependencies": {
+        "@npmcli/template-oss": "4.17.0",
+        "tap": "^12.7.0"
+      },
+      "files": [
+        "bin",
+        "range.bnf",
+        "semver.js"
+      ],
+      "license": "ISC",
+      "main": "semver.js",
+      "name": "semver",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/npm/node-semver.git"
+      },
+      "scripts": {
+        "lint": "echo linting disabled",
+        "lintfix": "npm run lint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap test/ --100 --timeout=30",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap test/ --100 --timeout=30"
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "content": "./scripts/template-oss",
+        "version": "4.17.0"
+      },
+      "version": "6.3.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 19093,
+      "sha256": "3c9b042a38e099cbd00a9bd792042aefb62a70b3f0f1ba1a3cbddf07e5eb1230"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

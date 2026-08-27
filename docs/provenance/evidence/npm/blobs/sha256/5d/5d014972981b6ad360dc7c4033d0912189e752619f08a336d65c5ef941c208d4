@@ -1,0 +1,96 @@
+{
+  "artifactId": "7af757c87da2bc47e34811499b5462853e172b2e2894452fc18002e4922db465",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2041,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "05dc4d785ac3a488676d3ed10e901b75ad89dafcc63f8e66610fd4a39cc5c7e8",
+        "size": 748,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "7287d41cefa8c790b6a3bd8a802614f93acf2fd0eaca3d2fc7b6fef0c5e2ce47",
+        "size": 991,
+        "type": "FILE"
+      },
+      {
+        "path": "package/inflight.js",
+        "sha256": "e33ea098a91d2c41be886fbbcecacb9799fe183d8a446f138a4786cb3d809802",
+        "size": 1365,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "5f2489e13f73e9ebad999134fae8a591f6d8b58e8341ec8e3b33397c4d1ef817",
+        "size": 658,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 748,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/05/05dc4d785ac3a488676d3ed10e901b75ad89dafcc63f8e66610fd4a39cc5c7e8",
+          "sha256": "05dc4d785ac3a488676d3ed10e901b75ad89dafcc63f8e66610fd4a39cc5c7e8"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "05dc4d785ac3a488676d3ed10e901b75ad89dafcc63f8e66610fd4a39cc5c7e8",
+        "size": 748
+      }
+    ],
+    "expandedBytes": 3762,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "homepage": "https://github.com/isaacs/inflight",
+      "license": "ISC",
+      "name": "inflight",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/npm/inflight.git"
+      },
+      "version": "1.0.6"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "bugs": {
+        "url": "https://github.com/isaacs/inflight/issues"
+      },
+      "dependencies": {
+        "once": "^1.3.0",
+        "wrappy": "1"
+      },
+      "description": "Add callbacks to requests in flight to avoid async duplication",
+      "devDependencies": {
+        "tap": "^7.1.2"
+      },
+      "files": [
+        "inflight.js"
+      ],
+      "homepage": "https://github.com/isaacs/inflight",
+      "license": "ISC",
+      "main": "inflight.js",
+      "name": "inflight",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/npm/inflight.git"
+      },
+      "scripts": {
+        "test": "tap test.js --100"
+      },
+      "version": "1.0.6"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 2041,
+      "sha256": "5a9fdcf59874af6ad3b413b6815d5afaaea34939a3bee20e1e50f7830031889b"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

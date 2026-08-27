@@ -1,0 +1,94 @@
+{
+  "artifactId": "24ed65d19cccff353928359c54a597fe848e0b8082fb27dd2b62d3a6cdc8ce79",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2094,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "b630651f34d0e0284ea940601bbe0a58f306ad7e9819e351d9dfab812f8d0f38",
+        "size": 775,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "2fcdd1a11d4dc927519e6801c59119fb9743173b510f2e30b99c4e3a6b7c3432",
+        "size": 1506,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "554b86b1de808d862951e2cfa8561a4024674e9b937be2d939d3b6a08432c6fc",
+        "size": 1994,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "042ab826c5440a7d01a1cafae44c54840618319e2e64ed40df006c542b0768f8",
+        "size": 688,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 775,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b6/b630651f34d0e0284ea940601bbe0a58f306ad7e9819e351d9dfab812f8d0f38",
+          "sha256": "b630651f34d0e0284ea940601bbe0a58f306ad7e9819e351d9dfab812f8d0f38"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "b630651f34d0e0284ea940601bbe0a58f306ad7e9819e351d9dfab812f8d0f38",
+        "size": 775
+      }
+    ],
+    "expandedBytes": 4963,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (https://izs.me)",
+      "homepage": null,
+      "license": "ISC",
+      "name": "minipass-collect",
+      "repository": "https://github.com/isaacs/minipass-collect",
+      "version": "2.0.1"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (https://izs.me)",
+      "dependencies": {
+        "minipass": "^7.0.3"
+      },
+      "description": "A Minipass stream that collects all the data into a single chunk",
+      "devDependencies": {
+        "tap": "^16.3.8"
+      },
+      "engines": {
+        "node": ">=16 || 14 >=14.17"
+      },
+      "files": [
+        "index.js"
+      ],
+      "license": "ISC",
+      "name": "minipass-collect",
+      "repository": "https://github.com/isaacs/minipass-collect",
+      "scripts": {
+        "postversion": "npm publish",
+        "prepublishOnly": "git push origin --follow-tags",
+        "preversion": "npm test",
+        "snap": "tap",
+        "test": "tap"
+      },
+      "tap": {
+        "check-coverage": true
+      },
+      "version": "2.0.1"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 2094,
+      "sha256": "1a4d094d890b9fa542e1608a73bef29e90389fa8960e40441c5d25284d7c4097"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

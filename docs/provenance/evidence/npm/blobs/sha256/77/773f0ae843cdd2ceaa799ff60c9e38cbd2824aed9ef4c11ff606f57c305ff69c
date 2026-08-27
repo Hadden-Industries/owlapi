@@ -1,0 +1,150 @@
+{
+  "artifactId": "784607c7bcfd113d24b67f0fe9bcbc6f98fcfc31167d442a25ccd44746a21617",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 10038,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE-MIT.txt",
+        "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+        "size": 1077,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "e0411816f6d5f1fd3b8c5522e7929dcbb218407525d1e5ff89f87476e77329c4",
+        "size": 14215,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/jsesc",
+        "sha256": "775eddbcc7769fa4d7d4d7b29c155a1bcd4221190462789545410f82e8328892",
+        "size": 3833,
+        "type": "FILE"
+      },
+      {
+        "path": "package/jsesc.js",
+        "sha256": "03c367cbd13dc753bb8fc6c8ec3a01078c3ee142ee3f747c0490d311bc80a3b3",
+        "size": 8908,
+        "type": "FILE"
+      },
+      {
+        "path": "package/man/jsesc.1",
+        "sha256": "86341e441905201d22fffe61d0166792de7de6774e481022a880ba8acb4a607f",
+        "size": 2888,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6127ab2ccfbf576671dcfedcf2a8d97c9bbb3e5e4cff1274b3210b86a97a287c",
+        "size": 1359,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1077,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+          "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE-MIT.txt",
+        "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+        "size": 1077
+      },
+      {
+        "blob": {
+          "bytes": 14215,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e0/e0411816f6d5f1fd3b8c5522e7929dcbb218407525d1e5ff89f87476e77329c4",
+          "sha256": "e0411816f6d5f1fd3b8c5522e7929dcbb218407525d1e5ff89f87476e77329c4"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "e0411816f6d5f1fd3b8c5522e7929dcbb218407525d1e5ff89f87476e77329c4",
+        "size": 14215
+      }
+    ],
+    "expandedBytes": 32280,
+    "packageIdentity": {
+      "author": {
+        "name": "Mathias Bynens",
+        "url": "https://mathiasbynens.be/"
+      },
+      "homepage": "https://mths.be/jsesc",
+      "license": "MIT",
+      "name": "jsesc",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mathiasbynens/jsesc.git"
+      },
+      "version": "3.1.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "Mathias Bynens",
+        "url": "https://mathiasbynens.be/"
+      },
+      "bin": "bin/jsesc",
+      "bugs": "https://github.com/mathiasbynens/jsesc/issues",
+      "description": "Given some data, jsesc returns the shortest possible stringified & ASCII-safe representation of that data.",
+      "devDependencies": {
+        "coveralls": "^2.11.6",
+        "grunt": "^0.4.5",
+        "grunt-cli": "^1.3.2",
+        "grunt-template": "^0.2.3",
+        "istanbul": "^0.4.2",
+        "mocha": "^5.2.0",
+        "regenerate": "^1.3.0",
+        "requirejs": "^2.1.22",
+        "unicode-13.0.0": "0.8.0"
+      },
+      "engines": {
+        "node": ">=6"
+      },
+      "files": [
+        "LICENSE-MIT.txt",
+        "jsesc.js",
+        "bin/",
+        "man/"
+      ],
+      "homepage": "https://mths.be/jsesc",
+      "keywords": [
+        "buffer",
+        "escape",
+        "javascript",
+        "json",
+        "map",
+        "set",
+        "string",
+        "stringify",
+        "tool"
+      ],
+      "license": "MIT",
+      "main": "jsesc.js",
+      "man": "man/jsesc.1",
+      "name": "jsesc",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mathiasbynens/jsesc.git"
+      },
+      "scripts": {
+        "build": "grunt template",
+        "cover": "istanbul cover --report 'html' --verbose --dir 'coverage' 'tests/tests.js'",
+        "coveralls": "istanbul cover --verbose --dir 'coverage' 'tests/tests.js' && coveralls < coverage/lcov.info'",
+        "test": "mocha tests"
+      },
+      "version": "3.1.0"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 10038,
+      "sha256": "0c712225ccca9a70bf83f2ac2f52a268c858c7df3b3df196f1623239d80d3c09"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

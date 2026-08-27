@@ -1,0 +1,118 @@
+{
+  "artifactId": "5ea095237ad70cd5dbeb4ed47c28f465ed954d5b1607c8c08be953c38cb92c10",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4133,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9a508cd4122f2dc1cc39f8ab0b6950efbc49fb087a581c7177a4b8c9d5d0d6a1",
+        "size": 1069,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "2b7a9c42b4b3fb8086d6976de2e18b186cd908c830267cd8a1f52fc6f2480db1",
+        "size": 1905,
+        "type": "FILE"
+      },
+      {
+        "path": "package/abi_registry.json",
+        "sha256": "db57482058d382440886425441e53cac8efec114abac7eca19a83750d437eb7a",
+        "size": 7653,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "e2039f88b4ebda3d74f595f3b633d8c1422493a2656ee5b40dd6f243552b2b4a",
+        "size": 6488,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "3cd9a160660b99cc8c2e7fc44fdfc52aeb463d20c331816e241d5581b537781c",
+        "size": 1164,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1069,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9a/9a508cd4122f2dc1cc39f8ab0b6950efbc49fb087a581c7177a4b8c9d5d0d6a1",
+          "sha256": "9a508cd4122f2dc1cc39f8ab0b6950efbc49fb087a581c7177a4b8c9d5d0d6a1"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9a508cd4122f2dc1cc39f8ab0b6950efbc49fb087a581c7177a4b8c9d5d0d6a1",
+        "size": 1069
+      }
+    ],
+    "expandedBytes": 18279,
+    "packageIdentity": {
+      "author": "Lukas Geiger",
+      "homepage": "https://github.com/electron/node-abi#readme",
+      "license": "MIT",
+      "name": "node-abi",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electron/node-abi.git"
+      },
+      "version": "3.95.0"
+    },
+    "packageMetadata": {
+      "author": "Lukas Geiger",
+      "bugs": {
+        "url": "https://github.com/electron/node-abi/issues"
+      },
+      "dependencies": {
+        "semver": "^7.3.5"
+      },
+      "description": "Get the Node ABI for a given target and runtime, and vice versa.",
+      "devDependencies": {
+        "@semantic-release/npm": "13.0.0-alpha.15",
+        "semantic-release": "^24.2.7",
+        "tape": "^5.3.1"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "abi_registry.json"
+      ],
+      "homepage": "https://github.com/electron/node-abi#readme",
+      "keywords": [
+        "node",
+        "electron",
+        "node_module_version",
+        "abi",
+        "v8"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "node-abi",
+      "packageManager": "yarn@4.10.3+sha512.c38cafb5c7bb273f3926d04e55e1d8c9dfa7d9c3ea1f36a4868fa028b9e5f72298f0b7f401ad5eb921749eb012eb1c3bb74bf7503df3ee43fd600d14a018266f",
+      "publishConfig": {
+        "provenance": true
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/electron/node-abi.git"
+      },
+      "scripts": {
+        "test": "tape test/index.js",
+        "update-abi-registry": "node --unhandled-rejections=strict scripts/update-abi-registry.js"
+      },
+      "version": "3.95.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 4133,
+      "sha256": "e58fc17351d9b07ef963bf208a4289bba12dcd1148f6fc2194ba88a8c110a267"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

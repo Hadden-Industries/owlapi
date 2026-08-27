@@ -1,0 +1,891 @@
+{
+  "artifactId": "f3e85d911764d39915ae73027517b9165ebb5906cb057470c4858c7ab6567da1",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 5,
+      "digestVerifiedFileCount": 5,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 5
+    },
+    "artifactId": "f3e85d911764d39915ae73027517b9165ebb5906cb057470c4858c7ab6567da1",
+    "dependencies": [],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+            "end_line": 20,
+            "start_line": 20
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "isc",
+        "detected_license_expression_spdx": "ISC",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/fs.realpath@1.0.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "isc-8444467e-911b-70d7-8f49-a86dcf33ac8f",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "matches": [
+              {
+                "end_line": 21,
+                "from_file": "f3e85d911764d39915ae73027517b9165ebb5906cb057470c4858c7ab6567da1/package/package.json",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"ISC\",",
+                "matcher": "2-aho",
+                "rule_identifier": "isc_38.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_38.RULE",
+                "score": 100,
+                "start_line": 21
+              }
+            ]
+          }
+        ],
+        "md5": "3aa3d67ce378e330e293496dd3b9a506",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/fs.realpath/1.0.0",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "isc",
+            "declared_license_expression_spdx": "ISC",
+            "dependencies": [],
+            "description": "Use node's fs.realpath, but fall back to the JS implementation if the native one fails",
+            "download_url": "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz",
+            "extra_data": {},
+            "extracted_license_statement": "- ISC\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "fs",
+              "polyfill",
+              "realpath"
+            ],
+            "license_detections": [
+              {
+                "identifier": "isc-6c4320cc-eb5b-3792-8c56-b8565fff1119",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "f3e85d911764d39915ae73027517b9165ebb5906cb057470c4858c7ab6567da1/package/package.json",
+                    "license_expression": "isc",
+                    "license_expression_spdx": "ISC",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "ISC",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "fs.realpath",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "i@izs.me",
+                "name": "Isaac Z. Schlueter",
+                "role": "author",
+                "type": "person",
+                "url": "http://blog.izs.me/"
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/fs.realpath@1.0.0",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/fs.realpath",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/isaacs/fs.realpath.git",
+            "version": "1.0.0"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 2.9,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "2ec89eb99a2117211b3879fa1bf42a4aac964a32",
+        "sha1_git": "3edc57d21c713754c3f288d0c0b610e42bff2d8b",
+        "sha256": "2985019b1b3cf5894df9b831816f7b480833931da982489e3a98c346ce7da897",
+        "size": 577,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Isaac Z. Schlueter and Contributors",
+            "end_line": 3,
+            "start_line": 3
+          },
+          {
+            "copyright": "Copyright Joyent, Inc. and other Node contributors",
+            "end_line": 25,
+            "start_line": 25
+          }
+        ],
+        "detected_license_expression": "isc AND mit",
+        "detected_license_expression_spdx": "ISC AND MIT",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/fs.realpath@1.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 25,
+            "holder": "Joyent, Inc. and other Node contributors",
+            "start_line": 25
+          },
+          {
+            "end_line": 3,
+            "holder": "Isaac Z. Schlueter and Contributors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "isc-625b5e8d-07cf-0e6f-c2d4-9fcfb410f70c",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "matches": [
+              {
+                "end_line": 15,
+                "from_file": "f3e85d911764d39915ae73027517b9165ebb5906cb057470c4858c7ab6567da1/package/LICENSE",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 115,
+                "matched_text": "The ISC License\n\nCopyright (c) Isaac Z. Schlueter and Contributors\n\nPermission to use, copy, modify, and/or distribute this software for any\npurpose with or without fee is hereby granted, provided that the above\ncopyright notice and this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\nMERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR\nIN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+                "matcher": "3-seq",
+                "rule_identifier": "isc_11.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_11.RULE",
+                "score": 94.26,
+                "start_line": 1
+              }
+            ]
+          },
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 20,
+                "from_file": "f3e85d911764d39915ae73027517b9165ebb5906cb057470c4858c7ab6567da1/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "methods from Node.js v0.10 under the terms of the Node.js MIT license.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 20
+              }
+            ]
+          },
+          {
+            "identifier": "mit-cacd5c0c-204a-85c2-affc-e4c125b2492a",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 43,
+                "from_file": "f3e85d911764d39915ae73027517b9165ebb5906cb057470c4858c7ab6567da1/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "  Permission is hereby granted, free of charge, to any person obtaining a\n  copy of this software and associated documentation files (the \"Software\"),\n  to deal in the Software without restriction, including without limitation\n  the rights to use, copy, modify, merge, publish, distribute, sublicense,\n  and/or sell copies of the Software, and to permit persons to whom the\n  Software is furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in\n  all copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\n  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER\n  DEALINGS IN THE SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 27
+              }
+            ]
+          }
+        ],
+        "md5": "062470525c8e380f8567f665ef554d11",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 83.48,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "cdf711a72ab90a1b193aea27e96cccf491e157e2",
+        "sha1_git": "5bd884c252ac49343524aa20cc67d1c370c0749a",
+        "sha256": "8465b04b67f473341171b5c9c8b2c741a4a395b3f6ed58339b3a4f4db3db7472",
+        "size": 2125,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/fs.realpath@1.0.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "b0e79f63ca0f7b8904b2b0e01b8aa1ed",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "325af4f63ad42821a34e8df60f6e3b502f1a3f64",
+        "sha1_git": "a42ceac62663ac72a9d39e17e8cbb6f53cf49bff",
+        "sha256": "fb5cf635902e9c47d767a1de8334dfc19f171c38b6d14585204a50ab294a52eb",
+        "size": 881,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/fs.realpath@1.0.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "81443ae283d9031000862ce501c9f964",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/index.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "9b5cdf4ef79264959ed0a23e4c35efbe6d64b0df",
+        "sha1_git": "b09c7c7e6364dad82ad4b5f4e358a06e66ed8bdd",
+        "sha256": "2e334ba43cd4852f7a3ed68159029167c05d7fa6af536e6ef177eb868ccd1bb8",
+        "size": 1308,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "old",
+        "copyrights": [
+          {
+            "copyright": "Copyright Joyent, Inc. and other Node contributors",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/fs.realpath@1.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Joyent, Inc. and other Node contributors",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-cacd5c0c-204a-85c2-affc-e4c125b2492a",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 20,
+                "from_file": "f3e85d911764d39915ae73027517b9165ebb5906cb057470c4858c7ab6567da1/package/old.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "// Permission is hereby granted, free of charge, to any person obtaining a\n// copy of this software and associated documentation files (the\n// \"Software\"), to deal in the Software without restriction, including\n// without limitation the rights to use, copy, modify, merge, publish,\n// distribute, sublicense, and/or sell copies of the Software, and to permit\n// persons to whom the Software is furnished to do so, subject to the\n// following conditions:\n//\n// The above copyright notice and this permission notice shall be included\n// in all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN\n// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR\n// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\n// USE OR OTHER DEALINGS IN THE SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "8c3d2bd3edf5d8918b7cbf3c93b3ba32",
+        "name": "old.js",
+        "package_data": [],
+        "path": "package/old.js",
+        "percentage_of_license_text": 15.69,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "d2d656e98e4d0735902068408824f8d08aaea84c",
+        "sha1_git": "b40305e73fd583364d50dde4daf74f17c19ce1a8",
+        "sha256": "07245a82717f9bfa2a63b9784284a1b7fc43ff5fcb4af2a94bce5f83611d4a2f",
+        "size": 8542,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "isc-625b5e8d-07cf-0e6f-c2d4-9fcfb410f70c",
+        "license_expression": "isc",
+        "license_expression_spdx": "ISC",
+        "reference_matches": [
+          {
+            "end_line": 15,
+            "from_file": "f3e85d911764d39915ae73027517b9165ebb5906cb057470c4858c7ab6567da1/package/LICENSE",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 115,
+            "matched_text": "The ISC License\n\nCopyright (c) Isaac Z. Schlueter and Contributors\n\nPermission to use, copy, modify, and/or distribute this software for any\npurpose with or without fee is hereby granted, provided that the above\ncopyright notice and this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\nMERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR\nIN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+            "matcher": "3-seq",
+            "rule_identifier": "isc_11.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_11.RULE",
+            "score": 94.26,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "isc-6c4320cc-eb5b-3792-8c56-b8565fff1119",
+        "license_expression": "isc",
+        "license_expression_spdx": "ISC",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "f3e85d911764d39915ae73027517b9165ebb5906cb057470c4858c7ab6567da1/package/package.json",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "ISC",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "isc-8444467e-911b-70d7-8f49-a86dcf33ac8f",
+        "license_expression": "isc",
+        "license_expression_spdx": "ISC",
+        "reference_matches": [
+          {
+            "end_line": 21,
+            "from_file": "f3e85d911764d39915ae73027517b9165ebb5906cb057470c4858c7ab6567da1/package/package.json",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "  \"license\": \"ISC\",",
+            "matcher": "2-aho",
+            "rule_identifier": "isc_38.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_38.RULE",
+            "score": 100,
+            "start_line": 21
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 20,
+            "from_file": "f3e85d911764d39915ae73027517b9165ebb5906cb057470c4858c7ab6567da1/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "methods from Node.js v0.10 under the terms of the Node.js MIT license.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_14.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+            "score": 100,
+            "start_line": 20
+          }
+        ]
+      },
+      {
+        "detection_count": 2,
+        "identifier": "mit-cacd5c0c-204a-85c2-affc-e4c125b2492a",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 43,
+            "from_file": "f3e85d911764d39915ae73027517b9165ebb5906cb057470c4858c7ab6567da1/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 161,
+            "matched_text": "  Permission is hereby granted, free of charge, to any person obtaining a\n  copy of this software and associated documentation files (the \"Software\"),\n  to deal in the Software without restriction, including without limitation\n  the rights to use, copy, modify, merge, publish, distribute, sublicense,\n  and/or sell copies of the Software, and to permit persons to whom the\n  Software is furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in\n  all copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\n  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER\n  DEALINGS IN THE SOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+            "score": 100,
+            "start_line": 27
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      },
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "https://www.isc.org/licenses/",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "isc",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/isc",
+        "minimum_coverage": 0,
+        "name": "ISC License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://opensource.org/licenses/isc-license.txt",
+        "other_spdx_license_keys": [],
+        "other_urls": [
+          "http://openbsd.wikia.com/wiki/OpenBSD%27s_BSD_license",
+          "http://www.isc.org/software/license",
+          "http://www.opensource.org/licenses/ISC",
+          "https://opensource.org/licenses/ISC",
+          "https://www.isc.org/downloads/software-support-policy/isc-license/",
+          "https://www.isc.org/isc-license-1.0.html",
+          "https://www.isc.org/software/license"
+        ],
+        "owner": "ISC - Internet Systems Consortium",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+        "short_name": "ISC License",
+        "spdx_license_key": "ISC",
+        "spdx_url": "https://spdx.org/licenses/ISC",
+        "standard_notice": null,
+        "text": "Permission to use, copy, modify, and/or distribute this software for any purpose\nwith or without fee is hereby granted, provided that the above copyright notice\nand this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH\nREGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND\nFITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS\nOF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER\nTORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF\nTHIS SOFTWARE.",
+        "text_urls": [
+          "http://fedoraproject.org/wiki/Licensing:MIT#Old_Style_with_legal_disclaimer_2",
+          "http://openbsd.wikia.com/wiki/OpenBSD%27s_BSD_license",
+          "http://opensource.org/licenses/isc-license.txt",
+          "https://www.isc.org/software/license"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "isc_11.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 115,
+        "license_expression": "isc",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_11.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "The {{ISC License}}\n\nPermission to use, copy, modify, and/or distribute this software for any\npurpose with or without fee is hereby granted, provided that the above\ncopyright notice and this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\nMERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR\nIN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."
+      },
+      {
+        "identifier": "isc_38.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "isc",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_38.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "\"license\": \"ISC\","
+      },
+      {
+        "identifier": "mit.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 161,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+      },
+      {
+        "identifier": "mit_14.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT License"
+      },
+      {
+        "identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "isc",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "ISC"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/fs.realpath/1.0.0",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "isc",
+        "declared_license_expression_spdx": "ISC",
+        "description": "Use node's fs.realpath, but fall back to the JS implementation if the native one fails",
+        "download_url": "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz",
+        "extra_data": {},
+        "extracted_license_statement": "- ISC\n",
+        "holder": null,
+        "homepage_url": null,
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "fs",
+          "polyfill",
+          "realpath"
+        ],
+        "license_detections": [
+          {
+            "identifier": "isc-6c4320cc-eb5b-3792-8c56-b8565fff1119",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "f3e85d911764d39915ae73027517b9165ebb5906cb057470c4858c7ab6567da1/package/package.json",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "ISC",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "fs.realpath",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "i@izs.me",
+            "name": "Isaac Z. Schlueter",
+            "role": "author",
+            "type": "person",
+            "url": "http://blog.izs.me/"
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/fs.realpath@1.0.0",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/fs.realpath",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/isaacs/fs.realpath.git",
+        "version": "1.0.0"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

@@ -1,0 +1,107 @@
+{
+  "artifactId": "1c0ce5b0c4aa2c6ca5ece7d338a8c95f52e7460f6db4e56514f87fc81c68fd7e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 563512,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "521c005c931292b83249b43ed6ca632d93c875d9f4302146ac0bfeb84cc823a5",
+        "size": 114,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "cb3cecb1c6b01571ab2f4b7554779cef0dbc147e66e46fcf1516fbd8015375a3",
+        "size": 819,
+        "type": "FILE"
+      },
+      {
+        "path": "package/resolver.wasi-browser.js",
+        "sha256": "6bb71a20360211529392245ad568139dca04f6bf5bc43a3cd20fcfee3ee34f6f",
+        "size": 1902,
+        "type": "FILE"
+      },
+      {
+        "path": "package/resolver.wasi.cjs",
+        "sha256": "c9205661e37747e8b81ca79a6601ff62c1aa55fe536b5890d526574685a68dae",
+        "size": 3683,
+        "type": "FILE"
+      },
+      {
+        "path": "package/resolver.wasm32-wasi.wasm",
+        "sha256": "bf79ef05a2ddefa35074298a8f80b425fd4941c700c37e630863b70d5ee7b21c",
+        "size": 1476639,
+        "type": "FILE"
+      },
+      {
+        "path": "package/wasi-worker-browser.mjs",
+        "sha256": "b907a6ae6407be438af12e239ad9efe431ae82409d1551b4d8b1a98d65ccee69",
+        "size": 1066,
+        "type": "FILE"
+      },
+      {
+        "path": "package/wasi-worker.mjs",
+        "sha256": "4c6ba7435bce4ae8bcfd02e10fc6ae09a97b71ec5269fe828eb521b07ab67c0c",
+        "size": 1461,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 1485684,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "license": "MIT",
+      "name": "@unrs/resolver-binding-wasm32-wasi",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.12.2"
+    },
+    "packageMetadata": {
+      "browser": "resolver.wasi-browser.js",
+      "cpu": [
+        "wasm32"
+      ],
+      "dependencies": {
+        "@emnapi/core": "1.10.0",
+        "@emnapi/runtime": "1.10.0",
+        "@napi-rs/wasm-runtime": "^1.1.4"
+      },
+      "description": "UnRS Resolver Node API",
+      "engines": {
+        "node": ">=14.0.0"
+      },
+      "files": [
+        "resolver.wasm32-wasi.wasm",
+        "resolver.wasi.cjs",
+        "resolver.wasi-browser.js",
+        "wasi-worker.mjs",
+        "wasi-worker-browser.mjs"
+      ],
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "license": "MIT",
+      "main": "resolver.wasi.cjs",
+      "name": "@unrs/resolver-binding-wasm32-wasi",
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.12.2"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 563512,
+      "sha256": "1c6bd64327da2787cf3867f700c39b0979a71e43f491ccbc4d541e87484fa4ef"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

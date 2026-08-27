@@ -1,0 +1,180 @@
+{
+  "artifactId": "a5cece6af353a9173b49cdf0b7affb757af00dc0b25f97a9280e470f1cb3d9b7",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 25441,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/globals.json",
+        "sha256": "85a8c22227b59ecdfb1049c4caceca40fc0fa4eedd3cec8575a723232ecbf13e",
+        "size": 73279,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "c8825b4d88b8347b83e6a4a44751899b116878810c54e326d5eb0984b48957af",
+        "size": 98835,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "2998fa25447dc5e0032334703ccec8604d66b750afb5b84e13eb778bf66fbb38",
+        "size": 58,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "3283bbc72ccb87e4652b9310d95ab643283fd1752a96b75f751a0eadeab36456",
+        "size": 2298,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "eeecacdebd1f2cdda3488a5d4ec5dedb7ae5b555ff826c3c674206f65f442be5",
+        "size": 1623,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      }
+    ],
+    "expandedBytes": 177210,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "globals",
+      "repository": "sindresorhus/globals",
+      "version": "15.15.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "description": "Global identifiers from different JavaScript environments",
+      "devDependencies": {
+        "@vitest/eslint-plugin": "^1.1.30",
+        "ava": "^6.1.3",
+        "cheerio": "^1.0.0-rc.12",
+        "eslint-plugin-jest": "^28.8.3",
+        "execa": "^9.4.0",
+        "get-port": "^7.1.0",
+        "npm-run-all2": "^6.2.3",
+        "outdent": "^0.8.0",
+        "puppeteer": "^23.4.1",
+        "shelljs": "^0.8.5",
+        "tsd": "^0.31.2",
+        "type-fest": "^4.26.1",
+        "xo": "^0.59.3"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts",
+        "globals.json"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "globals",
+        "global",
+        "identifiers",
+        "variables",
+        "vars",
+        "jshint",
+        "eslint",
+        "environments"
+      ],
+      "license": "MIT",
+      "name": "globals",
+      "repository": "sindresorhus/globals",
+      "scripts": {
+        "build": "run-s build:data build:types",
+        "build:data": "node scripts/generate-data.mjs",
+        "build:types": "node scripts/generate-types.mjs",
+        "prepare": "npm run build",
+        "test": "npm run build && xo && ava && tsd",
+        "update": "node scripts/update.mjs",
+        "update:browser": "node scripts/update.mjs --environment=browser",
+        "update:builtin": "node scripts/update.mjs --environment=builtin",
+        "update:jest": "node scripts/update.mjs --environment=jest",
+        "update:nodeBuiltin": "node scripts/update.mjs --environment=nodeBuiltin",
+        "update:shelljs": "node scripts/update.mjs --environment=shelljs",
+        "update:vitest": "node scripts/update.mjs --environment=vitest",
+        "update:worker": "node scripts/update.mjs --environment=worker"
+      },
+      "sideEffects": false,
+      "tsd": {
+        "compilerOptions": {
+          "resolveJsonModule": true
+        }
+      },
+      "version": "15.15.0",
+      "xo": {
+        "overrides": [
+          {
+            "files": [
+              "data/*.mjs"
+            ],
+            "rules": {
+              "camelcase": "off",
+              "import/no-anonymous-default-export": "off",
+              "unicorn/filename-case": [
+                "error",
+                {
+                  "cases": {
+                    "camelCase": true,
+                    "kebabCase": true
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "files": [
+              "scripts/*.mjs"
+            ],
+            "rules": {
+              "n/no-unsupported-features/node-builtins": "off"
+            }
+          }
+        ],
+        "rules": {
+          "unicorn/prefer-module": "off"
+        }
+      }
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 25441,
+      "sha256": "c637fabd69d31e10d9b008a3496ae8bb77b6ab15c703e4af123d5d042168b3e5"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

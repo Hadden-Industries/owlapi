@@ -1,0 +1,129 @@
+{
+  "artifactId": "cbca0bc73d6867d5d96ea3da8a649a8a30bb10b7e8115c3e9b8f33c3b710c5ae",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 15335,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "a5a110eb524bf3217958e405b5e3411277e915a2f5902c330348877000337e53",
+        "size": 787,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "c65c47fb2512a285fc6e7c63e5a613e5b959825be57e3d396427ef7ce6a4d49b",
+        "size": 25261,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "14bedd2e5282438e6062b4eaa08d00f20aabe5f0377edd2e54b4b83cc41dee63",
+        "size": 4224,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "dbc5220c4bc8b470da9c8e561b6a5382cf3fa9dcd97cace955ac6fd34a27970c",
+        "size": 16631,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e99f6b67ba6e5cda438efb7a23dd399ee5c2070af69ce77720d95de5fb42921e",
+        "size": 1187,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 787,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a5/a5a110eb524bf3217958e405b5e3411277e915a2f5902c330348877000337e53",
+          "sha256": "a5a110eb524bf3217958e405b5e3411277e915a2f5902c330348877000337e53"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "a5a110eb524bf3217958e405b5e3411277e915a2f5902c330348877000337e53",
+        "size": 787
+      }
+    ],
+    "expandedBytes": 48090,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "homepage": null,
+      "license": "ISC",
+      "name": "minipass",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/minipass.git"
+      },
+      "version": "3.3.6"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "dependencies": {
+        "yallist": "^4.0.0"
+      },
+      "description": "minimal implementation of a PassThrough stream",
+      "devDependencies": {
+        "@types/node": "^17.0.41",
+        "end-of-stream": "^1.4.0",
+        "prettier": "^2.6.2",
+        "tap": "^16.2.0",
+        "through2": "^2.0.3",
+        "ts-node": "^10.8.1",
+        "typescript": "^4.7.3"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.d.ts",
+        "index.js"
+      ],
+      "keywords": [
+        "passthrough",
+        "stream"
+      ],
+      "license": "ISC",
+      "main": "index.js",
+      "name": "minipass",
+      "prettier": {
+        "arrowParens": "avoid",
+        "bracketSameLine": true,
+        "endOfLine": "lf",
+        "jsxSingleQuote": false,
+        "printWidth": 80,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "useTabs": false
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/minipass.git"
+      },
+      "scripts": {
+        "postpublish": "git push origin --follow-tags",
+        "postversion": "npm publish",
+        "preversion": "npm test",
+        "test": "tap"
+      },
+      "tap": {
+        "check-coverage": true
+      },
+      "types": "index.d.ts",
+      "version": "3.3.6"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 15335,
+      "sha256": "7ad2907443a21947802c8e4fcbb7ecd6f1b66f3d0a83908235d93a2174cf9e5d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,126 @@
+{
+  "artifactId": "3566030f1200c955a816624abe794ca5c47d61ab25da80fb5de343d4c09ce58f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5072,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "019122b0a5a867bc45643b2eab26fa20e3a6e9c79777b3995f0468feb3c9dba7",
+        "size": 3611,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "c70399f5f872fefec57b56264e9ebb46905bd558e15c53632644afd0da0cede3",
+        "size": 3899,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "c4b717d4808738c3a8270e8485df6cdbf0cd4f7abb523784dca883b94c212e79",
+        "size": 976,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "cd1c67dad9aa17c4769ceb5588fc243936d27900fba15602f12ef77cdda4cc78",
+        "size": 4001,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      }
+    ],
+    "expandedBytes": 13596,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "ansi-styles",
+      "repository": "chalk/ansi-styles",
+      "version": "5.2.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "description": "ANSI escape codes for styling strings in the terminal",
+      "devDependencies": {
+        "ava": "^2.4.0",
+        "svg-term-cli": "^2.1.1",
+        "tsd": "^0.14.0",
+        "xo": "^0.37.1"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/chalk/ansi-styles?sponsor=1",
+      "keywords": [
+        "ansi",
+        "styles",
+        "color",
+        "colour",
+        "colors",
+        "terminal",
+        "console",
+        "cli",
+        "string",
+        "tty",
+        "escape",
+        "formatting",
+        "rgb",
+        "256",
+        "shell",
+        "xterm",
+        "log",
+        "logging",
+        "command-line",
+        "text"
+      ],
+      "license": "MIT",
+      "name": "ansi-styles",
+      "repository": "chalk/ansi-styles",
+      "scripts": {
+        "screenshot": "svg-term --command='node screenshot' --out=screenshot.svg --padding=3 --width=55 --height=3 --at=1000 --no-cursor",
+        "test": "xo && ava && tsd"
+      },
+      "version": "5.2.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 5072,
+      "sha256": "4ddd9360421279bb2c2c4ba91bc41a5515663223432d09158f9e3805f9d4a05f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

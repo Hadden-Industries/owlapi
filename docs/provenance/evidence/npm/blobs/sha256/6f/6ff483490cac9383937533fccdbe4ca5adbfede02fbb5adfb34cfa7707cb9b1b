@@ -1,0 +1,99 @@
+{
+  "artifactId": "42a61120b0367a8f88a8d46bce8e75694bc3c3cd26a653f8dfb5200f40cb8f5e",
+  "evidence": {
+    "archiveRoot": "stack-utils",
+    "compressedBytes": 2012,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "stack-utils",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "stack-utils/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "stack-utils/README.md",
+        "sha256": "79ac012b24444b7ab142699c2d80840f90cb35cdd7200f0428271b2ef4d2d7a3",
+        "size": 2545,
+        "type": "FILE"
+      },
+      {
+        "path": "stack-utils/index.d.ts",
+        "sha256": "ab82804a14454734010dcdcd43f564ff7b0389bee4c5692eec76ff5b30d4cf66",
+        "size": 1927,
+        "type": "FILE"
+      },
+      {
+        "path": "stack-utils/package.json",
+        "sha256": "7cbbd33e7303febcf826904457c5f5434d3064df4af14df76e9b9d8e1390559d",
+        "size": 813,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1141,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c2/c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        "kind": "LICENCE",
+        "path": "stack-utils/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141
+      }
+    ],
+    "expandedBytes": 6426,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/stack-utils",
+      "license": "MIT",
+      "name": "@types/stack-utils",
+      "repository": {
+        "directory": "types/stack-utils",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "version": "2.0.3"
+    },
+    "packageMetadata": {
+      "contributors": [
+        {
+          "githubUsername": "BendingBender",
+          "name": "BendingBender",
+          "url": "https://github.com/BendingBender"
+        }
+      ],
+      "dependencies": {},
+      "description": "TypeScript definitions for stack-utils",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/stack-utils",
+      "license": "MIT",
+      "main": "",
+      "name": "@types/stack-utils",
+      "repository": {
+        "directory": "types/stack-utils",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "scripts": {},
+      "typeScriptVersion": "4.5",
+      "types": "index.d.ts",
+      "typesPublisherContentHash": "ab51d155e7946b0b0e0edab741811a35172a48de2674195feb31eaaf7bf992b7",
+      "version": "2.0.3"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2012,
+      "sha256": "520394189609a15f8dc055ebbe9fc570830181a7c9638ecea8dd4d3ff7079812"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

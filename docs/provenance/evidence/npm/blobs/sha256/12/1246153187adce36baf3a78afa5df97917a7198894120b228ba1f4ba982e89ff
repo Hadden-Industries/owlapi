@@ -1,0 +1,100 @@
+{
+  "artifactId": "8bd01a44b676b6541c445eae9c5a7be36364c1335846c86354435709c9994cf2",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1539,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "92ad0f595dab36dbe0401d84b75d08aeedc53b2d332d3bbecfdfd5f67ef1ac83",
+        "size": 410,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "f16f951c3339d343f14898a4f9a893d9ee945d29d52b44a9452830e33c4ff412",
+        "size": 440,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "5a1b9c50f75d7eae5bb9b459bcf9f11a1d6e707b6955eef673e40b2aac5aeac6",
+        "size": 788,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 2744,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-syntax-class-static-block",
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-class-static-block",
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-class-static-block",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.14.5"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.14.5"
+      },
+      "description": "Allow parsing of class static blocks",
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "exports": {
+        ".": "./lib/index.js"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-syntax-class-static-block",
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/plugin-syntax-class-static-block",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-class-static-block",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.14.5"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1539,
+      "sha256": "2b371f2859eb7e96c29e353ea48bf27d89f6897ace44852b54ff31625c651456"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

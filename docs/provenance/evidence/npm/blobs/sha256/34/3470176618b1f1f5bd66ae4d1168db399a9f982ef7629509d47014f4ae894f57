@@ -1,0 +1,156 @@
+{
+  "artifactId": "c4cf7aec7156d6f9837c9e8d6e258fa1b99931be9e367dc3373b9755cfe8bafd",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6664,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE-MIT.txt",
+        "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+        "size": 1077,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "83fa2a1a5a1dd7318b99cb17c76927b775098d8fff0d3136c00303e4a7d0b267",
+        "size": 2691,
+        "type": "FILE"
+      },
+      {
+        "path": "package/es2015/index.js",
+        "sha256": "8718dea4d28647912918dba60545890dc10ae672bfb186b6ec0af3fc5e826137",
+        "size": 11104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/es2015/text.js",
+        "sha256": "aad6b3f580511fe1fd70ae4ddadff4f4ec6bd5143f1a53b93c7e16eaf608d552",
+        "size": 11105,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "69922c48a8f28317217455373eedaf7303772d0c2370cd9b553f091e71f7d47b",
+        "size": 427,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "c56978800e47f095cfbfe96712b5e78d150d1f62e32bb4943675213fce481ef0",
+        "size": 10286,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7bec29b9ca68f2c4becc60e866c2f9342ecdc89fab39841a818ccd9eda15c148",
+        "size": 1278,
+        "type": "FILE"
+      },
+      {
+        "path": "package/text.js",
+        "sha256": "4bae97c68c68cc8c56fa873fcbcbaf6869da926f3f38ddd9cb6ca22e8f60da41",
+        "size": 10287,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1077,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+          "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE-MIT.txt",
+        "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+        "size": 1077
+      },
+      {
+        "blob": {
+          "bytes": 2691,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/83/83fa2a1a5a1dd7318b99cb17c76927b775098d8fff0d3136c00303e4a7d0b267",
+          "sha256": "83fa2a1a5a1dd7318b99cb17c76927b775098d8fff0d3136c00303e4a7d0b267"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "83fa2a1a5a1dd7318b99cb17c76927b775098d8fff0d3136c00303e4a7d0b267",
+        "size": 2691
+      }
+    ],
+    "expandedBytes": 48255,
+    "packageIdentity": {
+      "author": {
+        "name": "Mathias Bynens",
+        "url": "https://mathiasbynens.be/"
+      },
+      "homepage": "https://mths.be/emoji-regex",
+      "license": "MIT",
+      "name": "emoji-regex",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mathiasbynens/emoji-regex.git"
+      },
+      "version": "8.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "Mathias Bynens",
+        "url": "https://mathiasbynens.be/"
+      },
+      "bugs": "https://github.com/mathiasbynens/emoji-regex/issues",
+      "description": "A regular expression to match all Emoji-only symbols as per the Unicode Standard.",
+      "devDependencies": {
+        "@babel/cli": "^7.2.3",
+        "@babel/core": "^7.3.4",
+        "@babel/plugin-proposal-unicode-property-regex": "^7.2.0",
+        "@babel/preset-env": "^7.3.4",
+        "mocha": "^6.0.2",
+        "regexgen": "^1.3.0",
+        "unicode-12.0.0": "^0.7.9"
+      },
+      "files": [
+        "LICENSE-MIT.txt",
+        "index.js",
+        "index.d.ts",
+        "text.js",
+        "es2015/index.js",
+        "es2015/text.js"
+      ],
+      "homepage": "https://mths.be/emoji-regex",
+      "keywords": [
+        "unicode",
+        "regex",
+        "regexp",
+        "regular expressions",
+        "code points",
+        "symbols",
+        "characters",
+        "emoji"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "emoji-regex",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mathiasbynens/emoji-regex.git"
+      },
+      "scripts": {
+        "build": "rm -rf -- es2015; babel src -d .; NODE_ENV=es2015 babel src -d ./es2015; node script/inject-sequences.js",
+        "test": "mocha",
+        "test:watch": "npm run test -- --watch"
+      },
+      "types": "index.d.ts",
+      "version": "8.0.0"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 6664,
+      "sha256": "b5ccd9fbfb08098eefbeb6b6b4b40db6db3acf9243e327e039925aa8661cb107"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

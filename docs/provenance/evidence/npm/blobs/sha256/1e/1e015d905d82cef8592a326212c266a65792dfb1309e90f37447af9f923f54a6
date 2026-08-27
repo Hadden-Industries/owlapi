@@ -1,0 +1,185 @@
+{
+  "artifactId": "e42844e5ff0181f18cc90db90b8ec43664e2842658ffff8f3e5b42a2ea5b3cbc",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 37216,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "97d87142793695cd73243de7258694abe85b3b6060fca7f247b0a2afa8219678",
+        "size": 1082,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "46a21a91883eba449693ed647a7aa8c11e6e85435471e230fb081bdcaa07156f",
+        "size": 8897,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/event-target-shim.js",
+        "sha256": "927f1aa229bf227acec02b374b7120b5c971dc97136e55152ce5d49b4c20cbf5",
+        "size": 23692,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/event-target-shim.js.map",
+        "sha256": "839f40662b31d5a7ee38173f785b6ac31f620a30ac126f8cfb0bb1560c557108",
+        "size": 37070,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/event-target-shim.mjs",
+        "sha256": "b0ef9133c4a14f35516accd98bbd51af5e297589398ce8078ed59b29b61773f3",
+        "size": 23411,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/event-target-shim.mjs.map",
+        "sha256": "b5b497ba92f6f66321b6a21b4ad505ca5ebdbf24a1118c3653fbfe56e25bb08c",
+        "size": 37059,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/event-target-shim.umd.js",
+        "sha256": "8685d3687e11cb426b3e86987fe301433da8a058903009becff23c44e2cf75e4",
+        "size": 6994,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/event-target-shim.umd.js.map",
+        "sha256": "0b45a8106aaf541a84a097e2b7bb23c2bde5923fd15c41df11450d00c2e5fd36",
+        "size": 37362,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "2859adaa4f2db3d4f0fc37ad86f056045341496b58fba0dbc16a222f9d5d55b1",
+        "size": 10757,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "980bdd7706c72d04a4df2e3ee2c8ffccf3bc72bd8e7cd13ca38be00cafc6e8db",
+        "size": 2559,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1082,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/97/97d87142793695cd73243de7258694abe85b3b6060fca7f247b0a2afa8219678",
+          "sha256": "97d87142793695cd73243de7258694abe85b3b6060fca7f247b0a2afa8219678"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "97d87142793695cd73243de7258694abe85b3b6060fca7f247b0a2afa8219678",
+        "size": 1082
+      }
+    ],
+    "expandedBytes": 188883,
+    "packageIdentity": {
+      "author": "Toru Nagashima",
+      "homepage": "https://github.com/mysticatea/event-target-shim",
+      "license": "MIT",
+      "name": "event-target-shim",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mysticatea/event-target-shim.git"
+      },
+      "version": "5.0.1"
+    },
+    "packageMetadata": {
+      "author": "Toru Nagashima",
+      "bugs": {
+        "url": "https://github.com/mysticatea/event-target-shim/issues"
+      },
+      "description": "An implementation of WHATWG EventTarget interface.",
+      "devDependencies": {
+        "@babel/core": "^7.2.2",
+        "@babel/plugin-transform-modules-commonjs": "^7.2.0",
+        "@babel/preset-env": "^7.2.3",
+        "@babel/register": "^7.0.0",
+        "@mysticatea/eslint-plugin": "^8.0.1",
+        "@mysticatea/spy": "^0.1.2",
+        "assert": "^1.4.1",
+        "codecov": "^3.1.0",
+        "eslint": "^5.12.1",
+        "karma": "^3.1.4",
+        "karma-chrome-launcher": "^2.2.0",
+        "karma-coverage": "^1.1.2",
+        "karma-firefox-launcher": "^1.0.0",
+        "karma-growl-reporter": "^1.0.0",
+        "karma-ie-launcher": "^1.0.0",
+        "karma-mocha": "^1.3.0",
+        "karma-rollup-preprocessor": "^7.0.0-rc.2",
+        "mocha": "^5.2.0",
+        "npm-run-all": "^4.1.5",
+        "nyc": "^13.1.0",
+        "opener": "^1.5.1",
+        "rimraf": "^2.6.3",
+        "rollup": "^1.1.1",
+        "rollup-plugin-babel": "^4.3.2",
+        "rollup-plugin-babel-minify": "^7.0.0",
+        "rollup-plugin-commonjs": "^9.2.0",
+        "rollup-plugin-json": "^3.1.0",
+        "rollup-plugin-node-resolve": "^4.0.0",
+        "rollup-watch": "^4.3.1",
+        "type-tester": "^1.0.0",
+        "typescript": "^3.2.4"
+      },
+      "engines": {
+        "node": ">=6"
+      },
+      "files": [
+        "dist",
+        "index.d.ts"
+      ],
+      "homepage": "https://github.com/mysticatea/event-target-shim",
+      "keywords": [
+        "w3c",
+        "whatwg",
+        "eventtarget",
+        "event",
+        "events",
+        "shim"
+      ],
+      "license": "MIT",
+      "main": "dist/event-target-shim",
+      "name": "event-target-shim",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mysticatea/event-target-shim.git"
+      },
+      "scripts": {
+        "build": "rollup -c scripts/rollup.config.js",
+        "clean": "rimraf .nyc_output coverage",
+        "codecov": "codecov",
+        "coverage": "nyc report --reporter lcov && opener coverage/lcov-report/index.html",
+        "lint": "eslint src test scripts --ext .js,.mjs",
+        "postversion": "git push && git push --tags",
+        "pretest": "npm run lint",
+        "preversion": "npm test",
+        "test": "run-s test:*",
+        "test:karma": "karma start scripts/karma.conf.js --single-run",
+        "test:mocha": "nyc --require ./scripts/babel-register mocha test/*.mjs",
+        "version": "npm run build && git add dist/*",
+        "watch": "run-p watch:*",
+        "watch:karma": "karma start scripts/karma.conf.js --watch",
+        "watch:mocha": "mocha test/*.mjs --require ./scripts/babel-register --watch --watch-extensions js,mjs --growl"
+      },
+      "types": "index.d.ts",
+      "version": "5.0.1"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 37216,
+      "sha256": "f0717da2cde5c703b92e66906623724959c23ac14e9439c436b84c8a4f5b26bc"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

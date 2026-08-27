@@ -1,0 +1,109 @@
+{
+  "artifactId": "4d8e9270e414e7dacc4ca9761eae74c0eac06398d6872a12af5273d4e0c9d27c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2186,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.mts",
+        "sha256": "8fc0c8b414a7fac318da6cdefac08cf539cd97cb7d7ee8c3c35ce7f5e92d6d3c",
+        "size": 535,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "8d2a3bb0cb0d13f5b03cd95c1639a4a2673f47a42f055d2570a64c95748e2c3b",
+        "size": 601,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "5ac6c487fe13c4f3131b46dd8c45243b7df265f4c27ee07cb7ba9a432accb4b5",
+        "size": 1979,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "1e5dcf639a9851280690256f5a547b01587dce8a37d33caad0e29b302b3f8dd8",
+        "size": 129,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "83400dcebd7c49179a3dfae3e76adc79d32a44b60540668bdbd6d0ecd2233661",
+        "size": 743,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 5119,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@jest/get-type",
+      "repository": {
+        "directory": "packages/jest-get-type",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.1.0"
+    },
+    "packageMetadata": {
+      "description": "A utility function to get the type of a value",
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "4d5f41d0885c1d9630c81b4fd47f74ab0615e18f",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "@jest/get-type",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-get-type",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.1.0"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 2186,
+      "sha256": "3779bd4db2a023d3306d46f0076d78676eac2494c7d59420d6fad0898ea150de"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

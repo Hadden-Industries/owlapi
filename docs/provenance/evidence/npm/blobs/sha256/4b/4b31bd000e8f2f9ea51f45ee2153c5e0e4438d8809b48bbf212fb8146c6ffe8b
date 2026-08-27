@@ -1,0 +1,1308 @@
+{
+  "artifactId": "69ebb2d4b21b3b07db5d23392a4237e196d18f10ef971dd4b9eb9ed182328928",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 10,
+      "digestVerifiedFileCount": 10,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 10
+    },
+    "artifactId": "69ebb2d4b21b3b07db5d23392a4237e196d18f10ef971dd4b9eb9ed182328928",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.1.3",
+        "for_package_purl": "pkg:npm/istanbul-lib-instrument@6.0.3",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/%40istanbuljs/schema",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^12.1.4",
+        "for_package_purl": "pkg:npm/istanbul-lib-instrument@6.0.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/documentation",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^15.1.0",
+        "for_package_purl": "pkg:npm/istanbul-lib-instrument@6.0.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/nyc",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.1.2",
+        "for_package_purl": "pkg:npm/istanbul-lib-instrument@6.0.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/clone",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.13.1",
+        "for_package_purl": "pkg:npm/istanbul-lib-instrument@6.0.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/js-yaml",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.2.0",
+        "for_package_purl": "pkg:npm/istanbul-lib-instrument@6.0.3",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/istanbul-lib-coverage",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.0.1",
+        "for_package_purl": "pkg:npm/istanbul-lib-instrument@6.0.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/nopt",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.1.1",
+        "for_package_purl": "pkg:npm/istanbul-lib-instrument@6.0.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/debug",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.2.0",
+        "for_package_purl": "pkg:npm/istanbul-lib-instrument@6.0.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/chai",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.2.3",
+        "for_package_purl": "pkg:npm/istanbul-lib-instrument@6.0.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/mocha",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^7.23.9",
+        "for_package_purl": "pkg:npm/istanbul-lib-instrument@6.0.3",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/%40babel/core",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^7.23.9",
+        "for_package_purl": "pkg:npm/istanbul-lib-instrument@6.0.3",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/%40babel/parser",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^7.23.9",
+        "for_package_purl": "pkg:npm/istanbul-lib-instrument@6.0.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40babel/cli",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^7.5.4",
+        "for_package_purl": "pkg:npm/istanbul-lib-instrument@6.0.3",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/semver",
+        "resolved_package": {},
+        "scope": "dependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
+            "end_line": 5,
+            "start_line": 5
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-instrument@6.0.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-008266ae-6939-ad31-3617-228b0809863c",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 31,
+                "from_file": "69ebb2d4b21b3b07db5d23392a4237e196d18f10ef971dd4b9eb9ed182328928/package/package.json",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "  \"license\": \"BSD-3-Clause\",",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_195.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+                "score": 100,
+                "start_line": 31
+              }
+            ]
+          }
+        ],
+        "md5": "eadf33b162ac877e6d5ac84f80629ee0",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/istanbul-lib-instrument/6.0.3",
+            "bug_tracking_url": "https://github.com/istanbuljs/istanbuljs/issues",
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "bsd-new",
+            "declared_license_expression_spdx": "BSD-3-Clause",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.1.3",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/%40istanbuljs/schema",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^12.1.4",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/documentation",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^15.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/nyc",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.1.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/clone",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.13.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/js-yaml",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.2.0",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/istanbul-lib-coverage",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.0.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/nopt",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.1.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/debug",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.2.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/chai",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.2.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/mocha",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^7.23.9",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/%40babel/core",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^7.23.9",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/%40babel/parser",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^7.23.9",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40babel/cli",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^7.5.4",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/semver",
+                "resolved_package": {},
+                "scope": "dependencies"
+              }
+            ],
+            "description": "Core istanbul API for JS code coverage",
+            "download_url": "https://registry.npmjs.org/istanbul-lib-instrument/-/istanbul-lib-instrument-6.0.3.tgz",
+            "extra_data": {
+              "engines": {
+                "node": ">=10"
+              }
+            },
+            "extracted_license_statement": "- BSD-3-Clause\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://istanbul.js.org/",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "coverage",
+              "instrumentation",
+              "istanbul",
+              "js"
+            ],
+            "license_detections": [
+              {
+                "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "69ebb2d4b21b3b07db5d23392a4237e196d18f10ef971dd4b9eb9ed182328928/package/package.json",
+                    "license_expression": "bsd-new",
+                    "license_expression_spdx": "BSD-3-Clause",
+                    "match_coverage": 100,
+                    "matched_length": 3,
+                    "matched_text": "BSD-3-Clause",
+                    "matcher": "1-hash",
+                    "rule_identifier": "bsd-new_10.RULE",
+                    "rule_relevance": 100,
+                    "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "istanbul-lib-instrument",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "kananthmail-github@yahoo.com",
+                "name": "Krishnan Anantheswaran",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/istanbul-lib-instrument@6.0.3",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/istanbul-lib-instrument/-/istanbul-lib-instrument-6.0.3.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/istanbul-lib-instrument",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git",
+            "version": "6.0.3"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 2.92,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "e91f58124e907f347e311f2f2a0e5dbcb59b452f",
+        "sha1_git": "5e3c704a13d642e07c6d8eb655cb052b69a99e45",
+        "sha256": "e9e903f776ef4f370760b1e57e1cd170bfa8db7989076c7a3d0af4b73e2b07df",
+        "size": 1154,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "CHANGELOG",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-instrument@6.0.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "6fcc712ae4cbd38fb96372cf31182195",
+        "name": "CHANGELOG.md",
+        "package_data": [],
+        "path": "package/CHANGELOG.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "0c5810757f21b6d2aa97d99d45e0962694ac6ed0",
+        "sha1_git": "3c2c978099ce42ef26b9cd86d5772cff79e329af",
+        "sha256": "63a447332532da1857e80760713718ec9f77c5c9f9a06249ea3e8972c697a195",
+        "size": 25650,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2012-2015 Yahoo! Inc.",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-instrument@6.0.3"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Yahoo! Inc.",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-fb730f3f-a26e-5103-b1ee-4ea46000c5b7",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 24,
+                "from_file": "69ebb2d4b21b3b07db5d23392a4237e196d18f10ef971dd4b9eb9ed182328928/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 97.67,
+                "matched_length": 210,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the Yahoo! Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL YAHOO! INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-new_534.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_534.RULE",
+                "score": 97.67,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "716b8ca15fee2be15af13159d0890c56",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 96.33,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "4e09d0a0fc29cb0067021064555f1025f97aef39",
+        "sha1_git": "d55d2916eb85ce7dff3bd1e309b9e4045f9a9c8f",
+        "sha256": "e09f9b52c6ce5c17ba8103cd0cbf446c33b5448b0c1d01d711b36a1f15a501ba",
+        "size": 1488,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-instrument@6.0.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "11159d9e2edbcf4b12958b6e722d64d0",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "31f8b7902930f03d7f17e033e94ee1740e478f7b",
+        "sha1_git": "c02ac23685c3755e056f5712236be8a08bf3f7ad",
+        "sha256": "3220d6d8d53485e164628c474f5d8154e0996c5b734b4044daa11c086b0b40ba",
+        "size": 946,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "constants",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-instrument@6.0.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "5a68e067206df436b891da48e47efe94",
+        "name": "constants.js",
+        "package_data": [],
+        "path": "package/src/constants.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "40fbdab5f920c34d7bb764719d0219bd4c81bc94",
+        "sha1_git": "2cd402bc0811e8fe1f0a7909774a296dfbcb0aeb",
+        "sha256": "be196a8087c5e80bfc0ef5f696a93ffd2ead202a7d1d0dbad98f18fe9cac39d2",
+        "size": 386,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-instrument@6.0.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "935d4469869958d76fa0d1dccf3b99d5",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/src/index.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "6c5ff334276db26da81f5f30bf49e820c07d2ac9",
+        "sha1_git": "33d2a4c1a6cef000dc5c62bdef80402d55081241",
+        "sha256": "c8d38c016712054bdfcbf3eed19982335dc1ec2a6bf0c2bce0699644b3d9684e",
+        "size": 594,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "instrumenter",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2012-2015, Yahoo Inc. Copyrights",
+            "end_line": 3,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-instrument@6.0.3"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Yahoo Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-3b35d8fc-79e4-ad7d-0ee2-12fbc0a487d6",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 24,
+                "from_file": "69ebb2d4b21b3b07db5d23392a4237e196d18f10ef971dd4b9eb9ed182328928/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 97.67,
+                "matched_length": 210,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the Yahoo! Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL YAHOO! INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-new_534.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_534.RULE",
+                "score": 97.67,
+                "start_line": 4
+              },
+              {
+                "end_line": 3,
+                "from_file": "69ebb2d4b21b3b07db5d23392a4237e196d18f10ef971dd4b9eb9ed182328928/package/src/instrumenter.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 14,
+                "matched_text": " Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_196.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_196.RULE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "8af384fbe2cfaf798ccf77265e0e9e44",
+        "name": "instrumenter.js",
+        "package_data": [],
+        "path": "package/src/instrumenter.js",
+        "percentage_of_license_text": 1.99,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "8f00557b49a42b6d8f157e44c96c10f6abc2c872",
+        "sha1_git": "ffc4387b9ba9477bdce3823760400fddb021637d",
+        "sha256": "8bdd4685299249eebde8f00ae479fb6a1c47fdceb091a6de354d1ef2ec1feb4a",
+        "size": 7129,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "read-coverage",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-instrument@6.0.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "baf9b6f17bd1ccfb48cd69b6a0990e09",
+        "name": "read-coverage.js",
+        "package_data": [],
+        "path": "package/src/read-coverage.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "a320f89c1066af02ec5f25b93e106d494118faac",
+        "sha1_git": "bec12e6cdf329f1221c3315379af42ea87961d1a",
+        "sha256": "0d22bebe3987b77dd52fe22b063ead0f24ecbf0c5247f428c8c012814b0b0a0e",
+        "size": 2161,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "source-coverage",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-instrument@6.0.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "cf3e649adff5b0de8a3641ba3ad9b502",
+        "name": "source-coverage.js",
+        "package_data": [],
+        "path": "package/src/source-coverage.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "b0858130ab4cdd1781210ae05a85d0c216eec54f",
+        "sha1_git": "ec3f234d5d11b21297c4b7da44d2fd60c212f31c",
+        "sha256": "d3bf34ec7ebecc448eaf0b8c6e8236bfa36a35edb5b1c2b2521d2a0807e62075",
+        "size": 3640,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "visitor",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-instrument@6.0.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "6af8b6b6fe78172cf9aba7871a4368d5",
+        "name": "visitor.js",
+        "package_data": [],
+        "path": "package/src/visitor.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "994bc11aa3462424df1a43ad10f43b675c3efd7e",
+        "sha1_git": "04e3115f832799fad6d141e8b0aeaa61ac5c98f9",
+        "sha256": "0dfdea336be10ed8d2ece2f39c0194fa568afbc13b7b720588003a0b55e511a4",
+        "size": 28846,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-008266ae-6939-ad31-3617-228b0809863c",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 31,
+            "from_file": "69ebb2d4b21b3b07db5d23392a4237e196d18f10ef971dd4b9eb9ed182328928/package/package.json",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "  \"license\": \"BSD-3-Clause\",",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_195.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+            "score": 100,
+            "start_line": 31
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-3b35d8fc-79e4-ad7d-0ee2-12fbc0a487d6",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 24,
+            "from_file": "69ebb2d4b21b3b07db5d23392a4237e196d18f10ef971dd4b9eb9ed182328928/package/LICENSE",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 97.67,
+            "matched_length": 210,
+            "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the Yahoo! Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL YAHOO! INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "3-seq",
+            "rule_identifier": "bsd-new_534.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_534.RULE",
+            "score": 97.67,
+            "start_line": 4
+          },
+          {
+            "end_line": 3,
+            "from_file": "69ebb2d4b21b3b07db5d23392a4237e196d18f10ef971dd4b9eb9ed182328928/package/src/instrumenter.js",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 14,
+            "matched_text": " Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_196.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_196.RULE",
+            "score": 100,
+            "start_line": 3
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "69ebb2d4b21b3b07db5d23392a4237e196d18f10ef971dd4b9eb9ed182328928/package/package.json",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "BSD-3-Clause",
+            "matcher": "1-hash",
+            "rule_identifier": "bsd-new_10.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-fb730f3f-a26e-5103-b1ee-4ea46000c5b7",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 24,
+            "from_file": "69ebb2d4b21b3b07db5d23392a4237e196d18f10ef971dd4b9eb9ed182328928/package/LICENSE",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 97.67,
+            "matched_length": 210,
+            "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the Yahoo! Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL YAHOO! INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "3-seq",
+            "rule_identifier": "bsd-new_534.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_534.RULE",
+            "score": 97.67,
+            "start_line": 4
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "http://www.opensource.org/licenses/BSD-3-Clause",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "bsd-new",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/bsd-new",
+        "minimum_coverage": 0,
+        "name": "BSD-3-Clause",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": "BSD-3-Clause",
+        "osi_url": "http://www.opensource.org/licenses/BSD-3-Clause",
+        "other_spdx_license_keys": [
+          "LicenseRef-scancode-libzip"
+        ],
+        "other_urls": [
+          "http://framework.zend.com/license/new-bsd",
+          "https://opensource.org/licenses/BSD-3-Clause",
+          "https://www.eclipse.org/org/documents/edl-v10.php"
+        ],
+        "owner": "Regents of the University of California",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-new.LICENSE",
+        "short_name": "BSD-3-Clause",
+        "spdx_license_key": "BSD-3-Clause",
+        "spdx_url": "https://spdx.org/licenses/BSD-3-Clause",
+        "standard_notice": null,
+        "text": "Redistribution and use in source and binary forms, with or without modification,\nare permitted provided that the following conditions are met:\n\nRedistributions of source code must retain the above copyright notice, this list\nof conditions and the following disclaimer.\n\nRedistributions in binary form must reproduce the above copyright notice, this\nlist of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.\n\nNeither the name of the ORGANIZATION nor the names of its contributors may be\nused to endorse or promote products derived from this software without specific\nprior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,\nTHE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\nARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS\nBE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR\nCONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE\nGOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)\nHOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT\nLIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF\nTHE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+        "text_urls": [
+          "http://www.opensource.org/licenses/BSD-3-Clause"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "bsd-new_10.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "BSD-3-Clause"
+      },
+      {
+        "identifier": "bsd-new_195.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: BSD-3-Clause"
+      },
+      {
+        "identifier": "bsd-new_196.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 14,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 50,
+        "notes": null,
+        "referenced_filenames": [
+          "LICENSE"
+        ],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_196.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Copyrights licensed under the {{New BSD License}}. See the accompanying LICENSE file for terms."
+      },
+      {
+        "identifier": "bsd-new_534.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 215,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_534.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Software License Agreement (BSD License)\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n\n    * Neither the name of the Yahoo! Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL YAHOO! INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/istanbul-lib-instrument/6.0.3",
+        "bug_tracking_url": "https://github.com/istanbuljs/istanbuljs/issues",
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "bsd-new",
+        "declared_license_expression_spdx": "BSD-3-Clause",
+        "description": "Core istanbul API for JS code coverage",
+        "download_url": "https://registry.npmjs.org/istanbul-lib-instrument/-/istanbul-lib-instrument-6.0.3.tgz",
+        "extra_data": {
+          "engines": {
+            "node": ">=10"
+          }
+        },
+        "extracted_license_statement": "- BSD-3-Clause\n",
+        "holder": null,
+        "homepage_url": "https://istanbul.js.org/",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "coverage",
+          "instrumentation",
+          "istanbul",
+          "js"
+        ],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "69ebb2d4b21b3b07db5d23392a4237e196d18f10ef971dd4b9eb9ed182328928/package/package.json",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "BSD-3-Clause",
+                "matcher": "1-hash",
+                "rule_identifier": "bsd-new_10.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "istanbul-lib-instrument",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "kananthmail-github@yahoo.com",
+            "name": "Krishnan Anantheswaran",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/istanbul-lib-instrument@6.0.3",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/istanbul-lib-instrument/-/istanbul-lib-instrument-6.0.3.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/istanbul-lib-instrument",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git",
+        "version": "6.0.3"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

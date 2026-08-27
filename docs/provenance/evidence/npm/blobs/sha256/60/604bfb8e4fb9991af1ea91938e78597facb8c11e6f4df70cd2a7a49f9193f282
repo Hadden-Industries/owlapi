@@ -1,0 +1,137 @@
+{
+  "artifactId": "94c1f52bf0ac282c76b07ffea3cf3469d042b8ef578f3132e3f389cd10219dbf",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7465,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "b9eb082c39fe245e38793699074c394c43a722c51fce031c3c165cb92a31035c",
+        "size": 1054,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "28536d8bd1ba1e951de415a61e056432b38538a341b7100f248e8f9173ca659a",
+        "size": 10468,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/cast.js",
+        "sha256": "6343296219412d1e04e57d968126d0891df2631aa8a857eb0fbf78c6c55a7fc6",
+        "size": 7861,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "982a4c79208c266d69321aacfd5afe92fa8caf42372cd43169d4d3bdcea28f59",
+        "size": 788,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/parse-string.js",
+        "sha256": "fc55565cf28e00086bd0b093b79b09286ec64e8b8fc1b8d63beb50eba4cfb394",
+        "size": 3875,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0a25421ab66ec56def7407234858f52c1d593b2454155c06df1d7feaa324c8fe",
+        "size": 901,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1054,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b9/b9eb082c39fe245e38793699074c394c43a722c51fce031c3c165cb92a31035c",
+          "sha256": "b9eb082c39fe245e38793699074c394c43a722c51fce031c3c165cb92a31035c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "b9eb082c39fe245e38793699074c394c43a722c51fce031c3c165cb92a31035c",
+        "size": 1054
+      },
+      {
+        "blob": {
+          "bytes": 10468,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/28/28536d8bd1ba1e951de415a61e056432b38538a341b7100f248e8f9173ca659a",
+          "sha256": "28536d8bd1ba1e951de415a61e056432b38538a341b7100f248e8f9173ca659a"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "28536d8bd1ba1e951de415a61e056432b38538a341b7100f248e8f9173ca659a",
+        "size": 10468
+      }
+    ],
+    "expandedBytes": 24947,
+    "packageIdentity": {
+      "author": "George Zahariev <z@georgezahariev.com>",
+      "homepage": "https://github.com/gkz/levn",
+      "license": "MIT",
+      "name": "levn",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/gkz/levn.git"
+      },
+      "version": "0.4.1"
+    },
+    "packageMetadata": {
+      "author": "George Zahariev <z@georgezahariev.com>",
+      "bugs": "https://github.com/gkz/levn/issues",
+      "dependencies": {
+        "prelude-ls": "^1.2.1",
+        "type-check": "~0.4.0"
+      },
+      "description": "Light ECMAScript (JavaScript) Value Notation - human written, concise, typed, flexible",
+      "devDependencies": {
+        "livescript": "^1.6.0",
+        "mocha": "^7.1.1"
+      },
+      "engines": {
+        "node": ">= 0.8.0"
+      },
+      "files": [
+        "lib",
+        "README.md",
+        "LICENSE"
+      ],
+      "homepage": "https://github.com/gkz/levn",
+      "keywords": [
+        "levn",
+        "light",
+        "ecmascript",
+        "value",
+        "notation",
+        "json",
+        "typed",
+        "human",
+        "concise",
+        "typed",
+        "flexible"
+      ],
+      "license": "MIT",
+      "main": "./lib/",
+      "name": "levn",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/gkz/levn.git"
+      },
+      "scripts": {
+        "test": "make test"
+      },
+      "version": "0.4.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 7465,
+      "sha256": "1f4457d4df0f93521899c0fdee0263de0f243ecb90ea6bc6d744fadd132067d1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

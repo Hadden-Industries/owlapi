@@ -1,0 +1,144 @@
+{
+  "artifactId": "95852acf741bb3624248da5ca401d8fb7b331d58f6995a3115e9262b978e5f9b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3726,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/browser.js",
+        "sha256": "2144db8259f49701ee485af0cec268a030971783a290b7145b7737918447aa77",
+        "size": 441,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "36ebfad20a03171d97e85fcdd39563c91b56cc0c579b8f7369f7503b7e156b82",
+        "size": 3065,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b1a932c44dfc194f2505bb4507531c8f7cd18295f9553d57a85214375931c4a6",
+        "size": 961,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "103e23b4a9d6756272e30ed588e4ae7924cf3206a3acffaed088ffd35c991a43",
+        "size": 2868,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      },
+      {
+        "blob": {
+          "bytes": 2868,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/10/103e23b4a9d6756272e30ed588e4ae7924cf3206a3acffaed088ffd35c991a43",
+          "sha256": "103e23b4a9d6756272e30ed588e4ae7924cf3206a3acffaed088ffd35c991a43"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "103e23b4a9d6756272e30ed588e4ae7924cf3206a3acffaed088ffd35c991a43",
+        "size": 2868
+      }
+    ],
+    "expandedBytes": 8452,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "supports-color",
+      "repository": "chalk/supports-color",
+      "version": "8.1.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "browser": "browser.js",
+      "dependencies": {
+        "has-flag": "^4.0.0"
+      },
+      "description": "Detect whether a terminal supports color",
+      "devDependencies": {
+        "ava": "^2.4.0",
+        "import-fresh": "^3.2.2",
+        "xo": "^0.35.0"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "exports": {
+        "default": "./browser.js",
+        "node": "./index.js"
+      },
+      "files": [
+        "index.js",
+        "browser.js"
+      ],
+      "funding": "https://github.com/chalk/supports-color?sponsor=1",
+      "keywords": [
+        "color",
+        "colour",
+        "colors",
+        "terminal",
+        "console",
+        "cli",
+        "ansi",
+        "styles",
+        "tty",
+        "rgb",
+        "256",
+        "shell",
+        "xterm",
+        "command-line",
+        "support",
+        "supports",
+        "capability",
+        "detect",
+        "truecolor",
+        "16m"
+      ],
+      "license": "MIT",
+      "name": "supports-color",
+      "repository": "chalk/supports-color",
+      "scripts": {
+        "test": "xo && ava"
+      },
+      "version": "8.1.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3726,
+      "sha256": "ea69d9b5801e109932f9f12b5499c06de3fde936119a21c5941b2759d4364fb0"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

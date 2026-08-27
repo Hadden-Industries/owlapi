@@ -1,0 +1,113 @@
+{
+  "artifactId": "4d7207ab7ff81dc65642df2028bef8515bb7f101ccfe0580e48c160ed6c80867",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4711,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "0f32c9d6349a57f96564aa50112a3f7c7a5060bdbb147f295227af1bb0666b6c",
+        "size": 1703,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "6f5ae6f035943562bc1fcfacbd45bb5d58eafbf47277f7c704d608f6689250be",
+        "size": 769,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "43666dbd94179a6bd89daee6010260b15590921f800a63eeef634a2cb4d5bc07",
+        "size": 12975,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "024846e07339478bf833ddd71a2830f2a23749363f3fec2a427be31faf2bf528",
+        "size": 157,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d77c9924caecc9a92bdf8b4dded25e9c0c5ed6bf4b8d2944d61a214d20df1d8d",
+        "size": 785,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 17521,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "jest-changed-files",
+      "repository": {
+        "directory": "packages/jest-changed-files",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.4.1"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "execa": "^5.1.1",
+        "jest-util": "30.4.1",
+        "p-limit": "^3.1.0"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "b3b4a09ed3005369dacc7466d1d2122797283785",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "jest-changed-files",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-changed-files",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.4.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 4711,
+      "sha256": "470fe0936a5433fe8a4614a0c3b9135e392179867e1815cd5ac556737dd0d248"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

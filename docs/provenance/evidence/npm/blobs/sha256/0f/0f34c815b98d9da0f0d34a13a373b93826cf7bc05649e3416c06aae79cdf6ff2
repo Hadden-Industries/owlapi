@@ -1,0 +1,154 @@
+{
+  "artifactId": "69ebb2d4b21b3b07db5d23392a4237e196d18f10ef971dd4b9eb9ed182328928",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 16798,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "63a447332532da1857e80760713718ec9f77c5c9f9a06249ea3e8972c697a195",
+        "size": 25650,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "e09f9b52c6ce5c17ba8103cd0cbf446c33b5448b0c1d01d711b36a1f15a501ba",
+        "size": 1488,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "3220d6d8d53485e164628c474f5d8154e0996c5b734b4044daa11c086b0b40ba",
+        "size": 946,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e9e903f776ef4f370760b1e57e1cd170bfa8db7989076c7a3d0af4b73e2b07df",
+        "size": 1154,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/constants.js",
+        "sha256": "be196a8087c5e80bfc0ef5f696a93ffd2ead202a7d1d0dbad98f18fe9cac39d2",
+        "size": 386,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.js",
+        "sha256": "c8d38c016712054bdfcbf3eed19982335dc1ec2a6bf0c2bce0699644b3d9684e",
+        "size": 594,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/instrumenter.js",
+        "sha256": "8bdd4685299249eebde8f00ae479fb6a1c47fdceb091a6de354d1ef2ec1feb4a",
+        "size": 7129,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/read-coverage.js",
+        "sha256": "0d22bebe3987b77dd52fe22b063ead0f24ecbf0c5247f428c8c012814b0b0a0e",
+        "size": 2161,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/source-coverage.js",
+        "sha256": "d3bf34ec7ebecc448eaf0b8c6e8236bfa36a35edb5b1c2b2521d2a0807e62075",
+        "size": 3640,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/visitor.js",
+        "sha256": "0dfdea336be10ed8d2ece2f39c0194fa568afbc13b7b720588003a0b55e511a4",
+        "size": 28846,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1488,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e0/e09f9b52c6ce5c17ba8103cd0cbf446c33b5448b0c1d01d711b36a1f15a501ba",
+          "sha256": "e09f9b52c6ce5c17ba8103cd0cbf446c33b5448b0c1d01d711b36a1f15a501ba"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "e09f9b52c6ce5c17ba8103cd0cbf446c33b5448b0c1d01d711b36a1f15a501ba",
+        "size": 1488
+      }
+    ],
+    "expandedBytes": 71994,
+    "packageIdentity": {
+      "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
+      "homepage": "https://istanbul.js.org/",
+      "license": "BSD-3-Clause",
+      "name": "istanbul-lib-instrument",
+      "repository": {
+        "directory": "packages/istanbul-lib-instrument",
+        "type": "git",
+        "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
+      },
+      "version": "6.0.3"
+    },
+    "packageMetadata": {
+      "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
+      "bugs": {
+        "url": "https://github.com/istanbuljs/istanbuljs/issues"
+      },
+      "dependencies": {
+        "@babel/core": "^7.23.9",
+        "@babel/parser": "^7.23.9",
+        "@istanbuljs/schema": "^0.1.3",
+        "istanbul-lib-coverage": "^3.2.0",
+        "semver": "^7.5.4"
+      },
+      "description": "Core istanbul API for JS code coverage",
+      "devDependencies": {
+        "@babel/cli": "^7.23.9",
+        "chai": "^4.2.0",
+        "clone": "^2.1.2",
+        "debug": "^4.1.1",
+        "documentation": "^12.1.4",
+        "js-yaml": "^3.13.1",
+        "mocha": "^6.2.3",
+        "nopt": "^4.0.1",
+        "nyc": "^15.1.0"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "src"
+      ],
+      "homepage": "https://istanbul.js.org/",
+      "keywords": [
+        "coverage",
+        "istanbul",
+        "js",
+        "instrumentation"
+      ],
+      "license": "BSD-3-Clause",
+      "main": "src/index.js",
+      "name": "istanbul-lib-instrument",
+      "repository": {
+        "directory": "packages/istanbul-lib-instrument",
+        "type": "git",
+        "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
+      },
+      "scripts": {
+        "test": "nyc mocha"
+      },
+      "version": "6.0.3"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 16798,
+      "sha256": "96345674f0bc81bdab6cc34da20d891e870dc460aea06cf6d6af1d955bf1d20d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

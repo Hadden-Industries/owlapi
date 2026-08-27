@@ -1,0 +1,116 @@
+{
+  "artifactId": "1cb27db619ef0b4f3010e66fa4579c56e41fefa48f0d68c3e59344fa3cbd6e9c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3992,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "ec361617c0473d39347b020eaa6dceedaebab43879fa1cd8b8f0f97a8e80a475",
+        "size": 756,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "3a909ee6684b1a009c02a563dbcaed02d555cd1655b234a0324826815a4108d6",
+        "size": 1762,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "1f732cb65d2783e12b3744dd9121efe2f5b6af49716c4f3f027b4fff0f244a96",
+        "size": 6507,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "a9e0a0aa2df9d83a94f44301cbb279afc44cc6a2dd6660fd92f856ba78bf1a25",
+        "size": 1239,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 756,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ec/ec361617c0473d39347b020eaa6dceedaebab43879fa1cd8b8f0f97a8e80a475",
+          "sha256": "ec361617c0473d39347b020eaa6dceedaebab43879fa1cd8b8f0f97a8e80a475"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "ec361617c0473d39347b020eaa6dceedaebab43879fa1cd8b8f0f97a8e80a475",
+        "size": 756
+      }
+    ],
+    "expandedBytes": 10264,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "npm-bundled",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/npm-bundled.git"
+      },
+      "version": "6.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "dependencies": {
+        "npm-normalize-package-bin": "^6.0.0"
+      },
+      "description": "list things in node_modules that are bundledDependencies, or transitive dependencies thereof",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^6.0.0",
+        "@npmcli/template-oss": "5.1.0",
+        "mutate-fs": "^2.1.1",
+        "tap": "^16.3.0"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "npm-bundled",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/npm-bundled.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": true,
+        "version": "5.1.0"
+      },
+      "version": "6.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 3992,
+      "sha256": "9c57b5867e0df352a36d2dddea511d03f71cfd21e8402866622a138bb1c97d36"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

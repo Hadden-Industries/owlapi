@@ -36,6 +36,9 @@ v2 human-reviewed third-party-material conclusion layer.
 - Never extract an untrusted archive to host-selected paths.
 - Commit no full package tarball, npm cache, ScanCode distribution or raw
   ScanCode report.
+- Keep retained evidence as individually reviewable, content-addressed files;
+  do not aggregate the corpus into an archive or classify its blobs as generated
+  content hidden by default in GitHub diffs.
 - Use canonical JSON, code-unit ordering, POSIX archive paths and lowercase
   content digests so Windows and Ubuntu produce identical evidence.
 - Preserve the existing human conclusions where the new evidence does not
@@ -89,6 +92,8 @@ v2 human-reviewed third-party-material conclusion layer.
 - `docs/provenance/evidence/npm/blobs/sha256/**` — suffixless retained evidence,
   archive inventories, normalized ScanCode results and verified attestation
   bundles keyed by byte SHA-256.
+- `docs/provenance/evidence/npm/.gitattributes` — disable only Git text/EOL
+  conversion for digest-addressed bytes; do not suppress their review diffs.
 
 ### Existing files changed
 
@@ -110,7 +115,8 @@ v2 human-reviewed third-party-material conclusion layer.
 - `.prettierrc.json` — deliberately empty repository-local declaration of the
   exact-pinned Prettier defaults, after exact configuration approval.
 - `CONTRIBUTING.md` and `scripts/source-policy.test.js` — explain the public
-  contributor contract and exercise real Git/Prettier policy resolution.
+  contributor contract, document the optional source-development partial-clone
+  boundary and exercise real Git/Prettier policy resolution.
 - `.github/workflows/release.yml` and `.github/workflows/extended-tests.yml` —
   required fresh Ubuntu sharded release verification plus manually dispatched
   Ubuntu/Windows baseline and parity proof, after exact configuration approval;
@@ -213,6 +219,21 @@ export function verifyBlob(root, reference)
 export function computeCorpusRoot(blobReferences)
 ```
 
+The loose CAS layout is a review and maintenance boundary, not incidental build
+output. Leave every digest path individually visible so a later release reuses
+unchanged Git objects and shows exactly which evidence bytes changed. Do not add
+`linguist-generated`, `-diff`, an aggregate ZIP or another presentation/storage
+rule that conceals that incremental distinction. The nested Git attributes may
+disable only transformations that would change the path-derived digest.
+
+The complete corpus remains on the primary branch. The optional contributor
+profile uses `--filter=blob:none` plus a positive cone-mode sparse selection to
+omit raw provenance/release payloads without omitting evidence indexes, review
+records or ordinary conformance fixtures. It is a source-development
+optimization, never a substitute input for governance, evidence or release
+gates; those commands must require a hydrated full checkout and fail clearly
+rather than skip absent evidence.
+
 - [ ] Prove identical bytes deduplicate, different bytes do not, suffixes are
       absent, prefix directories are lowercase and an existing wrong blob fails
       rather than being overwritten.
@@ -264,7 +285,10 @@ export function normalizeScancodeReport(report, { artifactId, inputRoot })
 ```
 
 - [ ] Hand-author paired reports whose only differences are absolute temporary
-      roots, timestamps, durations, host metadata and collection ordering.
+      roots, timestamps, durations, host metadata, collection ordering,
+      ScanCode-generated package/dependency UUIDv4 qualifiers, acquisition-day
+      file dates and the three proved host-derived file classifications
+      (`file_type`, `mime_type` and `is_script`).
 - [ ] Assert equal canonical JSON/digest while preserving licence matches/text,
       copyright, package data, unknown-licence findings and substantive errors.
 - [ ] Pin the official Python 3.14 release assets and require one ScanCode worker
@@ -293,7 +317,16 @@ export function normalizeScancodeReport(report, { artifactId, inputRoot })
       `packages[].datafile_paths` and `dependencies[].datafile_path`); preserve
       package-model fields such as `file_references[].path`, whose values may be
       dependency identities including scoped npm names rather than filesystem
-      locations.
+      locations. Validate ScanCode's package-instance UIDs against their npm
+      Package URLs, remove the execution-local UUID-bearing package/dependency
+      UIDs, rewrite file ownership to PURLs and rename nullable dependency
+      ownership to `for_package_purl`. Reject duplicate package PURLs, a UID/PURL
+      mismatch or a dangling package reference; keep repeated dependency-target
+      PURLs distinct through their complete edge records. Record normalization
+      version `1` in both the evidence policy and every finding envelope. Omit
+      only the acquisition-day `date` and three proved host-derived
+      classification fields above: retain file identity, digests,
+      source/language flags, package metadata and every legal finding.
 
 ## Task 6: Define and validate the evidence manifest
 
@@ -388,18 +421,34 @@ export async function acquireEvidence(options)
 - Regenerate `docs/provenance/third-party-material.json`.
 - Modify `governance.test.js`.
 
-- [ ] Write failing governance expectations for schema ID
+- [x] Write failing governance expectations for schema ID
       `third-party-material.v2.schema.json`, `LOCKED_REGISTRY_TARBALL`, artifact
       references, separate lock/tarball/observed/concluded licences, signature/
       provenance/scan states and explicit licence-file presence.
-- [ ] Remove installed-directory inspection and consume only the verified
+- [x] Remove installed-directory inspection and consume only the verified
       evidence manifest plus retained repository material facts.
-- [ ] Preserve human conclusions when their exact component facts remain
+- [x] Preserve human conclusions when their exact component facts remain
       equivalent; expose every contradiction or newly unresolved conclusion.
-- [ ] Bind the v2 facts digest to lockfile, evidence manifest, corpus root,
+- [x] Bind the v2 facts digest to lockfile, evidence manifest, corpus root,
       component conclusions and repository materials, excluding volatile network
       metadata.
-- [ ] Regenerate and validate; leave the new facts pending human review.
+- [x] Generate and schema-validate a prospective v2 inventory through the
+      generator's explicit alternate-output boundary; leave its facts pending
+      human review and do not replace the approved canonical inventory until that
+      exact prospective output is accepted.
+
+The prospective-review boundary exposed two defects before promotion. The first
+candidate retained 468 installed-tree-era rationales and described a declaration
+qualification as ScanCode agreement even though the governing fact was agreement
+between lockfile and authenticated tarball declarations. After correcting those
+facts, the first canonical-currentness check exposed a second, subtler defect:
+101 newly introduced v2 components received different explanatory wording on a
+repeat generation solely because their now-canonical decisions were described as
+“preserved” rather than initially “selected”. The generator now preserves an
+equivalent prior human decision while emitting one state-independent rationale,
+so prospective generation, canonical promotion and later currentness checks are
+idempotent. Human review approved the resulting facts digest
+`8505fbe24f3ad1cb7be5245927311ab6b9b033c641eea06eeffefd886486d41f`.
 
 ## Task 9: Acquire the full graph in closed shards and establish cross-platform parity
 
@@ -408,35 +457,35 @@ export async function acquireEvidence(options)
 - Generate `docs/provenance/npm-package-evidence.json` and retained blobs.
 - Create `docs/provenance/evidence/npm/README.md`.
 
-- [ ] Run all indices `0..31` of the deterministic unsigned-first-eight-hex
+- [x] Run all indices `0..31` of the deterministic unsigned-first-eight-hex
       modulo-32 assignment over every unique final locked artifact on Windows (the
       pre-tool graph contains 618 occurrences and 585 artifacts;
       the committed count is regenerated after adding the exact acquisition
       tools) with official ScanCode `32.5.0` Python 3.14 Windows archive whose
       SHA-256 is
       `74dfca9f0f2a607dbc90cfbfd03df1ed5b3e7e4b3a12dbb028e0d158c1311ec5`.
-- [ ] Run the same 32 shards on Ubuntu with official ScanCode `32.5.0` Python
+- [x] Run the same 32 shards on Ubuntu with official ScanCode `32.5.0` Python
       3.14 archive whose SHA-256 is
       `02be93341e2f9775f88b4abd03cdd74f2e4de91941a12a1d8cd150eeb72a0945`.
-- [ ] Invoke both hosts with `--processes 1`; ScanCode remains isolated in its
+- [x] Invoke both hosts with `--processes 1`; ScanCode remains isolated in its
       disposable release-tool environment and MUST NOT modify a user-level
       Python installation or publish any Python runtime in the npm package.
-- [ ] Select exact Python `3.14.7` x64 through full-SHA
+- [x] Select exact Python `3.14.7` x64 through full-SHA
       `actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97`
       (`v7.0.0`) with `check-latest: false`, `update-environment: false` and empty
       cache; authenticate the matching official ScanCode archive before private
       configuration.
-- [ ] Independently validate and merge each host's 32 partials into candidate
+- [x] Independently validate and merge each host's 32 partials into candidate
       corpora without `--verify-committed`, because the initial bootstrap has no
       prior corpus to compare; then require byte-identical canonical manifests
       and corpus roots, stopping and classifying a difference rather than
       selecting a preferred host.
-- [ ] Promote the parity-proven candidate bytes only after offline schema/digest
+- [x] Promote the parity-proven candidate bytes only after offline schema/digest
       verification and human review. Retain `--verify-committed` without an
       initial-corpus exception in every release aggregate.
-- [ ] Measure the graph against every archive/corpus ceiling and record actual
+- [x] Measure the graph against every archive/corpus ceiling and record actual
       maxima in the corpus README without weakening a failed safety ceiling.
-- [ ] Verify every final lockfile occurrence resolves to one complete artifact,
+- [x] Verify every final lockfile occurrence resolves to one complete artifact,
       every unique artifact passes identity/SRI/signature/archive/scan controls,
       and provenance counts distinguish verified from not published; do not
       preserve the pre-tool counts as constants after the lockfile changes.
@@ -539,6 +588,117 @@ native file selected as legal evidence is absent from ScanCode. A fourth complet
 64-shard run, two successful aggregates and byte-identical parity remain mandatory
 before Task 9 can be checked off.
 
+### Fourth diagnostic baseline: run 33087504175
+
+The fourth manually dispatched matrix was run on 27 August 2026 at exact signed
+source commit `5f76f787d38cb4cba11d7f0e23b062b606cb4220`. All 64 acquisition shards and
+both per-host aggregates succeeded; the schedule-only observation job was
+correctly skipped. The cross-platform parity job alone failed, so the 68-job run
+ended with 66 successes, one failure and one skip. No candidate corpus was
+promoted. The retained diagnostic is
+[GitHub Actions run 33087504175](https://github.com/Hadden-Industries/owlapi/actions/runs/33087504175),
+with the exact failing job at
+[cross-platform parity](https://github.com/Hadden-Industries/owlapi/actions/runs/33087504175/job/98591854922).
+
+Independent verification accepted both 639-artifact host aggregates. Their
+registry, provenance, signature, tarball and archive evidence agreed; only the
+canonical ScanCode finding blobs differed. A complete paired-report comparison
+identified two cross-host non-semantic sources:
+
+- ScanCode 32.5.0's package model constructs each `package_uid` by adding a fresh
+  UUIDv4 qualifier and propagates those execution-local values through
+  `files[].for_packages`, `dependencies[].dependency_uid` and
+  `dependencies[].for_package_uid`. The random identifiers therefore changed
+  otherwise identical finding-blob digests on every invocation.
+- `nearley@2.20.1`'s authenticated `package/bin/nearley-railroad.js` bytes were
+  identical, but Windows classified the file as HTML/non-script while Ubuntu
+  classified it as executable Node.js. Only `file_type`, `mime_type` and
+  `is_script` differed; its path, size, SHA-256, package evidence and every legal
+  finding agreed. ScanCode documents the first two fields as libmagic-derived,
+  while the third also observes extracted filesystem executable state.
+
+A later-day verifier would also have failed even after cross-host parity:
+ScanCode's `files[].date` records the modification date of the newly materialized
+scan tree. Both Run 4 hosts happened to execute on 27 August, masking that
+temporal difference. The authenticated archive inventory and per-file SHA-256,
+not the acquisition date, remain authoritative.
+
+The revised correction uses standard package identity instead of minting another
+identifier. The lock contains 639 artifacts but only 568 full npm package names,
+with 62 names present at multiple versions; the full scoped name therefore
+identifies a lineage, the npm PURL identifies a release, and SRI/tarball SHA-256
+identify exact bytes. The normalizer checks each ScanCode package/dependency UID
+against its reported PURL, removes the transient UID, rewrites graph references
+to PURLs and retains repeated dependency targets through their full edge records.
+It rejects duplicate package PURLs and dangling/mismatched references, omits only
+the four enumerated non-semantic file fields, and records normalization version
+`1`. Focused tests observed the previous UUID/date behavior before implementation.
+
+`util/recanonicalize-npm-package-evidence.mjs` then independently verified each
+original manifest and all referenced blobs before running that same pure
+normalizer over only the ScanCode envelopes. Every unchanged blob was retained
+again by content digest, and each complete result was verified before atomic
+output. The source and result identities are:
+
+- Ubuntu source manifest
+  `ada31436727cceff9df1ffd88ee0f919005db2658f6cd12227d882dd12acef81`,
+  corpus root
+  `a6af3aaa60aca38f67bff4d8ca2af12abdcad38ccdfc082b52b7272f7b85a29d`;
+- Windows source manifest
+  `81b494a94577cf002443766e89d8967a13e6ea8028c584076128316d9202e30b`,
+  corpus root
+  `bee204e7de68968ce2b5f63a9c0d8fe64cc8491cf2f96f2af939e478d428f7bb`;
+- independently reconstructed Ubuntu and Windows manifest
+  `2e515fa06c0407a15a1a2cd95b967342c626add80a8ab6422b2fe5532f75aed1`,
+  corpus root
+  `e94d28c8e27f0130185640e0198f756cb8ed648b5d10e61ecaf588468213945f`.
+
+The two reconstructed manifests are byte-identical and each closes over 714
+lockfile occurrences, 639 artifacts, 3,112 blobs and 64,518,053 retained bytes;
+all 639 signatures, 639 archives and 639 scans verify, with 192 verified and 447
+not-published provenance states. The original aggregates were copied without
+modification out of the volatile temporary directory, and their manifest hashes
+were rechecked at the destination.
+
+Run 4 already consumed 28,604 aggregate job-seconds (about 7.95 runner-hours) to
+produce 64 successful acquisitions and two verified platform aggregates. A fifth
+64-shard acquisition would repeat unchanged network, archive and scanner work and
+is therefore neither necessary nor proportionate. Run 4 plus the independently
+replayed, byte-identical candidates supplies the cross-platform bootstrap
+evidence. After the reviewed corpus is committed, the release workflow must still
+perform one fresh 32-shard Ubuntu acquisition and require exact equality with the
+committed corpus. No candidate is promoted until Git byte preservation, offline
+schema/digest checks and human rights review have completed.
+
+### Host-neutral archive-occurrence completion
+
+The first promoted PURL-normalized candidate exposed one retention omission during
+the required ceiling measurement: acquisition had enforced each archive's
+`physicalEntryCount` and `duplicateEntries` but had not retained those two facts in
+the archive evidence envelope. Treating the deduplicated entry array as the
+physical count would have concealed repeated members and weakened the promised
+archive-bomb evidence. The correction therefore introduced one shared strict
+archive-inventory validator and a bounded, eight-worker completion pass that
+re-downloaded only the 639 lock-pinned tarballs, revalidated both locked SRI and an
+independent SHA-256, reran only the archive inspector, and required every existing
+package, archive, legal-evidence and non-archive blob fact to remain exact. It did
+not rerun ScanCode, package code or either 32-shard acquisition matrix.
+
+The PURL-normalized source manifest
+`2e515fa06c0407a15a1a2cd95b967342c626add80a8ab6422b2fe5532f75aed1`
+and corpus root
+`e94d28c8e27f0130185640e0198f756cb8ed648b5d10e61ecaf588468213945f`
+completed deterministically as manifest
+`4f980ce7a5ba7cfd4baeb317b201f954c6bf26b80d2ecc6f2486a2adbd246136`
+and corpus root
+`5929e30f796814d6079fa1e4e931b0cbeab8cf32d6a47b29ac16ac8b1ce1dea9`.
+The final strict verifier closes 714 occurrences over 639 artifacts and 3,112
+blobs, including 12,586 physical archive members, four repeated canonical paths
+with four additional identical physical members, and 64,555,601 retained bytes.
+All future acquisition paths emit these occurrence facts directly; the legacy
+allowance exists only inside the one-purpose recanonicalizer for authenticating
+the preserved Run 4 inputs.
+
 ## Task 10: Reconcile rights and human review
 
 **Files:**
@@ -547,15 +707,26 @@ before Task 9 can be checked off.
 - Regenerate `docs/provenance/third-party-material.json` review metadata after
   human approval.
 
-- [ ] Prove every production component has retained licence evidence or one
+- [x] Prove every production component has retained licence evidence or one
       explicit immutable external-evidence rationale and no unresolved production
       conclusion.
-- [ ] Review development-only anomalies and record an explicit disposition for
+- [x] Review development-only anomalies and record an explicit disposition for
       each without pretending development material is distributed.
-- [ ] Update the rights inventory only to bind the new third-party-material facts
+- [x] Update the rights inventory only to bind the new third-party-material facts
       digest, recompute its facts digest and return it to human review.
-- [ ] Obtain exact human approval of the generated evidence and conclusion facts
+- [x] Obtain exact human approval of the generated evidence and conclusion facts
       before changing either review to `REVIEWED`.
+
+The final rights reconciliation also corrected a stale package-scope binding. The
+earlier digest predated approved Phase 19C commit
+`ba931446e125aefb99edad3f8b71c40229cd6164`, which changed the packed
+`package.json` by adding the evidence acquisition/verification scripts and exact
+development-tool pins. The positive packlist remains the same 72 paths and no
+other packed path changed. Recomputing those exact current bytes produced source
+manifest digest
+`5a270dd6601257147d0f07823533e681b62e733c5144e22991eb100a6172ea2a` and
+approved rights facts digest
+`c689ef908638d5e600e3d52e3969e42c94bc901716d8662c6c18771633ed60cf`.
 
 ## Task 11: Wire deterministic and release controls
 
@@ -563,6 +734,8 @@ before Task 9 can be checked off.
 
 - Create `.gitattributes` and `.editorconfig` as byte-for-byte policy copies of
   the corresponding WebVOWL root files after exact approval.
+- Create `docs/provenance/evidence/npm/.gitattributes` after exact approval so
+  Git never line-ending-normalizes digest-addressed raw package evidence.
 - Create empty `.prettierrc.json`, modify `CONTRIBUTING.md`, and create
   `scripts/source-policy.test.js` after exact approval.
 - Modify `.github/workflows/release.yml` and
@@ -581,37 +754,73 @@ before Task 9 can be checked off.
 - [x] Make the exact Prettier defaults repository-discoverable, document the
       contributor commands and prove the Git normalization/upstream-byte and
       Prettier-resolution behavior through real tools.
-- [ ] Keep ordinary CI's existing offline schema/blob/corpus/signature and cross-
+- [x] Keep ordinary CI's existing offline schema/blob/corpus/signature and cross-
       platform normalizer-fixture coverage without downloading all tarballs.
-- [ ] Add a 32-lane credential-free Ubuntu release acquisition matrix with
+- [x] Add a 32-lane credential-free Ubuntu release acquisition matrix with
       `fail-fast: false`, `max-parallel: 8`, exact 120-minute shard ceilings and
-      one-day same-run partial artifacts.
-- [ ] Make stable `Release / third-party evidence` run under `always()`, reject an
-      incomplete matrix during merge, require exact committed-corpus equality and
-      gate candidate construction plus the closed release aggregate on its success.
-- [ ] Add a manual-only 32×2 Ubuntu/Windows shard matrix, per-OS candidate-
+      one-day same-run partial artifacts. Fetch and validate npm's signing-key
+      set once in a predecessor job, transport its digest-checked snapshot by an
+      exact artifact name and require every shard to consume that same set.
+- [x] Make stable `Release / third-party evidence` run under `!cancelled()`, so
+      ordinary shard failures still reach the closed evaluator but an explicit
+      cancellation stops further work. Reject an incomplete matrix during merge,
+      require exact committed-corpus equality and gate candidate construction
+      plus the closed release aggregate on its success.
+- [x] Add a manual-only 32×2 Ubuntu/Windows shard matrix, per-OS candidate-
       aggregate matrix and cross-platform parity job to `extended-tests.yml`; do
       not compare the bootstrap aggregate with an absent committed corpus, run
       this heavy baseline on its weekly schedule, or make it a required ordinary
       CI check. Keep the transparent extended-environment observation job
       schedule-only so `workflow_dispatch` cannot couple the pre-corpus full test
-      state to a manual acquisition baseline.
-- [ ] Govern the sixth Action, exact setup-python inputs, fixed runner/shell matrix,
-      environment-only expression crossings, closed artifact patterns, one-day
-      retention, exact shard coordinates and all fail-closed aggregates; grant only
-      `contents: read`, with no npm/GitHub write, OIDC, environment or release
-      mutation authority.
+      state to a manual acquisition baseline. Keep one running and at most one
+      pending diagnostic run rather than queueing every accidental dispatch.
+- [x] Govern the sixth Action, exact setup-python inputs, fixed runner/shell matrix,
+      environment-only expression crossings, closed artifact selectors, one-day
+      shard/key retention, seven-day verified-aggregate retention, deterministic
+      coordinate replacement for failed-job reruns, exact shard coordinates and
+      all `!cancelled()` fail-closed aggregates; grant only `contents: read`, with
+      no npm/GitHub write, OIDC, environment or release mutation authority.
+
+The evidence manifest and generated release-gate registry retain the deterministic
+serialization emitted by their owning generators. They are therefore named
+explicitly in `.prettierignore`: applying a second general-purpose formatter would
+change reviewed evidence bytes after generation and would make a regenerated file
+disagree with the formatting gate. A source-policy test asks Prettier itself to
+prove that exact exclusion while also proving that ordinary first-party source
+remains formatter-controlled. Their schema, digest, currentness and registry
+reconciliation gates remain mandatory; the exclusion does not exempt their
+contents from validation.
 
 ## Task 12: Verify and stop at the Phase 19C evidence checkpoint
 
-- [ ] Run every focused evidence test using `npm test -- <file>`.
-- [ ] Run `npm test -- governance.test.js --runInBand`.
-- [ ] Run the full package, boundary, lint, formatting, gate-registry and workflow-
+- [x] Run every focused evidence test using `npm test -- <file>`.
+- [x] Run `npm test -- governance.test.js --runInBand`.
+- [x] Run the full package, boundary, lint, formatting, gate-registry and workflow-
       governance suites.
-- [ ] Run the offline verifier from a clean process with networking unavailable.
-- [ ] Run the full fresh network/ScanCode verifier once against the committed
-      corpus.
-- [ ] Inspect `git diff --check`, the complete file list, corpus size, generated
+- [x] Run the offline verifier from a clean process with networking unavailable.
+- [ ] Run one full fresh 32-shard Ubuntu network/ScanCode verifier against the
+      committed corpus; do not repeat the 64-shard cross-platform bootstrap whose
+      successful acquisitions were preserved and independently recanonicalized.
+- [x] Inspect `git diff --check`, the complete file list, corpus size, generated
       summaries and pending/reviewed states.
+- [ ] From the committed GitHub tree, exercise the documented blobless
+      source-development clone in a disposable directory: prove bulk evidence
+      payloads are absent, indexes and ordinary conformance fixtures remain,
+      focused source checks run, full evidence gates do not report false success,
+      and `git sparse-checkout disable` hydrates a corpus that passes the offline
+      verifier.
 - [ ] Pause for user review and a detailed file-by-file Phase 19C checkpoint
       commit; do not commit or push without separate explicit authorization.
+
+The pre-commit local checkpoint completed on 27 August 2026. All 127 Jest suites
+passed with 2,827 passing tests and one intentional skip; the independent package
+boundary added three passes. ESLint reported zero errors and 19 pre-existing
+benchmark-output warnings, the complete Prettier gate passed, all 44 release
+requirements reconciled across 111 checklist rows, and workflow governance
+reported no violations. The network-denied verifier independently closed all 714
+occurrences, 639 artifacts and 3,112 content-addressed blobs. The evidence
+directory contains those blobs plus its README and nested Git policy: 3,114 files
+and 64,563,161 on-disk bytes, of which 64,555,601 bytes are authenticated retained
+evidence. Both human-review states are `REVIEWED`, generator currentness and
+`git diff --check` pass, and the fresh post-commit 32-shard Ubuntu comparison
+remains deliberately pending until Git can supply the committed reference corpus.

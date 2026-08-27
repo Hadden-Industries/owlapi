@@ -1,0 +1,112 @@
+{
+  "artifactId": "d7d45e3d300374e6567c51601c7a42c3a4e33405381c826ec3dd26775e760a3e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3487,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.npmignore",
+        "sha256": "abcbd5929ba2d059647bd4c6c99a74df2676bfbaaf44535e4713b53fbd14e6a8",
+        "size": 587,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.travis.yml",
+        "sha256": "ee9fda56f77b68a1333e1d648745bac09376c7748f5568ab810874a4fe6e380c",
+        "size": 49,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "05ff177fbd1f816df52d583de62e1a5ca8887766bee91156eae7879253a45c7b",
+        "size": 1079,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "3ebef51dfd6006f66a2a62a2e65521bf72faead2634de1a3f684abd2ba318ce2",
+        "size": 825,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "6e5b512800391a796d33394e6e515ce3f84c94c3dcfee8a893da46e9c79c244e",
+        "size": 4282,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7f4077cea4aff8596a409fbae095e31edd4ef6dba3c253649e0c47e882ec06ad",
+        "size": 701,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/main-test.js",
+        "sha256": "1029b3f781af9d09f4663178249ed4632dd9dc46faaa73171e7959d5cb95435c",
+        "size": 3460,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1079,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/05/05ff177fbd1f816df52d583de62e1a5ca8887766bee91156eae7879253a45c7b",
+          "sha256": "05ff177fbd1f816df52d583de62e1a5ca8887766bee91156eae7879253a45c7b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "05ff177fbd1f816df52d583de62e1a5ca8887766bee91156eae7879253a45c7b",
+        "size": 1079
+      }
+    ],
+    "expandedBytes": 10983,
+    "packageIdentity": {
+      "author": "David Tudury <david.tudury@gmail.com>",
+      "homepage": "https://github.com/dtudury/discontinuous-range",
+      "license": "MIT",
+      "name": "discontinuous-range",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/dtudury/discontinuous-range.git"
+      },
+      "version": "1.0.0"
+    },
+    "packageMetadata": {
+      "author": "David Tudury <david.tudury@gmail.com>",
+      "bugs": {
+        "url": "https://github.com/dtudury/discontinuous-range/issues"
+      },
+      "description": "for adding, subtracting, and indexing discontinuous ranges of numbers",
+      "devDependencies": {
+        "mocha": "^1.21.4"
+      },
+      "homepage": "https://github.com/dtudury/discontinuous-range",
+      "keywords": [
+        "discontinuous",
+        "range",
+        "set"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "discontinuous-range",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/dtudury/discontinuous-range.git"
+      },
+      "scripts": {
+        "test": "./node_modules/mocha/bin/mocha -R spec test/*-test.js"
+      },
+      "version": "1.0.0"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 3487,
+      "sha256": "83c983195340a2b6f20509a08a3a1ad57b167d24810940d3200faa0410860a03"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

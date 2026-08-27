@@ -1,0 +1,193 @@
+{
+  "artifactId": "8868d17b82a7faff98514568d8981a71ad885856322b2083c451632e0852d46f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 12383,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "139490258a68fea80cbb38be69261bcbbc9ad48f2ed5233865e56bb281678f47",
+        "size": 2546,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts",
+        "sha256": "8cd9420ca2b84c0fa2851805ff06a1682f98c78fb51b1caf93f6888d184a0269",
+        "size": 3906,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts.map",
+        "sha256": "894016b70905408c44da489176303042e96adfa65c503e29ee31bd8e6443670d",
+        "size": 4163,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js",
+        "sha256": "2c934649bd1f847982fc06b02721244cb3271bf254afd71f23f9d20c14f9b59a",
+        "size": 12791,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js.map",
+        "sha256": "a69e0d670a9d4b67852d613d0cf3132599a5046653b7641edcb1f7497132e869",
+        "size": 27213,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/package.json",
+        "sha256": "8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a",
+        "size": 25,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts",
+        "sha256": "5a7cb3b29a8cafee77a7c6c1aeba80bfb32dd84a67020575a409032eac2f8756",
+        "size": 3981,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts.map",
+        "sha256": "894016b70905408c44da489176303042e96adfa65c503e29ee31bd8e6443670d",
+        "size": 4163,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js",
+        "sha256": "6feab1ba6210a3dd4c2bf1eb9cadfca5674c82972d0d015a162bbeb097a886da",
+        "size": 12129,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js.map",
+        "sha256": "cb7896bf7f5eac9b4eec3caffaac6fb122342b01c33c2e92bcfedd6b4a8c79a1",
+        "size": 27237,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/package.json",
+        "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+        "size": 23,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "ab8c1c2bce664e4c76b1937fa1a28f00ca5231a70cf0c1f78dd473101a9d2a88",
+        "size": 1675,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 100617,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter",
+      "homepage": null,
+      "license": "ISC",
+      "name": "@isaacs/fs-minipass",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/npm/fs-minipass.git"
+      },
+      "version": "4.0.1"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter",
+      "dependencies": {
+        "minipass": "^7.0.4"
+      },
+      "description": "fs read and write streams based on minipass",
+      "devDependencies": {
+        "@types/node": "^20.11.30",
+        "mutate-fs": "^2.1.1",
+        "prettier": "^3.2.5",
+        "tap": "^18.7.1",
+        "tshy": "^1.12.0",
+        "typedoc": "^0.25.12"
+      },
+      "engines": {
+        "node": ">=18.0.0"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./dist/esm/index.js",
+            "types": "./dist/esm/index.d.ts"
+          },
+          "require": {
+            "default": "./dist/commonjs/index.js",
+            "types": "./dist/commonjs/index.d.ts"
+          }
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "dist"
+      ],
+      "keywords": [],
+      "license": "ISC",
+      "main": "./dist/commonjs/index.js",
+      "name": "@isaacs/fs-minipass",
+      "prettier": {
+        "arrowParens": "avoid",
+        "bracketSameLine": true,
+        "endOfLine": "lf",
+        "jsxSingleQuote": false,
+        "printWidth": 75,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "useTabs": false
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/npm/fs-minipass.git"
+      },
+      "scripts": {
+        "format": "prettier --write . --loglevel warn",
+        "postversion": "npm publish",
+        "prepare": "tshy",
+        "prepublishOnly": "git push origin --follow-tags",
+        "pretest": "npm run prepare",
+        "preversion": "npm test",
+        "test": "tap",
+        "typedoc": "typedoc --tsconfig .tshy/esm.json ./src/*.ts"
+      },
+      "tshy": {
+        "exports": {
+          ".": "./src/index.ts",
+          "./package.json": "./package.json"
+        }
+      },
+      "type": "module",
+      "types": "./dist/commonjs/index.d.ts",
+      "version": "4.0.1"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 12383,
+      "sha256": "7ac286e3cccc1ea8980e79e2039def6bb97d3182e17951cd9094f0400ed98236"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

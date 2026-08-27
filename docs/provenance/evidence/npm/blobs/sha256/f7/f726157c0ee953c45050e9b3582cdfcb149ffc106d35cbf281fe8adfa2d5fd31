@@ -1,0 +1,198 @@
+{
+  "artifactId": "5f49f28af7d0baeea8df7fa74c59567d1052c49e1d75ab701671510c835a90c7",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8959,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "565acf764f4583abe4cf4b02128f01b5d4d1b4c62c253e92df7ed6a8a8ad406b",
+        "size": 733,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "32fe8d1e71fa043da2237140ca3298c94fd088793419303a5cdbf209f0121793",
+        "size": 5447,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/clone.js",
+        "sha256": "459ec3db39773683346d39233c9cec9176667e1785240f6c861d276ddf9e9b8a",
+        "size": 4937,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/errors.js",
+        "sha256": "e0d5d61cc750723ef875b2d5b56370a959bd80842fe105a7b5d6db988398655f",
+        "size": 579,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/find.js",
+        "sha256": "60b0559e699b01ae777e941cac75a8b8bd541f524bea8ba05b5c9055250733f3",
+        "size": 316,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "ce74e39939a74d25cba6c789ba1cb143af903884829e6cb105d2f1d69351d324",
+        "size": 242,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/is-clean.js",
+        "sha256": "886581add04269ea242570ea702a14a2a1419914ecaa504dcfb288e6b85903ec",
+        "size": 222,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/is.js",
+        "sha256": "bed8a09b70bfbfdd5d6ab4ec85654fb102b00333763a788bdec093bad700d503",
+        "size": 216,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/lines-to-revs.js",
+        "sha256": "9e41fc2ef265ed22c37b769cfc86ee7bf781b7fd1e7549b63d8a56f2fe88b58f",
+        "size": 4061,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/make-error.js",
+        "sha256": "b8ca6e2a780804c7577b2d84f8897b4c9441e8822464d99bc415d670e28175a1",
+        "size": 861,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/opts.js",
+        "sha256": "8134a53ca4ba794c33b34673e3aab6daf3be92c3da9742a9949f6fa42b47ad3e",
+        "size": 1617,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/revs.js",
+        "sha256": "5a9b3a8394d30e8dea8163ae19c1c1b9f3953bc1d714a5dc167bf755a6b2d597",
+        "size": 521,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/spawn.js",
+        "sha256": "212db7f3738490807b8555e6ffcd6d926103ab465741eccc9d168f6afe5bd19e",
+        "size": 1312,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/utils.js",
+        "sha256": "f9661fc6b4639b39215c8b8505a6e6d184fd1e7a4e2e2fc0b501f071e477ba98",
+        "size": 109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/which.js",
+        "sha256": "0ffeea200d18c25646b409cce1c06b13316b9e2a0013003df04a688cb4c9be8d",
+        "size": 339,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b0e0740849424292739df11d1330e58337f21ca2f7dcdced6fd23f6edb1a5dd6",
+        "size": 1449,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 733,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/56/565acf764f4583abe4cf4b02128f01b5d4d1b4c62c253e92df7ed6a8a8ad406b",
+          "sha256": "565acf764f4583abe4cf4b02128f01b5d4d1b4c62c253e92df7ed6a8a8ad406b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "565acf764f4583abe4cf4b02128f01b5d4d1b4c62c253e92df7ed6a8a8ad406b",
+        "size": 733
+      }
+    ],
+    "expandedBytes": 22961,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "@npmcli/git",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/git.git"
+      },
+      "version": "8.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "dependencies": {
+        "@gar/promise-retry": "^1.0.0",
+        "@npmcli/promise-spawn": "^10.0.0",
+        "ini": "^7.0.0",
+        "lru-cache": "^11.2.1",
+        "npm-pick-manifest": "^12.0.0",
+        "proc-log": "^7.0.0",
+        "semver": "^7.3.5",
+        "which": "^7.0.0"
+      },
+      "description": "a util for spawning git from npm CLI contexts",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^7.0.0",
+        "@npmcli/template-oss": "5.1.0",
+        "npm-package-arg": "^14.0.0",
+        "slash": "^3.0.0",
+        "tap": "^16.0.1"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "@npmcli/git",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/git.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ],
+        "timeout": 600
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": true,
+        "updateNpm": false,
+        "version": "5.1.0"
+      },
+      "version": "8.0.0"
+    },
+    "physicalEntryCount": 16,
+    "tarball": {
+      "bytes": 8959,
+      "sha256": "82eb115a4480c4943c76dec7c12574473bafec7a979bc22244b6e91c4e0c53bb"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

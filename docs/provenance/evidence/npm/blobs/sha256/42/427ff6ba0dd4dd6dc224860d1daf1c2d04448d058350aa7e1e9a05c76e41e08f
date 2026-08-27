@@ -1,0 +1,131 @@
+{
+  "artifactId": "8c1ba0c941b93b4d603748ddd72107b0063230b574520f584f18b4b93108c745",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2723,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "82bf3772616ba306ba63c84550e2c45072f829abdb4392a54defe39a4e587b26",
+        "size": 1577,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "8661c367be253a559e8cbcae21192e8520b1513b421a1f383558ec4d88c03698",
+        "size": 1336,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6fb0681c3501741d68594c69a0baae9f558f2d426c136946f2c7780a8c5e27bd",
+        "size": 720,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "d83ce2463d3599223d087ef5895444f6c756d46f6748a04b085c479dc39c457d",
+        "size": 1842,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 1842,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d8/d83ce2463d3599223d087ef5895444f6c756d46f6748a04b085c479dc39c457d",
+          "sha256": "d83ce2463d3599223d087ef5895444f6c756d46f6748a04b085c479dc39c457d"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "d83ce2463d3599223d087ef5895444f6c756d46f6748a04b085c479dc39c457d",
+        "size": 1842
+      }
+    ],
+    "expandedBytes": 6584,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "locate-path",
+      "repository": "sindresorhus/locate-path",
+      "version": "5.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "dependencies": {
+        "p-locate": "^4.1.0"
+      },
+      "description": "Get the first path that exists on disk of multiple paths",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "tsd": "^0.7.2",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "locate",
+        "path",
+        "paths",
+        "file",
+        "files",
+        "exists",
+        "find",
+        "finder",
+        "search",
+        "searcher",
+        "array",
+        "iterable",
+        "iterator"
+      ],
+      "license": "MIT",
+      "name": "locate-path",
+      "repository": "sindresorhus/locate-path",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "5.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2723,
+      "sha256": "ae3d1b9360a435840a81a8c7da29f59630dd793c3f39a08f15f73fd3894053b7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

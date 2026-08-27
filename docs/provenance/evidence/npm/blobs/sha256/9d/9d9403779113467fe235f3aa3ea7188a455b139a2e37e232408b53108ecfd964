@@ -1,0 +1,133 @@
+{
+  "artifactId": "0889a8599d0e75967bb10d0621d88d926271ec0209d963e7b43c21d96db34305",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5926,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "720836c9bdad386485a492ab41fe08007ecf85ca278ddd8f9333494dcac4949d",
+        "size": 755,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "cf4ed8bce6e9c6c650d6b119b01927ede27f26cc3314820672817ce18a848ba9",
+        "size": 7307,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "541017d95a059450a9c1527c4fdd742741c9ecc941e47f82fabb6fdd17947242",
+        "size": 6979,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "a900dadba69e0677aab7d4c9da8308e3e5558e574c7c945bed0e498f967c36c7",
+        "size": 1673,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 755,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/72/720836c9bdad386485a492ab41fe08007ecf85ca278ddd8f9333494dcac4949d",
+          "sha256": "720836c9bdad386485a492ab41fe08007ecf85ca278ddd8f9333494dcac4949d"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "720836c9bdad386485a492ab41fe08007ecf85ca278ddd8f9333494dcac4949d",
+        "size": 755
+      },
+      {
+        "blob": {
+          "bytes": 7307,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/cf/cf4ed8bce6e9c6c650d6b119b01927ede27f26cc3314820672817ce18a848ba9",
+          "sha256": "cf4ed8bce6e9c6c650d6b119b01927ede27f26cc3314820672817ce18a848ba9"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "cf4ed8bce6e9c6c650d6b119b01927ede27f26cc3314820672817ce18a848ba9",
+        "size": 7307
+      }
+    ],
+    "expandedBytes": 16714,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "npm-pick-manifest",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/npm-pick-manifest.git"
+      },
+      "version": "12.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "dependencies": {
+        "npm-install-checks": "^9.0.0",
+        "npm-normalize-package-bin": "^6.0.0",
+        "npm-package-arg": "^14.0.0",
+        "semver": "^7.3.5"
+      },
+      "description": "Resolves a matching manifest from a package metadata document according to standard npm semver resolution rules.",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^6.0.0",
+        "@npmcli/template-oss": "5.1.0"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "keywords": [
+        "npm",
+        "semver",
+        "package manager"
+      ],
+      "license": "ISC",
+      "main": "./lib",
+      "name": "npm-pick-manifest",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/npm-pick-manifest.git"
+      },
+      "scripts": {
+        "coverage": "tap",
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "node --test --test-update-snapshots './test/**/*.js'",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "node --test './test/**/*.js'",
+        "test:cover": "node --test --experimental-test-coverage --test-timeout=3000 --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 './test/**/*.js'",
+        "test:node20": "node --test test"
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "latestCiVersion": 24,
+        "publish": true,
+        "testRunner": "node:test",
+        "version": "5.1.0"
+      },
+      "version": "12.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 5926,
+      "sha256": "208baa93d657a3b998eab830315b8bbbef46e98b8f406865ad71078ab82b2be0"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

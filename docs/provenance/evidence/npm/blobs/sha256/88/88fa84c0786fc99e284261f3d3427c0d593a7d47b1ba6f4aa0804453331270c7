@@ -1,0 +1,107 @@
+{
+  "artifactId": "e55e2db25fc403cf42f1659742e5f19235cd418e331f985bf119de7695d68992",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4174,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "85fde19744c84cfacb04aed732c0392ba221231b26090d3271d2ed865bfc0792",
+        "size": 1108,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a5552f138725ba2768610c9362f5c7387c8ac80c61fc68477a4f97b7412bba86",
+        "size": 3476,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bindings.js",
+        "sha256": "8e32a0d37f20bd6f7d5bdbf99d041aa27be47cbbe5172ac13ebf7380a10b3bf6",
+        "size": 5986,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "a87721fe406e1f1798fef44d697b46ea1efe346fda118010334713346ee4207c",
+        "size": 660,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1108,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/85/85fde19744c84cfacb04aed732c0392ba221231b26090d3271d2ed865bfc0792",
+          "sha256": "85fde19744c84cfacb04aed732c0392ba221231b26090d3271d2ed865bfc0792"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "85fde19744c84cfacb04aed732c0392ba221231b26090d3271d2ed865bfc0792",
+        "size": 1108
+      },
+      {
+        "blob": {
+          "bytes": 3476,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a5/a5552f138725ba2768610c9362f5c7387c8ac80c61fc68477a4f97b7412bba86",
+          "sha256": "a5552f138725ba2768610c9362f5c7387c8ac80c61fc68477a4f97b7412bba86"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "a5552f138725ba2768610c9362f5c7387c8ac80c61fc68477a4f97b7412bba86",
+        "size": 3476
+      }
+    ],
+    "expandedBytes": 11230,
+    "packageIdentity": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)",
+      "homepage": "https://github.com/TooTallNate/node-bindings",
+      "license": "MIT",
+      "name": "bindings",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/TooTallNate/node-bindings.git"
+      },
+      "version": "1.5.0"
+    },
+    "packageMetadata": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)",
+      "bugs": {
+        "url": "https://github.com/TooTallNate/node-bindings/issues"
+      },
+      "dependencies": {
+        "file-uri-to-path": "1.0.0"
+      },
+      "description": "Helper module for loading your native module's .node file",
+      "homepage": "https://github.com/TooTallNate/node-bindings",
+      "keywords": [
+        "native",
+        "addon",
+        "bindings",
+        "gyp",
+        "waf",
+        "c",
+        "c++"
+      ],
+      "license": "MIT",
+      "main": "./bindings.js",
+      "name": "bindings",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/TooTallNate/node-bindings.git"
+      },
+      "version": "1.5.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 4174,
+      "sha256": "d77781178c5bd89a91b1f6c5556acd511b1b5927eb13e2ad8189cac29eeb0907"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

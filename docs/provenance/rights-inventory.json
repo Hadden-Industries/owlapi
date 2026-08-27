@@ -8,16 +8,16 @@
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
       "fileCount": 72,
-      "sourceManifestSha256": "e7e698d9387fbbdb37747ade51e43a0b7ae361986f4728b42ce26296590d74a3"
+      "sourceManifestSha256": "5a270dd6601257147d0f07823533e681b62e733c5144e22991eb100a6172ea2a"
     }
   },
   "review": {
     "status": "REVIEWED",
-    "factsSha256": "d60b8394f641f6c3b19c34d2b76b203aaa4ff72d7ea49b214f4a7538efb895cc",
+    "factsSha256": "c689ef908638d5e600e3d52e3969e42c94bc901716d8662c6c18771633ed60cf",
     "reviewer": "Maksym Shostak",
     "reviewedOn": "2026-08-27",
-    "capacity": "Original author, project maintainer, and release reviewer",
-    "conclusion": "Reviewed and approved the exact tarball scope, contributor, material-class, external-dependency, unresolved-contribution, and distribution-authority facts bound to this digest."
+    "capacity": "Copyright holder and project maintainer",
+    "conclusion": "Reviewed the exact package-scope rights facts and their binding to the reviewed third-party-material facts. Every tarball material class has an identified distribution basis, and no unresolved external copyrightable contribution or production dependency-licence conclusion is recorded."
   },
   "contributors": [
     {
@@ -98,9 +98,9 @@
   "externalDependencies": {
     "bundled": false,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "218bdf15e604c58a5f0a053f036b05c0c0e6b2200ff94e8fd16e605f8a7a80cb",
+    "inventoryFactsSha256": "8505fbe24f3ad1cb7be5245927311ab6b9b033c641eea06eeffefd886486d41f",
     "noticeRule": "Ordinary npm dependencies are installed separately and remain under their own licences. Their licence texts are not copied into the owlapi tarball merely because they appear in the installed dependency graph."
   },
   "unresolvedExternalContributions": [],
-  "conclusion": "Every material class in the machine-defined 0.1.0-alpha.0 tarball scope has an identified candidate distribution basis and no unresolved external copyrightable contribution is recorded; human review of this exact facts digest remains required before release."
+  "conclusion": "Every material class in the machine-defined 0.1.0-alpha.0 tarball scope has an identified distribution basis, the bound third-party-material inventory records no unresolved production licence conclusion, and no unresolved external copyrightable contribution is recorded."
 }

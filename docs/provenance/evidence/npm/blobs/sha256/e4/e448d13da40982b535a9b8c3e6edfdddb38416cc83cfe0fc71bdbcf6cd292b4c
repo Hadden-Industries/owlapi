@@ -1,0 +1,153 @@
+{
+  "artifactId": "9e3b2bd5d8b9e3beaf34b87c4d19abc012ca3b02352ad48a74c407a9583293fa",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3627,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "aa675bee44b9c91ca0be3defdb1d4cd62b175d5e51d3653a78ce292dd8a6c44b",
+        "size": 1155,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "e17120ad3deff741c2ca5cbe511971ca33971a1ba6e49694c6498309bb2680b9",
+        "size": 1093,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "33132ea8c9f1f257cdd9c1a03709f06d4ef89bfaccaa5e478fc5cb51d351840e",
+        "size": 1290,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "3589a8446276886aa54f8dda47d0d12be90fb167925559fab4a906ddfca6f91f",
+        "size": 47,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/deep-extend.js",
+        "sha256": "87aadac5b3cc8081b570a243c17c575c195c4ae642e98834495291fa626ed9d6",
+        "size": 4293,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "21b307891704eb34e9be621d7563d13734f75f41d8f97825862b05ca5bc2d217",
+        "size": 1312,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1093,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e1/e17120ad3deff741c2ca5cbe511971ca33971a1ba6e49694c6498309bb2680b9",
+          "sha256": "e17120ad3deff741c2ca5cbe511971ca33971a1ba6e49694c6498309bb2680b9"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "e17120ad3deff741c2ca5cbe511971ca33971a1ba6e49694c6498309bb2680b9",
+        "size": 1093
+      },
+      {
+        "blob": {
+          "bytes": 1290,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/33/33132ea8c9f1f257cdd9c1a03709f06d4ef89bfaccaa5e478fc5cb51d351840e",
+          "sha256": "33132ea8c9f1f257cdd9c1a03709f06d4ef89bfaccaa5e478fc5cb51d351840e"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "33132ea8c9f1f257cdd9c1a03709f06d4ef89bfaccaa5e478fc5cb51d351840e",
+        "size": 1290
+      }
+    ],
+    "expandedBytes": 9190,
+    "packageIdentity": {
+      "author": "Viacheslav Lotsmanov <lotsmanov89@gmail.com>",
+      "homepage": "https://github.com/unclechu/node-deep-extend",
+      "license": "MIT",
+      "name": "deep-extend",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/unclechu/node-deep-extend.git"
+      },
+      "version": "0.6.0"
+    },
+    "packageMetadata": {
+      "author": "Viacheslav Lotsmanov <lotsmanov89@gmail.com>",
+      "bugs": "https://github.com/unclechu/node-deep-extend/issues",
+      "contributors": [
+        {
+          "name": "Romain Prieto",
+          "url": "https://github.com/rprieto"
+        },
+        {
+          "name": "Max Maximov",
+          "url": "https://github.com/maxmaximov"
+        },
+        {
+          "name": "Marshall Bowers",
+          "url": "https://github.com/maxdeviant"
+        },
+        {
+          "name": "Misha Wakerman",
+          "url": "https://github.com/mwakerman"
+        }
+      ],
+      "description": "Recursive object extending",
+      "devDependencies": {
+        "mocha": "5.2.0",
+        "should": "13.2.1"
+      },
+      "engines": {
+        "node": ">=4.0.0"
+      },
+      "files": [
+        "index.js",
+        "lib/"
+      ],
+      "homepage": "https://github.com/unclechu/node-deep-extend",
+      "keywords": [
+        "deep-extend",
+        "extend",
+        "deep",
+        "recursive",
+        "xtend",
+        "clone",
+        "merge",
+        "json"
+      ],
+      "license": "MIT",
+      "licenses": [
+        {
+          "type": "MIT",
+          "url": "https://raw.githubusercontent.com/unclechu/node-deep-extend/master/LICENSE"
+        }
+      ],
+      "main": "lib/deep-extend.js",
+      "name": "deep-extend",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/unclechu/node-deep-extend.git"
+      },
+      "scripts": {
+        "test": "./node_modules/.bin/mocha"
+      },
+      "version": "0.6.0"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 3627,
+      "sha256": "0dcc5f34920c23f5da2916d1d42e53ae5574913dfb78c406902b7189cf0b1386"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

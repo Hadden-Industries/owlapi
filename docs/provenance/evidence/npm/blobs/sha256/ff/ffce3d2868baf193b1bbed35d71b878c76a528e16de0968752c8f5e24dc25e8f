@@ -1,0 +1,73 @@
+{
+  "artifactId": "f9178fa9c4edb603fb402877c50419cb0746d997d886295ecb3657a7c9e06c65",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 887843,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "2b764e9b8b3d69521edea0ceae74083076199952153675d09f4e3d2e992c182e",
+        "size": 114,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "847b7c519dc27ff4e609b09a190303c1991ff9430bd3a71ebfe82e91219eea6f",
+        "size": 536,
+        "type": "FILE"
+      },
+      {
+        "path": "package/resolver.darwin-arm64.node",
+        "sha256": "74ecd4da1cb587ac65623781a5b7c0a9fba56e504c4ba3ca2f48c093b549602c",
+        "size": 1685792,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 1686442,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "license": "MIT",
+      "name": "@unrs/resolver-binding-darwin-arm64",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.12.2"
+    },
+    "packageMetadata": {
+      "cpu": [
+        "arm64"
+      ],
+      "description": "UnRS Resolver Node API",
+      "files": [
+        "resolver.darwin-arm64.node"
+      ],
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "license": "MIT",
+      "main": "resolver.darwin-arm64.node",
+      "name": "@unrs/resolver-binding-darwin-arm64",
+      "os": [
+        "darwin"
+      ],
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.12.2"
+    },
+    "physicalEntryCount": 3,
+    "tarball": {
+      "bytes": 887843,
+      "sha256": "d385600e989fe50a1bdd5e0de2d6142f6007ea82013b2a17a8eea90f3dc92621"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

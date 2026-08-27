@@ -1,0 +1,161 @@
+{
+  "artifactId": "28f6ee9f8ecc703cd8896af366befde1376ac9f21d5aa943862c8f71a83b8073",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 13891,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "53c84776d633dfc3603923138c70365dea25e6a286e6c589d85adb310d81f7a3",
+        "size": 18115,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "1a9c55b2961f5e3062e181fa55666c44d011fc3cc03ed6d4fa4321c51f2a5ec5",
+        "size": 731,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "3307d6e46f41ab5ddd1519109c412006006c9a72ee3d58342308960d23e4e181",
+        "size": 2292,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "76c71df6bb584ef0057b11045906a3066e176215ada76a48fde4e741b3619022",
+        "size": 699,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "51bfb7855f2d66399e5ec4a4f1c4694f5c4050878e3e3729492e5cb7cbfdc10e",
+        "size": 197,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/branch.js",
+        "sha256": "cd8572eff81c27c136fa6771721ec7bf5536d477789f254aefd8cfd6bf1b561d",
+        "size": 588,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/function.js",
+        "sha256": "410c5cd1a0a2bd8a0c780aab3dd7edc3807fa379dc98d87c13079df8352732bb",
+        "size": 572,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/line.js",
+        "sha256": "677bbcbff6e43b9082bf6d4b15a802b022fb1add99368382d97cc7619095916d",
+        "size": 1020,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/range.js",
+        "sha256": "4d123e307090101b95a1ecae8261c6a27ef1e76140e493c5059f1f46c1da3586",
+        "size": 953,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/source.js",
+        "sha256": "d8ce608917b921ded3e97f4219f6ee3181218ae25a0a9ba349c6d21d7bcb1def",
+        "size": 8455,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/v8-to-istanbul.js",
+        "sha256": "39c0eeb33db2fb503b9e6c71b047567122393c02b7ab835797c746bc169b826b",
+        "size": 12904,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9403e515e7b76070a8c54b064107e06bfb98df3345634c0c405056a13e2c323e",
+        "size": 1118,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 731,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/1a/1a9c55b2961f5e3062e181fa55666c44d011fc3cc03ed6d4fa4321c51f2a5ec5",
+          "sha256": "1a9c55b2961f5e3062e181fa55666c44d011fc3cc03ed6d4fa4321c51f2a5ec5"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.txt",
+        "sha256": "1a9c55b2961f5e3062e181fa55666c44d011fc3cc03ed6d4fa4321c51f2a5ec5",
+        "size": 731
+      }
+    ],
+    "expandedBytes": 47644,
+    "packageIdentity": {
+      "author": "Ben Coe <ben@npmjs.com>",
+      "homepage": null,
+      "license": "ISC",
+      "name": "v8-to-istanbul",
+      "repository": "istanbuljs/v8-to-istanbul",
+      "version": "9.3.0"
+    },
+    "packageMetadata": {
+      "author": "Ben Coe <ben@npmjs.com>",
+      "dependencies": {
+        "@jridgewell/trace-mapping": "^0.3.12",
+        "@types/istanbul-lib-coverage": "^2.0.1",
+        "convert-source-map": "^2.0.0"
+      },
+      "description": "convert from v8 coverage format to istanbul's format",
+      "devDependencies": {
+        "@types/node": "^20.0.0",
+        "c8": "^7.2.1",
+        "semver": "^7.3.2",
+        "should": "13.2.3",
+        "source-map": "^0.7.3",
+        "standard": "^17.0.0",
+        "tap": "^16.0.0"
+      },
+      "engines": {
+        "node": ">=10.12.0"
+      },
+      "files": [
+        "lib/*.js",
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "istanbul",
+        "v8",
+        "coverage"
+      ],
+      "license": "ISC",
+      "main": "index.js",
+      "name": "v8-to-istanbul",
+      "repository": "istanbuljs/v8-to-istanbul",
+      "scripts": {
+        "coverage": "c8 report --check-coverage",
+        "fix": "standard --fix",
+        "posttest": "standard",
+        "snapshot": "TAP_SNAPSHOT=1 tap test/*.js",
+        "test": "c8 --reporter=html --reporter=text tap --no-coverage test/*.js"
+      },
+      "standard": {
+        "ignore": [
+          "**/test/fixtures"
+        ]
+      },
+      "types": "index.d.ts",
+      "version": "9.3.0"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 13891,
+      "sha256": "c5dc957adf26e86c0063e3dcc1b41741bc525a2a1b58210b5620fa352ff0d0b5"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

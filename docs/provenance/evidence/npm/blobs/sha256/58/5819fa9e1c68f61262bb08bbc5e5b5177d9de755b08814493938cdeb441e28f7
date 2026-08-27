@@ -1,0 +1,142 @@
+{
+  "artifactId": "1ef2b013b70770a0e0243d4ad07153ccf4c9c8f4e67797d07babf5bc83dec15b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2115,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "5bbbba0ff75caf4e01f74fb430f02eb41dc6e2286642bbcba606e3d159e2454a",
+        "size": 1066,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "c66737d7879de92efda1ac3f281061da4679575a9a15573f432bfa08ab71e4db",
+        "size": 452,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b69be51f033da6c79cd403523860f74ae242f29fc9b2f1bd6ab36c6cd1d12259",
+        "size": 841,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "9ee2530ec2cde49d13736c6083cf6caebdb8f23c4fd146c027b4daf4ffe758f6",
+        "size": 1282,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 1282,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9e/9ee2530ec2cde49d13736c6083cf6caebdb8f23c4fd146c027b4daf4ffe758f6",
+          "sha256": "9ee2530ec2cde49d13736c6083cf6caebdb8f23c4fd146c027b4daf4ffe758f6"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "9ee2530ec2cde49d13736c6083cf6caebdb8f23c4fd146c027b4daf4ffe758f6",
+        "size": 1282
+      }
+    ],
+    "expandedBytes": 4750,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "pkg-dir",
+      "repository": "sindresorhus/pkg-dir",
+      "version": "4.2.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "dependencies": {
+        "find-up": "^4.0.0"
+      },
+      "description": "Find the root directory of a Node.js project or npm package",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "tempy": "^0.3.0",
+        "tsd": "^0.7.2",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "package",
+        "json",
+        "root",
+        "npm",
+        "entry",
+        "find",
+        "up",
+        "find-up",
+        "findup",
+        "look-up",
+        "look",
+        "file",
+        "search",
+        "match",
+        "resolve",
+        "parent",
+        "parents",
+        "folder",
+        "directory",
+        "dir",
+        "walk",
+        "walking",
+        "path"
+      ],
+      "license": "MIT",
+      "name": "pkg-dir",
+      "repository": "sindresorhus/pkg-dir",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "4.2.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2115,
+      "sha256": "a7f4456094d571d70d29f32aa5fa1c738cb8c7087034661078b8678f0153224d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

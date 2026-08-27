@@ -1,0 +1,143 @@
+{
+  "artifactId": "04ac66f99cd392db5931e0dd7ff08ae424bf2940e303710aa40d12a30ac5f5cd",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9865,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "f23a4ae4ba5f494cf303c55db67aa6d45ac72f47ac44f6faea8a7cdb36150b4d",
+        "size": 7983,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/nopt.js",
+        "sha256": "95527c67ac7a1e294f7fcb09e648d1e454f6cfef06346a18a297173389b97d21",
+        "size": 644,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/debug.js",
+        "sha256": "b05ff7b220d143feb139105e9a37d1e42705f952e862d476786bb18a801c013a",
+        "size": 181,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/nopt-lib.js",
+        "sha256": "73cf6ad54ac9ea1a29b59954fc0473e28693069aede1586ac4acf64a92899d2e",
+        "size": 14184,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/nopt.js",
+        "sha256": "0cd507599b0b67afaaf6aa1019dfb2ea9dc958efd1d79f5e74cd997205d65469",
+        "size": 1127,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/type-defs.js",
+        "sha256": "230fee3a48e92b863c5d2d9d62e5c8de020cdb636037cd589730ddebe221c902",
+        "size": 2030,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "a892ac4d9de9c19c5649cd38963ff353ce637455f83667a6b3a691bee62a7912",
+        "size": 1214,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 28128,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "nopt",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/nopt.git"
+      },
+      "version": "8.1.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "bin": {
+        "nopt": "bin/nopt.js"
+      },
+      "dependencies": {
+        "abbrev": "^3.0.0"
+      },
+      "description": "Option parsing for Node, supporting types, shorthands, etc. Used by npm.",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^5.0.0",
+        "@npmcli/template-oss": "4.23.6",
+        "tap": "^16.3.0"
+      },
+      "engines": {
+        "node": "^18.17.0 || >=20.5.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "license": "ISC",
+      "main": "lib/nopt.js",
+      "name": "nopt",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/nopt.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": true,
+        "version": "4.23.6",
+        "windowsCI": false
+      },
+      "version": "8.1.0"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 9865,
+      "sha256": "60aba7d630bb40bc386577f16fce64a96f4631988fa48a774242f9dee410f0a6"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

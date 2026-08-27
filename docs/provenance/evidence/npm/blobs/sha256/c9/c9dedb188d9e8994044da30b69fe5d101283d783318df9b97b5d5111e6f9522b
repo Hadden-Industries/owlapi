@@ -1,0 +1,118 @@
+{
+  "artifactId": "030c34d0e82a3de086bd7dd10dd4c0166b293bfd05fa5aebd59515ef01b60c70",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3699,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "942a98cb8846a6354266193f173c1354615827fbb7d67f68399599dff12c4d6a",
+        "size": 1100,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "98c0fce4bf59ce20c5a470f183af69a4c22307e9aeef8100049c555e6aaa48a6",
+        "size": 3414,
+        "type": "FILE"
+      },
+      {
+        "path": "package/levenshtein.js",
+        "sha256": "1470a3a757e4bb0de73e0b2c032b549aedef68eb6189cf22a701f55d8b2b55e5",
+        "size": 3932,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "80167ee3483f23228b48d5cf5c9db355bacf55922282eb132af83136b9c9213e",
+        "size": 998,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1100,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/94/942a98cb8846a6354266193f173c1354615827fbb7d67f68399599dff12c4d6a",
+          "sha256": "942a98cb8846a6354266193f173c1354615827fbb7d67f68399599dff12c4d6a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "942a98cb8846a6354266193f173c1354615827fbb7d67f68399599dff12c4d6a",
+        "size": 1100
+      },
+      {
+        "blob": {
+          "bytes": 3414,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/98/98c0fce4bf59ce20c5a470f183af69a4c22307e9aeef8100049c555e6aaa48a6",
+          "sha256": "98c0fce4bf59ce20c5a470f183af69a4c22307e9aeef8100049c555e6aaa48a6"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "98c0fce4bf59ce20c5a470f183af69a4c22307e9aeef8100049c555e6aaa48a6",
+        "size": 3414
+      }
+    ],
+    "expandedBytes": 9444,
+    "packageIdentity": {
+      "author": "Ramesh Nair <ram@hiddentao.com> (http://www.hiddentao.com/)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "fast-levenshtein",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/hiddentao/fast-levenshtein.git"
+      },
+      "version": "2.0.6"
+    },
+    "packageMetadata": {
+      "author": "Ramesh Nair <ram@hiddentao.com> (http://www.hiddentao.com/)",
+      "description": "Efficient implementation of Levenshtein algorithm  with locale-specific collator support.",
+      "devDependencies": {
+        "chai": "~1.5.0",
+        "grunt": "~0.4.1",
+        "grunt-benchmark": "~0.2.0",
+        "grunt-cli": "^1.2.0",
+        "grunt-contrib-jshint": "~0.4.3",
+        "grunt-contrib-uglify": "~0.2.0",
+        "grunt-mocha-test": "~0.2.2",
+        "grunt-npm-install": "~0.1.0",
+        "load-grunt-tasks": "~0.6.0",
+        "lodash": "^4.0.1",
+        "mocha": "~1.9.0"
+      },
+      "files": [
+        "levenshtein.js"
+      ],
+      "keywords": [
+        "levenshtein",
+        "distance",
+        "string"
+      ],
+      "license": "MIT",
+      "main": "levenshtein.js",
+      "name": "fast-levenshtein",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/hiddentao/fast-levenshtein.git"
+      },
+      "scripts": {
+        "benchmark": "grunt benchmark",
+        "build": "grunt build",
+        "prepublish": "npm run build",
+        "test": "mocha"
+      },
+      "version": "2.0.6"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 3699,
+      "sha256": "bb4b50306b8b0f048475efddae11810e245937dca8ae85498ab4a171697bbf3c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

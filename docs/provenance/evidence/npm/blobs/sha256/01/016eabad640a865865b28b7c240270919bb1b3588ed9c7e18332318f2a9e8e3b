@@ -1,0 +1,111 @@
+{
+  "artifactId": "83b6d48c5e8ecb2b43eb6fc13b4a501744db40d5c6826d20f6d26463d5206809",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3851,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "e05b1eaf5b5f99b7ad75cd1f38858ff9a311780b97715ead67936d60bf96aa7e",
+        "size": 748,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "8db9ead38fd25b61abbe81cae8934eeaeb303ab52266305e09b617a352cc9e98",
+        "size": 1343,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "7cc6f6a1e14dec79dc23f6afd7caca1319189747144e1a33af77616c21d9e9de",
+        "size": 5708,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "cec1bba4c97e0cf653c13c8c79f745aac2232131ee718c93c4236c1b9577a201",
+        "size": 864,
+        "type": "FILE"
+      },
+      {
+        "path": "package/signals.js",
+        "sha256": "ae538fdae683d6fa2e14579da06df10fb7a66378cfa50971956fb68c2c86c727",
+        "size": 1295,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 748,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e0/e05b1eaf5b5f99b7ad75cd1f38858ff9a311780b97715ead67936d60bf96aa7e",
+          "sha256": "e05b1eaf5b5f99b7ad75cd1f38858ff9a311780b97715ead67936d60bf96aa7e"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.txt",
+        "sha256": "e05b1eaf5b5f99b7ad75cd1f38858ff9a311780b97715ead67936d60bf96aa7e",
+        "size": 748
+      }
+    ],
+    "expandedBytes": 9958,
+    "packageIdentity": {
+      "author": "Ben Coe <ben@npmjs.com>",
+      "homepage": "https://github.com/tapjs/signal-exit",
+      "license": "ISC",
+      "name": "signal-exit",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/tapjs/signal-exit.git"
+      },
+      "version": "3.0.7"
+    },
+    "packageMetadata": {
+      "author": "Ben Coe <ben@npmjs.com>",
+      "bugs": {
+        "url": "https://github.com/tapjs/signal-exit/issues"
+      },
+      "description": "when you want to fire an event no matter how a process exits.",
+      "devDependencies": {
+        "chai": "^3.5.0",
+        "coveralls": "^3.1.1",
+        "nyc": "^15.1.0",
+        "standard-version": "^9.3.1",
+        "tap": "^15.1.1"
+      },
+      "files": [
+        "index.js",
+        "signals.js"
+      ],
+      "homepage": "https://github.com/tapjs/signal-exit",
+      "keywords": [
+        "signal",
+        "exit"
+      ],
+      "license": "ISC",
+      "main": "index.js",
+      "name": "signal-exit",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/tapjs/signal-exit.git"
+      },
+      "scripts": {
+        "postversion": "npm publish",
+        "prepublishOnly": "git push origin --follow-tags",
+        "preversion": "npm test",
+        "snap": "tap",
+        "test": "tap"
+      },
+      "version": "3.0.7"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3851,
+      "sha256": "439623fa6aab91600615ec757eaa137fcab40d3b35dda38df7444c15678f20a8"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

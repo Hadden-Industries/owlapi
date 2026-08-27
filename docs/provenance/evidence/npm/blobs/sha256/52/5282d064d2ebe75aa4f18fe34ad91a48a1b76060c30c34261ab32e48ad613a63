@@ -1,0 +1,109 @@
+{
+  "artifactId": "3730bbea2b60c1b64632a4554854b608c89e3fcd2961bde34698574b1e6291e3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2496,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9e0d5c7989f7e9f07d7c4b158aceff270f235eb7464ace41c5e7b200834a43e0",
+        "size": 2011,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "2581765d44e15c58a2b88ad7bc9cc5c9ee029b4b5013c06dc45d9e94e8cb2ba4",
+        "size": 499,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "92f1fd161bdab2f33a468e4849c58d3a1dfe9bba4988e5b3686cdd4c81706caa",
+        "size": 1379,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "cde9446d72d605fdfe65bbadea7a3946feb2ef49a4e653535e46bbef80fb2b06",
+        "size": 1332,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 2011,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9e/9e0d5c7989f7e9f07d7c4b158aceff270f235eb7464ace41c5e7b200834a43e0",
+          "sha256": "9e0d5c7989f7e9f07d7c4b158aceff270f235eb7464ace41c5e7b200834a43e0"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9e0d5c7989f7e9f07d7c4b158aceff270f235eb7464ace41c5e7b200834a43e0",
+        "size": 2011
+      }
+    ],
+    "expandedBytes": 5221,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "abbrev",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/abbrev-js.git"
+      },
+      "version": "5.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "description": "Like ruby's abbrev module, but in js",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^6.0.0",
+        "@npmcli/template-oss": "5.0.0"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "abbrev",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/abbrev-js.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "node --test --test-update-snapshots './test/**/*.js'",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "node --test './test/**/*.js'",
+        "test:cover": "node --test --experimental-test-coverage --test-timeout=3000 --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 './test/**/*.js'",
+        "test:node20": "node --test test"
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "latestCiVersion": 24,
+        "publish": true,
+        "testRunner": "node:test",
+        "version": "5.0.0"
+      },
+      "version": "5.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 2496,
+      "sha256": "615bcaab97a7148c07bc4dd7412401ae7f304c19adef9cd6f173a5af4b353720"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

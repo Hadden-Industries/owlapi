@@ -1,0 +1,157 @@
+{
+  "artifactId": "a25314f92e87e0c4571306346da5f51833eb099c809f53b4591da9862be40630",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9622,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "b8778b155bfde5a28b023a558753c0fa058a52bb9de35c343c250be1bbcdedab",
+        "size": 1079,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "17439eff29e4d28023e6b50554c81e3f565d304eeb7bb19f56041ded2a0f0d21",
+        "size": 2826,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/resolve-uri.mjs",
+        "sha256": "92bc7d86f012f0a1a38447512014d2decabeec0663bcebf49b95ca6081722b90",
+        "size": 8609,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/resolve-uri.mjs.map",
+        "sha256": "2f383492f757607f39ac325f7523815cb6755ae4c970337faddc9bed1715d3ad",
+        "size": 14262,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/resolve-uri.umd.js",
+        "sha256": "2d46a62531a9ffa1e6e04995a94ae35d7a10869e2116132068a8755a15d46663",
+        "size": 9866,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/resolve-uri.umd.js.map",
+        "sha256": "cfd9b97e6b263660096db012fe3b5012f7c25ec10785a96a4b201dc542d93bb5",
+        "size": 14298,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/types/resolve-uri.d.ts",
+        "sha256": "36fa2acbe42db6888b14a1202a9922a2532fae87f795ecc294d0884ed84a582b",
+        "size": 150,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0793e722ffe08f3b4f1862c4dc96d920a62d6811a3648b4feb02f06c63227e8b",
+        "size": 2063,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1079,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b8/b8778b155bfde5a28b023a558753c0fa058a52bb9de35c343c250be1bbcdedab",
+          "sha256": "b8778b155bfde5a28b023a558753c0fa058a52bb9de35c343c250be1bbcdedab"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "b8778b155bfde5a28b023a558753c0fa058a52bb9de35c343c250be1bbcdedab",
+        "size": 1079
+      }
+    ],
+    "expandedBytes": 53153,
+    "packageIdentity": {
+      "author": "Justin Ridgewell <justin@ridgewell.name>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@jridgewell/resolve-uri",
+      "repository": "https://github.com/jridgewell/resolve-uri",
+      "version": "3.1.2"
+    },
+    "packageMetadata": {
+      "author": "Justin Ridgewell <justin@ridgewell.name>",
+      "description": "Resolve a URI relative to an optional base URI",
+      "devDependencies": {
+        "@jridgewell/resolve-uri-latest": "npm:@jridgewell/resolve-uri@*",
+        "@rollup/plugin-typescript": "8.3.0",
+        "@typescript-eslint/eslint-plugin": "5.10.0",
+        "@typescript-eslint/parser": "5.10.0",
+        "c8": "7.11.0",
+        "eslint": "8.7.0",
+        "eslint-config-prettier": "8.3.0",
+        "mocha": "9.2.0",
+        "npm-run-all": "4.1.5",
+        "prettier": "2.5.1",
+        "rollup": "2.66.0",
+        "typescript": "4.5.5"
+      },
+      "engines": {
+        "node": ">=6.0.0"
+      },
+      "exports": {
+        ".": [
+          {
+            "browser": "./dist/resolve-uri.umd.js",
+            "import": "./dist/resolve-uri.mjs",
+            "require": "./dist/resolve-uri.umd.js",
+            "types": "./dist/types/resolve-uri.d.ts"
+          },
+          "./dist/resolve-uri.umd.js"
+        ],
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "dist"
+      ],
+      "keywords": [
+        "resolve",
+        "uri",
+        "url",
+        "path"
+      ],
+      "license": "MIT",
+      "main": "dist/resolve-uri.umd.js",
+      "module": "dist/resolve-uri.mjs",
+      "name": "@jridgewell/resolve-uri",
+      "repository": "https://github.com/jridgewell/resolve-uri",
+      "scripts": {
+        "build": "run-s -n build:*",
+        "build:rollup": "rollup -c rollup.config.js",
+        "build:ts": "tsc --project tsconfig.build.json",
+        "lint": "run-s -n lint:*",
+        "lint:prettier": "npm run test:lint:prettier -- --write",
+        "lint:ts": "npm run test:lint:ts -- --fix",
+        "prebuild": "rm -rf dist",
+        "prepublishOnly": "npm run preversion",
+        "pretest": "run-s build:rollup",
+        "preversion": "run-s test build",
+        "test": "run-s -n test:lint test:only",
+        "test:coverage": "c8 mocha",
+        "test:debug": "mocha --inspect-brk",
+        "test:lint": "run-s -n test:lint:*",
+        "test:lint:prettier": "prettier --check '{src,test}/**/*.ts'",
+        "test:lint:ts": "eslint '{src,test}/**/*.ts'",
+        "test:only": "mocha",
+        "test:watch": "mocha --watch"
+      },
+      "types": "dist/types/resolve-uri.d.ts",
+      "version": "3.1.2"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 9622,
+      "sha256": "db52f9f62558baab13353dd39e3200750fc33e6a129a575b46226f493776e230"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

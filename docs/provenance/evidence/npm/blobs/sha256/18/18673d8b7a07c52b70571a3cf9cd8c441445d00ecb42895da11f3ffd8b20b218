@@ -1,0 +1,134 @@
+{
+  "artifactId": "f88750c5defa2755edad64bd90215e852d5de2602258f0409152244099f04048",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5983,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "71368fd0f5b4129191e9afcd1e1ef2dc89a9090d3e4d80bbab92dafd032b3bef",
+        "size": 1102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "c34be87fe9b9da003d53f739ea18192696a10c25b6d0f0b4173d75d9e621caa3",
+        "size": 1365,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "47f232fd6deb7a5b8876972256d448a101d8612673b50de42a59aca6706322ae",
+        "size": 2035,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts.map",
+        "sha256": "009baf958c089bb7297aa51af98a4c1c09ef07ae9ae8d16db1dcc06767ce6d15",
+        "size": 1961,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "9dd5c06053cd04f4b2e2cd6d3fab71562f123fb461771845276729e58b376c6e",
+        "size": 5248,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js.map",
+        "sha256": "26a6625ef678206d5d6780d1a2771b1c8a32a64523baf47c7206cee2abc20bcf",
+        "size": 4860,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "03703c6c566b00d8fd85ba57cd6460b14d0b762f694e26f0efbfe4e5384e3081",
+        "size": 1061,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1102,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/71/71368fd0f5b4129191e9afcd1e1ef2dc89a9090d3e4d80bbab92dafd032b3bef",
+          "sha256": "71368fd0f5b4129191e9afcd1e1ef2dc89a9090d3e4d80bbab92dafd032b3bef"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "71368fd0f5b4129191e9afcd1e1ef2dc89a9090d3e4d80bbab92dafd032b3bef",
+        "size": 1102
+      }
+    ],
+    "expandedBytes": 17632,
+    "packageIdentity": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "http-proxy-agent",
+      "repository": {
+        "directory": "packages/http-proxy-agent",
+        "type": "git",
+        "url": "https://github.com/TooTallNate/proxy-agents.git"
+      },
+      "version": "9.1.0"
+    },
+    "packageMetadata": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
+      "dependencies": {
+        "agent-base": "9.0.0",
+        "debug": "^4.3.4",
+        "proxy-agent-negotiate": "1.1.0"
+      },
+      "description": "An HTTP(s) proxy `http.Agent` implementation for HTTP",
+      "devDependencies": {
+        "@types/debug": "^4.1.7",
+        "@types/node": "^22.13.0",
+        "async-listen": "^3.0.0",
+        "proxy": "4.1.0",
+        "tsconfig": "0.0.0",
+        "typescript": "^5.1.6"
+      },
+      "engines": {
+        "node": ">= 20"
+      },
+      "exports": {
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      },
+      "files": [
+        "dist"
+      ],
+      "keywords": [
+        "http",
+        "proxy",
+        "endpoint",
+        "agent"
+      ],
+      "license": "MIT",
+      "name": "http-proxy-agent",
+      "repository": {
+        "directory": "packages/http-proxy-agent",
+        "type": "git",
+        "url": "https://github.com/TooTallNate/proxy-agents.git"
+      },
+      "scripts": {
+        "build": "tsc",
+        "lint": "eslint . --ext .ts",
+        "pack": "node ../../scripts/pack.mjs",
+        "test": "vitest"
+      },
+      "type": "module",
+      "version": "9.1.0"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 5983,
+      "sha256": "498cf1c537eabe9bde84d6b07d87f67d63849f7a99c2e2bf98ea7c49af97a76d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

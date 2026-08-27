@@ -1,0 +1,3930 @@
+{
+  "artifactId": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 49,
+      "digestVerifiedFileCount": 49,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 49
+    },
+    "artifactId": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "=2.81.0",
+        "for_package_purl": "pkg:npm/nan@2.22.2",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/request",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.1.4",
+        "for_package_purl": "pkg:npm/nan@2.22.2",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/readable-stream",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.8.1",
+        "for_package_purl": "pkg:npm/nan@2.22.2",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/commander",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.0.14",
+        "for_package_purl": "pkg:npm/nan@2.22.2",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/glob",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "~0.7.1",
+        "for_package_purl": "pkg:npm/nan@2.22.2",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/tap",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "~1.2.1",
+        "for_package_purl": "pkg:npm/nan@2.22.2",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/bindings",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "~4.0.0",
+        "for_package_purl": "pkg:npm/nan@2.22.2",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/xtend",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "~v10.3.1",
+        "for_package_purl": "pkg:npm/nan@2.22.2",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/node-gyp",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Ben Noordhuis",
+            "end_line": 342,
+            "start_line": 342
+          }
+        ],
+        "base_name": "nan",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors - Rod Vagg https://github.com/rvagg",
+            "end_line": 5,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 5,
+            "holder": "NAN contributors - Rod Vagg",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 14,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 14
+              }
+            ]
+          }
+        ],
+        "md5": "ab6abe98ed9d4c3180b7121205eb1065",
+        "name": "nan.h",
+        "package_data": [],
+        "path": "package/nan.h",
+        "percentage_of_license_text": 0.02,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "f0cce6e36af533f66866bb58a6778c2d17ffbc06",
+        "sha1_git": "5f3f73d7539472a4c6f5b54183da4ada2a9b1c76",
+        "sha256": "6b7c784738daf8aa08084fa69aadb239cd6f751c8f8499e329602982485df58e",
+        "size": 93644,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "1to2",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 5,
+            "start_line": 5
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 5,
+            "holder": "NAN contributors",
+            "start_line": 5
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 7,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/tools/1to2.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 7
+              }
+            ]
+          }
+        ],
+        "md5": "83bfeb6b315b681b49d8b8d8a4a447e2",
+        "name": "1to2.js",
+        "package_data": [],
+        "path": "package/tools/1to2.js",
+        "percentage_of_license_text": 0.14,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "1f17501fca9454a248cf5a1d8b0c9be0e9fd1e85",
+        "sha1_git": "bc441514d4544ca056f6cc97343b41317cfd3380",
+        "sha256": "1805f1f8810ce080b0fdc472bc792fcb55a6e8a04e257cc011bc12013a1a80b4",
+        "size": 14364,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "CHANGELOG",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 377,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/CHANGELOG.md",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " - License: Switch to plain MIT from custom hacked MIT license 11de983",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 377
+              }
+            ]
+          }
+        ],
+        "md5": "a08b65ff0e0c24469024f4291b2647ff",
+        "name": "CHANGELOG.md",
+        "package_data": [],
+        "path": "package/CHANGELOG.md",
+        "percentage_of_license_text": 0.07,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "70e8759b8a771656aa3761f4cead781787946b89",
+        "sha1_git": "56f187c9dbfe781f875bb5e1b486e571ee035eb0",
+        "sha256": "9276f56df1cae84625b301cb49eed9847fbf9e051cd6a09dc773db24da8a02ef",
+        "size": 22740,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "CMakeLists",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".txt",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "c60c6f5c56eab1bdb7923845df2f5165",
+        "name": "CMakeLists.txt",
+        "package_data": [],
+        "path": "package/CMakeLists.txt",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "43b3371d6f19dce9770a1cc845c51817e8d60e10",
+        "sha1_git": "fe3a7e04846b36368b1f61430c6521e1988f6b71",
+        "sha256": "867b5468b4876acca6feceda80ac58dbfed09e9e414b6355ff1bce6fc33ecd46",
+        "size": 4239,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "NAN contributors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-86fcf017-3572-9813-b7e8-0a10ec4a120f",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/LICENSE.md",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 9,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/LICENSE.md",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,\n subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "3952ff1c51e4ebe5b12c1bc501de4683",
+        "name": "LICENSE.md",
+        "package_data": [],
+        "path": "package/LICENSE.md",
+        "percentage_of_license_text": 92.7,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "643e9d57d83cd5b87764ef685af7784a009a1149",
+        "sha1_git": "2d33043df2743f1dc4a89b849f46c5ad6350bad8",
+        "sha256": "95d152af7a776fba93bd795d3235d478cca4a207f8e1475fc9a3d71d28964c39",
+        "size": 1144,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN WG Members",
+            "end_line": 453,
+            "start_line": 451
+          }
+        ],
+        "detected_license_expression": "dco-1.1 AND mit",
+        "detected_license_expression_spdx": "LicenseRef-scancode-dco-1.1 AND MIT",
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 453,
+            "holder": "NAN WG Members",
+            "start_line": 453
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "dco_1_1-af8de4e5-1b68-a083-6d7c-4b0a471509ac",
+            "license_expression": "dco-1.1",
+            "license_expression_spdx": "LicenseRef-scancode-dco-1.1",
+            "matches": [
+              {
+                "end_line": 434,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/README.md",
+                "license_expression": "dco-1.1",
+                "license_expression_spdx": "LicenseRef-scancode-dco-1.1",
+                "match_coverage": 100,
+                "matched_length": 184,
+                "matched_text": "Developer's Certificate of Origin 1.1\n\nBy making a contribution to this project, I certify that:\n\n* (a) The contribution was created in whole or in part by me and I\n  have the right to submit it under the open source license\n  indicated in the file; or\n\n* (b) The contribution is based upon previous work that, to the best\n  of my knowledge, is covered under an appropriate open source\n  license and I have the right under that license to submit that\n  work with modifications, whether created in whole or in part\n  by me, under the same open source license (unless I am\n  permitted to submit under a different license), as indicated\n  in the file; or\n\n* (c) The contribution was provided directly to me by some other\n  person who certified (a), (b) or (c) and I have not modified\n  it.\n\n* (d) I understand and agree that this project and the contribution\n  are public and that a record of the contribution (including all\n  personal information I submit with it, including my sign-off) is\n  maintained indefinitely and may be redistributed consistent with\n  this project or the open source license(s) involved.",
+                "matcher": "2-aho",
+                "rule_identifier": "dco-1.1_3.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/dco-1.1_3.RULE",
+                "score": 100,
+                "start_line": 410
+              }
+            ]
+          },
+          {
+            "identifier": "mit-ab0ce3d9-995e-0a89-41da-679684496742",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 455,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/README.md",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 19,
+                "matched_text": "All rights not explicitly granted in the MIT license are reserved. See the included LICENSE file for more details.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_1363.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_1363.RULE",
+                "score": 100,
+                "start_line": 455
+              },
+              {
+                "end_line": 455,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/README.md",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "under an MIT license.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_996.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_996.RULE",
+                "score": 100,
+                "start_line": 455
+              },
+              {
+                "end_line": 455,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/README.md",
+                "license_expression": "unknown-license-reference",
+                "license_expression_spdx": "LicenseRef-scancode-unknown-license-reference",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "licensed under",
+                "matcher": "2-aho",
+                "rule_identifier": "license-intro_2.RULE",
+                "rule_relevance": 50,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/license-intro_2.RULE",
+                "score": 50,
+                "start_line": 455
+              }
+            ]
+          }
+        ],
+        "md5": "2841ded696d3c95ec87aaf0c3abfa3e3",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 5.13,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "7d40d0577dce13808220dd9665fcc8591301f873",
+        "sha1_git": "22ce006672c9ecd473151c29361404203f6d2a4e",
+        "sha256": "2b69f6b57c5da43b33717d6503eb5adfbc2ad2a3cd259fd3340095490a7bbf25",
+        "size": 28473,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "77ed9db9010ff36055658c5f6d269aaa",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/tools/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "a5103d8b2150ba5fd2736fbb6fd2a2a819596244",
+        "sha1_git": "7f07e4b8256dd136943943b575776971c36c25e3",
+        "sha256": "a5e5b621d84fb9b98c84d5276f0b14ac022b752d2258388c2a1f56af7d830859",
+        "size": 456,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "asyncworker",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "9b171d595be9ffa95ff92619c9585bb8",
+        "name": "asyncworker.md",
+        "package_data": [],
+        "path": "package/doc/asyncworker.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "468f4cd88363adbfeae8566541aeb50cdcb812bc",
+        "sha1_git": "04231f83ce6e480d4a37902588692a00f3d958e6",
+        "sha256": "8899c8dd17a770c6464c17521f6e78de83eddc3009d07194e88c021afe1c63f7",
+        "size": 5348,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "buffers",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "4e500da11b843ab834f2d700ac41bbe0",
+        "name": "buffers.md",
+        "package_data": [],
+        "path": "package/doc/buffers.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "379d606e2e03de0cbe5ca3f28d6267b59da7986e",
+        "sha1_git": "8d8d25cf75a854d989ef7bc498caa7721913b89a",
+        "sha256": "b0729c1f183d135e7720e4a04cf060dbeba7d86454a75454018949b5d38ba403",
+        "size": 2121,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "callback",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "7dd01239cce77eb67fa2c230e36f6b53",
+        "name": "callback.md",
+        "package_data": [],
+        "path": "package/doc/callback.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "c621094ec117a6230eca1a1035217cbf147a4c28",
+        "sha1_git": "f7af0bfd9d8281f2eb7e16fc57e787ce54ebeda2",
+        "sha256": "1e0a33a866a7fee7a2a036f93982b2e57ed8ed6885d94a559856baad3ab4e45f",
+        "size": 2633,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "ci",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".yml",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "1cd4eaf1515099c640efaa7190b38a4f",
+        "name": "ci.yml",
+        "package_data": [],
+        "path": "package/.github/workflows/ci.yml",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "a21beb03751d5c22e59ee20a7a540cd813c28a22",
+        "sha1_git": "4481a6efbb87228dd93777fa6a0b5aef62d03f07",
+        "sha256": "8aec9c18a51c840039b2b610aeb69b9799843fb74bf617d3203d0b35f0bb372f",
+        "size": 1706,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "converters",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "d0f707e44abd0b4903c5c7dd12c8f457",
+        "name": "converters.md",
+        "package_data": [],
+        "path": "package/doc/converters.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "87a44ab8436a0a2c5ca5878fb0e3b40d067c3d9c",
+        "sha1_git": "d20861b5935b6208b594b91f67cabd27a2bb5558",
+        "sha256": "5729d8ec9ac3f745b3599e773248a667de73176f2c11e5f79678b1af5ad652b0",
+        "size": 1950,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "errors",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "0df17b4e70569932eb10f1eb4c128692",
+        "name": "errors.md",
+        "package_data": [],
+        "path": "package/doc/errors.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "529df5c95ad2e172e628533c981b26d8aa513e17",
+        "sha1_git": "173a8eaa93ca9918507046911030f26ac0e53b2b",
+        "sha256": "87a6d68a696d1270d6bcbbe4554ba3f880b5738f30ab0f74b0dab9b1d4b62f7f",
+        "size": 7391,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "include_dirs",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "9b8ab7e48044f99fb06303a6074bf356",
+        "name": "include_dirs.js",
+        "package_data": [],
+        "path": "package/include_dirs.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "cd38e47a4ea58e4b7b31355a1af480ccd04b568f",
+        "sha1_git": "4f1dfb41667b9b86b4db9bb2255eaef5ab1b9ab6",
+        "sha256": "c32b11511aba771a4c6765de2c73be416f205316ca9f37283170627e778e8d65",
+        "size": 55,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "json",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "58e3394129a176e3bfa613ac59e996c9",
+        "name": "json.md",
+        "package_data": [],
+        "path": "package/doc/json.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "6c01306fbc0ab019899ef33cfcd3dc33d02ab6b4",
+        "sha1_git": "55beb2629d4089dab7cd5862ab90328a995b0787",
+        "sha256": "2ca07b2c8582c9cd774e04db3ba433ca074df49353a30345a11227ee9ce49e68",
+        "size": 1944,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "maybe_types",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "233f0005c44c1135bc8883727f675fb4",
+        "name": "maybe_types.md",
+        "package_data": [],
+        "path": "package/doc/maybe_types.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "926829bc63537017e8fcd921bd4a2716e03436f5",
+        "sha1_git": "142851a19cc517d0464c9e6b0aed327b1ee91f3b",
+        "sha256": "ef82717e77c8da7d5d3ecbcf84b4e57d7ace120a969988de3c4ddb2792ef6fc4",
+        "size": 22401,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "methods",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "152bde270d62a851fe4f0c631b1952f3",
+        "name": "methods.md",
+        "package_data": [],
+        "path": "package/doc/methods.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "19afd9d0adec1bdedb65125f43057de21132001a",
+        "sha1_git": "f9a5af384c1b3fb5516219837cae31da3c685c3e",
+        "sha256": "543d0bec2391bcddffef1dc56f9d463906fe98474e9f2bc2e8d14a0c9b94944f",
+        "size": 27788,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_callbacks",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_callbacks.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "6ef58e5852938eba66d1ef5c2ccd0045",
+        "name": "nan_callbacks.h",
+        "package_data": [],
+        "path": "package/nan_callbacks.h",
+        "percentage_of_license_text": 0.42,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "b7c89a458d0061ee003c657fc3c9709222484886",
+        "sha1_git": "2c54857fb43827435a873dee8d536fad313221c0",
+        "sha256": "bda9fbd03c9696a12308093c9db88af162481603014498bec39f82ac303ff169",
+        "size": 4596,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_callbacks_12_inl",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_callbacks_12_inl.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "d59924b9f24d57e6e58911fdbd0a4871",
+        "name": "nan_callbacks_12_inl.h",
+        "package_data": [],
+        "path": "package/nan_callbacks_12_inl.h",
+        "percentage_of_license_text": 0.07,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "5c36b834551f37d07e856b4dc028a98098605a46",
+        "sha1_git": "f953989abc4532f8864c9ab7486b111ce4b679a4",
+        "sha256": "fc6a1e75ab1750080016004f6a57989a08770546de1aa10a3ce356e538abd77d",
+        "size": 24559,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_callbacks_pre_12_inl",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_callbacks_pre_12_inl.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "284218447c220f64a4c74f6c15a86219",
+        "name": "nan_callbacks_pre_12_inl.h",
+        "package_data": [],
+        "path": "package/nan_callbacks_pre_12_inl.h",
+        "percentage_of_license_text": 0.11,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "4b3855c7321bc41196fcf21813b7d6dac83d34ee",
+        "sha1_git": "c9ba4993205ec4feed387870b8f33f05e0789f1a",
+        "sha256": "38d1d686ba458e3af2da8874b31d69672648830f173fa0b6367a83f54442c90f",
+        "size": 17085,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_converters",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_converters.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "45bf6515985ae475ccaf2e9eaff20731",
+        "name": "nan_converters.h",
+        "package_data": [],
+        "path": "package/nan_converters.h",
+        "percentage_of_license_text": 0.88,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "650692d465767658e2859566aa7775f086d6c003",
+        "sha1_git": "c0b327294644045c2c7611d11e1cd83dd3ccab70",
+        "sha256": "6e92e34bb6915434f8093d80db908929984222dfd6b5ce70095fa9400a196154",
+        "size": 2109,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_converters_43_inl",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_converters_43_inl.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "971aa2fe8eec9eb5ccf2991bb04fa65e",
+        "name": "nan_converters_43_inl.h",
+        "package_data": [],
+        "path": "package/nan_converters_43_inl.h",
+        "percentage_of_license_text": 0.8,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "2ffd6ae286d2d7147d5bba3d4eaebe118ccf1b47",
+        "sha1_git": "41b72deb3a25e9afbc4eb857b182e9d8d78843bd",
+        "sha256": "7045e630e82c24629d8dfeaa375b4fb471dd24b6df72fb2b89d3803c41139e9d",
+        "size": 2748,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_converters_pre_43_inl",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_converters_pre_43_inl.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "4d134256a36c9567d98bbf583874f95f",
+        "name": "nan_converters_pre_43_inl.h",
+        "package_data": [],
+        "path": "package/nan_converters_pre_43_inl.h",
+        "percentage_of_license_text": 1.64,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "edc38da56abd775e7c5ff653cfaef5601ff8aeee",
+        "sha1_git": "ae0518aa33d0851cd08dfd8a3bb321508e02b64a",
+        "sha256": "5c2eaa295ec1caf3f3ef319b785b436b3e0bd2c4440ff576b5aba82d12262394",
+        "size": 1254,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_define_own_property_helper",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_define_own_property_helper.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "fef54fe2e6bd63a495607186cefd8206",
+        "name": "nan_define_own_property_helper.h",
+        "package_data": [],
+        "path": "package/nan_define_own_property_helper.h",
+        "percentage_of_license_text": 1.94,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "b23055a2f3fc0360b80356913445566f4c933933",
+        "sha1_git": "d710ef2293d93746e87b671e7c5e8577784f9e27",
+        "sha256": "cae6c4f3bdba55e362011702976075a8f23c2b555fdbd22ea0a90d3ac5572a20",
+        "size": 1027,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_implementation_12_inl",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_implementation_12_inl.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "13f9831a0753da8aff889baa109a12e4",
+        "name": "nan_implementation_12_inl.h",
+        "package_data": [],
+        "path": "package/nan_implementation_12_inl.h",
+        "percentage_of_license_text": 0.12,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "863a8924c6f8bc669a5e40bd382ec2e0368e3283",
+        "sha1_git": "255293ac2deb689d0e15644c4645780b09ad0e3b",
+        "sha256": "7ddff7c5e82c601a6cab39785be4fc84d2f3513e0c2e731a90f5c9f3eb9b2546",
+        "size": 15054,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_implementation_pre_12_inl",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_implementation_pre_12_inl.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "4f8d54b00dfc55b8cbed60b4db984f90",
+        "name": "nan_implementation_pre_12_inl.h",
+        "package_data": [],
+        "path": "package/nan_implementation_pre_12_inl.h",
+        "percentage_of_license_text": 0.25,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "4a3d8fbc7032e8a66bfbdb6dc1a741a8c194d6a5",
+        "sha1_git": "1472421afa76883abdc6077d92b7c5d3b6000e77",
+        "sha256": "09bcabcf7d99588c375545a7e6862374e717f5bdd7f6387b2c76377863b7817b",
+        "size": 7943,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_json",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_json.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "1234935f80e398d6a8d649040f961450",
+        "name": "nan_json.h",
+        "package_data": [],
+        "path": "package/nan_json.h",
+        "percentage_of_license_text": 0.25,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "a0b2c447d1195f9abfdea2aef5a4291ffcfd8be1",
+        "sha1_git": "33ac8ba69a082f5be23ce56d4c2d2cc078cd7646",
+        "sha256": "db8990e9fd1c1fef3a354f9e8ecb0830a41be9ac5f6754af520252f513c046b9",
+        "size": 5772,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_maybe_43_inl",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_maybe_43_inl.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "7cbf01040d89099080ffed4a7257c48f",
+        "name": "nan_maybe_43_inl.h",
+        "package_data": [],
+        "path": "package/nan_maybe_43_inl.h",
+        "percentage_of_license_text": 0.14,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "883baa0191b3b544a3cb17e48579b63d72796f9f",
+        "sha1_git": "c04ce30d2fa3bfb555c96754d93de64e8a83e36b",
+        "sha256": "e79a940c0641672fcc463d5eb73e1fa017e5b7b2c13ec1d492ed98efb0830001",
+        "size": 12375,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_maybe_pre_43_inl",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_maybe_pre_43_inl.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "6fa0f6015984d06cdd8923bea03cce43",
+        "name": "nan_maybe_pre_43_inl.h",
+        "package_data": [],
+        "path": "package/nan_maybe_pre_43_inl.h",
+        "percentage_of_license_text": 0.22,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "9d9e75a4a0be0d38bffda0959796eb61750b7b66",
+        "sha1_git": "83325ae0897f95f2fe5354e9ab720796a7cefd7c",
+        "sha256": "a128293f1802bbe309c11e2764f2a5d1fad9c7dd90eea9dbf7d046da481f8195",
+        "size": 7161,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_new",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_new.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "9268220e2884ded05a25aa1905a2c7d0",
+        "name": "nan_new.h",
+        "package_data": [],
+        "path": "package/nan_new.h",
+        "percentage_of_license_text": 0.17,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "87c7614eea3bff7c2a1c3fbd316897e6a9b01576",
+        "sha1_git": "cdf8bbe40b9b72c39ee9d4f00bdfc8bb7be6f7f6",
+        "sha256": "11fbc38eb49cb6f3c142022c5b47bccc6a18047ad7d509af011feee48f02d7fd",
+        "size": 8786,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_object_wrap",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_object_wrap.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "ce4658fbb3172e7e74bb77586d0f680b",
+        "name": "nan_object_wrap.h",
+        "package_data": [],
+        "path": "package/nan_object_wrap.h",
+        "percentage_of_license_text": 0.42,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "2ba8a7606dd4a2a41170c953613e82415b744a49",
+        "sha1_git": "78712f9c6741cb2672216834454407d21721a6a2",
+        "sha256": "57cf6cd941b4a807bcbe69d3555bcefd0dca0ec77f459ad77dac07b491f063d5",
+        "size": 4128,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_persistent_12_inl",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_persistent_12_inl.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "38c3d253fd534c37347177169c12ed98",
+        "name": "nan_persistent_12_inl.h",
+        "package_data": [],
+        "path": "package/nan_persistent_12_inl.h",
+        "percentage_of_license_text": 0.45,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "9b468716c6c928237fca681b6bf914a4496b96a6",
+        "sha1_git": "d9649e867606c6356e393e9964b5607a08ea4e3a",
+        "sha256": "f720e2e961664e897bf8e82d9181d810f0cb681a7e7bd5b8200c55649d3f02b2",
+        "size": 3873,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_persistent_pre_12_inl",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_persistent_pre_12_inl.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "0f43d330b821f2cfd2f623289fdbde99",
+        "name": "nan_persistent_pre_12_inl.h",
+        "package_data": [],
+        "path": "package/nan_persistent_pre_12_inl.h",
+        "percentage_of_license_text": 0.3,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "788187155cd3404bb9845e8db96d6c0a6edc6dac",
+        "sha1_git": "4c9c59da70b66a8c2090cfefa9078fb886bcf646",
+        "sha256": "f502353164d1538f8059c2cf999e55fa462e38cdb15ae97f94af0aaed51e58d2",
+        "size": 6157,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_private",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_private.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "c02d45b8364933733bf60edae9771924",
+        "name": "nan_private.h",
+        "package_data": [],
+        "path": "package/nan_private.h",
+        "percentage_of_license_text": 0.65,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "680d5adaf4f5356f2f9946ccd796859c9c2b7831",
+        "sha1_git": "15f44cc8c293861d46c73274e32b910f05011986",
+        "sha256": "c9a7b80803ee292a0e89ea40a5afffd21f2c5af387ddec405fd215e8dd3d60f7",
+        "size": 2477,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_scriptorigin",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2021 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_scriptorigin.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "daa03598306924d28f8dee2f840c53be",
+        "name": "nan_scriptorigin.h",
+        "package_data": [],
+        "path": "package/nan_scriptorigin.h",
+        "percentage_of_license_text": 0.47,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "e2dc8852cbe7a59c7a84704899b052e1f9708fbf",
+        "sha1_git": "f1072993587fdf8073951399deb1edf35fe6be4a",
+        "sha256": "cf91d6c59b273c1892c5654256c80475e09dbe9a44b2ddbae9216934ba4ffc0b",
+        "size": 3856,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_string_bytes",
+        "copyrights": [
+          {
+            "copyright": "Copyright Joyent, Inc. and other Node contributors",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Joyent, Inc. and other Node contributors",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-cacd5c0c-204a-85c2-affc-e4c125b2492a",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 20,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_string_bytes.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "// Permission is hereby granted, free of charge, to any person obtaining a\n// copy of this software and associated documentation files (the\n// \"Software\"), to deal in the Software without restriction, including\n// without limitation the rights to use, copy, modify, merge, publish,\n// distribute, sublicense, and/or sell copies of the Software, and to permit\n// persons to whom the Software is furnished to do so, subject to the\n// following conditions:\n//\n// The above copyright notice and this permission notice shall be included\n// in all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN\n// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR\n// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\n// USE OR OTHER DEALINGS IN THE SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "bfaf8ed5b3f467079a4497abe4152a85",
+        "name": "nan_string_bytes.h",
+        "package_data": [],
+        "path": "package/nan_string_bytes.h",
+        "percentage_of_license_text": 15.02,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "bdf8bfb9e779171768a04ec6e9d1e074c10874e1",
+        "sha1_git": "a2e6437d12b74cd29fad17ed6c40e1e739eded2c",
+        "sha256": "e06ce2cde16826c454691f8f310c3562ddc0d560f132db2fe61b3cb6dd29f101",
+        "size": 8102,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_typedarray_contents",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_typedarray_contents.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "0574d94260bc1786bdb228597449004f",
+        "name": "nan_typedarray_contents.h",
+        "package_data": [],
+        "path": "package/nan_typedarray_contents.h",
+        "percentage_of_license_text": 0.56,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "b1c080c9a88833e7bee3a33e647d9f0d490ade94",
+        "sha1_git": "c6ac8a418c0decb1d9d03c3d471e394c4b53a5f6",
+        "sha256": "7e3c67b148130da1c4e935aa910b91c18d453f42e2d73b1c57c9839c9a5c5720",
+        "size": 3089,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nan_weak",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2018 NAN contributors",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [
+          {
+            "end_line": 4,
+            "holder": "NAN contributors",
+            "start_line": 4
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 6,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_weak.h",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "8d3b7e92095543c1792b6954c9b31424",
+        "name": "nan_weak.h",
+        "package_data": [],
+        "path": "package/nan_weak.h",
+        "percentage_of_license_text": 0.12,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "784e34afe6ef00762acf3ec17b100b13734cf70a",
+        "sha1_git": "7e7ab07b8512dbbcc1f09c498e221032d2cd345f",
+        "sha256": "2303a6f5ba881d000511cf698adffd8bd8c448ba8fece209b9d503825cdd95f0",
+        "size": 15354,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "new",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "42134c5b82b5234e0413df83d2899416",
+        "name": "new.md",
+        "package_data": [],
+        "path": "package/doc/new.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "73eb21128867e7ab3113adc211d2862bb6568b50",
+        "sha1_git": "0f28a0e926571a0d2664988aab8e0069c9c8f8d9",
+        "sha256": "27a7478fb2d2e907b27431db232276add7f17a9a9b4d83a58c087e57494332bd",
+        "size": 4859,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "node_misc",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "332c6d10d9ce73e81f4b4adffa948fc0",
+        "name": "node_misc.md",
+        "package_data": [],
+        "path": "package/doc/node_misc.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "07d7e9b2d0353de05e14b04247b3c71644636292",
+        "sha1_git": "17578e34907ff185fd0d8940afa2a78dae1fbda2",
+        "sha256": "081a89819b3187a1afdc9e4ec4e0d2a5bab226d503c83bf5a20ef91b86e3575c",
+        "size": 5704,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "object_wrappers",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "cf822cd265bb11709e36c3517d48e40d",
+        "name": "object_wrappers.md",
+        "package_data": [],
+        "path": "package/doc/object_wrappers.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "f1d7969133fe68035faef7e2ab72e9ca2d91a105",
+        "sha1_git": "07d8c058afbe535676aaf691fe0c83bb23fb43cb",
+        "sha256": "06a59cd59a0d6e75a9c4588df69aac843c39ace9b24001f999c0d570fd8a0362",
+        "size": 8226,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 18,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/tools/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"MIT\"",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 18
+              }
+            ]
+          }
+        ],
+        "md5": "6a4d7bea6a23e974a2dc4840c4d9c8d1",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/1to2/1.0.0",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "mit",
+            "declared_license_expression_spdx": "MIT",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "~2.8.1",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/commander",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "~5.0.10",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/glob",
+                "resolved_package": {},
+                "scope": "dependencies"
+              }
+            ],
+            "description": "NAN 1 -> 2 Migration Script",
+            "download_url": "https://registry.npmjs.org/1to2/-/1to2-1.0.0.tgz",
+            "extra_data": {},
+            "extracted_license_statement": "- MIT\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [
+              {
+                "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/tools/package.json",
+                    "license_expression": "mit",
+                    "license_expression_spdx": "MIT",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "MIT",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "1to2",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "bbyholm@abo.fi",
+                "name": "Benjamin Byholm",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/kkoopa/"
+              },
+              {
+                "email": null,
+                "name": "Mathias Küsel",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/mathiask88/"
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/1to2@1.0.0",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/1to2/-/1to2-1.0.0.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/1to2",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git://github.com/nodejs/nan.git",
+            "version": "1.0.0"
+          }
+        ],
+        "path": "package/tools/package.json",
+        "percentage_of_license_text": 3.92,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "c8b6de0212f33be85f01aea1581791bd14aa2a73",
+        "sha1_git": "2dcdd789394965b8150ff96ead49f1a6ac9caf6a",
+        "sha256": "26c59824a231aa81659c1d72c0a359e271889881218212ececcd4b393dfe13aa",
+        "size": 441,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 37,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"MIT\"",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 37
+              }
+            ]
+          }
+        ],
+        "md5": "6b6a1492830f1bc6cfaf5151ed3bde24",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/nan/2.22.2",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "mit",
+            "declared_license_expression_spdx": "MIT",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "=2.81.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/request",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.1.4",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/readable-stream",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.8.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/commander",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.0.14",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/glob",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "~0.7.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/tap",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "~1.2.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/bindings",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "~4.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/xtend",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "~v10.3.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/node-gyp",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "Native Abstractions for Node.js: C++ header for Node 0.8 -> 22 compatibility",
+            "download_url": "https://registry.npmjs.org/nan/-/nan-2.22.2.tgz",
+            "extra_data": {},
+            "extracted_license_statement": "- MIT\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [
+              {
+                "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/package.json",
+                    "license_expression": "mit",
+                    "license_expression_spdx": "MIT",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "MIT",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "nan",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "bbyholm@abo.fi",
+                "name": "Benjamin Byholm",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/kkoopa/"
+              },
+              {
+                "email": "brett19@gmail.com",
+                "name": "Brett Lawson",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/brett19"
+              },
+              {
+                "email": "david@artcom.de",
+                "name": "David Siegel",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/agnat"
+              },
+              {
+                "email": "info@bnoordhuis.nl",
+                "name": "Ben Noordhuis",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/bnoordhuis"
+              },
+              {
+                "email": "mkrufky@gmail.com",
+                "name": "Michael Ira Krufky",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/mkrufky"
+              },
+              {
+                "email": "nathan@tootallnate.net",
+                "name": "Nathan Rajlich",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/TooTallNate"
+              },
+              {
+                "email": "r@va.gg",
+                "name": "Rod Vagg",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/rvagg"
+              },
+              {
+                "email": "trev.norris@gmail.com",
+                "name": "Trevor Norris",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/trevnorris"
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/nan@2.22.2",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/nan/-/nan-2.22.2.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/nan",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git://github.com/nodejs/nan.git",
+            "version": "2.22.2"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 1.04,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "0e0bd529c8f4d49238fb7e91741829cf7b0d2686",
+        "sha1_git": "b678f3eddfd9cd18b36fd54cad6fd3ad923b7652",
+        "sha256": "9be1db68926741824af69344a811048ea7f236090ee7b39fd639aec9e0a1f2c7",
+        "size": 1439,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "persistent",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "93257bb84bec99eb7e0dac31edcf2e74",
+        "name": "persistent.md",
+        "package_data": [],
+        "path": "package/doc/persistent.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "4456242f3f319c8264a9e1152795dc67bce44651",
+        "sha1_git": "9a7bb94e0578623bf3b3fd56102c12ed96098557",
+        "sha256": "f02866d69e105cc6cab69cbe9d1246352da40b56d253fc3f13065d0c6e4e23d1",
+        "size": 10899,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "scopes",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "f649523e40ffbdbf4fbc835dab8c5f69",
+        "name": "scopes.md",
+        "package_data": [],
+        "path": "package/doc/scopes.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "d9344a3b89e5ebf88f074a41d1eb301cf4eaf313",
+        "sha1_git": "84000eebf2b7a20dfa527c8928a6deddd3843bcd",
+        "sha256": "33cde5199d3d3b6ac4d8e73261ac23a6941db2ede7a8427d73e63b198e323811",
+        "size": 2362,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "script",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "765ac5ff73fc30e891b063328f450b5f",
+        "name": "script.md",
+        "package_data": [],
+        "path": "package/doc/script.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "195d8fad61bc815637808a8b2774ea9afa3c8ec9",
+        "sha1_git": "301c1b3df9e441411c7c9970699c9fed0dec25c9",
+        "sha256": "3dbefed20733372f194502cf91d8313c836bb6aab3314deed5db81bd71ab577b",
+        "size": 2081,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "string_bytes",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "7c176b1ed4bd5b648dbde952d4ef6f13",
+        "name": "string_bytes.md",
+        "package_data": [],
+        "path": "package/doc/string_bytes.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "f2d9b8259c38fc4fe88f1f1324273481ac0d328e",
+        "sha1_git": "7c1bd3250476b6b16a29ff684a3a7f86de26a7f9",
+        "sha256": "920c992eaf85103ce332bf5f6d7037610819ec431bfaa2ca80bf10195e10d284",
+        "size": 1900,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "v8_internals",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "ca90fe3153f5f3be8aa616bc314ff077",
+        "name": "v8_internals.md",
+        "package_data": [],
+        "path": "package/doc/v8_internals.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "0f382c7da8984638cb2cc894cffb9ba48fb8ff26",
+        "sha1_git": "2e7c918baea50857f509c68227a9c9d464a1e825",
+        "sha256": "1a9d45cc2c2f3a8dc227fbed4898dab56ef593ad51ec52f16bfb95c502159ff6",
+        "size": 7448,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "v8_misc",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/nan@2.22.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "7cdce2a1aaae8fd6ca4d12283d8301e9",
+        "name": "v8_misc.md",
+        "package_data": [],
+        "path": "package/doc/v8_misc.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "49c3d1e9164d062c14485fb96a7e6f19c21b0d57",
+        "sha1_git": "1bd46d358b18059d390a7521f1e4318940fe107c",
+        "sha256": "58a371b74df52c2499abef3e19c7f307f3d2a678138cda8f9b4a91ef5d2916de",
+        "size": 2914,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "dco_1_1-af8de4e5-1b68-a083-6d7c-4b0a471509ac",
+        "license_expression": "dco-1.1",
+        "license_expression_spdx": "LicenseRef-scancode-dco-1.1",
+        "reference_matches": [
+          {
+            "end_line": 434,
+            "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/README.md",
+            "license_expression": "dco-1.1",
+            "license_expression_spdx": "LicenseRef-scancode-dco-1.1",
+            "match_coverage": 100,
+            "matched_length": 184,
+            "matched_text": "Developer's Certificate of Origin 1.1\n\nBy making a contribution to this project, I certify that:\n\n* (a) The contribution was created in whole or in part by me and I\n  have the right to submit it under the open source license\n  indicated in the file; or\n\n* (b) The contribution is based upon previous work that, to the best\n  of my knowledge, is covered under an appropriate open source\n  license and I have the right under that license to submit that\n  work with modifications, whether created in whole or in part\n  by me, under the same open source license (unless I am\n  permitted to submit under a different license), as indicated\n  in the file; or\n\n* (c) The contribution was provided directly to me by some other\n  person who certified (a), (b) or (c) and I have not modified\n  it.\n\n* (d) I understand and agree that this project and the contribution\n  are public and that a record of the contribution (including all\n  personal information I submit with it, including my sign-off) is\n  maintained indefinitely and may be redistributed consistent with\n  this project or the open source license(s) involved.",
+            "matcher": "2-aho",
+            "rule_identifier": "dco-1.1_3.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/dco-1.1_3.RULE",
+            "score": 100,
+            "start_line": 410
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-86fcf017-3572-9813-b7e8-0a10ec4a120f",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/LICENSE.md",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "The MIT License (MIT)",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_26.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+            "score": 100,
+            "start_line": 1
+          },
+          {
+            "end_line": 9,
+            "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/LICENSE.md",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 161,
+            "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,\n subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+            "score": 100,
+            "start_line": 5
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-ab0ce3d9-995e-0a89-41da-679684496742",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 455,
+            "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/README.md",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 19,
+            "matched_text": "All rights not explicitly granted in the MIT license are reserved. See the included LICENSE file for more details.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_1363.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_1363.RULE",
+            "score": 100,
+            "start_line": 455
+          },
+          {
+            "end_line": 455,
+            "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/README.md",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "under an MIT license.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_996.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_996.RULE",
+            "score": 100,
+            "start_line": 455
+          },
+          {
+            "end_line": 455,
+            "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/README.md",
+            "license_expression": "unknown-license-reference",
+            "license_expression_spdx": "LicenseRef-scancode-unknown-license-reference",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "licensed under",
+            "matcher": "2-aho",
+            "rule_identifier": "license-intro_2.RULE",
+            "rule_relevance": 50,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/license-intro_2.RULE",
+            "score": 50,
+            "start_line": 455
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-cacd5c0c-204a-85c2-affc-e4c125b2492a",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 20,
+            "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/nan_string_bytes.h",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 161,
+            "matched_text": "// Permission is hereby granted, free of charge, to any person obtaining a\n// copy of this software and associated documentation files (the\n// \"Software\"), to deal in the Software without restriction, including\n// without limitation the rights to use, copy, modify, merge, publish,\n// distribute, sublicense, and/or sell copies of the Software, and to permit\n// persons to whom the Software is furnished to do so, subject to the\n// following conditions:\n//\n// The above copyright notice and this permission notice shall be included\n// in all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN\n// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR\n// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\n// USE OR OTHER DEALINGS IN THE SOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+            "score": 100,
+            "start_line": 3
+          }
+        ]
+      },
+      {
+        "detection_count": 2,
+        "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 37,
+            "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "  \"license\": \"MIT\"",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_30.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+            "score": 100,
+            "start_line": 37
+          }
+        ]
+      },
+      {
+        "detection_count": 2,
+        "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "MIT",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 23,
+        "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 377,
+            "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/CHANGELOG.md",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": " - License: Switch to plain MIT from custom hacked MIT license 11de983",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_14.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+            "score": 100,
+            "start_line": 377
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "CLA",
+        "faq_url": null,
+        "homepage_url": "https://developercertificate.org/",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [
+          "Copyright (c) 2004, 2006 The Linux Foundation and its contributors"
+        ],
+        "ignorable_emails": [],
+        "ignorable_holders": [
+          "The Linux Foundation and its contributors"
+        ],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "dco-1.1",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/dco-1.1",
+        "minimum_coverage": 90,
+        "name": "Developer Certificate of Origin 1.1",
+        "notes": null,
+        "osi_license_key": null,
+        "osi_url": null,
+        "other_spdx_license_keys": [],
+        "other_urls": [
+          "https://github.com/nexB/scancode-toolkit/issues/3038#issuecomment-1317511139"
+        ],
+        "owner": "Linux Foundation",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/dco-1.1.LICENSE",
+        "short_name": "DCO 1.1",
+        "spdx_license_key": "LicenseRef-scancode-dco-1.1",
+        "spdx_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/dco-1.1.LICENSE",
+        "standard_notice": null,
+        "text": "Developer Certificate of Origin\nVersion 1.1\n\nCopyright (C) 2004, 2006 The Linux Foundation and its contributors.\n1 Letterman Drive\nSuite D4700\nSan Francisco, CA, 94129\n\nEveryone is permitted to copy and distribute verbatim copies of this\nlicense document, but changing it is not allowed.\n\n\nDeveloper's Certificate of Origin 1.1\n\nBy making a contribution to this project, I certify that:\n\n(a) The contribution was created in whole or in part by me and I\n    have the right to submit it under the open source license\n    indicated in the file; or\n\n(b) The contribution is based upon previous work that, to the best\n    of my knowledge, is covered under an appropriate open source\n    license and I have the right under that license to submit that\n    work with modifications, whether created in whole or in part\n    by me, under the same open source license (unless I am\n    permitted to submit under a different license), as indicated\n    in the file; or\n\n(c) The contribution was provided directly to me by some other\n    person who certified (a), (b) or (c) and I have not modified\n    it.\n\n(d) I understand and agree that this project and the contribution\n    are public and that a record of the contribution (including all\n    personal information I submit with it, including my sign-off) is\n    maintained indefinitely and may be redistributed consistent with\n    this project or the open source license(s) involved.",
+        "text_urls": [
+          "https://developercertificate.org/"
+        ]
+      },
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      },
+      {
+        "category": "Unstated License",
+        "faq_url": null,
+        "homepage_url": null,
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": true,
+        "key": "unknown-license-reference",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/unknown-license-reference",
+        "minimum_coverage": 0,
+        "name": "Unknown License file reference",
+        "notes": "This applies to the case of a file with no clear license, which may be referenced via URL or text such as \"See license in...\" or \"This file is licensed under...\", but where the reference cannot be resolved to a specific named, public license.",
+        "osi_license_key": null,
+        "osi_url": null,
+        "other_spdx_license_keys": [],
+        "other_urls": [],
+        "owner": "Unspecified",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/unknown-license-reference.LICENSE",
+        "short_name": "Unknown License reference",
+        "spdx_license_key": "LicenseRef-scancode-unknown-license-reference",
+        "spdx_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/unknown-license-reference.LICENSE",
+        "standard_notice": null,
+        "text": "",
+        "text_urls": []
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "dco-1.1_3.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 184,
+        "license_expression": "dco-1.1",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/dco-1.1_3.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Developer's Certificate of Origin 1.1\n\n    By making a contribution to this project, I certify that:\n\n    (a) The contribution was created in whole or in part by me and I\n        have the right to submit it under the open source license\n        indicated in the file; or\n\n    (b) The contribution is based upon previous work that, to the best\n        of my knowledge, is covered under an appropriate open source\n        license and I have the right under that license to submit that\n        work with modifications, whether created in whole or in part\n        by me, under the same open source license (unless I am\n        permitted to submit under a different license), as indicated\n        in the file; or\n\n    (c) The contribution was provided directly to me by some other\n        person who certified (a), (b) or (c) and I have not modified\n        it.\n\n    (d) I understand and agree that this project and the contribution\n        are public and that a record of the contribution (including all\n        personal information I submit with it, including my sign-off) is\n        maintained indefinitely and may be redistributed consistent with\n        this project or the open source license(s) involved."
+      },
+      {
+        "identifier": "license-intro_2.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": true,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "unknown-license-reference",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 50,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/license-intro_2.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Licensed under"
+      },
+      {
+        "identifier": "mit.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 161,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+      },
+      {
+        "identifier": "mit_1363.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 19,
+        "license_expression": "mit",
+        "minimum_coverage": 50,
+        "notes": null,
+        "referenced_filenames": [
+          "LICENSE"
+        ],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_1363.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "All rights not explicitly granted in the {{MIT license}} are reserved. See the included LICENSE file for more details."
+      },
+      {
+        "identifier": "mit_14.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT License"
+      },
+      {
+        "identifier": "mit_26.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "mit",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "{{The MIT License}} (MIT)"
+      },
+      {
+        "identifier": "mit_30.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: MIT"
+      },
+      {
+        "identifier": "mit_996.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "mit",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_996.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "under an {{MIT license}}"
+      },
+      {
+        "identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/nan/2.22.2",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "mit",
+        "declared_license_expression_spdx": "MIT",
+        "description": "Native Abstractions for Node.js: C++ header for Node 0.8 -> 22 compatibility",
+        "download_url": "https://registry.npmjs.org/nan/-/nan-2.22.2.tgz",
+        "extra_data": {},
+        "extracted_license_statement": "- MIT\n",
+        "holder": null,
+        "homepage_url": null,
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [],
+        "license_detections": [
+          {
+            "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "4bad35301822cc1335fd5c27a07260156d45cab52cee0a1e948efa48fc278596/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "MIT",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "nan",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "bbyholm@abo.fi",
+            "name": "Benjamin Byholm",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/kkoopa/"
+          },
+          {
+            "email": "brett19@gmail.com",
+            "name": "Brett Lawson",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/brett19"
+          },
+          {
+            "email": "david@artcom.de",
+            "name": "David Siegel",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/agnat"
+          },
+          {
+            "email": "info@bnoordhuis.nl",
+            "name": "Ben Noordhuis",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/bnoordhuis"
+          },
+          {
+            "email": "mkrufky@gmail.com",
+            "name": "Michael Ira Krufky",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/mkrufky"
+          },
+          {
+            "email": "nathan@tootallnate.net",
+            "name": "Nathan Rajlich",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/TooTallNate"
+          },
+          {
+            "email": "r@va.gg",
+            "name": "Rod Vagg",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/rvagg"
+          },
+          {
+            "email": "trev.norris@gmail.com",
+            "name": "Trevor Norris",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/trevnorris"
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/nan@2.22.2",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/nan/-/nan-2.22.2.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/nan",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git://github.com/nodejs/nan.git",
+        "version": "2.22.2"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

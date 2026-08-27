@@ -1,0 +1,109 @@
+{
+  "artifactId": "9fabb43d2344c69203c2f33f8b6714285e39a2743de687c39c714d389fd53e32",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1949,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "898c2bcff663681498ad1ca8235d45b6e70b10cdf1f869a5b5e69f6e46efedd3",
+        "size": 739,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "797e4f5121b50808557e146c3a214adfd2306cc7565acd5df64e693d73105291",
+        "size": 398,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "5d5fb5cae6d9c04079c01e6e1978de69d19c77ff160f523df462d08bca44b2dd",
+        "size": 1346,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9ebac37059e17adaf6d0b062d6614ec77c4f03ab6959688f3e8b8db0a57978eb",
+        "size": 1403,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 739,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/89/898c2bcff663681498ad1ca8235d45b6e70b10cdf1f869a5b5e69f6e46efedd3",
+          "sha256": "898c2bcff663681498ad1ca8235d45b6e70b10cdf1f869a5b5e69f6e46efedd3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "898c2bcff663681498ad1ca8235d45b6e70b10cdf1f869a5b5e69f6e46efedd3",
+        "size": 739
+      }
+    ],
+    "expandedBytes": 3886,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "npm-normalize-package-bin",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/npm-normalize-package-bin.git"
+      },
+      "version": "6.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "description": "Turn any flavor of allowable package.json bin into a normalized object",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^6.0.0",
+        "@npmcli/template-oss": "5.0.0"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "npm-normalize-package-bin",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/npm-normalize-package-bin.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "node --test --test-update-snapshots './test/**/*.js'",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "node --test './test/**/*.js'",
+        "test:cover": "node --test --experimental-test-coverage --test-timeout=3000 --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 './test/**/*.js'",
+        "test:node20": "node --test test"
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "latestCiVersion": 24,
+        "publish": "true",
+        "testRunner": "node:test",
+        "version": "5.0.0"
+      },
+      "version": "6.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1949,
+      "sha256": "69cfe345c0162470da26f77fe58371f6720c0864529a59feae2420ad94a61e7c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

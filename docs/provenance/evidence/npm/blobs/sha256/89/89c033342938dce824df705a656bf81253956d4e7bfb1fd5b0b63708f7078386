@@ -1,0 +1,104 @@
+{
+  "artifactId": "592569627752d199a873daba61162db4017cbccdf03b2e7b7911a1cbadffcf20",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3593473,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+        "size": 15648,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "1bcc077c4e7ba9f20d2b1d4a4d014ebabe017868936883a69c208d993f49ecb0",
+        "size": 124,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lightningcss.linux-arm64-gnu.node",
+        "sha256": "630753f910bd6235aad7d702a984c109aa723563342b8057b88f34306702b626",
+        "size": 8893184,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b1d0e85aeed20593a71feee73a4833af9366c975f502acbde3523f0381a4a227",
+        "size": 753,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 15648,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5e/5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+          "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+        "size": 15648
+      }
+    ],
+    "expandedBytes": 8909709,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MPL-2.0",
+      "name": "lightningcss-linux-arm64-gnu",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/parcel-bundler/lightningcss.git"
+      },
+      "version": "1.33.0"
+    },
+    "packageMetadata": {
+      "browserslist": "last 2 versions, not dead",
+      "cpu": [
+        "arm64"
+      ],
+      "description": "A CSS parser, transformer, and minifier written in Rust",
+      "engines": {
+        "node": ">= 12.0.0"
+      },
+      "files": [
+        "lightningcss.linux-arm64-gnu.node"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/parcel"
+      },
+      "libc": [
+        "glibc"
+      ],
+      "license": "MPL-2.0",
+      "main": "lightningcss.linux-arm64-gnu.node",
+      "name": "lightningcss-linux-arm64-gnu",
+      "os": [
+        "linux"
+      ],
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/parcel-bundler/lightningcss.git"
+      },
+      "resolutions": {
+        "lightningcss": "link:."
+      },
+      "version": "1.33.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 3593473,
+      "sha256": "257b51498dfd90fc99b87afd28408ff9b53162e521db4e06a493e356b8536711"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,128 @@
+{
+  "artifactId": "d312f711e629f9f7431e3c5c12f7aa141724aac28ac45a16d142434bcbe0dbd3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2119,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "304e461b1cd4f15d82f6f11cde33a90e5a6a6f4425ededbff3c95ab3284c5ba2",
+        "size": 1211,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "9ca2b409cdf1718ce957292dc479c83516e4ea369f4b2cb3510066d4e50074e2",
+        "size": 300,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4601a9fd2b6cdcc0ee3220f2544523bea4366099ac356ca6a6d2fb73b5d4fef6",
+        "size": 641,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "4bd571e682d96c3915f33f19c0ba15879879f1dac5a91ac1079d7b6b9aa53c8a",
+        "size": 1196,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 1196,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4b/4bd571e682d96c3915f33f19c0ba15879879f1dac5a91ac1079d7b6b9aa53c8a",
+          "sha256": "4bd571e682d96c3915f33f19c0ba15879879f1dac5a91ac1079d7b6b9aa53c8a"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "4bd571e682d96c3915f33f19c0ba15879879f1dac5a91ac1079d7b6b9aa53c8a",
+        "size": 1196
+      }
+    ],
+    "expandedBytes": 4457,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "mimic-fn",
+      "repository": "sindresorhus/mimic-fn",
+      "version": "2.1.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "description": "Make a function mimic another one",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "tsd": "^0.7.1",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=6"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "function",
+        "mimic",
+        "imitate",
+        "rename",
+        "copy",
+        "inherit",
+        "properties",
+        "name",
+        "func",
+        "fn",
+        "set",
+        "infer",
+        "change"
+      ],
+      "license": "MIT",
+      "name": "mimic-fn",
+      "repository": "sindresorhus/mimic-fn",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "2.1.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2119,
+      "sha256": "ea705c261486c4ef2a8c936b159c86ad1d7451d7afc7b7f97cc2d1805c0466bf"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

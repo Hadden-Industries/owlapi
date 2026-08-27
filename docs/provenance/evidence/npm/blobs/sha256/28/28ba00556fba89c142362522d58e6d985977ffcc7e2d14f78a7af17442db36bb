@@ -1,0 +1,130 @@
+{
+  "artifactId": "9ba968188adee9b1a86ca89acb04863bce057a6c06157a46684c3cd857b81ff9",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2984,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "04d27b0c032b2f48905e692e7db73b6e0afafd9d6b7c63e9180965362267066d",
+        "size": 2329,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "51a998b34bd7ff983b316f77f9de24370f53158e1c7b8dc3ee021a08628ecfc1",
+        "size": 1013,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "64589abaa3855e3efa0646e920a6dbb58a9a5a028c60c3d8440fa7682d7c27e7",
+        "size": 712,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "b4d3297906c7e4d4c67298dcb1a895e1cc815bbe79624f9812513cc1cffd30e7",
+        "size": 2965,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 2965,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b4/b4d3297906c7e4d4c67298dcb1a895e1cc815bbe79624f9812513cc1cffd30e7",
+          "sha256": "b4d3297906c7e4d4c67298dcb1a895e1cc815bbe79624f9812513cc1cffd30e7"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "b4d3297906c7e4d4c67298dcb1a895e1cc815bbe79624f9812513cc1cffd30e7",
+        "size": 2965
+      }
+    ],
+    "expandedBytes": 8128,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "npm-run-path",
+      "repository": "sindresorhus/npm-run-path",
+      "version": "4.0.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "dependencies": {
+        "path-key": "^3.0.0"
+      },
+      "description": "Get your PATH prepended with locally installed binaries",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "tsd": "^0.7.2",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "npm",
+        "run",
+        "path",
+        "package",
+        "bin",
+        "binary",
+        "binaries",
+        "script",
+        "cli",
+        "command-line",
+        "execute",
+        "executable"
+      ],
+      "license": "MIT",
+      "name": "npm-run-path",
+      "repository": "sindresorhus/npm-run-path",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "4.0.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2984,
+      "sha256": "d2fc2934a397c337eacddb6f03e08255cd948bdd011fd473ef351cde4b8e1084"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

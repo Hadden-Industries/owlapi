@@ -1,0 +1,129 @@
+{
+  "artifactId": "aa3712ec2d4de47a6943c97975dcf8ab6dcb06bda7d991b27e2a0e7774cedbf7",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 18702,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "4402fac21504d9cba177c90d5bc91746c4ffc0f29ac311de56e1de5199fa9883",
+        "size": 11340,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b",
+        "size": 1098,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Readme.md",
+        "sha256": "29672cd1edd16b578263d874e1933bd7248bbe67d991cc366f73ba66d7a349b9",
+        "size": 12783,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "259465792c3db1ae81555cb0b654e224914ea59143d9674502d6754eb5266efd",
+        "size": 27849,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "3ab88e050858ad5fc1d2e7f993d959b83c7e2ddec64afe86cc4055f799e4762d",
+        "size": 864,
+        "type": "FILE"
+      },
+      {
+        "path": "package/typings/index.d.ts",
+        "sha256": "ce0594a0432dce2f4e9f6130d538a52d6292ca323e729b75d8e0febd9134dc65",
+        "size": 8508,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1098,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/04/04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b",
+          "sha256": "04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b",
+        "size": 1098
+      },
+      {
+        "blob": {
+          "bytes": 12783,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/29/29672cd1edd16b578263d874e1933bd7248bbe67d991cc366f73ba66d7a349b9",
+          "sha256": "29672cd1edd16b578263d874e1933bd7248bbe67d991cc366f73ba66d7a349b9"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/Readme.md",
+        "sha256": "29672cd1edd16b578263d874e1933bd7248bbe67d991cc366f73ba66d7a349b9",
+        "size": 12783
+      }
+    ],
+    "expandedBytes": 62442,
+    "packageIdentity": {
+      "author": "TJ Holowaychuk <tj@vision-media.ca>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "commander",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/tj/commander.js.git"
+      },
+      "version": "2.20.3"
+    },
+    "packageMetadata": {
+      "author": "TJ Holowaychuk <tj@vision-media.ca>",
+      "dependencies": {},
+      "description": "the complete solution for node.js command-line programs",
+      "devDependencies": {
+        "@types/node": "^12.7.8",
+        "eslint": "^6.4.0",
+        "should": "^13.2.3",
+        "sinon": "^7.5.0",
+        "standard": "^14.3.1",
+        "ts-node": "^8.4.1",
+        "typescript": "^3.6.3"
+      },
+      "files": [
+        "index.js",
+        "typings/index.d.ts"
+      ],
+      "keywords": [
+        "commander",
+        "command",
+        "option",
+        "parser"
+      ],
+      "license": "MIT",
+      "main": "index",
+      "name": "commander",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/tj/commander.js.git"
+      },
+      "scripts": {
+        "lint": "eslint index.js",
+        "test": "node test/run.js && npm run test-typings",
+        "test-typings": "tsc -p tsconfig.json"
+      },
+      "typings": "typings/index.d.ts",
+      "version": "2.20.3"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 18702,
+      "sha256": "3c02903de017a98d4dc3fe2bed4900beb0d04cf7b679dca0915fd8c759652b55"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

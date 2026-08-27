@@ -1,0 +1,187 @@
+{
+  "artifactId": "900a0ad5d535d48fec7190e46043590547f79f9d4898806deac9ad119929f440",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7930,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "05c365176db3cc00e951c44b921c809c75b8e99d2d724f7daf00381e26fb0850",
+        "size": 1102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "46ae01aaf4dd281da4485c4fd7a458cb79d529958c572462c121a8ea94a12f88",
+        "size": 4500,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commands.d.mts",
+        "sha256": "043542d97e348c86f5a313e1e328c29b653ed9ea6d6c2aad1a0a94fbaab618c5",
+        "size": 2556,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commands.mjs",
+        "sha256": "37be4782f16b10995bf6b105b2d7ce4267a15ee1f98fa5340f8effcea3b30ede",
+        "size": 5602,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/constants.d.mts",
+        "sha256": "5dcd2f7eb83c2765e0d1b52a2e96a28915875ce5c0a5c202cba5302b4c7fa3cd",
+        "size": 342,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/constants.mjs",
+        "sha256": "d96badf260a25ef573be2099b041f7ca8755d27ee747e07d9a38d6d1e5d681e7",
+        "size": 1428,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/detect.d.mts",
+        "sha256": "1dc12459b358e194c0b505d02babf16b10dfa8b7ee4bf68e8c8ccb1d142f3646",
+        "size": 669,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/detect.mjs",
+        "sha256": "29cbf0a1742942e07a030ffdb436472409969b8aadab76b871465a5f8c7bdc5d",
+        "size": 4455,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.mts",
+        "sha256": "4f16b146854d668b8d44ce381464fb4850aae67f2e757ee161043cfe5da009d1",
+        "size": 444,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.mjs",
+        "sha256": "1c26658634c3332397cd4d6eeeb6534649d7df5d4e97802362945152e73d8926",
+        "size": 281,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/shared/package-manager-detector.44nIG8rR.d.mts",
+        "sha256": "3a66f6ef4dc5d70eada2afe9b68ebffb72153b954028917f35b883cdeec950c8",
+        "size": 3523,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d0f0d249f71cfb0563914aa3f98eeb771715f1dfa29b6b899ffa88ab9a7515ca",
+        "size": 1466,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1102,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/05/05c365176db3cc00e951c44b921c809c75b8e99d2d724f7daf00381e26fb0850",
+          "sha256": "05c365176db3cc00e951c44b921c809c75b8e99d2d724f7daf00381e26fb0850"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "05c365176db3cc00e951c44b921c809c75b8e99d2d724f7daf00381e26fb0850",
+        "size": 1102
+      },
+      {
+        "blob": {
+          "bytes": 4500,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/46/46ae01aaf4dd281da4485c4fd7a458cb79d529958c572462c121a8ea94a12f88",
+          "sha256": "46ae01aaf4dd281da4485c4fd7a458cb79d529958c572462c121a8ea94a12f88"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "46ae01aaf4dd281da4485c4fd7a458cb79d529958c572462c121a8ea94a12f88",
+        "size": 4500
+      }
+    ],
+    "expandedBytes": 26368,
+    "packageIdentity": {
+      "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+      "homepage": "https://github.com/antfu-collective/package-manager-detector#readme",
+      "license": "MIT",
+      "name": "package-manager-detector",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/antfu-collective/package-manager-detector.git"
+      },
+      "version": "1.8.0"
+    },
+    "packageMetadata": {
+      "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+      "bugs": {
+        "url": "https://github.com/antfu-collective/package-manager-detector/issues"
+      },
+      "description": "Package manager detector",
+      "devDependencies": {
+        "@antfu/eslint-config": "^9.1.0",
+        "@types/node": "^26.1.1",
+        "bumpp": "^11.1.0",
+        "eslint": "^10.7.0",
+        "tsnapi": "^1.0.0",
+        "typescript": "^6.0.3",
+        "unbuild": "^3.6.1",
+        "vitest": "^4.1.10"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./commands": "./dist/commands.mjs",
+        "./constants": "./dist/constants.mjs",
+        "./detect": "./dist/detect.mjs"
+      },
+      "files": [
+        "dist"
+      ],
+      "homepage": "https://github.com/antfu-collective/package-manager-detector#readme",
+      "license": "MIT",
+      "main": "./dist/index.mjs",
+      "module": "./dist/index.mjs",
+      "name": "package-manager-detector",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/antfu-collective/package-manager-detector.git"
+      },
+      "scripts": {
+        "build": "unbuild",
+        "lint": "eslint",
+        "lint:fix": "eslint --fix",
+        "release": "bumpp",
+        "stub": "unbuild --stub",
+        "test": "vitest"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "types": "./dist/index.d.mts",
+      "typesVersions": {
+        "*": {
+          "commands": [
+            "./dist/commands.d.mts"
+          ],
+          "constants": [
+            "./dist/constants.d.mts"
+          ],
+          "detect": [
+            "./dist/detect.d.mts"
+          ]
+        }
+      },
+      "version": "1.8.0"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 7930,
+      "sha256": "fcf82d09555ad9ed291500b5c358c81e2a1860946b5b85e32477cbe31a59a6b1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

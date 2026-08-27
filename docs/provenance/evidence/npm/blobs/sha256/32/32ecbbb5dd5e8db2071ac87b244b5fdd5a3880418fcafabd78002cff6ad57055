@@ -1,0 +1,114 @@
+{
+  "artifactId": "d31b8cf87c6938d2d44c4746649ac360775b03836b7a17122f8e5f303437f2a4",
+  "evidence": {
+    "archiveRoot": "json-schema",
+    "compressedBytes": 6145,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "json-schema",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "json-schema/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "json-schema/README.md",
+        "sha256": "1356012b45f761d2e1d72f704edde2f74f437995d7dd064071b93fae703aac59",
+        "size": 622,
+        "type": "FILE"
+      },
+      {
+        "path": "json-schema/index.d.ts",
+        "sha256": "f3d8c757e148ad968f0d98697987db363070abada5f503da3c06aefd9d4248c1",
+        "size": 28732,
+        "type": "FILE"
+      },
+      {
+        "path": "json-schema/package.json",
+        "sha256": "6bf0cb0808cafc14023ae10d55d6a88228397dc54c16106d121f42ac88d64fc8",
+        "size": 1253,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1141,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c2/c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        "kind": "LICENCE",
+        "path": "json-schema/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141
+      }
+    ],
+    "expandedBytes": 31748,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/json-schema",
+      "license": "MIT",
+      "name": "@types/json-schema",
+      "repository": {
+        "directory": "types/json-schema",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "version": "7.0.15"
+    },
+    "packageMetadata": {
+      "contributors": [
+        {
+          "githubUsername": "bcherny",
+          "name": "Boris Cherny",
+          "url": "https://github.com/bcherny"
+        },
+        {
+          "githubUsername": "lucianbuzzo",
+          "name": "Lucian Buzzo",
+          "url": "https://github.com/lucianbuzzo"
+        },
+        {
+          "githubUsername": "rolandjitsu",
+          "name": "Roland Groza",
+          "url": "https://github.com/rolandjitsu"
+        },
+        {
+          "githubUsername": "JasonHK",
+          "name": "Jason Kwok",
+          "url": "https://github.com/JasonHK"
+        }
+      ],
+      "dependencies": {},
+      "description": "TypeScript definitions for json-schema",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/json-schema",
+      "license": "MIT",
+      "main": "",
+      "name": "@types/json-schema",
+      "repository": {
+        "directory": "types/json-schema",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "scripts": {},
+      "typeScriptVersion": "4.5",
+      "types": "index.d.ts",
+      "typesPublisherContentHash": "79984fd70cd25c3f7d72b84368778c763c89728ea0073832d745d4691b705257",
+      "version": "7.0.15"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 6145,
+      "sha256": "12dcb1dcff7099bff0663fc220551ba53fcf23c136a22375e323bb6626d95724"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

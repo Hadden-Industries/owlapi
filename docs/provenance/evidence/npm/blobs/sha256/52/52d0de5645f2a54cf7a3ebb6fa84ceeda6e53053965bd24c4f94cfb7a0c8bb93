@@ -1,0 +1,93 @@
+{
+  "artifactId": "83bae733166e89911a249910a8c5a373b414c8b4dfbc969786e5e1c4736c7c24",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 11128,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "db0b57e1acff55e7283e4de70069ef7c92524ce055bebb9a9795ebb9e97e6cb1",
+        "size": 1517,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "572a992b43fa0fb44f31913f8780be5c54dc8d1a4b455a7e1bc5796add53880c",
+        "size": 11976,
+        "type": "FILE"
+      },
+      {
+        "path": "package/moo.js",
+        "sha256": "71bd0199863a2a2a6c067eaa385c55323ac196df886cbd059d90d968626b73a0",
+        "size": 18663,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "a719c6f773d723c3479a1a521b6db0fbcb571c3b59d5381c104b88d1ab05021d",
+        "size": 648,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1517,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/db/db0b57e1acff55e7283e4de70069ef7c92524ce055bebb9a9795ebb9e97e6cb1",
+          "sha256": "db0b57e1acff55e7283e4de70069ef7c92524ce055bebb9a9795ebb9e97e6cb1"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "db0b57e1acff55e7283e4de70069ef7c92524ce055bebb9a9795ebb9e97e6cb1",
+        "size": 1517
+      }
+    ],
+    "expandedBytes": 32804,
+    "packageIdentity": {
+      "author": "Tim Radvan <tim@tjvr.org>",
+      "homepage": null,
+      "license": "BSD-3-Clause",
+      "name": "moo",
+      "repository": "https://github.com/tjvr/moo.git",
+      "version": "0.5.3"
+    },
+    "packageMetadata": {
+      "author": "Tim Radvan <tim@tjvr.org>",
+      "contributors": [
+        "Nathan"
+      ],
+      "description": "Optimised tokenizer/lexer generator! 🐄 Much performance. Moo!",
+      "devDependencies": {
+        "benchr": "^3.2.0",
+        "chevrotain": "4.2.0",
+        "jest": "24.7.1",
+        "lex": "^1.7.9",
+        "lexing": "^0.8.0",
+        "remix": "^0.1.4",
+        "tokenizer2": "^2.0.0"
+      },
+      "files": [
+        "moo.js"
+      ],
+      "license": "BSD-3-Clause",
+      "main": "moo.js",
+      "name": "moo",
+      "repository": "https://github.com/tjvr/moo.git",
+      "scripts": {
+        "benchmark": "benchr test/benchmark.js",
+        "moo": "echo 'Mooooo!'",
+        "test": "jest ."
+      },
+      "version": "0.5.3"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 11128,
+      "sha256": "26b0d55dc7784e8046c12792c99cf548d0896c796f51d98998f16f02326f5523"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,145 @@
+{
+  "artifactId": "c98962907986656e264f5f54d4eded4b630bcc98927a95bfbb8158f72d082bf5",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 11591,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "3749709146345fa15546aaba4e3ab1b3b92a4d930077b5bc32d90815cb63afaf",
+        "size": 760,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d2378a8edf9eee5fe7cd8ef386e74448032a9c517b53a7a14f61d603c936a36c",
+        "size": 20405,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "e36be1a5e67217f423148f206bce2ea3aa04bb1271e5ea8069836c4a331f4d3b",
+        "size": 15512,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "915c1addb2ba51bebb0ddf25c3bf8b75717f7063d8705258478f2b84d34a970d",
+        "size": 1842,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 760,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/37/3749709146345fa15546aaba4e3ab1b3b92a4d930077b5bc32d90815cb63afaf",
+          "sha256": "3749709146345fa15546aaba4e3ab1b3b92a4d930077b5bc32d90815cb63afaf"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "3749709146345fa15546aaba4e3ab1b3b92a4d930077b5bc32d90815cb63afaf",
+        "size": 760
+      },
+      {
+        "blob": {
+          "bytes": 20405,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d2/d2378a8edf9eee5fe7cd8ef386e74448032a9c517b53a7a14f61d603c936a36c",
+          "sha256": "d2378a8edf9eee5fe7cd8ef386e74448032a9c517b53a7a14f61d603c936a36c"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "d2378a8edf9eee5fe7cd8ef386e74448032a9c517b53a7a14f61d603c936a36c",
+        "size": 20405
+      }
+    ],
+    "expandedBytes": 38519,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "ssri",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/ssri.git"
+      },
+      "version": "14.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "dependencies": {
+        "minipass": "^7.0.3"
+      },
+      "description": "Standard Subresource Integrity library -- parses, serializes, generates, and verifies integrity metadata according to the SRI spec.",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^6.0.0",
+        "@npmcli/template-oss": "5.0.0",
+        "benchmark": "^2.1.4"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "keywords": [
+        "w3c",
+        "web",
+        "security",
+        "integrity",
+        "checksum",
+        "hashing",
+        "subresource integrity",
+        "sri",
+        "sri hash",
+        "sri string",
+        "sri generator",
+        "html"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "ssri",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/ssri.git"
+      },
+      "scripts": {
+        "coverage": "tap",
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "postrelease": "npm publish",
+        "posttest": "npm run lint",
+        "prerelease": "npm t",
+        "snap": "node --test --test-update-snapshots './test/**/*.js'",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "node --test './test/**/*.js'",
+        "test:cover": "node --test --experimental-test-coverage --test-timeout=3000 --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 './test/**/*.js'",
+        "test:node20": "node --test test"
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "allowPaths": [
+          "benchmarks/"
+        ],
+        "latestVersion": 24,
+        "publish": "true",
+        "testRunner": "node:test",
+        "version": "5.0.0"
+      },
+      "version": "14.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 11591,
+      "sha256": "79475f17c14100c9cafac339f712780a04616a7ba579ad09e658168ff84fc175"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

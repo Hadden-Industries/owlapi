@@ -1,0 +1,190 @@
+{
+  "artifactId": "ebbafae88e1c9f56d931456f98d3d9afc0067e585547d84c1877106d062a365a",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 13459,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d886ae3b568b9208198dde77fa05386dfaddd8f23ce22b3e018fadeec2bb1f46",
+        "size": 9708,
+        "type": "FILE"
+      },
+      {
+        "path": "package/global.d.ts",
+        "sha256": "aa2244ce9f7a033219dee13eecc186eb18b07e57f40621b9c9c8ca1da2f0b9cb",
+        "size": 1370,
+        "type": "FILE"
+      },
+      {
+        "path": "package/global.js",
+        "sha256": "ae1fcf3c3b3217352f6e371ed5355ed60fdf5fcccb3a9b97eb46de3b4247538b",
+        "size": 688,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "47f1503d8b3846eac9061cacbcb45e704cb11558a2662b9c3fba97ee6ebe0f6b",
+        "size": 6835,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "5f8c97165db0c9caf70b25712a8414967eb45f8a4013d8a4b34262f20e84376f",
+        "size": 10904,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "be6d9ae85669929bedb1f5fb52d6948519452e226041b39f8eb832ee1935fa14",
+        "size": 1676,
+        "type": "FILE"
+      },
+      {
+        "path": "package/promises.js",
+        "sha256": "9a1b2ab08175f5b774ad46d01b45d0c38da6c133189b76c860957991a0e18510",
+        "size": 77,
+        "type": "FILE"
+      },
+      {
+        "path": "package/web.d.ts",
+        "sha256": "79d05025b9fe63916d5bc63d642ad2fb2f47749aec33b0ed2217080f0f7d93ac",
+        "size": 4184,
+        "type": "FILE"
+      },
+      {
+        "path": "package/web.js",
+        "sha256": "07cfb64322c13838416ca49266a2007a8cb2496b547df11319594bd83ab859a5",
+        "size": 13980,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11357,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357
+      },
+      {
+        "blob": {
+          "bytes": 9708,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d8/d886ae3b568b9208198dde77fa05386dfaddd8f23ce22b3e018fadeec2bb1f46",
+          "sha256": "d886ae3b568b9208198dde77fa05386dfaddd8f23ce22b3e018fadeec2bb1f46"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "d886ae3b568b9208198dde77fa05386dfaddd8f23ce22b3e018fadeec2bb1f46",
+        "size": 9708
+      }
+    ],
+    "expandedBytes": 60779,
+    "packageIdentity": {
+      "author": "Holepunch",
+      "homepage": "https://github.com/holepunchto/bare-stream#readme",
+      "license": "Apache-2.0",
+      "name": "bare-stream",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/holepunchto/bare-stream.git"
+      },
+      "version": "2.13.4"
+    },
+    "packageMetadata": {
+      "author": "Holepunch",
+      "bugs": {
+        "url": "https://github.com/holepunchto/bare-stream/issues"
+      },
+      "dependencies": {
+        "b4a": "^1.8.1",
+        "streamx": "^2.25.0",
+        "teex": "^1.0.1"
+      },
+      "description": "Streaming data for JavaScript",
+      "devDependencies": {
+        "bare-abort-controller": "^1.1.0",
+        "bare-buffer": "^3.0.0",
+        "bare-events": "^2.5.4",
+        "brittle": "^3.5.2",
+        "lunte": "^1.6.0",
+        "prettier": "^3.3.3",
+        "prettier-config-holepunch": "^2.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./index.js",
+          "types": "./index.d.ts"
+        },
+        "./global": {
+          "default": "./global.js",
+          "types": "./global.d.ts"
+        },
+        "./package": "./package.json",
+        "./promises": "./promises.js",
+        "./web": {
+          "default": "./web.js",
+          "types": "./web.d.ts"
+        }
+      },
+      "files": [
+        "index.js",
+        "index.d.ts",
+        "promises.js",
+        "web.js",
+        "web.d.ts",
+        "global.js",
+        "global.d.ts"
+      ],
+      "homepage": "https://github.com/holepunchto/bare-stream#readme",
+      "license": "Apache-2.0",
+      "name": "bare-stream",
+      "peerDependencies": {
+        "bare-abort-controller": "*",
+        "bare-buffer": "*",
+        "bare-events": "*"
+      },
+      "peerDependenciesMeta": {
+        "bare-abort-controller": {
+          "optional": true
+        },
+        "bare-buffer": {
+          "optional": true
+        },
+        "bare-events": {
+          "optional": true
+        }
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/holepunchto/bare-stream.git"
+      },
+      "scripts": {
+        "format": "prettier --write . && lunte --fix",
+        "lint": "prettier --check . && lunte",
+        "test": "brittle-bare --coverage test.js"
+      },
+      "version": "2.13.4"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 13459,
+      "sha256": "fb4e89b12e635f55d767708a319b68d64c679997d7ed7db45c4e79c54f1f40d1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

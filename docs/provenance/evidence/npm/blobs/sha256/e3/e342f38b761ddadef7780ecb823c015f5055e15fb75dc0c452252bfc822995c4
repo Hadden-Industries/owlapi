@@ -1,0 +1,102 @@
+{
+  "artifactId": "77b41f77326738ebadfa50a926f22b87f45385a95dc1eb4402db349446069530",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2646,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "1aefaa6243dfcef681bbe786e24be7c5b61057208a8b9ecacd1e5e880b5bb47c",
+        "size": 399,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "bbdb2bc1d91d3dd67afc0f3b0296eba9c1b1ce70a5942f229b437d2b13204eb1",
+        "size": 1074,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "07a5c3973e80ac17d6a27804d0bf451236b87e613ef52a0476b2b59272e9b455",
+        "size": 3344,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "1f6548d17784a2ce269838cb2defb20a7ac1d144feb40bcd626743c2c060f3b8",
+        "size": 749,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 6672,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-optimise-call-expression",
+      "license": "MIT",
+      "name": "@babel/helper-optimise-call-expression",
+      "repository": {
+        "directory": "packages/babel-helper-optimise-call-expression",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/types": "^7.29.7"
+      },
+      "description": "Helper function to optimise call expression",
+      "devDependencies": {
+        "@babel/generator": "^7.29.7",
+        "@babel/parser": "^7.29.7"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-optimise-call-expression",
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/helper-optimise-call-expression",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-helper-optimise-call-expression",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2646,
+      "sha256": "5fbcc1984e70178ddf399ed38d0a9c8e15061d083a7edaf947361b8922db49f5"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

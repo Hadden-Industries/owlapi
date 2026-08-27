@@ -1,0 +1,122 @@
+{
+  "artifactId": "d6f9530a2e393f94ac43b0ddae30b7df8f5265f45f3b695c1f13aa0dccbcf5bf",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 25711,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "3a7d3bb198e909ed642bd68bd29a7d7c09a636d27a51ec663d35f00c4760ec42",
+        "size": 1079,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d01ee9820a11dbac333dcdf932e1af57649adbbe24e0c477a22c52e49084451b",
+        "size": 9459,
+        "type": "FILE"
+      },
+      {
+        "path": "package/browser-source-map-support.js",
+        "sha256": "351c92c7c0e8581a39815a55af22f6d48605195e57980a60ec6de3beafb192bd",
+        "size": 53009,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4883a87c2351a83750e3e20dcafdb43729ade8642812a9a87b2e5ce8c502c029",
+        "size": 764,
+        "type": "FILE"
+      },
+      {
+        "path": "package/register.js",
+        "sha256": "e07d374c1218641c6f50cd4da6eb202f3e825bd3658aecb369c434582cc468cd",
+        "size": 25,
+        "type": "FILE"
+      },
+      {
+        "path": "package/source-map-support.js",
+        "sha256": "c135697bd43d85b67f8e724440c90ddbff718afbdfbb1a3b41449c68788ed676",
+        "size": 18151,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1079,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/3a/3a7d3bb198e909ed642bd68bd29a7d7c09a636d27a51ec663d35f00c4760ec42",
+          "sha256": "3a7d3bb198e909ed642bd68bd29a7d7c09a636d27a51ec663d35f00c4760ec42"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "3a7d3bb198e909ed642bd68bd29a7d7c09a636d27a51ec663d35f00c4760ec42",
+        "size": 1079
+      },
+      {
+        "blob": {
+          "bytes": 9459,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d0/d01ee9820a11dbac333dcdf932e1af57649adbbe24e0c477a22c52e49084451b",
+          "sha256": "d01ee9820a11dbac333dcdf932e1af57649adbbe24e0c477a22c52e49084451b"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "d01ee9820a11dbac333dcdf932e1af57649adbbe24e0c477a22c52e49084451b",
+        "size": 9459
+      }
+    ],
+    "expandedBytes": 82487,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "source-map-support",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/evanw/node-source-map-support"
+      },
+      "version": "0.5.13"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/evanw/node-source-map-support/issues"
+      },
+      "dependencies": {
+        "buffer-from": "^1.0.0",
+        "source-map": "^0.6.0"
+      },
+      "description": "Fixes stack traces for files with source maps",
+      "devDependencies": {
+        "browserify": "^4.2.3",
+        "coffeescript": "^1.12.7",
+        "http-server": "^0.11.1",
+        "mocha": "^3.5.3",
+        "webpack": "^1.15.0"
+      },
+      "license": "MIT",
+      "main": "./source-map-support.js",
+      "name": "source-map-support",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/evanw/node-source-map-support"
+      },
+      "scripts": {
+        "build": "node build.js",
+        "prepublish": "npm run build",
+        "serve-tests": "http-server -p 1336",
+        "test": "mocha"
+      },
+      "version": "0.5.13"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 25711,
+      "sha256": "edf65116ff7850e7ca2693831eef73b83d3236bb9eac46a0281294b3215c8de8"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

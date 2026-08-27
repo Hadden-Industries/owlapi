@@ -1,0 +1,120 @@
+{
+  "artifactId": "3dbacb31cec08d948142fed88eacd48cdcaef114db55a726e4e17bd66a7ad406",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2311,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.travis.yml",
+        "sha256": "44845144e63197744810ba5b3777e343bc96cfd85fe880385911c01eaa0d8c3b",
+        "size": 47,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "0967624813244bf47da346449804af853437433cbdeb8c977f1e0d4bd14e0a3b",
+        "size": 1082,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "f366ba7a74be0614cdc647ade273b87f45a7401cc536f23919487276b3545d62",
+        "size": 1200,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "2f3bbc7d7e54e16d91683936a7fa70db16e2cf1b4c8c72451f3d3a6a40e0f701",
+        "size": 672,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "90f652967155275d9fab2887a845454ee797340b28cc0c1b00f1889aaa65f771",
+        "size": 647,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test.js",
+        "sha256": "906dae046928f840df7693081d7dc8f5f062773badb6658e201a382b97f7eda0",
+        "size": 1762,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1082,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/09/0967624813244bf47da346449804af853437433cbdeb8c977f1e0d4bd14e0a3b",
+          "sha256": "0967624813244bf47da346449804af853437433cbdeb8c977f1e0d4bd14e0a3b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "0967624813244bf47da346449804af853437433cbdeb8c977f1e0d4bd14e0a3b",
+        "size": 1082
+      },
+      {
+        "blob": {
+          "bytes": 1200,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/f3/f366ba7a74be0614cdc647ade273b87f45a7401cc536f23919487276b3545d62",
+          "sha256": "f366ba7a74be0614cdc647ade273b87f45a7401cc536f23919487276b3545d62"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "f366ba7a74be0614cdc647ade273b87f45a7401cc536f23919487276b3545d62",
+        "size": 1200
+      }
+    ],
+    "expandedBytes": 5410,
+    "packageIdentity": {
+      "author": "LM <ralphtheninja@riseup.net>",
+      "homepage": "https://github.com/ralphtheninja/expand-template",
+      "license": "(MIT OR WTFPL)",
+      "name": "expand-template",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/ralphtheninja/expand-template.git"
+      },
+      "version": "2.0.3"
+    },
+    "packageMetadata": {
+      "author": "LM <ralphtheninja@riseup.net>",
+      "dependencies": {},
+      "description": "Expand placeholders in a template string",
+      "devDependencies": {
+        "standard": "^12.0.0",
+        "tape": "^4.2.2"
+      },
+      "engines": {
+        "node": ">=6"
+      },
+      "homepage": "https://github.com/ralphtheninja/expand-template",
+      "keywords": [
+        "template",
+        "expand",
+        "replace"
+      ],
+      "license": "(MIT OR WTFPL)",
+      "main": "index.js",
+      "name": "expand-template",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/ralphtheninja/expand-template.git"
+      },
+      "scripts": {
+        "test": "tape test.js && standard"
+      },
+      "version": "2.0.3"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 2311,
+      "sha256": "135592c19c447b6f2c14d6c1d958538a0f4f44d35f87263d8ba2c40d1bc0e0df"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

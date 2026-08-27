@@ -1,0 +1,153 @@
+{
+  "artifactId": "b87457bc1b469eed0666ed60047e51d8355074f0f3be5108ea3a72fb9b634760",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 30174,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a1582b6872ac94833732d5764ac10e46a2111a9815df8eb557a7cf250a4e3b27",
+        "size": 2395,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "209b9f90384f43eedef0379cdd0ec22495c32bbd25dd5cef526b3068917de363",
+        "size": 1994,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "c8ffe46335fd2e33dc3a67c665c535874f1b90b3cd2b71069f4dc155d84285e8",
+        "size": 58234,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "0277fe2891c3c2c299748c84a952e2954836119b463e66c9ac43637f08b24389",
+        "size": 659,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/jestAdapterInit.js",
+        "sha256": "f64ef94daa71293d875d497f692c48de6f8cc72a70d1935449da6610aa9438d1",
+        "size": 72464,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/runner.js",
+        "sha256": "26e7f1e4684472561af0b445a8ee5872088d41aa3b1b120b79cb70f93ef5d764",
+        "size": 6908,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "488605fae2565092977981f56170340563a571a44e47bd9c7e2987319712e16b",
+        "size": 1573,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 145359,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "jest-circus",
+      "repository": {
+        "directory": "packages/jest-circus",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.4.2"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@jest/environment": "30.4.1",
+        "@jest/expect": "30.4.1",
+        "@jest/test-result": "30.4.1",
+        "@jest/types": "30.4.1",
+        "@types/node": "*",
+        "chalk": "^4.1.2",
+        "co": "^4.6.0",
+        "dedent": "^1.6.0",
+        "is-generator-fn": "^2.1.0",
+        "jest-each": "30.4.1",
+        "jest-matcher-utils": "30.4.1",
+        "jest-message-util": "30.4.1",
+        "jest-runtime": "30.4.2",
+        "jest-snapshot": "30.4.1",
+        "jest-util": "30.4.1",
+        "p-limit": "^3.1.0",
+        "pretty-format": "30.4.1",
+        "pure-rand": "^7.0.0",
+        "slash": "^3.0.0",
+        "stack-utils": "^2.0.6"
+      },
+      "devDependencies": {
+        "@babel/core": "^7.27.4",
+        "@babel/register": "^7.27.1",
+        "@types/co": "^4.6.6",
+        "@types/graceful-fs": "^4.1.9",
+        "@types/stack-utils": "^2.0.3",
+        "execa": "^5.1.1",
+        "graceful-fs": "^4.2.11",
+        "tempy": "^1.0.1"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json",
+        "./runner": "./build/runner.js"
+      },
+      "gitHead": "746f2a0f57c56e3bba555280f0587d40f3db95c0",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "jest-circus",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-circus",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.4.2"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 30174,
+      "sha256": "96e0fc63f34941fc6b7ecf0fa7d12707bce39ce30c2c4edba2bf78fad6ded79c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

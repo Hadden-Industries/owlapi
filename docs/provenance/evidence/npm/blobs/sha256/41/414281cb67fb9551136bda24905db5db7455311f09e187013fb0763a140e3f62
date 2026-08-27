@@ -1,0 +1,190 @@
+{
+  "artifactId": "3bb7df070c60988142c9a000f91856d9ab5f4078bd4812d96f72356628fd4708",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4579,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a0a41e54877943ee2992b1852e2be2863aa7b24e9ded003fbbbfef6735b85a3e",
+        "size": 920,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts",
+        "sha256": "d47a550502fcfb784452982cfff639cc6187bb53f6f9f4fedd955951bbce95c1",
+        "size": 924,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts.map",
+        "sha256": "3a31629860b459569500be9cc653a2a09f88aa2a855f432753caa7c4faa72021",
+        "size": 1125,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js",
+        "sha256": "c40038fa48eddb2428ad62266afc5804ff7739639a3103ea0035f1cf4c9f801c",
+        "size": 2363,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js.map",
+        "sha256": "90307b98a6162a93fbc0d26e486a3523700674fe5f95f52d821b56e803fff627",
+        "size": 5287,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/package.json",
+        "sha256": "8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a",
+        "size": 25,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts",
+        "sha256": "d47a550502fcfb784452982cfff639cc6187bb53f6f9f4fedd955951bbce95c1",
+        "size": 924,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts.map",
+        "sha256": "3a31629860b459569500be9cc653a2a09f88aa2a855f432753caa7c4faa72021",
+        "size": 1125,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js",
+        "sha256": "8010e9f690c45912a55909dd5b7437762e54de61e6188a04cb7e13e40e887e73",
+        "size": 2164,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js.map",
+        "sha256": "649d6b759b409f86fa4b30022af9f166d0e7558c4d972da830ca46f0434be925",
+        "size": 5297,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/package.json",
+        "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+        "size": 23,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7d80091eb5694c3e3509c46b3297bb5e9567cc2e6bed79c18d5e4881015ea360",
+        "size": 1594,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 22536,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (https://izs.me)",
+      "homepage": null,
+      "license": "ISC",
+      "name": "minipass-sized",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/minipass-sized.git"
+      },
+      "version": "2.0.0"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (https://izs.me)",
+      "dependencies": {
+        "minipass": "^7.1.2"
+      },
+      "description": "A Minipass stream that raises an error if you get a different number of bytes than expected",
+      "devDependencies": {
+        "prettier": "^3.7.4",
+        "tap": "^21.5.0",
+        "tshy": "^3.1.0",
+        "typedoc": "^0.28.15"
+      },
+      "directories": {
+        "test": "test"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./dist/esm/index.js",
+            "types": "./dist/esm/index.d.ts"
+          },
+          "require": {
+            "default": "./dist/commonjs/index.js",
+            "types": "./dist/commonjs/index.d.ts"
+          }
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "dist"
+      ],
+      "keywords": [
+        "minipass",
+        "size",
+        "length"
+      ],
+      "license": "ISC",
+      "main": "./dist/commonjs/index.js",
+      "module": "./dist/esm/index.js",
+      "name": "minipass-sized",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/minipass-sized.git"
+      },
+      "scripts": {
+        "format": "prettier --write . --log-level warn",
+        "postversion": "npm publish",
+        "prepare": "tshy",
+        "prepublishOnly": "git push origin --follow-tags",
+        "presnap": "npm run prepare",
+        "pretest": "npm run prepare",
+        "preversion": "npm test",
+        "snap": "tap",
+        "test": "tap",
+        "typedoc": "typedoc"
+      },
+      "tshy": {
+        "exports": {
+          ".": "./src/index.ts",
+          "./package.json": "./package.json"
+        }
+      },
+      "type": "module",
+      "types": "./dist/commonjs/index.d.ts",
+      "version": "2.0.0"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 4579,
+      "sha256": "5b4c9e1b1a7db12cb43e8e320a4bb8b40b23cbb6ed0f52dd67494d2375906d06"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

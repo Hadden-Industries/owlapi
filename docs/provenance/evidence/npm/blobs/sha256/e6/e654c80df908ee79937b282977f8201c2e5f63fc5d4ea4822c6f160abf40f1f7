@@ -1,0 +1,99 @@
+{
+  "artifactId": "f3e85d911764d39915ae73027517b9165ebb5906cb057470c4858c7ab6567da1",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4434,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "8465b04b67f473341171b5c9c8b2c741a4a395b3f6ed58339b3a4f4db3db7472",
+        "size": 2125,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "fb5cf635902e9c47d767a1de8334dfc19f171c38b6d14585204a50ab294a52eb",
+        "size": 881,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "2e334ba43cd4852f7a3ed68159029167c05d7fa6af536e6ef177eb868ccd1bb8",
+        "size": 1308,
+        "type": "FILE"
+      },
+      {
+        "path": "package/old.js",
+        "sha256": "07245a82717f9bfa2a63b9784284a1b7fc43ff5fcb4af2a94bce5f83611d4a2f",
+        "size": 8542,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "2985019b1b3cf5894df9b831816f7b480833931da982489e3a98c346ce7da897",
+        "size": 577,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 2125,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/84/8465b04b67f473341171b5c9c8b2c741a4a395b3f6ed58339b3a4f4db3db7472",
+          "sha256": "8465b04b67f473341171b5c9c8b2c741a4a395b3f6ed58339b3a4f4db3db7472"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "8465b04b67f473341171b5c9c8b2c741a4a395b3f6ed58339b3a4f4db3db7472",
+        "size": 2125
+      }
+    ],
+    "expandedBytes": 13433,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "homepage": null,
+      "license": "ISC",
+      "name": "fs.realpath",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/fs.realpath.git"
+      },
+      "version": "1.0.0"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "dependencies": {},
+      "description": "Use node's fs.realpath, but fall back to the JS implementation if the native one fails",
+      "devDependencies": {},
+      "files": [
+        "old.js",
+        "index.js"
+      ],
+      "keywords": [
+        "realpath",
+        "fs",
+        "polyfill"
+      ],
+      "license": "ISC",
+      "main": "index.js",
+      "name": "fs.realpath",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/fs.realpath.git"
+      },
+      "scripts": {
+        "test": "tap test/*.js --cov"
+      },
+      "version": "1.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 4434,
+      "sha256": "9e80cb8713125aa53df81a29626f7b81f26a9be1cd41840b3ccdcae4d52e8f9c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

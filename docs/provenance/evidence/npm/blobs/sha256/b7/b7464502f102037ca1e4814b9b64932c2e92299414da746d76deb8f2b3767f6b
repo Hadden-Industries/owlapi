@@ -1,0 +1,113 @@
+{
+  "artifactId": "634035b628fe5eba3a93f1ea1d37be0f236b96efbea4a04178fe231824acab54",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6934,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "2602d13a3924e9681e203256697653350c40103b7c6e851ec603db9731a9ddf8",
+        "size": 3487,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "917552b6d4639f9330d8f9e08228f688708e02d0a8b5fa0093f98a8e64c6f226",
+        "size": 23312,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "9c262ed5231507b2c3cc841b14463d1e41609f05cb113e19f749edb5f4a38ef0",
+        "size": 157,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "38b31ca2267234b4b9b6cbb56cbc8ffa01246c628eb93a480ae2c08c26ef222e",
+        "size": 949,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 29037,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@jest/fake-timers",
+      "repository": {
+        "directory": "packages/jest-fake-timers",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.4.1"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@jest/types": "30.4.1",
+        "@sinonjs/fake-timers": "^15.4.0",
+        "@types/node": "*",
+        "jest-message-util": "30.4.1",
+        "jest-mock": "30.4.1",
+        "jest-util": "30.4.1"
+      },
+      "devDependencies": {
+        "@jest/test-utils": "30.4.1"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "b3b4a09ed3005369dacc7466d1d2122797283785",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "@jest/fake-timers",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-fake-timers",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.4.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 6934,
+      "sha256": "f18941c31c31842497f434f68b036e1b7bfef98f07dac8afbdb6a3f10db3018a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

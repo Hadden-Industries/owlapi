@@ -1,0 +1,96 @@
+{
+  "artifactId": "fcb60879de31d3fdaa05e30892a33743ad2bbab161e86f3f3830c08beab2456b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5824,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "981a9b1f5cffb2d70e9e4f085d98d651ef8b83384b7f6c845a12fa941dd58b43",
+        "size": 5987,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "f527d2386a6266b9bf67d264194948cf741b12daa19fea19e3537414ee31f9a7",
+        "size": 8186,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "f5a3379f52a453412f5d8551bf11fa0bef4316cc88645c9d190a017e1c58a4c2",
+        "size": 776,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 15714,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me>",
+      "homepage": null,
+      "license": "ISC",
+      "name": "lru-cache",
+      "repository": "git://github.com/isaacs/node-lru-cache.git",
+      "version": "5.1.1"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me>",
+      "dependencies": {
+        "yallist": "^3.0.2"
+      },
+      "description": "A cache object that deletes the least-recently-used items.",
+      "devDependencies": {
+        "benchmark": "^2.1.4",
+        "tap": "^12.1.0"
+      },
+      "files": [
+        "index.js"
+      ],
+      "keywords": [
+        "mru",
+        "lru",
+        "cache"
+      ],
+      "license": "ISC",
+      "main": "index.js",
+      "name": "lru-cache",
+      "repository": "git://github.com/isaacs/node-lru-cache.git",
+      "scripts": {
+        "coveragerport": "tap --coverage-report=html",
+        "postpublish": "git push origin --all; git push origin --tags",
+        "postversion": "npm publish",
+        "preversion": "npm test",
+        "snap": "TAP_SNAPSHOT=1 tap test/*.js -J",
+        "test": "tap test/*.js --100 -J"
+      },
+      "version": "5.1.1"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 5824,
+      "sha256": "b11e78819544a6606e3317647a5593c102ea38d3c5afae62cd63f9c2c369485a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

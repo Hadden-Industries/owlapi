@@ -67,6 +67,7 @@
             "version",
             "pythonVersion",
             "outputFormatVersion",
+            "normalizationVersion",
             "semanticOptions",
             "preScanExcludedFileSuffixes",
             "executionOptions"
@@ -76,6 +77,7 @@
             "version": { "const": "32.5.0" },
             "pythonVersion": { "const": "3.14" },
             "outputFormatVersion": { "const": "4.1.0" },
+            "normalizationVersion": { "const": 1 },
             "semanticOptions": {
               "const": [
                 "--copyright",

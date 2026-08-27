@@ -1,0 +1,150 @@
+{
+  "artifactId": "db1b5d3b51ca9e08a0ac51c1a55d8c29958d945d01746c12225f668155e51978",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 11577,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "0d14fa22c41fdc7277e6f71473b20ebc07f40f00e38875142335d5b63cdfc9d2",
+        "size": 8899,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9cd907d34a45cb73b5c8a459d5602a36ccd456794665c529a3a5b0f02e196f26",
+        "size": 1197,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "b93f6d0b7d7ae17c159d80dc87d583c4432dba330b3094ba85d8c33d12eb7694",
+        "size": 13365,
+        "type": "FILE"
+      },
+      {
+        "path": "package/source/index.js",
+        "sha256": "a7eda1e88414e0e3f050a09621a35e8d656550077da044606c16b053148f6459",
+        "size": 6075,
+        "type": "FILE"
+      },
+      {
+        "path": "package/source/templates.js",
+        "sha256": "546f8511507d2e842cac590f99dc550dfe2b21f7fdcd12ab071ff5aaa3e770d5",
+        "size": 3367,
+        "type": "FILE"
+      },
+      {
+        "path": "package/source/util.js",
+        "sha256": "9d5cbee8050b580d28fc1de92987ee0237cf609415da8dc781920074f278c016",
+        "size": 1035,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      }
+    ],
+    "expandedBytes": 35047,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "chalk",
+      "repository": "chalk/chalk",
+      "version": "4.1.2"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "ansi-styles": "^4.1.0",
+        "supports-color": "^7.1.0"
+      },
+      "description": "Terminal string styling done right",
+      "devDependencies": {
+        "ava": "^2.4.0",
+        "coveralls": "^3.0.7",
+        "execa": "^4.0.0",
+        "import-fresh": "^3.1.0",
+        "matcha": "^0.7.0",
+        "nyc": "^15.0.0",
+        "resolve-from": "^5.0.0",
+        "tsd": "^0.7.4",
+        "xo": "^0.28.2"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "source",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/chalk/chalk?sponsor=1",
+      "keywords": [
+        "color",
+        "colour",
+        "colors",
+        "terminal",
+        "console",
+        "cli",
+        "string",
+        "str",
+        "ansi",
+        "style",
+        "styles",
+        "tty",
+        "formatting",
+        "rgb",
+        "256",
+        "shell",
+        "xterm",
+        "log",
+        "logging",
+        "command-line",
+        "text"
+      ],
+      "license": "MIT",
+      "main": "source",
+      "name": "chalk",
+      "repository": "chalk/chalk",
+      "scripts": {
+        "bench": "matcha benchmark.js",
+        "test": "xo && nyc ava && tsd"
+      },
+      "version": "4.1.2",
+      "xo": {
+        "rules": {
+          "@typescript-eslint/member-ordering": "off",
+          "no-redeclare": "off",
+          "unicorn/better-regex": "off",
+          "unicorn/prefer-includes": "off",
+          "unicorn/prefer-string-slice": "off",
+          "unicorn/string-content": "off"
+        }
+      }
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 11577,
+      "sha256": "e84c643aa53e87ace6c3d368b3cddda24a2d1434a06b6dfbdb628ad2107df90a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

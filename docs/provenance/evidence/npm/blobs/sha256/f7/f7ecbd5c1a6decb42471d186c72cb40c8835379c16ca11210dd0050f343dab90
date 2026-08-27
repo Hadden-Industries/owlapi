@@ -1,0 +1,116 @@
+{
+  "artifactId": "1f059203316a3fdb8840c219e85ea037938fa2711af5f5f35f4cca0e95e28aac",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5880,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/History.md",
+        "sha256": "9e48bb3fa6ff1a0f8dc584b76eea74ec5e029ddfb8c4b6f732064dd804149c35",
+        "size": 3629,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "29f4d474804f60aae177d7fed67d0d613d00006640cc9cf80077eef03fb9a2cc",
+        "size": 1104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Readme.md",
+        "sha256": "985e8c65b301d70c0c74b08fe186ec913f8206dafdbb6a67673e4ea5284271e9",
+        "size": 5382,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "00f5a6b863a35d1ec7d0170c808ef885979ac20a5beac7c8926e0517d75617ab",
+        "size": 5036,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "1b9e8a17b4f62937c7f475df3b2d6d412ffefc677b44a41b829a7464754de606",
+        "size": 865,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1104,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/29/29f4d474804f60aae177d7fed67d0d613d00006640cc9cf80077eef03fb9a2cc",
+          "sha256": "29f4d474804f60aae177d7fed67d0d613d00006640cc9cf80077eef03fb9a2cc"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "29f4d474804f60aae177d7fed67d0d613d00006640cc9cf80077eef03fb9a2cc",
+        "size": 1104
+      },
+      {
+        "blob": {
+          "bytes": 5382,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/98/985e8c65b301d70c0c74b08fe186ec913f8206dafdbb6a67673e4ea5284271e9",
+          "sha256": "985e8c65b301d70c0c74b08fe186ec913f8206dafdbb6a67673e4ea5284271e9"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/Readme.md",
+        "sha256": "985e8c65b301d70c0c74b08fe186ec913f8206dafdbb6a67673e4ea5284271e9",
+        "size": 5382
+      }
+    ],
+    "expandedBytes": 16016,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "co",
+      "repository": "tj/co",
+      "version": "4.6.0"
+    },
+    "packageMetadata": {
+      "description": "generator async control flow goodness",
+      "devDependencies": {
+        "browserify": "^10.0.0",
+        "istanbul-harmony": "0",
+        "mocha": "^2.0.0",
+        "mz": "^1.0.2"
+      },
+      "engines": {
+        "iojs": ">= 1.0.0",
+        "node": ">= 0.12.0"
+      },
+      "files": [
+        "index.js"
+      ],
+      "keywords": [
+        "async",
+        "flow",
+        "generator",
+        "coro",
+        "coroutine"
+      ],
+      "license": "MIT",
+      "name": "co",
+      "repository": "tj/co",
+      "scripts": {
+        "browserify": "browserify index.js -o ./co-browser.js -s co",
+        "prepublish": "npm run browserify",
+        "test": "mocha --harmony",
+        "test-cov": "node --harmony node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter dot",
+        "test-travis": "node --harmony node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- --reporter dot"
+      },
+      "version": "4.6.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 5880,
+      "sha256": "21d4362a4a3822e68fe1852409381dd0be9851756eabfbf6d0723ef51e39cf98"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

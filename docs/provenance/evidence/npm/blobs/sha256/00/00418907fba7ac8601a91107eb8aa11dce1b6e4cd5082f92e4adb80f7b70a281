@@ -1,0 +1,169 @@
+{
+  "artifactId": "64c63ef890a07c28c7e8c4a18c3790ea476d52b6e5f23814aaad72b82970875a",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 15295,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "607754a0e9fd71662876ce4f41b9a2519b4fd83c7524f60834405ed74f390fce",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "769c4a162f9faf92db08ef114203c154810d95e182bec8e7ee650804c102b403",
+        "size": 31419,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/cli.js",
+        "sha256": "2a237ab5ec06362df7d11aa3fc3e1c7191c085cc943d31c52c03eea009f5c401",
+        "size": 6885,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/validators.js",
+        "sha256": "775962ae6f5bee24fca2454b5dc8e8d897986763e1a5445c28bcf4ca0a945456",
+        "size": 2141,
+        "type": "FILE"
+      },
+      {
+        "path": "package/flat.d.ts",
+        "sha256": "1ead69b35cb9f09d5fa1a29510d51588d09023f1ec01d6265f3a4827cb07430f",
+        "size": 186,
+        "type": "FILE"
+      },
+      {
+        "path": "package/flat.js",
+        "sha256": "514b950f5dd8431dcd2655e6171d8bb270549358455e710ae7f9556a0711e774",
+        "size": 114,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "8c47ee4bc9e7dafd2d243e31071189e1b2c757219776ec128947d47b910e9127",
+        "size": 109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "ac1f817d3e03ac5a0ad119aa04e0935815a2b7756fc3f63151b484d88cca4b8d",
+        "size": 15461,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "386eca0aabeab05b7d8547311688b807b6e93474f1b1f3896b5ca58bc900b5c8",
+        "size": 1178,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prettier.d.ts",
+        "sha256": "d03c1989e4db9902a2e157343eaa7d127520ec4afeaf023217e5f9018603d1ec",
+        "size": 39,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prettier.js",
+        "sha256": "342d45f408b9c5296aebc71af09c5cb6120a83041ff8ba8895c8de1f94bd66a2",
+        "size": 357,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/60/607754a0e9fd71662876ce4f41b9a2519b4fd83c7524f60834405ed74f390fce",
+          "sha256": "607754a0e9fd71662876ce4f41b9a2519b4fd83c7524f60834405ed74f390fce"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "607754a0e9fd71662876ce4f41b9a2519b4fd83c7524f60834405ed74f390fce",
+        "size": 1132
+      },
+      {
+        "blob": {
+          "bytes": 31419,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/76/769c4a162f9faf92db08ef114203c154810d95e182bec8e7ee650804c102b403",
+          "sha256": "769c4a162f9faf92db08ef114203c154810d95e182bec8e7ee650804c102b403"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "769c4a162f9faf92db08ef114203c154810d95e182bec8e7ee650804c102b403",
+        "size": 31419
+      }
+    ],
+    "expandedBytes": 59021,
+    "packageIdentity": {
+      "author": "Simon Lydell",
+      "homepage": "https://github.com/prettier/eslint-config-prettier#readme",
+      "license": "MIT",
+      "name": "eslint-config-prettier",
+      "repository": "prettier/eslint-config-prettier",
+      "version": "10.1.8"
+    },
+    "packageMetadata": {
+      "author": "Simon Lydell",
+      "bin": "bin/cli.js",
+      "description": "Turns off all rules that are unnecessary or might conflict with Prettier.",
+      "exports": {
+        ".": {
+          "default": "./index.js",
+          "types": "./index.d.ts"
+        },
+        "./flat": {
+          "default": "./flat.js",
+          "types": "./flat.d.ts"
+        },
+        "./package.json": "./package.json",
+        "./prettier": {
+          "default": "./prettier.js",
+          "types": "./prettier.d.ts"
+        }
+      },
+      "files": [
+        "bin",
+        "flat.d.ts",
+        "flat.js",
+        "index.d.ts",
+        "index.js",
+        "prettier.d.ts",
+        "prettier.js"
+      ],
+      "funding": "https://opencollective.com/eslint-config-prettier",
+      "homepage": "https://github.com/prettier/eslint-config-prettier#readme",
+      "keywords": [
+        "eslint",
+        "eslintconfig",
+        "eslint-config",
+        "eslint-prettier",
+        "prettier"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "maintainers": [
+        "JounQin (https://www.1stG.me) <admin@1stg.me>"
+      ],
+      "name": "eslint-config-prettier",
+      "peerDependencies": {
+        "eslint": ">=7.0.0"
+      },
+      "repository": "prettier/eslint-config-prettier",
+      "type": "commonjs",
+      "types": "index.d.ts",
+      "version": "10.1.8"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 15295,
+      "sha256": "de290c23fe9e565adf2dfceb5929e98668d6570b7c25b8c5fe1af0fc401ebd8e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

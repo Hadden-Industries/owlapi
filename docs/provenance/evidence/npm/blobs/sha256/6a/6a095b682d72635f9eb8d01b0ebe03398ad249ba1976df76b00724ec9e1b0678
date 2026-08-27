@@ -1,0 +1,1488 @@
+{
+  "artifactId": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 11,
+      "digestVerifiedFileCount": 11,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 11
+    },
+    "artifactId": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.3.23",
+        "for_package_purl": "pkg:npm/istanbul-lib-source-maps@5.0.6",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/%40jridgewell/trace-mapping",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^15.0.0-beta.2",
+        "for_package_purl": "pkg:npm/istanbul-lib-source-maps@5.0.6",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/nyc",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.0.0",
+        "for_package_purl": "pkg:npm/istanbul-lib-source-maps@5.0.6",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/istanbul-lib-coverage",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.1.1",
+        "for_package_purl": "pkg:npm/istanbul-lib-source-maps@5.0.6",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/debug",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.2.0",
+        "for_package_purl": "pkg:npm/istanbul-lib-source-maps@5.0.6",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/chai",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.2.2",
+        "for_package_purl": "pkg:npm/istanbul-lib-source-maps@5.0.6",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/mocha",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^8.5.4",
+        "for_package_purl": "pkg:npm/istanbul-lib-source-maps@5.0.6",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/ts-node",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
+            "end_line": 5,
+            "start_line": 5
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-source-maps@5.0.6"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-008266ae-6939-ad31-3617-228b0809863c",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 25,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/package.json",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "  \"license\": \"BSD-3-Clause\",",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_195.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+                "score": 100,
+                "start_line": 25
+              }
+            ]
+          }
+        ],
+        "md5": "e9ff6243647386db8079103e5a0360d1",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/istanbul-lib-source-maps/5.0.6",
+            "bug_tracking_url": "https://github.com/istanbuljs/istanbuljs/issues",
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "bsd-new",
+            "declared_license_expression_spdx": "BSD-3-Clause",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.3.23",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/%40jridgewell/trace-mapping",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^15.0.0-beta.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/nyc",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.0.0",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/istanbul-lib-coverage",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.1.1",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/debug",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.2.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/chai",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.2.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/mocha",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^8.5.4",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/ts-node",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "Source maps support for istanbul",
+            "download_url": "https://registry.npmjs.org/istanbul-lib-source-maps/-/istanbul-lib-source-maps-5.0.6.tgz",
+            "extra_data": {
+              "engines": {
+                "node": ">=10"
+              }
+            },
+            "extracted_license_statement": "- BSD-3-Clause\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://istanbul.js.org/",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "istanbul",
+              "maps",
+              "source",
+              "sourcemap",
+              "sourcemaps"
+            ],
+            "license_detections": [
+              {
+                "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/package.json",
+                    "license_expression": "bsd-new",
+                    "license_expression_spdx": "BSD-3-Clause",
+                    "match_coverage": 100,
+                    "matched_length": 3,
+                    "matched_text": "BSD-3-Clause",
+                    "matcher": "1-hash",
+                    "rule_identifier": "bsd-new_10.RULE",
+                    "rule_relevance": 100,
+                    "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "istanbul-lib-source-maps",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "kananthmail-github@yahoo.com",
+                "name": "Krishnan Anantheswaran",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/istanbul-lib-source-maps@5.0.6",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/istanbul-lib-source-maps/-/istanbul-lib-source-maps-5.0.6.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/istanbul-lib-source-maps",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git",
+            "version": "5.0.6"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 3.54,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "e2e23363de07f2e8e9db76d5e5fab422cfbfbbc2",
+        "sha1_git": "cc5379c894719b5fb824a69c65fb6186a0496a1e",
+        "sha256": "1fb514a476933dd856734b58a41f55c5a3e9d922aa4620af39ccd49dbb852bda",
+        "size": 996,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "CHANGELOG",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-source-maps@5.0.6"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "c492ee6a88a966382d645c08fe46d7a7",
+        "name": "CHANGELOG.md",
+        "package_data": [],
+        "path": "package/CHANGELOG.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "ddb43b0a30667337969d05bd975d829a29a9773f",
+        "sha1_git": "dad8c06aac26cb8cfced31da5f35ac8e95915f15",
+        "sha256": "ce5116bb8a143a66edc73d16190637872b3bc0fe7f2405f750e221c5fb8225e1",
+        "size": 12398,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2015 Yahoo! Inc.",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-source-maps@5.0.6"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Yahoo! Inc.",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-fb730f3f-a26e-5103-b1ee-4ea46000c5b7",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 24,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 97.67,
+                "matched_length": 210,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the Yahoo! Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL YAHOO! INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-new_534.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_534.RULE",
+                "score": 97.67,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "2c39380ca74c032242016476ea5f4e2c",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 96.77,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "2e7d606c245cd31edbc6f86d8022096dbebc8790",
+        "sha1_git": "c05aaafbac801ff561e62c687fcc22b145b4c65b",
+        "sha256": "b661867c1d66a1b71ee3a6109159874334cd5c182a80d1bcc7353b5a4c6823c6",
+        "size": 1483,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-source-maps@5.0.6"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "0ee11cdd90d2e78407412a0b8d8da375",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "5d016d00b231621dbc26605b76b1ab38f7bd0a01",
+        "sha1_git": "da9dc59101611f195c3ba7fdb81d9fbfc1118b59",
+        "sha256": "b790f936bd13359c97464964dd20b1d002d5cdffefec09739a86e3b47b62eb4c",
+        "size": 454,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "get-mapping",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2015, Yahoo Inc. Copyrights",
+            "end_line": 3,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-source-maps@5.0.6"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Yahoo Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": true,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-3b35d8fc-79e4-ad7d-0ee2-12fbc0a487d6",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 24,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 97.67,
+                "matched_length": 210,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the Yahoo! Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL YAHOO! INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-new_534.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_534.RULE",
+                "score": 97.67,
+                "start_line": 4
+              },
+              {
+                "end_line": 3,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/lib/get-mapping.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 14,
+                "matched_text": " Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_196.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_196.RULE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "2a6f1119d3fb0ac63cdbc3244052bfeb",
+        "name": "get-mapping.js",
+        "package_data": [],
+        "path": "package/lib/get-mapping.js",
+        "percentage_of_license_text": 2.13,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "35b31a93887b0241c8cbc38cae7a04c81766ca3d",
+        "sha1_git": "187a02ed65104d8e3a058d6bfe7dc8bd7c285369",
+        "sha256": "d1834a6f6e1428458d8e81884daf01a650f701e0b41601befad208ff0e3a32f7",
+        "size": 5850,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2012-2015, Yahoo Inc. Copyrights",
+            "end_line": 3,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-source-maps@5.0.6"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Yahoo Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-3b35d8fc-79e4-ad7d-0ee2-12fbc0a487d6",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 24,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 97.67,
+                "matched_length": 210,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the Yahoo! Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL YAHOO! INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-new_534.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_534.RULE",
+                "score": 97.67,
+                "start_line": 4
+              },
+              {
+                "end_line": 3,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/index.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 14,
+                "matched_text": " Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_196.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_196.RULE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "93e223150e02b059ba65914aeaa32e52",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/index.js",
+        "percentage_of_license_text": 37.84,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "b120c3102098a9c77118bddcfe65d47cbf7721d4",
+        "sha1_git": "1bcb74c84e7fe267abcb0ed88c0cc07770ab9173",
+        "sha256": "375b9b523c60806205a0283986a0ad5fe350809ba6493b4912f5d6053d7b9067",
+        "size": 320,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "map-store",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2015, Yahoo Inc. Copyrights",
+            "end_line": 3,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-source-maps@5.0.6"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Yahoo Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-3b35d8fc-79e4-ad7d-0ee2-12fbc0a487d6",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 24,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 97.67,
+                "matched_length": 210,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the Yahoo! Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL YAHOO! INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-new_534.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_534.RULE",
+                "score": 97.67,
+                "start_line": 4
+              },
+              {
+                "end_line": 3,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/lib/map-store.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 14,
+                "matched_text": " Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_196.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_196.RULE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "8680f8f0c6c838a8132d7b3a43b921f8",
+        "name": "map-store.js",
+        "package_data": [],
+        "path": "package/lib/map-store.js",
+        "percentage_of_license_text": 2.17,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "8ace3f763643337f8051a760dfc18bbf7173c11f",
+        "sha1_git": "31fd986ed080294bc311837a6059844f29c9c33c",
+        "sha256": "820d7524a7fbcf2918c6fd63622d9d16306b0de53e51150c0712a06215265540",
+        "size": 7424,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "mapped",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2015, Yahoo Inc. Copyrights",
+            "end_line": 3,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-source-maps@5.0.6"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Yahoo Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-3b35d8fc-79e4-ad7d-0ee2-12fbc0a487d6",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 24,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 97.67,
+                "matched_length": 210,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the Yahoo! Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL YAHOO! INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-new_534.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_534.RULE",
+                "score": 97.67,
+                "start_line": 4
+              },
+              {
+                "end_line": 3,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/lib/mapped.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 14,
+                "matched_text": " Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_196.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_196.RULE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "d48b400600a4dc258a08828769aee31e",
+        "name": "mapped.js",
+        "package_data": [],
+        "path": "package/lib/mapped.js",
+        "percentage_of_license_text": 5.02,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "af6873ee7cbfbeaa2c587e4410a4488ea8819b22",
+        "sha1_git": "73f256c7d39cfad5d11875542bfb8106f174869d",
+        "sha256": "dfadca6ccf613a08478b0a35dce27b6a5d7229677ec6793061ab2336c50c93ad",
+        "size": 2832,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "pathutils",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2015, Yahoo Inc. Copyrights",
+            "end_line": 3,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-source-maps@5.0.6"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Yahoo Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-3b35d8fc-79e4-ad7d-0ee2-12fbc0a487d6",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 24,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 97.67,
+                "matched_length": 210,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the Yahoo! Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL YAHOO! INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-new_534.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_534.RULE",
+                "score": 97.67,
+                "start_line": 4
+              },
+              {
+                "end_line": 3,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/lib/pathutils.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 14,
+                "matched_text": " Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_196.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_196.RULE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "63aaab4f6e0fc648733e9bf54faa5b4c",
+        "name": "pathutils.js",
+        "package_data": [],
+        "path": "package/lib/pathutils.js",
+        "percentage_of_license_text": 24.56,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "cf637717017813ac5a6b4c89020b09cb649aa70e",
+        "sha1_git": "7dca05aa6cb852e5693ecfd275f1a3a8de3bfc63",
+        "sha256": "1ea8eae11a5ecc11c6f3232de7735fea2ccba6ee24d08fee505badba40765a04",
+        "size": 537,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "transform-utils",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2015, Yahoo Inc. Copyrights",
+            "end_line": 3,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-source-maps@5.0.6"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Yahoo Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-3b35d8fc-79e4-ad7d-0ee2-12fbc0a487d6",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 24,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 97.67,
+                "matched_length": 210,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the Yahoo! Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL YAHOO! INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-new_534.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_534.RULE",
+                "score": 97.67,
+                "start_line": 4
+              },
+              {
+                "end_line": 3,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/lib/transform-utils.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 14,
+                "matched_text": " Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_196.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_196.RULE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "b97446d6a6b054a46da0c592aca133ff",
+        "name": "transform-utils.js",
+        "package_data": [],
+        "path": "package/lib/transform-utils.js",
+        "percentage_of_license_text": 31.11,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "65fde45c96d524edb37f134bdd794ede98e87b62",
+        "sha1_git": "0933093756fd627938c62336954ad7d85a64123f",
+        "sha256": "972e59df9780e913979b12e5100270bbf60e32a98db4fc671ade600c26f0cf4a",
+        "size": 478,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "transformer",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2015, Yahoo Inc. Copyrights",
+            "end_line": 3,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/istanbul-lib-source-maps@5.0.6"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Yahoo Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-3b35d8fc-79e4-ad7d-0ee2-12fbc0a487d6",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 24,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 97.67,
+                "matched_length": 210,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the Yahoo! Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL YAHOO! INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-new_534.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_534.RULE",
+                "score": 97.67,
+                "start_line": 4
+              },
+              {
+                "end_line": 3,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/lib/transformer.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 14,
+                "matched_text": " Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_196.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_196.RULE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "c9f9efb92c7c231b74837c307e2a3f5d",
+        "name": "transformer.js",
+        "package_data": [],
+        "path": "package/lib/transformer.js",
+        "percentage_of_license_text": 3.81,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "a652b2902fe3e6e21a68a20685ffe285b63a0458",
+        "sha1_git": "c4356d68cd2d8fd57aa0a6a4ceab4c6b8eed5922",
+        "sha256": "cbb3a4447f8519b48af4f779e0a0c2158f072d79a9ff3a2d561d03cbc7ed2d48",
+        "size": 4953,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-008266ae-6939-ad31-3617-228b0809863c",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 25,
+            "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/package.json",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "  \"license\": \"BSD-3-Clause\",",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_195.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+            "score": 100,
+            "start_line": 25
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/package.json",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "BSD-3-Clause",
+            "matcher": "1-hash",
+            "rule_identifier": "bsd-new_10.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-fb730f3f-a26e-5103-b1ee-4ea46000c5b7",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 24,
+            "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/LICENSE",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 97.67,
+            "matched_length": 210,
+            "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the Yahoo! Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL YAHOO! INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "3-seq",
+            "rule_identifier": "bsd-new_534.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_534.RULE",
+            "score": 97.67,
+            "start_line": 4
+          }
+        ]
+      },
+      {
+        "detection_count": 7,
+        "identifier": "bsd_new-3b35d8fc-79e4-ad7d-0ee2-12fbc0a487d6",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 24,
+            "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/LICENSE",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 97.67,
+            "matched_length": 210,
+            "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the Yahoo! Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL YAHOO! INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "3-seq",
+            "rule_identifier": "bsd-new_534.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_534.RULE",
+            "score": 97.67,
+            "start_line": 4
+          },
+          {
+            "end_line": 3,
+            "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/index.js",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 14,
+            "matched_text": " Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_196.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_196.RULE",
+            "score": 100,
+            "start_line": 3
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "http://www.opensource.org/licenses/BSD-3-Clause",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "bsd-new",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/bsd-new",
+        "minimum_coverage": 0,
+        "name": "BSD-3-Clause",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": "BSD-3-Clause",
+        "osi_url": "http://www.opensource.org/licenses/BSD-3-Clause",
+        "other_spdx_license_keys": [
+          "LicenseRef-scancode-libzip"
+        ],
+        "other_urls": [
+          "http://framework.zend.com/license/new-bsd",
+          "https://opensource.org/licenses/BSD-3-Clause",
+          "https://www.eclipse.org/org/documents/edl-v10.php"
+        ],
+        "owner": "Regents of the University of California",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-new.LICENSE",
+        "short_name": "BSD-3-Clause",
+        "spdx_license_key": "BSD-3-Clause",
+        "spdx_url": "https://spdx.org/licenses/BSD-3-Clause",
+        "standard_notice": null,
+        "text": "Redistribution and use in source and binary forms, with or without modification,\nare permitted provided that the following conditions are met:\n\nRedistributions of source code must retain the above copyright notice, this list\nof conditions and the following disclaimer.\n\nRedistributions in binary form must reproduce the above copyright notice, this\nlist of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.\n\nNeither the name of the ORGANIZATION nor the names of its contributors may be\nused to endorse or promote products derived from this software without specific\nprior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,\nTHE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\nARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS\nBE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR\nCONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE\nGOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)\nHOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT\nLIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF\nTHE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+        "text_urls": [
+          "http://www.opensource.org/licenses/BSD-3-Clause"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "bsd-new_10.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "BSD-3-Clause"
+      },
+      {
+        "identifier": "bsd-new_195.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: BSD-3-Clause"
+      },
+      {
+        "identifier": "bsd-new_196.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 14,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 50,
+        "notes": null,
+        "referenced_filenames": [
+          "LICENSE"
+        ],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_196.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Copyrights licensed under the {{New BSD License}}. See the accompanying LICENSE file for terms."
+      },
+      {
+        "identifier": "bsd-new_534.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 215,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_534.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Software License Agreement (BSD License)\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n\n    * Neither the name of the Yahoo! Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL YAHOO! INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/istanbul-lib-source-maps/5.0.6",
+        "bug_tracking_url": "https://github.com/istanbuljs/istanbuljs/issues",
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "bsd-new",
+        "declared_license_expression_spdx": "BSD-3-Clause",
+        "description": "Source maps support for istanbul",
+        "download_url": "https://registry.npmjs.org/istanbul-lib-source-maps/-/istanbul-lib-source-maps-5.0.6.tgz",
+        "extra_data": {
+          "engines": {
+            "node": ">=10"
+          }
+        },
+        "extracted_license_statement": "- BSD-3-Clause\n",
+        "holder": null,
+        "homepage_url": "https://istanbul.js.org/",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "istanbul",
+          "maps",
+          "source",
+          "sourcemap",
+          "sourcemaps"
+        ],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4/package/package.json",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "BSD-3-Clause",
+                "matcher": "1-hash",
+                "rule_identifier": "bsd-new_10.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "istanbul-lib-source-maps",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "kananthmail-github@yahoo.com",
+            "name": "Krishnan Anantheswaran",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/istanbul-lib-source-maps@5.0.6",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/istanbul-lib-source-maps/-/istanbul-lib-source-maps-5.0.6.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/istanbul-lib-source-maps",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git",
+        "version": "5.0.6"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

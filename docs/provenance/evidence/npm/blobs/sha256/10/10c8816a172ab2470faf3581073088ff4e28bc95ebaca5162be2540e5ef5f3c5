@@ -1,0 +1,954 @@
+{
+  "artifactId": "6aea07244869e6fc559dc5619c0f2b8291ff1becbe93b7bf23bb849868f5ab8a",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 5,
+      "digestVerifiedFileCount": 5,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 5
+    },
+    "artifactId": "6aea07244869e6fc559dc5619c0f2b8291ff1becbe93b7bf23bb849868f5ab8a",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "*",
+        "for_package_purl": "pkg:npm/ieee754@1.2.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/standard",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.0.0",
+        "for_package_purl": "pkg:npm/ieee754@1.2.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/airtap",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.0.1",
+        "for_package_purl": "pkg:npm/ieee754@1.2.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/tape",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Feross Aboukhadijeh",
+            "end_line": 6,
+            "start_line": 5
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/ieee754@1.2.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-008266ae-6939-ad31-3617-228b0809863c",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 25,
+                "from_file": "6aea07244869e6fc559dc5619c0f2b8291ff1becbe93b7bf23bb849868f5ab8a/package/package.json",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "  \"license\": \"BSD-3-Clause\",",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_195.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+                "score": 100,
+                "start_line": 25
+              }
+            ]
+          }
+        ],
+        "md5": "c99ba1a776f9fbc9e23b4f0f7bfb7b0d",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/ieee754/1.2.1",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "bsd-new",
+            "declared_license_expression_spdx": "BSD-3-Clause",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "*",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/standard",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/airtap",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.0.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/tape",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "Read/write IEEE754 floating point numbers from/to a Buffer or array-like object",
+            "download_url": "https://registry.npmjs.org/ieee754/-/ieee754-1.2.1.tgz",
+            "extra_data": {},
+            "extracted_license_statement": "- BSD-3-Clause\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "IEEE 754",
+              "buffer",
+              "convert",
+              "floating point",
+              "ieee754"
+            ],
+            "license_detections": [
+              {
+                "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "6aea07244869e6fc559dc5619c0f2b8291ff1becbe93b7bf23bb849868f5ab8a/package/package.json",
+                    "license_expression": "bsd-new",
+                    "license_expression_spdx": "BSD-3-Clause",
+                    "match_coverage": 100,
+                    "matched_length": 3,
+                    "matched_text": "BSD-3-Clause",
+                    "matcher": "1-hash",
+                    "rule_identifier": "bsd-new_10.RULE",
+                    "rule_relevance": 100,
+                    "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "ieee754",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "feross@feross.org",
+                "name": "Feross Aboukhadijeh",
+                "role": "author",
+                "type": "person",
+                "url": "https://feross.org"
+              },
+              {
+                "email": "toots@rastageeks.org",
+                "name": "Romain Beauxis",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/ieee754@1.2.1",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/ieee754/-/ieee754-1.2.1.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/ieee754",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git://github.com/feross/ieee754.git",
+            "version": "1.2.1"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 3.1,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "19b82f401d4e2ef5db8528a35b2e12d1a2630d65",
+        "sha1_git": "7b23851384185c55cf62d4a590c40f543597d55f",
+        "sha256": "a8004b9c8dffe2e1b01a058ecf968a5d50beabcabc43cc98c655184ba6afc050",
+        "size": 1194,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2008 Fair Oaks Labs, Inc.",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/ieee754@1.2.1"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Fair Oaks Labs, Inc.",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-27f0ced9-dc7b-0fe1-9c69-3273179866a7",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 11,
+                "from_file": "6aea07244869e6fc559dc5619c0f2b8291ff1becbe93b7bf23bb849868f5ab8a/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 216,
+                "matched_text": "Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,\n WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_105.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_105.RULE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "56c3be003027d64d24ca6b69a2612f2f",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 97.3,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "f00e82a911110cd53aaebdb019a077388ffd252e",
+        "sha1_git": "5aac82c78c2d9982865f4432ab6a9b5d77aa9245",
+        "sha256": "18d45466ba3253deae04667e267a91ea8de8548f18c1125264d1c9db28194cc1",
+        "size": 1465,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2008, Fair Oaks Labs, Inc.",
+            "end_line": 51,
+            "start_line": 51
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/ieee754@1.2.1"
+        ],
+        "holders": [
+          {
+            "end_line": 51,
+            "holder": "Fair Oaks Labs, Inc.",
+            "start_line": 51
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-008266ae-6939-ad31-3617-228b0809863c",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 51,
+                "from_file": "6aea07244869e6fc559dc5619c0f2b8291ff1becbe93b7bf23bb849868f5ab8a/package/README.md",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "## license\n\nBSD 3 Clause. Copyright (c) 2008, Fair Oaks Labs, Inc.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_195.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+                "score": 100,
+                "start_line": 49
+              }
+            ]
+          }
+        ],
+        "md5": "963017fdff37bc94abf1dcb097712804",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 1.76,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "9eec09eb0c4b2b407839baf789e375b9ac48b9f7",
+        "sha1_git": "cb7527b3ce757840111964488b17e8696a1f8f57",
+        "sha256": "27827383727dcc6bb9f6f591e4b9204e35b6389bfba60df7a400371dac23b3ed",
+        "size": 1651,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": "bsd-new AND m-plus",
+        "detected_license_expression_spdx": "BSD-3-Clause AND mplus",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/ieee754@1.2.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new_and_m_plus-b3eaaf04-212e-4eea-0672-aacd351d2f29",
+            "license_expression": "bsd-new AND m-plus",
+            "license_expression_spdx": "BSD-3-Clause AND mplus",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "6aea07244869e6fc559dc5619c0f2b8291ff1becbe93b7bf23bb849868f5ab8a/package/index.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_required_phrase_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_required_phrase_14.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 1,
+                "from_file": "6aea07244869e6fc559dc5619c0f2b8291ff1becbe93b7bf23bb849868f5ab8a/package/index.js",
+                "license_expression": "m-plus",
+                "license_expression_spdx": "mplus",
+                "match_coverage": 7.84,
+                "matched_length": 4,
+                "matched_text": "/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */",
+                "matcher": "3-seq",
+                "rule_identifier": "m-plus_4.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/m-plus_4.RULE",
+                "score": 7.84,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": "b6e492a06aab5d4254df46da4f5e483c",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/index.js",
+        "percentage_of_license_text": 1.78,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "b247d31878019770ffab182f3abaf6e6bf67b3f7",
+        "sha1_git": "81d26c343c93dcd538f21bd085f9678ef16f1768",
+        "sha256": "fe3e2b20c1ebb57c3b390c8f685ad1e04e6f493517fa7e432f4351bb77a1a4d0",
+        "size": 2154,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/ieee754@1.2.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "71721c1aeb581ad19181981b0cf3ad42",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/index.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "a76e9e1ae9187f1385a176e49580af2936b01ebb",
+        "sha1_git": "f1e435487f01d89a377c168f5e4391978f0c1427",
+        "sha256": "1eb4db5f83679b3b6f8683611c93938948aa2d5d5e3988755f9e3a289388b75e",
+        "size": 332,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-27f0ced9-dc7b-0fe1-9c69-3273179866a7",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 11,
+            "from_file": "6aea07244869e6fc559dc5619c0f2b8291ff1becbe93b7bf23bb849868f5ab8a/package/LICENSE",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 216,
+            "matched_text": "Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,\n WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_105.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_105.RULE",
+            "score": 100,
+            "start_line": 3
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "6aea07244869e6fc559dc5619c0f2b8291ff1becbe93b7bf23bb849868f5ab8a/package/package.json",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "BSD-3-Clause",
+            "matcher": "1-hash",
+            "rule_identifier": "bsd-new_10.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new_and_m_plus-b3eaaf04-212e-4eea-0672-aacd351d2f29",
+        "license_expression": "bsd-new AND m-plus",
+        "license_expression_spdx": "BSD-3-Clause AND mplus",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "6aea07244869e6fc559dc5619c0f2b8291ff1becbe93b7bf23bb849868f5ab8a/package/index.js",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_required_phrase_14.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_required_phrase_14.RULE",
+            "score": 100,
+            "start_line": 1
+          },
+          {
+            "end_line": 1,
+            "from_file": "6aea07244869e6fc559dc5619c0f2b8291ff1becbe93b7bf23bb849868f5ab8a/package/index.js",
+            "license_expression": "m-plus",
+            "license_expression_spdx": "mplus",
+            "match_coverage": 7.84,
+            "matched_length": 4,
+            "matched_text": "/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */",
+            "matcher": "3-seq",
+            "rule_identifier": "m-plus_4.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/m-plus_4.RULE",
+            "score": 7.84,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 2,
+        "identifier": "bsd_new-008266ae-6939-ad31-3617-228b0809863c",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 25,
+            "from_file": "6aea07244869e6fc559dc5619c0f2b8291ff1becbe93b7bf23bb849868f5ab8a/package/package.json",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "  \"license\": \"BSD-3-Clause\",",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_195.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+            "score": 100,
+            "start_line": 25
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "https://en.wikipedia.org/wiki/M%2B_FONTS",
+        "homepage_url": "https://mplusfonts.github.io",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "m-plus",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/m-plus",
+        "minimum_coverage": 0,
+        "name": "M+ Fonts license",
+        "notes": null,
+        "osi_license_key": null,
+        "osi_url": null,
+        "other_spdx_license_keys": [
+          "LicenseRef-scancode-m-plus"
+        ],
+        "other_urls": [
+          "http://mplus-fonts.osdn.jp",
+          "https://fedoraproject.org/wiki/Licensing:Mplus?rd=Licensing/mplus",
+          "https://github.com/coz-m/MPLUS_FONTS"
+        ],
+        "owner": "Coji Morishita",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/m-plus.LICENSE",
+        "short_name": "M+ Fonts license",
+        "spdx_license_key": "mplus",
+        "spdx_url": "https://spdx.org/licenses/mplus",
+        "standard_notice": null,
+        "text": "These fonts are free software.\nUnlimited permission is granted to use, copy, and distribute them, with or\nwithout modification, either commercially or noncommercially.\nTHESE FONTS ARE PROVIDED \"AS IS\" WITHOUT WARRANTY.",
+        "text_urls": []
+      },
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "http://www.opensource.org/licenses/BSD-3-Clause",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "bsd-new",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/bsd-new",
+        "minimum_coverage": 0,
+        "name": "BSD-3-Clause",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": "BSD-3-Clause",
+        "osi_url": "http://www.opensource.org/licenses/BSD-3-Clause",
+        "other_spdx_license_keys": [
+          "LicenseRef-scancode-libzip"
+        ],
+        "other_urls": [
+          "http://framework.zend.com/license/new-bsd",
+          "https://opensource.org/licenses/BSD-3-Clause",
+          "https://www.eclipse.org/org/documents/edl-v10.php"
+        ],
+        "owner": "Regents of the University of California",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-new.LICENSE",
+        "short_name": "BSD-3-Clause",
+        "spdx_license_key": "BSD-3-Clause",
+        "spdx_url": "https://spdx.org/licenses/BSD-3-Clause",
+        "standard_notice": null,
+        "text": "Redistribution and use in source and binary forms, with or without modification,\nare permitted provided that the following conditions are met:\n\nRedistributions of source code must retain the above copyright notice, this list\nof conditions and the following disclaimer.\n\nRedistributions in binary form must reproduce the above copyright notice, this\nlist of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.\n\nNeither the name of the ORGANIZATION nor the names of its contributors may be\nused to endorse or promote products derived from this software without specific\nprior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,\nTHE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\nARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS\nBE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR\nCONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE\nGOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)\nHOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT\nLIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF\nTHE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+        "text_urls": [
+          "http://www.opensource.org/licenses/BSD-3-Clause"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "bsd-new_10.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "BSD-3-Clause"
+      },
+      {
+        "identifier": "bsd-new_105.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 216,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_105.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice,\n   this list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its contributors\n   may be used to endorse or promote products derived from this software\n   without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\nARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE\nLIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR\nCONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF\nSUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS\nINTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN\nCONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)\nARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE\nPOSSIBILITY OF SUCH DAMAGE."
+      },
+      {
+        "identifier": "bsd-new_195.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: BSD-3-Clause"
+      },
+      {
+        "identifier": "bsd-new_required_phrase_14.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_required_phrase_14.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "BSD 3-clause licence"
+      },
+      {
+        "identifier": "m-plus_4.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [
+          "https://opensource.org/licenses/0BSD"
+        ],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 51,
+        "license_expression": "m-plus",
+        "minimum_coverage": 0,
+        "notes": "Seen in https://github.com/asciidoctor/asciidoctor-pdf/blob/main/NOTICE.adoc This is not exactly a bsd-zero and we track this as a the m-plus license",
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/m-plus_4.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "These fonts are free software and are designed and maintained by . Unlimited permission is granted to use, copy, and distribute them, with or without modification, either commercially or noncommercially. THESE FONTS ARE PROVIDED \"AS IS\" WITHOUT WARRANTY. (Effectively the same as the Zero-Clause BSD License: https://opensource.org/licenses/0BSD)."
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/ieee754/1.2.1",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "bsd-new",
+        "declared_license_expression_spdx": "BSD-3-Clause",
+        "description": "Read/write IEEE754 floating point numbers from/to a Buffer or array-like object",
+        "download_url": "https://registry.npmjs.org/ieee754/-/ieee754-1.2.1.tgz",
+        "extra_data": {},
+        "extracted_license_statement": "- BSD-3-Clause\n",
+        "holder": null,
+        "homepage_url": null,
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "IEEE 754",
+          "buffer",
+          "convert",
+          "floating point",
+          "ieee754"
+        ],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "6aea07244869e6fc559dc5619c0f2b8291ff1becbe93b7bf23bb849868f5ab8a/package/package.json",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "BSD-3-Clause",
+                "matcher": "1-hash",
+                "rule_identifier": "bsd-new_10.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "ieee754",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "feross@feross.org",
+            "name": "Feross Aboukhadijeh",
+            "role": "author",
+            "type": "person",
+            "url": "https://feross.org"
+          },
+          {
+            "email": "toots@rastageeks.org",
+            "name": "Romain Beauxis",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/ieee754@1.2.1",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/ieee754/-/ieee754-1.2.1.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/ieee754",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git://github.com/feross/ieee754.git",
+        "version": "1.2.1"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

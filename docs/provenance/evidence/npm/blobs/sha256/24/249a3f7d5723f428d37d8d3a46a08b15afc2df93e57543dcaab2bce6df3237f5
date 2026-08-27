@@ -1,0 +1,144 @@
+{
+  "artifactId": "de773b96f2059e714f91ffdbb3cb7925c8b088036aabf85b3555d6b048a6464d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 10322,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "364a130d2ca340bd56eb1e6d045fc6929bb0f9d0aa018f2c1949b29517e1cdd0",
+        "size": 11351,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "48fd6e97218c8ee8de125a01eda8b3f53f4f23c0043425d987e2f2cbbb8a16dd",
+        "size": 11094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/config.d.ts",
+        "sha256": "853e15a3763271808a51107be9a55cf4c0c8c298469b78224789e098d4547fe0",
+        "size": 1594,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/config.js",
+        "sha256": "14b5f29f03aba5a34c541ec864775dc29b0fca19b968d43e8ad4a3aad00d1e94",
+        "size": 4553,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "6bf30aca46543a0c5e9226fd888d3b38e33f4f1827d1c689020f68ad30b28912",
+        "size": 550,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "aee7dc5eac1544339fc93e1b35afc6a02eaab078512426177ffdd272a2ca0482",
+        "size": 2444,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/sigstore.d.ts",
+        "sha256": "cd3f7880c0a95f401226b682e0488758922549316041e2dbb66be28639b38a3e",
+        "size": 785,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/sigstore.js",
+        "sha256": "6d987d4b8104630593d85fa63fd948fa978e55fcfe6cba4fa120947149cdcb38",
+        "size": 4328,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "efdd5c6b58f7f179aa562c2a467e387dbe1f08b54a51f553932963043ad0695d",
+        "size": 1194,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11351,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/36/364a130d2ca340bd56eb1e6d045fc6929bb0f9d0aa018f2c1949b29517e1cdd0",
+          "sha256": "364a130d2ca340bd56eb1e6d045fc6929bb0f9d0aa018f2c1949b29517e1cdd0"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "364a130d2ca340bd56eb1e6d045fc6929bb0f9d0aa018f2c1949b29517e1cdd0",
+        "size": 11351
+      }
+    ],
+    "expandedBytes": 37893,
+    "packageIdentity": {
+      "author": "bdehamer@github.com",
+      "homepage": "https://github.com/sigstore/sigstore-js/tree/main/packages/client#readme",
+      "license": "Apache-2.0",
+      "name": "sigstore",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sigstore/sigstore-js.git"
+      },
+      "version": "5.0.0"
+    },
+    "packageMetadata": {
+      "author": "bdehamer@github.com",
+      "bugs": {
+        "url": "https://github.com/sigstore/sigstore-js/issues"
+      },
+      "dependencies": {
+        "@sigstore/bundle": "^5.0.0",
+        "@sigstore/core": "^4.0.0",
+        "@sigstore/protobuf-specs": "^0.5.0",
+        "@sigstore/sign": "^5.0.0",
+        "@sigstore/tuf": "^5.0.0",
+        "@sigstore/verify": "^4.0.0"
+      },
+      "description": "code-signing for npm packages",
+      "devDependencies": {
+        "@sigstore/jest": "^0.0.0",
+        "@sigstore/mock": "^0.13.0",
+        "@sigstore/rekor-types": "^5.0.0",
+        "@tufjs/repo-mock": "^5.0.0",
+        "@types/make-fetch-happen": "^10.0.4"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "dist",
+        "store"
+      ],
+      "homepage": "https://github.com/sigstore/sigstore-js/tree/main/packages/client#readme",
+      "license": "Apache-2.0",
+      "main": "dist/index.js",
+      "name": "sigstore",
+      "publishConfig": {
+        "provenance": true
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sigstore/sigstore-js.git"
+      },
+      "scripts": {
+        "build": "tsc --build",
+        "clean": "shx rm -rf dist *.tsbuildinfo",
+        "test": "jest"
+      },
+      "types": "dist/index.d.ts",
+      "version": "5.0.0"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 10322,
+      "sha256": "3718e9a74a5a824a785b5f3930f767a4efdb052b3d4db65cd7649a5e2aa2f465"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

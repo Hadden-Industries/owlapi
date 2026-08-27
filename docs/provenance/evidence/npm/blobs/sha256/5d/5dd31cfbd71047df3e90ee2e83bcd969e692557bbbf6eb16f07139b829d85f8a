@@ -1,0 +1,106 @@
+{
+  "artifactId": "304fb04d1c742f28047f2f307979c026f6d270174ccfebdc4441da9f874619ff",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6059,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.npmignore",
+        "sha256": "26daffe3764f9c36a14068771686dd0534a97c19d9c5c5a73045eb45617af2f9",
+        "size": 37,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Int64.js",
+        "sha256": "2fa1049844b05abdc7bf43803089afe9886f8f1f4ce413922ea2ddcede5b51fb",
+        "size": 8052,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "8f85aab053e268546014761da47630a09886626afbd0d8d440cb2c69611bb8d3",
+        "size": 1058,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "b005d7f26eb6fb06bc5d2da9d3421ce058cf24a9904de1f0fb89bca6417ff173",
+        "size": 2705,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "bbe2ab9d857e90fe7a476ba51e3fa538d6e2478d2ac655249ab8c7b2b7d5d8ef",
+        "size": 580,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test.js",
+        "sha256": "07a0b087b653df3ac682c8eeb6e8a53f1eeb7fa6fb71bf034c0ea17414023e2c",
+        "size": 3836,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1058,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8f/8f85aab053e268546014761da47630a09886626afbd0d8d440cb2c69611bb8d3",
+          "sha256": "8f85aab053e268546014761da47630a09886626afbd0d8d440cb2c69611bb8d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "8f85aab053e268546014761da47630a09886626afbd0d8d440cb2c69611bb8d3",
+        "size": 1058
+      }
+    ],
+    "expandedBytes": 16268,
+    "packageIdentity": {
+      "author": "Robert Kieffer <robert@broofa.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "node-int64",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/broofa/node-int64"
+      },
+      "version": "0.4.0"
+    },
+    "packageMetadata": {
+      "author": "Robert Kieffer <robert@broofa.com>",
+      "contributors": [],
+      "dependencies": {},
+      "description": "Support for representing 64-bit integers in JavaScript",
+      "devDependencies": {
+        "nodeunit": "^0.9.0"
+      },
+      "keywords": [
+        "math",
+        "integer",
+        "int64"
+      ],
+      "lib": ".",
+      "license": "MIT",
+      "main": "./Int64.js",
+      "name": "node-int64",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/broofa/node-int64"
+      },
+      "scripts": {
+        "test": "nodeunit test.js"
+      },
+      "url": "http://github.com/broofa/node-int64",
+      "version": "0.4.0"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 6059,
+      "sha256": "2502628937c895945e2ceea48ff453c4812b35c2a270a4efb93ff77a8c0f2257"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

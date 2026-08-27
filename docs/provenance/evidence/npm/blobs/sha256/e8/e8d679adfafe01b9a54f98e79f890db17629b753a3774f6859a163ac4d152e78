@@ -1,0 +1,157 @@
+{
+  "artifactId": "2a03381906856f117aee4dd2123466897c2a6e3619af114c225f9ea94e9498b9",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7258,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "0a73be687a86b6f0e5494b1be555fcfbb886108794948837170c28f18820aae2",
+        "size": 286,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.eslintrc",
+        "sha256": "790a0b6d6b6ce1cbd1761a0221e4e4e8c241630d3aae2aceabe2427902a0f92a",
+        "size": 397,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.jscs.json",
+        "sha256": "7080f6c4ac6e23bc2325a467c95e7ac958af6035f510114017cd988eb31340ce",
+        "size": 4096,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.travis.yml",
+        "sha256": "9f63f9050d0391da51339d18c6f528a648101bd1ea713eb68c6a10556ca09d9d",
+        "size": 6899,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "e0b459d1648606d19f9216a182ef7497cb0c832a997b56b2aa49c006df309209",
+        "size": 2779,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "97af7428f93afbab9bf79cd09254da1357161794f4255eb1b4599f04dd2d2e7c",
+        "size": 1081,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "b1ab983f31e157d431d53cabbc4491346a4f29aa5a12c54aa99be17e6e4d4456",
+        "size": 3034,
+        "type": "FILE"
+      },
+      {
+        "path": "package/component.json",
+        "sha256": "58ef601667cfeaae669739b84f21df4510fc90b4984dae215150d90bd23eb834",
+        "size": 581,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "b4879ec38a11a2458846788b91be630e6b1d06eb07f9515adc1ff9030af0b00b",
+        "size": 3321,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8d891b3f00bead114c4741d8a594e7aaa59114f53782ec9a9319a619709dc14f",
+        "size": 987,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1081,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/97/97af7428f93afbab9bf79cd09254da1357161794f4255eb1b4599f04dd2d2e7c",
+          "sha256": "97af7428f93afbab9bf79cd09254da1357161794f4255eb1b4599f04dd2d2e7c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "97af7428f93afbab9bf79cd09254da1357161794f4255eb1b4599f04dd2d2e7c",
+        "size": 1081
+      },
+      {
+        "blob": {
+          "bytes": 3034,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b1/b1ab983f31e157d431d53cabbc4491346a4f29aa5a12c54aa99be17e6e4d4456",
+          "sha256": "b1ab983f31e157d431d53cabbc4491346a4f29aa5a12c54aa99be17e6e4d4456"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "b1ab983f31e157d431d53cabbc4491346a4f29aa5a12c54aa99be17e6e4d4456",
+        "size": 3034
+      }
+    ],
+    "expandedBytes": 23461,
+    "packageIdentity": {
+      "author": "Stefan Thomas <justmoon@members.fsf.org> (http://www.justmoon.net)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "extend",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/justmoon/node-extend.git"
+      },
+      "version": "3.0.2"
+    },
+    "packageMetadata": {
+      "author": "Stefan Thomas <justmoon@members.fsf.org> (http://www.justmoon.net)",
+      "contributors": [
+        {
+          "name": "Jordan Harband",
+          "url": "https://github.com/ljharb"
+        }
+      ],
+      "dependencies": {},
+      "description": "Port of jQuery.extend for node.js and the browser",
+      "devDependencies": {
+        "@ljharb/eslint-config": "^12.2.1",
+        "covert": "^1.1.0",
+        "eslint": "^4.19.1",
+        "jscs": "^3.0.7",
+        "tape": "^4.9.1"
+      },
+      "keywords": [
+        "extend",
+        "clone",
+        "merge"
+      ],
+      "license": "MIT",
+      "main": "index",
+      "name": "extend",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/justmoon/node-extend.git"
+      },
+      "scripts": {
+        "coverage": "covert test/index.js",
+        "coverage-quiet": "covert test/index.js --quiet",
+        "eslint": "eslint *.js */*.js",
+        "jscs": "jscs *.js */*.js",
+        "lint": "npm run jscs && npm run eslint",
+        "posttest": "npm run coverage-quiet",
+        "pretest": "npm run lint",
+        "test": "npm run tests-only",
+        "tests-only": "node test"
+      },
+      "version": "3.0.2"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 7258,
+      "sha256": "1d91d0b0faa50cba223fa937c7b5a4a662968b1d78b3e59dca5c917dd5cf72b2"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

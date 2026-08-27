@@ -1,0 +1,148 @@
+{
+  "artifactId": "c30abc88b58973397cd86ba4b44b7708fdabbe681ffd762c8b6ca69c9538f00d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6794,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/api-extractor.json",
+        "sha256": "a3d5c379abac28cf468fe4727e8bcbacbba1ae92aa293164c1b1d1d247fc7e21",
+        "size": 219,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "4bd92f93a7d48d219602eecbbbe89199f0e7c0c654f565a4fa035aa1a0d2e5db",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "ea569611687b5f0a1f48912730e5768c62a965399bf002466da43c2b18b45386",
+        "size": 10024,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "1712a30fd7d9fa9602ba0e104e748a9e522f863ce9630ddbb0cd4fa188126f19",
+        "size": 665,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d33b2842f8cf872432e40126c09f9750929c960c0b7288aa47097900d93d23cf",
+        "size": 931,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/__tests__/utils.test.ts",
+        "sha256": "9c73f63e0de1237c780755b3df83b2a89df9d59b932cb927a38051de4254f3a8",
+        "size": 8008,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.ts",
+        "sha256": "3278d25c7d84b94da0c393fa95740004d090d3f9413cbc6e4f9621953aef8f92",
+        "size": 242,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/types.ts",
+        "sha256": "0ce492729a677d07af5efddef34d93896dd238f6ba5622ba2287a903f748a3fc",
+        "size": 243,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/utils.ts",
+        "sha256": "bda415a4f34f89ed280574d0e276ca1c67319fe6a2603da7da5a51b9bd63ac76",
+        "size": 6065,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "50046cf38ff3077866a8e9d229fc4ce717e36c8896c38e76ab9161f82848324a",
+        "size": 246,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 28869,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@jest/snapshot-utils",
+      "repository": {
+        "directory": "packages/jest-snapshot-utils",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.4.1"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@jest/types": "30.4.1",
+        "chalk": "^4.1.2",
+        "graceful-fs": "^4.2.11",
+        "natural-compare": "^1.4.0"
+      },
+      "devDependencies": {
+        "@types/graceful-fs": "^4.1.9",
+        "@types/natural-compare": "^1.4.3"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "b3b4a09ed3005369dacc7466d1d2122797283785",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "@jest/snapshot-utils",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-snapshot-utils",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.4.1"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 6794,
+      "sha256": "480e59be9292759dc754aa96a732d9ff9c0cb9d2d0dfb01d3f2cb1c3cefeec20"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

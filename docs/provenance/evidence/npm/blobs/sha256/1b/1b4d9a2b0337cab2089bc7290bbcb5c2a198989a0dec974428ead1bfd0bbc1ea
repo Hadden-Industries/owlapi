@@ -1,0 +1,155 @@
+{
+  "artifactId": "d58ed7f3375f2ba9f3c50232977e240777eba297c966e6a20569d1db3b8408f4",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9710,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "ce5116bb8a143a66edc73d16190637872b3bc0fe7f2405f750e221c5fb8225e1",
+        "size": 12398,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "b661867c1d66a1b71ee3a6109159874334cd5c182a80d1bcc7353b5a4c6823c6",
+        "size": 1483,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "b790f936bd13359c97464964dd20b1d002d5cdffefec09739a86e3b47b62eb4c",
+        "size": 454,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "375b9b523c60806205a0283986a0ad5fe350809ba6493b4912f5d6053d7b9067",
+        "size": 320,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/get-mapping.js",
+        "sha256": "d1834a6f6e1428458d8e81884daf01a650f701e0b41601befad208ff0e3a32f7",
+        "size": 5850,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/map-store.js",
+        "sha256": "820d7524a7fbcf2918c6fd63622d9d16306b0de53e51150c0712a06215265540",
+        "size": 7424,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/mapped.js",
+        "sha256": "dfadca6ccf613a08478b0a35dce27b6a5d7229677ec6793061ab2336c50c93ad",
+        "size": 2832,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/pathutils.js",
+        "sha256": "1ea8eae11a5ecc11c6f3232de7735fea2ccba6ee24d08fee505badba40765a04",
+        "size": 537,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/transform-utils.js",
+        "sha256": "972e59df9780e913979b12e5100270bbf60e32a98db4fc671ade600c26f0cf4a",
+        "size": 478,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/transformer.js",
+        "sha256": "cbb3a4447f8519b48af4f779e0a0c2158f072d79a9ff3a2d561d03cbc7ed2d48",
+        "size": 4953,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "1fb514a476933dd856734b58a41f55c5a3e9d922aa4620af39ccd49dbb852bda",
+        "size": 996,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1483,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b6/b661867c1d66a1b71ee3a6109159874334cd5c182a80d1bcc7353b5a4c6823c6",
+          "sha256": "b661867c1d66a1b71ee3a6109159874334cd5c182a80d1bcc7353b5a4c6823c6"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "b661867c1d66a1b71ee3a6109159874334cd5c182a80d1bcc7353b5a4c6823c6",
+        "size": 1483
+      }
+    ],
+    "expandedBytes": 37725,
+    "packageIdentity": {
+      "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
+      "homepage": "https://istanbul.js.org/",
+      "license": "BSD-3-Clause",
+      "name": "istanbul-lib-source-maps",
+      "repository": {
+        "directory": "packages/istanbul-lib-source-maps",
+        "type": "git",
+        "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
+      },
+      "version": "5.0.6"
+    },
+    "packageMetadata": {
+      "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
+      "bugs": {
+        "url": "https://github.com/istanbuljs/istanbuljs/issues"
+      },
+      "dependencies": {
+        "@jridgewell/trace-mapping": "^0.3.23",
+        "debug": "^4.1.1",
+        "istanbul-lib-coverage": "^3.0.0"
+      },
+      "description": "Source maps support for istanbul",
+      "devDependencies": {
+        "chai": "^4.2.0",
+        "mocha": "^6.2.2",
+        "nyc": "^15.0.0-beta.2",
+        "ts-node": "^8.5.4"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "lib",
+        "index.js"
+      ],
+      "homepage": "https://istanbul.js.org/",
+      "keywords": [
+        "istanbul",
+        "sourcemaps",
+        "sourcemap",
+        "source",
+        "maps"
+      ],
+      "license": "BSD-3-Clause",
+      "main": "index.js",
+      "name": "istanbul-lib-source-maps",
+      "repository": {
+        "directory": "packages/istanbul-lib-source-maps",
+        "type": "git",
+        "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
+      },
+      "scripts": {
+        "test": "nyc mocha"
+      },
+      "version": "5.0.6"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 9710,
+      "sha256": "edd298e71ebf12ef7dded4826ba2cb0cbb58c911db0bb7c50efaf27dc80e04b4"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

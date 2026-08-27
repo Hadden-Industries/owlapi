@@ -1,0 +1,109 @@
+{
+  "artifactId": "344bedbbb8c0f6995cdaf8b999eda40286f49aa9507816a31418576d5aa43850",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4952,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "1fa6ee8bb95a81ae3d73a5bd074a3ac380ffec13697051063ca1a601921b91db",
+        "size": 1078,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "26c82404ae3f9165980422212c4acd08f49200870477c3ffb35bda111984a195",
+        "size": 7421,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "a842755693061e7bd3124513ca21f6b69d389b5776cdfbe097d62f66dc1f59dc",
+        "size": 6551,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e6bf802e6ee220d66321808ce3d619fbb85ff4d5729ea4f649bd65dfe9ee8956",
+        "size": 804,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1078,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/1f/1fa6ee8bb95a81ae3d73a5bd074a3ac380ffec13697051063ca1a601921b91db",
+          "sha256": "1fa6ee8bb95a81ae3d73a5bd074a3ac380ffec13697051063ca1a601921b91db"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "1fa6ee8bb95a81ae3d73a5bd074a3ac380ffec13697051063ca1a601921b91db",
+        "size": 1078
+      }
+    ],
+    "expandedBytes": 15854,
+    "packageIdentity": {
+      "author": {
+        "email": "thlorenz@gmx.de",
+        "name": "Thorsten Lorenz",
+        "url": "http://thlorenz.com"
+      },
+      "homepage": "https://github.com/thlorenz/convert-source-map",
+      "license": "MIT",
+      "name": "convert-source-map",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/thlorenz/convert-source-map.git"
+      },
+      "version": "2.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "thlorenz@gmx.de",
+        "name": "Thorsten Lorenz",
+        "url": "http://thlorenz.com"
+      },
+      "description": "Converts a source-map from/to  different formats and allows adding/changing properties.",
+      "devDependencies": {
+        "inline-source-map": "~0.6.2",
+        "tap": "~9.0.0"
+      },
+      "engine": {
+        "node": ">=4"
+      },
+      "files": [
+        "index.js"
+      ],
+      "homepage": "https://github.com/thlorenz/convert-source-map",
+      "keywords": [
+        "convert",
+        "sourcemap",
+        "source",
+        "map",
+        "browser",
+        "debug"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "convert-source-map",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/thlorenz/convert-source-map.git"
+      },
+      "scripts": {
+        "test": "tap test/*.js --color"
+      },
+      "version": "2.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 4952,
+      "sha256": "17f7253ec7e4e09f68371192fded2b5241a5cf85e610e5059b1d49e878fe1898"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,151 @@
+{
+  "artifactId": "37e3a30d605b0aacd366c1a460b906f4da697c7c6c7821854fa7d46cbba2abe3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9351,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "b4868a6bd5ca590548f0cbaec0281cbf5619a5b6c2d186a0c626d24431da42c9",
+        "size": 7899,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "e09f9b52c6ce5c17ba8103cd0cbf446c33b5448b0c1d01d711b36a1f15a501ba",
+        "size": 1488,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "8ea0b3c2bd1d3a6d0bd39e570ee132c48768acc2f80844f2c3b4c6bf2afa317f",
+        "size": 996,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "c8fb02897a7fd187d9a5bae519c58643dd786c8b00cecfcc87c17be73b18f561",
+        "size": 1898,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/coverage-map.js",
+        "sha256": "97d6c00e714d1171ffd8bcaa2a96b09120f03b823a194e285e797a75774d0a11",
+        "size": 3478,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/coverage-summary.js",
+        "sha256": "63819e1d8142b4661786bd0b89d11a2970187085a0c78d181fd5934a26f6cc15",
+        "size": 2811,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/data-properties.js",
+        "sha256": "50f66624f960cde8f0d218b0fe7db066d951d3aed165678dd36e54b9eba00391",
+        "size": 283,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/file-coverage.js",
+        "sha256": "a4ab6b43943dbb95adb0eb517098bc2760d320e2bacf331f0434f7ea0b1ba028",
+        "size": 14049,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/percent.js",
+        "sha256": "f60252cc5c75c4f5d1e43e9f49e09d19757504a1b570f36f1770509606fd2801",
+        "size": 367,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7974dda66b36ee4f2ae12760b0a94752ab735c6977174a30547047f08ff33cf3",
+        "size": 1098,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1488,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e0/e09f9b52c6ce5c17ba8103cd0cbf446c33b5448b0c1d01d711b36a1f15a501ba",
+          "sha256": "e09f9b52c6ce5c17ba8103cd0cbf446c33b5448b0c1d01d711b36a1f15a501ba"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "e09f9b52c6ce5c17ba8103cd0cbf446c33b5448b0c1d01d711b36a1f15a501ba",
+        "size": 1488
+      }
+    ],
+    "expandedBytes": 34367,
+    "packageIdentity": {
+      "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
+      "homepage": "https://istanbul.js.org/",
+      "license": "BSD-3-Clause",
+      "name": "istanbul-lib-coverage",
+      "repository": {
+        "directory": "packages/istanbul-lib-coverage",
+        "type": "git",
+        "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
+      },
+      "version": "3.2.2"
+    },
+    "packageMetadata": {
+      "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
+      "bugs": {
+        "url": "https://github.com/istanbuljs/istanbuljs/issues"
+      },
+      "description": "Data library for istanbul coverage objects",
+      "devDependencies": {
+        "chai": "^4.2.0",
+        "mocha": "^6.2.2",
+        "nyc": "^15.0.0-beta.2"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "lib",
+        "index.js"
+      ],
+      "homepage": "https://istanbul.js.org/",
+      "karmaDeps": {
+        "browserify-istanbul": "^0.2.1",
+        "karma": "^0.13.10",
+        "karma-browserify": "^4.2.1",
+        "karma-chrome-launcher": "^0.2.0",
+        "karma-coverage": "^0.4.2",
+        "karma-mocha": "^0.2.0",
+        "karma-phantomjs-launcher": "^0.2.0",
+        "phantomjs": "^1.9.17"
+      },
+      "keywords": [
+        "istanbul",
+        "coverage",
+        "data"
+      ],
+      "license": "BSD-3-Clause",
+      "main": "index.js",
+      "name": "istanbul-lib-coverage",
+      "repository": {
+        "directory": "packages/istanbul-lib-coverage",
+        "type": "git",
+        "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
+      },
+      "scripts": {
+        "test": "nyc mocha"
+      },
+      "version": "3.2.2"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 9351,
+      "sha256": "55807e4747867e8a34d54d0900fab3a5bba7d44230f796fcc7dc62be2efecc8e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

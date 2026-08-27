@@ -1,0 +1,96 @@
+{
+  "artifactId": "82045cfbc1488cdaf1afc8f0656c506a7aa130fc26a23adcea94b582ca1bde63",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1676,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "0d2537e86a9e5ae85d8e53910d779895179035c9daa35555874ec19f1225c224",
+        "size": 685,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "712ac9c4c3cef8bc79f42cf6075ff18551f4cb768f35158214fd643853ad7abc",
+        "size": 606,
+        "type": "FILE"
+      },
+      {
+        "path": "package/wrappy.js",
+        "sha256": "153453c4d84a3c2f13589c37055a7daff61d48475dcce554f7eedad15fc7b3e5",
+        "size": 905,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 2961,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "homepage": "https://github.com/npm/wrappy",
+      "license": "ISC",
+      "name": "wrappy",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/npm/wrappy"
+      },
+      "version": "1.0.2"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "bugs": {
+        "url": "https://github.com/npm/wrappy/issues"
+      },
+      "dependencies": {},
+      "description": "Callback wrapping utility",
+      "devDependencies": {
+        "tap": "^2.3.1"
+      },
+      "directories": {
+        "test": "test"
+      },
+      "files": [
+        "wrappy.js"
+      ],
+      "homepage": "https://github.com/npm/wrappy",
+      "license": "ISC",
+      "main": "wrappy.js",
+      "name": "wrappy",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/npm/wrappy"
+      },
+      "scripts": {
+        "test": "tap --coverage test/*.js"
+      },
+      "version": "1.0.2"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1676,
+      "sha256": "aff3730d91b7b1e143822956d14608f563163cf11b9d0ae602df1fe1e430fdfb"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

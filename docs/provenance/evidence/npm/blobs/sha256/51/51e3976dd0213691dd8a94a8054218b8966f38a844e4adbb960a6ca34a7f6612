@@ -1,0 +1,143 @@
+{
+  "artifactId": "5790f98a79c04a63b748c6e195aa1d6eb50d63ae1123600af2bc052254f1002e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5253,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "6daf84c2f653b80488d847fc4064e9fb39bbd941ace7affa73382e9f3df138d8",
+        "size": 5573,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "d0f6715c8f6028d84f6d0d2b9f6155a0c9e57ef3b22d10ba73e9895eceefdef3",
+        "size": 3750,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7aa94b3d0029a721f54bb0de09291aed005d606e9d40470077d7c438aacaba66",
+        "size": 929,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "7698091ec9444c07271f29a19d437659e104ecf4d359f7722baf447bced44efd",
+        "size": 5011,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      },
+      {
+        "blob": {
+          "bytes": 5011,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/76/7698091ec9444c07271f29a19d437659e104ecf4d359f7722baf447bced44efd",
+          "sha256": "7698091ec9444c07271f29a19d437659e104ecf4d359f7722baf447bced44efd"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "7698091ec9444c07271f29a19d437659e104ecf4d359f7722baf447bced44efd",
+        "size": 5011
+      }
+    ],
+    "expandedBytes": 16380,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "ansi-escapes",
+      "repository": "sindresorhus/ansi-escapes",
+      "version": "4.3.2"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "dependencies": {
+        "type-fest": "^0.21.3"
+      },
+      "description": "ANSI escape codes for manipulating the terminal",
+      "devDependencies": {
+        "@types/node": "^13.7.7",
+        "ava": "^2.1.0",
+        "tsd": "^0.14.0",
+        "xo": "^0.25.3"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "ansi",
+        "terminal",
+        "console",
+        "cli",
+        "string",
+        "tty",
+        "escape",
+        "escapes",
+        "formatting",
+        "shell",
+        "xterm",
+        "log",
+        "logging",
+        "command-line",
+        "text",
+        "vt100",
+        "sequence",
+        "control",
+        "code",
+        "codes",
+        "cursor",
+        "iterm",
+        "iterm2"
+      ],
+      "license": "MIT",
+      "name": "ansi-escapes",
+      "repository": "sindresorhus/ansi-escapes",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "4.3.2"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 5253,
+      "sha256": "44280af12799a2ad1c4aa8109324bf597fdaa8f0ec594ca6d2760851ae7e0713"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

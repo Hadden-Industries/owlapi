@@ -1,0 +1,1694 @@
+{
+  "artifactId": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 13,
+      "digestVerifiedFileCount": 13,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 13
+    },
+    "artifactId": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.33.0",
+        "for_package_purl": "pkg:npm/espree@11.2.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/tsd",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.8.5",
+        "for_package_purl": "pkg:npm/espree@11.2.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/shelljs",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.0.1",
+        "for_package_purl": "pkg:npm/espree@11.2.0",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/eslint-visitor-keys",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.3.2",
+        "for_package_purl": "pkg:npm/espree@11.2.0",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/acorn-jsx",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^8.16.0",
+        "for_package_purl": "pkg:npm/espree@11.2.0",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/acorn",
+        "resolved_package": {},
+        "scope": "dependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Kai Cataldo",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "options",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/espree@11.2.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "760661dfc63631bbb9760345b4b274a4",
+        "name": "options.js",
+        "package_data": [],
+        "path": "package/lib/options.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "a0159ec382f853935532026c505c08654333e97e",
+        "sha1_git": "1ef2271db3d6ceb0c66e0aa9985711c76b293301",
+        "sha256": "86e94df5b303515174ab33b8b217f7f1f42b236cc92b66fb698b53055970bec5",
+        "size": 4745,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Kai Cataldo",
+            "end_line": 329,
+            "start_line": 329
+          },
+          {
+            "author": "Nicholas C. Zakas",
+            "end_line": 28,
+            "start_line": 28
+          },
+          {
+            "author": "https://github.com/babel/babel/blob/master/packages/babylon/AUTHORS",
+            "end_line": 1007,
+            "start_line": 1007
+          },
+          {
+            "author": "https://github.com/marijnh/acorn/blob/master/AUTHORS",
+            "end_line": 1006,
+            "start_line": 1006
+          }
+        ],
+        "base_name": "espree",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) jQuery Foundation, Inc. and Contributors",
+            "end_line": 1030,
+            "start_line": 1030
+          },
+          {
+            "copyright": "Copyright 2012-2015 Acorn",
+            "end_line": 1006,
+            "start_line": 1006
+          },
+          {
+            "copyright": "Copyright 2014-2015 Sebastian McKenzie <sebmck@gmail.com>",
+            "end_line": 1008,
+            "start_line": 1008
+          },
+          {
+            "copyright": "Copyright 2014-2015 various",
+            "end_line": 1007,
+            "start_line": 1007
+          }
+        ],
+        "detected_license_expression": "mit AND bsd-new AND bsd-simplified",
+        "detected_license_expression_spdx": "MIT AND BSD-3-Clause AND BSD-2-Clause",
+        "dirs_count": 0,
+        "extension": ".cjs",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/espree@11.2.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1006,
+            "holder": "Acorn",
+            "start_line": 1006
+          },
+          {
+            "end_line": 1007,
+            "holder": "various",
+            "start_line": 1007
+          },
+          {
+            "end_line": 1008,
+            "holder": "Sebastian McKenzie",
+            "start_line": 1008
+          },
+          {
+            "end_line": 1030,
+            "holder": "jQuery Foundation, Inc. and Contributors",
+            "start_line": 1030
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-8018af62-4bec-2667-8ab2-458bcba0f2fc",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 1004,
+                "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/dist/espree.cjs",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": " * This file also contains code from Esprima, which is BSD licensed.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_215.RULE",
+                "rule_relevance": 90,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_215.RULE",
+                "score": 90,
+                "start_line": 1004
+              }
+            ]
+          },
+          {
+            "identifier": "bsd_simplified-1f629df9-5574-269f-0e44-9ef70c4c2ab9",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "matches": [
+              {
+                "end_line": 1028,
+                "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/dist/espree.cjs",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 100,
+                "matched_length": 180,
+                "matched_text": " * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are met:\n *\n * * Redistributions of source code must retain the above copyright\n *   notice, this list of conditions and the following disclaimer.\n * * Redistributions in binary form must reproduce the above copyright\n *   notice, this list of conditions and the following disclaimer in the\n *   documentation and/or other materials provided with the distribution.\n *\n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\n * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\n * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\n * ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\n * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\n * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF\n * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-simplified_18.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_18.RULE",
+                "score": 100,
+                "start_line": 1010
+              },
+              {
+                "end_line": 1050,
+                "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/dist/espree.cjs",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 100,
+                "matched_length": 180,
+                "matched_text": " * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are met:\n *\n *   * Redistributions of source code must retain the above copyright\n *     notice, this list of conditions and the following disclaimer.\n *   * Redistributions in binary form must reproduce the above copyright\n *     notice, this list of conditions and the following disclaimer in the\n *     documentation and/or other materials provided with the distribution.\n *\n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\n * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\n * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\n * ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\n * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\n * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF\n * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-simplified_18.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_18.RULE",
+                "score": 100,
+                "start_line": 1032
+              }
+            ]
+          },
+          {
+            "identifier": "mit-4e7803e6-e54b-c9ca-bcd2-bee9755c0dd7",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 999,
+                "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/dist/espree.cjs",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * This file contains code from the following MIT-licensed projects:",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_126.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_126.RULE",
+                "score": 100,
+                "start_line": 999
+              }
+            ]
+          }
+        ],
+        "md5": "24e44db316f85fa21971c9049da78a32",
+        "name": "espree.cjs",
+        "package_data": [],
+        "path": "package/dist/espree.cjs",
+        "percentage_of_license_text": 9.52,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "a715efe6fb38e14fd5ac1c1dab4389a24fe2f1c8",
+        "sha1_git": "9c55e87c900887e2ac70d3e174f9ed448785c51f",
+        "sha256": "00ad93bce4a8af52aeaab7b8198c1ed072c9cf1b5cbb2d44e3d2fdc00562c059",
+        "size": 35933,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Nicholas C. Zakas <nicholas+npm@nczconsulting.com> homepage' https://github.com/eslint/js/blob/main/packages/espree/README.md",
+            "end_line": 5,
+            "start_line": 4
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "bsd-simplified",
+        "detected_license_expression_spdx": "BSD-2-Clause",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/espree@11.2.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_simplified-71450002-f253-703f-89da-2ec134364868",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "matches": [
+              {
+                "end_line": 39,
+                "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/package.json",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "  \"license\": \"BSD-2-Clause\",",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-simplified_50.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_50.RULE",
+                "score": 100,
+                "start_line": 39
+              }
+            ]
+          }
+        ],
+        "md5": "47d08d3139d43974cd01d5dd1a19667e",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/espree/11.2.0",
+            "bug_tracking_url": "https://github.com/eslint/js/issues",
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "bsd-simplified",
+            "declared_license_expression_spdx": "BSD-2-Clause",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.33.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/tsd",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.8.5",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/shelljs",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.0.1",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/eslint-visitor-keys",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.3.2",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/acorn-jsx",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^8.16.0",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/acorn",
+                "resolved_package": {},
+                "scope": "dependencies"
+              }
+            ],
+            "description": "An Esprima-compatible JavaScript parser built on Acorn",
+            "download_url": "https://registry.npmjs.org/espree/-/espree-11.2.0.tgz",
+            "extra_data": {
+              "engines": {
+                "node": "^20.19.0 || ^22.13.0 || >=24"
+              }
+            },
+            "extracted_license_statement": "- BSD-2-Clause\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://github.com/eslint/js/blob/main/packages/espree/README.md",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "acorn",
+              "ast",
+              "ecmascript",
+              "javascript",
+              "parser",
+              "syntax"
+            ],
+            "license_detections": [
+              {
+                "identifier": "bsd_simplified-7cacd81a-0bdb-1c32-cf2d-2250f633f213",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/package.json",
+                    "license_expression": "bsd-simplified",
+                    "license_expression_spdx": "BSD-2-Clause",
+                    "match_coverage": 100,
+                    "matched_length": 3,
+                    "matched_text": "BSD-2-Clause",
+                    "matcher": "1-hash",
+                    "rule_identifier": "spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+                    "rule_relevance": 100,
+                    "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "espree",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "nicholas+npm@nczconsulting.com",
+                "name": "Nicholas C. Zakas",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/espree@11.2.0",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/espree/-/espree-11.2.0.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/espree",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/eslint/js.git",
+            "version": "11.2.0"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 1.66,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "30f6c7423a7376cde012770bddaf8b3e4f4beeb2",
+        "sha1_git": "471f5bc579ed503d1d1866b028bd97f513c5d7db",
+        "sha256": "23ed9eb09d6076011884a14deb09ad608968eaa01f69344b91207c810a1bebd2",
+        "size": 2012,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Nicholas C. Zakas",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "base_name": "token-translator",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/espree@11.2.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "20fdc53d16e13ee248763ccdf76c225e",
+        "name": "token-translator.js",
+        "package_data": [],
+        "path": "package/lib/token-translator.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "5406664370dff6301e55dcae1fc04a7d6d10d02e",
+        "sha1_git": "96c133f8959b6b06e2633b29c7cca0e2f2db6de0",
+        "sha256": "6006ebfc4914496d548389b0da2e58322bbae34827862fc40b9502c9970179d5",
+        "size": 8395,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "https://github.com/babel/babel/blob/master/packages/babylon/AUTHORS",
+            "end_line": 12,
+            "start_line": 12
+          },
+          {
+            "author": "https://github.com/marijnh/acorn/blob/master/AUTHORS",
+            "end_line": 11,
+            "start_line": 11
+          }
+        ],
+        "base_name": "espree",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) jQuery Foundation, Inc. and Contributors",
+            "end_line": 35,
+            "start_line": 35
+          },
+          {
+            "copyright": "Copyright 2012-2015 Acorn",
+            "end_line": 11,
+            "start_line": 11
+          },
+          {
+            "copyright": "Copyright 2014-2015 Sebastian McKenzie <sebmck@gmail.com>",
+            "end_line": 13,
+            "start_line": 13
+          },
+          {
+            "copyright": "Copyright 2014-2015 various",
+            "end_line": 12,
+            "start_line": 12
+          }
+        ],
+        "detected_license_expression": "mit AND bsd-new AND bsd-simplified",
+        "detected_license_expression_spdx": "MIT AND BSD-3-Clause AND BSD-2-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/espree@11.2.0"
+        ],
+        "holders": [
+          {
+            "end_line": 11,
+            "holder": "Acorn",
+            "start_line": 11
+          },
+          {
+            "end_line": 12,
+            "holder": "various",
+            "start_line": 12
+          },
+          {
+            "end_line": 13,
+            "holder": "Sebastian McKenzie",
+            "start_line": 13
+          },
+          {
+            "end_line": 35,
+            "holder": "jQuery Foundation, Inc. and Contributors",
+            "start_line": 35
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-8018af62-4bec-2667-8ab2-458bcba0f2fc",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 9,
+                "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/espree.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": " * This file also contains code from Esprima, which is BSD licensed.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_215.RULE",
+                "rule_relevance": 90,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_215.RULE",
+                "score": 90,
+                "start_line": 9
+              }
+            ]
+          },
+          {
+            "identifier": "bsd_simplified-1f629df9-5574-269f-0e44-9ef70c4c2ab9",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "matches": [
+              {
+                "end_line": 33,
+                "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/espree.js",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 100,
+                "matched_length": 180,
+                "matched_text": " * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are met:\n *\n * * Redistributions of source code must retain the above copyright\n *   notice, this list of conditions and the following disclaimer.\n * * Redistributions in binary form must reproduce the above copyright\n *   notice, this list of conditions and the following disclaimer in the\n *   documentation and/or other materials provided with the distribution.\n *\n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\n * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\n * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\n * ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\n * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\n * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF\n * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-simplified_18.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_18.RULE",
+                "score": 100,
+                "start_line": 15
+              },
+              {
+                "end_line": 55,
+                "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/espree.js",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 100,
+                "matched_length": 180,
+                "matched_text": " * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are met:\n *\n *   * Redistributions of source code must retain the above copyright\n *     notice, this list of conditions and the following disclaimer.\n *   * Redistributions in binary form must reproduce the above copyright\n *     notice, this list of conditions and the following disclaimer in the\n *     documentation and/or other materials provided with the distribution.\n *\n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\n * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\n * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\n * ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\n * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\n * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF\n * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-simplified_18.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_18.RULE",
+                "score": 100,
+                "start_line": 37
+              }
+            ]
+          },
+          {
+            "identifier": "mit-4e7803e6-e54b-c9ca-bcd2-bee9755c0dd7",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 4,
+                "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/espree.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * This file contains code from the following MIT-licensed projects:",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_126.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_126.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "dd4c60f12f145ac62fc2bbdb83bcfff8",
+        "name": "espree.js",
+        "package_data": [],
+        "path": "package/espree.js",
+        "percentage_of_license_text": 35.93,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "e43d0c14579d9ed9a166dade9cdb660a390c2fd1",
+        "sha1_git": "b227d8c8085fba756143bec61d9602307bc377f7",
+        "sha256": "9ef1d03ec22b9b5cc2dc1ef43310a2bbf30ae750eb882cec9868eb5bda7d9186",
+        "size": 9209,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Open JS Foundation",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "bsd-simplified",
+        "detected_license_expression_spdx": "BSD-2-Clause",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/espree@11.2.0"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Open JS Foundation",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_simplified-7b3e2901-fc97-dacf-4b03-406880011f57",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "matches": [
+              {
+                "end_line": 25,
+                "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/LICENSE",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 97.93,
+                "matched_length": 189,
+                "matched_text": "BSD 2-Clause License\n\nCopyright (c) Open JS Foundation\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-simplified_9.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_9.RULE",
+                "score": 97.93,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": "31b28967d0717cf00f0d00d02b64c44b",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 95.94,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "395dfa3bbe14e771467c5b297f581104e90d3dba",
+        "sha1_git": "b18469ff2ffdfcf437456350a4bee3ba493f1970",
+        "sha256": "26c95937762a3dc17a3934a0a2773c70259ba4bf28dab713c225e4af8eb9d349",
+        "size": 1322,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": "bsd-simplified",
+        "detected_license_expression_spdx": "BSD-2-Clause",
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/espree@11.2.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_simplified-63491aea-b4cc-3b8e-794e-a23fae70b239",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "matches": [
+              {
+                "end_line": 177,
+                "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/README.md",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 100,
+                "matched_length": 7,
+                "matched_text": "licensed under a permissive BSD 2-clause license.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-simplified_329.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_329.RULE",
+                "score": 100,
+                "start_line": 177
+              }
+            ]
+          }
+        ],
+        "md5": "28d3ee600851bdbb0534a8ddc6f5e251",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0.37,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "7a28e737a8afc91b02296e71948961c6a6d63851",
+        "sha1_git": "3e749f8eebce3f77909d206bece787c064e6681b",
+        "sha256": "dacdd0fce5f0e420517b024d409d2243119f3ad570618b60a45e37c0fecb824b",
+        "size": 13282,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "espree",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/espree@11.2.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "fbe84ff9202e63cdae37f9d5db997fe0",
+        "name": "espree.js",
+        "package_data": [],
+        "path": "package/lib/espree.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "ba718addd530a74c48b87c35b61d6bbe01192fb5",
+        "sha1_git": "1dc8a83764954bd570dd3cfa51b620856ec743dd",
+        "sha256": "713d844f758f5a947d703d50e7a50f16581bb19810e8c3f1f009b503ab1e12d5",
+        "size": 13294,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "espree.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".cts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/espree@11.2.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "df1327b98b8f5aa074a5db99cf1f7797",
+        "name": "espree.d.cts",
+        "package_data": [],
+        "path": "package/dist/espree.d.cts",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "a054c6391a18f5173c98f29ea7b8c8e845015bd7",
+        "sha1_git": "e15870048848a3f5ab577f40c1f0ac7cadd3d77e",
+        "sha256": "5d1dbce00c290f6ee4e551e38d02d8efa191ebe60e57372fc403435dc65971d2",
+        "size": 93,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "espree.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/espree@11.2.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "68ae8b9497630e448cc3a3c0a3887786",
+        "name": "espree.d.ts",
+        "package_data": [],
+        "path": "package/dist/espree.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "8e7871f1d6bf49e5a30da6f1bf3370994259b0e5",
+        "sha1_git": "21e6826ee172d4ea43ba6b52d80bfcd9aca242c5",
+        "sha256": "76e4b531a65aab96cb989875831eb07a1f265ec6c4a36f5f36bb7d83af3e1bee",
+        "size": 2150,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "espree.d.cts",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/espree@11.2.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "3b95a0dd8a0d31d59139cc51e08171d2",
+        "name": "espree.d.cts.map",
+        "package_data": [],
+        "path": "package/dist/espree.d.cts.map",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "a039ee6bcd0f1bce0bceb7b3ad6d8abddd3b29f1",
+        "sha1_git": "fc0eeb4df5db5bf8dee7ba0df1437858287c189b",
+        "sha256": "5c30435dc586460f542389eef5798a364aaff3b20c8844620b641a6a5bf3a8a5",
+        "size": 159,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "espree.d.ts",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/espree@11.2.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "c436b359ff9219a56c786da82f1e3641",
+        "name": "espree.d.ts.map",
+        "package_data": [],
+        "path": "package/dist/espree.d.ts.map",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "c661bdd241e39910f61fadc12acb854bb2d4757f",
+        "sha1_git": "e71ebc16531a705cfb78283655be82c27465a19e",
+        "sha256": "df091372413ea53a6404e321c95a985467f2a4444f23780ee8ff68eef249eefb",
+        "size": 1650,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "types",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/espree@11.2.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "ee1e94b3756116ec0e0d51f037c8f7b6",
+        "name": "types.js",
+        "package_data": [],
+        "path": "package/lib/types.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "2dd40fe23205b5407ca4b4c89c59efe08c3b6d93",
+        "sha1_git": "7a467805274bc7b0b4e883356ef8b619d2abb186",
+        "sha256": "9ca649d8154ebd37ee86e6382c12bfbae29211706958e1abd409a339ff7e986e",
+        "size": 3414,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "bsd_simplified-63491aea-b4cc-3b8e-794e-a23fae70b239",
+        "license_expression": "bsd-simplified",
+        "license_expression_spdx": "BSD-2-Clause",
+        "reference_matches": [
+          {
+            "end_line": 177,
+            "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/README.md",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "match_coverage": 100,
+            "matched_length": 7,
+            "matched_text": "licensed under a permissive BSD 2-clause license.",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-simplified_329.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_329.RULE",
+            "score": 100,
+            "start_line": 177
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_simplified-71450002-f253-703f-89da-2ec134364868",
+        "license_expression": "bsd-simplified",
+        "license_expression_spdx": "BSD-2-Clause",
+        "reference_matches": [
+          {
+            "end_line": 39,
+            "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/package.json",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "  \"license\": \"BSD-2-Clause\",",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-simplified_50.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_50.RULE",
+            "score": 100,
+            "start_line": 39
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_simplified-7b3e2901-fc97-dacf-4b03-406880011f57",
+        "license_expression": "bsd-simplified",
+        "license_expression_spdx": "BSD-2-Clause",
+        "reference_matches": [
+          {
+            "end_line": 25,
+            "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/LICENSE",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "match_coverage": 97.93,
+            "matched_length": 189,
+            "matched_text": "BSD 2-Clause License\n\nCopyright (c) Open JS Foundation\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "3-seq",
+            "rule_identifier": "bsd-simplified_9.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_9.RULE",
+            "score": 97.93,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_simplified-7cacd81a-0bdb-1c32-cf2d-2250f633f213",
+        "license_expression": "bsd-simplified",
+        "license_expression_spdx": "BSD-2-Clause",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/package.json",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "BSD-2-Clause",
+            "matcher": "1-hash",
+            "rule_identifier": "spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 2,
+        "identifier": "bsd_new-8018af62-4bec-2667-8ab2-458bcba0f2fc",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 9,
+            "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/espree.js",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": " * This file also contains code from Esprima, which is BSD licensed.",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_215.RULE",
+            "rule_relevance": 90,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_215.RULE",
+            "score": 90,
+            "start_line": 9
+          }
+        ]
+      },
+      {
+        "detection_count": 2,
+        "identifier": "bsd_simplified-1f629df9-5574-269f-0e44-9ef70c4c2ab9",
+        "license_expression": "bsd-simplified",
+        "license_expression_spdx": "BSD-2-Clause",
+        "reference_matches": [
+          {
+            "end_line": 33,
+            "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/espree.js",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "match_coverage": 100,
+            "matched_length": 180,
+            "matched_text": " * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are met:\n *\n * * Redistributions of source code must retain the above copyright\n *   notice, this list of conditions and the following disclaimer.\n * * Redistributions in binary form must reproduce the above copyright\n *   notice, this list of conditions and the following disclaimer in the\n *   documentation and/or other materials provided with the distribution.\n *\n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\n * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\n * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\n * ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\n * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\n * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF\n * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-simplified_18.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_18.RULE",
+            "score": 100,
+            "start_line": 15
+          },
+          {
+            "end_line": 55,
+            "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/espree.js",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "match_coverage": 100,
+            "matched_length": 180,
+            "matched_text": " * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are met:\n *\n *   * Redistributions of source code must retain the above copyright\n *     notice, this list of conditions and the following disclaimer.\n *   * Redistributions in binary form must reproduce the above copyright\n *     notice, this list of conditions and the following disclaimer in the\n *     documentation and/or other materials provided with the distribution.\n *\n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\n * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\n * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\n * ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\n * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\n * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF\n * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-simplified_18.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_18.RULE",
+            "score": 100,
+            "start_line": 37
+          }
+        ]
+      },
+      {
+        "detection_count": 2,
+        "identifier": "mit-4e7803e6-e54b-c9ca-bcd2-bee9755c0dd7",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 4,
+            "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/espree.js",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": " * This file contains code from the following MIT-licensed projects:",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_126.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_126.RULE",
+            "score": 100,
+            "start_line": 4
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      },
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "http://www.opensource.org/licenses/BSD-2-Clause",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "bsd-simplified",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/bsd-simplified",
+        "minimum_coverage": 0,
+        "name": "BSD-2-Clause",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://opensource.org/licenses/bsd-license.php",
+        "other_spdx_license_keys": [
+          "BSD-2",
+          "BSD-2-Clause-NetBSD"
+        ],
+        "other_urls": [
+          "http://spdx.org/licenses/BSD-2-Clause",
+          "http://www.freebsd.org/copyright/copyright.html",
+          "https://opensource.org/licenses/BSD-2-Clause"
+        ],
+        "owner": "Regents of the University of California",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-simplified.LICENSE",
+        "short_name": "BSD-2-Clause",
+        "spdx_license_key": "BSD-2-Clause",
+        "spdx_url": "https://spdx.org/licenses/BSD-2-Clause",
+        "standard_notice": null,
+        "text": "Redistribution and use in source and binary forms, with or without modification,\nare permitted provided that the following conditions are met:\n\nRedistributions of source code must retain the above copyright notice, this list\nof conditions and the following disclaimer.\n\nRedistributions in binary form must reproduce the above copyright notice, this\nlist of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR\nANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON\nANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+        "text_urls": [
+          "http://opensource.org/licenses/bsd-license.php"
+        ]
+      },
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "http://www.opensource.org/licenses/BSD-3-Clause",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "bsd-new",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/bsd-new",
+        "minimum_coverage": 0,
+        "name": "BSD-3-Clause",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": "BSD-3-Clause",
+        "osi_url": "http://www.opensource.org/licenses/BSD-3-Clause",
+        "other_spdx_license_keys": [
+          "LicenseRef-scancode-libzip"
+        ],
+        "other_urls": [
+          "http://framework.zend.com/license/new-bsd",
+          "https://opensource.org/licenses/BSD-3-Clause",
+          "https://www.eclipse.org/org/documents/edl-v10.php"
+        ],
+        "owner": "Regents of the University of California",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-new.LICENSE",
+        "short_name": "BSD-3-Clause",
+        "spdx_license_key": "BSD-3-Clause",
+        "spdx_url": "https://spdx.org/licenses/BSD-3-Clause",
+        "standard_notice": null,
+        "text": "Redistribution and use in source and binary forms, with or without modification,\nare permitted provided that the following conditions are met:\n\nRedistributions of source code must retain the above copyright notice, this list\nof conditions and the following disclaimer.\n\nRedistributions in binary form must reproduce the above copyright notice, this\nlist of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.\n\nNeither the name of the ORGANIZATION nor the names of its contributors may be\nused to endorse or promote products derived from this software without specific\nprior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,\nTHE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\nARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS\nBE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR\nCONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE\nGOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)\nHOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT\nLIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF\nTHE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+        "text_urls": [
+          "http://www.opensource.org/licenses/BSD-3-Clause"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "bsd-new_215.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 90,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_215.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "is {{BSD-licensed}}."
+      },
+      {
+        "identifier": "bsd-simplified_18.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 180,
+        "license_expression": "bsd-simplified",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_18.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Redistribution and use in source and binary forms, with or without\n modification, are permitted provided that the following conditions are met:\n\n   * Redistributions of source code must retain the above copyright\n     notice, this list of conditions and the following disclaimer.\n   * Redistributions in binary form must reproduce the above copyright\n     notice, this list of conditions and the following disclaimer in the\n     documentation and/or other materials provided with the distribution.\n\n THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\n AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\n IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\n ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\n DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\n ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF\n THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+      },
+      {
+        "identifier": "bsd-simplified_329.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 7,
+        "license_expression": "bsd-simplified",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_329.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "licensed under a permissive {{BSD 2-clause license}}."
+      },
+      {
+        "identifier": "bsd-simplified_50.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "bsd-simplified",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_50.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Licence BSD-2-Clause"
+      },
+      {
+        "identifier": "bsd-simplified_9.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 193,
+        "license_expression": "bsd-simplified",
+        "minimum_coverage": 96,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_9.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "The BSD 2-Clause license is as follows:\n\n        \"Redistribution and use in source and binary forms, with or\n        without modification, are permitted provided that the\n        following conditions are met:\n\n        1. Redistributions of source code must retain the above\n        copyright notice, this list of conditions and the following\n        disclaimer.\n\n        2. Redistributions in binary form must reproduce the above\n        copyright notice, this list of conditions and the following\n        disclaimer in the documentation and/or other materials\n        provided with the distribution.\n\n        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND\n        CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES,\n        INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF\n        MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\n        DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR\n        CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\n        SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT\n        NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n        LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)\n        HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN\n        CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR\n        OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,\n        EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\""
+      },
+      {
+        "identifier": "mit_126.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_126.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT Licensed"
+      },
+      {
+        "identifier": "spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "bsd-simplified",
+        "minimum_coverage": 100,
+        "notes": "Used to detect a bare SPDX license id",
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "BSD-2-Clause"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/espree/11.2.0",
+        "bug_tracking_url": "https://github.com/eslint/js/issues",
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "bsd-simplified",
+        "declared_license_expression_spdx": "BSD-2-Clause",
+        "description": "An Esprima-compatible JavaScript parser built on Acorn",
+        "download_url": "https://registry.npmjs.org/espree/-/espree-11.2.0.tgz",
+        "extra_data": {
+          "engines": {
+            "node": "^20.19.0 || ^22.13.0 || >=24"
+          }
+        },
+        "extracted_license_statement": "- BSD-2-Clause\n",
+        "holder": null,
+        "homepage_url": "https://github.com/eslint/js/blob/main/packages/espree/README.md",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "acorn",
+          "ast",
+          "ecmascript",
+          "javascript",
+          "parser",
+          "syntax"
+        ],
+        "license_detections": [
+          {
+            "identifier": "bsd_simplified-7cacd81a-0bdb-1c32-cf2d-2250f633f213",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241/package/package.json",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "BSD-2-Clause",
+                "matcher": "1-hash",
+                "rule_identifier": "spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "espree",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "nicholas+npm@nczconsulting.com",
+            "name": "Nicholas C. Zakas",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/espree@11.2.0",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/espree/-/espree-11.2.0.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/espree",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/eslint/js.git",
+        "version": "11.2.0"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

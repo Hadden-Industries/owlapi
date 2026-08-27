@@ -1,0 +1,816 @@
+{
+  "artifactId": "ce2f1956c16c50520275593850cef9cfde2b76729f1340a3172fb7648dd0616d",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 6,
+      "digestVerifiedFileCount": 6,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 6
+    },
+    "artifactId": "ce2f1956c16c50520275593850cef9cfde2b76729f1340a3172fb7648dd0616d",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "4.17.0",
+        "for_package_purl": "pkg:npm/semver@6.3.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40npmcli/template-oss",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^12.7.0",
+        "for_package_purl": "pkg:npm/semver@6.3.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/tap",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "GitHub Inc",
+            "end_line": 32,
+            "start_line": 32
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "isc",
+        "detected_license_expression_spdx": "ISC",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/semver@6.3.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "isc-8444467e-911b-70d7-8f49-a86dcf33ac8f",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "matches": [
+              {
+                "end_line": 19,
+                "from_file": "ce2f1956c16c50520275593850cef9cfde2b76729f1340a3172fb7648dd0616d/package/package.json",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"ISC\",",
+                "matcher": "2-aho",
+                "rule_identifier": "isc_38.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_38.RULE",
+                "score": 100,
+                "start_line": 19
+              }
+            ]
+          }
+        ],
+        "md5": "c512c8430c4f6a34d7276537800f31d6",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/semver/6.3.1",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "isc",
+            "declared_license_expression_spdx": "ISC",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "4.17.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40npmcli/template-oss",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^12.7.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/tap",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "The semantic version parser used by npm.",
+            "download_url": "https://registry.npmjs.org/semver/-/semver-6.3.1.tgz",
+            "extra_data": {},
+            "extracted_license_statement": "- ISC\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [
+              {
+                "identifier": "isc-6c4320cc-eb5b-3792-8c56-b8565fff1119",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "ce2f1956c16c50520275593850cef9cfde2b76729f1340a3172fb7648dd0616d/package/package.json",
+                    "license_expression": "isc",
+                    "license_expression_spdx": "ISC",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "ISC",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "semver",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": null,
+                "name": "GitHub Inc.",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/semver@6.3.1",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/semver/-/semver-6.3.1.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/semver",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/npm/node-semver.git",
+            "version": "6.3.1"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 1.72,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "d91947b266fe307993ed51d6a5abbcf5b275162c",
+        "sha1_git": "6b970a629ffe81d300d6b0469fa9b1992ca24c8e",
+        "sha256": "aa906c5bf8a2fa68683cae07d18553ae2538ed0d5a567911980b2ef25ee8b9ba",
+        "size": 981,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Isaac Z. Schlueter and Contributors",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "isc",
+        "detected_license_expression_spdx": "ISC",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/semver@6.3.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Isaac Z. Schlueter and Contributors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "isc-90dc51e4-d418-5a40-d42f-6b015cf53d02",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "ce2f1956c16c50520275593850cef9cfde2b76729f1340a3172fb7648dd0616d/package/LICENSE",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "The ISC License",
+                "matcher": "2-aho",
+                "rule_identifier": "isc_22.RULE",
+                "rule_relevance": 99,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_22.RULE",
+                "score": 99,
+                "start_line": 1
+              },
+              {
+                "end_line": 15,
+                "from_file": "ce2f1956c16c50520275593850cef9cfde2b76729f1340a3172fb7648dd0616d/package/LICENSE",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 112,
+                "matched_text": "Permission to use, copy, modify, and/or distribute this software for any\npurpose with or without fee is hereby granted, provided that the above\ncopyright notice and this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\nMERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR\nIN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "isc.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+                "score": 100,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "82703a69f6d7411dde679954c2fd9dca",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 93.44,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "bb408e929caeb1731945b2ba54bc337edb87cc66",
+        "sha1_git": "19129e315fe593965a2fdd50ec0d1253bcbd2ece",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [
+          {
+            "copyright": "Copyright Isaac Z. Schlueter",
+            "end_line": 34,
+            "start_line": 34
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/semver@6.3.1"
+        ],
+        "holders": [
+          {
+            "end_line": 34,
+            "holder": "Isaac Z. Schlueter",
+            "start_line": 34
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "c95b268486d7db4ee3ea2f3f045bd7ff",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "478f6554952838cf9b0c45250babc5400279fd0e",
+        "sha1_git": "2293a14fdc3579558dbe9fbc50aa549657948c3e",
+        "sha256": "c7d817091c6747e4f4fb7006bf60bd2040fd955ab7c37520f834c2af265876c6",
+        "size": 16974,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "range",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".bnf",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/semver@6.3.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "76d83b46734a4604da9df9998fe7d19e",
+        "name": "range.bnf",
+        "package_data": [],
+        "path": "package/range.bnf",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "5c6f063e0ec60f2d04686f73a12ba5f389988a2b",
+        "sha1_git": "d4c6ae0d76c9ac0c10c93062e5ff9cec277b07cd",
+        "sha256": "ed628fdaff64be366d07f6cc4559eae4de109826f743ea7f5e1588c370bca49a",
+        "size": 619,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "semver",
+        "copyrights": [
+          {
+            "copyright": "Copyright Isaac Z. Schlueter",
+            "end_line": 131,
+            "start_line": 131
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/semver@6.3.1"
+        ],
+        "holders": [
+          {
+            "end_line": 131,
+            "holder": "Isaac Z. Schlueter",
+            "start_line": 131
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "eb4e282d94eb3fc0cd83014b7ceebf41",
+        "name": "semver.js",
+        "package_data": [],
+        "path": "package/bin/semver.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "562a909c318904cf379778a9ba3b1c0e865b0fc7",
+        "sha1_git": "666034a75d8442be9bb2d9c55c3909b55a093cb5",
+        "sha256": "a3ed56435cbd4b3f07a80c4a343edd86d787f89bf2cee0105bdf68cb653ba2a0",
+        "size": 4717,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "semver",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/semver@6.3.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "c1f4573d2526cdbbbc4f2f658dc951f7",
+        "name": "semver.js",
+        "package_data": [],
+        "path": "package/semver.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "9821c250906ae29fe33e6b7dcd2114d84293d2e9",
+        "sha1_git": "39319c13cac27d65d88d34dac95470a6494a0dae",
+        "sha256": "d89ed53251e85463bf4300ae9a3e258dc75eb73eb2820d524bd05f4451bed3d4",
+        "size": 44287,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "isc-6c4320cc-eb5b-3792-8c56-b8565fff1119",
+        "license_expression": "isc",
+        "license_expression_spdx": "ISC",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "ce2f1956c16c50520275593850cef9cfde2b76729f1340a3172fb7648dd0616d/package/package.json",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "ISC",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "isc-8444467e-911b-70d7-8f49-a86dcf33ac8f",
+        "license_expression": "isc",
+        "license_expression_spdx": "ISC",
+        "reference_matches": [
+          {
+            "end_line": 19,
+            "from_file": "ce2f1956c16c50520275593850cef9cfde2b76729f1340a3172fb7648dd0616d/package/package.json",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "  \"license\": \"ISC\",",
+            "matcher": "2-aho",
+            "rule_identifier": "isc_38.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_38.RULE",
+            "score": 100,
+            "start_line": 19
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "isc-90dc51e4-d418-5a40-d42f-6b015cf53d02",
+        "license_expression": "isc",
+        "license_expression_spdx": "ISC",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "ce2f1956c16c50520275593850cef9cfde2b76729f1340a3172fb7648dd0616d/package/LICENSE",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "The ISC License",
+            "matcher": "2-aho",
+            "rule_identifier": "isc_22.RULE",
+            "rule_relevance": 99,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_22.RULE",
+            "score": 99,
+            "start_line": 1
+          },
+          {
+            "end_line": 15,
+            "from_file": "ce2f1956c16c50520275593850cef9cfde2b76729f1340a3172fb7648dd0616d/package/LICENSE",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 112,
+            "matched_text": "Permission to use, copy, modify, and/or distribute this software for any\npurpose with or without fee is hereby granted, provided that the above\ncopyright notice and this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\nMERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR\nIN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "isc.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+            "score": 100,
+            "start_line": 5
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "https://www.isc.org/licenses/",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "isc",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/isc",
+        "minimum_coverage": 0,
+        "name": "ISC License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://opensource.org/licenses/isc-license.txt",
+        "other_spdx_license_keys": [],
+        "other_urls": [
+          "http://openbsd.wikia.com/wiki/OpenBSD%27s_BSD_license",
+          "http://www.isc.org/software/license",
+          "http://www.opensource.org/licenses/ISC",
+          "https://opensource.org/licenses/ISC",
+          "https://www.isc.org/downloads/software-support-policy/isc-license/",
+          "https://www.isc.org/isc-license-1.0.html",
+          "https://www.isc.org/software/license"
+        ],
+        "owner": "ISC - Internet Systems Consortium",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+        "short_name": "ISC License",
+        "spdx_license_key": "ISC",
+        "spdx_url": "https://spdx.org/licenses/ISC",
+        "standard_notice": null,
+        "text": "Permission to use, copy, modify, and/or distribute this software for any purpose\nwith or without fee is hereby granted, provided that the above copyright notice\nand this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH\nREGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND\nFITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS\nOF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER\nTORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF\nTHIS SOFTWARE.",
+        "text_urls": [
+          "http://fedoraproject.org/wiki/Licensing:MIT#Old_Style_with_legal_disclaimer_2",
+          "http://openbsd.wikia.com/wiki/OpenBSD%27s_BSD_license",
+          "http://opensource.org/licenses/isc-license.txt",
+          "https://www.isc.org/software/license"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "isc.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 112,
+        "license_expression": "isc",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission to use, copy, modify, and/or distribute this software for any purpose\nwith or without fee is hereby granted, provided that the above copyright notice\nand this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH\nREGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND\nFITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS\nOF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER\nTORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF\nTHIS SOFTWARE."
+      },
+      {
+        "identifier": "isc_22.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "isc",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 99,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_22.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "ISC License"
+      },
+      {
+        "identifier": "isc_38.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "isc",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_38.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "\"license\": \"ISC\","
+      },
+      {
+        "identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "isc",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "ISC"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/semver/6.3.1",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "isc",
+        "declared_license_expression_spdx": "ISC",
+        "description": "The semantic version parser used by npm.",
+        "download_url": "https://registry.npmjs.org/semver/-/semver-6.3.1.tgz",
+        "extra_data": {},
+        "extracted_license_statement": "- ISC\n",
+        "holder": null,
+        "homepage_url": null,
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [],
+        "license_detections": [
+          {
+            "identifier": "isc-6c4320cc-eb5b-3792-8c56-b8565fff1119",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "ce2f1956c16c50520275593850cef9cfde2b76729f1340a3172fb7648dd0616d/package/package.json",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "ISC",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "semver",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": null,
+            "name": "GitHub Inc.",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/semver@6.3.1",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/semver/-/semver-6.3.1.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/semver",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/npm/node-semver.git",
+        "version": "6.3.1"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

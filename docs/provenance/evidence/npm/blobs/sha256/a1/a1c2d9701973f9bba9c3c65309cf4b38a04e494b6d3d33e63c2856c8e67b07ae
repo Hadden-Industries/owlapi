@@ -1,0 +1,121 @@
+{
+  "artifactId": "520b7f03e23d0ce80baa2943bdb7956354124045a9777143a238616c48e0ba13",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1840,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "5b71418af9a4923df0089934452cbae57643dfc4e480552be8b49192616181f3",
+        "size": 621,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "15a1a6b9f2a2d6d85f5de10ad3d6eb25fe4ca0db0397bc8e2dd89361780a1925",
+        "size": 289,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "2795b8bbe7a17e6e28a9766399073b3fa353b421256ad204f496b42c045c536c",
+        "size": 576,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "23198c3275e33646d9fab1f1e909c3f84a77e4131341c10b1049264a587b1aca",
+        "size": 912,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 912,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/23/23198c3275e33646d9fab1f1e909c3f84a77e4131341c10b1049264a587b1aca",
+          "sha256": "23198c3275e33646d9fab1f1e909c3f84a77e4131341c10b1049264a587b1aca"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "23198c3275e33646d9fab1f1e909c3f84a77e4131341c10b1049264a587b1aca",
+        "size": 912
+      }
+    ],
+    "expandedBytes": 3507,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "slash",
+      "repository": "sindresorhus/slash",
+      "version": "3.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "description": "Convert Windows backslash paths to slash paths",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "tsd": "^0.7.2",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "path",
+        "seperator",
+        "slash",
+        "backslash",
+        "windows",
+        "convert"
+      ],
+      "license": "MIT",
+      "name": "slash",
+      "repository": "sindresorhus/slash",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "3.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 1840,
+      "sha256": "f29a17d14b334511cf6f862bfe8a56b690a1d0291c2d264a25ca6f06b4a85d07"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

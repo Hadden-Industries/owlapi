@@ -1,0 +1,871 @@
+{
+  "artifactId": "83bae733166e89911a249910a8c5a373b414c8b4dfbc969786e5e1c4736c7c24",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 4,
+      "digestVerifiedFileCount": 4,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 4
+    },
+    "artifactId": "83bae733166e89911a249910a8c5a373b414c8b4dfbc969786e5e1c4736c7c24",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "24.7.1",
+        "for_package_purl": "pkg:npm/moo@0.5.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/jest",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "4.2.0",
+        "for_package_purl": "pkg:npm/moo@0.5.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/chevrotain",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.1.4",
+        "for_package_purl": "pkg:npm/moo@0.5.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/remix",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.8.0",
+        "for_package_purl": "pkg:npm/moo@0.5.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/lexing",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.7.9",
+        "for_package_purl": "pkg:npm/moo@0.5.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/lex",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.0.0",
+        "for_package_purl": "pkg:npm/moo@0.5.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/tokenizer2",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.2.0",
+        "for_package_purl": "pkg:npm/moo@0.5.3",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/benchr",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Tim Radvan <tim@tjvr.org>",
+            "end_line": 10,
+            "start_line": 10
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/moo@0.5.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-008266ae-6939-ad31-3617-228b0809863c",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 14,
+                "from_file": "83bae733166e89911a249910a8c5a373b414c8b4dfbc969786e5e1c4736c7c24/package/package.json",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "  \"license\": \"BSD-3-Clause\",",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_195.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+                "score": 100,
+                "start_line": 14
+              }
+            ]
+          }
+        ],
+        "md5": "a691675c6281e738067a61f4b7fe8d79",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/moo/0.5.3",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "bsd-new",
+            "declared_license_expression_spdx": "BSD-3-Clause",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "24.7.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/jest",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "4.2.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/chevrotain",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.1.4",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/remix",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.8.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/lexing",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.7.9",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/lex",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/tokenizer2",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.2.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/benchr",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "Optimised tokenizer/lexer generator! 🐄 Much performance. Moo!",
+            "download_url": "https://registry.npmjs.org/moo/-/moo-0.5.3.tgz",
+            "extra_data": {},
+            "extracted_license_statement": "- BSD-3-Clause\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [
+              {
+                "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "83bae733166e89911a249910a8c5a373b414c8b4dfbc969786e5e1c4736c7c24/package/package.json",
+                    "license_expression": "bsd-new",
+                    "license_expression_spdx": "BSD-3-Clause",
+                    "match_coverage": 100,
+                    "matched_length": 3,
+                    "matched_text": "BSD-3-Clause",
+                    "matcher": "1-hash",
+                    "rule_identifier": "bsd-new_10.RULE",
+                    "rule_relevance": 100,
+                    "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "moo",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "tim@tjvr.org",
+                "name": "Tim Radvan",
+                "role": "author",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": null,
+                "name": "Nathan",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/moo@0.5.3",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/moo/-/moo-0.5.3.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/moo",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "https://github.com/tjvr/moo.git",
+            "version": "0.5.3"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 5.13,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "b423d4a21a999990018df17cad9eea30fba3bed7",
+        "sha1_git": "2eaf974add47e85fc3a7a7c70f961cd9eb113bbb",
+        "sha256": "a719c6f773d723c3479a1a521b6db0fbcb571c3b59d5381c104b88d1ab05021d",
+        "size": 648,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017, Tim Radvan (tjvr)",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/moo@0.5.3"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Tim Radvan (tjvr)",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-5be47247-8ec7-7f95-1b90-0aaa3275e0c2",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 29,
+                "from_file": "83bae733166e89911a249910a8c5a373b414c8b4dfbc969786e5e1c4736c7c24/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 213,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the name of the copyright holder nor the names of its\n  contributors may be used to endorse or promote products derived from\n  this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_577.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_577.RULE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          },
+          {
+            "identifier": "bsd_new-c2abb3db-3401-d656-f33d-6a58cd6a3f85",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "83bae733166e89911a249910a8c5a373b414c8b4dfbc969786e5e1c4736c7c24/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "BSD 3-Clause License",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_required_phrase_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_required_phrase_14.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": "c7a00c403f1e60e1dde7da19cd846abe",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 96.02,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "5077562209bd4a28c03c408611d84f341d2f1633",
+        "sha1_git": "3810d823c85f70e3916ae2e0945f7dc6127aeed9",
+        "sha256": "db0b57e1acff55e7283e4de70069ef7c92524ce055bebb9a9795ebb9e97e6cb1",
+        "size": 1517,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/moo@0.5.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "69fdc5c1c5b26f30e1daecfd1f2aa1ae",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "ac2cd778023c911448d9b88878863f4374be21a7",
+        "sha1_git": "e2378f1f949ccc1f8c0641935447902003828360",
+        "sha256": "572a992b43fa0fb44f31913f8780be5c54dc8d1a4b455a7e1bc5796add53880c",
+        "size": 11976,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "moo",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/moo@0.5.3"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "28040dfa75a3b0bba91970adcfb7b1ad",
+        "name": "moo.js",
+        "package_data": [],
+        "path": "package/moo.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "3ef0b05adc40663b9ea6ecee575eec2138cc08f9",
+        "sha1_git": "0a123dba108e78044b870579ea53c95d0203fb4a",
+        "sha256": "71bd0199863a2a2a6c067eaa385c55323ac196df886cbd059d90d968626b73a0",
+        "size": 18663,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-008266ae-6939-ad31-3617-228b0809863c",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 14,
+            "from_file": "83bae733166e89911a249910a8c5a373b414c8b4dfbc969786e5e1c4736c7c24/package/package.json",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "  \"license\": \"BSD-3-Clause\",",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_195.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+            "score": 100,
+            "start_line": 14
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "83bae733166e89911a249910a8c5a373b414c8b4dfbc969786e5e1c4736c7c24/package/package.json",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "BSD-3-Clause",
+            "matcher": "1-hash",
+            "rule_identifier": "bsd-new_10.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-5be47247-8ec7-7f95-1b90-0aaa3275e0c2",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 29,
+            "from_file": "83bae733166e89911a249910a8c5a373b414c8b4dfbc969786e5e1c4736c7c24/package/LICENSE",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 213,
+            "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the name of the copyright holder nor the names of its\n  contributors may be used to endorse or promote products derived from\n  this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_577.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_577.RULE",
+            "score": 100,
+            "start_line": 6
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-c2abb3db-3401-d656-f33d-6a58cd6a3f85",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "83bae733166e89911a249910a8c5a373b414c8b4dfbc969786e5e1c4736c7c24/package/LICENSE",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "BSD 3-Clause License",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_required_phrase_14.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_required_phrase_14.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "http://www.opensource.org/licenses/BSD-3-Clause",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "bsd-new",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/bsd-new",
+        "minimum_coverage": 0,
+        "name": "BSD-3-Clause",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": "BSD-3-Clause",
+        "osi_url": "http://www.opensource.org/licenses/BSD-3-Clause",
+        "other_spdx_license_keys": [
+          "LicenseRef-scancode-libzip"
+        ],
+        "other_urls": [
+          "http://framework.zend.com/license/new-bsd",
+          "https://opensource.org/licenses/BSD-3-Clause",
+          "https://www.eclipse.org/org/documents/edl-v10.php"
+        ],
+        "owner": "Regents of the University of California",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-new.LICENSE",
+        "short_name": "BSD-3-Clause",
+        "spdx_license_key": "BSD-3-Clause",
+        "spdx_url": "https://spdx.org/licenses/BSD-3-Clause",
+        "standard_notice": null,
+        "text": "Redistribution and use in source and binary forms, with or without modification,\nare permitted provided that the following conditions are met:\n\nRedistributions of source code must retain the above copyright notice, this list\nof conditions and the following disclaimer.\n\nRedistributions in binary form must reproduce the above copyright notice, this\nlist of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.\n\nNeither the name of the ORGANIZATION nor the names of its contributors may be\nused to endorse or promote products derived from this software without specific\nprior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,\nTHE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\nARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS\nBE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR\nCONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE\nGOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)\nHOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT\nLIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF\nTHE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+        "text_urls": [
+          "http://www.opensource.org/licenses/BSD-3-Clause"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "bsd-new_10.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "BSD-3-Clause"
+      },
+      {
+        "identifier": "bsd-new_195.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: BSD-3-Clause"
+      },
+      {
+        "identifier": "bsd-new_577.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 213,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_577.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the name of the copyright holder nor the names of its\n  contributors may be used to endorse or promote products derived from\n  this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+      },
+      {
+        "identifier": "bsd-new_required_phrase_14.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_required_phrase_14.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "BSD 3-clause licence"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/moo/0.5.3",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "bsd-new",
+        "declared_license_expression_spdx": "BSD-3-Clause",
+        "description": "Optimised tokenizer/lexer generator! 🐄 Much performance. Moo!",
+        "download_url": "https://registry.npmjs.org/moo/-/moo-0.5.3.tgz",
+        "extra_data": {},
+        "extracted_license_statement": "- BSD-3-Clause\n",
+        "holder": null,
+        "homepage_url": null,
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "83bae733166e89911a249910a8c5a373b414c8b4dfbc969786e5e1c4736c7c24/package/package.json",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "BSD-3-Clause",
+                "matcher": "1-hash",
+                "rule_identifier": "bsd-new_10.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "moo",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "tim@tjvr.org",
+            "name": "Tim Radvan",
+            "role": "author",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": null,
+            "name": "Nathan",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/moo@0.5.3",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/moo/-/moo-0.5.3.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/moo",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "https://github.com/tjvr/moo.git",
+        "version": "0.5.3"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

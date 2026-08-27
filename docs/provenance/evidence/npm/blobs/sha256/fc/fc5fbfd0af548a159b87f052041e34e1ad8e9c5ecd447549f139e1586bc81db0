@@ -1,0 +1,219 @@
+{
+  "artifactId": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 35340,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "6cb0631f71c7749763fd3dd1d5bee52dd1070ec17f2edc1710079ad070bd2fbd",
+        "size": 1526,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "8e1a57daf01cd2fc8969ecd0afeae51d1c05c7c79e9413ea82016a0f65e97646",
+        "size": 26040,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/array-set.js",
+        "sha256": "163bb3055aaea7140167740036a83161fd912c344b14f992754b80f21477d754",
+        "size": 3197,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/base64-vlq.js",
+        "sha256": "f3407e528f54ec0787bd0a71eeac0c99fffd98445916fcbe116dc69ca3be928b",
+        "size": 4714,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/base64.js",
+        "sha256": "651bf433cf05e9ec8cee0b94639483236a605d48279e83d3d5c5de81c21d6599",
+        "size": 1540,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/binary-search.js",
+        "sha256": "c7f4a47a125af0bd860443dfd71d2f412d1a97dcb53ab7038189d63b91dc32bd",
+        "size": 4249,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/mapping-list.js",
+        "sha256": "35ddb82861f11a70ab84cb47d620fcb28d7f884bb444644e06bde815b836ef9e",
+        "size": 2339,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/quick-sort.js",
+        "sha256": "72ed4911cdc72232cac53cac995e28e865cd4302186173bba74ff6436c089915",
+        "size": 4068,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/source-map-consumer.d.ts",
+        "sha256": "2ca1c32e3bd72c64662adf034d97df8606ba1e1399cafc75567809ecff4bca95",
+        "size": 40,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/source-map-consumer.js",
+        "sha256": "78f7a8f6d20f51a99a9cbd8d552321b1a72de9b9fb9c39dbeb27dc84eb2eade5",
+        "size": 41580,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/source-map-generator.d.ts",
+        "sha256": "11f9b1e28747ca9cf5f4f7d41a7f261ac98ecde6be7dc146824fa275ac1f169d",
+        "size": 41,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/source-map-generator.js",
+        "sha256": "645482e8d23fd49cd025a0ad07c2e2beb173995138370d6a73e596e18e889bd8",
+        "size": 14933,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/source-node.d.ts",
+        "sha256": "e4a2e40e293158fb2ab29aadb9eaa6400c8d9be5851d45a95a76f9e2a4bb7c8b",
+        "size": 33,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/source-node.js",
+        "sha256": "b45db8183550ca1e6259976f6ceee89f6764360c56cf206701bd2f7471144e31",
+        "size": 13808,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util.js",
+        "sha256": "0629f3ae2f3049cda3a2e87ea651dcf0cc71108f4681795ab989a8ac1573fc03",
+        "size": 15403,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "58f8e94a461a5e461e0cb2bb2be681cbd89b9181989fd26fceb858e67711469a",
+        "size": 2548,
+        "type": "FILE"
+      },
+      {
+        "path": "package/source-map.d.ts",
+        "sha256": "402e5c534fb2b85fa771170595db3ac0dd532112c8fa44fc23f233bc6967488b",
+        "size": 3408,
+        "type": "FILE"
+      },
+      {
+        "path": "package/source-map.js",
+        "sha256": "dc098456c2d9ab90a4c0a17cca9be16665b9813df20906553a98b0088a157be7",
+        "size": 405,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1526,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6c/6cb0631f71c7749763fd3dd1d5bee52dd1070ec17f2edc1710079ad070bd2fbd",
+          "sha256": "6cb0631f71c7749763fd3dd1d5bee52dd1070ec17f2edc1710079ad070bd2fbd"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "6cb0631f71c7749763fd3dd1d5bee52dd1070ec17f2edc1710079ad070bd2fbd",
+        "size": 1526
+      }
+    ],
+    "expandedBytes": 139872,
+    "packageIdentity": {
+      "author": "Valentin 7rulnik Semirulnik <v7rulnik@gmail.com>",
+      "homepage": "https://github.com/7rulnik/source-map-js",
+      "license": "BSD-3-Clause",
+      "name": "source-map-js",
+      "repository": "7rulnik/source-map-js",
+      "version": "1.2.1"
+    },
+    "packageMetadata": {
+      "author": "Valentin 7rulnik Semirulnik <v7rulnik@gmail.com>",
+      "clean-publish": {
+        "cleanDocs": true
+      },
+      "contributors": [
+        "Nick Fitzgerald <nfitzgerald@mozilla.com>",
+        "Tobias Koppers <tobias.koppers@googlemail.com>",
+        "Duncan Beevers <duncan@dweebd.com>",
+        "Stephen Crane <scrane@mozilla.com>",
+        "Ryan Seddon <seddon.ryan@gmail.com>",
+        "Miles Elam <miles.elam@deem.com>",
+        "Mihai Bazon <mihai.bazon@gmail.com>",
+        "Michael Ficarra <github.public.email@michael.ficarra.me>",
+        "Todd Wolfson <todd@twolfson.com>",
+        "Alexander Solovyov <alexander@solovyov.net>",
+        "Felix Gnass <fgnass@gmail.com>",
+        "Conrad Irwin <conrad.irwin@gmail.com>",
+        "usrbincc <usrbincc@yahoo.com>",
+        "David Glasser <glasser@davidglasser.net>",
+        "Chase Douglas <chase@newrelic.com>",
+        "Evan Wallace <evan.exe@gmail.com>",
+        "Heather Arthur <fayearthur@gmail.com>",
+        "Hugh Kennedy <hughskennedy@gmail.com>",
+        "David Glasser <glasser@davidglasser.net>",
+        "Simon Lydell <simon.lydell@gmail.com>",
+        "Jmeas Smith <jellyes2@gmail.com>",
+        "Michael Z Goddard <mzgoddard@gmail.com>",
+        "azu <azu@users.noreply.github.com>",
+        "John Gozde <john@gozde.ca>",
+        "Adam Kirkton <akirkton@truefitinnovation.com>",
+        "Chris Montgomery <christopher.montgomery@dowjones.com>",
+        "J. Ryan Stinnett <jryans@gmail.com>",
+        "Jack Herrington <jherrington@walmartlabs.com>",
+        "Chris Truter <jeffpalentine@gmail.com>",
+        "Daniel Espeset <daniel@danielespeset.com>",
+        "Jamie Wong <jamie.lf.wong@gmail.com>",
+        "Eddy Bruël <ejpbruel@mozilla.com>",
+        "Hawken Rives <hawkrives@gmail.com>",
+        "Gilad Peleg <giladp007@gmail.com>",
+        "djchie <djchie.dev@gmail.com>",
+        "Gary Ye <garysye@gmail.com>",
+        "Nicolas Lalevée <nicolas.lalevee@hibnet.org>"
+      ],
+      "description": "Generates and consumes source maps",
+      "devDependencies": {
+        "clean-publish": "^3.1.0",
+        "doctoc": "^0.15.0",
+        "webpack": "^1.12.0"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      },
+      "files": [
+        "source-map.js",
+        "source-map.d.ts",
+        "lib/"
+      ],
+      "homepage": "https://github.com/7rulnik/source-map-js",
+      "license": "BSD-3-Clause",
+      "main": "./source-map.js",
+      "name": "source-map-js",
+      "repository": "7rulnik/source-map-js",
+      "scripts": {
+        "build": "webpack --color",
+        "test": "npm run build && node test/run-tests.js",
+        "toc": "doctoc --title '## Table of Contents' README.md && doctoc --title '## Table of Contents' CONTRIBUTING.md"
+      },
+      "typings": "source-map.d.ts",
+      "version": "1.2.1"
+    },
+    "physicalEntryCount": 18,
+    "tarball": {
+      "bytes": 35340,
+      "sha256": "f126a6f9fca487a43219d8cb8c3a955279187a966119d548eb5cd47e999d4853"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

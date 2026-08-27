@@ -1,0 +1,137 @@
+{
+  "artifactId": "bd6235c17ad09afdd980450649d44d25a2a745b6a202363c5a14468423f9e217",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2646,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "542e37beab90b9e444ae1a1080650954df423358fcec3c9ed5c49048c1b311f6",
+        "size": 264,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.istanbul.yml",
+        "sha256": "7ebeb632ff066130491f51eb0b25a027fdb8bb73aee8c4755729c6602b96a950",
+        "size": 59,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.npmignore",
+        "sha256": "b159e1d78cfe9480d4c9d2d5af1a34b3b660c8afdc037445aacdce6ee9f71501",
+        "size": 52,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.travis.yml",
+        "sha256": "a6b31a677dafca4c8c968a4d798070dc86010f51fa7116f0f205170f4876bdd3",
+        "size": 988,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "92b07a2e5b0e051d37dde85042c736d6d551cfcbc0983f39d7ef903b3986bbc1",
+        "size": 1077,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "0915ef999ac468f9410e2214ccc1ab12e64eaac7a05595f71feb4a577bbdf196",
+        "size": 704,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "2b9860e6cb7fdc4edb7b31d893738d8631f52b7289ad74c7dd3b3d3ad79e4eb5",
+        "size": 204,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7598eefa3f8d75a42582eed0c3756c863984106147f63c7e7c088a8b31be7c19",
+        "size": 705,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1077,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/92/92b07a2e5b0e051d37dde85042c736d6d551cfcbc0983f39d7ef903b3986bbc1",
+          "sha256": "92b07a2e5b0e051d37dde85042c736d6d551cfcbc0983f39d7ef903b3986bbc1"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "92b07a2e5b0e051d37dde85042c736d6d551cfcbc0983f39d7ef903b3986bbc1",
+        "size": 1077
+      },
+      {
+        "blob": {
+          "bytes": 704,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/09/0915ef999ac468f9410e2214ccc1ab12e64eaac7a05595f71feb4a577bbdf196",
+          "sha256": "0915ef999ac468f9410e2214ccc1ab12e64eaac7a05595f71feb4a577bbdf196"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "0915ef999ac468f9410e2214ccc1ab12e64eaac7a05595f71feb4a577bbdf196",
+        "size": 704
+      }
+    ],
+    "expandedBytes": 4053,
+    "packageIdentity": {
+      "author": "Qix (http://github.com/qix-)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "is-arrayish",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/qix-/node-is-arrayish.git"
+      },
+      "version": "0.2.1"
+    },
+    "packageMetadata": {
+      "author": "Qix (http://github.com/qix-)",
+      "description": "Determines if an object can be used as an array",
+      "devDependencies": {
+        "coffee-script": "^1.9.3",
+        "coveralls": "^2.11.2",
+        "istanbul": "^0.3.17",
+        "mocha": "^2.2.5",
+        "should": "^7.0.1",
+        "xo": "^0.6.1"
+      },
+      "keywords": [
+        "is",
+        "array",
+        "duck",
+        "type",
+        "arrayish",
+        "similar",
+        "proto",
+        "prototype",
+        "type"
+      ],
+      "license": "MIT",
+      "name": "is-arrayish",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/qix-/node-is-arrayish.git"
+      },
+      "scripts": {
+        "pretest": "xo",
+        "test": "mocha --compilers coffee:coffee-script/register"
+      },
+      "version": "0.2.1"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 2646,
+      "sha256": "848d15d93e447897263a654c114c8e45c340ce7fdc1bc86e7a44a4c44f27e38c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,232 @@
+{
+  "artifactId": "c0d0aa67c20ff84ed309bfc4f5413a1757d39906e46f07b99d1a58bf47ef3c27",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6296,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a",
+        "size": 1101,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "372394886b8b5100e7a03ac156f778865ba6a01a364dbee22d97b18c06524f59",
+        "size": 1260,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "0c792fa4c43a481ad152c20cf828636f0ffa9600e1b5da7868b8689bbdca7251",
+        "size": 1098,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts.map",
+        "sha256": "29ec07cece99add366246c658709d4076e2111aa9e9aef158689921428815dc7",
+        "size": 983,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "0c15d5e2adb59bab586ee4959e4b58c4e68418044924065714f0d7c565465bbe",
+        "size": 5516,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js.map",
+        "sha256": "deb7be553e73d70b316ca120e6bab1a8b99a2212ff73ab2a816772fe50d33e21",
+        "size": 4885,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "727412a5f08e72b6097b6d16b64b151dbb45baca9742e251492fab862b11a688",
+        "size": 3152,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1101,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8d/8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a",
+          "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a",
+        "size": 1101
+      }
+    ],
+    "expandedBytes": 17995,
+    "packageIdentity": {
+      "author": {
+        "email": "nathan@tootallnate.net",
+        "name": "Nathan Rajlich",
+        "url": "http://n8.io/"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "socks-proxy-agent",
+      "repository": {
+        "directory": "packages/socks-proxy-agent",
+        "type": "git",
+        "url": "https://github.com/TooTallNate/proxy-agents.git"
+      },
+      "version": "10.1.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "nathan@tootallnate.net",
+        "name": "Nathan Rajlich",
+        "url": "http://n8.io/"
+      },
+      "contributors": [
+        {
+          "email": "josefrancisco.verdu@gmail.com",
+          "name": "Kiko Beats"
+        },
+        {
+          "email": "josh@joshglazebrook.com",
+          "name": "Josh Glazebrook"
+        },
+        {
+          "email": "talmobi@users.noreply.github.com",
+          "name": "talmobi"
+        },
+        {
+          "email": "justin@indospace.io",
+          "name": "Indospace.io"
+        },
+        {
+          "email": "github@jumoog.io",
+          "name": "Kilian von Pflugk"
+        },
+        {
+          "email": "admin@hk1229.cn",
+          "name": "Kyle"
+        },
+        {
+          "email": "matheus.frndes@gmail.com",
+          "name": "Matheus Fernandes"
+        },
+        {
+          "email": "richardkazuomiller@gmail.com",
+          "name": "Ricky Miller"
+        },
+        {
+          "email": "shantanu34@outlook.com",
+          "name": "Shantanu Sharma"
+        },
+        {
+          "email": "pimterry@gmail.com",
+          "name": "Tim Perry"
+        },
+        {
+          "email": "vadimbaryshev@gmail.com",
+          "name": "Vadim Baryshev"
+        },
+        {
+          "email": "luo1257857309@gmail.com",
+          "name": "jigu"
+        },
+        {
+          "email": "me@jmendeth.com",
+          "name": "Alba Mendez"
+        },
+        {
+          "email": "Dimangud@rambler.ru",
+          "name": "Дмитрий Гуденков"
+        },
+        {
+          "email": "63638922+andrei-bitca-dc@users.noreply.github.com",
+          "name": "Andrei Bitca"
+        },
+        {
+          "email": "amcasey@users.noreply.github.com",
+          "name": "Andrew Casey"
+        },
+        {
+          "email": "brandonros1@gmail.com",
+          "name": "Brandon Ros"
+        },
+        {
+          "email": "thanhdd.it@gmail.com",
+          "name": "Dang Duy Thanh"
+        },
+        {
+          "email": "8790386+dimitarnestorov@users.noreply.github.com",
+          "name": "Dimitar Nestorov"
+        }
+      ],
+      "dependencies": {
+        "agent-base": "9.0.0",
+        "debug": "^4.3.4",
+        "socks": "^2.8.3"
+      },
+      "description": "A SOCKS proxy `http.Agent` implementation for HTTP and HTTPS",
+      "devDependencies": {
+        "@types/async-retry": "^1.4.5",
+        "@types/debug": "^4.1.7",
+        "@types/dns2": "^2.0.3",
+        "@types/node": "^22.13.0",
+        "async-listen": "^3.0.0",
+        "async-retry": "^1.3.3",
+        "cacheable-lookup": "^6.1.0",
+        "dns2": "^2.1.0",
+        "proxy": "4.1.0",
+        "socksv5": "github:TooTallNate/socksv5#d937368b28e929396166d77a06d387a4a902bd51",
+        "tsconfig": "0.0.0",
+        "typescript": "^5.1.6"
+      },
+      "engines": {
+        "node": ">= 20"
+      },
+      "exports": {
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      },
+      "files": [
+        "dist"
+      ],
+      "keywords": [
+        "agent",
+        "http",
+        "https",
+        "proxy",
+        "socks",
+        "socks4",
+        "socks4a",
+        "socks5",
+        "socks5h"
+      ],
+      "license": "MIT",
+      "name": "socks-proxy-agent",
+      "repository": {
+        "directory": "packages/socks-proxy-agent",
+        "type": "git",
+        "url": "https://github.com/TooTallNate/proxy-agents.git"
+      },
+      "scripts": {
+        "build": "tsc",
+        "lint": "eslint . --ext .ts",
+        "pack": "node ../../scripts/pack.mjs",
+        "test": "vitest --exclude test/e2e.test.ts",
+        "test-e2e": "vitest run test/e2e.test.ts"
+      },
+      "type": "module",
+      "version": "10.1.0"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 6296,
+      "sha256": "476155b5c3dfcfdf81d681e1fd85662a0a44c2a8c87ef2201d7ee36ae8e5aac1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

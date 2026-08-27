@@ -1,0 +1,181 @@
+{
+  "artifactId": "cc56c83218a6641cd05ecac434df8b660c90e07c9d6fb8ad9d8ee6720eebba0f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 21691,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "2ee10bcad50e60042e97aea2d25a65488872ad2c1e329c70d7908afcb2bd7650",
+        "size": 299,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "4320bfb069385c62aa85dceb212ef0e8337d86f5d0a7af0006f7cd3db99fbd20",
+        "size": 6968,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "66801f82bcf05a14562be9d0aaeb11cc581d6d22f5e1847a4da1e4de82ef63fd",
+        "size": 13642,
+        "type": "FILE"
+      },
+      {
+        "path": "package/examples/is-default-value.js",
+        "sha256": "7554ac15fc2145520d15ab0832b45671204b377ad23c0c8bbcc86d481ca9537f",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/examples/limit-long-syntax.js",
+        "sha256": "92d07fcfe098ec3e8545ddc388871c54f167933ce34b3f25f1f3525c027c5c29",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/examples/negate.js",
+        "sha256": "c0a19806fabd2322a5e59c32acbf1b533730c7c63b6f2fa91ed234ac26acdb1d",
+        "size": 1314,
+        "type": "FILE"
+      },
+      {
+        "path": "package/examples/no-repeated-options.js",
+        "sha256": "feaf66321eae697f69998c24569ea713025571e9b59a9944a889002eb5183a66",
+        "size": 897,
+        "type": "FILE"
+      },
+      {
+        "path": "package/examples/ordered-options.mjs",
+        "sha256": "d7f8752ecd0a19749479e01cc5db812f04aca212897625331758084f6d43eb57",
+        "size": 1396,
+        "type": "FILE"
+      },
+      {
+        "path": "package/examples/simple-hard-coded.js",
+        "sha256": "6f67e0faca3925b7e024ae4787195e86f94d3a4e55541972d53188445bc289f3",
+        "size": 540,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "916086cc95f92a5466b66de57fea8e6494b16eadc9096137bb63c41ea71e64ae",
+        "size": 12936,
+        "type": "FILE"
+      },
+      {
+        "path": "package/internal/errors.js",
+        "sha256": "c6126bf159b366d692ebb61e54ad6741a9ad86eb5ab656dd5b72a7447cbe1d91",
+        "size": 1431,
+        "type": "FILE"
+      },
+      {
+        "path": "package/internal/primordials.js",
+        "sha256": "dd709222c125fc927a4d312cfae3c42415571bbeb5541fe325c83386209e6d3c",
+        "size": 11947,
+        "type": "FILE"
+      },
+      {
+        "path": "package/internal/util.js",
+        "sha256": "e62fead3fe9031877f4294ade32c692bdb01bc2baf58215f1e872bc86d3e4e83",
+        "size": 235,
+        "type": "FILE"
+      },
+      {
+        "path": "package/internal/validators.js",
+        "sha256": "d23c3ce849dc90ab15a615f75f883fc8b8c997b64ee2fdac457f88e55e0e23e7",
+        "size": 2243,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "c52af8cea1efc18fc306336d6ade5a1d8d9ccd8916a5d2246bc585a92635901e",
+        "size": 881,
+        "type": "FILE"
+      },
+      {
+        "path": "package/utils.js",
+        "sha256": "27348a8fd6ada65af0931fefc752849818eb8048b3667e719ee79e575dca70e9",
+        "size": 6251,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11357,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357
+      }
+    ],
+    "expandedBytes": 74173,
+    "packageIdentity": {
+      "author": "",
+      "homepage": "https://github.com/pkgjs/parseargs#readme",
+      "license": "MIT",
+      "name": "@pkgjs/parseargs",
+      "repository": {
+        "type": "git",
+        "url": "git@github.com:pkgjs/parseargs.git"
+      },
+      "version": "0.11.0"
+    },
+    "packageMetadata": {
+      "author": "",
+      "bugs": {
+        "url": "https://github.com/pkgjs/parseargs/issues"
+      },
+      "description": "Polyfill of future proposal for `util.parseArgs()`",
+      "devDependencies": {
+        "c8": "^7.10.0",
+        "eslint": "^8.2.0",
+        "eslint-plugin-node-core": "iansu/eslint-plugin-node-core",
+        "tape": "^5.2.2"
+      },
+      "engines": {
+        "node": ">=14"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./package.json": "./package.json"
+      },
+      "homepage": "https://github.com/pkgjs/parseargs#readme",
+      "keywords": [],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "@pkgjs/parseargs",
+      "repository": {
+        "type": "git",
+        "url": "git@github.com:pkgjs/parseargs.git"
+      },
+      "scripts": {
+        "coverage": "c8 --check-coverage tape 'test/*.js'",
+        "fix": "npm run posttest -- --fix",
+        "posttest": "eslint .",
+        "test": "c8 tape 'test/*.js'"
+      },
+      "version": "0.11.0"
+    },
+    "physicalEntryCount": 17,
+    "tarball": {
+      "bytes": 21691,
+      "sha256": "56b159ed7f5c2bc0df8516522fdea4966cb8708a017fbfa3e148cd9fc3367425"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

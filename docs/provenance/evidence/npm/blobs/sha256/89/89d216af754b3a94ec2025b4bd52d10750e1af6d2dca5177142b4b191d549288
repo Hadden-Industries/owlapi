@@ -1,0 +1,124 @@
+{
+  "artifactId": "19d7cd8bf0c9e466ba54079b60608ba63aac711c776c5784711b4a804c7482d1",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 30780,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.gitignore",
+        "sha256": "c1b3179df45eb7575b21ea2978181d01badec7860da74dda8f4124200ee1b69a",
+        "size": 264,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d1f73ac0d166bfbf0e3f4278d38a36f2f05efbb8288b668a51f664d15f42178f",
+        "size": 859,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "21c8904d1ce6960362bc6aa7261e3b371b8f203b60fcc57e1b54a701e96ec77d",
+        "size": 1785,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package-lock.json",
+        "sha256": "9e7c7fbfd01a99b8bce20f3ae9108bc9962d9cd5ba6b8bd7f2ec1c946e65a870",
+        "size": 117102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "55b337582c4192528f19eea2ababf77b18fe2ada15f346b25a2c1d276fec182b",
+        "size": 831,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/basic.js",
+        "sha256": "0dbb5775907943f43dee34e95b0850c209b1a2df3ee912b888f1b4eeec63cff8",
+        "size": 2259,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 123865,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (https://izs.me)",
+      "homepage": null,
+      "license": "ISC",
+      "name": "minipass-sized",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/minipass-sized.git"
+      },
+      "version": "1.0.3"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (https://izs.me)",
+      "dependencies": {
+        "minipass": "^3.0.0"
+      },
+      "description": "A Minipass stream that raises an error if you get a different number of bytes than expected",
+      "devDependencies": {
+        "tap": "^14.6.4"
+      },
+      "directories": {
+        "test": "test"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "keywords": [
+        "minipass",
+        "size",
+        "length"
+      ],
+      "license": "ISC",
+      "main": "index.js",
+      "name": "minipass-sized",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/minipass-sized.git"
+      },
+      "scripts": {
+        "postpublish": "git push origin --follow-tags",
+        "postversion": "npm publish",
+        "preversion": "npm test",
+        "snap": "tap",
+        "test": "tap"
+      },
+      "tap": {
+        "check-coverage": true
+      },
+      "version": "1.0.3"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 30780,
+      "sha256": "5ce2d8cb6515d69ce3fa0dbb8ccbe9958309b2045df91fd048207b7b0d1c30b5"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,128 @@
+{
+  "artifactId": "478bc5f1c67fa825aaa63998e3f1532c56b5c85bfcc0d8b405e84439c7355f5e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3154,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.github/FUNDING.yml",
+        "sha256": "a60eb4853d8b4fc34e7f729c6278176a34c1474748d2654a56cbd443da3643e7",
+        "size": 72,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/workflows/nodejs.yml",
+        "sha256": "a9a27c7bff7686df17b07c0fd92b568f63317d02a938e71958f2720f06e5bf61",
+        "size": 1133,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "dddddf170b975dc55422b4a7d852fb000b9088aea454730df07b36ebb40a8953",
+        "size": 1095,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "63c43739fd0ccca9bb83ceb32583977c658ffe4e42f294c9480adf11c7b4df93",
+        "size": 794,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4b1f1bf11d3f07fee0088df6c8ce749c98cf78823c1d5cb67ca6b7910eb77df1",
+        "size": 1789,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.js",
+        "sha256": "17aa4b0677b2b726647f353bb0c0030b6656b41623a15abc1b9ea1f7256409da",
+        "size": 2597,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1095,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dd/dddddf170b975dc55422b4a7d852fb000b9088aea454730df07b36ebb40a8953",
+          "sha256": "dddddf170b975dc55422b4a7d852fb000b9088aea454730df07b36ebb40a8953"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "dddddf170b975dc55422b4a7d852fb000b9088aea454730df07b36ebb40a8953",
+        "size": 1095
+      }
+    ],
+    "expandedBytes": 7480,
+    "packageIdentity": {
+      "author": {
+        "name": "Nicolò Ribaudo",
+        "url": "https://github.com/nicolo-ribaudo"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "babel-preset-current-node-syntax",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/nicolo-ribaudo/babel-preset-current-node-syntax.git"
+      },
+      "version": "1.2.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "Nicolò Ribaudo",
+        "url": "https://github.com/nicolo-ribaudo"
+      },
+      "dependencies": {
+        "@babel/plugin-syntax-async-generators": "^7.8.4",
+        "@babel/plugin-syntax-bigint": "^7.8.3",
+        "@babel/plugin-syntax-class-properties": "^7.12.13",
+        "@babel/plugin-syntax-class-static-block": "^7.14.5",
+        "@babel/plugin-syntax-import-attributes": "^7.24.7",
+        "@babel/plugin-syntax-import-meta": "^7.10.4",
+        "@babel/plugin-syntax-json-strings": "^7.8.3",
+        "@babel/plugin-syntax-logical-assignment-operators": "^7.10.4",
+        "@babel/plugin-syntax-nullish-coalescing-operator": "^7.8.3",
+        "@babel/plugin-syntax-numeric-separator": "^7.10.4",
+        "@babel/plugin-syntax-object-rest-spread": "^7.8.3",
+        "@babel/plugin-syntax-optional-catch-binding": "^7.8.3",
+        "@babel/plugin-syntax-optional-chaining": "^7.8.3",
+        "@babel/plugin-syntax-private-property-in-object": "^7.14.5",
+        "@babel/plugin-syntax-top-level-await": "^7.14.5"
+      },
+      "description": "A Babel preset that enables parsing of proposals supported by the current Node.js version.",
+      "devDependencies": {
+        "@babel/core": "7.25.2",
+        "@babel/core-8": "npm:@babel/core@^8.0.0-beta.1",
+        "@babel/parser-7.0.0": "npm:@babel/parser@7.0.0",
+        "@babel/parser-7.12.0": "npm:@babel/parser@7.12.0",
+        "@babel/parser-7.22.0": "npm:@babel/parser@7.22.0",
+        "@babel/parser-7.9.0": "npm:@babel/parser@7.9.0"
+      },
+      "license": "MIT",
+      "main": "src/index.js",
+      "name": "babel-preset-current-node-syntax",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0 || ^8.0.0-0"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/nicolo-ribaudo/babel-preset-current-node-syntax.git"
+      },
+      "scripts": {
+        "test": "node ./test/index.js"
+      },
+      "version": "1.2.0"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 3154,
+      "sha256": "37aa71f9650db96e783dfbb734705529246859bbbb62468eabd52f5fe953c379"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

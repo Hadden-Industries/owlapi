@@ -1,0 +1,100 @@
+{
+  "artifactId": "61d61387e57fbfd375052cea9dd47b963c622189ae1d901e0e5b5ccf007a7b8f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1979,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "43b6d72bb23aff98af3243ab7e8d23d9af339ec46cdbdc81ded537c9899fa650",
+        "size": 1772,
+        "type": "FILE"
+      },
+      {
+        "path": "package/once.js",
+        "sha256": "3db73e347ecbdbafdf8d0db85145c877e133f5372e767360ef90c09f70ac5103",
+        "size": 935,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "33840d74c14c94bfb75c76374765b635531b1eacb88d7f1f2f380c94d0ea1328",
+        "size": 574,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 4046,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "homepage": null,
+      "license": "ISC",
+      "name": "once",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/isaacs/once"
+      },
+      "version": "1.4.0"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "dependencies": {
+        "wrappy": "1"
+      },
+      "description": "Run a function exactly one time",
+      "devDependencies": {
+        "tap": "^7.0.1"
+      },
+      "directories": {
+        "test": "test"
+      },
+      "files": [
+        "once.js"
+      ],
+      "keywords": [
+        "once",
+        "function",
+        "one",
+        "single"
+      ],
+      "license": "ISC",
+      "main": "once.js",
+      "name": "once",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/isaacs/once"
+      },
+      "scripts": {
+        "test": "tap test/*.js"
+      },
+      "version": "1.4.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1979,
+      "sha256": "cf51460ba370c698f68b976e514d113497339ba018b6003e8e8eb569c6fccfcf"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

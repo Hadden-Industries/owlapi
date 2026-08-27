@@ -1,0 +1,3 @@
+# Content-addressed package evidence must survive Git unchanged so each
+# path-derived SHA-256 continues to identify the checked-out bytes exactly.
+blobs/** -text !eol

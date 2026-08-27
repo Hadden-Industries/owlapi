@@ -1,0 +1,112 @@
+{
+  "artifactId": "b91be0ce662a216ad0cc74f5730ccaafc594b6ec77eb1bcae18dff55108acad2",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3040,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.prettierrc.js",
+        "sha256": "f5a1a1e54071e6c49804161a86d4315d32eb47cbb155794379abe16aeeb07074",
+        "size": 156,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.travis.yml",
+        "sha256": "b3106a20c12bd85d89e24f1937b5477c848b9d9163c4b9103750e8b40d074a2d",
+        "size": 505,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "2453d3b90aa23715eec80b25fcda1bebf71052ad41a6694d58a9aa867d103c81",
+        "size": 935,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "4da47bbb1da019629fffcfa736bc154e854bdc710ba149e0dda5ef19baa97b28",
+        "size": 1379,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/encoding.js",
+        "sha256": "9d4bb3d5942dd1c97da48470dbc3775fad31387e8aea997f20b07cb16ec1439d",
+        "size": 2116,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8a868d7c206bf2eb71c0721a957b7a255738678f72c290c880b46fec4ec54dbe",
+        "size": 432,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/test.js",
+        "sha256": "dbadc655493bcf1419b90b27c1f66d935962ade084b959327d7c7d6c7092e633",
+        "size": 1600,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 935,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/24/2453d3b90aa23715eec80b25fcda1bebf71052ad41a6694d58a9aa867d103c81",
+          "sha256": "2453d3b90aa23715eec80b25fcda1bebf71052ad41a6694d58a9aa867d103c81"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2453d3b90aa23715eec80b25fcda1bebf71052ad41a6694d58a9aa867d103c81",
+        "size": 935
+      },
+      {
+        "blob": {
+          "bytes": 1379,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4d/4da47bbb1da019629fffcfa736bc154e854bdc710ba149e0dda5ef19baa97b28",
+          "sha256": "4da47bbb1da019629fffcfa736bc154e854bdc710ba149e0dda5ef19baa97b28"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "4da47bbb1da019629fffcfa736bc154e854bdc710ba149e0dda5ef19baa97b28",
+        "size": 1379
+      }
+    ],
+    "expandedBytes": 7123,
+    "packageIdentity": {
+      "author": "Andris Reinman",
+      "homepage": null,
+      "license": "MIT",
+      "name": "encoding",
+      "repository": "https://github.com/andris9/encoding.git",
+      "version": "0.1.13"
+    },
+    "packageMetadata": {
+      "author": "Andris Reinman",
+      "dependencies": {
+        "iconv-lite": "^0.6.2"
+      },
+      "description": "Convert encodings, uses iconv-lite",
+      "devDependencies": {
+        "nodeunit": "0.11.3"
+      },
+      "license": "MIT",
+      "main": "lib/encoding.js",
+      "name": "encoding",
+      "repository": "https://github.com/andris9/encoding.git",
+      "scripts": {
+        "test": "nodeunit test"
+      },
+      "version": "0.1.13"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 3040,
+      "sha256": "6cf5b22ca0ee387c5302dcdefd8591c2ada56f1a6d6beaf64f0c021ff28dcf84"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

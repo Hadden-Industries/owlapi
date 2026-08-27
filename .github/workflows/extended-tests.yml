@@ -54,9 +54,60 @@ jobs:
         run: npm run extended:record-status
         timeout-minutes: 5
 
+  third_party_evidence_registry_keys:
+    name: Extended tests / third-party evidence / npm registry signing keys
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the default branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 10
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        timeout-minutes: 5
+      - name: Install the reviewed evidence tools
+        run: npm ci
+        timeout-minutes: 15
+      - name: Record the Ubuntu hosted runner identity
+        run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
+        timeout-minutes: 5
+      - name: Snapshot and validate npm's signing keys once for this run
+        run: node util/snapshot-npm-registry-keys.mjs --output=.release/registry-keys/npm-registry-keys.json
+        timeout-minutes: 5
+      - name: Retain the exact same-run signing-key snapshot
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: npm-evidence-registry-keys
+          path: .release/registry-keys/npm-registry-keys.json
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+          overwrite: true
+          include-hidden-files: false
+          archive: true
+
   third_party_evidence_shard:
     name: Extended tests / third-party evidence / ${{ matrix.os.id }} / shard ${{ matrix.shard }}
     if: ${{ github.event_name == 'workflow_dispatch' }}
+    needs: third_party_evidence_registry_keys
     runs-on: ${{ matrix.os.runner }}
     timeout-minutes: 120
     permissions:
@@ -145,6 +196,14 @@ jobs:
       - name: Install the reviewed evidence tools
         run: npm ci
         timeout-minutes: 20
+      - name: Download the exact same-run npm signing-key snapshot
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: npm-evidence-registry-keys
+          path: .release/registry-keys
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
       - name: Record the Ubuntu hosted runner identity
         if: ${{ matrix.os.id == 'ubuntu' }}
         run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
@@ -163,7 +222,7 @@ jobs:
         env:
           EVIDENCE_SHARD_INDEX: ${{ matrix.shard }}
           SCANCODE_COMMAND: ${{ matrix.os.scancode_command }}
-        run: node util/acquire-npm-package-evidence.mjs --shard-count=32 --shard-index-env=EVIDENCE_SHARD_INDEX --output=.release/evidence-shard --scancode-env=SCANCODE_COMMAND
+        run: node util/acquire-npm-package-evidence.mjs --shard-count=32 --shard-index-env=EVIDENCE_SHARD_INDEX --output=.release/evidence-shard --scancode-env=SCANCODE_COMMAND --registry-keys=.release/registry-keys/npm-registry-keys.json
         timeout-minutes: 60
       - name: Retain the independently verifiable shard for aggregation
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -173,13 +232,13 @@ jobs:
           if-no-files-found: error
           retention-days: 1
           compression-level: 0
-          overwrite: false
+          overwrite: true
           include-hidden-files: false
           archive: true
 
   third_party_evidence_aggregate:
     name: Extended tests / third-party evidence / ${{ matrix.os }} aggregate
-    if: ${{ always() && github.event_name == 'workflow_dispatch' }}
+    if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' }}
     needs: third_party_evidence_shard
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -234,15 +293,15 @@ jobs:
           name: npm-evidence-aggregate-${{ matrix.os }}
           path: .release/evidence-aggregate
           if-no-files-found: error
-          retention-days: 1
+          retention-days: 7
           compression-level: 0
-          overwrite: false
+          overwrite: true
           include-hidden-files: false
           archive: true
 
   third_party_evidence_parity:
     name: Extended tests / third-party evidence / cross-platform parity
-    if: ${{ always() && github.event_name == 'workflow_dispatch' }}
+    if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' }}
     needs: third_party_evidence_aggregate
     runs-on: ubuntu-24.04
     timeout-minutes: 30

@@ -1,0 +1,755 @@
+{
+  "artifactId": "ef4101825f3b7faa59251a623db952a554228009b412f02850f22e8467fafb75",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 4,
+      "digestVerifiedFileCount": 4,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 4
+    },
+    "artifactId": "ef4101825f3b7faa59251a623db952a554228009b412f02850f22e8467fafb75",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "4.23.3",
+        "for_package_purl": "pkg:npm/proc-log@5.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40npmcli/template-oss",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^16.0.1",
+        "for_package_purl": "pkg:npm/proc-log@5.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/tap",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.0.0",
+        "for_package_purl": "pkg:npm/proc-log@5.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40npmcli/eslint-config",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "GitHub Inc",
+            "end_line": 14,
+            "start_line": 14
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "isc",
+        "detected_license_expression_spdx": "ISC",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/proc-log@5.0.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "isc-8444467e-911b-70d7-8f49-a86dcf33ac8f",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "matches": [
+              {
+                "end_line": 15,
+                "from_file": "ef4101825f3b7faa59251a623db952a554228009b412f02850f22e8467fafb75/package/package.json",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"ISC\",",
+                "matcher": "2-aho",
+                "rule_identifier": "isc_38.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_38.RULE",
+                "score": 100,
+                "start_line": 15
+              }
+            ]
+          }
+        ],
+        "md5": "ed987115b7e8c429e26eaec582bd518a",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/proc-log/5.0.0",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "isc",
+            "declared_license_expression_spdx": "ISC",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "4.23.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40npmcli/template-oss",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^16.0.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/tap",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40npmcli/eslint-config",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "just emit 'log' events on the process object",
+            "download_url": "https://registry.npmjs.org/proc-log/-/proc-log-5.0.0.tgz",
+            "extra_data": {
+              "engines": {
+                "node": "^18.17.0 || >=20.5.0"
+              }
+            },
+            "extracted_license_statement": "- ISC\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [
+              {
+                "identifier": "isc-6c4320cc-eb5b-3792-8c56-b8565fff1119",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "ef4101825f3b7faa59251a623db952a554228009b412f02850f22e8467fafb75/package/package.json",
+                    "license_expression": "isc",
+                    "license_expression_spdx": "ISC",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "ISC",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "proc-log",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": null,
+                "name": "GitHub Inc.",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/proc-log@5.0.0",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/proc-log/-/proc-log-5.0.0.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/proc-log",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/npm/proc-log.git",
+            "version": "5.0.0"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 1.46,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "ef77e00bb180e2d474ef8ec427d3ddb2dffe8b60",
+        "sha1_git": "957209d3954e53a364dee437b71275612f62896e",
+        "sha256": "636f411adcca5bcfec9c68ee39ce18f3ee00d27934dbbcde3c6635929faceb85",
+        "size": 1132,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) GitHub, Inc.",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "isc",
+        "detected_license_expression_spdx": "ISC",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/proc-log@5.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "GitHub, Inc.",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "isc-90dc51e4-d418-5a40-d42f-6b015cf53d02",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "ef4101825f3b7faa59251a623db952a554228009b412f02850f22e8467fafb75/package/LICENSE",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "The ISC License",
+                "matcher": "2-aho",
+                "rule_identifier": "isc_22.RULE",
+                "rule_relevance": 99,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_22.RULE",
+                "score": 99,
+                "start_line": 1
+              },
+              {
+                "end_line": 15,
+                "from_file": "ef4101825f3b7faa59251a623db952a554228009b412f02850f22e8467fafb75/package/LICENSE",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 112,
+                "matched_text": "Permission to use, copy, modify, and/or distribute this software for any\npurpose with or without fee is hereby granted, provided that the above\ncopyright notice and this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\nMERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR\nIN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "isc.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+                "score": 100,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "ff3ebb073dc14dd12f0c142c96b3b04b",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 95.8,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "c3f5c7f37d0833769d9bb64475b3e589dbca4010",
+        "sha1_git": "83837797202b70f5ad18b6054c483961ed0ad1e4",
+        "sha256": "dc32a0dee275e0a9aeffbc974dbf4899a30dcdc2e5ffa8934aecb69261065864",
+        "size": 742,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/proc-log@5.0.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "532537fe8805cbfc2f1a465c544905df",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "baa0b400319e2499263e7adaf24d9b8672d674de",
+        "sha1_git": "9d1d1a910520ee800bd69523ee8105ba9cb35ed3",
+        "sha256": "b0644b30a705a5dad38fe544c6d60dd0d3fd1e8675dcb0bad1b42d63ebacba0f",
+        "size": 7033,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/proc-log@5.0.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "195732d5297a99d53639d1ae591a4434",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/lib/index.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "d68e0b83d23e548e25f723b680777efe038536df",
+        "sha1_git": "86d90861078dab660bb1a9a4d5986753805fd740",
+        "sha256": "6bfa074637f4fdd7f112b99ed6939bfebed3c55bce698222a9ebde20f7f32b44",
+        "size": 3380,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "isc-6c4320cc-eb5b-3792-8c56-b8565fff1119",
+        "license_expression": "isc",
+        "license_expression_spdx": "ISC",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "ef4101825f3b7faa59251a623db952a554228009b412f02850f22e8467fafb75/package/package.json",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "ISC",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "isc-8444467e-911b-70d7-8f49-a86dcf33ac8f",
+        "license_expression": "isc",
+        "license_expression_spdx": "ISC",
+        "reference_matches": [
+          {
+            "end_line": 15,
+            "from_file": "ef4101825f3b7faa59251a623db952a554228009b412f02850f22e8467fafb75/package/package.json",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "  \"license\": \"ISC\",",
+            "matcher": "2-aho",
+            "rule_identifier": "isc_38.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_38.RULE",
+            "score": 100,
+            "start_line": 15
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "isc-90dc51e4-d418-5a40-d42f-6b015cf53d02",
+        "license_expression": "isc",
+        "license_expression_spdx": "ISC",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "ef4101825f3b7faa59251a623db952a554228009b412f02850f22e8467fafb75/package/LICENSE",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "The ISC License",
+            "matcher": "2-aho",
+            "rule_identifier": "isc_22.RULE",
+            "rule_relevance": 99,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_22.RULE",
+            "score": 99,
+            "start_line": 1
+          },
+          {
+            "end_line": 15,
+            "from_file": "ef4101825f3b7faa59251a623db952a554228009b412f02850f22e8467fafb75/package/LICENSE",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 112,
+            "matched_text": "Permission to use, copy, modify, and/or distribute this software for any\npurpose with or without fee is hereby granted, provided that the above\ncopyright notice and this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\nMERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR\nIN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "isc.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+            "score": 100,
+            "start_line": 5
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "https://www.isc.org/licenses/",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "isc",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/isc",
+        "minimum_coverage": 0,
+        "name": "ISC License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://opensource.org/licenses/isc-license.txt",
+        "other_spdx_license_keys": [],
+        "other_urls": [
+          "http://openbsd.wikia.com/wiki/OpenBSD%27s_BSD_license",
+          "http://www.isc.org/software/license",
+          "http://www.opensource.org/licenses/ISC",
+          "https://opensource.org/licenses/ISC",
+          "https://www.isc.org/downloads/software-support-policy/isc-license/",
+          "https://www.isc.org/isc-license-1.0.html",
+          "https://www.isc.org/software/license"
+        ],
+        "owner": "ISC - Internet Systems Consortium",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+        "short_name": "ISC License",
+        "spdx_license_key": "ISC",
+        "spdx_url": "https://spdx.org/licenses/ISC",
+        "standard_notice": null,
+        "text": "Permission to use, copy, modify, and/or distribute this software for any purpose\nwith or without fee is hereby granted, provided that the above copyright notice\nand this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH\nREGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND\nFITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS\nOF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER\nTORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF\nTHIS SOFTWARE.",
+        "text_urls": [
+          "http://fedoraproject.org/wiki/Licensing:MIT#Old_Style_with_legal_disclaimer_2",
+          "http://openbsd.wikia.com/wiki/OpenBSD%27s_BSD_license",
+          "http://opensource.org/licenses/isc-license.txt",
+          "https://www.isc.org/software/license"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "isc.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 112,
+        "license_expression": "isc",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission to use, copy, modify, and/or distribute this software for any purpose\nwith or without fee is hereby granted, provided that the above copyright notice\nand this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH\nREGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND\nFITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS\nOF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER\nTORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF\nTHIS SOFTWARE."
+      },
+      {
+        "identifier": "isc_22.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "isc",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 99,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_22.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "ISC License"
+      },
+      {
+        "identifier": "isc_38.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "isc",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_38.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "\"license\": \"ISC\","
+      },
+      {
+        "identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "isc",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "ISC"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/proc-log/5.0.0",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "isc",
+        "declared_license_expression_spdx": "ISC",
+        "description": "just emit 'log' events on the process object",
+        "download_url": "https://registry.npmjs.org/proc-log/-/proc-log-5.0.0.tgz",
+        "extra_data": {
+          "engines": {
+            "node": "^18.17.0 || >=20.5.0"
+          }
+        },
+        "extracted_license_statement": "- ISC\n",
+        "holder": null,
+        "homepage_url": null,
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [],
+        "license_detections": [
+          {
+            "identifier": "isc-6c4320cc-eb5b-3792-8c56-b8565fff1119",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "ef4101825f3b7faa59251a623db952a554228009b412f02850f22e8467fafb75/package/package.json",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "ISC",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "proc-log",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": null,
+            "name": "GitHub Inc.",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/proc-log@5.0.0",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/proc-log/-/proc-log-5.0.0.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/proc-log",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/npm/proc-log.git",
+        "version": "5.0.0"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

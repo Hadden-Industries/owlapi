@@ -1,0 +1,109 @@
+{
+  "artifactId": "024ba017f057220e501f68f46b94e6573aa0307aa260553ec8b0d51adf0ca239",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2191,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+        "size": 1552,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "4a98617b437c20d4a47d6322176dc662b55bd7a875fa419d40a7b317c577c74b",
+        "size": 1197,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "56d0dfbd2acbaffd7a592eb25130eed4ab12bc1c10844677b2d869d5992c36a9",
+        "size": 1011,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "00eb6d6a76a29658c56bfc079f9e5ec008ae6ba136b83467777948280077185c",
+        "size": 858,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1552,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8a/8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+          "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+        "size": 1552
+      }
+    ],
+    "expandedBytes": 4618,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (https://izs.me)",
+      "homepage": null,
+      "license": "BlueOak-1.0.0",
+      "name": "minipass-flush",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/minipass-flush.git"
+      },
+      "version": "1.0.7"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (https://izs.me)",
+      "dependencies": {
+        "minipass": "^3.0.0"
+      },
+      "description": "A Minipass stream that calls a flush function before emitting 'end'",
+      "devDependencies": {
+        "tap": "^15.1.6"
+      },
+      "engines": {
+        "node": ">= 8"
+      },
+      "files": [
+        "index.js"
+      ],
+      "keywords": [
+        "minipass",
+        "flush",
+        "stream"
+      ],
+      "license": "BlueOak-1.0.0",
+      "main": "index.js",
+      "name": "minipass-flush",
+      "publishConfig": {
+        "tag": "v1-legacy"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/minipass-flush.git"
+      },
+      "scripts": {
+        "postpublish": "git push origin --follow-tags",
+        "postversion": "npm publish",
+        "preversion": "npm test",
+        "snap": "tap",
+        "test": "tap"
+      },
+      "tap": {
+        "check-coverage": true
+      },
+      "version": "1.0.7"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 2191,
+      "sha256": "26baadb82d20dc010e4c9037491d2f1483705adc7e484abe1dc5486e41cab33b"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

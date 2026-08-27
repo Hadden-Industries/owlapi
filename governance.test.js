@@ -1120,6 +1120,17 @@ bundle licence and notice review.
 
   it("records exact component evidence without heuristic attribution or duplicated review state", () => {
     const inventory = readJson("./docs/provenance/third-party-material.json");
+    const evidenceManifest = readJson(
+      "./docs/provenance/npm-package-evidence.json",
+    );
+    const archiveRootByArtifact = new Map(
+      evidenceManifest.artifacts.map(({ artifactId, archive }) => {
+        const envelope = readJson(
+          `./docs/provenance/evidence/npm/${archive.evidence.path}`,
+        );
+        return [artifactId, envelope.evidence.archiveRoot];
+      }),
+    );
     for (const component of inventory.components) {
       expect(component).not.toHaveProperty("attributionText");
       expect(component).not.toHaveProperty("reviewStatus");
@@ -1141,7 +1152,11 @@ bundle licence and notice review.
         expect(component.sourceUrl).toMatch(/^https:\/\//u);
       }
       for (const evidence of component.inspectedFiles) {
-        expect(evidence.path).toMatch(/^package\//u);
+        expect(
+          evidence.path.startsWith(
+            `${archiveRootByArtifact.get(component.artifactId)}/`,
+          ),
+        ).toBe(true);
         expect(evidence.sha256).toBe(evidence.blobSha256);
         expect(evidence.blobPath).toBe(
           `blobs/sha256/${evidence.sha256.slice(0, 2)}/${evidence.sha256}`,

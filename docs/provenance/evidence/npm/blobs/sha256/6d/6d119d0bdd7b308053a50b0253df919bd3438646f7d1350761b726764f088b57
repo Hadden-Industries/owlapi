@@ -1,0 +1,135 @@
+{
+  "artifactId": "646edfc2192de7264ecea61a367a23b69f42171131c733e2e88da8da9f29d760",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 29990,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "6132497b3e231bf9f92ce695e74b19e58624d9ff510d806cb6b56dc78e70c652",
+        "size": 4309,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "864ab8ff5bf55724b079afdf98c9f3deccb408cd218a1d3fe218fc1805ae39ba",
+        "size": 6589,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "ad14b93fd214b54748faf66ce61a99d20745ad37cdf0361d79377f4220e53002",
+        "size": 98765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "74b41820226f1ff7c7ec0fd3dad2428f2ca99844d5108b6483a8475757eaf81d",
+        "size": 173,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/worker.js",
+        "sha256": "9af2a904ec59d4d210f5a781264ee04bc67e6e87eaa54927ab2ab7b810218f9d",
+        "size": 10139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7a1c0461dd1faceca4a52ebde5362cbf23e5b0747f8e149ec7ddad1ec31d0fec",
+        "size": 1194,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 122301,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "jest-haste-map",
+      "repository": {
+        "directory": "packages/jest-haste-map",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.4.1"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@jest/types": "30.4.1",
+        "@types/node": "*",
+        "anymatch": "^3.1.3",
+        "fb-watchman": "^2.0.2",
+        "graceful-fs": "^4.2.11",
+        "jest-regex-util": "30.4.0",
+        "jest-util": "30.4.1",
+        "jest-worker": "30.4.1",
+        "picomatch": "^4.0.3",
+        "walker": "^1.0.8"
+      },
+      "devDependencies": {
+        "@types/fb-watchman": "^2.0.5",
+        "@types/graceful-fs": "^4.1.9",
+        "@types/picomatch": "^4.0.0",
+        "slash": "^3.0.0"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "b3b4a09ed3005369dacc7466d1d2122797283785",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "jest-haste-map",
+      "optionalDependencies": {
+        "fsevents": "^2.3.3"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-haste-map",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.4.1"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 29990,
+      "sha256": "48ea0500da774d2a0ced49052b01dee08b27e1db9c6b4fe9f27a1343776c14c8"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

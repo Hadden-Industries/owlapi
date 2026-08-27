@@ -1,0 +1,180 @@
+{
+  "artifactId": "6efd50967a489e9e0ee1f19034e4c11ebd24980fbbc8b319a0247f838e4b2fa1",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9239,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "364a130d2ca340bd56eb1e6d045fc6929bb0f9d0aa018f2c1949b29517e1cdd0",
+        "size": 11351,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "4a9f06a104f54a1b83f6fabaff39eee7867c77a0f857a8a8be2eabd16e99dc89",
+        "size": 831,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/build.d.ts",
+        "sha256": "0b7fab6cb3269c53f5278c91074faf9526ff80b96632cd77980f26f337feca10",
+        "size": 669,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/build.js",
+        "sha256": "837927ac999d1beb76607f516a7e030388274a8f0eeef77f1604e17d003fa684",
+        "size": 3083,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/bundle.d.ts",
+        "sha256": "b01b8a39bc1412f417b900af2d0d704203d50bde74a1e861d7fac4b90c4dc184",
+        "size": 3376,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/bundle.js",
+        "sha256": "07a67e2910a034bae697b28520584f5e6dae1bfd54dfe85c04f9194bbee28353",
+        "size": 1270,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/error.d.ts",
+        "sha256": "c5c0274cfa320d91de461ccb5baa951d81fb4851c50c2ca3c4b5eb8abdb4e946",
+        "size": 129,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/error.js",
+        "sha256": "5e4035bda72c285a2d7f6e721036bf71e6d0b4e1eda5a881f85040549ff3c807",
+        "size": 869,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "d6eabd1be254e358b14b06a689381c71d0f56ead0517208a0a9ed24fc7ed29c9",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "898210069b039c525273a8d15d7aa055c87f18bcc544a6b04af7ab21353ba430",
+        "size": 4154,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/serialized.d.ts",
+        "sha256": "02ce22ee2466df1eb6fcb04572db45b4d345e7652e59fcf96dc94fb1b59afd26",
+        "size": 1974,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/serialized.js",
+        "sha256": "98edf6005530cb390ecdfa2a0cb56206a716077c6c5d4b8346e9c2f0882aa993",
+        "size": 1814,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/utility.d.ts",
+        "sha256": "bfba8317aff39eda19e171598f1ffbf0c8a315a83b901796c427594d3709066c",
+        "size": 381,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/utility.js",
+        "sha256": "d43aa81f5bc89faa359e0f97c814ba25155591ff078fbb9bfd40f8c7c9683230",
+        "size": 77,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/validate.d.ts",
+        "sha256": "68c3eb4b2de5b26fe7b9418ad6dc38c816ec1731cf3dd9e3497e1abdd1d06442",
+        "size": 527,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/validate.js",
+        "sha256": "8510442c81ecd4ef54cd912ee9e45d72ac455edb8cfc64c91d2264a502a84c43",
+        "size": 8027,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "410d257b34acb53ca90eec9663e626a040de96e1f2e6e069913a32d4287e1e98",
+        "size": 822,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11351,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/36/364a130d2ca340bd56eb1e6d045fc6929bb0f9d0aa018f2c1949b29517e1cdd0",
+          "sha256": "364a130d2ca340bd56eb1e6d045fc6929bb0f9d0aa018f2c1949b29517e1cdd0"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "364a130d2ca340bd56eb1e6d045fc6929bb0f9d0aa018f2c1949b29517e1cdd0",
+        "size": 11351
+      }
+    ],
+    "expandedBytes": 40495,
+    "packageIdentity": {
+      "author": "bdehamer@github.com",
+      "homepage": "https://github.com/sigstore/sigstore-js/tree/main/packages/bundle#readme",
+      "license": "Apache-2.0",
+      "name": "@sigstore/bundle",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sigstore/sigstore-js.git"
+      },
+      "version": "5.0.0"
+    },
+    "packageMetadata": {
+      "author": "bdehamer@github.com",
+      "bugs": {
+        "url": "https://github.com/sigstore/sigstore-js/issues"
+      },
+      "dependencies": {
+        "@sigstore/protobuf-specs": "^0.5.0"
+      },
+      "description": "Sigstore bundle type",
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "dist",
+        "store"
+      ],
+      "homepage": "https://github.com/sigstore/sigstore-js/tree/main/packages/bundle#readme",
+      "license": "Apache-2.0",
+      "main": "dist/index.js",
+      "name": "@sigstore/bundle",
+      "publishConfig": {
+        "provenance": true
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sigstore/sigstore-js.git"
+      },
+      "scripts": {
+        "build": "tsc --build",
+        "clean": "shx rm -rf dist *.tsbuildinfo",
+        "test": "jest"
+      },
+      "types": "dist/index.d.ts",
+      "version": "5.0.0"
+    },
+    "physicalEntryCount": 17,
+    "tarball": {
+      "bytes": 9239,
+      "sha256": "8badcefbfe0543a8515026c2a409b1798680c285ac51924e7709b1c57344f53c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

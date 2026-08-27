@@ -1,0 +1,76 @@
+{
+  "artifactId": "09d41fd37ce2154b1eda2dbd8507960ea223330ab93b978cda83593e42057d73",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1065130,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "d3fea91d5663b2fe4f3b1c47b8ba8a7568332e5d2712fde35b65c6339f9d9b7d",
+        "size": 119,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "72cecf001066926be4b669b4501d629fb81034ddc94dc87bd194415af37f3101",
+        "size": 565,
+        "type": "FILE"
+      },
+      {
+        "path": "package/resolver.linux-x64-gnu.node",
+        "sha256": "13bd18708eaf0f050f2d86732ed29ce8cdbc7f1ee81263c10790b5c90a46d28b",
+        "size": 2338112,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 2338796,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "license": "MIT",
+      "name": "@unrs/resolver-binding-linux-x64-gnu",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.12.2"
+    },
+    "packageMetadata": {
+      "cpu": [
+        "x64"
+      ],
+      "description": "UnRS Resolver Node API",
+      "files": [
+        "resolver.linux-x64-gnu.node"
+      ],
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "libc": [
+        "glibc"
+      ],
+      "license": "MIT",
+      "main": "resolver.linux-x64-gnu.node",
+      "name": "@unrs/resolver-binding-linux-x64-gnu",
+      "os": [
+        "linux"
+      ],
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.12.2"
+    },
+    "physicalEntryCount": 3,
+    "tarball": {
+      "bytes": 1065130,
+      "sha256": "672d429bbc0289aa88648784cf3240035b5d85c50edc9e62b3c7d9d5e733d3ba"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

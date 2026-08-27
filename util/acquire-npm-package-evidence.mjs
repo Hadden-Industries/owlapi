@@ -44,6 +44,7 @@ import {
 } from "./third-party-evidence/registry-signatures.mjs";
 import {
   SCANCODE_EXECUTION_OPTIONS,
+  SCANCODE_NORMALIZATION_VERSION,
   SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES,
   SCANCODE_SEMANTIC_OPTIONS,
   SCANCODE_TOOL,
@@ -59,6 +60,31 @@ const REGISTRY_KEYS_URL = `${PUBLIC_REGISTRY_ORIGIN}/-/npm/v1/keys`;
 const DEFAULT_REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const MAX_JSON_BYTES = 64 * 1024 * 1024;
 const SHARD_MANIFEST_NAME = "npm-package-evidence-shard.json";
+const REGISTRY_RETRY_MINIMUM_MS = 10_000;
+const REGISTRY_RETRY_MAXIMUM_MS = 60_000;
+const REGISTRY_RETRY_FACTOR = 10;
+const PACOTE_NETWORK_OPTIONS = Object.freeze({
+  fetchRetries: 2,
+  fetchRetryFactor: REGISTRY_RETRY_FACTOR,
+  fetchRetryMintimeout: REGISTRY_RETRY_MINIMUM_MS,
+  fetchRetryMaxtimeout: REGISTRY_RETRY_MAXIMUM_MS,
+  fetchTimeout: 300_000,
+});
+const TRANSIENT_NETWORK_CODES = new Set([
+  "EAI_AGAIN",
+  "ECONNABORTED",
+  "ECONNREFUSED",
+  "ECONNRESET",
+  "EHOSTUNREACH",
+  "ENETDOWN",
+  "ENETUNREACH",
+  "ENOTFOUND",
+  "ETIMEDOUT",
+  "FETCH_ERROR",
+  "UND_ERR_CONNECT_TIMEOUT",
+  "UND_ERR_HEADERS_TIMEOUT",
+  "UND_ERR_SOCKET",
+]);
 
 export class AcquisitionError extends Error {
   constructor(classification, code, message, options = undefined) {
@@ -106,6 +132,50 @@ const exists = async (path) => {
 const delay = (milliseconds) =>
   new Promise((resolveDelay) => setTimeout(resolveDelay, milliseconds));
 
+const retryAfterMilliseconds = (response, now) => {
+  const value = response?.headers?.get("retry-after")?.trim();
+  if (!value) {
+    return null;
+  }
+  if (/^\d+$/u.test(value)) {
+    return Number(value) * 1_000;
+  }
+  const date = Date.parse(value);
+  return Number.isFinite(date) ? Math.max(0, date - now()) : null;
+};
+
+const registryRetryDelay = ({ attempt, response, now, random }) => {
+  const requested = retryAfterMilliseconds(response, now);
+  if (requested !== null) {
+    return Math.min(requested, REGISTRY_RETRY_MAXIMUM_MS);
+  }
+  const base = Math.min(
+    REGISTRY_RETRY_MINIMUM_MS * REGISTRY_RETRY_FACTOR ** (attempt - 1),
+    REGISTRY_RETRY_MAXIMUM_MS,
+  );
+  const jitterCeiling = Math.min(1_000, REGISTRY_RETRY_MAXIMUM_MS - base);
+  return base + Math.floor(random() * (jitterCeiling + 1));
+};
+
+const retryableRegistryStatus = (status) =>
+  status === 408 || status === 429 || (status >= 500 && status <= 599);
+
+const isTransientRegistryError = (error) => {
+  const visited = new Set();
+  let current = error;
+  while (current && typeof current === "object" && !visited.has(current)) {
+    visited.add(current);
+    if (
+      TRANSIENT_NETWORK_CODES.has(current.code) ||
+      retryableRegistryStatus(current.statusCode ?? current.status ?? 0)
+    ) {
+      return true;
+    }
+    current = current.cause;
+  }
+  return false;
+};
+
 const readBoundedResponse = async (response, maximumBytes) => {
   const contentLength = response.headers.get("content-length");
   if (
@@ -152,6 +222,8 @@ export const fetchJsonWithRetry = async (
   {
     fetchImpl = fetch,
     sleep = delay,
+    now = Date.now,
+    random = Math.random,
     attempts = 3,
     maximumBytes = MAX_JSON_BYTES,
   } = {},
@@ -177,20 +249,24 @@ export const fetchJsonWithRetry = async (
           error,
         );
       }
-      await sleep(attempt === 1 ? 250 : 1_000);
+      await sleep(registryRetryDelay({ attempt, now, random }));
       continue;
     }
-    if (response.status >= 500 && response.status <= 599) {
+    if (retryableRegistryStatus(response.status)) {
       lastError = new Error(`Registry HTTP ${response.status}`);
       if (attempt === attempts) {
         externalBlocked(
-          "REGISTRY_SERVER_UNAVAILABLE",
+          response.status === 429
+            ? "REGISTRY_RATE_LIMITED"
+            : response.status === 408
+              ? "REGISTRY_REQUEST_TIMEOUT"
+              : "REGISTRY_SERVER_UNAVAILABLE",
           `Registry remained unavailable after ${attempts} attempts: ${url}`,
           lastError,
         );
       }
       await response.body?.cancel();
-      await sleep(attempt === 1 ? 250 : 1_000);
+      await sleep(registryRetryDelay({ attempt, response, now, random }));
       continue;
     }
     if (!response.ok) {
@@ -278,6 +354,55 @@ const validateRegistryKey = (key) => {
   return { ...key };
 };
 
+export const validateRegistryKeySnapshot = (snapshot) => {
+  if (
+    !snapshot ||
+    snapshot.schemaVersion !== 1 ||
+    snapshot.registryOrigin !== PUBLIC_REGISTRY_ORIGIN ||
+    !Array.isArray(snapshot.keys) ||
+    snapshot.keys.length === 0 ||
+    stableJson(Object.keys(snapshot).sort(compareCodeUnits)) !==
+      stableJson(["keys", "registryOrigin", "schemaVersion"])
+  ) {
+    productFailure(
+      "REGISTRY_KEYS_MISSING",
+      "npm registry key snapshot is invalid or empty",
+    );
+  }
+  const keys = snapshot.keys.map(validateRegistryKey);
+  const keyids = new Set();
+  for (const key of keys) {
+    if (keyids.has(key.keyid)) {
+      productFailure(
+        "REGISTRY_KEY_DUPLICATE",
+        `npm registry key snapshot contains duplicate key ${key.keyid}`,
+      );
+    }
+    keyids.add(key.keyid);
+  }
+  return keys;
+};
+
+export const createRegistryKeySnapshot = async ({
+  fetchImpl = fetch,
+  sleep = delay,
+} = {}) => {
+  const response = await fetchJsonWithRetry(REGISTRY_KEYS_URL, {
+    fetchImpl,
+    sleep,
+    maximumBytes: 2 * 1024 * 1024,
+  });
+  const snapshot = {
+    schemaVersion: 1,
+    registryOrigin: PUBLIC_REGISTRY_ORIGIN,
+    keys: response?.keys,
+  };
+  return {
+    ...snapshot,
+    keys: validateRegistryKeySnapshot(snapshot),
+  };
+};
+
 const registryKeysForPacote = (keys) =>
   keys.map((key) => ({
     ...key,
@@ -305,9 +430,10 @@ const defaultVerifyPackageMetadata = async ({
     verifySignatures: true,
     verifyAttestations: hasAttestations,
     "//registry.npmjs.org/:_keys": registryKeysForPacote(registryKeys),
+    ...PACOTE_NETWORK_OPTIONS,
   });
 
-const defaultDownloadTarball = async ({
+export const downloadLockedRegistryTarball = async ({
   identity,
   destination,
   cache,
@@ -322,6 +448,7 @@ const defaultDownloadTarball = async ({
       resolved: identity.resolved,
       integrity: identity.integrity,
       preferOnline: true,
+      ...PACOTE_NETWORK_OPTIONS,
     },
   );
 
@@ -611,6 +738,13 @@ const acquireArtifact = async ({
       pacoteClient,
     });
   } catch (error) {
+    if (isTransientRegistryError(error)) {
+      externalBlocked(
+        "PACKAGE_METADATA_UNAVAILABLE",
+        `Pacote metadata transport remained unavailable for ${identity.artifactId}`,
+        error,
+      );
+    }
     productFailure(
       "PACKAGE_METADATA_VERIFICATION_FAILED",
       `Pacote metadata verification failed for ${identity.artifactId}`,
@@ -643,7 +777,7 @@ const acquireArtifact = async ({
         fetchImpl,
       });
     } catch (error) {
-      if (new Set(["EAI_AGAIN", "ECONNRESET", "ETIMEDOUT"]).has(error?.code)) {
+      if (isTransientRegistryError(error)) {
         externalBlocked(
           "TARBALL_DOWNLOAD_UNAVAILABLE",
           `Tarball download was externally blocked for ${identity.artifactId}`,
@@ -711,7 +845,9 @@ const acquireArtifact = async ({
     const archiveEvidence = {
       archiveRoot: inventory.archiveRoot,
       compressedBytes: inventory.compressedBytes,
+      duplicateEntries: inventory.duplicateEntries,
       expandedBytes: inventory.expandedBytes,
+      physicalEntryCount: inventory.physicalEntryCount,
       packageIdentity: inventory.packageIdentity,
       packageMetadata: inventory.packageMetadata,
       tarball,
@@ -862,6 +998,17 @@ export const publishEvidence = async ({
     errorOnExist: true,
     force: false,
   });
+  const repositoryPolicyPath = join(destinationCorpus, ".gitattributes");
+  if (await exists(repositoryPolicyPath)) {
+    // The nested Git policy is repository configuration, not acquired evidence.
+    // Carry it across the atomic corpus swap without admitting it to the CAS or
+    // requiring every temporary aggregate to manufacture a policy-file copy.
+    await writeFile(
+      join(pendingCorpus, ".gitattributes"),
+      await readFile(repositoryPolicyPath),
+      { flag: "wx" },
+    );
+  }
   await writeFile(pendingManifest, stableJson(manifest), { flag: "wx" });
   const hadCorpus = await exists(destinationCorpus);
   const hadManifest = await exists(destinationManifest);
@@ -938,6 +1085,7 @@ const evidencePolicy = () => ({
     version: SCANCODE_TOOL.version,
     pythonVersion: SCANCODE_TOOL.pythonVersion,
     outputFormatVersion: SCANCODE_TOOL.outputFormatVersion,
+    normalizationVersion: SCANCODE_NORMALIZATION_VERSION,
     semanticOptions: SCANCODE_SEMANTIC_OPTIONS,
     preScanExcludedFileSuffixes: SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES,
     executionOptions: SCANCODE_EXECUTION_OPTIONS,
@@ -979,11 +1127,13 @@ export const acquireEvidence = async ({
   repositoryRoot = DEFAULT_REPOSITORY_ROOT,
   fetchImpl = fetch,
   sleep = delay,
-  downloadTarball = defaultDownloadTarball,
+  downloadTarball = downloadLockedRegistryTarball,
   verifyPackageMetadata = defaultVerifyPackageMetadata,
   scanArtifact = defaultScanArtifact,
   pacoteClient = pacote,
   scancode = null,
+  registryKeySnapshot = null,
+  registryKeysPath = null,
   write = false,
   shard = null,
 } = {}) => {
@@ -997,26 +1147,34 @@ export const acquireEvidence = async ({
   const cache = join(stagingRoot, "cache");
   await mkdir(corpusRoot, { recursive: true });
   try {
-    const keyResponse = await fetchJsonWithRetry(REGISTRY_KEYS_URL, {
-      fetchImpl,
-      sleep,
-      maximumBytes: 2 * 1024 * 1024,
-    });
-    if (!Array.isArray(keyResponse?.keys) || keyResponse.keys.length === 0) {
-      productFailure(
-        "REGISTRY_KEYS_MISSING",
-        "npm registry returned no signing keys",
+    if (registryKeySnapshot !== null && registryKeysPath !== null) {
+      throw new TypeError(
+        "Registry keys must come from either a snapshot value or a snapshot path",
       );
     }
-    const registryKeys = keyResponse.keys.map(validateRegistryKey);
-    const keyById = new Map();
-    for (const key of registryKeys) {
-      if (keyById.has(key.keyid)) {
-        productFailure(
-          "REGISTRY_KEY_DUPLICATE",
-          `npm registry returned duplicate key ${key.keyid}`,
+    let resolvedKeySnapshot = registryKeySnapshot;
+    if (registryKeysPath !== null) {
+      try {
+        resolvedKeySnapshot = JSON.parse(
+          await readFile(resolve(repositoryRoot, registryKeysPath), "utf8"),
+        );
+      } catch (error) {
+        controlFailure(
+          "REGISTRY_KEY_SNAPSHOT_UNAVAILABLE",
+          `Registry key snapshot could not be read: ${registryKeysPath}`,
+          error,
         );
       }
+    }
+    if (resolvedKeySnapshot === null) {
+      resolvedKeySnapshot = await createRegistryKeySnapshot({
+        fetchImpl,
+        sleep,
+      });
+    }
+    const registryKeys = validateRegistryKeySnapshot(resolvedKeySnapshot);
+    const keyById = new Map();
+    for (const key of registryKeys) {
       keyById.set(key.keyid, key);
     }
 
@@ -1115,6 +1273,7 @@ export const parseAcquisitionArguments = (
   let shardCount = null;
   let shardIndex = null;
   let outputRoot = null;
+  let registryKeysPath = null;
   const seen = new Set();
   for (const argument of arguments_) {
     const key = argument === "--write" ? "--write" : argument.split("=", 1)[0];
@@ -1158,6 +1317,11 @@ export const parseAcquisitionArguments = (
       }
     } else if (argument.startsWith("--output=") && argument.length > 9) {
       outputRoot = argument.slice(9);
+    } else if (
+      argument.startsWith("--registry-keys=") &&
+      argument.length > 16
+    ) {
+      registryKeysPath = argument.slice(16);
     } else {
       throw new TypeError(`Unknown acquisition argument: ${argument}`);
     }
@@ -1190,7 +1354,7 @@ export const parseAcquisitionArguments = (
       throw new TypeError("--write cannot be combined with shard acquisition");
     }
   }
-  return { write, scancode, shard };
+  return { write, scancode, shard, registryKeysPath };
 };
 
 const isMain =

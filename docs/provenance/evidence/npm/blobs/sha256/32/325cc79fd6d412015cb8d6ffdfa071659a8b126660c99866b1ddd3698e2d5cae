@@ -1,0 +1,120 @@
+{
+  "artifactId": "966d2e84bd8be8148f1751770453830783275b9f4d16779c0d8ea5a87587ab41",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6977,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "c8a00bc0b7ab4eb73c27b724caf172c54037f7c675a5a3797a34efdc13951c28",
+        "size": 1634,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "2d816704a60117c2ed5d5a455360dce0f525668ac2ac9b4fb12232911815a4d6",
+        "size": 15703,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "5c0f845b1497fb5eadeb63fcf628b6257a7fc659de7709459a6db751d7b6ec2e",
+        "size": 515,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d59b894e46f35738af8190efede24d69ee4463f1539f66dcff375590d0ccdabd",
+        "size": 1161,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 20145,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "jest-message-util",
+      "repository": {
+        "directory": "packages/jest-message-util",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.4.1"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@babel/code-frame": "^7.27.1",
+        "@jest/types": "30.4.1",
+        "@types/stack-utils": "^2.0.3",
+        "chalk": "^4.1.2",
+        "graceful-fs": "^4.2.11",
+        "jest-util": "30.4.1",
+        "picomatch": "^4.0.3",
+        "pretty-format": "30.4.1",
+        "slash": "^3.0.0",
+        "stack-utils": "^2.0.6"
+      },
+      "devDependencies": {
+        "@types/babel__code-frame": "^7.0.6",
+        "@types/graceful-fs": "^4.1.9",
+        "@types/picomatch": "^4.0.0",
+        "tempy": "^1.0.1"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "b3b4a09ed3005369dacc7466d1d2122797283785",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "jest-message-util",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-message-util",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.4.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 6977,
+      "sha256": "d78ab664c651d8e4274dfdb1240e7af61ad07bb4f8f980a2142b962a7f05ca37"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,219 @@
+{
+  "artifactId": "15e0c0ccc12583b1bed9d3fe14d6ca477e49e403e9bb2ad81acdb8d7a23090c2",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 15999,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9df3bb69929a3b650ed73b3bfa1756725aaff0ac296461605753547004eafeaf",
+        "size": 1074,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "bfb4ce0b6f3f34ffdc42be1a6549926aaa13854aae0d1827287d50c2c293097f",
+        "size": 6164,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/formats.d.ts",
+        "sha256": "f050afc4e2e063baf534e8bfa7aa6489e360f1016eba8603c19b45ba9fcd5887",
+        "size": 650,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/formats.js",
+        "sha256": "b61693a26869970a92cc1fe832c931ccd3afe8b6d66802b19c48306349e84880",
+        "size": 12263,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/formats.js.map",
+        "sha256": "572005eb8eca5a6bf6a82bb08fe5b96d001afd801a71c4f0c60dc98ec4e72e87",
+        "size": 7070,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "092657fbee8f216761a98d6d1242bfe819a5ba06d8f312eafb03fe8b9ba059ce",
+        "size": 572,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "3f3014150293846086d11058bb8bf43e669e354a98b37adcf10281454d5e753b",
+        "size": 1508,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js.map",
+        "sha256": "b954274ddd48215db2779c9da8b6353d3a327166de369219d45762378b30e5b5",
+        "size": 1534,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/limit.d.ts",
+        "sha256": "9d6d5aec23fce486ccc52123d440d056519572f529d1f03dca71270d34efeec8",
+        "size": 468,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/limit.js",
+        "sha256": "ffc374031a55c3f6e39dc3fe69e663f8251b9d9d7ddb8f513a6807c985c18bb8",
+        "size": 2900,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/limit.js.map",
+        "sha256": "1f7c052543625258c85ac43a754478960655ad4954a23846bc841a47e6fdf8e4",
+        "size": 2868,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "402fb4bcfa457f0226813f3976ac42839dd619907c075c108efba8600d7edb69",
+        "size": 1897,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/formats.ts",
+        "sha256": "fec0bb3f73fd3ea487205c9fa783dca3d088d8f402829ab14c207567d00f0f8e",
+        "size": 12928,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.ts",
+        "sha256": "fb330a47ec7d2c8498d03078834603dab1a0689f40ca15875e6d57d740c5ff71",
+        "size": 1793,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/limit.ts",
+        "sha256": "62402e4fcb3bd9a0f4a22d2b228f1371897d47982e67ecd62950fdadb46261e6",
+        "size": 3074,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1074,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9df3bb69929a3b650ed73b3bfa1756725aaff0ac296461605753547004eafeaf",
+          "sha256": "9df3bb69929a3b650ed73b3bfa1756725aaff0ac296461605753547004eafeaf"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9df3bb69929a3b650ed73b3bfa1756725aaff0ac296461605753547004eafeaf",
+        "size": 1074
+      },
+      {
+        "blob": {
+          "bytes": 6164,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/bf/bfb4ce0b6f3f34ffdc42be1a6549926aaa13854aae0d1827287d50c2c293097f",
+          "sha256": "bfb4ce0b6f3f34ffdc42be1a6549926aaa13854aae0d1827287d50c2c293097f"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "bfb4ce0b6f3f34ffdc42be1a6549926aaa13854aae0d1827287d50c2c293097f",
+        "size": 6164
+      }
+    ],
+    "expandedBytes": 56763,
+    "packageIdentity": {
+      "author": "Evgeny Poberezkin",
+      "homepage": "https://github.com/ajv-validator/ajv-formats#readme",
+      "license": "MIT",
+      "name": "ajv-formats",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ajv-validator/ajv-formats.git"
+      },
+      "version": "3.0.1"
+    },
+    "packageMetadata": {
+      "author": "Evgeny Poberezkin",
+      "bugs": {
+        "url": "https://github.com/ajv-validator/ajv-formats/issues"
+      },
+      "dependencies": {
+        "ajv": "^8.0.0"
+      },
+      "description": "Format validation for Ajv v7+",
+      "devDependencies": {
+        "@ajv-validator/config": "^0.3.0",
+        "@types/jest": "^26.0.5",
+        "@types/node": "^14.10.1",
+        "@typescript-eslint/eslint-plugin": "^3.7.0",
+        "@typescript-eslint/parser": "^3.7.0",
+        "ajv": "^8.0.0",
+        "eslint": "^7.5.0",
+        "eslint-config-prettier": "^6.11.0",
+        "husky": "^4.2.5",
+        "jest": "^26.1.0",
+        "json-schema-test": "^2.0.0",
+        "lint-staged": "^10.2.11",
+        "prettier": "^2.3.2",
+        "ts-jest": "^26.1.3",
+        "typescript": "^4.0.0"
+      },
+      "files": [
+        "src/",
+        "dist/"
+      ],
+      "homepage": "https://github.com/ajv-validator/ajv-formats#readme",
+      "husky": {
+        "hooks": {
+          "pre-commit": "lint-staged && npm test"
+        }
+      },
+      "keywords": [
+        "Ajv",
+        "JSON-Schema",
+        "format",
+        "validation"
+      ],
+      "license": "MIT",
+      "lint-staged": {
+        "*.{md,json,yaml,js,ts}": "prettier --write"
+      },
+      "main": "dist/index.js",
+      "name": "ajv-formats",
+      "peerDependencies": {
+        "ajv": "^8.0.0"
+      },
+      "peerDependenciesMeta": {
+        "ajv": {
+          "optional": true
+        }
+      },
+      "prettier": "@ajv-validator/config/prettierrc.json",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ajv-validator/ajv-formats.git"
+      },
+      "scripts": {
+        "build": "tsc",
+        "ci-test": "npm run test",
+        "eslint": "eslint --ext .ts ./src/**/*",
+        "prettier:check": "prettier --list-different \"./**/*.{md,json,yaml,js,ts}\"",
+        "prettier:write": "prettier --write \"./**/*.{md,json,yaml,js,ts}\"",
+        "test": "npm run prettier:check && npm run build && npm run eslint && npm run test-cov",
+        "test-cov": "jest --coverage",
+        "test-spec": "jest"
+      },
+      "types": "dist/index.d.ts",
+      "version": "3.0.1"
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 15999,
+      "sha256": "f4d6980fd367381fd29199066911e863db8d97496613b6c2c5b91563a150acc5"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

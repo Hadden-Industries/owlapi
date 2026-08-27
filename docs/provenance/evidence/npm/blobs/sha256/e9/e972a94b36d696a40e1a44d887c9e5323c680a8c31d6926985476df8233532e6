@@ -1,0 +1,172 @@
+{
+  "artifactId": "651e54e5b1d80bf075c3ec8e272b8775685c49d943ba2ef3cb99da054edda97a",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8903,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "a6a23fb76d91d98669f5ed6eb58213df594ab2d56c9e981ae021b194e3d662a7",
+        "size": 1088,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "99c5045c01d2b6a6832f76fc2d3051813da37e156ed136df28dd075859cfef0e",
+        "size": 3066,
+        "type": "FILE"
+      },
+      {
+        "path": "package/changelog.md",
+        "sha256": "acfe07f36566b16256e044e79475b41f765b4e53743362aef18488e2cde1d813",
+        "size": 16026,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8086a3cb7efb10e538f6d55d820c22c237d686454f8b0e6b144c4baf92ea7e1e",
+        "size": 1593,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "package/src/cache.js",
+        "sha256": "36787d22bff9984c51b6c636b3aec4ef6fdadfac2068b9b6b9c2e65bddabdae3",
+        "size": 5895,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/del.js",
+        "sha256": "bca621b1c278789e26f113f47e0a3913c5f25bc0189af448efd41ef6255ebc6f",
+        "size": 777,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/utils.js",
+        "sha256": "284b9f5bec47b2d8178bc772fd5970ad065cc7f14d2ad8b741af78cad37e7519",
+        "size": 876,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1088,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a6/a6a23fb76d91d98669f5ed6eb58213df594ab2d56c9e981ae021b194e3d662a7",
+          "sha256": "a6a23fb76d91d98669f5ed6eb58213df594ab2d56c9e981ae021b194e3d662a7"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "a6a23fb76d91d98669f5ed6eb58213df594ab2d56c9e981ae021b194e3d662a7",
+        "size": 1088
+      },
+      {
+        "blob": {
+          "bytes": 3066,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/99/99c5045c01d2b6a6832f76fc2d3051813da37e156ed136df28dd075859cfef0e",
+          "sha256": "99c5045c01d2b6a6832f76fc2d3051813da37e156ed136df28dd075859cfef0e"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "99c5045c01d2b6a6832f76fc2d3051813da37e156ed136df28dd075859cfef0e",
+        "size": 3066
+      }
+    ],
+    "expandedBytes": 29321,
+    "packageIdentity": {
+      "author": {
+        "name": "Jared Wray",
+        "url": "https://jaredwray.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "flat-cache",
+      "repository": "jaredwray/flat-cache",
+      "version": "4.0.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "Jared Wray",
+        "url": "https://jaredwray.com"
+      },
+      "dependencies": {
+        "flatted": "^3.2.9",
+        "keyv": "^4.5.4"
+      },
+      "description": "A stupidly simple key/value storage using files to persist some data",
+      "devDependencies": {
+        "c8": "^9.1.0",
+        "chai": "^4.3.10",
+        "eslint": "^8.56.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-mocha": "^10.2.0",
+        "glob-expand": "^0.2.1",
+        "mocha": "^10.3.0",
+        "prettier": "^3.2.4",
+        "rimraf": "^5.0.5",
+        "sinon": "^17.0.1",
+        "write": "^2.0.0"
+      },
+      "engines": {
+        "node": ">=16"
+      },
+      "files": [
+        "src/cache.js",
+        "src/del.js",
+        "src/utils.js"
+      ],
+      "keywords": [
+        "json cache",
+        "simple cache",
+        "file cache",
+        "key par",
+        "key value",
+        "cache"
+      ],
+      "license": "MIT",
+      "main": "src/cache.js",
+      "name": "flat-cache",
+      "precommit": [
+        "npm run verify --silent"
+      ],
+      "prepush": [
+        "npm run verify --silent"
+      ],
+      "repository": "jaredwray/flat-cache",
+      "scripts": {
+        "autofix": "npm run eslint-fix",
+        "check": "npm run eslint",
+        "clean": "rimraf ./node_modules ./package-lock.json ./yarn.lock ./coverage",
+        "eslint": "eslint --cache --cache-location=node_modules/.cache/ ./src/**/*.js ./test/**/*.js",
+        "eslint-fix": "npm run eslint -- --fix",
+        "format": "prettier --write .",
+        "test": "npm run verify --silent",
+        "test:cache": "c8 mocha -R spec test/specs",
+        "test:ci:cache": "c8 --reporter=lcov mocha -R spec test/specs",
+        "verify": "npm run eslint && npm run test:cache"
+      },
+      "version": "4.0.1"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 8903,
+      "sha256": "e2085ae2b084792812a4f4102f6b4967e93cfda8457361b7debe610cf2aedaf0"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

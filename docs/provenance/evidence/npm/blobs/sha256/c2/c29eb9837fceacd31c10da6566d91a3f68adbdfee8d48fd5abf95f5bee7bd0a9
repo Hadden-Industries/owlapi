@@ -1,0 +1,163 @@
+{
+  "artifactId": "110b5545606256303168abd627bbe733bd485742832d3d6714c6f04aaacabd80",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8452,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "73cc38e40b41f1eea6fd2d98d0ade5324f1ad564c3f111ebd0040b4286d2c25c",
+        "size": 113,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.eslintcache",
+        "sha256": "7690c5da38095c17a8c3ce73f3ebdc7bf7d7797c618a9c919c79a6b5e0024012",
+        "size": 382,
+        "type": "FILE"
+      },
+      {
+        "path": "package/changelog.md",
+        "sha256": "360f6a3465a3e82f7bc1428cf1dc0cf5e6935a83b97345d172d27a4d8703321e",
+        "size": 9785,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/cjs.js",
+        "sha256": "2e5160f84a1141bd927264afe4d15766f1e6cf07daef182b37ff53fea121de7d",
+        "size": 4048,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/umd.js",
+        "sha256": "f33e6596482d1fb5c7c427f8ef92f2aa849eea9223acd974176b2fb27ddbf73a",
+        "size": 4420,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "146ba4b99c5feb82663e17a671bf9f53bb39c704cd76345d6c5a801c26372f44",
+        "size": 823,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "12440c84957c1990ea2d5e33dc0091722dc1dc1585c6d20e0c780e568ffa9d30",
+        "size": 3293,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license.txt",
+        "sha256": "6cfc4687cb2f2d86f4a77e6b526290d3878e5e512f3fec2f4cb36a9cb36f798b",
+        "size": 1116,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "f56978e7a6da1a3c6edee41abb54f98584a2fa2680458c48db820ae772fef0c9",
+        "size": 1152,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "202430923abee498512b2f9cbab686a1e7d64759314a503ca0d5aaa29007fc0f",
+        "size": 5682,
+        "type": "FILE"
+      },
+      {
+        "path": "package/rollup.config.js",
+        "sha256": "abba48beb11daa282e69134e4928ec32737ae6f6d192dd5f00a6e660e032bb25",
+        "size": 343,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1116,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6c/6cfc4687cb2f2d86f4a77e6b526290d3878e5e512f3fec2f4cb36a9cb36f798b",
+          "sha256": "6cfc4687cb2f2d86f4a77e6b526290d3878e5e512f3fec2f4cb36a9cb36f798b"
+        },
+        "kind": "LICENCE",
+        "path": "package/license.txt",
+        "sha256": "6cfc4687cb2f2d86f4a77e6b526290d3878e5e512f3fec2f4cb36a9cb36f798b",
+        "size": 1116
+      },
+      {
+        "blob": {
+          "bytes": 5682,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/20/202430923abee498512b2f9cbab686a1e7d64759314a503ca0d5aaa29007fc0f",
+          "sha256": "202430923abee498512b2f9cbab686a1e7d64759314a503ca0d5aaa29007fc0f"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "202430923abee498512b2f9cbab686a1e7d64759314a503ca0d5aaa29007fc0f",
+        "size": 5682
+      }
+    ],
+    "expandedBytes": 31157,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/TehShrike/deepmerge",
+      "license": "MIT",
+      "name": "deepmerge",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/TehShrike/deepmerge.git"
+      },
+      "version": "4.3.1"
+    },
+    "packageMetadata": {
+      "description": "A library for deep (recursive) merging of Javascript objects",
+      "devDependencies": {
+        "@types/node": "^8.10.54",
+        "is-mergeable-object": "1.1.0",
+        "is-plain-object": "^5.0.0",
+        "jsmd": "^1.0.2",
+        "rollup": "^1.23.1",
+        "rollup-plugin-commonjs": "^10.1.0",
+        "rollup-plugin-node-resolve": "^5.2.0",
+        "tape": "^4.11.0",
+        "ts-node": "7.0.1",
+        "typescript": "=2.2.2",
+        "uglify-js": "^3.6.1"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      },
+      "homepage": "https://github.com/TehShrike/deepmerge",
+      "keywords": [
+        "merge",
+        "deep",
+        "extend",
+        "copy",
+        "clone",
+        "recursive"
+      ],
+      "license": "MIT",
+      "main": "dist/cjs.js",
+      "name": "deepmerge",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/TehShrike/deepmerge.git"
+      },
+      "scripts": {
+        "build": "rollup -c",
+        "size": "npm run build && uglifyjs --compress --mangle -- ./dist/umd.js | gzip -c | wc -c",
+        "test": "npm run build && tape test/*.js && jsmd readme.md && npm run test:typescript",
+        "test:typescript": "tsc --noEmit test/typescript.ts && ts-node test/typescript.ts"
+      },
+      "version": "4.3.1"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 8452,
+      "sha256": "4003a0a348276a95543fa969f561f6b5968629acbbb59d66018dd23e7b8f1d5c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

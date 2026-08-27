@@ -1,0 +1,76 @@
+{
+  "artifactId": "fca00abe85050759365cf3e80bccb5fd2c46440b874866d17f19ad9a508a6587",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1025243,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "660b6aa52f8dd26dbe92fcc0a08a3e8103f26ca95c3e37160b3a51a2a0961e18",
+        "size": 130,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "f444cd3f6f341ebdfb613201a071f2d0d284fd5058822a269f943f2853477280",
+        "size": 583,
+        "type": "FILE"
+      },
+      {
+        "path": "package/resolver.linux-loong64-musl.node",
+        "sha256": "5bf79b20d7c9f6ceaf45bba2bccdda15bcd0ca822c73e8b8b69bcc13f32093f2",
+        "size": 2268248,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 2268961,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "license": "MIT",
+      "name": "@unrs/resolver-binding-linux-loong64-musl",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.12.2"
+    },
+    "packageMetadata": {
+      "cpu": [
+        "loong64"
+      ],
+      "description": "UnRS Resolver Node API",
+      "files": [
+        "resolver.linux-loong64-musl.node"
+      ],
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "libc": [
+        "musl"
+      ],
+      "license": "MIT",
+      "main": "resolver.linux-loong64-musl.node",
+      "name": "@unrs/resolver-binding-linux-loong64-musl",
+      "os": [
+        "linux"
+      ],
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.12.2"
+    },
+    "physicalEntryCount": 3,
+    "tarball": {
+      "bytes": 1025243,
+      "sha256": "5f8e786ccc5d80e02f6a0be7772bb21e7b276df9ae0a1643dfff54fd0a82c79e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

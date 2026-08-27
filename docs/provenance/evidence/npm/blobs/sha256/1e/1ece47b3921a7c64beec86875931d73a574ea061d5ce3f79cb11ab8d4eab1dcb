@@ -1,0 +1,126 @@
+{
+  "artifactId": "b80d01df63f3a54f25fb02cc93d3d987734b083c0483d97eced8fb99016ed0a3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3599,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "cc2268af129c704007091211aa24976fb884d7278905f6222f44ea47756514fc",
+        "size": 6297,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "d4aa397f36177c8490143e62ff8a72c1239852e2af42512fa9cc3f5e9c7949ec",
+        "size": 1401,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "97c894d224eba71f2a3a15b9ac7b9a021d34ea6217ef95965baf9b48bf1d3519",
+        "size": 1647,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7ea6214732ffa08ae74509ba2a86d58e04a70e500933ad9c885fde92000a6503",
+        "size": 1450,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 6297,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/cc/cc2268af129c704007091211aa24976fb884d7278905f6222f44ea47756514fc",
+          "sha256": "cc2268af129c704007091211aa24976fb884d7278905f6222f44ea47756514fc"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "cc2268af129c704007091211aa24976fb884d7278905f6222f44ea47756514fc",
+        "size": 6297
+      }
+    ],
+    "expandedBytes": 10795,
+    "packageIdentity": {
+      "author": "Kent C. Dodds <me@kentcdodds.com> (https://kentcdodds.com/)",
+      "homepage": "https://github.com/epicweb-dev/invariant#readme",
+      "license": "MIT",
+      "name": "@epic-web/invariant",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/epicweb-dev/invariant"
+      },
+      "version": "1.0.0"
+    },
+    "packageMetadata": {
+      "author": "Kent C. Dodds <me@kentcdodds.com> (https://kentcdodds.com/)",
+      "bugs": {
+        "url": "https://github.com/epicweb-dev/invariant/issues"
+      },
+      "description": "Type safe utilities for throwing errors (and responses) if things aren't quite right. Inspired by npm.im/invariant",
+      "devDependencies": {
+        "@types/node": "^20.10.4",
+        "prettier": "^3.1.1",
+        "tsx": "^4.6.2",
+        "typescript": "^5.3.3"
+      },
+      "exports": {
+        ".": {
+          "default": "./dist/index.js",
+          "types": "./dist/index.d.ts"
+        }
+      },
+      "files": [
+        "dist"
+      ],
+      "homepage": "https://github.com/epicweb-dev/invariant#readme",
+      "keywords": [],
+      "license": "MIT",
+      "main": "./dist/index.js",
+      "module": "./dist/index.js",
+      "name": "@epic-web/invariant",
+      "prettier": {
+        "overrides": [
+          {
+            "files": [
+              "**/*.json"
+            ],
+            "options": {
+              "useTabs": false
+            }
+          }
+        ],
+        "proseWrap": "always",
+        "semi": false,
+        "singleQuote": true,
+        "useTabs": true
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/epicweb-dev/invariant"
+      },
+      "scripts": {
+        "build": "tsc",
+        "format": "prettier --write .",
+        "test": "tsx --test --test-reporter spec --experimental-test-coverage test/*.test.ts",
+        "test:watch": "tsx --test --test-reporter spec --watch test/*.test.ts"
+      },
+      "type": "module",
+      "version": "1.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 3599,
+      "sha256": "6f8058357a552982fc190386b1792bde9d52802022f885e2404cd7fc1ce9862d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,147 @@
+{
+  "artifactId": "325c66c56f31a5751d7a72a938e55e05e7e653956d97418edecd64843d55fd0a",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 10655,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "6ab1224e0149cc983d5da72ff3540bc0cad8ee7b23cf2a3da136f77f76d01763",
+        "size": 16206,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "4785b43546842416526da6017927e98cea82e6023cb76fc65ebbfe7ce30923be",
+        "size": 13022,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/maps.js",
+        "sha256": "d93394398c5a61f52540556298ba491c851c3cb7084ce6e13887381e1731ad4c",
+        "size": 157,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e91129a0ea9463b696b7cebff4e266be5fb9d26e19f3623c390ffde2446902ac",
+        "size": 1073,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "89e4e4cfa89c08cc05644d698af718a11a2f33f829fbe48fe55607806acf11a7",
+        "size": 14901,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      }
+    ],
+    "expandedBytes": 46476,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "emittery",
+      "repository": "sindresorhus/emittery",
+      "version": "0.13.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "description": "Simple and modern async event emitter",
+      "devDependencies": {
+        "@types/node": "^15.6.1",
+        "ava": "^2.4.0",
+        "delay": "^4.3.0",
+        "nyc": "^15.0.0",
+        "p-event": "^4.1.0",
+        "tsd": "^0.19.1",
+        "xo": "^0.39.0"
+      },
+      "engines": {
+        "node": ">=12"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts",
+        "maps.js"
+      ],
+      "funding": "https://github.com/sindresorhus/emittery?sponsor=1",
+      "keywords": [
+        "event",
+        "emitter",
+        "eventemitter",
+        "events",
+        "async",
+        "emit",
+        "on",
+        "once",
+        "off",
+        "listener",
+        "subscribe",
+        "unsubscribe",
+        "pubsub",
+        "tiny",
+        "addlistener",
+        "addeventlistener",
+        "dispatch",
+        "dispatcher",
+        "observer",
+        "trigger",
+        "await",
+        "promise",
+        "typescript",
+        "ts",
+        "typed"
+      ],
+      "license": "MIT",
+      "name": "emittery",
+      "nyc": {
+        "reporter": [
+          "html",
+          "lcov",
+          "text"
+        ]
+      },
+      "repository": "sindresorhus/emittery",
+      "scripts": {
+        "test": "xo && nyc ava && tsd"
+      },
+      "version": "0.13.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 10655,
+      "sha256": "28c69a6b146f70bd65ea0e64622e364295ed28dfe367d8fdea435e393b4b54cd"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

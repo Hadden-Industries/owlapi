@@ -1,0 +1,129 @@
+{
+  "artifactId": "c187061f9232ebe5b5ee7feb5c7b51f996829e811c45ee80f31cc2ec9db74712",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1957,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "ad455fccdff87b5d76850c6ec9ea5fd6f2d2e891beae513c6299d94868ec27d3",
+        "size": 1312,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "956955f75ee1dab4fd9ad6598689494a9b8fc313de36e5273d30a4983801c6ff",
+        "size": 208,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "dfc8262b4f0ec2672ed6f4e6d79a428e86a33db3d500f70ac84f1e32829fabf2",
+        "size": 737,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "efae5473a7ee44ad4d87444b8b1122046da4551de2ba85fdb5a97c6bcfc733c7",
+        "size": 1618,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 1618,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ef/efae5473a7ee44ad4d87444b8b1122046da4551de2ba85fdb5a97c6bcfc733c7",
+          "sha256": "efae5473a7ee44ad4d87444b8b1122046da4551de2ba85fdb5a97c6bcfc733c7"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "efae5473a7ee44ad4d87444b8b1122046da4551de2ba85fdb5a97c6bcfc733c7",
+        "size": 1618
+      }
+    ],
+    "expandedBytes": 4984,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "resolve-cwd",
+      "repository": "sindresorhus/resolve-cwd",
+      "version": "3.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "dependencies": {
+        "resolve-from": "^5.0.0"
+      },
+      "description": "Resolve the path of a module like `require.resolve()` but from the current working directory",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "tsd": "^0.7.2",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "require",
+        "resolve",
+        "path",
+        "module",
+        "from",
+        "like",
+        "cwd",
+        "current",
+        "working",
+        "directory",
+        "import"
+      ],
+      "license": "MIT",
+      "name": "resolve-cwd",
+      "repository": "sindresorhus/resolve-cwd",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "3.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 1957,
+      "sha256": "a9d99831e70958349d753cff556d1efd10d818cb4affb1f32c1eacc013158ca6"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

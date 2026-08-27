@@ -1,0 +1,140 @@
+{
+  "artifactId": "d1e2a5cb42fc293a1a6b10992eb5cd48cbf3dce1b99f1399552c87c288c89d52",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4101,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "3161426dccb7cd128d19b3bad714a0feab0e13cfd276d6296fdf1a2bc895ad4d",
+        "size": 220,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.jshintrc",
+        "sha256": "5f944306428195f4b97de2753160a960ffb655ab528b8b09c7eaba7a83566a4e",
+        "size": 1185,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.travis.yml",
+        "sha256": "08496f8283824cbf6a38b3d8d4d659cacaacec1b90d3b5074d3757b526100a1f",
+        "size": 45,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "b1344bd78ebcbf8a359225ec444d038a653c6a5f9ecf405a50d4a5c11fbf27d1",
+        "size": 1056,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ac51045a6e785a27ac9c62ed9a3a17737371524a497f7569e9a5e1d043879c70",
+        "size": 3444,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "93c1b8ff5fd1fdb14105573d7eec21351894ce3c5f86090ca6a33fb89d65d559",
+        "size": 1378,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "71c2995725304ffa82e03be2c21e83f3b7c0c557846df88aaed0f2b9fa75d911",
+        "size": 843,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/test.js",
+        "sha256": "c89c47a4c5fb1e1edec10dc693ce623bdfcf9c721fa621ade12249bb50bc7bf2",
+        "size": 7385,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1056,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b1/b1344bd78ebcbf8a359225ec444d038a653c6a5f9ecf405a50d4a5c11fbf27d1",
+          "sha256": "b1344bd78ebcbf8a359225ec444d038a653c6a5f9ecf405a50d4a5c11fbf27d1"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "b1344bd78ebcbf8a359225ec444d038a653c6a5f9ecf405a50d4a5c11fbf27d1",
+        "size": 1056
+      },
+      {
+        "blob": {
+          "bytes": 3444,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ac/ac51045a6e785a27ac9c62ed9a3a17737371524a497f7569e9a5e1d043879c70",
+          "sha256": "ac51045a6e785a27ac9c62ed9a3a17737371524a497f7569e9a5e1d043879c70"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "ac51045a6e785a27ac9c62ed9a3a17737371524a497f7569e9a5e1d043879c70",
+        "size": 3444
+      }
+    ],
+    "expandedBytes": 15556,
+    "packageIdentity": {
+      "author": "IndigoUnited <hello@indigounited.com> (http://indigounited.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "promise-retry",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/IndigoUnited/node-promise-retry.git"
+      },
+      "version": "2.0.1"
+    },
+    "packageMetadata": {
+      "author": "IndigoUnited <hello@indigounited.com> (http://indigounited.com)",
+      "bugs": {
+        "url": "https://github.com/IndigoUnited/node-promise-retry/issues/"
+      },
+      "dependencies": {
+        "err-code": "^2.0.2",
+        "retry": "^0.12.0"
+      },
+      "description": "Retries a function that returns a promise, leveraging the power of the retry module.",
+      "devDependencies": {
+        "expect.js": "^0.3.1",
+        "mocha": "^8.0.1",
+        "sleep-promise": "^8.0.1"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "keywords": [
+        "retry",
+        "promise",
+        "backoff",
+        "repeat",
+        "replay"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "promise-retry",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/IndigoUnited/node-promise-retry.git"
+      },
+      "scripts": {
+        "test": "mocha --bail -t 10000"
+      },
+      "version": "2.0.1"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 4101,
+      "sha256": "58963726cda40bdf4ea694a9a84335ab3d203617703fd6a71f50f025056b55cc"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,228 @@
+{
+  "artifactId": "1f779d76d990398096221853d247aa2e311107a7651dbdc5f165a933bfc2f948",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7725,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "76c9d5f5ea942054715c026f33f8717c9e24603196a3737b8899afa216bcbdab",
+        "size": 1038,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ad8b9e3573cfbafcf1f860bf7bcd1f2a0acaf106a5c9a2aedb41ab35432fa1cf",
+        "size": 13005,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/dedent.d.mts",
+        "sha256": "c8d8492a602441dfc7a2d8d2787f87a7bd92d9858e710859afdf97624ac94796",
+        "size": 430,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/dedent.d.ts",
+        "sha256": "c8d8492a602441dfc7a2d8d2787f87a7bd92d9858e710859afdf97624ac94796",
+        "size": 430,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/dedent.js",
+        "sha256": "ca84edd184336215ab2e2afb3d0f1d02bef5c645af96999e4afcf2a7e7c5a4c5",
+        "size": 3721,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/dedent.mjs",
+        "sha256": "56e4bb39d50c382c972f5ca0bc2f648978d3b1c02dba1311b141f0dc2d0904e2",
+        "size": 5123,
+        "type": "FILE"
+      },
+      {
+        "path": "package/macro.js",
+        "sha256": "96e2a6d1f0ac97cc45b7453771dbd2fbc6fd438f3831921805ffc3f4e4ffe908",
+        "size": 1139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "42794a4864fec1741d324f5ff6ba436a5542f910d6658c7bf1946614e5dcc7f8",
+        "size": 3499,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1038,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/76/76c9d5f5ea942054715c026f33f8717c9e24603196a3737b8899afa216bcbdab",
+          "sha256": "76c9d5f5ea942054715c026f33f8717c9e24603196a3737b8899afa216bcbdab"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "76c9d5f5ea942054715c026f33f8717c9e24603196a3737b8899afa216bcbdab",
+        "size": 1038
+      },
+      {
+        "blob": {
+          "bytes": 13005,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ad/ad8b9e3573cfbafcf1f860bf7bcd1f2a0acaf106a5c9a2aedb41ab35432fa1cf",
+          "sha256": "ad8b9e3573cfbafcf1f860bf7bcd1f2a0acaf106a5c9a2aedb41ab35432fa1cf"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "ad8b9e3573cfbafcf1f860bf7bcd1f2a0acaf106a5c9a2aedb41ab35432fa1cf",
+        "size": 13005
+      }
+    ],
+    "expandedBytes": 28385,
+    "packageIdentity": {
+      "author": {
+        "email": "dmnd@desmondbrand.com",
+        "name": "Desmond Brand",
+        "url": "http://desmondbrand.com"
+      },
+      "homepage": "https://github.com/dmnd/dedent",
+      "license": "MIT",
+      "name": "dedent",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/dmnd/dedent"
+      },
+      "version": "1.7.2"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "dmnd@desmondbrand.com",
+        "name": "Desmond Brand",
+        "url": "http://desmondbrand.com"
+      },
+      "bugs": {
+        "url": "https://github.com/dmnd/dedent/issues"
+      },
+      "description": "A string tag that strips indentation from multi-line strings. ⬅️",
+      "devDependencies": {
+        "@babel/cli": "^7.21.5",
+        "@babel/preset-env": "^7.23.3",
+        "@babel/preset-typescript": "^7.23.3",
+        "@release-it/conventional-changelog": "^8.0.1",
+        "@types/babel-plugin-macros": "^3.1.0",
+        "@types/bun": "^1.3.4",
+        "@types/eslint": "^8.44.7",
+        "@types/jest": "^29.5.3",
+        "@typescript-eslint/eslint-plugin": "^6.10.0",
+        "@typescript-eslint/parser": "^6.10.0",
+        "babel-plugin-add-module-exports": "^1.0.4",
+        "babel-plugin-tester": "^11.0.4",
+        "console-fail-test": "^0.2.3",
+        "cspell": "^8.0.0",
+        "eslint": "^8.53.0",
+        "eslint-plugin-deprecation": "^2.0.0",
+        "eslint-plugin-eslint-comments": "^3.2.0",
+        "eslint-plugin-jest": "^27.6.0",
+        "eslint-plugin-jsdoc": "^46.9.0",
+        "eslint-plugin-jsonc": "^2.10.0",
+        "eslint-plugin-markdown": "^3.0.1",
+        "eslint-plugin-n": "^16.3.1",
+        "eslint-plugin-no-only-tests": "^3.1.0",
+        "eslint-plugin-perfectionist": "^2.3.0",
+        "eslint-plugin-regexp": "^2.1.1",
+        "eslint-plugin-yml": "^1.10.0",
+        "husky": "^8.0.3",
+        "jest": "^29.7.0",
+        "jsonc-eslint-parser": "^2.4.0",
+        "knip": "^5.75.0",
+        "lint-staged": "^15.1.0",
+        "markdownlint": "^0.31.1",
+        "markdownlint-cli": "^0.37.0",
+        "npm-package-json-lint": "^7.1.0",
+        "npm-package-json-lint-config-default": "^6.0.0",
+        "prettier": "^3.0.3",
+        "prettier-plugin-curly": "^0.1.3",
+        "prettier-plugin-packagejson": "^2.4.6",
+        "release-it": "^17.0.0",
+        "should-semantic-release": "^0.2.1",
+        "tsup": "^7.2.0",
+        "typescript": "^5.2.2",
+        "yaml-eslint-parser": "^1.2.2"
+      },
+      "exports": {
+        ".": {
+          "import": "./dist/dedent.mjs",
+          "require": "./dist/dedent.js",
+          "types": {
+            "import": "./dist/dedent.d.mts",
+            "require": "./dist/dedent.d.ts"
+          }
+        }
+      },
+      "files": [
+        "dist/",
+        "macro.js",
+        "package.json",
+        "LICENSE.md",
+        "README.md"
+      ],
+      "homepage": "https://github.com/dmnd/dedent",
+      "keywords": [
+        "dedent",
+        "tag",
+        "multi-line string",
+        "es6"
+      ],
+      "license": "MIT",
+      "lint-staged": {
+        "*": "prettier --ignore-unknown --write"
+      },
+      "main": "./dist/dedent.js",
+      "module": "./dist/dedent.mjs",
+      "name": "dedent",
+      "packageManager": "pnpm@8.7.0",
+      "peerDependencies": {
+        "babel-plugin-macros": "^3.1.0"
+      },
+      "peerDependenciesMeta": {
+        "babel-plugin-macros": {
+          "optional": true
+        }
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/dmnd/dedent"
+      },
+      "scripts": {
+        "build": "pnpm build:legacy && pnpm build:modern && pnpm build:types",
+        "build:legacy": "BABEL_ENV=legacy babel src/dedent.ts --out-file dist/dedent.js",
+        "build:modern": "BABEL_ENV=modern babel src/dedent.ts --out-file dist/dedent.mjs",
+        "build:types": "tsup src/dedent.ts --dts-only",
+        "format": "prettier \"**/*\" --ignore-unknown",
+        "lint": "eslint . .*js --max-warnings 0 --report-unused-disable-directives",
+        "lint:knip": "knip",
+        "lint:md": "markdownlint \"**/*.md\" \".github/**/*.md\"",
+        "lint:package-json": "npmPkgJsonLint .",
+        "lint:packages": "pnpm dedupe --check",
+        "lint:spelling": "cspell \"**\" \".github/**/*\"",
+        "prepare": "husky install",
+        "should-semantic-release": "should-semantic-release --verbose",
+        "test": "jest",
+        "test:bun": "bun test src/dedent.test.ts",
+        "tsc": "tsc"
+      },
+      "type": "commonjs",
+      "types": "./dist/dedent.d.mts",
+      "version": "1.7.2"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 7725,
+      "sha256": "172d0d2e71a7e928e39578366dd52d130764b32896d9bf95f5a1716ea53a8076"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

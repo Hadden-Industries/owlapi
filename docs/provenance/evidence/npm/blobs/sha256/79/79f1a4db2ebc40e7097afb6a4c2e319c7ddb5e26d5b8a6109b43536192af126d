@@ -1,0 +1,178 @@
+{
+  "artifactId": "92658675821baee8d3540f30eb8cdd28faea2cf43449dbe7e5766179537f300a",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 37783,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "f065c40191c7e740a71ed93e4ad921ed0bbef43698c34634e989c388b9448516",
+        "size": 387,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dynamic-import.js",
+        "sha256": "0c0f8b589e909b93f4697c07abd1c40a6f3f3a8f1affc202118d754fc1ff4eb3",
+        "size": 1747,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dynamic-import.js.map",
+        "sha256": "eed78801f3b23d8b7f9f231adbcaf419c406b2dd638dd53aeac12a2457303dcf",
+        "size": 4003,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/get-module-name.js",
+        "sha256": "109e30171eb4b950ca41868a146d7c1db123e9f4eea8f8947edaa58b621adb22",
+        "size": 1707,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/get-module-name.js.map",
+        "sha256": "069c263db3427cafbb2d5827d97557882ad731f4cbc9f2be64ff96b6b0f3f9af",
+        "size": 3904,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "3c0048e040b5e162df82fd6a88dfd93222af7ed953d50b57f1b00a71db6c33a9",
+        "size": 13490,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "e4b3f57bdd7b55673cb112bc4fcd9d166209de52d1d1d9ec5017f0a51684104e",
+        "size": 32016,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/lazy-modules.js",
+        "sha256": "bc043adae6c1782773e46c99cd6961d4394d91acf7c0127c01273bfa65645cf6",
+        "size": 1005,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/lazy-modules.js.map",
+        "sha256": "c3ae607be867440370055a6bfa4ec868a51576129bf33ae235363aa9c9f170ee",
+        "size": 2379,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/normalize-and-load-metadata.js",
+        "sha256": "3d5436a8c2698e045304cf2586bd148455e6cff9f9fa8cd407d39cb4f9e8f0c6",
+        "size": 13246,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/normalize-and-load-metadata.js.map",
+        "sha256": "950b64c93b3558c8ef6ad30ab32671b71f0f6d37ee97023a23fb3d3fac69aa68",
+        "size": 34943,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/rewrite-live-references.js",
+        "sha256": "d61b1dd6a09832da387be6d03dc9a6483a1b12953fdc9b44e44a0a999f26d08f",
+        "size": 13596,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/rewrite-live-references.js.map",
+        "sha256": "51469820173e5a952f78a3becab0f5921451c8163d1ecc2574d5e08f5fc077dc",
+        "size": 35137,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/rewrite-this.js",
+        "sha256": "dcaf0b9fde1579cecb68bb576c0656c7c2cac8616d62f09a412de601f52cb8bc",
+        "size": 641,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/rewrite-this.js.map",
+        "sha256": "f44bf4023149ea1e9bdc975ed582ef1471caee7268f1b99b98732379081da50a",
+        "size": 1531,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4f5010bdec7a80d93d84a1ecff8fbdd0a9a865f1bd22ceb5b0215a07255de3b3",
+        "size": 874,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 161712,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-module-transforms",
+      "license": "MIT",
+      "name": "@babel/helper-module-transforms",
+      "repository": {
+        "directory": "packages/babel-helper-module-transforms",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/helper-module-imports": "^7.29.7",
+        "@babel/helper-validator-identifier": "^7.29.7",
+        "@babel/traverse": "^7.29.7"
+      },
+      "description": "Babel helper functions for implementing ES6 module transformations",
+      "devDependencies": {
+        "@babel/core": "^7.29.7"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-module-transforms",
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/helper-module-transforms",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-helper-module-transforms",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 17,
+    "tarball": {
+      "bytes": 37783,
+      "sha256": "dbb3b9b10b0a2828f5af58a6317685b1a150464c6bd54995069c526aba45e6e4"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

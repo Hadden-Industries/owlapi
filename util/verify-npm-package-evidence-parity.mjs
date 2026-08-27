@@ -21,6 +21,7 @@ export const verifyEvidenceAggregateParity = async ({
   repositoryRoot = DEFAULT_REPOSITORY_ROOT,
   leftRoot,
   rightRoot,
+  allowLegacyScancodeNormalization = false,
 } = {}) => {
   if (typeof leftRoot !== "string" || typeof rightRoot !== "string") {
     throw new TypeError(
@@ -41,11 +42,13 @@ export const verifyEvidenceAggregateParity = async ({
       manifest: leftManifest,
       lockfileBytes,
       blobRoot: join(left, "corpus"),
+      allowLegacyScancodeNormalization,
     }),
     verifyEvidenceManifest({
       manifest: rightManifest,
       lockfileBytes,
       blobRoot: join(right, "corpus"),
+      allowLegacyScancodeNormalization,
     }),
   ]);
   if (stableJson(leftManifest) !== stableJson(rightManifest)) {
@@ -65,7 +68,17 @@ export const parseParityArguments = (arguments_) => {
     throw new TypeError("Evidence parity arguments must be an array");
   }
   const values = new Map();
+  let allowLegacyScancodeNormalization = false;
   for (const argument of arguments_) {
+    if (argument === "--allow-legacy-scancode-normalization") {
+      if (allowLegacyScancodeNormalization) {
+        throw new TypeError(
+          "Duplicate evidence parity argument: --allow-legacy-scancode-normalization",
+        );
+      }
+      allowLegacyScancodeNormalization = true;
+      continue;
+    }
     const match = /^(--(?:left|right))=(.+)$/u.exec(argument);
     if (!match) {
       throw new TypeError(`Unknown evidence parity argument: ${argument}`);
@@ -81,7 +94,7 @@ export const parseParityArguments = (arguments_) => {
   if (!leftRoot || !rightRoot) {
     throw new TypeError("Evidence parity requires --left and --right");
   }
-  return { leftRoot, rightRoot };
+  return { leftRoot, rightRoot, allowLegacyScancodeNormalization };
 };
 
 const isMain =

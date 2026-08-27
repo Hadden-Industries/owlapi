@@ -1,0 +1,120 @@
+{
+  "artifactId": "65ba4ccf09468c92e51192eac25cf5e6152c15ac97c50e1745342ad3399df98e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2476,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "34239137535c0fee5a5b590310300f988fff92bbba6719889454eda410f536e3",
+        "size": 1092,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "34ff104763e52a46d4394e7290b5c498141c57b32316cc5ac73912f6ce0bda30",
+        "size": 713,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "d39a6147447ff7e7bfb8da325f0679ea69189deed41f828390ad4e05062bb7ae",
+        "size": 297,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "c4a6b11bf81090ebf12a0369fb61baa40bcdf5ea054abac45ef13952d1ee8ea1",
+        "size": 1920,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7c33a3c8f3be1bebe79595e873eaeda7358164a2861dd7dd4f88be44ff2dc374",
+        "size": 937,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1092,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/34/34239137535c0fee5a5b590310300f988fff92bbba6719889454eda410f536e3",
+          "sha256": "34239137535c0fee5a5b590310300f988fff92bbba6719889454eda410f536e3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "34239137535c0fee5a5b590310300f988fff92bbba6719889454eda410f536e3",
+        "size": 1092
+      }
+    ],
+    "expandedBytes": 4959,
+    "packageIdentity": {
+      "author": "Richie Bendall <richiebendall@gmail.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "char-regex",
+      "repository": "https://github.com/Richienb/char-regex.git",
+      "version": "1.0.2"
+    },
+    "packageMetadata": {
+      "author": "Richie Bendall <richiebendall@gmail.com>",
+      "dependencies": {},
+      "description": "A regex to match any full character, considering weird character ranges.",
+      "devDependencies": {
+        "@babel/core": "^7.8.4",
+        "@babel/plugin-proposal-unicode-property-regex": "^7.8.3",
+        "array-uniq": "^2.1.0",
+        "ava": "^3.0.0",
+        "emoji.json": "^12.1.1",
+        "eslint-config-richienb": "^0.3.0",
+        "unicode-chars": "^1.0.1",
+        "xo": "^0.25.3"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "character",
+        "regex",
+        "match",
+        "split",
+        "length"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "char-regex",
+      "repository": "https://github.com/Richienb/char-regex.git",
+      "resolutions": {
+        "eslint": "^6.8.0"
+      },
+      "scripts": {
+        "lint": "xo",
+        "test": "yarn lint && ava"
+      },
+      "version": "1.0.2",
+      "xo": {
+        "extends": "richienb/node"
+      }
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 2476,
+      "sha256": "366fc94c4f6087985192b94fc7134601ddfc08ab5b7066c992c34956aa21ede1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

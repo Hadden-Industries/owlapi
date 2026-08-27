@@ -1,0 +1,109 @@
+{
+  "artifactId": "bbcd4dd1711e497b01b00aa965f991ffcca1235d862bc38e013579f1305d1dd3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3074,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "083eff003d0a4a794a9eebc2843b4ad5e59586df4815fdca90019fb69315ead0",
+        "size": 365,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "8ec2973315112969f58140535920328aa2046d3f4edca7e09427eb886ee9c76e",
+        "size": 1148,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "834ca514e5973fd48db983aedfbc004777fc7bf77165654e4c275225a24e271c",
+        "size": 3462,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b0e1f617ded02fff4bd37f96777124b2bcf1afbe72d397be0e5924345f610de1",
+        "size": 864,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 6945,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-syntax-typescript",
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-typescript",
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-typescript",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.29.7"
+      },
+      "description": "Allow parsing of TypeScript syntax",
+      "devDependencies": {
+        "@babel/core": "^7.29.7",
+        "@babel/helper-plugin-test-runner": "^7.29.7"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-syntax-typescript",
+      "keywords": [
+        "babel-plugin",
+        "typescript"
+      ],
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/plugin-syntax-typescript",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-typescript",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3074,
+      "sha256": "f5c774297c3a21e54c941c8407830d3c328c3741f96448aa424053efc40e230f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

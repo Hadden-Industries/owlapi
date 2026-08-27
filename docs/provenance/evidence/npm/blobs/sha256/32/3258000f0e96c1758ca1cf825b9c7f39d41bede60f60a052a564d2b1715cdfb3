@@ -1,0 +1,189 @@
+{
+  "artifactId": "c3c875f9796f1a60e8e23c980f06d9d370568b15b43a2fba46c828c4cf62a815",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 14864,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "60de438a23fe704192f61f4ac5a98327b9b74add3b8e12ca73f574049b5bced8",
+        "size": 376,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/debug.js",
+        "sha256": "b5b23f2ccd2420c3943cab045962f8a82bb3251c97d8c411c0af39f584034aff",
+        "size": 1072,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/debug.js.map",
+        "sha256": "998b36d9132e8a2b5d7db665863a3d9c3d11e4451422c8821aff1b49eedeb943",
+        "size": 2504,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/filter-items.js",
+        "sha256": "f5ad422832bb605f0edd58203af48f2415d680f018fd7e9c38580e5fc3939b69",
+        "size": 2435,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/filter-items.js.map",
+        "sha256": "e7a548734eb40039e456e9afc1183557532d6e4a704aeca280b577a313e86118",
+        "size": 5780,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "9374b9b7a017db5530efeadc6c17fb5421772ef80f85f46a8d0a5e8e14dc1df8",
+        "size": 7917,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "92b13a96ed44705f5adfe319213ad678939c1080b1792646a2c5af916b9b0f11",
+        "size": 18494,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/options.js",
+        "sha256": "44b239c5e79f4460bef68a39810d32d09cc639b7ff878f6a16f6f80d6c56ea9b",
+        "size": 465,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/options.js.map",
+        "sha256": "d4782083565bb6b5a5c79368a6e6d8ab44c3705e8d6df52c6555f051624f3ac8",
+        "size": 956,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/pretty.js",
+        "sha256": "0ca1ed24b41d439a278ef79f751523dc77ddde5475acb8ed9042666ff4a7e570",
+        "size": 953,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/pretty.js.map",
+        "sha256": "43deaebf1fac4b31ebf66a3f52a1a5dfdb212efa0b3610cfa1744540d51200b4",
+        "size": 2206,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/targets.js",
+        "sha256": "2e8e493d7dae85b19b9fa6252388ea72795c2645c25aedd4e1f66ba31f968119",
+        "size": 587,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/targets.js.map",
+        "sha256": "8af5a542447097a28f35ef61545e168aed9c8d1ce5cd34bf405c1481ac7a071e",
+        "size": 1350,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/utils.js",
+        "sha256": "d74b41fcb6d47fd4e7eb9acdee93770b83adef6ca20b0accfbee26bd5d83b511",
+        "size": 1984,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/utils.js.map",
+        "sha256": "9daf28b7a06aac2364f17d8dd01bfe5eedfd45a3d92fe988bc59263f1cc0810a",
+        "size": 4566,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6ac5b42b124c964fb3c0feed98cd2c13aaf5c5827021374db6884bab91f206d2",
+        "size": 1040,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 53791,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/helper-compilation-targets",
+      "repository": {
+        "directory": "packages/babel-helper-compilation-targets",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/compat-data": "^7.29.7",
+        "@babel/helper-validator-option": "^7.29.7",
+        "browserslist": "^4.24.0",
+        "lru-cache": "^5.1.1",
+        "semver": "^6.3.1"
+      },
+      "description": "Helper functions on Babel compilation targets",
+      "devDependencies": {
+        "@babel/helper-plugin-test-runner": "^7.29.7",
+        "@types/lru-cache": "^5.1.1",
+        "@types/semver": "^5.5.0"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./lib/index.js",
+          "types": "./lib/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "keywords": [
+        "babel",
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/helper-compilation-targets",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-helper-compilation-targets",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 17,
+    "tarball": {
+      "bytes": 14864,
+      "sha256": "5b5446f3d32b10ba38cb308af5f65e76afcddaacd7b817e71055a6de6ab934e0"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

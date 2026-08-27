@@ -1,0 +1,120 @@
+{
+  "artifactId": "3915644068d66170218a4ab89f2c1b337ee7921d05fc7a0442ae2ecdc446f550",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1704,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.js",
+        "sha256": "f338131e750ebd9dcfbf7350f22baee11b90af95ee3e484951e9a3eb7e4a63c4",
+        "size": 368,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "5656bd8df76ad3a8702bfbb0d326fab95efdba30f624da2c71934a56931c7744",
+        "size": 646,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "d1cd530ac8483800a5fc8fce1e5876e1a95defe354a2f50566122ad98e9bfca4",
+        "size": 923,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 923,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d1/d1cd530ac8483800a5fc8fce1e5876e1a95defe354a2f50566122ad98e9bfca4",
+          "sha256": "d1cd530ac8483800a5fc8fce1e5876e1a95defe354a2f50566122ad98e9bfca4"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "d1cd530ac8483800a5fc8fce1e5876e1a95defe354a2f50566122ad98e9bfca4",
+        "size": 923
+      }
+    ],
+    "expandedBytes": 3046,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "strip-final-newline",
+      "repository": "sindresorhus/strip-final-newline",
+      "version": "2.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "description": "Strip the final newline character from a string/buffer",
+      "devDependencies": {
+        "ava": "^0.25.0",
+        "xo": "^0.23.0"
+      },
+      "engines": {
+        "node": ">=6"
+      },
+      "files": [
+        "index.js"
+      ],
+      "keywords": [
+        "strip",
+        "trim",
+        "remove",
+        "delete",
+        "final",
+        "last",
+        "end",
+        "file",
+        "newline",
+        "linebreak",
+        "character",
+        "string",
+        "buffer"
+      ],
+      "license": "MIT",
+      "name": "strip-final-newline",
+      "repository": "sindresorhus/strip-final-newline",
+      "scripts": {
+        "test": "xo && ava"
+      },
+      "version": "2.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1704,
+      "sha256": "691ffb2c808d6f64d02565f0e8e1e1cd25eace1e32c065e93d6c1aa24e2b0075"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

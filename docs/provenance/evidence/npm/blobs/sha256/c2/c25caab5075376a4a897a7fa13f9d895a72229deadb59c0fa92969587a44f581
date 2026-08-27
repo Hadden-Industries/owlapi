@@ -1,0 +1,117 @@
+{
+  "artifactId": "e712be9974894911ff147428a53e1b8d61856937a292cc874f7cffe07f7a8a94",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5798,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "19e9a0ae178ca6c3667eec26bff09ec4da669809823c83dd2a268757e4cf43bc",
+        "size": 5247,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "61af0205b46992c09dcb2624f394925d4c7e9dd29bb5cbdd72ce10ec97c18b37",
+        "size": 14925,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "0027c2acd2ef86faee77d642d608d3060dd04c3bb1cc81aaefa7d5623cc7a213",
+        "size": 459,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "028213583585383ddb77da646c29ebb4abdf150ce950325c3c81f82281e613ea",
+        "size": 1079,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 22842,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://jestjs.io/",
+      "license": "MIT",
+      "name": "jest-watcher",
+      "repository": {
+        "directory": "packages/jest-watcher",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.4.1"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/jestjs/jest/issues"
+      },
+      "dependencies": {
+        "@jest/test-result": "30.4.1",
+        "@jest/types": "30.4.1",
+        "@types/node": "*",
+        "ansi-escapes": "^4.3.2",
+        "chalk": "^4.1.2",
+        "emittery": "^0.13.1",
+        "jest-util": "30.4.1",
+        "string-length": "^4.0.2"
+      },
+      "description": "Delightful JavaScript Testing.",
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "b3b4a09ed3005369dacc7466d1d2122797283785",
+      "homepage": "https://jestjs.io/",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "jest-watcher",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-watcher",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.4.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 5798,
+      "sha256": "ac92237c7e3da71a440154a020be0a5ef8c5145ed4193dce482043644548c562"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

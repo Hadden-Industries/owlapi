@@ -1,0 +1,89 @@
+{
+  "artifactId": "3d9fa62e07251a83bdfd45088c83c623266d32764811a66876c8f08a012da7bc",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 13982,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "ab868ad5a2ef5068560d9cd3b2180ec63c140bb4c5cae1ba779d300a0ac74fa3",
+        "size": 1274,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "be77466544e7060ad859664e779d84db4440f6dcca28da0975d0bcd97000c9fa",
+        "size": 12687,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "01b7d66c854b2fe53ac05c98feb6e0d64722ab8898a778e2d2426a8b468d178f",
+        "size": 35412,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "bee0609d5ab09a590afe0e1209d3702b0afb0a3c158492f90902a724d889d22b",
+        "size": 600,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1274,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ab/ab868ad5a2ef5068560d9cd3b2180ec63c140bb4c5cae1ba779d300a0ac74fa3",
+          "sha256": "ab868ad5a2ef5068560d9cd3b2180ec63c140bb4c5cae1ba779d300a0ac74fa3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "ab868ad5a2ef5068560d9cd3b2180ec63c140bb4c5cae1ba779d300a0ac74fa3",
+        "size": 1274
+      }
+    ],
+    "expandedBytes": 49973,
+    "packageIdentity": {
+      "author": "Kornel Lesiński <npms2@geekhood.net> (https://kornel.ski/)",
+      "homepage": null,
+      "license": "BSD-2-Clause",
+      "name": "http-cache-semantics",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kornelski/http-cache-semantics.git"
+      },
+      "version": "4.2.0"
+    },
+    "packageMetadata": {
+      "author": "Kornel Lesiński <npms2@geekhood.net> (https://kornel.ski/)",
+      "description": "Parses Cache-Control and other headers. Helps building correct HTTP caches and proxies",
+      "devDependencies": {
+        "mocha": "^11.0"
+      },
+      "files": [
+        "index.js"
+      ],
+      "license": "BSD-2-Clause",
+      "main": "index.js",
+      "name": "http-cache-semantics",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kornelski/http-cache-semantics.git"
+      },
+      "scripts": {
+        "test": "mocha"
+      },
+      "types": "index.js",
+      "version": "4.2.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 13982,
+      "sha256": "f57454db8ab2d06a4baabbfb7c70ad4181a00b7ee0efebcdffa9ba313bd80eb7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

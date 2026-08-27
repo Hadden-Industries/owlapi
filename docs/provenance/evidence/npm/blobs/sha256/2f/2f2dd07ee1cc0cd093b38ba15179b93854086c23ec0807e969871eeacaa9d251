@@ -1,0 +1,2486 @@
+{
+  "artifactId": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 18,
+      "digestVerifiedFileCount": 18,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 18
+    },
+    "artifactId": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.15.0",
+        "for_package_purl": "pkg:npm/source-map-js@1.2.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/doctoc",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.12.0",
+        "for_package_purl": "pkg:npm/source-map-js@1.2.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/webpack",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.1.0",
+        "for_package_purl": "pkg:npm/source-map-js@1.2.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/clean-publish",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Ben Rothman (@benthemonkey) (https://github.com/benthemonkey)",
+            "end_line": 15,
+            "start_line": 15
+          },
+          {
+            "author": "Vyacheslav Egorov (@mraleph) (https://github.com/mraleph)",
+            "end_line": 17,
+            "start_line": 17
+          }
+        ],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "3b32eb04abd34416748b950a13352efb",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "8bcc0cd3a43ad824bb0137e41ec53e4ddc1edf03",
+        "sha1_git": "614962d76c8609022129a1921f7bf6bfe10ce56c",
+        "sha256": "8e1a57daf01cd2fc8969ecd0afeae51d1c05c7c79e9413ea82016a0f65e97646",
+        "size": 26040,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Valentin 7rulnik Semirulnik <v7rulnik@gmail.com> contributors' Nick Fitzgerald <nfitzgerald@mozilla.com> Tobias Koppers <tobias.koppers@googlemail.com> Duncan Beevers <duncan@dweebd.com> Stephen Crane <scrane@mozilla.com> Ryan Seddon <seddon.ryan@gmail.com> Miles Elam <miles.elam@deem.com> Mihai Bazon <mihai.bazon@gmail.com> Michael Ficarra <github.public.email@michael.ficarra.me> Todd Wolfson <todd@twolfson.com> Alexander Solovyov <alexander@solovyov.net> Felix Gnass <fgnass@gmail.com> Conrad Irwin <conrad.irwin@gmail.com> usrbincc <usrbincc@yahoo.com> David Glasser <glasser@davidglasser.net> Chase Douglas <chase@newrelic.com> Evan Wallace <evan.exe@gmail.com> Heather Arthur <fayearthur@gmail.com> Hugh Kennedy <hughskennedy@gmail.com> David Glasser <glasser@davidglasser.net> Simon Lydell <simon.lydell@gmail.com> Jmeas Smith <jellyes2@gmail.com> Michael Z Goddard <mzgoddard@gmail.com> azu <azu@users.noreply.github.com> John Gozde <john@gozde.ca> Adam Kirkton <akirkton@truefitinnovation.com> Chris Montgomery <christopher.montgomery@dowjones.com> J. Ryan Stinnett <jryans@gmail.com> Jack Herrington <jherrington@walmartlabs.com> Chris Truter <jeffpalentine@gmail.com> Daniel Espeset <daniel@danielespeset.com> Jamie Wong <jamie.lf.wong@gmail.com> Eddy Bruel <ejpbruel@mozilla.com> Hawken Rives <hawkrives@gmail.com> Gilad Peleg <giladp007@gmail.com> djchie <djchie.dev@gmail.com> Gary Ye <garysye@gmail.com> Nicolas Lalevee <nicolas.lalevee@hibnet.org>",
+            "end_line": 44,
+            "start_line": 6
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-008266ae-6939-ad31-3617-228b0809863c",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 56,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/package.json",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "  \"license\": \"BSD-3-Clause\",",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_195.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+                "score": 100,
+                "start_line": 56
+              }
+            ]
+          }
+        ],
+        "md5": "33047a8980dd0761366e53b92dd89446",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/source-map-js/1.2.1",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "bsd-new",
+            "declared_license_expression_spdx": "BSD-3-Clause",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.15.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/doctoc",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.12.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/webpack",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/clean-publish",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "Generates and consumes source maps",
+            "download_url": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz",
+            "extra_data": {
+              "engines": {
+                "node": ">=0.10.0"
+              }
+            },
+            "extracted_license_statement": "- BSD-3-Clause\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://github.com/7rulnik/source-map-js",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [
+              {
+                "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/package.json",
+                    "license_expression": "bsd-new",
+                    "license_expression_spdx": "BSD-3-Clause",
+                    "match_coverage": 100,
+                    "matched_length": 3,
+                    "matched_text": "BSD-3-Clause",
+                    "matcher": "1-hash",
+                    "rule_identifier": "bsd-new_10.RULE",
+                    "rule_relevance": 100,
+                    "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "source-map-js",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "akirkton@truefitinnovation.com",
+                "name": "Adam Kirkton",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "alexander@solovyov.net",
+                "name": "Alexander Solovyov",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "azu@users.noreply.github.com",
+                "name": "azu",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "chase@newrelic.com",
+                "name": "Chase Douglas",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "christopher.montgomery@dowjones.com",
+                "name": "Chris Montgomery",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "conrad.irwin@gmail.com",
+                "name": "Conrad Irwin",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "daniel@danielespeset.com",
+                "name": "Daniel Espeset",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "djchie.dev@gmail.com",
+                "name": "djchie",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "duncan@dweebd.com",
+                "name": "Duncan Beevers",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "ejpbruel@mozilla.com",
+                "name": "Eddy Bruël",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "evan.exe@gmail.com",
+                "name": "Evan Wallace",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "fayearthur@gmail.com",
+                "name": "Heather Arthur",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "fgnass@gmail.com",
+                "name": "Felix Gnass",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "garysye@gmail.com",
+                "name": "Gary Ye",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "giladp007@gmail.com",
+                "name": "Gilad Peleg",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "github.public.email@michael.ficarra.me",
+                "name": "Michael Ficarra",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "glasser@davidglasser.net",
+                "name": "David Glasser",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "glasser@davidglasser.net",
+                "name": "David Glasser",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "hawkrives@gmail.com",
+                "name": "Hawken Rives",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "hughskennedy@gmail.com",
+                "name": "Hugh Kennedy",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "jamie.lf.wong@gmail.com",
+                "name": "Jamie Wong",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "jeffpalentine@gmail.com",
+                "name": "Chris Truter",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "jellyes2@gmail.com",
+                "name": "Jmeas Smith",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "jherrington@walmartlabs.com",
+                "name": "Jack Herrington",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "john@gozde.ca",
+                "name": "John Gozde",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "jryans@gmail.com",
+                "name": "J. Ryan Stinnett",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "mihai.bazon@gmail.com",
+                "name": "Mihai Bazon",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "miles.elam@deem.com",
+                "name": "Miles Elam",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "mzgoddard@gmail.com",
+                "name": "Michael Z Goddard",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "nfitzgerald@mozilla.com",
+                "name": "Nick Fitzgerald",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "nicolas.lalevee@hibnet.org",
+                "name": "Nicolas Lalevée",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "scrane@mozilla.com",
+                "name": "Stephen Crane",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "seddon.ryan@gmail.com",
+                "name": "Ryan Seddon",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "simon.lydell@gmail.com",
+                "name": "Simon Lydell",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "tobias.koppers@googlemail.com",
+                "name": "Tobias Koppers",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "todd@twolfson.com",
+                "name": "Todd Wolfson",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "usrbincc@yahoo.com",
+                "name": "usrbincc",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "v7rulnik@gmail.com",
+                "name": "Valentin 7rulnik Semirulnik",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/source-map-js@1.2.1",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/source-map-js",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "https://github.com/7rulnik/source-map-js",
+            "version": "1.2.1"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 1.29,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "5a6168eb96a5054a6d0ae443f2a5e4524ce0af57",
+        "sha1_git": "f58dbeb4eca3ad3118fbd5e2a7f6241d5b5aceaa",
+        "sha256": "58f8e94a461a5e461e0cb2bb2be681cbd89b9181989fd26fceb858e67711469a",
+        "size": 2548,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2009-2011, Mozilla Foundation and contributors",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Mozilla Foundation and contributors",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-4409e1d8-cc22-e833-1e6d-4ebbebdb7333",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 28,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 213,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the names of the Mozilla Foundation nor the names of project\n  contributors may be used to endorse or promote products derived from this\n  software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_1201.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1201.RULE",
+                "score": 100,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "b1ca6dbc0075d56cbd9931a75566cd44",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 95.09,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "914d42b13ad394be4aa75b4d93fde94b1e79cbbd",
+        "sha1_git": "ed1b7cf27e97e136918e87ad7bb33baf169f0171",
+        "sha256": "6cb0631f71c7749763fd3dd1d5bee52dd1070ec17f2edc1710079ad070bd2fbd",
+        "size": 1526,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "array-set",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2011 Mozilla Foundation and contributors",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Mozilla Foundation and contributors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-b4a3e656-18f4-012c-f239-83dff6d64fc0",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 28,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 213,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the names of the Mozilla Foundation nor the names of project\n  contributors may be used to endorse or promote products derived from this\n  software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_1201.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1201.RULE",
+                "score": 100,
+                "start_line": 5
+              },
+              {
+                "end_line": 5,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/lib/array-set.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 16,
+                "matched_text": " * Licensed under the New BSD license. See LICENSE or:\n * http://opensource.org/licenses/BSD-3-Clause",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_359.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_359.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "e409c2198743fb3f9c3e5939358bc32e",
+        "name": "array-set.js",
+        "package_data": [],
+        "path": "package/lib/array-set.js",
+        "percentage_of_license_text": 3.77,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "ad62f4ee15345ba799a00c59dd226690b4d1d1d2",
+        "sha1_git": "fbd5c81cae66fa6401f871ac7fb02e96fdb9c213",
+        "sha256": "163bb3055aaea7140167740036a83161fd912c344b14f992754b80f21477d754",
+        "size": 3197,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "base64",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2011 Mozilla Foundation and contributors",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Mozilla Foundation and contributors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-b4a3e656-18f4-012c-f239-83dff6d64fc0",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 28,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 213,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the names of the Mozilla Foundation nor the names of project\n  contributors may be used to endorse or promote products derived from this\n  software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_1201.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1201.RULE",
+                "score": 100,
+                "start_line": 5
+              },
+              {
+                "end_line": 5,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/lib/base64.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 16,
+                "matched_text": " * Licensed under the New BSD license. See LICENSE or:\n * http://opensource.org/licenses/BSD-3-Clause",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_359.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_359.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "d6ba9a233e14b859b51f538c0b295953",
+        "name": "base64.js",
+        "package_data": [],
+        "path": "package/lib/base64.js",
+        "percentage_of_license_text": 9.2,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "269e8e4dcb82db12f6e2a6187e7be46bee604ab0",
+        "sha1_git": "8aa86b30264363990334a7df0aa0d0c9cc1aecfc",
+        "sha256": "651bf433cf05e9ec8cee0b94639483236a605d48279e83d3d5c5de81c21d6599",
+        "size": 1540,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "base64-vlq",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2011 Mozilla Foundation and contributors",
+            "end_line": 3,
+            "start_line": 3
+          },
+          {
+            "copyright": "Copyright 2011 The Closure Compiler Authors",
+            "end_line": 10,
+            "start_line": 10
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [
+          {
+            "end_line": 10,
+            "holder": "The Closure Compiler Authors",
+            "start_line": 10
+          },
+          {
+            "end_line": 3,
+            "holder": "Mozilla Foundation and contributors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-b4a3e656-18f4-012c-f239-83dff6d64fc0",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 28,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 213,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the names of the Mozilla Foundation nor the names of project\n  contributors may be used to endorse or promote products derived from this\n  software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_1201.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1201.RULE",
+                "score": 100,
+                "start_line": 5
+              },
+              {
+                "end_line": 5,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/lib/base64-vlq.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 16,
+                "matched_text": " * Licensed under the New BSD license. See LICENSE or:\n * http://opensource.org/licenses/BSD-3-Clause",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_359.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_359.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          },
+          {
+            "identifier": "bsd_new-050b3051-820b-200e-26c9-1a3c8e9761d2",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 35,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/lib/base64-vlq.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 212,
+                "matched_text": " * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are\n * met:\n *\n *  * Redistributions of source code must retain the above copyright\n *    notice, this list of conditions and the following disclaimer.\n *  * Redistributions in binary form must reproduce the above\n *    copyright notice, this list of conditions and the following\n *    disclaimer in the documentation and/or other materials provided\n *    with the distribution.\n *  * Neither the name of Google Inc. nor the names of its\n *    contributors may be used to endorse or promote products derived\n *    from this software without specific prior written permission.\n *\n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n * \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\n * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\n * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\n * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\n * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\n * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\n * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\n * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\n * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_166.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_166.RULE",
+                "score": 100,
+                "start_line": 11
+              }
+            ]
+          }
+        ],
+        "md5": "10ab2672fb7feaa6e4a2ca651d2412f9",
+        "name": "base64-vlq.js",
+        "package_data": [],
+        "path": "package/lib/base64-vlq.js",
+        "percentage_of_license_text": 34.6,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "493d3d895198dfaefe88d2b066c272552ea35889",
+        "sha1_git": "612b404018ece911ab71fc0a8db326d16e6b1287",
+        "sha256": "f3407e528f54ec0787bd0a71eeac0c99fffd98445916fcbe116dc69ca3be928b",
+        "size": 4714,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "binary-search",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2011 Mozilla Foundation and contributors",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Mozilla Foundation and contributors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-b4a3e656-18f4-012c-f239-83dff6d64fc0",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 28,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 213,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the names of the Mozilla Foundation nor the names of project\n  contributors may be used to endorse or promote products derived from this\n  software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_1201.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1201.RULE",
+                "score": 100,
+                "start_line": 5
+              },
+              {
+                "end_line": 5,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/lib/binary-search.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 16,
+                "matched_text": " * Licensed under the New BSD license. See LICENSE or:\n * http://opensource.org/licenses/BSD-3-Clause",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_359.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_359.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "250315731532fce9f782a6dcc6a0f569",
+        "name": "binary-search.js",
+        "package_data": [],
+        "path": "package/lib/binary-search.js",
+        "percentage_of_license_text": 2.65,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "b4333085d02fb4c091361de85d5cb368a3ce7632",
+        "sha1_git": "010ac941e1568d59c89b67cb649051a14608ee79",
+        "sha256": "c7f4a47a125af0bd860443dfd71d2f412d1a97dcb53ab7038189d63b91dc32bd",
+        "size": 4249,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "mapping-list",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2014 Mozilla Foundation and contributors",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Mozilla Foundation and contributors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-b4a3e656-18f4-012c-f239-83dff6d64fc0",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 28,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 213,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the names of the Mozilla Foundation nor the names of project\n  contributors may be used to endorse or promote products derived from this\n  software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_1201.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1201.RULE",
+                "score": 100,
+                "start_line": 5
+              },
+              {
+                "end_line": 5,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/lib/mapping-list.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 16,
+                "matched_text": " * Licensed under the New BSD license. See LICENSE or:\n * http://opensource.org/licenses/BSD-3-Clause",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_359.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_359.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "b43d49bb65a0e89b26e13a97de816cad",
+        "name": "mapping-list.js",
+        "package_data": [],
+        "path": "package/lib/mapping-list.js",
+        "percentage_of_license_text": 5.86,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "68a9ed5c0a48a384f64efaec04444a464952509d",
+        "sha1_git": "06d1274a025a8a30879f31c9c6703a14f79f73b9",
+        "sha256": "35ddb82861f11a70ab84cb47d620fcb28d7f884bb444644e06bde815b836ef9e",
+        "size": 2339,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "quick-sort",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2011 Mozilla Foundation and contributors",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Mozilla Foundation and contributors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-b4a3e656-18f4-012c-f239-83dff6d64fc0",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 28,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 213,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the names of the Mozilla Foundation nor the names of project\n  contributors may be used to endorse or promote products derived from this\n  software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_1201.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1201.RULE",
+                "score": 100,
+                "start_line": 5
+              },
+              {
+                "end_line": 5,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/lib/quick-sort.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 16,
+                "matched_text": " * Licensed under the New BSD license. See LICENSE or:\n * http://opensource.org/licenses/BSD-3-Clause",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_359.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_359.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "ace64c2b979c64ee72d7f445c6142601",
+        "name": "quick-sort.js",
+        "package_data": [],
+        "path": "package/lib/quick-sort.js",
+        "percentage_of_license_text": 2.75,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "1df82889f3320d0699f700e4adfe367d30bb751f",
+        "sha1_git": "23f9eda57f7383b5291361e4593cf2fdef5409ba",
+        "sha256": "72ed4911cdc72232cac53cac995e28e865cd4302186173bba74ff6436c089915",
+        "size": 4068,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "source-map",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2009-2011 Mozilla Foundation and contributors",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Mozilla Foundation and contributors",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-0a25bf84-3e32-2d01-44c2-a34e0f7f3cae",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 4,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/source-map.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 17,
+                "matched_text": " * Licensed under the New BSD license. See LICENSE.txt or:\n * http://opensource.org/licenses/BSD-3-Clause",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_1438.RULE",
+                "rule_relevance": 94,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1438.RULE",
+                "score": 94,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "1bb9c1d35d2fbb3779c67306ca3d8070",
+        "name": "source-map.js",
+        "package_data": [],
+        "path": "package/source-map.js",
+        "percentage_of_license_text": 36.17,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "54dd50c132e3a298bcad252861389300ac0ce265",
+        "sha1_git": "bc88fe820c87a217d27eb010281fe39b71163835",
+        "sha256": "dc098456c2d9ab90a4c0a17cca9be16665b9813df20906553a98b0088a157be7",
+        "size": 405,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "source-map-consumer",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2011 Mozilla Foundation and contributors",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Mozilla Foundation and contributors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-b4a3e656-18f4-012c-f239-83dff6d64fc0",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 28,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 213,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the names of the Mozilla Foundation nor the names of project\n  contributors may be used to endorse or promote products derived from this\n  software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_1201.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1201.RULE",
+                "score": 100,
+                "start_line": 5
+              },
+              {
+                "end_line": 5,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/lib/source-map-consumer.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 16,
+                "matched_text": " * Licensed under the New BSD license. See LICENSE or:\n * http://opensource.org/licenses/BSD-3-Clause",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_359.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_359.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "30543b0d56ae204cfdbee13c90ea1f0d",
+        "name": "source-map-consumer.js",
+        "package_data": [],
+        "path": "package/lib/source-map-consumer.js",
+        "percentage_of_license_text": 0.36,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "9aeb708a82caa21b406aa4488525a28a6855ba0d",
+        "sha1_git": "ee66114636c1e3f1b455457ad9e91b0eeeb2d360",
+        "sha256": "78f7a8f6d20f51a99a9cbd8d552321b1a72de9b9fb9c39dbeb27dc84eb2eade5",
+        "size": 41580,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "source-map-consumer.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "bbf75d8e94d9513ac8aa1d8ad4c099b5",
+        "name": "source-map-consumer.d.ts",
+        "package_data": [],
+        "path": "package/lib/source-map-consumer.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "3d62e727235be72355ef7a9978e4c375c06fc0dc",
+        "sha1_git": "744bda73d103b79b7e654972b9a42c3c95ff432a",
+        "sha256": "2ca1c32e3bd72c64662adf034d97df8606ba1e1399cafc75567809ecff4bca95",
+        "size": 40,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "source-map-generator",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2011 Mozilla Foundation and contributors",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Mozilla Foundation and contributors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-b4a3e656-18f4-012c-f239-83dff6d64fc0",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 28,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 213,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the names of the Mozilla Foundation nor the names of project\n  contributors may be used to endorse or promote products derived from this\n  software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_1201.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1201.RULE",
+                "score": 100,
+                "start_line": 5
+              },
+              {
+                "end_line": 5,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/lib/source-map-generator.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 16,
+                "matched_text": " * Licensed under the New BSD license. See LICENSE or:\n * http://opensource.org/licenses/BSD-3-Clause",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_359.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_359.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "92a05c0eb9568b0b153ac667a4e54713",
+        "name": "source-map-generator.js",
+        "package_data": [],
+        "path": "package/lib/source-map-generator.js",
+        "percentage_of_license_text": 1.07,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "8fcba0871fd8a25fd17cab19a2fd3a082ba3d639",
+        "sha1_git": "bab04ff85b38eb50f942fb7ba84dd46dfe1f00c6",
+        "sha256": "645482e8d23fd49cd025a0ad07c2e2beb173995138370d6a73e596e18e889bd8",
+        "size": 14933,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "source-map-generator.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "acaa57e102b833969ea11eedc3174f0c",
+        "name": "source-map-generator.d.ts",
+        "package_data": [],
+        "path": "package/lib/source-map-generator.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "54ea1e98b5722b700c8fb8bb4bc051c1249f4f50",
+        "sha1_git": "f59d70aa9ca827224617e01d390c9c10b4e81cbc",
+        "sha256": "11f9b1e28747ca9cf5f4f7d41a7f261ac98ecde6be7dc146824fa275ac1f169d",
+        "size": 41,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "source-map.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "81402fe6b6b3c7b04be8a67f1e1051b9",
+        "name": "source-map.d.ts",
+        "package_data": [],
+        "path": "package/source-map.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "9ba4f63827ebfceeacd8c087ba2019411ce478f5",
+        "sha1_git": "ec8892fa11313d34c668e6f0ca9f80fdd5b53aec",
+        "sha256": "402e5c534fb2b85fa771170595db3ac0dd532112c8fa44fc23f233bc6967488b",
+        "size": 3408,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "source-node",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2011 Mozilla Foundation and contributors",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Mozilla Foundation and contributors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-b4a3e656-18f4-012c-f239-83dff6d64fc0",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 28,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 213,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the names of the Mozilla Foundation nor the names of project\n  contributors may be used to endorse or promote products derived from this\n  software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_1201.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1201.RULE",
+                "score": 100,
+                "start_line": 5
+              },
+              {
+                "end_line": 5,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/lib/source-node.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 16,
+                "matched_text": " * Licensed under the New BSD license. See LICENSE or:\n * http://opensource.org/licenses/BSD-3-Clause",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_359.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_359.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "c53b081a390b23d134d60c390843b5de",
+        "name": "source-node.js",
+        "package_data": [],
+        "path": "package/lib/source-node.js",
+        "percentage_of_license_text": 1.13,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "380a1badcbfc18aa40dc5b9ea4cee52dc33ab29c",
+        "sha1_git": "8bcdbe385d2c0d333bcd62648ca700f13f9d3181",
+        "sha256": "b45db8183550ca1e6259976f6ceee89f6764360c56cf206701bd2f7471144e31",
+        "size": 13808,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "source-node.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "00ee870ff217d2d2e52461607faa8b26",
+        "name": "source-node.d.ts",
+        "package_data": [],
+        "path": "package/lib/source-node.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "5d8cc2dee5df7a75fedd67e564c8da44e5501138",
+        "sha1_git": "4df6a1aca10c42f674f4403b803ced48e030253f",
+        "sha256": "e4a2e40e293158fb2ab29aadb9eaa6400c8d9be5851d45a95a76f9e2a4bb7c8b",
+        "size": 33,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "util",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2011 Mozilla Foundation and contributors",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/source-map-js@1.2.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Mozilla Foundation and contributors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "bsd_new-b4a3e656-18f4-012c-f239-83dff6d64fc0",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 28,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 213,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the names of the Mozilla Foundation nor the names of project\n  contributors may be used to endorse or promote products derived from this\n  software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_1201.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1201.RULE",
+                "score": 100,
+                "start_line": 5
+              },
+              {
+                "end_line": 5,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/lib/util.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 16,
+                "matched_text": " * Licensed under the New BSD license. See LICENSE or:\n * http://opensource.org/licenses/BSD-3-Clause",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_359.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_359.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "460072236ad347448538aeeba8d90144",
+        "name": "util.js",
+        "package_data": [],
+        "path": "package/lib/util.js",
+        "percentage_of_license_text": 0.88,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "74d5b98805130f41e20c54066d681df2f7263d3f",
+        "sha1_git": "430e2d0ff0b2f2a084d00fbfbcf9a229d0a7bfff",
+        "sha256": "0629f3ae2f3049cda3a2e87ea651dcf0cc71108f4681795ab989a8ac1573fc03",
+        "size": 15403,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-008266ae-6939-ad31-3617-228b0809863c",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 56,
+            "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/package.json",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "  \"license\": \"BSD-3-Clause\",",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_195.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+            "score": 100,
+            "start_line": 56
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-050b3051-820b-200e-26c9-1a3c8e9761d2",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 35,
+            "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/lib/base64-vlq.js",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 212,
+            "matched_text": " * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are\n * met:\n *\n *  * Redistributions of source code must retain the above copyright\n *    notice, this list of conditions and the following disclaimer.\n *  * Redistributions in binary form must reproduce the above\n *    copyright notice, this list of conditions and the following\n *    disclaimer in the documentation and/or other materials provided\n *    with the distribution.\n *  * Neither the name of Google Inc. nor the names of its\n *    contributors may be used to endorse or promote products derived\n *    from this software without specific prior written permission.\n *\n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n * \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\n * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\n * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\n * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\n * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\n * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\n * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\n * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\n * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_166.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_166.RULE",
+            "score": 100,
+            "start_line": 11
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-0a25bf84-3e32-2d01-44c2-a34e0f7f3cae",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 4,
+            "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/source-map.js",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 17,
+            "matched_text": " * Licensed under the New BSD license. See LICENSE.txt or:\n * http://opensource.org/licenses/BSD-3-Clause",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_1438.RULE",
+            "rule_relevance": 94,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1438.RULE",
+            "score": 94,
+            "start_line": 3
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-4409e1d8-cc22-e833-1e6d-4ebbebdb7333",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 28,
+            "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/LICENSE",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 213,
+            "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the names of the Mozilla Foundation nor the names of project\n  contributors may be used to endorse or promote products derived from this\n  software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_1201.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1201.RULE",
+            "score": 100,
+            "start_line": 5
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/package.json",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "BSD-3-Clause",
+            "matcher": "1-hash",
+            "rule_identifier": "bsd-new_10.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 10,
+        "identifier": "bsd_new-b4a3e656-18f4-012c-f239-83dff6d64fc0",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 28,
+            "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/LICENSE",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 213,
+            "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the names of the Mozilla Foundation nor the names of project\n  contributors may be used to endorse or promote products derived from this\n  software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_1201.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1201.RULE",
+            "score": 100,
+            "start_line": 5
+          },
+          {
+            "end_line": 5,
+            "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/lib/array-set.js",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 16,
+            "matched_text": " * Licensed under the New BSD license. See LICENSE or:\n * http://opensource.org/licenses/BSD-3-Clause",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_359.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_359.RULE",
+            "score": 100,
+            "start_line": 4
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "http://www.opensource.org/licenses/BSD-3-Clause",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "bsd-new",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/bsd-new",
+        "minimum_coverage": 0,
+        "name": "BSD-3-Clause",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": "BSD-3-Clause",
+        "osi_url": "http://www.opensource.org/licenses/BSD-3-Clause",
+        "other_spdx_license_keys": [
+          "LicenseRef-scancode-libzip"
+        ],
+        "other_urls": [
+          "http://framework.zend.com/license/new-bsd",
+          "https://opensource.org/licenses/BSD-3-Clause",
+          "https://www.eclipse.org/org/documents/edl-v10.php"
+        ],
+        "owner": "Regents of the University of California",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-new.LICENSE",
+        "short_name": "BSD-3-Clause",
+        "spdx_license_key": "BSD-3-Clause",
+        "spdx_url": "https://spdx.org/licenses/BSD-3-Clause",
+        "standard_notice": null,
+        "text": "Redistribution and use in source and binary forms, with or without modification,\nare permitted provided that the following conditions are met:\n\nRedistributions of source code must retain the above copyright notice, this list\nof conditions and the following disclaimer.\n\nRedistributions in binary form must reproduce the above copyright notice, this\nlist of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.\n\nNeither the name of the ORGANIZATION nor the names of its contributors may be\nused to endorse or promote products derived from this software without specific\nprior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,\nTHE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\nARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS\nBE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR\nCONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE\nGOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)\nHOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT\nLIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF\nTHE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+        "text_urls": [
+          "http://www.opensource.org/licenses/BSD-3-Clause"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "bsd-new_10.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "BSD-3-Clause"
+      },
+      {
+        "identifier": "bsd-new_1201.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 213,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1201.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n* Redistributions of source code must retain the above copyright notice, this\n  list of conditions and the following disclaimer.\n\n* Redistributions in binary form must reproduce the above copyright notice,\n  this list of conditions and the following disclaimer in the documentation\n  and/or other materials provided with the distribution.\n\n* Neither the names of the Mozilla Foundation nor the names of project\n  contributors may be used to endorse or promote products derived from this\n  software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+      },
+      {
+        "identifier": "bsd-new_1438.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [
+          "http://opensource.org/licenses/BSD-3-Clause"
+        ],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 17,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 50,
+        "notes": null,
+        "referenced_filenames": [
+          "LICENSE.txt"
+        ],
+        "relevance": 94,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1438.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "/*\n* Licensed under the {{New BSD license}}. See LICENSE.txt or:\n* http://opensource.org/licenses/BSD-3-Clause\n*/"
+      },
+      {
+        "identifier": "bsd-new_166.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 212,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_166.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "// Redistribution and use in source and binary forms, with or without\n// modification, are permitted provided that the following conditions are\n// met:\n//\n//    * Redistributions of source code must retain the above copyright\n// notice, this list of conditions and the following disclaimer.\n//    * Redistributions in binary form must reproduce the above\n// copyright notice, this list of conditions and the following disclaimer\n// in the documentation and/or other materials provided with the\n// distribution.\n//    * Neither the name of Google Inc. nor the names of its\n// contributors may be used to endorse or promote products derived from\n// this software without specific prior written permission.\n//\n// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n// &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\n// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\n// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\n// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\n// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\n// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\n// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\n// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\n// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+      },
+      {
+        "identifier": "bsd-new_195.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: BSD-3-Clause"
+      },
+      {
+        "identifier": "bsd-new_359.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [
+          "http://opensource.org/licenses/BSD-3-Clause"
+        ],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 16,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 50,
+        "notes": null,
+        "referenced_filenames": [
+          "LICENSE"
+        ],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_359.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "* Licensed under the {{New BSD license}}. See LICENSE or:\n * http://opensource.org/licenses/BSD-3-Clause"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/source-map-js/1.2.1",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "bsd-new",
+        "declared_license_expression_spdx": "BSD-3-Clause",
+        "description": "Generates and consumes source maps",
+        "download_url": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz",
+        "extra_data": {
+          "engines": {
+            "node": ">=0.10.0"
+          }
+        },
+        "extracted_license_statement": "- BSD-3-Clause\n",
+        "holder": null,
+        "homepage_url": "https://github.com/7rulnik/source-map-js",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847/package/package.json",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "BSD-3-Clause",
+                "matcher": "1-hash",
+                "rule_identifier": "bsd-new_10.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "source-map-js",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "akirkton@truefitinnovation.com",
+            "name": "Adam Kirkton",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "alexander@solovyov.net",
+            "name": "Alexander Solovyov",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "chase@newrelic.com",
+            "name": "Chase Douglas",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "christopher.montgomery@dowjones.com",
+            "name": "Chris Montgomery",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "conrad.irwin@gmail.com",
+            "name": "Conrad Irwin",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "daniel@danielespeset.com",
+            "name": "Daniel Espeset",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "djchie.dev@gmail.com",
+            "name": "djchie",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "duncan@dweebd.com",
+            "name": "Duncan Beevers",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "ejpbruel@mozilla.com",
+            "name": "Eddy Bruël",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "evan.exe@gmail.com",
+            "name": "Evan Wallace",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "fayearthur@gmail.com",
+            "name": "Heather Arthur",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "fgnass@gmail.com",
+            "name": "Felix Gnass",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "garysye@gmail.com",
+            "name": "Gary Ye",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "giladp007@gmail.com",
+            "name": "Gilad Peleg",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "github.public.email@michael.ficarra.me",
+            "name": "Michael Ficarra",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "glasser@davidglasser.net",
+            "name": "David Glasser",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "glasser@davidglasser.net",
+            "name": "David Glasser",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "hawkrives@gmail.com",
+            "name": "Hawken Rives",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "hughskennedy@gmail.com",
+            "name": "Hugh Kennedy",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "jamie.lf.wong@gmail.com",
+            "name": "Jamie Wong",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "jeffpalentine@gmail.com",
+            "name": "Chris Truter",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "jellyes2@gmail.com",
+            "name": "Jmeas Smith",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "jherrington@walmartlabs.com",
+            "name": "Jack Herrington",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "john@gozde.ca",
+            "name": "John Gozde",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "jryans@gmail.com",
+            "name": "J. Ryan Stinnett",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "mihai.bazon@gmail.com",
+            "name": "Mihai Bazon",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "miles.elam@deem.com",
+            "name": "Miles Elam",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "mzgoddard@gmail.com",
+            "name": "Michael Z Goddard",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "nfitzgerald@mozilla.com",
+            "name": "Nick Fitzgerald",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "nicolas.lalevee@hibnet.org",
+            "name": "Nicolas Lalevée",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "scrane@mozilla.com",
+            "name": "Stephen Crane",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "seddon.ryan@gmail.com",
+            "name": "Ryan Seddon",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "simon.lydell@gmail.com",
+            "name": "Simon Lydell",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "tobias.koppers@googlemail.com",
+            "name": "Tobias Koppers",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "todd@twolfson.com",
+            "name": "Todd Wolfson",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "usrbincc@yahoo.com",
+            "name": "usrbincc",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "v7rulnik@gmail.com",
+            "name": "Valentin 7rulnik Semirulnik",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/source-map-js@1.2.1",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/source-map-js",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "https://github.com/7rulnik/source-map-js",
+        "version": "1.2.1"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

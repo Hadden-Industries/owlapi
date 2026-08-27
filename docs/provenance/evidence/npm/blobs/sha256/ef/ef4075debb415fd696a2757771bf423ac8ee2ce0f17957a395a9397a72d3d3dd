@@ -1,0 +1,190 @@
+{
+  "artifactId": "e60a3b59cf50e846cb953dfc2abf6c4ef8a189637dcc681de5d9c86ca0e8d70a",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4405,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "a49c9ba464796f65b59fca3f1e6ca40912df1e859f575383223f7ec6c5baae09",
+        "size": 1764,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "cafe18aeaf5d10a590bc8ffdcfb2f4e6120438a2364964aba4d8968693124984",
+        "size": 59,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts",
+        "sha256": "692b3edf2c30018d189493912f0b706e1fa1a6b8f3084448a8efe6c15469d458",
+        "size": 218,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts.map",
+        "sha256": "8968c2fea5e84958e40da05565fe271e02ebb525252b59ca804fb9f7a0f86556",
+        "size": 251,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js",
+        "sha256": "02b4ca7ab42bdb4ab00bfe7f17d4dafd215e66fd96105e949b4f918b37101bc4",
+        "size": 3059,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js.map",
+        "sha256": "d06dbeded9ba10ecc87b7eedc859c6f9fec1082573d21a008f8b398314ef0a8b",
+        "size": 6020,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/package.json",
+        "sha256": "8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a",
+        "size": 25,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts",
+        "sha256": "692b3edf2c30018d189493912f0b706e1fa1a6b8f3084448a8efe6c15469d458",
+        "size": 218,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts.map",
+        "sha256": "8968c2fea5e84958e40da05565fe271e02ebb525252b59ca804fb9f7a0f86556",
+        "size": 251,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js",
+        "sha256": "09b582ed90c2acc9c457a621fdbd7e6930a099e5089958917c1ad4d823f832e9",
+        "size": 2534,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js.map",
+        "sha256": "1ed155cb324fc6b6b76a0701cca6930150be1df396e9c4015235289fb60fe27c",
+        "size": 6005,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/package.json",
+        "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+        "size": 23,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4300e90fdd91ec7035047473c60f880251a9801bd786302729d4277751d3b948",
+        "size": 1621,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1764,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a4/a49c9ba464796f65b59fca3f1e6ca40912df1e859f575383223f7ec6c5baae09",
+          "sha256": "a49c9ba464796f65b59fca3f1e6ca40912df1e859f575383223f7ec6c5baae09"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "a49c9ba464796f65b59fca3f1e6ca40912df1e859f575383223f7ec6c5baae09",
+        "size": 1764
+      }
+    ],
+    "expandedBytes": 22048,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "homepage": null,
+      "license": "BlueOak-1.0.0",
+      "name": "chownr",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/isaacs/chownr.git"
+      },
+      "version": "3.0.0"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "description": "like `chown -R`",
+      "devDependencies": {
+        "@types/node": "^20.12.5",
+        "mkdirp": "^3.0.1",
+        "prettier": "^3.2.5",
+        "rimraf": "^5.0.5",
+        "tap": "^18.7.2",
+        "tshy": "^1.13.1",
+        "typedoc": "^0.25.12"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./dist/esm/index.js",
+            "types": "./dist/esm/index.d.ts"
+          },
+          "require": {
+            "default": "./dist/commonjs/index.js",
+            "types": "./dist/commonjs/index.d.ts"
+          }
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "dist"
+      ],
+      "license": "BlueOak-1.0.0",
+      "main": "./dist/commonjs/index.js",
+      "name": "chownr",
+      "prettier": {
+        "arrowParens": "avoid",
+        "bracketSameLine": true,
+        "endOfLine": "lf",
+        "jsxSingleQuote": false,
+        "printWidth": 75,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "useTabs": false
+      },
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/isaacs/chownr.git"
+      },
+      "scripts": {
+        "format": "prettier --write . --loglevel warn",
+        "postversion": "npm publish",
+        "prepare": "tshy",
+        "prepublishOnly": "git push origin --follow-tags",
+        "pretest": "npm run prepare",
+        "preversion": "npm test",
+        "test": "tap",
+        "typedoc": "typedoc --tsconfig .tshy/esm.json ./src/*.ts"
+      },
+      "tshy": {
+        "exports": {
+          ".": "./src/index.ts",
+          "./package.json": "./package.json"
+        }
+      },
+      "type": "module",
+      "types": "./dist/commonjs/index.d.ts",
+      "version": "3.0.0"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 4405,
+      "sha256": "4c24f5daa630142252da89de655f7df090ea479450a8825897751d78321b1360"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

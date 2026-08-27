@@ -1,0 +1,135 @@
+{
+  "artifactId": "e35e0362440be17ddbb83e3f45c8e5941c327db6eb4ae46f0f37be251d9c5196",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4448,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "ef5e3835f50bd027c801f6e7c4769fdd06ff82b39bdfa1f9335daf9a63c84190",
+        "size": 456,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "040c717626f5f7ce28e32c6c2aea267569ee2d8cfbf4c9511727e88419541b36",
+        "size": 2918,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.mjs",
+        "sha256": "dadfba4b762fae76a84250da2c772da6dd5a520afe65b97fcb6b19a6d9eea5c6",
+        "size": 2916,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license.md",
+        "sha256": "306fa513e39b23a6e8747520de761809d206b99800ef41907b530226574c59ae",
+        "size": 1114,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "aa262c911b04e093f9293a3e01083d3e771e1253c1356a0dd2beee4159fb9e74",
+        "size": 803,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "78379bee8e7c7ef1b4e4032212fc33a2b437058afa752103abfa07b820b17960",
+        "size": 5054,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1114,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/30/306fa513e39b23a6e8747520de761809d206b99800ef41907b530226574c59ae",
+          "sha256": "306fa513e39b23a6e8747520de761809d206b99800ef41907b530226574c59ae"
+        },
+        "kind": "LICENCE",
+        "path": "package/license.md",
+        "sha256": "306fa513e39b23a6e8747520de761809d206b99800ef41907b530226574c59ae",
+        "size": 1114
+      },
+      {
+        "blob": {
+          "bytes": 5054,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/78/78379bee8e7c7ef1b4e4032212fc33a2b437058afa752103abfa07b820b17960",
+          "sha256": "78379bee8e7c7ef1b4e4032212fc33a2b437058afa752103abfa07b820b17960"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "78379bee8e7c7ef1b4e4032212fc33a2b437058afa752103abfa07b820b17960",
+        "size": 5054
+      }
+    ],
+    "expandedBytes": 13261,
+    "packageIdentity": {
+      "author": {
+        "email": "luke.edwards05@gmail.com",
+        "name": "Luke Edwards",
+        "url": "https://lukeed.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "mri",
+      "repository": "lukeed/mri",
+      "version": "1.2.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "luke.edwards05@gmail.com",
+        "name": "Luke Edwards",
+        "url": "https://lukeed.com"
+      },
+      "description": "Quickly scan for CLI flags and arguments",
+      "devDependencies": {
+        "bundt": "1.0.2",
+        "tap-spec": "4.1.2",
+        "tape": "4.13.3"
+      },
+      "engines": {
+        "node": ">=4"
+      },
+      "files": [
+        "*.d.ts",
+        "lib"
+      ],
+      "keywords": [
+        "argv",
+        "arguments",
+        "cli",
+        "minimist",
+        "options",
+        "optimist",
+        "parser",
+        "args"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "module": "lib/index.mjs",
+      "name": "mri",
+      "repository": "lukeed/mri",
+      "scripts": {
+        "bench": "node bench",
+        "build": "bundt",
+        "pretest": "npm run build",
+        "test": "tape test/*.js | tap-spec"
+      },
+      "types": "index.d.ts",
+      "version": "1.2.0"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 4448,
+      "sha256": "9e383990963c167baa471cc928a02eb1768ee2ffabf8117082a09b5213f9a575"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,141 @@
+{
+  "artifactId": "6aea07244869e6fc559dc5619c0f2b8291ff1becbe93b7bf23bb849868f5ab8a",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2886,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "18d45466ba3253deae04667e267a91ea8de8548f18c1125264d1c9db28194cc1",
+        "size": 1465,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "27827383727dcc6bb9f6f591e4b9204e35b6389bfba60df7a400371dac23b3ed",
+        "size": 1651,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "1eb4db5f83679b3b6f8683611c93938948aa2d5d5e3988755f9e3a289388b75e",
+        "size": 332,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "fe3e2b20c1ebb57c3b390c8f685ad1e04e6f493517fa7e432f4351bb77a1a4d0",
+        "size": 2154,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "a8004b9c8dffe2e1b01a058ecf968a5d50beabcabc43cc98c655184ba6afc050",
+        "size": 1194,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1465,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/18/18d45466ba3253deae04667e267a91ea8de8548f18c1125264d1c9db28194cc1",
+          "sha256": "18d45466ba3253deae04667e267a91ea8de8548f18c1125264d1c9db28194cc1"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "18d45466ba3253deae04667e267a91ea8de8548f18c1125264d1c9db28194cc1",
+        "size": 1465
+      },
+      {
+        "blob": {
+          "bytes": 1651,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/27/27827383727dcc6bb9f6f591e4b9204e35b6389bfba60df7a400371dac23b3ed",
+          "sha256": "27827383727dcc6bb9f6f591e4b9204e35b6389bfba60df7a400371dac23b3ed"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "27827383727dcc6bb9f6f591e4b9204e35b6389bfba60df7a400371dac23b3ed",
+        "size": 1651
+      }
+    ],
+    "expandedBytes": 6796,
+    "packageIdentity": {
+      "author": {
+        "email": "feross@feross.org",
+        "name": "Feross Aboukhadijeh",
+        "url": "https://feross.org"
+      },
+      "homepage": null,
+      "license": "BSD-3-Clause",
+      "name": "ieee754",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/feross/ieee754.git"
+      },
+      "version": "1.2.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "feross@feross.org",
+        "name": "Feross Aboukhadijeh",
+        "url": "https://feross.org"
+      },
+      "contributors": [
+        "Romain Beauxis <toots@rastageeks.org>"
+      ],
+      "description": "Read/write IEEE754 floating point numbers from/to a Buffer or array-like object",
+      "devDependencies": {
+        "airtap": "^3.0.0",
+        "standard": "*",
+        "tape": "^5.0.1"
+      },
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/feross"
+        },
+        {
+          "type": "patreon",
+          "url": "https://www.patreon.com/feross"
+        },
+        {
+          "type": "consulting",
+          "url": "https://feross.org/support"
+        }
+      ],
+      "keywords": [
+        "IEEE 754",
+        "buffer",
+        "convert",
+        "floating point",
+        "ieee754"
+      ],
+      "license": "BSD-3-Clause",
+      "main": "index.js",
+      "name": "ieee754",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/feross/ieee754.git"
+      },
+      "scripts": {
+        "test": "standard && npm run test-node && npm run test-browser",
+        "test-browser": "airtap -- test/*.js",
+        "test-browser-local": "airtap --local -- test/*.js",
+        "test-node": "tape test/*.js"
+      },
+      "types": "index.d.ts",
+      "version": "1.2.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2886,
+      "sha256": "8ef14b9b397e339db89db97881fb714f49319d8f0eb1275901f45567b28f9dac"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,104 @@
+{
+  "artifactId": "b08732b2fead37d7fb1d2abf422da30d70f11da4986f1010514cdc0c1f60349d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5675,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "size": 11358,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "83d2cb7ce540025db83b709e5c923f0aae2ba7c9440b8d9d6a83b0ad6253caf3",
+        "size": 2566,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "bb81b15cca6d4c7fbc3cbcc0c473359bdc257f772d5a836fc189027de1acde67",
+        "size": 1925,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e510bebf52a39ff777c88c3494b0bba688252b361edf0774aec2b7dd8bb1fde4",
+        "size": 748,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11358,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/cf/cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "size": 11358
+      },
+      {
+        "blob": {
+          "bytes": 2566,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/83/83d2cb7ce540025db83b709e5c923f0aae2ba7c9440b8d9d6a83b0ad6253caf3",
+          "sha256": "83d2cb7ce540025db83b709e5c923f0aae2ba7c9440b8d9d6a83b0ad6253caf3"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "83d2cb7ce540025db83b709e5c923f0aae2ba7c9440b8d9d6a83b0ad6253caf3",
+        "size": 2566
+      }
+    ],
+    "expandedBytes": 16597,
+    "packageIdentity": {
+      "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com)",
+      "homepage": null,
+      "license": "Apache-2.0",
+      "name": "validate-npm-package-license",
+      "repository": "kemitchell/validate-npm-package-license.js",
+      "version": "3.0.4"
+    },
+    "packageMetadata": {
+      "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com)",
+      "contributors": [
+        "Mark Stacey <markjstacey@gmail.com>"
+      ],
+      "dependencies": {
+        "spdx-correct": "^3.0.0",
+        "spdx-expression-parse": "^3.0.0"
+      },
+      "description": "Give me a string and I'll tell you if it's a valid npm package license string",
+      "devDependencies": {
+        "defence-cli": "^2.0.1",
+        "replace-require-self": "^1.0.0"
+      },
+      "keywords": [
+        "license",
+        "npm",
+        "package",
+        "validation"
+      ],
+      "license": "Apache-2.0",
+      "name": "validate-npm-package-license",
+      "repository": "kemitchell/validate-npm-package-license.js",
+      "scripts": {
+        "test": "defence README.md | replace-require-self | node"
+      },
+      "version": "3.0.4"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 5675,
+      "sha256": "0166efb34d41a131d4df2a75f8ff84314be35c0dacf6fec265602de66777fd8c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

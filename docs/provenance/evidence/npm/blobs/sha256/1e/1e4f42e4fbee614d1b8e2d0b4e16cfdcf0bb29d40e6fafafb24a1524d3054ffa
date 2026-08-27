@@ -1,0 +1,152 @@
+{
+  "artifactId": "621066e9315a955035bd31de5f0f58739fb02bdca7698e4e105e18ca01b9a17d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6245,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.github/workflows/node.js.yml",
+        "sha256": "6a14e2fece4ea66adf104149b38b392f8bf127591f747b6683c7bfe8ec903964",
+        "size": 789,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.prettierrc.js",
+        "sha256": "2a70e4436870ca27d3fc76dcaa0f185911b4d7d45ab4158a5793d5aa67ffb33a",
+        "size": 137,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "97e30193ba65b1d419999a73b7a199000389146f63f21d9202b6bb655c85ab3b",
+        "size": 1064,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "507181c9afae4d2e7652ab562ea9f3ba290161b69fd1a1e501bcfda54731babd",
+        "size": 4343,
+        "type": "FILE"
+      },
+      {
+        "path": "package/formats/duration.js",
+        "sha256": "8166461cea858a87dd5ff841288a48964837405febcf7734ef9d34c46ba8781c",
+        "size": 248,
+        "type": "FILE"
+      },
+      {
+        "path": "package/formats/idn-email.js",
+        "sha256": "567cfe1438043fc9799312f0b550d4026c3563475c19d7d4975ab417e4b7747f",
+        "size": 167,
+        "type": "FILE"
+      },
+      {
+        "path": "package/formats/idn-hostname.js",
+        "sha256": "b33ab3d367eb075e4df96bc40e2af659e3415f2be668c572c1373ff1a6ff18f4",
+        "size": 334,
+        "type": "FILE"
+      },
+      {
+        "path": "package/formats/index.js",
+        "sha256": "284882b0a62ba1a61b1acf491c54f1bf7a29ce52b48149dcdf0ae0bf60a99d3e",
+        "size": 264,
+        "type": "FILE"
+      },
+      {
+        "path": "package/formats/iri-reference.js",
+        "sha256": "ab4647ed4ea065cda70a8a662ba6ac008d3daf57d4388e9af53bed785dbc9d60",
+        "size": 954,
+        "type": "FILE"
+      },
+      {
+        "path": "package/formats/iri.js",
+        "sha256": "630507ffd36177fe1c856b2ff74992419dbca676299d27c9074b3de842f01ee8",
+        "size": 506,
+        "type": "FILE"
+      },
+      {
+        "path": "package/idn.js",
+        "sha256": "d1e67445de125649a42dd284c402589e37f0ae9952c9c22ca7635d396cba6333",
+        "size": 250,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "4676d2563d05a772d7a287bb23819bbcfe2e383e3041c5620188bd75dee55ee5",
+        "size": 494,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.test.js",
+        "sha256": "5cfeb5eb2d7f2df422f602d07725234ddc9398b15671d75f8ad3ea7d0ba86138",
+        "size": 11279,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0cf7fe10913b1d592657d5b635541b07b8027c9026f54af4d94442f6e80ee169",
+        "size": 746,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1064,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/97/97e30193ba65b1d419999a73b7a199000389146f63f21d9202b6bb655c85ab3b",
+          "sha256": "97e30193ba65b1d419999a73b7a199000389146f63f21d9202b6bb655c85ab3b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "97e30193ba65b1d419999a73b7a199000389146f63f21d9202b6bb655c85ab3b",
+        "size": 1064
+      }
+    ],
+    "expandedBytes": 21575,
+    "packageIdentity": {
+      "author": "Carlo Quinonez <carlo@machina.bio>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "ajv-formats-draft2019",
+      "repository": "https://github.com/luzlab/ajv-formats-draft2019.git",
+      "version": "1.6.1"
+    },
+    "packageMetadata": {
+      "author": "Carlo Quinonez <carlo@machina.bio>",
+      "dependencies": {
+        "punycode": "^2.1.1",
+        "schemes": "^1.4.0",
+        "smtp-address-parser": "^1.0.3",
+        "uri-js": "^4.4.1"
+      },
+      "description": "Plugin for AJV that adds support for some of string formats adding in the draft2019 JSON Schema.",
+      "devDependencies": {
+        "ajv": "^8",
+        "mocha": "^9.0.3",
+        "prettier": "^2.3.2"
+      },
+      "license": "MIT",
+      "main": "index.js",
+      "name": "ajv-formats-draft2019",
+      "peerDependencies": {
+        "ajv": "*"
+      },
+      "repository": "https://github.com/luzlab/ajv-formats-draft2019.git",
+      "scripts": {
+        "format": "prettier --write '**/*.{js,md}'",
+        "start": "node index.js",
+        "test": "mocha index.test.js"
+      },
+      "version": "1.6.1"
+    },
+    "physicalEntryCount": 14,
+    "tarball": {
+      "bytes": 6245,
+      "sha256": "d88e56af7a72049fa846c6141269ac11172fe4d52b1fd6968c1868d08652f748"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,136 @@
+{
+  "artifactId": "142bde9f4aa09d723515a45d729a26574710b7ce5ce0c93cc0f7dcef7df62223",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6913,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "3ae03bd4825c69c76f9b18fac984f57935aa9984802d7d53dfc322586c72f4d3",
+        "size": 12125,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d",
+        "size": 731,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "eb9f56bebd9f58686ce98078db459fe0b0f3669a37d63989dacf8a05856bf7b8",
+        "size": 4035,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "2efc00ea24843849d9c0bf0967b3dc199f6a03fdbd4fc38e417a5317922cc6c5",
+        "size": 5211,
+        "type": "FILE"
+      },
+      {
+        "path": "package/is-outside-dir-posix.js",
+        "sha256": "c629e1a0848a19c910dac7ec67046016a66d7ca9b916855833eeef463341205e",
+        "size": 147,
+        "type": "FILE"
+      },
+      {
+        "path": "package/is-outside-dir-win32.js",
+        "sha256": "e6dc6974dce0ed2f3a54827226d564fbb0483a091a07da9df0cfc88d98db4eaf",
+        "size": 239,
+        "type": "FILE"
+      },
+      {
+        "path": "package/is-outside-dir.js",
+        "sha256": "00925f6b22e20be00e270c49e5ae14d62ee634942c338c5b993b7a042e8fdf2c",
+        "size": 174,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "261ca50a943bb3c4ddd13ff5f320cdc7ade6c3e8b6d31611cafe53d58b38d6d4",
+        "size": 950,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 731,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/36/365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d",
+          "sha256": "365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.txt",
+        "sha256": "365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d",
+        "size": 731
+      }
+    ],
+    "expandedBytes": 23612,
+    "packageIdentity": {
+      "author": "Ben Coe <ben@npmjs.com>",
+      "homepage": "https://istanbul.js.org/",
+      "license": "ISC",
+      "name": "test-exclude",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/istanbuljs/test-exclude.git"
+      },
+      "version": "6.0.0"
+    },
+    "packageMetadata": {
+      "author": "Ben Coe <ben@npmjs.com>",
+      "bugs": {
+        "url": "https://github.com/istanbuljs/test-exclude/issues"
+      },
+      "dependencies": {
+        "@istanbuljs/schema": "^0.1.2",
+        "glob": "^7.1.4",
+        "minimatch": "^3.0.4"
+      },
+      "description": "test for inclusion or exclusion of paths using globs",
+      "devDependencies": {
+        "nyc": "^15.0.0-beta.3",
+        "standard-version": "^7.0.0",
+        "tap": "^14.10.5"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "*.js",
+        "!nyc.config.js"
+      ],
+      "homepage": "https://istanbul.js.org/",
+      "keywords": [
+        "exclude",
+        "include",
+        "glob",
+        "package",
+        "config"
+      ],
+      "license": "ISC",
+      "main": "index.js",
+      "name": "test-exclude",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/istanbuljs/test-exclude.git"
+      },
+      "scripts": {
+        "release": "standard-version",
+        "snap": "npm test -- --snapshot",
+        "test": "nyc tap"
+      },
+      "version": "6.0.0"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 6913,
+      "sha256": "e77c50f9beeebe95b599dff7f94c539dad4ab2326ee4048e1f22105e4c15c66e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

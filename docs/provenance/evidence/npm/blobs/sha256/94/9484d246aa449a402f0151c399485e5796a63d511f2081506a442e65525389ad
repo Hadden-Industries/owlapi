@@ -1,0 +1,125 @@
+{
+  "artifactId": "2b2f98a63f55402422d306aa17ceb65ee58aa30768aba41306f1d20470ff5b51",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3346,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "6fb4ed7dceebccb0e0ec1cf2ac83e1025d5cf9bb0b918bc65ff98c11b8f02777",
+        "size": 1378,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/which.js",
+        "sha256": "7c37493fcac8af6526f51f4d83606a733ca7ca3c7b943d1e9239bb30346b019d",
+        "size": 960,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "d9d32d45a01826692a1a0c70d40c6182aa0405713166ecd4a3bd3df68d3b90bf",
+        "size": 3129,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9f06638e5fcb977409c2181382492dd0d62885999e5739a8f285960d5a78906d",
+        "size": 1245,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 7477,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "which",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/node-which.git"
+      },
+      "version": "5.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "bin": {
+        "node-which": "./bin/which.js"
+      },
+      "dependencies": {
+        "isexe": "^3.1.1"
+      },
+      "description": "Like which(1) unix command. Find the first instance of an executable in the PATH.",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^5.0.0",
+        "@npmcli/template-oss": "4.23.3",
+        "tap": "^16.3.0"
+      },
+      "engines": {
+        "node": "^18.17.0 || >=20.5.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "which",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/node-which.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "check-coverage": true,
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": "true",
+        "version": "4.23.3"
+      },
+      "version": "5.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3346,
+      "sha256": "f27741870b04a447622248ba5131f6b241680dd065d6f0a037ee60e6cabd4e4b"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

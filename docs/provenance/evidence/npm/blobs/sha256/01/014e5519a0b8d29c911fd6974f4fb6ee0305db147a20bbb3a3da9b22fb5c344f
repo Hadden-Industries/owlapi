@@ -1,0 +1,137 @@
+{
+  "artifactId": "952eab9f9c7304fb6e9dc731db77b6f626e034a1b3edfd570f90035d8d0bcd9d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 812747,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+        "size": 6555,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "9185b9b00e6de382f31c4ad5a72990f561b678a678096ab03370077a81b0cbdf",
+        "size": 14329,
+        "type": "FILE"
+      },
+      {
+        "path": "package/data.json",
+        "sha256": "023e8626f6132fd2732a3743cd2dc1790f4f66011eae0a264fb1af1c79a0fbbb",
+        "size": 17006951,
+        "type": "FILE"
+      },
+      {
+        "path": "package/import.d.mts",
+        "sha256": "9a87a3d8a60924b48d3910af2ebd1b43d99d96f268cc28215b5d37db1ee386a8",
+        "size": 215,
+        "type": "FILE"
+      },
+      {
+        "path": "package/legacynode.mjs",
+        "sha256": "aae2838f01b26c3aa0235ffc10ef5d084471d1978eb54a3a451ee11c07d40f64",
+        "size": 230,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "56d7e14fcd50607958cc4a55a8f0fa1555ccfac4eb2aab61153196f8ca0ccfc0",
+        "size": 1036,
+        "type": "FILE"
+      },
+      {
+        "path": "package/require.d.ts",
+        "sha256": "9a87a3d8a60924b48d3910af2ebd1b43d99d96f268cc28215b5d37db1ee386a8",
+        "size": 215,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types.d.ts",
+        "sha256": "1a043429c2cd202bc911123ca92a0a48da90da44bf903188c84d5ee5e5a038fa",
+        "size": 10857,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 6555,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/36/36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+          "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+        "size": 6555
+      }
+    ],
+    "expandedBytes": 17040388,
+    "packageIdentity": {
+      "author": "MDN Web Docs",
+      "homepage": "https://github.com/mdn/browser-compat-data#readme",
+      "license": "CC0-1.0",
+      "name": "@mdn/browser-compat-data",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mdn/browser-compat-data.git"
+      },
+      "version": "6.1.5"
+    },
+    "packageMetadata": {
+      "author": "MDN Web Docs",
+      "bugs": {
+        "url": "https://github.com/mdn/browser-compat-data/issues"
+      },
+      "description": "Browser compatibility data provided by MDN Web Docs",
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./data.json",
+            "types": "./import.d.mts"
+          },
+          "require": {
+            "default": "./data.json",
+            "types": "./require.d.ts"
+          }
+        },
+        "./forLegacyNode": {
+          "default": "./legacynode.mjs",
+          "types": "./import.d.mts"
+        },
+        "./types": {
+          "default": "./types.d.ts",
+          "types": "./types.d.ts"
+        }
+      },
+      "homepage": "https://github.com/mdn/browser-compat-data#readme",
+      "keywords": [
+        "bcd",
+        "browser-compat-data",
+        "browser",
+        "compatibility",
+        "data",
+        "mdn",
+        "mozilla"
+      ],
+      "license": "CC0-1.0",
+      "main": "data.json",
+      "name": "@mdn/browser-compat-data",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mdn/browser-compat-data.git"
+      },
+      "types": "require.d.ts",
+      "version": "6.1.5"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 812747,
+      "sha256": "109190d44f6b235a677572a932c6c9981ebfae2557669e78f24aadb6f5e2976e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

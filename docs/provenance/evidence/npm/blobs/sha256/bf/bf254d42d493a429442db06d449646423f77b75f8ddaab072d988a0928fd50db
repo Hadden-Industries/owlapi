@@ -1,0 +1,100 @@
+{
+  "artifactId": "d9817b2c6a7a6443f31f9a3481a40afcb07ac1a0c51459debf198e51ebb8c51b",
+  "evidence": {
+    "archiveRoot": "esrecurse",
+    "compressedBytes": 2028,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "esrecurse",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "esrecurse/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "esrecurse/README.md",
+        "sha256": "39aa7698d643040605facf9de4bf681aab584db3bd9ac8fdfcde9bade6bf91fc",
+        "size": 1990,
+        "type": "FILE"
+      },
+      {
+        "path": "esrecurse/index.d.ts",
+        "sha256": "d5799bcf7fe4e6de3063abf4e321c14b051706f03cf5716d8a19f22fe1f69519",
+        "size": 1393,
+        "type": "FILE"
+      },
+      {
+        "path": "esrecurse/package.json",
+        "sha256": "10559a1fe22c5c66a6d91cf7fc8dbe3fe98642ccd14994392a0a43f0d33ea982",
+        "size": 823,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1141,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c2/c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        "kind": "LICENCE",
+        "path": "esrecurse/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141
+      }
+    ],
+    "expandedBytes": 5347,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/esrecurse",
+      "license": "MIT",
+      "name": "@types/esrecurse",
+      "repository": {
+        "directory": "types/esrecurse",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "version": "4.3.1"
+    },
+    "packageMetadata": {
+      "contributors": [
+        {
+          "githubUsername": "hkleungai",
+          "name": "Jimmy Leung",
+          "url": "https://github.com/hkleungai"
+        }
+      ],
+      "dependencies": {},
+      "description": "TypeScript definitions for esrecurse",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/esrecurse",
+      "license": "MIT",
+      "main": "",
+      "name": "@types/esrecurse",
+      "peerDependencies": {},
+      "repository": {
+        "directory": "types/esrecurse",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "scripts": {},
+      "typeScriptVersion": "5.1",
+      "types": "index.d.ts",
+      "typesPublisherContentHash": "0e4ed7e0fe84b6879532ce29fdfe397c1fc205d0c9dbc17172b64f3016ae0065",
+      "version": "4.3.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2028,
+      "sha256": "cc338c6515fd66a157e553423d0b3d887d06763479fbc6c7fd9db64dc75aa1bf"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

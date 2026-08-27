@@ -1,0 +1,1177 @@
+{
+  "artifactId": "0a46b980fb719f4e050c37c58623dd518e9b032d93847072059e145fed3ddd93",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 6,
+      "digestVerifiedFileCount": 6,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 6
+    },
+    "artifactId": "0a46b980fb719f4e050c37c58623dd518e9b032d93847072059e145fed3ddd93",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.2.2",
+        "for_package_purl": "pkg:npm/estraverse@5.3.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/gulp-bump",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.0.1",
+        "for_package_purl": "pkg:npm/estraverse@5.3.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/gulp-git",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.11.0",
+        "for_package_purl": "pkg:npm/estraverse@5.3.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/espree",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.3.0",
+        "for_package_purl": "pkg:npm/estraverse@5.3.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/gulp-tag-version",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.6.1",
+        "for_package_purl": "pkg:npm/estraverse@5.3.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/babel-preset-env",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.0.0",
+        "for_package_purl": "pkg:npm/estraverse@5.3.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/gulp-filter",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.1.0",
+        "for_package_purl": "pkg:npm/estraverse@5.3.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/mocha",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.1.1",
+        "for_package_purl": "pkg:npm/estraverse@5.3.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/chai",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.5.6",
+        "for_package_purl": "pkg:npm/estraverse@5.3.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/jshint",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.8.10",
+        "for_package_purl": "pkg:npm/estraverse@5.3.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/gulp",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.3.13",
+        "for_package_purl": "pkg:npm/estraverse@5.3.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/babel-register",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [],
+        "base_name": ".jshintrc",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/estraverse@5.3.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "e3281f3d6047c6d4d1873a992a3b4515",
+        "name": ".jshintrc",
+        "package_data": [],
+        "path": "package/.jshintrc",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "fa79fa14ae122f25b9af0bc7295c50bda9d31950",
+        "sha1_git": "f642dae7683b8155bd800db2aa3bfd574c2f7b64",
+        "sha256": "48460ff8874f6b68482ec068c01f7246ae406b891749f92f3d06180b3c70fc35",
+        "size": 242,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [],
+        "detected_license_expression": "bsd-simplified",
+        "detected_license_expression_spdx": "BSD-2-Clause",
+        "dirs_count": 0,
+        "extension": ".BSD",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/estraverse@5.3.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_simplified-b0a120a3-cce3-995b-123f-087ac0411b9b",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "matches": [
+              {
+                "end_line": 19,
+                "from_file": "0a46b980fb719f4e050c37c58623dd518e9b032d93847072059e145fed3ddd93/package/LICENSE.BSD",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 100,
+                "matched_length": 180,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n  * Redistributions of source code must retain the above copyright\n    notice, this list of conditions and the following disclaimer.\n  * Redistributions in binary form must reproduce the above copyright\n    notice, this list of conditions and the following disclaimer in the\n    documentation and/or other materials provided with the distribution.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\nARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF\nTHIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "1-hash",
+                "rule_identifier": "bsd-simplified_18.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_18.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": "e74cede38e957fe3e525b0e53a510bcf",
+        "name": "LICENSE.BSD",
+        "package_data": [],
+        "path": "package/LICENSE.BSD",
+        "percentage_of_license_text": 100,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "e74ff75ee8a455b69f308ecaeef9804e6c9c8fd8",
+        "sha1_git": "3e580c355a96e5ab8c4fb2ea4ada2d62287de41f",
+        "sha256": "0e74697a68cebdcd61502c30fe80ab7f9e341d995dcd452023654d57133534b1",
+        "size": 1231,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2012-2016 Yusuke Suzuki (http://github.com/Constellation) (twitter @Constellation (http://twitter.com/Constellation)) and other contributors",
+            "end_line": 132,
+            "start_line": 131
+          }
+        ],
+        "detected_license_expression": "bsd-simplified",
+        "detected_license_expression_spdx": "BSD-2-Clause",
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/estraverse@5.3.0"
+        ],
+        "holders": [
+          {
+            "end_line": 132,
+            "holder": "Yusuke Suzuki twitter @Constellation and other contributors",
+            "start_line": 131
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_simplified-b0a120a3-cce3-995b-123f-087ac0411b9b",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "matches": [
+              {
+                "end_line": 153,
+                "from_file": "0a46b980fb719f4e050c37c58623dd518e9b032d93847072059e145fed3ddd93/package/README.md",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 100,
+                "matched_length": 180,
+                "matched_text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n  * Redistributions of source code must retain the above copyright\n    notice, this list of conditions and the following disclaimer.\n\n  * Redistributions in binary form must reproduce the above copyright\n    notice, this list of conditions and the following disclaimer in the\n    documentation and/or other materials provided with the distribution.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\nARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF\nTHIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-simplified_18.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_18.RULE",
+                "score": 100,
+                "start_line": 134
+              }
+            ]
+          }
+        ],
+        "md5": "ec86c696f76f35df3ec47ca4bca4b4f6",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 30.66,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "5a996433ae4f6bdae8ecd4baf1cbf665f1639384",
+        "sha1_git": "ccd3377f3e9449547787f8f8f969def96e3f6d23",
+        "sha256": "623a48ac487901c20b18ff241617efb3adf6a3b8c077073fccdddc770404c991",
+        "size": 4865,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "estraverse",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2012 Ariya Hidayat <ariya.hidayat@gmail.com>",
+            "end_line": 3,
+            "start_line": 3
+          },
+          {
+            "copyright": "Copyright (c) 2012-2013 Yusuke Suzuki <utatane.tea@gmail.com>",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-simplified AND mit",
+        "detected_license_expression_spdx": "BSD-2-Clause AND MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/estraverse@5.3.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Yusuke Suzuki",
+            "start_line": 2
+          },
+          {
+            "end_line": 3,
+            "holder": "Ariya Hidayat",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_simplified-b0a120a3-cce3-995b-123f-087ac0411b9b",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "matches": [
+              {
+                "end_line": 23,
+                "from_file": "0a46b980fb719f4e050c37c58623dd518e9b032d93847072059e145fed3ddd93/package/estraverse.js",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 100,
+                "matched_length": 180,
+                "matched_text": "  Redistribution and use in source and binary forms, with or without\n  modification, are permitted provided that the following conditions are met:\n\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n\n  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\n  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\n  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\n  ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\n  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\n  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF\n  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-simplified_18.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_18.RULE",
+                "score": 100,
+                "start_line": 5
+              }
+            ]
+          },
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 54,
+                "from_file": "0a46b980fb719f4e050c37c58623dd518e9b032d93847072059e145fed3ddd93/package/estraverse.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "    // MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 54
+              }
+            ]
+          }
+        ],
+        "md5": "0401c7dc81c41f8bda8891ecaf019e34",
+        "name": "estraverse.js",
+        "package_data": [],
+        "path": "package/estraverse.js",
+        "percentage_of_license_text": 8.81,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "869ac4d04aff486a5ab249ef56d5a14fc7a6ef8c",
+        "sha1_git": "f0d9af9b46bfebb6cda551de17beeb659c7a2f69",
+        "sha256": "818578222a4686be24197cac7e9ea00a6b32a0312c86a2bb946ec4b7faeee93c",
+        "size": 26957,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "gulpfile",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2014 Yusuke Suzuki <utatane.tea@gmail.com>",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "bsd-simplified",
+        "detected_license_expression_spdx": "BSD-2-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/estraverse@5.3.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Yusuke Suzuki",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_simplified-b0a120a3-cce3-995b-123f-087ac0411b9b",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "matches": [
+              {
+                "end_line": 22,
+                "from_file": "0a46b980fb719f4e050c37c58623dd518e9b032d93847072059e145fed3ddd93/package/gulpfile.js",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 100,
+                "matched_length": 180,
+                "matched_text": "  Redistribution and use in source and binary forms, with or without\n  modification, are permitted provided that the following conditions are met:\n\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n\n  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS'\n  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\n  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\n  ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\n  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\n  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF\n  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-simplified_18.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_18.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "4eb0529ea7ca874d5f750bac960c5f75",
+        "name": "gulpfile.js",
+        "package_data": [],
+        "path": "package/gulpfile.js",
+        "percentage_of_license_text": 48.13,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "1b430ab8fe6438e61ac5f3585a9243b2db260748",
+        "sha1_git": "8772bbcca542a8dc43f1e08f55126ae24426f983",
+        "sha256": "02601a92111d2c67d2f9bc725a66c80aceb7e24a9e266a2ab5e83c5b9e01b27a",
+        "size": 2790,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "bsd-simplified",
+        "detected_license_expression_spdx": "BSD-2-Clause",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/estraverse@5.3.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_simplified-71450002-f253-703f-89da-2ec134364868",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "matches": [
+              {
+                "end_line": 34,
+                "from_file": "0a46b980fb719f4e050c37c58623dd518e9b032d93847072059e145fed3ddd93/package/package.json",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "  \"license\": \"BSD-2-Clause\",",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-simplified_50.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_50.RULE",
+                "score": 100,
+                "start_line": 34
+              }
+            ]
+          }
+        ],
+        "md5": "bd9f5d0269a086134806f672b4115cea",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/estraverse/5.3.0",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "bsd-simplified",
+            "declared_license_expression_spdx": "BSD-2-Clause",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.2.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/gulp-bump",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.0.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/gulp-git",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.11.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/espree",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.3.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/gulp-tag-version",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.6.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/babel-preset-env",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/gulp-filter",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/mocha",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.1.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/chai",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.5.6",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/jshint",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.8.10",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/gulp",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.3.13",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/babel-register",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "ECMAScript JS AST traversal functions",
+            "download_url": "https://registry.npmjs.org/estraverse/-/estraverse-5.3.0.tgz",
+            "extra_data": {
+              "engines": {
+                "node": ">=4.0"
+              }
+            },
+            "extracted_license_statement": "- BSD-2-Clause\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://github.com/estools/estraverse",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [
+              {
+                "identifier": "bsd_simplified-7cacd81a-0bdb-1c32-cf2d-2250f633f213",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "0a46b980fb719f4e050c37c58623dd518e9b032d93847072059e145fed3ddd93/package/package.json",
+                    "license_expression": "bsd-simplified",
+                    "license_expression_spdx": "BSD-2-Clause",
+                    "match_coverage": 100,
+                    "matched_length": 3,
+                    "matched_text": "BSD-2-Clause",
+                    "matcher": "1-hash",
+                    "rule_identifier": "spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+                    "rule_relevance": 100,
+                    "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "estraverse",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "utatane.tea@gmail.com",
+                "name": "Yusuke Suzuki",
+                "role": "maintainer",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/estraverse@5.3.0",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/estraverse/-/estraverse-5.3.0.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/estraverse",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+http://github.com/estools/estraverse.git",
+            "version": "5.3.0"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 3.17,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "0531d8f4becce53263ed592b54ee0e0abc53fbed",
+        "sha1_git": "a86321850b4ec93883754e4de7b03227e1a9a379",
+        "sha256": "133a5be160a0123ad20ab8f2bdaa9da2fd94ebf3403996bf4cb69606e6a84a65",
+        "size": 1009,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "bsd_simplified-71450002-f253-703f-89da-2ec134364868",
+        "license_expression": "bsd-simplified",
+        "license_expression_spdx": "BSD-2-Clause",
+        "reference_matches": [
+          {
+            "end_line": 34,
+            "from_file": "0a46b980fb719f4e050c37c58623dd518e9b032d93847072059e145fed3ddd93/package/package.json",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "  \"license\": \"BSD-2-Clause\",",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-simplified_50.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_50.RULE",
+            "score": 100,
+            "start_line": 34
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_simplified-7cacd81a-0bdb-1c32-cf2d-2250f633f213",
+        "license_expression": "bsd-simplified",
+        "license_expression_spdx": "BSD-2-Clause",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "0a46b980fb719f4e050c37c58623dd518e9b032d93847072059e145fed3ddd93/package/package.json",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "BSD-2-Clause",
+            "matcher": "1-hash",
+            "rule_identifier": "spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 54,
+            "from_file": "0a46b980fb719f4e050c37c58623dd518e9b032d93847072059e145fed3ddd93/package/estraverse.js",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "    // MIT License",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_14.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+            "score": 100,
+            "start_line": 54
+          }
+        ]
+      },
+      {
+        "detection_count": 4,
+        "identifier": "bsd_simplified-b0a120a3-cce3-995b-123f-087ac0411b9b",
+        "license_expression": "bsd-simplified",
+        "license_expression_spdx": "BSD-2-Clause",
+        "reference_matches": [
+          {
+            "end_line": 23,
+            "from_file": "0a46b980fb719f4e050c37c58623dd518e9b032d93847072059e145fed3ddd93/package/estraverse.js",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "match_coverage": 100,
+            "matched_length": 180,
+            "matched_text": "  Redistribution and use in source and binary forms, with or without\n  modification, are permitted provided that the following conditions are met:\n\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n\n  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\n  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\n  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\n  ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\n  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\n  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF\n  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-simplified_18.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_18.RULE",
+            "score": 100,
+            "start_line": 5
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      },
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "http://www.opensource.org/licenses/BSD-2-Clause",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "bsd-simplified",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/bsd-simplified",
+        "minimum_coverage": 0,
+        "name": "BSD-2-Clause",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://opensource.org/licenses/bsd-license.php",
+        "other_spdx_license_keys": [
+          "BSD-2",
+          "BSD-2-Clause-NetBSD"
+        ],
+        "other_urls": [
+          "http://spdx.org/licenses/BSD-2-Clause",
+          "http://www.freebsd.org/copyright/copyright.html",
+          "https://opensource.org/licenses/BSD-2-Clause"
+        ],
+        "owner": "Regents of the University of California",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-simplified.LICENSE",
+        "short_name": "BSD-2-Clause",
+        "spdx_license_key": "BSD-2-Clause",
+        "spdx_url": "https://spdx.org/licenses/BSD-2-Clause",
+        "standard_notice": null,
+        "text": "Redistribution and use in source and binary forms, with or without modification,\nare permitted provided that the following conditions are met:\n\nRedistributions of source code must retain the above copyright notice, this list\nof conditions and the following disclaimer.\n\nRedistributions in binary form must reproduce the above copyright notice, this\nlist of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR\nANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON\nANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+        "text_urls": [
+          "http://opensource.org/licenses/bsd-license.php"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "bsd-simplified_18.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 180,
+        "license_expression": "bsd-simplified",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_18.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Redistribution and use in source and binary forms, with or without\n modification, are permitted provided that the following conditions are met:\n\n   * Redistributions of source code must retain the above copyright\n     notice, this list of conditions and the following disclaimer.\n   * Redistributions in binary form must reproduce the above copyright\n     notice, this list of conditions and the following disclaimer in the\n     documentation and/or other materials provided with the distribution.\n\n THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\n AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\n IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\n ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY\n DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\n ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF\n THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+      },
+      {
+        "identifier": "bsd-simplified_50.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "bsd-simplified",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_50.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Licence BSD-2-Clause"
+      },
+      {
+        "identifier": "mit_14.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT License"
+      },
+      {
+        "identifier": "spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "bsd-simplified",
+        "minimum_coverage": 100,
+        "notes": "Used to detect a bare SPDX license id",
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "BSD-2-Clause"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/estraverse/5.3.0",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "bsd-simplified",
+        "declared_license_expression_spdx": "BSD-2-Clause",
+        "description": "ECMAScript JS AST traversal functions",
+        "download_url": "https://registry.npmjs.org/estraverse/-/estraverse-5.3.0.tgz",
+        "extra_data": {
+          "engines": {
+            "node": ">=4.0"
+          }
+        },
+        "extracted_license_statement": "- BSD-2-Clause\n",
+        "holder": null,
+        "homepage_url": "https://github.com/estools/estraverse",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_simplified-7cacd81a-0bdb-1c32-cf2d-2250f633f213",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "0a46b980fb719f4e050c37c58623dd518e9b032d93847072059e145fed3ddd93/package/package.json",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "BSD-2-Clause",
+                "matcher": "1-hash",
+                "rule_identifier": "spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "estraverse",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "utatane.tea@gmail.com",
+            "name": "Yusuke Suzuki",
+            "role": "maintainer",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/estraverse@5.3.0",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/estraverse/-/estraverse-5.3.0.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/estraverse",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+http://github.com/estools/estraverse.git",
+        "version": "5.3.0"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

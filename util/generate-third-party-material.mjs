@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
-import { dirname, resolve, sep } from "node:path";
+import { dirname, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import parseSpdxExpression from "spdx-expression-parse";
 import { format as formatWithPrettier } from "prettier";
@@ -34,7 +34,7 @@ const EXTERNAL_LICENSE_EVIDENCE = new Map([
 ]);
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const outputPath = resolve(
+const canonicalOutputPath = resolve(
   repositoryRoot,
   "docs/provenance/third-party-material.json",
 );
@@ -47,10 +47,14 @@ const evidenceManifestPath = resolve(
 const evidenceRoot = resolve(repositoryRoot, "docs/provenance/evidence/npm");
 
 const toRepositoryPath = (path) =>
-  path
-    .slice(repositoryRoot.length + 1)
-    .split(sep)
-    .join("/");
+  relative(repositoryRoot, path).split(sep).join("/");
+
+const toDisplayPath = (path) => {
+  const repositoryRelativePath = relative(repositoryRoot, path);
+  return repositoryRelativePath.startsWith("..")
+    ? path
+    : toRepositoryPath(path);
+};
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
 
@@ -231,7 +235,7 @@ const createComponentFacts = ({ occurrence, context, existingComponent }) => {
   ];
   const licenseQualification =
     distinctDeclarations.length <= 1
-      ? "LOCKFILE_TARBALL_AND_SCAN_EVIDENCE_AGREE"
+      ? "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT"
       : `DECLARATION_MISMATCH: ${distinctDeclarations.join(" | ")}`;
   const relationship = occurrence.development
     ? "DEVELOPMENT_ONLY"
@@ -256,6 +260,14 @@ const createComponentFacts = ({ occurrence, context, existingComponent }) => {
       : SEPARATELY_INSTALLED_RUNTIME_LICENSES.has(concludedLicenseExpression)
         ? "ALLOWED_SEPARATELY_INSTALLED_EXTERNAL_RUNTIME"
         : "REQUIRES_HUMAN_REVIEW";
+  const licenseConclusionRationale = [
+    "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence.",
+    "The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy.",
+    distinctDeclarations.length <= 1
+      ? "The lockfile and authenticated package.json declarations are consistent where present."
+      : "Every differing lockfile or authenticated package.json declaration remains explicit for human review.",
+    "ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
+  ].join(" ");
   const inspectedFiles = archive.evidenceFiles.map(
     ({ path, kind, sha256: digest, blob }) => ({
       path,
@@ -283,9 +295,7 @@ const createComponentFacts = ({ occurrence, context, existingComponent }) => {
     declaredLicenseExpression,
     concludedLicenseExpression,
     licenseQualification,
-    licenseConclusionRationale: canPreserveConclusion
-      ? existingComponent.licenseConclusionRationale
-      : "The conclusion selects the first SPDX-valid declaration in lockfile, authenticated tarball, then ScanCode order; every differing observation remains explicit for human review.",
+    licenseConclusionRationale,
     distributionDisposition,
     inspectionBasis: "LOCKED_REGISTRY_TARBALL",
     licenseFilePresence: hasLicenceFile
@@ -677,7 +687,7 @@ const createMaterialFacts = () => [
   },
 ];
 
-const createInventory = async () => {
+const createInventory = async ({ preserveReview }) => {
   const lockfileBytes = readFileSync(lockfilePath);
   const lockfile = JSON.parse(lockfileBytes.toString("utf8"));
   const rootPackage = lockfile.packages[""];
@@ -689,7 +699,12 @@ const createInventory = async () => {
     lockfileBytes,
     blobRoot: evidenceRoot,
   });
-  const existing = existsSync(outputPath) ? readJson(outputPath) : undefined;
+  // Review metadata belongs to the canonical inventory, not to a disposable
+  // prospective output. This lets a reviewer compare a candidate safely while
+  // preserving an existing decision only when the generated facts are exact.
+  const existing = existsSync(canonicalOutputPath)
+    ? readJson(canonicalOutputPath)
+    : undefined;
   const existingByPath = new Map(
     (existing?.components || []).map((component) => [
       component.dependencyPath,
@@ -819,7 +834,7 @@ const createInventory = async () => {
   // evidence-file, or scope change alters this digest and deliberately returns
   // the inventory to a human-review gate instead of carrying approval forward.
   const review =
-    existing?.review?.factsSha256 === factsSha256
+    preserveReview && existing?.review?.factsSha256 === factsSha256
       ? existing.review
       : {
           status: "PENDING_HUMAN_REVIEW",
@@ -850,10 +865,24 @@ const createInventory = async () => {
   };
 };
 
-const requestedWrite = process.argv.slice(2).includes("--write");
-const unknownArguments = process.argv
-  .slice(2)
-  .filter((argument) => argument !== "--write");
+const arguments_ = process.argv.slice(2);
+const requestedWrite = arguments_.includes("--write");
+const outputArguments = arguments_.filter((argument) =>
+  argument.startsWith("--output="),
+);
+if (outputArguments.length > 1) {
+  throw new Error("--output may be specified only once");
+}
+const requestedOutput = outputArguments[0]?.slice("--output=".length);
+if (outputArguments.length === 1 && requestedOutput.length === 0) {
+  throw new Error("--output requires a path");
+}
+const outputPath = requestedOutput
+  ? resolve(repositoryRoot, requestedOutput)
+  : canonicalOutputPath;
+const unknownArguments = arguments_.filter(
+  (argument) => argument !== "--write" && !argument.startsWith("--output="),
+);
 if (unknownArguments.length > 0) {
   throw new Error(`Unknown arguments: ${unknownArguments.join(", ")}`);
 }
@@ -861,22 +890,29 @@ if (unknownArguments.length > 0) {
 // The facts digest uses stable JSON member ordering; the checked-in artifact is
 // additionally rendered by the repository formatter so generation and the
 // formatting gate have one canonical representation instead of fighting.
-const expected = await formatWithPrettier(stableJson(await createInventory()), {
-  parser: "json",
-});
+const expected = await formatWithPrettier(
+  stableJson(
+    await createInventory({
+      preserveReview: outputPath === canonicalOutputPath,
+    }),
+  ),
+  {
+    parser: "json",
+  },
+);
 if (requestedWrite) {
   writeFileSync(outputPath, expected, "utf8");
-  process.stdout.write(`Wrote ${toRepositoryPath(outputPath)}\n`);
+  process.stdout.write(`Wrote ${toDisplayPath(outputPath)}\n`);
 } else {
   if (!existsSync(outputPath)) {
     throw new Error(
-      "docs/provenance/third-party-material.json is missing; run this generator with --write",
+      `${toDisplayPath(outputPath)} is missing; run this generator with --write`,
     );
   }
   const actual = readFileSync(outputPath, "utf8");
   if (actual !== expected) {
     throw new Error(
-      "docs/provenance/third-party-material.json is stale; review the changed facts and regenerate with --write",
+      `${toDisplayPath(outputPath)} is stale; review the changed facts and regenerate with --write`,
     );
   }
   process.stdout.write("Third-party material inventory is current.\n");

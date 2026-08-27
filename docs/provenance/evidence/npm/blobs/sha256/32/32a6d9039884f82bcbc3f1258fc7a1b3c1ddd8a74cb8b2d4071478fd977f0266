@@ -1,0 +1,117 @@
+{
+  "artifactId": "5d5109a6553a3b6e8221a7ff831ad3c00e2d9043c73b8e13c5ae4b4383a955c4",
+  "evidence": {
+    "archiveRoot": "babel__template",
+    "compressedBytes": 2677,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "babel__template",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "babel__template/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "babel__template/README.md",
+        "sha256": "7b323c32ccd53d1eea0d850c692d51a1e3bed92612b74abd854e48b76f0ac7e6",
+        "size": 783,
+        "type": "FILE"
+      },
+      {
+        "path": "babel__template/index.d.ts",
+        "sha256": "670a76db379b27c8ff42f1ba927828a22862e2ab0b0908e38b671f0e912cc5ed",
+        "size": 3126,
+        "type": "FILE"
+      },
+      {
+        "path": "babel__template/package.json",
+        "sha256": "51293405049986b206d68e5b08181710934be70a05ecbd5384adb4eabde2ab82",
+        "size": 1359,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1141,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c2/c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        "kind": "LICENCE",
+        "path": "babel__template/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141
+      }
+    ],
+    "expandedBytes": 6409,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/babel__template",
+      "license": "MIT",
+      "name": "@types/babel__template",
+      "repository": {
+        "directory": "types/babel__template",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "version": "7.4.4"
+    },
+    "packageMetadata": {
+      "contributors": [
+        {
+          "githubUsername": "yortus",
+          "name": "Troy Gerwien",
+          "url": "https://github.com/yortus"
+        },
+        {
+          "githubUsername": "marvinhagemeister",
+          "name": "Marvin Hagemeister",
+          "url": "https://github.com/marvinhagemeister"
+        },
+        {
+          "githubUsername": "mgroenhoff",
+          "name": "Melvin Groenhoff",
+          "url": "https://github.com/mgroenhoff"
+        },
+        {
+          "githubUsername": "ExE-Boss",
+          "name": "ExE Boss",
+          "url": "https://github.com/ExE-Boss"
+        }
+      ],
+      "dependencies": {
+        "@babel/parser": "^7.1.0",
+        "@babel/types": "^7.0.0"
+      },
+      "description": "TypeScript definitions for @babel/template",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/babel__template",
+      "license": "MIT",
+      "main": "",
+      "name": "@types/babel__template",
+      "repository": {
+        "directory": "types/babel__template",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "scripts": {},
+      "typeScriptVersion": "4.5",
+      "types": "index.d.ts",
+      "typesPublisherContentHash": "5730d754b4d1fcd41676b093f9e32b340c749c4d37b126dfa312e394467e86c6",
+      "version": "7.4.4"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2677,
+      "sha256": "a67c2c19e0281996d2f7ddcc41f561abff796ed1cb07276ebad6982dbb67a7c1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

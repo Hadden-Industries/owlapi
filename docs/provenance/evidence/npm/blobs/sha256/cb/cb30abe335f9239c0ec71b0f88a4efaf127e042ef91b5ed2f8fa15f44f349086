@@ -1,0 +1,149 @@
+{
+  "artifactId": "882473932199413957489d8dfa23aa4537e0ae4f1265ce39fef894e04ba60f3a",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3743,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "08c19f0b735146ea0387e29083bcd6416fd64d97fc12e68867cda678d41a6f60",
+        "size": 1534,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "785452810981ef60aaa0090b2499fb64fd349fc3ac386e32653420c4465403c0",
+        "size": 3069,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "dc90aaea0e4c90012ac8a7e7d858e72d3d74104883ff49125026413c771c277f",
+        "size": 1097,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "d709e5a9678d02fb9f2691bb5ed995f00c04e1c99c839410f916b54a3870412b",
+        "size": 3096,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      },
+      {
+        "blob": {
+          "bytes": 3096,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d7/d709e5a9678d02fb9f2691bb5ed995f00c04e1c99c839410f916b54a3870412b",
+          "sha256": "d709e5a9678d02fb9f2691bb5ed995f00c04e1c99c839410f916b54a3870412b"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "d709e5a9678d02fb9f2691bb5ed995f00c04e1c99c839410f916b54a3870412b",
+        "size": 3096
+      }
+    ],
+    "expandedBytes": 9913,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "make-dir",
+      "repository": "sindresorhus/make-dir",
+      "version": "4.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "dependencies": {
+        "semver": "^7.5.3"
+      },
+      "description": "Make a directory and its parents if needed - Think `mkdir -p`",
+      "devDependencies": {
+        "@types/graceful-fs": "^4.1.3",
+        "@types/node": "^14.14.6",
+        "ava": "^2.4.0",
+        "codecov": "^3.2.0",
+        "graceful-fs": "^4.1.15",
+        "nyc": "^15.0.0",
+        "path-type": "^4.0.0",
+        "tempy": "^1.0.0",
+        "tsd": "^0.13.1",
+        "xo": "^0.34.2"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "mkdir",
+        "mkdirp",
+        "make",
+        "directories",
+        "folders",
+        "directory",
+        "folder",
+        "path",
+        "parent",
+        "parents",
+        "intermediate",
+        "recursively",
+        "recursive",
+        "create",
+        "fs",
+        "filesystem",
+        "file-system"
+      ],
+      "license": "MIT",
+      "name": "make-dir",
+      "nyc": {
+        "reporter": [
+          "text",
+          "lcov"
+        ]
+      },
+      "repository": "sindresorhus/make-dir",
+      "scripts": {
+        "test": "xo && nyc ava && tsd"
+      },
+      "version": "4.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3743,
+      "sha256": "91497bdb7c98b5c3de4dd26111b1ca4a1bc74670e981ef3637d9c9d71ea6d962"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

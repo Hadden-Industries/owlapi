@@ -1,0 +1,109 @@
+{
+  "artifactId": "852e9f696ad019bda2b5eaba1366974a52a7a3d1491a57e9678de1709e2aee16",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4312,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "4491517f7deb68d0b2a3bb590e785e276a60f12448447a9650d0bd50161a101c",
+        "size": 4763,
+        "type": "FILE"
+      },
+      {
+        "path": "package/imurmurhash.js",
+        "sha256": "45368bfe11080c4504b7804602015d93873303c5b13d5710af6c42e9abc35b4a",
+        "size": 4412,
+        "type": "FILE"
+      },
+      {
+        "path": "package/imurmurhash.min.js",
+        "sha256": "ea8490563a229b89f2b779217938f9eb2bcf93dd89de9f7fc5c035632f0934b5",
+        "size": 1894,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "aa3b07e7fa3d63aa96e401c3842b8cca1dd3247954baf92377094766e903c185",
+        "size": 818,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 4763,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/44/4491517f7deb68d0b2a3bb590e785e276a60f12448447a9650d0bd50161a101c",
+          "sha256": "4491517f7deb68d0b2a3bb590e785e276a60f12448447a9650d0bd50161a101c"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "4491517f7deb68d0b2a3bb590e785e276a60f12448447a9650d0bd50161a101c",
+        "size": 4763
+      }
+    ],
+    "expandedBytes": 11887,
+    "packageIdentity": {
+      "author": {
+        "email": "jensyt@gmail.com",
+        "name": "Jens Taylor",
+        "url": "https://github.com/homebrewing"
+      },
+      "homepage": "https://github.com/jensyt/imurmurhash-js",
+      "license": "MIT",
+      "name": "imurmurhash",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/jensyt/imurmurhash-js"
+      },
+      "version": "0.1.4"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "jensyt@gmail.com",
+        "name": "Jens Taylor",
+        "url": "https://github.com/homebrewing"
+      },
+      "bugs": {
+        "url": "https://github.com/jensyt/imurmurhash-js/issues"
+      },
+      "dependencies": {},
+      "description": "An incremental implementation of MurmurHash3",
+      "devDependencies": {},
+      "engines": {
+        "node": ">=0.8.19"
+      },
+      "files": [
+        "imurmurhash.js",
+        "imurmurhash.min.js",
+        "package.json",
+        "README.md"
+      ],
+      "homepage": "https://github.com/jensyt/imurmurhash-js",
+      "keywords": [
+        "murmur",
+        "murmurhash",
+        "murmurhash3",
+        "hash",
+        "incremental"
+      ],
+      "license": "MIT",
+      "main": "imurmurhash.js",
+      "name": "imurmurhash",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/jensyt/imurmurhash-js"
+      },
+      "version": "0.1.4"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 4312,
+      "sha256": "ac23a031966a7371d192e35c7852ab31c772b7d4e468ddd886ad3c014372cb60"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

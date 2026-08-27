@@ -1,0 +1,205 @@
+{
+  "artifactId": "885766094ee42f0921b488448afd1b60c5c6d5469ad342ad53fc9583c6436d75",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 75502,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ea8d34a5eb00d06b94a7c639cc24071bfa867887c3d3c420894ad0123287f910",
+        "size": 17052,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/cjs/index.cjs",
+        "sha256": "615889758115b8254f0c5ae4761ab659a98c4b4cc16da0f06215b9107ba49675",
+        "size": 44061,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/cjs/index.d.cts",
+        "sha256": "149303c9046e9e8ff492a20d31789d9ff4e96da1fb0d5b2b3b787a7e11bee9dc",
+        "size": 7101,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/cjs/std__path/posix.cjs",
+        "sha256": "d78e4e44f1dd420ada78e9001c27f577bdfe567671d4e74867977d9598766a4e",
+        "size": 42967,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/cjs/std__path/windows.cjs",
+        "sha256": "6e089fa55fb7892dc5a8152f4115b34ad64def39dd23068c478af96bc33d5113",
+        "size": 54516,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/cjs/types.cts",
+        "sha256": "9f8f8d4c63094f3090f60e8d431121477b339a206c448bead7722d181c3b80d4",
+        "size": 861,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts",
+        "sha256": "e163ac391555c5f21fc6547a589c1f921102975b33057bf47d5290b5abd2539e",
+        "size": 7100,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js",
+        "sha256": "39fd87507068ce385a79a9672bdc5e1483ed6cddf195124ef29dad7ba07f60c6",
+        "size": 43379,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/std__path/posix.js",
+        "sha256": "3c2aace86ddc1311589624944275860fe83914e270276a146f8ce94cdc938d2c",
+        "size": 42544,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/std__path/windows.js",
+        "sha256": "b74eacc005cc04b50161058609b223d9d092b6032b282d8b2160a3b76ed97ded",
+        "size": 54093,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/types.d.ts",
+        "sha256": "430ff14cb1ae707f19af32b056c127237d19cd07fd682be8bdd4a15e5f285603",
+        "size": 855,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/types.ts",
+        "sha256": "9f8f8d4c63094f3090f60e8d431121477b339a206c448bead7722d181c3b80d4",
+        "size": 861,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "865f769edb92c7eaf452c9cf0194a7f3c925636a5ab4be826510a518165a6473",
+        "size": 2005,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11357,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357
+      },
+      {
+        "blob": {
+          "bytes": 17052,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ea/ea8d34a5eb00d06b94a7c639cc24071bfa867887c3d3c420894ad0123287f910",
+          "sha256": "ea8d34a5eb00d06b94a7c639cc24071bfa867887c3d3c420894ad0123287f910"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "ea8d34a5eb00d06b94a7c639cc24071bfa867887c3d3c420894ad0123287f910",
+        "size": 17052
+      }
+    ],
+    "expandedBytes": 328752,
+    "packageIdentity": {
+      "author": "Nicholas C. Zakas",
+      "homepage": "https://github.com/eslint/rewrite/tree/main/packages/config-array#readme",
+      "license": "Apache-2.0",
+      "name": "@eslint/config-array",
+      "repository": {
+        "directory": "packages/config-array",
+        "type": "git",
+        "url": "git+https://github.com/eslint/rewrite.git"
+      },
+      "version": "0.23.5"
+    },
+    "packageMetadata": {
+      "author": "Nicholas C. Zakas",
+      "bugs": {
+        "url": "https://github.com/eslint/rewrite/issues"
+      },
+      "dependencies": {
+        "@eslint/object-schema": "^3.0.5",
+        "debug": "^4.3.1",
+        "minimatch": "^10.2.4"
+      },
+      "description": "General purpose glob-based configuration matching.",
+      "devDependencies": {
+        "@jsr/std__path": "^1.0.4",
+        "rollup-plugin-copy": "^3.5.0"
+      },
+      "engines": {
+        "node": "^20.19.0 || ^22.13.0 || >=24"
+      },
+      "exports": {
+        "import": {
+          "default": "./dist/esm/index.js",
+          "types": "./dist/esm/index.d.ts"
+        },
+        "require": {
+          "default": "./dist/cjs/index.cjs",
+          "types": "./dist/cjs/index.d.cts"
+        }
+      },
+      "files": [
+        "dist"
+      ],
+      "homepage": "https://github.com/eslint/rewrite/tree/main/packages/config-array#readme",
+      "keywords": [
+        "configuration",
+        "configarray",
+        "config file"
+      ],
+      "license": "Apache-2.0",
+      "main": "dist/esm/index.js",
+      "name": "@eslint/config-array",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/config-array",
+        "type": "git",
+        "url": "git+https://github.com/eslint/rewrite.git"
+      },
+      "scripts": {
+        "build": "rollup -c && npm run build:dedupe-types && tsc -p tsconfig.esm.json && npm run build:cts && npm run build:std__path",
+        "build:cts": "node ../../tools/build-cts.js dist/esm/index.d.ts dist/cjs/index.d.cts",
+        "build:dedupe-types": "node ../../tools/dedupe-types.js dist/cjs/index.cjs dist/esm/index.js",
+        "build:std__path": "rollup -c rollup.std__path-config.js && node fix-std__path-imports",
+        "lint:types": "attw --pack",
+        "pretest": "npm run build",
+        "test": "npm run test:types && npm run test:unit",
+        "test:coverage": "npm run build && c8 npm run test:unit",
+        "test:jsr": "npx -y jsr@latest publish --dry-run",
+        "test:types": "tsc -p tests/types/tsconfig.json",
+        "test:unit": "mocha \"tests/**/*.test.js\""
+      },
+      "type": "module",
+      "types": "dist/esm/index.d.ts",
+      "version": "0.23.5"
+    },
+    "physicalEntryCount": 14,
+    "tarball": {
+      "bytes": 75502,
+      "sha256": "e94ae1cfacadb9b669cd7e4c862fe9b4f844d32e2c1b783a966617f912a5d0f8"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

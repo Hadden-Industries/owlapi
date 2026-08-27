@@ -1,0 +1,189 @@
+{
+  "artifactId": "05e1ce27d1e7c354cc52bb9ac89729f85fb4618737171c78daec7effc465d57c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 10431,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.npmignore",
+        "sha256": "c78685538298801f126456b97d27a6331eabb4045b50b154abc5aff275780b94",
+        "size": 39,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.travis.yml",
+        "sha256": "ed9b99c44bd141e35532a275c55bd59990a16da4e67ceaa93b1021e524fc7e69",
+        "size": 334,
+        "type": "FILE"
+      },
+      {
+        "path": "package/License",
+        "sha256": "01ad164273e8e095abc9dbd1c21e194594a671af7d528cb43ee7b4c903ba7da3",
+        "size": 1139,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Makefile",
+        "sha256": "7ca871146d4f446b640251fdee4e8b7e002c5cf502c924343764d076c5e2622e",
+        "size": 312,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "7f39755e8946f5cac7dea12c7a39717b966b319201562e09cf937fdcaa6cfb1f",
+        "size": 8967,
+        "type": "FILE"
+      },
+      {
+        "path": "package/equation.gif",
+        "sha256": "ea0b38ba378f11e2adb20e868061ded1bf0b4973c92aa3317bf2710724343c38",
+        "size": 1209,
+        "type": "FILE"
+      },
+      {
+        "path": "package/example/dns.js",
+        "sha256": "1ed998627ee1df8b49c48d158a0bda6c582c2f11b364c64b949cc3486a563e62",
+        "size": 687,
+        "type": "FILE"
+      },
+      {
+        "path": "package/example/stop.js",
+        "sha256": "32b9c02ccb7d4fa1beaa7411b4804204d0927cd91a36a28f052bdd9a61233ad2",
+        "size": 888,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "003f04e5fb5913675c886ac938e9b7bbd33754eb17ee8f00e074e1bf888bec1e",
+        "size": 40,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/retry.js",
+        "sha256": "4388d78729faa0dea430e2a7fa572aee6a15a407da05097b41ee44106d336616",
+        "size": 2298,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/retry_operation.js",
+        "sha256": "eaca13037da35523326c8870e39c4fd236c4f38b5822a2af0f33d0f4e0b21d02",
+        "size": 3657,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "c0733eb226e2a6572c7c9c2bc8b4a0efabe233971b0dee1e6d62c6898257e1da",
+        "size": 1022,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/common.js",
+        "sha256": "009708c033e269c1d8537cc3289b033ae5008f6c34ae55b944d7c906de89c0da",
+        "size": 208,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/integration/test-forever.js",
+        "sha256": "6f1a7d7f2a6ddad485f3bd868b18cfbc3f0244094a0b8e37db4ac5d73fdbfce8",
+        "size": 515,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/integration/test-retry-operation.js",
+        "sha256": "86c1befd397771ac1d8f588d330429efe34f5161c88420667f0ae7e2de038a7f",
+        "size": 6434,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/integration/test-retry-wrap.js",
+        "sha256": "1983c1e30c0c1df29e306a44a856f6471a50f167862acaa402ef29d5b961066b",
+        "size": 2682,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/integration/test-timeouts.js",
+        "sha256": "48c08ff322d155dc9e2b33344429996d73da9335e6ca6056d778cc02e0fb71c6",
+        "size": 1779,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1139,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/01/01ad164273e8e095abc9dbd1c21e194594a671af7d528cb43ee7b4c903ba7da3",
+          "sha256": "01ad164273e8e095abc9dbd1c21e194594a671af7d528cb43ee7b4c903ba7da3"
+        },
+        "kind": "LICENCE",
+        "path": "package/License",
+        "sha256": "01ad164273e8e095abc9dbd1c21e194594a671af7d528cb43ee7b4c903ba7da3",
+        "size": 1139
+      },
+      {
+        "blob": {
+          "bytes": 8967,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/7f/7f39755e8946f5cac7dea12c7a39717b966b319201562e09cf937fdcaa6cfb1f",
+          "sha256": "7f39755e8946f5cac7dea12c7a39717b966b319201562e09cf937fdcaa6cfb1f"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "7f39755e8946f5cac7dea12c7a39717b966b319201562e09cf937fdcaa6cfb1f",
+        "size": 8967
+      }
+    ],
+    "expandedBytes": 32210,
+    "packageIdentity": {
+      "author": "Tim Koschützki <tim@debuggable.com> (http://debuggable.com/)",
+      "homepage": "https://github.com/tim-kos/node-retry",
+      "license": "MIT",
+      "name": "retry",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/tim-kos/node-retry.git"
+      },
+      "version": "0.12.0"
+    },
+    "packageMetadata": {
+      "author": "Tim Koschützki <tim@debuggable.com> (http://debuggable.com/)",
+      "dependencies": {},
+      "description": "Abstraction for exponential and custom retry strategies for failed operations.",
+      "devDependencies": {
+        "fake": "0.2.0",
+        "istanbul": "^0.4.5",
+        "tape": "^4.8.0"
+      },
+      "directories": {
+        "lib": "./lib"
+      },
+      "engines": {
+        "node": ">= 4"
+      },
+      "homepage": "https://github.com/tim-kos/node-retry",
+      "license": "MIT",
+      "main": "index",
+      "name": "retry",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/tim-kos/node-retry.git"
+      },
+      "scripts": {
+        "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && git push && git push --tags && npm publish",
+        "release:major": "env SEMANTIC=major npm run release",
+        "release:minor": "env SEMANTIC=minor npm run release",
+        "release:patch": "env SEMANTIC=patch npm run release",
+        "test": "./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/integration/*.js"
+      },
+      "version": "0.12.0"
+    },
+    "physicalEntryCount": 17,
+    "tarball": {
+      "bytes": 10431,
+      "sha256": "df61c6d197aadc6ab17b489103533bbb0223413558d4222411c162155c30b428"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,131 @@
+{
+  "artifactId": "f8fd0789a81e3db70ab0ffb1c419bdecd4b23cd1b763d4c663f6df9ee12ff63c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4418,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "f674630c4d3e668dabac6d955fb5f74c75b4a63a707ac93a8833b74bdc57221e",
+        "size": 1333,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "6dd37adbe6955ffd8f895904f82e3d9f3b8d8c9e5e09548e357ae0cb2c24380c",
+        "size": 1390,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/current-env.js",
+        "sha256": "7b3ad15e71fdb142e2b40fbe311cee9e271f45e395a5051526d4ca0aa1920886",
+        "size": 1819,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dev-engines.js",
+        "sha256": "65bca3235b114e450755be049ab17c625b686fcfb54596eb10fc905aead413fd",
+        "size": 4101,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "2372095fc73982184f77759432935af6259b51201c750464fe7ed52033ab0640",
+        "size": 2254,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "70867910a30197020e69c5a18423ae5cf8e90386c88b5fa07b0be6f7670cc9da",
+        "size": 1226,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1333,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/f6/f674630c4d3e668dabac6d955fb5f74c75b4a63a707ac93a8833b74bdc57221e",
+          "sha256": "f674630c4d3e668dabac6d955fb5f74c75b4a63a707ac93a8833b74bdc57221e"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "f674630c4d3e668dabac6d955fb5f74c75b4a63a707ac93a8833b74bdc57221e",
+        "size": 1333
+      }
+    ],
+    "expandedBytes": 12123,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "BSD-2-Clause",
+      "name": "npm-install-checks",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/npm-install-checks.git"
+      },
+      "version": "9.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "dependencies": {
+        "semver": "^7.1.1"
+      },
+      "description": "Check the engines and platform fields in package.json",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^6.0.0",
+        "@npmcli/template-oss": "5.1.0",
+        "tap": "^16.0.1"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "keywords": [
+        "npm,",
+        "install"
+      ],
+      "license": "BSD-2-Clause",
+      "main": "lib/index.js",
+      "name": "npm-install-checks",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/npm-install-checks.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": "true",
+        "version": "5.1.0"
+      },
+      "version": "9.0.0"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 4418,
+      "sha256": "91833b9231e2105a64b2e3a8ddf677af7172e2979e9ecf51e6827cc29414a93c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

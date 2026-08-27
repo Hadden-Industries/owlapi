@@ -1,0 +1,87 @@
+{
+  "artifactId": "38124c353d10462c4f9d04d779d75ea1f5096607273f508d070f9c5050be32e8",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1471,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "73b869e8629a1a48a4e1f35df84c9e5248c461229c0bc2d038d06cd7472e1b1a",
+        "size": 444,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "f099a9fcd296cc06c6c4f1baafcd653895f9217417d991722a89c57e158de471",
+        "size": 448,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9e1b3c24c0a1761aa4fe3c95b5c85c3dfb8dd82ab0113f3d3da5fb252d55c79b",
+        "size": 575,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 2573,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-optional-catch-binding",
+      "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-optional-catch-binding",
+      "version": "7.8.3"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.8.0"
+      },
+      "description": "Allow parsing of optional catch bindings",
+      "devDependencies": {
+        "@babel/core": "^7.8.0"
+      },
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "@babel/plugin-syntax-optional-catch-binding",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-optional-catch-binding",
+      "version": "7.8.3"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1471,
+      "sha256": "948592c54b88d724dc50d80707ae13cfadc1ed053738776209aa43f7a558fba7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

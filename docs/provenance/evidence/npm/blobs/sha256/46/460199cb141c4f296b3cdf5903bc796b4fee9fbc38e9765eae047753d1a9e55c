@@ -1,0 +1,107 @@
+{
+  "artifactId": "29e20bfac3a1b7a94713353c9eef91b20101e5d469e0b74f1f1496e8bbcfec62",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2219,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "97b20ad2f7c49aa8c8a9bd982f5f4456688012232ea412c15aa05f9e998ea23f",
+        "size": 316,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "9a05b79b51e6f2d61c95cf504b7f7d568687edb5e9b899a348c7edb87ad043dc",
+        "size": 568,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "3d04ce9113a11baa006d7678763ca75cfffbfdb38baccdce015dde172dcbb314",
+        "size": 1405,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0837c35659148215b2804bfb7581486a66a11c4bf6ea7d4a7dd09a16b9968bad",
+        "size": 760,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 4155,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-syntax-jsx",
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-jsx",
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-jsx",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.29.7"
+      },
+      "description": "Allow parsing of jsx",
+      "devDependencies": {
+        "@babel/core": "^7.29.7"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-syntax-jsx",
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/plugin-syntax-jsx",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-jsx",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2219,
+      "sha256": "83b73bda742f06422c53deda112d3d8c5f4a6f207a2ca220fd2f4d1b2e5e39f4"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

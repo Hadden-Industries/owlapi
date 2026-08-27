@@ -1,0 +1,100 @@
+{
+  "artifactId": "9043c2dcad4f7d39fb0db91800abf1a8d969ab86a3da3167f37fdc745623ca97",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1537,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "aba60b6758b9241eeda1661e187c94130952a759080afee677be204f3c956ed8",
+        "size": 402,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "a841ad3594198f408d460a329304aacdabc7de012fcb4db1ba930073f46acee1",
+        "size": 434,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "2b00aa22d5138ac348abc7d69e213ba5aa452325878826ae0c8401ee5aed26c9",
+        "size": 796,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 2738,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-syntax-top-level-await",
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-top-level-await",
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-top-level-await",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.14.5"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.14.5"
+      },
+      "description": "Allow parsing of top-level await in modules",
+      "devDependencies": {
+        "@babel/core": "7.14.5"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-syntax-top-level-await",
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/plugin-syntax-top-level-await",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-top-level-await",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.14.5"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1537,
+      "sha256": "ce294cb0242b5a6cc88c87e027cac58d0391f4ccc9dfc76cc7ceedbcf327479a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,142 @@
+{
+  "artifactId": "d1a7eb4d453bea9ed29838822572a007fe150753802eb9ae5b53b81408fdc2e1",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8119,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c1476ec53119cd4c8370f91f5152ac76312a29b4fae2d49b5e0e0970fe0fa5ee",
+        "size": 733,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "3d49d3aea08dbbcce9f427643cb75ad9dd6f1127dd8a46ee893a8525962391b0",
+        "size": 4533,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/from-url.js",
+        "sha256": "be08a3f35f54a3a9510b0c2ed3e6db03e1427965d5b189eb00bd09659938f52a",
+        "size": 4219,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/hosts.js",
+        "sha256": "b9941c9d4f3d9166a4abfa41899e519b66cc5ae0fbc7360ea3ae81effb62a140",
+        "size": 9021,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "37f3c1042f5202d6e10ee1b39797a281e8ba1d3620193427a51c89b55101ba77",
+        "size": 5445,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/parse-url.js",
+        "sha256": "3975a74ee1830772ada32f51599c293603524c7a077e36375957aafd1df6955a",
+        "size": 2713,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4ee05f78a84ae12a87a88a8374ae594e6d3f564070f516a764e9b1ebd529bc22",
+        "size": 1738,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 733,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c1/c1476ec53119cd4c8370f91f5152ac76312a29b4fae2d49b5e0e0970fe0fa5ee",
+          "sha256": "c1476ec53119cd4c8370f91f5152ac76312a29b4fae2d49b5e0e0970fe0fa5ee"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c1476ec53119cd4c8370f91f5152ac76312a29b4fae2d49b5e0e0970fe0fa5ee",
+        "size": 733
+      }
+    ],
+    "expandedBytes": 28402,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": "https://github.com/npm/hosted-git-info",
+      "license": "ISC",
+      "name": "hosted-git-info",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/hosted-git-info.git"
+      },
+      "version": "10.1.1"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "bugs": {
+        "url": "https://github.com/npm/hosted-git-info/issues"
+      },
+      "dependencies": {
+        "lru-cache": "^11.1.0"
+      },
+      "description": "Provides metadata and conversions from repository urls for GitHub, Bitbucket and GitLab",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^6.0.0",
+        "@npmcli/template-oss": "5.1.0"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "homepage": "https://github.com/npm/hosted-git-info",
+      "keywords": [
+        "git",
+        "github",
+        "bitbucket",
+        "gitlab"
+      ],
+      "license": "ISC",
+      "main": "./lib/index.js",
+      "name": "hosted-git-info",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/hosted-git-info.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "node --test --test-update-snapshots './test/**/*.js'",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "node --test './test/**/*.js'",
+        "test:cover": "node --test --experimental-test-coverage --test-timeout=3000 --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 './test/**/*.js'",
+        "test:coverage": "tap --coverage-report=html",
+        "test:node20": "node --test test"
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "latestCiVersion": 24,
+        "publish": "true",
+        "testRunner": "node:test",
+        "updateNpm": false,
+        "version": "5.1.0"
+      },
+      "version": "10.1.1"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 8119,
+      "sha256": "4ebca2d4a11bf7fcf6898fb17fb3ba6d7ac9bbda226a9064bc1a4488bbe8a0be"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

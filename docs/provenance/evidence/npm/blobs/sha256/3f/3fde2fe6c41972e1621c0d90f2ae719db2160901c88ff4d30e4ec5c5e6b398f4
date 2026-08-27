@@ -1,0 +1,165 @@
+{
+  "artifactId": "3e06185613ba1da8c195e183a808d7bfe58f4bb282a0153ad1f1723a8671df6f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 41437,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ce08340f74ffa99ac7405cb83b3788dee2881826394bdd7bcea01daeeef2ee51",
+        "size": 25357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/cli.cjs",
+        "sha256": "b4bf0e7179a8b3f1dcc9066f38caaa17998907415bf429050a701618ba1d3064",
+        "size": 2891,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.cjs",
+        "sha256": "3b24cee9242532fbbc769ebcc79e5518b158b54b28019fb39c2420dfcd277c81",
+        "size": 43014,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "12ae89e2d380b5ffb56a38e5ee4ba8c5403a374878ab6ef43f34d8e3e6e4fcec",
+        "size": 1826,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "8d365412e686d690e185fa67c32869770629dee53929dd1389b7cdbc456a6fd0",
+        "size": 42998,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/types.d.ts",
+        "sha256": "f6a467cbc2826cedffd22219af6fc79821d10b9b332dcad3d84241cc81e8aaf0",
+        "size": 4226,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/utils.d.ts",
+        "sha256": "c1be0f0b9b1fc47f045288862a1175fb728dbcacb1efa5543816217a8669d498",
+        "size": 96,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4ae4b3cb9e505f25310deb05d25611b7bba7f7a640606197f8de909e0f650cbf",
+        "size": 2844,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11357,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.txt",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357
+      }
+    ],
+    "expandedBytes": 134609,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "Apache-2.0",
+      "name": "baseline-browser-mapping",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/web-platform-dx/baseline-browser-mapping.git"
+      },
+      "version": "2.11.19"
+    },
+    "packageMetadata": {
+      "bin": {
+        "baseline-browser-mapping": "dist/cli.cjs"
+      },
+      "description": "A library for obtaining browser versions with their maximum supported Baseline feature set and Widely Available status.",
+      "devDependencies": {
+        "@mdn/browser-compat-data": "^8.0.12",
+        "@rollup/plugin-terser": "^1.0.0",
+        "@rollup/plugin-typescript": "^12.1.3",
+        "@types/node": "^22.19.21",
+        "eslint-plugin-new-with-error": "^5.0.0",
+        "jasmine": "^5.8.0",
+        "jasmine-browser-runner": "^3.0.0",
+        "jasmine-spec-reporter": "^7.0.0",
+        "prettier": "^3.5.3",
+        "rollup": "^4.44.0",
+        "tslib": "^2.8.1",
+        "typescript": "^5.7.2",
+        "typescript-eslint": "^8.35.0",
+        "web-features": "^3.35.1"
+      },
+      "engines": {
+        "node": ">=6.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./dist/index.js",
+          "require": "./dist/index.cjs",
+          "types": "./dist/index.d.ts"
+        },
+        "./legacy": {
+          "require": "./dist/index.cjs",
+          "types": "./dist/index.d.ts"
+        }
+      },
+      "files": [
+        "dist/*",
+        "!dist/scripts/*",
+        "LICENSE.txt",
+        "README.md"
+      ],
+      "jsdelivr": "./dist/index.js",
+      "license": "Apache-2.0",
+      "main": "./dist/index.cjs",
+      "name": "baseline-browser-mapping",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/web-platform-dx/baseline-browser-mapping.git"
+      },
+      "scripts": {
+        "build": "rm -rf dist; npx prettier . --write; rollup -c; rm -rf ./dist/scripts/expose-data.d.ts ./dist/cli.d.ts",
+        "check-timeline-changes": "git diff --name-only | grep -q '^src/data/timeline.js$' && echo 'changes-available=TRUE' || echo 'changes-available=FALSE'",
+        "fix-cli-permissions": "output=$(npx baseline-browser-mapping 2>&1); path=$(printf '%s\n' \"$output\" | sed -n 's/^.*: \\(.*\\): Permission denied$/\\1/p; t; s/^\\(.*\\): Permission denied$/\\1/p'); if [ -n \"$path\" ]; then echo \"Permission denied for: $path\"; echo \"Removing $path ...\"; rm -rf \"$path\"; else echo \"$output\"; fi",
+        "refresh-downstream": "npx tsx scripts/refresh-downstream.ts",
+        "refresh-static": "npx tsx scripts/refresh-static.ts",
+        "test": "npm run build && npm run fix-cli-permissions && npm run test:format && npm run test:lint && npm run test:jasmine && npm run test:jasmine-browser",
+        "test:format": "npx prettier --check .",
+        "test:jasmine": "npx jasmine",
+        "test:jasmine-browser": "npx jasmine-browser-runner runSpecs --config ./spec/support/jasmine-browser.js",
+        "test:legacy-test": "node spec/legacy-tests/legacy-test.cjs; node dist/cli.cjs",
+        "test:lint": "npx eslint .",
+        "update-data-dependencies": "npm i @mdn/browser-compat-data@latest web-features@latest -D",
+        "update-timeline": "npx tsx scripts/create-timeline.ts; npx prettier ./src/data/timeline.js --write"
+      },
+      "type": "module",
+      "types": "./dist/index.d.ts",
+      "version": "2.11.19"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 41437,
+      "sha256": "9628e157cb2fd4640169542e68ad859d4f4f75572641c2ea6cc32fd5b4ecd47f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

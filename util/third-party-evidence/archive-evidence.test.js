@@ -6,6 +6,7 @@ import {
   ARCHIVE_LIMITS,
   inspectPackageTarball,
   materializePackageForScan,
+  validateArchiveInventory,
 } from "./archive-evidence.mjs";
 
 const BLOCK_BYTES = 512;
@@ -271,6 +272,19 @@ describe("inspectPackageTarball", () => {
     ]);
     expect(result.expandedBytes).toBe(
       result.entries.reduce((sum, { size }) => sum + size, 0) + 4,
+    );
+    expect(validateArchiveInventory(result)).toMatchObject({
+      expandedBytes: result.expandedBytes,
+      maximumEntryBytes: expect.any(Number),
+      maximumPathBytes: expect.any(Number),
+      physicalEntryCount: 3,
+      retainedEvidenceBytes: 0,
+    });
+
+    const missingOccurrence = structuredClone(result);
+    missingOccurrence.duplicateEntries = [];
+    expect(() => validateArchiveInventory(missingOccurrence)).toThrow(
+      /physical entry count is inconsistent/iu,
     );
   });
 

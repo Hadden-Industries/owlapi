@@ -1,0 +1,135 @@
+{
+  "artifactId": "45cbed684c8f6b18284acf5d9d26f557a04b2f1358f932f6cddf4c69012cd188",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 12035,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4bc935e71be198c67ddf3c2b5fddb195f6edc182bfc155a96a6db61b44b494b9",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Porting-Buffer.md",
+        "sha256": "134523d05b39e177135c2a2070a426eb319657dfc77589e38ef7cf13cd50e730",
+        "size": 12794,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Readme.md",
+        "sha256": "d4331b7c5af9c02161150daf9451ee6bc7a73ece3ec0312603fae09f46a817d8",
+        "size": 8261,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dangerous.js",
+        "sha256": "1dc2900bcc8ffc375af0d2fc99a03ecad2dcbb85d278fbf26982e87707bea53f",
+        "size": 1483,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4247a3a63c45a6a7ced1557fe4dd9d2a163af4915d594b95e5867b69a53edb52",
+        "size": 822,
+        "type": "FILE"
+      },
+      {
+        "path": "package/safer.js",
+        "sha256": "37f9716144105051ab302f6a0c30a52ff5de7269b9e1173ac22be798fc11ccad",
+        "size": 2110,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tests.js",
+        "sha256": "511906fdf6a233c84a9216065d1701dbfd84f380fbd495ae1cf5a002370b9885",
+        "size": 15735,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1094,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4b/4bc935e71be198c67ddf3c2b5fddb195f6edc182bfc155a96a6db61b44b494b9",
+          "sha256": "4bc935e71be198c67ddf3c2b5fddb195f6edc182bfc155a96a6db61b44b494b9"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4bc935e71be198c67ddf3c2b5fddb195f6edc182bfc155a96a6db61b44b494b9",
+        "size": 1094
+      },
+      {
+        "blob": {
+          "bytes": 8261,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d4/d4331b7c5af9c02161150daf9451ee6bc7a73ece3ec0312603fae09f46a817d8",
+          "sha256": "d4331b7c5af9c02161150daf9451ee6bc7a73ece3ec0312603fae09f46a817d8"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/Readme.md",
+        "sha256": "d4331b7c5af9c02161150daf9451ee6bc7a73ece3ec0312603fae09f46a817d8",
+        "size": 8261
+      }
+    ],
+    "expandedBytes": 42299,
+    "packageIdentity": {
+      "author": {
+        "email": "chalkerx@gmail.com",
+        "name": "Nikita Skovoroda",
+        "url": "https://github.com/ChALkeR"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "safer-buffer",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ChALkeR/safer-buffer.git"
+      },
+      "version": "2.1.2"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "chalkerx@gmail.com",
+        "name": "Nikita Skovoroda",
+        "url": "https://github.com/ChALkeR"
+      },
+      "bugs": {
+        "url": "https://github.com/ChALkeR/safer-buffer/issues"
+      },
+      "description": "Modern Buffer API polyfill without footguns",
+      "devDependencies": {
+        "standard": "^11.0.1",
+        "tape": "^4.9.0"
+      },
+      "files": [
+        "Porting-Buffer.md",
+        "Readme.md",
+        "tests.js",
+        "dangerous.js",
+        "safer.js"
+      ],
+      "license": "MIT",
+      "main": "safer.js",
+      "name": "safer-buffer",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ChALkeR/safer-buffer.git"
+      },
+      "scripts": {
+        "browserify-test": "browserify --external tape tests.js > browserify-tests.js && tape browserify-tests.js",
+        "test": "standard && tape tests.js"
+      },
+      "version": "2.1.2"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 12035,
+      "sha256": "78812f65ae3b98071ce1c9bacbe0666f4220d0b2753c2a11530eb27df440a3b3"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

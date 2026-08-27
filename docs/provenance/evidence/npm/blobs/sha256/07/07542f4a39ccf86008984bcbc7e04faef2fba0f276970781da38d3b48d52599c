@@ -1,0 +1,83 @@
+{
+  "artifactId": "47bb5d9e2928b6347a9ec2c4758f3a4338ea4ed9a560137174d964580680f1ad",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4112,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "2b5f0e7274a619ee2b37eee170bf1d32ffae35e9806312e886561f93ceea80df",
+        "size": 1228,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "174162c01b5c8bf9b031bbef70f5ecd9b8a972e67c16e3cd1a098944b51293bf",
+        "size": 9073,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "1cbf98d28443db3b03e6fe0425fcebbea9aa6569c421abee605da0fd61d612ee",
+        "size": 707,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 11008,
+    "packageIdentity": {
+      "author": "Wez Furlong <wez@fb.com> (http://wezfurlong.org)",
+      "homepage": "https://facebook.github.io/watchman/",
+      "license": "Apache-2.0",
+      "name": "fb-watchman",
+      "repository": {
+        "type": "git",
+        "url": "git@github.com:facebook/watchman.git"
+      },
+      "version": "2.0.2"
+    },
+    "packageMetadata": {
+      "author": "Wez Furlong <wez@fb.com> (http://wezfurlong.org)",
+      "bugs": {
+        "url": "https://github.com/facebook/watchman/issues"
+      },
+      "dependencies": {
+        "bser": "2.1.1"
+      },
+      "description": "Bindings for the Watchman file watching service",
+      "files": [
+        "index.js"
+      ],
+      "homepage": "https://facebook.github.io/watchman/",
+      "keywords": [
+        "facebook",
+        "watchman",
+        "file",
+        "watch",
+        "watcher",
+        "watching",
+        "fs.watch",
+        "fswatcher",
+        "fs",
+        "glob",
+        "utility"
+      ],
+      "license": "Apache-2.0",
+      "main": "index.js",
+      "name": "fb-watchman",
+      "repository": {
+        "type": "git",
+        "url": "git@github.com:facebook/watchman.git"
+      },
+      "version": "2.0.2"
+    },
+    "physicalEntryCount": 3,
+    "tarball": {
+      "bytes": 4112,
+      "sha256": "7e16260469e7b07d888a0daa07d798e0358a2180fae897da18c7679edbc26845"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

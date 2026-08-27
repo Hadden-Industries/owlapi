@@ -1,0 +1,140 @@
+{
+  "artifactId": "437f222b50187d773ebf86b97e7243e935ba8ce70f1f4bb3f75185a175f4bbde",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3806,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "461f5886f7cb604443d2a5865466d838e75efa24845ed9c9d0c0eecf2c88b0a1",
+        "size": 3762,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "2c5674173aa95b0d714d876f2e2f865e3c5b641d4d6dd89c6a2f0b9c8d1ed768",
+        "size": 1940,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d1de12b1501bb90cf2fe6ef2668eb9d56a3dadeccdcaf075db46287bcb2f43ea",
+        "size": 917,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "53cbd429b86c64ae5c3ecfd2a38475c817be53bcb8acee35d551fba486e3677c",
+        "size": 4025,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      },
+      {
+        "blob": {
+          "bytes": 4025,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/53/53cbd429b86c64ae5c3ecfd2a38475c817be53bcb8acee35d551fba486e3677c",
+          "sha256": "53cbd429b86c64ae5c3ecfd2a38475c817be53bcb8acee35d551fba486e3677c"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "53cbd429b86c64ae5c3ecfd2a38475c817be53bcb8acee35d551fba486e3677c",
+        "size": 4025
+      }
+    ],
+    "expandedBytes": 11761,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "find-up",
+      "repository": "sindresorhus/find-up",
+      "version": "5.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "dependencies": {
+        "locate-path": "^6.0.0",
+        "path-exists": "^4.0.0"
+      },
+      "description": "Find a file or directory by walking up parent directories",
+      "devDependencies": {
+        "ava": "^2.1.0",
+        "is-path-inside": "^2.1.0",
+        "tempy": "^0.6.0",
+        "tsd": "^0.13.1",
+        "xo": "^0.33.0"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "find",
+        "up",
+        "find-up",
+        "findup",
+        "look-up",
+        "look",
+        "file",
+        "search",
+        "match",
+        "package",
+        "resolve",
+        "parent",
+        "parents",
+        "folder",
+        "directory",
+        "walk",
+        "walking",
+        "path"
+      ],
+      "license": "MIT",
+      "name": "find-up",
+      "repository": "sindresorhus/find-up",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "5.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3806,
+      "sha256": "f4a64efb583769c09638d81963fd3f7aa883b632f9992a256de3fbe962ca75b4"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

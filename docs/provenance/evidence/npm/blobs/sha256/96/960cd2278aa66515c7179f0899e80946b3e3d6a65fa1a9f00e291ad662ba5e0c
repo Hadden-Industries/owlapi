@@ -1,0 +1,141 @@
+{
+  "artifactId": "fd6e3998696b5d2c7d0d95996f3aa03c0c33c0ac1904542a627ce6058761f209",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5512,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "a0e2f73971f663b49d3c66cc6749fc88de0f475680ccf5b980a9cbcc0c52490f",
+        "size": 1086,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "5ecfccc1f5012ee672ca904e167b4252e181031bfc8227310362761f22dbb986",
+        "size": 5495,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cache.js",
+        "sha256": "23ff365ca781022912046d9f9264729a376c246b8412b3c3bb04f82431091a7a",
+        "size": 7892,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "1d88b9fe323d9766712599c0ee134c56e02a472e1fa633f304bc7be8cdc4dcec",
+        "size": 1549,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1086,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a0/a0e2f73971f663b49d3c66cc6749fc88de0f475680ccf5b980a9cbcc0c52490f",
+          "sha256": "a0e2f73971f663b49d3c66cc6749fc88de0f475680ccf5b980a9cbcc0c52490f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "a0e2f73971f663b49d3c66cc6749fc88de0f475680ccf5b980a9cbcc0c52490f",
+        "size": 1086
+      },
+      {
+        "blob": {
+          "bytes": 5495,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5e/5ecfccc1f5012ee672ca904e167b4252e181031bfc8227310362761f22dbb986",
+          "sha256": "5ecfccc1f5012ee672ca904e167b4252e181031bfc8227310362761f22dbb986"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "5ecfccc1f5012ee672ca904e167b4252e181031bfc8227310362761f22dbb986",
+        "size": 5495
+      }
+    ],
+    "expandedBytes": 16022,
+    "packageIdentity": {
+      "author": {
+        "name": "Jared Wray",
+        "url": "https://jaredwray.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "file-entry-cache",
+      "repository": "jaredwray/file-entry-cache",
+      "version": "8.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "Jared Wray",
+        "url": "https://jaredwray.com"
+      },
+      "dependencies": {
+        "flat-cache": "^4.0.0"
+      },
+      "description": "Super simple cache for file metadata, useful for process that work o a given series of files and that only need to repeat the job on the changed ones since the previous run of the process",
+      "devDependencies": {
+        "c8": "^8.0.1",
+        "chai": "^4.3.10",
+        "eslint": "^8.56.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-mocha": "^10.2.0",
+        "eslint-plugin-prettier": "^5.0.1",
+        "glob-expand": "^0.2.1",
+        "mocha": "^10.2.0",
+        "prettier": "^3.1.1",
+        "rimraf": "^5.0.5",
+        "write": "^2.0.0"
+      },
+      "engines": {
+        "node": ">=16.0.0"
+      },
+      "files": [
+        "cache.js"
+      ],
+      "keywords": [
+        "file cache",
+        "task cache files",
+        "file cache",
+        "key par",
+        "key value",
+        "cache"
+      ],
+      "license": "MIT",
+      "main": "cache.js",
+      "name": "file-entry-cache",
+      "precommit": [
+        "npm run eslint --silent"
+      ],
+      "prepush": [
+        "npm run eslint --silent"
+      ],
+      "repository": "jaredwray/file-entry-cache",
+      "scripts": {
+        "autofix": "npm run eslint -- --fix",
+        "clean": "rimraf ./node_modules ./package-lock.json ./yarn.lock",
+        "eslint": "eslint --cache --cache-location=node_modules/.cache/ 'cache.js' 'test/**/*.js' 'perf.js'",
+        "perf": "node perf.js",
+        "test": "npm run eslint --silent && c8 mocha -R spec test/specs",
+        "test:ci": "npm run eslint --silent && c8 --reporter=lcov mocha -R spec test/specs"
+      },
+      "version": "8.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 5512,
+      "sha256": "67ac5a6cea2268114a1f8935ca3ad60fe634fed04dd7914939bf24ceaa2d57b8"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

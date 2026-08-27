@@ -1,0 +1,200 @@
+{
+  "artifactId": "81d7e11505ac2f856522a8afa97f26c609b10c63f7b4435c1252ed6b92efe284",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 11118,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE-MIT.txt",
+        "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+        "size": 1077,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "e8e521420c6d406699b564f4f19ed087f0fa22d237079ade464b281c242d29c5",
+        "size": 4513,
+        "type": "FILE"
+      },
+      {
+        "path": "package/RGI_Emoji.d.ts",
+        "sha256": "6f4742c435f0e657ee951fdd0d2924e2dc2fd79748dc823f9863e8e925027728",
+        "size": 100,
+        "type": "FILE"
+      },
+      {
+        "path": "package/RGI_Emoji.js",
+        "sha256": "d02478271a0e0ba3a1753ffb2217aba4ff6852ecc6833eea880946b15103a8f9",
+        "size": 12976,
+        "type": "FILE"
+      },
+      {
+        "path": "package/es2015/RGI_Emoji.d.ts",
+        "sha256": "2e6bbc424e4413342ad2d45ebfc12673db942236e17b86967e10b9852fba74c0",
+        "size": 107,
+        "type": "FILE"
+      },
+      {
+        "path": "package/es2015/RGI_Emoji.js",
+        "sha256": "6ef32d4593f0f75cc80d87d49eba6c635a6ac9b5e0f8202520a6027277a7134e",
+        "size": 14024,
+        "type": "FILE"
+      },
+      {
+        "path": "package/es2015/index.d.ts",
+        "sha256": "00d952a799128f978ac420f115f264f12c3d5abff305afedf0b060c250b4f878",
+        "size": 97,
+        "type": "FILE"
+      },
+      {
+        "path": "package/es2015/index.js",
+        "sha256": "8899e020a16b1d0647c6bbd84e17592f1def5e65f4818fd7c21c0f10008b04dd",
+        "size": 17405,
+        "type": "FILE"
+      },
+      {
+        "path": "package/es2015/text.d.ts",
+        "sha256": "67f4320768af9e78d8be9efc494719897fa0fbf8ee8afe89dfd24a9441a7c7bf",
+        "size": 102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/es2015/text.js",
+        "sha256": "1fb82c82d847ebc4aa287f481ff67c8cc9bde03149987b2d43eb0dee2a5160b6",
+        "size": 15796,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "350f00936b770777203e7ec0fbdc95cc67122df3d7e9beb2bdc5c78e6781f4fe",
+        "size": 90,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "0766305faf3d167ffd85ad6b6d52c80bfebb90187d83ea6f96ed84b583777e95",
+        "size": 15735,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "181fa046bdbb7d8958c57dcef2e63aea9af667036e218c7222479a8618375f1a",
+        "size": 1331,
+        "type": "FILE"
+      },
+      {
+        "path": "package/text.d.ts",
+        "sha256": "d112f5017410e1dc1a885f3cd1ed94eb53094de0d5ee91f173a127fe7af826cd",
+        "size": 95,
+        "type": "FILE"
+      },
+      {
+        "path": "package/text.js",
+        "sha256": "d1e41c11aa11e125105d14c95d05e1e1acd3bede89429d3a1c12a71450318f88",
+        "size": 14468,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1077,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+          "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE-MIT.txt",
+        "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+        "size": 1077
+      },
+      {
+        "blob": {
+          "bytes": 4513,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e8/e8e521420c6d406699b564f4f19ed087f0fa22d237079ade464b281c242d29c5",
+          "sha256": "e8e521420c6d406699b564f4f19ed087f0fa22d237079ade464b281c242d29c5"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "e8e521420c6d406699b564f4f19ed087f0fa22d237079ade464b281c242d29c5",
+        "size": 4513
+      }
+    ],
+    "expandedBytes": 97916,
+    "packageIdentity": {
+      "author": {
+        "name": "Mathias Bynens",
+        "url": "https://mathiasbynens.be/"
+      },
+      "homepage": "https://mths.be/emoji-regex",
+      "license": "MIT",
+      "name": "emoji-regex",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mathiasbynens/emoji-regex.git"
+      },
+      "version": "9.2.2"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "Mathias Bynens",
+        "url": "https://mathiasbynens.be/"
+      },
+      "bugs": "https://github.com/mathiasbynens/emoji-regex/issues",
+      "description": "A regular expression to match all Emoji-only symbols as per the Unicode Standard.",
+      "devDependencies": {
+        "@babel/cli": "^7.4.4",
+        "@babel/core": "^7.4.4",
+        "@babel/plugin-proposal-unicode-property-regex": "^7.4.4",
+        "@babel/preset-env": "^7.4.4",
+        "@unicode/unicode-13.0.0": "^1.0.3",
+        "mocha": "^6.1.4",
+        "regexgen": "^1.3.0"
+      },
+      "files": [
+        "LICENSE-MIT.txt",
+        "index.js",
+        "index.d.ts",
+        "RGI_Emoji.js",
+        "RGI_Emoji.d.ts",
+        "text.js",
+        "text.d.ts",
+        "es2015"
+      ],
+      "homepage": "https://mths.be/emoji-regex",
+      "keywords": [
+        "unicode",
+        "regex",
+        "regexp",
+        "regular expressions",
+        "code points",
+        "symbols",
+        "characters",
+        "emoji"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "emoji-regex",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mathiasbynens/emoji-regex.git"
+      },
+      "scripts": {
+        "build": "rm -rf -- es2015; babel src -d .; NODE_ENV=es2015 babel src es2015_types -D -d ./es2015; node script/inject-sequences.js",
+        "test": "mocha",
+        "test:watch": "npm run test -- --watch"
+      },
+      "types": "index.d.ts",
+      "version": "9.2.2"
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 11118,
+      "sha256": "1dc78dfa80b23abd0ca36501eaa3241ce1440c2478b2a9da20718a26bc67ae7e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

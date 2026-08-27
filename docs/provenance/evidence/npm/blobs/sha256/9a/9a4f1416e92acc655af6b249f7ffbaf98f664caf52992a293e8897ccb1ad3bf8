@@ -1,0 +1,178 @@
+{
+  "artifactId": "46c5ec16cd3f5faf1283da8c9cdb1c7ca180fe97bede2bc58b2ce0d78ded674b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8550,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.npmignore",
+        "sha256": "dba27c31aad935787bb275c3e5e4e957708f15386de599eff1db476022cd7e4c",
+        "size": 12,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "ed251dc3a48522399fffe95fe04d94fbcadcd9edd0e7689f3b71cf73403a6138",
+        "size": 1087,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.markdown",
+        "sha256": "5d9130d1329be125cb2cc4515b12c720d5bdd5c444a242a5534f43096b95558f",
+        "size": 1198,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bench.js",
+        "sha256": "4c57b725091bbc8ad7c85a57f9a529128c2144eba897ac5307269cbaf642ac21",
+        "size": 556,
+        "type": "FILE"
+      },
+      {
+        "path": "package/examples/twitterfeed.js",
+        "sha256": "d7e0ab747dfbb9144b5d8f6ee4c74fab90b944ca6950f3afa6242f323487b787",
+        "size": 1003,
+        "type": "FILE"
+      },
+      {
+        "path": "package/jsonparse.js",
+        "sha256": "8fee0da896c802ccc73d8f0db740625ad0dd6b403a7bc5c86f4afdd17ba8941e",
+        "size": 15570,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "fd84a394475582d3aca1da89b9d2dbb193ba7952da9f8c01a5a5474505185a29",
+        "size": 551,
+        "type": "FILE"
+      },
+      {
+        "path": "package/samplejson/basic.json",
+        "sha256": "07abe37a28f8e0be74364e93ad2e030e6ee629ac5f8ceaabab5b7c7131816680",
+        "size": 4364,
+        "type": "FILE"
+      },
+      {
+        "path": "package/samplejson/basic2.json",
+        "sha256": "c27c2194631e6a24dd8fc953ff300a49b2b04915945500e8de99b67e673767cb",
+        "size": 4591,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/big-token.js",
+        "sha256": "3a0b6a085448ee92f0d8c5b24cf32818602aeff7ba9caf625926d8806f29458a",
+        "size": 708,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/boundary.js",
+        "sha256": "5c4c3a8cd7f15d723a5e1f8075fe6c8f13017314f4061aa524f4ba7ea8e3f533",
+        "size": 2777,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/offset.js",
+        "sha256": "925fd9424b8eefb09c5d54a1ad13f528979643970dae96cced0737968c841259",
+        "size": 1715,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/primitives.js",
+        "sha256": "1a57457b49dd2705171aaf44ed3bcd52e748bfaaaf1d34f2c4d4e0d0f8f185de",
+        "size": 1240,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/surrogate.js",
+        "sha256": "1cf4cf0fadbcee78553c6b7c666073cbb034691fcae60846631b7280eb2361b6",
+        "size": 451,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/unvalid.js",
+        "sha256": "5e2e10c9f6a8d749351cd6ea6e06f356ecb9439069365d460f941d9871d5f0f1",
+        "size": 251,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/utf8.js",
+        "sha256": "1feed5191cd2507e425d83a26672582e92c9b7a8b2c822d25d525cb0dd87d249",
+        "size": 705,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1087,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ed/ed251dc3a48522399fffe95fe04d94fbcadcd9edd0e7689f3b71cf73403a6138",
+          "sha256": "ed251dc3a48522399fffe95fe04d94fbcadcd9edd0e7689f3b71cf73403a6138"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "ed251dc3a48522399fffe95fe04d94fbcadcd9edd0e7689f3b71cf73403a6138",
+        "size": 1087
+      },
+      {
+        "blob": {
+          "bytes": 1198,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5d/5d9130d1329be125cb2cc4515b12c720d5bdd5c444a242a5534f43096b95558f",
+          "sha256": "5d9130d1329be125cb2cc4515b12c720d5bdd5c444a242a5534f43096b95558f"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.markdown",
+        "sha256": "5d9130d1329be125cb2cc4515b12c720d5bdd5c444a242a5534f43096b95558f",
+        "size": 1198
+      }
+    ],
+    "expandedBytes": 36779,
+    "packageIdentity": {
+      "author": "Tim Caswell <tim@creationix.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "jsonparse",
+      "repository": {
+        "type": "git",
+        "url": "http://github.com/creationix/jsonparse.git"
+      },
+      "version": "1.3.1"
+    },
+    "packageMetadata": {
+      "author": "Tim Caswell <tim@creationix.com>",
+      "bugs": "http://github.com/creationix/jsonparse/issues",
+      "description": "This is a pure-js JSON streaming parser for node.js",
+      "devDependencies": {
+        "tap": "~0.3.3",
+        "tape": "~0.1.1"
+      },
+      "engines": [
+        "node >= 0.2.0"
+      ],
+      "license": "MIT",
+      "main": "jsonparse.js",
+      "name": "jsonparse",
+      "repository": {
+        "type": "git",
+        "url": "http://github.com/creationix/jsonparse.git"
+      },
+      "scripts": {
+        "test": "tap test/*.js"
+      },
+      "tags": [
+        "json",
+        "stream"
+      ],
+      "version": "1.3.1"
+    },
+    "physicalEntryCount": 16,
+    "tarball": {
+      "bytes": 8550,
+      "sha256": "cf6c2edd3a8f77080beabb6c46b51e5853b61422341a0ef2e05a9e83a90bffce"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

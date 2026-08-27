@@ -1,0 +1,133 @@
+{
+  "artifactId": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 780979,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+        "size": 6555,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "092d9f4343519d7a7ef044949b0e83128143d43d5ad92e6ba14a3ff778ac8662",
+        "size": 13837,
+        "type": "FILE"
+      },
+      {
+        "path": "package/data.json",
+        "sha256": "2bb016140dbaebc054d4dbc67dff1a218ded07fccb193b645c74e1bc7e2c2c90",
+        "size": 16303021,
+        "type": "FILE"
+      },
+      {
+        "path": "package/import.d.mts",
+        "sha256": "9a87a3d8a60924b48d3910af2ebd1b43d99d96f268cc28215b5d37db1ee386a8",
+        "size": 215,
+        "type": "FILE"
+      },
+      {
+        "path": "package/legacynode.mjs",
+        "sha256": "aae2838f01b26c3aa0235ffc10ef5d084471d1978eb54a3a451ee11c07d40f64",
+        "size": 230,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9973bbc0497cbe8e3c05201f23074e10970b44662cab2bf67ec8e66c66107d9a",
+        "size": 949,
+        "type": "FILE"
+      },
+      {
+        "path": "package/require.d.ts",
+        "sha256": "9a87a3d8a60924b48d3910af2ebd1b43d99d96f268cc28215b5d37db1ee386a8",
+        "size": 215,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types.d.ts",
+        "sha256": "f30c523a5f6621cac4bf5bb937403f4530908e536ed9f27f22833ee38f610286",
+        "size": 10789,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 6555,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/36/36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+          "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+        "size": 6555
+      }
+    ],
+    "expandedBytes": 16335811,
+    "packageIdentity": {
+      "author": "MDN Web Docs",
+      "homepage": "https://github.com/mdn/browser-compat-data#readme",
+      "license": "CC0-1.0",
+      "name": "@mdn/browser-compat-data",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mdn/browser-compat-data.git"
+      },
+      "version": "5.7.6"
+    },
+    "packageMetadata": {
+      "author": "MDN Web Docs",
+      "bugs": {
+        "url": "https://github.com/mdn/browser-compat-data/issues"
+      },
+      "description": "Browser compatibility data provided by MDN Web Docs",
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./data.json",
+            "types": "./import.d.mts"
+          },
+          "require": {
+            "default": "./data.json",
+            "types": "./require.d.ts"
+          }
+        },
+        "./forLegacyNode": {
+          "default": "./legacynode.mjs",
+          "types": "./import.d.mts"
+        }
+      },
+      "homepage": "https://github.com/mdn/browser-compat-data#readme",
+      "keywords": [
+        "bcd",
+        "browser-compat-data",
+        "browser",
+        "compatibility",
+        "data",
+        "mdn",
+        "mozilla"
+      ],
+      "license": "CC0-1.0",
+      "main": "data.json",
+      "name": "@mdn/browser-compat-data",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mdn/browser-compat-data.git"
+      },
+      "types": "require.d.ts",
+      "version": "5.7.6"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 780979,
+      "sha256": "05c04132ef2ebc52b831f66206eb182e8a1439efee423e79132bd18a4a0b0382"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

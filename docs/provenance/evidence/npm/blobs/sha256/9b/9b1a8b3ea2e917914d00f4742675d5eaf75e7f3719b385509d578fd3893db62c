@@ -1,0 +1,147 @@
+{
+  "artifactId": "737092331bd621410275f1a8d1f721c024830b5fe06feaccd6abc47b11e05435",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3549,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.npmignore",
+        "sha256": "bfb16fc2dc3b7f24e20981aa586e31d66293c81eb7c2e5d0a9bbb252b13c6271",
+        "size": 14,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.travis.yml",
+        "sha256": "14cfedcd0d39a797fb56787bc06b46d09aa2786084bb0dec49467b9720fb2979",
+        "size": 472,
+        "type": "FILE"
+      },
+      {
+        "path": "package/History.md",
+        "sha256": "0b06e981a4318af1daef8b6ef0c6ff794e9b18a0a3e0738a65c9063988016d2e",
+        "size": 433,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "75070206e4ee2a749be52444cecc05101ca8d314c9d6d335ff914046cbf086a0",
+        "size": 1083,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a801a028d69327433eb397e69fd0aea3f58b80a76222ffbae129d8808913251a",
+        "size": 2073,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "46eb38b4f992126135e00159041a6e69e46402e56613bdc891d7b0d28fc31e37",
+        "size": 77,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "e62293e871bdd5a7449ff3c7956c9536ec1d2ea7369461de77322b5256bb93e7",
+        "size": 1723,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "71eb1e24bb9694f89c613fa0aa307f977dd43f41d11794c7b48fabf6c55f66b0",
+        "size": 717,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/test.js",
+        "sha256": "223c25dba6fefbb7cb491b026a32f070b1425475d3cd2d04627be5d71a07fd38",
+        "size": 666,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/tests.json",
+        "sha256": "b48c50c1328ab8522fc0bf91923ea42fb59e63e847b967dac88123cb5e5b185d",
+        "size": 810,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1083,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/75/75070206e4ee2a749be52444cecc05101ca8d314c9d6d335ff914046cbf086a0",
+          "sha256": "75070206e4ee2a749be52444cecc05101ca8d314c9d6d335ff914046cbf086a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "75070206e4ee2a749be52444cecc05101ca8d314c9d6d335ff914046cbf086a0",
+        "size": 1083
+      },
+      {
+        "blob": {
+          "bytes": 2073,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a8/a801a028d69327433eb397e69fd0aea3f58b80a76222ffbae129d8808913251a",
+          "sha256": "a801a028d69327433eb397e69fd0aea3f58b80a76222ffbae129d8808913251a"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "a801a028d69327433eb397e69fd0aea3f58b80a76222ffbae129d8808913251a",
+        "size": 2073
+      }
+    ],
+    "expandedBytes": 8068,
+    "packageIdentity": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
+      "homepage": "https://github.com/TooTallNate/file-uri-to-path",
+      "license": "MIT",
+      "name": "file-uri-to-path",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/TooTallNate/file-uri-to-path.git"
+      },
+      "version": "1.0.0"
+    },
+    "packageMetadata": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)",
+      "bugs": {
+        "url": "https://github.com/TooTallNate/file-uri-to-path/issues"
+      },
+      "description": "Convert a file: URI to a file path",
+      "devDependencies": {
+        "mocha": "3"
+      },
+      "directories": {
+        "test": "test"
+      },
+      "homepage": "https://github.com/TooTallNate/file-uri-to-path",
+      "keywords": [
+        "file",
+        "uri",
+        "convert",
+        "path"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "file-uri-to-path",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/TooTallNate/file-uri-to-path.git"
+      },
+      "scripts": {
+        "test": "mocha --reporter spec"
+      },
+      "types": "index.d.ts",
+      "version": "1.0.0"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 3549,
+      "sha256": "5440cdf67e75ab96f36a6be63c1d4c3d54255b1d0970273710fecfebfab06fb3"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -50,6 +50,7 @@ const policy = Object.freeze({
     version: "32.5.0",
     pythonVersion: "3.14",
     outputFormatVersion: "4.1.0",
+    normalizationVersion: 1,
     semanticOptions: ["--license"],
     executionOptions: ["--processes", "1"],
   },

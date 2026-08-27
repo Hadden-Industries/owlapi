@@ -1,0 +1,209 @@
+{
+  "artifactId": "8a6523bf08b29fbdf797cb980924e62ce32639b84bbcfbb2e6a90e20c5e7a8cb",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 31507,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "bd1a0d615fd1b83d6c7638457aa21cada2d7280f10ddac0d6be89660a1a5b7f9",
+        "size": 1090,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "eb1d0bc0013d9185fcf3b6e8f5817f6e02674bbfa2b8c73115bfe9b1d0392b85",
+        "size": 618,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0e902ded8843229eb4ab9614f6fe6e6f5c37f689fa7e86e2ebd04c4c3e18d2f7",
+        "size": 1379,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/cli.js",
+        "sha256": "49c83e6cc8c2ade20e10a9c07fadece6f60909c0f06f8aa0759da26db6d97a0d",
+        "size": 8642,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index-browser.js",
+        "sha256": "b7e7711abefedd2c90308b39d6d2386920ef5f299ba613722a54eab084f3d866",
+        "size": 962,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index-node.js",
+        "sha256": "422edc3e5946617c34dccdb2f0949a30b8131885755825499b15e87f3bbb8010",
+        "size": 4172,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.d.ts",
+        "sha256": "0c5d77063df8eff48fa16561a8021965048dc3ab8e7eba4cabe7e709e657cd56",
+        "size": 7027,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/node/vfs-node.js",
+        "sha256": "1820bded5135cd3390bee2cb6b52b1bd8bb0ff24139e60a6028f65c19054f0d0",
+        "size": 911,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/shared/constants.js",
+        "sha256": "62c16503a6f1f68b93585ba5202017187eae69c400ed5300fc8fd9167e3e8e4d",
+        "size": 2113,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/shared/core.js",
+        "sha256": "203bfe20914f85e76e36aeecf19e5edc73148a8428ebd9b226049f7e461ae96e",
+        "size": 52990,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/shared/message.js",
+        "sha256": "fe9796171f51934daa14f5dc505dbf9fa84edcb0b84f5f3c9a7bda03614691bd",
+        "size": 16967,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/shared/utils.js",
+        "sha256": "6a896390edbdb8b084f215b93c144ba821468ab837f3531b1643b0f3f671dea3",
+        "size": 17400,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/shared/vfs-tarball.js",
+        "sha256": "5832bcd1bad8853bef831431cd74513eb041e6dcd10680da6e7d2438bde74952",
+        "size": 1595,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/utils.d.ts",
+        "sha256": "610a25b7391f848af3eb35236c07c63482176c06469a546c6b77d63bf6640749",
+        "size": 1272,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/utils.js",
+        "sha256": "ab417ec03d46ae9cc6b696c5ee1359186f2ef9d3dfa7000ebd4440f981ac3af9",
+        "size": 123,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1090,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/bd/bd1a0d615fd1b83d6c7638457aa21cada2d7280f10ddac0d6be89660a1a5b7f9",
+          "sha256": "bd1a0d615fd1b83d6c7638457aa21cada2d7280f10ddac0d6be89660a1a5b7f9"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "bd1a0d615fd1b83d6c7638457aa21cada2d7280f10ddac0d6be89660a1a5b7f9",
+        "size": 1090
+      },
+      {
+        "blob": {
+          "bytes": 618,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/eb/eb1d0bc0013d9185fcf3b6e8f5817f6e02674bbfa2b8c73115bfe9b1d0392b85",
+          "sha256": "eb1d0bc0013d9185fcf3b6e8f5817f6e02674bbfa2b8c73115bfe9b1d0392b85"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "eb1d0bc0013d9185fcf3b6e8f5817f6e02674bbfa2b8c73115bfe9b1d0392b85",
+        "size": 618
+      }
+    ],
+    "expandedBytes": 117261,
+    "packageIdentity": {
+      "author": "Bjorn Lu",
+      "homepage": "https://publint.dev",
+      "license": "MIT",
+      "name": "publint",
+      "repository": {
+        "directory": "packages/publint",
+        "type": "git",
+        "url": "git+https://github.com/publint/publint.git"
+      },
+      "version": "0.3.24"
+    },
+    "packageMetadata": {
+      "author": "Bjorn Lu",
+      "bin": {
+        "publint": "./src/cli.js"
+      },
+      "bugs": {
+        "url": "https://github.com/publint/publint/issues"
+      },
+      "dependencies": {
+        "@publint/pack": "^0.1.7",
+        "package-manager-detector": "^1.8.0",
+        "picocolors": "^1.1.1",
+        "sade": "^1.8.1"
+      },
+      "description": "Lint packaging errors",
+      "devDependencies": {
+        "@types/prompts": "^2.4.9",
+        "fs-fixture": "^2.14.0",
+        "prompts": "^2.4.2",
+        "tinyexec": "^1.3.0",
+        "vitest": "^4.1.10"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "exports": {
+        ".": {
+          "browser": "./src/index-browser.js",
+          "default": "./src/index-node.js",
+          "types": "./src/index.d.ts"
+        },
+        "./utils": {
+          "default": "./src/utils.js",
+          "types": "./src/utils.d.ts"
+        }
+      },
+      "files": [
+        "src"
+      ],
+      "funding": "https://bjornlu.com/sponsor",
+      "homepage": "https://publint.dev",
+      "keywords": [
+        "publish",
+        "lint"
+      ],
+      "license": "MIT",
+      "name": "publint",
+      "repository": {
+        "directory": "packages/publint",
+        "type": "git",
+        "url": "git+https://github.com/publint/publint.git"
+      },
+      "scripts": {
+        "cli": "node ./src/cli.js",
+        "lint-fixture": "node ./scripts/lintFixture.js",
+        "lint-publint": "node ./src/cli.js",
+        "test": "vitest run",
+        "test-dev": "vitest",
+        "typecheck": "tsc"
+      },
+      "type": "module",
+      "version": "0.3.24"
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 31507,
+      "sha256": "83ad64151c95c63a4347635bbe6b67719fc105a053c9cedf7b785d896719e7c0"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

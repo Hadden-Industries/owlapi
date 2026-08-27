@@ -1,0 +1,138 @@
+{
+  "artifactId": "a2a534522eeb31a6fc4f2eed5a8e790f7d4e7005b4e436ce72a9f617842742f5",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 22326,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d6575be6629988d4d86def6a7af5611c3c268becd2801e7f412984cc63d8a6ad",
+        "size": 3413,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/cjs/types.d.cts",
+        "sha256": "3671af8f58c05e9c83409ae56cb2a3db3c2e0a4cd082e685933d72f1c1a621ae",
+        "size": 37998,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/types.d.ts",
+        "sha256": "3671af8f58c05e9c83409ae56cb2a3db3c2e0a4cd082e685933d72f1c1a621ae",
+        "size": 37998,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "2ff49ec6b715f0682b361ad1a1f6b7a2e3c6de3b998e6eee1e20a2b545239da8",
+        "size": 1288,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11357,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357
+      },
+      {
+        "blob": {
+          "bytes": 3413,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d6/d6575be6629988d4d86def6a7af5611c3c268becd2801e7f412984cc63d8a6ad",
+          "sha256": "d6575be6629988d4d86def6a7af5611c3c268becd2801e7f412984cc63d8a6ad"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "d6575be6629988d4d86def6a7af5611c3c268becd2801e7f412984cc63d8a6ad",
+        "size": 3413
+      }
+    ],
+    "expandedBytes": 92054,
+    "packageIdentity": {
+      "author": "Nicholas C. Zakas",
+      "homepage": "https://github.com/eslint/rewrite/tree/main/packages/core#readme",
+      "license": "Apache-2.0",
+      "name": "@eslint/core",
+      "repository": {
+        "directory": "packages/core",
+        "type": "git",
+        "url": "git+https://github.com/eslint/rewrite.git"
+      },
+      "version": "1.2.1"
+    },
+    "packageMetadata": {
+      "author": "Nicholas C. Zakas",
+      "bugs": {
+        "url": "https://github.com/eslint/rewrite/issues"
+      },
+      "dependencies": {
+        "@types/json-schema": "^7.0.15"
+      },
+      "description": "Runtime-agnostic core of ESLint",
+      "devDependencies": {
+        "json-schema": "^0.4.0"
+      },
+      "engines": {
+        "node": "^20.19.0 || ^22.13.0 || >=24"
+      },
+      "exports": {
+        "types": {
+          "import": "./dist/esm/types.d.ts",
+          "require": "./dist/cjs/types.d.cts"
+        }
+      },
+      "files": [
+        "dist"
+      ],
+      "homepage": "https://github.com/eslint/rewrite/tree/main/packages/core#readme",
+      "keywords": [
+        "eslint",
+        "core"
+      ],
+      "license": "Apache-2.0",
+      "name": "@eslint/core",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/core",
+        "type": "git",
+        "url": "git+https://github.com/eslint/rewrite.git"
+      },
+      "scripts": {
+        "build": "tsc && npm run build:cts",
+        "build:cts": "node -e \"fs.cpSync('dist/esm/types.d.ts', 'dist/cjs/types.d.cts')\"",
+        "lint:types": "attw --pack",
+        "pretest": "npm run build",
+        "test": "npm run test:types",
+        "test:jsr": "npx -y jsr@latest publish --dry-run",
+        "test:types": "tsc -p tests/types/tsconfig.json"
+      },
+      "type": "module",
+      "types": "./dist/esm/types.d.ts",
+      "version": "1.2.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 22326,
+      "sha256": "77278a566a21ac718a07dbdd54a6138946ec19436359247edf446cbe99f20fe6"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

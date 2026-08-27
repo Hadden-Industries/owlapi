@@ -1,0 +1,87 @@
+{
+  "artifactId": "44da920a59187b66aea2be0a8bba8a637a3a899070234660d36e3c26ed1e81a0",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1486,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a32218a4c6ba541884aadc5de5ada1578046d6d0967eb7372084e12f4a854a2e",
+        "size": 441,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "94b9d22105f530d326c46c0ab8a0d439915096d5e72f753f7e4c1b672c582459",
+        "size": 429,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7c194a4635366736a34f4c8233a342361ddf04bf8075def1fc3ea1016983a7ca",
+        "size": 602,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 2578,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-json-strings",
+      "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-json-strings",
+      "version": "7.8.3"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.8.0"
+      },
+      "description": "Allow parsing of the U+2028 LINE SEPARATOR and U+2029 PARAGRAPH SEPARATOR in JS strings",
+      "devDependencies": {
+        "@babel/core": "^7.8.0"
+      },
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "@babel/plugin-syntax-json-strings",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-json-strings",
+      "version": "7.8.3"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1486,
+      "sha256": "4a1bcc95d7d5dd766f22ff6e4f4f3dcda6919fc73c886511793a775ad995f20d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

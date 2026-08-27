@@ -1,0 +1,112 @@
+{
+  "artifactId": "ac71902937f6d1edf9ae38d9a2bf709d76156736b5587fa5c37515dd1ba8ba34",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6542,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "79291b8c4832938501fb03ef4673fd4d4ff476216605ae412bf21973e69df6e1",
+        "size": 4481,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "2213d91c606205c71eb051a199478cdc2adde945893404d7f1421436dd6d5cc1",
+        "size": 1103,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "21ef7d86f3372ba08c924f07b9611a9eca0101f80fc177abe9dbd3e507f2c388",
+        "size": 7388,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "b6f81c0531fc09be2f8a26059a5cb9f47150e550471da0ace5705a26d3c6268e",
+        "size": 1448,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "47345931827b3e26db9fe690abb81f856a0d040cbca8af1e69711a64cd58ce0d",
+        "size": 649,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1103,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/22/2213d91c606205c71eb051a199478cdc2adde945893404d7f1421436dd6d5cc1",
+          "sha256": "2213d91c606205c71eb051a199478cdc2adde945893404d7f1421436dd6d5cc1"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2213d91c606205c71eb051a199478cdc2adde945893404d7f1421436dd6d5cc1",
+        "size": 1103
+      },
+      {
+        "blob": {
+          "bytes": 7388,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/21/21ef7d86f3372ba08c924f07b9611a9eca0101f80fc177abe9dbd3e507f2c388",
+          "sha256": "21ef7d86f3372ba08c924f07b9611a9eca0101f80fc177abe9dbd3e507f2c388"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "21ef7d86f3372ba08c924f07b9611a9eca0101f80fc177abe9dbd3e507f2c388",
+        "size": 7388
+      }
+    ],
+    "expandedBytes": 15069,
+    "packageIdentity": {
+      "author": "Simon Lydell",
+      "homepage": null,
+      "license": "MIT",
+      "name": "js-tokens",
+      "repository": "lydell/js-tokens",
+      "version": "4.0.0"
+    },
+    "packageMetadata": {
+      "author": "Simon Lydell",
+      "description": "A regex that tokenizes JavaScript.",
+      "devDependencies": {
+        "coffeescript": "2.1.1",
+        "esprima": "4.0.0",
+        "everything.js": "1.0.3",
+        "mocha": "5.0.0"
+      },
+      "files": [
+        "index.js"
+      ],
+      "keywords": [
+        "JavaScript",
+        "js",
+        "token",
+        "tokenize",
+        "regex"
+      ],
+      "license": "MIT",
+      "name": "js-tokens",
+      "repository": "lydell/js-tokens",
+      "scripts": {
+        "build": "node generate-index.js",
+        "dev": "npm run build && npm test",
+        "esprima-compare": "node esprima-compare ./index.js everything.js/es5.js",
+        "test": "mocha --ui tdd"
+      },
+      "version": "4.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 6542,
+      "sha256": "d884c7a2d8adb5568c1272d92b4f9c62707f4226cf9e7b22e7b957c7361e3c53"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

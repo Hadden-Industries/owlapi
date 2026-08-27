@@ -1,0 +1,199 @@
+{
+  "artifactId": "c1f8d5ddebad56da680b34162de4ee48552372c95986c73e3bbd8e44cab606e6",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4621,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.npmignore",
+        "sha256": "16d30e4462189fb14dd611bdb708c510630c576a1f35b9383e89a4352da36c97",
+        "size": 13,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.travis.yml",
+        "sha256": "9b9a2cce2d8b28843a1a10647f82300c8403ccde268df5b6abc6c349e5167b34",
+        "size": 48,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b",
+        "size": 1073,
+        "type": "FILE"
+      },
+      {
+        "path": "package/example/key_cmp.js",
+        "sha256": "8bfb1825ceaa31e04eb55d48796bd1ebb599d61921f9ed632238482258c2ade3",
+        "size": 177,
+        "type": "FILE"
+      },
+      {
+        "path": "package/example/nested.js",
+        "sha256": "2407719be20d1f8e84d0eb52019a850e3e97d0bad79d1e21c215d5ba9fb8031e",
+        "size": 109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/example/str.js",
+        "sha256": "7b78227c48a3373d053728a6fa70b5eca194e2121ade3410b44623c45ce77d89",
+        "size": 97,
+        "type": "FILE"
+      },
+      {
+        "path": "package/example/value_cmp.js",
+        "sha256": "a90e841d945d9d1cb9ee27705e95f242f7c7cfc05924fec35fa0bc9db4743130",
+        "size": 188,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "46caf62c2209799f8fb8fced77b0b01b7dd85dbdb9aa5da1ec2fae786e7839cd",
+        "size": 2792,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "49bfc3a3a94d19ccb890f71c39f41a2a56ae8cc54b45d6330d4e30dc59418ae7",
+        "size": 991,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.markdown",
+        "sha256": "644b1f37eb90b57fe70691d738518926a229294a1bd525d6097eebd005ae8868",
+        "size": 2767,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/cmp.js",
+        "sha256": "cc780fcd3353f3fe4e851f66feb7598e1de3eff2be4dc5b2dab3e97e1c141980",
+        "size": 335,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/nested.js",
+        "sha256": "db4b679e897b3a61c7990737b6dc64c482077cb05ded7e8476fcd6981448a68b",
+        "size": 1124,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/replacer.js",
+        "sha256": "8bcf0499deba412096831426b52c2e0037c220f5689c8cb54b2a8c035df5ea20",
+        "size": 1745,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/space.js",
+        "sha256": "c56c2f2536b052db9abaeca53f6d4c66244a9f694cfcb573d86c3f9701e29ed7",
+        "size": 1433,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/str.js",
+        "sha256": "ad1d0baccaf13bdc46ae21f1e48b8a5b70cd8f5b564cf0aaaf81992bd1250592",
+        "size": 758,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/to-json.js",
+        "sha256": "ebfe070bd31b66bf556526c90640e1880a9cd12549946f2dc140917daa84c222",
+        "size": 574,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1073,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/43/435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b",
+          "sha256": "435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b",
+        "size": 1073
+      },
+      {
+        "blob": {
+          "bytes": 2767,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/64/644b1f37eb90b57fe70691d738518926a229294a1bd525d6097eebd005ae8868",
+          "sha256": "644b1f37eb90b57fe70691d738518926a229294a1bd525d6097eebd005ae8868"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.markdown",
+        "sha256": "644b1f37eb90b57fe70691d738518926a229294a1bd525d6097eebd005ae8868",
+        "size": 2767
+      }
+    ],
+    "expandedBytes": 14224,
+    "packageIdentity": {
+      "author": {
+        "email": "mail@substack.net",
+        "name": "James Halliday",
+        "url": "http://substack.net"
+      },
+      "homepage": "https://github.com/samn/json-stable-stringify",
+      "license": "MIT",
+      "name": "json-stable-stringify-without-jsonify",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/samn/json-stable-stringify.git"
+      },
+      "version": "1.0.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "mail@substack.net",
+        "name": "James Halliday",
+        "url": "http://substack.net"
+      },
+      "dependencies": {},
+      "description": "deterministic JSON.stringify() with custom sorting to get deterministic hashes from stringified results, with no public domain dependencies",
+      "devDependencies": {
+        "tape": "~1.0.4"
+      },
+      "homepage": "https://github.com/samn/json-stable-stringify",
+      "keywords": [
+        "json",
+        "stringify",
+        "deterministic",
+        "hash",
+        "sort",
+        "stable"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "json-stable-stringify-without-jsonify",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/samn/json-stable-stringify.git"
+      },
+      "scripts": {
+        "test": "tape test/*.js"
+      },
+      "testling": {
+        "browsers": [
+          "ie/8..latest",
+          "ff/5",
+          "ff/latest",
+          "chrome/15",
+          "chrome/latest",
+          "safari/latest",
+          "opera/latest"
+        ],
+        "files": "test/*.js"
+      },
+      "version": "1.0.1"
+    },
+    "physicalEntryCount": 16,
+    "tarball": {
+      "bytes": 4621,
+      "sha256": "5dbd60ac858b8eb9fb8219cd0dbe89cb866405749cbac90c2f8bc18acc77aeea"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,140 @@
+{
+  "artifactId": "dde1a8986bbfcae6ece22caa93687ce747994cb331fde39b6195a8de757dc8f0",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3151,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "093a64b9e65ad2b28fa2a5d2e7cab81851e3dc1d7f3c193e35f7eda124223cf1",
+        "size": 1467,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "370323654b11cedf0f1bb510972bc251ecf5e7c60863cc8351a59a369e328d66",
+        "size": 1157,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "3a3baffa53cfac8fd6281250dd824d56118f46ad258edb09d8aed1a15e0003d2",
+        "size": 942,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "3553dd9f250c4ecc119b21e709db34d3c6ff3dd4f2cdec4d2327a824d759690b",
+        "size": 2557,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      },
+      {
+        "blob": {
+          "bytes": 2557,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/35/3553dd9f250c4ecc119b21e709db34d3c6ff3dd4f2cdec4d2327a824d759690b",
+          "sha256": "3553dd9f250c4ecc119b21e709db34d3c6ff3dd4f2cdec4d2327a824d759690b"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "3553dd9f250c4ecc119b21e709db34d3c6ff3dd4f2cdec4d2327a824d759690b",
+        "size": 2557
+      }
+    ],
+    "expandedBytes": 7240,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "p-locate",
+      "repository": "sindresorhus/p-locate",
+      "version": "5.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "dependencies": {
+        "p-limit": "^3.0.2"
+      },
+      "description": "Get the first fulfilled promise that satisfies the provided testing function",
+      "devDependencies": {
+        "ava": "^2.4.0",
+        "delay": "^4.1.0",
+        "in-range": "^2.0.0",
+        "time-span": "^4.0.0",
+        "tsd": "^0.13.1",
+        "xo": "^0.32.1"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "promise",
+        "locate",
+        "find",
+        "finder",
+        "search",
+        "searcher",
+        "test",
+        "array",
+        "collection",
+        "iterable",
+        "iterator",
+        "race",
+        "fulfilled",
+        "fastest",
+        "async",
+        "await",
+        "promises",
+        "bluebird"
+      ],
+      "license": "MIT",
+      "name": "p-locate",
+      "repository": "sindresorhus/p-locate",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "5.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3151,
+      "sha256": "2ec11480a90965a753b141be5432d24f4ca98860b844fd1b10cab0a1023423fc"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

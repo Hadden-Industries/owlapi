@@ -1,0 +1,87 @@
+{
+  "artifactId": "84c8ef363f350ab528eb13ebc3a5ea59603a2a205f483a7d6c8bd269a57769e3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1454,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "5d61a37ed455508ae95fe60424b5f7d70da87a53c5c7d2f957d5830a620f3dc4",
+        "size": 356,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "5273e91fc7c8750c6aa8913961f21f57e919e35d9618edf452500f59359ddd40",
+        "size": 418,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e6a4f716a0a1c9b868162d1753d62c01e15f67672f83c38b950693fb1a171bb5",
+        "size": 535,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 2415,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-bigint",
+      "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-bigint",
+      "version": "7.8.3"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.8.0"
+      },
+      "description": "Allow parsing of BigInt literals",
+      "devDependencies": {
+        "@babel/core": "^7.8.0"
+      },
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "@babel/plugin-syntax-bigint",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-bigint",
+      "version": "7.8.3"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1454,
+      "sha256": "d00c321754d21d04c3041ab9384da8528e18fe2259712731b258d07953d600c2"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

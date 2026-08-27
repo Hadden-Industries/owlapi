@@ -1,0 +1,162 @@
+{
+  "artifactId": "e26c3d425735d69aac41032e2003ea3b94b5fef87d2d4573a6e259b9c6e77e21",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9398,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "16620f2c96dc28780052234b8d397ad3c807eb1d685de4864767982e007d038f",
+        "size": 3148,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "4fe8721ec7c8d312c01b8dbb0f27672a12d5822df40d13fcd4cf89e6bdbeddc2",
+        "size": 68,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/node-fsx.d.ts",
+        "sha256": "ed2aa72449310473ebda4e96d882f1e8d69fc1897c2be9845303296d73100301",
+        "size": 6687,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/node-hfs.d.ts",
+        "sha256": "f7dd403a68696d81111e84a9b1fc092c356c433c01a216bbda0948e5e2047392",
+        "size": 8298,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "bc1bac9440bc97611a0a8b233960780cff13d8aba4192f6b1ff6739ab6c9c9ed",
+        "size": 1254,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.js",
+        "sha256": "45e2e1abf049f05a79c393087b75e7df9b23e0f701bb399e8e650f3cf055edfa",
+        "size": 170,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/node-hfs.js",
+        "sha256": "3ba135eed09f79c1ca551c5bf4250ded8e2d7e42dc870069ebac2b8edac7cfce",
+        "size": 13490,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11357,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357
+      },
+      {
+        "blob": {
+          "bytes": 3148,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/16/16620f2c96dc28780052234b8d397ad3c807eb1d685de4864767982e007d038f",
+          "sha256": "16620f2c96dc28780052234b8d397ad3c807eb1d685de4864767982e007d038f"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "16620f2c96dc28780052234b8d397ad3c807eb1d685de4864767982e007d038f",
+        "size": 3148
+      }
+    ],
+    "expandedBytes": 44472,
+    "packageIdentity": {
+      "author": "Nicholas C. Zakas",
+      "homepage": "https://github.com/humanwhocodes/humanfs#readme",
+      "license": "Apache-2.0",
+      "name": "@humanfs/node",
+      "repository": {
+        "directory": "packages/node",
+        "type": "git",
+        "url": "git+https://github.com/humanwhocodes/humanfs.git"
+      },
+      "version": "0.16.8"
+    },
+    "packageMetadata": {
+      "author": "Nicholas C. Zakas",
+      "bugs": {
+        "url": "https://github.com/humanwhocodes/humanfs/issues"
+      },
+      "dependencies": {
+        "@humanfs/core": "^0.19.2",
+        "@humanfs/types": "^0.15.0",
+        "@humanwhocodes/retry": "^0.4.0"
+      },
+      "description": "The Node.js bindings of the humanfs library.",
+      "devDependencies": {
+        "@humanfs/test": "^0.15.0",
+        "@types/node": "^20.9.4",
+        "mocha": "^10.2.0",
+        "typescript": "^5.2.2"
+      },
+      "engines": {
+        "node": ">=18.18.0"
+      },
+      "exports": {
+        "import": {
+          "default": "./src/index.js",
+          "types": "./dist/index.d.ts"
+        }
+      },
+      "files": [
+        "dist",
+        "src"
+      ],
+      "homepage": "https://github.com/humanwhocodes/humanfs#readme",
+      "keywords": [
+        "filesystem",
+        "fs",
+        "hfs",
+        "files"
+      ],
+      "license": "Apache-2.0",
+      "main": "dist/index.js",
+      "name": "@humanfs/node",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/node",
+        "type": "git",
+        "url": "git+https://github.com/humanwhocodes/humanfs.git"
+      },
+      "scripts": {
+        "build": "tsc",
+        "prepare": "npm run build",
+        "pretest": "npm run build",
+        "test": "mocha ./tests/"
+      },
+      "type": "module",
+      "types": "dist/index.d.ts",
+      "version": "0.16.8"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 9398,
+      "sha256": "b7beb7c13d7cb80d5cf559973e89e24898414cc5ac2fb699341682e22540c6b6"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

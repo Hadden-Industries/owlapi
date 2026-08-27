@@ -1,0 +1,189 @@
+{
+  "artifactId": "7f2b67ec9289b51bc6b9324d2bf769802ffda2095803ed5c072e2df6118a31f8",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9821,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "a49c9ba464796f65b59fca3f1e6ca40912df1e859f575383223f7ec6c5baae09",
+        "size": 1764,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "6c65b8751f634565491381192cf5a4f05cf4b26fb955b79eb5988fa8bbe3cb13",
+        "size": 4528,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts",
+        "sha256": "f484fb7cbc384bc305e27cecb0f7524bcfbebcba1dcd889779fd8d2bb700c2f5",
+        "size": 1737,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.d.ts.map",
+        "sha256": "506be25bd091b4ab8435714e0d8870af5672a6909cccb5548e1d158c92df2ef7",
+        "size": 2413,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js",
+        "sha256": "ba0199785e5dd531ee9fe5b8a8f9903f85d3787de85e9c8ba358ea38fb367e44",
+        "size": 9914,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/index.js.map",
+        "sha256": "4640c75687e44e7d9dc5f36f54e6459926078a2b96be97da4e0c5153bd922ca7",
+        "size": 22191,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/commonjs/package.json",
+        "sha256": "8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a",
+        "size": 25,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts",
+        "sha256": "f484fb7cbc384bc305e27cecb0f7524bcfbebcba1dcd889779fd8d2bb700c2f5",
+        "size": 1737,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts.map",
+        "sha256": "506be25bd091b4ab8435714e0d8870af5672a6909cccb5548e1d158c92df2ef7",
+        "size": 2413,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js",
+        "sha256": "ddc4c2d4f599190677c553dfa9e4db28338283645508cb3db35aa2c6282b7af7",
+        "size": 9762,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js.map",
+        "sha256": "a1ec8e1ed48b54deca7a08f454107352817b41b1e11ca5008ae63b62d2546d7a",
+        "size": 22172,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/package.json",
+        "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+        "size": 23,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "1b9d47057ce39814531ff93f668823b4fa03e7d23945449c274a1ff6d4cc297f",
+        "size": 1618,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1764,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a4/a49c9ba464796f65b59fca3f1e6ca40912df1e859f575383223f7ec6c5baae09",
+          "sha256": "a49c9ba464796f65b59fca3f1e6ca40912df1e859f575383223f7ec6c5baae09"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "a49c9ba464796f65b59fca3f1e6ca40912df1e859f575383223f7ec6c5baae09",
+        "size": 1764
+      }
+    ],
+    "expandedBytes": 80297,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "homepage": null,
+      "license": "BlueOak-1.0.0",
+      "name": "yallist",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/yallist.git"
+      },
+      "version": "5.0.0"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "description": "Yet Another Linked List",
+      "devDependencies": {
+        "prettier": "^3.2.5",
+        "tap": "^18.7.2",
+        "tshy": "^1.13.1",
+        "typedoc": "^0.25.13"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./dist/esm/index.js",
+            "types": "./dist/esm/index.d.ts"
+          },
+          "require": {
+            "default": "./dist/commonjs/index.js",
+            "types": "./dist/commonjs/index.d.ts"
+          }
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "dist"
+      ],
+      "license": "BlueOak-1.0.0",
+      "main": "./dist/commonjs/index.js",
+      "name": "yallist",
+      "prettier": {
+        "arrowParens": "avoid",
+        "bracketSameLine": true,
+        "endOfLine": "lf",
+        "jsxSingleQuote": false,
+        "printWidth": 70,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "useTabs": false
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/yallist.git"
+      },
+      "scripts": {
+        "format": "prettier --write . --loglevel warn --ignore-path ../../.prettierignore --cache",
+        "postversion": "npm publish",
+        "prepare": "tshy",
+        "prepublishOnly": "git push origin --follow-tags",
+        "presnap": "npm run prepare",
+        "pretest": "npm run prepare",
+        "preversion": "npm test",
+        "snap": "tap",
+        "test": "tap",
+        "typedoc": "typedoc"
+      },
+      "tshy": {
+        "exports": {
+          ".": "./src/index.ts",
+          "./package.json": "./package.json"
+        }
+      },
+      "type": "module",
+      "types": "./dist/commonjs/index.d.ts",
+      "version": "5.0.0"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 9821,
+      "sha256": "7c9d43dbab7cab3b3133b0e6a5af14014482285316b39ec9f508efadd9ebce95"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

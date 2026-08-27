@@ -1,0 +1,99 @@
+{
+  "artifactId": "35db4cfea8aca1e139b5f57dc96efdcb64dfcdfc7cda8a6b790998dc5a9ac705",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 13651,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "68c0a6c8d09f86634e3cc000678e69e011c7f307f1564253cc3188db0a914590",
+        "size": 459,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "787c5da8120ea4101827041e46447bf3d63806f0c0d9b96ed5f791db102c443f",
+        "size": 12847,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "e6b769e3e663fd4c1e722a8242b4e7202373c2479fd3089c7c15898b3aacf524",
+        "size": 39740,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "89324fc5a5f7afc823c8334352336f8cca5982340aa9f2ae09843c29ef5e836a",
+        "size": 737,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 54889,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-member-expression-to-functions",
+      "license": "MIT",
+      "name": "@babel/helper-member-expression-to-functions",
+      "repository": {
+        "directory": "packages/babel-helper-member-expression-to-functions",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/traverse": "^7.29.7",
+        "@babel/types": "^7.29.7"
+      },
+      "description": "Helper function to replace certain member expressions with function calls",
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-member-expression-to-functions",
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/helper-member-expression-to-functions",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-helper-member-expression-to-functions",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 13651,
+      "sha256": "19e4760889b4d8b3d55d2db83bfedc057ebea1839c13837386a7f0acf94a21e5"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

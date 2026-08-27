@@ -1,0 +1,208 @@
+{
+  "artifactId": "1c4afe32f7cd59c394cbf8749caa678dda5c1c268b60f99414d70853e623ae76",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 16401,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "a806e21000ee60cfd64a6f1416f29c7552b4834701974e86c0156f99c0cdd806",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "72d72130fb75ef049229a623331a549febf2ed34e1862781803e22dadc9918bc",
+        "size": 14351,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/cache/entry.js",
+        "sha256": "c448d1d1601ad2ec99c2963fc4dd093a57d884ff4ea089bb08a05496d01015c7",
+        "size": 16421,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/cache/errors.js",
+        "sha256": "5e8a91f9e801e9eb81e00c52451c7fe4e354674cdd671713299f392ddc8ff324",
+        "size": 284,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/cache/index.js",
+        "sha256": "b9a47e604b9d6ec9211e5129636ba7366c408c074ea1d4b8c859cf221c347071",
+        "size": 1792,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/cache/key.js",
+        "sha256": "ae7da8b3fbc282391fc70df8a625de765062f955fc85587e575479cbe9c33adb",
+        "size": 430,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/cache/policy.js",
+        "sha256": "2014cf549fceb8808cba81e8760315b9060f502b6c62b7cb79e1b024abde54c3",
+        "size": 4527,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/fetch.js",
+        "sha256": "7d57bfd656a6ae2a53738fb3f25365d074d9cb7364794005bc70317ff2bf81e8",
+        "size": 3947,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "c6fa07e324498f7bbd05e98892790186556bf55c6265d0c07f45900a6941a57c",
+        "size": 1173,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/options.js",
+        "sha256": "b067a3566cf03d9a4cc77478efb88c2b3d8cc4081a311b2ae9ea67a500bf3c0e",
+        "size": 1688,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/pipeline.js",
+        "sha256": "082bb7c9c7f020c816c2582fe436c992b9851e0727339723337b580d6f6c1707",
+        "size": 1114,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/remote.js",
+        "sha256": "4902d89e949dae492557b734ddb4609ca283e97f4720d1bfc489b5306891fb0e",
+        "size": 4875,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "81aef6b930cb2462c5f5e9215c3d0ed4e682ae6277709870bf4bbf20ff13fda1",
+        "size": 1810,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a8/a806e21000ee60cfd64a6f1416f29c7552b4834701974e86c0156f99c0cdd806",
+          "sha256": "a806e21000ee60cfd64a6f1416f29c7552b4834701974e86c0156f99c0cdd806"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "a806e21000ee60cfd64a6f1416f29c7552b4834701974e86c0156f99c0cdd806",
+        "size": 765
+      },
+      {
+        "blob": {
+          "bytes": 14351,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/72/72d72130fb75ef049229a623331a549febf2ed34e1862781803e22dadc9918bc",
+          "sha256": "72d72130fb75ef049229a623331a549febf2ed34e1862781803e22dadc9918bc"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "72d72130fb75ef049229a623331a549febf2ed34e1862781803e22dadc9918bc",
+        "size": 14351
+      }
+    ],
+    "expandedBytes": 53177,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "make-fetch-happen",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/make-fetch-happen.git"
+      },
+      "version": "16.0.1"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "dependencies": {
+        "@gar/promise-retry": "^1.0.0",
+        "@npmcli/agent": "^5.0.0",
+        "@npmcli/redact": "^5.0.0",
+        "cacache": "^21.0.0",
+        "http-cache-semantics": "^4.1.1",
+        "minipass": "^7.0.2",
+        "minipass-fetch": "^6.0.0",
+        "minipass-flush": "^1.0.5",
+        "minipass-pipeline": "^1.2.4",
+        "negotiator": "^1.0.0",
+        "proc-log": "^7.0.0",
+        "ssri": "^14.0.0"
+      },
+      "description": "Opinionated, caching, retrying fetch client",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^7.0.0",
+        "@npmcli/template-oss": "5.1.0",
+        "nock": "^13.2.4",
+        "safe-buffer": "^5.2.1",
+        "standard-version": "^9.3.2",
+        "tap": "^16.0.0"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "keywords": [
+        "http",
+        "request",
+        "fetch",
+        "mean girls",
+        "caching",
+        "cache",
+        "subresource integrity"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "make-fetch-happen",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/make-fetch-happen.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "check-coverage": true,
+        "color": 1,
+        "files": "test/*.js",
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ],
+        "timeout": 60
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": "true",
+        "version": "5.1.0"
+      },
+      "version": "16.0.1"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 16401,
+      "sha256": "ab2cdfb6bf5445b8a5b94f2f2ddd9bb5645c14e848454e20d902efe01a79bd37"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

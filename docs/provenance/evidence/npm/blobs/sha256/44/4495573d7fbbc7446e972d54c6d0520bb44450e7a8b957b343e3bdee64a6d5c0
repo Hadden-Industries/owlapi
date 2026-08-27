@@ -1,0 +1,144 @@
+{
+  "artifactId": "605ba3ca2d007b550aac0999fe5c19887351ed5b71c8fe33a754c8344b41febd",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3762,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "f3e1645267f7dd77ee6545283cc1766e5883e8fb3b5088fe2cfb995defbb3dde",
+        "size": 728,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "0d5c798361c472f33283ae8ec2a0c2641410769a00f5448579832b29424761d7",
+        "size": 2933,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/builtin-modules.json",
+        "sha256": "748abff83531219c79f949608c39dbc2078fa7a6f48672af0a68835db8e5ff60",
+        "size": 883,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "192644713adf00fa530905f1bd598b14c83644b4e4819a809e472cf6c6eb12f3",
+        "size": 2778,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "44cacea7161bec3b3a0ac8912db0fe93345a0925e6cfad3bcf9e7d92fab7b70d",
+        "size": 1934,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 728,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/f3/f3e1645267f7dd77ee6545283cc1766e5883e8fb3b5088fe2cfb995defbb3dde",
+          "sha256": "f3e1645267f7dd77ee6545283cc1766e5883e8fb3b5088fe2cfb995defbb3dde"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "f3e1645267f7dd77ee6545283cc1766e5883e8fb3b5088fe2cfb995defbb3dde",
+        "size": 728
+      },
+      {
+        "blob": {
+          "bytes": 2933,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/0d/0d5c798361c472f33283ae8ec2a0c2641410769a00f5448579832b29424761d7",
+          "sha256": "0d5c798361c472f33283ae8ec2a0c2641410769a00f5448579832b29424761d7"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "0d5c798361c472f33283ae8ec2a0c2641410769a00f5448579832b29424761d7",
+        "size": 2933
+      }
+    ],
+    "expandedBytes": 9256,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": "https://github.com/npm/validate-npm-package-name",
+      "license": "ISC",
+      "name": "validate-npm-package-name",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/validate-npm-package-name.git"
+      },
+      "version": "8.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "bugs": {
+        "url": "https://github.com/npm/validate-npm-package-name/issues"
+      },
+      "description": "Give me a string and I'll tell you if it's a valid npm package name",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^6.0.0",
+        "@npmcli/template-oss": "5.0.0"
+      },
+      "directories": {
+        "test": "test"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "homepage": "https://github.com/npm/validate-npm-package-name",
+      "keywords": [
+        "npm",
+        "package",
+        "names",
+        "validation"
+      ],
+      "license": "ISC",
+      "main": "lib/",
+      "name": "validate-npm-package-name",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/validate-npm-package-name.git"
+      },
+      "scripts": {
+        "builtin-fixture": "node -e \"console.log(JSON.stringify(require('node:module').builtinModules))\" > ./lib/builtin-modules.json",
+        "cov:test": "TAP_FLAGS='--cov' npm run test:code",
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "node --test --test-update-snapshots './test/**/*.js'",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "node --test './test/**/*.js'",
+        "test:code": "tap ${TAP_FLAGS:-'--'} test/*.js",
+        "test:cover": "node --test --experimental-test-coverage --test-timeout=3000 --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 './test/**/*.js'",
+        "test:node20": "node --test test",
+        "test:style": "standard"
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "latestCiVersion": 24,
+        "publish": true,
+        "testRunner": "node:test",
+        "version": "5.0.0"
+      },
+      "version": "8.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3762,
+      "sha256": "f49509fbefe763ceaef25dbb08f3e697c40048e6034ce637b4cd1ed1f7df431c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

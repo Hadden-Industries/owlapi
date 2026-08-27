@@ -1,0 +1,128 @@
+{
+  "artifactId": "bdecd74b161907321967aa84c40f1b236fcd367990f5d9972f4633d60bf0676c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2822,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "3f69dcc939c762ba024dad37843cd3db9cc1d7542c05790331939cd6096bb6ee",
+        "size": 599,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "5fe21e8b7a51ea8f6bdddc198ec62b523033c12c60c2f95fef6446779200daf0",
+        "size": 1581,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "ff358428a418a46fb2431a2c48b396fb01c8291fec9e1f14434ade01196c8e9c",
+        "size": 768,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "777c0925baf283767a4b0b5e4a6c5f652ad17fea49b29cbd6d68c09e479836a8",
+        "size": 1938,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      },
+      {
+        "blob": {
+          "bytes": 1938,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/77/777c0925baf283767a4b0b5e4a6c5f652ad17fea49b29cbd6d68c09e479836a8",
+          "sha256": "777c0925baf283767a4b0b5e4a6c5f652ad17fea49b29cbd6d68c09e479836a8"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "777c0925baf283767a4b0b5e4a6c5f652ad17fea49b29cbd6d68c09e479836a8",
+        "size": 1938
+      }
+    ],
+    "expandedBytes": 6003,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "mimic-response",
+      "repository": "sindresorhus/mimic-response",
+      "version": "3.1.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "description": "Mimic a Node.js HTTP response stream",
+      "devDependencies": {
+        "@types/node": "^14.0.1",
+        "ava": "^2.4.0",
+        "create-test-server": "^2.4.0",
+        "p-event": "^4.1.0",
+        "pify": "^5.0.0",
+        "tsd": "^0.11.0",
+        "xo": "^0.30.0"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "mimic",
+        "response",
+        "stream",
+        "http",
+        "https",
+        "request",
+        "get",
+        "core"
+      ],
+      "license": "MIT",
+      "name": "mimic-response",
+      "repository": "sindresorhus/mimic-response",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "3.1.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2822,
+      "sha256": "321e9b7c155cd47183de9d9cdbd6c37bca8187e15b11a42443883330c063dd54"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

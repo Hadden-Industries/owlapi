@@ -1,0 +1,100 @@
+{
+  "artifactId": "a1aa581c50261f29482d45954d314d5a5bb399beca5a31b6222a28d842e0d07b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1551,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "0435264687ab54bb74b027a372d11ce03d96213bc0573e8ad419037f4b288703",
+        "size": 457,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "f2bb3efbb94221e0ac718b54388e04d5695e560669c7209b1bf536d80493a19b",
+        "size": 441,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "35170ba88bbe756738b24d5dadc549c30df2be94d8e6be2801ce3727cde35dbf",
+        "size": 819,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 2823,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-syntax-private-property-in-object",
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-private-property-in-object",
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-private-property-in-object",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.14.5"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.14.5"
+      },
+      "description": "Allow parsing of '#foo in obj' brand checks",
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "exports": {
+        ".": "./lib/index.js"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-syntax-private-property-in-object",
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/plugin-syntax-private-property-in-object",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-private-property-in-object",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.14.5"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1551,
+      "sha256": "2fe9a9047eba0a0cb8db7e068e53190ce6493352525ab9407909ddcfbcf954de"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

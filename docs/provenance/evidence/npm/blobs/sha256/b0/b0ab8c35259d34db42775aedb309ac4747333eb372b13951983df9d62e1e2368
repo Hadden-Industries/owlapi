@@ -1,0 +1,115 @@
+{
+  "artifactId": "15022bdada78c066a3eaeb283ddc6fb1c80489ef61b1f5439cbde8ac2e30fb30",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3866,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "b83799ec420f33e6fe9dfcb76a03c77fbcededef4c353a18c4274b7b0a3690fe",
+        "size": 6913,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "e1076e47ea96eef79e05496912ad03a9fa8031e1bf4847aab1a9554aef5cc5c0",
+        "size": 497,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "1b849aa49814883fc0e70ca461c9faccb675ed1c801e784f1858e75e3b36eec5",
+        "size": 878,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/hfs-types.ts",
+        "sha256": "a3befb11eea960f9285e5122e7df6c428c7b5bf0f0e73713bbbe085c17c2916e",
+        "size": 6682,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "cf8b7f383f52c63171a58ea307aaa0687d0b4ba3074cb923d3dac46271879a9e",
+        "size": 271,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 497,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e1/e1076e47ea96eef79e05496912ad03a9fa8031e1bf4847aab1a9554aef5cc5c0",
+          "sha256": "e1076e47ea96eef79e05496912ad03a9fa8031e1bf4847aab1a9554aef5cc5c0"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "e1076e47ea96eef79e05496912ad03a9fa8031e1bf4847aab1a9554aef5cc5c0",
+        "size": 497
+      }
+    ],
+    "expandedBytes": 15241,
+    "packageIdentity": {
+      "author": "Nicholas C. Zakas",
+      "homepage": "https://github.com/humanwhocodes/humanfs#readme",
+      "license": "Apache-2.0",
+      "name": "@humanfs/types",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/humanwhocodes/humanfs.git"
+      },
+      "version": "0.15.0"
+    },
+    "packageMetadata": {
+      "author": "Nicholas C. Zakas",
+      "bugs": {
+        "url": "https://github.com/humanwhocodes/humanfs/issues"
+      },
+      "description": "The TypeScript types for the hfs project.",
+      "devDependencies": {
+        "typescript": "^5.2.2"
+      },
+      "engines": {
+        "node": ">=18.18.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./src/hfs-types.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "homepage": "https://github.com/humanwhocodes/humanfs#readme",
+      "keywords": [
+        "filesystem",
+        "fs",
+        "hfs",
+        "files"
+      ],
+      "license": "Apache-2.0",
+      "name": "@humanfs/types",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/humanwhocodes/humanfs.git"
+      },
+      "scripts": {
+        "build": "tsc",
+        "prepare": "npm run build"
+      },
+      "type": "module",
+      "types": "src/hfs-types.ts",
+      "version": "0.15.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3866,
+      "sha256": "3c2942da7ba321f6ba27255a5faceee76eae502403129d8aa50d2dc8400a94d5"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

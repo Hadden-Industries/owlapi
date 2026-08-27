@@ -1,0 +1,149 @@
+{
+  "artifactId": "e3e1c75732253f753e062beba8e66e1b7cb5a1cc644f4e46bd4e06d9c9796917",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 156767,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/dist/emnapi-plugins.cjs",
+        "sha256": "2ab135973a4f6141fd7280b633a5ffe6dfda89d46fe3dd334cace7397002d025",
+        "size": 59960,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-plugins.js",
+        "sha256": "cc29177ea60a651580f185b2da8121f1a578b149648748ed7a9fba5d8c8fd6f4",
+        "size": 59884,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/fs-proxy.cjs",
+        "sha256": "b9cad3b63d8f6a5254a682db9fcb763d64259bbb4222b67bfc0d55661a2fba81",
+        "size": 7370,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/fs.js",
+        "sha256": "7357c7859efc35d7b3cbe37d2cec912f12d554403fb6b48e1a7ac035c43cbb70",
+        "size": 636780,
+        "type": "FILE"
+      },
+      {
+        "path": "package/fs-proxy.js",
+        "sha256": "c768e658eba94a26e048f51fac4de7652115b63302bf2343f71afb6ca1259b75",
+        "size": 8492,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "73887509364c8dbda8fd15b953dc924b536ade50e4dc51744c398a954f53fa00",
+        "size": 1530,
+        "type": "FILE"
+      },
+      {
+        "path": "package/runtime.cjs",
+        "sha256": "ac3fb8bba0eae6fa31adcd3cf9e13ea78789b72f7e5ad51c9a33d1d8bb014ace",
+        "size": 1542,
+        "type": "FILE"
+      },
+      {
+        "path": "package/runtime.js",
+        "sha256": "5fd49a37e1e817f7498bb8e5bed5ad2c322823fff50488674254bf749e4a8ba2",
+        "size": 1521,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 777079,
+    "packageIdentity": {
+      "author": {
+        "name": "LongYinan",
+        "url": "https://github.com/Brooooooklyn"
+      },
+      "homepage": "https://napi.rs/",
+      "license": "MIT",
+      "name": "@napi-rs/wasm-runtime",
+      "repository": {
+        "directory": "wasm-runtime",
+        "type": "git",
+        "url": "git+https://github.com/napi-rs/napi-rs.git"
+      },
+      "version": "1.2.3"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "LongYinan",
+        "url": "https://github.com/Brooooooklyn"
+      },
+      "dependencies": {
+        "@tybys/wasm-util": "^0.10.3"
+      },
+      "description": "Runtime and polyfill for wasm targets",
+      "devDependencies": {
+        "@emnapi/core": "^2.0.0-alpha.4",
+        "buffer": "^6.0.3",
+        "events": "^3.3.0",
+        "memfs": "^4.64.0",
+        "node-inspect-extracted": "^3.3.2",
+        "path-browserify": "^1.0.1",
+        "process": "^0.11.10",
+        "readable-stream": "^4.7.0",
+        "rolldown": "^1.2.1",
+        "tslib": "^2.8.1"
+      },
+      "engines": {
+        "node": "^20.19.0 || ^22.13.0 || >=23.5.0"
+      },
+      "exports": {
+        ".": {
+          "import": "./runtime.js",
+          "require": "./runtime.cjs"
+        },
+        "./fs": {
+          "import": "./dist/fs.js"
+        }
+      },
+      "files": [
+        "runtime.cjs",
+        "runtime.js",
+        "fs-proxy.js",
+        "dist/*.cjs",
+        "dist/*.js"
+      ],
+      "funding": {
+        "type": "github",
+        "url": "https://github.com/sponsors/Brooooooklyn"
+      },
+      "homepage": "https://napi.rs/",
+      "license": "MIT",
+      "name": "@napi-rs/wasm-runtime",
+      "peerDependencies": {
+        "@emnapi/core": "^1.7.1 || ^2.0.0-alpha.4",
+        "@emnapi/runtime": "^1.7.1 || ^2.0.0-alpha.4"
+      },
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "directory": "wasm-runtime",
+        "type": "git",
+        "url": "git+https://github.com/napi-rs/napi-rs.git"
+      },
+      "scripts": {
+        "build": "rolldown -c",
+        "test": "yarn run build && node --test"
+      },
+      "type": "module",
+      "version": "1.2.3"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 156767,
+      "sha256": "434e1f4532cef2e9505ad597735cdad0eab0b3cfe3b6708f9dfb399f737346b2"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

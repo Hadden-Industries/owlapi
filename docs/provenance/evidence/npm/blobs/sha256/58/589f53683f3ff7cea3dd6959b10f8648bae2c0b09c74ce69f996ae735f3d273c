@@ -1,0 +1,199 @@
+{
+  "artifactId": "4fb21619cbe9ccb907a0901f8f407ff41ebe02b3edf62774d2a02569c516fca0",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 15165,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "65675229fc81818c9490a1942f361f7ef31cd525bef9111e62a6c84e9bd4769d",
+        "size": 719,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "333197a92af80f154d98282b0a02424d0fec9fb00721a4d09f2272ca4bfe1253",
+        "size": 7818,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "29c7e4b3309454d2b434ae017eb7093b15ebdc58111dffa04f6cafc92e676a63",
+        "size": 6922,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/license.js",
+        "sha256": "bc4c06b48b593b8b63f3e1557f52bdd37ebf40295033cfdb03d420d181809c11",
+        "size": 860,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/normalize-data.js",
+        "sha256": "fa48d03aeacd7af99aa87626b3b809b567dd2f46dbbfa408cc69832d73954e69",
+        "size": 7716,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/normalize.js",
+        "sha256": "f384df7379770bcea86e3315b32cfb7cf90b4be79a96564e20cfe94c4ca705c5",
+        "size": 20578,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/read-package.js",
+        "sha256": "2bca2d4464b83d6436f81ebe2fd8fae6da5ab79aed381e5577a0c7286783da47",
+        "size": 1048,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/sort.js",
+        "sha256": "841cef6a034d4c0a56b0ba23f0b8c1d02a2401e5e273eb47dea03b207c3b4a98",
+        "size": 3589,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/update-dependencies.js",
+        "sha256": "3585272de6bc9da718f06c486b8a975c32959b7c4ac46ff7ba76ce400d6b053f",
+        "size": 2026,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/update-scripts.js",
+        "sha256": "7acce587127a827829967c378da8f23cb3b800171e1e37d0d843619586a2b873",
+        "size": 664,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/update-workspaces.js",
+        "sha256": "56805fd3b326bf9fcc2532e8e11d72e49f060b300e187f91d87f4f7632b5a057",
+        "size": 626,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "f5f79d1542c3a7e002a6112dce89fca253377daaedb49b63fabc4deea7c8c384",
+        "size": 1454,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 719,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/65/65675229fc81818c9490a1942f361f7ef31cd525bef9111e62a6c84e9bd4769d",
+          "sha256": "65675229fc81818c9490a1942f361f7ef31cd525bef9111e62a6c84e9bd4769d"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "65675229fc81818c9490a1942f361f7ef31cd525bef9111e62a6c84e9bd4769d",
+        "size": 719
+      },
+      {
+        "blob": {
+          "bytes": 7818,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/33/333197a92af80f154d98282b0a02424d0fec9fb00721a4d09f2272ca4bfe1253",
+          "sha256": "333197a92af80f154d98282b0a02424d0fec9fb00721a4d09f2272ca4bfe1253"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "333197a92af80f154d98282b0a02424d0fec9fb00721a4d09f2272ca4bfe1253",
+        "size": 7818
+      },
+      {
+        "blob": {
+          "bytes": 860,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/bc/bc4c06b48b593b8b63f3e1557f52bdd37ebf40295033cfdb03d420d181809c11",
+          "sha256": "bc4c06b48b593b8b63f3e1557f52bdd37ebf40295033cfdb03d420d181809c11"
+        },
+        "kind": "LICENCE",
+        "path": "package/lib/license.js",
+        "sha256": "bc4c06b48b593b8b63f3e1557f52bdd37ebf40295033cfdb03d420d181809c11",
+        "size": 860
+      }
+    ],
+    "expandedBytes": 54020,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "@npmcli/package-json",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/package-json.git"
+      },
+      "version": "8.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "dependencies": {
+        "@npmcli/git": "^8.0.0",
+        "glob": "^13.0.0",
+        "hosted-git-info": "^10.1.1",
+        "json-parse-even-better-errors": "^6.0.0",
+        "proc-log": "^7.0.0",
+        "semver": "^7.5.3",
+        "spdx-expression-parse": "^4.0.0"
+      },
+      "description": "Programmatic API to update package.json",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^7.0.0",
+        "@npmcli/template-oss": "5.1.0",
+        "tap": "^16.0.1"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "keywords": [
+        "npm",
+        "oss"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "@npmcli/package-json",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/package-json.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "postsnap": "npm run lintfix --",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": "true",
+        "updateNpm": false,
+        "version": "5.1.0"
+      },
+      "version": "8.0.0"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 15165,
+      "sha256": "bb601ab2632ae3acf2557f1c073c9516b76fd60cc02490463a4463a4e50ff28d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

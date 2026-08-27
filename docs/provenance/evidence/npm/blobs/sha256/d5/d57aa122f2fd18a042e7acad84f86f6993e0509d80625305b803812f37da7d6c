@@ -1,0 +1,196 @@
+{
+  "artifactId": "ecf1df2c13e830492aa1cd3e2f33d597b8ea579c1739464637b5bfcce89c7e73",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4483,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/dist/index.js",
+        "sha256": "85643e13de77213831aea57dac009638a9dea5baaa85a964c2592f602234db68",
+        "size": 534,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.mjs",
+        "sha256": "436c778b45b4f46cf906bff4c38962219b349d5e42a2c62696c689417ab582a5",
+        "size": 517,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.mts",
+        "sha256": "31f9773c49839ecbd0591286db8fcf739c38de09f92ba453c3ea9d84fe76c648",
+        "size": 236,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "db755cee8111600981c5fcad73235b6156d1f6c8d35424f5ac7187ed38ce8543",
+        "size": 301,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "9a9edad7baae52622bddf3c15b2ef8a33d2c89f2d25408ad13e8a7481c6b0c97",
+        "size": 1104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "acd22b264ecbea162e320a360dab0ad0f3e5438fa4382288df844fa08b484e73",
+        "size": 1461,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "de88fe806fe66a944d49b4e86518d5cfee43565654faf76daa67716726359696",
+        "size": 6993,
+        "type": "FILE"
+      },
+      {
+        "path": "package/sync/index.d.mts",
+        "sha256": "9ce9dc9cc3ad9d64038ace89f4d29422a99eb8379a8658d4d2b77ed2d0e1cb3d",
+        "size": 177,
+        "type": "FILE"
+      },
+      {
+        "path": "package/sync/index.d.ts",
+        "sha256": "2940e5c69685d83c30b4359b5a917ccb1779da0be12c84975018e6a969fb7b00",
+        "size": 242,
+        "type": "FILE"
+      },
+      {
+        "path": "package/sync/index.js",
+        "sha256": "bf89be2b8bb2eb86c19ce0a3598e19fe91ad689a64710607e6cbb3e15c076d4f",
+        "size": 416,
+        "type": "FILE"
+      },
+      {
+        "path": "package/sync/index.mjs",
+        "sha256": "8262677f39b0e4f3c085c04a38b66626913b980237da67496a4f8ebd8d1e5507",
+        "size": 404,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1104,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9a/9a9edad7baae52622bddf3c15b2ef8a33d2c89f2d25408ad13e8a7481c6b0c97",
+          "sha256": "9a9edad7baae52622bddf3c15b2ef8a33d2c89f2d25408ad13e8a7481c6b0c97"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "9a9edad7baae52622bddf3c15b2ef8a33d2c89f2d25408ad13e8a7481c6b0c97",
+        "size": 1104
+      },
+      {
+        "blob": {
+          "bytes": 6993,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/de/de88fe806fe66a944d49b4e86518d5cfee43565654faf76daa67716726359696",
+          "sha256": "de88fe806fe66a944d49b4e86518d5cfee43565654faf76daa67716726359696"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "de88fe806fe66a944d49b4e86518d5cfee43565654faf76daa67716726359696",
+        "size": 6993
+      }
+    ],
+    "expandedBytes": 12385,
+    "packageIdentity": {
+      "author": {
+        "email": "luke.edwards05@gmail.com",
+        "name": "Luke Edwards",
+        "url": "https://lukeed.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "escalade",
+      "repository": "lukeed/escalade",
+      "version": "3.2.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "luke.edwards05@gmail.com",
+        "name": "Luke Edwards",
+        "url": "https://lukeed.com"
+      },
+      "description": "A tiny (183B to 210B) and fast utility to ascend parent directories",
+      "devDependencies": {
+        "bundt": "1.1.1",
+        "esm": "3.2.25",
+        "uvu": "0.3.3"
+      },
+      "engines": {
+        "node": ">=6"
+      },
+      "exports": {
+        ".": [
+          {
+            "import": {
+              "default": "./dist/index.mjs",
+              "types": "./index.d.mts"
+            },
+            "require": {
+              "default": "./dist/index.js",
+              "types": "./index.d.ts"
+            }
+          },
+          "./dist/index.js"
+        ],
+        "./sync": [
+          {
+            "import": {
+              "default": "./sync/index.mjs",
+              "types": "./sync/index.d.mts"
+            },
+            "require": {
+              "default": "./sync/index.js",
+              "types": "./sync/index.d.ts"
+            }
+          },
+          "./sync/index.js"
+        ]
+      },
+      "files": [
+        "*.d.mts",
+        "*.d.ts",
+        "dist",
+        "sync"
+      ],
+      "keywords": [
+        "find",
+        "parent",
+        "parents",
+        "directory",
+        "search",
+        "walk"
+      ],
+      "license": "MIT",
+      "main": "dist/index.js",
+      "modes": {
+        "default": "src/async.js",
+        "sync": "src/sync.js"
+      },
+      "module": "dist/index.mjs",
+      "name": "escalade",
+      "repository": "lukeed/escalade",
+      "scripts": {
+        "build": "bundt",
+        "pretest": "npm run build",
+        "test": "uvu -r esm test -i fixtures"
+      },
+      "types": "index.d.ts",
+      "version": "3.2.0"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 4483,
+      "sha256": "ba2755afc0e6c6705326711fd218ebe107a527eccbd6485155fde98ed000bee7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

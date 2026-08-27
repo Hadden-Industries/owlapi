@@ -1,0 +1,182 @@
+{
+  "artifactId": "ba6e8ab2abc3bd41001aad97f53610ac63395334336a1009aa2158904ca60412",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6255,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "aaa78451b6fecd1b9c4594c796c133c0e90cad100372ff8bc6de615e9ef9adf1",
+        "size": 1105,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "022aa5bc5706ce14899569741b420e8cb59108c90871d341f31b684d279bd594",
+        "size": 4117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "b8e01cb18ba87ee1b0e5eb2eb1ce6cbb25a2bdd229f9e08671f8a10ed7e3ad35",
+        "size": 1192,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/enoent.js",
+        "sha256": "0f9aab5c708991cf01d3fda557318c4600a46071138742ee8596244f7fd73ef5",
+        "size": 1471,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/parse.js",
+        "sha256": "0a67601365a3ae413653c8c9d3c6bff2202861e1eb8b5d28bf46d4812a4465ea",
+        "size": 3065,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util/escape.js",
+        "sha256": "5d61b2829e0e7912874e1e664146554d0cd02fd5524abf4ea59a879f0fc30675",
+        "size": 1383,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util/readShebang.js",
+        "sha256": "b05ba732e167fcf9a4fd67ebb4a5c28cca4712a36376c0b0f2e4e1d37e7f18d2",
+        "size": 549,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util/resolveCommand.js",
+        "sha256": "e525fe739aba01cf5eee6473df449cdda93df6266effa8eae0fcfb9a4e6c5de6",
+        "size": 1557,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "2e106cd9b4ae4e34ead35218371a0d4e172da72515a4f8f97d69a2e1fe3dee82",
+        "size": 1655,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1105,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/aa/aaa78451b6fecd1b9c4594c796c133c0e90cad100372ff8bc6de615e9ef9adf1",
+          "sha256": "aaa78451b6fecd1b9c4594c796c133c0e90cad100372ff8bc6de615e9ef9adf1"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "aaa78451b6fecd1b9c4594c796c133c0e90cad100372ff8bc6de615e9ef9adf1",
+        "size": 1105
+      },
+      {
+        "blob": {
+          "bytes": 4117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/02/022aa5bc5706ce14899569741b420e8cb59108c90871d341f31b684d279bd594",
+          "sha256": "022aa5bc5706ce14899569741b420e8cb59108c90871d341f31b684d279bd594"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "022aa5bc5706ce14899569741b420e8cb59108c90871d341f31b684d279bd594",
+        "size": 4117
+      }
+    ],
+    "expandedBytes": 16094,
+    "packageIdentity": {
+      "author": "André Cruz <andre@moxy.studio>",
+      "homepage": "https://github.com/moxystudio/node-cross-spawn",
+      "license": "MIT",
+      "name": "cross-spawn",
+      "repository": {
+        "type": "git",
+        "url": "git@github.com:moxystudio/node-cross-spawn.git"
+      },
+      "version": "7.0.6"
+    },
+    "packageMetadata": {
+      "author": "André Cruz <andre@moxy.studio>",
+      "commitlint": {
+        "extends": [
+          "@commitlint/config-conventional"
+        ]
+      },
+      "dependencies": {
+        "path-key": "^3.1.0",
+        "shebang-command": "^2.0.0",
+        "which": "^2.0.1"
+      },
+      "description": "Cross platform child_process#spawn and child_process#spawnSync",
+      "devDependencies": {
+        "@commitlint/cli": "^8.1.0",
+        "@commitlint/config-conventional": "^8.1.0",
+        "babel-core": "^6.26.3",
+        "babel-jest": "^24.9.0",
+        "babel-preset-moxy": "^3.1.0",
+        "eslint": "^5.16.0",
+        "eslint-config-moxy": "^7.1.0",
+        "husky": "^3.0.5",
+        "jest": "^24.9.0",
+        "lint-staged": "^9.2.5",
+        "mkdirp": "^0.5.1",
+        "rimraf": "^3.0.0",
+        "standard-version": "^9.5.0"
+      },
+      "engines": {
+        "node": ">= 8"
+      },
+      "files": [
+        "lib"
+      ],
+      "homepage": "https://github.com/moxystudio/node-cross-spawn",
+      "husky": {
+        "hooks": {
+          "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+          "pre-commit": "lint-staged"
+        }
+      },
+      "keywords": [
+        "spawn",
+        "spawnSync",
+        "windows",
+        "cross-platform",
+        "path-ext",
+        "shebang",
+        "cmd",
+        "execute"
+      ],
+      "license": "MIT",
+      "lint-staged": {
+        "*.js": [
+          "eslint --fix",
+          "git add"
+        ]
+      },
+      "main": "index.js",
+      "name": "cross-spawn",
+      "repository": {
+        "type": "git",
+        "url": "git@github.com:moxystudio/node-cross-spawn.git"
+      },
+      "scripts": {
+        "lint": "eslint .",
+        "postrelease": "git push --follow-tags origin HEAD && npm publish",
+        "prerelease": "npm t && npm run lint",
+        "release": "standard-version",
+        "test": "jest --env node --coverage"
+      },
+      "version": "7.0.6"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 6255,
+      "sha256": "188c320cdc413adfec03098fda72af7a9b02152ba13d3a8f87f172d93ced38ea"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

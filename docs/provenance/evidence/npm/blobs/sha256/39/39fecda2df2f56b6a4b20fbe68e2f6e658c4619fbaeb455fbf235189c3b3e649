@@ -1,0 +1,101 @@
+{
+  "artifactId": "cfd1cdd9d61c2991711a0e870a63346cd5569900d9045fc77f8273df31cd5ada",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3863824,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+        "size": 15648,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "afad978bc3e23c9bb7f70fdddd13465c1351997c5035a4711ca56dec7b1ffa2e",
+        "size": 121,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lightningcss.freebsd-x64.node",
+        "sha256": "dfb2f178af52beafdc4f30e65582f21c488796ac4474263881b7f0293cf18feb",
+        "size": 10018032,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "da6e39e808798636b781aa2a179104c50a5d79f54ece8b47af4a156cca5b2dec",
+        "size": 712,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 15648,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5e/5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+          "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+        "size": 15648
+      }
+    ],
+    "expandedBytes": 10034513,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MPL-2.0",
+      "name": "lightningcss-freebsd-x64",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/parcel-bundler/lightningcss.git"
+      },
+      "version": "1.33.0"
+    },
+    "packageMetadata": {
+      "browserslist": "last 2 versions, not dead",
+      "cpu": [
+        "x64"
+      ],
+      "description": "A CSS parser, transformer, and minifier written in Rust",
+      "engines": {
+        "node": ">= 12.0.0"
+      },
+      "files": [
+        "lightningcss.freebsd-x64.node"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/parcel"
+      },
+      "license": "MPL-2.0",
+      "main": "lightningcss.freebsd-x64.node",
+      "name": "lightningcss-freebsd-x64",
+      "os": [
+        "freebsd"
+      ],
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/parcel-bundler/lightningcss.git"
+      },
+      "resolutions": {
+        "lightningcss": "link:."
+      },
+      "version": "1.33.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 3863824,
+      "sha256": "828e9a915d504a2796bdbe56643397d3ac639bf9abc629ba11163e7b7ef150a6"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

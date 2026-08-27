@@ -1,0 +1,157 @@
+{
+  "artifactId": "018aec1ceefad8234b541900c39da6b92dc90989cb6fb2b95c1e04b16d308470",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4255,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4cd903859549d4b20b571041f96dfae1136ed079c476126268f9d7cc1b611150",
+        "size": 1088,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "e42512412a98a913be8db9d4a117737a49b649b6a20919a0711070803089206c",
+        "size": 7145,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "3d6b458efdfc6c26e196b907ca56f14ee015e7272d46e179e5b6fccfb7b99a39",
+        "size": 3628,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "1cce62b80db12fc033d85250b5881b1a288476229abda8e1abd983724befd56f",
+        "size": 1748,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1088,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4c/4cd903859549d4b20b571041f96dfae1136ed079c476126268f9d7cc1b611150",
+          "sha256": "4cd903859549d4b20b571041f96dfae1136ed079c476126268f9d7cc1b611150"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4cd903859549d4b20b571041f96dfae1136ed079c476126268f9d7cc1b611150",
+        "size": 1088
+      },
+      {
+        "blob": {
+          "bytes": 7145,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e4/e42512412a98a913be8db9d4a117737a49b649b6a20919a0711070803089206c",
+          "sha256": "e42512412a98a913be8db9d4a117737a49b649b6a20919a0711070803089206c"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "e42512412a98a913be8db9d4a117737a49b649b6a20919a0711070803089206c",
+        "size": 7145
+      }
+    ],
+    "expandedBytes": 13609,
+    "packageIdentity": {
+      "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+      "homepage": "https://github.com/micromatch/is-glob",
+      "license": "MIT",
+      "name": "is-glob",
+      "repository": "micromatch/is-glob",
+      "version": "4.0.3"
+    },
+    "packageMetadata": {
+      "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+      "bugs": {
+        "url": "https://github.com/micromatch/is-glob/issues"
+      },
+      "contributors": [
+        "Brian Woodward (https://twitter.com/doowb)",
+        "Daniel Perez (https://tuvistavie.com)",
+        "Jon Schlinkert (http://twitter.com/jonschlinkert)"
+      ],
+      "dependencies": {
+        "is-extglob": "^2.1.1"
+      },
+      "description": "Returns `true` if the given string looks like a glob pattern or an extglob pattern. This makes it easy to create code that only uses external modules like node-glob when necessary, resulting in much faster code execution and initialization time, and a better user experience.",
+      "devDependencies": {
+        "gulp-format-md": "^0.1.10",
+        "mocha": "^3.0.2"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      },
+      "files": [
+        "index.js"
+      ],
+      "homepage": "https://github.com/micromatch/is-glob",
+      "keywords": [
+        "bash",
+        "braces",
+        "check",
+        "exec",
+        "expression",
+        "extglob",
+        "glob",
+        "globbing",
+        "globstar",
+        "is",
+        "match",
+        "matches",
+        "pattern",
+        "regex",
+        "regular",
+        "string",
+        "test"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "is-glob",
+      "repository": "micromatch/is-glob",
+      "scripts": {
+        "test": "mocha && node benchmark.js"
+      },
+      "verb": {
+        "layout": "default",
+        "plugins": [
+          "gulp-format-md"
+        ],
+        "reflinks": [
+          "assemble",
+          "bach",
+          "base",
+          "composer",
+          "gulp",
+          "has-glob",
+          "is-valid-glob",
+          "micromatch",
+          "npm",
+          "scaffold",
+          "verb",
+          "vinyl"
+        ],
+        "related": {
+          "list": [
+            "assemble",
+            "base",
+            "update",
+            "verb"
+          ]
+        }
+      },
+      "version": "4.0.3"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 4255,
+      "sha256": "3fe453fb193bb58f6f0505dfb1151230935380b5b55e1f9864261c2aafc1bec6"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

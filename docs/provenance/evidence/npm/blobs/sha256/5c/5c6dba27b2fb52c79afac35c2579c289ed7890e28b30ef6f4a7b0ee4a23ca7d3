@@ -1,0 +1,117 @@
+{
+  "artifactId": "33d2c968541d62b0f651c3f7775a752e952ab576906e72f84c4a5308f0f0cde4",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2741,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "473dc2a4d220778e0d12e3df20b4434008b8a62f0eb33adf2f91825a1bd81773",
+        "size": 1259,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "59a0b25379fff19195343d47759339397c689e8ab93270adcab2d106a80e1625",
+        "size": 1120,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "2ccc81d28d7d13e2868eaf69e8e7fcdac6a4ae912235707cbdaef321385344b7",
+        "size": 715,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "ff63f66c164b2869e1963865c4f77875fa26f47e8ace82691e1e81b053c0e07a",
+        "size": 1962,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      }
+    ],
+    "expandedBytes": 6173,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "onetime",
+      "repository": "sindresorhus/onetime",
+      "version": "5.1.2"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "dependencies": {
+        "mimic-fn": "^2.1.0"
+      },
+      "description": "Ensure a function is only called once",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "tsd": "^0.7.1",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=6"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "once",
+        "function",
+        "one",
+        "onetime",
+        "func",
+        "fn",
+        "single",
+        "call",
+        "called",
+        "prevent"
+      ],
+      "license": "MIT",
+      "name": "onetime",
+      "repository": "sindresorhus/onetime",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "5.1.2"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2741,
+      "sha256": "f059b2ea801cb7b253c4613f43d96cd56ae8dda56faa0999539aa1795725aacd"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

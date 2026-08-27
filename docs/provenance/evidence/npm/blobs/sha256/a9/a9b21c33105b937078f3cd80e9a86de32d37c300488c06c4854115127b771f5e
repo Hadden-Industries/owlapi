@@ -1,0 +1,127 @@
+{
+  "artifactId": "2337c9cc15e9a3db55ae8fce89edd60c37284db2f7a6d18b4c72dac0497c2e05",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7982,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "898c2bcff663681498ad1ca8235d45b6e70b10cdf1f869a5b5e69f6e46efedd3",
+        "size": 739,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "b806667ca0abc175e4c98c4e9c073a98739292508591d0530e5a3d9c1743c96b",
+        "size": 5249,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/npa.js",
+        "sha256": "41cd09e778c4a7588df362588dbe9146a024d5cfcdf449702feb294e6acde761",
+        "size": 14251,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "5f4e94a829ee5893b15168657c3a6268258961c86ab5230ff08ee4a2f6fe0f2b",
+        "size": 1514,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 739,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/89/898c2bcff663681498ad1ca8235d45b6e70b10cdf1f869a5b5e69f6e46efedd3",
+          "sha256": "898c2bcff663681498ad1ca8235d45b6e70b10cdf1f869a5b5e69f6e46efedd3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "898c2bcff663681498ad1ca8235d45b6e70b10cdf1f869a5b5e69f6e46efedd3",
+        "size": 739
+      }
+    ],
+    "expandedBytes": 21753,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": "https://github.com/npm/npm-package-arg",
+      "license": "ISC",
+      "name": "npm-package-arg",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/npm-package-arg.git"
+      },
+      "version": "14.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "bugs": {
+        "url": "https://github.com/npm/npm-package-arg/issues"
+      },
+      "dependencies": {
+        "hosted-git-info": "^10.1.0",
+        "proc-log": "^7.0.0",
+        "semver": "^7.3.5",
+        "validate-npm-package-name": "^8.0.0"
+      },
+      "description": "Parse the things that can be arguments to `npm install`",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^6.0.0",
+        "@npmcli/template-oss": "5.1.0",
+        "tap": "^16.0.1"
+      },
+      "directories": {
+        "test": "test"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "homepage": "https://github.com/npm/npm-package-arg",
+      "license": "ISC",
+      "main": "./lib/npa.js",
+      "name": "npm-package-arg",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/npm-package-arg.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "npmclilint": "npmcli-lint",
+        "postlint": "template-oss-check",
+        "postsnap": "npm run lintfix --",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": true,
+        "version": "5.1.0"
+      },
+      "version": "14.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 7982,
+      "sha256": "d93510d179886f11b47f51231129e6b637a753b1460c58580f0ef38fd3efee8a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

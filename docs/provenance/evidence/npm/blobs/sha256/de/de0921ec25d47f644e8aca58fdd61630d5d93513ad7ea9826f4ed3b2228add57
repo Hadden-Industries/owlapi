@@ -1,0 +1,125 @@
+{
+  "artifactId": "e46cde5263f7c5169abcf05233fb2b4384c531c5f4c39ac7f8ac96f0278d4429",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1829,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "0209a9ef963f96cbc5eeab555406353047046b2c30f74ccd61c750474b0591d1",
+        "size": 614,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "7306f2ecc168c9e20be4a2a3d44a0dad59ea21dc0bf4cd41ea85829bc79e2c18",
+        "size": 505,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "c19b1a51e6f829e71629c32e67c67d36cb8edbc92af4c408891711aadb40e8c8",
+        "size": 640,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "860e7775ad4cad536d5cda6b119f09cf527df57a9190f91860d81141d14ec107",
+        "size": 906,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 906,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/86/860e7775ad4cad536d5cda6b119f09cf527df57a9190f91860d81141d14ec107",
+          "sha256": "860e7775ad4cad536d5cda6b119f09cf527df57a9190f91860d81141d14ec107"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "860e7775ad4cad536d5cda6b119f09cf527df57a9190f91860d81141d14ec107",
+        "size": 906
+      }
+    ],
+    "expandedBytes": 3774,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "detect-newline",
+      "repository": "sindresorhus/detect-newline",
+      "version": "3.1.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "description": "Detect the dominant newline character of a string",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "tsd": "^0.7.2",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "newline",
+        "linebreak",
+        "line-break",
+        "line",
+        "lf",
+        "crlf",
+        "eol",
+        "linefeed",
+        "character",
+        "char"
+      ],
+      "license": "MIT",
+      "name": "detect-newline",
+      "repository": "sindresorhus/detect-newline",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "3.1.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 1829,
+      "sha256": "169e7d8cf483d073ed7c7613d9c5c47f54aeec57e7643f709ea4b3720c46f31d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

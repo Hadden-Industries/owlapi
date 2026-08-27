@@ -1,0 +1,127 @@
+{
+  "artifactId": "7884ad2f18eb18f8914ccca743cf64baf5d2391a3036de445d5e7ae79b40a86a",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4869,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "5863ec4d615feecc4c1879e62e996afa23cd5416fc592b7fb92fba6ad2c3534c",
+        "size": 1437,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "a8024e11e3098ba6e7273734ed9d369c70f80ebb3fcd5311c487d6a2491a4163",
+        "size": 716,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "8b660566735bc739b7adf29aeaf9f634a84c5584e490b6346b8111862fb388bc",
+        "size": 10971,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "63134cceb97af2e298aa8dbc6419e3c99fbfca7351d4252235dbb11533169718",
+        "size": 133,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e8b4de431db5bb1e1a11bb9b97a3902d9fd754228fd00384a82bcee1c1bdfee3",
+        "size": 1227,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 15616,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "babel-jest",
+      "repository": {
+        "directory": "packages/babel-jest",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.4.1"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@jest/transform": "30.4.1",
+        "@types/babel__core": "^7.20.5",
+        "babel-plugin-istanbul": "^7.0.1",
+        "babel-preset-jest": "30.4.0",
+        "chalk": "^4.1.2",
+        "graceful-fs": "^4.2.11",
+        "slash": "^3.0.0"
+      },
+      "description": "Jest plugin to use babel for transformation.",
+      "devDependencies": {
+        "@babel-8/core": "npm:@babel/core@8.0.0-rc.4",
+        "@babel/core": "^7.27.4",
+        "@jest/test-utils": "30.4.1",
+        "@types/graceful-fs": "^4.1.9"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "b3b4a09ed3005369dacc7466d1d2122797283785",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "babel-jest",
+      "peerDependencies": {
+        "@babel/core": "^7.11.0 || ^8.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-jest",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.4.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 4869,
+      "sha256": "b499870004a8922c6d3a0e1d201f5a67a7bd925bf95407e21a6324455a1a3f33"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

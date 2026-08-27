@@ -1,0 +1,99 @@
+{
+  "artifactId": "88b70061d59bef792fbfeb8943080a9df1898612c82a8e97a3d56451131850a9",
+  "evidence": {
+    "archiveRoot": "yargs-parser",
+    "compressedBytes": 3312,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "yargs-parser",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "yargs-parser/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "yargs-parser/README.md",
+        "sha256": "9f0eda92b589874556e0895adc6b21e0e7bcc086715b4c9eca0c49714ff1097b",
+        "size": 489,
+        "type": "FILE"
+      },
+      {
+        "path": "yargs-parser/index.d.ts",
+        "sha256": "bae8d023ef6b23df7da26f51cea44321f95817c190342a36882e93b80d07a960",
+        "size": 6215,
+        "type": "FILE"
+      },
+      {
+        "path": "yargs-parser/package.json",
+        "sha256": "3c530a00514e42749bb5538ce8f99d30e0be5d0e62977136e9f44e5f17d883ae",
+        "size": 804,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1141,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c2/c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        "kind": "LICENCE",
+        "path": "yargs-parser/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141
+      }
+    ],
+    "expandedBytes": 8649,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/yargs-parser",
+      "license": "MIT",
+      "name": "@types/yargs-parser",
+      "repository": {
+        "directory": "types/yargs-parser",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "version": "21.0.3"
+    },
+    "packageMetadata": {
+      "contributors": [
+        {
+          "githubUsername": "milesj",
+          "name": "Miles Johnson",
+          "url": "https://github.com/milesj"
+        }
+      ],
+      "dependencies": {},
+      "description": "TypeScript definitions for yargs-parser",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/yargs-parser",
+      "license": "MIT",
+      "main": "",
+      "name": "@types/yargs-parser",
+      "repository": {
+        "directory": "types/yargs-parser",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "scripts": {},
+      "typeScriptVersion": "4.5",
+      "types": "index.d.ts",
+      "typesPublisherContentHash": "c8ba48d493937115b81658ba71ff9ae3452d2f1b86a9fea357703f8745fa34d7",
+      "version": "21.0.3"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3312,
+      "sha256": "db762df1f459d7a9401ace02649c22d9edb52614d48d73ed3173fb1d8b4f5bc0"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

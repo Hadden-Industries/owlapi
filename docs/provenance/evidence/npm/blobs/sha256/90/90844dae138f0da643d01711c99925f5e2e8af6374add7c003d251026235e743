@@ -1,0 +1,120 @@
+{
+  "artifactId": "76f3bc1568d36f4ed78771568bb105d776e58fefccac5d0ceb397b91dc9d59a9",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1852,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "11734bf6e540e2c021413451205315e5053932de9df9e81279cf2acad6f135ed",
+        "size": 717,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "0f2c8c70f016ce8d955c00bd3fcd99507566a21f1844385d4f186179b5cf8454",
+        "size": 1237,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "8f3c7e1002f2161e6d8f5900c73cf2e5aa82b4a1028bb0a96e201ff3db6e355b",
+        "size": 202,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "ac3d03b4b239b3eff717b2fdb3dac9f32fd9bf49ee8c20cd87f82fd148c2a7e5",
+        "size": 1328,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 717,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/11734bf6e540e2c021413451205315e5053932de9df9e81279cf2acad6f135ed",
+          "sha256": "11734bf6e540e2c021413451205315e5053932de9df9e81279cf2acad6f135ed"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "11734bf6e540e2c021413451205315e5053932de9df9e81279cf2acad6f135ed",
+        "size": 717
+      }
+    ],
+    "expandedBytes": 3484,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": "https://github.com/iarna/unique-filename",
+      "license": "ISC",
+      "name": "unique-filename",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/unique-filename.git"
+      },
+      "version": "4.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "bugs": {
+        "url": "https://github.com/iarna/unique-filename/issues"
+      },
+      "dependencies": {
+        "unique-slug": "^5.0.0"
+      },
+      "description": "Generate a unique filename for use in temporary directories or caches.",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^5.0.0",
+        "@npmcli/template-oss": "4.23.3",
+        "tap": "^16.3.0"
+      },
+      "engines": {
+        "node": "^18.17.0 || >=20.5.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "homepage": "https://github.com/iarna/unique-filename",
+      "keywords": [],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "unique-filename",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/unique-filename.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": true,
+        "version": "4.23.3"
+      },
+      "version": "4.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1852,
+      "sha256": "b63d6285dcecbe19a7e1b8a3919730b3ab27f3c1e920aa3875f85ef283654851"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

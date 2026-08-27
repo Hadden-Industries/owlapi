@@ -1,0 +1,152 @@
+{
+  "artifactId": "463e4d7d41817353e1120e153d5506828d1b774282d3b8fdc5da601f603d1a42",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 46275,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "6b0c1f98ec71a46b44276c4e5095822f33efaba2dfac61c17c24fe5d666ccaee",
+        "size": 1085,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "1373eb8c0b4ce6829f4005069b8b8e8d81018d4868faa24c63f8ddc999d96973",
+        "size": 14890,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lexer.js",
+        "sha256": "04a541ad2c05d9464eeabd2cb4b44a1a6d46be1073c52dcd2e8f33e36bfcbfb5",
+        "size": 32643,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lexer.mjs",
+        "sha256": "a403d4fe405b00a89c84b52528a78e74d3603d8bbea787935fed9a7bc56828cd",
+        "size": 32616,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lexer.d.mts",
+        "sha256": "9b706c0ba608498275b56b50f42075c130487304048490423e256b0a65667eac",
+        "size": 27,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lexer.d.ts",
+        "sha256": "11e156ea0e2b165d1640172f94d8fcd6c3758698248cfb6c0127b0c0bdb97fea",
+        "size": 234,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lexer.js",
+        "sha256": "38c6e2ee98eea2d2ffa5d6bc9f51d40c3b4f2b1125f826c6302b1ad773f408ca",
+        "size": 57085,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9043b8562249f1a7fe9b87b8f26fa0bf04a4bc8d6d623a96a9d5351fa35aea39",
+        "size": 1713,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1085,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6b/6b0c1f98ec71a46b44276c4e5095822f33efaba2dfac61c17c24fe5d666ccaee",
+          "sha256": "6b0c1f98ec71a46b44276c4e5095822f33efaba2dfac61c17c24fe5d666ccaee"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "6b0c1f98ec71a46b44276c4e5095822f33efaba2dfac61c17c24fe5d666ccaee",
+        "size": 1085
+      },
+      {
+        "blob": {
+          "bytes": 14890,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/13/1373eb8c0b4ce6829f4005069b8b8e8d81018d4868faa24c63f8ddc999d96973",
+          "sha256": "1373eb8c0b4ce6829f4005069b8b8e8d81018d4868faa24c63f8ddc999d96973"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "1373eb8c0b4ce6829f4005069b8b8e8d81018d4868faa24c63f8ddc999d96973",
+        "size": 14890
+      }
+    ],
+    "expandedBytes": 140293,
+    "packageIdentity": {
+      "author": "Guy Bedford",
+      "homepage": "https://github.com/nodejs/cjs-module-lexer#readme",
+      "license": "MIT",
+      "name": "cjs-module-lexer",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nodejs/cjs-module-lexer.git"
+      },
+      "version": "2.2.1"
+    },
+    "packageMetadata": {
+      "author": "Guy Bedford",
+      "bugs": {
+        "url": "https://github.com/nodejs/cjs-module-lexer/issues"
+      },
+      "description": "Lexes CommonJS modules, returning their named exports metadata",
+      "devDependencies": {
+        "@babel/cli": "^7.5.5",
+        "@babel/core": "^7.5.5",
+        "@babel/plugin-transform-modules-commonjs": "^7.5.0",
+        "cross-env": "^7.0.3",
+        "kleur": "^2.0.2",
+        "mocha": "^11.8.0",
+        "terser": "^4.1.4"
+      },
+      "exports": {
+        "default": "./lexer.js",
+        "import": {
+          "default": "./dist/lexer.mjs",
+          "types": "./lexer.d.mts"
+        }
+      },
+      "files": [
+        "dist",
+        "lexer.d.ts",
+        "lexer.d.mts"
+      ],
+      "homepage": "https://github.com/nodejs/cjs-module-lexer#readme",
+      "license": "MIT",
+      "main": "lexer.js",
+      "name": "cjs-module-lexer",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nodejs/cjs-module-lexer.git"
+      },
+      "scripts": {
+        "bench": "node --expose-gc bench/index.mjs",
+        "build": "node build.js ; babel dist/lexer.mjs -o dist/lexer.js ; terser dist/lexer.js -o dist/lexer.js",
+        "build-wasm": "make lib/lexer.wasm ; node build.js",
+        "footprint": "npm run build && cat dist/lexer.js | gzip -9f | wc -c",
+        "prepublishOnly": "make && npm run build",
+        "test": "npm run test-wasm && npm run test-wasm-sync && npm run test-js",
+        "test-js": "cross-env NODE_OPTIONS=--disallow-code-generation-from-strings mocha -b -u tdd test/*.js",
+        "test-wasm": "cross-env WASM=1 NODE_OPTIONS=--disallow-code-generation-from-strings mocha -b -u tdd test/*.js",
+        "test-wasm-sync": "cross-env WASM_SYNC=1 NODE_OPTIONS=--disallow-code-generation-from-strings mocha -b -u tdd test/*.js"
+      },
+      "types": "lexer.d.ts",
+      "version": "2.2.1"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 46275,
+      "sha256": "a78b97a027b0236d501ccbbfeae8bb2d08b3cf1f726bbf92bb9d1dd2a3aa6458"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

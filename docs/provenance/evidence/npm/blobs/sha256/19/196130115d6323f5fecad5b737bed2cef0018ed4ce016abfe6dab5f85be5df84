@@ -1,0 +1,95 @@
+{
+  "artifactId": "8656c7afd4d0be08293e98b397b698ce771fc8cf3b75dfe835e1bc02ae017682",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2260,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "2cee71bf4612fc2efe1c6261e3f2b21f3c7259ef8a4f3593b095ae7a7bd65ad9",
+        "size": 1119,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d0671b5a7a16bb1b4568565a00b45865645102c345eba426d4e2fda6cd9b292d",
+        "size": 1813,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "79a8881e309ecd45a9193d02fdf79bc2e623effbcdba49c41b2a35e09319ef19",
+        "size": 885,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "2b73a84c1b323ff92c14604a42f9e2eef8bae799a0d7cd8fb392c45c47d3513f",
+        "size": 489,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1119,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2c/2cee71bf4612fc2efe1c6261e3f2b21f3c7259ef8a4f3593b095ae7a7bd65ad9",
+          "sha256": "2cee71bf4612fc2efe1c6261e3f2b21f3c7259ef8a4f3593b095ae7a7bd65ad9"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2cee71bf4612fc2efe1c6261e3f2b21f3c7259ef8a4f3593b095ae7a7bd65ad9",
+        "size": 1119
+      },
+      {
+        "blob": {
+          "bytes": 1813,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d0/d0671b5a7a16bb1b4568565a00b45865645102c345eba426d4e2fda6cd9b292d",
+          "sha256": "d0671b5a7a16bb1b4568565a00b45865645102c345eba426d4e2fda6cd9b292d"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "d0671b5a7a16bb1b4568565a00b45865645102c345eba426d4e2fda6cd9b292d",
+        "size": 1813
+      }
+    ],
+    "expandedBytes": 4306,
+    "packageIdentity": {
+      "author": "Stephen Sugden <me@stephensugden.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "merge-stream",
+      "repository": "grncdr/merge-stream",
+      "version": "2.0.0"
+    },
+    "packageMetadata": {
+      "author": "Stephen Sugden <me@stephensugden.com>",
+      "dependencies": {},
+      "description": "Create a stream that emits events from multiple other streams",
+      "devDependencies": {
+        "from2": "^2.0.3",
+        "istanbul": "^0.4.5"
+      },
+      "files": [
+        "index.js"
+      ],
+      "license": "MIT",
+      "name": "merge-stream",
+      "repository": "grncdr/merge-stream",
+      "scripts": {
+        "test": "istanbul cover test.js && istanbul check-cover --statements 100 --branches 100"
+      },
+      "version": "2.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 2260,
+      "sha256": "24c3be9bb27065e67519a480da43b251c8a0de6def1de79c3c22e96dd597764e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

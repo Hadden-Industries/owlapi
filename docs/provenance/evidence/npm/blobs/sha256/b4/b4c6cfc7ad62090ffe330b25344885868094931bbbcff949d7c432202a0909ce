@@ -1,0 +1,133 @@
+{
+  "artifactId": "ffd6639ccc1a3e2894413f3fe526a163801464e4a2fb3fa1734fc6d89ac493dc",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4540,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.github/workflows/run-npm-tests.yml",
+        "sha256": "c98eb730518078c38edc410a3f1a24916e67786f9adf42c3683a1da2b386c094",
+        "size": 547,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "9c6a91d2847bd9bfd493c1ca87b9c3f96302cfd069667e6dd4a6278e69a33a31",
+        "size": 1069,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "8a372a57ba70da0794958afc07870bd3bd2c8b81099dc0b86badbe7d3f726b64",
+        "size": 2678,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "83d1f00fe91178a56fd66c130199a44dea3ffd36bd31bf358d53f8ac1fb40fb9",
+        "size": 7334,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.md",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "001ba5640df99785e76b7d407ae35a24c490f145737cf3f194408fb17dfec411",
+        "size": 1042,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1069,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9c/9c6a91d2847bd9bfd493c1ca87b9c3f96302cfd069667e6dd4a6278e69a33a31",
+          "sha256": "9c6a91d2847bd9bfd493c1ca87b9c3f96302cfd069667e6dd4a6278e69a33a31"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9c6a91d2847bd9bfd493c1ca87b9c3f96302cfd069667e6dd4a6278e69a33a31",
+        "size": 1069
+      },
+      {
+        "blob": {
+          "bytes": 2678,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8a/8a372a57ba70da0794958afc07870bd3bd2c8b81099dc0b86badbe7d3f726b64",
+          "sha256": "8a372a57ba70da0794958afc07870bd3bd2c8b81099dc0b86badbe7d3f726b64"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "8a372a57ba70da0794958afc07870bd3bd2c8b81099dc0b86badbe7d3f726b64",
+        "size": 2678
+      }
+    ],
+    "expandedBytes": 12670,
+    "packageIdentity": {
+      "author": "Jim Schlight",
+      "homepage": "https://github.com/inspiredware/napi-build-utils#readme",
+      "license": "MIT",
+      "name": "napi-build-utils",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspiredware/napi-build-utils.git"
+      },
+      "version": "2.0.0"
+    },
+    "packageMetadata": {
+      "author": "Jim Schlight",
+      "binary": {
+        "napi_versions": [
+          2,
+          2,
+          3,
+          10
+        ],
+        "note": "napi-build-tools is not an N-API module. This entry is for unit testing."
+      },
+      "bugs": {
+        "url": "https://github.com/inspiredware/napi-build-utils/issues"
+      },
+      "description": "A set of utilities to assist developers of tools that build N-API native add-ons",
+      "devDependencies": {
+        "chai": "^4.1.2",
+        "jsdoc-to-markdown": "^4.0.1",
+        "mocha": "^5.2.0",
+        "standard": "^12.0.1"
+      },
+      "homepage": "https://github.com/inspiredware/napi-build-utils#readme",
+      "keywords": [
+        "n-api",
+        "prebuild",
+        "prebuild-install"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "napi-build-utils",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspiredware/napi-build-utils.git"
+      },
+      "scripts": {
+        "doc": "jsdoc2md index.js >index.md",
+        "lint": "standard",
+        "prepublishOnly": "npm run test",
+        "test": "mocha test/ && npm run lint"
+      },
+      "version": "2.0.0"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 4540,
+      "sha256": "a597633b66d0406c4ddfcdcd4eb3fa33aa89cb97f9c46fb52aa13ae889046a9e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

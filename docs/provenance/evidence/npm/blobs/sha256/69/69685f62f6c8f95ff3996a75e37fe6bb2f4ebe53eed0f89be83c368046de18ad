@@ -1,0 +1,120 @@
+{
+  "artifactId": "99d7074d5ca07310bf7e09df8be8450db27bb08c982df4cb05ba76db16e2627b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4638,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "b3e8623bbd73e4f964f9b5091c7b4c7e078fd760113890b8c1af951ab7921877",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ee96b7870ec58997cec44bb5d0a2c94133d857d0081e3fc80c9fd79c0f2e717d",
+        "size": 3006,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "9ae2cb7a049a714237185bb1be59deb75996d773a04a3602aeb5bfc935212ffe",
+        "size": 1969,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "f7450bf88a2cd3a21b348cfd8db02f35e2b1605692a278030423db37bd58c302",
+        "size": 5679,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "1ec1274d170c2e50b842dbc2bac41bd01af38ccc1867fcf31934048e499e91e8",
+        "size": 839,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b3/b3e8623bbd73e4f964f9b5091c7b4c7e078fd760113890b8c1af951ab7921877",
+          "sha256": "b3e8623bbd73e4f964f9b5091c7b4c7e078fd760113890b8c1af951ab7921877"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "b3e8623bbd73e4f964f9b5091c7b4c7e078fd760113890b8c1af951ab7921877",
+        "size": 1071
+      }
+    ],
+    "expandedBytes": 12564,
+    "packageIdentity": {
+      "author": {
+        "email": "ari@ariporad.com",
+        "name": "Ari Porad",
+        "url": "http://ariporad.com"
+      },
+      "homepage": "https://github.com/danez/pirates#readme",
+      "license": "MIT",
+      "name": "pirates",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/danez/pirates.git"
+      },
+      "version": "4.0.7"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "ari@ariporad.com",
+        "name": "Ari Porad",
+        "url": "http://ariporad.com"
+      },
+      "ava": {
+        "files": [
+          "test/*.js"
+        ],
+        "sources": [
+          "lib/**/*.js"
+        ]
+      },
+      "bugs": {
+        "url": "https://github.com/danez/pirates/issues"
+      },
+      "description": "Properly hijack require, i.e., properly define require hooks and customizations",
+      "devDependencies": {
+        "ava": "1.4.1",
+        "decache": "4.6.2"
+      },
+      "engines": {
+        "node": ">= 6"
+      },
+      "files": [
+        "lib",
+        "index.d.ts"
+      ],
+      "homepage": "https://github.com/danez/pirates#readme",
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "pirates",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/danez/pirates.git"
+      },
+      "scripts": {
+        "test": "ava"
+      },
+      "types": "index.d.ts",
+      "version": "4.0.7"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 4638,
+      "sha256": "958548738d4cf76a37f7e01e6a6974ea8a7f904ee05ede2424d6bf7be89eec17"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,232 @@
+{
+  "artifactId": "424a45880e9067423457942a7970260a8c8448f3a09208484ccc629711538577",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 25199,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "36ec394cd0f976603cfec687c19175a703c1c0d9db717a76915391e756522c8e",
+        "size": 791,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "5b7e8647509c87e4fae8e95cddf130e971349825bad12dbdf08b444593d4f375",
+        "size": 12984,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/index.js",
+        "sha256": "fbcdd6e4d3ea97e03d45a908cc143760e8908b59aadf7c27384a148ae19455c7",
+        "size": 3982,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dir.js",
+        "sha256": "8ac1c50bdb3a74d6c3e3730185b681fe3f474b3e907cc0614b905338c3b55339",
+        "size": 5597,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/fetcher.js",
+        "sha256": "b7d5a642322323017f778d113729a87dd340d4155bab90c44089b8b0ffced486",
+        "size": 18033,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/file.js",
+        "sha256": "e56e384ee34175b52b960bbb52e0f4127978cca1df3d5e7b1edaff5a24d1fba4",
+        "size": 2547,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/git.js",
+        "sha256": "74b2b389db67197b64d4cb9a9afa388ac7cb67337f05acb12a88682bd397f89a",
+        "size": 12117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "3f4a6a8d7ae3eb72ad61e567bae8d05356cc0a7439e9f7006701728a3af95d32",
+        "size": 808,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/registry.js",
+        "sha256": "306ffe4b4176c78c1118f09ee594616e843b7d708780dba930a82965a56c3d31",
+        "size": 14658,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/remote.js",
+        "sha256": "d4843de4eec468b75632de2f431eb769a333dbd345b1b294f57a4a9eb077192c",
+        "size": 2661,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util/add-git-sha.js",
+        "sha256": "609c1e6b9d8c49120ef823ba6ad213819a8b92bcc977ad70f4f00d7e475856c9",
+        "size": 629,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util/cache-dir.js",
+        "sha256": "b3b77272a4a66e4976a121c028857fa46d8600c7b385cb0db9e0f7c729a72e4f",
+        "size": 610,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util/is-package-bin.js",
+        "sha256": "4814cc5d581ac2d21ffedd16b657fa7289b32309733e83b1f33a0f159a8d2983",
+        "size": 824,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util/npm.js",
+        "sha256": "7caa5a0e9c7abcf7e902911ec8523ba9264b5731122246cfa54207223b05e9f8",
+        "size": 567,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util/protected.js",
+        "sha256": "3b47c89f7d003a89f4fb9e20cc8f8cb479ea25acb302948e44d4fc49e5ac73eb",
+        "size": 222,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util/tar-create-options.js",
+        "sha256": "87c387d44fea5d1aaef41decd6896e19c45a8a8dfd560334777db2f2cf02a840",
+        "size": 914,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util/trailing-slashes.js",
+        "sha256": "d41ed7d724edd3ce667e60959d63c22da512954912074f2aeb1d986ee99b075f",
+        "size": 238,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "91b6e0507b0f85ace44164030c1561265159ab9edece4bcf74c483d26ce1f451",
+        "size": 1994,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 791,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/36/36ec394cd0f976603cfec687c19175a703c1c0d9db717a76915391e756522c8e",
+          "sha256": "36ec394cd0f976603cfec687c19175a703c1c0d9db717a76915391e756522c8e"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "36ec394cd0f976603cfec687c19175a703c1c0d9db717a76915391e756522c8e",
+        "size": 791
+      }
+    ],
+    "expandedBytes": 80176,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "pacote",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/pacote.git"
+      },
+      "version": "22.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "bin": {
+        "pacote": "bin/index.js"
+      },
+      "dependencies": {
+        "@gar/promise-retry": "^1.0.0",
+        "@npmcli/git": "^8.0.0",
+        "@npmcli/installed-package-contents": "^5.0.0",
+        "@npmcli/package-json": "^8.0.0",
+        "@npmcli/promise-spawn": "^10.0.0",
+        "@npmcli/run-script": "^11.0.0",
+        "cacache": "^21.0.1",
+        "fs-minipass": "^3.0.0",
+        "minipass": "^7.0.2",
+        "npm-package-arg": "^14.0.0",
+        "npm-packlist": "^11.2.0",
+        "npm-pick-manifest": "^12.0.0",
+        "npm-registry-fetch": "^20.0.1",
+        "proc-log": "^7.0.0",
+        "sigstore": "^5.0.0",
+        "ssri": "^14.0.0",
+        "tar": "^7.4.3"
+      },
+      "description": "JavaScript package downloader",
+      "devDependencies": {
+        "@npmcli/arborist": "^9.0.2",
+        "@npmcli/eslint-config": "^7.0.0",
+        "@npmcli/template-oss": "5.1.0",
+        "hosted-git-info": "^10.1.1",
+        "mutate-fs": "^2.1.1",
+        "nock": "^13.2.4",
+        "npm-registry-mock": "^1.3.2",
+        "rimraf": "^6.0.1",
+        "tap": "^16.0.1"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "keywords": [
+        "packages",
+        "npm",
+        "git"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "pacote",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/pacote.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ],
+        "timeout": 300
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": "true",
+        "updateNpm": false,
+        "version": "5.1.0",
+        "windowsCI": false
+      },
+      "version": "22.0.0"
+    },
+    "physicalEntryCount": 18,
+    "tarball": {
+      "bytes": 25199,
+      "sha256": "c1308ed9afa61cef267033fee7566144ccd1f234442ade86dfc8e83ebd66b889"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

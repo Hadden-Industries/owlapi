@@ -1,0 +1,125 @@
+{
+  "artifactId": "ca710a45a169a6f0ef206c88b1d59f3f76bf9e84f544ab6789d5c76c224aed48",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2602,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "f3059e7c8f71ba5556eb9b6f53c3f8a8bbc34319fac4f8cfeffc3b71e39b15d1",
+        "size": 1093,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "68de92df8196cfbbadaaf85102e430777fc41cb2710a261c3d37557316982c2a",
+        "size": 1070,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "1d4908c925c1ac9402929b96d7b76570547d8999e3c4d4c659dca17e0670ac4d",
+        "size": 377,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "0fd641a3b3e3ec89058051a284135a3f30b94a325fb809c4e4159ec5495b5cdc",
+        "size": 271,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "da79d1fd09d8b789fdc276cdcdd27c4554bd6a04ccd0392d2a351d48e55c0103",
+        "size": 1595,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4c42e8f38a2f0299701c5ae807cb21663c1c2ded3390218f6832730c246ddfd3",
+        "size": 1126,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1070,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/68/68de92df8196cfbbadaaf85102e430777fc41cb2710a261c3d37557316982c2a",
+          "sha256": "68de92df8196cfbbadaaf85102e430777fc41cb2710a261c3d37557316982c2a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "68de92df8196cfbbadaaf85102e430777fc41cb2710a261c3d37557316982c2a",
+        "size": 1070
+      }
+    ],
+    "expandedBytes": 5532,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "collect-v8-coverage",
+      "repository": "SimenB/collect-v8-coverage",
+      "version": "1.0.3"
+    },
+    "packageMetadata": {
+      "commitlint": {
+        "extends": [
+          "@commitlint/config-conventional"
+        ]
+      },
+      "devDependencies": {
+        "@commitlint/cli": "^19.0.0",
+        "@commitlint/config-conventional": "^19.0.0",
+        "@semantic-release/changelog": "^6.0.0",
+        "@semantic-release/git": "^10.0.0",
+        "husky": "^9.0.0",
+        "lint-staged": "^15.0.0",
+        "prettier": "^3.0.0",
+        "semantic-release": "^25.0.0"
+      },
+      "files": [
+        "CHANGELOG.md",
+        "index.js",
+        "index.d.ts"
+      ],
+      "license": "MIT",
+      "lint-staged": {
+        "*.{js,ts,md,json}": "prettier --write"
+      },
+      "main": "index.js",
+      "name": "collect-v8-coverage",
+      "packageManager": "yarn@4.10.3",
+      "prettier": {
+        "singleQuote": true,
+        "trailingComma": "all"
+      },
+      "release": {
+        "plugins": [
+          "@semantic-release/commit-analyzer",
+          "@semantic-release/release-notes-generator",
+          "@semantic-release/changelog",
+          "@semantic-release/npm",
+          "@semantic-release/git",
+          "@semantic-release/github"
+        ]
+      },
+      "repository": "SimenB/collect-v8-coverage",
+      "scripts": {
+        "prepare": "husky"
+      },
+      "types": "index.d.ts",
+      "version": "1.0.3"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 2602,
+      "sha256": "df5ce7bdcb01a5753b65ac6f04396a7b2c3d2d19c94827a2327e35666cb46fe9"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

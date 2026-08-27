@@ -1,0 +1,182 @@
+{
+  "artifactId": "c005276aacabfb91183dd3bef9dcc3b34a8bf272c7ffc51d18dc1d64f5ef18a5",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 236224,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+        "size": 1076,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "71bc9106276d4da0dcf03fa870e9557b8f20e9dbd66b4957d51107a3fd3b5aad",
+        "size": 83,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-core.cjs.js",
+        "sha256": "12e6904ed5282629782631641c48a407346385651c51b5aa6482e08178a380b1",
+        "size": 329732,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-core.cjs.min.d.ts",
+        "sha256": "4a131a923e876ae2af2d870bf719e8a439016c388fe007a2971560d90b13006b",
+        "size": 13652,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-core.cjs.min.js",
+        "sha256": "702aaf77cf40004737b5b8d518b9b0b943224346cece630bcb059ca8ee8088c5",
+        "size": 118311,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-core.d.mts",
+        "sha256": "4a131a923e876ae2af2d870bf719e8a439016c388fe007a2971560d90b13006b",
+        "size": 13652,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-core.d.ts",
+        "sha256": "761af415c580414ca41c7247296c42dc77e57ab2a8fbc36b37ec749fe08f0f7c",
+        "size": 13685,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-core.esm-bundler.js",
+        "sha256": "0cf8cce517536e0a4d8dea0053ef1b02ed01d1993c36df838a7af2194ad26012",
+        "size": 399270,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-core.js",
+        "sha256": "46f02570f280155126c4093833784cd3bb7ce0d134af27274139af5ffb11cb1f",
+        "size": 474245,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-core.min.d.mts",
+        "sha256": "4a131a923e876ae2af2d870bf719e8a439016c388fe007a2971560d90b13006b",
+        "size": 13652,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-core.min.js",
+        "sha256": "7c5d9a10d8b05c23172a536f548b3de96ae2a2de7361d08d62a0c03bbb31c5d6",
+        "size": 134056,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-core.min.mjs",
+        "sha256": "fdf56b6993fd9cf89aaf045d0829d248d59d646685e381a4a78f85d71be92800",
+        "size": 118173,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi-core.mjs",
+        "sha256": "95d2bc27a78d6fb26f98cbd33058f5743801dd5469f76fae91e9936ee1fdba41",
+        "size": 329331,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "e0e198695b0a24a9716fb28179b55583dd9fda8e761c06990c345835cc34b366",
+        "size": 206,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9d93d85c0fd78ef680677dff067cb112ad2ddc33edb3e9a45ca02637de0448ac",
+        "size": 1283,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1076,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/20/2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+          "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+        "size": 1076
+      }
+    ],
+    "expandedBytes": 1960407,
+    "packageIdentity": {
+      "author": "toyobayashi",
+      "homepage": "https://github.com/toyobayashi/emnapi#readme",
+      "license": "MIT",
+      "name": "@emnapi/core",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/toyobayashi/emnapi.git"
+      },
+      "version": "1.10.0"
+    },
+    "packageMetadata": {
+      "author": "toyobayashi",
+      "bugs": {
+        "url": "https://github.com/toyobayashi/emnapi/issues"
+      },
+      "dependencies": {
+        "@emnapi/wasi-threads": "1.2.1",
+        "tslib": "^2.4.0"
+      },
+      "description": "emnapi core",
+      "exports": {
+        ".": {
+          "default": "./index.js",
+          "import": "./dist/emnapi-core.mjs",
+          "module": "./dist/emnapi-core.esm-bundler.js",
+          "types": {
+            "default": "./dist/emnapi-core.d.ts",
+            "import": "./dist/emnapi-core.d.mts",
+            "module": "./dist/emnapi-core.d.ts"
+          }
+        },
+        "./dist/emnapi-core.cjs.min": {
+          "default": "./dist/emnapi-core.cjs.min.js",
+          "types": "./dist/emnapi-core.d.ts"
+        },
+        "./dist/emnapi-core.min.mjs": {
+          "default": "./dist/emnapi-core.min.mjs",
+          "types": "./dist/emnapi-core.d.mts"
+        }
+      },
+      "homepage": "https://github.com/toyobayashi/emnapi#readme",
+      "license": "MIT",
+      "main": "index.js",
+      "module": "./dist/emnapi-core.esm-bundler.js",
+      "name": "@emnapi/core",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/toyobayashi/emnapi.git"
+      },
+      "scripts": {
+        "build": "node ./script/build.js"
+      },
+      "sideEffects": false,
+      "types": "./dist/emnapi-core.d.ts",
+      "version": "1.10.0"
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 236224,
+      "sha256": "6834612073231f703a67aae5fa0192cef09748d634ba3701abe478988c28a720"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,86 @@
+{
+  "artifactId": "df8198440c86fe910ff32139cd2829abc8f69912038701b95c4fd222c466f3a5",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1636,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/lib/tmpl.js",
+        "sha256": "b22043dae3509a207b9dde6b295a1056247430c7f21254c0e065339fa5bd8e85",
+        "size": 564,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "efd6f9e708b909de1a18730b90fb6394a3125680ac2f98a87cd23d1a0c93afa2",
+        "size": 1499,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "c41cf9a3685ffcaafc5f542d61df9256edbea9df65afa7806570d9e596b92416",
+        "size": 448,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "982da7b9c777513a1c4a847e56ec378924b9965f5135bf335665649896b0f5d9",
+        "size": 263,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1499,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ef/efd6f9e708b909de1a18730b90fb6394a3125680ac2f98a87cd23d1a0c93afa2",
+          "sha256": "efd6f9e708b909de1a18730b90fb6394a3125680ac2f98a87cd23d1a0c93afa2"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "efd6f9e708b909de1a18730b90fb6394a3125680ac2f98a87cd23d1a0c93afa2",
+        "size": 1499
+      }
+    ],
+    "expandedBytes": 2774,
+    "packageIdentity": {
+      "author": "Naitik Shah <n@daaku.org>",
+      "homepage": "https://github.com/daaku/nodejs-tmpl",
+      "license": "BSD-3-Clause",
+      "name": "tmpl",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/daaku/nodejs-tmpl"
+      },
+      "version": "1.0.5"
+    },
+    "packageMetadata": {
+      "author": "Naitik Shah <n@daaku.org>",
+      "description": "JavaScript micro templates.",
+      "devDependencies": {
+        "mocha": "^9.1.1"
+      },
+      "homepage": "https://github.com/daaku/nodejs-tmpl",
+      "license": "BSD-3-Clause",
+      "main": "lib/tmpl",
+      "name": "tmpl",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/daaku/nodejs-tmpl"
+      },
+      "scripts": {
+        "test": "NODE_PATH=./lib mocha --ui exports"
+      },
+      "version": "1.0.5"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1636,
+      "sha256": "b90108f4108436b7fcaa4339cf7d70ebfe1d95bbdfa013418fd11159f926d8ae"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

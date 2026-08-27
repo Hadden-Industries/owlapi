@@ -1,0 +1,126 @@
+{
+  "artifactId": "6d1b91f7b700b987dfcd6e76842d92f445ab7d7173e5007e7a20cf220b4d7521",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 13328,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.gitattributes",
+        "sha256": "dcc4e04a9952ff446b9d78c624d80379b0f20f5817a89b9b2b1ab8b55b82fd52",
+        "size": 483,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.npmignore",
+        "sha256": "3806645e5b73066b8e34b12b179132ee4151fe287d47ccf10f6e9df06e518039",
+        "size": 1970,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "f5fe530d59993859c5b554de4ae43b42526ccd579c3738a3bc498239d6e142d5",
+        "size": 6172,
+        "type": "FILE"
+      },
+      {
+        "path": "package/css-example.py-js",
+        "sha256": "38722eaf3f26692e65322f080cb00ce9398d5306a61f1f2b04ac226ba4537ca6",
+        "size": 5030,
+        "type": "FILE"
+      },
+      {
+        "path": "package/example.html",
+        "sha256": "9f94effb94f8a687ab67e8069ccf46c3404e3f1afe6a76ec009deb636c94b436",
+        "size": 3027,
+        "type": "FILE"
+      },
+      {
+        "path": "package/generator.html",
+        "sha256": "851b46cbec4a8cb141f4c8b83d52337ab80b354a7c38031ee14f7882c10ce383",
+        "size": 1220,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "adcd8ddadf3d4420e9aba8f88411bb859f6f5ce08c64fbb220eec61f9c02a8fa",
+        "size": 571,
+        "type": "FILE"
+      },
+      {
+        "path": "package/railroad-diagrams.css",
+        "sha256": "cbffdbb716d877d9cb2353dd57c95f47770fd6a770f827e1b999f2e9b81e9fb1",
+        "size": 475,
+        "type": "FILE"
+      },
+      {
+        "path": "package/railroad-diagrams.js",
+        "sha256": "5d6a6210c57aa24965edd5f9e4f02415e624f922d107246de9639244b9d16c47",
+        "size": 17828,
+        "type": "FILE"
+      },
+      {
+        "path": "package/railroad_diagrams.py",
+        "sha256": "0fa16892d5d164e958c5bf37abe3a1c4ee905ae51982a40f0a99def83d37c9a1",
+        "size": 15237,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 6172,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/f5/f5fe530d59993859c5b554de4ae43b42526ccd579c3738a3bc498239d6e142d5",
+          "sha256": "f5fe530d59993859c5b554de4ae43b42526ccd579c3738a3bc498239d6e142d5"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "f5fe530d59993859c5b554de4ae43b42526ccd579c3738a3bc498239d6e142d5",
+        "size": 6172
+      }
+    ],
+    "expandedBytes": 52013,
+    "packageIdentity": {
+      "author": "Tab Atkins Jr.",
+      "homepage": "https://github.com/tabatkins/railroad-diagrams",
+      "license": "CC0-1.0",
+      "name": "railroad-diagrams",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/tabatkins/railroad-diagrams.git"
+      },
+      "version": "1.0.0"
+    },
+    "packageMetadata": {
+      "author": "Tab Atkins Jr.",
+      "bugs": {
+        "url": "https://github.com/tabatkins/railroad-diagrams/issues"
+      },
+      "description": "A small JS+SVG library for drawing railroad syntax diagrams.",
+      "homepage": "https://github.com/tabatkins/railroad-diagrams",
+      "keywords": [
+        "railroad",
+        "syntax",
+        "diagrams",
+        "grammar",
+        "svg"
+      ],
+      "license": "CC0-1.0",
+      "main": "railroad-diagrams.js",
+      "name": "railroad-diagrams",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/tabatkins/railroad-diagrams.git"
+      },
+      "version": "1.0.0"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 13328,
+      "sha256": "89bca8b225095e78a338699f1acb1ef841fa8e7526a45555960a28a09896e722"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

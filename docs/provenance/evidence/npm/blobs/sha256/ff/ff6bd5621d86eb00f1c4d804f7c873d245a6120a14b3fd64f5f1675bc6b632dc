@@ -1,0 +1,192 @@
+{
+  "artifactId": "1bc9677f0a22da4d7b9e368d955354965ff151eb4379403715ffc53db71a5d49",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6007,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "a7254c95a62d9d6d89f7aa3d426ab821ab2df38671194b9eb81d222cfc878194",
+        "size": 1092,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "07d7509cb675e1c8ef3b640f1e29f681fd722374975e191c1dc4aa6d0a7faf3c",
+        "size": 2104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "d3792cd546aadd281a925e7641f885a2d6a9ea43712eef4c7470cd258f38d74b",
+        "size": 32,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "fccc295d02a7ac7144adeb7acddf3175b24f818bc7deeddd32fc6b3a9a83f925",
+        "size": 840,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js.map",
+        "sha256": "7c71a6212ac1a72943fd3cf20c2e1e562819a5386a334c371a789e313cf4325b",
+        "size": 177,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Validate.d.ts",
+        "sha256": "67b9728244f4fbd25d3a41cba1fadb321c26971aded8a7e28c53be2bed0c7ab2",
+        "size": 962,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Validate.js",
+        "sha256": "dd7c2c9434a9f5a299c86d08e8b6505535c477f1a67936b25ee5d972f4387903",
+        "size": 4664,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Validate.js.map",
+        "sha256": "1b9480160f042cf4820332c5cf06379702d4a1f4362dae448304e230ced695ad",
+        "size": 7208,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "21ffd955187582bfa3d08cb551bafaadd91fa2f5796550817e936c9e1d55e8ad",
+        "size": 2158,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1092,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a7/a7254c95a62d9d6d89f7aa3d426ab821ab2df38671194b9eb81d222cfc878194",
+          "sha256": "a7254c95a62d9d6d89f7aa3d426ab821ab2df38671194b9eb81d222cfc878194"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.txt",
+        "sha256": "a7254c95a62d9d6d89f7aa3d426ab821ab2df38671194b9eb81d222cfc878194",
+        "size": 1092
+      },
+      {
+        "blob": {
+          "bytes": 2104,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/07/07d7509cb675e1c8ef3b640f1e29f681fd722374975e191c1dc4aa6d0a7faf3c",
+          "sha256": "07d7509cb675e1c8ef3b640f1e29f681fd722374975e191c1dc4aa6d0a7faf3c"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "07d7509cb675e1c8ef3b640f1e29f681fd722374975e191c1dc4aa6d0a7faf3c",
+        "size": 2104
+      }
+    ],
+    "expandedBytes": 19237,
+    "packageIdentity": {
+      "author": "Ruben Taelman <rubensworks@gmail.com>",
+      "homepage": "https://github.com/comunica/validate-iri.js#readme",
+      "license": "MIT",
+      "name": "validate-iri",
+      "repository": "git@github.com:comunica/validate-iri.js.git",
+      "version": "1.0.1"
+    },
+    "packageMetadata": {
+      "author": "Ruben Taelman <rubensworks@gmail.com>",
+      "bugs": {
+        "url": "https://github.com/comunica/validate-iri.js/issues"
+      },
+      "description": "Validates an IRI according to RFC 3987",
+      "devDependencies": {
+        "@rubensworks/eslint-config": "^1.0.0",
+        "@types/jest": "^28.0.0",
+        "@typescript-eslint/eslint-plugin": "^4.2.0",
+        "@typescript-eslint/parser": "^4.1.1",
+        "coveralls": "^3.0.0",
+        "eslint": "^7.9.0",
+        "eslint-config-es": "^3.23.0",
+        "eslint-import-resolver-typescript": "^2.3.0",
+        "eslint-plugin-import": "^2.22.0",
+        "eslint-plugin-jest": "^24.0.2",
+        "eslint-plugin-tsdoc": "^0.2.7",
+        "eslint-plugin-unused-imports": "^1.0.0",
+        "jest": "^28.0.0",
+        "manual-git-changelog": "^1.0.0",
+        "pre-commit": "^1.2.2",
+        "ts-jest": "^28.0.0",
+        "typescript": "^4.0.2"
+      },
+      "files": [
+        "lib/**/*.d.ts",
+        "lib/**/*.js",
+        "lib/**/*.js.map",
+        "index.d.ts",
+        "index.js.map",
+        "index.js"
+      ],
+      "homepage": "https://github.com/comunica/validate-iri.js#readme",
+      "jest": {
+        "collectCoverage": true,
+        "coverageThreshold": {
+          "global": {
+            "branches": 100,
+            "functions": 100,
+            "lines": 100,
+            "statements": 100
+          }
+        },
+        "moduleFileExtensions": [
+          "ts",
+          "js"
+        ],
+        "testRegex": "(/test/.*|(\\.|/)(test|spec))\\.ts$",
+        "transform": {
+          "^.+\\.ts$": "ts-jest"
+        },
+        "transformIgnorePatterns": [
+          "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
+        ]
+      },
+      "keywords": [
+        "IRI",
+        "validate",
+        "validator",
+        "RFC3987",
+        "URI",
+        "URL"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "validate-iri",
+      "pre-commit": [
+        "build",
+        "lint",
+        "test"
+      ],
+      "repository": "git@github.com:comunica/validate-iri.js.git",
+      "scripts": {
+        "build": "tsc",
+        "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls",
+        "lint": "eslint . --ext .ts --cache",
+        "prepare": "npm run build",
+        "test": "jest ${1}",
+        "test-watch": "jest ${1} --watch",
+        "validate": "npm ls",
+        "version": "manual-git-changelog onversion"
+      },
+      "typings": "index",
+      "version": "1.0.1"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 6007,
+      "sha256": "9898a92c22928e2da8025e3852e86f481ddd704b217f5cdb9fb33b23e60ff7f4"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

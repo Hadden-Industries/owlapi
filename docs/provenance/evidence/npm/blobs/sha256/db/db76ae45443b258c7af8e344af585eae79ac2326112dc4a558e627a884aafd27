@@ -1,0 +1,135 @@
+{
+  "artifactId": "90651a4c8451802e76fe4912e028bfd9e53a2f0bf2beeccae35e6fa9c7476170",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9344,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "1ec3baa5dbd0b47e670d6deb7d9773dc5e83bfe9b4dd5df043b6aca332599613",
+        "size": 7858,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/nopt.js",
+        "sha256": "95527c67ac7a1e294f7fcb09e648d1e454f6cfef06346a18a297173389b97d21",
+        "size": 644,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/nopt-lib.js",
+        "sha256": "21fe75a7d2602ff0068ac8f1561d45ea17ef7976b02e38933cfc3113ee53f406",
+        "size": 12814,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/nopt.js",
+        "sha256": "2bd82376d4debc19c9f76d190d2f4bca6f122a925881eff460164ba3e185466b",
+        "size": 1121,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/type-defs.js",
+        "sha256": "f3b0b15bea38a2e67f85428fb026d0fea14c7f340b1be16e8e811e1d427cb6d1",
+        "size": 1810,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "a5c1fbef2c901cc729793a855eb7a1c9f8f8f1bc7e6a38e98375b625c235f8b6",
+        "size": 1499,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 26511,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "nopt",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/nopt.git"
+      },
+      "version": "10.0.1"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "bin": {
+        "nopt": "bin/nopt.js"
+      },
+      "dependencies": {
+        "abbrev": "^5.0.0"
+      },
+      "description": "Option parsing for Node, supporting types, shorthands, etc. Used by npm.",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^7.0.0",
+        "@npmcli/template-oss": "5.1.0"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "license": "ISC",
+      "main": "lib/nopt.js",
+      "name": "nopt",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/nopt.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "node --test --test-update-snapshots './test/**/*.js'",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "node --test './test/**/*.js'",
+        "test:cover": "node --test --experimental-test-coverage --test-timeout=3000 --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 './test/**/*.js'",
+        "test:node20": "node --test test"
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "latestCiVersion": 24,
+        "publish": true,
+        "testRunner": "node:test",
+        "updateNpm": false,
+        "version": "5.1.0",
+        "windowsCI": false
+      },
+      "version": "10.0.1"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 9344,
+      "sha256": "7ace88407b28bce77ead502d1fef6b9361d869cb6fd8584f6761c3ca194c4f54"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

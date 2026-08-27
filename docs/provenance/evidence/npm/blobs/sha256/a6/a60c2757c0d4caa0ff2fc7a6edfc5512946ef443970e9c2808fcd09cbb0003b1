@@ -1,0 +1,199 @@
+{
+  "artifactId": "3acd1952d0d4e4da32de6495fb2553d57eafeb3dbaf772c9a9629232237a3aaa",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 166185,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "6b0983cd4a59559a3903aef3bf4bce41e32f6290f119d1d3cf51728a1c156e4b",
+        "size": 2182,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esquery.esm.js",
+        "sha256": "010440fcf01440cf79491558566da89bb9fbdc225d877ce7b1289c5f230f71ef",
+        "size": 131615,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esquery.esm.min.js",
+        "sha256": "6a586c4b53ccf8c593a305b7bebd9c7c197275546f2ffa05fdc44e16ecaa3424",
+        "size": 36550,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esquery.esm.min.js.map",
+        "sha256": "d9d1225655801ffae3f7843464e0a37309aa33a2db713a9fa959eefd056a1766",
+        "size": 188756,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esquery.js",
+        "sha256": "cab760a32c4a2560f839d82ac1833483a34ec70e996156c56e484c92a0c65636",
+        "size": 140614,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esquery.lite.js",
+        "sha256": "5523c06aa02139bff3be84699dc0b00c93308804a4f400c9b0887d42e56de324",
+        "size": 115069,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esquery.lite.min.js",
+        "sha256": "07c9d3994faa452cbd3aef83cacb5f6aa64bb8c869b8f944d00f5a1cc2925d06",
+        "size": 26203,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esquery.lite.min.js.map",
+        "sha256": "41579ba7b3cbeaef18ba86d5613bcafd06e02df10ae6a3d0e1a49b21c0173020",
+        "size": 147852,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esquery.min.js",
+        "sha256": "a878d2bd2377c0c6bdea21d645b9ae8baeaa0d7caa904e376dc610defdaf9b80",
+        "size": 36731,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esquery.min.js.map",
+        "sha256": "8342c4a18cb85f1dc6d3860e456dee1b7d263c1c4d81bd22a3473a282418228a",
+        "size": 188752,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license.txt",
+        "sha256": "ac68116ae73740de4190892f334992e449a124600924ec761e64319d3aac9e6e",
+        "size": 1488,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e69c382432559247e50fd8886b0476d4066fd90a47d80e6e722db4d164dcf61c",
+        "size": 2030,
+        "type": "FILE"
+      },
+      {
+        "path": "package/parser.js",
+        "sha256": "04c484180f6c46468a6b92ee2ed629f6d71206fb8ff9e706fd63d9b091b5d429",
+        "size": 79242,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1488,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ac/ac68116ae73740de4190892f334992e449a124600924ec761e64319d3aac9e6e",
+          "sha256": "ac68116ae73740de4190892f334992e449a124600924ec761e64319d3aac9e6e"
+        },
+        "kind": "LICENCE",
+        "path": "package/license.txt",
+        "sha256": "ac68116ae73740de4190892f334992e449a124600924ec761e64319d3aac9e6e",
+        "size": 1488
+      }
+    ],
+    "expandedBytes": 1097084,
+    "packageIdentity": {
+      "author": "Joel Feenstra <jrfeenst+esquery@gmail.com>",
+      "homepage": "https://github.com/estools/esquery/",
+      "license": "BSD-3-Clause",
+      "name": "esquery",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/estools/esquery.git"
+      },
+      "version": "1.7.0"
+    },
+    "packageMetadata": {
+      "author": "Joel Feenstra <jrfeenst+esquery@gmail.com>",
+      "bugs": "https://github.com/estools/esquery/issues",
+      "contributors": [],
+      "dependencies": {
+        "estraverse": "^5.1.0"
+      },
+      "description": "A query library for ECMAScript AST using a CSS selector like query language.",
+      "devDependencies": {
+        "@babel/core": "^7.9.0",
+        "@babel/preset-env": "^7.9.5",
+        "@babel/register": "^7.9.0",
+        "@rollup/plugin-commonjs": "^11.1.0",
+        "@rollup/plugin-json": "^4.0.2",
+        "@rollup/plugin-node-resolve": "^7.1.3",
+        "babel-plugin-transform-es2017-object-entries": "0.0.5",
+        "chai": "4.2.0",
+        "eslint": "^6.8.0",
+        "esprima": "~4.0.1",
+        "mocha": "7.1.1",
+        "nyc": "^15.0.1",
+        "pegjs": "~0.10.0",
+        "rollup": "^1.32.1",
+        "rollup-plugin-babel": "^4.4.0",
+        "rollup-plugin-terser": "^5.3.0"
+      },
+      "engines": {
+        "node": ">=0.10"
+      },
+      "files": [
+        "dist/*.js",
+        "dist/*.map",
+        "parser.js",
+        "license.txt",
+        "README.md"
+      ],
+      "homepage": "https://github.com/estools/esquery/",
+      "keywords": [
+        "ast",
+        "ecmascript",
+        "javascript",
+        "query"
+      ],
+      "license": "BSD-3-Clause",
+      "main": "dist/esquery.min.js",
+      "module": "dist/esquery.esm.min.js",
+      "name": "esquery",
+      "nyc": {
+        "branches": 100,
+        "exclude": [
+          "parser.js",
+          "dist",
+          "tests"
+        ],
+        "functions": 100,
+        "lines": 100,
+        "reporter": [
+          "html",
+          "text"
+        ],
+        "statements": 100
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/estools/esquery.git"
+      },
+      "scripts": {
+        "build": "npm run build:parser && npm run build:browser",
+        "build:browser": "rollup -c",
+        "build:parser": "rm parser.js && pegjs --cache --format umd -o \"parser.js\" \"grammar.pegjs\"",
+        "lint": "eslint .",
+        "mocha": "mocha --require chai/register-assert --require @babel/register tests",
+        "prepublishOnly": "npm run build && npm test",
+        "test": "nyc npm run mocha && npm run lint",
+        "test:ci": "npm run mocha"
+      },
+      "version": "1.7.0"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 166185,
+      "sha256": "19136a1e7ef183bc0f9757197de4a9539a380b70b930d1673ab2eb4097ba7aa5"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

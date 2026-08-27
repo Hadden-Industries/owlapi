@@ -1,0 +1,124 @@
+{
+  "artifactId": "d4145fc549a4985ee611278234cb147b0f14a2bde30eb784fb462b4e27884d35",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5285,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "565acf764f4583abe4cf4b02128f01b5d4d1b4c62c253e92df7ed6a8a8ad406b",
+        "size": 733,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "27e97936dc7fc9f306fe5f502e5e5a568f26ca1c40c4e6dc0790d5dbf30abec8",
+        "size": 2977,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/escape.js",
+        "sha256": "1199330b0c167466bf912080f88917963dce809842e307b7c9fb292fd3f055d7",
+        "size": 1502,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "9e220f7040270955627603056ae02f0348b671962892001c3cf5f574b08cfc84",
+        "size": 6192,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e6ee346eacafc0d772a4a67e53ccc6ee307a0adfbeace70d309c77e6c0e0f360",
+        "size": 1251,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 733,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/56/565acf764f4583abe4cf4b02128f01b5d4d1b4c62c253e92df7ed6a8a8ad406b",
+          "sha256": "565acf764f4583abe4cf4b02128f01b5d4d1b4c62c253e92df7ed6a8a8ad406b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "565acf764f4583abe4cf4b02128f01b5d4d1b4c62c253e92df7ed6a8a8ad406b",
+        "size": 733
+      }
+    ],
+    "expandedBytes": 12655,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "@npmcli/promise-spawn",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/promise-spawn.git"
+      },
+      "version": "10.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "dependencies": {
+        "which": "^7.0.0"
+      },
+      "description": "spawn processes the way the npm cli likes to do",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^6.0.0",
+        "@npmcli/template-oss": "5.1.0",
+        "spawk": "^1.7.1",
+        "tap": "^16.0.1"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "license": "ISC",
+      "main": "./lib/index.js",
+      "name": "@npmcli/promise-spawn",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/promise-spawn.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "postsnap": "npm run lintfix --",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "check-coverage": true,
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": true,
+        "version": "5.1.0"
+      },
+      "version": "10.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 5285,
+      "sha256": "fc1ef043b4ccedc411385bee4c2e4754f9befcff861fa0c2f80c9eda650a65fa"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

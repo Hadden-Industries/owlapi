@@ -1,0 +1,83 @@
+{
+  "artifactId": "e9ff9d5c8f4888d510a1e5e3202175027d8b8efcde45f8039dd945cb05361ab1",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6117,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "ffd8b33b354585f4ce119f19c53728281e48a97b074491eb6bf6d5c5ff305272",
+        "size": 1951,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "da9e4c31b8bb925413e6fdd88ede366acd46772982d997a93bd9d5531220d202",
+        "size": 460,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "486e2c8259371963a40f7e7e27e5ed6ea0ffc8b9e924ea34982ef480a5f4591a",
+        "size": 16969,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "616495f2abe74008695628b7356f097ed373431ec08954fdf5a10c78c6228c5d",
+        "size": 746,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1951,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ff/ffd8b33b354585f4ce119f19c53728281e48a97b074491eb6bf6d5c5ff305272",
+          "sha256": "ffd8b33b354585f4ce119f19c53728281e48a97b074491eb6bf6d5c5ff305272"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "ffd8b33b354585f4ce119f19c53728281e48a97b074491eb6bf6d5c5ff305272",
+        "size": 1951
+      }
+    ],
+    "expandedBytes": 20126,
+    "packageIdentity": {
+      "author": "John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/)",
+      "homepage": "https://lodash.com/",
+      "license": "MIT",
+      "name": "lodash.memoize",
+      "repository": "lodash/lodash",
+      "version": "4.1.2"
+    },
+    "packageMetadata": {
+      "author": "John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/)",
+      "contributors": [
+        "John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/)",
+        "Blaine Bublitz <blaine.bublitz@gmail.com> (https://github.com/phated)",
+        "Mathias Bynens <mathias@qiwi.be> (https://mathiasbynens.be/)"
+      ],
+      "description": "The lodash method `_.memoize` exported as a module.",
+      "homepage": "https://lodash.com/",
+      "icon": "https://lodash.com/icon.svg",
+      "keywords": "lodash-modularized, memoize",
+      "license": "MIT",
+      "name": "lodash.memoize",
+      "repository": "lodash/lodash",
+      "scripts": {
+        "test": "echo \"See https://travis-ci.org/lodash/lodash-cli for testing details.\""
+      },
+      "version": "4.1.2"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 6117,
+      "sha256": "bb02b8b3d4372deaaae17caaa0acc5659cb93449c71a067666bf8c6ffa84b6c1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

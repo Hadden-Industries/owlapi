@@ -1,0 +1,634 @@
+{
+  "artifactId": "3d9fa62e07251a83bdfd45088c83c623266d32764811a66876c8f08a012da7bc",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 4,
+      "digestVerifiedFileCount": 4,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 4
+    },
+    "artifactId": "3d9fa62e07251a83bdfd45088c83c623266d32764811a66876c8f08a012da7bc",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^11.0",
+        "for_package_purl": "pkg:npm/http-cache-semantics@4.2.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/mocha",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Kornel Lesinski <npms2@geekhood.net> (https://kornel.ski/)",
+            "end_line": 17,
+            "start_line": 17
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "bsd-simplified",
+        "detected_license_expression_spdx": "BSD-2-Clause",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/http-cache-semantics@4.2.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_simplified-71450002-f253-703f-89da-2ec134364868",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "matches": [
+              {
+                "end_line": 18,
+                "from_file": "3d9fa62e07251a83bdfd45088c83c623266d32764811a66876c8f08a012da7bc/package/package.json",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "    \"license\": \"BSD-2-Clause\",",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-simplified_50.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_50.RULE",
+                "score": 100,
+                "start_line": 18
+              }
+            ]
+          }
+        ],
+        "md5": "440e6ae9f58a60ad9c9d0e640f054602",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/http-cache-semantics/4.2.0",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "bsd-simplified",
+            "declared_license_expression_spdx": "BSD-2-Clause",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^11.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/mocha",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "Parses Cache-Control and other headers. Helps building correct HTTP caches and proxies",
+            "download_url": "https://registry.npmjs.org/http-cache-semantics/-/http-cache-semantics-4.2.0.tgz",
+            "extra_data": {},
+            "extracted_license_statement": "- BSD-2-Clause\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [
+              {
+                "identifier": "bsd_simplified-7cacd81a-0bdb-1c32-cf2d-2250f633f213",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "3d9fa62e07251a83bdfd45088c83c623266d32764811a66876c8f08a012da7bc/package/package.json",
+                    "license_expression": "bsd-simplified",
+                    "license_expression_spdx": "BSD-2-Clause",
+                    "match_coverage": 100,
+                    "matched_length": 3,
+                    "matched_text": "BSD-2-Clause",
+                    "matcher": "1-hash",
+                    "rule_identifier": "spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+                    "rule_relevance": 100,
+                    "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "http-cache-semantics",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "npms2@geekhood.net",
+                "name": "Kornel Lesiński",
+                "role": "author",
+                "type": "person",
+                "url": "https://kornel.ski/"
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/http-cache-semantics@4.2.0",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/http-cache-semantics/-/http-cache-semantics-4.2.0.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/http-cache-semantics",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/kornelski/http-cache-semantics.git",
+            "version": "4.2.0"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 6.35,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "563b0d8af1a9641083e8f6cefbf4259fa845e7ca",
+        "sha1_git": "d45dfa1274e0da6927d7ba27bec9949d28ca414d",
+        "sha256": "bee0609d5ab09a590afe0e1209d3702b0afb0a3c158492f90902a724d889d22b",
+        "size": 600,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2016-2018 Kornel Lesinski",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "bsd-simplified",
+        "detected_license_expression_spdx": "BSD-2-Clause",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/http-cache-semantics@4.2.0"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Kornel Lesinski",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_simplified-25075703-83ad-f419-e8fc-55c5ce7e67a5",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "matches": [
+              {
+                "end_line": 9,
+                "from_file": "3d9fa62e07251a83bdfd45088c83c623266d32764811a66876c8f08a012da7bc/package/LICENSE",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 100,
+                "matched_length": 185,
+                "matched_text": "Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,\n WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-simplified_16.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_16.RULE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "7b7cd412797b9e24e3c58eff96661bf9",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 97.37,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "33382aae7725488a616426986298f9d1cd2e566c",
+        "sha1_git": "493d2ea29f0882e5f39de49420d9c09cb96f5995",
+        "sha256": "ab868ad5a2ef5068560d9cd3b2180ec63c140bb4c5cae1ba779d300a0ac74fa3",
+        "size": 1274,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/http-cache-semantics@4.2.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "abb3710ac62a52e7d54365e7f65d6ee6",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "80bbc0efc53fb36ab72dfc53d10dc486ca2b6915",
+        "sha1_git": "de951c15e87b4e21f21d40ac58969e3ea77a2096",
+        "sha256": "be77466544e7060ad859664e779d84db4440f6dcca28da0975d0bcd97000c9fa",
+        "size": 12687,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/http-cache-semantics@4.2.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "a5d65b1bfb5d2234e60df264959a1aa5",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/index.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "4b1dd7d4b4933a78423a832881a16358d5c1a9c6",
+        "sha1_git": "f01e9a16b4781dc24c8f43dc7a4c8e6d1e4ae5eb",
+        "sha256": "01b7d66c854b2fe53ac05c98feb6e0d64722ab8898a778e2d2426a8b468d178f",
+        "size": 35412,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "bsd_simplified-25075703-83ad-f419-e8fc-55c5ce7e67a5",
+        "license_expression": "bsd-simplified",
+        "license_expression_spdx": "BSD-2-Clause",
+        "reference_matches": [
+          {
+            "end_line": 9,
+            "from_file": "3d9fa62e07251a83bdfd45088c83c623266d32764811a66876c8f08a012da7bc/package/LICENSE",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "match_coverage": 100,
+            "matched_length": 185,
+            "matched_text": "Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,\n WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-simplified_16.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_16.RULE",
+            "score": 100,
+            "start_line": 3
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_simplified-71450002-f253-703f-89da-2ec134364868",
+        "license_expression": "bsd-simplified",
+        "license_expression_spdx": "BSD-2-Clause",
+        "reference_matches": [
+          {
+            "end_line": 18,
+            "from_file": "3d9fa62e07251a83bdfd45088c83c623266d32764811a66876c8f08a012da7bc/package/package.json",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "    \"license\": \"BSD-2-Clause\",",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-simplified_50.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_50.RULE",
+            "score": 100,
+            "start_line": 18
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_simplified-7cacd81a-0bdb-1c32-cf2d-2250f633f213",
+        "license_expression": "bsd-simplified",
+        "license_expression_spdx": "BSD-2-Clause",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "3d9fa62e07251a83bdfd45088c83c623266d32764811a66876c8f08a012da7bc/package/package.json",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "BSD-2-Clause",
+            "matcher": "1-hash",
+            "rule_identifier": "spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "http://www.opensource.org/licenses/BSD-2-Clause",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "bsd-simplified",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/bsd-simplified",
+        "minimum_coverage": 0,
+        "name": "BSD-2-Clause",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://opensource.org/licenses/bsd-license.php",
+        "other_spdx_license_keys": [
+          "BSD-2",
+          "BSD-2-Clause-NetBSD"
+        ],
+        "other_urls": [
+          "http://spdx.org/licenses/BSD-2-Clause",
+          "http://www.freebsd.org/copyright/copyright.html",
+          "https://opensource.org/licenses/BSD-2-Clause"
+        ],
+        "owner": "Regents of the University of California",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-simplified.LICENSE",
+        "short_name": "BSD-2-Clause",
+        "spdx_license_key": "BSD-2-Clause",
+        "spdx_url": "https://spdx.org/licenses/BSD-2-Clause",
+        "standard_notice": null,
+        "text": "Redistribution and use in source and binary forms, with or without modification,\nare permitted provided that the following conditions are met:\n\nRedistributions of source code must retain the above copyright notice, this list\nof conditions and the following disclaimer.\n\nRedistributions in binary form must reproduce the above copyright notice, this\nlist of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR\nANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON\nANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+        "text_urls": [
+          "http://opensource.org/licenses/bsd-license.php"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "bsd-simplified_16.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 185,
+        "license_expression": "bsd-simplified",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_16.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice,\n   this list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\nARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE\nLIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR\nCONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF\nSUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS\nINTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN\nCONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)\nARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE\nPOSSIBILITY OF SUCH DAMAGE.`,"
+      },
+      {
+        "identifier": "bsd-simplified_50.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "bsd-simplified",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-simplified_50.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Licence BSD-2-Clause"
+      },
+      {
+        "identifier": "spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "bsd-simplified",
+        "minimum_coverage": 100,
+        "notes": "Used to detect a bare SPDX license id",
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "BSD-2-Clause"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/http-cache-semantics/4.2.0",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "bsd-simplified",
+        "declared_license_expression_spdx": "BSD-2-Clause",
+        "description": "Parses Cache-Control and other headers. Helps building correct HTTP caches and proxies",
+        "download_url": "https://registry.npmjs.org/http-cache-semantics/-/http-cache-semantics-4.2.0.tgz",
+        "extra_data": {},
+        "extracted_license_statement": "- BSD-2-Clause\n",
+        "holder": null,
+        "homepage_url": null,
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_simplified-7cacd81a-0bdb-1c32-cf2d-2250f633f213",
+            "license_expression": "bsd-simplified",
+            "license_expression_spdx": "BSD-2-Clause",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "3d9fa62e07251a83bdfd45088c83c623266d32764811a66876c8f08a012da7bc/package/package.json",
+                "license_expression": "bsd-simplified",
+                "license_expression_spdx": "BSD-2-Clause",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "BSD-2-Clause",
+                "matcher": "1-hash",
+                "rule_identifier": "spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_bsd-2-clause_for_bsd-simplified.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "http-cache-semantics",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "npms2@geekhood.net",
+            "name": "Kornel Lesiński",
+            "role": "author",
+            "type": "person",
+            "url": "https://kornel.ski/"
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/http-cache-semantics@4.2.0",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/http-cache-semantics/-/http-cache-semantics-4.2.0.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/http-cache-semantics",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/kornelski/http-cache-semantics.git",
+        "version": "4.2.0"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

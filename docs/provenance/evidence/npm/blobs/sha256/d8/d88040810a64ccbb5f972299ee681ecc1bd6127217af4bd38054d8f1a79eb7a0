@@ -1,0 +1,116 @@
+{
+  "artifactId": "36ced55d2ced0f29294cca77bf52ace17b226fbb8a248fbeddb2f2584feadc71",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2429,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6",
+        "size": 1078,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "177b2368d761e70733e06bbc2ff58f59360e49643aa86b99bc3114ba7ee2fe0c",
+        "size": 1701,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "fd2c4e9b9b363dce5971089ad21a45b68499dc5c7c3ee2aca6cffa9bc2f76d04",
+        "size": 2739,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "da504d0bef5a5974590b62f58df0003b448eccde6b5fbeb044506b7e43368eb5",
+        "size": 777,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1078,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/3f/3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6",
+          "sha256": "3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6",
+        "size": 1078
+      },
+      {
+        "blob": {
+          "bytes": 1701,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/17/177b2368d761e70733e06bbc2ff58f59360e49643aa86b99bc3114ba7ee2fe0c",
+          "sha256": "177b2368d761e70733e06bbc2ff58f59360e49643aa86b99bc3114ba7ee2fe0c"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "177b2368d761e70733e06bbc2ff58f59360e49643aa86b99bc3114ba7ee2fe0c",
+        "size": 1701
+      }
+    ],
+    "expandedBytes": 6295,
+    "packageIdentity": {
+      "author": "Mathias Buus <mathiasbuus@gmail.com>",
+      "homepage": "https://github.com/mafintosh/end-of-stream",
+      "license": "MIT",
+      "name": "end-of-stream",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/mafintosh/end-of-stream.git"
+      },
+      "version": "1.4.5"
+    },
+    "packageMetadata": {
+      "author": "Mathias Buus <mathiasbuus@gmail.com>",
+      "bugs": {
+        "url": "https://github.com/mafintosh/end-of-stream/issues"
+      },
+      "dependencies": {
+        "once": "^1.4.0"
+      },
+      "description": "Call a callback when a readable/writable/duplex stream has completed or failed.",
+      "devDependencies": {
+        "tape": "^4.11.0"
+      },
+      "files": [
+        "index.js"
+      ],
+      "homepage": "https://github.com/mafintosh/end-of-stream",
+      "keywords": [
+        "stream",
+        "streams",
+        "callback",
+        "finish",
+        "close",
+        "end",
+        "wait"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "end-of-stream",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/mafintosh/end-of-stream.git"
+      },
+      "scripts": {
+        "test": "node test.js"
+      },
+      "version": "1.4.5"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 2429,
+      "sha256": "6d9c2a6030dc642b77b3a4979dfa82138cdb426d2c0e5b09626ad063e384a309"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

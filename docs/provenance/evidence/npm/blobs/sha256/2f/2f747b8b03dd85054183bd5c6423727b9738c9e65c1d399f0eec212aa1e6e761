@@ -1,0 +1,96 @@
+{
+  "artifactId": "2f22da2d6d576dd4765c6b6a9a879c9491e109e9812b8d0832969c55b758cea6",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1528,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "3ed1c21e728e39f83a885da0ba34f19e398066385e04d63eb5c4d674d0d6b701",
+        "size": 483,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "0da52610cc8ea05147106fefa34813681e62e057e39d1433206417bf63b0f6a1",
+        "size": 451,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "f974a6ef10c3f522b8815c4dbcd402a89c6db0a47bb2b994f30868c28bbe9bc9",
+        "size": 704,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 2744,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-logical-assignment-operators",
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-logical-assignment-operators",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.10.4"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.10.4"
+      },
+      "description": "Allow parsing of the logical assignment operators",
+      "devDependencies": {
+        "@babel/core": "^7.10.4"
+      },
+      "gitHead": "7fd40d86a0d03ff0e9c3ea16b29689945433d4df",
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "@babel/plugin-syntax-logical-assignment-operators",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-logical-assignment-operators",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.10.4"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1528,
+      "sha256": "8f8c2a568588c52a0a20609377b1ccedcadd430ca17d220d16c3f12fda1cd329"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

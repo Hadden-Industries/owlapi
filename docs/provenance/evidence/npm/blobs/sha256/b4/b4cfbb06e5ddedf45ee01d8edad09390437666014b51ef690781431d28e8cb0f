@@ -1,0 +1,967 @@
+{
+  "artifactId": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 8,
+      "digestVerifiedFileCount": 8,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 8
+    },
+    "artifactId": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9",
+    "dependencies": [],
+    "files": [
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [],
+        "detected_license_expression": "cc0-1.0",
+        "detected_license_expression_spdx": "CC0-1.0",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40mdn/browser-compat-data@5.7.6"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "cc0_1_0-57dd576a-f55f-b84d-832f-826ec8b2a8b9",
+            "license_expression": "cc0-1.0",
+            "license_expression_spdx": "CC0-1.0",
+            "matches": [
+              {
+                "end_line": 116,
+                "from_file": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9/package/LICENSE",
+                "license_expression": "cc0-1.0",
+                "license_expression_spdx": "CC0-1.0",
+                "match_coverage": 100,
+                "matched_length": 1007,
+                "matched_text": "CC0 1.0 Universal\n\nStatement of Purpose\n\nThe laws of most jurisdictions throughout the world automatically confer\nexclusive Copyright and Related Rights (defined below) upon the creator and\nsubsequent owner(s) (each and all, an \"owner\") of an original work of\nauthorship and/or a database (each, a \"Work\").\n\nCertain owners wish to permanently relinquish those rights to a Work for the\npurpose of contributing to a commons of creative, cultural and scientific\nworks (\"Commons\") that the public can reliably and without fear of later\nclaims of infringement build upon, modify, incorporate in other works, reuse\nand redistribute as freely as possible in any form whatsoever and for any\npurposes, including without limitation commercial purposes. These owners may\ncontribute to the Commons to promote the ideal of a free culture and the\nfurther production of creative, cultural and scientific works, or to gain\nreputation or greater distribution for their Work in part through the use and\nefforts of others.\n\nFor these and/or other purposes and motivations, and without any expectation\nof additional consideration or compensation, the person associating CC0 with a\nWork (the \"Affirmer\"), to the extent that he or she is an owner of Copyright\nand Related Rights in the Work, voluntarily elects to apply CC0 to the Work\nand publicly distribute the Work under its terms, with knowledge of his or her\nCopyright and Related Rights in the Work and the meaning and intended legal\neffect of CC0 on those rights.\n\n1. Copyright and Related Rights. A Work made available under CC0 may be\nprotected by copyright and related or neighboring rights (\"Copyright and\nRelated Rights\"). Copyright and Related Rights include, but are not limited\nto, the following:\n\n  i. the right to reproduce, adapt, distribute, perform, display, communicate,\n  and translate a Work;\n\n  ii. moral rights retained by the original author(s) and/or performer(s);\n\n  iii. publicity and privacy rights pertaining to a person's image or likeness\n  depicted in a Work;\n\n  iv. rights protecting against unfair competition in regards to a Work,\n  subject to the limitations in paragraph 4(a), below;\n\n  v. rights protecting the extraction, dissemination, use and reuse of data in\n  a Work;\n\n  vi. database rights (such as those arising under Directive 96/9/EC of the\n  European Parliament and of the Council of 11 March 1996 on the legal\n  protection of databases, and under any national implementation thereof,\n  including any amended or successor version of such directive); and\n\n  vii. other similar, equivalent or corresponding rights throughout the world\n  based on applicable law or treaty, and any national implementations thereof.\n\n2. Waiver. To the greatest extent permitted by, but not in contravention of,\napplicable law, Affirmer hereby overtly, fully, permanently, irrevocably and\nunconditionally waives, abandons, and surrenders all of Affirmer's Copyright\nand Related Rights and associated claims and causes of action, whether now\nknown or unknown (including existing as well as future claims and causes of\naction), in the Work (i) in all territories worldwide, (ii) for the maximum\nduration provided by applicable law or treaty (including future time\nextensions), (iii) in any current or future medium and for any number of\ncopies, and (iv) for any purpose whatsoever, including without limitation\ncommercial, advertising or promotional purposes (the \"Waiver\"). Affirmer makes\nthe Waiver for the benefit of each member of the public at large and to the\ndetriment of Affirmer's heirs and successors, fully intending that such Waiver\nshall not be subject to revocation, rescission, cancellation, termination, or\nany other legal or equitable action to disrupt the quiet enjoyment of the Work\nby the public as contemplated by Affirmer's express Statement of Purpose.\n\n3. Public License Fallback. Should any part of the Waiver for any reason be\njudged legally invalid or ineffective under applicable law, then the Waiver\nshall be preserved to the maximum extent permitted taking into account\nAffirmer's express Statement of Purpose. In addition, to the extent the Waiver\nis so judged Affirmer hereby grants to each affected person a royalty-free,\nnon transferable, non sublicensable, non exclusive, irrevocable and\nunconditional license to exercise Affirmer's Copyright and Related Rights in\nthe Work (i) in all territories worldwide, (ii) for the maximum duration\nprovided by applicable law or treaty (including future time extensions), (iii)\nin any current or future medium and for any number of copies, and (iv) for any\npurpose whatsoever, including without limitation commercial, advertising or\npromotional purposes (the \"License\"). The License shall be deemed effective as\nof the date CC0 was applied by Affirmer to the Work. Should any part of the\nLicense for any reason be judged legally invalid or ineffective under\napplicable law, such partial invalidity or ineffectiveness shall not\ninvalidate the remainder of the License, and in such case Affirmer hereby\naffirms that he or she will not (i) exercise any of his or her remaining\nCopyright and Related Rights in the Work or (ii) assert any associated claims\nand causes of action with respect to the Work, in either case contrary to\nAffirmer's express Statement of Purpose.\n\n4. Limitations and Disclaimers.\n\n  a. No trademark or patent rights held by Affirmer are waived, abandoned,\n  surrendered, licensed or otherwise affected by this document.\n\n  b. Affirmer offers the Work as-is and makes no representations or warranties\n  of any kind concerning the Work, express, implied, statutory or otherwise,\n  including without limitation warranties of title, merchantability, fitness\n  for a particular purpose, non infringement, or the absence of latent or\n  other defects, accuracy, or the present or absence of errors, whether or not\n  discoverable, all to the greatest extent permissible under applicable law.\n\n  c. Affirmer disclaims responsibility for clearing rights of other persons\n  that may apply to the Work or any use thereof, including without limitation\n  any person's Copyright and Related Rights in the Work. Further, Affirmer\n  disclaims responsibility for obtaining any necessary consents, permissions\n  or other rights required for any use of the Work.\n\n  d. Affirmer understands and acknowledges that Creative Commons is not a\n  party to this document and has no duty or obligation with respect to this\n  CC0 or use of the Work.\n\nFor more information, please see\n<http://creativecommons.org/publicdomain/zero/1.0/>",
+                "matcher": "1-hash",
+                "rule_identifier": "cc0-1.0_5.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/cc0-1.0_5.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": "7bae63a234e80ee7c6427dce9fdba6cc",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 100,
+        "programming_language": "verilog",
+        "scan_errors": [],
+        "sha1": "34b2b37ec594d86bd391137b4fb644eccb17bdbb",
+        "sha1_git": "670154e3538863b2d9891fd5483160fbdfc89164",
+        "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+        "size": 6555,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40mdn/browser-compat-data@5.7.6"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "1267061d90459a522aad0863f1537ec0",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "2467fc4f300c4d9703b9d104f4aa7dc45e22ea4d",
+        "sha1_git": "60d23f5ce855a318805e01e9226d2bf2224a036d",
+        "sha256": "092d9f4343519d7a7ef044949b0e83128143d43d5ad92e6ba14a3ff778ac8662",
+        "size": 13837,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "data",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40mdn/browser-compat-data@5.7.6"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "bdecdb4c61c8f200277a761e0529b5dc",
+        "name": "data.json",
+        "package_data": [],
+        "path": "package/data.json",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "6f4d2f7f78a182689bda8236284e4ed14eb2fabb",
+        "sha1_git": "2054b7a19e025018b0d397c4e8e2385995a081db",
+        "sha256": "2bb016140dbaebc054d4dbc67dff1a218ded07fccb193b645c74e1bc7e2c2c90",
+        "size": 16303021,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "import.d",
+        "copyrights": [],
+        "detected_license_expression": "cc0-1.0",
+        "detected_license_expression_spdx": "CC0-1.0",
+        "dirs_count": 0,
+        "extension": ".mts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40mdn/browser-compat-data@5.7.6"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "cc0_1_0-85ce349e-6e1d-692b-7fd5-248652a71b53",
+            "license_expression": "cc0-1.0",
+            "license_expression_spdx": "CC0-1.0",
+            "matches": [
+              {
+                "end_line": 116,
+                "from_file": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9/package/LICENSE",
+                "license_expression": "cc0-1.0",
+                "license_expression_spdx": "CC0-1.0",
+                "match_coverage": 100,
+                "matched_length": 1007,
+                "matched_text": "CC0 1.0 Universal\n\nStatement of Purpose\n\nThe laws of most jurisdictions throughout the world automatically confer\nexclusive Copyright and Related Rights (defined below) upon the creator and\nsubsequent owner(s) (each and all, an \"owner\") of an original work of\nauthorship and/or a database (each, a \"Work\").\n\nCertain owners wish to permanently relinquish those rights to a Work for the\npurpose of contributing to a commons of creative, cultural and scientific\nworks (\"Commons\") that the public can reliably and without fear of later\nclaims of infringement build upon, modify, incorporate in other works, reuse\nand redistribute as freely as possible in any form whatsoever and for any\npurposes, including without limitation commercial purposes. These owners may\ncontribute to the Commons to promote the ideal of a free culture and the\nfurther production of creative, cultural and scientific works, or to gain\nreputation or greater distribution for their Work in part through the use and\nefforts of others.\n\nFor these and/or other purposes and motivations, and without any expectation\nof additional consideration or compensation, the person associating CC0 with a\nWork (the \"Affirmer\"), to the extent that he or she is an owner of Copyright\nand Related Rights in the Work, voluntarily elects to apply CC0 to the Work\nand publicly distribute the Work under its terms, with knowledge of his or her\nCopyright and Related Rights in the Work and the meaning and intended legal\neffect of CC0 on those rights.\n\n1. Copyright and Related Rights. A Work made available under CC0 may be\nprotected by copyright and related or neighboring rights (\"Copyright and\nRelated Rights\"). Copyright and Related Rights include, but are not limited\nto, the following:\n\n  i. the right to reproduce, adapt, distribute, perform, display, communicate,\n  and translate a Work;\n\n  ii. moral rights retained by the original author(s) and/or performer(s);\n\n  iii. publicity and privacy rights pertaining to a person's image or likeness\n  depicted in a Work;\n\n  iv. rights protecting against unfair competition in regards to a Work,\n  subject to the limitations in paragraph 4(a), below;\n\n  v. rights protecting the extraction, dissemination, use and reuse of data in\n  a Work;\n\n  vi. database rights (such as those arising under Directive 96/9/EC of the\n  European Parliament and of the Council of 11 March 1996 on the legal\n  protection of databases, and under any national implementation thereof,\n  including any amended or successor version of such directive); and\n\n  vii. other similar, equivalent or corresponding rights throughout the world\n  based on applicable law or treaty, and any national implementations thereof.\n\n2. Waiver. To the greatest extent permitted by, but not in contravention of,\napplicable law, Affirmer hereby overtly, fully, permanently, irrevocably and\nunconditionally waives, abandons, and surrenders all of Affirmer's Copyright\nand Related Rights and associated claims and causes of action, whether now\nknown or unknown (including existing as well as future claims and causes of\naction), in the Work (i) in all territories worldwide, (ii) for the maximum\nduration provided by applicable law or treaty (including future time\nextensions), (iii) in any current or future medium and for any number of\ncopies, and (iv) for any purpose whatsoever, including without limitation\ncommercial, advertising or promotional purposes (the \"Waiver\"). Affirmer makes\nthe Waiver for the benefit of each member of the public at large and to the\ndetriment of Affirmer's heirs and successors, fully intending that such Waiver\nshall not be subject to revocation, rescission, cancellation, termination, or\nany other legal or equitable action to disrupt the quiet enjoyment of the Work\nby the public as contemplated by Affirmer's express Statement of Purpose.\n\n3. Public License Fallback. Should any part of the Waiver for any reason be\njudged legally invalid or ineffective under applicable law, then the Waiver\nshall be preserved to the maximum extent permitted taking into account\nAffirmer's express Statement of Purpose. In addition, to the extent the Waiver\nis so judged Affirmer hereby grants to each affected person a royalty-free,\nnon transferable, non sublicensable, non exclusive, irrevocable and\nunconditional license to exercise Affirmer's Copyright and Related Rights in\nthe Work (i) in all territories worldwide, (ii) for the maximum duration\nprovided by applicable law or treaty (including future time extensions), (iii)\nin any current or future medium and for any number of copies, and (iv) for any\npurpose whatsoever, including without limitation commercial, advertising or\npromotional purposes (the \"License\"). The License shall be deemed effective as\nof the date CC0 was applied by Affirmer to the Work. Should any part of the\nLicense for any reason be judged legally invalid or ineffective under\napplicable law, such partial invalidity or ineffectiveness shall not\ninvalidate the remainder of the License, and in such case Affirmer hereby\naffirms that he or she will not (i) exercise any of his or her remaining\nCopyright and Related Rights in the Work or (ii) assert any associated claims\nand causes of action with respect to the Work, in either case contrary to\nAffirmer's express Statement of Purpose.\n\n4. Limitations and Disclaimers.\n\n  a. No trademark or patent rights held by Affirmer are waived, abandoned,\n  surrendered, licensed or otherwise affected by this document.\n\n  b. Affirmer offers the Work as-is and makes no representations or warranties\n  of any kind concerning the Work, express, implied, statutory or otherwise,\n  including without limitation warranties of title, merchantability, fitness\n  for a particular purpose, non infringement, or the absence of latent or\n  other defects, accuracy, or the present or absence of errors, whether or not\n  discoverable, all to the greatest extent permissible under applicable law.\n\n  c. Affirmer disclaims responsibility for clearing rights of other persons\n  that may apply to the Work or any use thereof, including without limitation\n  any person's Copyright and Related Rights in the Work. Further, Affirmer\n  disclaims responsibility for obtaining any necessary consents, permissions\n  or other rights required for any use of the Work.\n\n  d. Affirmer understands and acknowledges that Creative Commons is not a\n  party to this document and has no duty or obligation with respect to this\n  CC0 or use of the Work.\n\nFor more information, please see\n<http://creativecommons.org/publicdomain/zero/1.0/>",
+                "matcher": "1-hash",
+                "rule_identifier": "cc0-1.0_5.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/cc0-1.0_5.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 2,
+                "from_file": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9/package/import.d.mts",
+                "license_expression": "unknown-license-reference",
+                "license_expression_spdx": "LicenseRef-scancode-unknown-license-reference",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * See LICENSE file for more information. */",
+                "matcher": "2-aho",
+                "rule_identifier": "unknown-license-reference_see-license_1.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/unknown-license-reference_see-license_1.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "a7810360105e07fd58c64d4e3aade86e",
+        "name": "import.d.mts",
+        "package_data": [],
+        "path": "package/import.d.mts",
+        "percentage_of_license_text": 6.45,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "f38ac4231363fda948562fa624a4bd328d57b9d7",
+        "sha1_git": "755bf7d0ec7cae0f8d8f04ac0ac506be6d615506",
+        "sha256": "9a87a3d8a60924b48d3910af2ebd1b43d99d96f268cc28215b5d37db1ee386a8",
+        "size": 215,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "legacynode",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".mjs",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40mdn/browser-compat-data@5.7.6"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "0f6ddacfc5da8c64f59bf6c909cdee2c",
+        "name": "legacynode.mjs",
+        "package_data": [],
+        "path": "package/legacynode.mjs",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "d595bd6e8a7b8360b41779f77f72e341b3c90520",
+        "sha1_git": "3518bbe8b731f99ad62e900efb2538a2e340d88b",
+        "sha256": "aae2838f01b26c3aa0235ffc10ef5d084471d1978eb54a3a451ee11c07d40f64",
+        "size": 230,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "cc0-1.0",
+        "detected_license_expression_spdx": "CC0-1.0",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40mdn/browser-compat-data@5.7.6"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "cc0_1_0-1d6b7759-f524-6c1c-e284-2ef992e991e1",
+            "license_expression": "cc0-1.0",
+            "license_expression_spdx": "CC0-1.0",
+            "matches": [
+              {
+                "end_line": 37,
+                "from_file": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9/package/package.json",
+                "license_expression": "cc0-1.0",
+                "license_expression_spdx": "CC0-1.0",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "  \"license\": \"CC0-1.0\",",
+                "matcher": "2-aho",
+                "rule_identifier": "cc0-1.0_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/cc0-1.0_12.RULE",
+                "score": 100,
+                "start_line": 37
+              }
+            ]
+          }
+        ],
+        "md5": "963dfe42b4ba4b329df1f7dad0462780",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/@mdn%2fbrowser-compat-data/5.7.6",
+            "bug_tracking_url": "https://github.com/mdn/browser-compat-data/issues",
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "cc0-1.0",
+            "declared_license_expression_spdx": "CC0-1.0",
+            "dependencies": [],
+            "description": "Browser compatibility data provided by MDN Web Docs",
+            "download_url": "https://registry.npmjs.org/@mdn/browser-compat-data/-/browser-compat-data-5.7.6.tgz",
+            "extra_data": {},
+            "extracted_license_statement": "- CC0-1.0\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://github.com/mdn/browser-compat-data#readme",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "bcd",
+              "browser",
+              "browser-compat-data",
+              "compatibility",
+              "data",
+              "mdn",
+              "mozilla"
+            ],
+            "license_detections": [
+              {
+                "identifier": "cc0_1_0-a115fa78-d690-c749-d4bf-3a118899256b",
+                "license_expression": "cc0-1.0",
+                "license_expression_spdx": "CC0-1.0",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9/package/package.json",
+                    "license_expression": "cc0-1.0",
+                    "license_expression_spdx": "CC0-1.0",
+                    "match_coverage": 100,
+                    "matched_length": 3,
+                    "matched_text": "CC0-1.0",
+                    "matcher": "1-hash",
+                    "rule_identifier": "spdx_license_id_cc0-1.0_for_cc0-1.0.RULE",
+                    "rule_relevance": 100,
+                    "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_cc0-1.0_for_cc0-1.0.RULE",
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "browser-compat-data",
+            "namespace": "@mdn",
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": null,
+                "name": "MDN Web Docs",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/%40mdn/browser-compat-data@5.7.6",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/@mdn/browser-compat-data/-/browser-compat-data-5.7.6.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/@mdn/browser-compat-data",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/mdn/browser-compat-data.git",
+            "version": "5.7.6"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 4.04,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "52e5b547588b3873453bf99dd994d39e8a879ab7",
+        "sha1_git": "6d3122b7af7cec615fec2b9e0d3c021c5872d2eb",
+        "sha256": "9973bbc0497cbe8e3c05201f23074e10970b44662cab2bf67ec8e66c66107d9a",
+        "size": 949,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "require.d",
+        "copyrights": [],
+        "detected_license_expression": "cc0-1.0",
+        "detected_license_expression_spdx": "CC0-1.0",
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40mdn/browser-compat-data@5.7.6"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "cc0_1_0-85ce349e-6e1d-692b-7fd5-248652a71b53",
+            "license_expression": "cc0-1.0",
+            "license_expression_spdx": "CC0-1.0",
+            "matches": [
+              {
+                "end_line": 116,
+                "from_file": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9/package/LICENSE",
+                "license_expression": "cc0-1.0",
+                "license_expression_spdx": "CC0-1.0",
+                "match_coverage": 100,
+                "matched_length": 1007,
+                "matched_text": "CC0 1.0 Universal\n\nStatement of Purpose\n\nThe laws of most jurisdictions throughout the world automatically confer\nexclusive Copyright and Related Rights (defined below) upon the creator and\nsubsequent owner(s) (each and all, an \"owner\") of an original work of\nauthorship and/or a database (each, a \"Work\").\n\nCertain owners wish to permanently relinquish those rights to a Work for the\npurpose of contributing to a commons of creative, cultural and scientific\nworks (\"Commons\") that the public can reliably and without fear of later\nclaims of infringement build upon, modify, incorporate in other works, reuse\nand redistribute as freely as possible in any form whatsoever and for any\npurposes, including without limitation commercial purposes. These owners may\ncontribute to the Commons to promote the ideal of a free culture and the\nfurther production of creative, cultural and scientific works, or to gain\nreputation or greater distribution for their Work in part through the use and\nefforts of others.\n\nFor these and/or other purposes and motivations, and without any expectation\nof additional consideration or compensation, the person associating CC0 with a\nWork (the \"Affirmer\"), to the extent that he or she is an owner of Copyright\nand Related Rights in the Work, voluntarily elects to apply CC0 to the Work\nand publicly distribute the Work under its terms, with knowledge of his or her\nCopyright and Related Rights in the Work and the meaning and intended legal\neffect of CC0 on those rights.\n\n1. Copyright and Related Rights. A Work made available under CC0 may be\nprotected by copyright and related or neighboring rights (\"Copyright and\nRelated Rights\"). Copyright and Related Rights include, but are not limited\nto, the following:\n\n  i. the right to reproduce, adapt, distribute, perform, display, communicate,\n  and translate a Work;\n\n  ii. moral rights retained by the original author(s) and/or performer(s);\n\n  iii. publicity and privacy rights pertaining to a person's image or likeness\n  depicted in a Work;\n\n  iv. rights protecting against unfair competition in regards to a Work,\n  subject to the limitations in paragraph 4(a), below;\n\n  v. rights protecting the extraction, dissemination, use and reuse of data in\n  a Work;\n\n  vi. database rights (such as those arising under Directive 96/9/EC of the\n  European Parliament and of the Council of 11 March 1996 on the legal\n  protection of databases, and under any national implementation thereof,\n  including any amended or successor version of such directive); and\n\n  vii. other similar, equivalent or corresponding rights throughout the world\n  based on applicable law or treaty, and any national implementations thereof.\n\n2. Waiver. To the greatest extent permitted by, but not in contravention of,\napplicable law, Affirmer hereby overtly, fully, permanently, irrevocably and\nunconditionally waives, abandons, and surrenders all of Affirmer's Copyright\nand Related Rights and associated claims and causes of action, whether now\nknown or unknown (including existing as well as future claims and causes of\naction), in the Work (i) in all territories worldwide, (ii) for the maximum\nduration provided by applicable law or treaty (including future time\nextensions), (iii) in any current or future medium and for any number of\ncopies, and (iv) for any purpose whatsoever, including without limitation\ncommercial, advertising or promotional purposes (the \"Waiver\"). Affirmer makes\nthe Waiver for the benefit of each member of the public at large and to the\ndetriment of Affirmer's heirs and successors, fully intending that such Waiver\nshall not be subject to revocation, rescission, cancellation, termination, or\nany other legal or equitable action to disrupt the quiet enjoyment of the Work\nby the public as contemplated by Affirmer's express Statement of Purpose.\n\n3. Public License Fallback. Should any part of the Waiver for any reason be\njudged legally invalid or ineffective under applicable law, then the Waiver\nshall be preserved to the maximum extent permitted taking into account\nAffirmer's express Statement of Purpose. In addition, to the extent the Waiver\nis so judged Affirmer hereby grants to each affected person a royalty-free,\nnon transferable, non sublicensable, non exclusive, irrevocable and\nunconditional license to exercise Affirmer's Copyright and Related Rights in\nthe Work (i) in all territories worldwide, (ii) for the maximum duration\nprovided by applicable law or treaty (including future time extensions), (iii)\nin any current or future medium and for any number of copies, and (iv) for any\npurpose whatsoever, including without limitation commercial, advertising or\npromotional purposes (the \"License\"). The License shall be deemed effective as\nof the date CC0 was applied by Affirmer to the Work. Should any part of the\nLicense for any reason be judged legally invalid or ineffective under\napplicable law, such partial invalidity or ineffectiveness shall not\ninvalidate the remainder of the License, and in such case Affirmer hereby\naffirms that he or she will not (i) exercise any of his or her remaining\nCopyright and Related Rights in the Work or (ii) assert any associated claims\nand causes of action with respect to the Work, in either case contrary to\nAffirmer's express Statement of Purpose.\n\n4. Limitations and Disclaimers.\n\n  a. No trademark or patent rights held by Affirmer are waived, abandoned,\n  surrendered, licensed or otherwise affected by this document.\n\n  b. Affirmer offers the Work as-is and makes no representations or warranties\n  of any kind concerning the Work, express, implied, statutory or otherwise,\n  including without limitation warranties of title, merchantability, fitness\n  for a particular purpose, non infringement, or the absence of latent or\n  other defects, accuracy, or the present or absence of errors, whether or not\n  discoverable, all to the greatest extent permissible under applicable law.\n\n  c. Affirmer disclaims responsibility for clearing rights of other persons\n  that may apply to the Work or any use thereof, including without limitation\n  any person's Copyright and Related Rights in the Work. Further, Affirmer\n  disclaims responsibility for obtaining any necessary consents, permissions\n  or other rights required for any use of the Work.\n\n  d. Affirmer understands and acknowledges that Creative Commons is not a\n  party to this document and has no duty or obligation with respect to this\n  CC0 or use of the Work.\n\nFor more information, please see\n<http://creativecommons.org/publicdomain/zero/1.0/>",
+                "matcher": "1-hash",
+                "rule_identifier": "cc0-1.0_5.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/cc0-1.0_5.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 2,
+                "from_file": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9/package/require.d.ts",
+                "license_expression": "unknown-license-reference",
+                "license_expression_spdx": "LicenseRef-scancode-unknown-license-reference",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": " * See LICENSE file for more information. */",
+                "matcher": "2-aho",
+                "rule_identifier": "unknown-license-reference_see-license_1.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/unknown-license-reference_see-license_1.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "a7810360105e07fd58c64d4e3aade86e",
+        "name": "require.d.ts",
+        "package_data": [],
+        "path": "package/require.d.ts",
+        "percentage_of_license_text": 6.45,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "f38ac4231363fda948562fa624a4bd328d57b9d7",
+        "sha1_git": "755bf7d0ec7cae0f8d8f04ac0ac506be6d615506",
+        "sha256": "9a87a3d8a60924b48d3910af2ebd1b43d99d96f268cc28215b5d37db1ee386a8",
+        "size": 215,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "types.d",
+        "copyrights": [],
+        "detected_license_expression": "cc0-1.0",
+        "detected_license_expression_spdx": "CC0-1.0",
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40mdn/browser-compat-data@5.7.6"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": true,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "cc0_1_0-85ce349e-6e1d-692b-7fd5-248652a71b53",
+            "license_expression": "cc0-1.0",
+            "license_expression_spdx": "CC0-1.0",
+            "matches": [
+              {
+                "end_line": 116,
+                "from_file": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9/package/LICENSE",
+                "license_expression": "cc0-1.0",
+                "license_expression_spdx": "CC0-1.0",
+                "match_coverage": 100,
+                "matched_length": 1007,
+                "matched_text": "CC0 1.0 Universal\n\nStatement of Purpose\n\nThe laws of most jurisdictions throughout the world automatically confer\nexclusive Copyright and Related Rights (defined below) upon the creator and\nsubsequent owner(s) (each and all, an \"owner\") of an original work of\nauthorship and/or a database (each, a \"Work\").\n\nCertain owners wish to permanently relinquish those rights to a Work for the\npurpose of contributing to a commons of creative, cultural and scientific\nworks (\"Commons\") that the public can reliably and without fear of later\nclaims of infringement build upon, modify, incorporate in other works, reuse\nand redistribute as freely as possible in any form whatsoever and for any\npurposes, including without limitation commercial purposes. These owners may\ncontribute to the Commons to promote the ideal of a free culture and the\nfurther production of creative, cultural and scientific works, or to gain\nreputation or greater distribution for their Work in part through the use and\nefforts of others.\n\nFor these and/or other purposes and motivations, and without any expectation\nof additional consideration or compensation, the person associating CC0 with a\nWork (the \"Affirmer\"), to the extent that he or she is an owner of Copyright\nand Related Rights in the Work, voluntarily elects to apply CC0 to the Work\nand publicly distribute the Work under its terms, with knowledge of his or her\nCopyright and Related Rights in the Work and the meaning and intended legal\neffect of CC0 on those rights.\n\n1. Copyright and Related Rights. A Work made available under CC0 may be\nprotected by copyright and related or neighboring rights (\"Copyright and\nRelated Rights\"). Copyright and Related Rights include, but are not limited\nto, the following:\n\n  i. the right to reproduce, adapt, distribute, perform, display, communicate,\n  and translate a Work;\n\n  ii. moral rights retained by the original author(s) and/or performer(s);\n\n  iii. publicity and privacy rights pertaining to a person's image or likeness\n  depicted in a Work;\n\n  iv. rights protecting against unfair competition in regards to a Work,\n  subject to the limitations in paragraph 4(a), below;\n\n  v. rights protecting the extraction, dissemination, use and reuse of data in\n  a Work;\n\n  vi. database rights (such as those arising under Directive 96/9/EC of the\n  European Parliament and of the Council of 11 March 1996 on the legal\n  protection of databases, and under any national implementation thereof,\n  including any amended or successor version of such directive); and\n\n  vii. other similar, equivalent or corresponding rights throughout the world\n  based on applicable law or treaty, and any national implementations thereof.\n\n2. Waiver. To the greatest extent permitted by, but not in contravention of,\napplicable law, Affirmer hereby overtly, fully, permanently, irrevocably and\nunconditionally waives, abandons, and surrenders all of Affirmer's Copyright\nand Related Rights and associated claims and causes of action, whether now\nknown or unknown (including existing as well as future claims and causes of\naction), in the Work (i) in all territories worldwide, (ii) for the maximum\nduration provided by applicable law or treaty (including future time\nextensions), (iii) in any current or future medium and for any number of\ncopies, and (iv) for any purpose whatsoever, including without limitation\ncommercial, advertising or promotional purposes (the \"Waiver\"). Affirmer makes\nthe Waiver for the benefit of each member of the public at large and to the\ndetriment of Affirmer's heirs and successors, fully intending that such Waiver\nshall not be subject to revocation, rescission, cancellation, termination, or\nany other legal or equitable action to disrupt the quiet enjoyment of the Work\nby the public as contemplated by Affirmer's express Statement of Purpose.\n\n3. Public License Fallback. Should any part of the Waiver for any reason be\njudged legally invalid or ineffective under applicable law, then the Waiver\nshall be preserved to the maximum extent permitted taking into account\nAffirmer's express Statement of Purpose. In addition, to the extent the Waiver\nis so judged Affirmer hereby grants to each affected person a royalty-free,\nnon transferable, non sublicensable, non exclusive, irrevocable and\nunconditional license to exercise Affirmer's Copyright and Related Rights in\nthe Work (i) in all territories worldwide, (ii) for the maximum duration\nprovided by applicable law or treaty (including future time extensions), (iii)\nin any current or future medium and for any number of copies, and (iv) for any\npurpose whatsoever, including without limitation commercial, advertising or\npromotional purposes (the \"License\"). The License shall be deemed effective as\nof the date CC0 was applied by Affirmer to the Work. Should any part of the\nLicense for any reason be judged legally invalid or ineffective under\napplicable law, such partial invalidity or ineffectiveness shall not\ninvalidate the remainder of the License, and in such case Affirmer hereby\naffirms that he or she will not (i) exercise any of his or her remaining\nCopyright and Related Rights in the Work or (ii) assert any associated claims\nand causes of action with respect to the Work, in either case contrary to\nAffirmer's express Statement of Purpose.\n\n4. Limitations and Disclaimers.\n\n  a. No trademark or patent rights held by Affirmer are waived, abandoned,\n  surrendered, licensed or otherwise affected by this document.\n\n  b. Affirmer offers the Work as-is and makes no representations or warranties\n  of any kind concerning the Work, express, implied, statutory or otherwise,\n  including without limitation warranties of title, merchantability, fitness\n  for a particular purpose, non infringement, or the absence of latent or\n  other defects, accuracy, or the present or absence of errors, whether or not\n  discoverable, all to the greatest extent permissible under applicable law.\n\n  c. Affirmer disclaims responsibility for clearing rights of other persons\n  that may apply to the Work or any use thereof, including without limitation\n  any person's Copyright and Related Rights in the Work. Further, Affirmer\n  disclaims responsibility for obtaining any necessary consents, permissions\n  or other rights required for any use of the Work.\n\n  d. Affirmer understands and acknowledges that Creative Commons is not a\n  party to this document and has no duty or obligation with respect to this\n  CC0 or use of the Work.\n\nFor more information, please see\n<http://creativecommons.org/publicdomain/zero/1.0/>",
+                "matcher": "1-hash",
+                "rule_identifier": "cc0-1.0_5.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/cc0-1.0_5.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 2,
+                "from_file": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9/package/types.d.ts",
+                "license_expression": "unknown-license-reference",
+                "license_expression_spdx": "LicenseRef-scancode-unknown-license-reference",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "See LICENSE",
+                "matcher": "2-aho",
+                "rule_identifier": "unknown-license-reference_see-license_1.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/unknown-license-reference_see-license_1.RULE",
+                "score": 100,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "29c733c7aad59a854b4636296105f8d2",
+        "name": "types.d.ts",
+        "package_data": [],
+        "path": "package/types.d.ts",
+        "percentage_of_license_text": 0.15,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "ba6d62961b85d1336ae68d82ebf602967660f9ce",
+        "sha1_git": "91cd325fbbb38d2e2815ac11bd0916e161c60c90",
+        "sha256": "f30c523a5f6621cac4bf5bb937403f4530908e536ed9f27f22833ee38f610286",
+        "size": 10789,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "cc0_1_0-1d6b7759-f524-6c1c-e284-2ef992e991e1",
+        "license_expression": "cc0-1.0",
+        "license_expression_spdx": "CC0-1.0",
+        "reference_matches": [
+          {
+            "end_line": 37,
+            "from_file": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9/package/package.json",
+            "license_expression": "cc0-1.0",
+            "license_expression_spdx": "CC0-1.0",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "  \"license\": \"CC0-1.0\",",
+            "matcher": "2-aho",
+            "rule_identifier": "cc0-1.0_12.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/cc0-1.0_12.RULE",
+            "score": 100,
+            "start_line": 37
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "cc0_1_0-57dd576a-f55f-b84d-832f-826ec8b2a8b9",
+        "license_expression": "cc0-1.0",
+        "license_expression_spdx": "CC0-1.0",
+        "reference_matches": [
+          {
+            "end_line": 116,
+            "from_file": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9/package/LICENSE",
+            "license_expression": "cc0-1.0",
+            "license_expression_spdx": "CC0-1.0",
+            "match_coverage": 100,
+            "matched_length": 1007,
+            "matched_text": "CC0 1.0 Universal\n\nStatement of Purpose\n\nThe laws of most jurisdictions throughout the world automatically confer\nexclusive Copyright and Related Rights (defined below) upon the creator and\nsubsequent owner(s) (each and all, an \"owner\") of an original work of\nauthorship and/or a database (each, a \"Work\").\n\nCertain owners wish to permanently relinquish those rights to a Work for the\npurpose of contributing to a commons of creative, cultural and scientific\nworks (\"Commons\") that the public can reliably and without fear of later\nclaims of infringement build upon, modify, incorporate in other works, reuse\nand redistribute as freely as possible in any form whatsoever and for any\npurposes, including without limitation commercial purposes. These owners may\ncontribute to the Commons to promote the ideal of a free culture and the\nfurther production of creative, cultural and scientific works, or to gain\nreputation or greater distribution for their Work in part through the use and\nefforts of others.\n\nFor these and/or other purposes and motivations, and without any expectation\nof additional consideration or compensation, the person associating CC0 with a\nWork (the \"Affirmer\"), to the extent that he or she is an owner of Copyright\nand Related Rights in the Work, voluntarily elects to apply CC0 to the Work\nand publicly distribute the Work under its terms, with knowledge of his or her\nCopyright and Related Rights in the Work and the meaning and intended legal\neffect of CC0 on those rights.\n\n1. Copyright and Related Rights. A Work made available under CC0 may be\nprotected by copyright and related or neighboring rights (\"Copyright and\nRelated Rights\"). Copyright and Related Rights include, but are not limited\nto, the following:\n\n  i. the right to reproduce, adapt, distribute, perform, display, communicate,\n  and translate a Work;\n\n  ii. moral rights retained by the original author(s) and/or performer(s);\n\n  iii. publicity and privacy rights pertaining to a person's image or likeness\n  depicted in a Work;\n\n  iv. rights protecting against unfair competition in regards to a Work,\n  subject to the limitations in paragraph 4(a), below;\n\n  v. rights protecting the extraction, dissemination, use and reuse of data in\n  a Work;\n\n  vi. database rights (such as those arising under Directive 96/9/EC of the\n  European Parliament and of the Council of 11 March 1996 on the legal\n  protection of databases, and under any national implementation thereof,\n  including any amended or successor version of such directive); and\n\n  vii. other similar, equivalent or corresponding rights throughout the world\n  based on applicable law or treaty, and any national implementations thereof.\n\n2. Waiver. To the greatest extent permitted by, but not in contravention of,\napplicable law, Affirmer hereby overtly, fully, permanently, irrevocably and\nunconditionally waives, abandons, and surrenders all of Affirmer's Copyright\nand Related Rights and associated claims and causes of action, whether now\nknown or unknown (including existing as well as future claims and causes of\naction), in the Work (i) in all territories worldwide, (ii) for the maximum\nduration provided by applicable law or treaty (including future time\nextensions), (iii) in any current or future medium and for any number of\ncopies, and (iv) for any purpose whatsoever, including without limitation\ncommercial, advertising or promotional purposes (the \"Waiver\"). Affirmer makes\nthe Waiver for the benefit of each member of the public at large and to the\ndetriment of Affirmer's heirs and successors, fully intending that such Waiver\nshall not be subject to revocation, rescission, cancellation, termination, or\nany other legal or equitable action to disrupt the quiet enjoyment of the Work\nby the public as contemplated by Affirmer's express Statement of Purpose.\n\n3. Public License Fallback. Should any part of the Waiver for any reason be\njudged legally invalid or ineffective under applicable law, then the Waiver\nshall be preserved to the maximum extent permitted taking into account\nAffirmer's express Statement of Purpose. In addition, to the extent the Waiver\nis so judged Affirmer hereby grants to each affected person a royalty-free,\nnon transferable, non sublicensable, non exclusive, irrevocable and\nunconditional license to exercise Affirmer's Copyright and Related Rights in\nthe Work (i) in all territories worldwide, (ii) for the maximum duration\nprovided by applicable law or treaty (including future time extensions), (iii)\nin any current or future medium and for any number of copies, and (iv) for any\npurpose whatsoever, including without limitation commercial, advertising or\npromotional purposes (the \"License\"). The License shall be deemed effective as\nof the date CC0 was applied by Affirmer to the Work. Should any part of the\nLicense for any reason be judged legally invalid or ineffective under\napplicable law, such partial invalidity or ineffectiveness shall not\ninvalidate the remainder of the License, and in such case Affirmer hereby\naffirms that he or she will not (i) exercise any of his or her remaining\nCopyright and Related Rights in the Work or (ii) assert any associated claims\nand causes of action with respect to the Work, in either case contrary to\nAffirmer's express Statement of Purpose.\n\n4. Limitations and Disclaimers.\n\n  a. No trademark or patent rights held by Affirmer are waived, abandoned,\n  surrendered, licensed or otherwise affected by this document.\n\n  b. Affirmer offers the Work as-is and makes no representations or warranties\n  of any kind concerning the Work, express, implied, statutory or otherwise,\n  including without limitation warranties of title, merchantability, fitness\n  for a particular purpose, non infringement, or the absence of latent or\n  other defects, accuracy, or the present or absence of errors, whether or not\n  discoverable, all to the greatest extent permissible under applicable law.\n\n  c. Affirmer disclaims responsibility for clearing rights of other persons\n  that may apply to the Work or any use thereof, including without limitation\n  any person's Copyright and Related Rights in the Work. Further, Affirmer\n  disclaims responsibility for obtaining any necessary consents, permissions\n  or other rights required for any use of the Work.\n\n  d. Affirmer understands and acknowledges that Creative Commons is not a\n  party to this document and has no duty or obligation with respect to this\n  CC0 or use of the Work.\n\nFor more information, please see\n<http://creativecommons.org/publicdomain/zero/1.0/>",
+            "matcher": "1-hash",
+            "rule_identifier": "cc0-1.0_5.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/cc0-1.0_5.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "cc0_1_0-a115fa78-d690-c749-d4bf-3a118899256b",
+        "license_expression": "cc0-1.0",
+        "license_expression_spdx": "CC0-1.0",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9/package/package.json",
+            "license_expression": "cc0-1.0",
+            "license_expression_spdx": "CC0-1.0",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "CC0-1.0",
+            "matcher": "1-hash",
+            "rule_identifier": "spdx_license_id_cc0-1.0_for_cc0-1.0.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_cc0-1.0_for_cc0-1.0.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 3,
+        "identifier": "cc0_1_0-85ce349e-6e1d-692b-7fd5-248652a71b53",
+        "license_expression": "cc0-1.0",
+        "license_expression_spdx": "CC0-1.0",
+        "reference_matches": [
+          {
+            "end_line": 116,
+            "from_file": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9/package/LICENSE",
+            "license_expression": "cc0-1.0",
+            "license_expression_spdx": "CC0-1.0",
+            "match_coverage": 100,
+            "matched_length": 1007,
+            "matched_text": "CC0 1.0 Universal\n\nStatement of Purpose\n\nThe laws of most jurisdictions throughout the world automatically confer\nexclusive Copyright and Related Rights (defined below) upon the creator and\nsubsequent owner(s) (each and all, an \"owner\") of an original work of\nauthorship and/or a database (each, a \"Work\").\n\nCertain owners wish to permanently relinquish those rights to a Work for the\npurpose of contributing to a commons of creative, cultural and scientific\nworks (\"Commons\") that the public can reliably and without fear of later\nclaims of infringement build upon, modify, incorporate in other works, reuse\nand redistribute as freely as possible in any form whatsoever and for any\npurposes, including without limitation commercial purposes. These owners may\ncontribute to the Commons to promote the ideal of a free culture and the\nfurther production of creative, cultural and scientific works, or to gain\nreputation or greater distribution for their Work in part through the use and\nefforts of others.\n\nFor these and/or other purposes and motivations, and without any expectation\nof additional consideration or compensation, the person associating CC0 with a\nWork (the \"Affirmer\"), to the extent that he or she is an owner of Copyright\nand Related Rights in the Work, voluntarily elects to apply CC0 to the Work\nand publicly distribute the Work under its terms, with knowledge of his or her\nCopyright and Related Rights in the Work and the meaning and intended legal\neffect of CC0 on those rights.\n\n1. Copyright and Related Rights. A Work made available under CC0 may be\nprotected by copyright and related or neighboring rights (\"Copyright and\nRelated Rights\"). Copyright and Related Rights include, but are not limited\nto, the following:\n\n  i. the right to reproduce, adapt, distribute, perform, display, communicate,\n  and translate a Work;\n\n  ii. moral rights retained by the original author(s) and/or performer(s);\n\n  iii. publicity and privacy rights pertaining to a person's image or likeness\n  depicted in a Work;\n\n  iv. rights protecting against unfair competition in regards to a Work,\n  subject to the limitations in paragraph 4(a), below;\n\n  v. rights protecting the extraction, dissemination, use and reuse of data in\n  a Work;\n\n  vi. database rights (such as those arising under Directive 96/9/EC of the\n  European Parliament and of the Council of 11 March 1996 on the legal\n  protection of databases, and under any national implementation thereof,\n  including any amended or successor version of such directive); and\n\n  vii. other similar, equivalent or corresponding rights throughout the world\n  based on applicable law or treaty, and any national implementations thereof.\n\n2. Waiver. To the greatest extent permitted by, but not in contravention of,\napplicable law, Affirmer hereby overtly, fully, permanently, irrevocably and\nunconditionally waives, abandons, and surrenders all of Affirmer's Copyright\nand Related Rights and associated claims and causes of action, whether now\nknown or unknown (including existing as well as future claims and causes of\naction), in the Work (i) in all territories worldwide, (ii) for the maximum\nduration provided by applicable law or treaty (including future time\nextensions), (iii) in any current or future medium and for any number of\ncopies, and (iv) for any purpose whatsoever, including without limitation\ncommercial, advertising or promotional purposes (the \"Waiver\"). Affirmer makes\nthe Waiver for the benefit of each member of the public at large and to the\ndetriment of Affirmer's heirs and successors, fully intending that such Waiver\nshall not be subject to revocation, rescission, cancellation, termination, or\nany other legal or equitable action to disrupt the quiet enjoyment of the Work\nby the public as contemplated by Affirmer's express Statement of Purpose.\n\n3. Public License Fallback. Should any part of the Waiver for any reason be\njudged legally invalid or ineffective under applicable law, then the Waiver\nshall be preserved to the maximum extent permitted taking into account\nAffirmer's express Statement of Purpose. In addition, to the extent the Waiver\nis so judged Affirmer hereby grants to each affected person a royalty-free,\nnon transferable, non sublicensable, non exclusive, irrevocable and\nunconditional license to exercise Affirmer's Copyright and Related Rights in\nthe Work (i) in all territories worldwide, (ii) for the maximum duration\nprovided by applicable law or treaty (including future time extensions), (iii)\nin any current or future medium and for any number of copies, and (iv) for any\npurpose whatsoever, including without limitation commercial, advertising or\npromotional purposes (the \"License\"). The License shall be deemed effective as\nof the date CC0 was applied by Affirmer to the Work. Should any part of the\nLicense for any reason be judged legally invalid or ineffective under\napplicable law, such partial invalidity or ineffectiveness shall not\ninvalidate the remainder of the License, and in such case Affirmer hereby\naffirms that he or she will not (i) exercise any of his or her remaining\nCopyright and Related Rights in the Work or (ii) assert any associated claims\nand causes of action with respect to the Work, in either case contrary to\nAffirmer's express Statement of Purpose.\n\n4. Limitations and Disclaimers.\n\n  a. No trademark or patent rights held by Affirmer are waived, abandoned,\n  surrendered, licensed or otherwise affected by this document.\n\n  b. Affirmer offers the Work as-is and makes no representations or warranties\n  of any kind concerning the Work, express, implied, statutory or otherwise,\n  including without limitation warranties of title, merchantability, fitness\n  for a particular purpose, non infringement, or the absence of latent or\n  other defects, accuracy, or the present or absence of errors, whether or not\n  discoverable, all to the greatest extent permissible under applicable law.\n\n  c. Affirmer disclaims responsibility for clearing rights of other persons\n  that may apply to the Work or any use thereof, including without limitation\n  any person's Copyright and Related Rights in the Work. Further, Affirmer\n  disclaims responsibility for obtaining any necessary consents, permissions\n  or other rights required for any use of the Work.\n\n  d. Affirmer understands and acknowledges that Creative Commons is not a\n  party to this document and has no duty or obligation with respect to this\n  CC0 or use of the Work.\n\nFor more information, please see\n<http://creativecommons.org/publicdomain/zero/1.0/>",
+            "matcher": "1-hash",
+            "rule_identifier": "cc0-1.0_5.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/cc0-1.0_5.RULE",
+            "score": 100,
+            "start_line": 1
+          },
+          {
+            "end_line": 2,
+            "from_file": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9/package/import.d.mts",
+            "license_expression": "unknown-license-reference",
+            "license_expression_spdx": "LicenseRef-scancode-unknown-license-reference",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": " * See LICENSE file for more information. */",
+            "matcher": "2-aho",
+            "rule_identifier": "unknown-license-reference_see-license_1.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/unknown-license-reference_see-license_1.RULE",
+            "score": 100,
+            "start_line": 2
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Public Domain",
+        "faq_url": "http://wiki.creativecommons.org/CC0_FAQ",
+        "homepage_url": "http://creativecommons.org/publicdomain/zero/1.0/",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "cc0-1.0",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/cc0-1.0",
+        "minimum_coverage": 0,
+        "name": "Creative Commons CC0 1.0 Universal",
+        "notes": null,
+        "osi_license_key": null,
+        "osi_url": null,
+        "other_spdx_license_keys": [],
+        "other_urls": [
+          "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+        ],
+        "owner": "Creative Commons",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/cc0-1.0.LICENSE",
+        "short_name": "CC0-1.0",
+        "spdx_license_key": "CC0-1.0",
+        "spdx_url": "https://spdx.org/licenses/CC0-1.0",
+        "standard_notice": null,
+        "text": "Creative Commons Legal Code\n\nCC0 1.0 Universal\n\n    CREATIVE COMMONS CORPORATION IS NOT A LAW FIRM AND DOES NOT PROVIDE\n    LEGAL SERVICES. DISTRIBUTION OF THIS DOCUMENT DOES NOT CREATE AN\n    ATTORNEY-CLIENT RELATIONSHIP. CREATIVE COMMONS PROVIDES THIS\n    INFORMATION ON AN \"AS-IS\" BASIS. CREATIVE COMMONS MAKES NO WARRANTIES\n    REGARDING THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS\n    PROVIDED HEREUNDER, AND DISCLAIMS LIABILITY FOR DAMAGES RESULTING FROM\n    THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS PROVIDED\n    HEREUNDER.\n\nStatement of Purpose\n\nThe laws of most jurisdictions throughout the world automatically confer\nexclusive Copyright and Related Rights (defined below) upon the creator\nand subsequent owner(s) (each and all, an \"owner\") of an original work of\nauthorship and/or a database (each, a \"Work\").\n\nCertain owners wish to permanently relinquish those rights to a Work for\nthe purpose of contributing to a commons of creative, cultural and\nscientific works (\"Commons\") that the public can reliably and without fear\nof later claims of infringement build upon, modify, incorporate in other\nworks, reuse and redistribute as freely as possible in any form whatsoever\nand for any purposes, including without limitation commercial purposes.\nThese owners may contribute to the Commons to promote the ideal of a free\nculture and the further production of creative, cultural and scientific\nworks, or to gain reputation or greater distribution for their Work in\npart through the use and efforts of others.\n\nFor these and/or other purposes and motivations, and without any\nexpectation of additional consideration or compensation, the person\nassociating CC0 with a Work (the \"Affirmer\"), to the extent that he or she\nis an owner of Copyright and Related Rights in the Work, voluntarily\nelects to apply CC0 to the Work and publicly distribute the Work under its\nterms, with knowledge of his or her Copyright and Related Rights in the\nWork and the meaning and intended legal effect of CC0 on those rights.\n\n1. Copyright and Related Rights. A Work made available under CC0 may be\nprotected by copyright and related or neighboring rights (\"Copyright and\nRelated Rights\"). Copyright and Related Rights include, but are not\nlimited to, the following:\n\n  i. the right to reproduce, adapt, distribute, perform, display,\n     communicate, and translate a Work;\n ii. moral rights retained by the original author(s) and/or performer(s);\niii. publicity and privacy rights pertaining to a person's image or\n     likeness depicted in a Work;\n iv. rights protecting against unfair competition in regards to a Work,\n     subject to the limitations in paragraph 4(a), below;\n  v. rights protecting the extraction, dissemination, use and reuse of data\n     in a Work;\n vi. database rights (such as those arising under Directive 96/9/EC of the\n     European Parliament and of the Council of 11 March 1996 on the legal\n     protection of databases, and under any national implementation\n     thereof, including any amended or successor version of such\n     directive); and\nvii. other similar, equivalent or corresponding rights throughout the\n     world based on applicable law or treaty, and any national\n     implementations thereof.\n\n2. Waiver. To the greatest extent permitted by, but not in contravention\nof, applicable law, Affirmer hereby overtly, fully, permanently,\nirrevocably and unconditionally waives, abandons, and surrenders all of\nAffirmer's Copyright and Related Rights and associated claims and causes\nof action, whether now known or unknown (including existing as well as\nfuture claims and causes of action), in the Work (i) in all territories\nworldwide, (ii) for the maximum duration provided by applicable law or\ntreaty (including future time extensions), (iii) in any current or future\nmedium and for any number of copies, and (iv) for any purpose whatsoever,\nincluding without limitation commercial, advertising or promotional\npurposes (the \"Waiver\"). Affirmer makes the Waiver for the benefit of each\nmember of the public at large and to the detriment of Affirmer's heirs and\nsuccessors, fully intending that such Waiver shall not be subject to\nrevocation, rescission, cancellation, termination, or any other legal or\nequitable action to disrupt the quiet enjoyment of the Work by the public\nas contemplated by Affirmer's express Statement of Purpose.\n\n3. Public License Fallback. Should any part of the Waiver for any reason\nbe judged legally invalid or ineffective under applicable law, then the\nWaiver shall be preserved to the maximum extent permitted taking into\naccount Affirmer's express Statement of Purpose. In addition, to the\nextent the Waiver is so judged Affirmer hereby grants to each affected\nperson a royalty-free, non transferable, non sublicensable, non exclusive,\nirrevocable and unconditional license to exercise Affirmer's Copyright and\nRelated Rights in the Work (i) in all territories worldwide, (ii) for the\nmaximum duration provided by applicable law or treaty (including future\ntime extensions), (iii) in any current or future medium and for any number\nof copies, and (iv) for any purpose whatsoever, including without\nlimitation commercial, advertising or promotional purposes (the\n\"License\"). The License shall be deemed effective as of the date CC0 was\napplied by Affirmer to the Work. Should any part of the License for any\nreason be judged legally invalid or ineffective under applicable law, such\npartial invalidity or ineffectiveness shall not invalidate the remainder\nof the License, and in such case Affirmer hereby affirms that he or she\nwill not (i) exercise any of his or her remaining Copyright and Related\nRights in the Work or (ii) assert any associated claims and causes of\naction with respect to the Work, in either case contrary to Affirmer's\nexpress Statement of Purpose.\n\n4. Limitations and Disclaimers.\n\n a. No trademark or patent rights held by Affirmer are waived, abandoned,\n    surrendered, licensed or otherwise affected by this document.\n b. Affirmer offers the Work as-is and makes no representations or\n    warranties of any kind concerning the Work, express, implied,\n    statutory or otherwise, including without limitation warranties of\n    title, merchantability, fitness for a particular purpose, non\n    infringement, or the absence of latent or other defects, accuracy, or\n    the present or absence of errors, whether or not discoverable, all to\n    the greatest extent permissible under applicable law.\n c. Affirmer disclaims responsibility for clearing rights of other persons\n    that may apply to the Work or any use thereof, including without\n    limitation any person's Copyright and Related Rights in the Work.\n    Further, Affirmer disclaims responsibility for obtaining any necessary\n    consents, permissions or other rights required for any use of the\n    Work.\n d. Affirmer understands and acknowledges that Creative Commons is not a\n    party to this document and has no duty or obligation with respect to\n    this CC0 or use of the Work.",
+        "text_urls": [
+          "http://creativecommons.org/publicdomain/zero/1.0/legalcode"
+        ]
+      },
+      {
+        "category": "Unstated License",
+        "faq_url": null,
+        "homepage_url": null,
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": true,
+        "key": "unknown-license-reference",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/unknown-license-reference",
+        "minimum_coverage": 0,
+        "name": "Unknown License file reference",
+        "notes": "This applies to the case of a file with no clear license, which may be referenced via URL or text such as \"See license in...\" or \"This file is licensed under...\", but where the reference cannot be resolved to a specific named, public license.",
+        "osi_license_key": null,
+        "osi_url": null,
+        "other_spdx_license_keys": [],
+        "other_urls": [],
+        "owner": "Unspecified",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/unknown-license-reference.LICENSE",
+        "short_name": "Unknown License reference",
+        "spdx_license_key": "LicenseRef-scancode-unknown-license-reference",
+        "spdx_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/unknown-license-reference.LICENSE",
+        "standard_notice": null,
+        "text": "",
+        "text_urls": []
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "cc0-1.0_12.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "cc0-1.0",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/cc0-1.0_12.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License:  CC0-1.0"
+      },
+      {
+        "identifier": "cc0-1.0_5.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [
+          "http://creativecommons.org/publicdomain/zero/1.0/"
+        ],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 1007,
+        "license_expression": "cc0-1.0",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/cc0-1.0_5.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "CC0 1.0 Universal\n\nStatement of Purpose\n\nThe laws of most jurisdictions throughout the world automatically confer\nexclusive Copyright and Related Rights (defined below) upon the creator and\nsubsequent owner(s) (each and all, an \"owner\") of an original work of\nauthorship and/or a database (each, a \"Work\").\n\nCertain owners wish to permanently relinquish those rights to a Work for the\npurpose of contributing to a commons of creative, cultural and scientific\nworks (\"Commons\") that the public can reliably and without fear of later\nclaims of infringement build upon, modify, incorporate in other works, reuse\nand redistribute as freely as possible in any form whatsoever and for any\npurposes, including without limitation commercial purposes. These owners may\ncontribute to the Commons to promote the ideal of a free culture and the\nfurther production of creative, cultural and scientific works, or to gain\nreputation or greater distribution for their Work in part through the use and\nefforts of others.\n\nFor these and/or other purposes and motivations, and without any expectation\nof additional consideration or compensation, the person associating CC0 with a\nWork (the \"Affirmer\"), to the extent that he or she is an owner of Copyright\nand Related Rights in the Work, voluntarily elects to apply CC0 to the Work\nand publicly distribute the Work under its terms, with knowledge of his or her\nCopyright and Related Rights in the Work and the meaning and intended legal\neffect of CC0 on those rights.\n\n1. Copyright and Related Rights. A Work made available under CC0 may be\nprotected by copyright and related or neighboring rights (\"Copyright and\nRelated Rights\"). Copyright and Related Rights include, but are not limited\nto, the following:\n\n  i. the right to reproduce, adapt, distribute, perform, display, communicate,\n  and translate a Work;\n\n  ii. moral rights retained by the original author(s) and/or performer(s);\n\n  iii. publicity and privacy rights pertaining to a person's image or likeness\n  depicted in a Work;\n\n  iv. rights protecting against unfair competition in regards to a Work,\n  subject to the limitations in paragraph 4(a), below;\n\n  v. rights protecting the extraction, dissemination, use and reuse of data in\n  a Work;\n\n  vi. database rights (such as those arising under Directive 96/9/EC of the\n  European Parliament and of the Council of 11 March 1996 on the legal\n  protection of databases, and under any national implementation thereof,\n  including any amended or successor version of such directive); and\n\n  vii. other similar, equivalent or corresponding rights throughout the world\n  based on applicable law or treaty, and any national implementations thereof.\n\n2. Waiver. To the greatest extent permitted by, but not in contravention of,\napplicable law, Affirmer hereby overtly, fully, permanently, irrevocably and\nunconditionally waives, abandons, and surrenders all of Affirmer's Copyright\nand Related Rights and associated claims and causes of action, whether now\nknown or unknown (including existing as well as future claims and causes of\naction), in the Work (i) in all territories worldwide, (ii) for the maximum\nduration provided by applicable law or treaty (including future time\nextensions), (iii) in any current or future medium and for any number of\ncopies, and (iv) for any purpose whatsoever, including without limitation\ncommercial, advertising or promotional purposes (the \"Waiver\"). Affirmer makes\nthe Waiver for the benefit of each member of the public at large and to the\ndetriment of Affirmer's heirs and successors, fully intending that such Waiver\nshall not be subject to revocation, rescission, cancellation, termination, or\nany other legal or equitable action to disrupt the quiet enjoyment of the Work\nby the public as contemplated by Affirmer's express Statement of Purpose.\n\n3. Public License Fallback. Should any part of the Waiver for any reason be\njudged legally invalid or ineffective under applicable law, then the Waiver\nshall be preserved to the maximum extent permitted taking into account\nAffirmer's express Statement of Purpose. In addition, to the extent the Waiver\nis so judged Affirmer hereby grants to each affected person a royalty-free,\nnon transferable, non sublicensable, non exclusive, irrevocable and\nunconditional license to exercise Affirmer's Copyright and Related Rights in\nthe Work (i) in all territories worldwide, (ii) for the maximum duration\nprovided by applicable law or treaty (including future time extensions), (iii)\nin any current or future medium and for any number of copies, and (iv) for any\npurpose whatsoever, including without limitation commercial, advertising or\npromotional purposes (the \"License\"). The License shall be deemed effective as\nof the date CC0 was applied by Affirmer to the Work. Should any part of the\nLicense for any reason be judged legally invalid or ineffective under\napplicable law, such partial invalidity or ineffectiveness shall not\ninvalidate the remainder of the License, and in such case Affirmer hereby\naffirms that he or she will not (i) exercise any of his or her remaining\nCopyright and Related Rights in the Work or (ii) assert any associated claims\nand causes of action with respect to the Work, in either case contrary to\nAffirmer's express Statement of Purpose.\n\n4. Limitations and Disclaimers.\n\n  a. No trademark or patent rights held by Affirmer are waived, abandoned,\n  surrendered, licensed or otherwise affected by this document.\n\n  b. Affirmer offers the Work as-is and makes no representations or warranties\n  of any kind concerning the Work, express, implied, statutory or otherwise,\n  including without limitation warranties of title, merchantability, fitness\n  for a particular purpose, non infringement, or the absence of latent or\n  other defects, accuracy, or the present or absence of errors, whether or not\n  discoverable, all to the greatest extent permissible under applicable law.\n\n  c. Affirmer disclaims responsibility for clearing rights of other persons\n  that may apply to the Work or any use thereof, including without limitation\n  any person's Copyright and Related Rights in the Work. Further, Affirmer\n  disclaims responsibility for obtaining any necessary consents, permissions\n  or other rights required for any use of the Work.\n\n  d. Affirmer understands and acknowledges that Creative Commons is not a\n  party to this document and has no duty or obligation with respect to this\n  CC0 or use of the Work.\n\nFor more information, please see\n<http://creativecommons.org/publicdomain/zero/1.0/>"
+      },
+      {
+        "identifier": "spdx_license_id_cc0-1.0_for_cc0-1.0.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "cc0-1.0",
+        "minimum_coverage": 80,
+        "notes": "Used to detect a bare SPDX license id",
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_cc0-1.0_for_cc0-1.0.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "CC0-1.0"
+      },
+      {
+        "identifier": "unknown-license-reference_see-license_1.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": true,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "unknown-license-reference",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [
+          "LICENSE"
+        ],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/unknown-license-reference_see-license_1.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "See LICENSE"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/@mdn%2fbrowser-compat-data/5.7.6",
+        "bug_tracking_url": "https://github.com/mdn/browser-compat-data/issues",
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "cc0-1.0",
+        "declared_license_expression_spdx": "CC0-1.0",
+        "description": "Browser compatibility data provided by MDN Web Docs",
+        "download_url": "https://registry.npmjs.org/@mdn/browser-compat-data/-/browser-compat-data-5.7.6.tgz",
+        "extra_data": {},
+        "extracted_license_statement": "- CC0-1.0\n",
+        "holder": null,
+        "homepage_url": "https://github.com/mdn/browser-compat-data#readme",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "bcd",
+          "browser",
+          "browser-compat-data",
+          "compatibility",
+          "data",
+          "mdn",
+          "mozilla"
+        ],
+        "license_detections": [
+          {
+            "identifier": "cc0_1_0-a115fa78-d690-c749-d4bf-3a118899256b",
+            "license_expression": "cc0-1.0",
+            "license_expression_spdx": "CC0-1.0",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "0004a944ab80f6ee0cbee71a02b0591865be2365d7c23f3dc9b3d1e28d72d7e9/package/package.json",
+                "license_expression": "cc0-1.0",
+                "license_expression_spdx": "CC0-1.0",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "CC0-1.0",
+                "matcher": "1-hash",
+                "rule_identifier": "spdx_license_id_cc0-1.0_for_cc0-1.0.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_cc0-1.0_for_cc0-1.0.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "browser-compat-data",
+        "namespace": "@mdn",
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": null,
+            "name": "MDN Web Docs",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/%40mdn/browser-compat-data@5.7.6",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/@mdn/browser-compat-data/-/browser-compat-data-5.7.6.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/@mdn/browser-compat-data",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/mdn/browser-compat-data.git",
+        "version": "5.7.6"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

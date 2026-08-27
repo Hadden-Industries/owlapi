@@ -1,0 +1,137 @@
+{
+  "artifactId": "2dc7d8e968fe3b55a6627308b6a3268e37ff654d6e4da2400778de41cb484b9a",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4372,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.jshintrc",
+        "sha256": "2338f248b4ae48525907b524f49de077bc53f6f387d912150f15ca849413689d",
+        "size": 1853,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.npmignore",
+        "sha256": "17d3035a74abeaaf2ac3156d1388eaa1efad46a68717edf4fa3bcb4d0c5554b7",
+        "size": 8,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.travis.yml",
+        "sha256": "5e5329df283badd5487a0556f7cfcedd1f80361915cf246795a475074f64cf81",
+        "size": 36,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "a92e52eb1fa7cd746e3827bf01d3a3589bbc8e1e51348b1da042aad165525ad1",
+        "size": 1099,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.markdown",
+        "sha256": "958e646593907b1757b5a359844bdf69374392f6089eb009a6e0d6591d866497",
+        "size": 5175,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "65eaf8b7b519d6ae7be7ea20382d91a117d9c689897897ce4c2ee798e128a2d3",
+        "size": 2867,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "5690bdddd6eb4abd795fa5319df7552279508df9d562d571e3132ddff3045a71",
+        "size": 1033,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1099,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a9/a92e52eb1fa7cd746e3827bf01d3a3589bbc8e1e51348b1da042aad165525ad1",
+          "sha256": "a92e52eb1fa7cd746e3827bf01d3a3589bbc8e1e51348b1da042aad165525ad1"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "a92e52eb1fa7cd746e3827bf01d3a3589bbc8e1e51348b1da042aad165525ad1",
+        "size": 1099
+      },
+      {
+        "blob": {
+          "bytes": 5175,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/95/958e646593907b1757b5a359844bdf69374392f6089eb009a6e0d6591d866497",
+          "sha256": "958e646593907b1757b5a359844bdf69374392f6089eb009a6e0d6591d866497"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.markdown",
+        "sha256": "958e646593907b1757b5a359844bdf69374392f6089eb009a6e0d6591d866497",
+        "size": 5175
+      }
+    ],
+    "expandedBytes": 12071,
+    "packageIdentity": {
+      "author": "Troy Goode <troygoode@gmail.com> (http://github.com/troygoode/)",
+      "homepage": "https://github.com/troygoode/node-require-directory/",
+      "license": "MIT",
+      "name": "require-directory",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/troygoode/node-require-directory.git"
+      },
+      "version": "2.1.1"
+    },
+    "packageMetadata": {
+      "author": "Troy Goode <troygoode@gmail.com> (http://github.com/troygoode/)",
+      "bugs": {
+        "url": "http://github.com/troygoode/node-require-directory/issues/"
+      },
+      "contributors": [
+        {
+          "email": "troygoode@gmail.com",
+          "name": "Troy Goode",
+          "web": "http://github.com/troygoode/"
+        }
+      ],
+      "description": "Recursively iterates over specified directory, require()'ing each file, and returning a nested hash structure containing those modules.",
+      "devDependencies": {
+        "jshint": "^2.6.0",
+        "mocha": "^2.1.0"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      },
+      "homepage": "https://github.com/troygoode/node-require-directory/",
+      "keywords": [
+        "require",
+        "directory",
+        "library",
+        "recursive"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "require-directory",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/troygoode/node-require-directory.git"
+      },
+      "scripts": {
+        "lint": "jshint index.js test/test.js",
+        "test": "mocha"
+      },
+      "version": "2.1.1"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 4372,
+      "sha256": "703bee0844360383fe4a8792d4a5a562647426a053e7597a1d272ac554f386c8"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,101 @@
+{
+  "artifactId": "8489685e4549e9f21010199999081db1ce2a90e53dad13c8ea86446727f27209",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4622,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "11f2aafb37d06b3ee5bdaf06e9811141d0da05263c316f3d627f45c20d43261b",
+        "size": 2338,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "64417fec74bed1e4160c792189c85e6f37f4232a179e2beb04f32d80df76c4cf",
+        "size": 1801,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/string_decoder.js",
+        "sha256": "f1d36d47b2c579063392c1a68963467f2d4f51a069af09eb068d974c63ee3b37",
+        "size": 9465,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "31984c85cd4f3df0aa75075acdec98c25961496897d1f46d04ed4a701f129c54",
+        "size": 823,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 2338,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/11f2aafb37d06b3ee5bdaf06e9811141d0da05263c316f3d627f45c20d43261b",
+          "sha256": "11f2aafb37d06b3ee5bdaf06e9811141d0da05263c316f3d627f45c20d43261b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "11f2aafb37d06b3ee5bdaf06e9811141d0da05263c316f3d627f45c20d43261b",
+        "size": 2338
+      }
+    ],
+    "expandedBytes": 14427,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/nodejs/string_decoder",
+      "license": "MIT",
+      "name": "string_decoder",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/nodejs/string_decoder.git"
+      },
+      "version": "1.3.0"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "safe-buffer": "~5.2.0"
+      },
+      "description": "The string_decoder module from Node core",
+      "devDependencies": {
+        "babel-polyfill": "^6.23.0",
+        "core-util-is": "^1.0.2",
+        "inherits": "^2.0.3",
+        "tap": "~0.4.8"
+      },
+      "files": [
+        "lib"
+      ],
+      "homepage": "https://github.com/nodejs/string_decoder",
+      "keywords": [
+        "string",
+        "decoder",
+        "browser",
+        "browserify"
+      ],
+      "license": "MIT",
+      "main": "lib/string_decoder.js",
+      "name": "string_decoder",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/nodejs/string_decoder.git"
+      },
+      "scripts": {
+        "ci": "tap test/parallel/*.js test/ours/*.js --tap | tee test.tap && node test/verify-dependencies.js",
+        "test": "tap test/parallel/*.js && node test/verify-dependencies"
+      },
+      "version": "1.3.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 4622,
+      "sha256": "7d036900940345e423538371ae45b23bfaf4b454bc398c6ba604063b0597b3ad"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

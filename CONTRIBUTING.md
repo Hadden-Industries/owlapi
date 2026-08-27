@@ -91,6 +91,46 @@ To apply the canonical formatter locally, run:
 npm run format
 ```
 
+## Optional source-development checkout
+
+The ordinary clone is the authoritative repository checkout and includes the
+complete provenance and release-evidence corpus. Contributors who need to work
+only on package source and its ordinary test resources may instead start with a
+blobless partial clone and a positive cone-mode sparse selection:
+
+```shell
+git clone --filter=blob:none --sparse https://github.com/Hadden-Industries/owlapi.git owlapi
+```
+
+Enter the cloned `owlapi` directory, then select the source-development tree:
+
+```shell
+git sparse-checkout set --cone .github LICENSES apibinding docs/adr docs/compatibility docs/conformance docs/migration docs/performance docs/plans docs/provenance/history-reconstruction/review docs/release formats internal io model scripts test util
+```
+
+Cone mode also retains repository-root files and the direct files of selected
+ancestor directories. The resulting checkout therefore keeps the evidence
+manifests, schemas, human-review records and explanatory policy, as well as the
+W3C and other conformance inputs used by ordinary parser tests. It omits the raw
+content-addressed npm blobs and the bulky history-reconstruction payloads. The
+omitted Git blobs remain available from the promisor remote and are downloaded
+only if a later Git operation requests them.
+
+This profile is intentionally unsuitable for repository-wide governance,
+evidence verification or release preparation. Use focused tests for the source
+being changed; the aggregate `npm test`, `npm run evidence:verify`, and every
+release gate require a complete checkout and must not silently reinterpret
+missing evidence as success. Restore the complete working tree before running
+those gates:
+
+```shell
+git sparse-checkout disable
+```
+
+Sparse checkout reduces working-tree contents, while `--filter=blob:none` avoids
+initially transferring omitted file contents. Enabling sparse checkout after an
+ordinary full clone does not reclaim Git objects that were already downloaded.
+
 ## Preparing a pull request
 
 - Keep each change cohesive and explain its user-visible, compatibility, and

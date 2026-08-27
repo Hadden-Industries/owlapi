@@ -1,0 +1,106 @@
+{
+  "artifactId": "7c5603b9baf4048ea30ae8d48807760125b559ca06a0282a675a6adb2f1c64cf",
+  "evidence": {
+    "archiveRoot": "istanbul-lib-report",
+    "compressedBytes": 3096,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "istanbul-lib-report",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "istanbul-lib-report/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "istanbul-lib-report/README.md",
+        "sha256": "af602cb8785ddac22f3b1d4d6e3c6a1b5a152764778b714cca9445ff16f847d9",
+        "size": 629,
+        "type": "FILE"
+      },
+      {
+        "path": "istanbul-lib-report/index.d.ts",
+        "sha256": "a4809f4d92317535e6b22b01019437030077a76fec1d93b9881c9ed4738fcc54",
+        "size": 5110,
+        "type": "FILE"
+      },
+      {
+        "path": "istanbul-lib-report/package.json",
+        "sha256": "c7f36f0bac8742b08ebfe33aa97369eacd0f0ac87580dc9f4db7e03faf2d6d5e",
+        "size": 1037,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1141,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c2/c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        "kind": "LICENCE",
+        "path": "istanbul-lib-report/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141
+      }
+    ],
+    "expandedBytes": 7917,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/istanbul-lib-report",
+      "license": "MIT",
+      "name": "@types/istanbul-lib-report",
+      "repository": {
+        "directory": "types/istanbul-lib-report",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "version": "3.0.3"
+    },
+    "packageMetadata": {
+      "contributors": [
+        {
+          "githubUsername": "jason0x43",
+          "name": "Jason Cheatham",
+          "url": "https://github.com/jason0x43"
+        },
+        {
+          "githubUsername": "zache",
+          "name": "Zacharias Björngren",
+          "url": "https://github.com/zache"
+        }
+      ],
+      "dependencies": {
+        "@types/istanbul-lib-coverage": "*"
+      },
+      "description": "TypeScript definitions for istanbul-lib-report",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/istanbul-lib-report",
+      "license": "MIT",
+      "main": "",
+      "name": "@types/istanbul-lib-report",
+      "repository": {
+        "directory": "types/istanbul-lib-report",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "scripts": {},
+      "typeScriptVersion": "4.5",
+      "types": "index.d.ts",
+      "typesPublisherContentHash": "7036cfd1108c02c3ceec9ffab2cbc424c76e2cafd694c550037d808bf66e3946",
+      "version": "3.0.3"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3096,
+      "sha256": "261bf1f720c2fcb3796ad9c7527050d70f9d9330fd28983f5a51b745cd3184d4"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

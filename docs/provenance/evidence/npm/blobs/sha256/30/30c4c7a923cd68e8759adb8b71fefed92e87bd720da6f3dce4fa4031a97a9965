@@ -1,0 +1,155 @@
+{
+  "artifactId": "4e60121bda0510f66eb011e4ad6ed4cae9e1546b3595c3535342b8378a819261",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8751,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "d8bf34ff6d190640a01e7704ad78253fc181bc128949d71273fbbaa12f33c0b4",
+        "size": 11337,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "3ab1da1d94726786fccee39d37e811a23cd88fbc97b50820ee0f3a66a9e0052f",
+        "size": 5998,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/eslint-visitor-keys.cjs",
+        "sha256": "ae65d53f994f6caaa8bba35b190ef5ba209a2bc9d8dff86a45b0b68fa0700a86",
+        "size": 5663,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/eslint-visitor-keys.d.cts",
+        "sha256": "f977ccd51967b32d13e701675bb0fbb223485d797709b38dbd2066f968808acb",
+        "size": 773,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "21ea0ff3ce74988c14fbfb2bcef2ac08e5ba066b766bd9f30495a171c33f03c2",
+        "size": 596,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/visitor-keys.d.ts",
+        "sha256": "620efe3c144b4ca973a744f604c0cde020ba9e1ccc7a6baaabd4b815953ab14b",
+        "size": 295,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "8f83ce32c916cf2b7f5cf8d3b600956010d799f8ccac938edd5983b2c8cf93e7",
+        "size": 1758,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/visitor-keys.js",
+        "sha256": "196eb3a1bfad41d47dcb16b0959222a1c457a845f1ec6b021192e4d7d14130d4",
+        "size": 3901,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "13f8b0207958a2d504740826e8245bc2b023248136275550907a5569d8659242",
+        "size": 1621,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11337,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d8/d8bf34ff6d190640a01e7704ad78253fc181bc128949d71273fbbaa12f33c0b4",
+          "sha256": "d8bf34ff6d190640a01e7704ad78253fc181bc128949d71273fbbaa12f33c0b4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "d8bf34ff6d190640a01e7704ad78253fc181bc128949d71273fbbaa12f33c0b4",
+        "size": 11337
+      }
+    ],
+    "expandedBytes": 31942,
+    "packageIdentity": {
+      "author": "Toru Nagashima (https://github.com/mysticatea)",
+      "homepage": "https://github.com/eslint/js/blob/main/packages/eslint-visitor-keys/README.md",
+      "license": "Apache-2.0",
+      "name": "eslint-visitor-keys",
+      "repository": {
+        "directory": "packages/eslint-visitor-keys",
+        "type": "git",
+        "url": "https://github.com/eslint/js.git"
+      },
+      "version": "5.0.1"
+    },
+    "packageMetadata": {
+      "author": "Toru Nagashima (https://github.com/mysticatea)",
+      "bugs": {
+        "url": "https://github.com/eslint/js/issues"
+      },
+      "description": "Constants and utilities about visitor keys to traverse AST.",
+      "devDependencies": {
+        "rollup-plugin-dts": "^6.2.3",
+        "tsd": "^0.33.0"
+      },
+      "engines": {
+        "node": "^20.19.0 || ^22.13.0 || >=24"
+      },
+      "exports": {
+        ".": [
+          {
+            "import": "./lib/index.js",
+            "require": "./dist/eslint-visitor-keys.cjs"
+          },
+          "./dist/eslint-visitor-keys.cjs"
+        ],
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "dist/index.d.ts",
+        "dist/visitor-keys.d.ts",
+        "dist/eslint-visitor-keys.cjs",
+        "dist/eslint-visitor-keys.d.cts",
+        "lib"
+      ],
+      "funding": "https://opencollective.com/eslint",
+      "homepage": "https://github.com/eslint/js/blob/main/packages/eslint-visitor-keys/README.md",
+      "keywords": [
+        "eslint"
+      ],
+      "license": "Apache-2.0",
+      "main": "dist/eslint-visitor-keys.cjs",
+      "name": "eslint-visitor-keys",
+      "repository": {
+        "directory": "packages/eslint-visitor-keys",
+        "type": "git",
+        "url": "https://github.com/eslint/js.git"
+      },
+      "scripts": {
+        "build": "npm run build:cjs && npm run build:types",
+        "build:cjs": "rollup -c",
+        "build:debug": "npm run build:cjs -- -m && npm run build:types",
+        "build:types": "tsc -v && tsc",
+        "test": "mocha \"tests/**/*.test.cjs\" && mocha \"tests/**/*.test.js\" && npm run test:types",
+        "test:coverage": "c8 npm test",
+        "test:types": "tsd"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "types": "./dist/index.d.ts",
+      "version": "5.0.1"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 8751,
+      "sha256": "cc0945290fe3cc73aa7f04b03cdc0704ca7ac8d805ff19f43fa3f9e5e0b6728d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

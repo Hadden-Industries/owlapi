@@ -1,0 +1,101 @@
+{
+  "artifactId": "08799ee91682b75aba0d9ad6a9f9022f30693ed7e69d892f789835dc94f82b3f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3875799,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+        "size": 15648,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "83f82f4fbb999a6550c0e556cd001c5184f1abaf9c94ad6a14c602e44732a109",
+        "size": 118,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lightningcss.darwin-x64.node",
+        "sha256": "a094d4e4b93e53daa1b467ba21a6e5e3c679f96641092de3845404f042130bb0",
+        "size": 9952684,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4d09df551754494eb38c4363593e8897e6c8e2298d4f0ea3649b4ddf09cf816b",
+        "size": 708,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 15648,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5e/5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+          "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+        "size": 15648
+      }
+    ],
+    "expandedBytes": 9969158,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MPL-2.0",
+      "name": "lightningcss-darwin-x64",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/parcel-bundler/lightningcss.git"
+      },
+      "version": "1.33.0"
+    },
+    "packageMetadata": {
+      "browserslist": "last 2 versions, not dead",
+      "cpu": [
+        "x64"
+      ],
+      "description": "A CSS parser, transformer, and minifier written in Rust",
+      "engines": {
+        "node": ">= 12.0.0"
+      },
+      "files": [
+        "lightningcss.darwin-x64.node"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/parcel"
+      },
+      "license": "MPL-2.0",
+      "main": "lightningcss.darwin-x64.node",
+      "name": "lightningcss-darwin-x64",
+      "os": [
+        "darwin"
+      ],
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/parcel-bundler/lightningcss.git"
+      },
+      "resolutions": {
+        "lightningcss": "link:."
+      },
+      "version": "1.33.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 3875799,
+      "sha256": "c0b555fe6ec4c5c660503b1e87aad7ac90ba5af1e2cb1742155d485a39d5b973"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,155 @@
+{
+  "artifactId": "17800ad17f726bbae012fe5fa6daf8b44cf9906a892249c8c89a2a11231fb6a0",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4444,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "ddfb580d6e180537edf996e79ff5a160829c9753e3688accb40c1abdbb9ba901",
+        "size": 1268,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "10361ec7e4678874114103e47caa1c8ef1cffc78e0efce5088e081a26fe6e977",
+        "size": 5778,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "609dd6ab176847e57e799dba2e4c4ad355abe463ec67a5ab0dccec08b67e6761",
+        "size": 1148,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "6bca92fc203076f244deeed4a67bcae353724bbead191f8c754f9f8f0bcb5e68",
+        "size": 2466,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      },
+      {
+        "blob": {
+          "bytes": 2466,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6b/6bca92fc203076f244deeed4a67bcae353724bbead191f8c754f9f8f0bcb5e68",
+          "sha256": "6bca92fc203076f244deeed4a67bcae353724bbead191f8c754f9f8f0bcb5e68"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "6bca92fc203076f244deeed4a67bcae353724bbead191f8c754f9f8f0bcb5e68",
+        "size": 2466
+      }
+    ],
+    "expandedBytes": 11777,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "wrap-ansi",
+      "repository": "chalk/wrap-ansi",
+      "version": "8.1.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "dependencies": {
+        "ansi-styles": "^6.1.0",
+        "string-width": "^5.0.1",
+        "strip-ansi": "^7.0.1"
+      },
+      "description": "Wordwrap a string with ANSI escape codes",
+      "devDependencies": {
+        "ava": "^3.15.0",
+        "chalk": "^4.1.2",
+        "coveralls": "^3.1.1",
+        "has-ansi": "^5.0.1",
+        "nyc": "^15.1.0",
+        "tsd": "^0.25.0",
+        "xo": "^0.44.0"
+      },
+      "engines": {
+        "node": ">=12"
+      },
+      "exports": {
+        "default": "./index.js",
+        "types": "./index.d.ts"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/chalk/wrap-ansi?sponsor=1",
+      "keywords": [
+        "wrap",
+        "break",
+        "wordwrap",
+        "wordbreak",
+        "linewrap",
+        "ansi",
+        "styles",
+        "color",
+        "colour",
+        "colors",
+        "terminal",
+        "console",
+        "cli",
+        "string",
+        "tty",
+        "escape",
+        "formatting",
+        "rgb",
+        "256",
+        "shell",
+        "xterm",
+        "log",
+        "logging",
+        "command-line",
+        "text"
+      ],
+      "license": "MIT",
+      "name": "wrap-ansi",
+      "repository": "chalk/wrap-ansi",
+      "scripts": {
+        "test": "xo && nyc ava && tsd"
+      },
+      "type": "module",
+      "version": "8.1.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 4444,
+      "sha256": "f71b2b97bac28dec5d71ce0b7d205c2800ebd4b7f7f50eaee5cb79221eb4ac6d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

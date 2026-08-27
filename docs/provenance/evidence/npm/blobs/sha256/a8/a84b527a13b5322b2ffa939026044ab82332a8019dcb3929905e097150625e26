@@ -1,0 +1,117 @@
+{
+  "artifactId": "56d09452eae92fce7d878dedc12f913ed75536892d06b42313c85af948333db8",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2153,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "69b1ce578ad0aa97ce5302c7cb8d507c2fbe5a670712b02f0b4a2b95cae3184a",
+        "size": 1079,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ca92334f97726913bd69da5ade8582aa2a2840592a2ca8f183b5f77734702705",
+        "size": 566,
+        "type": "FILE"
+      },
+      {
+        "path": "package/example.js",
+        "sha256": "e9bab80d6fb55a9a667c92b377e4f5c6be05df3835c0331993ed4ae24b52b81c",
+        "size": 253,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "ae9eea7031bf8380de0b2918705f1361970e505e6bd88a2e9a65d436383cb84a",
+        "size": 1107,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b37a78b9a1e3339c1267a738131066b71125866823df6cc704fdb5fbaa923337",
+        "size": 608,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test.js",
+        "sha256": "c3457edf79cafef659e4cd514934666261b43e644546ed171f08269310163688",
+        "size": 1181,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1079,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/69/69b1ce578ad0aa97ce5302c7cb8d507c2fbe5a670712b02f0b4a2b95cae3184a",
+          "sha256": "69b1ce578ad0aa97ce5302c7cb8d507c2fbe5a670712b02f0b4a2b95cae3184a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "69b1ce578ad0aa97ce5302c7cb8d507c2fbe5a670712b02f0b4a2b95cae3184a",
+        "size": 1079
+      },
+      {
+        "blob": {
+          "bytes": 566,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ca/ca92334f97726913bd69da5ade8582aa2a2840592a2ca8f183b5f77734702705",
+          "sha256": "ca92334f97726913bd69da5ade8582aa2a2840592a2ca8f183b5f77734702705"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "ca92334f97726913bd69da5ade8582aa2a2840592a2ca8f183b5f77734702705",
+        "size": 566
+      }
+    ],
+    "expandedBytes": 4794,
+    "packageIdentity": {
+      "author": "Mathias Buus (@mafintosh)",
+      "homepage": "https://github.com/mafintosh/teex",
+      "license": "MIT",
+      "name": "teex",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mafintosh/teex.git"
+      },
+      "version": "1.0.1"
+    },
+    "packageMetadata": {
+      "author": "Mathias Buus (@mafintosh)",
+      "bugs": {
+        "url": "https://github.com/mafintosh/teex/issues"
+      },
+      "dependencies": {
+        "streamx": "^2.12.5"
+      },
+      "description": "Turn a readable stream into multiple readable streamx streams",
+      "devDependencies": {
+        "standard": "^14.3.4",
+        "tape": "^5.0.1"
+      },
+      "homepage": "https://github.com/mafintosh/teex",
+      "license": "MIT",
+      "main": "index.js",
+      "name": "teex",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mafintosh/teex.git"
+      },
+      "scripts": {
+        "test": "standard && tape test.js"
+      },
+      "version": "1.0.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 2153,
+      "sha256": "8fbfaeabeef64fdf6f19c3d82b35d017e88426ef6bdbfba044252054d87ffee8"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

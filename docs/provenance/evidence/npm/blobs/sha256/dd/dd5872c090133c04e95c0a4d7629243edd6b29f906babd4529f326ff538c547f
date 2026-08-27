@@ -1,0 +1,124 @@
+{
+  "artifactId": "6bda31d130571599839f35ae50463e5cdb3fc395a8f33d07a3e073e662e748fc",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1762,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "0e9090d69c55834a574ea4c41ff963c2ddaa4f2477a472d48096df56f4a990a8",
+        "size": 549,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "4e06d73bb7a23996c9dee6acf0da6d30cf66171ea1a0a5be197b3e24a4de53d6",
+        "size": 367,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8a3a98dbc893ce25c97464446d57ffc9f1af8a108eb707396c9b3a2f3ffe288e",
+        "size": 614,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "e4797ea8709e8324b22133b6d8e3d9e05c66eda5f01329ecd39df950d370d5ac",
+        "size": 645,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 645,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e4/e4797ea8709e8324b22133b6d8e3d9e05c66eda5f01329ecd39df950d370d5ac",
+          "sha256": "e4797ea8709e8324b22133b6d8e3d9e05c66eda5f01329ecd39df950d370d5ac"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "e4797ea8709e8324b22133b6d8e3d9e05c66eda5f01329ecd39df950d370d5ac",
+        "size": 645
+      }
+    ],
+    "expandedBytes": 3284,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "is-generator-fn",
+      "repository": "sindresorhus/is-generator-fn",
+      "version": "2.1.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "description": "Check if something is a generator function",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "tsd": "^0.7.2",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=6"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "generator",
+        "function",
+        "func",
+        "fn",
+        "is",
+        "check",
+        "detect",
+        "yield",
+        "type"
+      ],
+      "license": "MIT",
+      "name": "is-generator-fn",
+      "repository": "sindresorhus/is-generator-fn",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "2.1.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 1762,
+      "sha256": "85d9625027c15401a357e1406aeabc076f7914e471c356cd4545de88d26323ca"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,672 @@
+{
+  "artifactId": "47bb5d9e2928b6347a9ec2c4758f3a4338ea4ed9a560137174d964580680f1ad",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 3,
+      "digestVerifiedFileCount": 3,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 3
+    },
+    "artifactId": "47bb5d9e2928b6347a9ec2c4758f3a4338ea4ed9a560137174d964580680f1ad",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "2.1.1",
+        "for_package_purl": "pkg:npm/fb-watchman@2.0.2",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/bser",
+        "resolved_package": {},
+        "scope": "dependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Wez Furlong <wez@fb.com> (http://wezfurlong.org) license' Apache-2.0 bugs' url' https://github.com/facebook/watchman/issues",
+            "end_line": 26,
+            "start_line": 23
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/fb-watchman@2.0.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-ec759ae0-ea5a-f138-793e-388520e080c0",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 24,
+                "from_file": "47bb5d9e2928b6347a9ec2c4758f3a4338ea4ed9a560137174d964580680f1ad/package/package.json",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "  \"license\": \"Apache-2.0\",",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_65.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_65.RULE",
+                "score": 100,
+                "start_line": 24
+              }
+            ]
+          }
+        ],
+        "md5": "460feb81904d63de04b0cb68592c5396",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/fb-watchman/2.0.2",
+            "bug_tracking_url": "https://github.com/facebook/watchman/issues",
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "apache-2.0",
+            "declared_license_expression_spdx": "Apache-2.0",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "2.1.1",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/bser",
+                "resolved_package": {},
+                "scope": "dependencies"
+              }
+            ],
+            "description": "Bindings for the Watchman file watching service",
+            "download_url": "https://registry.npmjs.org/fb-watchman/-/fb-watchman-2.0.2.tgz",
+            "extra_data": {},
+            "extracted_license_statement": "- Apache-2.0\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://facebook.github.io/watchman/",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "facebook",
+              "file",
+              "fs",
+              "fs.watch",
+              "fswatcher",
+              "glob",
+              "utility",
+              "watch",
+              "watcher",
+              "watching",
+              "watchman"
+            ],
+            "license_detections": [
+              {
+                "identifier": "apache_2_0-d66ab77d-a5cc-7104-e702-dc7df61fe9e8",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "47bb5d9e2928b6347a9ec2c4758f3a4338ea4ed9a560137174d964580680f1ad/package/package.json",
+                    "license_expression": "apache-2.0",
+                    "license_expression_spdx": "Apache-2.0",
+                    "match_coverage": 100,
+                    "matched_length": 3,
+                    "matched_text": "Apache-2.0",
+                    "matcher": "1-hash",
+                    "rule_identifier": "spdx_license_id_apache-2.0_for_apache-2.0.RULE",
+                    "rule_relevance": 100,
+                    "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_apache-2.0_for_apache-2.0.RULE",
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "fb-watchman",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "wez@fb.com",
+                "name": "Wez Furlong",
+                "role": "author",
+                "type": "person",
+                "url": "http://wezfurlong.org"
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/fb-watchman@2.0.2",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/fb-watchman/-/fb-watchman-2.0.2.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/fb-watchman",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/facebook/watchman.git",
+            "version": "2.0.2"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 5.26,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "da9b8f8585534b241e488abbc01a1c5d0f7741d3",
+        "sha1_git": "23188e6b5436099e8f6ee0c65ffb37a34cf4f10d",
+        "sha256": "1cbf98d28443db3b03e6fe0425fcebbea9aa6569c421abee605da0fd61d612ee",
+        "size": 707,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/fb-watchman@2.0.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "6b5a505e382dd0014a2a3fdc59fa9d67",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "1ecd2595f16a5ce0c93abfdac13ff5d26f564baa",
+        "sha1_git": "33da0ad5cff06e31831e64dad3838753d8053984",
+        "sha256": "2b5f0e7274a619ee2b37eee170bf1d32ffae35e9806312e886561f93ceea80df",
+        "size": 1228,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/fb-watchman@2.0.2"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Meta Platforms, Inc. and affiliates",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-7be5aaf1-e32e-2a85-99d9-a29293c96232",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 5,
+                "from_file": "47bb5d9e2928b6347a9ec2c4758f3a4338ea4ed9a560137174d964580680f1ad/package/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 22,
+                "matched_text": " * This source code is licensed under the MIT license found in the\n * LICENSE file in the root directory of this source tree.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_101.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "5eb89bba15389b997365c59de9079e85",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/index.js",
+        "percentage_of_license_text": 2,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "a340818d4be246437a66b849566f75ab2915f818",
+        "sha1_git": "388bcc6991372cb5bccb41b0dfb5fb4064637590",
+        "sha256": "174162c01b5c8bf9b031bbef70f5ecd9b8a972e67c16e3cd1a098944b51293bf",
+        "size": 9073,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "apache_2_0-d66ab77d-a5cc-7104-e702-dc7df61fe9e8",
+        "license_expression": "apache-2.0",
+        "license_expression_spdx": "Apache-2.0",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "47bb5d9e2928b6347a9ec2c4758f3a4338ea4ed9a560137174d964580680f1ad/package/package.json",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "Apache-2.0",
+            "matcher": "1-hash",
+            "rule_identifier": "spdx_license_id_apache-2.0_for_apache-2.0.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_apache-2.0_for_apache-2.0.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "apache_2_0-ec759ae0-ea5a-f138-793e-388520e080c0",
+        "license_expression": "apache-2.0",
+        "license_expression_spdx": "Apache-2.0",
+        "reference_matches": [
+          {
+            "end_line": 24,
+            "from_file": "47bb5d9e2928b6347a9ec2c4758f3a4338ea4ed9a560137174d964580680f1ad/package/package.json",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "  \"license\": \"Apache-2.0\",",
+            "matcher": "2-aho",
+            "rule_identifier": "apache-2.0_65.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_65.RULE",
+            "score": 100,
+            "start_line": 24
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-7be5aaf1-e32e-2a85-99d9-a29293c96232",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 5,
+            "from_file": "47bb5d9e2928b6347a9ec2c4758f3a4338ea4ed9a560137174d964580680f1ad/package/index.js",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 22,
+            "matched_text": " * This source code is licensed under the MIT license found in the\n * LICENSE file in the root directory of this source tree.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_101.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+            "score": 100,
+            "start_line": 4
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "http://www.apache.org/foundation/licence-FAQ.html",
+        "homepage_url": "http://www.apache.org/licenses/",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [
+          "http://www.apache.org/licenses/",
+          "http://www.apache.org/licenses/LICENSE-2.0"
+        ],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "apache-2.0",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/apache-2.0",
+        "minimum_coverage": 0,
+        "name": "Apache License 2.0",
+        "notes": "Per SPDX.org, this version was released January 2004 This license is OSI\ncertified\n",
+        "osi_license_key": "Apache-2.0",
+        "osi_url": "http://opensource.org/licenses/apache2.0.php",
+        "other_spdx_license_keys": [
+          "LicenseRef-Apache",
+          "LicenseRef-Apache-2.0"
+        ],
+        "other_urls": [
+          "http://www.opensource.org/licenses/Apache-2.0",
+          "https://opensource.org/licenses/Apache-2.0",
+          "https://www.apache.org/licenses/LICENSE-2.0"
+        ],
+        "owner": "Apache Software Foundation",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/apache-2.0.LICENSE",
+        "short_name": "Apache 2.0",
+        "spdx_license_key": "Apache-2.0",
+        "spdx_url": "https://spdx.org/licenses/Apache-2.0",
+        "standard_notice": null,
+        "text": "                                 Apache License\n                           Version 2.0, January 2004\n                        http://www.apache.org/licenses/\n \n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n \n   1. Definitions.\n \n      \"License\" shall mean the terms and conditions for use, reproduction,\n      and distribution as defined by Sections 1 through 9 of this document.\n \n      \"Licensor\" shall mean the copyright owner or entity authorized by\n      the copyright owner that is granting the License.\n \n      \"Legal Entity\" shall mean the union of the acting entity and all\n      other entities that control, are controlled by, or are under common\n      control with that entity. For the purposes of this definition,\n      \"control\" means (i) the power, direct or indirect, to cause the\n      direction or management of such entity, whether by contract or\n      otherwise, or (ii) ownership of fifty percent (50%) or more of the\n      outstanding shares, or (iii) beneficial ownership of such entity.\n \n      \"You\" (or \"Your\") shall mean an individual or Legal Entity\n      exercising permissions granted by this License.\n \n      \"Source\" form shall mean the preferred form for making modifications,\n      including but not limited to software source code, documentation\n      source, and configuration files.\n \n      \"Object\" form shall mean any form resulting from mechanical\n      transformation or translation of a Source form, including but\n      not limited to compiled object code, generated documentation,\n      and conversions to other media types.\n \n      \"Work\" shall mean the work of authorship, whether in Source or\n      Object form, made available under the License, as indicated by a\n      copyright notice that is included in or attached to the work\n      (an example is provided in the Appendix below).\n \n      \"Derivative Works\" shall mean any work, whether in Source or Object\n      form, that is based on (or derived from) the Work and for which the\n      editorial revisions, annotations, elaborations, or other modifications\n      represent, as a whole, an original work of authorship. For the purposes\n      of this License, Derivative Works shall not include works that remain\n      separable from, or merely link (or bind by name) to the interfaces of,\n      the Work and Derivative Works thereof.\n \n      \"Contribution\" shall mean any work of authorship, including\n      the original version of the Work and any modifications or additions\n      to that Work or Derivative Works thereof, that is intentionally\n      submitted to Licensor for inclusion in the Work by the copyright owner\n      or by an individual or Legal Entity authorized to submit on behalf of\n      the copyright owner. For the purposes of this definition, \"submitted\"\n      means any form of electronic, verbal, or written communication sent\n      to the Licensor or its representatives, including but not limited to\n      communication on electronic mailing lists, source code control systems,\n      and issue tracking systems that are managed by, or on behalf of, the\n      Licensor for the purpose of discussing and improving the Work, but\n      excluding communication that is conspicuously marked or otherwise\n      designated in writing by the copyright owner as \"Not a Contribution.\"\n \n      \"Contributor\" shall mean Licensor and any individual or Legal Entity\n      on behalf of whom a Contribution has been received by Licensor and\n      subsequently incorporated within the Work.\n \n   2. Grant of Copyright License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      copyright license to reproduce, prepare Derivative Works of,\n      publicly display, publicly perform, sublicense, and distribute the\n      Work and such Derivative Works in Source or Object form.\n \n   3. Grant of Patent License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      (except as stated in this section) patent license to make, have made,\n      use, offer to sell, sell, import, and otherwise transfer the Work,\n      where such license applies only to those patent claims licensable\n      by such Contributor that are necessarily infringed by their\n      Contribution(s) alone or by combination of their Contribution(s)\n      with the Work to which such Contribution(s) was submitted. If You\n      institute patent litigation against any entity (including a\n      cross-claim or counterclaim in a lawsuit) alleging that the Work\n      or a Contribution incorporated within the Work constitutes direct\n      or contributory patent infringement, then any patent licenses\n      granted to You under this License for that Work shall terminate\n      as of the date such litigation is filed.\n \n   4. Redistribution. You may reproduce and distribute copies of the\n      Work or Derivative Works thereof in any medium, with or without\n      modifications, and in Source or Object form, provided that You\n      meet the following conditions:\n \n      (a) You must give any other recipients of the Work or\n          Derivative Works a copy of this License; and\n \n      (b) You must cause any modified files to carry prominent notices\n          stating that You changed the files; and\n \n      (c) You must retain, in the Source form of any Derivative Works\n          that You distribute, all copyright, patent, trademark, and\n          attribution notices from the Source form of the Work,\n          excluding those notices that do not pertain to any part of\n          the Derivative Works; and\n \n      (d) If the Work includes a \"NOTICE\" text file as part of its\n          distribution, then any Derivative Works that You distribute must\n          include a readable copy of the attribution notices contained\n          within such NOTICE file, excluding those notices that do not\n          pertain to any part of the Derivative Works, in at least one\n          of the following places: within a NOTICE text file distributed\n          as part of the Derivative Works; within the Source form or\n          documentation, if provided along with the Derivative Works; or,\n          within a display generated by the Derivative Works, if and\n          wherever such third-party notices normally appear. The contents\n          of the NOTICE file are for informational purposes only and\n          do not modify the License. You may add Your own attribution\n          notices within Derivative Works that You distribute, alongside\n          or as an addendum to the NOTICE text from the Work, provided\n          that such additional attribution notices cannot be construed\n          as modifying the License.\n \n      You may add Your own copyright statement to Your modifications and\n      may provide additional or different license terms and conditions\n      for use, reproduction, or distribution of Your modifications, or\n      for any such Derivative Works as a whole, provided Your use,\n      reproduction, and distribution of the Work otherwise complies with\n      the conditions stated in this License.\n \n   5. Submission of Contributions. Unless You explicitly state otherwise,\n      any Contribution intentionally submitted for inclusion in the Work\n      by You to the Licensor shall be under the terms and conditions of\n      this License, without any additional terms or conditions.\n      Notwithstanding the above, nothing herein shall supersede or modify\n      the terms of any separate license agreement you may have executed\n      with Licensor regarding such Contributions.\n \n   6. Trademarks. This License does not grant permission to use the trade\n      names, trademarks, service marks, or product names of the Licensor,\n      except as required for reasonable and customary use in describing the\n      origin of the Work and reproducing the content of the NOTICE file.\n \n   7. Disclaimer of Warranty. Unless required by applicable law or\n      agreed to in writing, Licensor provides the Work (and each\n      Contributor provides its Contributions) on an \"AS IS\" BASIS,\n      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or\n      implied, including, without limitation, any warranties or conditions\n      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A\n      PARTICULAR PURPOSE. You are solely responsible for determining the\n      appropriateness of using or redistributing the Work and assume any\n      risks associated with Your exercise of permissions under this License.\n \n   8. Limitation of Liability. In no event and under no legal theory,\n      whether in tort (including negligence), contract, or otherwise,\n      unless required by applicable law (such as deliberate and grossly\n      negligent acts) or agreed to in writing, shall any Contributor be\n      liable to You for damages, including any direct, indirect, special,\n      incidental, or consequential damages of any character arising as a\n      result of this License or out of the use or inability to use the\n      Work (including but not limited to damages for loss of goodwill,\n      work stoppage, computer failure or malfunction, or any and all\n      other commercial damages or losses), even if such Contributor\n      has been advised of the possibility of such damages.\n \n   9. Accepting Warranty or Additional Liability. While redistributing\n      the Work or Derivative Works thereof, You may choose to offer,\n      and charge a fee for, acceptance of support, warranty, indemnity,\n      or other liability obligations and/or rights consistent with this\n      License. However, in accepting such obligations, You may act only\n      on Your own behalf and on Your sole responsibility, not on behalf\n      of any other Contributor, and only if You agree to indemnify,\n      defend, and hold each Contributor harmless for any liability\n      incurred by, or claims asserted against, such Contributor by reason\n      of your accepting any such warranty or additional liability.\n \n   END OF TERMS AND CONDITIONS\n \n   APPENDIX: How to apply the Apache License to your work.\n \n      To apply the Apache License to your work, attach the following\n      boilerplate notice, with the fields enclosed by brackets \"[]\"\n      replaced with your own identifying information. (Don't include\n      the brackets!)  The text should be enclosed in the appropriate\n      comment syntax for the file format. We also recommend that a\n      file or class name and description of purpose be included on the\n      same \"printed page\" as the copyright notice for easier\n      identification within third-party archives.\n \n   Copyright [yyyy] [name of copyright owner]\n \n   Licensed under the Apache License, Version 2.0 (the \"License\");\n   you may not use this file except in compliance with the License.\n   You may obtain a copy of the License at\n \n       http://www.apache.org/licenses/LICENSE-2.0\n \n   Unless required by applicable law or agreed to in writing, software\n   distributed under the License is distributed on an \"AS IS\" BASIS,\n   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n   See the License for the specific language governing permissions and\n   limitations under the License.",
+        "text_urls": [
+          "http://www.apache.org/licenses/LICENSE-2.0"
+        ]
+      },
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "apache-2.0_65.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "apache-2.0",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_65.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "license=\"Apache-2.0"
+      },
+      {
+        "identifier": "mit_101.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 22,
+        "license_expression": "mit",
+        "minimum_coverage": 50,
+        "notes": null,
+        "referenced_filenames": [
+          "LICENSE"
+        ],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "This source code is {{licensed under the MIT}} license found in the\nLICENSE file in the root directory of this source tree."
+      },
+      {
+        "identifier": "spdx_license_id_apache-2.0_for_apache-2.0.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "apache-2.0",
+        "minimum_coverage": 100,
+        "notes": "Used to detect a bare SPDX license id",
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_apache-2.0_for_apache-2.0.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Apache-2.0"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/fb-watchman/2.0.2",
+        "bug_tracking_url": "https://github.com/facebook/watchman/issues",
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "apache-2.0",
+        "declared_license_expression_spdx": "Apache-2.0",
+        "description": "Bindings for the Watchman file watching service",
+        "download_url": "https://registry.npmjs.org/fb-watchman/-/fb-watchman-2.0.2.tgz",
+        "extra_data": {},
+        "extracted_license_statement": "- Apache-2.0\n",
+        "holder": null,
+        "homepage_url": "https://facebook.github.io/watchman/",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "facebook",
+          "file",
+          "fs",
+          "fs.watch",
+          "fswatcher",
+          "glob",
+          "utility",
+          "watch",
+          "watcher",
+          "watching",
+          "watchman"
+        ],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-d66ab77d-a5cc-7104-e702-dc7df61fe9e8",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "47bb5d9e2928b6347a9ec2c4758f3a4338ea4ed9a560137174d964580680f1ad/package/package.json",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "Apache-2.0",
+                "matcher": "1-hash",
+                "rule_identifier": "spdx_license_id_apache-2.0_for_apache-2.0.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_apache-2.0_for_apache-2.0.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "fb-watchman",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "wez@fb.com",
+            "name": "Wez Furlong",
+            "role": "author",
+            "type": "person",
+            "url": "http://wezfurlong.org"
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/fb-watchman@2.0.2",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/fb-watchman/-/fb-watchman-2.0.2.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/fb-watchman",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/facebook/watchman.git",
+        "version": "2.0.2"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

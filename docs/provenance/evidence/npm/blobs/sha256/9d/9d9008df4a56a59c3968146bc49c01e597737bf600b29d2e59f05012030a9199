@@ -1,0 +1,73 @@
+{
+  "artifactId": "84450d29a9c3e950a2745193158573e0b02ec5cd416aaa2c9441a08f694eeb29",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 937988,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "9a72cfa50065e739613aa98d47aaf1a9ee710babd4754ce215e3f02c45b8c7f1",
+        "size": 115,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "33ecaf379796050fdf8108db6bfea919373b1fc0c9a4e434f010f02c6d2542e8",
+        "size": 532,
+        "type": "FILE"
+      },
+      {
+        "path": "package/resolver.freebsd-x64.node",
+        "sha256": "85cc0c540a5ca2b30e82edded2eb6c2e8d5f05241a634356d4446235c4adf6fe",
+        "size": 2059896,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 2060543,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "license": "MIT",
+      "name": "@unrs/resolver-binding-freebsd-x64",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.12.2"
+    },
+    "packageMetadata": {
+      "cpu": [
+        "x64"
+      ],
+      "description": "UnRS Resolver Node API",
+      "files": [
+        "resolver.freebsd-x64.node"
+      ],
+      "homepage": "https://github.com/unrs/unrs-resolver",
+      "license": "MIT",
+      "main": "resolver.freebsd-x64.node",
+      "name": "@unrs/resolver-binding-freebsd-x64",
+      "os": [
+        "freebsd"
+      ],
+      "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unrs/unrs-resolver.git"
+      },
+      "version": "1.12.2"
+    },
+    "physicalEntryCount": 3,
+    "tarball": {
+      "bytes": 937988,
+      "sha256": "6a6f4d7055ebc0ae90286f77b0430297a29054f8854955775b0bb0787592b595"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

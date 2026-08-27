@@ -1,0 +1,185 @@
+{
+  "artifactId": "67fe19cfc249e2ea3914bc7fce8b975fefa489287483b0c29fbef826144e6222",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 24234,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "7f66e84b166332cdec8b2c38e73a47c9d8bf460004e80a1cb225e88b0a0adb29",
+        "size": 11828,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/cjs/index.cjs",
+        "sha256": "f095a96eed87d27b2e4eb7d3b488701ee943e16f15a53f70c10fe4736e523244",
+        "size": 26080,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/cjs/index.d.cts",
+        "sha256": "37ecd7aa9e464b72ca1286207dc7567bff2214cd73e9da6bf9b5d3274707e210",
+        "size": 12616,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/cjs/types.cts",
+        "sha256": "0f6d2591c6dbab10e42a87df2e9cfdf1673cb4001a03f32c75ad1a327329080a",
+        "size": 2107,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/cjs/types.d.cts",
+        "sha256": "cfe1a2612ffd55f0eeebd0f4bbe324808859ec686067406066b03f34c0434386",
+        "size": 1586,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.d.ts",
+        "sha256": "84870c650086e731babff3a3c5b525bc1908576c1ec474aac75efa90aa97a057",
+        "size": 12613,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/index.js",
+        "sha256": "133bc8b6ce7f5d5732353d2b442e12932d855d33c670bdd2087888a1ebc02dff",
+        "size": 25978,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/types.d.ts",
+        "sha256": "cfe1a2612ffd55f0eeebd0f4bbe324808859ec686067406066b03f34c0434386",
+        "size": 1586,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/esm/types.ts",
+        "sha256": "0f6d2591c6dbab10e42a87df2e9cfdf1673cb4001a03f32c75ad1a327329080a",
+        "size": 2107,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7908f9d2f29ded86dd0e7141ee0423bdfc13a1cd280051705efaa3e05c54ce3b",
+        "size": 1893,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11357,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357
+      },
+      {
+        "blob": {
+          "bytes": 11828,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/7f/7f66e84b166332cdec8b2c38e73a47c9d8bf460004e80a1cb225e88b0a0adb29",
+          "sha256": "7f66e84b166332cdec8b2c38e73a47c9d8bf460004e80a1cb225e88b0a0adb29"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "7f66e84b166332cdec8b2c38e73a47c9d8bf460004e80a1cb225e88b0a0adb29",
+        "size": 11828
+      }
+    ],
+    "expandedBytes": 109751,
+    "packageIdentity": {
+      "author": "Nicholas C. Zakas",
+      "homepage": "https://github.com/eslint/rewrite/tree/main/packages/plugin-kit#readme",
+      "license": "Apache-2.0",
+      "name": "@eslint/plugin-kit",
+      "repository": {
+        "directory": "packages/plugin-kit",
+        "type": "git",
+        "url": "git+https://github.com/eslint/rewrite.git"
+      },
+      "version": "0.7.2"
+    },
+    "packageMetadata": {
+      "author": "Nicholas C. Zakas",
+      "bugs": {
+        "url": "https://github.com/eslint/rewrite/issues"
+      },
+      "dependencies": {
+        "@eslint/core": "^1.2.1",
+        "levn": "^0.4.1"
+      },
+      "description": "Utilities for building ESLint plugins.",
+      "devDependencies": {
+        "@types/levn": "^0.4.0",
+        "rollup-plugin-copy": "^3.5.0"
+      },
+      "engines": {
+        "node": "^20.19.0 || ^22.13.0 || >=24"
+      },
+      "exports": {
+        "import": {
+          "default": "./dist/esm/index.js",
+          "types": "./dist/esm/index.d.ts"
+        },
+        "require": {
+          "default": "./dist/cjs/index.cjs",
+          "types": "./dist/cjs/index.d.cts"
+        }
+      },
+      "files": [
+        "dist"
+      ],
+      "homepage": "https://github.com/eslint/rewrite/tree/main/packages/plugin-kit#readme",
+      "keywords": [
+        "eslint",
+        "eslintplugin",
+        "eslint-plugin"
+      ],
+      "license": "Apache-2.0",
+      "main": "dist/esm/index.js",
+      "name": "@eslint/plugin-kit",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/plugin-kit",
+        "type": "git",
+        "url": "git+https://github.com/eslint/rewrite.git"
+      },
+      "scripts": {
+        "build": "rollup -c && npm run build:dedupe-types && tsc -p tsconfig.esm.json && npm run build:cts",
+        "build:cts": "node ../../tools/build-cts.js dist/esm/index.d.ts dist/cjs/index.d.cts && node -e \"fs.cpSync('dist/esm/types.d.ts', 'dist/cjs/types.d.cts')\"",
+        "build:dedupe-types": "node ../../tools/dedupe-types.js dist/cjs/index.cjs dist/esm/index.js",
+        "lint:types": "attw --pack",
+        "pretest": "npm run build",
+        "test": "npm run test:types && npm run test:unit",
+        "test:coverage": "npm run build && c8 npm run test:unit",
+        "test:jsr": "npx -y jsr@latest publish --dry-run",
+        "test:types": "tsc -p tests/types/tsconfig.json",
+        "test:unit": "mocha \"tests/**/*.test.js\""
+      },
+      "type": "module",
+      "types": "dist/esm/index.d.ts",
+      "version": "0.7.2"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 24234,
+      "sha256": "50b22954f78c880d1de67c861725d430560a08f2c8c20ad13b65d4ab18dd6cbb"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

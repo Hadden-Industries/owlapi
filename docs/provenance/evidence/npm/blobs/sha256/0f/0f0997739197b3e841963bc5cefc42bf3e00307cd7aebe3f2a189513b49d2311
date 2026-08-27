@@ -1,0 +1,714 @@
+{
+  "artifactId": "20786ae43d8c9cd2998da5dd50508883cab05a8b924ef84a06ad728df94f1899",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 202724,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.tonic_example.js",
+        "sha256": "6df193499f7d9f042775bc44c78e586f332b114bbc066aaea6f6ff5ba91dd22b",
+        "size": 439,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "e85e131fa4ed25538ff1f4962ced1fb6f68b079bd9164a790597a0f30b8fd030",
+        "size": 1090,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "9f4a3d6e74123a325a21efc8494cac6d01f9fe1781bcf63976a2e118260b4d89",
+        "size": 86876,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/ajv.bundle.js",
+        "sha256": "f49bf8a27a25ba0e6aa9274d01481c748e344ee9a186346f5e0b8055dafeaad9",
+        "size": 273216,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/ajv.min.js",
+        "sha256": "e03fc6014680bd4a07160361ed07c0c8df08e87a7aa60671dcdf3d9a77c623a3",
+        "size": 119444,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/ajv.min.js.map",
+        "sha256": "f07a981066fee20dff37f1921ce0e509119ed8226f6a884e8aa348cf61ddda99",
+        "size": 149045,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/ajv.d.ts",
+        "sha256": "10365e99a9a9ca531670369ee229ed129ed6cf1cfb7b4e6ee35f79943c646c33",
+        "size": 13331,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/ajv.js",
+        "sha256": "cc30899a3c8232e1183d6f4d26a54396213f68f7476c3492f783d08e25401023",
+        "size": 15837,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/cache.js",
+        "sha256": "e46dcc11c6e844f644ca331bf7d5caeb3ad1357ca540215da9668f6c58c6aa89",
+        "size": 409,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/compile/async.js",
+        "sha256": "4bfa8664a637f31818f9a88b5151ed7e8fd986bc0664b674654b610d5e4c80d2",
+        "size": 2644,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/compile/equal.js",
+        "sha256": "a32f0fd0f8794ed157804169c7a32ac9a89e2e5762d427bb2b424a70ba2be763",
+        "size": 176,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/compile/error_classes.js",
+        "sha256": "dd1dec6c510cd07e796c6ba1b746cf1efc4eed57c79ef790417d50497ee9af02",
+        "size": 828,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/compile/formats.js",
+        "sha256": "73e0bc9794682f969be639ba5fceaafd9c12221f61ce773bbceff6c67c737588",
+        "size": 12102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/compile/index.js",
+        "sha256": "ee3290acb345cc37b1412c45d53f7d200a824eb35ec060279a25c6e703513bcc",
+        "size": 10807,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/compile/resolve.js",
+        "sha256": "61735e559ac4ff73d3b5a85d0f7e7d248bf53eaa47f9fd80cb950f59a9aca80c",
+        "size": 7847,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/compile/rules.js",
+        "sha256": "ee1d720ece5b85634762672652cb1daf4074ab3535da2cc8b8c002eb4dd536ba",
+        "size": 2021,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/compile/schema_obj.js",
+        "sha256": "42e3892ff6d470c9fb601dc7bbde42c6909fcf00c0d86fdbbab0deaf9c37b598",
+        "size": 133,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/compile/ucs2length.js",
+        "sha256": "b60efae2495d93ce8db6eb79c690448038269e720d89b846bae2fc1f7ae764cc",
+        "size": 558,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/compile/util.js",
+        "sha256": "329aa7f0b435a37096f1a1c4dc8f06f56110d68d69189ad5d4809de86422f651",
+        "size": 6974,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/data.js",
+        "sha256": "c8540b06ec80ba7ab9078d38c4818b82097a282159981f377fa283186cc64492",
+        "size": 1048,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/definition_schema.js",
+        "sha256": "d050d4982e55cbf963425bf8a42ab1b9d365e2a53e1cc03208a6d2b30bdfccdf",
+        "size": 872,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/_limit.jst",
+        "sha256": "5a359e1fea273dc74ec451ecabb37e69330b38d65a85edca91d3d2edeeea52d6",
+        "size": 3932,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/_limitItems.jst",
+        "sha256": "dd288000fc1a50c87095896710e86d934cee2642a06f0d6d8337997e7419c996",
+        "size": 353,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/_limitLength.jst",
+        "sha256": "9bb203beb1705c226e9e3ce22dbbca3920b6f652b1afd8a0d42cc5a6c32d9452",
+        "size": 358,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/_limitProperties.jst",
+        "sha256": "a8f0f1effb40478156e2deb98f2c532cb7c75ece19df64f2d23cbdb8af3e306c",
+        "size": 376,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/allOf.jst",
+        "sha256": "ee4e6c238cfd04c4acb42d44f14547f2f2010a522784ff31085b93e4e5281dc7",
+        "size": 609,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/anyOf.jst",
+        "sha256": "67bf7efc9a7d001acd1d0e635b83d9ad45fb259c5044141ed91975497304c9da",
+        "size": 921,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/coerce.def",
+        "sha256": "55a8ad7fad7aab2fbd65eaafec5cdefd3f08761b6a80969ae8321a3591143eb3",
+        "size": 1979,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/comment.jst",
+        "sha256": "9ae60097b70de6628841168ba9013555d29bbe5aa9c3fc546cdb502d385ce536",
+        "size": 322,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/const.jst",
+        "sha256": "6d2fcb0689dd1376e54321076f9808b2bf6901dca3b5308ac826f012005c02a2",
+        "size": 280,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/contains.jst",
+        "sha256": "86efacd183d38376d2fe0f1502b2d344c294a136b8219cdef4e409a0dc9028c3",
+        "size": 1188,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/custom.jst",
+        "sha256": "450510c02f23ca48cf1cf98a92c3de346d8fbfb47b53da460ba5ec7e3c898c80",
+        "size": 4945,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/defaults.def",
+        "sha256": "6686d2936716a9e18a2efc66bce7563e479d14fd3ab40f0d9251eaab81233ac1",
+        "size": 1285,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/definitions.def",
+        "sha256": "546bfcfd7846af2b218c487ec46e801efb409838b4bcd6c2a4cef843a390615a",
+        "size": 4022,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/dependencies.jst",
+        "sha256": "7e307f0f74f72b3ea2498787d2ddf0d32a68d2c111578697a9614d372babb7c1",
+        "size": 1868,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/enum.jst",
+        "sha256": "088fd6c53a93c4e4633ecf2e873340f84e94939316f64b776c9a81bb732a1ba9",
+        "size": 552,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/errors.def",
+        "sha256": "2e67bc06f4ec877190d3d52863aa6b671384ddbb99b4c8ba840df542838e0c68",
+        "size": 8282,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/format.jst",
+        "sha256": "8e6bc9e02190a1e1103cac4704465bcc47a4edd596f4d2eb73e39110ab83df74",
+        "size": 3136,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/if.jst",
+        "sha256": "a084c8301cfa186f0460a4e88387ea3150ad52d2a114fbd11e6fbf85fc912c62",
+        "size": 1618,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/items.jst",
+        "sha256": "cbc3d15b52c4169d750ff6f842208e3ccd5d8dcae6a2cff52cd4e7325ceb1e92",
+        "size": 2610,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/missing.def",
+        "sha256": "bb52cb196254320b3a80782b1dac6636debcbe04bf1e48df5b81fec3886456d8",
+        "size": 1194,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/multipleOf.jst",
+        "sha256": "34d7a719b015fd7500ac8ec31a5199775dba55ccc49a0547715d5ac0bafbcb66",
+        "size": 644,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/not.jst",
+        "sha256": "6a5d0d66c1182464d9b85ff393b56830f0702c8942d9a19d42657620bb6d25a4",
+        "size": 861,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/oneOf.jst",
+        "sha256": "d1d91a376cb3383e4c595a34b596fdff9cc0fd6187879b6a86e2ea7846d2b7d3",
+        "size": 1150,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/pattern.jst",
+        "sha256": "7e7c04ee8ee2f1a4bcab5d65b2493a1da1fdce37f3416fe17630a54a12a97899",
+        "size": 576,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/properties.jst",
+        "sha256": "3518d27bf09a1dd4d35530681f196c9f6e1744c10cd1c632b4645ee6ca3f7969",
+        "size": 7725,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/propertyNames.jst",
+        "sha256": "f306ced709b3f0d12ee9f4b863ddbb3b176b018fc577d6d9296208df8d8e2fe1",
+        "size": 1284,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/ref.jst",
+        "sha256": "bdb99d7e81d98330463e10b41a08335439e3a9965dc9031c54263ee3fbc500c3",
+        "size": 2454,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/required.jst",
+        "sha256": "21b390b530ac65f59eb585fbd2ace68eae8e04dfe8af9a3574e49ae07e0c1f58",
+        "size": 2868,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/uniqueItems.jst",
+        "sha256": "4c2afcc9877a02b58fd00c4dc36187d3cd1e0e8ff5761ddaf1c666b7d3a25263",
+        "size": 1696,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dot/validate.jst",
+        "sha256": "4b3ce454d8cefb6a77846f97069b812f386a312e84f1182ad38a409a6f51d0c7",
+        "size": 7717,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/README.md",
+        "sha256": "30eeee72a46d849c941e3e9446e0bca66ed905a72ade2716119ef26c14c0dac9",
+        "size": 149,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/_limit.js",
+        "sha256": "1cf617f09077f153168137651a53abc2088d80591d5d577e276d1b7023523ba1",
+        "size": 7395,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/_limitItems.js",
+        "sha256": "a20128ce95a4267bc026f72da633d8f81f23d5d6d664a5503529279b1fe98574",
+        "size": 2704,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/_limitLength.js",
+        "sha256": "abc90262f31f548f6593855e82cbea1a0a5d7199a511c43e766357af39af93cc",
+        "size": 2825,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/_limitProperties.js",
+        "sha256": "36c8b6512cc53fe730990c9cdc0d9da2fbbfb10b9a60d96ac3b35d75ef66503b",
+        "size": 2742,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/allOf.js",
+        "sha256": "8f73c7d4242793a3b485dce5e1a46861ccb6af1935f3b7565cd7f1c71c79f70d",
+        "size": 1349,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/anyOf.js",
+        "sha256": "c6fd31c9e66cea3f16017c5cfbe6c8eb25ea8248b8520026e05ff4c5802cbe99",
+        "size": 2925,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/comment.js",
+        "sha256": "7f96f44c08b52e9b4658d40fd65382dc89cf4e73116479c6211582147c4b0048",
+        "size": 573,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/const.js",
+        "sha256": "1bcb376424595c3b2be687118bc7a2ace072cc87f31363b28892c6b28c3b160e",
+        "size": 2113,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/contains.js",
+        "sha256": "cb182b4d4e1eb540f1ab0e216165b654fd11692ad21405fc6d1a13dd14143213",
+        "size": 3370,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/custom.js",
+        "sha256": "3e42bc285568af0fa8977ce2fd14b592ff8b8716921868a46e18d4dc4e21a81b",
+        "size": 9770,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/dependencies.js",
+        "sha256": "6ec373cb168e6bfe6dcf5b4e492ac67114e4a176aaaae643d12f804e86306523",
+        "size": 7720,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/enum.js",
+        "sha256": "7ed0f983a5d98c2bf8980b04cc49d80a4a4c543b99eb4c0296e6fce84075ec9c",
+        "size": 2586,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/format.js",
+        "sha256": "652a1fb810cb4cb7b19907e58da3433336197f7c8b28db458fce75b473cd51cb",
+        "size": 5565,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/if.js",
+        "sha256": "2479d874860ae5857974d20c0d5908532c435327a70bdd982f2a747ac129eecc",
+        "size": 4159,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/index.js",
+        "sha256": "5370d6a29859f9eca7e989aabb4a377bc030af34a77960aff373478a30c26c1e",
+        "size": 1100,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/items.js",
+        "sha256": "5abe003d9fe397ac60140c8bda4890ac0ba6059e8d29876699fefc7e052dbd13",
+        "size": 6214,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/multipleOf.js",
+        "sha256": "a7331e809a6c3f968f2b8aa507ad6a6cca91eeff693e141620b8b9170a83bf4f",
+        "size": 2807,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/not.js",
+        "sha256": "6685973fcbc5a8c4271ab1c59a11a80a599c8cc919e78c3f3c899b74adcee63b",
+        "size": 3460,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/oneOf.js",
+        "sha256": "ef2d63612fdf85e16eb8af8fe9eed5151bddf394d821d6219c98aed822b23c6d",
+        "size": 3188,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/pattern.js",
+        "sha256": "6bc3e0fb7bd34cba177e1e63909314fba393e7c6c92b494ad083a64406693611",
+        "size": 3025,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/properties.js",
+        "sha256": "deddeaac1178b03ed0ef4581f5e538e57be39acb4cacd3e297627e2ed724b8f3",
+        "size": 15121,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/propertyNames.js",
+        "sha256": "55ff82517e1bf3823a43612541c75e6df74fb404beb934d8512708595f68813a",
+        "size": 3607,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/ref.js",
+        "sha256": "efdf5f24dd240a9aa6cd9cd757b82e7b7cb3d2d9c21730734516223fcb416021",
+        "size": 4711,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/required.js",
+        "sha256": "71411bc4c49c0a9bf1ee7e86758b400955015346801cbe3cec1d2e2ee0db94e0",
+        "size": 12395,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/uniqueItems.js",
+        "sha256": "5c5a4de99d43a2afc530ef356f97d9d64420dad276c7c2302763a122df4a48bd",
+        "size": 3694,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dotjs/validate.js",
+        "sha256": "f0f8768cf0d5707a35b1524259483d146aa5f8ab55c8f0e43b06dc96e218576d",
+        "size": 20018,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/keyword.js",
+        "sha256": "28b5706754b43356efd830465bb2b4b0f68e94cc56cb068020c7a96b2a432e3d",
+        "size": 3911,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/refs/data.json",
+        "sha256": "c99e189cc843d5c835a0b8d6059cd33d7330d31ae99d8d7c99d307e0b38bd1a8",
+        "size": 551,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/refs/json-schema-draft-04.json",
+        "sha256": "e1489d0b4755f02793302591d3fcb8f07b6893a82a94f24895f8e4edf11b82e2",
+        "size": 4357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/refs/json-schema-draft-06.json",
+        "sha256": "47a0be9bec080b114a30a83d99143610838369aadba28ab1e27e29f2bab96646",
+        "size": 4445,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/refs/json-schema-draft-07.json",
+        "sha256": "7f5fd717194bd954bbb04c833f6116f727d899c7bc977c26abcb2607aa51d66a",
+        "size": 4879,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/refs/json-schema-secure.json",
+        "sha256": "27a688d91d55baab0d04b84eddc76d6e325683643c62ab843f639344d5e218e1",
+        "size": 2572,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "be4fd09eb4658674ed5ffb9da2786d2056fd78429192a3619e0458f84fe0ca6b",
+        "size": 3142,
+        "type": "FILE"
+      },
+      {
+        "path": "package/scripts/.eslintrc.yml",
+        "sha256": "814c6f190dd9e82d2bd59ed462347d2368b5d1319176976c8e873ad5b941c0fd",
+        "size": 62,
+        "type": "FILE"
+      },
+      {
+        "path": "package/scripts/bundle.js",
+        "sha256": "572324063ceb1b1a6c80658110863b0dfe75d7d801030f5fd1838c8519d29264",
+        "size": 1795,
+        "type": "FILE"
+      },
+      {
+        "path": "package/scripts/compile-dots.js",
+        "sha256": "80618e4ac58cddc6a0c8989b3b29534ff1f32c279ba385332bdffdbe96380eb2",
+        "size": 2431,
+        "type": "FILE"
+      },
+      {
+        "path": "package/scripts/info",
+        "sha256": "ac6b35ca053000ddd18d728d182ca6d28fe557396ec2150f5cc7206f2564c182",
+        "size": 289,
+        "type": "FILE"
+      },
+      {
+        "path": "package/scripts/prepare-tests",
+        "sha256": "e14b646f4624b96e46c8d61806d89cbe1cddab78c2429d3f71f2a6f1a1548c13",
+        "size": 269,
+        "type": "FILE"
+      },
+      {
+        "path": "package/scripts/publish-built-version",
+        "sha256": "b1db1ae1a4ed95c48fbee1e9bc3b5dfed1ed74d9075fcb6b20989a4cf66d33c1",
+        "size": 842,
+        "type": "FILE"
+      },
+      {
+        "path": "package/scripts/travis-gh-pages",
+        "sha256": "a237607f9992de6e13a77c10a05557cd071425b7bdb6341578b0b83da3d07264",
+        "size": 874,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1090,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e8/e85e131fa4ed25538ff1f4962ced1fb6f68b079bd9164a790597a0f30b8fd030",
+          "sha256": "e85e131fa4ed25538ff1f4962ced1fb6f68b079bd9164a790597a0f30b8fd030"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "e85e131fa4ed25538ff1f4962ced1fb6f68b079bd9164a790597a0f30b8fd030",
+        "size": 1090
+      },
+      {
+        "blob": {
+          "bytes": 86876,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9f/9f4a3d6e74123a325a21efc8494cac6d01f9fe1781bcf63976a2e118260b4d89",
+          "sha256": "9f4a3d6e74123a325a21efc8494cac6d01f9fe1781bcf63976a2e118260b4d89"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "9f4a3d6e74123a325a21efc8494cac6d01f9fe1781bcf63976a2e118260b4d89",
+        "size": 86876
+      }
+    ],
+    "expandedBytes": 938206,
+    "packageIdentity": {
+      "author": "Evgeny Poberezkin",
+      "homepage": "https://github.com/ajv-validator/ajv",
+      "license": "MIT",
+      "name": "ajv",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/ajv-validator/ajv.git"
+      },
+      "version": "6.15.0"
+    },
+    "packageMetadata": {
+      "author": "Evgeny Poberezkin",
+      "bugs": {
+        "url": "https://github.com/ajv-validator/ajv/issues"
+      },
+      "collective": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/ajv"
+      },
+      "dependencies": {
+        "fast-deep-equal": "^3.1.1",
+        "fast-json-stable-stringify": "^2.0.0",
+        "json-schema-traverse": "^0.4.1",
+        "uri-js": "^4.2.2"
+      },
+      "description": "Another JSON Schema Validator",
+      "devDependencies": {
+        "ajv-async": "^1.0.0",
+        "bluebird": "^3.5.3",
+        "brfs": "^2.0.0",
+        "browserify": "^16.2.0",
+        "chai": "^4.0.1",
+        "coveralls": "^3.0.1",
+        "del-cli": "^3.0.0",
+        "dot": "^1.0.3",
+        "eslint": "^7.3.1",
+        "gh-pages-generator": "^0.2.3",
+        "glob": "^7.0.0",
+        "if-node-version": "^1.0.0",
+        "js-beautify": "^1.7.3",
+        "jshint": "^2.10.2",
+        "json-schema-test": "^2.0.0",
+        "karma": "^5.0.0",
+        "karma-chrome-launcher": "^3.0.0",
+        "karma-mocha": "^2.0.0",
+        "karma-sauce-launcher": "^4.1.3",
+        "mocha": "^8.0.1",
+        "nyc": "^15.0.0",
+        "pre-commit": "^1.1.1",
+        "re2": "^1.21.4",
+        "require-globify": "^1.3.0",
+        "typescript": "^3.9.5",
+        "uglify-js": "^3.6.9",
+        "watch": "^1.0.0"
+      },
+      "files": [
+        "lib/",
+        "dist/",
+        "scripts/",
+        "LICENSE",
+        ".tonic_example.js"
+      ],
+      "funding": {
+        "type": "github",
+        "url": "https://github.com/sponsors/epoberezkin"
+      },
+      "homepage": "https://github.com/ajv-validator/ajv",
+      "keywords": [
+        "JSON",
+        "schema",
+        "validator",
+        "validation",
+        "jsonschema",
+        "json-schema",
+        "json-schema-validator",
+        "json-schema-validation"
+      ],
+      "license": "MIT",
+      "main": "lib/ajv.js",
+      "name": "ajv",
+      "nyc": {
+        "exclude": [
+          "**/spec/**",
+          "node_modules"
+        ],
+        "reporter": [
+          "lcov",
+          "text-summary"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/ajv-validator/ajv.git"
+      },
+      "scripts": {
+        "build": "del-cli lib/dotjs/*.js \"!lib/dotjs/index.js\" && node scripts/compile-dots.js",
+        "bundle": "del-cli dist && node ./scripts/bundle.js . Ajv pure_getters",
+        "bundle-beautify": "node ./scripts/bundle.js js-beautify",
+        "eslint": "eslint lib/{compile/,}*.js spec/{**/,}*.js scripts --ignore-pattern spec/JSON-Schema-Test-Suite",
+        "jshint": "jshint lib/{compile/,}*.js",
+        "lint": "npm run jshint && npm run eslint",
+        "prepublish": "npm run build && npm run bundle",
+        "test": "npm run lint && npm run build && npm run test-all",
+        "test-all": "npm run test-cov && if-node-version 10 npm run test-browser",
+        "test-browser": "del-cli .browser && npm run bundle && scripts/prepare-tests && npm run test-karma",
+        "test-cov": "nyc npm run test-spec",
+        "test-debug": "npm run test-spec -- --inspect-brk",
+        "test-fast": "AJV_FAST_TEST=true npm run test-spec",
+        "test-karma": "karma start",
+        "test-spec": "mocha spec/{**/,}*.spec.js -R spec",
+        "test-ts": "tsc --target ES5 --noImplicitAny --noEmit spec/typescript/index.ts",
+        "watch": "watch \"npm run build\" ./lib/dot"
+      },
+      "tonicExampleFilename": ".tonic_example.js",
+      "typings": "lib/ajv.d.ts",
+      "version": "6.15.0"
+    },
+    "physicalEntryCount": 92,
+    "tarball": {
+      "bytes": 202724,
+      "sha256": "f52192ad895dee468f1d1d5bf8972f7114e2459ff126632a1963e7bd2a38ed0a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

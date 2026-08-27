@@ -1,0 +1,151 @@
+{
+  "artifactId": "0ecab493c50f69f9010619dc42f95265401e292ecf47eb713a0883abd73ee697",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 10631,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "b2298a66f1859b2149187a23db5e23c8d0b9f1d7fcb23605d233994856f4f78b",
+        "size": 1081,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "13f55491389c83062e7347bc31dfc63411df0f6337fbf9d29c83db23353d04cd",
+        "size": 2069,
+        "type": "FILE"
+      },
+      {
+        "path": "package/data-model.d.ts",
+        "sha256": "23c992090c336c34af55673d1d865b55a5f5c23a5fd2b4a6049e2df7058207c0",
+        "size": 8906,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dataset.d.ts",
+        "sha256": "d2cdba5be077b28a91fd380157e423d093279590aedb605f51ed6b6f398657c1",
+        "size": 8116,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "d399f2e8fb5a30229e0ebfae43e5d6c90ad23c0b4128d1e8d2499b809660cf4d",
+        "size": 160,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "f0a6586730dd8c3d25119e622ac38ef88476d650a4bfe9edbfe85db1ee820d7e",
+        "size": 973,
+        "type": "FILE"
+      },
+      {
+        "path": "package/query.d.ts",
+        "sha256": "642970856d429003a8a04298231d0dedac726519411a8b88afd90e2ab689f094",
+        "size": 130,
+        "type": "FILE"
+      },
+      {
+        "path": "package/query/common.d.ts",
+        "sha256": "26e5fdc90b7bf9f7e5b107f2368adc69c72c74e4a125e6109ccde781b87bbd57",
+        "size": 10390,
+        "type": "FILE"
+      },
+      {
+        "path": "package/query/queryable.d.ts",
+        "sha256": "8953bf122fc832d335954e3a9188cbe4766ee2ef9be51f577de52234cd8a630e",
+        "size": 5484,
+        "type": "FILE"
+      },
+      {
+        "path": "package/stream.d.ts",
+        "sha256": "b1cac4e06205000177d05342bc524983550157a72fcf450b701e747deb19e6af",
+        "size": 4292,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1081,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b2/b2298a66f1859b2149187a23db5e23c8d0b9f1d7fcb23605d233994856f4f78b",
+          "sha256": "b2298a66f1859b2149187a23db5e23c8d0b9f1d7fcb23605d233994856f4f78b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "b2298a66f1859b2149187a23db5e23c8d0b9f1d7fcb23605d233994856f4f78b",
+        "size": 1081
+      }
+    ],
+    "expandedBytes": 41601,
+    "packageIdentity": {
+      "author": {
+        "email": "public-rdfjs@w3.org",
+        "name": "RDF/JS Representation Task Force",
+        "url": "https://github.com/rdfjs/representation-task-force"
+      },
+      "homepage": "http://rdf.js.org/",
+      "license": "MIT",
+      "name": "@rdfjs/types",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/rdfjs/types"
+      },
+      "version": "2.0.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "public-rdfjs@w3.org",
+        "name": "RDF/JS Representation Task Force",
+        "url": "https://github.com/rdfjs/representation-task-force"
+      },
+      "bugs": {
+        "email": "public-rdfjs@w3.org",
+        "url": "https://github.com/rdfjs/types/issues"
+      },
+      "dependencies": {
+        "@types/node": "*"
+      },
+      "devDependencies": {
+        "@changesets/cli": "^2.27.8",
+        "@typescript-eslint/eslint-plugin": "^4.5.0",
+        "@typescript-eslint/parser": "^4.5.0",
+        "eslint": "^7.12.0",
+        "typescript": "^5.7.2"
+      },
+      "files": [
+        "./**/*.d.ts"
+      ],
+      "homepage": "http://rdf.js.org/",
+      "keywords": [
+        "rdf",
+        "rdf/js",
+        "rdfjs",
+        "typescript"
+      ],
+      "license": "MIT",
+      "name": "@rdfjs/types",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/rdfjs/types"
+      },
+      "scripts": {
+        "lint": "eslint . --ext .ts",
+        "release": "changeset publish",
+        "test": "tsc --noEmit"
+      },
+      "types": "index.d.ts",
+      "version": "2.0.1"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 10631,
+      "sha256": "b0ba20257ed30bf0f1caad406d71eb4c8cf73519a938472c4738bfc49b4b29ab"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

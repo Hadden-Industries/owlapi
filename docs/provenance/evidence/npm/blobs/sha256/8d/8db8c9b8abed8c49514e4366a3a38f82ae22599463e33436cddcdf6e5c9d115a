@@ -1,0 +1,423 @@
+{
+  "artifactId": "f398e9285a77859395fefed5b600af7455679c74432148b68e37a04badcb8e2c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 30747,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "769d154fbde32a915af110b1123650bc79f4cbe675acc66e005265bf069c6c6c",
+        "size": 1080,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "bc4a19f3e6ac9a3faeefa0687570a6d32ea925365a0705523c064b721c47c799",
+        "size": 14417,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/trace-mapping.mjs",
+        "sha256": "ddcf6097a82c7b16c267f6fb592578205c31e09adf54d3978b6250cca18ed86f",
+        "size": 15335,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/trace-mapping.mjs.map",
+        "sha256": "8d6c357eaa626e6809cde55d373b7d3bfa17d2d6fc6bc05d2ac0a36308163567",
+        "size": 11208,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/trace-mapping.umd.js",
+        "sha256": "5ad4ec0709f78aa806c70965d4c162270e1df605f5572aa3a1ced31fe73dd07a",
+        "size": 18670,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/trace-mapping.umd.js.map",
+        "sha256": "deb2abbb333a3c55331d1e3cfbf31dadd68e4e2ea127f826501ba26edab47608",
+        "size": 11570,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7f5eacc669d36013f9b792ab15721a97d48b26b093100122aa6c8691ebe656be",
+        "size": 2252,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/binary-search.ts",
+        "sha256": "ae7ae4c8879a66c98ab0b1197e8e4110d121ac21cf52482dd66f6a4788e6c933",
+        "size": 2793,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/by-source.ts",
+        "sha256": "dc8a55d9a17dfbe75334c6f274d50e86677a334daa4c68c1c3ab1451ddb722ff",
+        "size": 1244,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/flatten-map.ts",
+        "sha256": "5b1194dcdafd44aedfe0076c72e2ac6757e617c9a5e3bc8fd5712189a7de6491",
+        "size": 5417,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/resolve.ts",
+        "sha256": "c7e1c5732de10ed3801666733cc8130fa72e55a91a8d74d8ed7dabc114aba57f",
+        "size": 699,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/sort.ts",
+        "sha256": "afc9d966ec471f1be9f6e6843d009b30ce0a37853cbc31ec9834c8d273286403",
+        "size": 1445,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/sourcemap-segment.ts",
+        "sha256": "691633f8781f475dfe47b2c91d2ef0e253b0b58f004c6fc51b81fc903138cbcb",
+        "size": 665,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/strip-filename.ts",
+        "sha256": "66f7d317bfda55df933db5a029f646cb25aebec305773edfc2d84605307492b7",
+        "size": 253,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/trace-mapping.ts",
+        "sha256": "f37d9db53896dd9adb199cb75b79ab33c8c588b5a25793b714e20dad2f77187b",
+        "size": 15414,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/types.ts",
+        "sha256": "ee844c77a35506b757cd0bf21e8170b3422989c2cb13f2839cf6264e8bbef241",
+        "size": 3166,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/binary-search.d.cts",
+        "sha256": "f6cff70e413f1e8f5b3b5649a08b05421dacb07b526f58f9fb8819d95a273f39",
+        "size": 1585,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/binary-search.d.cts.map",
+        "sha256": "eb1efc4186cc9692582372f788f5d7dddb0cd9f37e2e02e549d381dca7f75b76",
+        "size": 902,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/binary-search.d.mts",
+        "sha256": "62fba7df9c1fef09dc568f43ada328e06161274b7ea0e2d14ccb65f852fe05c6",
+        "size": 1585,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/binary-search.d.mts.map",
+        "sha256": "eb1efc4186cc9692582372f788f5d7dddb0cd9f37e2e02e549d381dca7f75b76",
+        "size": 902,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/by-source.d.cts",
+        "sha256": "99d91012694196b2a4f793c4e94365fb71411678f510fb1238e65ba804eb7680",
+        "size": 269,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/by-source.d.cts.map",
+        "sha256": "703132ce95a792475cfc9538210faedc6c54a789ce67688fb9d978a15fd13f66",
+        "size": 332,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/by-source.d.mts",
+        "sha256": "440b7897a0537788ba5b018bf8cabaa7287ba9012145134151d1e2f36bbe587a",
+        "size": 269,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/by-source.d.mts.map",
+        "sha256": "703132ce95a792475cfc9538210faedc6c54a789ce67688fb9d978a15fd13f66",
+        "size": 332,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/flatten-map.d.cts",
+        "sha256": "db2e3685e0cd88f135134d9072b5fd684059b7bd9089fb19292853409af3b7f8",
+        "size": 384,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/flatten-map.d.cts.map",
+        "sha256": "eb8e7f1763d0a16e2d25bda4a816cf1f7f346cf872fef28a829ddb74660e9bc0",
+        "size": 471,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/flatten-map.d.mts",
+        "sha256": "fabb88dfd85ea8b0224522c17011292454279f86d834c444f3346b5696ac192b",
+        "size": 384,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/flatten-map.d.mts.map",
+        "sha256": "eb8e7f1763d0a16e2d25bda4a816cf1f7f346cf872fef28a829ddb74660e9bc0",
+        "size": 471,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/resolve.d.cts",
+        "sha256": "7aad6f4f525f3b80355197be0755b01023f7cf95dd15c1e4626d5461eb5395b8",
+        "size": 208,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/resolve.d.cts.map",
+        "sha256": "b867e2ca531527332c0920fe87ad933af55047a3cce7bc2432d3b9a743771969",
+        "size": 291,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/resolve.d.mts",
+        "sha256": "db6f954c51cb59eb52aa03a44528879122fbe4c0c2ace3829c10736682ff28ae",
+        "size": 208,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/resolve.d.mts.map",
+        "sha256": "b867e2ca531527332c0920fe87ad933af55047a3cce7bc2432d3b9a743771969",
+        "size": 291,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/sort.d.cts",
+        "sha256": "bdb5286f265f02985927b37222ea2493654dd62b6a53c482220fbeebc899d3fe",
+        "size": 325,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/sort.d.cts.map",
+        "sha256": "5cddcbc6aedd6f1c99a3cd9a0000e2a44b7e432246732ccd9d250a87f2f56a1d",
+        "size": 379,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/sort.d.mts",
+        "sha256": "2b8bec35d40f910fec455f0e6dfd3716b9c10424e9b2176f4b519009b361311e",
+        "size": 325,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/sort.d.mts.map",
+        "sha256": "5cddcbc6aedd6f1c99a3cd9a0000e2a44b7e432246732ccd9d250a87f2f56a1d",
+        "size": 379,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/sourcemap-segment.d.cts",
+        "sha256": "3889f1cc96a1a391148469172d625936f5382f3bd8241d0e7951739eec768d40",
+        "size": 766,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/sourcemap-segment.d.cts.map",
+        "sha256": "40cbbb2ff7f7314ed9f006fa7f2a35b6bc1fc82fa5ea508851cefb93fba4872f",
+        "size": 760,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/sourcemap-segment.d.mts",
+        "sha256": "3889f1cc96a1a391148469172d625936f5382f3bd8241d0e7951739eec768d40",
+        "size": 766,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/sourcemap-segment.d.mts.map",
+        "sha256": "40cbbb2ff7f7314ed9f006fa7f2a35b6bc1fc82fa5ea508851cefb93fba4872f",
+        "size": 760,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/strip-filename.d.cts",
+        "sha256": "4b9e87caf3d6ed692325b40815612243edf5bf9e0d435ad87b30fc54f7902b2f",
+        "size": 196,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/strip-filename.d.cts.map",
+        "sha256": "e81ff1d320e8816ef15c94461c2892cb34a426095903ecd01b9ed1e91ec13f1e",
+        "size": 218,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/strip-filename.d.mts",
+        "sha256": "184f81c13671fc2b767bf04fa51d09e1ec3be21248713443f0f6d7949870a809",
+        "size": 196,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/strip-filename.d.mts.map",
+        "sha256": "e81ff1d320e8816ef15c94461c2892cb34a426095903ecd01b9ed1e91ec13f1e",
+        "size": 218,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/trace-mapping.d.cts",
+        "sha256": "961d5e56f27129f1f6181b43390b865d79e50d0408187d2c64aa869e1ff93ce2",
+        "size": 4193,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/trace-mapping.d.cts.map",
+        "sha256": "c6b5346cf5fc3d1a8e15c3a9e97915318811e9d365e488dcf3a4f1496534622a",
+        "size": 2559,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/trace-mapping.d.mts",
+        "sha256": "b33ce07211389c7c95b50703770aed983f78d4193969886618d0da02ae1b993c",
+        "size": 4193,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/trace-mapping.d.mts.map",
+        "sha256": "c6b5346cf5fc3d1a8e15c3a9e97915318811e9d365e488dcf3a4f1496534622a",
+        "size": 2559,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/types.d.cts",
+        "sha256": "8984cc992aa87e144923c005dbf7570e9fdc3417b70cdca9b7bba06be3aaf57c",
+        "size": 3144,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/types.d.cts.map",
+        "sha256": "9125aa139cfadc7103a3c369b075b17eebbf4efb0c0c51ae8849b1cae887e492",
+        "size": 3566,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/types.d.mts",
+        "sha256": "bd0249ee262db66dca0236137a039f175441740674f8b1b6c24b118c312fffc4",
+        "size": 3144,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/types.d.mts.map",
+        "sha256": "9125aa139cfadc7103a3c369b075b17eebbf4efb0c0c51ae8849b1cae887e492",
+        "size": 3566,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1080,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/76/769d154fbde32a915af110b1123650bc79f4cbe675acc66e005265bf069c6c6c",
+          "sha256": "769d154fbde32a915af110b1123650bc79f4cbe675acc66e005265bf069c6c6c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "769d154fbde32a915af110b1123650bc79f4cbe675acc66e005265bf069c6c6c",
+        "size": 1080
+      }
+    ],
+    "expandedBytes": 146724,
+    "packageIdentity": {
+      "author": "Justin Ridgewell <justin@ridgewell.name>",
+      "homepage": "https://github.com/jridgewell/sourcemaps/tree/main/packages/trace-mapping",
+      "license": "MIT",
+      "name": "@jridgewell/trace-mapping",
+      "repository": {
+        "directory": "packages/trace-mapping",
+        "type": "git",
+        "url": "git+https://github.com/jridgewell/sourcemaps.git"
+      },
+      "version": "0.3.31"
+    },
+    "packageMetadata": {
+      "author": "Justin Ridgewell <justin@ridgewell.name>",
+      "dependencies": {
+        "@jridgewell/resolve-uri": "^3.1.0",
+        "@jridgewell/sourcemap-codec": "^1.4.14"
+      },
+      "description": "Trace the original position through a source map",
+      "exports": {
+        ".": [
+          {
+            "default": {
+              "default": "./dist/trace-mapping.umd.js",
+              "types": "./types/trace-mapping.d.cts"
+            },
+            "import": {
+              "default": "./dist/trace-mapping.mjs",
+              "types": "./types/trace-mapping.d.mts"
+            }
+          },
+          "./dist/trace-mapping.umd.js"
+        ],
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "dist",
+        "src",
+        "types"
+      ],
+      "homepage": "https://github.com/jridgewell/sourcemaps/tree/main/packages/trace-mapping",
+      "keywords": [
+        "source",
+        "map"
+      ],
+      "license": "MIT",
+      "main": "dist/trace-mapping.umd.js",
+      "module": "dist/trace-mapping.mjs",
+      "name": "@jridgewell/trace-mapping",
+      "repository": {
+        "directory": "packages/trace-mapping",
+        "type": "git",
+        "url": "git+https://github.com/jridgewell/sourcemaps.git"
+      },
+      "scripts": {
+        "benchmark": "run-s build:code benchmark:*",
+        "benchmark:install": "cd benchmark && npm install",
+        "benchmark:only": "node --expose-gc benchmark/index.mjs",
+        "build": "run-s -n build:code build:types",
+        "build:code": "node ../../esbuild.mjs trace-mapping.ts",
+        "build:types": "run-s build:types:force build:types:emit build:types:mts",
+        "build:types:emit": "tsc --project tsconfig.build.json",
+        "build:types:force": "rimraf tsconfig.build.tsbuildinfo",
+        "build:types:mts": "node ../../mts-types.mjs",
+        "clean": "run-s -n clean:code clean:types",
+        "clean:code": "tsc --build --clean tsconfig.build.json",
+        "clean:types": "rimraf dist types",
+        "lint": "run-s -n lint:types lint:format",
+        "lint:format": "npm run test:format -- --write",
+        "lint:types": "npm run test:types -- --fix",
+        "prepublishOnly": "npm run-s -n build test",
+        "test": "run-s -n test:types test:only test:format",
+        "test:format": "prettier --check '{src,test}/**/*.ts'",
+        "test:only": "mocha",
+        "test:types": "eslint '{src,test}/**/*.ts'"
+      },
+      "types": "types/trace-mapping.d.cts",
+      "version": "0.3.31"
+    },
+    "physicalEntryCount": 52,
+    "tarball": {
+      "bytes": 30747,
+      "sha256": "c64c71a119630d5abe8246889edf334b2ca9ddad094e20d623332956b1453ccf"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

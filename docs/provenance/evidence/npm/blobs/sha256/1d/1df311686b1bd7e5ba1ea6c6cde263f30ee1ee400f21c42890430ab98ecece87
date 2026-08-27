@@ -1,0 +1,125 @@
+{
+  "artifactId": "a69eaa1496d4d257d0d9ef1de46aeb8f60fa273027c749563cbf1b67ed0a510f",
+  "evidence": {
+    "archiveRoot": "babel__core",
+    "compressedBytes": 9704,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "babel__core",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "babel__core/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "babel__core/README.md",
+        "sha256": "bb3bb2bd57363a033262e6638e3e00c0b67da454147b107f0f54d3e4483da914",
+        "size": 1045,
+        "type": "FILE"
+      },
+      {
+        "path": "babel__core/index.d.ts",
+        "sha256": "069bebfee29864e3955378107e243508b163e77ab10de6a5ee03ae06939f0bb9",
+        "size": 29219,
+        "type": "FILE"
+      },
+      {
+        "path": "babel__core/package.json",
+        "sha256": "0787d557e5f4f1dcd57b43e2ec1a6cb955e768801bab5cad3c5c36e2d13eca0b",
+        "size": 1615,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1141,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c2/c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        "kind": "LICENCE",
+        "path": "babel__core/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141
+      }
+    ],
+    "expandedBytes": 33020,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/babel__core",
+      "license": "MIT",
+      "name": "@types/babel__core",
+      "repository": {
+        "directory": "types/babel__core",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "version": "7.20.5"
+    },
+    "packageMetadata": {
+      "contributors": [
+        {
+          "githubUsername": "yortus",
+          "name": "Troy Gerwien",
+          "url": "https://github.com/yortus"
+        },
+        {
+          "githubUsername": "marvinhagemeister",
+          "name": "Marvin Hagemeister",
+          "url": "https://github.com/marvinhagemeister"
+        },
+        {
+          "githubUsername": "mgroenhoff",
+          "name": "Melvin Groenhoff",
+          "url": "https://github.com/mgroenhoff"
+        },
+        {
+          "githubUsername": "Jessidhia",
+          "name": "Jessica Franco",
+          "url": "https://github.com/Jessidhia"
+        },
+        {
+          "githubUsername": "ifiokjr",
+          "name": "Ifiok Jr.",
+          "url": "https://github.com/ifiokjr"
+        }
+      ],
+      "dependencies": {
+        "@babel/parser": "^7.20.7",
+        "@babel/types": "^7.20.7",
+        "@types/babel__generator": "*",
+        "@types/babel__template": "*",
+        "@types/babel__traverse": "*"
+      },
+      "description": "TypeScript definitions for @babel/core",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/babel__core",
+      "license": "MIT",
+      "main": "",
+      "name": "@types/babel__core",
+      "repository": {
+        "directory": "types/babel__core",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "scripts": {},
+      "typeScriptVersion": "4.5",
+      "types": "index.d.ts",
+      "typesPublisherContentHash": "3ece429b02ff9f70503a5644f2b303b04d10e6da7940c91a9eff5e52f2c76b91",
+      "version": "7.20.5"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 9704,
+      "sha256": "1865223be6b834c44abf5ebedafb1707019b4941be8021469980c7ef4c2e1155"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

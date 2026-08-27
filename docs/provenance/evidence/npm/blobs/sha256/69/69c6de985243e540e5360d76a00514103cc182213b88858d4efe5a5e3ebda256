@@ -1,0 +1,125 @@
+{
+  "artifactId": "d1f5f23b3fba59447302d7f92b23badee9b5d594def63652b450b064db22e871",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2586,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.js",
+        "sha256": "a86f431b9c79a88034ddb14831d061527d3bf7a98a4152698aa51cd35909db81",
+        "size": 1330,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "3a632b2286c79f119092a160f56a39f476802c85f0e00b9d1839a37ececadfb1",
+        "size": 825,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "45f8e5a9eb993328752abccc90f83d44f5298b2d2c6ca426dc47c6ac0d5ec19f",
+        "size": 2137,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      },
+      {
+        "blob": {
+          "bytes": 2137,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/45/45f8e5a9eb993328752abccc90f83d44f5298b2d2c6ca426dc47c6ac0d5ec19f",
+          "sha256": "45f8e5a9eb993328752abccc90f83d44f5298b2d2c6ca426dc47c6ac0d5ec19f"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "45f8e5a9eb993328752abccc90f83d44f5298b2d2c6ca426dc47c6ac0d5ec19f",
+        "size": 2137
+      }
+    ],
+    "expandedBytes": 5409,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "parse-json",
+      "repository": "sindresorhus/parse-json",
+      "version": "5.2.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "dependencies": {
+        "@babel/code-frame": "^7.0.0",
+        "error-ex": "^1.3.1",
+        "json-parse-even-better-errors": "^2.3.0",
+        "lines-and-columns": "^1.1.6"
+      },
+      "description": "Parse JSON with more helpful errors",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "nyc": "^14.1.1",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "vendor"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "parse",
+        "json",
+        "graceful",
+        "error",
+        "message",
+        "humanize",
+        "friendly",
+        "helpful",
+        "string"
+      ],
+      "license": "MIT",
+      "name": "parse-json",
+      "repository": "sindresorhus/parse-json",
+      "scripts": {
+        "test": "xo && nyc ava"
+      },
+      "version": "5.2.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 2586,
+      "sha256": "06b73684e0fdc2344daa6b718cdbeb3365339deab8ce8d0cc3cf3ff80d7b088d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

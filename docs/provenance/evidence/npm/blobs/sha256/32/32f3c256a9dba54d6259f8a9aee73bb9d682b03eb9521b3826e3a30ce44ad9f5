@@ -1,0 +1,138 @@
+{
+  "artifactId": "5740c53e647b9cd916472269230a2a6f0206cf1a526db479c2c0d99f4bb5e214",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 14064,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "56bf94a009223cd8ece2d82bfc3d61b9818bdf00a38c3f69356f407cd5b1f9b4",
+        "size": 355,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/import-builder.js",
+        "sha256": "0b68863623592ca8d46987f9606e69c84d2aae336968fd20768314e676c28f5e",
+        "size": 4193,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/import-builder.js.map",
+        "sha256": "961a35a2ea4e32bfc5c6ce5da080e512454dc6b10ab821083fc1dc65e1f55219",
+        "size": 10126,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/import-injector.js",
+        "sha256": "cf606e01425db891f9d1858b5eb641483a0f16865b9cb9eab01a3211e13f045a",
+        "size": 10954,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/import-injector.js.map",
+        "sha256": "f04fb74ab19aca463da1c1cb489234850d3887a24323908ce91d634b249ce506",
+        "size": 31195,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "233349c8482863c4bfd2656c940b0a3f22448c1420b2957bbdfc498c94dab87f",
+        "size": 1145,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "8bd61f7b0a52e4224cd5c0d17d3e0655779ef6b63aeff1907b05a2e60097088d",
+        "size": 3182,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/is-module.js",
+        "sha256": "624f4b427ea97bad24b1a0133031ab4eb889aa066afa5a5294e5dd38200a5ab9",
+        "size": 219,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/is-module.js.map",
+        "sha256": "caa09bf4b0ab1ece2062de421059245c7a24be0b2f264e2056112769ac351c18",
+        "size": 523,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "fa2e7c54b6b86e250770f9b2703571bcff0c8166995e01c756539745859fedb7",
+        "size": 722,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 63720,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-module-imports",
+      "license": "MIT",
+      "name": "@babel/helper-module-imports",
+      "repository": {
+        "directory": "packages/babel-helper-module-imports",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/traverse": "^7.29.7",
+        "@babel/types": "^7.29.7"
+      },
+      "description": "Babel helper functions for inserting module loads",
+      "devDependencies": {
+        "@babel/core": "^7.29.7"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-module-imports",
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/helper-module-imports",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-helper-module-imports",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 14064,
+      "sha256": "4bdf46cf597b875ce16770f151159ca34f96c20ba3c112dc8d7f6c6d6cce770c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,118 @@
+{
+  "artifactId": "c06fe44336b321d682eaf73fd144deead126fc57a6a2e2b1f91b4b8049cf64f6",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5436,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "52412d7bc7ce4157ea628bbaacb8829e0a9cb3c58f57f99176126bc8cf2bfc85",
+        "size": 1086,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "c255107ea9a45a3938ac6d0738032e5bdbcc2719fce4d5e9199fdee86a0d2e5d",
+        "size": 2378,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cjs/react-is.development.js",
+        "sha256": "f9740ad16de473fec0eef0532319f907a68d19531669e4be72fd64d551fef59b",
+        "size": 7359,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cjs/react-is.production.min.js",
+        "sha256": "2140814ad6a8bb0f3200085067aece328b539f7852a6cb76018b617c3efddb3b",
+        "size": 2265,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "d34fce01b963097a8d649b95e20aa17a63e4105b54adcce7d7daf1c8524b434e",
+        "size": 196,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8d8b7b3d6df8fa36fcd2fbee3561faea9bfa488c2318dabef4cfeaf275aee7f3",
+        "size": 505,
+        "type": "FILE"
+      },
+      {
+        "path": "package/umd/react-is.development.js",
+        "sha256": "03edba20808e84cd6d15edc352656a98f48e429cfe1b0a85dd47e8bfe38d1cc4",
+        "size": 7914,
+        "type": "FILE"
+      },
+      {
+        "path": "package/umd/react-is.production.min.js",
+        "sha256": "750a6877c8377a677d676448e67ab7e331a7c0844fa579286f7def02f8e2dab6",
+        "size": 2310,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1086,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/52/52412d7bc7ce4157ea628bbaacb8829e0a9cb3c58f57f99176126bc8cf2bfc85",
+          "sha256": "52412d7bc7ce4157ea628bbaacb8829e0a9cb3c58f57f99176126bc8cf2bfc85"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "52412d7bc7ce4157ea628bbaacb8829e0a9cb3c58f57f99176126bc8cf2bfc85",
+        "size": 1086
+      }
+    ],
+    "expandedBytes": 24013,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://reactjs.org/",
+      "license": "MIT",
+      "name": "react-is",
+      "repository": {
+        "directory": "packages/react-is",
+        "type": "git",
+        "url": "https://github.com/facebook/react.git"
+      },
+      "version": "18.3.1"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/facebook/react/issues"
+      },
+      "description": "Brand checking of React Elements.",
+      "files": [
+        "LICENSE",
+        "README.md",
+        "index.js",
+        "cjs/",
+        "umd/"
+      ],
+      "homepage": "https://reactjs.org/",
+      "keywords": [
+        "react"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "react-is",
+      "repository": {
+        "directory": "packages/react-is",
+        "type": "git",
+        "url": "https://github.com/facebook/react.git"
+      },
+      "version": "18.3.1"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 5436,
+      "sha256": "867a2bb62ef5277e6b2065cdd1332cda07cc92aa2979b22d05c86c89fb918552"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

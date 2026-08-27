@@ -1,0 +1,87 @@
+{
+  "artifactId": "d95bf439e8f38363c80b8267a03fcacea434882708761df116a63743c0d6bdcb",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1462,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "82fa43fecc0792f24b1f2de63bda493475010ac3c6110a6a99d886bdc5cd09f2",
+        "size": 415,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "4310936ff742d400cdb7ef3bf86f60c12d8646b51269e178cc4f82e9b38f8800",
+        "size": 439,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "484ea5ab0cdfd22f27a9bafaf3749bc98e6ac7e298e49bce334ec1ecec33b5d8",
+        "size": 561,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 2521,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-optional-chaining",
+      "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-optional-chaining",
+      "version": "7.8.3"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.8.0"
+      },
+      "description": "Allow parsing of optional properties",
+      "devDependencies": {
+        "@babel/core": "^7.8.0"
+      },
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "@babel/plugin-syntax-optional-chaining",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-optional-chaining",
+      "version": "7.8.3"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1462,
+      "sha256": "f597dcdf1d7ac372210e1f4b622f779f3bda962ec2ff6139b4633ee5be693ee4"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

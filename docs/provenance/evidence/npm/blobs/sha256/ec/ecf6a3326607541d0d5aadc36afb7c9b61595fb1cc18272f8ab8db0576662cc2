@@ -1,0 +1,169 @@
+{
+  "artifactId": "7e76330130978320481a416a5796a9e7c20d7945d6c5e0217384a1bd3394751f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7389,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "898c2bcff663681498ad1ca8235d45b6e70b10cdf1f869a5b5e69f6e46efedd3",
+        "size": 739,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ce030ef32c927d007d5e0fc50e41f831c0bc47478715d27af665fa1c01a9b193",
+        "size": 6964,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/make-spawn-args.js",
+        "sha256": "51ef6919950dc6e87dfa1b0824fe2f1dcd423f2e3a5b2632b8a076120b8bd7b4",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/node-gyp-bin/node-gyp",
+        "sha256": "637b99704e9c651fe9f0c4bf1c25cc0f70f5c94fb9eb77c4980cc8b9015adc8c",
+        "size": 51,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/node-gyp-bin/node-gyp.cmd",
+        "sha256": "4cf2b2890c2fcc782d82692aa50c68bc8c9dc54281b6c23e5e507986ea13d3fe",
+        "size": 34,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/package-envs.js",
+        "sha256": "ff502d71d89b640fb42d643060dcfefb2b499c355e86aeb77e5486e29dd16880",
+        "size": 826,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/run-script-pkg.js",
+        "sha256": "1142ab865b1180409f0f3a93eb3bc01f9ca36fa9ead1c938b254eb6923de7886",
+        "size": 2709,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/run-script.js",
+        "sha256": "4d1002941ee12c2234f7827c7ecb1193be3ba01a51d3f28d09cc5e6ec9d19833",
+        "size": 426,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/set-path.js",
+        "sha256": "bc023d0c2d0840074c9e81ac0bda0fed0ef75e64623fa670437a7706d05d3542",
+        "size": 1856,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/signal-manager.js",
+        "sha256": "0e8c0860b3aa32ec683b8bdc8197e7d6674f2efe4cc13370b14d9ffa38e7e90a",
+        "size": 1051,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/validate-options.js",
+        "sha256": "bd1266cef7afed9317072b35756e20db420bfe3e64f9b9f9904856151e95528a",
+        "size": 1212,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "dcc9ad8e7cd50a1689d42b203990b5bed0ea4425b3fdf4c87d584b3a3fc94bce",
+        "size": 1369,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 739,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/89/898c2bcff663681498ad1ca8235d45b6e70b10cdf1f869a5b5e69f6e46efedd3",
+          "sha256": "898c2bcff663681498ad1ca8235d45b6e70b10cdf1f869a5b5e69f6e46efedd3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "898c2bcff663681498ad1ca8235d45b6e70b10cdf1f869a5b5e69f6e46efedd3",
+        "size": 739
+      }
+    ],
+    "expandedBytes": 18343,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "@npmcli/run-script",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/run-script.git"
+      },
+      "version": "11.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "dependencies": {
+        "@npmcli/node-gyp": "^6.0.0",
+        "@npmcli/package-json": "^8.0.0",
+        "@npmcli/promise-spawn": "^10.0.0",
+        "node-gyp": "^13.0.0",
+        "proc-log": "^7.0.0"
+      },
+      "description": "Run a lifecycle script for a package (descendant of npm-lifecycle)",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^7.0.0",
+        "@npmcli/template-oss": "5.1.0",
+        "spawk": "^1.8.1",
+        "tap": "^16.0.1"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "license": "ISC",
+      "main": "lib/run-script.js",
+      "name": "@npmcli/run-script",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/run-script.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": "true",
+        "updateNpm": false,
+        "version": "5.1.0"
+      },
+      "version": "11.0.0"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 7389,
+      "sha256": "73d1a9cbf75d6eb071bf3b2b0d4dd86f15b103defdc56b674744bf4b40ed8532"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

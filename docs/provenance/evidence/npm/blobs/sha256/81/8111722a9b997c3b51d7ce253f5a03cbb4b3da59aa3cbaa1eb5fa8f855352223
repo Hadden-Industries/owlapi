@@ -1,0 +1,83 @@
+{
+  "artifactId": "c2a3ae0ecd9e779ceb0806383841fa4a6cfd2032fe64b0040d9030935d31af1c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1621,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "554b19eee11d2964e9f7b244e47944c08d52ca75539260a04f3227e6c0144513",
+        "size": 1243,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deprecated.json",
+        "sha256": "bf84cb52b5bc8e2b1e6b4341765204d23b7bbce74b06ae8aec1cfee7f76faa24",
+        "size": 31,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.json",
+        "sha256": "26144efbe0f61f41b0f8751e266b8b828ac53eb3f28f9041620442892228e92b",
+        "size": 1731,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0af9bd4b68c9e3d1bc7a9208881cbde84da140d564a3bb42cf53184c6e83f2e3",
+        "size": 463,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1243,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/55/554b19eee11d2964e9f7b244e47944c08d52ca75539260a04f3227e6c0144513",
+          "sha256": "554b19eee11d2964e9f7b244e47944c08d52ca75539260a04f3227e6c0144513"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "554b19eee11d2964e9f7b244e47944c08d52ca75539260a04f3227e6c0144513",
+        "size": 1243
+      }
+    ],
+    "expandedBytes": 3468,
+    "packageIdentity": {
+      "author": "The Linux Foundation",
+      "homepage": null,
+      "license": "CC-BY-3.0",
+      "name": "spdx-exceptions",
+      "repository": "kemitchell/spdx-exceptions.json",
+      "version": "2.5.0"
+    },
+    "packageMetadata": {
+      "author": "The Linux Foundation",
+      "contributors": [
+        "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com/)"
+      ],
+      "description": "list of SPDX standard license exceptions",
+      "files": [
+        "index.json",
+        "deprecated.json"
+      ],
+      "license": "CC-BY-3.0",
+      "name": "spdx-exceptions",
+      "repository": "kemitchell/spdx-exceptions.json",
+      "scripts": {
+        "build": "node build.js",
+        "latest": "node latest.js"
+      },
+      "version": "2.5.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1621,
+      "sha256": "c5295dd22415e8b60a5af2560e7461954f660bcb591be7c5622e463956d33256"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,1283 @@
+{
+  "artifactId": "f05209dda371340df545fcf29e398eda4da9943d23726c2d4c31dc4b83ceb0fe",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 295110,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "a6db8096b2707bc0102d256917d4d33f298ba36d8c3f25de067a2b5bb379db27",
+        "size": 1090,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "f8c36e725c48849e82eebad6f6167d1a9d9cc2c1426418af29a13b23769f3e1f",
+        "size": 19538,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/Agent.md",
+        "sha256": "6cf9a18ddc0f07ccb0819db288dced8f710e58f1ae7d6d76bfb989ffce498201",
+        "size": 2797,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/BalancedPool.md",
+        "sha256": "2a6ccb2f8ec194336e342d313c437bb9f3e0634ca0d168800ea12fd6b62f4429",
+        "size": 2817,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/CacheStorage.md",
+        "sha256": "37e458d8baff658682379bf4196a9085fd7bae0aa76560a23896a9f5d447e498",
+        "size": 1078,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/Client.md",
+        "sha256": "71eb2fe49cd6a5aad1ad4aad6e20d4467081a084b01346e4febc41913173ed53",
+        "size": 11596,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/Connector.md",
+        "sha256": "c363feda8c4bb65f09379df7f2d0164f88336a2487b3043876c275b2d04a01ed",
+        "size": 3464,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/ContentType.md",
+        "sha256": "b7418622c803d210b744fa1e705505a1c62829ec95b557fbc3071cc68b4fdcbd",
+        "size": 1130,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/Cookies.md",
+        "sha256": "1669eb09d53cac17ffaa721bb64c01b04d3e15954eafdc68ee9bdfa552ae049b",
+        "size": 2043,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/Debug.md",
+        "sha256": "4586368c30c64c85a6b368487c06723d58a5e2b4b8360eb0dd64b8abd130078a",
+        "size": 2297,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/DiagnosticsChannel.md",
+        "sha256": "75410ee4b45ee20e2901e74b206d1947ef4c2f357e30e4eaa1b1b563ee05dff9",
+        "size": 6271,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/DispatchInterceptor.md",
+        "sha256": "3b5b39f333b1c3c405d1515bf1305478891f399ffb723aa759efe68a5cfb40be",
+        "size": 1524,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/Dispatcher.md",
+        "sha256": "cb32a577e2e2364b0ec4bfc80ed71094a9089911864e0202ebe72f705ef2fd47",
+        "size": 42084,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/EnvHttpProxyAgent.md",
+        "sha256": "512b3ae7fd348df4ae3ec7b4b0d265bc4406a8113a63abfc7dc4b2f325fed24c",
+        "size": 5704,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/Errors.md",
+        "sha256": "20d0dd0af0d969b67001245573650a7a28369fb8252751dadc990949d9ebf30c",
+        "size": 3877,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/EventSource.md",
+        "sha256": "4f6abf7c96d473ffb15fe5224df7bc994fe03ae22b5903dbf8bd8f6fee6a9ab6",
+        "size": 1236,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/Fetch.md",
+        "sha256": "0c17cc35dcc4e67d01aaa7e0526a99d5bbd73fb7eaaab41250226da950821f1b",
+        "size": 2124,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/MockAgent.md",
+        "sha256": "a4c9d4ebacb7809e97222e96d00b21bee60c36561100870f26ac3567431f8c81",
+        "size": 15248,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/MockClient.md",
+        "sha256": "41298451fbb43c0290386b7b0cd8e2336a2e7f3d8587f18cf674445ab95a3a1c",
+        "size": 2021,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/MockErrors.md",
+        "sha256": "862b81346856a128b577cb7825500cb5b09095203f97f6e01dcb3a583b50947b",
+        "size": 595,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/MockPool.md",
+        "sha256": "e2c99fb959c6706a6aaa4643e0432b634ee1358a83c7cd30ea75e2badd9a852a",
+        "size": 16229,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/Pool.md",
+        "sha256": "cb25bc88b8f381c8f8cfaa52fce333146b85e614c808611a139594888480f112",
+        "size": 2769,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/PoolStats.md",
+        "sha256": "d143e045fcd7c3d3c67ea04dd34baff4a0290bbe7c92fe940a41e1696513ed5e",
+        "size": 775,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/ProxyAgent.md",
+        "sha256": "980712e8cbdeed1c30a79873f83a0143d8a2c035ed79c6e34dfabb3973cfdebf",
+        "size": 5031,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/RedirectHandler.md",
+        "sha256": "4d9def1d8620827ac89fdf0101c40c2d4b2599758b66d4f8d2a5cfe69f65f064",
+        "size": 3206,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/RetryAgent.md",
+        "sha256": "5b585108b2f7b95db18afbae234d3c4b2ec37ae2c9eae7c495c48468cef154fc",
+        "size": 2015,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/RetryHandler.md",
+        "sha256": "9208c40a9ddd00f79b5964bf59c6c85aa3391fd5d0b9c69741524d001073287a",
+        "size": 4375,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/Util.md",
+        "sha256": "c61bedd14de49978130b2a390bde9e83b79c7ed34a0decdb4a3c4eec1f925fb9",
+        "size": 732,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/WebSocket.md",
+        "sha256": "aef4ee1140c0326962907d719279e3728ec9777e24428f2fd20a545758d28392",
+        "size": 1923,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/api/api-lifecycle.md",
+        "sha256": "b2492da7af8ece58cac58a84883d09fd8e5f92569344b8efcd57f8a68e404f02",
+        "size": 7751,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/best-practices/client-certificate.md",
+        "sha256": "f04bc4291917e454069c88f1a81326f0935a205930034930c01096b5d37e566b",
+        "size": 2053,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/best-practices/mocking-request.md",
+        "sha256": "869f18e979b17c9bbefe3008912065355ba404720f59eb38ff5de8ac7b82915c",
+        "size": 3341,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/best-practices/proxy.md",
+        "sha256": "0b7edcbf4991f03699687ed0298f1583b6bc6f58c8b80ff4942be785fc98608c",
+        "size": 3328,
+        "type": "FILE"
+      },
+      {
+        "path": "package/docs/docs/best-practices/writing-tests.md",
+        "sha256": "4fb1816618ab3a119e872f23d8d9d46c3521f9aea055dd5bc75c58847892641f",
+        "size": 648,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index-fetch.js",
+        "sha256": "3b99e505f9dc3ac97b44fb6bd77b67987b2e9c4ec936270971326de28993de8c",
+        "size": 1558,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "299fd0c281633d8dbfbe5f44c5f2850fe37392da6fd3b9cca3cb4e10cda16432",
+        "size": 87,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "c42e75dd4f2dfa00b8bafa7b85b8594ab367b2d8d22dcf72a67585f1f5ee41ee",
+        "size": 6057,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/api/abort-signal.js",
+        "sha256": "940054d80e9a82a4dda26fbe0b26ec3fb8ef2d283ab1b74febc4c698dfb40c5f",
+        "size": 1057,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/api/api-connect.js",
+        "sha256": "33229ace71010bfb1c2df21c0751d96042ec7c9d1e6b8ae3d5067fec4936e86f",
+        "size": 2565,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/api/api-pipeline.js",
+        "sha256": "1fff148ec69841c6a31c12350f9afe788a72fcb9c42a4082462987c31b345eb1",
+        "size": 5445,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/api/api-request.js",
+        "sha256": "dba2cdb7c724d7898cc11c4f2635e7cfbbdeadbf141b8b07d063c41782b126b8",
+        "size": 5734,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/api/api-stream.js",
+        "sha256": "b2687896c2a99be3ef9e6d9d4befde55158a4336eb39b5081b600aa360215145",
+        "size": 5320,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/api/api-upgrade.js",
+        "sha256": "efa17f0b83ad86f8135b1576dab81fe6b7983b29dd1223d092c0f734bd6498bd",
+        "size": 2576,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/api/index.js",
+        "sha256": "a7b4b74ea6b81b2401f8659c138df54fd3f2c45450741682c026abb4cf133096",
+        "size": 264,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/api/readable.js",
+        "sha256": "7c1ab798eb492b3b5fb55425d84d9ee115bfc39e763b4c64befeaf30937c8434",
+        "size": 9085,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/api/util.js",
+        "sha256": "8fb5cca52bdf03160ca7b4a41eab2088c6d4213240aa7f70425b3c71102df9c3",
+        "size": 2374,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/core/connect.js",
+        "sha256": "24ed02e5a7080d7873ffc0b02870393d87529f7a8b0a6783f59a00a14bd8aabb",
+        "size": 7286,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/core/constants.js",
+        "sha256": "962e2278404f3c0b0d45bf67eb1966c39dc33c04b89e2e9f4a955ac057272b82",
+        "size": 2610,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/core/diagnostics.js",
+        "sha256": "b07763ed42b4463f95fad4bc042e04c894587ce2ed52fb3c7ebd22d77f8d005c",
+        "size": 5687,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/core/errors.js",
+        "sha256": "aaca1e0952616cb68db77153f24e1c2a7da3ee54d699b507f40d88eecc62b061",
+        "size": 12171,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/core/request.js",
+        "sha256": "dd77a5199e35cdd6fc2f1962e6b18f00b11c24db43ac8025d45b2ff0113ab106",
+        "size": 11222,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/core/symbols.js",
+        "sha256": "c27f3539f763111179c821a91e391025ffc5a19bdadaf33dda85c2b6ccd796f4",
+        "size": 2547,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/core/tree.js",
+        "sha256": "7f2625127a44664c9fd531c0938b00a8fbac467e2ad15e65dbef48cb5029a385",
+        "size": 3455,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/core/util.js",
+        "sha256": "ebbaa1263b06489bc467b6b62d95b247f38006f94d17131482ea03685ef18da9",
+        "size": 19042,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dispatcher/agent.js",
+        "sha256": "6bf76d0a07820033b65fc831839a17794a6582874d7d4573f900a5a00393a6f7",
+        "size": 4006,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dispatcher/balanced-pool.js",
+        "sha256": "6beac1850ec97449ab72f87a623547c0152acf27b65fe3faa432a3f00782209d",
+        "size": 5531,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dispatcher/client-h1.js",
+        "sha256": "41f689e08a3b3c9ece2b181cd77d5a4919c6db2c930dc3f8432028b500dbe6ec",
+        "size": 40409,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dispatcher/client-h2.js",
+        "sha256": "bc902c3b3999ec669a0a5dd05204e7efba6d07f98e5af766483bb74d02487220",
+        "size": 18623,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dispatcher/client.js",
+        "sha256": "bf715aab5839b1f88ff42eedf69eff8badb43e671c0fd7e785cfc28102e69ab6",
+        "size": 17057,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dispatcher/dispatcher-base.js",
+        "sha256": "9a627a0e5a9e3a17d4fd3c0df1c52f5d421e995b193ae3d196984aa43eec37aa",
+        "size": 4847,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dispatcher/dispatcher.js",
+        "sha256": "e76ad1e0766f839303d2208843df639a642edd0c218cf3bb468af6d740f70d78",
+        "size": 1437,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dispatcher/env-http-proxy-agent.js",
+        "sha256": "96a0cbb0dc557f76e2d11c9969d8b5e840a5565bb6501dcbed2f7406be37fa5e",
+        "size": 4479,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dispatcher/fixed-queue.js",
+        "sha256": "244a0b8b734395490f13430449e06754ec6ea7b102447d6b77e8eef3cb20c979",
+        "size": 4222,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dispatcher/pool-base.js",
+        "sha256": "5263c1112ec9be6d7cf1548f916c6ed903379db97fb0eb6d4a7a7dd397134fc6",
+        "size": 4558,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dispatcher/pool-stats.js",
+        "sha256": "b77bfdc27744e464ec58099982b0b1c4c2d5926e5c8e3929bf1321772b29d593",
+        "size": 553,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dispatcher/pool.js",
+        "sha256": "5ccc278d8e34fad79d6ba2b656a73da0c6cc2225715522021c1fb4586633990b",
+        "size": 3013,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dispatcher/proxy-agent.js",
+        "sha256": "3bf00deb1018c397adb7049a85d6a6d9a116f639441a4ac0b6b762976f5d13a9",
+        "size": 8135,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dispatcher/retry-agent.js",
+        "sha256": "465e9429750441852cb0ed19bd669dbe2eca2b531ce6966040551a9b6550ae30",
+        "size": 684,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/global.js",
+        "sha256": "2743c8128f9004d7d82dfae10cdcae10b27806b7c5d378b94f2c50651f3b6dbc",
+        "size": 871,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/handler/decorator-handler.js",
+        "sha256": "56e55b0a2683669007c43454030b2d488f5577aeb693ef7d4b74a3b03b89fb12",
+        "size": 858,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/handler/redirect-handler.js",
+        "sha256": "35945253f190fd6149839d9b4c4d6d99d966fca3da64fc84d803aa071fb96fac",
+        "size": 7700,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/handler/retry-handler.js",
+        "sha256": "7efa2ca22dc394d7b9383d600e7cc01e403e0dfb7192ba04100299cf7423b544",
+        "size": 10860,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interceptor/dns.js",
+        "sha256": "bca388666ef90bc4a89f125c786af07760e55c2fc8f7510bbe2f647d10b59c86",
+        "size": 9338,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interceptor/dump.js",
+        "sha256": "3bfd2bfbd074fd23e1867b5d14962b065bdfb43ab8c83d30a4108939be651cf8",
+        "size": 2514,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interceptor/redirect-interceptor.js",
+        "sha256": "dc4f2739771211d5dd3940d6b41abcced797de6cce9431665037ace2149ab3d9",
+        "size": 661,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interceptor/redirect.js",
+        "sha256": "377a3f459d5652d2668d49b0668cf259e537745abb9174ad0677ecae7fb31427",
+        "size": 588,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interceptor/response-error.js",
+        "sha256": "aece2c6eee6314919df653a0c5bcd89f9d5243241c11186546455af26722e57d",
+        "size": 2148,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/interceptor/retry.js",
+        "sha256": "488cf270ae143cc13a6ecf82ba523314fdbb17fd9ee08677c4488d4410f047c3",
+        "size": 419,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/llhttp/.gitkeep",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/llhttp/constants.js",
+        "sha256": "3cba0763867e5e3753f3efbf22853e42b3da26e2353ff77d06156d923eb4d8bd",
+        "size": 11002,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/llhttp/llhttp-wasm.js",
+        "sha256": "f6e22d23d57d86c1e613ce26ef1eb4e997e81663987a8127eef758ce5f20a655",
+        "size": 64920,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/llhttp/llhttp_simd-wasm.js",
+        "sha256": "1b8fa2e4e50e4f5774dde59855f0d34d112ef9900caf97aea4b2e6ec4ca9e3f1",
+        "size": 64960,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/llhttp/utils.js",
+        "sha256": "0c72c339551b7e963cada1733f0d95e059d340e0f77c5d704c3e2e5989dc86a3",
+        "size": 394,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/mock/mock-agent.js",
+        "sha256": "746d3abcf9f8e352549833e1a18e8880989e4f6541b23f90491adfa148a49663",
+        "size": 4556,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/mock/mock-client.js",
+        "sha256": "e5fa1ccc3f1025276166affcca04f04e6659631b9f106019fdd95f264061d792",
+        "size": 1513,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/mock/mock-errors.js",
+        "sha256": "30c997cff400a8cf3f0a9b2eadeb1923c6506a9743ba892f14fae741c49b9840",
+        "size": 740,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/mock/mock-interceptor.js",
+        "sha256": "0794f09f20e76f5b4d74d603e6557fe5462d09e8a7c307306bfc1efcfbbc460e",
+        "size": 6824,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/mock/mock-pool.js",
+        "sha256": "9526cb9c0a989987cdde04e15647e8fab21166b711a6b6dba4ffcc781d8045f0",
+        "size": 1499,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/mock/mock-symbols.js",
+        "sha256": "2bb0167aca64371dc350fa9ee1077018517d3fd43f0d48ed068cdfc3e0530950",
+        "size": 769,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/mock/mock-utils.js",
+        "sha256": "7979b322a2c7a47cf864eee799febae6c33cfc923d270e1d19e1e5714f698511",
+        "size": 10783,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/mock/pending-interceptors-formatter.js",
+        "sha256": "9d3737f40ba601fd7a9c6dd28a328e6797686ff08da712dcd0a0f011d5639f8d",
+        "size": 1186,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/mock/pluralizer.js",
+        "sha256": "d5d71bf11a309f2368693f40737a011ae59734ea1b45c27678c6d49f9888ef33",
+        "size": 495,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util/timers.js",
+        "sha256": "bea70a68b7d31ea58611892c54795399d6bd3bcc4aca635081d40a5b4a564f7a",
+        "size": 11737,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/cache/cache.js",
+        "sha256": "4f6c667a0566e1e916dbfa23a3ede274d151433c073c131e058df42bc6e5e504",
+        "size": 21080,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/cache/cachestorage.js",
+        "sha256": "bf271e7d5bd3b6e3adfd7b0a092490bf17ae10dcb396f35efd3c28f7fd496567",
+        "size": 3663,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/cache/symbols.js",
+        "sha256": "499a6cdb7a77eb92655c929145116c0724e81caa6c351f23232f55dff05e073d",
+        "size": 90,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/cache/util.js",
+        "sha256": "638d5c2424a730e6d2400ac518765b3fc9b50e2b3816b65fb7b46f93c66a5930",
+        "size": 1020,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/cookies/constants.js",
+        "sha256": "85a24ae49eb5954e15363049bbc68967f01aae7260246daa3f49ad375429acb4",
+        "size": 306,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/cookies/index.js",
+        "sha256": "55f0e191558a019507374c918a08060ca5b9d5810b1bc4901cf5dd2dd5293ff5",
+        "size": 4247,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/cookies/parse.js",
+        "sha256": "550f060bdae6ac7d0215be1e21a9e95a439486f58883c49c38ed18b8c4aebbe4",
+        "size": 12481,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/cookies/util.js",
+        "sha256": "51941b2fb0a6f29e389b91236050b1fc4bdaf57051ae53145767219a9d3c5f09",
+        "size": 9261,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/eventsource/eventsource-stream.js",
+        "sha256": "baef83e10219926475f6d8ad2d28016561cf68e1af13f669d11d5541cc209e8d",
+        "size": 11586,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/eventsource/eventsource.js",
+        "sha256": "12709d9420c06126f1886d16e4c74b38a9d81023ee8e907c49cabf46bb098245",
+        "size": 14143,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/eventsource/util.js",
+        "sha256": "23db924c5eed1b4421811da40e78ed6dc754cdf165cc8eb6e9f1b9cf1dc424d7",
+        "size": 788,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fetch/LICENSE",
+        "sha256": "a21d6c8d3fc631198b97e57584697f7f9c37805c71c6cf9a12e4442b40394b88",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fetch/body.js",
+        "sha256": "edc925847d383b21cc286c27972075aea26cc52d2c87c0bc5bc9d0d3aa1a3543",
+        "size": 17339,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fetch/constants.js",
+        "sha256": "d6c377a0ce91b947a1299845516886be525f474aedad65c7dde35f2c9301b97e",
+        "size": 3395,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fetch/data-url.js",
+        "sha256": "9593cb61a2844fabc1849f6343c0fbb132d4ab885195ee1a87eeee54579dcaaa",
+        "size": 21989,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fetch/dispatcher-weakref.js",
+        "sha256": "9f34f1dda099666ef510e41399c00c66da21d0482780aa82aaf6478acd687479",
+        "size": 1083,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fetch/file.js",
+        "sha256": "29a79309900579667fb5df3a0629f508bde34464f2c08a29990de2fea1b21078",
+        "size": 3300,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fetch/formdata-parser.js",
+        "sha256": "a99daed7968ae5031a50d020a881a97afbeb613fa1db13a98561ce8e6b8f4384",
+        "size": 15227,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fetch/formdata.js",
+        "sha256": "2755aa6653a131084c3c9d8123a8556a5bb4de4102cbe291b7134a1975faa9d8",
+        "size": 7756,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fetch/global.js",
+        "sha256": "6b38813b82ec8d5002009640515d35f83ab96d4f8e0066d71fae89324079a289",
+        "size": 890,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fetch/headers.js",
+        "sha256": "8492ae2455a524b46017cb74e6a7353d63ea705914a4fb28e718b7b6d2de4470",
+        "size": 20603,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fetch/index.js",
+        "sha256": "ec5fa587004c3d852f4e29ca4726eff00bede5cc4793dc6431b0c13ca0576c9f",
+        "size": 82477,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fetch/request.js",
+        "sha256": "eed7953967abb30acad4c7ae54417e61d2c53bd3393a6f1929270865724345ad",
+        "size": 34565,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fetch/response.js",
+        "sha256": "103a92a5e44ee47822ad5892b6134b8b237fad505a4ccf9fb4d2963af1c49fb6",
+        "size": 19205,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fetch/symbols.js",
+        "sha256": "dd88b1385665e69fca2465f33dc99d4f69919441555e5504ce65b55019e077a7",
+        "size": 181,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fetch/util.js",
+        "sha256": "85ee9fbb5c6083b521ac108959dddc4029e3549350da5e4ec10bfc2077846039",
+        "size": 50492,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fetch/webidl.js",
+        "sha256": "c1197b314e62c8dc9e1cce920b59679474ccb2e74dc4779a7d33ee1ecd0c91d0",
+        "size": 20571,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fileapi/encoding.js",
+        "sha256": "1104cabac55bb11fb9ce5127017f7c1b5dd816e63e2ec1a1c8eb40d7dfb4ad20",
+        "size": 6618,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fileapi/filereader.js",
+        "sha256": "758f05d98581fa73a36df3efde7db45b209df05f9fbbdcd21ab90cd527c2feb2",
+        "size": 8515,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fileapi/progressevent.js",
+        "sha256": "a4efded37a5b1bf78ae1a3c9a09c90615e24f1b8fcaed5310a317f43bd40ffc6",
+        "size": 1651,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fileapi/symbols.js",
+        "sha256": "ac1dd1e588f039bee4917ff017e32af5eb727d68683d869acf1479828480c371",
+        "size": 317,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/fileapi/util.js",
+        "sha256": "7fe9d4d9e553ff05bbd5fe63e9c2d1d75acf4e47291936a513bcab712a1e907b",
+        "size": 11526,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/websocket/connection.js",
+        "sha256": "399bfffecf05b8c1c43db4ca7b8ed11ad2176eb0e08d89e917c643e2c38c2761",
+        "size": 14206,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/websocket/constants.js",
+        "sha256": "55527aeddaa0d2ca2a9b57080be9ee3113f674dce45069cf6d494d5149f8767c",
+        "size": 1073,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/websocket/events.js",
+        "sha256": "156e4faea9fae2665344d5af1d08efb0cb6dc1deb96a787879e411fd80d55d2d",
+        "size": 7353,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/websocket/frame.js",
+        "sha256": "a60454364e7f2ec5db26c6ff03d20262d35fb2f1a0b2f6d625fd644be21cb118",
+        "size": 2307,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/websocket/permessage-deflate.js",
+        "sha256": "808e4fc2eb52ac7e0140cc37a0efe0ed2b13f4bd0119133c569030d3fab05f25",
+        "size": 2757,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/websocket/receiver.js",
+        "sha256": "279aa204e739cf532ad06edd575b563c5b73ee0864ccacfd9c21ce9826378a47",
+        "size": 16127,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/websocket/sender.js",
+        "sha256": "147f118843cdbbb884b39b2f4644cbec6671a530018e3baedafadf04339e4dcd",
+        "size": 2291,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/websocket/symbols.js",
+        "sha256": "8b0fefd6a165e147061da314db2f1d5f7e870b6720835e540d0be3376c6132fa",
+        "size": 330,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/websocket/util.js",
+        "sha256": "0a391dc293d65810a39c9c336904e98956fba902eb4402e55556e3dbe151ac46",
+        "size": 9355,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/web/websocket/websocket.js",
+        "sha256": "9b3173f0a96feda58e36293002f2341ca3c1c3340e9e1e070f149a4dcfe28f8c",
+        "size": 18741,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "f529aa8b145f6e270a72700ceb6c8dd3b87f742313078ea9f774a9d2ce8c865d",
+        "size": 6290,
+        "type": "FILE"
+      },
+      {
+        "path": "package/scripts/strip-comments.js",
+        "sha256": "dda77b813446eda232f84105181302ab39e3e58c8d92d3350ac1ce3eace5f4c4",
+        "size": 260,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/README.md",
+        "sha256": "c8cced6ec588c55b07e35733258cb7d6b63e3426ee7490aa9267aab4bda0fb20",
+        "size": 455,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/agent.d.ts",
+        "sha256": "4893a895ea92c85345017a04ed427cbd6a1710453338df26881a6019432febdd",
+        "size": 1065,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/api.d.ts",
+        "sha256": "0db18c6e78ea846316c012478888f33c11ffadab9efd1cc8bcc12daded7a60b6",
+        "size": 1455,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/balanced-pool.d.ts",
+        "sha256": "ba7bc87d01492633cb5a0e5da8a4a42a1c86270e7b3d2dea5d156828a84e4882",
+        "size": 961,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/cache.d.ts",
+        "sha256": "c46e079fe54c76f95c67fb89081b3e399da2c7d109e7dca8e4b58d83e332e605",
+        "size": 1251,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/client.d.ts",
+        "sha256": "e2e2d50484762af2f962c1122fc4ccadea263c3a41ce6882dc36e903577476f5",
+        "size": 5541,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/connector.d.ts",
+        "sha256": "c6fd2c5a395f2432786c9cb8deb870b9b0e8ff7e22c029954fabdd692bff6195",
+        "size": 1029,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/content-type.d.ts",
+        "sha256": "2e85db9e6fd73cfa3d7f28e0ab6b55417ea18931423bd47b409a96e4a169e8e6",
+        "size": 561,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/cookies.d.ts",
+        "sha256": "89167d696a849fce5ca508032aabfe901c0868f833a8625d5a9c6e861ef935d2",
+        "size": 635,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/diagnostics-channel.d.ts",
+        "sha256": "4732aec92b20fb28c5fe9ad99521fb59974289ed1e45aecb282616202184064f",
+        "size": 1579,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/dispatcher.d.ts",
+        "sha256": "7f182617db458e98fc18dfb272d40aa2fff3a353c44a89b2c0ccb3937709bfb5",
+        "size": 14222,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/env-http-proxy-agent.d.ts",
+        "sha256": "24c6a117721e606c9984335f71711877293a9651e44f59f3d21c1ea0856f9cc9",
+        "size": 675,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/errors.d.ts",
+        "sha256": "a5579f898b9e47423f675bdadf4148222f28c08d2c906c42ecc8b8ef4c897dba",
+        "size": 4492,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/eventsource.d.ts",
+        "sha256": "8bd86b8e8f6a6aa6c49b71e14c4ffe1211a0e97c80f08d2c8cc98838006e4b88",
+        "size": 1648,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/fetch.d.ts",
+        "sha256": "c464d66b20788266e5353b48dc4aa6bc0dc4a707276df1e7152ab0c9ae21fad8",
+        "size": 5575,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/file.d.ts",
+        "sha256": "25c8056edf4314820382a5fdb4bb7816999acdcb929c8f75e3f39473b87e85bc",
+        "size": 1707,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/filereader.d.ts",
+        "sha256": "317e63deeb21ac07f3992f5b50cdca8338f10acd4fbb7257ebf56735bf52ab00",
+        "size": 1433,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/formdata.d.ts",
+        "sha256": "78d0d27c130d35c60b5e5566c9f1e5be77caf39804636bc1a40133919a949f21",
+        "size": 4998,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/global-dispatcher.d.ts",
+        "sha256": "cadc8aced301244057c4e7e73fbcae534b0f5b12a37b150d80e5a45aa4bebcbd",
+        "size": 276,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/global-origin.d.ts",
+        "sha256": "385aab901643aa54e1c36f5ef3107913b10d1b5bb8cbcd933d4263b80a0d7f20",
+        "size": 175,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/handlers.d.ts",
+        "sha256": "11396ed8a44c02ab9798b7dca436009f866e8dae3c9c25e8c1fbc396880bf1bb",
+        "size": 447,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/header.d.ts",
+        "sha256": "5929864ce17fba74232584d90cb721a89b7ad277220627cc97054ba15a98ea8f",
+        "size": 133,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/index.d.ts",
+        "sha256": "bf67d53d168abc1298888693338cb82854bdb2e69ef83f8a0092093c2d562107",
+        "size": 3387,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/interceptors.d.ts",
+        "sha256": "d072cb61b086eeae042c45d85ea553a03b123d3e27dbac911faa1a695f5d6752",
+        "size": 1681,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/mock-agent.d.ts",
+        "sha256": "13f6f39e12b1518c6650bbb220c8985999020fe0f21d818e28f512b7771d00f9",
+        "size": 2535,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/mock-client.d.ts",
+        "sha256": "9b5369969f6e7175740bf51223112ff209f94ba43ecd3bb09eefff9fd675624a",
+        "size": 1002,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/mock-errors.d.ts",
+        "sha256": "24515859bc0b836719105bb6cc3d68255042a9f02a6022b3187948b204946bd2",
+        "size": 338,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/mock-interceptor.d.ts",
+        "sha256": "c21dc52e277bcfc75fac0436ccb75c204f9e1b3fa5e12729670910639f27343e",
+        "size": 3902,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/mock-pool.d.ts",
+        "sha256": "4fe9e626e7164748e8769bbf74b538e09607f07ed17c2f20af8d680ee49fc1da",
+        "size": 974,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/patch.d.ts",
+        "sha256": "615ba88d0128ed16bf83ef8ccbb6aff05c3ee2db1cc0f89ab50a4939bfc1943f",
+        "size": 691,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/pool-stats.d.ts",
+        "sha256": "9670d44354bab9d9982eca21945686b5c24a3f893db73c0dae0fd74217a4c219",
+        "size": 669,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/pool.d.ts",
+        "sha256": "0b8a9268adaf4da35e7fa830c8981cfa22adbbe5b3f6f5ab91f6658899e657a7",
+        "size": 1336,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/proxy-agent.d.ts",
+        "sha256": "4a1d973d2c93128508df27876bcaeafb2d5b2e3cf6e84092b6fc8608939b1287",
+        "size": 807,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/readable.d.ts",
+        "sha256": "763fe0f42b3d79b440a9b6e51e9ba3f3f91352469c1e4b3b67bfa4ff6352f3f4",
+        "size": 1738,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/retry-agent.d.ts",
+        "sha256": "405822be75ad3e4d162e07439bac80c6bcc6dbae1929e179cf467ec0b9ee4e2e",
+        "size": 232,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/retry-handler.d.ts",
+        "sha256": "aa5524e0509c2168c9493604acf51ef97d2027f03f3b38da097802d3aa719dc8",
+        "size": 2973,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/util.d.ts",
+        "sha256": "bd0532fd6556073727d28da0edfd1736417a3f9f394877b6d5ef6ad88fba1d1a",
+        "size": 623,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/webidl.d.ts",
+        "sha256": "99c42860a78963ee66048ef3536dbd9eb59858e6a06f2feba845105ed411e658",
+        "size": 5921,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/websocket.d.ts",
+        "sha256": "a4d551dbf8746780194d550c88f26cf937caf8d56f102969a110cfaed4b06656",
+        "size": 3840,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1090,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a6/a6db8096b2707bc0102d256917d4d33f298ba36d8c3f25de067a2b5bb379db27",
+          "sha256": "a6db8096b2707bc0102d256917d4d33f298ba36d8c3f25de067a2b5bb379db27"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "a6db8096b2707bc0102d256917d4d33f298ba36d8c3f25de067a2b5bb379db27",
+        "size": 1090
+      },
+      {
+        "blob": {
+          "bytes": 19538,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/f8/f8c36e725c48849e82eebad6f6167d1a9d9cc2c1426418af29a13b23769f3e1f",
+          "sha256": "f8c36e725c48849e82eebad6f6167d1a9d9cc2c1426418af29a13b23769f3e1f"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "f8c36e725c48849e82eebad6f6167d1a9d9cc2c1426418af29a13b23769f3e1f",
+        "size": 19538
+      },
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a2/a21d6c8d3fc631198b97e57584697f7f9c37805c71c6cf9a12e4442b40394b88",
+          "sha256": "a21d6c8d3fc631198b97e57584697f7f9c37805c71c6cf9a12e4442b40394b88"
+        },
+        "kind": "LICENCE",
+        "path": "package/lib/web/fetch/LICENSE",
+        "sha256": "a21d6c8d3fc631198b97e57584697f7f9c37805c71c6cf9a12e4442b40394b88",
+        "size": 1071
+      }
+    ],
+    "expandedBytes": 1195229,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://undici.nodejs.org",
+      "license": "MIT",
+      "name": "undici",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nodejs/undici.git"
+      },
+      "version": "6.28.0"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/nodejs/undici/issues"
+      },
+      "contributors": [
+        {
+          "author": true,
+          "name": "Daniele Belardi",
+          "url": "https://github.com/dnlup"
+        },
+        {
+          "author": true,
+          "name": "Ethan Arrowood",
+          "url": "https://github.com/ethan-arrowood"
+        },
+        {
+          "author": true,
+          "name": "Matteo Collina",
+          "url": "https://github.com/mcollina"
+        },
+        {
+          "author": true,
+          "name": "Matthew Aitken",
+          "url": "https://github.com/KhafraDev"
+        },
+        {
+          "author": true,
+          "name": "Robert Nagy",
+          "url": "https://github.com/ronag"
+        },
+        {
+          "author": true,
+          "name": "Szymon Marczak",
+          "url": "https://github.com/szmarczak"
+        },
+        {
+          "author": true,
+          "name": "Tomas Della Vedova",
+          "url": "https://github.com/delvedor"
+        }
+      ],
+      "description": "An HTTP/1.1 client, written from scratch for Node.js",
+      "devDependencies": {
+        "@fastify/busboy": "2.1.1",
+        "@matteo.collina/tspl": "^0.1.1",
+        "@metcoder95/https-pem": "^1.0.0",
+        "@sinonjs/fake-timers": "^11.1.0",
+        "@types/node": "~18.19.50",
+        "abort-controller": "^3.0.0",
+        "borp": "^0.15.0",
+        "c8": "^10.0.0",
+        "cross-env": "^7.0.3",
+        "dns-packet": "^5.4.0",
+        "fast-check": "^3.17.1",
+        "form-data": "^4.0.0",
+        "formdata-node": "^6.0.3",
+        "husky": "^9.0.7",
+        "jest": "^29.0.2",
+        "jsdom": "^24.0.0",
+        "node-forge": "^1.3.1",
+        "pre-commit": "^1.2.2",
+        "proxy": "^2.1.1",
+        "snazzy": "^9.0.0",
+        "standard": "^17.0.0",
+        "tsd": "^0.31.0",
+        "typescript": "^5.0.2",
+        "ws": "^8.11.0"
+      },
+      "engines": {
+        "node": ">=18.17"
+      },
+      "homepage": "https://undici.nodejs.org",
+      "jest": {
+        "testMatch": [
+          "<rootDir>/test/jest/**"
+        ]
+      },
+      "keywords": [
+        "fetch",
+        "http",
+        "https",
+        "promise",
+        "request",
+        "curl",
+        "wget",
+        "xhr",
+        "whatwg"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "undici",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nodejs/undici.git"
+      },
+      "scripts": {
+        "bench": "echo \"Error: Benchmarks have been moved to '/benchmarks'\" && exit 1",
+        "build:node": "npx esbuild@0.19.10 index-fetch.js --bundle --platform=node --outfile=undici-fetch.js --define:esbuildDetection=1 --keep-names && node scripts/strip-comments.js",
+        "build:wasm": "node build/wasm.js --docker",
+        "coverage": "npm run coverage:clean && cross-env NODE_V8_COVERAGE=./coverage/tmp npm run test:javascript && npm run coverage:report",
+        "coverage:ci": "npm run coverage:clean && cross-env NODE_V8_COVERAGE=./coverage/tmp npm run test:javascript && npm run coverage:report:ci",
+        "coverage:clean": "node ./scripts/clean-coverage.js",
+        "coverage:report": "cross-env NODE_V8_COVERAGE= c8 report",
+        "coverage:report:ci": "c8 report",
+        "lint": "standard | snazzy",
+        "lint:fix": "standard --fix | snazzy",
+        "prebuild:wasm": "node build/wasm.js --prebuild",
+        "prepare": "husky && node ./scripts/platform-shell.js",
+        "serve:website": "echo \"Error: Documentation has been moved to '/docs'\" && exit 1",
+        "test": "npm run test:javascript && cross-env NODE_V8_COVERAGE=  npm run test:typescript",
+        "test:busboy": "borp -p \"test/busboy/*.js\"",
+        "test:cache": "borp -p \"test/cache/*.js\"",
+        "test:cookies": "borp -p \"test/cookie/*.js\"",
+        "test:eventsource": "npm run build:node && npm run test:eventsource:nobuild",
+        "test:eventsource:nobuild": "borp --expose-gc -p \"test/eventsource/*.js\"",
+        "test:fetch": "npm run build:node && npm run test:fetch:nobuild",
+        "test:fetch:nobuild": "borp --timeout 180000 --expose-gc --concurrency 1 -p \"test/fetch/*.js\" && npm run test:webidl && npm run test:busboy",
+        "test:fuzzing": "node test/fuzzing/fuzzing.test.js",
+        "test:h2": "npm run test:h2:core && npm run test:h2:fetch",
+        "test:h2:core": "borp -p \"test/http2*.js\"",
+        "test:h2:fetch": "npm run build:node && borp -p \"test/fetch/http2*.js\"",
+        "test:interceptors": "borp -p \"test/interceptors/*.js\"",
+        "test:javascript": "node scripts/generate-pem && npm run test:unit && npm run test:node-fetch && npm run test:cache && npm run test:interceptors && npm run test:fetch && npm run test:cookies && npm run test:eventsource && npm run test:wpt && npm run test:websocket && npm run test:node-test && npm run test:jest",
+        "test:javascript:withoutintl": "node scripts/generate-pem && npm run test:unit && npm run test:node-fetch && npm run test:fetch:nobuild && npm run test:cache && npm run test:interceptors && npm run test:cookies && npm run test:eventsource:nobuild && npm run test:wpt:withoutintl && npm run test:node-test",
+        "test:jest": "cross-env NODE_V8_COVERAGE= jest",
+        "test:node-fetch": "borp -p \"test/node-fetch/**/*.js\"",
+        "test:node-test": "borp -p \"test/node-test/**/*.js\"",
+        "test:tdd": "borp --expose-gc -p \"test/*.js\"",
+        "test:tdd:node-test": "borp -p \"test/node-test/**/*.js\" -w",
+        "test:typescript": "tsd && tsc test/imports/undici-import.ts --typeRoots ./types && tsc ./types/*.d.ts --noEmit --typeRoots ./types",
+        "test:unit": "borp --expose-gc -p \"test/*.js\"",
+        "test:webidl": "borp -p \"test/webidl/*.js\"",
+        "test:websocket": "borp -p \"test/websocket/*.js\"",
+        "test:websocket:autobahn": "node test/autobahn/client.js",
+        "test:websocket:autobahn:report": "node test/autobahn/report.js",
+        "test:wpt": "node test/wpt/start-fetch.mjs && node test/wpt/start-FileAPI.mjs && node test/wpt/start-mimesniff.mjs && node test/wpt/start-xhr.mjs && node test/wpt/start-websockets.mjs && node test/wpt/start-cacheStorage.mjs && node test/wpt/start-eventsource.mjs",
+        "test:wpt:withoutintl": "node test/wpt/start-fetch.mjs && node test/wpt/start-mimesniff.mjs && node test/wpt/start-xhr.mjs && node test/wpt/start-cacheStorage.mjs && node test/wpt/start-eventsource.mjs"
+      },
+      "standard": {
+        "env": [
+          "jest"
+        ],
+        "ignore": [
+          "lib/llhttp/constants.js",
+          "lib/llhttp/utils.js",
+          "test/fixtures/wpt"
+        ]
+      },
+      "tsd": {
+        "compilerOptions": {
+          "esModuleInterop": true,
+          "lib": [
+            "esnext"
+          ]
+        },
+        "directory": "test/types"
+      },
+      "types": "index.d.ts",
+      "version": "6.28.0"
+    },
+    "physicalEntryCount": 176,
+    "tarball": {
+      "bytes": 295110,
+      "sha256": "32a86c6fa28fd48b915555048c05bbd37ad35457d9e945953831a4374c886a9c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

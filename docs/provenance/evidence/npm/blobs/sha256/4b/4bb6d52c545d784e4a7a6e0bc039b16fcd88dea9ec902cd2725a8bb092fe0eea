@@ -1,0 +1,932 @@
+{
+  "artifactId": "fa01d7cb0ac23ccef372d9880bda4f6431499232412e2a3027a28a469ca815d3",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 7,
+      "digestVerifiedFileCount": 7,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 7
+    },
+    "artifactId": "fa01d7cb0ac23ccef372d9880bda4f6431499232412e2a3027a28a469ca815d3",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^15.1.0",
+        "for_package_purl": "pkg:npm/argparse@2.0.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/nyc",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^7.10.4",
+        "for_package_purl": "pkg:npm/argparse@2.0.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40babel/plugin-syntax-class-properties",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^7.11.0",
+        "for_package_purl": "pkg:npm/argparse@2.0.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40babel/eslint-parser",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^7.5.0",
+        "for_package_purl": "pkg:npm/argparse@2.0.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^8.0.1",
+        "for_package_purl": "pkg:npm/argparse@2.0.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/mocha",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Greg Ward <gward@python.net>",
+            "end_line": 13,
+            "start_line": 13
+          }
+        ],
+        "base_name": "textwrap",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 1999-2001 Gregory P. Ward",
+            "end_line": 10,
+            "start_line": 10
+          },
+          {
+            "copyright": "Copyright (c) 2002, 2003 Python Software Foundation",
+            "end_line": 11,
+            "start_line": 11
+          },
+          {
+            "copyright": "Copyright (c) 2020 argparse.js authors",
+            "end_line": 12,
+            "start_line": 12
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/argparse@2.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 10,
+            "holder": "Gregory P. Ward",
+            "start_line": 10
+          },
+          {
+            "end_line": 11,
+            "holder": "Python Software Foundation",
+            "start_line": 11
+          },
+          {
+            "end_line": 12,
+            "holder": "argparse.js authors",
+            "start_line": 12
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "32f3c10f519c3d10f41f86c29dd67809",
+        "name": "textwrap.js",
+        "package_data": [],
+        "path": "package/lib/textwrap.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "1fd8c341ed281e33d43b3a21a311149d772274ef",
+        "sha1_git": "23d51cdb95ccc8591fb6ade3f7e07943071559fe",
+        "sha256": "2550466c9a0425fa583a70e25bb93e190fe09b61f7de4861ea8ec54b7b899db0",
+        "size": 17391,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "CHANGELOG",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/argparse@2.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "c7a21f06ea88c4f598c4ea3fd03fa297",
+        "name": "CHANGELOG.md",
+        "package_data": [],
+        "path": "package/CHANGELOG.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "12635413af3eb966ff8bf60bb470b6e4c017285d",
+        "sha1_git": "dc39ed6952f87adcd961d07749e1ffe7a2b7335b",
+        "sha256": "c3f89be070b29b2db49d6ecee73e5e2a50dd32e8b68dc9a8ca1a959fc14fe451",
+        "size": 5966,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 1991 - 1995, Stichting Mathematisch Centrum Amsterdam, The Netherlands",
+            "end_line": 237,
+            "start_line": 236
+          },
+          {
+            "copyright": "Copyright (c) 1995-2001 Corporation for National Research Initiatives",
+            "end_line": 177,
+            "start_line": 176
+          },
+          {
+            "copyright": "Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020 Python Software Foundation",
+            "end_line": 76,
+            "start_line": 75
+          }
+        ],
+        "detected_license_expression": "python",
+        "detected_license_expression_spdx": "Python-2.0",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/argparse@2.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 177,
+            "holder": "Corporation for National Research Initiatives",
+            "start_line": 177
+          },
+          {
+            "end_line": 237,
+            "holder": "Stichting Mathematisch Centrum Amsterdam, The Netherlands",
+            "start_line": 236
+          },
+          {
+            "end_line": 76,
+            "holder": "Python Software Foundation",
+            "start_line": 76
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "python-ca216085-02fe-9793-882e-a48b37252c4b",
+            "license_expression": "python",
+            "license_expression_spdx": "Python-2.0",
+            "matches": [
+              {
+                "end_line": 254,
+                "from_file": "fa01d7cb0ac23ccef372d9880bda4f6431499232412e2a3027a28a469ca815d3/package/LICENSE",
+                "license_expression": "python",
+                "license_expression_spdx": "Python-2.0",
+                "match_coverage": 100,
+                "matched_length": 1965,
+                "matched_text": "A. HISTORY OF THE SOFTWARE\n==========================\n\nPython was created in the early 1990s by Guido van Rossum at Stichting\nMathematisch Centrum (CWI, see http://www.cwi.nl) in the Netherlands\nas a successor of a language called ABC.  Guido remains Python's\nprincipal author, although it includes many contributions from others.\n\nIn 1995, Guido continued his work on Python at the Corporation for\nNational Research Initiatives (CNRI, see http://www.cnri.reston.va.us)\nin Reston, Virginia where he released several versions of the\nsoftware.\n\nIn May 2000, Guido and the Python core development team moved to\nBeOpen.com to form the BeOpen PythonLabs team.  In October of the same\nyear, the PythonLabs team moved to Digital Creations, which became\nZope Corporation.  In 2001, the Python Software Foundation (PSF, see\nhttps://www.python.org/psf/) was formed, a non-profit organization\ncreated specifically to own Python-related Intellectual Property.\nZope Corporation was a sponsoring member of the PSF.\n\nAll Python releases are Open Source (see http://www.opensource.org for\nthe Open Source Definition).  Historically, most, but not all, Python\nreleases have also been GPL-compatible; the table below summarizes\nthe various releases.\n\n    Release         Derived     Year        Owner       GPL-\n                    from                                compatible? (1)\n\n    0.9.0 thru 1.2              1991-1995   CWI         yes\n    1.3 thru 1.5.2  1.2         1995-1999   CNRI        yes\n    1.6             1.5.2       2000        CNRI        no\n    2.0             1.6         2000        BeOpen.com  no\n    1.6.1           1.6         2001        CNRI        yes (2)\n    2.1             2.0+1.6.1   2001        PSF         no\n    2.0.1           2.0+1.6.1   2001        PSF         yes\n    2.1.1           2.1+2.0.1   2001        PSF         yes\n    2.1.2           2.1.1       2002        PSF         yes\n    2.1.3           2.1.2       2002        PSF         yes\n    2.2 and above   2.1.1       2001-now    PSF         yes\n\nFootnotes:\n\n(1) GPL-compatible doesn't mean that we're distributing Python under\n    the GPL.  All Python licenses, unlike the GPL, let you distribute\n    a modified version without making your changes open source.  The\n    GPL-compatible licenses make it possible to combine Python with\n    other software that is released under the GPL; the others don't.\n\n(2) According to Richard Stallman, 1.6.1 is not GPL-compatible,\n    because its license has a choice of law clause.  According to\n    CNRI, however, Stallman's lawyer has told CNRI's lawyer that 1.6.1\n    is \"not incompatible\" with the GPL.\n\nThanks to the many outside volunteers who have worked under Guido's\ndirection to make these releases possible.\n\n\nB. TERMS AND CONDITIONS FOR ACCESSING OR OTHERWISE USING PYTHON\n===============================================================\n\nPYTHON SOFTWARE FOUNDATION LICENSE VERSION 2\n--------------------------------------------\n\n1. This LICENSE AGREEMENT is between the Python Software Foundation\n(\"PSF\"), and the Individual or Organization (\"Licensee\") accessing and\notherwise using this software (\"Python\") in source or binary form and\nits associated documentation.\n\n2. Subject to the terms and conditions of this License Agreement, PSF hereby\ngrants Licensee a nonexclusive, royalty-free, world-wide license to reproduce,\nanalyze, test, perform and/or display publicly, prepare derivative works,\ndistribute, and otherwise use Python alone or in any derivative version,\nprovided, however, that PSF's License Agreement and PSF's notice of copyright,\ni.e., \"Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010,\n2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020 Python Software Foundation;\nAll Rights Reserved\" are retained in Python alone or in any derivative version\nprepared by Licensee.\n\n3. In the event Licensee prepares a derivative work that is based on\nor incorporates Python or any part thereof, and wants to make\nthe derivative work available to others as provided herein, then\nLicensee hereby agrees to include in any such work a brief summary of\nthe changes made to Python.\n\n4. PSF is making Python available to Licensee on an \"AS IS\"\nbasis.  PSF MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, PSF MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n5. PSF SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON\nFOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS\nA RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON,\nOR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n6. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n7. Nothing in this License Agreement shall be deemed to create any\nrelationship of agency, partnership, or joint venture between PSF and\nLicensee.  This License Agreement does not grant permission to use PSF\ntrademarks or trade name in a trademark sense to endorse or promote\nproducts or services of Licensee, or any third party.\n\n8. By copying, installing or otherwise using Python, Licensee\nagrees to be bound by the terms and conditions of this License\nAgreement.\n\n\nBEOPEN.COM LICENSE AGREEMENT FOR PYTHON 2.0\n-------------------------------------------\n\nBEOPEN PYTHON OPEN SOURCE LICENSE AGREEMENT VERSION 1\n\n1. This LICENSE AGREEMENT is between BeOpen.com (\"BeOpen\"), having an\noffice at 160 Saratoga Avenue, Santa Clara, CA 95051, and the\nIndividual or Organization (\"Licensee\") accessing and otherwise using\nthis software in source or binary form and its associated\ndocumentation (\"the Software\").\n\n2. Subject to the terms and conditions of this BeOpen Python License\nAgreement, BeOpen hereby grants Licensee a non-exclusive,\nroyalty-free, world-wide license to reproduce, analyze, test, perform\nand/or display publicly, prepare derivative works, distribute, and\notherwise use the Software alone or in any derivative version,\nprovided, however, that the BeOpen Python License is retained in the\nSoftware, alone or in any derivative version prepared by Licensee.\n\n3. BeOpen is making the Software available to Licensee on an \"AS IS\"\nbasis.  BEOPEN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, BEOPEN MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE SOFTWARE WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n4. BEOPEN SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF THE\nSOFTWARE FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS\nAS A RESULT OF USING, MODIFYING OR DISTRIBUTING THE SOFTWARE, OR ANY\nDERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n5. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n6. This License Agreement shall be governed by and interpreted in all\nrespects by the law of the State of California, excluding conflict of\nlaw provisions.  Nothing in this License Agreement shall be deemed to\ncreate any relationship of agency, partnership, or joint venture\nbetween BeOpen and Licensee.  This License Agreement does not grant\npermission to use BeOpen trademarks or trade names in a trademark\nsense to endorse or promote products or services of Licensee, or any\nthird party.  As an exception, the \"BeOpen Python\" logos available at\nhttp://www.pythonlabs.com/logos.html may be used according to the\npermissions granted on that web page.\n\n7. By copying, installing or otherwise using the software, Licensee\nagrees to be bound by the terms and conditions of this License\nAgreement.\n\n\nCNRI LICENSE AGREEMENT FOR PYTHON 1.6.1\n---------------------------------------\n\n1. This LICENSE AGREEMENT is between the Corporation for National\nResearch Initiatives, having an office at 1895 Preston White Drive,\nReston, VA 20191 (\"CNRI\"), and the Individual or Organization\n(\"Licensee\") accessing and otherwise using Python 1.6.1 software in\nsource or binary form and its associated documentation.\n\n2. Subject to the terms and conditions of this License Agreement, CNRI\nhereby grants Licensee a nonexclusive, royalty-free, world-wide\nlicense to reproduce, analyze, test, perform and/or display publicly,\nprepare derivative works, distribute, and otherwise use Python 1.6.1\nalone or in any derivative version, provided, however, that CNRI's\nLicense Agreement and CNRI's notice of copyright, i.e., \"Copyright (c)\n1995-2001 Corporation for National Research Initiatives; All Rights\nReserved\" are retained in Python 1.6.1 alone or in any derivative\nversion prepared by Licensee.  Alternately, in lieu of CNRI's License\nAgreement, Licensee may substitute the following text (omitting the\nquotes): \"Python 1.6.1 is made available subject to the terms and\nconditions in CNRI's License Agreement.  This Agreement together with\nPython 1.6.1 may be located on the Internet using the following\nunique, persistent identifier (known as a handle): 1895.22/1013.  This\nAgreement may also be obtained from a proxy server on the Internet\nusing the following URL: http://hdl.handle.net/1895.22/1013\".\n\n3. In the event Licensee prepares a derivative work that is based on\nor incorporates Python 1.6.1 or any part thereof, and wants to make\nthe derivative work available to others as provided herein, then\nLicensee hereby agrees to include in any such work a brief summary of\nthe changes made to Python 1.6.1.\n\n4. CNRI is making Python 1.6.1 available to Licensee on an \"AS IS\"\nbasis.  CNRI MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, CNRI MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON 1.6.1 WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n5. CNRI SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON\n1.6.1 FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS\nA RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON 1.6.1,\nOR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n6. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n7. This License Agreement shall be governed by the federal\nintellectual property law of the United States, including without\nlimitation the federal copyright law, and, to the extent such\nU.S. federal law does not apply, by the law of the Commonwealth of\nVirginia, excluding Virginia's conflict of law provisions.\nNotwithstanding the foregoing, with regard to derivative works based\non Python 1.6.1 that incorporate non-separable material that was\npreviously distributed under the GNU General Public License (GPL), the\nlaw of the Commonwealth of Virginia shall govern this License\nAgreement only as to issues arising under or with respect to\nParagraphs 4, 5, and 7 of this License Agreement.  Nothing in this\nLicense Agreement shall be deemed to create any relationship of\nagency, partnership, or joint venture between CNRI and Licensee.  This\nLicense Agreement does not grant permission to use CNRI trademarks or\ntrade name in a trademark sense to endorse or promote products or\nservices of Licensee, or any third party.\n\n8. By clicking on the \"ACCEPT\" button where indicated, or by copying,\ninstalling or otherwise using Python 1.6.1, Licensee agrees to be\nbound by the terms and conditions of this License Agreement.\n\n        ACCEPT\n\n\nCWI LICENSE AGREEMENT FOR PYTHON 0.9.0 THROUGH 1.2\n--------------------------------------------------\n\nCopyright (c) 1991 - 1995, Stichting Mathematisch Centrum Amsterdam,\nThe Netherlands.  All rights reserved.\n\nPermission to use, copy, modify, and distribute this software and its\ndocumentation for any purpose and without fee is hereby granted,\nprovided that the above copyright notice appear in all copies and that\nboth that copyright notice and this permission notice appear in\nsupporting documentation, and that the name of Stichting Mathematisch\nCentrum or CWI not be used in advertising or publicity pertaining to\ndistribution of the software without specific, written prior\npermission.\n\nSTICHTING MATHEMATISCH CENTRUM DISCLAIMS ALL WARRANTIES WITH REGARD TO\nTHIS SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND\nFITNESS, IN NO EVENT SHALL STICHTING MATHEMATISCH CENTRUM BE LIABLE\nFOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT\nOF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+                "matcher": "1-hash",
+                "rule_identifier": "python_70.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/python_70.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": "203a6dbc802ee896020a47161e759642",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 100,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "8c99330b2c56b327357927017fee2ffbb6ace001",
+        "sha1_git": "66a3ac80d729a3a5bdfd22002d34be59a6daf222",
+        "sha256": "de4d1f2d2ad5ad0cfd1657a106476b31cb5db5ef9d1ff842b237c0c81f0c8a23",
+        "size": 12775,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/argparse@2.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "0478fa2eb07d37dbe8fc242523662469",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "aefa7a1c66f31fcc83334104604d18611e6c58d5",
+        "sha1_git": "550b5c9b7b00aaa18ba240b485e5b31598ef04b2",
+        "sha256": "44161d4e4baf71c745a327a5d05ee4a762c3004db5453aca221e3d0a3fa52ba6",
+        "size": 2768,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "argparse",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2010-2020 Python Software Foundation",
+            "end_line": 6,
+            "start_line": 6
+          },
+          {
+            "copyright": "Copyright (c) 2020 argparse.js authors",
+            "end_line": 7,
+            "start_line": 7
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/argparse@2.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 6,
+            "holder": "Python Software Foundation",
+            "start_line": 6
+          },
+          {
+            "end_line": 7,
+            "holder": "argparse.js authors",
+            "start_line": 7
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "1a4680402726bb811869938fce0bd394",
+        "name": "argparse.js",
+        "package_data": [],
+        "path": "package/argparse.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "7d94781ccc8562050c15b90153227f0dad178cd4",
+        "sha1_git": "2b8c8c63177af9757a44926cfc3ab7d9878c9387",
+        "sha256": "2e73e7a3167ba840dbcf41feeafc3544a3e2b39220b5e997133c519861febf16",
+        "size": 129714,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "python",
+        "detected_license_expression_spdx": "Python-2.0",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/argparse@2.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "python-eef67f72-b878-54d9-159a-1fcf050e571f",
+            "license_expression": "python",
+            "license_expression_spdx": "Python-2.0",
+            "matches": [
+              {
+                "end_line": 17,
+                "from_file": "fa01d7cb0ac23ccef372d9880bda4f6431499232412e2a3027a28a469ca815d3/package/package.json",
+                "license_expression": "python",
+                "license_expression_spdx": "Python-2.0",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "  \"license\": \"Python-2.0\",",
+                "matcher": "2-aho",
+                "rule_identifier": "python_78.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/python_78.RULE",
+                "score": 100,
+                "start_line": 17
+              }
+            ]
+          }
+        ],
+        "md5": "e1daf76b5677802d7fc8cdd585ec610d",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/argparse/2.0.1",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "python",
+            "declared_license_expression_spdx": "Python-2.0",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^15.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/nyc",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^7.10.4",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40babel/plugin-syntax-class-properties",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^7.11.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40babel/eslint-parser",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^7.5.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^8.0.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/mocha",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "CLI arguments parser. Native port of python's argparse.",
+            "download_url": "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz",
+            "extra_data": {},
+            "extracted_license_statement": "- Python-2.0\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "argparse",
+              "args",
+              "cli",
+              "option",
+              "parser"
+            ],
+            "license_detections": [
+              {
+                "identifier": "python-487591fa-c245-3fa2-d521-866f05382201",
+                "license_expression": "python",
+                "license_expression_spdx": "Python-2.0",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "fa01d7cb0ac23ccef372d9880bda4f6431499232412e2a3027a28a469ca815d3/package/package.json",
+                    "license_expression": "python",
+                    "license_expression_spdx": "Python-2.0",
+                    "match_coverage": 100,
+                    "matched_length": 3,
+                    "matched_text": "Python-2.0",
+                    "matcher": "1-hash",
+                    "rule_identifier": "python_required_phrase_1.RULE",
+                    "rule_relevance": 16,
+                    "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/python_required_phrase_1.RULE",
+                    "score": 16,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "argparse",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/argparse@2.0.1",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/argparse",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "https://github.com/nodeca/argparse",
+            "version": "2.0.1"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 5.06,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "84bc2b346b0acbbe449637bc5f9b487edcf0e122",
+        "sha1_git": "647d2aff18d2ac0bc73c4618e09a2a220bf7b36a",
+        "sha256": "688bace28e14392b3a1c4137eb56bc48b684dbf5cb56278ed7056cd2ece07990",
+        "size": 682,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "sub",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/argparse@2.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "5edf55299638e603e506a2005d8fafcb",
+        "name": "sub.js",
+        "package_data": [],
+        "path": "package/lib/sub.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "757f59221515e7de37f85c4ae8bcfc3e47f11846",
+        "sha1_git": "e3eb3215fc171cec44a2a1e290cc7deb19bcca74",
+        "sha256": "2bc4ef9e87c47f1a4e0cfcb3706d886e0d73edce88149e300d2364066f396ed6",
+        "size": 2252,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "python-487591fa-c245-3fa2-d521-866f05382201",
+        "license_expression": "python",
+        "license_expression_spdx": "Python-2.0",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "fa01d7cb0ac23ccef372d9880bda4f6431499232412e2a3027a28a469ca815d3/package/package.json",
+            "license_expression": "python",
+            "license_expression_spdx": "Python-2.0",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "Python-2.0",
+            "matcher": "1-hash",
+            "rule_identifier": "python_required_phrase_1.RULE",
+            "rule_relevance": 16,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/python_required_phrase_1.RULE",
+            "score": 16,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "python-ca216085-02fe-9793-882e-a48b37252c4b",
+        "license_expression": "python",
+        "license_expression_spdx": "Python-2.0",
+        "reference_matches": [
+          {
+            "end_line": 254,
+            "from_file": "fa01d7cb0ac23ccef372d9880bda4f6431499232412e2a3027a28a469ca815d3/package/LICENSE",
+            "license_expression": "python",
+            "license_expression_spdx": "Python-2.0",
+            "match_coverage": 100,
+            "matched_length": 1965,
+            "matched_text": "A. HISTORY OF THE SOFTWARE\n==========================\n\nPython was created in the early 1990s by Guido van Rossum at Stichting\nMathematisch Centrum (CWI, see http://www.cwi.nl) in the Netherlands\nas a successor of a language called ABC.  Guido remains Python's\nprincipal author, although it includes many contributions from others.\n\nIn 1995, Guido continued his work on Python at the Corporation for\nNational Research Initiatives (CNRI, see http://www.cnri.reston.va.us)\nin Reston, Virginia where he released several versions of the\nsoftware.\n\nIn May 2000, Guido and the Python core development team moved to\nBeOpen.com to form the BeOpen PythonLabs team.  In October of the same\nyear, the PythonLabs team moved to Digital Creations, which became\nZope Corporation.  In 2001, the Python Software Foundation (PSF, see\nhttps://www.python.org/psf/) was formed, a non-profit organization\ncreated specifically to own Python-related Intellectual Property.\nZope Corporation was a sponsoring member of the PSF.\n\nAll Python releases are Open Source (see http://www.opensource.org for\nthe Open Source Definition).  Historically, most, but not all, Python\nreleases have also been GPL-compatible; the table below summarizes\nthe various releases.\n\n    Release         Derived     Year        Owner       GPL-\n                    from                                compatible? (1)\n\n    0.9.0 thru 1.2              1991-1995   CWI         yes\n    1.3 thru 1.5.2  1.2         1995-1999   CNRI        yes\n    1.6             1.5.2       2000        CNRI        no\n    2.0             1.6         2000        BeOpen.com  no\n    1.6.1           1.6         2001        CNRI        yes (2)\n    2.1             2.0+1.6.1   2001        PSF         no\n    2.0.1           2.0+1.6.1   2001        PSF         yes\n    2.1.1           2.1+2.0.1   2001        PSF         yes\n    2.1.2           2.1.1       2002        PSF         yes\n    2.1.3           2.1.2       2002        PSF         yes\n    2.2 and above   2.1.1       2001-now    PSF         yes\n\nFootnotes:\n\n(1) GPL-compatible doesn't mean that we're distributing Python under\n    the GPL.  All Python licenses, unlike the GPL, let you distribute\n    a modified version without making your changes open source.  The\n    GPL-compatible licenses make it possible to combine Python with\n    other software that is released under the GPL; the others don't.\n\n(2) According to Richard Stallman, 1.6.1 is not GPL-compatible,\n    because its license has a choice of law clause.  According to\n    CNRI, however, Stallman's lawyer has told CNRI's lawyer that 1.6.1\n    is \"not incompatible\" with the GPL.\n\nThanks to the many outside volunteers who have worked under Guido's\ndirection to make these releases possible.\n\n\nB. TERMS AND CONDITIONS FOR ACCESSING OR OTHERWISE USING PYTHON\n===============================================================\n\nPYTHON SOFTWARE FOUNDATION LICENSE VERSION 2\n--------------------------------------------\n\n1. This LICENSE AGREEMENT is between the Python Software Foundation\n(\"PSF\"), and the Individual or Organization (\"Licensee\") accessing and\notherwise using this software (\"Python\") in source or binary form and\nits associated documentation.\n\n2. Subject to the terms and conditions of this License Agreement, PSF hereby\ngrants Licensee a nonexclusive, royalty-free, world-wide license to reproduce,\nanalyze, test, perform and/or display publicly, prepare derivative works,\ndistribute, and otherwise use Python alone or in any derivative version,\nprovided, however, that PSF's License Agreement and PSF's notice of copyright,\ni.e., \"Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010,\n2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020 Python Software Foundation;\nAll Rights Reserved\" are retained in Python alone or in any derivative version\nprepared by Licensee.\n\n3. In the event Licensee prepares a derivative work that is based on\nor incorporates Python or any part thereof, and wants to make\nthe derivative work available to others as provided herein, then\nLicensee hereby agrees to include in any such work a brief summary of\nthe changes made to Python.\n\n4. PSF is making Python available to Licensee on an \"AS IS\"\nbasis.  PSF MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, PSF MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n5. PSF SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON\nFOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS\nA RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON,\nOR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n6. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n7. Nothing in this License Agreement shall be deemed to create any\nrelationship of agency, partnership, or joint venture between PSF and\nLicensee.  This License Agreement does not grant permission to use PSF\ntrademarks or trade name in a trademark sense to endorse or promote\nproducts or services of Licensee, or any third party.\n\n8. By copying, installing or otherwise using Python, Licensee\nagrees to be bound by the terms and conditions of this License\nAgreement.\n\n\nBEOPEN.COM LICENSE AGREEMENT FOR PYTHON 2.0\n-------------------------------------------\n\nBEOPEN PYTHON OPEN SOURCE LICENSE AGREEMENT VERSION 1\n\n1. This LICENSE AGREEMENT is between BeOpen.com (\"BeOpen\"), having an\noffice at 160 Saratoga Avenue, Santa Clara, CA 95051, and the\nIndividual or Organization (\"Licensee\") accessing and otherwise using\nthis software in source or binary form and its associated\ndocumentation (\"the Software\").\n\n2. Subject to the terms and conditions of this BeOpen Python License\nAgreement, BeOpen hereby grants Licensee a non-exclusive,\nroyalty-free, world-wide license to reproduce, analyze, test, perform\nand/or display publicly, prepare derivative works, distribute, and\notherwise use the Software alone or in any derivative version,\nprovided, however, that the BeOpen Python License is retained in the\nSoftware, alone or in any derivative version prepared by Licensee.\n\n3. BeOpen is making the Software available to Licensee on an \"AS IS\"\nbasis.  BEOPEN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, BEOPEN MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE SOFTWARE WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n4. BEOPEN SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF THE\nSOFTWARE FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS\nAS A RESULT OF USING, MODIFYING OR DISTRIBUTING THE SOFTWARE, OR ANY\nDERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n5. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n6. This License Agreement shall be governed by and interpreted in all\nrespects by the law of the State of California, excluding conflict of\nlaw provisions.  Nothing in this License Agreement shall be deemed to\ncreate any relationship of agency, partnership, or joint venture\nbetween BeOpen and Licensee.  This License Agreement does not grant\npermission to use BeOpen trademarks or trade names in a trademark\nsense to endorse or promote products or services of Licensee, or any\nthird party.  As an exception, the \"BeOpen Python\" logos available at\nhttp://www.pythonlabs.com/logos.html may be used according to the\npermissions granted on that web page.\n\n7. By copying, installing or otherwise using the software, Licensee\nagrees to be bound by the terms and conditions of this License\nAgreement.\n\n\nCNRI LICENSE AGREEMENT FOR PYTHON 1.6.1\n---------------------------------------\n\n1. This LICENSE AGREEMENT is between the Corporation for National\nResearch Initiatives, having an office at 1895 Preston White Drive,\nReston, VA 20191 (\"CNRI\"), and the Individual or Organization\n(\"Licensee\") accessing and otherwise using Python 1.6.1 software in\nsource or binary form and its associated documentation.\n\n2. Subject to the terms and conditions of this License Agreement, CNRI\nhereby grants Licensee a nonexclusive, royalty-free, world-wide\nlicense to reproduce, analyze, test, perform and/or display publicly,\nprepare derivative works, distribute, and otherwise use Python 1.6.1\nalone or in any derivative version, provided, however, that CNRI's\nLicense Agreement and CNRI's notice of copyright, i.e., \"Copyright (c)\n1995-2001 Corporation for National Research Initiatives; All Rights\nReserved\" are retained in Python 1.6.1 alone or in any derivative\nversion prepared by Licensee.  Alternately, in lieu of CNRI's License\nAgreement, Licensee may substitute the following text (omitting the\nquotes): \"Python 1.6.1 is made available subject to the terms and\nconditions in CNRI's License Agreement.  This Agreement together with\nPython 1.6.1 may be located on the Internet using the following\nunique, persistent identifier (known as a handle): 1895.22/1013.  This\nAgreement may also be obtained from a proxy server on the Internet\nusing the following URL: http://hdl.handle.net/1895.22/1013\".\n\n3. In the event Licensee prepares a derivative work that is based on\nor incorporates Python 1.6.1 or any part thereof, and wants to make\nthe derivative work available to others as provided herein, then\nLicensee hereby agrees to include in any such work a brief summary of\nthe changes made to Python 1.6.1.\n\n4. CNRI is making Python 1.6.1 available to Licensee on an \"AS IS\"\nbasis.  CNRI MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, CNRI MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON 1.6.1 WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n5. CNRI SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON\n1.6.1 FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS\nA RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON 1.6.1,\nOR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n6. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n7. This License Agreement shall be governed by the federal\nintellectual property law of the United States, including without\nlimitation the federal copyright law, and, to the extent such\nU.S. federal law does not apply, by the law of the Commonwealth of\nVirginia, excluding Virginia's conflict of law provisions.\nNotwithstanding the foregoing, with regard to derivative works based\non Python 1.6.1 that incorporate non-separable material that was\npreviously distributed under the GNU General Public License (GPL), the\nlaw of the Commonwealth of Virginia shall govern this License\nAgreement only as to issues arising under or with respect to\nParagraphs 4, 5, and 7 of this License Agreement.  Nothing in this\nLicense Agreement shall be deemed to create any relationship of\nagency, partnership, or joint venture between CNRI and Licensee.  This\nLicense Agreement does not grant permission to use CNRI trademarks or\ntrade name in a trademark sense to endorse or promote products or\nservices of Licensee, or any third party.\n\n8. By clicking on the \"ACCEPT\" button where indicated, or by copying,\ninstalling or otherwise using Python 1.6.1, Licensee agrees to be\nbound by the terms and conditions of this License Agreement.\n\n        ACCEPT\n\n\nCWI LICENSE AGREEMENT FOR PYTHON 0.9.0 THROUGH 1.2\n--------------------------------------------------\n\nCopyright (c) 1991 - 1995, Stichting Mathematisch Centrum Amsterdam,\nThe Netherlands.  All rights reserved.\n\nPermission to use, copy, modify, and distribute this software and its\ndocumentation for any purpose and without fee is hereby granted,\nprovided that the above copyright notice appear in all copies and that\nboth that copyright notice and this permission notice appear in\nsupporting documentation, and that the name of Stichting Mathematisch\nCentrum or CWI not be used in advertising or publicity pertaining to\ndistribution of the software without specific, written prior\npermission.\n\nSTICHTING MATHEMATISCH CENTRUM DISCLAIMS ALL WARRANTIES WITH REGARD TO\nTHIS SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND\nFITNESS, IN NO EVENT SHALL STICHTING MATHEMATISCH CENTRUM BE LIABLE\nFOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT\nOF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+            "matcher": "1-hash",
+            "rule_identifier": "python_70.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/python_70.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "python-eef67f72-b878-54d9-159a-1fcf050e571f",
+        "license_expression": "python",
+        "license_expression_spdx": "Python-2.0",
+        "reference_matches": [
+          {
+            "end_line": 17,
+            "from_file": "fa01d7cb0ac23ccef372d9880bda4f6431499232412e2a3027a28a469ca815d3/package/package.json",
+            "license_expression": "python",
+            "license_expression_spdx": "Python-2.0",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "  \"license\": \"Python-2.0\",",
+            "matcher": "2-aho",
+            "rule_identifier": "python_78.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/python_78.RULE",
+            "score": 100,
+            "start_line": 17
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "http://docs.python.org/license.html",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [
+          "Copyright (c) 1991 - 1995, Stichting Mathematisch Centrum Amsterdam, The Netherlands",
+          "Copyright (c) 1995-2001 Corporation for National Research Initiatives",
+          "Copyright (c) Python Software Foundation"
+        ],
+        "ignorable_emails": [],
+        "ignorable_holders": [
+          "Corporation for National Research Initiatives",
+          "Python Software Foundation",
+          "Stichting Mathematisch Centrum Amsterdam, The Netherlands"
+        ],
+        "ignorable_urls": [
+          "http://hdl.handle.net/1895.22/1013",
+          "http://www.pythonlabs.com/logos.html"
+        ],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "python",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/python",
+        "minimum_coverage": 0,
+        "name": "Python Software Foundation License v2",
+        "notes": null,
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/Python-2.0",
+        "other_spdx_license_keys": [],
+        "other_urls": [
+          "http://opensource.org/licenses/PythonSoftFoundation.php",
+          "http://www.gnu.org/licenses/license-list.html#PythonOld",
+          "https://opensource.org/licenses/Python-2.0"
+        ],
+        "owner": "Python Software Foundation (PSF)",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/python.LICENSE",
+        "short_name": "Python License 2.0",
+        "spdx_license_key": "Python-2.0",
+        "spdx_url": "https://spdx.org/licenses/Python-2.0",
+        "standard_notice": null,
+        "text": "PYTHON SOFTWARE FOUNDATION LICENSE VERSION 2\n--------------------------------------------\n\n1. This LICENSE AGREEMENT is between the Python Software Foundation\n(\"PSF\"), and the Individual or Organization (\"Licensee\") accessing and\notherwise using this software (\"Python\") in source or binary form and\nits associated documentation.\n\n2. Subject to the terms and conditions of this License Agreement, PSF hereby\ngrants Licensee a nonexclusive, royalty-free, world-wide license to reproduce,\nanalyze, test, perform and/or display publicly, prepare derivative works,\ndistribute, and otherwise use Python alone or in any derivative version,\nprovided, however, that PSF's License Agreement and PSF's notice of copyright,\ni.e., \"Copyright (c) Python Software Foundation;\nAll Rights Reserved\" are retained in Python alone or in any derivative version\nprepared by Licensee.\n\n3. In the event Licensee prepares a derivative work that is based on\nor incorporates Python or any part thereof, and wants to make\nthe derivative work available to others as provided herein, then\nLicensee hereby agrees to include in any such work a brief summary of\nthe changes made to Python.\n\n4. PSF is making Python available to Licensee on an \"AS IS\"\nbasis.  PSF MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, PSF MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n5. PSF SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON\nFOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS\nA RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON,\nOR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n6. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n7. Nothing in this License Agreement shall be deemed to create any\nrelationship of agency, partnership, or joint venture between PSF and\nLicensee.  This License Agreement does not grant permission to use PSF\ntrademarks or trade name in a trademark sense to endorse or promote\nproducts or services of Licensee, or any third party.\n\n8. By copying, installing or otherwise using Python, Licensee\nagrees to be bound by the terms and conditions of this License\nAgreement.\n\n\nBEOPEN.COM LICENSE AGREEMENT FOR PYTHON 2.0\n-------------------------------------------\n\nBEOPEN PYTHON OPEN SOURCE LICENSE AGREEMENT VERSION 1\n\n1. This LICENSE AGREEMENT is between BeOpen.com (\"BeOpen\"), having an\noffice at 160 Saratoga Avenue, Santa Clara, CA 95051, and the\nIndividual or Organization (\"Licensee\") accessing and otherwise using\nthis software in source or binary form and its associated\ndocumentation (\"the Software\").\n\n2. Subject to the terms and conditions of this BeOpen Python License\nAgreement, BeOpen hereby grants Licensee a non-exclusive,\nroyalty-free, world-wide license to reproduce, analyze, test, perform\nand/or display publicly, prepare derivative works, distribute, and\notherwise use the Software alone or in any derivative version,\nprovided, however, that the BeOpen Python License is retained in the\nSoftware, alone or in any derivative version prepared by Licensee.\n\n3. BeOpen is making the Software available to Licensee on an \"AS IS\"\nbasis.  BEOPEN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, BEOPEN MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE SOFTWARE WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n4. BEOPEN SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF THE\nSOFTWARE FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS\nAS A RESULT OF USING, MODIFYING OR DISTRIBUTING THE SOFTWARE, OR ANY\nDERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n5. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n6. This License Agreement shall be governed by and interpreted in all\nrespects by the law of the State of California, excluding conflict of\nlaw provisions.  Nothing in this License Agreement shall be deemed to\ncreate any relationship of agency, partnership, or joint venture\nbetween BeOpen and Licensee.  This License Agreement does not grant\npermission to use BeOpen trademarks or trade names in a trademark\nsense to endorse or promote products or services of Licensee, or any\nthird party.  As an exception, the \"BeOpen Python\" logos available at\nhttp://www.pythonlabs.com/logos.html may be used according to the\npermissions granted on that web page.\n\n7. By copying, installing or otherwise using the software, Licensee\nagrees to be bound by the terms and conditions of this License\nAgreement.\n\n\nCNRI LICENSE AGREEMENT FOR PYTHON 1.6.1\n---------------------------------------\n\n1. This LICENSE AGREEMENT is between the Corporation for National\nResearch Initiatives, having an office at 1895 Preston White Drive,\nReston, VA 20191 (\"CNRI\"), and the Individual or Organization\n(\"Licensee\") accessing and otherwise using Python 1.6.1 software in\nsource or binary form and its associated documentation.\n\n2. Subject to the terms and conditions of this License Agreement, CNRI\nhereby grants Licensee a nonexclusive, royalty-free, world-wide\nlicense to reproduce, analyze, test, perform and/or display publicly,\nprepare derivative works, distribute, and otherwise use Python 1.6.1\nalone or in any derivative version, provided, however, that CNRI's\nLicense Agreement and CNRI's notice of copyright, i.e., \"Copyright (c)\n1995-2001 Corporation for National Research Initiatives; All Rights\nReserved\" are retained in Python 1.6.1 alone or in any derivative\nversion prepared by Licensee.  Alternately, in lieu of CNRI's License\nAgreement, Licensee may substitute the following text (omitting the\nquotes): \"Python 1.6.1 is made available subject to the terms and\nconditions in CNRI's License Agreement.  This Agreement together with\nPython 1.6.1 may be located on the Internet using the following\nunique, persistent identifier (known as a handle): 1895.22/1013.  This\nAgreement may also be obtained from a proxy server on the Internet\nusing the following URL: http://hdl.handle.net/1895.22/1013\".\n\n3. In the event Licensee prepares a derivative work that is based on\nor incorporates Python 1.6.1 or any part thereof, and wants to make\nthe derivative work available to others as provided herein, then\nLicensee hereby agrees to include in any such work a brief summary of\nthe changes made to Python 1.6.1.\n\n4. CNRI is making Python 1.6.1 available to Licensee on an \"AS IS\"\nbasis.  CNRI MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, CNRI MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON 1.6.1 WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n5. CNRI SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON\n1.6.1 FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS\nA RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON 1.6.1,\nOR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n6. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n7. This License Agreement shall be governed by the federal\nintellectual property law of the United States, including without\nlimitation the federal copyright law, and, to the extent such\nU.S. federal law does not apply, by the law of the Commonwealth of\nVirginia, excluding Virginia's conflict of law provisions.\nNotwithstanding the foregoing, with regard to derivative works based\non Python 1.6.1 that incorporate non-separable material that was\npreviously distributed under the GNU General Public License (GPL), the\nlaw of the Commonwealth of Virginia shall govern this License\nAgreement only as to issues arising under or with respect to\nParagraphs 4, 5, and 7 of this License Agreement.  Nothing in this\nLicense Agreement shall be deemed to create any relationship of\nagency, partnership, or joint venture between CNRI and Licensee.  This\nLicense Agreement does not grant permission to use CNRI trademarks or\ntrade name in a trademark sense to endorse or promote products or\nservices of Licensee, or any third party.\n\n8. By clicking on the \"ACCEPT\" button where indicated, or by copying,\ninstalling or otherwise using Python 1.6.1, Licensee agrees to be\nbound by the terms and conditions of this License Agreement.\n\n        ACCEPT\n\n\nCWI LICENSE AGREEMENT FOR PYTHON 0.9.0 THROUGH 1.2\n--------------------------------------------------\n\nCopyright (c) 1991 - 1995, Stichting Mathematisch Centrum Amsterdam,\nThe Netherlands.  All rights reserved.\n\nPermission to use, copy, modify, and distribute this software and its\ndocumentation for any purpose and without fee is hereby granted,\nprovided that the above copyright notice appear in all copies and that\nboth that copyright notice and this permission notice appear in\nsupporting documentation, and that the name of Stichting Mathematisch\nCentrum or CWI not be used in advertising or publicity pertaining to\ndistribution of the software without specific, written prior\npermission.\n\nSTICHTING MATHEMATISCH CENTRUM DISCLAIMS ALL WARRANTIES WITH REGARD TO\nTHIS SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND\nFITNESS, IN NO EVENT SHALL STICHTING MATHEMATISCH CENTRUM BE LIABLE\nFOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT\nOF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+        "text_urls": [
+          "http://spdx.org/licenses/Python-2.0"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "python_70.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [
+          "Copyright (c) 1991 - 1995, Stichting Mathematisch Centrum Amsterdam, The Netherlands",
+          "Copyright (c) 1995-2001 Corporation for National Research Initiatives",
+          "Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020 Python Software Foundation"
+        ],
+        "ignorable_emails": [],
+        "ignorable_holders": [
+          "Corporation for National Research Initiatives",
+          "Python Software Foundation",
+          "Stichting Mathematisch Centrum Amsterdam, The Netherlands"
+        ],
+        "ignorable_urls": [
+          "http://hdl.handle.net/1895.22/1013",
+          "http://www.cnri.reston.va.us/",
+          "http://www.cwi.nl/",
+          "http://www.opensource.org/",
+          "http://www.pythonlabs.com/logos.html",
+          "https://www.python.org/psf"
+        ],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 1965,
+        "license_expression": "python",
+        "minimum_coverage": 0,
+        "notes": "from 2.7.18",
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/python_70.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "A. HISTORY OF THE SOFTWARE\n==========================\n\nPython was created in the early 1990s by Guido van Rossum at Stichting\nMathematisch Centrum (CWI, see http://www.cwi.nl) in the Netherlands\nas a successor of a language called ABC.  Guido remains Python's\nprincipal author, although it includes many contributions from others.\n\nIn 1995, Guido continued his work on Python at the Corporation for\nNational Research Initiatives (CNRI, see http://www.cnri.reston.va.us)\nin Reston, Virginia where he released several versions of the\nsoftware.\n\nIn May 2000, Guido and the Python core development team moved to\nBeOpen.com to form the BeOpen PythonLabs team.  In October of the same\nyear, the PythonLabs team moved to Digital Creations, which became\nZope Corporation.  In 2001, the Python Software Foundation (PSF, see\nhttps://www.python.org/psf/) was formed, a non-profit organization\ncreated specifically to own Python-related Intellectual Property.\nZope Corporation was a sponsoring member of the PSF.\n\nAll Python releases are Open Source (see http://www.opensource.org for\nthe Open Source Definition).  Historically, most, but not all, Python\nreleases have also been GPL-compatible; the table below summarizes\nthe various releases.\n\n    Release         Derived     Year        Owner       GPL-\n                    from                                compatible? (1)\n\n    0.9.0 thru 1.2              1991-1995   CWI         yes\n    1.3 thru 1.5.2  1.2         1995-1999   CNRI        yes\n    1.6             1.5.2       2000        CNRI        no\n    2.0             1.6         2000        BeOpen.com  no\n    1.6.1           1.6         2001        CNRI        yes (2)\n    2.1             2.0+1.6.1   2001        PSF         no\n    2.0.1           2.0+1.6.1   2001        PSF         yes\n    2.1.1           2.1+2.0.1   2001        PSF         yes\n    2.1.2           2.1.1       2002        PSF         yes\n    2.1.3           2.1.2       2002        PSF         yes\n    2.2 and above   2.1.1       2001-now    PSF         yes\n\nFootnotes:\n\n(1) GPL-compatible doesn't mean that we're distributing Python under\n    the GPL.  All Python licenses, unlike the GPL, let you distribute\n    a modified version without making your changes open source.  The\n    GPL-compatible licenses make it possible to combine Python with\n    other software that is released under the GPL; the others don't.\n\n(2) According to Richard Stallman, 1.6.1 is not GPL-compatible,\n    because its license has a choice of law clause.  According to\n    CNRI, however, Stallman's lawyer has told CNRI's lawyer that 1.6.1\n    is \"not incompatible\" with the GPL.\n\nThanks to the many outside volunteers who have worked under Guido's\ndirection to make these releases possible.\n\n\nB. TERMS AND CONDITIONS FOR ACCESSING OR OTHERWISE USING PYTHON\n===============================================================\n\n{{PYTHON SOFTWARE FOUNDATION LICENSE VERSION 2}}\n--------------------------------------------\n\n1. This LICENSE AGREEMENT is between the Python Software Foundation\n(\"PSF\"), and the Individual or Organization (\"Licensee\") accessing and\notherwise using this software (\"Python\") in source or binary form and\nits associated documentation.\n\n2. Subject to the terms and conditions of this License Agreement, PSF hereby\ngrants Licensee a nonexclusive, royalty-free, world-wide license to reproduce,\nanalyze, test, perform and/or display publicly, prepare derivative works,\ndistribute, and otherwise use Python alone or in any derivative version,\nprovided, however, that PSF's License Agreement and PSF's notice of copyright,\ni.e., \"Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010,\n2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020 Python Software Foundation;\nAll Rights Reserved\" are retained in Python alone or in any derivative version\nprepared by Licensee.\n\n3. In the event Licensee prepares a derivative work that is based on\nor incorporates Python or any part thereof, and wants to make\nthe derivative work available to others as provided herein, then\nLicensee hereby agrees to include in any such work a brief summary of\nthe changes made to Python.\n\n4. PSF is making Python available to Licensee on an \"AS IS\"\nbasis.  PSF MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, PSF MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n5. PSF SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON\nFOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS\nA RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON,\nOR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n6. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n7. Nothing in this License Agreement shall be deemed to create any\nrelationship of agency, partnership, or joint venture between PSF and\nLicensee.  This License Agreement does not grant permission to use PSF\ntrademarks or trade name in a trademark sense to endorse or promote\nproducts or services of Licensee, or any third party.\n\n8. By copying, installing or otherwise using Python, Licensee\nagrees to be bound by the terms and conditions of this License\nAgreement.\n\n\nBEOPEN.COM {{LICENSE AGREEMENT FOR PYTHON 2.0}}\n-------------------------------------------\n\nBEOPEN {{PYTHON OPEN SOURCE LICENSE AGREEMENT VERSION 1}}\n\n1. This LICENSE AGREEMENT is between BeOpen.com (\"BeOpen\"), having an\noffice at 160 Saratoga Avenue, Santa Clara, CA 95051, and the\nIndividual or Organization (\"Licensee\") accessing and otherwise using\nthis software in source or binary form and its associated\ndocumentation (\"the Software\").\n\n2. Subject to the terms and conditions of this BeOpen Python License\nAgreement, BeOpen hereby grants Licensee a non-exclusive,\nroyalty-free, world-wide license to reproduce, analyze, test, perform\nand/or display publicly, prepare derivative works, distribute, and\notherwise use the Software alone or in any derivative version,\nprovided, however, that the BeOpen Python License is retained in the\nSoftware, alone or in any derivative version prepared by Licensee.\n\n3. BeOpen is making the Software available to Licensee on an \"AS IS\"\nbasis.  BEOPEN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, BEOPEN MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE SOFTWARE WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n4. BEOPEN SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF THE\nSOFTWARE FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS\nAS A RESULT OF USING, MODIFYING OR DISTRIBUTING THE SOFTWARE, OR ANY\nDERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n5. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n6. This License Agreement shall be governed by and interpreted in all\nrespects by the law of the State of California, excluding conflict of\nlaw provisions.  Nothing in this License Agreement shall be deemed to\ncreate any relationship of agency, partnership, or joint venture\nbetween BeOpen and Licensee.  This License Agreement does not grant\npermission to use BeOpen trademarks or trade names in a trademark\nsense to endorse or promote products or services of Licensee, or any\nthird party.  As an exception, the \"BeOpen Python\" logos available at\nhttp://www.pythonlabs.com/logos.html may be used according to the\npermissions granted on that web page.\n\n7. By copying, installing or otherwise using the software, Licensee\nagrees to be bound by the terms and conditions of this License\nAgreement.\n\n\nCNRI LICENSE AGREEMENT FOR PYTHON 1.6.1\n---------------------------------------\n\n1. This LICENSE AGREEMENT is between the Corporation for National\nResearch Initiatives, having an office at 1895 Preston White Drive,\nReston, VA 20191 (\"CNRI\"), and the Individual or Organization\n(\"Licensee\") accessing and otherwise using Python 1.6.1 software in\nsource or binary form and its associated documentation.\n\n2. Subject to the terms and conditions of this License Agreement, CNRI\nhereby grants Licensee a nonexclusive, royalty-free, world-wide\nlicense to reproduce, analyze, test, perform and/or display publicly,\nprepare derivative works, distribute, and otherwise use Python 1.6.1\nalone or in any derivative version, provided, however, that CNRI's\nLicense Agreement and CNRI's notice of copyright, i.e., \"Copyright (c)\n1995-2001 Corporation for National Research Initiatives; All Rights\nReserved\" are retained in Python 1.6.1 alone or in any derivative\nversion prepared by Licensee.  Alternately, in lieu of CNRI's License\nAgreement, Licensee may substitute the following text (omitting the\nquotes): \"Python 1.6.1 is made available subject to the terms and\nconditions in CNRI's License Agreement.  This Agreement together with\nPython 1.6.1 may be located on the Internet using the following\nunique, persistent identifier (known as a handle): 1895.22/1013.  This\nAgreement may also be obtained from a proxy server on the Internet\nusing the following URL: http://hdl.handle.net/1895.22/1013\".\n\n3. In the event Licensee prepares a derivative work that is based on\nor incorporates Python 1.6.1 or any part thereof, and wants to make\nthe derivative work available to others as provided herein, then\nLicensee hereby agrees to include in any such work a brief summary of\nthe changes made to Python 1.6.1.\n\n4. CNRI is making Python 1.6.1 available to Licensee on an \"AS IS\"\nbasis.  CNRI MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR\nIMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, CNRI MAKES NO AND\nDISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS\nFOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON 1.6.1 WILL NOT\nINFRINGE ANY THIRD PARTY RIGHTS.\n\n5. CNRI SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON\n1.6.1 FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS\nA RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON 1.6.1,\nOR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.\n\n6. This License Agreement will automatically terminate upon a material\nbreach of its terms and conditions.\n\n7. This License Agreement shall be governed by the federal\nintellectual property law of the United States, including without\nlimitation the federal copyright law, and, to the extent such\nU.S. federal law does not apply, by the law of the Commonwealth of\nVirginia, excluding Virginia's conflict of law provisions.\nNotwithstanding the foregoing, with regard to derivative works based\non Python 1.6.1 that incorporate non-separable material that was\npreviously distributed under the GNU General Public License (GPL), the\nlaw of the Commonwealth of Virginia shall govern this License\nAgreement only as to issues arising under or with respect to\nParagraphs 4, 5, and 7 of this License Agreement.  Nothing in this\nLicense Agreement shall be deemed to create any relationship of\nagency, partnership, or joint venture between CNRI and Licensee.  This\nLicense Agreement does not grant permission to use CNRI trademarks or\ntrade name in a trademark sense to endorse or promote products or\nservices of Licensee, or any third party.\n\n8. By clicking on the \"ACCEPT\" button where indicated, or by copying,\ninstalling or otherwise using Python 1.6.1, Licensee agrees to be\nbound by the terms and conditions of this License Agreement.\n\n        ACCEPT\n\n\nCWI LICENSE AGREEMENT FOR PYTHON 0.9.0 THROUGH 1.2\n--------------------------------------------------\n\nCopyright (c) 1991 - 1995, Stichting Mathematisch Centrum Amsterdam,\nThe Netherlands.  All rights reserved.\n\nPermission to use, copy, modify, and distribute this software and its\ndocumentation for any purpose and without fee is hereby granted,\nprovided that the above copyright notice appear in all copies and that\nboth that copyright notice and this permission notice appear in\nsupporting documentation, and that the name of Stichting Mathematisch\nCentrum or CWI not be used in advertising or publicity pertaining to\ndistribution of the software without specific, written prior\npermission.\n\nSTICHTING MATHEMATISCH CENTRUM DISCLAIMS ALL WARRANTIES WITH REGARD TO\nTHIS SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND\nFITNESS, IN NO EVENT SHALL STICHTING MATHEMATISCH CENTRUM BE LIABLE\nFOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT\nOF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."
+      },
+      {
+        "identifier": "python_78.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": true,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "python",
+        "minimum_coverage": 100,
+        "notes": "Rule based on an SPDX license identifier and name",
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/python_78.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "license: {{Python-2.0}}"
+      },
+      {
+        "identifier": "python_required_phrase_1.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "python",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 16,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/python_required_phrase_1.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "python 2 0"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/argparse/2.0.1",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "python",
+        "declared_license_expression_spdx": "Python-2.0",
+        "description": "CLI arguments parser. Native port of python's argparse.",
+        "download_url": "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz",
+        "extra_data": {},
+        "extracted_license_statement": "- Python-2.0\n",
+        "holder": null,
+        "homepage_url": null,
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "argparse",
+          "args",
+          "cli",
+          "option",
+          "parser"
+        ],
+        "license_detections": [
+          {
+            "identifier": "python-487591fa-c245-3fa2-d521-866f05382201",
+            "license_expression": "python",
+            "license_expression_spdx": "Python-2.0",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "fa01d7cb0ac23ccef372d9880bda4f6431499232412e2a3027a28a469ca815d3/package/package.json",
+                "license_expression": "python",
+                "license_expression_spdx": "Python-2.0",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "Python-2.0",
+                "matcher": "1-hash",
+                "rule_identifier": "python_required_phrase_1.RULE",
+                "rule_relevance": 16,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/python_required_phrase_1.RULE",
+                "score": 16,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "argparse",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/argparse@2.0.1",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/argparse",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "https://github.com/nodeca/argparse",
+        "version": "2.0.1"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

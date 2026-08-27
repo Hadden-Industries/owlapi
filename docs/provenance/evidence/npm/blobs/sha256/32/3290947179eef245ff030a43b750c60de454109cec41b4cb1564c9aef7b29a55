@@ -1,0 +1,112 @@
+{
+  "artifactId": "3d7fe7b5822f2124583793906e27bf0d345a9dd40621ecb6d041189017f0aa79",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6839,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "33cbd6b571ed8dd06df7eafcd3c011d1b49e4a463a440f39759e5b07f4c26a13",
+        "size": 330,
+        "type": "FILE"
+      },
+      {
+        "path": "package/data/browser-upper.json",
+        "sha256": "7fa481e0210bc42a28f96417902dcac5bdcd33476343c34b5994a362e6b3fb18",
+        "size": 19908,
+        "type": "FILE"
+      },
+      {
+        "path": "package/data/builtin-lower.json",
+        "sha256": "10a1d28c90e86d70e31fd9d21c60adcb7f134959bc64a64254fa3d9952be16b9",
+        "size": 203,
+        "type": "FILE"
+      },
+      {
+        "path": "package/data/builtin-upper.json",
+        "sha256": "49de1ac44975edbb209431cb75f2174a5507e6714985d40cebc822d5ae1beaed",
+        "size": 718,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "c06a17222ad81933dbae3768fe59cd6737ebdcfa88b84097f3a8e659e28d2c9f",
+        "size": 814,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 23079,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/helper-globals",
+      "repository": {
+        "directory": "packages/babel-helper-globals",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "description": "A collection of JavaScript globals for Babel internal usage",
+      "devDependencies": {
+        "globals": "^16.1.0"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "exports": {
+        "./data/browser-upper.json": "./data/browser-upper.json",
+        "./data/builtin-lower.json": "./data/builtin-lower.json",
+        "./data/builtin-upper.json": "./data/builtin-upper.json",
+        "./package.json": "./package.json"
+      },
+      "keywords": [
+        "babel",
+        "globals"
+      ],
+      "license": "MIT",
+      "name": "@babel/helper-globals",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-helper-globals",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 6839,
+      "sha256": "94fb962c489aae2c4e5581f1494721083dc76dddd7c703314dd4d7ff965d2a3f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

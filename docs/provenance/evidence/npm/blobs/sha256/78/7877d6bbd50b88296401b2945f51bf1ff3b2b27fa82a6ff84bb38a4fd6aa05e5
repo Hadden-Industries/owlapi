@@ -1,0 +1,142 @@
+{
+  "artifactId": "9f649c97668150ccdef8465ba5769a6917a162cd476d8a1630776258d9a699d6",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4317,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.js",
+        "sha256": "a958f56f7d15e97092bcb7cad7acc180245f212bc5ef12c6565d4679dc7fd383",
+        "size": 5772,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0b0cf0bf62bd0cc71da2128e3269e63edd566feffdd501aa3692acd6db93c3c9",
+        "size": 1014,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "c51ea359cdb90d1bf80558cc49ac41f8ded7a4a22c8eded3eb86bca4ccf7e4b4",
+        "size": 2745,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      },
+      {
+        "blob": {
+          "bytes": 2745,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c5/c51ea359cdb90d1bf80558cc49ac41f8ded7a4a22c8eded3eb86bca4ccf7e4b4",
+          "sha256": "c51ea359cdb90d1bf80558cc49ac41f8ded7a4a22c8eded3eb86bca4ccf7e4b4"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "c51ea359cdb90d1bf80558cc49ac41f8ded7a4a22c8eded3eb86bca4ccf7e4b4",
+        "size": 2745
+      }
+    ],
+    "expandedBytes": 10648,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "wrap-ansi",
+      "repository": "chalk/wrap-ansi",
+      "version": "7.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "dependencies": {
+        "ansi-styles": "^4.0.0",
+        "string-width": "^4.1.0",
+        "strip-ansi": "^6.0.0"
+      },
+      "description": "Wordwrap a string with ANSI escape codes",
+      "devDependencies": {
+        "ava": "^2.1.0",
+        "chalk": "^4.0.0",
+        "coveralls": "^3.0.3",
+        "has-ansi": "^4.0.0",
+        "nyc": "^15.0.1",
+        "xo": "^0.29.1"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "index.js"
+      ],
+      "funding": "https://github.com/chalk/wrap-ansi?sponsor=1",
+      "keywords": [
+        "wrap",
+        "break",
+        "wordwrap",
+        "wordbreak",
+        "linewrap",
+        "ansi",
+        "styles",
+        "color",
+        "colour",
+        "colors",
+        "terminal",
+        "console",
+        "cli",
+        "string",
+        "tty",
+        "escape",
+        "formatting",
+        "rgb",
+        "256",
+        "shell",
+        "xterm",
+        "log",
+        "logging",
+        "command-line",
+        "text"
+      ],
+      "license": "MIT",
+      "name": "wrap-ansi",
+      "repository": "chalk/wrap-ansi",
+      "scripts": {
+        "test": "xo && nyc ava"
+      },
+      "version": "7.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 4317,
+      "sha256": "0795b3510bd2e938f6a415396de3d4f58fd76ef1f8249a07196444eaf85ca42f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

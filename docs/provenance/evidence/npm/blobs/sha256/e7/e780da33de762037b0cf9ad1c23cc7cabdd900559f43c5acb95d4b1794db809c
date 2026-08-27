@@ -1,0 +1,136 @@
+{
+  "artifactId": "59e8f1de06b0e015d6763e83319666304ff109754fdab66eb1f68f294de71592",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5212,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "1c66b5311fc6328ab70616d2cf8e20a8e0a787f534831cf8a311b20098b617a5",
+        "size": 1156,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "7e19e5bd89f3d3c3bb2338e4a5d89246210df701b52edbc96a1be0c16ab673db",
+        "size": 3041,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "0d22317616b3258c3678bf438fa81aef007dc0fade11a743eb60844817204c84",
+        "size": 4243,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "c2bd73aad9f2d8c2160e1fe0765f1e726cadaf88dd1523e4df0728267da6ca19",
+        "size": 1907,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/retry.js",
+        "sha256": "06ac775effbcd097a76a1c17a4b1e5dbe9753f0f7c5d4620f331709c3367f665",
+        "size": 2440,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "eb1b40048ddbbd28e4bb0f663b10054ce27733ff0d65cfa4e6698ad2633d2ade",
+        "size": 1099,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1156,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/1c/1c66b5311fc6328ab70616d2cf8e20a8e0a787f534831cf8a311b20098b617a5",
+          "sha256": "1c66b5311fc6328ab70616d2cf8e20a8e0a787f534831cf8a311b20098b617a5"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "1c66b5311fc6328ab70616d2cf8e20a8e0a787f534831cf8a311b20098b617a5",
+        "size": 1156
+      },
+      {
+        "blob": {
+          "bytes": 3041,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/7e/7e19e5bd89f3d3c3bb2338e4a5d89246210df701b52edbc96a1be0c16ab673db",
+          "sha256": "7e19e5bd89f3d3c3bb2338e4a5d89246210df701b52edbc96a1be0c16ab673db"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "7e19e5bd89f3d3c3bb2338e4a5d89246210df701b52edbc96a1be0c16ab673db",
+        "size": 3041
+      }
+    ],
+    "expandedBytes": 13886,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@gar/promise-retry",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/wraithgar/node-promise-retry.git"
+      },
+      "version": "1.0.3"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/wraithgar/node-promise-retry/issues/"
+      },
+      "description": "Retries a function that returns a promise, leveraging the power of the retry module.",
+      "engines": {
+        "node": "^20.17.0 || >=22.9.0"
+      },
+      "exports": {
+        ".": [
+          {
+            "default": "./lib/index.js",
+            "types": "./lib/index.d.ts"
+          },
+          "./lib/index.js"
+        ]
+      },
+      "files": [
+        "lib"
+      ],
+      "keywords": [
+        "retry",
+        "promise",
+        "backoff",
+        "repeat",
+        "replay"
+      ],
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@gar/promise-retry",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/wraithgar/node-promise-retry.git"
+      },
+      "scripts": {
+        "lint": "npx standard",
+        "lint:fix": "npx standard --fix",
+        "postlint": "npm run typelint",
+        "posttest": "npm run lint",
+        "test": "node --test --experimental-test-coverage --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100",
+        "typelint": "npx -p typescript tsc ./lib/index.d.ts"
+      },
+      "type": "commonjs",
+      "version": "1.0.3"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 5212,
+      "sha256": "bcef4048202c052a07338626509ee89fdd94cb8c972fddb1c27c41f3929f7eee"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

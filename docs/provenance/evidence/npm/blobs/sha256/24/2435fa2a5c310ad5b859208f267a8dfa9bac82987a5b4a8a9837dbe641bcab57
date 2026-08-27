@@ -1,0 +1,145 @@
+{
+  "artifactId": "64e35c8bf597246d112b311ddb85c350fcfa1fe84a9c9939db549332379b7e98",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2663,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "73b5283588baa142c5baaef5f56d3e8fdea7a30b214e8c5737e87640f882453a",
+        "size": 1087,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "bb36a84b32da3f9cc24ba6e08713013e85afdc31f7d98ed051321356fe55d4f3",
+        "size": 3469,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "68be041dd0379d295d89550d1f6f2e8c29645bdd92d14b427fe2e140b3c8f2f8",
+        "size": 441,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8031afcd87f448d75ba8a5dd2cde9c68f982a94f406ebae8e5fb7cf6dfdeede2",
+        "size": 1220,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1087,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/73/73b5283588baa142c5baaef5f56d3e8fdea7a30b214e8c5737e87640f882453a",
+          "sha256": "73b5283588baa142c5baaef5f56d3e8fdea7a30b214e8c5737e87640f882453a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "73b5283588baa142c5baaef5f56d3e8fdea7a30b214e8c5737e87640f882453a",
+        "size": 1087
+      },
+      {
+        "blob": {
+          "bytes": 3469,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/bb/bb36a84b32da3f9cc24ba6e08713013e85afdc31f7d98ed051321356fe55d4f3",
+          "sha256": "bb36a84b32da3f9cc24ba6e08713013e85afdc31f7d98ed051321356fe55d4f3"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "bb36a84b32da3f9cc24ba6e08713013e85afdc31f7d98ed051321356fe55d4f3",
+        "size": 3469
+      }
+    ],
+    "expandedBytes": 6217,
+    "packageIdentity": {
+      "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+      "homepage": "https://github.com/jonschlinkert/is-extglob",
+      "license": "MIT",
+      "name": "is-extglob",
+      "repository": "jonschlinkert/is-extglob",
+      "version": "2.1.1"
+    },
+    "packageMetadata": {
+      "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+      "bugs": {
+        "url": "https://github.com/jonschlinkert/is-extglob/issues"
+      },
+      "description": "Returns true if a string has an extglob.",
+      "devDependencies": {
+        "gulp-format-md": "^0.1.10",
+        "mocha": "^3.0.2"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      },
+      "files": [
+        "index.js"
+      ],
+      "homepage": "https://github.com/jonschlinkert/is-extglob",
+      "keywords": [
+        "bash",
+        "braces",
+        "check",
+        "exec",
+        "expression",
+        "extglob",
+        "glob",
+        "globbing",
+        "globstar",
+        "is",
+        "match",
+        "matches",
+        "pattern",
+        "regex",
+        "regular",
+        "string",
+        "test"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "is-extglob",
+      "repository": "jonschlinkert/is-extglob",
+      "scripts": {
+        "test": "mocha"
+      },
+      "verb": {
+        "layout": "default",
+        "lint": {
+          "reflinks": true
+        },
+        "plugins": [
+          "gulp-format-md"
+        ],
+        "reflinks": [
+          "verb",
+          "verb-generate-readme"
+        ],
+        "related": {
+          "list": [
+            "has-glob",
+            "is-glob",
+            "micromatch"
+          ]
+        },
+        "tasks": [
+          "readme"
+        ],
+        "toc": false
+      },
+      "version": "2.1.1"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 2663,
+      "sha256": "8c5d4286146ad62fc1096981700ce1c22a167708926fca01f9ca74f9bb50bc19"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

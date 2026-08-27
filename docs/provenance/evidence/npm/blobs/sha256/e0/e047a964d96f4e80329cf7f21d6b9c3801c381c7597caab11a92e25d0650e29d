@@ -1,0 +1,149 @@
+{
+  "artifactId": "994bc2518eac3ad26ed9182201d4382b3f2e3b165afbb8a55e3374a49b07eec8",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9408,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "89222921f59a9ada903d6d9a61b47c49117e80643cc0dd99bea00b4345089ea7",
+        "size": 4123,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "b9eb082c39fe245e38793699074c394c43a722c51fce031c3c165cb92a31035c",
+        "size": 1054,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "22e826aa1a63821df6e369012401a79ee5b0952cc0320fcede801d6fdf50ea67",
+        "size": 613,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Func.js",
+        "sha256": "0243e2303a7615f008eb7482d66f47d31158480c77b993d5e8a0b0a24241bcb0",
+        "size": 1654,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/List.js",
+        "sha256": "a38ae5bbae6a50732f12d574b9251a20ce61d1a5bb7ea793e33d1cdb8ab4d260",
+        "size": 15544,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Num.js",
+        "sha256": "4694568f49a6b57eafa5fe57d6e4e1ae562251cfdd1022f2f5cd028eadeb3430",
+        "size": 2469,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Obj.js",
+        "sha256": "31395047a5e213032ff2064bcba87ad1e7fdd04321a716b1c42233193dd5ac16",
+        "size": 3201,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Str.js",
+        "sha256": "8da922782784d9e73a02a15ddd2464adf8081ab8c0fcc9a1aca4b113c44ad802",
+        "size": 2104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "3a62c2d3956f5441b9a9675c85e6f57efd5473048323b9a6a653e7c8a7fe1bb9",
+        "size": 4932,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d943e3b5a7189692268bf64e3a068249696985a9c8728397fc8786b59a198b53",
+        "size": 1047,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1054,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b9/b9eb082c39fe245e38793699074c394c43a722c51fce031c3c165cb92a31035c",
+          "sha256": "b9eb082c39fe245e38793699074c394c43a722c51fce031c3c165cb92a31035c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "b9eb082c39fe245e38793699074c394c43a722c51fce031c3c165cb92a31035c",
+        "size": 1054
+      }
+    ],
+    "expandedBytes": 36741,
+    "packageIdentity": {
+      "author": "George Zahariev <z@georgezahariev.com>",
+      "homepage": "http://preludels.com",
+      "license": "MIT",
+      "name": "prelude-ls",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/gkz/prelude-ls.git"
+      },
+      "version": "1.2.1"
+    },
+    "packageMetadata": {
+      "author": "George Zahariev <z@georgezahariev.com>",
+      "bugs": "https://github.com/gkz/prelude-ls/issues",
+      "description": "prelude.ls is a functionally oriented utility library. It is powerful and flexible. Almost all of its functions are curried. It is written in, and is the recommended base library for, LiveScript.",
+      "devDependencies": {
+        "browserify": "^16.5.1",
+        "livescript": "^1.6.0",
+        "mocha": "^7.1.1",
+        "sinon": "~8.0.1",
+        "uglify-js": "^3.8.1"
+      },
+      "engines": {
+        "node": ">= 0.8.0"
+      },
+      "files": [
+        "lib/",
+        "README.md",
+        "LICENSE"
+      ],
+      "homepage": "http://preludels.com",
+      "keywords": [
+        "prelude",
+        "livescript",
+        "utility",
+        "ls",
+        "coffeescript",
+        "javascript",
+        "library",
+        "functional",
+        "array",
+        "list",
+        "object",
+        "string"
+      ],
+      "license": "MIT",
+      "main": "lib/",
+      "name": "prelude-ls",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/gkz/prelude-ls.git"
+      },
+      "scripts": {
+        "test": "make test"
+      },
+      "version": "1.2.1"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 9408,
+      "sha256": "14e8fc397f1f852ffda5bed29d012605add8866feff1790b388ad8f7abb8d291"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

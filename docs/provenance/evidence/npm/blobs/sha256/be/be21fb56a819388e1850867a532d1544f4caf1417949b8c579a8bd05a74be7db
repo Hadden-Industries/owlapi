@@ -1,0 +1,193 @@
+{
+  "artifactId": "cf2138ebc6be1764c5647df98609ad4c9fce11c165fab002e25060c57b4fe608",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 67770,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+        "size": 1076,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "71bc9106276d4da0dcf03fa870e9557b8f20e9dbd66b4957d51107a3fd3b5aad",
+        "size": 83,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi.cjs.js",
+        "sha256": "95ce5fb12cb947b88b7cd4bac8cf26f70922c36a2fa429d8df345ca4fedef81f",
+        "size": 43125,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi.cjs.min.d.ts",
+        "sha256": "e96bea5084eb4551db33bef06b1fb86e0dddc03905eb3940311b15b9f8385e09",
+        "size": 21740,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi.cjs.min.js",
+        "sha256": "901e25ee1de5067ea2476f08a1e77317db442435c9a0044f382ea5f19055c1c1",
+        "size": 21319,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi.d.mts",
+        "sha256": "e96bea5084eb4551db33bef06b1fb86e0dddc03905eb3940311b15b9f8385e09",
+        "size": 21740,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi.d.ts",
+        "sha256": "f58fd4f3bdc560cde4841e56865139f79f0a5cdd6478a44d0b6d46d3886c8a12",
+        "size": 21769,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi.esm-bundler.js",
+        "sha256": "a037b13982502a93297d8da1d63d34c25e5d5ea7f2d29a88f3c49c44e749b948",
+        "size": 52702,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi.iife.d.ts",
+        "sha256": "e9438bbc015428314b5b69a31ca862098fec7aa3f0e3926286cdb0779813b1d3",
+        "size": 14650,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi.iife.js",
+        "sha256": "5995f463cf776b7628facdd638f87facbba2c90427f747b65397ed7c8a866c96",
+        "size": 61228,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi.js",
+        "sha256": "955f52c5a7f268ea6813e56d19918bd4ec747ec4b35853794c266230ea6a6d60",
+        "size": 61504,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi.min.d.mts",
+        "sha256": "e96bea5084eb4551db33bef06b1fb86e0dddc03905eb3940311b15b9f8385e09",
+        "size": 21740,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi.min.js",
+        "sha256": "86ea1e5d3d359de0436506174bc70835794659c804168657bf8305cfb0d14701",
+        "size": 25989,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi.min.mjs",
+        "sha256": "98e6c6053bc307105380ed4455c65369b80669cdf850f51a5f95cf8c66fb14f0",
+        "size": 21114,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/emnapi.mjs",
+        "sha256": "e419e735428d1373455c5bd0509d11be4e4e8bd8254d1014d750962bc748b9ea",
+        "size": 42327,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "c406ece13dc7dcd5aec8b02c2d3d11c87acbfb01dee17f30483bec071c20a0c5",
+        "size": 196,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d25f8a2410b0e8e0af1808389a2e108f4350b20735ae3ad63424229143fac68e",
+        "size": 1187,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1076,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/20/2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+          "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+        "size": 1076
+      }
+    ],
+    "expandedBytes": 433489,
+    "packageIdentity": {
+      "author": "toyobayashi",
+      "homepage": "https://github.com/toyobayashi/emnapi#readme",
+      "license": "MIT",
+      "name": "@emnapi/runtime",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/toyobayashi/emnapi.git"
+      },
+      "version": "1.10.0"
+    },
+    "packageMetadata": {
+      "author": "toyobayashi",
+      "bugs": {
+        "url": "https://github.com/toyobayashi/emnapi/issues"
+      },
+      "dependencies": {
+        "tslib": "^2.4.0"
+      },
+      "description": "emnapi runtime",
+      "exports": {
+        ".": {
+          "default": "./index.js",
+          "import": "./dist/emnapi.mjs",
+          "module": "./dist/emnapi.esm-bundler.js",
+          "types": {
+            "default": "./dist/emnapi.d.ts",
+            "import": "./dist/emnapi.d.mts",
+            "module": "./dist/emnapi.d.ts"
+          }
+        },
+        "./dist/emnapi.cjs.min": {
+          "default": "./dist/emnapi.cjs.min.js",
+          "types": "./dist/emnapi.d.ts"
+        },
+        "./dist/emnapi.min.mjs": {
+          "default": "./dist/emnapi.min.mjs",
+          "types": "./dist/emnapi.d.mts"
+        }
+      },
+      "homepage": "https://github.com/toyobayashi/emnapi#readme",
+      "license": "MIT",
+      "main": "index.js",
+      "module": "./dist/emnapi.esm-bundler.js",
+      "name": "@emnapi/runtime",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/toyobayashi/emnapi.git"
+      },
+      "scripts": {
+        "build": "node ./script/build.js"
+      },
+      "sideEffects": false,
+      "types": "./dist/emnapi.d.ts",
+      "version": "1.10.0"
+    },
+    "physicalEntryCount": 17,
+    "tarball": {
+      "bytes": 67770,
+      "sha256": "8c2e94821047dea035114ec42d094f8eb32f6e1af754c0a59b6180f7ec0700e8"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

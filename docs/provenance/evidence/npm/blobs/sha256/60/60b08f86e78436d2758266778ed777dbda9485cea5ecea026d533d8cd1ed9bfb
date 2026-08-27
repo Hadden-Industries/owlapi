@@ -1,0 +1,132 @@
+{
+  "artifactId": "41c30500b64ea5e1ac2bad02d47a0e764021f8944a2ade57dd788db055552468",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2206,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "1f2e0d7173b86a8a84c9a6acd319b89d48e1411b5024e6eb03dc1551b30f392d",
+        "size": 684,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "e9e921d4734fee9405bef5886c010c80a8f10fe958e5d71bd5d8eed5e616e78d",
+        "size": 330,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "3fef4b52efbeabeadfffd5994e90b1025eb24263286e34170675956637d368b1",
+        "size": 696,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "e9f8f4e5c1e63047b8d491d0218e47d1512017af38d3b9cfab7b81e8e0a0cbcd",
+        "size": 1600,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 1600,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e9/e9f8f4e5c1e63047b8d491d0218e47d1512017af38d3b9cfab7b81e8e0a0cbcd",
+          "sha256": "e9f8f4e5c1e63047b8d491d0218e47d1512017af38d3b9cfab7b81e8e0a0cbcd"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "e9f8f4e5c1e63047b8d491d0218e47d1512017af38d3b9cfab7b81e8e0a0cbcd",
+        "size": 1600
+      }
+    ],
+    "expandedBytes": 4419,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "has-flag",
+      "repository": "sindresorhus/has-flag",
+      "version": "4.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "description": "Check if argv has a specific flag",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "tsd": "^0.7.2",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "has",
+        "check",
+        "detect",
+        "contains",
+        "find",
+        "flag",
+        "cli",
+        "command-line",
+        "argv",
+        "process",
+        "arg",
+        "args",
+        "argument",
+        "arguments",
+        "getopt",
+        "minimist",
+        "optimist"
+      ],
+      "license": "MIT",
+      "name": "has-flag",
+      "repository": "sindresorhus/has-flag",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "4.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2206,
+      "sha256": "77a7eb1411d927bb8a5ca7069dbe168886d63c88f446f0b81500a2cf23ddb5b1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

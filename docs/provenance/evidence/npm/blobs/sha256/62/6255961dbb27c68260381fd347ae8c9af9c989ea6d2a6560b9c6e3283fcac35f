@@ -1,0 +1,155 @@
+{
+  "artifactId": "1241ff5ce0897924d1951ee0639f158367faa933b8f1f3d590e33324414795fb",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7873,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "22c68811e174cbbfb3813d4135918df4f540959c14d872e601d9abe83d3cde8f",
+        "size": 1076,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "657d808498dddf2ea2049dd44f008cd18c260893ef73920285d7b3e9afcb7072",
+        "size": 931,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.cjs",
+        "sha256": "ee408bbc9665cba5800a6b2a0c89dd3df9820baa30d4ff3ba2f2435f16ce9f94",
+        "size": 13706,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.cts",
+        "sha256": "737da79b3269b992ed4aa9a9f799ec85ae0eb5236a3f63125382e52e02e0c832",
+        "size": 4688,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.mts",
+        "sha256": "737da79b3269b992ed4aa9a9f799ec85ae0eb5236a3f63125382e52e02e0c832",
+        "size": 4688,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.mjs",
+        "sha256": "fc1bed0d5da56d4638002af7deaf6d179e183a85de648c180839ca36b21b3b50",
+        "size": 12438,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "bd2b2af3c9ba0580f1acfb22c55d0b6d29abf683af5cac8a2efe82fa7c943f23",
+        "size": 1761,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1076,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/22/22c68811e174cbbfb3813d4135918df4f540959c14d872e601d9abe83d3cde8f",
+          "sha256": "22c68811e174cbbfb3813d4135918df4f540959c14d872e601d9abe83d3cde8f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "22c68811e174cbbfb3813d4135918df4f540959c14d872e601d9abe83d3cde8f",
+        "size": 1076
+      }
+    ],
+    "expandedBytes": 39288,
+    "packageIdentity": {
+      "author": "Superchupu",
+      "homepage": "https://superchupu.dev/tinyglobby",
+      "license": "MIT",
+      "name": "tinyglobby",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/SuperchupuDev/tinyglobby.git"
+      },
+      "version": "0.2.17"
+    },
+    "packageMetadata": {
+      "author": "Superchupu",
+      "bugs": {
+        "url": "https://github.com/SuperchupuDev/tinyglobby/issues"
+      },
+      "dependencies": {
+        "fdir": "^6.5.0",
+        "picomatch": "^4.0.4"
+      },
+      "description": "A fast and minimal alternative to globby and fast-glob",
+      "devDependencies": {
+        "@biomejs/biome": "^2.4.16",
+        "@types/node": "^25.9.1",
+        "@types/picomatch": "^4.0.3",
+        "fast-glob": "^3.3.3",
+        "fs-fixture": "^2.14.0",
+        "glob": "^13.0.6",
+        "tinybench": "^6.0.2",
+        "tsdown": "^0.22.1",
+        "typescript": "^6.0.3"
+      },
+      "engines": {
+        "node": ">=12.0.0"
+      },
+      "exports": {
+        ".": {
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "dist"
+      ],
+      "funding": {
+        "url": "https://github.com/sponsors/SuperchupuDev"
+      },
+      "homepage": "https://superchupu.dev/tinyglobby",
+      "keywords": [
+        "glob",
+        "patterns",
+        "tiny",
+        "fast"
+      ],
+      "license": "MIT",
+      "main": "./dist/index.cjs",
+      "module": "./dist/index.mjs",
+      "name": "tinyglobby",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/SuperchupuDev/tinyglobby.git"
+      },
+      "scripts": {
+        "bench": "node benchmark/bench.ts",
+        "bench:setup": "node benchmark/setup.ts",
+        "build": "tsdown",
+        "check": "biome check",
+        "check:fix": "biome check --write --unsafe",
+        "format": "biome format --write",
+        "lint": "biome lint",
+        "test": "node --test \"test/**/*.ts\"",
+        "test:coverage": "node --test --experimental-test-coverage \"test/**/*.ts\"",
+        "test:only": "node --test --test-only \"test/**/*.ts\"",
+        "typecheck": "tsc --noEmit"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "types": "./dist/index.d.cts",
+      "version": "0.2.17"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 7873,
+      "sha256": "afb4afae9175f8b873ac13e1d21cea0997a0bcb40c3598613a834490058cb562"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

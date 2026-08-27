@@ -1,0 +1,139 @@
+{
+  "artifactId": "cfe27c2c507c3362bc154ef2530b12dd1afd09ddf50a707ad9a7a5314da7b7af",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3060,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "1337620a49d58c831eb77dddb944fc7ef8b4792d7c0a662d70484e31c9077978",
+        "size": 1868,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "44b91a10c69197d1928db80b5bb89d8b31082efbf6b49caf3a424b6ff85909bf",
+        "size": 1239,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "26d44c5d05942d6b315ecde2f3dcf78972cfb3b4c81c932ac2573d3eea5f5e94",
+        "size": 876,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "f185e9ce4fe82baa71bcd091efcd3ca88bc6d2af50cdc4750ec195efc1c705bb",
+        "size": 2193,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 2193,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/f1/f185e9ce4fe82baa71bcd091efcd3ca88bc6d2af50cdc4750ec195efc1c705bb",
+          "sha256": "f185e9ce4fe82baa71bcd091efcd3ca88bc6d2af50cdc4750ec195efc1c705bb"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "f185e9ce4fe82baa71bcd091efcd3ca88bc6d2af50cdc4750ec195efc1c705bb",
+        "size": 2193
+      }
+    ],
+    "expandedBytes": 7285,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "p-locate",
+      "repository": "sindresorhus/p-locate",
+      "version": "4.1.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "dependencies": {
+        "p-limit": "^2.2.0"
+      },
+      "description": "Get the first fulfilled promise that satisfies the provided testing function",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "delay": "^4.1.0",
+        "in-range": "^1.0.0",
+        "time-span": "^3.0.0",
+        "tsd": "^0.7.2",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "promise",
+        "locate",
+        "find",
+        "finder",
+        "search",
+        "searcher",
+        "test",
+        "array",
+        "collection",
+        "iterable",
+        "iterator",
+        "race",
+        "fulfilled",
+        "fastest",
+        "async",
+        "await",
+        "promises",
+        "bluebird"
+      ],
+      "license": "MIT",
+      "name": "p-locate",
+      "repository": "sindresorhus/p-locate",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "4.1.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3060,
+      "sha256": "d95a6ae462e3d967deb0c250bda1c3bbebfe86a58832d27b204c7b74a76fa5f0"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

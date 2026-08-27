@@ -1,0 +1,160 @@
+{
+  "artifactId": "50b58559849eb438bd8a8d176b6adf747802aa24411df5627caf58ba67585e23",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2263,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.travis.yml",
+        "sha256": "dc3b4379f4671f3771341b866a8b9d7ff954a65e9152056b8166747dfb343d19",
+        "size": 43,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b",
+        "size": 1073,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.markdown",
+        "sha256": "2bc76dd6de6869fb5335e04c066edd5ab9d99a2cf7958a25e3c7c8c48768b5b4",
+        "size": 1165,
+        "type": "FILE"
+      },
+      {
+        "path": "package/example/map.js",
+        "sha256": "ffd5fbdaf966b799cd9d046624be96b48e206920e58ad52d2ed1f2bdd10e93d0",
+        "size": 171,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "091b65d778337599d0140b35d53c038603d1732d27c33bfe39e03871a96926b2",
+        "size": 345,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4fe5e8089b65ebfd55bb86f465ba896ba6a8e24b7b61de1e0f420f590616b118",
+        "size": 989,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/map.js",
+        "sha256": "e2a41fad6a88afcd0958cb9f93217ac2d62670d2a116ab7deb2b790e8f9bc90a",
+        "size": 1075,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1073,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/43/435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b",
+          "sha256": "435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b",
+        "size": 1073
+      },
+      {
+        "blob": {
+          "bytes": 1165,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2b/2bc76dd6de6869fb5335e04c066edd5ab9d99a2cf7958a25e3c7c8c48768b5b4",
+          "sha256": "2bc76dd6de6869fb5335e04c066edd5ab9d99a2cf7958a25e3c7c8c48768b5b4"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.markdown",
+        "sha256": "2bc76dd6de6869fb5335e04c066edd5ab9d99a2cf7958a25e3c7c8c48768b5b4",
+        "size": 1165
+      }
+    ],
+    "expandedBytes": 4861,
+    "packageIdentity": {
+      "author": {
+        "email": "mail@substack.net",
+        "name": "James Halliday",
+        "url": "http://substack.net"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "concat-map",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/substack/node-concat-map.git"
+      },
+      "version": "0.0.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "mail@substack.net",
+        "name": "James Halliday",
+        "url": "http://substack.net"
+      },
+      "description": "concatenative mapdashery",
+      "devDependencies": {
+        "tape": "~2.4.0"
+      },
+      "directories": {
+        "example": "example",
+        "test": "test"
+      },
+      "keywords": [
+        "concat",
+        "concatMap",
+        "map",
+        "functional",
+        "higher-order"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "concat-map",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/substack/node-concat-map.git"
+      },
+      "scripts": {
+        "test": "tape test/*.js"
+      },
+      "testling": {
+        "browsers": {
+          "chrome": [
+            10,
+            22
+          ],
+          "ff": [
+            3.5,
+            10,
+            15
+          ],
+          "ie": [
+            6,
+            7,
+            8,
+            9
+          ],
+          "opera": [
+            12
+          ],
+          "safari": [
+            5.1
+          ]
+        },
+        "files": "test/*.js"
+      },
+      "version": "0.0.1"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 2263,
+      "sha256": "35902dd620cf0058c49ea614120f18a889d984269a90381b7622e79c2cfe4261"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,182 @@
+{
+  "artifactId": "bd484840ecfe50c6552a02926a1d4c64ee6f5ea9422d80746078b64b99a86b6e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 12287,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "39eb0bff3dc0cc6ade4c4494c23ae799e48750baa40bf7c92b0ac609aaaab1d5",
+        "size": 160,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "0f2c1c521a08ca2e202316a29c57cba39077ebe2618cf10f23df410f4047f60a",
+        "size": 11357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "b05a9d4ca7165a0fb36e748f43838143823498e73061a4dd7ff4334e9ba9c1b0",
+        "size": 5114,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/src/core.js",
+        "sha256": "be3841504f5cb1ac4c61000637e95044ba9d4593866aeb498dee246f5f751115",
+        "size": 4268,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/src/core.js.map",
+        "sha256": "dc950dfe1d46ffdaec497746392c8946f472f4a6c5386a91fa39f045bcd51bed",
+        "size": 10551,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/src/main.d.ts",
+        "sha256": "05ac258a135ce620ca238665a8c55182513b6add341e3264253a608d5fef63af",
+        "size": 1395,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/src/main.js",
+        "sha256": "97771c477204331457c525c2547f329400aabe2194d6287165b13d886cc056d1",
+        "size": 1528,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/src/main.js.map",
+        "sha256": "c8e454f9559578abcd421b0cbba94f1d7652f65a3fde4022781880e9a21851cf",
+        "size": 4047,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/src/realtime.js",
+        "sha256": "d5546eba2a83a02b5264d8081f1c8baa96e6def11ec5ea7d9adb1adc5e5be83a",
+        "size": 590,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/src/realtime.js.map",
+        "sha256": "c501d5d355e3565fb3abce740b4f306064a80efd3a04c55ad588f7aebb2b22d5",
+        "size": 1245,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/src/signals.js",
+        "sha256": "9135798c3f3d93bfdbda07d8145e271958bfd218a63984e8096f8f07e1dbf35d",
+        "size": 778,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/src/signals.js.map",
+        "sha256": "c8ebe50c73163daf6a3daec70295cdf66ed6056bbf3612580de4a2e38bd3207f",
+        "size": 2054,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8d0e5822043b620381bba01b835023aa587daccc6c9302bd002f185d1441e580",
+        "size": 1220,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11357,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/0f/0f2c1c521a08ca2e202316a29c57cba39077ebe2618cf10f23df410f4047f60a",
+          "sha256": "0f2c1c521a08ca2e202316a29c57cba39077ebe2618cf10f23df410f4047f60a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "0f2c1c521a08ca2e202316a29c57cba39077ebe2618cf10f23df410f4047f60a",
+        "size": 11357
+      }
+    ],
+    "expandedBytes": 44307,
+    "packageIdentity": {
+      "author": "ehmicky <ehmicky@gmail.com> (https://github.com/ehmicky)",
+      "homepage": "https://git.io/JeluP",
+      "license": "Apache-2.0",
+      "name": "human-signals",
+      "repository": "ehmicky/human-signals",
+      "version": "2.1.0"
+    },
+    "packageMetadata": {
+      "author": "ehmicky <ehmicky@gmail.com> (https://github.com/ehmicky)",
+      "bugs": {
+        "url": "https://github.com/ehmicky/human-signals/issues"
+      },
+      "dependencies": {},
+      "description": "Human-friendly process signals",
+      "devDependencies": {
+        "@ehmicky/dev-tasks": "^0.31.9",
+        "ajv": "^6.12.0",
+        "ava": "^3.5.0",
+        "gulp": "^4.0.2",
+        "husky": "^4.2.3",
+        "test-each": "^2.0.0"
+      },
+      "directories": {
+        "lib": "src",
+        "test": "test"
+      },
+      "engines": {
+        "node": ">=10.17.0"
+      },
+      "files": [
+        "build/src",
+        "!~"
+      ],
+      "homepage": "https://git.io/JeluP",
+      "husky": {
+        "hooks": {
+          "pre-push": "gulp check --full"
+        }
+      },
+      "keywords": [
+        "signal",
+        "signals",
+        "handlers",
+        "error-handling",
+        "errors",
+        "interrupts",
+        "sigterm",
+        "sigint",
+        "irq",
+        "process",
+        "exit",
+        "exit-code",
+        "status",
+        "operating-system",
+        "es6",
+        "javascript",
+        "linux",
+        "macos",
+        "windows",
+        "nodejs"
+      ],
+      "license": "Apache-2.0",
+      "main": "build/src/main.js",
+      "name": "human-signals",
+      "repository": "ehmicky/human-signals",
+      "scripts": {
+        "test": "gulp test"
+      },
+      "types": "build/src/main.d.ts",
+      "version": "2.1.0"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 12287,
+      "sha256": "bef9e69fde224e067907418f9e01218fda00bdea4101c33b05b56046f42936b8"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,125 @@
+{
+  "artifactId": "b9092245feba0ac64dfb059d71faf475a7339467c9fed43f2f2d2c0db4ddb43b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2618,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.travis.yml",
+        "sha256": "96f622a9783bb8745352a4d3802d8d68fbb70fb27693de4f0a9299b1d542b6f9",
+        "size": 38,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "715f1f0f2eb7688e53e4e958acdc7fc9e365ae3eaf26efc2604b93cc65fdc3f5",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "2886080bde50b2b31e75872d44e944e73729c59e86dc12769ea7e826ea973138",
+        "size": 659,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "d7596e0f7c808f2800aa6fa9dfa723c5547ab964aba7dcd9014cebf292f667d1",
+        "size": 1504,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "67bd0213396ba4664a9f2fafa3d2d25864a29f4f3800e766ea17c2aa3f4dbef9",
+        "size": 878,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "f81b3c5a4cfee41b6b735b4ffb04c049fcba7fe833197a032860c6aa1ad476e4",
+        "size": 1254,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/71/715f1f0f2eb7688e53e4e958acdc7fc9e365ae3eaf26efc2604b93cc65fdc3f5",
+          "sha256": "715f1f0f2eb7688e53e4e958acdc7fc9e365ae3eaf26efc2604b93cc65fdc3f5"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "715f1f0f2eb7688e53e4e958acdc7fc9e365ae3eaf26efc2604b93cc65fdc3f5",
+        "size": 1071
+      },
+      {
+        "blob": {
+          "bytes": 659,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/28/2886080bde50b2b31e75872d44e944e73729c59e86dc12769ea7e826ea973138",
+          "sha256": "2886080bde50b2b31e75872d44e944e73729c59e86dc12769ea7e826ea973138"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "2886080bde50b2b31e75872d44e944e73729c59e86dc12769ea7e826ea973138",
+        "size": 659
+      }
+    ],
+    "expandedBytes": 5404,
+    "packageIdentity": {
+      "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://dominictarr.com)",
+      "homepage": "https://github.com/dominictarr/json-buffer",
+      "license": "MIT",
+      "name": "json-buffer",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/dominictarr/json-buffer.git"
+      },
+      "version": "3.0.1"
+    },
+    "packageMetadata": {
+      "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://dominictarr.com)",
+      "description": "JSON parse & stringify that supports binary via bops & base64",
+      "devDependencies": {
+        "tape": "^4.6.3"
+      },
+      "homepage": "https://github.com/dominictarr/json-buffer",
+      "license": "MIT",
+      "name": "json-buffer",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/dominictarr/json-buffer.git"
+      },
+      "scripts": {
+        "test": "set -e; for t in test/*.js; do node $t; done"
+      },
+      "testling": {
+        "browsers": [
+          "ie/8..latest",
+          "firefox/17..latest",
+          "firefox/nightly",
+          "chrome/22..latest",
+          "chrome/canary",
+          "opera/12..latest",
+          "opera/next",
+          "safari/5.1..latest",
+          "ipad/6.0..latest",
+          "iphone/6.0..latest",
+          "android-browser/4.2..latest"
+        ],
+        "files": "test/*.js"
+      },
+      "version": "3.0.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 2618,
+      "sha256": "d1f7464db9713c5f73c919da72de334fce0bcbd76fb08727d36712ef5dfef5a5"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

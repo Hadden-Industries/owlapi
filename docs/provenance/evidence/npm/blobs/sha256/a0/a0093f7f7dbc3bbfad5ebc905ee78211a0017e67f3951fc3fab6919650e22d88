@@ -1,0 +1,122 @@
+{
+  "artifactId": "50d10d7de1e0327f7f6b22c2c7eb3bb22ac84184139d238f22241f3d730f7fc3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2333,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "a5cd2e379198aa40fb10141d5e8273cc22b09bff6b8c3cd982b651fdd8d5d999",
+        "size": 1025,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "71a34263582dd96e5b3eba1422c5c2af0062cac6c060c1eaaee352094723359b",
+        "size": 1201,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "ac3644d363967676dba47bbf65d61b6145463632fcf60617926d484102ff5805",
+        "size": 622,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "9888af62b37ba38b29e422bc3f160cbd87744ab726969fb07566d3126b0de8ee",
+        "size": 1867,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 1867,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/98/9888af62b37ba38b29e422bc3f160cbd87744ab726969fb07566d3126b0de8ee",
+          "sha256": "9888af62b37ba38b29e422bc3f160cbd87744ab726969fb07566d3126b0de8ee"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "9888af62b37ba38b29e422bc3f160cbd87744ab726969fb07566d3126b0de8ee",
+        "size": 1867
+      }
+    ],
+    "expandedBytes": 5824,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "resolve-from",
+      "repository": "sindresorhus/resolve-from",
+      "version": "5.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "description": "Resolve the path of a module like `require.resolve()` but from a given path",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "tsd": "^0.7.2",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "require",
+        "resolve",
+        "path",
+        "module",
+        "from",
+        "like",
+        "import"
+      ],
+      "license": "MIT",
+      "name": "resolve-from",
+      "repository": "sindresorhus/resolve-from",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "5.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2333,
+      "sha256": "fdf7cffeccad13cf433fe9399b291c5437de4b43c83ea0d535294e1b3d4f25e3"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

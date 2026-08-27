@@ -1,0 +1,167 @@
+{
+  "artifactId": "ace0c92fa9b2de75d96d3b1b0c6fe645d16b906a48efa568bbc2e85f54bc0196",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2121,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.travis.yml",
+        "sha256": "070dffc7dc13bf0be3cefbef8f39ce015537ad397abb812e2cad8f1df9f459e1",
+        "size": 43,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b",
+        "size": 1073,
+        "type": "FILE"
+      },
+      {
+        "path": "package/example/package.json",
+        "sha256": "1b0a33ff4aad344b3d09605b854a4b5bcf1b79bef1dc821fc32d206ba7cc0cf8",
+        "size": 143,
+        "type": "FILE"
+      },
+      {
+        "path": "package/example/url.js",
+        "sha256": "d4897228fa19f8b23e353331990ade0ed9ec285e5ec051288cbc737f315cfeb6",
+        "size": 92,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "b0ff829d7fd3310f3fa12a28f91d14d20cd1492758c0ee6db0ab3f068bff5806",
+        "size": 406,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "67742aa2b856e3523c2f89132e41cc5026c49ffe7df58bd3ea906caaa217bd79",
+        "size": 753,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.markdown",
+        "sha256": "f4357920ffb818644c7fcacf47f9359f35e770e89cb0f00553b113532d044874",
+        "size": 895,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/a.json",
+        "sha256": "1b0a33ff4aad344b3d09605b854a4b5bcf1b79bef1dc821fc32d206ba7cc0cf8",
+        "size": 143,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/b.json",
+        "sha256": "0ec92e2c4641546ed426e8726b2e1f0650a2fc716dfad1c728cfc2d16bcb86e0",
+        "size": 106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/c.json",
+        "sha256": "68883b6504a4400a5ea72321179dc0ac531367dd9537e4155a0b5a148a75da97",
+        "size": 110,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/d.json",
+        "sha256": "16309f575a01b803b5dd7135735a12f68275584a5adfe822ebc61b3f3b55dae3",
+        "size": 123,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/e.json",
+        "sha256": "6a844566c1847e1ec1953ff10ccce1368985ce8472ffc1d324f2fa269c470b44",
+        "size": 110,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/url.js",
+        "sha256": "a32f3a5f8f11ef9065514f38999feacb1353b259dece2f0c52719c6739c6e6b2",
+        "size": 611,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1073,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/43/435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b",
+          "sha256": "435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b",
+        "size": 1073
+      },
+      {
+        "blob": {
+          "bytes": 895,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/f4/f4357920ffb818644c7fcacf47f9359f35e770e89cb0f00553b113532d044874",
+          "sha256": "f4357920ffb818644c7fcacf47f9359f35e770e89cb0f00553b113532d044874"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.markdown",
+        "sha256": "f4357920ffb818644c7fcacf47f9359f35e770e89cb0f00553b113532d044874",
+        "size": 895
+      }
+    ],
+    "expandedBytes": 4608,
+    "packageIdentity": {
+      "author": {
+        "email": "mail@substack.net",
+        "name": "James Halliday",
+        "url": "http://substack.net"
+      },
+      "homepage": "https://github.com/substack/github-from-package",
+      "license": "MIT",
+      "name": "github-from-package",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/substack/github-from-package.git"
+      },
+      "version": "0.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "mail@substack.net",
+        "name": "James Halliday",
+        "url": "http://substack.net"
+      },
+      "description": "return the github url from a package.json file",
+      "devDependencies": {
+        "tap": "~0.3.0",
+        "tape": "~0.1.5"
+      },
+      "homepage": "https://github.com/substack/github-from-package",
+      "keywords": [
+        "github",
+        "package.json",
+        "npm",
+        "repository"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "github-from-package",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/substack/github-from-package.git"
+      },
+      "scripts": {
+        "test": "tap test/*.js"
+      },
+      "version": "0.0.0"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 2121,
+      "sha256": "3e46f185e0772ae9b83a3383a2bc7182b9facaef63c247a76b0ffc91114443fa"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

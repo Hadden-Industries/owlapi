@@ -1,0 +1,230 @@
+{
+  "artifactId": "a28307a13475f3aa754e59525049e699aa0fce429ed5aac9f3011ebcea0652dd",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 11683,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "148718606d34f467fd08a2176bb4c1ab275f999576f779368503d8d3e3642861",
+        "size": 770,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "54587592ee101d2b68b6b9fbccc11b4b079b18189aa0c8261c4cb19ff390dc85",
+        "size": 4044,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cjs/index.js",
+        "sha256": "a6fda60d434e62631778a7d18acfc2aeaac59740205cffbae894fd654cd82171",
+        "size": 3557,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cjs/package.json",
+        "sha256": "fa6944a20ca5e6fbaf98fd202eb8c7004d5b4ab786e36b9ed02ee31dbe196c9f",
+        "size": 19,
+        "type": "FILE"
+      },
+      {
+        "path": "package/es.js",
+        "sha256": "541753b50b5080347d15c1fa913fa43cc0ed1e49d8a25a3d6c20d7ce25a99d2a",
+        "size": 1133,
+        "type": "FILE"
+      },
+      {
+        "path": "package/esm.js",
+        "sha256": "e93a14488c07ac3c7c7f3e93c1de328edf68ebd4e17b01f5e7cfc208ecb172e6",
+        "size": 1101,
+        "type": "FILE"
+      },
+      {
+        "path": "package/esm/index.js",
+        "sha256": "d697ad948769363b99110e1bffe84269a7e74955b42e4e74abac61b02f6c9de6",
+        "size": 3463,
+        "type": "FILE"
+      },
+      {
+        "path": "package/golang/README.md",
+        "sha256": "85d7f9364cb460097dc8e8751429391a908fcc5e6e187751723891b1a3d9d44a",
+        "size": 1144,
+        "type": "FILE"
+      },
+      {
+        "path": "package/golang/pkg/flatted/flatted.go",
+        "sha256": "2621b9b28c0c4a6696da0f4b006d6c3c93acd103b3cc7a4d7d361bcf668ef3b1",
+        "size": 6025,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "7cfee2be90ba60c6023ca5c94f34cf06485b7874904edcea837a6dbcad779881",
+        "size": 4531,
+        "type": "FILE"
+      },
+      {
+        "path": "package/min.js",
+        "sha256": "d11402f5b13f5def394380e5016dbcae65c162804af155cac7278243df453b44",
+        "size": 1455,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b2ff4da4785cbefcbdb4bd5951cf9232f3fe8d9c55c210cab5e28c0a120f0ba0",
+        "size": 2509,
+        "type": "FILE"
+      },
+      {
+        "path": "package/php/flatted.php",
+        "sha256": "61a68e38a84ccd25cffc725fef498df1f684795cd6da462ec2fd100616194f5e",
+        "size": 4613,
+        "type": "FILE"
+      },
+      {
+        "path": "package/python/flatted.py",
+        "sha256": "f784c254de76a25435ebaa61c72942072733ae4b42619b943bf37b09fa45e644",
+        "size": 3773,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/index.d.ts",
+        "sha256": "9d8bf1b59550675cba7b63b35eacdbeb25db851efdb4b8bca235bc8e4be9b245",
+        "size": 364,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 770,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/14/148718606d34f467fd08a2176bb4c1ab275f999576f779368503d8d3e3642861",
+          "sha256": "148718606d34f467fd08a2176bb4c1ab275f999576f779368503d8d3e3642861"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "148718606d34f467fd08a2176bb4c1ab275f999576f779368503d8d3e3642861",
+        "size": 770
+      },
+      {
+        "blob": {
+          "bytes": 4044,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/54/54587592ee101d2b68b6b9fbccc11b4b079b18189aa0c8261c4cb19ff390dc85",
+          "sha256": "54587592ee101d2b68b6b9fbccc11b4b079b18189aa0c8261c4cb19ff390dc85"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "54587592ee101d2b68b6b9fbccc11b4b079b18189aa0c8261c4cb19ff390dc85",
+        "size": 4044
+      }
+    ],
+    "expandedBytes": 38501,
+    "packageIdentity": {
+      "author": "Andrea Giammarchi",
+      "homepage": "https://github.com/WebReflection/flatted#readme",
+      "license": "ISC",
+      "name": "flatted",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/WebReflection/flatted.git"
+      },
+      "version": "3.4.4"
+    },
+    "packageMetadata": {
+      "author": "Andrea Giammarchi",
+      "bugs": {
+        "url": "https://github.com/WebReflection/flatted/issues"
+      },
+      "description": "A super light and fast circular JSON parser.",
+      "devDependencies": {
+        "@babel/core": "^7.29.0",
+        "@babel/preset-env": "^7.29.2",
+        "@rollup/plugin-babel": "^7.0.0",
+        "@rollup/plugin-terser": "^1.0.0",
+        "@ungap/structured-clone": "^1.3.0",
+        "ascjs": "^6.0.3",
+        "c8": "^11.0.0",
+        "circular-json": "^0.5.9",
+        "circular-json-es6": "^2.0.2",
+        "flatted-view": "^0.1.6",
+        "jsan": "^3.1.14",
+        "rollup": "^4.60.1",
+        "terser": "^5.46.1",
+        "typescript": "^5.9.3"
+      },
+      "exports": {
+        ".": {
+          "default": "./cjs/index.js",
+          "import": "./esm/index.js",
+          "types": "./types/index.d.ts"
+        },
+        "./esm": "./esm.js",
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "LICENSE",
+        "README.md",
+        "cjs/",
+        "es.js",
+        "esm.js",
+        "esm/",
+        "index.js",
+        "min.js",
+        "php/flatted.php",
+        "python/flatted.py",
+        "golang/pkg/flatted/flatted.go",
+        "types/"
+      ],
+      "homepage": "https://github.com/WebReflection/flatted#readme",
+      "keywords": [
+        "circular",
+        "JSON",
+        "fast",
+        "parser",
+        "minimal"
+      ],
+      "license": "ISC",
+      "main": "./cjs/index.js",
+      "module": "./esm/index.js",
+      "name": "flatted",
+      "overrides": {
+        "c8": {
+          "yargs": "^18.0.0"
+        }
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/WebReflection/flatted.git"
+      },
+      "scripts": {
+        "build": "npm run cjs && npm run rollup:esm && npm run rollup:es && npm run rollup:babel && npm run min && npm run test && npm run size",
+        "cjs": "ascjs esm cjs",
+        "coverage": "mkdir -p ./coverage; c8 report --reporter=text-lcov > ./coverage/lcov.info",
+        "min": "terser index.js -c -m -o min.js",
+        "rollup:babel": "rollup --config rollup/babel.config.js && sed -i.bck 's/^var /self./' index.js && rm -rf index.js.bck",
+        "rollup:es": "rollup --config rollup/es.config.js && sed -i.bck 's/^var /self./' es.js && rm -rf es.js.bck",
+        "rollup:esm": "rollup --config rollup/esm.config.js",
+        "size": "cat index.js | wc -c;cat min.js | wc -c;gzip -c9 min.js | wc -c;cat min.js | brotli | wc -c; cat es.js | brotli | wc -c; cat esm.js | brotli | wc -c",
+        "test": "c8 node test/index.js",
+        "test:php": "php php/test.php",
+        "test:py": "python python/test.py",
+        "ts": "tsc -p ."
+      },
+      "type": "module",
+      "types": "./types/index.d.ts",
+      "unpkg": "min.js",
+      "version": "3.4.4"
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 11683,
+      "sha256": "5ddc55129d365193496e8ae1f6e21e4beabe639b6c00f5f67e2e0843b72efa55"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

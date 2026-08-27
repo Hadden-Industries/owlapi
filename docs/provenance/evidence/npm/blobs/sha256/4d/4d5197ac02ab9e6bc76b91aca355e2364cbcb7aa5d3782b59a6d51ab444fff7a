@@ -1,0 +1,115 @@
+{
+  "artifactId": "29636ea2d56c4c13f154afaa81f9fbc49c1b5d33033d611a8ab5381598ff8c7c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3024,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "3903f8a012d18bbc0505ea410b2f6f0bd10525f48bb26ad67f8700805c40b72d",
+        "size": 741,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "a16620fd87746d7de5a8b72b1fcff60c79a6d10de38221aee58b3248bfdaeed2",
+        "size": 576,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "bf33e5d74a00d649b86c498fe925fc91254344e0802778fe81a8e0916a5a4f4a",
+        "size": 3570,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "d3833fd4593b6a37438b86cf2eae4666a7043c9a7002700c272102d6a621129f",
+        "size": 71,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "da9fa40bc68e2647c2069cf672e5cae61ac34660a01783e5543081646790336f",
+        "size": 824,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 6914,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "jest-leak-detector",
+      "repository": {
+        "directory": "packages/jest-leak-detector",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.4.1"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@jest/get-type": "30.1.0",
+        "pretty-format": "30.4.1"
+      },
+      "devDependencies": {
+        "@types/node": "*"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "b3b4a09ed3005369dacc7466d1d2122797283785",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "jest-leak-detector",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-leak-detector",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.4.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 3024,
+      "sha256": "a87a89df58bc177b8c695ce96867fee7d80d420b460c0f7f4bc77641f11bd900"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

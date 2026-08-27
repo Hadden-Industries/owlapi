@@ -1,0 +1,133 @@
+{
+  "artifactId": "ea0d78b8dada54cf36a6a69212bb5041fa4c90a074ec23e9590af1d5160e5890",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6826,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "c60a0331e1339e300bd44155457700f8e6a9d8413636d39ac2d158d6b11900ac",
+        "size": 4344,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "e085aab5bf9acbfb4c3b6633e9945ac2434bda4dd1f4375b27589dd656b8b4b0",
+        "size": 712,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/iana-historical.json",
+        "sha256": "e251918293819c6112f4c6a3059b970f9b9d0668e342a8c5f3fbdfd74cfa2e68",
+        "size": 2505,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/iana-permanent.json",
+        "sha256": "125e29e1441ad3829d3695ffcf70e13091bb765d3b4a5e8c40fcfc7dbd2bf1db",
+        "size": 17569,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/iana-provisional.json",
+        "sha256": "6cb1f65f2935815692ce36232f476f9d95d2276ee05ea73da0e4e7c4aeb980a9",
+        "size": 24615,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/unofficial.json",
+        "sha256": "47ef4b92a198d5ddf00e09c7869210e6fc6abe6e65a71b3e9008a3b139a098f3",
+        "size": 395,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "881cb7e1a15df7cbdd40264f8ea8df745549b47410f3d3dc945ebe045f341ce8",
+        "size": 1113,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 4344,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c6/c60a0331e1339e300bd44155457700f8e6a9d8413636d39ac2d158d6b11900ac",
+          "sha256": "c60a0331e1339e300bd44155457700f8e6a9d8413636d39ac2d158d6b11900ac"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "c60a0331e1339e300bd44155457700f8e6a9d8413636d39ac2d158d6b11900ac",
+        "size": 4344
+      }
+    ],
+    "expandedBytes": 51253,
+    "packageIdentity": {
+      "author": "Peter Müller <munter@fumle.dk>",
+      "homepage": "https://github.com/Munter/schemes",
+      "license": "MIT",
+      "name": "schemes",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/Munter/schemes.git"
+      },
+      "version": "1.4.0"
+    },
+    "packageMetadata": {
+      "author": "Peter Müller <munter@fumle.dk>",
+      "bugs": {
+        "url": "https://github.com/Munter/schemes/issues"
+      },
+      "dependencies": {
+        "extend": "^3.0.0"
+      },
+      "description": "IANA Uniform Resource Identifier (URI) Schemes list, including crowd sourced unofficial ones",
+      "devDependencies": {
+        "chalk": "^1.1.3",
+        "cheerio": "^0.22.0",
+        "deep-equal": "^1.0.1",
+        "jshint": "^2.9.2",
+        "lodash.keyby": "^4.4.0",
+        "simple-array-diff": "^1.1.0",
+        "simple-get": "^2.2.0"
+      },
+      "files": [
+        "index.js",
+        "lib"
+      ],
+      "homepage": "https://github.com/Munter/schemes",
+      "keywords": [
+        "iana",
+        "uri",
+        "url",
+        "scheme",
+        "schemes",
+        "protocol",
+        "protocols",
+        "rfc"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "schemes",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/Munter/schemes.git"
+      },
+      "scripts": {
+        "build": "node tools/update-schemes.js",
+        "preversion": "npm run travis && git add lib",
+        "test": "jshint . --exclude-path .gitignore",
+        "travis": "npm run test && npm run build"
+      },
+      "version": "1.4.0"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 6826,
+      "sha256": "6d4f8d253e83cf4103071562506a93bfbecd24aef42b57b9c28691eae2b49370"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

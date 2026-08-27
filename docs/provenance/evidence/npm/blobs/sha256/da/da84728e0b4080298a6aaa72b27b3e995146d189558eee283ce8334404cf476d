@@ -1,0 +1,112 @@
+{
+  "artifactId": "2bd7cb8f357a51454408f8905325ffb82f0e790eb5bfbaca25a99d0d7dca7fa4",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4910,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "8d1844511493947f9be309d2eb6db97b3ecc83840009aef4f3dfcf920df8bc4c",
+        "size": 3184,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/ini.js",
+        "sha256": "007123836ffec243f41c8b35584fb3db0498aa12a440a9e0efc675d0000f4c32",
+        "size": 7123,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8fa8b0d70252d57858bae47eae4d4b8d19c83f316dddd0d4565f5626cc51e194",
+        "size": 1068,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 12140,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "ini",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/ini.git"
+      },
+      "version": "7.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "description": "An ini encoder/decoder for node",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^6.0.0",
+        "@npmcli/template-oss": "5.0.0",
+        "tap": "^16.0.1"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "license": "ISC",
+      "main": "lib/ini.js",
+      "name": "ini",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/ini.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": "true",
+        "version": "5.0.0"
+      },
+      "version": "7.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 4910,
+      "sha256": "7e7c8f2d6d0511237ac1d9e728483d8e6c9ecf3c7e16f55e9be4a59782327442"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

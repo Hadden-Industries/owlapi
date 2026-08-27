@@ -1,0 +1,108 @@
+{
+  "artifactId": "7f6a600533b69239a72b56836f65a77ddea1e80a006e0dc40fa74619b06e4eae",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2691,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "564bcb001d6e131452a8e9fba0f0ccc59e8b881f84ce3e46e319a5a33e191e10",
+        "size": 1088,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "fc998ce2e2601f49e7ed96ce2d7a7a58c0a280dd03fcf6d5a9f5bc57098fb4c7",
+        "size": 1780,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "6db651932d83bbd23d1935b88c7b3b69f72f1844465e72e229a4de2bd1f9c3c1",
+        "size": 115,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "7084e10563154ac703db99141ff3311858e5fb5a3096381fcb69b1ecfa9ea1c5",
+        "size": 2020,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8c09f4774a7dddb18c24d85cc833c8a847b829f87ce45f1c2a74a61a23a4f4fd",
+        "size": 771,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1088,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/56/564bcb001d6e131452a8e9fba0f0ccc59e8b881f84ce3e46e319a5a33e191e10",
+          "sha256": "564bcb001d6e131452a8e9fba0f0ccc59e8b881f84ce3e46e319a5a33e191e10"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "564bcb001d6e131452a8e9fba0f0ccc59e8b881f84ce3e46e319a5a33e191e10",
+        "size": 1088
+      }
+    ],
+    "expandedBytes": 5774,
+    "packageIdentity": {
+      "author": "bdehamer@github.com",
+      "homepage": "https://github.com/theupdateframework/tuf-js/tree/main/packages/canonical-json#readme",
+      "license": "MIT",
+      "name": "@tufjs/canonical-json",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/theupdateframework/tuf-js.git"
+      },
+      "version": "2.0.0"
+    },
+    "packageMetadata": {
+      "author": "bdehamer@github.com",
+      "bugs": {
+        "url": "https://github.com/theupdateframework/tuf-js/issues"
+      },
+      "description": "OLPC JSON canonicalization",
+      "engines": {
+        "node": "^16.14.0 || >=18.0.0"
+      },
+      "files": [
+        "lib/"
+      ],
+      "homepage": "https://github.com/theupdateframework/tuf-js/tree/main/packages/canonical-json#readme",
+      "keywords": [
+        "json",
+        "canonical",
+        "canonicalize",
+        "canonicalization",
+        "crypto",
+        "signature",
+        "olpc"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "@tufjs/canonical-json",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/theupdateframework/tuf-js.git"
+      },
+      "scripts": {
+        "test": "jest"
+      },
+      "typings": "lib/index.d.ts",
+      "version": "2.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2691,
+      "sha256": "6697839da72a4f8fde54cf037d984ce3b52962466af283548e245555256b66cd"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,101 @@
+{
+  "artifactId": "8ee283d5db5c45c55576189eec0865b727267bbecdde558de6b82b5f90fab1dc",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3632951,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+        "size": 15648,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "0cf9f120e0ee3289ed30971b6a869f2849b5db2fa8e9e98ed7fe1de606e7f7e6",
+        "size": 120,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lightningcss.android-arm64.node",
+        "sha256": "d754cdc0af391caa283f435b53d1b11f9d1933b6b611c4b7d45e2e23d2104ec6",
+        "size": 8911128,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "3a45f484abb1f56be80a12d2ea7c180df5a2b9ea98fc5407a98350d348bf6806",
+        "size": 720,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 15648,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5e/5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+          "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+        "size": 15648
+      }
+    ],
+    "expandedBytes": 8927616,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MPL-2.0",
+      "name": "lightningcss-android-arm64",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/parcel-bundler/lightningcss.git"
+      },
+      "version": "1.33.0"
+    },
+    "packageMetadata": {
+      "browserslist": "last 2 versions, not dead",
+      "cpu": [
+        "arm64"
+      ],
+      "description": "A CSS parser, transformer, and minifier written in Rust",
+      "engines": {
+        "node": ">= 12.0.0"
+      },
+      "files": [
+        "lightningcss.android-arm64.node"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/parcel"
+      },
+      "license": "MPL-2.0",
+      "main": "lightningcss.android-arm64.node",
+      "name": "lightningcss-android-arm64",
+      "os": [
+        "android"
+      ],
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/parcel-bundler/lightningcss.git"
+      },
+      "resolutions": {
+        "lightningcss": "link:."
+      },
+      "version": "1.33.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 3632951,
+      "sha256": "e6fd2befa439a4934dd50a9283820a7b95725246a3251c60588f074aff20509a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

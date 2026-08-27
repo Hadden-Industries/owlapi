@@ -1,0 +1,138 @@
+{
+  "artifactId": "3484fbbaf13990f01609855e41eff389b01e6a8e986d80a1c1c6c53709007643",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6044,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "838746c5f90e2560312ec35c4a83928027d94fe5bcdf8a80451eb9d73ed95ebe",
+        "size": 1958,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/agents.js",
+        "sha256": "1cf43ea63fa71a1a992a15e335ffec4ae3029711d933f382521f828f63aadb71",
+        "size": 5930,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dns.js",
+        "sha256": "58a0abcfb7ab16ece73a1fea304b8cb4539f650c4f2726e2d5980c285a96351b",
+        "size": 1250,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/errors.js",
+        "sha256": "f4ee0f8a8ac25830be4a902246059d260e5254ba9e2e766eef84972eeb66926d",
+        "size": 1394,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "8d7b321c0eb45d3ddacc78b48448b2ed02ad79284f931d73f4bd0a67d0f5a4dd",
+        "size": 1257,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/options.js",
+        "sha256": "c475022b830424dbdf75987670549f32bc08c43c224731fd20cdc4f747f56901",
+        "size": 2437,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/proxy.js",
+        "sha256": "192a78a72232f67d0cbd46fe8f9dbd994f98c197cb345570c312aaac12831111",
+        "size": 2011,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d67f4edf03680423c43434e3b28902feec2a136da2e85355034b174ba286828b",
+        "size": 1511,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 17748,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": "https://github.com/npm/agent#readme",
+      "license": "ISC",
+      "name": "@npmcli/agent",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/agent.git"
+      },
+      "version": "3.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "bugs": {
+        "url": "https://github.com/npm/agent/issues"
+      },
+      "dependencies": {
+        "agent-base": "^7.1.0",
+        "http-proxy-agent": "^7.0.0",
+        "https-proxy-agent": "^7.0.1",
+        "lru-cache": "^10.0.1",
+        "socks-proxy-agent": "^8.0.3"
+      },
+      "description": "the http/https agent used by the npm cli",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^5.0.0",
+        "@npmcli/template-oss": "4.23.1",
+        "minipass-fetch": "^3.0.3",
+        "nock": "^13.2.7",
+        "socksv5": "^0.0.6",
+        "tap": "^16.3.0"
+      },
+      "engines": {
+        "node": "^18.17.0 || >=20.5.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "homepage": "https://github.com/npm/agent#readme",
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "@npmcli/agent",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/agent.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "gencerts": "bash scripts/create-cert.sh",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": "true",
+        "version": "4.23.1"
+      },
+      "version": "3.0.0"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 6044,
+      "sha256": "fc9996041d3760e5cff0a5121d4cf0fc853898ceebd5d854e622e52ec11a5cb9"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,128 @@
+{
+  "artifactId": "6270ddf6c2e5e4cd68b1e0880e7a2e647f75e6c0d75b388bf159f7362f7dbe3b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 14443,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "1a29e8deec69c785e7314d2023b8e9068572a10ce328915e050c46631065603e",
+        "size": 14291,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "d421c4e4d70b03d8d05f993dd13a2c473c967b863438b167a8b3c01d4685a692",
+        "size": 3390,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "a402d0283ddb1bc9a42d6d2605789b2573895114db88c6fb4070eca228a06d20",
+        "size": 40721,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "0b1256fcfdf3c1154a0c5f2d1dcbcf909413e84fb6fca5d9084104cafe688d22",
+        "size": 211,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "816f475ae53780688516968fddef795c2f69c25ea9814b752553dd6d411e2564",
+        "size": 1309,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 61054,
+    "packageIdentity": {
+      "author": "James Kyle <me@thejameskyle.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "pretty-format",
+      "repository": {
+        "directory": "packages/pretty-format",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.4.1"
+    },
+    "packageMetadata": {
+      "author": "James Kyle <me@thejameskyle.com>",
+      "dependencies": {
+        "@jest/schemas": "30.4.1",
+        "ansi-styles": "^5.2.0",
+        "react-is-18": "npm:react-is@^18.3.1",
+        "react-is-19": "npm:react-is@^19.2.5"
+      },
+      "description": "Stringify any JavaScript value.",
+      "devDependencies": {
+        "@types/react": "^18.3.23",
+        "@types/react-is": "^19.0.0",
+        "@types/react-test-renderer": "^18.3.1",
+        "immutable": "^5.1.2",
+        "jest-util": "30.4.1",
+        "react": "18.3.1",
+        "react-17": "npm:react@^17.0.2",
+        "react-18": "npm:react@^18.3.1",
+        "react-19": "npm:react@^19.2.5",
+        "react-test-renderer": "18.3.1"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "b3b4a09ed3005369dacc7466d1d2122797283785",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "pretty-format",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/pretty-format",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.4.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 14443,
+      "sha256": "940e61e84371b64e22e093909acfc90225e5ec28e1bc58d3ee46bc76f6612f08"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

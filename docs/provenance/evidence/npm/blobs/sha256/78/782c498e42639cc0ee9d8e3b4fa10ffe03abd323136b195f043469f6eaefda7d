@@ -1,0 +1,2845 @@
+{
+  "artifactId": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 47,
+      "digestVerifiedFileCount": 47,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 47
+    },
+    "artifactId": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f",
+    "dependencies": [],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "bdehamer@github.com",
+            "end_line": 15,
+            "start_line": 15
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-ec759ae0-ea5a-f138-793e-388520e080c0",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 16,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/package.json",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "  \"license\": \"Apache-2.0\",",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_65.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_65.RULE",
+                "score": 100,
+                "start_line": 16
+              }
+            ]
+          }
+        ],
+        "md5": "540a715e5b31d6c738fc014cba61e9c3",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/@sigstore%2fcore/4.0.1",
+            "bug_tracking_url": "https://github.com/sigstore/sigstore-js/issues",
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "apache-2.0",
+            "declared_license_expression_spdx": "Apache-2.0",
+            "dependencies": [],
+            "description": "Base library for Sigstore",
+            "download_url": "https://registry.npmjs.org/@sigstore/core/-/core-4.0.1.tgz",
+            "extra_data": {
+              "engines": {
+                "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+              }
+            },
+            "extracted_license_statement": "- Apache-2.0\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://github.com/sigstore/sigstore-js/tree/main/packages/core#readme",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [
+              {
+                "identifier": "apache_2_0-d66ab77d-a5cc-7104-e702-dc7df61fe9e8",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/package.json",
+                    "license_expression": "apache-2.0",
+                    "license_expression_spdx": "Apache-2.0",
+                    "match_coverage": 100,
+                    "matched_length": 3,
+                    "matched_text": "Apache-2.0",
+                    "matcher": "1-hash",
+                    "rule_identifier": "spdx_license_id_apache-2.0_for_apache-2.0.RULE",
+                    "rule_relevance": 100,
+                    "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_apache-2.0_for_apache-2.0.RULE",
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "core",
+            "namespace": "@sigstore",
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": null,
+                "name": "bdehamer@github.com",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/%40sigstore/core@4.0.1",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/@sigstore/core/-/core-4.0.1.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/@sigstore/core",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/sigstore/sigstore-js.git",
+            "version": "4.0.1"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 4.49,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "c96edfc6ea66e21133432635e40d9a147088fbf6",
+        "sha1_git": "7bafeb09ac21312ac5644ae5aa9c0b306b93a1c4",
+        "sha256": "55d00d9cfae15f310382659245d3829fc9a5a615953bf8691127bbb80d1bd44a",
+        "size": 744,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 190,
+            "start_line": 190
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 190,
+            "holder": "The Sigstore Authors",
+            "start_line": 190
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": true,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-9e458229-3aad-32b0-23b2-0c3a295f960c",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 202,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/LICENSE",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 1579,
+                "matched_text": "                                 Apache License\n                           Version 2.0, January 2004\n                        http://www.apache.org/licenses/\n\n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n\n   1. Definitions.\n\n      \"License\" shall mean the terms and conditions for use, reproduction,\n      and distribution as defined by Sections 1 through 9 of this document.\n\n      \"Licensor\" shall mean the copyright owner or entity authorized by\n      the copyright owner that is granting the License.\n\n      \"Legal Entity\" shall mean the union of the acting entity and all\n      other entities that control, are controlled by, or are under common\n      control with that entity. For the purposes of this definition,\n      \"control\" means (i) the power, direct or indirect, to cause the\n      direction or management of such entity, whether by contract or\n      otherwise, or (ii) ownership of fifty percent (50%) or more of the\n      outstanding shares, or (iii) beneficial ownership of such entity.\n\n      \"You\" (or \"Your\") shall mean an individual or Legal Entity\n      exercising permissions granted by this License.\n\n      \"Source\" form shall mean the preferred form for making modifications,\n      including but not limited to software source code, documentation\n      source, and configuration files.\n\n      \"Object\" form shall mean any form resulting from mechanical\n      transformation or translation of a Source form, including but\n      not limited to compiled object code, generated documentation,\n      and conversions to other media types.\n\n      \"Work\" shall mean the work of authorship, whether in Source or\n      Object form, made available under the License, as indicated by a\n      copyright notice that is included in or attached to the work\n      (an example is provided in the Appendix below).\n\n      \"Derivative Works\" shall mean any work, whether in Source or Object\n      form, that is based on (or derived from) the Work and for which the\n      editorial revisions, annotations, elaborations, or other modifications\n      represent, as a whole, an original work of authorship. For the purposes\n      of this License, Derivative Works shall not include works that remain\n      separable from, or merely link (or bind by name) to the interfaces of,\n      the Work and Derivative Works thereof.\n\n      \"Contribution\" shall mean any work of authorship, including\n      the original version of the Work and any modifications or additions\n      to that Work or Derivative Works thereof, that is intentionally\n      submitted to Licensor for inclusion in the Work by the copyright owner\n      or by an individual or Legal Entity authorized to submit on behalf of\n      the copyright owner. For the purposes of this definition, \"submitted\"\n      means any form of electronic, verbal, or written communication sent\n      to the Licensor or its representatives, including but not limited to\n      communication on electronic mailing lists, source code control systems,\n      and issue tracking systems that are managed by, or on behalf of, the\n      Licensor for the purpose of discussing and improving the Work, but\n      excluding communication that is conspicuously marked or otherwise\n      designated in writing by the copyright owner as \"Not a Contribution.\"\n\n      \"Contributor\" shall mean Licensor and any individual or Legal Entity\n      on behalf of whom a Contribution has been received by Licensor and\n      subsequently incorporated within the Work.\n\n   2. Grant of Copyright License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      copyright license to reproduce, prepare Derivative Works of,\n      publicly display, publicly perform, sublicense, and distribute the\n      Work and such Derivative Works in Source or Object form.\n\n   3. Grant of Patent License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      (except as stated in this section) patent license to make, have made,\n      use, offer to sell, sell, import, and otherwise transfer the Work,\n      where such license applies only to those patent claims licensable\n      by such Contributor that are necessarily infringed by their\n      Contribution(s) alone or by combination of their Contribution(s)\n      with the Work to which such Contribution(s) was submitted. If You\n      institute patent litigation against any entity (including a\n      cross-claim or counterclaim in a lawsuit) alleging that the Work\n      or a Contribution incorporated within the Work constitutes direct\n      or contributory patent infringement, then any patent licenses\n      granted to You under this License for that Work shall terminate\n      as of the date such litigation is filed.\n\n   4. Redistribution. You may reproduce and distribute copies of the\n      Work or Derivative Works thereof in any medium, with or without\n      modifications, and in Source or Object form, provided that You\n      meet the following conditions:\n\n      (a) You must give any other recipients of the Work or\n          Derivative Works a copy of this License; and\n\n      (b) You must cause any modified files to carry prominent notices\n          stating that You changed the files; and\n\n      (c) You must retain, in the Source form of any Derivative Works\n          that You distribute, all copyright, patent, trademark, and\n          attribution notices from the Source form of the Work,\n          excluding those notices that do not pertain to any part of\n          the Derivative Works; and\n\n      (d) If the Work includes a \"NOTICE\" text file as part of its\n          distribution, then any Derivative Works that You distribute must\n          include a readable copy of the attribution notices contained\n          within such NOTICE file, excluding those notices that do not\n          pertain to any part of the Derivative Works, in at least one\n          of the following places: within a NOTICE text file distributed\n          as part of the Derivative Works; within the Source form or\n          documentation, if provided along with the Derivative Works; or,\n          within a display generated by the Derivative Works, if and\n          wherever such third-party notices normally appear. The contents\n          of the NOTICE file are for informational purposes only and\n          do not modify the License. You may add Your own attribution\n          notices within Derivative Works that You distribute, alongside\n          or as an addendum to the NOTICE text from the Work, provided\n          that such additional attribution notices cannot be construed\n          as modifying the License.\n\n      You may add Your own copyright statement to Your modifications and\n      may provide additional or different license terms and conditions\n      for use, reproduction, or distribution of Your modifications, or\n      for any such Derivative Works as a whole, provided Your use,\n      reproduction, and distribution of the Work otherwise complies with\n      the conditions stated in this License.\n\n   5. Submission of Contributions. Unless You explicitly state otherwise,\n      any Contribution intentionally submitted for inclusion in the Work\n      by You to the Licensor shall be under the terms and conditions of\n      this License, without any additional terms or conditions.\n      Notwithstanding the above, nothing herein shall supersede or modify\n      the terms of any separate license agreement you may have executed\n      with Licensor regarding such Contributions.\n\n   6. Trademarks. This License does not grant permission to use the trade\n      names, trademarks, service marks, or product names of the Licensor,\n      except as required for reasonable and customary use in describing the\n      origin of the Work and reproducing the content of the NOTICE file.\n\n   7. Disclaimer of Warranty. Unless required by applicable law or\n      agreed to in writing, Licensor provides the Work (and each\n      Contributor provides its Contributions) on an \"AS IS\" BASIS,\n      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or\n      implied, including, without limitation, any warranties or conditions\n      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A\n      PARTICULAR PURPOSE. You are solely responsible for determining the\n      appropriateness of using or redistributing the Work and assume any\n      risks associated with Your exercise of permissions under this License.\n\n   8. Limitation of Liability. In no event and under no legal theory,\n      whether in tort (including negligence), contract, or otherwise,\n      unless required by applicable law (such as deliberate and grossly\n      negligent acts) or agreed to in writing, shall any Contributor be\n      liable to You for damages, including any direct, indirect, special,\n      incidental, or consequential damages of any character arising as a\n      result of this License or out of the use or inability to use the\n      Work (including but not limited to damages for loss of goodwill,\n      work stoppage, computer failure or malfunction, or any and all\n      other commercial damages or losses), even if such Contributor\n      has been advised of the possibility of such damages.\n\n   9. Accepting Warranty or Additional Liability. While redistributing\n      the Work or Derivative Works thereof, You may choose to offer,\n      and charge a fee for, acceptance of support, warranty, indemnity,\n      or other liability obligations and/or rights consistent with this\n      License. However, in accepting such obligations, You may act only\n      on Your own behalf and on Your sole responsibility, not on behalf\n      of any other Contributor, and only if You agree to indemnify,\n      defend, and hold each Contributor harmless for any liability\n      incurred by, or claims asserted against, such Contributor by reason\n      of your accepting any such warranty or additional liability.\n\n   END OF TERMS AND CONDITIONS\n\n   APPENDIX: How to apply the Apache License to your work.\n\n      To apply the Apache License to your work, attach the following\n      boilerplate notice, with the fields enclosed by brackets \"[]\"\n      replaced with your own identifying information. (Don't include\n      the brackets!)  The text should be enclosed in the appropriate\n      comment syntax for the file format. We also recommend that a\n      file or class name and description of purpose be included on the\n      same \"printed page\" as the copyright notice for easier\n      identification within third-party archives.\n\n   Copyright 2023 The Sigstore Authors\n\n   Licensed under the Apache License, Version 2.0 (the \"License\");\n   you may not use this file except in compliance with the License.\n   You may obtain a copy of the License at\n\n       http://www.apache.org/licenses/LICENSE-2.0\n\n   Unless required by applicable law or agreed to in writing, software\n   distributed under the License is distributed on an \"AS IS\" BASIS,\n   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n   See the License for the specific language governing permissions and\n   limitations under the License.",
+                "matcher": "3-seq",
+                "rule_identifier": "apache-2.0_443.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_443.RULE",
+                "score": 99.81,
+                "start_line": 2
+              }
+            ]
+          }
+        ],
+        "md5": "f03382535cd50de5e9294254cd26acba",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 99.75,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "d3d4d2a95ecb3ad46be7910b056f936a20fefacf",
+        "sha1_git": "e9e7c1679a09dfcb0793682d99f5129e206a8abd",
+        "sha256": "364a130d2ca340bd56eb1e6d045fc6929bb0f9d0aa018f2c1949b29517e1cdd0",
+        "size": 11351,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "014eab2dfd9ddd0860f4a58c7c493675",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "7a21f8a6f66c60d3d29408b9a3ff0ad4712a87be",
+        "sha1_git": "097a45b0388edecd791abd14ba0b3b0b2135c14b",
+        "sha256": "f56f30f77e32c9f115f92a0730827b759b750fb20a0d9f5c6846b99f836f49a9",
+        "size": 618,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "cert",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 38,
+            "start_line": 38
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 38,
+            "holder": "The Sigstore Authors",
+            "start_line": 38
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 50,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/x509/cert.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 40
+              }
+            ]
+          }
+        ],
+        "md5": "08ac707eb65c98be0b8ad4426a8f8b3c",
+        "name": "cert.js",
+        "package_data": [],
+        "path": "package/dist/x509/cert.js",
+        "percentage_of_license_text": 7.22,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "fbecae3bebfcd42f7090aeff1b66fe18faa68479",
+        "sha1_git": "0e1126ba4a298fa0be974bcb0cad6c7bcfbf96e8",
+        "sha256": "c2d88613d8e356f77b734caa663002c24b0cfae86fb41e1ebc3da5b564bec538",
+        "size": 9784,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "cert.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "6431d7c395632e715bd8c446f66caffc",
+        "name": "cert.d.ts",
+        "package_data": [],
+        "path": "package/dist/x509/cert.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "4b154d9581ac0fe4274578a35e1b51c1285dfa50",
+        "sha1_git": "802c42d8fe7a85b9e00728d856ad7c652186ce65",
+        "sha256": "486f0f3b82d1e719d3392ec7ddee485fd451d87afd08d48af3a33d638a39f7fd",
+        "size": 1869,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "crypto",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 11,
+            "start_line": 11
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 11,
+            "holder": "The Sigstore Authors",
+            "start_line": 11
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 23,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/crypto.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 13
+              }
+            ]
+          }
+        ],
+        "md5": "a0de11891c6619056e785671abd45b1f",
+        "name": "crypto.js",
+        "package_data": [],
+        "path": "package/dist/crypto.js",
+        "percentage_of_license_text": 32.57,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "e960b54a10b51f6ebd6e344bfa05693f96cdf71e",
+        "sha1_git": "8d8110ee4234766dc639b4c01b3cc6d6ba980d40",
+        "sha256": "031e2830e1b6d884335ef43366f53e119649c6e97ae931bc59c2e6193ea18713",
+        "size": 2190,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "crypto.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "560ccb22b996d062f568f865e827095a",
+        "name": "crypto.d.ts",
+        "package_data": [],
+        "path": "package/dist/crypto.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "0dd71047a7e9d4733e577b465728bd7ac1132222",
+        "sha1_git": "784a8e32d4bfa40b73523ae226374c1860006464",
+        "sha256": "2b33c37094f25af5bdd9621985602344362741ac78f86fc2fec9172dec6f2247",
+        "size": 457,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "dsse",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 5,
+            "start_line": 5
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 5,
+            "holder": "The Sigstore Authors",
+            "start_line": 5
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 17,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/dsse.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 7
+              }
+            ]
+          }
+        ],
+        "md5": "3dac576a8155e339e172d0733843d028",
+        "name": "dsse.js",
+        "package_data": [],
+        "path": "package/dist/dsse.js",
+        "percentage_of_license_text": 62.5,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "02df2b9171256033fa9414a0fb8ae1dc482432b1",
+        "sha1_git": "9dcc2649198c19981bceb72516773ed57351b26e",
+        "sha256": "f9ed81710343a411eb1035f0c79e654c87cb932cda42dbb7e6150b8e5303bdb4",
+        "size": 1053,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "dsse.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "1673594dc7b74855e9f38af61352f590",
+        "name": "dsse.d.ts",
+        "package_data": [],
+        "path": "package/dist/dsse.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "1acb3d995eedca5d7bf073eb3f175d9ee0939178",
+        "sha1_git": "69c020829b583f9374683ab0a78b0df0d8252287",
+        "sha256": "4fa7d2d873f3db849f9bba01e32c5225770e33655e4fdd099a00e957463e87c0",
+        "size": 87,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "encoding",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 6,
+            "start_line": 6
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 6,
+            "holder": "The Sigstore Authors",
+            "start_line": 6
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 18,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/encoding.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 8
+              }
+            ]
+          }
+        ],
+        "md5": "3b614554671f90833953eebe87a1ce41",
+        "name": "encoding.js",
+        "package_data": [],
+        "path": "package/dist/encoding.js",
+        "percentage_of_license_text": 62.04,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "e7f5716f03dbfcadf5b387ba37bdf90f878f96a4",
+        "sha1_git": "7113af66db4c2db22612289e8194572ced1d2d10",
+        "sha256": "0cba784e1e688fdb2d03dd89c78fbced64a8542e7210ac19ed6e22586fd8d050",
+        "size": 986,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "encoding.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "4577fcec35e6d08488494b820c3a2128",
+        "name": "encoding.d.ts",
+        "package_data": [],
+        "path": "package/dist/encoding.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "bcb13b6584e48db41cc668235a9946db6846a8ef",
+        "sha1_git": "46e0e465a0b29ae50af1d2b6c186710e51af78ce",
+        "sha256": "15b9b4ada623de4bdbc4e7e73cec02d317a562790108b820609bb4e5a93198c0",
+        "size": 118,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "error",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 5,
+            "start_line": 5
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 5,
+            "holder": "The Sigstore Authors",
+            "start_line": 5
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 17,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/asn1/error.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 7
+              }
+            ]
+          }
+        ],
+        "md5": "b1a78b39e3b60a44ad0c61f74f8dcfed",
+        "name": "error.js",
+        "package_data": [],
+        "path": "package/dist/asn1/error.js",
+        "percentage_of_license_text": 73.28,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "ca5370a49e2592a48459e4b90af27096ce62d4d1",
+        "sha1_git": "17d93b0f7e706425681ea4245dd9c46d318b9dcf",
+        "sha256": "31d1305e0ab546f5a2fedd81f6f157f4102dae3782220fd6e0e7afb50b1a6b95",
+        "size": 859,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "error",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 5,
+            "start_line": 5
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 5,
+            "holder": "The Sigstore Authors",
+            "start_line": 5
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 17,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/rfc3161/error.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 7
+              }
+            ]
+          }
+        ],
+        "md5": "9831794bb8412c72412cc071df2163b4",
+        "name": "error.js",
+        "package_data": [],
+        "path": "package/dist/rfc3161/error.js",
+        "percentage_of_license_text": 78.7,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "6dd0045eedb62fc8cf1dcd2ced29a7a09cd08407",
+        "sha1_git": "b9b549b0bb32355c02ac4c01ac64a5b64eec4568",
+        "sha256": "a9dc1ebc92fa89f11c68cb8f77ad144b1dc33151b747f3389483fca34214f8a5",
+        "size": 834,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "error.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "beb8ca394eac067cb927609d550f760d",
+        "name": "error.d.ts",
+        "package_data": [],
+        "path": "package/dist/asn1/error.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "d9d297e314782b00aea328190f1915b8db5a6dbf",
+        "sha1_git": "fcd908f47036ac1c7c7a47e0a9e4d5b54a7b8874",
+        "sha256": "466ef1e585b127a9a171b55f41eec3029e06e8f4eb6ba1f6475605094aa02af1",
+        "size": 107,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "error.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "d624a88ee3617a57e0c48d619723154b",
+        "name": "error.d.ts",
+        "package_data": [],
+        "path": "package/dist/rfc3161/error.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "22e40eaa8062c3f8cf8b882841078a0466aebef2",
+        "sha1_git": "87010747607ae82d2b5700656445d553f3e018be",
+        "sha256": "f7408b5fbdfefa872d1da9e0211054fba8c0c4dff77a829f3298d78ad1f37330",
+        "size": 73,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "ext",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "89c6cffe7c73defe153bfe1401654428",
+        "name": "ext.js",
+        "package_data": [],
+        "path": "package/dist/x509/ext.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "fec332f5bf60c6641a8e747156a7711b9aa90ae1",
+        "sha1_git": "10f37fe256efe5657caf7134a8493be491e945c9",
+        "sha256": "4799415e915f5f673b341911502c3dcabf2c0e4bf5ff0947d2708a96e3f49378",
+        "size": 5591,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "ext.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "80d8fcc37a2f9c6d038e84b75aa88144",
+        "name": "ext.d.ts",
+        "package_data": [],
+        "path": "package/dist/x509/ext.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "226cc8977846ccc262535d19d1498a257078d2a0",
+        "sha1_git": "349bcfb0993d56e087e293b0325c31e708c2a6ab",
+        "sha256": "97b118e08a222dbe48a81e7292056fb68a62c560d586ccfec3b652b6fd2c9572",
+        "size": 1447,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "The Sigstore Authors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 15,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/rfc3161/index.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "aaea41620411af1a5db2a3553eadefcb",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/rfc3161/index.js",
+        "percentage_of_license_text": 71.43,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "161efac5e2d3a6ae9b5e97c0d9f1f8e6555eb833",
+        "sha1_git": "b77ecf1c7d50c29b4f2d22cc3ab7c3ad33145b08",
+        "sha256": "97c1ff010c638c997c0b15f218bb908d1b6ecc4161e8f3e112cbe28756e3c709",
+        "size": 855,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "The Sigstore Authors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 15,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/x509/index.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "be6cb70d3e71c8dc8d57900977277a35",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/x509/index.js",
+        "percentage_of_license_text": 53.8,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "d35bcbd78ae0e6d451f5bd09c28fd9497a31a579",
+        "sha1_git": "cdd77e58f37d5a7ffe1dcfdd33ad8bb3733d59cb",
+        "sha256": "d44814772e0f843d131d4c0b854a382e110607014edde185262bb058f5845500",
+        "size": 1179,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 38,
+            "start_line": 38
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 38,
+            "holder": "The Sigstore Authors",
+            "start_line": 38
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 50,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/index.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 40
+              }
+            ]
+          }
+        ],
+        "md5": "5c8da44d0287cc1428a96e1c2be2ec65",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/index.js",
+        "percentage_of_license_text": 20.88,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "0b7bfb512131666d7a3572225bb2fa60ff38159c",
+        "sha1_git": "49859d84db7561836b05853859e49724dc17b749",
+        "sha256": "047302239dbe0526fbdb4e98583f6f33e6117bba1eebffea9b0ffcbd46776afa",
+        "size": 3370,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 5,
+            "start_line": 5
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 5,
+            "holder": "The Sigstore Authors",
+            "start_line": 5
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 17,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/asn1/index.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 7
+              }
+            ]
+          }
+        ],
+        "md5": "7b91a1e7022ca426e5bc04ecefc5d808",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/asn1/index.js",
+        "percentage_of_license_text": 71.43,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "13ae7b502e0ece465e1bdf5f63dea5222a7fee52",
+        "sha1_git": "348b2ea4022e5ef9f26758b3435da1d612a489ee",
+        "sha256": "07377c8dc320b991517dd832068c540a86d949a40563b233b07191621d7513d6",
+        "size": 810,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "26802727e8da11a71cc181994e3cacf7",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/dist/x509/index.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "934ca3840b0c3455e2063a9f7bf861cca5b2ec57",
+        "sha1_git": "39d8ad479f62c00ed42a80956e2e21df2dc899c4",
+        "sha256": "11f2fcfc64237cf265d54364f99bb99ba865e12d1202dba65f0776b46ccd6eb0",
+        "size": 103,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "2872c7704ddd73211920ceb2e656dfcd",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/dist/rfc3161/index.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "3146941ef46f8a8ac1ecc93016ce06d047e91165",
+        "sha1_git": "514400b0750013e9989bebd2a2531a0c3c2fb068",
+        "sha256": "62da0d6e1d92216b6254865092654359e1a164313c0d9a9cb7adaef476e36f43",
+        "size": 48,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "2d0714062657b32278894fdd1e01836f",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/dist/index.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "8f56647c568bcb9e12176cbc0aacc8b359fb128a",
+        "sha1_git": "6fa561654b6fb85cde49fd5c1799fc2f65133dc6",
+        "sha256": "323b15f49da7197e7c28e2f761191eb000666df21f7b4f4e64a47087dc7e592f",
+        "size": 368,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "8d5a6e97ee4d19551fabfab2e96f9473",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/dist/asn1/index.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "3731c66fec8137f4d5825f79b2c8c608406c3ff8",
+        "sha1_git": "da45453d4eab7b47f79ede96207f36e3a8f85e18",
+        "sha256": "03bfb97e5896cf686063d2e91aa997a2908737f6bb6a6b30583280941154e601",
+        "size": 33,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "json",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "The Sigstore Authors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 15,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/json.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "65f0461b2d41256528cf33ca323626fe",
+        "name": "json.js",
+        "package_data": [],
+        "path": "package/dist/json.js",
+        "percentage_of_license_text": 41.87,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "f985853916bc7e14ca35aad08f92c6908da593d8",
+        "sha1_git": "7808d033b98cc990c64305dc827f93527b6420ca",
+        "sha256": "eba8aef02dd4f005abeb9cef37b06d49a74d9799f922170a397b3a859be5ecbb",
+        "size": 1953,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "json.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "8db907a9ea68edd18c14ec643a5e127d",
+        "name": "json.d.ts",
+        "package_data": [],
+        "path": "package/dist/json.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "100bcfdabbf0ad1965e0c3b17a7a37e866c3f224",
+        "sha1_git": "ed331817ef2360366830edfb5e020532fb7fdc94",
+        "sha256": "e20413d136f96a2915cbd230797c906bfeeee5ff8913ddcaa6bb22e6d9daf305",
+        "size": 59,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "length",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "The Sigstore Authors",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 15,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/asn1/length.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "00a778baa332366e2c256f7469e10d4b",
+        "name": "length.js",
+        "package_data": [],
+        "path": "package/dist/asn1/length.js",
+        "percentage_of_license_text": 21.52,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "3e9d0354d0182167d10e73be174b5e4726b19d64",
+        "sha1_git": "f4bfd9a06a8a5c0456fbea440d716688113b0572",
+        "sha256": "5278552c3ef1c365c7d690c3e0c3d412ffe7c7f1e27b04dca93f973a1cfa7f41",
+        "size": 2847,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "length.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "920aa08cc4512f7a6b285053fe0bfb7a",
+        "name": "length.d.ts",
+        "package_data": [],
+        "path": "package/dist/asn1/length.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "32f880f9ca5d85756b575cec1e39507260b3d9ff",
+        "sha1_git": "ad7b405c5191f715d464b1686d69228172573236",
+        "sha256": "602644e98b5ea954193aba124ee27b1e6ed27dffff90a76cf85008eb4ff0fbd8",
+        "size": 165,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "obj",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 5,
+            "start_line": 5
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 5,
+            "holder": "The Sigstore Authors",
+            "start_line": 5
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 17,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/asn1/obj.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 7
+              }
+            ]
+          }
+        ],
+        "md5": "ef879ba01208f4fc61370fd0ec455e22",
+        "name": "obj.js",
+        "package_data": [],
+        "path": "package/dist/asn1/obj.js",
+        "percentage_of_license_text": 10.18,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "cd430936582c97685da6b3886e56b30a2a45e48c",
+        "sha1_git": "1b8558a3510a7bd9f518ee0d1659e8c280ade893",
+        "sha256": "e6b493da367b545c79b5519491d8176699e83bf2f370a1ee321fa8a888cbd749",
+        "size": 6680,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "obj.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "10bc348d6a91495957a5a6fc5094c506",
+        "name": "obj.d.ts",
+        "package_data": [],
+        "path": "package/dist/asn1/obj.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "3bb41dccf7b84be6a1c2a25bd97c302be26b04af",
+        "sha1_git": "a43a0967a530e9e0f4db33cb8ca4ca16a80d35da",
+        "sha256": "8b075a1bd8e475fe1cea79e80aded2612b324d1ba4ebe82d681614182b328c8f",
+        "size": 449,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "oid",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "18745976598248ff65fa31d4724264f9",
+        "name": "oid.js",
+        "package_data": [],
+        "path": "package/dist/oid.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "90005aa8d4d9c54e9623b1c3bd8221eccf52154d",
+        "sha1_git": "4438ac9bdca984920ea284268a8e1b1bb2257fcc",
+        "sha256": "5deddcd10af33d07d1fdf2a14df86f6738331db19900ba72e71d78ead2c9fd3d",
+        "size": 700,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "oid.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "6ba4976333c7146442f3ea491edbfc24",
+        "name": "oid.d.ts",
+        "package_data": [],
+        "path": "package/dist/oid.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "3f145cabeebee2e8f82e6e6edac29edd130d7d98",
+        "sha1_git": "bf35cca2f16512b3324764e48590c31fb042a003",
+        "sha256": "34f1480746a39e62a660dd598ea884a42d9b81f75ca53f6be5e89b95226c3ad4",
+        "size": 196,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "parse",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 10,
+            "start_line": 10
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 10,
+            "holder": "The Sigstore Authors",
+            "start_line": 10
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 22,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/asn1/parse.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 12
+              }
+            ]
+          }
+        ],
+        "md5": "4d6cbf558fd4c8e7c32f885042adfc7e",
+        "name": "parse.js",
+        "package_data": [],
+        "path": "package/dist/asn1/parse.js",
+        "percentage_of_license_text": 11.23,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "8fac2bcdcf19e8e687c208330647ad100d944f8c",
+        "sha1_git": "09acc8ccab594f831565e45c6cb3550d9df5ad17",
+        "sha256": "3eb3c13d86080bf37cf4194bfe57dd84154b370e7fe592160963849c93980b7f",
+        "size": 5296,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "parse.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "18d156bf11fa7bc7e1a7c5c497bf5cb6",
+        "name": "parse.d.ts",
+        "package_data": [],
+        "path": "package/dist/asn1/parse.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "e1ade6fd065ac51d08a82722a42c20772ee6dd2c",
+        "sha1_git": "bb4e0a2cde1e879022b71c5db54380aef2d6daf7",
+        "sha256": "dd6b9c9aaf99a852776dc3f2f021aac7c8c116755031aeac52ec8219f8a52234",
+        "size": 374,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "pem",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 6,
+            "start_line": 6
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 6,
+            "holder": "The Sigstore Authors",
+            "start_line": 6
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 18,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/pem.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 8
+              }
+            ]
+          }
+        ],
+        "md5": "e7a576979cda2254baa9a003c579bc19",
+        "name": "pem.js",
+        "package_data": [],
+        "path": "package/dist/pem.js",
+        "percentage_of_license_text": 43.15,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "f7c5be87387373f5322a4e31791ce2ee77b3edb3",
+        "sha1_git": "f1241d28d586ec3e71d87a86d4d86be0c908df0d",
+        "sha256": "f520e6b379ec5c763edd7d5bf6a1a1d3991a6c7565ce16dce214790ef7eae0bf",
+        "size": 1573,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "pem.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "25998698d5c5deaa98efa5dc4fac7363",
+        "name": "pem.d.ts",
+        "package_data": [],
+        "path": "package/dist/pem.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "4966c185431700750bccff314300ae347d6862e3",
+        "sha1_git": "5428cdc95236dffd87dbcbe8beb752850a4b1e37",
+        "sha256": "eaf0c8a7a660889561a638a75723cf188ab3eaf6439539b24a52e105c85466fa",
+        "size": 150,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "sct",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 38,
+            "start_line": 38
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 38,
+            "holder": "The Sigstore Authors",
+            "start_line": 38
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 50,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/x509/sct.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 40
+              }
+            ]
+          }
+        ],
+        "md5": "35ceb62e6dbb573015f4fb0526133a43",
+        "name": "sct.js",
+        "package_data": [],
+        "path": "package/dist/x509/sct.js",
+        "percentage_of_license_text": 12.69,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "52570500a189a9c3fe881dc34c211346daccaa0c",
+        "sha1_git": "338e3478fd45ed50b1d5c51e965fe1268c616a3c",
+        "sha256": "cdabc11ef8bc6b00a86a3a0ba0a2338165ff3f6e3407969968ec69beb6ca4ed2",
+        "size": 6161,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "sct.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "81921ab925a78b5ba7556ca5d11ef443",
+        "name": "sct.d.ts",
+        "package_data": [],
+        "path": "package/dist/x509/sct.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "b6fda1a91f5a127bcc66f7ee433b1cf622b80f59",
+        "sha1_git": "7316a3acb854180e90d9f9fef57fa11a129404f2",
+        "sha256": "483dfdecaf238133ef7c77ab09cb4990424ec140ff3347172f0543af8929646b",
+        "size": 739,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "stream",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 5,
+            "start_line": 5
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 5,
+            "holder": "The Sigstore Authors",
+            "start_line": 5
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 17,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/stream.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 7
+              }
+            ]
+          }
+        ],
+        "md5": "5b56e9024973306e3adddcf2bd897ab8",
+        "name": "stream.js",
+        "package_data": [],
+        "path": "package/dist/stream.js",
+        "percentage_of_license_text": 20.33,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "e740c345aa5d05796c29ac69ee17546ce2ab953b",
+        "sha1_git": "c69b3097a2dd25094f0a92e7c8feac7ce4a6284a",
+        "sha256": "92bf85aaa2b23e840c0b0cb5c3d3b1ae11576643b09fa7d73d881c04ac6e71d5",
+        "size": 3535,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "stream.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "658cfa6ed8a40ed277d85266859a26a2",
+        "name": "stream.d.ts",
+        "package_data": [],
+        "path": "package/dist/stream.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "e754c027d63f2c7f812bef678932b575e5d8120d",
+        "sha1_git": "8194ac0f94599206be8fd6483c9cd4e519d6c3c9",
+        "sha256": "026ca89f3b7c93d4a6930da443c2f35225c4b51d26341ba742f156eb84f7ed00",
+        "size": 617,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "tag",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 5,
+            "start_line": 5
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 5,
+            "holder": "The Sigstore Authors",
+            "start_line": 5
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 17,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/asn1/tag.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 7
+              }
+            ]
+          }
+        ],
+        "md5": "5dd7152b552fe8706d35407df676d346",
+        "name": "tag.js",
+        "package_data": [],
+        "path": "package/dist/asn1/tag.js",
+        "percentage_of_license_text": 25.99,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "5962a5180447dc919a301b0854d090fd3c508da9",
+        "sha1_git": "ebb4dd562353f6f8d2faf2dcb21831fc8c76239f",
+        "sha256": "71333f71304fd8aa4bb7c64a37535c0ab1f9d17178dcbc15ae70d2670c2e7eaf",
+        "size": 2877,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "tag.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "02ac4abb44a3511d57db4f2034b523be",
+        "name": "tag.d.ts",
+        "package_data": [],
+        "path": "package/dist/asn1/tag.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "4f8edffd391b957141827bb457e76e6cdde98308",
+        "sha1_git": "a00014b13cebb49292e508aa286d7147b8ea33ee",
+        "sha256": "0cf05fc52b2978c948c3fbf475b4e7a3ee61628ddbeda154b9d199febb084422",
+        "size": 442,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "timestamp",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2023 The Sigstore Authors",
+            "end_line": 38,
+            "start_line": 38
+          }
+        ],
+        "detected_license_expression": "apache-2.0",
+        "detected_license_expression_spdx": "Apache-2.0",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [
+          {
+            "end_line": 38,
+            "holder": "The Sigstore Authors",
+            "start_line": 38
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 50,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/rfc3161/timestamp.js",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 85,
+                "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+                "matcher": "2-aho",
+                "rule_identifier": "apache-2.0_7.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+                "score": 100,
+                "start_line": 40
+              }
+            ]
+          }
+        ],
+        "md5": "8bc5ff90d6feb93629c82ed7343db1f3",
+        "name": "timestamp.js",
+        "package_data": [],
+        "path": "package/dist/rfc3161/timestamp.js",
+        "percentage_of_license_text": 8.42,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "ca3df79458366a089899541b24f2ac3d0389b9a7",
+        "sha1_git": "a7034526ecbce2144ecf2971b7c53fd4402f8b11",
+        "sha256": "0c728d7c642969de8424e77424f8e5562c84d424fd2474902afee3d23aa9c0a1",
+        "size": 8618,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "timestamp.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "fc4ca6fae5ec0f6b0804313fbe2a0726",
+        "name": "timestamp.d.ts",
+        "package_data": [],
+        "path": "package/dist/rfc3161/timestamp.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "8c22f50a46dbb1c6249d8f3fe4074e022a397296",
+        "sha1_git": "98ebe565bcc2589bcc6a8c03d69b7d20c54f0cc2",
+        "sha256": "92356dcaefe9b3d94e70f8e7630dd39fd3b1986eb662ff6a5ecb2d95f5aea5fb",
+        "size": 1261,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "tstinfo",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "41a8105af85e2d7095e7ddc8fec14658",
+        "name": "tstinfo.js",
+        "package_data": [],
+        "path": "package/dist/rfc3161/tstinfo.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "d17db8cff02603aa7a740ed17061e5fe87d46cfd",
+        "sha1_git": "91213529b66050b8de0d9691178700c0e9bfe71d",
+        "sha256": "edeafa060a2e955dff166b2482b5dfa8e0dec1d083409be0c8ee38b6cc1eb62f",
+        "size": 2574,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "tstinfo.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/%40sigstore/core@4.0.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "7df540bc850b6472362f0b3d40c1b436",
+        "name": "tstinfo.d.ts",
+        "package_data": [],
+        "path": "package/dist/rfc3161/tstinfo.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "63f0beba76ab04f21d5bb58bd0ac63c0cc5ce8d8",
+        "sha1_git": "a63c81723456ed2b20e933cc39fa591b97505d9b",
+        "sha256": "7ae3fd7fe1484d4f0bf19ebe0810ca752d1195276359794607ec1f7dff31566f",
+        "size": 357,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "apache_2_0-9e458229-3aad-32b0-23b2-0c3a295f960c",
+        "license_expression": "apache-2.0",
+        "license_expression_spdx": "Apache-2.0",
+        "reference_matches": [
+          {
+            "end_line": 202,
+            "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/LICENSE",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "match_coverage": 100,
+            "matched_length": 1579,
+            "matched_text": "                                 Apache License\n                           Version 2.0, January 2004\n                        http://www.apache.org/licenses/\n\n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n\n   1. Definitions.\n\n      \"License\" shall mean the terms and conditions for use, reproduction,\n      and distribution as defined by Sections 1 through 9 of this document.\n\n      \"Licensor\" shall mean the copyright owner or entity authorized by\n      the copyright owner that is granting the License.\n\n      \"Legal Entity\" shall mean the union of the acting entity and all\n      other entities that control, are controlled by, or are under common\n      control with that entity. For the purposes of this definition,\n      \"control\" means (i) the power, direct or indirect, to cause the\n      direction or management of such entity, whether by contract or\n      otherwise, or (ii) ownership of fifty percent (50%) or more of the\n      outstanding shares, or (iii) beneficial ownership of such entity.\n\n      \"You\" (or \"Your\") shall mean an individual or Legal Entity\n      exercising permissions granted by this License.\n\n      \"Source\" form shall mean the preferred form for making modifications,\n      including but not limited to software source code, documentation\n      source, and configuration files.\n\n      \"Object\" form shall mean any form resulting from mechanical\n      transformation or translation of a Source form, including but\n      not limited to compiled object code, generated documentation,\n      and conversions to other media types.\n\n      \"Work\" shall mean the work of authorship, whether in Source or\n      Object form, made available under the License, as indicated by a\n      copyright notice that is included in or attached to the work\n      (an example is provided in the Appendix below).\n\n      \"Derivative Works\" shall mean any work, whether in Source or Object\n      form, that is based on (or derived from) the Work and for which the\n      editorial revisions, annotations, elaborations, or other modifications\n      represent, as a whole, an original work of authorship. For the purposes\n      of this License, Derivative Works shall not include works that remain\n      separable from, or merely link (or bind by name) to the interfaces of,\n      the Work and Derivative Works thereof.\n\n      \"Contribution\" shall mean any work of authorship, including\n      the original version of the Work and any modifications or additions\n      to that Work or Derivative Works thereof, that is intentionally\n      submitted to Licensor for inclusion in the Work by the copyright owner\n      or by an individual or Legal Entity authorized to submit on behalf of\n      the copyright owner. For the purposes of this definition, \"submitted\"\n      means any form of electronic, verbal, or written communication sent\n      to the Licensor or its representatives, including but not limited to\n      communication on electronic mailing lists, source code control systems,\n      and issue tracking systems that are managed by, or on behalf of, the\n      Licensor for the purpose of discussing and improving the Work, but\n      excluding communication that is conspicuously marked or otherwise\n      designated in writing by the copyright owner as \"Not a Contribution.\"\n\n      \"Contributor\" shall mean Licensor and any individual or Legal Entity\n      on behalf of whom a Contribution has been received by Licensor and\n      subsequently incorporated within the Work.\n\n   2. Grant of Copyright License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      copyright license to reproduce, prepare Derivative Works of,\n      publicly display, publicly perform, sublicense, and distribute the\n      Work and such Derivative Works in Source or Object form.\n\n   3. Grant of Patent License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      (except as stated in this section) patent license to make, have made,\n      use, offer to sell, sell, import, and otherwise transfer the Work,\n      where such license applies only to those patent claims licensable\n      by such Contributor that are necessarily infringed by their\n      Contribution(s) alone or by combination of their Contribution(s)\n      with the Work to which such Contribution(s) was submitted. If You\n      institute patent litigation against any entity (including a\n      cross-claim or counterclaim in a lawsuit) alleging that the Work\n      or a Contribution incorporated within the Work constitutes direct\n      or contributory patent infringement, then any patent licenses\n      granted to You under this License for that Work shall terminate\n      as of the date such litigation is filed.\n\n   4. Redistribution. You may reproduce and distribute copies of the\n      Work or Derivative Works thereof in any medium, with or without\n      modifications, and in Source or Object form, provided that You\n      meet the following conditions:\n\n      (a) You must give any other recipients of the Work or\n          Derivative Works a copy of this License; and\n\n      (b) You must cause any modified files to carry prominent notices\n          stating that You changed the files; and\n\n      (c) You must retain, in the Source form of any Derivative Works\n          that You distribute, all copyright, patent, trademark, and\n          attribution notices from the Source form of the Work,\n          excluding those notices that do not pertain to any part of\n          the Derivative Works; and\n\n      (d) If the Work includes a \"NOTICE\" text file as part of its\n          distribution, then any Derivative Works that You distribute must\n          include a readable copy of the attribution notices contained\n          within such NOTICE file, excluding those notices that do not\n          pertain to any part of the Derivative Works, in at least one\n          of the following places: within a NOTICE text file distributed\n          as part of the Derivative Works; within the Source form or\n          documentation, if provided along with the Derivative Works; or,\n          within a display generated by the Derivative Works, if and\n          wherever such third-party notices normally appear. The contents\n          of the NOTICE file are for informational purposes only and\n          do not modify the License. You may add Your own attribution\n          notices within Derivative Works that You distribute, alongside\n          or as an addendum to the NOTICE text from the Work, provided\n          that such additional attribution notices cannot be construed\n          as modifying the License.\n\n      You may add Your own copyright statement to Your modifications and\n      may provide additional or different license terms and conditions\n      for use, reproduction, or distribution of Your modifications, or\n      for any such Derivative Works as a whole, provided Your use,\n      reproduction, and distribution of the Work otherwise complies with\n      the conditions stated in this License.\n\n   5. Submission of Contributions. Unless You explicitly state otherwise,\n      any Contribution intentionally submitted for inclusion in the Work\n      by You to the Licensor shall be under the terms and conditions of\n      this License, without any additional terms or conditions.\n      Notwithstanding the above, nothing herein shall supersede or modify\n      the terms of any separate license agreement you may have executed\n      with Licensor regarding such Contributions.\n\n   6. Trademarks. This License does not grant permission to use the trade\n      names, trademarks, service marks, or product names of the Licensor,\n      except as required for reasonable and customary use in describing the\n      origin of the Work and reproducing the content of the NOTICE file.\n\n   7. Disclaimer of Warranty. Unless required by applicable law or\n      agreed to in writing, Licensor provides the Work (and each\n      Contributor provides its Contributions) on an \"AS IS\" BASIS,\n      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or\n      implied, including, without limitation, any warranties or conditions\n      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A\n      PARTICULAR PURPOSE. You are solely responsible for determining the\n      appropriateness of using or redistributing the Work and assume any\n      risks associated with Your exercise of permissions under this License.\n\n   8. Limitation of Liability. In no event and under no legal theory,\n      whether in tort (including negligence), contract, or otherwise,\n      unless required by applicable law (such as deliberate and grossly\n      negligent acts) or agreed to in writing, shall any Contributor be\n      liable to You for damages, including any direct, indirect, special,\n      incidental, or consequential damages of any character arising as a\n      result of this License or out of the use or inability to use the\n      Work (including but not limited to damages for loss of goodwill,\n      work stoppage, computer failure or malfunction, or any and all\n      other commercial damages or losses), even if such Contributor\n      has been advised of the possibility of such damages.\n\n   9. Accepting Warranty or Additional Liability. While redistributing\n      the Work or Derivative Works thereof, You may choose to offer,\n      and charge a fee for, acceptance of support, warranty, indemnity,\n      or other liability obligations and/or rights consistent with this\n      License. However, in accepting such obligations, You may act only\n      on Your own behalf and on Your sole responsibility, not on behalf\n      of any other Contributor, and only if You agree to indemnify,\n      defend, and hold each Contributor harmless for any liability\n      incurred by, or claims asserted against, such Contributor by reason\n      of your accepting any such warranty or additional liability.\n\n   END OF TERMS AND CONDITIONS\n\n   APPENDIX: How to apply the Apache License to your work.\n\n      To apply the Apache License to your work, attach the following\n      boilerplate notice, with the fields enclosed by brackets \"[]\"\n      replaced with your own identifying information. (Don't include\n      the brackets!)  The text should be enclosed in the appropriate\n      comment syntax for the file format. We also recommend that a\n      file or class name and description of purpose be included on the\n      same \"printed page\" as the copyright notice for easier\n      identification within third-party archives.\n\n   Copyright 2023 The Sigstore Authors\n\n   Licensed under the Apache License, Version 2.0 (the \"License\");\n   you may not use this file except in compliance with the License.\n   You may obtain a copy of the License at\n\n       http://www.apache.org/licenses/LICENSE-2.0\n\n   Unless required by applicable law or agreed to in writing, software\n   distributed under the License is distributed on an \"AS IS\" BASIS,\n   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n   See the License for the specific language governing permissions and\n   limitations under the License.",
+            "matcher": "3-seq",
+            "rule_identifier": "apache-2.0_443.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_443.RULE",
+            "score": 99.81,
+            "start_line": 2
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "apache_2_0-d66ab77d-a5cc-7104-e702-dc7df61fe9e8",
+        "license_expression": "apache-2.0",
+        "license_expression_spdx": "Apache-2.0",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/package.json",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "Apache-2.0",
+            "matcher": "1-hash",
+            "rule_identifier": "spdx_license_id_apache-2.0_for_apache-2.0.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_apache-2.0_for_apache-2.0.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "apache_2_0-ec759ae0-ea5a-f138-793e-388520e080c0",
+        "license_expression": "apache-2.0",
+        "license_expression_spdx": "Apache-2.0",
+        "reference_matches": [
+          {
+            "end_line": 16,
+            "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/package.json",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "  \"license\": \"Apache-2.0\",",
+            "matcher": "2-aho",
+            "rule_identifier": "apache-2.0_65.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_65.RULE",
+            "score": 100,
+            "start_line": 16
+          }
+        ]
+      },
+      {
+        "detection_count": 19,
+        "identifier": "apache_2_0-c4e30bcd-ccfd-bbc3-d2f1-196ab911e47d",
+        "license_expression": "apache-2.0",
+        "license_expression_spdx": "Apache-2.0",
+        "reference_matches": [
+          {
+            "end_line": 23,
+            "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/dist/crypto.js",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "match_coverage": 100,
+            "matched_length": 85,
+            "matched_text": "Licensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+            "matcher": "2-aho",
+            "rule_identifier": "apache-2.0_7.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+            "score": 100,
+            "start_line": 13
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "http://www.apache.org/foundation/licence-FAQ.html",
+        "homepage_url": "http://www.apache.org/licenses/",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [
+          "http://www.apache.org/licenses/",
+          "http://www.apache.org/licenses/LICENSE-2.0"
+        ],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "apache-2.0",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/apache-2.0",
+        "minimum_coverage": 0,
+        "name": "Apache License 2.0",
+        "notes": "Per SPDX.org, this version was released January 2004 This license is OSI\ncertified\n",
+        "osi_license_key": "Apache-2.0",
+        "osi_url": "http://opensource.org/licenses/apache2.0.php",
+        "other_spdx_license_keys": [
+          "LicenseRef-Apache",
+          "LicenseRef-Apache-2.0"
+        ],
+        "other_urls": [
+          "http://www.opensource.org/licenses/Apache-2.0",
+          "https://opensource.org/licenses/Apache-2.0",
+          "https://www.apache.org/licenses/LICENSE-2.0"
+        ],
+        "owner": "Apache Software Foundation",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/apache-2.0.LICENSE",
+        "short_name": "Apache 2.0",
+        "spdx_license_key": "Apache-2.0",
+        "spdx_url": "https://spdx.org/licenses/Apache-2.0",
+        "standard_notice": null,
+        "text": "                                 Apache License\n                           Version 2.0, January 2004\n                        http://www.apache.org/licenses/\n \n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n \n   1. Definitions.\n \n      \"License\" shall mean the terms and conditions for use, reproduction,\n      and distribution as defined by Sections 1 through 9 of this document.\n \n      \"Licensor\" shall mean the copyright owner or entity authorized by\n      the copyright owner that is granting the License.\n \n      \"Legal Entity\" shall mean the union of the acting entity and all\n      other entities that control, are controlled by, or are under common\n      control with that entity. For the purposes of this definition,\n      \"control\" means (i) the power, direct or indirect, to cause the\n      direction or management of such entity, whether by contract or\n      otherwise, or (ii) ownership of fifty percent (50%) or more of the\n      outstanding shares, or (iii) beneficial ownership of such entity.\n \n      \"You\" (or \"Your\") shall mean an individual or Legal Entity\n      exercising permissions granted by this License.\n \n      \"Source\" form shall mean the preferred form for making modifications,\n      including but not limited to software source code, documentation\n      source, and configuration files.\n \n      \"Object\" form shall mean any form resulting from mechanical\n      transformation or translation of a Source form, including but\n      not limited to compiled object code, generated documentation,\n      and conversions to other media types.\n \n      \"Work\" shall mean the work of authorship, whether in Source or\n      Object form, made available under the License, as indicated by a\n      copyright notice that is included in or attached to the work\n      (an example is provided in the Appendix below).\n \n      \"Derivative Works\" shall mean any work, whether in Source or Object\n      form, that is based on (or derived from) the Work and for which the\n      editorial revisions, annotations, elaborations, or other modifications\n      represent, as a whole, an original work of authorship. For the purposes\n      of this License, Derivative Works shall not include works that remain\n      separable from, or merely link (or bind by name) to the interfaces of,\n      the Work and Derivative Works thereof.\n \n      \"Contribution\" shall mean any work of authorship, including\n      the original version of the Work and any modifications or additions\n      to that Work or Derivative Works thereof, that is intentionally\n      submitted to Licensor for inclusion in the Work by the copyright owner\n      or by an individual or Legal Entity authorized to submit on behalf of\n      the copyright owner. For the purposes of this definition, \"submitted\"\n      means any form of electronic, verbal, or written communication sent\n      to the Licensor or its representatives, including but not limited to\n      communication on electronic mailing lists, source code control systems,\n      and issue tracking systems that are managed by, or on behalf of, the\n      Licensor for the purpose of discussing and improving the Work, but\n      excluding communication that is conspicuously marked or otherwise\n      designated in writing by the copyright owner as \"Not a Contribution.\"\n \n      \"Contributor\" shall mean Licensor and any individual or Legal Entity\n      on behalf of whom a Contribution has been received by Licensor and\n      subsequently incorporated within the Work.\n \n   2. Grant of Copyright License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      copyright license to reproduce, prepare Derivative Works of,\n      publicly display, publicly perform, sublicense, and distribute the\n      Work and such Derivative Works in Source or Object form.\n \n   3. Grant of Patent License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      (except as stated in this section) patent license to make, have made,\n      use, offer to sell, sell, import, and otherwise transfer the Work,\n      where such license applies only to those patent claims licensable\n      by such Contributor that are necessarily infringed by their\n      Contribution(s) alone or by combination of their Contribution(s)\n      with the Work to which such Contribution(s) was submitted. If You\n      institute patent litigation against any entity (including a\n      cross-claim or counterclaim in a lawsuit) alleging that the Work\n      or a Contribution incorporated within the Work constitutes direct\n      or contributory patent infringement, then any patent licenses\n      granted to You under this License for that Work shall terminate\n      as of the date such litigation is filed.\n \n   4. Redistribution. You may reproduce and distribute copies of the\n      Work or Derivative Works thereof in any medium, with or without\n      modifications, and in Source or Object form, provided that You\n      meet the following conditions:\n \n      (a) You must give any other recipients of the Work or\n          Derivative Works a copy of this License; and\n \n      (b) You must cause any modified files to carry prominent notices\n          stating that You changed the files; and\n \n      (c) You must retain, in the Source form of any Derivative Works\n          that You distribute, all copyright, patent, trademark, and\n          attribution notices from the Source form of the Work,\n          excluding those notices that do not pertain to any part of\n          the Derivative Works; and\n \n      (d) If the Work includes a \"NOTICE\" text file as part of its\n          distribution, then any Derivative Works that You distribute must\n          include a readable copy of the attribution notices contained\n          within such NOTICE file, excluding those notices that do not\n          pertain to any part of the Derivative Works, in at least one\n          of the following places: within a NOTICE text file distributed\n          as part of the Derivative Works; within the Source form or\n          documentation, if provided along with the Derivative Works; or,\n          within a display generated by the Derivative Works, if and\n          wherever such third-party notices normally appear. The contents\n          of the NOTICE file are for informational purposes only and\n          do not modify the License. You may add Your own attribution\n          notices within Derivative Works that You distribute, alongside\n          or as an addendum to the NOTICE text from the Work, provided\n          that such additional attribution notices cannot be construed\n          as modifying the License.\n \n      You may add Your own copyright statement to Your modifications and\n      may provide additional or different license terms and conditions\n      for use, reproduction, or distribution of Your modifications, or\n      for any such Derivative Works as a whole, provided Your use,\n      reproduction, and distribution of the Work otherwise complies with\n      the conditions stated in this License.\n \n   5. Submission of Contributions. Unless You explicitly state otherwise,\n      any Contribution intentionally submitted for inclusion in the Work\n      by You to the Licensor shall be under the terms and conditions of\n      this License, without any additional terms or conditions.\n      Notwithstanding the above, nothing herein shall supersede or modify\n      the terms of any separate license agreement you may have executed\n      with Licensor regarding such Contributions.\n \n   6. Trademarks. This License does not grant permission to use the trade\n      names, trademarks, service marks, or product names of the Licensor,\n      except as required for reasonable and customary use in describing the\n      origin of the Work and reproducing the content of the NOTICE file.\n \n   7. Disclaimer of Warranty. Unless required by applicable law or\n      agreed to in writing, Licensor provides the Work (and each\n      Contributor provides its Contributions) on an \"AS IS\" BASIS,\n      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or\n      implied, including, without limitation, any warranties or conditions\n      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A\n      PARTICULAR PURPOSE. You are solely responsible for determining the\n      appropriateness of using or redistributing the Work and assume any\n      risks associated with Your exercise of permissions under this License.\n \n   8. Limitation of Liability. In no event and under no legal theory,\n      whether in tort (including negligence), contract, or otherwise,\n      unless required by applicable law (such as deliberate and grossly\n      negligent acts) or agreed to in writing, shall any Contributor be\n      liable to You for damages, including any direct, indirect, special,\n      incidental, or consequential damages of any character arising as a\n      result of this License or out of the use or inability to use the\n      Work (including but not limited to damages for loss of goodwill,\n      work stoppage, computer failure or malfunction, or any and all\n      other commercial damages or losses), even if such Contributor\n      has been advised of the possibility of such damages.\n \n   9. Accepting Warranty or Additional Liability. While redistributing\n      the Work or Derivative Works thereof, You may choose to offer,\n      and charge a fee for, acceptance of support, warranty, indemnity,\n      or other liability obligations and/or rights consistent with this\n      License. However, in accepting such obligations, You may act only\n      on Your own behalf and on Your sole responsibility, not on behalf\n      of any other Contributor, and only if You agree to indemnify,\n      defend, and hold each Contributor harmless for any liability\n      incurred by, or claims asserted against, such Contributor by reason\n      of your accepting any such warranty or additional liability.\n \n   END OF TERMS AND CONDITIONS\n \n   APPENDIX: How to apply the Apache License to your work.\n \n      To apply the Apache License to your work, attach the following\n      boilerplate notice, with the fields enclosed by brackets \"[]\"\n      replaced with your own identifying information. (Don't include\n      the brackets!)  The text should be enclosed in the appropriate\n      comment syntax for the file format. We also recommend that a\n      file or class name and description of purpose be included on the\n      same \"printed page\" as the copyright notice for easier\n      identification within third-party archives.\n \n   Copyright [yyyy] [name of copyright owner]\n \n   Licensed under the Apache License, Version 2.0 (the \"License\");\n   you may not use this file except in compliance with the License.\n   You may obtain a copy of the License at\n \n       http://www.apache.org/licenses/LICENSE-2.0\n \n   Unless required by applicable law or agreed to in writing, software\n   distributed under the License is distributed on an \"AS IS\" BASIS,\n   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n   See the License for the specific language governing permissions and\n   limitations under the License.",
+        "text_urls": [
+          "http://www.apache.org/licenses/LICENSE-2.0"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "apache-2.0_443.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [
+          "http://www.apache.org/licenses/",
+          "http://www.apache.org/licenses/LICENSE-2.0"
+        ],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 1579,
+        "license_expression": "apache-2.0",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_443.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Apache License\n                           Version 2.0, January 2004\n                        http://www.apache.org/licenses/\n\n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n\n   1. Definitions.\n\n      \"License\" shall mean the terms and conditions for use, reproduction,\n      and distribution as defined by Sections 1 through 9 of this document.\n\n      \"Licensor\" shall mean the copyright owner or entity authorized by\n      the copyright owner that is granting the License.\n\n      \"Legal Entity\" shall mean the union of the acting entity and all\n      other entities that control, are controlled by, or are under common\n      control with that entity. For the purposes of this definition,\n      \"control\" means (i) the power, direct or indirect, to cause the\n      direction or management of such entity, whether by contract or\n      otherwise, or (ii) ownership of fifty percent (50%) or more of the\n      outstanding shares, or (iii) beneficial ownership of such entity.\n\n      \"You\" (or \"Your\") shall mean an individual or Legal Entity\n      exercising permissions granted by this License.\n\n      \"Source\" form shall mean the preferred form for making modifications,\n      including but not limited to software source code, documentation\n      source, and configuration files.\n\n      \"Object\" form shall mean any form resulting from mechanical\n      transformation or translation of a Source form, including but\n      not limited to compiled object code, generated documentation,\n      and conversions to other media types.\n\n      \"Work\" shall mean the work of authorship, whether in Source or\n      Object form, made available under the License, as indicated by a\n      copyright notice that is included in or attached to the work\n      (an example is provided in the Appendix below).\n\n      \"Derivative Works\" shall mean any work, whether in Source or Object\n      form, that is based on (or derived from) the Work and for which the\n      editorial revisions, annotations, elaborations, or other modifications\n      represent, as a whole, an original work of authorship. For the purposes\n      of this License, Derivative Works shall not include works that remain\n      separable from, or merely link (or bind by name) to the interfaces of,\n      the Work and Derivative Works thereof.\n\n      \"Contribution\" shall mean any work of authorship, including\n      the original version of the Work and any modifications or additions\n      to that Work or Derivative Works thereof, that is intentionally\n      submitted to Licensor for inclusion in the Work by the copyright owner\n      or by an individual or Legal Entity authorized to submit on behalf of\n      the copyright owner. For the purposes of this definition, \"submitted\"\n      means any form of electronic, verbal, or written communication sent\n      to the Licensor or its representatives, including but not limited to\n      communication on electronic mailing lists, source code control systems,\n      and issue tracking systems that are managed by, or on behalf of, the\n      Licensor for the purpose of discussing and improving the Work, but\n      excluding communication that is conspicuously marked or otherwise\n      designated in writing by the copyright owner as \"Not a Contribution.\"\n\n      \"Contributor\" shall mean Licensor and any individual or Legal Entity\n      on behalf of whom a Contribution has been received by Licensor and\n      subsequently incorporated within the Work.\n\n   2. Grant of Copyright License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      copyright license to reproduce, prepare Derivative Works of,\n      publicly display, publicly perform, sublicense, and distribute the\n      Work and such Derivative Works in Source or Object form.\n\n   3. Grant of Patent License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      (except as stated in this section) patent license to make, have made,\n      use, offer to sell, sell, import, and otherwise transfer the Work,\n      where such license applies only to those patent claims licensable\n      by such Contributor that are necessarily infringed by their\n      Contribution(s) alone or by combination of their Contribution(s)\n      with the Work to which such Contribution(s) was submitted. If You\n      institute patent litigation against any entity (including a\n      cross-claim or counterclaim in a lawsuit) alleging that the Work\n      or a Contribution incorporated within the Work constitutes direct\n      or contributory patent infringement, then any patent licenses\n      granted to You under this License for that Work shall terminate\n      as of the date such litigation is filed.\n\n   4. Redistribution. You may reproduce and distribute copies of the\n      Work or Derivative Works thereof in any medium, with or without\n      modifications, and in Source or Object form, provided that You\n      meet the following conditions:\n\n      (a) You must give any other recipients of the Work or\n          Derivative Works a copy of this License; and\n\n      (b) You must cause any modified files to carry prominent notices\n          stating that You changed the files; and\n\n      (c) You must retain, in the Source form of any Derivative Works\n          that You distribute, all copyright, patent, trademark, and\n          attribution notices from the Source form of the Work,\n          excluding those notices that do not pertain to any part of\n          the Derivative Works; and\n\n      (d) If the Work includes a \"NOTICE\" text file as part of its\n          distribution, then any Derivative Works that You distribute must\n          include a readable copy of the attribution notices contained\n          within such NOTICE file, excluding those notices that do not\n          pertain to any part of the Derivative Works, in at least one\n          of the following places: within a NOTICE text file distributed\n          as part of the Derivative Works; within the Source form or\n          documentation, if provided along with the Derivative Works; or,\n          within a display generated by the Derivative Works, if and\n          wherever such third-party notices normally appear. The contents\n          of the NOTICE file are for informational purposes only and\n          do not modify the License. You may add Your own attribution\n          notices within Derivative Works that You distribute, alongside\n          or as an addendum to the NOTICE text from the Work, provided\n          that such additional attribution notices cannot be construed\n          as modifying the License.\n\n      You may add Your own copyright statement to Your modifications and\n      may provide additional or different license terms and conditions\n      for use, reproduction, or distribution of Your modifications, or\n      for any such Derivative Works as a whole, provided Your use,\n      reproduction, and distribution of the Work otherwise complies with\n      the conditions stated in this License.\n\n   5. Submission of Contributions. Unless You explicitly state otherwise,\n      any Contribution intentionally submitted for inclusion in the Work\n      by You to the Licensor shall be under the terms and conditions of\n      this License, without any additional terms or conditions.\n      Notwithstanding the above, nothing herein shall supersede or modify\n      the terms of any separate license agreement you may have executed\n      with Licensor regarding such Contributions.\n\n   6. Trademarks. This License does not grant permission to use the trade\n      names, trademarks, service marks, or product names of the Licensor,\n      except as required for reasonable and customary use in describing the\n      origin of the Work and reproducing the content of the NOTICE file.\n\n   7. Disclaimer of Warranty. Unless required by applicable law or\n      agreed to in writing, Licensor provides the Work (and each\n      Contributor provides its Contributions) on an \"AS IS\" BASIS,\n      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or\n      implied, including, without limitation, any warranties or conditions\n      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A\n      PARTICULAR PURPOSE. You are solely responsible for determining the\n      appropriateness of using or redistributing the Work and assume any\n      risks associated with Your exercise of permissions under this License.\n\n   8. Limitation of Liability. In no event and under no legal theory,\n      whether in tort (including negligence), contract, or otherwise,\n      unless required by applicable law (such as deliberate and grossly\n      negligent acts) or agreed to in writing, shall any Contributor be\n      liable to You for damages, including any direct, indirect, special,\n      incidental, or consequential damages of any character arising as a\n      result of this License or out of the use or inability to use the\n      Work (including but not limited to damages for loss of goodwill,\n      work stoppage, computer failure or malfunction, or any and all\n      other commercial damages or losses), even if such Contributor\n      has been advised of the possibility of such damages.\n\n   9. Accepting Warranty or Additional Liability. While redistributing\n      the Work or Derivative Works thereof, You may choose to offer,\n      and charge a fee for, acceptance of support, warranty, indemnity,\n      or other liability obligations and/or rights consistent with this\n      License. However, in accepting such obligations, You may act only\n      on Your own behalf and on Your sole responsibility, not on behalf\n      of any other Contributor, and only if You agree to indemnify,\n      defend, and hold each Contributor harmless for any liability\n      incurred by, or claims asserted against, such Contributor by reason\n      of your accepting any such warranty or additional liability.\n\n   END OF TERMS AND CONDITIONS\n\n   APPENDIX: How to apply the Apache License to your work.\n\n      To apply the Apache License to your work, attach the following\n      boilerplate notice, with the fields enclosed by brackets \"[]\"\n      replaced with your own identifying information. (Don't include\n      the brackets!)  The text should be enclosed in the appropriate\n      comment syntax for the file format. We also recommend that a\n      file or class name and description of purpose be included on the\n      same \"printed page\" as the copyright notice for easier\n      identification within third-party archives.\n\n   Copyright \n\n   Licensed under the Apache License, Version 2.0 (the \"License\");\n   you may not use this file except in compliance with the License.\n   You may obtain a copy of the License at\n\n       http://www.apache.org/licenses/LICENSE-2.0\n\n   Unless required by applicable law or agreed to in writing, software\n   distributed under the License is distributed on an \"AS IS\" BASIS,\n   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n   See the License for the specific language governing permissions and\n   limitations under the License."
+      },
+      {
+        "identifier": "apache-2.0_65.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "apache-2.0",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_65.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "license=\"Apache-2.0"
+      },
+      {
+        "identifier": "apache-2.0_7.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [
+          "http://www.apache.org/licenses/LICENSE-2.0"
+        ],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 85,
+        "license_expression": "apache-2.0",
+        "minimum_coverage": 0,
+        "notes": "apache 2.0 with disclaimer",
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/apache-2.0_7.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "# {{Licensed under the Apache License, Version 2.0 (the \"License}}\");\n# you may not use this file except in compliance with the License.\n# You may obtain a copy of the License at\n# \n#   http://www.apache.org/licenses/LICENSE-2.0\n# \n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License."
+      },
+      {
+        "identifier": "spdx_license_id_apache-2.0_for_apache-2.0.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "apache-2.0",
+        "minimum_coverage": 100,
+        "notes": "Used to detect a bare SPDX license id",
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_apache-2.0_for_apache-2.0.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Apache-2.0"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/@sigstore%2fcore/4.0.1",
+        "bug_tracking_url": "https://github.com/sigstore/sigstore-js/issues",
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "apache-2.0",
+        "declared_license_expression_spdx": "Apache-2.0",
+        "description": "Base library for Sigstore",
+        "download_url": "https://registry.npmjs.org/@sigstore/core/-/core-4.0.1.tgz",
+        "extra_data": {
+          "engines": {
+            "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+          }
+        },
+        "extracted_license_statement": "- Apache-2.0\n",
+        "holder": null,
+        "homepage_url": "https://github.com/sigstore/sigstore-js/tree/main/packages/core#readme",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [],
+        "license_detections": [
+          {
+            "identifier": "apache_2_0-d66ab77d-a5cc-7104-e702-dc7df61fe9e8",
+            "license_expression": "apache-2.0",
+            "license_expression_spdx": "Apache-2.0",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "275404a44d5d9f86cc4b81fa4e9c93b30584d47787f0a68709c0f473ea10130f/package/package.json",
+                "license_expression": "apache-2.0",
+                "license_expression_spdx": "Apache-2.0",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "Apache-2.0",
+                "matcher": "1-hash",
+                "rule_identifier": "spdx_license_id_apache-2.0_for_apache-2.0.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_apache-2.0_for_apache-2.0.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "core",
+        "namespace": "@sigstore",
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": null,
+            "name": "bdehamer@github.com",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/%40sigstore/core@4.0.1",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/@sigstore/core/-/core-4.0.1.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/@sigstore/core",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/sigstore/sigstore-js.git",
+        "version": "4.0.1"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

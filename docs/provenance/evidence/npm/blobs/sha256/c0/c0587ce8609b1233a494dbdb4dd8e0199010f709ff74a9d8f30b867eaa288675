@@ -1,0 +1,116 @@
+{
+  "artifactId": "70c1464b549a0f75a0d2ab8967f6526afb4d7b11c02a02eb30fa3353b19e60c3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 12760,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "f486cf60e744cbb9408a0e04267179fc8beb18789a5abd9110332304efccc7e9",
+        "size": 8232,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "28a63de5dd0bce498d71db357e81d5467c2a6ecc7258edb11a402480b20e6642",
+        "size": 51151,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "db482401dd2d0621116bb667afcb8f7d152d2f9d6562fe770a37af54f6787784",
+        "size": 321,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "bf31322ac333837e5e6033b7a931a1e0b022cd85c760c2eff4ade6d75c8fb3e8",
+        "size": 1016,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 61852,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "jest-resolve",
+      "repository": {
+        "directory": "packages/jest-resolve",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.4.1"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "chalk": "^4.1.2",
+        "graceful-fs": "^4.2.11",
+        "jest-haste-map": "30.4.1",
+        "jest-pnp-resolver": "^1.2.3",
+        "jest-util": "30.4.1",
+        "jest-validate": "30.4.1",
+        "slash": "^3.0.0",
+        "unrs-resolver": "^1.7.11"
+      },
+      "devDependencies": {
+        "@types/graceful-fs": "^4.1.9",
+        "url": "^0.11.4"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "b3b4a09ed3005369dacc7466d1d2122797283785",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "jest-resolve",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-resolve",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.4.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 12760,
+      "sha256": "8b163226228720c057716e65cdc71c987cf1bb7ebb0d68529e78761a2ba97122"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,130 @@
+{
+  "artifactId": "11b0a2843f3ac0c8ad8a5e2c65cd281f8d132c0ebe00d5e2df0c658c86f5b678",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3449,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "fc68eb8f1c8e1d6b8be50f3c177927e24791cae7dc251e6253a012f37926a30c",
+        "size": 857,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "3aca23131514c7dddcd974de81fe585f419c63329ebbcc5dc67953914fd826c9",
+        "size": 4198,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "e5829e146ba7f616bdb8645e4486c5ed9bfdb11c7bb7f5b3c6eb3adae6283e33",
+        "size": 1614,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "1a0b9ff627b3ded5a3e8c7e7ab99eface3c79e92d7691a11e3eff8d78e0f8e24",
+        "size": 1050,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 857,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/fc/fc68eb8f1c8e1d6b8be50f3c177927e24791cae7dc251e6253a012f37926a30c",
+          "sha256": "fc68eb8f1c8e1d6b8be50f3c177927e24791cae7dc251e6253a012f37926a30c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "fc68eb8f1c8e1d6b8be50f3c177927e24791cae7dc251e6253a012f37926a30c",
+        "size": 857
+      },
+      {
+        "blob": {
+          "bytes": 4198,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/3a/3aca23131514c7dddcd974de81fe585f419c63329ebbcc5dc67953914fd826c9",
+          "sha256": "3aca23131514c7dddcd974de81fe585f419c63329ebbcc5dc67953914fd826c9"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "3aca23131514c7dddcd974de81fe585f419c63329ebbcc5dc67953914fd826c9",
+        "size": 4198
+      }
+    ],
+    "expandedBytes": 7719,
+    "packageIdentity": {
+      "author": "Gulp Team <team@gulpjs.com> (https://gulpjs.com/)",
+      "homepage": null,
+      "license": "ISC",
+      "name": "glob-parent",
+      "repository": "gulpjs/glob-parent",
+      "version": "6.0.2"
+    },
+    "packageMetadata": {
+      "author": "Gulp Team <team@gulpjs.com> (https://gulpjs.com/)",
+      "contributors": [
+        "Elan Shanker (https://github.com/es128)",
+        "Blaine Bublitz <blaine.bublitz@gmail.com>"
+      ],
+      "dependencies": {
+        "is-glob": "^4.0.3"
+      },
+      "description": "Extract the non-magic parent path from a glob string.",
+      "devDependencies": {
+        "eslint": "^7.0.0",
+        "eslint-config-gulp": "^5.0.0",
+        "expect": "^26.0.1",
+        "mocha": "^7.1.2",
+        "nyc": "^15.0.1"
+      },
+      "engines": {
+        "node": ">=10.13.0"
+      },
+      "files": [
+        "LICENSE",
+        "index.js"
+      ],
+      "keywords": [
+        "glob",
+        "parent",
+        "strip",
+        "path",
+        "dirname",
+        "directory",
+        "base",
+        "wildcard"
+      ],
+      "license": "ISC",
+      "main": "index.js",
+      "name": "glob-parent",
+      "nyc": {
+        "reporter": [
+          "lcov",
+          "text-summary"
+        ]
+      },
+      "prettier": {
+        "singleQuote": true
+      },
+      "repository": "gulpjs/glob-parent",
+      "scripts": {
+        "lint": "eslint .",
+        "pretest": "npm run lint",
+        "test": "nyc mocha --async-only"
+      },
+      "version": "6.0.2"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 3449,
+      "sha256": "345bb942f3be1fe234cab09ddc1df2c443cb2e84aaf5743c1862cf2b4e8d5066"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

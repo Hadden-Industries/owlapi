@@ -1,0 +1,101 @@
+{
+  "artifactId": "e68b053301a0cc2492682b2042d80ee72da84f82d9bdba4b2ddbb1d2904d217a",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3706526,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+        "size": 15648,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "7a8ce7a98de104127a9414f2ad3d1c36e169609c8c85b0e9c232dc723178bd2c",
+        "size": 121,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lightningcss.win32-x64-msvc.node",
+        "sha256": "d043df0f0675e7fffed4cf8b8c33e28639ec9f21d445c21e7fe4985e4a9b5a91",
+        "size": 9484800,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b5ebddf44be90f0f82899482f512de5c2937fee0892dd001041cd17b35bc7699",
+        "size": 719,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 15648,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5e/5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+          "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+        "size": 15648
+      }
+    ],
+    "expandedBytes": 9501288,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MPL-2.0",
+      "name": "lightningcss-win32-x64-msvc",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/parcel-bundler/lightningcss.git"
+      },
+      "version": "1.33.0"
+    },
+    "packageMetadata": {
+      "browserslist": "last 2 versions, not dead",
+      "cpu": [
+        "x64"
+      ],
+      "description": "A CSS parser, transformer, and minifier written in Rust",
+      "engines": {
+        "node": ">= 12.0.0"
+      },
+      "files": [
+        "lightningcss.win32-x64-msvc.node"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/parcel"
+      },
+      "license": "MPL-2.0",
+      "main": "lightningcss.win32-x64-msvc.node",
+      "name": "lightningcss-win32-x64-msvc",
+      "os": [
+        "win32"
+      ],
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/parcel-bundler/lightningcss.git"
+      },
+      "resolutions": {
+        "lightningcss": "link:."
+      },
+      "version": "1.33.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 3706526,
+      "sha256": "feb506faf3bdf4139826f521777c71b53c355f8eb6bcdd3220e16c5e131f1197"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

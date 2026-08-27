@@ -1,0 +1,159 @@
+{
+  "artifactId": "7d304b13334c51c9b0f20f1407fa72acf72047f2b2c13809028a498f49709799",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4409,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "73b5283588baa142c5baaef5f56d3e8fdea7a30b214e8c5737e87640f882453a",
+        "size": 1087,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "cb6f495a5eeabb9782560a308d9ec8bb09f59992562e74f664a648622615dcd4",
+        "size": 6336,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "14e27c8804ce2fe36fe1cfdbea2c0625cb97f4c20394fa9973567fb09cc03406",
+        "size": 1243,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "10fa705ebcff5c8e724c457f9a94eff8f795cf09938c941debdd18df5fcd0309",
+        "size": 1455,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "917ace72e6293d7bc27ce908ed87f59526c05438930afcdf04462845e103fb94",
+        "size": 1724,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1087,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/73/73b5283588baa142c5baaef5f56d3e8fdea7a30b214e8c5737e87640f882453a",
+          "sha256": "73b5283588baa142c5baaef5f56d3e8fdea7a30b214e8c5737e87640f882453a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "73b5283588baa142c5baaef5f56d3e8fdea7a30b214e8c5737e87640f882453a",
+        "size": 1087
+      },
+      {
+        "blob": {
+          "bytes": 6336,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/cb/cb6f495a5eeabb9782560a308d9ec8bb09f59992562e74f664a648622615dcd4",
+          "sha256": "cb6f495a5eeabb9782560a308d9ec8bb09f59992562e74f664a648622615dcd4"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "cb6f495a5eeabb9782560a308d9ec8bb09f59992562e74f664a648622615dcd4",
+        "size": 6336
+      }
+    ],
+    "expandedBytes": 11845,
+    "packageIdentity": {
+      "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+      "homepage": "https://github.com/jonschlinkert/word-wrap",
+      "license": "MIT",
+      "name": "word-wrap",
+      "repository": "jonschlinkert/word-wrap",
+      "version": "1.2.5"
+    },
+    "packageMetadata": {
+      "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+      "bugs": {
+        "url": "https://github.com/jonschlinkert/word-wrap/issues"
+      },
+      "contributors": [
+        "Danilo Sampaio <danilo.sampaio@gmail.com> (localhost:8080)",
+        "Fede Ramirez <i@2fd.me> (https://2fd.github.io)",
+        "Joe Hildebrand <joe-github@cursive.net> (https://twitter.com/hildjj)",
+        "Jon Schlinkert <jon.schlinkert@sellside.com> (http://twitter.com/jonschlinkert)",
+        "Todd Kennedy (https://tck.io)",
+        "Waldemar Reusch (https://github.com/lordvlad)",
+        "Wolfgang Faust (http://www.linestarve.com)",
+        "Zach Hale <zachhale@gmail.com> (http://zachhale.com)"
+      ],
+      "description": "Wrap words to a specified length.",
+      "devDependencies": {
+        "gulp-format-md": "^0.1.11",
+        "mocha": "^3.2.0"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "homepage": "https://github.com/jonschlinkert/word-wrap",
+      "keywords": [
+        "break",
+        "carriage",
+        "line",
+        "new-line",
+        "newline",
+        "return",
+        "soft",
+        "text",
+        "word",
+        "word-wrap",
+        "words",
+        "wrap"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "word-wrap",
+      "repository": "jonschlinkert/word-wrap",
+      "scripts": {
+        "test": "mocha"
+      },
+      "typings": "index.d.ts",
+      "verb": {
+        "layout": "default",
+        "lint": {
+          "reflinks": true
+        },
+        "plugins": [
+          "gulp-format-md"
+        ],
+        "reflinks": [
+          "verb",
+          "verb-generate-readme"
+        ],
+        "related": {
+          "list": [
+            "common-words",
+            "shuffle-words",
+            "unique-words",
+            "wordcount"
+          ]
+        },
+        "tasks": [
+          "readme"
+        ],
+        "toc": false
+      },
+      "version": "1.2.5"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 4409,
+      "sha256": "d0d7cc3b19863faa09d3822d1386b6b62ccc4551f7190ffaa25c792bbaf59dec"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

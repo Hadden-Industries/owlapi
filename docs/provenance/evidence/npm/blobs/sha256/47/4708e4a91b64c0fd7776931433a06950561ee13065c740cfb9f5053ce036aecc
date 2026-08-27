@@ -1,0 +1,187 @@
+{
+  "artifactId": "56e60729ed76dd3cb1ca0e2ba27bd813a0a08907c4573c3c218c70efbb5999b9",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8727,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "27d998b503b18cdb16c49e93da04069a99ba8a1d7e18d67146de8e242f9a6d21",
+        "size": 798,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "c380f9f64d3be42bda0858b52117646ada8cb347a045dfa4e3d29c7cc91f317c",
+        "size": 2557,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/get-options.js",
+        "sha256": "9effc9eb07753c26041c78a42338687c9dbc3a2fe7580256277d1e6f9b6ce4e1",
+        "size": 528,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/common/node.js",
+        "sha256": "3682e75ccd114a154ec490db83cb92e4e81a7001f98551305ce8e1f78cef3cbd",
+        "size": 181,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/cp/LICENSE",
+        "sha256": "1e76029602ae9b21cc4e612db2496d92febed882ba13ba745f8b3309e85f9d39",
+        "size": 1084,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/cp/errors.js",
+        "sha256": "a7d09952191cde9205664ff85cd97edf0b765ac0903105039c6c735249269861",
+        "size": 3396,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/cp/index.js",
+        "sha256": "f92557b351461096d1e9e9dc5446e0d7241cc26fca08b4627a1b00246d54fc73",
+        "size": 695,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/cp/polyfill.js",
+        "sha256": "39f6e60d75218eb0b26dfbaa10b805778ee633502a6d1156d92cdb6c6e78bf37",
+        "size": 12241,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "54747b38cb1f467bc5e50f1af7388159186bfe594d85c68bb43f3deb8325d2c3",
+        "size": 268,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/move-file.js",
+        "sha256": "f3c1b4dc7f4b718045d8691e5d54cb6d36943a0831d0d934d0a4789b234dc11f",
+        "size": 2287,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/readdir-scoped.js",
+        "sha256": "5aeb27ad14fcaf82c879df66b79068d670c9e10e91e0483d0b72fdc87c00658c",
+        "size": 431,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/with-temp-dir.js",
+        "sha256": "866d28b80e53a2a09985c23d99dbac867487dbd5dfdc8cf3df5c844c6beafbf8",
+        "size": 900,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "c787a9ac214de77c77d34d548f285b6382137ba7984c368c086411c398115173",
+        "size": 1240,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 798,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/27/27d998b503b18cdb16c49e93da04069a99ba8a1d7e18d67146de8e242f9a6d21",
+          "sha256": "27d998b503b18cdb16c49e93da04069a99ba8a1d7e18d67146de8e242f9a6d21"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "27d998b503b18cdb16c49e93da04069a99ba8a1d7e18d67146de8e242f9a6d21",
+        "size": 798
+      },
+      {
+        "blob": {
+          "bytes": 1084,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/1e/1e76029602ae9b21cc4e612db2496d92febed882ba13ba745f8b3309e85f9d39",
+          "sha256": "1e76029602ae9b21cc4e612db2496d92febed882ba13ba745f8b3309e85f9d39"
+        },
+        "kind": "LICENCE",
+        "path": "package/lib/cp/LICENSE",
+        "sha256": "1e76029602ae9b21cc4e612db2496d92febed882ba13ba745f8b3309e85f9d39",
+        "size": 1084
+      }
+    ],
+    "expandedBytes": 26606,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "@npmcli/fs",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/fs.git"
+      },
+      "version": "6.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "dependencies": {
+        "semver": "^7.3.5"
+      },
+      "description": "filesystem utilities for the npm cli",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^6.0.0",
+        "@npmcli/template-oss": "5.1.0",
+        "tap": "^16.0.1"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "keywords": [
+        "npm",
+        "oss"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "@npmcli/fs",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/fs.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "npmclilint": "npmcli-lint",
+        "postlint": "template-oss-check",
+        "postsnap": "npm run lintfix --",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": true,
+        "version": "5.1.0"
+      },
+      "version": "6.0.0"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 8727,
+      "sha256": "08f21c76f6b2bad5a63a46dff7ed35754c7f71da6148439eda51e96325ad4deb"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,195 @@
+{
+  "artifactId": "cbf97ae0978f1f49bfa930c2bb1b9328b86591841462cdcea6cc643a9e016313",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 59919,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "8a4b6c44eebfb026d23719a348145a661a555568dbfdc11618ff2d0dd9306b00",
+        "size": 1085,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "3de04445b4628a8aedc44c8e04bb87827a61e5bc0b9204e2805e549c2bbed014",
+        "size": 12156,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lexer.asm.js",
+        "sha256": "46d11e94acb9beaaeae857571c7694040b61a6ddf285a10d8a3275ec00d40a48",
+        "size": 28181,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lexer.cjs",
+        "sha256": "cd30b20344c2648c7f889d6bdf301c6ea2d6570df3bca1f28f0dfb706c493ae3",
+        "size": 17890,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lexer.js",
+        "sha256": "e0e77e4cb28bcbad6e8dd31499c0fa5f93285081b9da7c0ad5df823cfa62abed",
+        "size": 17811,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lexer.minimal.asm.js",
+        "sha256": "7547b894e0e6df692db8b6f804fb1eb5eacf885a4fc6d6f66719b79fe7e3945e",
+        "size": 26434,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lexer.minimal.cjs",
+        "sha256": "87e8a2e6a7e524008ca748ec789e541e809910ef8c88a3cf38e2b27822de1f2e",
+        "size": 16729,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lexer.minimal.js",
+        "sha256": "101d5141e30d3cfb8d14beb1986c529512f7efe9e35e886e7aa2ac010e415812",
+        "size": 16652,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lexer.js",
+        "sha256": "aad11eacc508afa1bdd538fd44a0c0a179a9530a56db996c8093638cea61b42d",
+        "size": 28783,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6ac33aba7ed35abf79f1bfa12f39563369cb2b5ffa25bd7b7982e9554c7de4af",
+        "size": 1756,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/lexer.d.ts",
+        "sha256": "a4bc676f3e73a1119af7c40dc94bc596fb9545748bba193670207e2d7f6cfa70",
+        "size": 6466,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/lexer.minimal.d.ts",
+        "sha256": "60e3cb99c5db92f612181a97b1848eb86fa07daf8af317935cf5e440d0469f6b",
+        "size": 1509,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1085,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8a/8a4b6c44eebfb026d23719a348145a661a555568dbfdc11618ff2d0dd9306b00",
+          "sha256": "8a4b6c44eebfb026d23719a348145a661a555568dbfdc11618ff2d0dd9306b00"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "8a4b6c44eebfb026d23719a348145a661a555568dbfdc11618ff2d0dd9306b00",
+        "size": 1085
+      },
+      {
+        "blob": {
+          "bytes": 12156,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/3d/3de04445b4628a8aedc44c8e04bb87827a61e5bc0b9204e2805e549c2bbed014",
+          "sha256": "3de04445b4628a8aedc44c8e04bb87827a61e5bc0b9204e2805e549c2bbed014"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "3de04445b4628a8aedc44c8e04bb87827a61e5bc0b9204e2805e549c2bbed014",
+        "size": 12156
+      }
+    ],
+    "expandedBytes": 175452,
+    "packageIdentity": {
+      "author": "Guy Bedford",
+      "homepage": "https://github.com/guybedford/es-module-lexer#readme",
+      "license": "MIT",
+      "name": "es-module-lexer",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/guybedford/es-module-lexer.git"
+      },
+      "version": "2.3.2"
+    },
+    "packageMetadata": {
+      "author": "Guy Bedford",
+      "bugs": {
+        "url": "https://github.com/guybedford/es-module-lexer/issues"
+      },
+      "description": "Lexes ES modules returning their import/export metadata",
+      "devDependencies": {
+        "@babel/cli": "^7.29.7",
+        "@babel/core": "^7.29.7",
+        "@babel/plugin-transform-modules-commonjs": "^7.29.7",
+        "@swc/cli": "^0.8.1",
+        "@swc/core": "^1.15.41",
+        "@types/node": "^25.9.3",
+        "kleur": "^4.1.5",
+        "mocha": "^11.7.6",
+        "terser": "^5.48.0",
+        "typescript": "^6.0.3"
+      },
+      "directories": {
+        "lib": "lib",
+        "test": "test"
+      },
+      "exports": {
+        ".": {
+          "import": "./dist/lexer.js",
+          "module": "./dist/lexer.js",
+          "require": "./dist/lexer.cjs",
+          "types": "./types/lexer.d.ts"
+        },
+        "./js": {
+          "default": "./dist/lexer.asm.js",
+          "types": "./types/lexer.d.ts"
+        },
+        "./minimal": {
+          "import": "./dist/lexer.minimal.js",
+          "module": "./dist/lexer.minimal.js",
+          "require": "./dist/lexer.minimal.cjs",
+          "types": "./types/lexer.minimal.d.ts"
+        },
+        "./minimal/js": {
+          "default": "./dist/lexer.minimal.asm.js",
+          "types": "./types/lexer.minimal.d.ts"
+        }
+      },
+      "files": [
+        "dist",
+        "types",
+        "lexer.js"
+      ],
+      "homepage": "https://github.com/guybedford/es-module-lexer#readme",
+      "keywords": [],
+      "license": "MIT",
+      "main": "dist/lexer.cjs",
+      "module": "dist/lexer.js",
+      "name": "es-module-lexer",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/guybedford/es-module-lexer.git"
+      },
+      "scripts": {
+        "build": "npm install -g chomp ; chomp build",
+        "test": "npm install -g chomp ; chomp test"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "types": "types/lexer.d.ts",
+      "version": "2.3.2"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 59919,
+      "sha256": "99b4da5f3bd7cc4483f3d892ee9037b10a1da26ac5bec374038cf0bd4a52e1a7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

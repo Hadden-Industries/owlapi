@@ -1,0 +1,204 @@
+{
+  "artifactId": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 24865,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "26c95937762a3dc17a3934a0a2773c70259ba4bf28dab713c225e4af8eb9d349",
+        "size": 1322,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "dacdd0fce5f0e420517b024d409d2243119f3ad570618b60a45e37c0fecb824b",
+        "size": 13282,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/espree.cjs",
+        "sha256": "00ad93bce4a8af52aeaab7b8198c1ed072c9cf1b5cbb2d44e3d2fdc00562c059",
+        "size": 35933,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/espree.d.cts",
+        "sha256": "5d1dbce00c290f6ee4e551e38d02d8efa191ebe60e57372fc403435dc65971d2",
+        "size": 93,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/espree.d.cts.map",
+        "sha256": "5c30435dc586460f542389eef5798a364aaff3b20c8844620b641a6a5bf3a8a5",
+        "size": 159,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/espree.d.ts",
+        "sha256": "76e4b531a65aab96cb989875831eb07a1f265ec6c4a36f5f36bb7d83af3e1bee",
+        "size": 2150,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/espree.d.ts.map",
+        "sha256": "df091372413ea53a6404e321c95a985467f2a4444f23780ee8ff68eef249eefb",
+        "size": 1650,
+        "type": "FILE"
+      },
+      {
+        "path": "package/espree.js",
+        "sha256": "9ef1d03ec22b9b5cc2dc1ef43310a2bbf30ae750eb882cec9868eb5bda7d9186",
+        "size": 9209,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/espree.js",
+        "sha256": "713d844f758f5a947d703d50e7a50f16581bb19810e8c3f1f009b503ab1e12d5",
+        "size": 13294,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/options.js",
+        "sha256": "86e94df5b303515174ab33b8b217f7f1f42b236cc92b66fb698b53055970bec5",
+        "size": 4745,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/token-translator.js",
+        "sha256": "6006ebfc4914496d548389b0da2e58322bbae34827862fc40b9502c9970179d5",
+        "size": 8395,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/types.js",
+        "sha256": "9ca649d8154ebd37ee86e6382c12bfbae29211706958e1abd409a339ff7e986e",
+        "size": 3414,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "23ed9eb09d6076011884a14deb09ad608968eaa01f69344b91207c810a1bebd2",
+        "size": 2012,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1322,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/26/26c95937762a3dc17a3934a0a2773c70259ba4bf28dab713c225e4af8eb9d349",
+          "sha256": "26c95937762a3dc17a3934a0a2773c70259ba4bf28dab713c225e4af8eb9d349"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "26c95937762a3dc17a3934a0a2773c70259ba4bf28dab713c225e4af8eb9d349",
+        "size": 1322
+      },
+      {
+        "blob": {
+          "bytes": 13282,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/da/dacdd0fce5f0e420517b024d409d2243119f3ad570618b60a45e37c0fecb824b",
+          "sha256": "dacdd0fce5f0e420517b024d409d2243119f3ad570618b60a45e37c0fecb824b"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "dacdd0fce5f0e420517b024d409d2243119f3ad570618b60a45e37c0fecb824b",
+        "size": 13282
+      }
+    ],
+    "expandedBytes": 95658,
+    "packageIdentity": {
+      "author": "Nicholas C. Zakas <nicholas+npm@nczconsulting.com>",
+      "homepage": "https://github.com/eslint/js/blob/main/packages/espree/README.md",
+      "license": "BSD-2-Clause",
+      "name": "espree",
+      "repository": {
+        "directory": "packages/espree",
+        "type": "git",
+        "url": "https://github.com/eslint/js.git"
+      },
+      "version": "11.2.0"
+    },
+    "packageMetadata": {
+      "author": "Nicholas C. Zakas <nicholas+npm@nczconsulting.com>",
+      "bugs": {
+        "url": "https://github.com/eslint/js/issues"
+      },
+      "dependencies": {
+        "acorn": "^8.16.0",
+        "acorn-jsx": "^5.3.2",
+        "eslint-visitor-keys": "^5.0.1"
+      },
+      "description": "An Esprima-compatible JavaScript parser built on Acorn",
+      "devDependencies": {
+        "shelljs": "^0.8.5",
+        "tsd": "^0.33.0"
+      },
+      "engines": {
+        "node": "^20.19.0 || ^22.13.0 || >=24"
+      },
+      "exports": {
+        ".": {
+          "default": "./dist/espree.cjs",
+          "import": "./espree.js",
+          "require": "./dist/espree.cjs",
+          "types": {
+            "import": "./dist/espree.d.ts",
+            "require": "./dist/espree.d.cts"
+          }
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "lib",
+        "dist",
+        "espree.js"
+      ],
+      "funding": "https://opencollective.com/eslint",
+      "homepage": "https://github.com/eslint/js/blob/main/packages/espree/README.md",
+      "keywords": [
+        "ast",
+        "ecmascript",
+        "javascript",
+        "parser",
+        "syntax",
+        "acorn"
+      ],
+      "license": "BSD-2-Clause",
+      "main": "dist/espree.cjs",
+      "name": "espree",
+      "repository": {
+        "directory": "packages/espree",
+        "type": "git",
+        "url": "https://github.com/eslint/js.git"
+      },
+      "scripts": {
+        "build": "rollup -c rollup.config.js && npm run build:types && node -e \"fs.rmSync('dist/lib', { recursive: true })\"",
+        "build:debug": "npm run build -- -m",
+        "build:docs": "node tools/sync-docs.js",
+        "build:types": "tsc && tsc -p tsconfig-cjs.json",
+        "lint:types": "attw --pack",
+        "pretest": "npm run build",
+        "test": "npm run test:types && npm run test:cjs && npm run test:esm",
+        "test:cjs": "mocha --color --reporter progress --timeout 30000 \"tests/**/*.test.cjs\"",
+        "test:esm": "c8 mocha --color --reporter progress --timeout 30000 \"tests/**/*.test.js\"",
+        "test:types": "tsd --typings dist/espree.d.ts"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "types": "./dist/espree.d.cts",
+      "version": "11.2.0"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 24865,
+      "sha256": "149c997f9e5e274feff3217785f0947507dd65d273a5274ea7ff620598bf91fd"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

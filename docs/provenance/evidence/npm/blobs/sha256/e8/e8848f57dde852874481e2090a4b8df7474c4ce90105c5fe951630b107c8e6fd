@@ -1,0 +1,145 @@
+{
+  "artifactId": "1ff54623928c60c0bbea38a95a92ebda9afc531598c28a740a4fb8bc170098e0",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4282,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "27d06bbb2eb031be8aa376868a2e1f11b6acba938d4cc8e1234b66b9739c54a3",
+        "size": 1089,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "766c55f9e5ccf893ff458dfd5b6f6e49cbb54f21e5e27d55ecc43e81d354c5f6",
+        "size": 4308,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cjs/index.js",
+        "sha256": "208f4a77e03bd59705113e845c5a8be7b20282f41e7fb2d6832252b5a8755fe5",
+        "size": 1799,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cjs/package.json",
+        "sha256": "fa6944a20ca5e6fbaf98fd202eb8c7004d5b4ab786e36b9ed02ee31dbe196c9f",
+        "size": 19,
+        "type": "FILE"
+      },
+      {
+        "path": "package/esm/index.js",
+        "sha256": "7159a657a6029d4e2e71a8925d76b428663cb0a53eb6636ee93d40bef4117c9c",
+        "size": 1747,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "063454f334412d821d17b1d76debc4731338e2664fff300f7363385b4be5a11d",
+        "size": 1976,
+        "type": "FILE"
+      },
+      {
+        "path": "package/min.js",
+        "sha256": "02603743319bedb3f2864355b8616b53c5550ea12bb67471b57104603a6f2f46",
+        "size": 456,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "768e1f3e57c6803280925e71992a7ed640a2b43e29542326ccc4cadebff15e4c",
+        "size": 1220,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "1c92da9944b7051aef21d6cb6294ae759443b431c7bb13c3f87972018d95b5ba",
+        "size": 459,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/package.json",
+        "sha256": "fa6944a20ca5e6fbaf98fd202eb8c7004d5b4ab786e36b9ed02ee31dbe196c9f",
+        "size": 19,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1089,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/27/27d06bbb2eb031be8aa376868a2e1f11b6acba938d4cc8e1234b66b9739c54a3",
+          "sha256": "27d06bbb2eb031be8aa376868a2e1f11b6acba938d4cc8e1234b66b9739c54a3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.txt",
+        "sha256": "27d06bbb2eb031be8aa376868a2e1f11b6acba938d4cc8e1234b66b9739c54a3",
+        "size": 1089
+      }
+    ],
+    "expandedBytes": 13092,
+    "packageIdentity": {
+      "author": "Andrea Giammarchi",
+      "homepage": "https://github.com/WebReflection/html-escaper",
+      "license": "MIT",
+      "name": "html-escaper",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/WebReflection/html-escaper.git"
+      },
+      "version": "2.0.2"
+    },
+    "packageMetadata": {
+      "author": "Andrea Giammarchi",
+      "bugs": {
+        "url": "https://github.com/WebReflection/html-escaper/issues"
+      },
+      "description": "fast and safe way to escape and unescape &<>'\" chars",
+      "devDependencies": {
+        "ascjs": "^3.1.2",
+        "coveralls": "^3.0.11",
+        "istanbul": "^0.4.5",
+        "rollup": "^2.1.0",
+        "uglify-js": "^3.8.0"
+      },
+      "homepage": "https://github.com/WebReflection/html-escaper",
+      "keywords": [
+        "html",
+        "escape",
+        "encode",
+        "unescape",
+        "decode",
+        "entities"
+      ],
+      "license": "MIT",
+      "main": "./cjs/index.js",
+      "module": "./esm/index.js",
+      "name": "html-escaper",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/WebReflection/html-escaper.git"
+      },
+      "scripts": {
+        "build": "npm run cjs && npm run rollup && npm run minify && npm test && npm run size",
+        "cjs": "ascjs esm cjs",
+        "coveralls": "cat ./coverage/lcov.info | coveralls",
+        "minify": "uglifyjs index.js --comments=/^!/ --compress --mangle -o min.js",
+        "rollup": "rollup --config rollup.config.js",
+        "size": "cat index.js | wc -c;cat min.js | wc -c;gzip -c min.js | wc -c",
+        "test": "istanbul cover ./test/index.js"
+      },
+      "unpkg": "min.js",
+      "version": "2.0.2"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 4282,
+      "sha256": "8ab75514cf8515cf43f7b69fef645b952c6577026554eb306cc4c17b37c6fad7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,236 @@
+{
+  "artifactId": "b3c1f492130c60efde3e05e384ee8c9b3a64c0b3807546717dd3bbe8485c681c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 26270,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "8e2ff644b2422824b04554bcc34c30bdb53917dd499df5a11ce434020cfa5327",
+        "size": 1079,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "b264813f3f16f401eea8302522e7ab9cbdb5968ba26533686a4be2f755aa59ef",
+        "size": 5556,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "bfb9c54aebac37ae8d3caf8bb9802457b9e32ba75113ced2787e95dfa31c2ead",
+        "size": 36,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "0cad34055cec1ab0285cde73c29358b6c73a398fc0bc0f4eeb61206b3b271cb7",
+        "size": 844,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js.map",
+        "sha256": "d03a8ee88b95f122ce521f5754b6197841aca80067888ea4b295cfd2669e8110",
+        "size": 181,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/ParseError.d.ts",
+        "sha256": "55c4fd973767ea123c608b9564af6426978248f0dbbc0656ec208921321c7c29",
+        "size": 230,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/ParseError.js",
+        "sha256": "206b21d2a4cc0a0112bcefb49ce0a9106c2c844692c230fcacb9b6b03afad39a",
+        "size": 486,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/ParseError.js.map",
+        "sha256": "097e726e641f9cfaba39b98f6b13c410c7bea287c69e7dcd92338952df6acad1",
+        "size": 908,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/RdfXmlParser.d.ts",
+        "sha256": "933fa45d5d5a2a51b1bd763d0857709c731ac497e95a1d976d333ea8f6367214",
+        "size": 8275,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/RdfXmlParser.js",
+        "sha256": "c9b6f1f29ea3e02fc1bce2901fb455c7a3162d30123d875f841b5e5135cd4fc6",
+        "size": 37089,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/RdfXmlParser.js.map",
+        "sha256": "0e8251e3a81dc2cb2b02e7f486906d22231f78b23242413cdf3ec9fb58faf7b3",
+        "size": 64615,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "098af9c02c3c13ac6938f1496cd518ce4eabe6beee2a5997c13bde82612e509d",
+        "size": 3529,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1079,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8e/8e2ff644b2422824b04554bcc34c30bdb53917dd499df5a11ce434020cfa5327",
+          "sha256": "8e2ff644b2422824b04554bcc34c30bdb53917dd499df5a11ce434020cfa5327"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.txt",
+        "sha256": "8e2ff644b2422824b04554bcc34c30bdb53917dd499df5a11ce434020cfa5327",
+        "size": 1079
+      },
+      {
+        "blob": {
+          "bytes": 5556,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b2/b264813f3f16f401eea8302522e7ab9cbdb5968ba26533686a4be2f755aa59ef",
+          "sha256": "b264813f3f16f401eea8302522e7ab9cbdb5968ba26533686a4be2f755aa59ef"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "b264813f3f16f401eea8302522e7ab9cbdb5968ba26533686a4be2f755aa59ef",
+        "size": 5556
+      }
+    ],
+    "expandedBytes": 122828,
+    "packageIdentity": {
+      "author": "Ruben Taelman <rubensworks@gmail.com>",
+      "homepage": "https://github.com/rdfjs/rdfxml-streaming-parser.js#readme",
+      "license": "MIT",
+      "name": "rdfxml-streaming-parser",
+      "repository": "git@github.com:rdfjs/rdfxml-streaming-parser.js.git",
+      "version": "3.3.0"
+    },
+    "packageMetadata": {
+      "author": "Ruben Taelman <rubensworks@gmail.com>",
+      "bugs": {
+        "url": "https://github.com/rdfjs/rdfxml-streaming-parser.js/issues"
+      },
+      "dependencies": {
+        "@rubensworks/saxes": "^6.0.1",
+        "@types/readable-stream": "^4.0.18",
+        "buffer": "^6.0.3",
+        "rdf-data-factory": "^2.0.2",
+        "readable-stream": "^4.4.2",
+        "relative-to-absolute-iri": "^1.0.0",
+        "validate-iri": "^1.0.0"
+      },
+      "description": "Streaming RDF/XML parser",
+      "devDependencies": {
+        "@rubensworks/eslint-config": "^3.1.0",
+        "@types/jest": "^30.0.0",
+        "@types/minimist": "^1.2.0",
+        "@types/sax": "^1.0.1",
+        "arrayify-stream": "^3.0.0",
+        "coveralls": "^3.0.0",
+        "eslint": "^8.57.0",
+        "jest": "^30.2.0",
+        "jest-rdf": "^2.0.0",
+        "manual-git-changelog": "^1.0.0",
+        "pre-commit": "^2.0.0",
+        "rdf-quad": "^2.0.0",
+        "rdf-test-suite": "^2.1.4",
+        "streamify-array": "^2.0.0",
+        "streamify-string": "^1.0.1",
+        "ts-jest": "^29.4.6",
+        "ts-loader": "^9.3.1",
+        "typescript": "^6.0.0",
+        "webpack": "^5.73.0",
+        "webpack-cli": "^7.0.0"
+      },
+      "files": [
+        "index.d.ts",
+        "index.js",
+        "index.js.map",
+        "lib/**/*.d.ts",
+        "lib/**/*.js",
+        "lib/**/*.js.map"
+      ],
+      "funding": {
+        "type": "individual",
+        "url": "https://github.com/sponsors/rubensworks/"
+      },
+      "homepage": "https://github.com/rdfjs/rdfxml-streaming-parser.js#readme",
+      "jest": {
+        "collectCoverage": true,
+        "globals": {
+          "ts-jest": {
+            "tsconfig": "test/tsconfig.json"
+          }
+        },
+        "moduleFileExtensions": [
+          "ts",
+          "js"
+        ],
+        "setupFilesAfterEnv": [
+          "jest-rdf"
+        ],
+        "testEnvironment": "node",
+        "testRegex": "(/test/.*|(\\.|/)(test|spec))\\.ts$",
+        "transform": {
+          "^.+\\.ts$": "ts-jest"
+        },
+        "transformIgnorePatterns": [
+          "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
+        ]
+      },
+      "keywords": [
+        "rdf/xml",
+        "streaming",
+        "parser",
+        "xml",
+        "rdfjs",
+        "rdf",
+        "linked data"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "rdfxml-streaming-parser",
+      "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+      "pre-commit": [
+        "build",
+        "lint",
+        "test"
+      ],
+      "repository": "git@github.com:rdfjs/rdfxml-streaming-parser.js.git",
+      "scripts": {
+        "build": "tsc",
+        "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls",
+        "lint": "eslint . --cache",
+        "prepare": "npm run build",
+        "spec": "npm run spec-1-1 && npm run spec-1-2",
+        "spec-1-1": "rdf-test-suite spec/parser.js https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl -c .rdf-test-suite-cache/",
+        "spec-1-2": "rdf-test-suite spec/parser.js https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-xml/eval/manifest.ttl -c .rdf-test-suite-cache/",
+        "spec-earl": "npm run spec-earl-1-1 && spec-earl-1-2",
+        "spec-earl-1-1": "rdf-test-suite spec/parser.js https://w3c.github.io/rdf-tests/rdf/rdf11/rdf-xml/manifest.ttl -c .rdf-test-suite-cache/ -o earl -p spec/earl-meta.json > earl-1-1.ttl",
+        "spec-earl-1-2": "rdf-test-suite spec/parser.js https://w3c.github.io/rdf-tests/rdf/rdf12/rdf-xml/eval/manifest.ttl -c .rdf-test-suite-cache/ -o earl -p spec/earl-meta.json > earl-1-2.ttl",
+        "test": "jest ${1}",
+        "test-watch": "jest ${1} --watch",
+        "validate": "npm ls",
+        "version": "manual-git-changelog onversion"
+      },
+      "sideEffects": false,
+      "typings": "index",
+      "version": "3.3.0"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 26270,
+      "sha256": "568e8b3355ba42a5c81f1d96bbabba1e8fa6a45ef6bec3302af1da5f249764da"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

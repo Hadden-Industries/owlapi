@@ -1,0 +1,174 @@
+{
+  "artifactId": "63d6970bb7e53a0d021013a1599b3d4cfdca7c1eb5d019295bd7cbdeb42f1581",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6658,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "21e051ee3c6f9b83ce6a902b7c39de789f935e684f1cc7412c43d2ce2d3d2492",
+        "size": 307,
+        "type": "FILE"
+      },
+      {
+        "path": "package/corejs2-built-ins.js",
+        "sha256": "650aa556daf6e89ae6d19f03f97ed1f8e821df5202a6247f5276034d156eb40c",
+        "size": 132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/corejs3-shipped-proposals.js",
+        "sha256": "7273863740420fc763944537a51b261e1ee30b5b8806e2096098301ffdbd1782",
+        "size": 160,
+        "type": "FILE"
+      },
+      {
+        "path": "package/data/corejs2-built-ins.json",
+        "sha256": "45ee08687581b6cc13b029cfe42ef87078f0e0fa406a4cdd12bf0d8dc97f1ca5",
+        "size": 41279,
+        "type": "FILE"
+      },
+      {
+        "path": "package/data/corejs3-shipped-proposals.json",
+        "sha256": "7fde46e5fa6c338cc101fc8607aece6b367514b2bcf7c3e2317131b5b5a31e63",
+        "size": 88,
+        "type": "FILE"
+      },
+      {
+        "path": "package/data/native-modules.json",
+        "sha256": "1b14cf74b090ffe8def9013ca4bb448b4c76e98fbfe20c58a06e439b9e4e6438",
+        "size": 316,
+        "type": "FILE"
+      },
+      {
+        "path": "package/data/overlapping-plugins.json",
+        "sha256": "54e5c458e997fc29d81102dbd9ab94d06592e63d5298963d7deaf297eb5d8572",
+        "size": 1293,
+        "type": "FILE"
+      },
+      {
+        "path": "package/data/plugin-bugfixes.json",
+        "sha256": "c24955f310c54985039a6573ac19b2f45073f64d889b16a9e1ec77cac1e22fd4",
+        "size": 4733,
+        "type": "FILE"
+      },
+      {
+        "path": "package/data/plugins.json",
+        "sha256": "574be4d30480fa3b7efb4fd6462a3921c7a8190fe169215cb94ad02f4cc11657",
+        "size": 17058,
+        "type": "FILE"
+      },
+      {
+        "path": "package/native-modules.js",
+        "sha256": "d65a57a748b4b9fd2666d7ddda77c799e236b62e0f4c9cd489121295d9cbc9fe",
+        "size": 136,
+        "type": "FILE"
+      },
+      {
+        "path": "package/overlapping-plugins.js",
+        "sha256": "8d1105e69afdd9ba8a89826d3b83061951cc72c5f69c43d693711ea1de38eafa",
+        "size": 141,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "a871a1f7397a91d00f877751ab2da88904ff1dd30c5bb4ab2e5badd9f3adf6d4",
+        "size": 1192,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugin-bugfixes.js",
+        "sha256": "f5a0606adac04a0a4c60b3691612a2cf319e00c0b51a5ea1c0a42c987797f241",
+        "size": 137,
+        "type": "FILE"
+      },
+      {
+        "path": "package/plugins.js",
+        "sha256": "66ac3f8a8c710de59754e76f5f092aac6386bcc837ad467d81691a4c6d885a3c",
+        "size": 129,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 68207,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/compat-data",
+      "repository": {
+        "directory": "packages/babel-compat-data",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "description": "The compat-data to determine required Babel plugins",
+      "devDependencies": {
+        "@mdn/browser-compat-data": "^6.0.8",
+        "core-js-compat": "^3.48.0",
+        "electron-to-chromium": "^1.5.278"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "exports": {
+        "./corejs2-built-ins": "./corejs2-built-ins.js",
+        "./corejs3-shipped-proposals": "./corejs3-shipped-proposals.js",
+        "./native-modules": "./native-modules.js",
+        "./overlapping-plugins": "./overlapping-plugins.js",
+        "./plugin-bugfixes": "./plugin-bugfixes.js",
+        "./plugins": "./plugins.js"
+      },
+      "keywords": [
+        "babel",
+        "compat-table",
+        "compat-data"
+      ],
+      "license": "MIT",
+      "name": "@babel/compat-data",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-compat-data",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "scripts": {
+        "build-data": "./scripts/download-compat-table.sh && node ./scripts/build-data.mjs && node ./scripts/build-modules-support.mjs && node ./scripts/build-bugfixes-targets.mjs"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 6658,
+      "sha256": "0cf63b5ed704654bdc7574be035883b2eb3f8872c795a6b8dbb690cb7a3d54b9"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,150 @@
+{
+  "artifactId": "92692fc0cf823cb6b578a1747b30277e657ef98eb3d5f57ae39a8a4bc8dcc1e1",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7518,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.github/dependabot.yaml",
+        "sha256": "663f85b15a81a603b2e5917433fe08bca7c37d768f04e184657cf2a0fae3281e",
+        "size": 238,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/workflows/test.yaml",
+        "sha256": "9c4007ea1dfda43f50f9dd6c3998de059b3bf2fa424b6a1af2d1372c89dacb3f",
+        "size": 769,
+        "type": "FILE"
+      },
+      {
+        "path": "package/DatasetCore.js",
+        "sha256": "f1e74e503adfb0a512202c4026db53841592fd303d94d974b132e16b63ff1fa0",
+        "size": 14084,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Factory.js",
+        "sha256": "bea01db4b335a0788ebbf9b673b08c9278f5c546df9a381a93ba3900ab002e61",
+        "size": 175,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "6b6f77846a6c8f60f456517661d8724f2894d89390f005c6a4c58dc4532f5087",
+        "size": 1073,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "afcad1b19d0b2b71a4c4e0acf2003485f0aeb2e4b8ab61501a728c7acc10b93e",
+        "size": 1163,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/test.js",
+        "sha256": "219e07d69c7ede9d17ffc7e4d8074eff7fc7c323ed676cbcb5fb29019901ea33",
+        "size": 420,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "a3babe2a7594dd858df88a3a043159426824293e0f1ec4db2305632e5c0ad7a9",
+        "size": 90,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "a0c7164400c5579da4fa78deccc27ad26ec60540f0186c5cf97e2a7d60db4507",
+        "size": 902,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/DatasetCore.test.js",
+        "sha256": "4f0769fdd31a8371b1efe01521bef6bcb9f3a059595d42eaf3c4d7cd170ba3be",
+        "size": 13164,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.js",
+        "sha256": "fc3c7bf74a6d915dec86898619bbc75ff9f6257679b651675aafc53ae379ea4d",
+        "size": 294,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/test.js",
+        "sha256": "8727fd97709546d693b2321431d8cf86cc575b0acfa79f1822f3e5479b1ddd4d",
+        "size": 171,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1073,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6b/6b6f77846a6c8f60f456517661d8724f2894d89390f005c6a4c58dc4532f5087",
+          "sha256": "6b6f77846a6c8f60f456517661d8724f2894d89390f005c6a4c58dc4532f5087"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "6b6f77846a6c8f60f456517661d8724f2894d89390f005c6a4c58dc4532f5087",
+        "size": 1073
+      }
+    ],
+    "expandedBytes": 32543,
+    "packageIdentity": {
+      "author": "Thomas Bergwinkl <bergi@axolotlfarm.org> (https://www.bergnet.org/people/bergi/card#me)",
+      "homepage": "https://github.com/rdfjs-base/dataset",
+      "license": "MIT",
+      "name": "@rdfjs/dataset",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/rdfjs-base/dataset.git"
+      },
+      "version": "2.0.3"
+    },
+    "packageMetadata": {
+      "author": "Thomas Bergwinkl <bergi@axolotlfarm.org> (https://www.bergnet.org/people/bergi/card#me)",
+      "bin": {
+        "rdfjs-dataset-test": "./bin/test.js"
+      },
+      "bugs": {
+        "url": "https://github.com/rdfjs-base/dataset/issues"
+      },
+      "description": "An indexed implementation of the RDF/JS Dataset",
+      "devDependencies": {
+        "@rdfjs/data-model": "^2.0.1",
+        "@rdfjs/namespace": "^2.0.1",
+        "c8": "^11.0.0",
+        "mocha": "^11.0.1",
+        "stricter-standard": "^0.3.0"
+      },
+      "homepage": "https://github.com/rdfjs-base/dataset",
+      "keywords": [
+        "dataset",
+        "rdf",
+        "rdfjs"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "@rdfjs/dataset",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/rdfjs-base/dataset.git"
+      },
+      "scripts": {
+        "test": "stricter-standard && c8 --reporter=lcov --reporter=text mocha"
+      },
+      "type": "module",
+      "version": "2.0.3"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 7518,
+      "sha256": "9a02ab240c4b763b873b5d46a93bb006123a42f7bde6476daa743af7b3999762"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

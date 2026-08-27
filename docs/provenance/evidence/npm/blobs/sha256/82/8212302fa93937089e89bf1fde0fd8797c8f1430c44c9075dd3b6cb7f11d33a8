@@ -1,0 +1,117 @@
+{
+  "artifactId": "89814765f6340989b72bc6d2e653ddd3c5b0dc8aadfccfc30cfb56641f977be9",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2765,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "9ba5c1dff380f1823bfcb5101ecf92221377ead0e7c99f8c5d0d9a2d18886e60",
+        "size": 1140,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "03423d2c5abaa4c0c64eac47cc67f29cb7c7ed716393aad5b10ccfd27e947949",
+        "size": 949,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e94d571d03c65c94eab2216f4fde773918a152d5d36e5672e1f5c158ff6ac42d",
+        "size": 725,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "adf5a71d52fc4fabb51c09aa67d58f8f61baa138c6d0705b1a805958f0c584a5",
+        "size": 2096,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      }
+    ],
+    "expandedBytes": 6027,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "yocto-queue",
+      "repository": "sindresorhus/yocto-queue",
+      "version": "0.1.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "description": "Tiny queue data structure",
+      "devDependencies": {
+        "ava": "^2.4.0",
+        "tsd": "^0.13.1",
+        "xo": "^0.35.0"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "queue",
+        "data",
+        "structure",
+        "algorithm",
+        "queues",
+        "queuing",
+        "list",
+        "array",
+        "linkedlist",
+        "fifo",
+        "enqueue",
+        "dequeue",
+        "data-structure"
+      ],
+      "license": "MIT",
+      "name": "yocto-queue",
+      "repository": "sindresorhus/yocto-queue",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "0.1.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2765,
+      "sha256": "c772bceca58f20f0ea08ac6121ba385f55db715cd3c2c46b2b38d06d3c6129f1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

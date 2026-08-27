@@ -1,0 +1,128 @@
+{
+  "artifactId": "848e39adc2a7a5be36fd9167f50743f8f54e534c88902f6743a8204dd294619d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2194,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "eed362bb69f02efd66fbe7050f1681f87751209cea8c877d5ee3e00d1ae36bb5",
+        "size": 1082,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "98b069ba5ff64b0f988162a310c47110d5c121d42c33aa7314817393f453c9e3",
+        "size": 211,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "ff793c821f36985cde9f9d9ff6297e6c1304f8e597aa2d48dc53eda83c11e54c",
+        "size": 636,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "2389e9cb72fae2955b9c76b1f45c9a626c23dd506a44a474796fc5212c16607b",
+        "size": 1333,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 1333,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/23/2389e9cb72fae2955b9c76b1f45c9a626c23dd506a44a474796fc5212c16607b",
+          "sha256": "2389e9cb72fae2955b9c76b1f45c9a626c23dd506a44a474796fc5212c16607b"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "2389e9cb72fae2955b9c76b1f45c9a626c23dd506a44a474796fc5212c16607b",
+        "size": 1333
+      }
+    ],
+    "expandedBytes": 4371,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "p-try",
+      "repository": "sindresorhus/p-try",
+      "version": "2.2.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "description": "`Start a promise chain",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "tsd": "^0.7.1",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=6"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "promise",
+        "try",
+        "resolve",
+        "function",
+        "catch",
+        "async",
+        "await",
+        "promises",
+        "settled",
+        "ponyfill",
+        "polyfill",
+        "shim",
+        "bluebird"
+      ],
+      "license": "MIT",
+      "name": "p-try",
+      "repository": "sindresorhus/p-try",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "2.2.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2194,
+      "sha256": "a390b2b89899df950afc0304eaba7cd1f5e3746b2e370758a9b50f177e713790"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

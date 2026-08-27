@@ -1,0 +1,198 @@
+{
+  "artifactId": "f767e9a744f60984e5e105a3bceb18f1682e721afc817bab444ebded9ada4b6a",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 15530,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.prettierrc.json",
+        "sha256": "6947dabcac295b76f70cba8d05f078a85b7566fac8bee5eca4ab137f1726d9d7",
+        "size": 355,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "79195953f83b16fc7c04ce5d78720c86af1d970b9c6c736053da26f0879c595f",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "c21f729f5a3a1adc055bff1d5a8eb953361a4f7f65cfc29acd1cc8f16391aa7c",
+        "size": 1265,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lib/grammar.d.ts",
+        "sha256": "d04d0cfb219eb0bbe5516f9894e73e39584977b06692479b333731c4e761b2dc",
+        "size": 700,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lib/grammar.js",
+        "sha256": "07fb260298bfee9d4276c719021a9a17861b5b2322aa2daa4b3adde1c0dc8d9a",
+        "size": 14212,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lib/grammar.js.map",
+        "sha256": "9b9e5eaf0ff1028e78985c87b0baaa6e1cafe2a5b271f52f10fa8eb8e1bbacfb",
+        "size": 13122,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lib/index.d.ts",
+        "sha256": "a30ad3a76173f8c075df1c9520d7c32e77d619d0e1373cb0b1de5eb5bafd93a5",
+        "size": 537,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lib/index.js",
+        "sha256": "f84c925e0c8a9b1713ae4ff6676d73ad9ebad423f4c965a3a083c710d1b6a5df",
+        "size": 3763,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/lib/index.js.map",
+        "sha256": "ec57a32d67bda8d0883625e059f10a0d9ead6319e13a45a9645df13870990283",
+        "size": 3028,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/test/addresses.test.d.ts",
+        "sha256": "adc8fb318c926505a80b39fb388baf90b56889f2ba787c8492118690a1e2adde",
+        "size": 256,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/test/addresses.test.js",
+        "sha256": "ae92648aa4c30faa57bb9000ee8489e006429b04d25b33d9b4457651e6ad2578",
+        "size": 10568,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/test/addresses.test.js.map",
+        "sha256": "53ede64bab82925e48bbe5b2df09cc5f165a9c36f7f3ac8805b1125c6d3c716a",
+        "size": 8505,
+        "type": "FILE"
+      },
+      {
+        "path": "package/examples/example.js",
+        "sha256": "3b91dd95eba3d8c457fb62204f6b076975f09e296643660b741d59bfeea9f2ce",
+        "size": 300,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/grammar.ne",
+        "sha256": "4ce92f04cda3d8ff76aa70fd3fdd6143b63c21e6c1afef77d79c807bfa00d90a",
+        "size": 5112,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.ts",
+        "sha256": "6d07230ccd35ad5f3f9a91e9af6bbfa7878b6a004422b006299cd00dc97dcb5b",
+        "size": 3133,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "79807367e6a3d12bc73f87bab80fc694a0aaf58de9eec315d8b053fe45999942",
+        "size": 1384,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/addresses.test.ts",
+        "sha256": "dfd58cc5638348ee2f39abd4cd04efbf2a28fd8789d3fe9efa728d9c178857a2",
+        "size": 10668,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "87fafbc88cbfc0e058717573ccbdb52215c3dbadaa345900e76ab559b83c9083",
+        "size": 487,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/79/79195953f83b16fc7c04ce5d78720c86af1d970b9c6c736053da26f0879c595f",
+          "sha256": "79195953f83b16fc7c04ce5d78720c86af1d970b9c6c736053da26f0879c595f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "79195953f83b16fc7c04ce5d78720c86af1d970b9c6c736053da26f0879c595f",
+        "size": 1071
+      }
+    ],
+    "expandedBytes": 78466,
+    "packageIdentity": {
+      "author": "Gene Hightower <gene@digilicious.com> (https://digilicious.com/)",
+      "homepage": "https://github.com/gene-hightower/smtp-address-parser#readme",
+      "license": "MIT",
+      "name": "smtp-address-parser",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/gene-hightower/smtp-address-parser.git"
+      },
+      "version": "1.1.0"
+    },
+    "packageMetadata": {
+      "author": "Gene Hightower <gene@digilicious.com> (https://digilicious.com/)",
+      "bugs": {
+        "url": "https://github.com/gene-hightower/smtp-address-parser/issues"
+      },
+      "dependencies": {
+        "nearley": "^2.20.1"
+      },
+      "description": "Parse an SMTP (RFC-5321) address",
+      "devDependencies": {
+        "@types/jest": "^26.0.20",
+        "@types/node": "^14.14.33",
+        "eslint": "*",
+        "jest": "^26.6.3",
+        "typescript": "^4.2.3"
+      },
+      "engines": {
+        "node": ">=0.10"
+      },
+      "homepage": "https://github.com/gene-hightower/smtp-address-parser#readme",
+      "keywords": [
+        "RFC-5321",
+        "address",
+        "email",
+        "envelope",
+        "rfc2821",
+        "rfc5321",
+        "rfc821"
+      ],
+      "license": "MIT",
+      "main": "dist/lib/index.js",
+      "name": "smtp-address-parser",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/gene-hightower/smtp-address-parser.git"
+      },
+      "scripts": {
+        "build": "tsc",
+        "clean": "rm -rf node_modules lib/grammar.ts dist",
+        "coverage": "jest --collectCoverage -- dist/test/*.test.js",
+        "grammar": "nearleyc lib/grammar.ne -o lib/grammar.ts",
+        "prepare": "npm run grammar && npm run build",
+        "test": "jest dist/test/*.test.js"
+      },
+      "types": "dist/lib/index.d.ts",
+      "version": "1.1.0"
+    },
+    "physicalEntryCount": 18,
+    "tarball": {
+      "bytes": 15530,
+      "sha256": "1d9d786569f07ef2bb591d0dd7ea71d8640cd01b92e064cc23a3a8886adf8e6d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

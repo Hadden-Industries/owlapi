@@ -21,6 +21,7 @@
 > **Staged-candidate binding decision:** 25 August 2026, hardened 25 August 2026 — publication mode follows actual package/registry capability rather than a literal version: namespace/control support is resolved outside live release runs; any genuinely necessary direct bootstrap uses one explicitly bounded, immediately revoked npm granular access token; every release for which stage-only OIDC is available stages the already-retained tarball, downloads npm's immutable candidate before approval, proves its SHA-256 is byte-for-byte identical to that retained tarball, and binds the human approval record to the stage ID, package coordinate, distribution tag, source tag/commit and digest; an undocumented stage lifetime is never assumed, and missing state permits a freshly authorized identical restage only when read-only evidence proves the coordinate and exact bytes remain reusable.<br>
 > **Release-control toolchain decision:** 24 August 2026 — Phase 19 freezes exact Node 22/24, npm, SemVer, import-map, SBOM, schema, package-lint, Playwright, fixture-bundler, GitHub CLI and history-filter versions; npm tools run only from the repository lockfile through named scripts, non-npm executables are checksum-verified, the SBOM generator is isolated from its production-only subject tree, and any replacement is a separately reviewed exact configuration change.<br>
 > **Standalone source-policy decision:** 27 August 2026 — correct the Phase 19A omission of WebVOWL's formerly inherited Git/editor policy before the Phase 19C bootstrap commit: repository-owned attributes normalize first-party text to LF while preserving upstream evidence bytes, root EditorConfig defines the cross-editor baseline, an empty Prettier declaration intentionally selects exact `prettier@3.9.6` defaults, exact ESLint defines native-ESM grammar/static quality, contributor documentation names the canonical commands, and behavioral governance invokes real Git and Prettier resolution.<br>
+> **Repository-evidence checkout decision:** 28 August 2026 — retain evidence payloads as individually reviewable content-addressed files on the primary branch, with no aggregate archive or `linguist-generated` diff suppression; provide an optional blobless partial-clone plus positive cone-mode sparse profile that omits bulk provenance/release payloads but retains their indexes, schemas, review records and ordinary conformance inputs; and require a complete checkout for governance, evidence verification and every release gate.<br>
 > **Workflow-trust-boundary decision:** 24 August 2026 — use separate read-only CI, manually dispatched late-tag release, maintenance and extended-test workflows; keep each release's retained artefact chain inside one serialized `release.yml` run; deny token authority by default; isolate npm OIDC, GitHub-release writes and maintenance issue writes in different least-privilege jobs; and forbid privileged execution or cross-workflow artefact promotion of untrusted pull-request content.<br>
 > **GitHub-Action inventory decision:** 24 August 2026, hardened 27 August 2026 — allow exactly six GitHub-maintained Actions at reviewed full commit SHAs; disable `setup-node`'s implicit npm cache everywhere; select the evidence scanner's exact isolated Python through cache-free `setup-python`; remove persisted checkout credentials; transport the three-file release candidate by exact same-run artefact ID and the deterministic evidence shards by closed same-run patterns with digest enforcement; and configure dependency review solely for newly introduced high/critical runtime vulnerabilities.<br>
 > **Hosted-runner and shell decision:** 24 August 2026 — use only explicit GA `ubuntu-24.04` x64, `windows-2025` x64 and `macos-15` arm64 GitHub-hosted labels; build every release artefact only on Ubuntu/Node 24; qualify the installed tarball on both Node patches across Windows and macOS; run the three Playwright engines separately on Ubuntu; make Bash/PowerShell Core selection explicit; record each mutable runner-image identity as evidence; and consume no runner-preinstalled release tool.<br>
@@ -3239,6 +3240,27 @@ original archive path, byte length, classification and encoding. Full tarballs
 and raw scanner reports remain temporary under `.release/` and **MUST NOT** be
 committed or packed.
 
+The individual CAS files are an intentional review boundary. A dependency or
+evidence-tool update **MUST** reuse every unchanged digest path and expose each
+added or removed path beside the semantic manifest diff. The blob tree **MUST
+NOT** be combined into an archive, marked `linguist-generated`, assigned `-diff`
+or otherwise hidden by default from GitHub review. Its nested `.gitattributes`
+may disable only text/EOL transformations needed to preserve the path-derived
+SHA-256.
+
+The complete corpus remains reachable from the protected primary branch and is
+mandatory for governance, offline evidence verification and release work. A
+documented optional source-development checkout **MAY** use a blobless partial
+clone followed by a positive cone-mode sparse selection. That profile omits all
+bulk provenance and release-evidence payloads, while retaining their canonical
+manifests, schemas, human-review records and explanatory policy. It also retains
+W3C and other conformance resources used as ordinary parser-test inputs; those
+are development fixtures even though their results later contribute evidence.
+No required command may treat an absent sparse payload as successful evidence.
+The contributor procedure **MUST** identify the unavailable aggregate gates,
+show how to hydrate the full tree, and be exercised against the committed GitHub
+tree before the Phase 19C checkpoint closes.
+
 Full acquisition is deterministically divided into exactly 32 shards. For each
 artifact, the sharder interprets the first eight hexadecimal characters of its
 lowercase SHA-256 artifact identity as an unsigned 32-bit integer and assigns it
@@ -3283,7 +3305,10 @@ historical tarball may repeat one canonical path only when every physical member
 has independently identical type, size and SHA-256. The inventory retains one
 canonical entry plus the occurrence count, while every physical member and byte
 still consumes the safety ceilings; scan materialization re-hashes every
-occurrence and writes the authenticated file once. Offline verification rechecks
+occurrence and writes the authenticated file once. The retained archive envelope
+records both `physicalEntryCount` and the closed `duplicateEntries` occurrence
+ledger; neither may be reconstructed from the deduplicated canonical entry array.
+Offline verification rechecks
 the recorded root against every inventory path and the root manifest. The
 inspector canonicalizes harmless POSIX current-directory (`.`) components before
 applying root and collision controls, while empty components and parent traversal
@@ -3330,7 +3355,27 @@ reports the exact required npm version. It never executes a Windows command shim
 A deterministic normalizer removes only enumerated
 non-semantic timing/temporary-path fields, preserves scan errors and all
 substantive findings, sorts unordered collections and binds each result to the
-artifact and scanner-option digests. It treats only `files[].path`,
+artifact and scanner-option digests. ScanCode deliberately adds a fresh UUIDv4
+qualifier to each package/dependency instance on every invocation; those values
+are execution-local object identities rather than durable package identities.
+The normalizer therefore verifies each stripped package UID against its reported
+npm Package URL, removes `packages[].package_uid`, rewrites
+`files[].for_packages` to Package URLs, removes
+`dependencies[].dependency_uid`, and replaces `for_package_uid` with the nullable
+`for_package_purl`. A full scoped npm name identifies a package lineage, the
+standard npm PURL identifies a release, and the lockfile SRI plus retained
+tarball SHA-256 identify exact bytes; the corpus's existing artifact digest
+remains only its lock-bound evidence/join key. Duplicate package PURLs, mismatched
+UID/PURL pairs and dangling graph references fail closed, while repeated
+dependency-target PURLs remain distinct through their complete requirement,
+scope and flag records. The versioned normalizer also omits exactly
+`files[].date`, `files[].file_type`, `files[].mime_type` and
+`files[].is_script`: the first records the newly materialized acquisition day,
+and ScanCode derives the other three from host libmagic/filesystem state, so all
+can change for identical authenticated archive bytes. File paths, sizes,
+cryptographic digests, programming-language/source classification, package data
+and every licence/copyright finding remain retained.
+The normalizer treats only `files[].path`,
 `packages[].datafile_paths` and `dependencies[].datafile_path` as execution-rooted
 ScanCode codebase locations. Package-model fields such as
 `file_references[].path` remain semantic package metadata because their values can
@@ -3378,6 +3423,12 @@ schema transition from third-party-material v1 to v2 **MUST** separately record
 lockfile and tarball declarations, observed evidence and ScanCode findings,
 registry-signature/provenance status, explicit licence-file presence or absence,
 the concluded SPDX expression, distribution disposition and human rationale.
+Generation **MUST** be idempotent: an explanatory fact cannot change merely
+because an equivalent decision is being generated before promotion or preserved
+after promotion. A generator may carry forward a human conclusion only when the
+component facts and decision remain equivalent, and it **MUST** first support a
+schema-validated alternate output so reviewers can inspect the complete
+prospective inventory without mutating its canonical predecessor.
 The v2 facts digest binds the lockfile, evidence-manifest digest, corpus root and
 conclusions while excluding timestamps, retries, temporary locations and live
 registry metadata. `rights-inventory.json` remains package-tarball-scoped and
@@ -3939,15 +3990,27 @@ archive digest check.
 The §2.50.1 evidence path is the only approved pattern-selected exception to the
 candidate-by-ID rule. Each shard uploads exactly its closed shard directory under
 `npm-evidence-release-<index>` or `npm-evidence-<os>-<index>` with missing-file
-failure, one-day retention, zero compression, no overwrite, no hidden files and
-ordinary archive transport. Its aggregate downloads only the matching same-run
-prefix with `merge-multiple: false`, `skip-decompress: false` and
-`digest-mismatch: error`, and supplies no artifact ID, repository, run ID or
-token capable of crossing the current workflow run. The merger independently
-validates all 32 shard memberships and every content digest, so the Action's
-pattern and archive digest remain transport controls rather than evidence truth.
-The manually dispatched OS aggregates use the same bounded upload settings and
-the parity job selects only `npm-evidence-aggregate-*` from that same run.
+failure, one-day retention, zero compression, deterministic coordinate
+replacement, no hidden files and ordinary archive transport. Deterministic
+replacement permits a failed same-run job attempt to replace only its own exact
+coordinate instead of leaving an unusable first upload; immutable evidence truth
+still comes from the independently verified content-addressed corpus rather than
+the mutable workflow-transport name. A preceding same-run job snapshots the exact
+npm registry signing-key set once, uploads only that validated canonical JSON
+under its closed one-day coordinate, and every shard downloads that exact
+snapshot instead of observing key rotation at different times.
+
+Each aggregate downloads only its exact matching same-run prefix with
+`merge-multiple: false`, `skip-decompress: false` and `digest-mismatch: error`,
+and supplies no artifact ID, repository, run ID or token capable of crossing the
+current workflow run. The merger independently validates the source commit, npm
+snapshot identity, all 32 shard memberships and every content digest, so the
+Action's pattern and archive digest remain transport controls rather than
+evidence truth. Shard and signing-key transports expire after one day; a
+successfully verified aggregate is retained for seven days to make review and
+diagnosis proportionate without treating Actions storage as the durable corpus.
+The manually dispatched OS aggregates use these same closed selectors and the
+parity job selects only `npm-evidence-aggregate-*` from that same run.
 
 `actions/dependency-review-action` runs only for `pull_request` and has only
 `contents: read`. Its exact policy inputs are:
@@ -4130,14 +4193,18 @@ does not create the required check, the ruleset remains unsatisfied and blocks
 merge.
 
 `release.yml` has a corresponding unprivileged `Release / qualified` job. It
-runs with `if: ${{ always() }}` only after every mandatory pre-publication job,
-lists each one through explicit `needs`, and rejects every conclusion other than
-`success`. The protected `npm-release` publication job depends directly on this
-aggregate; no environment approval or npm authority is requested before it
-passes. `Release / qualified` is a small ten-minute job whose evaluation step
-has a five-minute timeout. `always()` belongs on these two aggregate evaluators,
-not on long-running build, test, download or publication jobs where it could
-keep executing after a failed prerequisite.
+runs with `if: ${{ !cancelled() }}` only after every mandatory pre-publication
+job, lists each one through explicit `needs`, and rejects every conclusion other
+than `success`. This permits the evaluator to classify an ordinary failed or
+skipped prerequisite while respecting an explicit workflow cancellation instead
+of continuing expensive work. The protected `npm-release` publication job
+depends directly on this aggregate; no environment approval or npm authority is
+requested before it passes. `Release / qualified` is a small ten-minute job whose
+evaluation step has a five-minute timeout. `always()` is reserved for the stable
+`CI / required` branch-protection evaluator that must report a conclusion even
+after cancellation; `!cancelled()` belongs on release and extended-evidence
+aggregates, and neither condition belongs on long-running build, test, download
+or publication jobs where it could keep executing after a failed prerequisite.
 
 Every required matrix declares `strategy.fail-fast: false`: all blocking lanes
 finish and produce independently reviewable evidence. Required jobs have an
@@ -13048,11 +13115,15 @@ precise subset; this summary is not the machine mapping.
       The release candidate contains only the tarball, CycloneDX SBOM and
       `SHA256SUMS` under a version/run/attempt-specific name; upload records its ID/
       digest and download selects only that immutable ID into a new fixed directory
-      before independent inventory/checksum verification. Evidence shards contain
-      only their closed manifest/CAS directory, expire after one day, and download
-      only by the approved same-run release/OS/aggregate prefix without merge,
-      repository, run-ID or token broadening; the project merger independently
-      proves all 32 memberships and content digests.
+      before independent inventory/checksum verification. A same-run npm signing-
+      key snapshot and evidence shards contain only their closed canonical JSON or
+      manifest/CAS directory, use deterministic coordinate replacement for a
+      failed-job rerun, expire after one day, and download only by their exact
+      approved same-run key/release/OS/aggregate selector without merge,
+      repository, run-ID or token broadening. The project merger independently
+      proves the source/key identities, all 32 memberships and content digests;
+      only a successfully verified aggregate receives seven-day diagnostic
+      retention.
 - [ ] <!-- Gate: P19-CHECK-066; Covers: P19-CI-CONTROLS-001, P19-NODE-001 --> Every required job uses and validates exactly `ubuntu-24.04` x64,
       `windows-2025` x64 or `macos-15` arm64 according to §2.57; no moving, preview,
       slim, larger, self-hosted or container runner appears. Ubuntu alone builds,
@@ -13083,10 +13154,11 @@ precise subset; this summary is not the machine mapping.
       aggregate plus separately required CodeQL, and one pre-publication
       `Release / qualified` aggregate on which the protected npm job directly
       depends. Governance checks keep each explicit `needs` inventory synchronized;
-      `if: always()` is confined to the small aggregate evaluators; dependency
-      review emits its closed push-only non-applicability reason; and every skipped,
-      cancelled, timed-out, missing or otherwise non-success mandatory conclusion
-      fails closed.
+      `if: always()` is confined to `CI / required`, while release and extended-
+      evidence aggregates use `if: !cancelled()` so explicit cancellation halts
+      them; dependency review emits its closed push-only non-applicability reason;
+      and every observed skipped, cancelled, timed-out, missing or otherwise non-
+      success mandatory conclusion fails closed.
 - [ ] <!-- Gate: P19-CHECK-071; Covers: P19-CI-CONTROLS-001 --> Every required matrix uses `strategy.fail-fast: false` with no effective
       `continue-on-error`, swallowed status or neutralized report; every job/step
       has the exact §2.58 timeout; npm and project-owned HTTP reads use only the
@@ -15345,11 +15417,11 @@ The final architectural rules are:
 
 > **GitHub Actions uses exactly four trust-separated workflow files: read-only `ci.yml`, protected-`main` manually dispatched late-tag `release.yml`, `maintenance.yml` and non-blocking `extended-tests.yml`. Each denies token authority at its root and grants only job-minimal permissions. One serialized, non-cancelling, cache-free `release.yml` run owns the complete retained candidate; npm OIDC, no-authority `release-manual` review jobs, GitHub-release writes and maintenance issue writes remain separate. Privileged `pull_request_target`/`workflow_run`, cross-workflow candidate promotion, runner-based human-wait polling, external reusable workflows, floating Actions and unselected Action repositories are forbidden.**
 
-> **Exactly six GitHub-maintained Action releases are executable, each by the §2.56 full SHA with its reviewed tag beside it: checkout v7.0.1, setup-node v7.0.0, setup-python v7.0.0, upload-artifact v7.0.1, download-artifact v8.0.1 and dependency-review-action v5.0.0. Checkout never persists credentials; setup-node uses literal Node patches with both implicit and explicit dependency caching disabled; setup-python selects exact isolated Python 3.14.7 only for deterministic ScanCode shards and changes neither PATH nor caches; steady OIDC publication performs no checkout and receives no registry/token setup; the three-file candidate is uploaded once, recorded and downloaded by immutable artefact ID with closed inventory and independent hashes; one-day evidence shards move only by closed same-run patterns before independent closure/digest verification; dependency review is read-only and blocks only introduced high/critical runtime vulnerabilities. Cache, script, publish, release, SBOM, provenance and attestation wrapper Actions are absent. An update proposal must revalidate the tag-to-SHA mapping and every relevant runtime/default/input/output/permission behavior, never merely replace a hash.**
+> **Exactly six GitHub-maintained Action releases are executable, each by the §2.56 full SHA with its reviewed tag beside it: checkout v7.0.1, setup-node v7.0.0, setup-python v7.0.0, upload-artifact v7.0.1, download-artifact v8.0.1 and dependency-review-action v5.0.0. Checkout never persists credentials; setup-node uses literal Node patches with both implicit and explicit dependency caching disabled; setup-python selects exact isolated Python 3.14.7 only for deterministic ScanCode shards and changes neither PATH nor caches; steady OIDC publication performs no checkout and receives no registry/token setup; the three-file candidate is uploaded once, recorded and downloaded by immutable artefact ID with closed inventory and independent hashes; a validated same-run npm signing-key snapshot and one-day evidence shards move only by exact closed selectors with deterministic coordinate replacement, seven-day aggregate retention and independent source/key/closure/digest verification; dependency review is read-only and blocks only introduced high/critical runtime vulnerabilities. Cache, script, publish, release, SBOM, provenance and attestation wrapper Actions are absent. An update proposal must revalidate the tag-to-SHA mapping and every relevant runtime/default/input/output/permission behavior, never merely replace a hash.**
 
 > **Required automation uses only explicit GA `ubuntu-24.04` x64, `windows-2025` x64 and `macos-15` arm64 hosted labels. Ubuntu alone builds and publishes; its complete Node 22/24 suite is joined by four blocking Windows/macOS installed-tarball lanes and three separate one-worker, cache-free Ubuntu Playwright-engine jobs. Linux/macOS use explicit Bash, Windows uses PowerShell Core, and substantive policy stays in cross-platform `.mjs` scripts. Each job validates and records the requested label, OS/architecture, mutable GitHub image version, OS/kernel and actual runtime/browser identities. Moving/latest, preview, slim, larger, self-hosted and container runners are absent, as is every runner-preinstalled release tool.**
 
-> **Automation fails closed through two governance-verified stable aggregates: the GitHub-Actions-owned `CI / required` check plus separate CodeQL protects `main`, and the protected npm job directly needs `Release / qualified`. Every required matrix uses `fail-fast: false` without allow-failure or swallowed status; every job/critical step has its exact timeout; release concurrency is non-cancelling `queue: max`, while CI cancels only superseded work and observational schedules coalesce only pending runs. Bounded retries apply solely to classified idempotent reads. Every npm/GitHub/issue/Git-ref write receives one automatic attempt; an ambiguous response is reconciled read-only against exact remote identity and digest, and any genuinely new mutation requires renewed explicit authorization.**
+> **Automation fails closed through two governance-verified stable aggregates: the GitHub-Actions-owned `CI / required` check plus separate CodeQL protects `main`, and the protected npm job directly needs `Release / qualified`. `CI / required` uses `always()` to produce the branch-protection conclusion; release and extended-evidence aggregates use `!cancelled()` so ordinary failures remain classifiable but explicit cancellation stops further work. Every required matrix uses `fail-fast: false` without allow-failure or swallowed status; every job/critical step has its exact timeout; release concurrency is non-cancelling `queue: max`, while CI cancels only superseded work and observational schedules coalesce only pending runs. Bounded retries apply solely to classified idempotent reads. Every npm/GitHub/issue/Git-ref write receives one automatic attempt; an ambiguous response is reconciled read-only against exact remote identity and digest, and any genuinely new mutation requires renewed explicit authorization.**
 
 > **A versioned Draft 2020-12 gate registry is the executable projection of every Phase 19/20 completion requirement and is reconciled bidirectionally with this plan. Required gates end only in `PASS` or validated `NOT_APPLICABLE`; there is no ordinary waiver, and unresolved `PRODUCT_FAILURE`, `CONTROL_FAILURE` or `EXTERNAL_BLOCKED` states all block publication. `INFRASTRUCTURE_ERROR` is transient diagnostic state, never a terminal result. Required local Playwright Chromium/Firefox/WebKit checks must pass; extended branded, historical, hosted and real-device observations remain transparently non-blocking `PASS`/`FAIL`/reasoned `NOT_RUN` evidence.**
 

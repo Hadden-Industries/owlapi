@@ -1,0 +1,96 @@
+{
+  "artifactId": "ad938e0dc39a5340f528954937f226f2d440ec6b013e3e6f8b7b8014d07739e8",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1564,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "7d883cda4a26786f7cad18813155accf4e96c6f020b09a5e47a136a997c15962",
+        "size": 476,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "7dae15d55f0c7421e08c9ef6483e5c573cd6d682b10fc1468dff5394a7ed1db9",
+        "size": 439,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "aab80801029419aa7298330848c2ce3b20049b494197b7e66df0f3bbdadc0c0d",
+        "size": 730,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 2751,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-numeric-separator",
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-numeric-separator",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.10.4"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.10.4"
+      },
+      "description": "Allow parsing of Decimal, Binary, Hex and Octal literals that contain a Numeric Literal Separator",
+      "devDependencies": {
+        "@babel/core": "^7.10.4"
+      },
+      "gitHead": "7fd40d86a0d03ff0e9c3ea16b29689945433d4df",
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "@babel/plugin-syntax-numeric-separator",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-numeric-separator",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.10.4"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1564,
+      "sha256": "1a8cbb6069aa630efbd774c8e47ddeac8ca7718d330c82d5242eca4825209745"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

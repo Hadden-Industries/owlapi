@@ -1,6 +1,13 @@
 import { createHash, generateKeyPairSync, sign } from "node:crypto";
 import { createServer } from "node:http";
-import { mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import {
+  mkdir,
+  mkdtemp,
+  readFile,
+  readdir,
+  rm,
+  writeFile,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { basename, join } from "node:path";
 import { once } from "node:events";
@@ -24,6 +31,8 @@ import {
   verifyEvidenceManifest,
   verifyEvidenceShard,
 } from "./evidence-manifest.mjs";
+import { computeCorpusRoot, retainBlob } from "./blob-store.mjs";
+import { stableJson } from "./digests.mjs";
 import {
   npmRegistryKeyId,
   registrySignaturePayload,
@@ -382,6 +391,8 @@ describe("acquireEvidence", () => {
       ),
     );
     expect(archiveEnvelope.evidence.archiveRoot).toBe("alpha");
+    expect(archiveEnvelope.evidence.physicalEntryCount).toBe(3);
+    expect(archiveEnvelope.evidence.duplicateEntries).toEqual([]);
     await expect(
       readFile(
         join(
@@ -398,6 +409,37 @@ describe("acquireEvidence", () => {
     await expect(readdir(join(repositoryRoot, ".release"))).resolves.toEqual(
       [],
     );
+  });
+
+  it("uses one supplied, validated registry-key snapshot without refetching keys", async () => {
+    const fixture = makeRegistryFixture();
+    const registry = await startRegistryServer(fixture);
+    const repositoryRoot = await mkdtemp(
+      join(tmpdir(), "owlapi-registry-key-snapshot-test-"),
+    );
+    temporaryRoots.push(repositoryRoot);
+    await writeFile(
+      join(repositoryRoot, "package-lock.json"),
+      fixture.lockfileBytes,
+    );
+
+    const result = await acquireEvidence({
+      repositoryRoot,
+      fetchImpl: mappedFetch(registry.origin),
+      registryKeySnapshot: {
+        schemaVersion: 1,
+        registryOrigin: "https://registry.npmjs.org",
+        keys: [fixture.key],
+      },
+      downloadTarball: fixtureDownload,
+      verifyPackageMetadata: fixtureMetadataVerification,
+      scanArtifact: fixtureScan,
+      sleep: async () => {},
+      write: true,
+    });
+
+    expect(result.manifest.registryKeys).toEqual([fixture.key]);
+    expect(registry.attempts.has("/-/npm/v1/keys")).toBe(false);
   });
 
   it("records authenticated zero-byte and hidden files that ScanCode does not report", async () => {
@@ -679,6 +721,70 @@ describe("acquireEvidence", () => {
     });
   });
 
+  it("classifies exhausted Pacote metadata transport as externally blocked", async () => {
+    const fixture = makeRegistryFixture();
+    const registry = await startRegistryServer(fixture);
+    const repositoryRoot = await mkdtemp(
+      join(tmpdir(), "owlapi-metadata-network-test-"),
+    );
+    temporaryRoots.push(repositoryRoot);
+    await writeFile(
+      join(repositoryRoot, "package-lock.json"),
+      fixture.lockfileBytes,
+    );
+    const unavailableMetadata = async () => {
+      const error = new Error("registry timed out");
+      error.code = "ETIMEDOUT";
+      throw error;
+    };
+
+    await expect(
+      acquireEvidence({
+        repositoryRoot,
+        fetchImpl: mappedFetch(registry.origin),
+        downloadTarball: fixtureDownload,
+        verifyPackageMetadata: unavailableMetadata,
+        scanArtifact: fixtureScan,
+        sleep: async () => {},
+      }),
+    ).rejects.toMatchObject({
+      classification: "EXTERNAL_BLOCKED",
+      code: "PACKAGE_METADATA_UNAVAILABLE",
+    });
+  });
+
+  it("keeps Pacote cryptographic metadata rejection as a product failure", async () => {
+    const fixture = makeRegistryFixture();
+    const registry = await startRegistryServer(fixture);
+    const repositoryRoot = await mkdtemp(
+      join(tmpdir(), "owlapi-metadata-integrity-test-"),
+    );
+    temporaryRoots.push(repositoryRoot);
+    await writeFile(
+      join(repositoryRoot, "package-lock.json"),
+      fixture.lockfileBytes,
+    );
+    const invalidMetadata = async () => {
+      const error = new Error("signature verification failed");
+      error.code = "EINTEGRITY";
+      throw error;
+    };
+
+    await expect(
+      acquireEvidence({
+        repositoryRoot,
+        fetchImpl: mappedFetch(registry.origin),
+        downloadTarball: fixtureDownload,
+        verifyPackageMetadata: invalidMetadata,
+        scanArtifact: fixtureScan,
+        sleep: async () => {},
+      }),
+    ).rejects.toMatchObject({
+      classification: "PRODUCT_FAILURE",
+      code: "PACKAGE_METADATA_VERIFICATION_FAILED",
+    });
+  });
+
   it("writes a verifiable shard and reconstructs the same full corpus", async () => {
     const fixture = makeRegistryFixture();
     const registry = await startRegistryServer(fixture);
@@ -738,6 +844,207 @@ describe("acquireEvidence", () => {
       }),
     ).resolves.toMatchObject({
       corpusRoot: merged.manifest.corpusRoot,
+      summary: { artifactCount: 1 },
+    });
+  });
+
+  it("recanonicalizes a verified legacy aggregate without registry or scanner access", async () => {
+    const fixture = makeRegistryFixture();
+    const registry = await startRegistryServer(fixture);
+    const repositoryRoot = await mkdtemp(
+      join(tmpdir(), "owlapi-recanonicalize-test-"),
+    );
+    temporaryRoots.push(repositoryRoot);
+    await writeFile(
+      join(repositoryRoot, "package-lock.json"),
+      fixture.lockfileBytes,
+    );
+    const shardSetRoot = join(repositoryRoot, "shards");
+    const shardRoot = join(shardSetRoot, "shard-0");
+    const aggregateRoot = join(repositoryRoot, "aggregate");
+    const outputRoot = join(repositoryRoot, "recanonicalized");
+    const completedRoot = join(repositoryRoot, "archive-complete");
+
+    await acquireEvidence({
+      repositoryRoot,
+      fetchImpl: mappedFetch(registry.origin),
+      downloadTarball: fixtureDownload,
+      verifyPackageMetadata: fixtureMetadataVerification,
+      scanArtifact: fixtureScan,
+      shard: { count: 1, index: 0, outputRoot: shardRoot },
+      sleep: async () => {},
+    });
+    await mergeEvidenceShardDirectories({
+      repositoryRoot,
+      inputRoot: shardSetRoot,
+      outputRoot: aggregateRoot,
+    });
+
+    const manifestPath = join(aggregateRoot, "npm-package-evidence.json");
+    const corpusRoot = join(aggregateRoot, "corpus");
+    const legacy = JSON.parse(await readFile(manifestPath, "utf8"));
+    const artifact = legacy.artifacts[0];
+    const previousScan = artifact.scan.evidence;
+    const envelope = JSON.parse(
+      await readFile(join(corpusRoot, previousScan.path), "utf8"),
+    );
+    const packageUid =
+      "pkg:npm/alpha@1.0.0?uuid=11111111-1111-4111-8111-111111111111";
+    delete envelope.evidence.scanner.normalizationVersion;
+    envelope.evidence.packages = [
+      {
+        name: "alpha",
+        package_uid: packageUid,
+        purl: "pkg:npm/alpha@1.0.0",
+        type: "npm",
+        version: "1.0.0",
+      },
+    ];
+    envelope.evidence.dependencies = [
+      {
+        dependency_uid:
+          "pkg:npm/beta@2.0.0?uuid=22222222-2222-4222-8222-222222222222",
+        for_package_uid: packageUid,
+        purl: "pkg:npm/beta@2.0.0",
+      },
+    ];
+    envelope.evidence.files[0].date = "2026-08-27";
+    envelope.evidence.files[0].for_packages = [packageUid];
+    const replacement = {
+      ...(await retainBlob(corpusRoot, stableJson(envelope))),
+      kind: "SCANCODE_FINDINGS",
+    };
+    artifact.scan.evidence = replacement;
+    const previousArchive = artifact.archive.evidence;
+    const archiveEnvelope = JSON.parse(
+      await readFile(join(corpusRoot, previousArchive.path), "utf8"),
+    );
+    delete archiveEnvelope.evidence.duplicateEntries;
+    delete archiveEnvelope.evidence.physicalEntryCount;
+    const legacyArchive = {
+      ...(await retainBlob(corpusRoot, stableJson(archiveEnvelope))),
+      kind: "ARCHIVE_INVENTORY",
+    };
+    artifact.archive.evidence = legacyArchive;
+    legacy.blobs = legacy.blobs.map((reference) =>
+      reference.kind === previousScan.kind &&
+      reference.sha256 === previousScan.sha256
+        ? replacement
+        : reference.kind === previousArchive.kind &&
+            reference.sha256 === previousArchive.sha256
+          ? legacyArchive
+          : reference,
+    );
+    delete legacy.policy.scanner.normalizationVersion;
+    legacy.summary.retainedBytes = legacy.blobs.reduce(
+      (total, reference) => total + reference.bytes,
+      0,
+    );
+    legacy.corpusRoot = computeCorpusRoot(legacy.blobs);
+    await writeFile(manifestPath, stableJson(legacy));
+
+    const { recanonicalizeEvidenceAggregate } =
+      await import("../recanonicalize-npm-package-evidence.mjs");
+    const result = await recanonicalizeEvidenceAggregate({
+      repositoryRoot,
+      inputRoot: aggregateRoot,
+      outputRoot,
+    });
+
+    expect(result.manifest.policy.scanner.normalizationVersion).toBe(1);
+    const normalizedScan = result.manifest.artifacts[0].scan.evidence;
+    const normalizedEnvelope = JSON.parse(
+      await readFile(join(outputRoot, "corpus", normalizedScan.path), "utf8"),
+    );
+    expect(normalizedEnvelope.evidence.packages[0]).toMatchObject({
+      purl: "pkg:npm/alpha@1.0.0",
+    });
+    expect(normalizedEnvelope.evidence.packages[0]).not.toHaveProperty(
+      "package_uid",
+    );
+    expect(normalizedEnvelope.evidence.dependencies[0]).toMatchObject({
+      for_package_purl: "pkg:npm/alpha@1.0.0",
+      purl: "pkg:npm/beta@2.0.0",
+    });
+    expect(normalizedEnvelope.evidence.files[0]).not.toHaveProperty("date");
+    await expect(
+      verifyEvidenceManifest({
+        manifest: result.manifest,
+        lockfileBytes: fixture.lockfileBytes,
+        blobRoot: join(outputRoot, "corpus"),
+      }),
+    ).rejects.toMatchObject({ code: "ARCHIVE_INVENTORY_INVALID" });
+    expect(JSON.parse(await readFile(manifestPath, "utf8"))).toEqual(legacy);
+
+    const { completeArchiveEvidenceAggregate } =
+      await import("../complete-npm-archive-evidence.mjs");
+    const completed = await completeArchiveEvidenceAggregate({
+      repositoryRoot,
+      inputRoot: outputRoot,
+      outputRoot: completedRoot,
+      downloadTarball: fixtureDownload,
+      fetchImpl: mappedFetch(registry.origin),
+    });
+    const completedArchive = completed.manifest.artifacts[0].archive.evidence;
+    const completedArchiveEnvelope = JSON.parse(
+      await readFile(
+        join(completedRoot, "corpus", completedArchive.path),
+        "utf8",
+      ),
+    );
+    expect(completedArchiveEnvelope.evidence).toMatchObject({
+      duplicateEntries: [],
+      physicalEntryCount: 3,
+    });
+    await expect(
+      verifyEvidenceManifest({
+        manifest: completed.manifest,
+        lockfileBytes: fixture.lockfileBytes,
+        blobRoot: join(completedRoot, "corpus"),
+      }),
+    ).resolves.toMatchObject({ artifactCount: 1 });
+
+    const { promoteEvidenceAggregate } =
+      await import("../promote-npm-package-evidence.mjs");
+    const committedCorpusRoot = join(
+      repositoryRoot,
+      "docs",
+      "provenance",
+      "evidence",
+      "npm",
+    );
+    await mkdir(committedCorpusRoot, { recursive: true });
+    await writeFile(
+      join(committedCorpusRoot, ".gitattributes"),
+      "blobs/** -text !eol\n",
+    );
+    await expect(
+      promoteEvidenceAggregate({ repositoryRoot, inputRoot: completedRoot }),
+    ).resolves.toMatchObject({
+      manifestSha256: completed.output.manifestSha256,
+      summary: { artifactCount: 1 },
+    });
+    await expect(
+      verifyEvidenceManifest({
+        manifest: completed.manifest,
+        lockfileBytes: fixture.lockfileBytes,
+        blobRoot: committedCorpusRoot,
+      }),
+    ).resolves.toMatchObject({ artifactCount: 1 });
+    await expect(
+      readFile(join(committedCorpusRoot, ".gitattributes"), "utf8"),
+    ).resolves.toBe("blobs/** -text !eol\n");
+    await expect(
+      promoteEvidenceAggregate({ repositoryRoot, inputRoot: completedRoot }),
+    ).rejects.toThrow("Committed npm evidence already exists");
+    await expect(
+      promoteEvidenceAggregate({
+        repositoryRoot,
+        inputRoot: completedRoot,
+        expectedCurrentManifestSha256: completed.output.manifestSha256,
+      }),
+    ).resolves.toMatchObject({
+      manifestSha256: completed.output.manifestSha256,
       summary: { artifactCount: 1 },
     });
   });
@@ -804,6 +1111,85 @@ describe("fetchJsonWithRetry", () => {
     expect(registry.attempts.get("/flaky")).toBe(3);
   });
 
+  it("retries 429 and 408 responses while honoring a capped Retry-After", async () => {
+    const fixture = makeRegistryFixture();
+    const delays = [];
+    const registry = await startRegistryServer(fixture, {
+      handle: ({ request, response, count }) => {
+        if (request.url !== "/rate-limited") {
+          return false;
+        }
+        if (count === 1) {
+          response.statusCode = 429;
+          response.setHeader("retry-after", "2");
+          response.end("slow down");
+        } else if (count === 2) {
+          response.statusCode = 408;
+          response.end("request timed out");
+        } else {
+          response.setHeader("content-type", "application/json");
+          response.end(JSON.stringify({ ok: true }));
+        }
+        return true;
+      },
+    });
+
+    await expect(
+      fetchJsonWithRetry(`${registry.origin}/rate-limited`, {
+        fetchImpl: fetch,
+        random: () => 0,
+        sleep: async (milliseconds) => delays.push(milliseconds),
+      }),
+    ).resolves.toEqual({ ok: true });
+    expect(delays).toEqual([2_000, 60_000]);
+  });
+
+  it("caps an HTTP-date Retry-After and never retries invalid JSON", async () => {
+    const fixture = makeRegistryFixture();
+    const delays = [];
+    const now = Date.parse("2026-08-27T12:00:00.000Z");
+    const registry = await startRegistryServer(fixture, {
+      handle: ({ request, response, count }) => {
+        if (request.url === "/dated" && count === 1) {
+          response.statusCode = 503;
+          response.setHeader("retry-after", "Wed, 27 Aug 2026 12:05:00 GMT");
+          response.end("later");
+          return true;
+        }
+        if (request.url === "/dated") {
+          response.setHeader("content-type", "application/json");
+          response.end(JSON.stringify({ ok: true }));
+          return true;
+        }
+        if (request.url === "/invalid-json") {
+          response.setHeader("content-type", "application/json");
+          response.end("not json");
+          return true;
+        }
+        return false;
+      },
+    });
+
+    await expect(
+      fetchJsonWithRetry(`${registry.origin}/dated`, {
+        fetchImpl: fetch,
+        now: () => now,
+        random: () => 0,
+        sleep: async (milliseconds) => delays.push(milliseconds),
+      }),
+    ).resolves.toEqual({ ok: true });
+    expect(delays).toEqual([60_000]);
+    await expect(
+      fetchJsonWithRetry(`${registry.origin}/invalid-json`, {
+        fetchImpl: fetch,
+        sleep: async () => {
+          throw new Error("invalid JSON must not be retried");
+        },
+      }),
+    ).rejects.toMatchObject({ classification: "PRODUCT_FAILURE" });
+    expect(registry.attempts.get("/invalid-json")).toBe(1);
+  });
+
   it("classifies persistent 5xx but never retries a 4xx response", async () => {
     const fixture = makeRegistryFixture();
     const registry = await startRegistryServer(fixture, {
@@ -839,19 +1225,59 @@ describe("fetchJsonWithRetry", () => {
   });
 });
 
+describe("registry-key snapshot CLI", () => {
+  it("writes one canonical, exclusive same-run registry-key snapshot", async () => {
+    const fixture = makeRegistryFixture();
+    const registry = await startRegistryServer(fixture);
+    const directory = await mkdtemp(
+      join(tmpdir(), "owlapi-registry-key-writer-test-"),
+    );
+    temporaryRoots.push(directory);
+    const outputPath = join(directory, "keys", "npm-registry-keys.json");
+    const { snapshotRegistryKeys } =
+      await import("../snapshot-npm-registry-keys.mjs");
+
+    const snapshot = await snapshotRegistryKeys({
+      outputPath,
+      fetchImpl: mappedFetch(registry.origin),
+      sleep: async () => {},
+    });
+
+    expect(JSON.parse(await readFile(outputPath, "utf8"))).toEqual(snapshot);
+    expect(snapshot).toMatchObject({
+      schemaVersion: 1,
+      registryOrigin: "https://registry.npmjs.org",
+      keys: [fixture.key],
+    });
+    await expect(
+      snapshotRegistryKeys({
+        outputPath,
+        fetchImpl: mappedFetch(registry.origin),
+        sleep: async () => {},
+      }),
+    ).rejects.toMatchObject({ code: "EEXIST" });
+  });
+});
+
 describe("acquisition CLI", () => {
   it("requires an explicit write switch to replace committed evidence", () => {
     expect(parseAcquisitionArguments([])).toEqual({
       write: false,
       scancode: null,
       shard: null,
+      registryKeysPath: null,
     });
     expect(
       parseAcquisitionArguments([
         "--write",
         "--scancode=C:/tools/scancode.exe",
       ]),
-    ).toEqual({ write: true, scancode: "C:/tools/scancode.exe", shard: null });
+    ).toEqual({
+      write: true,
+      scancode: "C:/tools/scancode.exe",
+      shard: null,
+      registryKeysPath: null,
+    });
     expect(
       parseAcquisitionArguments([
         "--shard-count=32",
@@ -862,6 +1288,7 @@ describe("acquisition CLI", () => {
     ).toEqual({
       write: false,
       scancode: "C:/tools/scancode.exe",
+      registryKeysPath: null,
       shard: {
         count: 32,
         index: 7,
@@ -884,6 +1311,24 @@ describe("acquisition CLI", () => {
     ).toEqual({
       write: false,
       scancode: ".release/tools/scancode/venv/bin/scancode",
+      registryKeysPath: null,
+      shard: {
+        count: 32,
+        index: 7,
+        outputRoot: ".release/evidence-shard",
+      },
+    });
+    expect(
+      parseAcquisitionArguments([
+        "--shard-count=32",
+        "--shard-index=7",
+        "--output=.release/evidence-shard",
+        "--registry-keys=.release/registry-keys/npm-registry-keys.json",
+      ]),
+    ).toEqual({
+      write: false,
+      scancode: null,
+      registryKeysPath: ".release/registry-keys/npm-registry-keys.json",
       shard: {
         count: 32,
         index: 7,
@@ -974,6 +1419,18 @@ describe("shard aggregation CLIs", () => {
         "--right=.release/windows",
       ]),
     ).toEqual({
+      allowLegacyScancodeNormalization: false,
+      leftRoot: ".release/ubuntu",
+      rightRoot: ".release/windows",
+    });
+    expect(
+      parseParityArguments([
+        "--left=.release/ubuntu",
+        "--right=.release/windows",
+        "--allow-legacy-scancode-normalization",
+      ]),
+    ).toEqual({
+      allowLegacyScancodeNormalization: true,
       leftRoot: ".release/ubuntu",
       rightRoot: ".release/windows",
     });

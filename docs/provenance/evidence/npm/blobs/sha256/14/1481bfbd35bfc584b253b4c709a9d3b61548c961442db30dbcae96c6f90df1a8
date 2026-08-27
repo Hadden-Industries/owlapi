@@ -1,0 +1,125 @@
+{
+  "artifactId": "29eb7c9d54cb8ec8b1fc5b0fe702ce517b34c27ef119f97e4a346d3cad049549",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4878,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "898c2bcff663681498ad1ca8235d45b6e70b10cdf1f869a5b5e69f6e46efedd3",
+        "size": 739,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "03c4e531b776b3d40a6f2d4e1803946894bafa1df15fe94eae8351ac554e4744",
+        "size": 4190,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/index.js",
+        "sha256": "9a7da3ca72951dee31cdcc04ae700361c003d9c30c29403d3063499be60e613a",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "4a320ac32ea62d17e4c76a0a3919c17289ce4aec370ada617b622b2894e60274",
+        "size": 4979,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "ba9ea32ea0a810ab5c08014a998f407e04f9a0c38c26c6610827bf40db6040e1",
+        "size": 1344,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 739,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/89/898c2bcff663681498ad1ca8235d45b6e70b10cdf1f869a5b5e69f6e46efedd3",
+          "sha256": "898c2bcff663681498ad1ca8235d45b6e70b10cdf1f869a5b5e69f6e46efedd3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "898c2bcff663681498ad1ca8235d45b6e70b10cdf1f869a5b5e69f6e46efedd3",
+        "size": 739
+      }
+    ],
+    "expandedBytes": 12361,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "@npmcli/installed-package-contents",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/installed-package-contents.git"
+      },
+      "version": "5.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "bin": {
+        "installed-package-contents": "bin/index.js"
+      },
+      "dependencies": {
+        "npm-bundled": "^6.0.0",
+        "npm-normalize-package-bin": "^6.0.0"
+      },
+      "description": "Get the list of files installed in a package in node_modules, including bundled dependencies",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^6.0.0",
+        "@npmcli/template-oss": "5.1.0",
+        "tap": "^16.3.0"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "@npmcli/installed-package-contents",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/installed-package-contents.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": true,
+        "version": "5.1.0"
+      },
+      "version": "5.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 4878,
+      "sha256": "08ed487f855fa3651588a56ba44a586c3519d533870ae182987e2466261988e7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -14,8 +14,9 @@ const git = (...args) =>
 
 describe("standalone source policy", () => {
   it("normalizes first-party text to LF without rewriting pinned upstream bytes", () => {
-    // The nested override is part of the contract: W3C fixtures remain byte-for-byte
-    // evidence even though ordinary project text is normalized for contributors.
+    // Nested overrides are part of the contract: upstream fixtures and
+    // digest-addressed npm evidence remain byte-for-byte inputs even though
+    // ordinary project text is normalized for contributors.
     expect(
       git(
         "check-attr",
@@ -24,20 +25,26 @@ describe("standalone source policy", () => {
         "--",
         "index.js",
         "docs/conformance/upstream/w3c-owl2/all.rdf",
+        "docs/provenance/evidence/npm/blobs/sha256/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       ).split(/\r?\n/u),
     ).toEqual([
       "index.js: text: auto",
       "index.js: eol: lf",
       "docs/conformance/upstream/w3c-owl2/all.rdf: text: unset",
       "docs/conformance/upstream/w3c-owl2/all.rdf: eol: unspecified",
+      "docs/provenance/evidence/npm/blobs/sha256/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: text: unset",
+      "docs/provenance/evidence/npm/blobs/sha256/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: eol: unspecified",
     ]);
 
     const nonLfFirstPartyEntries = git("ls-files", "--eol")
       .split(/\r?\n/u)
       .filter((entry) => /^i\/(?:crlf|mixed)\s/u.test(entry))
       .filter((entry) => {
-        const [, path = ""] = entry.split("\t", 2);
-        return !path.startsWith("docs/conformance/upstream/");
+        const [metadata = "", path = ""] = entry.split("\t", 2);
+        return (
+          !metadata.includes("attr/-text") &&
+          !path.startsWith("docs/conformance/upstream/")
+        );
       });
 
     expect(nonLfFirstPartyEntries).toEqual([]);
@@ -65,5 +72,28 @@ describe("standalone source policy", () => {
         filepath: sourcePath,
       }),
     ).toBe("const value = { nested: true };\n");
+  });
+
+  it("leaves canonical generated JSON under its owning generator's control", async () => {
+    // These artefacts are schema- and digest-verified in their own gates. Running
+    // a second formatter over them would change reviewed bytes after generation.
+    const ignorePath = resolve(repositoryRoot, ".prettierignore");
+    const [evidenceManifest, releaseGates, ordinarySource] = await Promise.all([
+      prettier.getFileInfo(
+        resolve(repositoryRoot, "docs/provenance/npm-package-evidence.json"),
+        { ignorePath },
+      ),
+      prettier.getFileInfo(resolve(repositoryRoot, "docs/release/gates.json"), {
+        ignorePath,
+      }),
+      prettier.getFileInfo(resolve(repositoryRoot, "index.js"), { ignorePath }),
+    ]);
+
+    expect(evidenceManifest.ignored).toBe(true);
+    expect(releaseGates.ignored).toBe(true);
+    expect(ordinarySource).toMatchObject({
+      ignored: false,
+      inferredParser: "babel",
+    });
   });
 });

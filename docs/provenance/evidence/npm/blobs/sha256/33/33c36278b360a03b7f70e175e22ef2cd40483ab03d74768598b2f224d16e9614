@@ -1,0 +1,152 @@
+{
+  "artifactId": "8088ab6c32c215f8591b602af868c22c5b3c8e0221e4b703009a9ff9ddd7e8fa",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5141,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.eslintrc.yml",
+        "sha256": "9c739822eb954f6013344095d52462a819f50cc70e7697e9588756ee9b244725",
+        "size": 630,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.travis.yml",
+        "sha256": "705a72042203657c7509247824507c69fff0bc359941961ab0c5caa109a66444",
+        "size": 108,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "7bf9b2de73a6b356761c948d0e9eeb4be6c1270bd04c79cd489c1e400ffdfc1a",
+        "size": 1074,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "0baa52e8b3bc88a8b9ce83437aad7714d1b41b4b29bb0af72bcabfecfea2fbb2",
+        "size": 2694,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "8109c042923d3033ec2a7304cb5edefc3d36bb0d03e329b892fa1b1ba5488e2c",
+        "size": 2373,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "bdedf225125f10e80911bb94f9a3992f93835e3c70894b3d5081ed75f25c5126",
+        "size": 1008,
+        "type": "FILE"
+      },
+      {
+        "path": "package/spec/.eslintrc.yml",
+        "sha256": "8df0cb64273b71c11db4f99be49c92e6f80f10a13de4599743e4372c8a0be82c",
+        "size": 91,
+        "type": "FILE"
+      },
+      {
+        "path": "package/spec/fixtures/schema.js",
+        "sha256": "0262591e321bc88b22dc33ec78bcded5ab664e2fce2c10b9e0c35d3eb6030d27",
+        "size": 5544,
+        "type": "FILE"
+      },
+      {
+        "path": "package/spec/index.spec.js",
+        "sha256": "40e6986bda700387e2d397971087a3977d6801bf954591505229691a267c5f69",
+        "size": 6042,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1074,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/7b/7bf9b2de73a6b356761c948d0e9eeb4be6c1270bd04c79cd489c1e400ffdfc1a",
+          "sha256": "7bf9b2de73a6b356761c948d0e9eeb4be6c1270bd04c79cd489c1e400ffdfc1a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "7bf9b2de73a6b356761c948d0e9eeb4be6c1270bd04c79cd489c1e400ffdfc1a",
+        "size": 1074
+      },
+      {
+        "blob": {
+          "bytes": 2694,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/0b/0baa52e8b3bc88a8b9ce83437aad7714d1b41b4b29bb0af72bcabfecfea2fbb2",
+          "sha256": "0baa52e8b3bc88a8b9ce83437aad7714d1b41b4b29bb0af72bcabfecfea2fbb2"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "0baa52e8b3bc88a8b9ce83437aad7714d1b41b4b29bb0af72bcabfecfea2fbb2",
+        "size": 2694
+      }
+    ],
+    "expandedBytes": 19564,
+    "packageIdentity": {
+      "author": "Evgeny Poberezkin",
+      "homepage": "https://github.com/epoberezkin/json-schema-traverse#readme",
+      "license": "MIT",
+      "name": "json-schema-traverse",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/epoberezkin/json-schema-traverse.git"
+      },
+      "version": "0.4.1"
+    },
+    "packageMetadata": {
+      "author": "Evgeny Poberezkin",
+      "bugs": {
+        "url": "https://github.com/epoberezkin/json-schema-traverse/issues"
+      },
+      "description": "Traverse JSON Schema passing each schema object to callback",
+      "devDependencies": {
+        "coveralls": "^2.13.1",
+        "eslint": "^3.19.0",
+        "mocha": "^3.4.2",
+        "nyc": "^11.0.2",
+        "pre-commit": "^1.2.2"
+      },
+      "homepage": "https://github.com/epoberezkin/json-schema-traverse#readme",
+      "keywords": [
+        "JSON-Schema",
+        "traverse",
+        "iterate"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "json-schema-traverse",
+      "nyc": {
+        "exclude": [
+          "**/spec/**",
+          "node_modules"
+        ],
+        "reporter": [
+          "lcov",
+          "text-summary"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/epoberezkin/json-schema-traverse.git"
+      },
+      "scripts": {
+        "eslint": "eslint index.js spec",
+        "test": "npm run eslint && nyc npm run test-spec",
+        "test-spec": "mocha spec -R spec"
+      },
+      "version": "0.4.1"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 5141,
+      "sha256": "f735add93641842e13096c8b3239f54e9b0b10e8ffd8a377400f4d61eabec065"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,212 @@
+{
+  "artifactId": "dbabbde9cc1f43a78812597ee910aae818fd10a209be628ed148da53112f9d14",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 36931,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "d3a724e2ed749f172ff70b62a1d0631b7d4b0ea273782365a3464d4e2d6b6dbd",
+        "size": 1390,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "7170e4eb9e7779758994e08532af053453bbface33fe0816a8185978f6fe51ad",
+        "size": 11171,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/eslint-scope.cjs",
+        "sha256": "615c9351593f8d8d3a2700fad7c288b0e0d48188fe4ef70e98707887ac9b302b",
+        "size": 64832,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/assert.js",
+        "sha256": "ee6a92ef1198f83af7dd766fce1ae1b86344200cb56c9f1b8311e25826bb6c96",
+        "size": 452,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/definition.js",
+        "sha256": "81e051d08b3cc83d4d15e5481c419b8bf9886e34ff8240bf61fcf2b08cc621d1",
+        "size": 2822,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.cts",
+        "sha256": "14d05dc8f5c5321d463f44ea300208a9943e08c0d427ee857bcd174aa9d72f13",
+        "size": 26913,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "cd448460641d289e06406ed5133ab50feac7edb00b8eab3170a7c5ea73feddee",
+        "size": 117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "522ad28c80b2749adc5d388703bc7f0dd919808fea20cbd84cdf473734d4748f",
+        "size": 6323,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/pattern-visitor.js",
+        "sha256": "409803cc8d60e925ca366b6bad6f8e085690d9c531ada4d7393037c7d04931df",
+        "size": 4544,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/reference.js",
+        "sha256": "d620dfb10ed0e848448da0720e53a0196bd5ffa61e5a2ce7d05a90e64c79de76",
+        "size": 4341,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/referencer.js",
+        "sha256": "d8cc6d00d48bdc2de55c74289551d7edb4ff4a853ea5678a07a921620deba518",
+        "size": 18048,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/scope-manager.js",
+        "sha256": "57e33cdbd881bd9035740cad7afd78341d164b5e268b4420738abe5802e5d17c",
+        "size": 7397,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/scope.js",
+        "sha256": "13fbe9d3973b596bb2fafae272b5a6b80db69bb360894a117b31c7f4e93e48ed",
+        "size": 20423,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/variable.js",
+        "sha256": "3a1b7e00e96fccb9a4c8985f34f6362fbbae91794f7e37cc6aa33be9866fee87",
+        "size": 3040,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "00b69c8c78e79c01f844987acdf8cdd43c8647dd84c752cdc39dc9319bac241a",
+        "size": 1682,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1390,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d3/d3a724e2ed749f172ff70b62a1d0631b7d4b0ea273782365a3464d4e2d6b6dbd",
+          "sha256": "d3a724e2ed749f172ff70b62a1d0631b7d4b0ea273782365a3464d4e2d6b6dbd"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "d3a724e2ed749f172ff70b62a1d0631b7d4b0ea273782365a3464d4e2d6b6dbd",
+        "size": 1390
+      },
+      {
+        "blob": {
+          "bytes": 11171,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/71/7170e4eb9e7779758994e08532af053453bbface33fe0816a8185978f6fe51ad",
+          "sha256": "7170e4eb9e7779758994e08532af053453bbface33fe0816a8185978f6fe51ad"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "7170e4eb9e7779758994e08532af053453bbface33fe0816a8185978f6fe51ad",
+        "size": 11171
+      }
+    ],
+    "expandedBytes": 173495,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/eslint/js/blob/main/packages/eslint-scope/README.md",
+      "license": "BSD-2-Clause",
+      "name": "eslint-scope",
+      "repository": {
+        "directory": "packages/eslint-scope",
+        "type": "git",
+        "url": "https://github.com/eslint/js.git"
+      },
+      "version": "9.1.2"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/eslint/js/issues"
+      },
+      "dependencies": {
+        "@types/esrecurse": "^4.3.1",
+        "@types/estree": "^1.0.8",
+        "esrecurse": "^4.3.0",
+        "estraverse": "^5.2.0"
+      },
+      "description": "ECMAScript scope analyzer for ESLint",
+      "devDependencies": {
+        "@typescript-eslint/parser": "^8.7.0",
+        "chai": "^6.0.0",
+        "eslint": ">=10.0.0-rc.0 <10.0.0 || ^10.0.0",
+        "eslint-visitor-keys": "^5.0.1",
+        "espree": "^11.2.0",
+        "npm-license": "^0.3.3",
+        "shelljs": "^0.8.5"
+      },
+      "engines": {
+        "node": "^20.19.0 || ^22.13.0 || >=24"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./lib/index.js",
+            "types": "./lib/index.d.ts"
+          },
+          "require": {
+            "default": "./dist/eslint-scope.cjs",
+            "types": "./lib/index.d.cts"
+          }
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "LICENSE",
+        "README.md",
+        "lib",
+        "dist/eslint-scope.cjs"
+      ],
+      "funding": "https://opencollective.com/eslint",
+      "homepage": "https://github.com/eslint/js/blob/main/packages/eslint-scope/README.md",
+      "keywords": [
+        "eslint"
+      ],
+      "license": "BSD-2-Clause",
+      "main": "./dist/eslint-scope.cjs",
+      "name": "eslint-scope",
+      "repository": {
+        "directory": "packages/eslint-scope",
+        "type": "git",
+        "url": "https://github.com/eslint/js.git"
+      },
+      "scripts": {
+        "build": "rollup -c",
+        "lint:types": "attw --pack",
+        "pretest": "npm run build",
+        "test": "node Makefile.js test && npm run test:types",
+        "test:types": "tsc -p tsconfig.json && tsc -p tests/types/tsconfig.json"
+      },
+      "type": "module",
+      "types": "./lib/index.d.cts",
+      "version": "9.1.2"
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 36931,
+      "sha256": "16b004c4e056634c6b96c44821d453c268359d781a5db3652bddb191b3195dc3"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

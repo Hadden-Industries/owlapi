@@ -1,0 +1,101 @@
+{
+  "artifactId": "39baeb5fd1202887bf0ff6396f42e20732ce30a8b1270e46776f7b78c6aa9b49",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2133,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "319cef563607eefc4b9eca0b06f6cdbab85d4fa856f02313d2340ad28fcd5c29",
+        "size": 382,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "1783d2bd9b6db30c2e276158d29b77959a5dc8b9cf3b3a75510629b39b79a0d0",
+        "size": 571,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "ba1842f3748e0ed0a4bc67fc4c63c968eef1fa50fb75b50c3cbaccedcbcbb947",
+        "size": 1268,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "2fb83cc5029a69241bc3005b23e67e69d77cee3aa73f42e75d9177e5c125e266",
+        "size": 715,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 4042,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-annotate-as-pure",
+      "license": "MIT",
+      "name": "@babel/helper-annotate-as-pure",
+      "repository": {
+        "directory": "packages/babel-helper-annotate-as-pure",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/types": "^7.29.7"
+      },
+      "description": "Helper function to annotate paths and nodes with #__PURE__ comment",
+      "devDependencies": {
+        "@babel/traverse": "^7.29.7"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-annotate-as-pure",
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/helper-annotate-as-pure",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-helper-annotate-as-pure",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2133,
+      "sha256": "9c495b23b4c9f6b917a1363765eccd42a96c022e19a4f8bf3dc6620e19cdeeba"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

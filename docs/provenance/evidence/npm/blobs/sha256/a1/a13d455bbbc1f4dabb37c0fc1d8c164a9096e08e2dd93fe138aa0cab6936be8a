@@ -1,0 +1,117 @@
+{
+  "artifactId": "a792d618ae92c41395a6757d5fc30feaac1386a6e492ae0bd43964a69761f64f",
+  "evidence": {
+    "archiveRoot": "babel__generator",
+    "compressedBytes": 4068,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "babel__generator",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "babel__generator/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "babel__generator/README.md",
+        "sha256": "23527da5a4641a832e95652f07257520c2eb0ae41676a7b0fb8db0f924cf9341",
+        "size": 708,
+        "type": "FILE"
+      },
+      {
+        "path": "babel__generator/index.d.ts",
+        "sha256": "b6d03c9cfe2cf0ba4c673c209fcd7c46c815b2619fd2aad59fc4229aaef2ed43",
+        "size": 8269,
+        "type": "FILE"
+      },
+      {
+        "path": "babel__generator/package.json",
+        "sha256": "40436b147f93a5e56e69c5c0473e805ff17474c763875bdda598a977a6b824f4",
+        "size": 1323,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1141,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c2/c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        "kind": "LICENCE",
+        "path": "babel__generator/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141
+      }
+    ],
+    "expandedBytes": 11441,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/babel__generator",
+      "license": "MIT",
+      "name": "@types/babel__generator",
+      "repository": {
+        "directory": "types/babel__generator",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "version": "7.27.0"
+    },
+    "packageMetadata": {
+      "contributors": [
+        {
+          "githubUsername": "yortus",
+          "name": "Troy Gerwien",
+          "url": "https://github.com/yortus"
+        },
+        {
+          "githubUsername": "mgroenhoff",
+          "name": "Melvin Groenhoff",
+          "url": "https://github.com/mgroenhoff"
+        },
+        {
+          "githubUsername": "khell",
+          "name": "Cameron Yan",
+          "url": "https://github.com/khell"
+        },
+        {
+          "githubUsername": "Lyanbin",
+          "name": "Lyanbin",
+          "url": "https://github.com/Lyanbin"
+        }
+      ],
+      "dependencies": {
+        "@babel/types": "^7.0.0"
+      },
+      "description": "TypeScript definitions for @babel/generator",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/babel__generator",
+      "license": "MIT",
+      "main": "",
+      "name": "@types/babel__generator",
+      "peerDependencies": {},
+      "repository": {
+        "directory": "types/babel__generator",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "scripts": {},
+      "typeScriptVersion": "5.1",
+      "types": "index.d.ts",
+      "typesPublisherContentHash": "b5c7deac65dbd6ab9b313d1d71c86afe4383b881dcb4e3b3ac51dab07b8f95fb",
+      "version": "7.27.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 4068,
+      "sha256": "755508f0bb974706739e5cf3a94f546c5c8c149dbcd407c599f36cdd89056f9d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

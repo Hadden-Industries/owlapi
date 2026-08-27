@@ -1,0 +1,96 @@
+{
+  "artifactId": "502c823edf4d89bb6b9c72f29ad534eb559bd479d9b09018e6f107474be1af34",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1501,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "6a99bebb035dc05e96e17f308feef0e6f27e3e6f372724cb8430a3d3e032b376",
+        "size": 397,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "cefa925f4bca9c2b0ae589a9bff9c46a36776a185f2c41308cbbb3e48b1cb4ba",
+        "size": 486,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "5a36914d5a8c5efe5cbd95d47675778e173b6d18daed344e81b5baaf852d3a5c",
+        "size": 693,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 2682,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-syntax-class-properties",
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-class-properties",
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-class-properties",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.12.13"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.12.13"
+      },
+      "description": "Allow parsing of class properties",
+      "devDependencies": {
+        "@babel/core": "7.12.13"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-syntax-class-properties",
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "@babel/plugin-syntax-class-properties",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-class-properties",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.12.13"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1501,
+      "sha256": "1267793fe50d38301368f36e3fc8f4a53081719e8a34cd185809728058a83889"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

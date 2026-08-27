@@ -1,0 +1,108 @@
+{
+  "artifactId": "df16c8d6954237209eb22972a33b93d3617c35d606ecc0d9ffe2fc91d3130576",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7240,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "size": 11358,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "0f394fce232beca481644be5b5eee4434f2a598f4c006d480eb61d5dfbf3c720",
+        "size": 577,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "bf6aaa22f934f48c945a0302eff34d6e0edb265fa06917f82cd41551465c8f6c",
+        "size": 10753,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4d5b264748a7510ad96a135debdae4833a62506bfc95df06c70d657096df6aaa",
+        "size": 724,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11358,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/cf/cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "size": 11358
+      },
+      {
+        "blob": {
+          "bytes": 577,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/0f/0f394fce232beca481644be5b5eee4434f2a598f4c006d480eb61d5dfbf3c720",
+          "sha256": "0f394fce232beca481644be5b5eee4434f2a598f4c006d480eb61d5dfbf3c720"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "0f394fce232beca481644be5b5eee4434f2a598f4c006d480eb61d5dfbf3c720",
+        "size": 577
+      }
+    ],
+    "expandedBytes": 23412,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "Apache-2.0",
+      "name": "spdx-correct",
+      "repository": "jslicense/spdx-correct.js",
+      "version": "3.2.0"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "spdx-expression-parse": "^3.0.0",
+        "spdx-license-ids": "^3.0.0"
+      },
+      "description": "correct invalid SPDX expressions",
+      "devDependencies": {
+        "defence-cli": "^3.0.1",
+        "replace-require-self": "^1.0.0",
+        "standard": "^14.3.4",
+        "standard-markdown": "^6.0.0",
+        "tape": "^5.0.1"
+      },
+      "files": [
+        "index.js"
+      ],
+      "keywords": [
+        "SPDX",
+        "law",
+        "legal",
+        "license",
+        "metadata"
+      ],
+      "license": "Apache-2.0",
+      "name": "spdx-correct",
+      "repository": "jslicense/spdx-correct.js",
+      "scripts": {
+        "lint": "standard && standard-markdown README.md",
+        "test": "defence README.md | replace-require-self | node && node test.js"
+      },
+      "version": "3.2.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 7240,
+      "sha256": "f106c7a567d9bcaee76f55353be4ceec5909df30134d25864b71324fe4e46278"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

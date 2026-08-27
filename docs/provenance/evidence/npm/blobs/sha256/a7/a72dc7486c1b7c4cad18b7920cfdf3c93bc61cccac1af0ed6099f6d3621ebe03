@@ -1,0 +1,83 @@
+{
+  "artifactId": "ecf7e76a4fbfc684e3fb7d54396e66ce07b45911efaa7ea69d8ce8a422bc0600",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2313,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "14275f5c8139d02054c5259d52a88ccbba662a86af18c30f071c8d082dc6004c",
+        "size": 1078,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "2c069ba678c6db9acd475bcc8c5be20eb5077ea26c67514dea9429bc1ad4ff2f",
+        "size": 1675,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "f7cde31d1db3e71738045206397d472e1f12513643ba4b9fd60ea337f22b1e3f",
+        "size": 304,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "b8ead24fbe5797f6980b6dd6b54508e528871d47e6c124dd5a3fef2f93467da9",
+        "size": 1990,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1078,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/14/14275f5c8139d02054c5259d52a88ccbba662a86af18c30f071c8d082dc6004c",
+          "sha256": "14275f5c8139d02054c5259d52a88ccbba662a86af18c30f071c8d082dc6004c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "14275f5c8139d02054c5259d52a88ccbba662a86af18c30f071c8d082dc6004c",
+        "size": 1078
+      }
+    ],
+    "expandedBytes": 5047,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "buffer-from",
+      "repository": "LinusU/buffer-from",
+      "version": "1.1.2"
+    },
+    "packageMetadata": {
+      "devDependencies": {
+        "standard": "^12.0.1"
+      },
+      "files": [
+        "index.js"
+      ],
+      "keywords": [
+        "buffer",
+        "buffer from"
+      ],
+      "license": "MIT",
+      "name": "buffer-from",
+      "repository": "LinusU/buffer-from",
+      "scripts": {
+        "test": "standard && node test"
+      },
+      "version": "1.1.2"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 2313,
+      "sha256": "9c2b03d59eca8f463a1927e07273ddaa87785fe3f61626c42b005540e962e343"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

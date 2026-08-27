@@ -1,0 +1,125 @@
+{
+  "artifactId": "4a2949300c974d27277e3121c758ac936b0de53cbcd133d0614b1facb20053a3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2073,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "1cbab72f53316e0997d014579384ad715731e1e701ab0f2b76667161a16f16ff",
+        "size": 429,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "379a30047a60f8d7b3bbbc2fa1fa0362f53e11ab7e63859fedfa7f2e25a99601",
+        "size": 347,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "5e258d1a0d185ae469fec34de2af18913421b94181ef61238efcfe0b00d1b2c3",
+        "size": 607,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "9b41614e1a564d590df6e1367a4ee28f27efc0886e98bbfee104c5fa725db7b7",
+        "size": 1427,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 1427,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9b/9b41614e1a564d590df6e1367a4ee28f27efc0886e98bbfee104c5fa725db7b7",
+          "sha256": "9b41614e1a564d590df6e1367a4ee28f27efc0886e98bbfee104c5fa725db7b7"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "9b41614e1a564d590df6e1367a4ee28f27efc0886e98bbfee104c5fa725db7b7",
+        "size": 1427
+      }
+    ],
+    "expandedBytes": 3919,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "path-exists",
+      "repository": "sindresorhus/path-exists",
+      "version": "4.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "description": "Check if a path exists",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "tsd": "^0.7.2",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "path",
+        "exists",
+        "exist",
+        "file",
+        "filepath",
+        "fs",
+        "filesystem",
+        "file-system",
+        "access",
+        "stat"
+      ],
+      "license": "MIT",
+      "name": "path-exists",
+      "repository": "sindresorhus/path-exists",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "4.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2073,
+      "sha256": "dbb535c9302ce9b3f777ece3ff055cc8d88890a1e1deddc045340aef76fb775c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

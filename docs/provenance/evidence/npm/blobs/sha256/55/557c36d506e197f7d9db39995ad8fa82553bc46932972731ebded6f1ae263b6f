@@ -1,0 +1,146 @@
+{
+  "artifactId": "3e730c17bec9116ce82abc3739f068b542d5430c4a29c65fc217ec13b4efefe0",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7603,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE-MIT.txt",
+        "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+        "size": 1077,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ab87f92cff7bfac2644eee44b469b263f7a147b6e5e8c15627164890a249c2be",
+        "size": 5719,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e025033bd11110af671fb8eb62f0db8895073ccdca70b596aa94a27eb5bf9acb",
+        "size": 1227,
+        "type": "FILE"
+      },
+      {
+        "path": "package/punycode.es6.js",
+        "sha256": "8969ae1b78644a33574be197d1a7a9c85b031092f1c1a657d865b7b3c1edd77e",
+        "size": 12780,
+        "type": "FILE"
+      },
+      {
+        "path": "package/punycode.js",
+        "sha256": "6052a80eac47e46bd4de17ae0095e0192c336d3d7c387d292ad2176ebfc53d04",
+        "size": 12711,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1077,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+          "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE-MIT.txt",
+        "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+        "size": 1077
+      },
+      {
+        "blob": {
+          "bytes": 5719,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ab/ab87f92cff7bfac2644eee44b469b263f7a147b6e5e8c15627164890a249c2be",
+          "sha256": "ab87f92cff7bfac2644eee44b469b263f7a147b6e5e8c15627164890a249c2be"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "ab87f92cff7bfac2644eee44b469b263f7a147b6e5e8c15627164890a249c2be",
+        "size": 5719
+      }
+    ],
+    "expandedBytes": 33514,
+    "packageIdentity": {
+      "author": {
+        "name": "Mathias Bynens",
+        "url": "https://mathiasbynens.be/"
+      },
+      "homepage": "https://mths.be/punycode",
+      "license": "MIT",
+      "name": "punycode",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mathiasbynens/punycode.js.git"
+      },
+      "version": "2.3.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "name": "Mathias Bynens",
+        "url": "https://mathiasbynens.be/"
+      },
+      "bugs": "https://github.com/mathiasbynens/punycode.js/issues",
+      "contributors": [
+        {
+          "name": "Mathias Bynens",
+          "url": "https://mathiasbynens.be/"
+        }
+      ],
+      "description": "A robust Punycode converter that fully complies to RFC 3492 and RFC 5891, and works on nearly all JavaScript platforms.",
+      "devDependencies": {
+        "codecov": "^3.8.3",
+        "mocha": "^10.2.0",
+        "nyc": "^15.1.0"
+      },
+      "engines": {
+        "node": ">=6"
+      },
+      "files": [
+        "LICENSE-MIT.txt",
+        "punycode.js",
+        "punycode.es6.js"
+      ],
+      "homepage": "https://mths.be/punycode",
+      "jsnext:main": "punycode.es6.js",
+      "jspm": {
+        "map": {
+          "./punycode.js": {
+            "node": "@node/punycode"
+          }
+        }
+      },
+      "keywords": [
+        "punycode",
+        "unicode",
+        "idn",
+        "idna",
+        "dns",
+        "url",
+        "domain"
+      ],
+      "license": "MIT",
+      "main": "punycode.js",
+      "module": "punycode.es6.js",
+      "name": "punycode",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mathiasbynens/punycode.js.git"
+      },
+      "scripts": {
+        "build": "node scripts/prepublish.js",
+        "test": "mocha tests"
+      },
+      "version": "2.3.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 7603,
+      "sha256": "e4ce59f9fbac44349abab87279ab658f6b4614916bec5e088ae3be9323e193bb"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

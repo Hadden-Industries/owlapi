@@ -1,0 +1,137 @@
+{
+  "artifactId": "6bfeafa2ef96624f95466d588d9caaf9ab53084e5dcf1cdb419cb014dad02a5d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 10449,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "2cf4272b734a0f079fdc002b6a2879c650ac6279b8e331d9daf65c8e425de672",
+        "size": 938,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "10b6befc1052c58fd703f48e0e181816cbf98b599d870f59ddfab2d2885b42e9",
+        "size": 4274,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.mjs",
+        "sha256": "d4d1288ab8ef600a30c5acf799c19c32fbd94ca2025a52d8e4ea7959b920b8d3",
+        "size": 4275,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "ba573393f24555ac0528612ad39665fab5bdcc80330a61096024bbf5f736526d",
+        "size": 1122,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "72a0f0148bd771df8a91b4d2880bb87248313fca5e399a8d3fa69b747c96adfd",
+        "size": 820,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "07636cbb730f463c82148b51d861dba48d37915aa7ca25576b380e381a217b30",
+        "size": 20116,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1122,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ba/ba573393f24555ac0528612ad39665fab5bdcc80330a61096024bbf5f736526d",
+          "sha256": "ba573393f24555ac0528612ad39665fab5bdcc80330a61096024bbf5f736526d"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "ba573393f24555ac0528612ad39665fab5bdcc80330a61096024bbf5f736526d",
+        "size": 1122
+      },
+      {
+        "blob": {
+          "bytes": 20116,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/07/07636cbb730f463c82148b51d861dba48d37915aa7ca25576b380e381a217b30",
+          "sha256": "07636cbb730f463c82148b51d861dba48d37915aa7ca25576b380e381a217b30"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "07636cbb730f463c82148b51d861dba48d37915aa7ca25576b380e381a217b30",
+        "size": 20116
+      }
+    ],
+    "expandedBytes": 31545,
+    "packageIdentity": {
+      "author": {
+        "email": "luke.edwards05@gmail.com",
+        "name": "Luke Edwards",
+        "url": "https://lukeed.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "sade",
+      "repository": "lukeed/sade",
+      "version": "1.8.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "luke.edwards05@gmail.com",
+        "name": "Luke Edwards",
+        "url": "https://lukeed.com"
+      },
+      "dependencies": {
+        "mri": "^1.1.0"
+      },
+      "description": "Smooth (CLI) operator 🎶",
+      "devDependencies": {
+        "esm": "3.2.25",
+        "rollup": "1.32.1",
+        "tap-spec": "4.1.2",
+        "tape": "4.14.0",
+        "terser": "4.8.0"
+      },
+      "engines": {
+        "node": ">=6"
+      },
+      "files": [
+        "*.d.ts",
+        "lib"
+      ],
+      "keywords": [
+        "cli",
+        "cli-app",
+        "commander",
+        "arguments",
+        "parser",
+        "yargs",
+        "argv"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "module": "lib/index.mjs",
+      "name": "sade",
+      "repository": "lukeed/sade",
+      "scripts": {
+        "build": "rollup -c",
+        "test": "tape -r esm test/*.js | tap-spec"
+      },
+      "types": "index.d.ts",
+      "version": "1.8.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 10449,
+      "sha256": "73dfd051a36ea90daf95c811ba503bb5230b24f86afbe755c254736dad5d045e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

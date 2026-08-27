@@ -1,0 +1,102 @@
+{
+  "artifactId": "731940f637d9518361a427055bc7164a281f531633f97855d2d75672afbbffe1",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4496,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "cf293896dc0c704e9ed655ebb43341cc1ac5d0b2214f78377bed4370b7c6dd0f",
+        "size": 4717,
+        "type": "FILE"
+      },
+      {
+        "path": "package/iterator.js",
+        "sha256": "d02451fa396de7f9ec93cc6fb3b07aaa7be637acb3409a9ddebd1c2de9279c1a",
+        "size": 207,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "27699a6415a43f128c0e8ddcd5bf6e265f6cf3a581a9d959c11b977244fadc34",
+        "size": 652,
+        "type": "FILE"
+      },
+      {
+        "path": "package/yallist.js",
+        "sha256": "a2518b63469953a0fd13f3c738f50a1b2ce084374e9af0af7d7209ee1b0e8e55",
+        "size": 8425,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 14766,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "homepage": null,
+      "license": "ISC",
+      "name": "yallist",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/yallist.git"
+      },
+      "version": "3.1.1"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "dependencies": {},
+      "description": "Yet Another Linked List",
+      "devDependencies": {
+        "tap": "^12.1.0"
+      },
+      "directories": {
+        "test": "test"
+      },
+      "files": [
+        "yallist.js",
+        "iterator.js"
+      ],
+      "license": "ISC",
+      "main": "yallist.js",
+      "name": "yallist",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/isaacs/yallist.git"
+      },
+      "scripts": {
+        "postpublish": "git push origin --all; git push origin --tags",
+        "postversion": "npm publish",
+        "preversion": "npm test",
+        "test": "tap test/*.js --100"
+      },
+      "version": "3.1.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 4496,
+      "sha256": "50f14ae6cfe8360cb2259ba3e93305e069036f13251d69d3cbee9e1d4775ca04"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -132,6 +132,8 @@ const makeFixture = async () => {
       identity.artifactId,
       {
         archiveRoot: "package",
+        compressedBytes: tarball.bytes,
+        duplicateEntries: [],
         packageIdentity: {
           name: identity.name,
           version: identity.version,
@@ -162,6 +164,7 @@ const makeFixture = async () => {
           : [],
         expandedBytes:
           packageEntry.size + (legalEvidence ? legalEvidence.bytes : 0),
+        physicalEntryCount: legalEvidence ? 2 : 1,
       },
     );
     const signatureEvidence = await retainEvidence(
@@ -190,6 +193,7 @@ const makeFixture = async () => {
           name: "scancode-toolkit",
           version: "32.5.0",
           outputFormatVersion: "4.1.0",
+          normalizationVersion: 1,
         },
         files: [],
       },
@@ -223,6 +227,7 @@ const makeFixture = async () => {
         version: "32.5.0",
         pythonVersion: "3.14",
         outputFormatVersion: "4.1.0",
+        normalizationVersion: 1,
         semanticOptions: [
           "--copyright",
           "--generated",
@@ -403,6 +408,37 @@ describe("npm package evidence manifest", () => {
       await readFile(join(fixture.blobRoot, previous.path), "utf8"),
     );
     envelope.evidence.archiveRoot = "other";
+    const replacement = {
+      ...(await retainBlob(fixture.blobRoot, stableJson(envelope))),
+      kind: "ARCHIVE_INVENTORY",
+    };
+    artifact.archive.evidence = replacement;
+    manifest.blobs = manifest.blobs.map((reference) =>
+      reference.kind === previous.kind && reference.sha256 === previous.sha256
+        ? replacement
+        : reference,
+    );
+    manifest.summary.retainedBytes = manifest.blobs.reduce(
+      (total, reference) => total + reference.bytes,
+      0,
+    );
+    manifest.corpusRoot = computeCorpusRoot(manifest.blobs);
+
+    await expectClassifiedFailure(
+      verifyEvidenceManifest({ ...fixture, manifest }),
+      "CONTROL_FAILURE",
+    );
+  });
+
+  it("rejects a digest-consistent archive inventory that omits physical occurrences", async () => {
+    const fixture = await makeFixture();
+    const manifest = structuredClone(fixture.manifest);
+    const artifact = manifest.artifacts[0];
+    const previous = artifact.archive.evidence;
+    const envelope = JSON.parse(
+      await readFile(join(fixture.blobRoot, previous.path), "utf8"),
+    );
+    delete envelope.evidence.physicalEntryCount;
     const replacement = {
       ...(await retainBlob(fixture.blobRoot, stableJson(envelope))),
       kind: "ARCHIVE_INVENTORY",

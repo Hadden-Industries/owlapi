@@ -1,0 +1,87 @@
+{
+  "artifactId": "21af067bbfd28b45c3e8dada09d7b7760a65801dcbda04e2550cf181a6e50c08",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1467,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "24ad5fa7acadd0db189ed98fee3d0fa4e9c00381c6d727250f391a91d7b40567",
+        "size": 477,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "9e7aa2ae147b3984a52d7b6d87756d7fdac869bd14e92b45e788ae4cc760168c",
+        "size": 458,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "c3bfbbb279696ef3f644b8d695b3048abae08d54bc472f66acd8c598edfb2f43",
+        "size": 593,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 2634,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-nullish-coalescing-operator",
+      "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-nullish-coalescing-operator",
+      "version": "7.8.3"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.8.0"
+      },
+      "description": "Allow parsing of the nullish-coalescing operator",
+      "devDependencies": {
+        "@babel/core": "^7.8.0"
+      },
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "@babel/plugin-syntax-nullish-coalescing-operator",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-nullish-coalescing-operator",
+      "version": "7.8.3"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1467,
+      "sha256": "41f312da1c090ef6d092ddf773f040eebe8b65a162e2869f492f1d96257432e2"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

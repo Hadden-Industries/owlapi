@@ -1,0 +1,124 @@
+{
+  "artifactId": "d8fe9dbc1d8e90fdc0d1c60562f91b38eca2ab125be479b341f5d7aaecfa04ba",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4408,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "ea7f376fe7a1fc28572b83ac8f806d92effb31852b9981bc9ba9d5266caa6b28",
+        "size": 734,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d0727025b629e8fed711a826cb28df7d6ead6ff1274faccb9ed6c6bcd244a712",
+        "size": 3309,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "50ee058cef60c7cf037ba09c9d03a8025cf62ce0c09a8ec66ae2bb2a91591915",
+        "size": 6750,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "95fdab5aecffa4b17cb5969185027d95787d92a332b3b1e429b7841d98f569bd",
+        "size": 1362,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 734,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ea/ea7f376fe7a1fc28572b83ac8f806d92effb31852b9981bc9ba9d5266caa6b28",
+          "sha256": "ea7f376fe7a1fc28572b83ac8f806d92effb31852b9981bc9ba9d5266caa6b28"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "ea7f376fe7a1fc28572b83ac8f806d92effb31852b9981bc9ba9d5266caa6b28",
+        "size": 734
+      }
+    ],
+    "expandedBytes": 12155,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": "https://github.com/npm/write-file-atomic",
+      "license": "ISC",
+      "name": "write-file-atomic",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/npm/write-file-atomic.git"
+      },
+      "version": "5.0.1"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "bugs": {
+        "url": "https://github.com/npm/write-file-atomic/issues"
+      },
+      "dependencies": {
+        "imurmurhash": "^0.1.4",
+        "signal-exit": "^4.0.1"
+      },
+      "description": "Write files in an atomic fashion w/configurable ownership",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^4.0.0",
+        "@npmcli/template-oss": "4.14.1",
+        "tap": "^16.0.1"
+      },
+      "engines": {
+        "node": "^14.17.0 || ^16.13.0 || >=18.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "homepage": "https://github.com/npm/write-file-atomic",
+      "keywords": [
+        "writeFile",
+        "atomic"
+      ],
+      "license": "ISC",
+      "main": "./lib/index.js",
+      "name": "write-file-atomic",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/npm/write-file-atomic.git"
+      },
+      "scripts": {
+        "lint": "eslint \"**/*.js\"",
+        "lintfix": "npm run lint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": "true",
+        "version": "4.14.1",
+        "windowsCI": false
+      },
+      "version": "5.0.1"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 4408,
+      "sha256": "4630bff00f9a6cc4bde5ff769e049cab8f25d8364a27a3e869940577e4423be1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

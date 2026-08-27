@@ -1,0 +1,179 @@
+{
+  "artifactId": "58b57dd69bc7e34499d5a83bd67219c24e85037289d5e406f91b3be7d4fa3619",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 13592,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "1dedee6f84f5875ce4dc398d4d767274eb952a43cfd510a6ada856b2ed347472",
+        "size": 1308,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "fb323fc2a7cff84685404e403fc485939a3b1e4e5ed39e4cfae59ff64b094db0",
+        "size": 988,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/abort-error.js",
+        "sha256": "beef50fea16c75e829bb5288e8135d0c8d5e9c1425c123978dd38a2754afc007",
+        "size": 362,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/blob.js",
+        "sha256": "f53cb813c7f8159fb10bafc8a20181c65797ded22d5e350511ab2f847b2db861",
+        "size": 2334,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/body.js",
+        "sha256": "d15239f5082038d1828105abc5d20e5df6986cb9e83d6825b017d60817c540c7",
+        "size": 10548,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/fetch-error.js",
+        "sha256": "0ef76c82e13164deedb94685b0e8781136f7e596421f5e29f47854f268630b20",
+        "size": 713,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/headers.js",
+        "sha256": "25a7cc3bb7c6b4a64f1ed839dd08a9cc4172ccb00d5c0a0259cc08ecc6177dc0",
+        "size": 6547,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "b263a13aa2f71ad80804b3da45080d45523610e654eded4a0008df222618e7d6",
+        "size": 13156,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/request.js",
+        "sha256": "37d47ad0f3d7f91ec56b4187475d3fa218c1fad55f79334b17123337fa5b8da8",
+        "size": 7173,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/response.js",
+        "sha256": "5ca89c930583ca0d3de066e7b58ca6cd57fd9271a5ca5ff30cd2ae7085d6ac7a",
+        "size": 1952,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "75e1d21fe4253c6a01b012e347900cf44c13f0ff541a5e000ff930faa504d84b",
+        "size": 1745,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1308,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/1d/1dedee6f84f5875ce4dc398d4d767274eb952a43cfd510a6ada856b2ed347472",
+          "sha256": "1dedee6f84f5875ce4dc398d4d767274eb952a43cfd510a6ada856b2ed347472"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "1dedee6f84f5875ce4dc398d4d767274eb952a43cfd510a6ada856b2ed347472",
+        "size": 1308
+      }
+    ],
+    "expandedBytes": 46826,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "MIT",
+      "name": "minipass-fetch",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/minipass-fetch.git"
+      },
+      "version": "4.0.1"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "dependencies": {
+        "minipass": "^7.0.3",
+        "minipass-sized": "^1.0.3",
+        "minizlib": "^3.0.1"
+      },
+      "description": "An implementation of window.fetch in Node.js using Minipass streams",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^5.0.0",
+        "@npmcli/template-oss": "4.23.3",
+        "@ungap/url-search-params": "^0.2.2",
+        "abort-controller": "^3.0.0",
+        "abortcontroller-polyfill": "~1.7.3",
+        "encoding": "^0.1.13",
+        "form-data": "^4.0.0",
+        "nock": "^13.2.4",
+        "parted": "^0.1.1",
+        "string-to-arraybuffer": "^1.0.2",
+        "tap": "^16.0.0"
+      },
+      "engines": {
+        "node": "^18.17.0 || >=20.5.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "keywords": [
+        "fetch",
+        "minipass",
+        "node-fetch",
+        "window.fetch"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "minipass-fetch",
+      "optionalDependencies": {
+        "encoding": "^0.1.13"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/minipass-fetch.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap",
+        "test:tls-fixtures": "./test/fixtures/tls/setup.sh"
+      },
+      "tap": {
+        "check-coverage": true,
+        "coverage-map": "map.js",
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": "true",
+        "version": "4.23.3"
+      },
+      "version": "4.0.1"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 13592,
+      "sha256": "76c2126d0e9c266077040ccc6a0a7b8e0dc7e6054e95861cc290f5049850bd33"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

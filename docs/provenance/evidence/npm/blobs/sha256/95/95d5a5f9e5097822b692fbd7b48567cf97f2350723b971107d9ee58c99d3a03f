@@ -1,0 +1,129 @@
+{
+  "artifactId": "3cb140d387815da36472a3c16d9fda262d5494e52d36f76b08852eb7b3389bb1",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3028,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "b8e7261f41dd775524077306a69c01796bd5a2a742c7338e6607ff4e689bc356",
+        "size": 1280,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "c335ea757e3898080795f25093827d97b8fb00d0f3ac04dd56c80eecdac8eef3",
+        "size": 2098,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b6d533c740d144de4da1493940b541978a77aae9d712dd0d609f60c58c83a73e",
+        "size": 746,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "086278e988c8104ea5aeaa9f296b5ffc18c66837f3b2dadb86253708ce4a3387",
+        "size": 2214,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 2214,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/08/086278e988c8104ea5aeaa9f296b5ffc18c66837f3b2dadb86253708ce4a3387",
+          "sha256": "086278e988c8104ea5aeaa9f296b5ffc18c66837f3b2dadb86253708ce4a3387"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "086278e988c8104ea5aeaa9f296b5ffc18c66837f3b2dadb86253708ce4a3387",
+        "size": 2214
+      }
+    ],
+    "expandedBytes": 7447,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "camelcase",
+      "repository": "sindresorhus/camelcase",
+      "version": "5.3.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "description": "Convert a dash/dot/underscore/space separated string to camelCase or PascalCase: `foo-bar` → `fooBar`",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "tsd": "^0.7.1",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=6"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "camelcase",
+        "camel-case",
+        "camel",
+        "case",
+        "dash",
+        "hyphen",
+        "dot",
+        "underscore",
+        "separator",
+        "string",
+        "text",
+        "convert",
+        "pascalcase",
+        "pascal-case"
+      ],
+      "license": "MIT",
+      "name": "camelcase",
+      "repository": "sindresorhus/camelcase",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "5.3.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3028,
+      "sha256": "c609324ab889515f2f7354ddcc319b6080c9b76f2ac1441c03da031c85458696"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,122 @@
+{
+  "artifactId": "ddeb09a90ce55b15f3ee1820b8e7b9b5536d0696d20e1e7da3eb6aeb71e22fd9",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4496,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "89bc599ca0b3a119d711c62855b2e3619b734bf371ef55dcc049454313f9904e",
+        "size": 2667,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "0c91f714f46006bc9a543e629a3ce3b63700fa8cfbe7c6310a0bcff2738356dd",
+        "size": 1352,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/node-which",
+        "sha256": "055f0ac4eed1a1591d033d59462972968bf3483b4cc07e163589569c0fb999f0",
+        "size": 985,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "43010039ed5e89f7186960be682b3cb5cda5ab6cdfb06cbfd4f081cf0e7b4260",
+        "size": 1043,
+        "type": "FILE"
+      },
+      {
+        "path": "package/which.js",
+        "sha256": "76845e1fe7851267fb7ee72b18f2d916996d330150e31e48f4657a79e9b46b5b",
+        "size": 3163,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 9975,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me)",
+      "homepage": null,
+      "license": "ISC",
+      "name": "which",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/isaacs/node-which.git"
+      },
+      "version": "2.0.2"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me)",
+      "bin": {
+        "node-which": "./bin/node-which"
+      },
+      "dependencies": {
+        "isexe": "^2.0.0"
+      },
+      "description": "Like which(1) unix command. Find the first instance of an executable in the PATH.",
+      "devDependencies": {
+        "mkdirp": "^0.5.0",
+        "rimraf": "^2.6.2",
+        "tap": "^14.6.9"
+      },
+      "engines": {
+        "node": ">= 8"
+      },
+      "files": [
+        "which.js",
+        "bin/node-which"
+      ],
+      "license": "ISC",
+      "main": "which.js",
+      "name": "which",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/isaacs/node-which.git"
+      },
+      "scripts": {
+        "changelog": "git add CHANGELOG.md",
+        "postchangelog": "git commit -m 'update changelog - '${npm_package_version}",
+        "postpublish": "git push origin --follow-tags",
+        "postversion": "npm publish",
+        "prechangelog": "bash gen-changelog.sh",
+        "prepublish": "npm run changelog",
+        "preversion": "npm test",
+        "test": "tap"
+      },
+      "tap": {
+        "check-coverage": true
+      },
+      "version": "2.0.2"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 4496,
+      "sha256": "a13adf5fddeb769655edce551e81fbb11904b9c9be76d95e41da8c4c499d4edc"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,133 @@
+{
+  "artifactId": "a7dbc1061d60691f7a690dc63b8abd4d63f34cb2ceb0d4b78c49c3b7f345d246",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2156,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "d690ec58f57c5fa69cfe088959335c9f12482db67eb1bc1bbba93e3062f69276",
+        "size": 349,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "9ff7e1abf2727fbf9854a9dfcc1e69d1f9a0b23ccc0649269fc1c4fa8e44bd79",
+        "size": 626,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "228b214dd06ca80ab3c36e2b890a8696a39cea65585f6d61498c922c615e18a0",
+        "size": 961,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "97c8f78e30d8dd4f03a252669110d775f6308674bcdb0280ecea942d191045b1",
+        "size": 1223,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      }
+    ],
+    "expandedBytes": 4276,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "strip-ansi",
+      "repository": "chalk/strip-ansi",
+      "version": "7.2.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "dependencies": {
+        "ansi-regex": "^6.2.2"
+      },
+      "description": "Strip ANSI escape codes from a string",
+      "devDependencies": {
+        "ava": "^6.4.1",
+        "tsd": "^0.33.0",
+        "xo": "^1.2.3"
+      },
+      "engines": {
+        "node": ">=12"
+      },
+      "exports": "./index.js",
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/chalk/strip-ansi?sponsor=1",
+      "keywords": [
+        "strip",
+        "trim",
+        "remove",
+        "ansi",
+        "styles",
+        "color",
+        "colour",
+        "colors",
+        "terminal",
+        "console",
+        "string",
+        "tty",
+        "escape",
+        "formatting",
+        "rgb",
+        "256",
+        "shell",
+        "xterm",
+        "log",
+        "logging",
+        "command-line",
+        "text"
+      ],
+      "license": "MIT",
+      "name": "strip-ansi",
+      "repository": "chalk/strip-ansi",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "types": "./index.d.ts",
+      "version": "7.2.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2156,
+      "sha256": "2fa01de86a5022ef32773abbc4e84a53a1c5d31f5a5cbf03ed2575f10408543f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

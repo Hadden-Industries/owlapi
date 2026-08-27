@@ -1,0 +1,171 @@
+{
+  "artifactId": "1b4a49b2702114aac60525034759e8c8b3e6c82eca9799953f7d2f56b735ee51",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8922,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "a5f6f572f26172e1289f2f769cd93acf63ae90dcbb71a9f4953ced871ab38544",
+        "size": 1403,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "1e7b1258552c912c5e035d1f7f1c9bf17cf0bcbd4a07d36ebd1492efee61541b",
+        "size": 7271,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/extract_description.js",
+        "sha256": "929cae46ba0b3b1e96c598f3186edb9e3fa934078e6f229fffef8cb045107554",
+        "size": 549,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/fixer.js",
+        "sha256": "17da4b1193d75c210c31576fdc919f7f37979c13d4b2424025b7ad568252039b",
+        "size": 12451,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/make_warning.js",
+        "sha256": "4c0e5ae69e7554bb56ce269a4e81b3d5069b294f907a20e444e41a288b1c2946",
+        "size": 711,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/normalize.js",
+        "sha256": "4d92074e91c166590868e40b432cee61983195c2621cc58239b01117108813a3",
+        "size": 1380,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/safe_format.js",
+        "sha256": "fedf560cade701c950577804c7d4ed77642c8bf49977a16671521a0276cef2ea",
+        "size": 262,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/typos.json",
+        "sha256": "aa8fd1a11b9ce3cb523b3e913ed2a514c6c6afc13bd581a13d7b4211bb514a25",
+        "size": 747,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/warning_messages.json",
+        "sha256": "8d477c902b2bcd8d8152a6abc663b2acd43caf41c64ca989dcfc3e5d0b75b641",
+        "size": 1798,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b4ac3688ef0297966accf85cd44c767b9789d5ec855c9ef3adfb55c211325a12",
+        "size": 1414,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1403,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a5/a5f6f572f26172e1289f2f769cd93acf63ae90dcbb71a9f4953ced871ab38544",
+          "sha256": "a5f6f572f26172e1289f2f769cd93acf63ae90dcbb71a9f4953ced871ab38544"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "a5f6f572f26172e1289f2f769cd93acf63ae90dcbb71a9f4953ced871ab38544",
+        "size": 1403
+      },
+      {
+        "blob": {
+          "bytes": 7271,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/1e/1e7b1258552c912c5e035d1f7f1c9bf17cf0bcbd4a07d36ebd1492efee61541b",
+          "sha256": "1e7b1258552c912c5e035d1f7f1c9bf17cf0bcbd4a07d36ebd1492efee61541b"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "1e7b1258552c912c5e035d1f7f1c9bf17cf0bcbd4a07d36ebd1492efee61541b",
+        "size": 7271
+      }
+    ],
+    "expandedBytes": 27986,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "BSD-2-Clause",
+      "name": "normalize-package-data",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/normalize-package-data.git"
+      },
+      "version": "8.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "dependencies": {
+        "hosted-git-info": "^9.0.0",
+        "semver": "^7.3.5",
+        "validate-npm-package-license": "^3.0.4"
+      },
+      "description": "Normalizes data that can be found in package.json files.",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^5.0.0",
+        "@npmcli/template-oss": "4.25.0",
+        "tap": "^16.0.1"
+      },
+      "engines": {
+        "node": "^20.17.0 || >=22.9.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "license": "BSD-2-Clause",
+      "main": "lib/normalize.js",
+      "name": "normalize-package-data",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/normalize-package-data.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "npmclilint": "npmcli-lint",
+        "postlint": "template-oss-check",
+        "postsnap": "npm run lintfix --",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "branches": 86,
+        "functions": 92,
+        "lines": 86,
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ],
+        "statements": 86
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": "true",
+        "version": "4.25.0"
+      },
+      "version": "8.0.0"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 8922,
+      "sha256": "36deea87f0d2916621c7e503c43666840366600a0862869541b5fe0bbdcae279"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

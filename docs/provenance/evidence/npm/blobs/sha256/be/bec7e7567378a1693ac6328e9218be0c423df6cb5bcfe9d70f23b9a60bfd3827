@@ -1,0 +1,143 @@
+{
+  "artifactId": "7359339a6059f448372b0cf3613a9e16806b51e06426596c9c8d1ff5e8079e29",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9557,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "715c654bf57894368e458d1fafae71434f8ee09a0545c98babbc2a481aa60931",
+        "size": 5129,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "5d0f84da339159590d746d343d12cb7708add8ffc96841002fc67e87fd714505",
+        "size": 19739,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d11f2880b951f0b3856f20269ef581aa81ca3986d18a51d737c74b609d13e9fb",
+        "size": 1504,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      },
+      {
+        "blob": {
+          "bytes": 5129,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/71/715c654bf57894368e458d1fafae71434f8ee09a0545c98babbc2a481aa60931",
+          "sha256": "715c654bf57894368e458d1fafae71434f8ee09a0545c98babbc2a481aa60931"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "715c654bf57894368e458d1fafae71434f8ee09a0545c98babbc2a481aa60931",
+        "size": 5129
+      }
+    ],
+    "expandedBytes": 27137,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "npm-packlist",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/npm-packlist.git"
+      },
+      "version": "11.3.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "dependencies": {
+        "glob": "^13.0.6",
+        "ignore-walk": "^9.0.0",
+        "proc-log": "^7.0.0"
+      },
+      "description": "Get a list of the files to add from a folder into an npm package",
+      "devDependencies": {
+        "@npmcli/arborist": "^9.0.0",
+        "@npmcli/eslint-config": "^7.0.0",
+        "@npmcli/template-oss": "5.1.1",
+        "mutate-fs": "^2.1.1",
+        "tap": "^16.0.1"
+      },
+      "directories": {
+        "test": "test"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "npm-packlist",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/npm-packlist.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "npmclilint": "npmcli-lint",
+        "postlint": "template-oss-check",
+        "postsnap": "npm run lintfix --",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "files": [
+          "test/*.js"
+        ],
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ],
+        "test-env": [
+          "LC_ALL=sk"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": true,
+        "updateNpm": false,
+        "version": "5.1.1"
+      },
+      "version": "11.3.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 9557,
+      "sha256": "679064cd6ff83959df38ce77c9a334f91b39585735ea71798ccc464ea0859aba"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

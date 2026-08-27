@@ -1,0 +1,546 @@
+{
+  "artifactId": "be4c77fa83d3e2cf648bb9e086e36a87dd722afd929d563048fa899c23077cde",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 73972,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "93dcdb5609ab8d4d052389fd74e9521e387f616fb20d8d3214fad5307b24bf1b",
+        "size": 25158,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "2f1a503bfab84b3ba7393627308b3274501e459e3b5185bbb56bbf16cb1602d4",
+        "size": 1146,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "54d7c7461d14a0800b2e88f8ae47b081e451204a2257237d08f291c5a1479bb4",
+        "size": 5974,
+        "type": "FILE"
+      },
+      {
+        "path": "package/browser.mjs",
+        "sha256": "a0528d3010ec7ee527a41f288403bc769ff0df6e5002785be086f20903762981",
+        "size": 232,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.cjs",
+        "sha256": "f1615fa3e03a5175b356a50c37ede07b40fa5a4baef9021631419e70630b5abd",
+        "size": 61906,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/argsert.js",
+        "sha256": "eb085555452eac3ff300935994a42f35d16e04cf698cb775cb5ad4f5653c0627",
+        "size": 2477,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/command.js",
+        "sha256": "6249ffd299e16a1e531ccff13a23aed7b7eef37e20b6e6ab7f254413aece6ca6",
+        "size": 19368,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/completion-templates.js",
+        "sha256": "d9bbed244af4394b786f8abce9efbbdc3777a73458ebd7b6bf23b2495ac11027",
+        "size": 1452,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/completion.js",
+        "sha256": "62e41220b5baa7c082f72638c7eab23a69fff46a78011f2c448e2a2f1fcfd05a",
+        "size": 10495,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/middleware.js",
+        "sha256": "6ab9c953a83264739aa50d7fa6b1ab693500336dfd593b9958865e12beb8bdeb",
+        "size": 3221,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/parse-command.js",
+        "sha256": "327242c0afae207b7aefa13133439e3b321d7db4229febc5b7bd5285770ac7f7",
+        "size": 1060,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/typings/common-types.js",
+        "sha256": "9618b81a86acb88a61fd9988e9bc3ec21c5250d94fc2231ba7d898e71500789d",
+        "size": 308,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/typings/yargs-parser-types.js",
+        "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "size": 11,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/usage.js",
+        "sha256": "31faaa7aa61e5a57a2cac5a269b773aa8b1fcab2db7cac2f8252396f3ccc2f5e",
+        "size": 21402,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/utils/apply-extends.js",
+        "sha256": "64640dce92669705abead3bdbe2c46c8318c8623843a55e4726fb3c55ff9dd1d",
+        "size": 2049,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/utils/is-promise.js",
+        "sha256": "be45baa3090c5106dd4e442cceef6b357a268783a2ee28ec10fe131a8cd8db72",
+        "size": 155,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/utils/levenshtein.js",
+        "sha256": "d8638efc3376b5f794b1c8df6ef4f3d484b29d919127c7fdc242400e3cfded91",
+        "size": 1031,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/utils/maybe-async-result.js",
+        "sha256": "31cf4026279e14c87d16faa14ac758f35c8cc5795d29393c5ce07120f5a3caf6",
+        "size": 496,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/utils/obj-filter.js",
+        "sha256": "5523fb2288d1e86ed48c460e176770b49587554df4ae2405b468c093786b040b",
+        "size": 299,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/utils/process-argv.js",
+        "sha256": "f429237ebe955987db568c36acf32507127c15341b00a603a26becb797068df1",
+        "size": 436,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/utils/set-blocking.js",
+        "sha256": "6fa8ffc3299f456e42902736bae35fbc1f2dc96b3905a02ba9629f5bd9f80af1",
+        "size": 386,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/utils/which-module.js",
+        "sha256": "9267633b2c9f8990b2c699101b641e59ae59932e0dee5270613c0508bfa13c5d",
+        "size": 321,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/validation.js",
+        "sha256": "af040834cb9201d4238bbeb8f673eb2ebaff9611857270524a7c86dfcf2ca51b",
+        "size": 12653,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/yargs-factory.js",
+        "sha256": "05326932b431801d7459d5b14b21f73f13ebd74a8a74e9b7b8cec5f99ba14819",
+        "size": 77635,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/lib/yerror.js",
+        "sha256": "9729aaa8bce1a0d00c57f470efb2ad76ad2988661bb48f3769e496a3435b4462",
+        "size": 234,
+        "type": "FILE"
+      },
+      {
+        "path": "package/helpers/helpers.mjs",
+        "sha256": "56d75619d9959cabdd0b79e97bcfe7476369321f8ddfd723862bdae9ffeddc27",
+        "size": 384,
+        "type": "FILE"
+      },
+      {
+        "path": "package/helpers/index.js",
+        "sha256": "073fc8dc10f93c3cb6563d7aa1c3512903c88107de9abe9408e15189e8f84ae0",
+        "size": 291,
+        "type": "FILE"
+      },
+      {
+        "path": "package/helpers/package.json",
+        "sha256": "8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a",
+        "size": 25,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.cjs",
+        "sha256": "473da31d026034993f1a1a7a930513872c500c037306a20f1b98cb03d9d38fd1",
+        "size": 1455,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.mjs",
+        "sha256": "fd2aefd1b3f63590505375fd2ff6409a86d95529690d9ff1515adefca686311b",
+        "size": 231,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/platform-shims/browser.mjs",
+        "sha256": "0753be85c76b299420a7bd5bc9b925c6c7ed1fb15e872e2f547819490dfca697",
+        "size": 2301,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/platform-shims/esm.mjs",
+        "sha256": "0bf6133c39fff113943fd0bc1bb06492c05babb8b754ef85b5567d6591719302",
+        "size": 1876,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/be.json",
+        "sha256": "134235e6c034c2ff51eeef9f00032cd47cbd4f836744fae0821143207c857edf",
+        "size": 2602,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/cs.json",
+        "sha256": "2d24eff79017a67adb53960407de4598750abdabc65d50c3e7c1ef76b9022dbc",
+        "size": 2024,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/de.json",
+        "sha256": "dd49fd237f42a5c3da5140730ff81dbfa543bd8eb9a529331b876e00d46902e1",
+        "size": 1805,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/en.json",
+        "sha256": "c393afceaa956142d614ba1cf504813faa03afdbe583d24bf843b2b77dd5f40a",
+        "size": 2019,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/es.json",
+        "sha256": "5e9eab1fbfdde64463e1cae36fbbafe035d0a80fbfe13ec99557d38e5ac9e020",
+        "size": 1885,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/fi.json",
+        "sha256": "9708614b65a8afe075e0d9724f4121017258ffd339986a033e69c53f96e5e94c",
+        "size": 2113,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/fr.json",
+        "sha256": "12fcfb7c6d0f59c378db746bbf018a1fc3b662b9a4fcc7caa6a037e0f5c375f0",
+        "size": 2117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/hi.json",
+        "sha256": "66aed85c3d7e2b6564e401c32d12d406983b69f5b965f01aab1b7cbb1c3ba2cf",
+        "size": 3074,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/hu.json",
+        "sha256": "5149e6aaec4cd1facd504efbae03a5cc2d5f6d24cd6c6418c818740b8abd72a2",
+        "size": 1883,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/id.json",
+        "sha256": "3745df73a41c026c2ef8fff048c56afd4e1e362deacc43c04be260fb0d3df93c",
+        "size": 1821,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/it.json",
+        "sha256": "2eed3f6e2f402a7a5c1049ef323d6670e427e9905233ce66b38fbfa8cef282f2",
+        "size": 1855,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/ja.json",
+        "sha256": "b63a4a4d7b7dfbbcd25a5359197171a783c824e7d408c3b2ccc2e360810e3a15",
+        "size": 2411,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/ko.json",
+        "sha256": "6ab9d089a822553311230633acee9e701ea0f7eeb93d2e969a7fcd21a1d2d7af",
+        "size": 2257,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/nb.json",
+        "sha256": "8de6f5381e45e448536b0143a6cc6130b7d87ea495881e5bebc4e9569238ebe6",
+        "size": 1680,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/nl.json",
+        "sha256": "638c26e2d638bc08023e4e9924237c2c0f67130eb4d454c824b15cd4da916671",
+        "size": 1958,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/nn.json",
+        "sha256": "466b2d749e6115b0bc8fe0fce420f4e049f3c7e69831ae4ab0e66b402230a627",
+        "size": 1661,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/pirate.json",
+        "sha256": "0e66add12f48117254852ebac22250ad18bbc859b5de40301dd047800be40e36",
+        "size": 569,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/pl.json",
+        "sha256": "64d84f86e74e9b14e6cb8159e65cb2a2b0302e848d61fdd25f8710e70446665c",
+        "size": 2075,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/pt.json",
+        "sha256": "d36c160b1f4757b6275cb5dd4135d2d8262d8d1b79147e3c3fcf9acecc1b89d2",
+        "size": 1917,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/pt_BR.json",
+        "sha256": "503075049239e50e8fe82b7d06d062f5a1d69f26346d05af487dc8b3e090596e",
+        "size": 1932,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/ru.json",
+        "sha256": "3505a2e258e83fdf33bf31cc8e53aedb2018add60c3df70f4818dbf791ee9a84",
+        "size": 2972,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/th.json",
+        "sha256": "3ff78ad6e861403ff1c94707d6e13dd87e948424008156debc0e7d3a4f4500d3",
+        "size": 3278,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/tr.json",
+        "sha256": "4744c36d2531029ed93d593a25c595f4ea1f9c2f4f037867aa8f36161f959886",
+        "size": 1912,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/uk_UA.json",
+        "sha256": "70baca396d1387b30a163b03561ff1177088b579de53b89359158eed847fc273",
+        "size": 2748,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/uz.json",
+        "sha256": "27f6a0144dd21321b2ca160c174a8622bc4d86af3e64c27bc6f06bad44b59aa0",
+        "size": 2157,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/zh_CN.json",
+        "sha256": "bacf8a4dcdd23146ff5834e7853536a7d97a1baca15a8ad5939c719e583a3f59",
+        "size": 1907,
+        "type": "FILE"
+      },
+      {
+        "path": "package/locales/zh_TW.json",
+        "sha256": "9f191189f2b4551c9c04c02fb75db1c111beca65fae5be7e7f032ae07dc3dc76",
+        "size": 2055,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "357c9c2e7725d86a137de13fa68441f88a750b5083313cc1482a7969bcb81584",
+        "size": 3136,
+        "type": "FILE"
+      },
+      {
+        "path": "package/yargs",
+        "sha256": "92f8754029e24807ffc97ad723945f7e206444a2f30c4cba40870f8e1296395c",
+        "size": 220,
+        "type": "FILE"
+      },
+      {
+        "path": "package/yargs.cjs",
+        "sha256": "ef1e69a89d7b5b611ffb00996b80aeb45320561e3d4871b5ac0090346541f491",
+        "size": 476,
+        "type": "FILE"
+      },
+      {
+        "path": "package/yargs.mjs",
+        "sha256": "559d52aa26a9c9af5fdfdb4c1db6280373752871bf1d43e0a4e8bf9c7b572186",
+        "size": 473,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1146,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2f/2f1a503bfab84b3ba7393627308b3274501e459e3b5185bbb56bbf16cb1602d4",
+          "sha256": "2f1a503bfab84b3ba7393627308b3274501e459e3b5185bbb56bbf16cb1602d4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2f1a503bfab84b3ba7393627308b3274501e459e3b5185bbb56bbf16cb1602d4",
+        "size": 1146
+      }
+    ],
+    "expandedBytes": 317460,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://yargs.js.org/",
+      "license": "MIT",
+      "name": "yargs",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/yargs/yargs.git"
+      },
+      "version": "17.7.3"
+    },
+    "packageMetadata": {
+      "contributors": [
+        {
+          "name": "Yargs Contributors",
+          "url": "https://github.com/yargs/yargs/graphs/contributors"
+        }
+      ],
+      "dependencies": {
+        "cliui": "^8.0.1",
+        "escalade": "^3.1.1",
+        "get-caller-file": "^2.0.5",
+        "require-directory": "^2.1.1",
+        "string-width": "^4.2.3",
+        "y18n": "^5.0.5",
+        "yargs-parser": "^21.1.1"
+      },
+      "description": "yargs the modern, pirate-themed, successor to optimist.",
+      "devDependencies": {
+        "@types/chai": "^4.2.11",
+        "@types/mocha": "^9.0.0",
+        "@types/node": "18.16.1",
+        "c8": "^7.7.0",
+        "chai": "^4.2.0",
+        "chalk": "^4.0.0",
+        "coveralls": "^3.0.9",
+        "cpr": "^3.0.1",
+        "cross-env": "^7.0.2",
+        "cross-spawn": "^7.0.0",
+        "eslint": "^7.23.0",
+        "gts": "^3.0.0",
+        "hashish": "0.0.4",
+        "mocha": "^9.0.0",
+        "rimraf": "^3.0.2",
+        "rollup": "^2.23.0",
+        "rollup-plugin-cleanup": "^3.1.1",
+        "rollup-plugin-terser": "^7.0.2",
+        "rollup-plugin-ts": "^2.0.4",
+        "tslib": "^2.4.0",
+        "typescript": "^4.0.2",
+        "which": "^2.0.0",
+        "yargs-test-extends": "^1.0.1"
+      },
+      "engines": {
+        "node": ">=12"
+      },
+      "exports": {
+        ".": [
+          {
+            "import": "./index.mjs",
+            "require": "./index.cjs"
+          },
+          "./index.cjs"
+        ],
+        "./browser": {
+          "import": "./browser.mjs",
+          "types": "./browser.d.ts"
+        },
+        "./helpers": {
+          "import": "./helpers/helpers.mjs",
+          "require": "./helpers/index.js"
+        },
+        "./package.json": "./package.json",
+        "./yargs": [
+          {
+            "import": "./yargs.mjs",
+            "require": "./yargs.cjs"
+          },
+          "./yargs.cjs"
+        ]
+      },
+      "files": [
+        "browser.mjs",
+        "browser.d.ts",
+        "index.cjs",
+        "helpers/*.js",
+        "helpers/*",
+        "index.mjs",
+        "yargs",
+        "yargs.cjs",
+        "yargs.mjs",
+        "build",
+        "locales",
+        "LICENSE",
+        "lib/platform-shims/*.mjs",
+        "!*.d.ts",
+        "!**/*.d.ts"
+      ],
+      "homepage": "https://yargs.js.org/",
+      "keywords": [
+        "argument",
+        "args",
+        "option",
+        "parser",
+        "parsing",
+        "cli",
+        "command"
+      ],
+      "license": "MIT",
+      "main": "./index.cjs",
+      "module": "./index.mjs",
+      "name": "yargs",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/yargs/yargs.git"
+      },
+      "scripts": {
+        "build:cjs": "rollup -c rollup.config.cjs",
+        "check": "gts lint && npm run check:js",
+        "check:js": "eslint . --ext cjs --ext mjs --ext js",
+        "clean": "gts clean",
+        "compile": "rimraf build && tsc",
+        "coverage": "c8 report --check-coverage",
+        "fix": "gts fix && npm run fix:js",
+        "fix:js": "eslint . --ext cjs --ext mjs --ext js --fix",
+        "postbuild:cjs": "rimraf ./build/index.cjs.d.ts",
+        "postcompile": "npm run build:cjs",
+        "posttest": "npm run check",
+        "prepare": "npm run compile",
+        "pretest": "npm run compile -- -p tsconfig.test.json && cross-env NODE_ENV=test npm run build:cjs",
+        "test": "c8 mocha --enable-source-maps ./test/*.cjs --require ./test/before.cjs --timeout=12000 --check-leaks",
+        "test:esm": "c8 mocha --enable-source-maps ./test/esm/*.mjs --check-leaks"
+      },
+      "type": "module",
+      "version": "17.7.3"
+    },
+    "physicalEntryCount": 63,
+    "tarball": {
+      "bytes": 73972,
+      "sha256": "76ac30834674f0d8da9c7bfedb175f6ada260420e6475edfdcc551c601f8717e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

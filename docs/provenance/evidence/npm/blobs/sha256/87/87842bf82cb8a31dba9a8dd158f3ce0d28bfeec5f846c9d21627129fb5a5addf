@@ -1,0 +1,102 @@
+{
+  "artifactId": "53b7ce44e783fa26fe04869ff4a90157d121d0b6c70dcd05c70bf12f5412f714",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1506,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.js",
+        "sha256": "d98c3aa373c72016e990a723e919af495423bc4ac1daa0736c5f45fac0418d7f",
+        "size": 387,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "69dee148a2cc470554dfa7142e830662062394d0fe67cddd379aba90dc60d6b3",
+        "size": 1116,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "44de390ae5ed6c5f9758b8b9c90b93fa53977d5361731600429f1de08f4b3f30",
+        "size": 558,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "7918385f0c22cac3aeae9bcebdc589649f3cd4b62ce087afd60ee35ce6f5b6f8",
+        "size": 495,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1116,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/69/69dee148a2cc470554dfa7142e830662062394d0fe67cddd379aba90dc60d6b3",
+          "sha256": "69dee148a2cc470554dfa7142e830662062394d0fe67cddd379aba90dc60d6b3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "69dee148a2cc470554dfa7142e830662062394d0fe67cddd379aba90dc60d6b3",
+        "size": 1116
+      }
+    ],
+    "expandedBytes": 2556,
+    "packageIdentity": {
+      "author": {
+        "email": "kevinmartensson@gmail.com",
+        "name": "Kevin Mårtensson",
+        "url": "github.com/kevva"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "shebang-command",
+      "repository": "kevva/shebang-command",
+      "version": "2.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "kevinmartensson@gmail.com",
+        "name": "Kevin Mårtensson",
+        "url": "github.com/kevva"
+      },
+      "dependencies": {
+        "shebang-regex": "^3.0.0"
+      },
+      "description": "Get the command from a shebang",
+      "devDependencies": {
+        "ava": "^2.3.0",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js"
+      ],
+      "keywords": [
+        "cmd",
+        "command",
+        "parse",
+        "shebang"
+      ],
+      "license": "MIT",
+      "name": "shebang-command",
+      "repository": "kevva/shebang-command",
+      "scripts": {
+        "test": "xo && ava"
+      },
+      "version": "2.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1506,
+      "sha256": "9acba5bd18a51e9cdf5898380e4df63f803e1844def64ae1a46f88cff86d556e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

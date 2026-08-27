@@ -1,0 +1,196 @@
+{
+  "artifactId": "bb6ed16d96af451218b2af06fed60c67fa1756a205b8c8341777208ec824e818",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 14494,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "088703b7810394a5af823ac753cca116931df81a97183725ae1e2c4e6038268d",
+        "size": 17674,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "fb539673c9689a0613bbf0fa7c864857fd40462692d6addc15b420b7605b6770",
+        "size": 6516,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/command.js",
+        "sha256": "b13060ad8e7262a9656edb57f894a57f039b86bd706466d8aecf315e0d9888ef",
+        "size": 1189,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/error.js",
+        "sha256": "7c0ef8a52066d45f9ad2b8e43ff1f8d06955cd2fe4dec3ec1ddad7fb49205454",
+        "size": 2169,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/kill.js",
+        "sha256": "6984ac704c67dd84fe5e6a86441d3902d94b44842aa7a2037279a01b95d678ed",
+        "size": 3095,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/promise.js",
+        "sha256": "13c171151f5c3ce102bc711841bc12ff09058134f7f414d144cf0c766da15e1e",
+        "size": 1150,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/stdio.js",
+        "sha256": "adae66bc15a0e364688c5baa8a3ebe55056d62f33d5b0cad17b5e3b61af0cf0d",
+        "size": 1186,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/stream.js",
+        "sha256": "b2ba44c25beb717ca5de07ed5c19508b4f2ce46d90b45c441ddca0592d286847",
+        "size": 2400,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "80ab900f810b886b97fd7aeb3044389712cb100f5d8183c3e52573122f656c7b",
+        "size": 1282,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "ccc308e2caee8d9000dfe4ec400e1cb0046f8afadc964ba1afad5a7a2476bbb0",
+        "size": 19747,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      },
+      {
+        "blob": {
+          "bytes": 19747,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/cc/ccc308e2caee8d9000dfe4ec400e1cb0046f8afadc964ba1afad5a7a2476bbb0",
+          "sha256": "ccc308e2caee8d9000dfe4ec400e1cb0046f8afadc964ba1afad5a7a2476bbb0"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "ccc308e2caee8d9000dfe4ec400e1cb0046f8afadc964ba1afad5a7a2476bbb0",
+        "size": 19747
+      }
+    ],
+    "expandedBytes": 57525,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "execa",
+      "repository": "sindresorhus/execa",
+      "version": "5.1.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "dependencies": {
+        "cross-spawn": "^7.0.3",
+        "get-stream": "^6.0.0",
+        "human-signals": "^2.1.0",
+        "is-stream": "^2.0.0",
+        "merge-stream": "^2.0.0",
+        "npm-run-path": "^4.0.1",
+        "onetime": "^5.1.2",
+        "signal-exit": "^3.0.3",
+        "strip-final-newline": "^2.0.0"
+      },
+      "description": "Process execution for humans",
+      "devDependencies": {
+        "@types/node": "^14.14.10",
+        "ava": "^2.4.0",
+        "get-node": "^11.0.1",
+        "is-running": "^2.1.0",
+        "nyc": "^15.1.0",
+        "p-event": "^4.2.0",
+        "tempfile": "^3.0.0",
+        "tsd": "^0.13.1",
+        "xo": "^0.35.0"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts",
+        "lib"
+      ],
+      "funding": "https://github.com/sindresorhus/execa?sponsor=1",
+      "keywords": [
+        "exec",
+        "child",
+        "process",
+        "execute",
+        "fork",
+        "execfile",
+        "spawn",
+        "file",
+        "shell",
+        "bin",
+        "binary",
+        "binaries",
+        "npm",
+        "path",
+        "local"
+      ],
+      "license": "MIT",
+      "name": "execa",
+      "nyc": {
+        "exclude": [
+          "**/fixtures/**",
+          "**/test.js",
+          "**/test/**"
+        ],
+        "reporter": [
+          "text",
+          "lcov"
+        ]
+      },
+      "repository": "sindresorhus/execa",
+      "scripts": {
+        "test": "xo && nyc ava && tsd"
+      },
+      "version": "5.1.1"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 14494,
+      "sha256": "6fdd821f7b8d62867017c9729c362de3992c607fb59bcf8c95d96bc9d0196cf3"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

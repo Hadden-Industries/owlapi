@@ -234,6 +234,8 @@ const validateAggregate = (fileName, source, workflow, violations) => {
   const block = jobBlock(source, id);
   const expectedName =
     workflow === "ci" ? "CI / required" : "Release / qualified";
+  const expectedCondition =
+    workflow === "ci" ? "if: ${{ always() }}" : "if: ${{ !cancelled() }}";
   add(
     violations,
     block.includes(`name: ${expectedName}`),
@@ -241,8 +243,8 @@ const validateAggregate = (fileName, source, workflow, violations) => {
   );
   add(
     violations,
-    block.includes("if: ${{ always() }}"),
-    `${fileName}: aggregate must evaluate every required conclusion`,
+    block.includes(expectedCondition),
+    `${fileName}: aggregate must use ${expectedCondition}`,
   );
   const observed = listNeeds(block);
   add(
@@ -292,7 +294,13 @@ const validateCandidateTransport = (fileName, source, violations) => {
     const isCandidateDownload = block.includes(
       "artifact-ids: ${{ needs.candidate.outputs.artifact_id }}",
     );
-    const isEvidenceDownload = /^\s+pattern: npm-evidence-/mu.test(block);
+    const isEvidencePatternDownload = /^\s+pattern: npm-evidence-/mu.test(
+      block,
+    );
+    const isEvidenceKeyDownload =
+      /^\s+name: npm-evidence-registry-keys$/mu.test(block);
+    const isEvidenceDownload =
+      isEvidencePatternDownload || isEvidenceKeyDownload;
     add(
       violations,
       isCandidateDownload || isEvidenceDownload,
@@ -319,18 +327,21 @@ const validateCandidateTransport = (fileName, source, violations) => {
         `${fileName}: candidate download broadens same-run artifact selection`,
       );
     } else {
-      add(
-        violations,
+      const usesApprovedPattern =
         /pattern: npm-evidence-(?:release-\*|aggregate-\*|\$\{\{ matrix\.os \}\}-\*)/u.test(
           block,
-        ),
-        `${fileName}: evidence download uses an unapproved artifact pattern`,
-      );
+        );
       add(
         violations,
-        !/^\s+(?:artifact-ids|name|github-token|repository|run-id):/mu.test(
-          block,
-        ),
+        usesApprovedPattern || isEvidenceKeyDownload,
+        `${fileName}: evidence download uses an unapproved artifact selector`,
+      );
+      const forbiddenSelectorKeys = isEvidenceKeyDownload
+        ? /^(?:\s+)(?:artifact-ids|pattern|github-token|repository|run-id):/mu
+        : /^(?:\s+)(?:artifact-ids|name|github-token|repository|run-id):/mu;
+      add(
+        violations,
+        !forbiddenSelectorKeys.test(block),
         `${fileName}: evidence download broadens same-run artifact selection`,
       );
     }
@@ -366,16 +377,16 @@ const validateEvidenceUpload = (
   fileName,
   jobId,
   block,
-  { name, path },
+  { name, path, retentionDays = 1 },
   violations,
 ) => {
   for (const setting of [
     `name: ${name}`,
     `path: ${path}`,
     "if-no-files-found: error",
-    "retention-days: 1",
+    `retention-days: ${retentionDays}`,
     "compression-level: 0",
-    "overwrite: false",
+    "overwrite: true",
     "include-hidden-files: false",
     "archive: true",
   ]) {
@@ -416,11 +427,41 @@ const validateReadOnlyEvidenceJob = (fileName, jobId, block, violations) => {
 
 const validateEvidenceWorkflows = (sources, violations) => {
   const release = sources["release.yml"] ?? "";
+  const releaseRegistryKeys = jobBlock(
+    release,
+    "third_party_evidence_registry_keys",
+  );
   const releaseShard = jobBlock(release, "third_party_evidence_shard");
   const releaseAggregate = jobBlock(release, "third_party_evidence");
   for (const setting of [
-    "name: Release / third-party evidence / shard ${{ matrix.shard }}",
+    "name: Release / third-party evidence / npm registry signing keys",
     "needs: release_preflight",
+    "run: node util/snapshot-npm-registry-keys.mjs --output=.release/registry-keys/npm-registry-keys.json",
+  ]) {
+    add(
+      violations,
+      releaseRegistryKeys.includes(setting),
+      `release.yml:third_party_evidence_registry_keys is missing ${setting}`,
+    );
+  }
+  validateReadOnlyEvidenceJob(
+    "release.yml",
+    "third_party_evidence_registry_keys",
+    releaseRegistryKeys,
+    violations,
+  );
+  validateEvidenceUpload(
+    "release.yml",
+    "third_party_evidence_registry_keys",
+    releaseRegistryKeys,
+    {
+      name: "npm-evidence-registry-keys",
+      path: ".release/registry-keys/npm-registry-keys.json",
+    },
+    violations,
+  );
+  for (const setting of [
+    "name: Release / third-party evidence / shard ${{ matrix.shard }}",
     "timeout-minutes: 120",
     "fail-fast: false",
     "max-parallel: 8",
@@ -430,7 +471,9 @@ const validateEvidenceWorkflows = (sources, violations) => {
     "EVIDENCE_SHARD_INDEX: ${{ matrix.shard }}",
     "SCANCODE_COMMAND: .release/tools/scancode/scancode-toolkit-v32.5.0/venv/bin/scancode",
     "run: node util/prepare-scancode.mjs --platform-env=SCANCODE_PLATFORM --output=.release/tools/scancode --python-env=SCANCODE_PYTHON",
-    "run: node util/acquire-npm-package-evidence.mjs --shard-count=32 --shard-index-env=EVIDENCE_SHARD_INDEX --output=.release/evidence-shard --scancode-env=SCANCODE_COMMAND",
+    "name: npm-evidence-registry-keys",
+    "path: .release/registry-keys",
+    "run: node util/acquire-npm-package-evidence.mjs --shard-count=32 --shard-index-env=EVIDENCE_SHARD_INDEX --output=.release/evidence-shard --scancode-env=SCANCODE_COMMAND --registry-keys=.release/registry-keys/npm-registry-keys.json",
   ]) {
     add(
       violations,
@@ -438,6 +481,15 @@ const validateEvidenceWorkflows = (sources, violations) => {
       `release.yml:third_party_evidence_shard is missing ${setting}`,
     );
   }
+  add(
+    violations,
+    JSON.stringify(listNeeds(releaseShard)) ===
+      JSON.stringify([
+        "release_preflight",
+        "third_party_evidence_registry_keys",
+      ]),
+    "release.yml:third_party_evidence_shard must wait for preflight and the same-run signing-key snapshot",
+  );
   add(
     violations,
     JSON.stringify(shardCoordinates(releaseShard)) ===
@@ -468,7 +520,7 @@ const validateEvidenceWorkflows = (sources, violations) => {
 
   for (const setting of [
     "name: Release / third-party evidence",
-    "if: ${{ always() }}",
+    "if: ${{ !cancelled() }}",
     "needs: third_party_evidence_shard",
     "pattern: npm-evidence-release-*",
     "run: node util/merge-npm-package-evidence.mjs --input=.release/evidence-shards --output=.release/evidence-aggregate --verify-committed",
@@ -504,12 +556,43 @@ const validateEvidenceWorkflows = (sources, violations) => {
     extendedEvidence.includes("if: ${{ github.event_name == 'schedule' }}"),
     "extended-tests.yml:extended_evidence must run only for scheduled observations",
   );
+  const extendedRegistryKeys = jobBlock(
+    extended,
+    "third_party_evidence_registry_keys",
+  );
   const extendedShard = jobBlock(extended, "third_party_evidence_shard");
   const extendedAggregate = jobBlock(
     extended,
     "third_party_evidence_aggregate",
   );
   const parity = jobBlock(extended, "third_party_evidence_parity");
+  for (const setting of [
+    "name: Extended tests / third-party evidence / npm registry signing keys",
+    "if: ${{ github.event_name == 'workflow_dispatch' }}",
+    "run: node util/snapshot-npm-registry-keys.mjs --output=.release/registry-keys/npm-registry-keys.json",
+  ]) {
+    add(
+      violations,
+      extendedRegistryKeys.includes(setting),
+      `extended-tests.yml:third_party_evidence_registry_keys is missing ${setting}`,
+    );
+  }
+  validateReadOnlyEvidenceJob(
+    "extended-tests.yml",
+    "third_party_evidence_registry_keys",
+    extendedRegistryKeys,
+    violations,
+  );
+  validateEvidenceUpload(
+    "extended-tests.yml",
+    "third_party_evidence_registry_keys",
+    extendedRegistryKeys,
+    {
+      name: "npm-evidence-registry-keys",
+      path: ".release/registry-keys/npm-registry-keys.json",
+    },
+    violations,
+  );
   for (const setting of [
     "name: Extended tests / third-party evidence / ${{ matrix.os.id }} / shard ${{ matrix.shard }}",
     "if: ${{ github.event_name == 'workflow_dispatch' }}",
@@ -523,7 +606,9 @@ const validateEvidenceWorkflows = (sources, violations) => {
     "EVIDENCE_SHARD_INDEX: ${{ matrix.shard }}",
     "SCANCODE_COMMAND: ${{ matrix.os.scancode_command }}",
     "run: node util/prepare-scancode.mjs --platform-env=SCANCODE_PLATFORM --output=.release/tools/scancode --python-env=SCANCODE_PYTHON",
-    "run: node util/acquire-npm-package-evidence.mjs --shard-count=32 --shard-index-env=EVIDENCE_SHARD_INDEX --output=.release/evidence-shard --scancode-env=SCANCODE_COMMAND",
+    "name: npm-evidence-registry-keys",
+    "path: .release/registry-keys",
+    "run: node util/acquire-npm-package-evidence.mjs --shard-count=32 --shard-index-env=EVIDENCE_SHARD_INDEX --output=.release/evidence-shard --scancode-env=SCANCODE_COMMAND --registry-keys=.release/registry-keys/npm-registry-keys.json",
   ]) {
     add(
       violations,
@@ -531,6 +616,12 @@ const validateEvidenceWorkflows = (sources, violations) => {
       `extended-tests.yml:third_party_evidence_shard is missing ${setting}`,
     );
   }
+  add(
+    violations,
+    JSON.stringify(listNeeds(extendedShard)) ===
+      JSON.stringify(["third_party_evidence_registry_keys"]),
+    "extended-tests.yml:third_party_evidence_shard must wait for the same-run signing-key snapshot",
+  );
   add(
     violations,
     JSON.stringify(shardCoordinates(extendedShard)) ===
@@ -583,7 +674,7 @@ const validateEvidenceWorkflows = (sources, violations) => {
 
   for (const setting of [
     "name: Extended tests / third-party evidence / ${{ matrix.os }} aggregate",
-    "if: ${{ always() && github.event_name == 'workflow_dispatch' }}",
+    "if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' }}",
     "needs: third_party_evidence_shard",
     "fail-fast: false",
     "os: [ubuntu, windows]",
@@ -615,13 +706,14 @@ const validateEvidenceWorkflows = (sources, violations) => {
     {
       name: "npm-evidence-aggregate-${{ matrix.os }}",
       path: ".release/evidence-aggregate",
+      retentionDays: 7,
     },
     violations,
   );
 
   for (const setting of [
     "name: Extended tests / third-party evidence / cross-platform parity",
-    "if: ${{ always() && github.event_name == 'workflow_dispatch' }}",
+    "if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' }}",
     "needs: third_party_evidence_aggregate",
     "pattern: npm-evidence-aggregate-*",
     "run: node util/verify-npm-package-evidence-parity.mjs --left=.release/evidence-aggregates/npm-evidence-aggregate-ubuntu --right=.release/evidence-aggregates/npm-evidence-aggregate-windows",
@@ -856,25 +948,19 @@ export const auditRepositoryControls = () => {
   }
   validateMaintenanceReporter(sources["maintenance.yml"] ?? "", violations);
 
-  const alwaysJobs = [
-    ["ci.yml", "required"],
-    ["release.yml", "third_party_evidence"],
-    ["release.yml", "required"],
-    ["extended-tests.yml", "third_party_evidence_aggregate"],
-    ["extended-tests.yml", "third_party_evidence_parity"],
-  ];
+  const alwaysJobs = [["ci.yml", "required"]];
   for (const [fileName, jobId] of alwaysJobs) {
     add(
       violations,
       jobBlock(sources[fileName] ?? "", jobId).includes("always()"),
-      `${fileName}:${jobId} must retain fail-closed always() evaluation`,
+      `${fileName}:${jobId} must retain the branch-protection always() evaluation`,
     );
   }
   const allSources = Object.values(sources).join("\n");
   add(
     violations,
     (allSources.match(/always\(\)/gu) ?? []).length === alwaysJobs.length,
-    "always() is allowed only on the five named fail-closed aggregates",
+    "always() is allowed only on CI / required",
   );
   const webVowlControl = JSON.parse(
     readFileSync(

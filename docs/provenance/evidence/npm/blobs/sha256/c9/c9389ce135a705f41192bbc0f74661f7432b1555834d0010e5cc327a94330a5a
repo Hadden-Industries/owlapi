@@ -1,0 +1,98 @@
+{
+  "artifactId": "a9945411c46e43842900caca2774ac1a1597bfcac2335de533bd4fd470f7a386",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4424,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "0d3555be863eb05b17ca88e01e26f630c25818d2a25e8c3d3453aefca933f15b",
+        "size": 332,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "75d07ef0d14cd4e03251af706a1d2912c2131c9726e9b973db4670b75bff00bf",
+        "size": 2535,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "fd11cc9c143692ac336c32709ee30124e9f81cd775ac2bd9b2c3776044e75ee5",
+        "size": 7174,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "2ce650d5c6bd8c1d1111ada7f39de65c48c227c25af74031493a377eb9fc3691",
+        "size": 614,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 11761,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-plugin-utils",
+      "license": "MIT",
+      "name": "@babel/helper-plugin-utils",
+      "repository": {
+        "directory": "packages/babel-helper-plugin-utils",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "description": "General utilities for plugins to use",
+      "devDependencies": {
+        "@babel/core": "^7.29.7"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-plugin-utils",
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/helper-plugin-utils",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-helper-plugin-utils",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 4424,
+      "sha256": "00824ca9e3a146e73a071849b085668ae2012b7fff58056442ab9d33d1e357e8"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

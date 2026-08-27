@@ -1,0 +1,387 @@
+{
+  "artifactId": "aeeb60579fe396d6ce496a3af8af647fd956e8cac60b8ff99330ce7b39afdf84",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 42968,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.gitattributes",
+        "sha256": "e173bffc6cde613d3e6d06e49f2b1d05385cb02aa68c4931656b5b051ab649dd",
+        "size": 80,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/dependabot.yml",
+        "sha256": "60ffc0c7159ff6af5e36ad3ecc56fe63782e4defaabafa94a13df7150d9a84c6",
+        "size": 274,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/workflows/ci.yml",
+        "sha256": "a5f799b1fd846548bd97adc494f1e0bc13919215b683235f5d3a30d2ad472736",
+        "size": 2592,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/workflows/lock-threads.yml",
+        "sha256": "618dc46b9d589d991d97f4c9dd8b24c4f21edae32cdfd6c1ddc299dcab3d21d7",
+        "size": 293,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.github/workflows/package-manager-ci.yml",
+        "sha256": "7b086b40b64203092ce43638296c235ceba118d7b942fac7398ff476167876de",
+        "size": 370,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "b010b0dfdfdb23d7396e03b82cd4621fc9bb8f95d6b0aea70b9c24e12074c786",
+        "size": 1813,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "55449f95eb4b7b69f7a97eca943de1e30d7ebcad2e323753e44cf44669133c5f",
+        "size": 11726,
+        "type": "FILE"
+      },
+      {
+        "path": "package/benchmark/benchmark.mjs",
+        "sha256": "45ba9783c3258e448b05bd371161ef9fcbeed332ba1e9455ca9c98edb24e1f33",
+        "size": 4421,
+        "type": "FILE"
+      },
+      {
+        "path": "package/benchmark/equal.mjs",
+        "sha256": "36eb5b2acea9c4e969ab8fe028e88b781aa948e597368655a13528c3a93f1d39",
+        "size": 1305,
+        "type": "FILE"
+      },
+      {
+        "path": "package/benchmark/non-simple-domain.mjs",
+        "sha256": "303eb41faa6c2489b5086f3d2764bf6ecaf3b937b385647c6e8b14aaf2582524",
+        "size": 838,
+        "type": "FILE"
+      },
+      {
+        "path": "package/benchmark/package.json",
+        "sha256": "463a034d344b042e495841b770ca69a812693087ee2053d7c18cc8497e020b58",
+        "size": 293,
+        "type": "FILE"
+      },
+      {
+        "path": "package/benchmark/string-array-to-hex-stripped.mjs",
+        "sha256": "693d4a312b0e275e02ef5531d707ff7df6cddf14cd83bc09a79909ea2008bfd4",
+        "size": 819,
+        "type": "FILE"
+      },
+      {
+        "path": "package/benchmark/ws-is-secure.mjs",
+        "sha256": "6f105dc633aadd4bd4b8362765f4a1d44fb31fe0c8754cb11d73f27ff7d6527b",
+        "size": 1891,
+        "type": "FILE"
+      },
+      {
+        "path": "package/eslint.config.js",
+        "sha256": "52e3a2601a98f23c954d664ab8de95fddb390789f8b067815e484b010d3da2d0",
+        "size": 135,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "45b52d2d77365bcc8a41bfac0223482bf73e3bedf7d232027b4b27544f40097b",
+        "size": 21620,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/schemes.js",
+        "sha256": "c2c61d3fd0bc63a587100928a399e75be8c420d210c439d75f7346da4aa4f3c3",
+        "size": 7367,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/utils.js",
+        "sha256": "a523a2da0a4cc3354d6d171107ee9af303ba6437d6db228be0a629e9698d1602",
+        "size": 20635,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d62cb9be0a111b42131b264efe1fee4638a5f643ff25fe0bc3627675a9b92a8b",
+        "size": 1983,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/ajv.test.js",
+        "sha256": "75892faa0e01df30856f2a87eb50dcd4a4aa9a3ec1c7aa4e290ff936b0789f72",
+        "size": 752,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/component-safe-serialization.test.js",
+        "sha256": "1f4882873ef4323741b5547bca4409212296dd1e77f372e50fd4a6c2e2beaad2",
+        "size": 3335,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/equal.test.js",
+        "sha256": "9a2e83b204e7d9e14139dce7a13457a12b46f02189fb9138e1624bbd25d9b390",
+        "size": 5117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/fixtures/uri-js-parse.json",
+        "sha256": "c954f79d2fa7f4d9779a6e7514cdf8df1eeb95d0097ea62cd3b785d20f2d0859",
+        "size": 9888,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/fixtures/uri-js-serialize.json",
+        "sha256": "c10203102fee328d6c8aedbd03319b8eeb364417c3b1137d714537fcd3102d69",
+        "size": 1688,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/ipv6-canonical.test.js",
+        "sha256": "647cca74400388c5ea503c67433507a71fa371ba3377e5ddcec5204948b16968",
+        "size": 1144,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/ipv6-validation.test.js",
+        "sha256": "21f99d96fc7fe5869bf0e2d75a5a261b6e9c57ac9638565394c6f29211040263",
+        "size": 2835,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/malformed-percent.test.js",
+        "sha256": "151bf26b0c6096adb923677c42ea33dfa2dabb999cd4dc07ce34f94aa8281fce",
+        "size": 2795,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/malformed-urn.test.js",
+        "sha256": "dfc01dbace807c71fab8e80acd154aeba25d1eca0aa2740681fa62d046bfe437",
+        "size": 2196,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/parse.test.js",
+        "sha256": "53d2c5bf0c198a834cb131dfd71795a30df6e49a28cedb1c62eec2d497192702",
+        "size": 14516,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/query-fragment-normalization.test.js",
+        "sha256": "18051e881d06450b5e33009e92c7582cc020b4dc39d636103370e0e8dd3ea0a6",
+        "size": 1716,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/reserved-path-normalization.test.js",
+        "sha256": "984c6d447e4e0474b8b11c75cf2a5f54ffd855206dc588c8d5c47fd819fe7212",
+        "size": 3661,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/resolve.test.js",
+        "sha256": "5f44df0de389cfb13848595184fd73a309ef7a702f55ebf5fc3cf0490ff7709c",
+        "size": 4480,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/rfc-3986.test.js",
+        "sha256": "b753dd115304e6cc567d2cb1169dd4d23641148274956fde0fabfdc612c65e27",
+        "size": 5279,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/scheme-validation.test.js",
+        "sha256": "eeb22864d23236f723fe00f8fccace70911b95ef9a3f74f116921e5cb18cce32",
+        "size": 3687,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/security-normalization.test.js",
+        "sha256": "fa4751a8eb7761372a384df23055afb323a69454f3d821efcb040af34db0f0d1",
+        "size": 4795,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/security.test.js",
+        "sha256": "ce2138c92e7c0f6cbad4cdc8e6d142b66ecf78af192b04771cd3b48c604dbb1d",
+        "size": 14258,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/serialize.test.js",
+        "sha256": "abb8f831a5ebcfe6d76d8d9abb2220bfe2d255892cab1f2b43d8ef3364f21ab4",
+        "size": 6283,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/uri-js-compatibility.test.js",
+        "sha256": "ca79aa1a3917c2bb237ab7e64235e4f1036a6ddacb66a5319845e8926cc89b28",
+        "size": 1019,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/uri-js.test.js",
+        "sha256": "dc3a3b9d0a532f6483bc2c11d13b865273afb7c74224e401ce6005a7fa0a834a",
+        "size": 42039,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/urn-full-input.test.js",
+        "sha256": "2f36727aafe2524ef08b8c5f1d124dea6971784ec9e96cffbf1986fba6c95718",
+        "size": 1320,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/util.test.js",
+        "sha256": "fa0595a97c1f948e641ea4696828a4d81c3389a986a45ac0a16feeffc73f8cad",
+        "size": 1147,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/websocket-query-preservation.test.js",
+        "sha256": "b3e7a45b622530f0c76910d7bdda2aa18b3b17a1d55b66e67dbb86d030fc0769",
+        "size": 903,
+        "type": "FILE"
+      },
+      {
+        "path": "package/tsconfig.json",
+        "sha256": "6bbba68684f6d6f1613d9ae79de617c25d8d749f30942307faee46a6d2fd721f",
+        "size": 166,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/index.d.ts",
+        "sha256": "84bcc7c6b06f4d643a55dc63b56be0c81d990f8d549b66ea615c553268774dc3",
+        "size": 1608,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/index.test-d.ts",
+        "sha256": "ad36147194c3ecfaecf55d75dd22f0b2c6b4ca476d6450cd307dceaf39012b46",
+        "size": 479,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1813,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b0/b010b0dfdfdb23d7396e03b82cd4621fc9bb8f95d6b0aea70b9c24e12074c786",
+          "sha256": "b010b0dfdfdb23d7396e03b82cd4621fc9bb8f95d6b0aea70b9c24e12074c786"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "b010b0dfdfdb23d7396e03b82cd4621fc9bb8f95d6b0aea70b9c24e12074c786",
+        "size": 1813
+      },
+      {
+        "blob": {
+          "bytes": 11726,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/55/55449f95eb4b7b69f7a97eca943de1e30d7ebcad2e323753e44cf44669133c5f",
+          "sha256": "55449f95eb4b7b69f7a97eca943de1e30d7ebcad2e323753e44cf44669133c5f"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "55449f95eb4b7b69f7a97eca943de1e30d7ebcad2e323753e44cf44669133c5f",
+        "size": 11726
+      }
+    ],
+    "expandedBytes": 215561,
+    "packageIdentity": {
+      "author": "Vincent Le Goff <vince.legoff@gmail.com> (https://github.com/zekth)",
+      "homepage": "https://github.com/fastify/fast-uri",
+      "license": "BSD-3-Clause",
+      "name": "fast-uri",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/fastify/fast-uri.git"
+      },
+      "version": "3.1.6"
+    },
+    "packageMetadata": {
+      "author": "Vincent Le Goff <vince.legoff@gmail.com> (https://github.com/zekth)",
+      "bugs": {
+        "url": "https://github.com/fastify/fast-uri/issues"
+      },
+      "contributors": [
+        {
+          "email": "hello@matteocollina.com",
+          "name": "Matteo Collina"
+        },
+        {
+          "email": "hey@gurgun.day",
+          "name": "Gürgün Dayıoğlu",
+          "url": "https://heyhey.to/G"
+        },
+        {
+          "email": "aras.abbasi@gmail.com",
+          "name": "Aras Abbasi"
+        },
+        {
+          "email": "frazer.dev@icloud.com",
+          "name": "Frazer Smith",
+          "url": "https://github.com/fdawgs"
+        }
+      ],
+      "description": "Dependency-free RFC 3986 URI toolbox",
+      "devDependencies": {
+        "ajv": "^8.16.0",
+        "eslint": "^9.17.0",
+        "neostandard": "^0.13.0",
+        "playwright-test": "^14.1.12",
+        "tape": "^5.8.1",
+        "tsd": "^0.33.0"
+      },
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/fastify"
+        },
+        {
+          "type": "opencollective",
+          "url": "https://opencollective.com/fastify"
+        }
+      ],
+      "homepage": "https://github.com/fastify/fast-uri",
+      "license": "BSD-3-Clause",
+      "main": "index.js",
+      "name": "fast-uri",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/fastify/fast-uri.git"
+      },
+      "scripts": {
+        "lint": "eslint",
+        "lint:fix": "eslint --fix",
+        "test": "npm run test:unit && npm run test:typescript",
+        "test:browser": "npm run test:browser:chromium && npm run test:browser:firefox && npm run test:browser:webkit",
+        "test:browser:chromium": "playwright-test ./test/* --runner tape --browser=chromium",
+        "test:browser:firefox": "playwright-test ./test/* --runner tape --browser=firefox",
+        "test:browser:webkit": "playwright-test ./test/* --runner tape --browser=webkit",
+        "test:typescript": "tsd",
+        "test:unit": "tape test/**/*.js",
+        "test:unit:dev": "npm run test:unit -- --coverage-report=html"
+      },
+      "type": "commonjs",
+      "types": "types/index.d.ts",
+      "version": "3.1.6"
+    },
+    "physicalEntryCount": 44,
+    "tarball": {
+      "bytes": 42968,
+      "sha256": "264af0e32c4b7b7bcb9ce5b4623c82469ee3e69ba5d171920f1762d626db1064"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

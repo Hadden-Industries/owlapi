@@ -1,0 +1,88 @@
+{
+  "artifactId": "6c5ac5aa9744ef80cbfe8f97fdc2a6ff1667e0d8cc506957cf4ab5b101c98081",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5828,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "d446a8c73d7bbe4872d6524b15ae206f9a2d7eb53f8c9cb6e6c893a43acc5276",
+        "size": 9140,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "c8086e96047bc824a3eefffde0fd5838595b1320c8c5c88efbba0dc8a495feaa",
+        "size": 113,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "76ffc88cb84b3f20c2d7999e4d7c4646e6a450132fde37564c8189bf2c960018",
+        "size": 6884,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "08a8560b650b49370af44148a8645c11675ba97d21ee7f347d8d434b13c51074",
+        "size": 542,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 9140,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d4/d446a8c73d7bbe4872d6524b15ae206f9a2d7eb53f8c9cb6e6c893a43acc5276",
+          "sha256": "d446a8c73d7bbe4872d6524b15ae206f9a2d7eb53f8c9cb6e6c893a43acc5276"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "d446a8c73d7bbe4872d6524b15ae206f9a2d7eb53f8c9cb6e6c893a43acc5276",
+        "size": 9140
+      }
+    ],
+    "expandedBytes": 16679,
+    "packageIdentity": {
+      "author": "Mikeal Rogers <mikeal.rogers@gmail.com> (http://www.futurealoof.com)",
+      "homepage": null,
+      "license": "Apache-2.0",
+      "name": "tunnel-agent",
+      "repository": {
+        "url": "https://github.com/mikeal/tunnel-agent"
+      },
+      "version": "0.6.0"
+    },
+    "packageMetadata": {
+      "author": "Mikeal Rogers <mikeal.rogers@gmail.com> (http://www.futurealoof.com)",
+      "dependencies": {
+        "safe-buffer": "^5.0.1"
+      },
+      "description": "HTTP proxy tunneling agent. Formerly part of mikeal/request, now a standalone module.",
+      "devDependencies": {},
+      "engines": {
+        "node": "*"
+      },
+      "files": [
+        "index.js"
+      ],
+      "license": "Apache-2.0",
+      "main": "index.js",
+      "name": "tunnel-agent",
+      "optionalDependencies": {},
+      "repository": {
+        "url": "https://github.com/mikeal/tunnel-agent"
+      },
+      "version": "0.6.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 5828,
+      "sha256": "d3e3c04a50d6d2fa40654bf764fa1792f797bd5a62c69d03dceaa7d4a85c5012"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

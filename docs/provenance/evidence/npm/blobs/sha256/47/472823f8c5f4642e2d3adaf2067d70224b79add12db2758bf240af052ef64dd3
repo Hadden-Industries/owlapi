@@ -1,0 +1,96 @@
+{
+  "artifactId": "bf3fc9c218d6250ff6a007c921a7d7ff2c4b50d38fef9e781f3c40d23c7e08e4",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1512,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "6708bffc27da46ad9f6455d078f2f3d85d55217aa74c20787b86ff3390085681",
+        "size": 377,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "a2987d9311594ccf6b2a5c0ba5a31a7a6a2fe6c090aa7038da1b78afd70620d8",
+        "size": 427,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "463793b06b88098d9b806131da83a08db76881ea730526f80a4b58d90870d667",
+        "size": 649,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 2559,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-import-meta",
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-import-meta",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.10.4"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.10.4"
+      },
+      "description": "Allow parsing of import.meta",
+      "devDependencies": {
+        "@babel/core": "^7.10.4"
+      },
+      "gitHead": "7fd40d86a0d03ff0e9c3ea16b29689945433d4df",
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "@babel/plugin-syntax-import-meta",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-import-meta",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.10.4"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1512,
+      "sha256": "90b2683f050b61f6af0e7c5dd510f9486e0d43f0bbe1857b2499424a37ca2b91"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

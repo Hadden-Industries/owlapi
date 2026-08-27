@@ -1,0 +1,114 @@
+{
+  "artifactId": "5e53943e06292969dd1baf612437b936df4316cbf2b6951b7abbbeff14a916b9",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2721,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "b32e17b40c613d37fc45a1c9000f3d6fccf4ffb1004487c44e6d8a0a036f4d8f",
+        "size": 428,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "b6d51454d7f6a4e40f2054f6a0fdf48e82ff4aa8ea4bba2a44f34dc4b9d7d7ff",
+        "size": 1345,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "fef788eae21986b301fee3ad6918277b6f40effaf66be0562072e2467ce58e33",
+        "size": 2522,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0a9253ce6251bc2f9d2e885f419c7c60f51a9cb41420f09dc5f25302dcbb9bdb",
+        "size": 955,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 6356,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-import-attributes",
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-import-attributes",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.29.7"
+      },
+      "description": "Allow parsing of the module attributes in the import statement",
+      "devDependencies": {
+        "@babel/core": "^7.29.7",
+        "@babel/helper-plugin-test-runner": "^7.29.7"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./lib/index.js",
+          "types": "./lib/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/plugin-syntax-import-attributes",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-plugin-syntax-import-attributes",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2721,
+      "sha256": "ccf92f7a64843ca0cd7488bf2f446c51a180a8c7c8b6bfea164d6a911ecb7eca"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,390 @@
+{
+  "artifactId": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 438971,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "0707101bd4a2fc564788b1ba03c53615e35388dad33879663db263e724a6bd4a",
+        "size": 2336,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "065c72e4eb81b47b2fcf9449304c120ae0956d1340d4404b594ed0e5e6b0f99c",
+        "size": 16805,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/jsonld.esm.js",
+        "sha256": "d4cfcc3ad466b29fdc49b8eb0c7ed2545830fae79c99526999db2c5d6e913f7f",
+        "size": 623245,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/jsonld.esm.min.js",
+        "sha256": "1878ed3ef5cb87e7514d36dbb575d5a9004fa7cb452cff4f945eb891ac87f4eb",
+        "size": 164446,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/jsonld.esm.min.js.map",
+        "sha256": "50479b62392b0ef5dd826a8943a248aab1dbdcfe45cfb5a4d9621fe118fd4b11",
+        "size": 575,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/jsonld.js",
+        "sha256": "9524f41aa6dad64af0adeed097d179787c6581833a45327262f733d3dabf6242",
+        "size": 791593,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/jsonld.min.js",
+        "sha256": "380e91a398c55b86e88ba7aef93f7512e0a9540c7065e6e84190e0aa43bbf8ea",
+        "size": 197279,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/jsonld.min.js.map",
+        "sha256": "e83ed798a9e853fcd9a022f2eb585e127b6b91e4916ef98bec9ba84ee4e48d45",
+        "size": 571,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/ContextResolver.js",
+        "sha256": "2f8e65f3d73c5309e4312e7e81da427533745b800030f591a55056c69d1d3bf6",
+        "size": 7576,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/JsonLdError.js",
+        "sha256": "743345136e24ef00c4dc5ac8673c248685d0f11ac9661b90e55df7ee1008e1ca",
+        "size": 514,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/JsonLdProcessor.js",
+        "sha256": "4f212aea363632dd3e830955ee0ff83eb9881d88c95c705718ef75238d65da29",
+        "size": 1485,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/NQuads.js",
+        "sha256": "e37f0cd14b1fc01b6e846318ff9dbc4b6227569da852dd614096f09637c73b8a",
+        "size": 177,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/RequestQueue.js",
+        "sha256": "69738752d6dde37b44b60a0bd05c478aefed3c08b60deb823154769049c6b143",
+        "size": 764,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/ResolvedContext.js",
+        "sha256": "a63af18a67418c8bb49dd34be25a69c9868becfeeb516da96ad7d0dcca6e00ba",
+        "size": 704,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/compact.js",
+        "sha256": "7ccfe8996cb335e7b6c66f61f9d6cdb98aedf94a286d2eb4e92b967f77aac071",
+        "size": 38367,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/constants.js",
+        "sha256": "12280956c21c8dd3e3a50d04656503fb91bfc5294755718913e36f7f681b67e3",
+        "size": 868,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/context.js",
+        "sha256": "eaa538a319076e8750299817ae51cd253bcea2a3aa1fdf15c15297aedcf720af",
+        "size": 50000,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/documentLoaders/node.js",
+        "sha256": "5afc0904dffe7b60c9375c9c3ffe239b649255e9adf360348481feb50b7d2898",
+        "size": 6441,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/documentLoaders/xhr.js",
+        "sha256": "6cd215fd118c6036eabc0884222d11c6e9b0839007237df41f0deb1b456bd4c9",
+        "size": 3735,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/events.js",
+        "sha256": "f3e4ce80b42758305c8e77af375598e0ec12648791ce6602d25672d9d3d39be6",
+        "size": 5200,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/expand.js",
+        "sha256": "ca0d293995542784d8ce0851c135993043d13b6c13f918b4f870cde297ddefef",
+        "size": 39859,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/flatten.js",
+        "sha256": "a1a4c36cdece1aad52e37bd436348e2582daa823fc220b7cee736e64d4466d97",
+        "size": 819,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/frame.js",
+        "sha256": "ee82b013b3097f718e66aaa9f8d623f6f772f9952ec63b582d759a2c9c9b7cec",
+        "size": 25273,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/fromRdf.js",
+        "sha256": "f5a515d7755777b4f787e5c65fd1399db646a20649a8715c51fe477f3499b804",
+        "size": 11593,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/graphTypes.js",
+        "sha256": "8ca15b8bf7960ed06151286069ceca5a0c0a0de04d809e55c1c5522e7eca1c34",
+        "size": 3300,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "34f3d2e69fb0bd1fbf8ebe573651688d80d48deb64776072553358aacd36c42d",
+        "size": 142,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/jsonld.js",
+        "sha256": "14fd60de8ce342f47c105e6fa4ceeae1278452536de5fa8b79332f0487c8f252",
+        "size": 33578,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/nodeMap.js",
+        "sha256": "4d1d60c5cec708b6377b40497b0655b991aa0e76e365a48a0c1029a70e4b8631",
+        "size": 8379,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/platform-browser.js",
+        "sha256": "e56bfa5fff87ceaf625bc681a87b773c846a54a1269163e843cd210f683e3e73",
+        "size": 871,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/platform.js",
+        "sha256": "84d90a61fc41343420b431ad1f54a18b0299263936ee65030284211b692b1a9c",
+        "size": 609,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/toRdf.js",
+        "sha256": "569a8cc0cee3c06c8b217f0c7682c7c792a17c43e6e61301a5150022ee7f866c",
+        "size": 11782,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/types.js",
+        "sha256": "3d11e664de2a672f01abe029ca89cbb4f8704ad0d6aa7c18a9c9ffb82d47cea7",
+        "size": 2206,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/url.js",
+        "sha256": "8774106ffc62553976cc3b29d93fbf135fbbe3ab482d27fa245e5a8158e3a560",
+        "size": 7347,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util.js",
+        "sha256": "032b1b1a852d502cd194f73ddccacf10cf8a5b0fa38b9e82ea1b24ea47a1d251",
+        "size": 12638,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "055ed69d0e7ac0f5f813667c106cb90191dbeef0a91454b3c42b2b9cf3819d21",
+        "size": 4458,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 2336,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/07/0707101bd4a2fc564788b1ba03c53615e35388dad33879663db263e724a6bd4a",
+          "sha256": "0707101bd4a2fc564788b1ba03c53615e35388dad33879663db263e724a6bd4a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "0707101bd4a2fc564788b1ba03c53615e35388dad33879663db263e724a6bd4a",
+        "size": 2336
+      }
+    ],
+    "expandedBytes": 2075535,
+    "packageIdentity": {
+      "author": {
+        "email": "support@digitalbazaar.com",
+        "name": "Digital Bazaar, Inc.",
+        "url": "https://digitalbazaar.com/"
+      },
+      "homepage": "https://github.com/digitalbazaar/jsonld.js",
+      "license": "BSD-3-Clause",
+      "name": "jsonld",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/digitalbazaar/jsonld.js"
+      },
+      "version": "9.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "support@digitalbazaar.com",
+        "name": "Digital Bazaar, Inc.",
+        "url": "https://digitalbazaar.com/"
+      },
+      "browser": {
+        "./lib/index.js": "./lib/jsonld.js",
+        "./lib/platform.js": "./lib/platform-browser.js",
+        "crypto": false,
+        "http": false,
+        "jsonld-request": false,
+        "request": false,
+        "url": false,
+        "util": false
+      },
+      "bugs": {
+        "email": "support@digitalbazaar.com",
+        "url": "https://github.com/digitalbazaar/jsonld.js/issues"
+      },
+      "contributors": [
+        "Dave Longley <dlongley@digitalbazaar.com>",
+        "David I. Lehn <dlehn@digitalbazaar.com>"
+      ],
+      "dependencies": {
+        "@digitalbazaar/http-client": "^4.2.0",
+        "canonicalize": "^2.1.0",
+        "lru-cache": "^6.0.0",
+        "rdf-canonize": "^5.0.0"
+      },
+      "description": "A JSON-LD Processor and API implementation in JavaScript.",
+      "devDependencies": {
+        "@babel/core": "^7.28.5",
+        "@babel/plugin-transform-modules-commonjs": "^7.27.1",
+        "@babel/plugin-transform-runtime": "^7.28.5",
+        "@babel/preset-env": "^7.28.5",
+        "@babel/runtime": "^7.28.4",
+        "babel-loader": "^10.0.0",
+        "benchmark": "^2.1.4",
+        "browserify": "^17.0.1",
+        "chai": "^4.5.0",
+        "core-js": "^3.47.0",
+        "cors": "^2.8.5",
+        "cross-env": "^7.0.3",
+        "envify": "^4.1.0",
+        "eslint": "^8.57.1",
+        "eslint-config-digitalbazaar": "^5.2.0",
+        "esmify": "^2.1.1",
+        "express": "^5.1.0",
+        "fs-extra": "^11.3.2",
+        "join-path-js": "0.0.0",
+        "karma": "^6.4.4",
+        "karma-babel-preprocessor": "^8.0.2",
+        "karma-browserify": "^8.1.0",
+        "karma-chrome-launcher": "^3.2.0",
+        "karma-edge-launcher": "^0.4.2",
+        "karma-firefox-launcher": "^2.1.3",
+        "karma-mocha": "^2.0.1",
+        "karma-mocha-reporter": "^2.2.5",
+        "karma-safari-launcher": "^1.0.0",
+        "karma-sourcemap-loader": "^0.4.0",
+        "karma-tap-reporter": "0.0.6",
+        "karma-webpack": "^5.0.1",
+        "klona": "^2.0.6",
+        "mocha": "^11.7.5",
+        "mocha-lcov-reporter": "^1.3.0",
+        "nyc": "^17.1.0",
+        "watchify": "^4.0.0",
+        "webpack": "^5.103.0",
+        "webpack-cli": "^6.0.1",
+        "webpack-merge": "^6.0.1"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "files": [
+        "dist/*.js",
+        "dist/*.js.map",
+        "lib/*.js",
+        "lib/**/*.js"
+      ],
+      "homepage": "https://github.com/digitalbazaar/jsonld.js",
+      "keywords": [
+        "JSON",
+        "JSON-LD",
+        "Linked Data",
+        "RDF",
+        "Semantic Web",
+        "jsonld"
+      ],
+      "license": "BSD-3-Clause",
+      "main": "lib/index.js",
+      "name": "jsonld",
+      "nyc": {
+        "exclude": [
+          "lib/documentLoaders/xhr.js",
+          "tests"
+        ]
+      },
+      "react-native": {
+        "./lib/index.js": "./lib/jsonld.js",
+        "./lib/platform.js": "./lib/platform-browser.js",
+        "crypto": false,
+        "http": false,
+        "jsonld-request": false,
+        "request": false,
+        "url": false,
+        "util": false
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/digitalbazaar/jsonld.js"
+      },
+      "scripts": {
+        "build": "npm run build-webpack",
+        "build-webpack": "webpack",
+        "coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text-summary npm test",
+        "coverage-ci": "cross-env NODE_ENV=test nyc --reporter=lcovonly npm run test",
+        "coverage-report": "nyc report",
+        "fetch-json-ld-api-test-suite": "if [ ! -e test-suites/json-wg-api ]; then git clone --depth 1 https://github.com/w3c/json-ld-api.git test-suites/json-ld-api; fi",
+        "fetch-json-ld-framing-test-suite": "if [ ! -e test-suites/json-wg-framing ]; then git clone --depth 1 https://github.com/w3c/json-ld-framing.git test-suites/json-ld-framing; fi",
+        "fetch-json-ld-org-test-suite": "if [ ! -e test-suites/json-ld.org ]; then git clone --depth 1 https://github.com/json-ld/json-ld.org.git test-suites/json-ld.org; fi",
+        "fetch-json-ld-wg-test-suite": "npm run fetch-json-ld-api-test-suite && npm run fetch-json-ld-framing-test-suite",
+        "fetch-rdf-canon-test-suite": "if [ ! -e test-suites/rdf-canon ]; then git clone --depth 1 https://github.com/w3c/rdf-canon.git test-suites/rdf-canon; fi",
+        "fetch-test-suites": "npm run fetch-json-ld-wg-test-suite && npm run fetch-json-ld-org-test-suite && npm run fetch-rdf-canon-test-suite",
+        "lint": "eslint .",
+        "prepack": "npm run build",
+        "test": "npm run test-node",
+        "test-karma": "cross-env NODE_ENV=test karma start",
+        "test-node": "cross-env NODE_ENV=test mocha --delay -t 30000 -A -R ${REPORTER:-spec} tests/test-node.js"
+      },
+      "version": "9.0.0"
+    },
+    "physicalEntryCount": 35,
+    "tarball": {
+      "bytes": 438971,
+      "sha256": "3628c8df4ceaf4da1f0b55dc7a006287dc4362ed78f6f7c85e83bd99b9328627"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

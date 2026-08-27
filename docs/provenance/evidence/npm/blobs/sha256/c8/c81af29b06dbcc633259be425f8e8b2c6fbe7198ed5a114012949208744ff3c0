@@ -1,0 +1,125 @@
+{
+  "artifactId": "7265ddce25cc9bab531fb2834ae834e61a04f830235ff428546e2d7480738e65",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4053,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.babelrc",
+        "sha256": "9b5fa5ccf91f15404f266f8595c85a005814efdecc3fd7c584630e6667fb5597",
+        "size": 30,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a7007c78c9d9da690ef6cdb0e7a3427d05832edb00abd1f5a9882700d73be4ad",
+        "size": 5102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/esrecurse.js",
+        "sha256": "aa99847033c240a621fe987f0e06b754f388f22abd11a05bdf9cdd00794b7350",
+        "size": 4230,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gulpfile.babel.js",
+        "sha256": "fb47567884ee5dddc084a93db85d940f0874dbb4a1863820c6c317a3a83e62b1",
+        "size": 3000,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "3bc67cb54672ec6957b53947613c23599371bf9222dbbe97275d20516a561a20",
+        "size": 1165,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 5102,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a7/a7007c78c9d9da690ef6cdb0e7a3427d05832edb00abd1f5a9882700d73be4ad",
+          "sha256": "a7007c78c9d9da690ef6cdb0e7a3427d05832edb00abd1f5a9882700d73be4ad"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "a7007c78c9d9da690ef6cdb0e7a3427d05832edb00abd1f5a9882700d73be4ad",
+        "size": 5102
+      }
+    ],
+    "expandedBytes": 13527,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/estools/esrecurse",
+      "license": "BSD-2-Clause",
+      "name": "esrecurse",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/estools/esrecurse.git"
+      },
+      "version": "4.3.0"
+    },
+    "packageMetadata": {
+      "babel": {
+        "presets": [
+          "es2015"
+        ]
+      },
+      "dependencies": {
+        "estraverse": "^5.2.0"
+      },
+      "description": "ECMAScript AST recursive visitor",
+      "devDependencies": {
+        "babel-cli": "^6.24.1",
+        "babel-eslint": "^7.2.3",
+        "babel-preset-es2015": "^6.24.1",
+        "babel-register": "^6.24.1",
+        "chai": "^4.0.2",
+        "esprima": "^4.0.0",
+        "gulp": "^3.9.0",
+        "gulp-bump": "^2.7.0",
+        "gulp-eslint": "^4.0.0",
+        "gulp-filter": "^5.0.0",
+        "gulp-git": "^2.4.1",
+        "gulp-mocha": "^4.3.1",
+        "gulp-tag-version": "^1.2.1",
+        "jsdoc": "^3.3.0-alpha10",
+        "minimist": "^1.1.0"
+      },
+      "engines": {
+        "node": ">=4.0"
+      },
+      "homepage": "https://github.com/estools/esrecurse",
+      "license": "BSD-2-Clause",
+      "main": "esrecurse.js",
+      "maintainers": [
+        {
+          "email": "utatane.tea@gmail.com",
+          "name": "Yusuke Suzuki",
+          "web": "https://github.com/Constellation"
+        }
+      ],
+      "name": "esrecurse",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/estools/esrecurse.git"
+      },
+      "scripts": {
+        "lint": "gulp lint",
+        "test": "gulp travis",
+        "unit-test": "gulp test"
+      },
+      "version": "4.3.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 4053,
+      "sha256": "3ecf9370d7296b47b570c88a11f70b35bb965af8d536536b259eb55f9b793b61"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

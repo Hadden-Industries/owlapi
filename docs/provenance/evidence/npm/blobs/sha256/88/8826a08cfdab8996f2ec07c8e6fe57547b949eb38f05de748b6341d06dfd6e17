@@ -1,0 +1,178 @@
+{
+  "artifactId": "36a570b231c993decb44dc6ac647464888f39a8b68608264c8dcb64d78f397f8",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 10105,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ceb0c7489a994a755a27aacc0fa1a06a57ef12793b8f5712e8e99c7cc09c184d",
+        "size": 4450,
+        "type": "FILE"
+      },
+      {
+        "path": "package/browser.js",
+        "sha256": "dadbd42b71ad0b40285d44ccfdb31c91abbfb088e4336422d4e2948cad7afe01",
+        "size": 13336,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "f02bf4cd6fbcda59d7558aaaa726886cb1ac3fb8cf1022ff371939357c91a60b",
+        "size": 4054,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/ascii.js",
+        "sha256": "14c2f2bcba3d735d473b2a99c80035a1a31963ee6ec079457a7552567602f97d",
+        "size": 459,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/base64.js",
+        "sha256": "aea51ec32d2e4a536af4741fdaefb5fa5d42f820e559c7f481505e9f07ce5215",
+        "size": 1474,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/hex.js",
+        "sha256": "5032f1fdb25757f3214fb5b5fd4628a5b8796138718d03ace0ae1b50f0f53863",
+        "size": 1028,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/latin1.js",
+        "sha256": "3032dcbd3121decbc265f57b477001e57fdaf59650efcf85bc5936c0f4be1fc1",
+        "size": 452,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/utf16le.js",
+        "sha256": "b39c0cd40e2709417421cfcbdc177d36a609a83edb192e78a979acdab87bc75e",
+        "size": 641,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/utf8.js",
+        "sha256": "8122851133ec42e520e687924370854a7c8fc9118210a45aef2bf6f08a856ffd",
+        "size": 2732,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8bca7126107a091957db1d7f091d636fa54d634f38e3b9f0c66c7c571945bd0a",
+        "size": 1245,
+        "type": "FILE"
+      },
+      {
+        "path": "package/react-native.js",
+        "sha256": "9e1a54263fae03656f72e7b22bdb46a43ac7c024316a4382725429988498cc44",
+        "size": 105,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11357,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357
+      },
+      {
+        "blob": {
+          "bytes": 4450,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ce/ceb0c7489a994a755a27aacc0fa1a06a57ef12793b8f5712e8e99c7cc09c184d",
+          "sha256": "ceb0c7489a994a755a27aacc0fa1a06a57ef12793b8f5712e8e99c7cc09c184d"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "ceb0c7489a994a755a27aacc0fa1a06a57ef12793b8f5712e8e99c7cc09c184d",
+        "size": 4450
+      }
+    ],
+    "expandedBytes": 41333,
+    "packageIdentity": {
+      "author": "Holepunch",
+      "homepage": "https://github.com/holepunchto/b4a#readme",
+      "license": "Apache-2.0",
+      "name": "b4a",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/holepunchto/b4a.git"
+      },
+      "version": "1.8.1"
+    },
+    "packageMetadata": {
+      "author": "Holepunch",
+      "bugs": {
+        "url": "https://github.com/holepunchto/b4a/issues"
+      },
+      "description": "Bridging the gap between buffers and typed arrays",
+      "devDependencies": {
+        "brittle": "^3.5.2",
+        "lunte": "^1.7.0",
+        "nanobench": "^3.0.0",
+        "prettier": "^3.6.2",
+        "prettier-config-holepunch": "^2.0.0"
+      },
+      "exports": {
+        ".": {
+          "browser": "./browser.js",
+          "default": "./index.js",
+          "react-native": "./react-native.js"
+        },
+        "./package": "./package.json"
+      },
+      "files": [
+        "browser.js",
+        "index.js",
+        "react-native.js",
+        "lib"
+      ],
+      "homepage": "https://github.com/holepunchto/b4a#readme",
+      "license": "Apache-2.0",
+      "name": "b4a",
+      "peerDependencies": {
+        "react-native-b4a": "*"
+      },
+      "peerDependenciesMeta": {
+        "react-native-b4a": {
+          "optional": true
+        }
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/holepunchto/b4a.git"
+      },
+      "scripts": {
+        "format": "prettier --write . && lunte --fix",
+        "lint": "prettier --check . && lunte",
+        "test": "npm run test:bare && npm run test:node",
+        "test:bare": "brittle-bare --coverage test.mjs",
+        "test:node": "brittle-node --coverage test.mjs"
+      },
+      "version": "1.8.1"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 10105,
+      "sha256": "804bc1f9451f0106c5654800ff972398771df0535a6786b5830659d71a387f9f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

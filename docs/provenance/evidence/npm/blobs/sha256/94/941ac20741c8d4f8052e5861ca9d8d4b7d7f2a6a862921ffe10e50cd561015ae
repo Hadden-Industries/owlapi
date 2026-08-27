@@ -1,0 +1,182 @@
+{
+  "artifactId": "39ac6f98caf9cef4c312a61603c92cbfdedc68ce8a1fdddc09dc1751a495fd84",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3656,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "7bf9b2de73a6b356761c948d0e9eeb4be6c1270bd04c79cd489c1e400ffdfc1a",
+        "size": 1074,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ada32c1b53bd74640a22806e99b25c2b8ab2946eed338f325114be87bd5b9fce",
+        "size": 3323,
+        "type": "FILE"
+      },
+      {
+        "path": "package/es6/index.d.ts",
+        "sha256": "d979def17dea97ee491c975f3d3cb31957b7970a791c1d5a3854ea6cd4cce91e",
+        "size": 66,
+        "type": "FILE"
+      },
+      {
+        "path": "package/es6/index.js",
+        "sha256": "d7f027497048c75e17268dbc66b670579d4f70f2dc0e019cdc9edf5078c247d6",
+        "size": 1935,
+        "type": "FILE"
+      },
+      {
+        "path": "package/es6/react.d.ts",
+        "sha256": "d979def17dea97ee491c975f3d3cb31957b7970a791c1d5a3854ea6cd4cce91e",
+        "size": 66,
+        "type": "FILE"
+      },
+      {
+        "path": "package/es6/react.js",
+        "sha256": "366779cbb7821d26d18b9eaa12b6788cbb101cdbbabcae36f2919a5f48534ef0",
+        "size": 2209,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "37ffe3c12813b6a6d512f7c27b71f3388d03dafa10555ad5094cea393ed3d1f6",
+        "size": 103,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "eb469e206280321a3878f2335ec98aa2104a155079d8ed83a23029098dccd215",
+        "size": 1177,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "a5c63940db0260739be9e2ac67f3aac268df4db5770420ee4e34e493152f97d2",
+        "size": 1496,
+        "type": "FILE"
+      },
+      {
+        "path": "package/react.d.ts",
+        "sha256": "d979def17dea97ee491c975f3d3cb31957b7970a791c1d5a3854ea6cd4cce91e",
+        "size": 66,
+        "type": "FILE"
+      },
+      {
+        "path": "package/react.js",
+        "sha256": "37cbd168dbd42c73119ce7326556bddef40b3a5fbd2e215cf81a7c78fb73ff9a",
+        "size": 1451,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1074,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/7b/7bf9b2de73a6b356761c948d0e9eeb4be6c1270bd04c79cd489c1e400ffdfc1a",
+          "sha256": "7bf9b2de73a6b356761c948d0e9eeb4be6c1270bd04c79cd489c1e400ffdfc1a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "7bf9b2de73a6b356761c948d0e9eeb4be6c1270bd04c79cd489c1e400ffdfc1a",
+        "size": 1074
+      },
+      {
+        "blob": {
+          "bytes": 3323,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ad/ada32c1b53bd74640a22806e99b25c2b8ab2946eed338f325114be87bd5b9fce",
+          "sha256": "ada32c1b53bd74640a22806e99b25c2b8ab2946eed338f325114be87bd5b9fce"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "ada32c1b53bd74640a22806e99b25c2b8ab2946eed338f325114be87bd5b9fce",
+        "size": 3323
+      }
+    ],
+    "expandedBytes": 12966,
+    "packageIdentity": {
+      "author": "Evgeny Poberezkin",
+      "homepage": "https://github.com/epoberezkin/fast-deep-equal#readme",
+      "license": "MIT",
+      "name": "fast-deep-equal",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/epoberezkin/fast-deep-equal.git"
+      },
+      "version": "3.1.3"
+    },
+    "packageMetadata": {
+      "author": "Evgeny Poberezkin",
+      "bugs": {
+        "url": "https://github.com/epoberezkin/fast-deep-equal/issues"
+      },
+      "description": "Fast deep equal",
+      "devDependencies": {
+        "coveralls": "^3.1.0",
+        "dot": "^1.1.2",
+        "eslint": "^7.2.0",
+        "mocha": "^7.2.0",
+        "nyc": "^15.1.0",
+        "pre-commit": "^1.2.2",
+        "react": "^16.12.0",
+        "react-test-renderer": "^16.12.0",
+        "sinon": "^9.0.2",
+        "typescript": "^3.9.5"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts",
+        "react.js",
+        "react.d.ts",
+        "es6/"
+      ],
+      "homepage": "https://github.com/epoberezkin/fast-deep-equal#readme",
+      "keywords": [
+        "fast",
+        "equal",
+        "deep-equal"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "fast-deep-equal",
+      "nyc": {
+        "exclude": [
+          "**/spec/**",
+          "node_modules"
+        ],
+        "reporter": [
+          "lcov",
+          "text-summary"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/epoberezkin/fast-deep-equal.git"
+      },
+      "scripts": {
+        "benchmark": "npm i && npm run build && cd ./benchmark && npm i && node ./",
+        "build": "node build",
+        "eslint": "eslint *.js benchmark/*.js spec/*.js",
+        "prepublish": "npm run build",
+        "test": "npm run build && npm run eslint && npm run test-ts && npm run test-cov",
+        "test-cov": "nyc npm run test-spec",
+        "test-spec": "mocha spec/*.spec.js -R spec",
+        "test-ts": "tsc --target ES5 --noImplicitAny index.d.ts"
+      },
+      "types": "index.d.ts",
+      "version": "3.1.3"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 3656,
+      "sha256": "b019a0980f27638dc3f85836b0e478f188e00d7a6e5852c0819fa86f56e47b8f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

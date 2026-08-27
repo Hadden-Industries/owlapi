@@ -1,0 +1,132 @@
+{
+  "artifactId": "487d8da02685bb31826341fbbf2855fb0ff3d4fc8201ac904e097592c4b0c4df",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2604,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "8bd61b42789ca7dfc40fed5f870b81cb3956d9d9fde6e01b95a3b6fa91cac59f",
+        "size": 356,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "24a4cce7958e3905080069a18952f1f35796fcd861b4c5686047f0a33faa21ed",
+        "size": 1068,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "b2fc74f128de0884325cc3f98a8724246c99b60fd65b8b151b9d193e177ea34d",
+        "size": 1036,
+        "type": "FILE"
+      },
+      {
+        "path": "package/async.cjs",
+        "sha256": "f6fc91156b21fedcde2a9ce7c722e6e0d24ae651238a5926bda9d0437574382e",
+        "size": 1184,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cache.cjs",
+        "sha256": "4db2a8667fcfc042ba7222bdef94ac7c07bade2437b60a2157769e56065c23a4",
+        "size": 43,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.cjs",
+        "sha256": "8bdbf4374c7991936756b3b21fc8b98a945a249cbb2f850176f19155ae910b5e",
+        "size": 210,
+        "type": "FILE"
+      },
+      {
+        "path": "package/is-node-modules.cjs",
+        "sha256": "bfc9ba7081e57ac6c60292a24c01339e806634f1f473ea25997a22d7241a24c0",
+        "size": 317,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "388625f89e2d55ff88a02428a91e8db33bf83b14a6c9b5e3722d14033a57890b",
+        "size": 886,
+        "type": "FILE"
+      },
+      {
+        "path": "package/sync.cjs",
+        "sha256": "fceb9962740a48ebfd341d963772e5b2ddb42ba3204ab2448fefb436b08012ff",
+        "size": 912,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1068,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/24/24a4cce7958e3905080069a18952f1f35796fcd861b4c5686047f0a33faa21ed",
+          "sha256": "24a4cce7958e3905080069a18952f1f35796fcd861b4c5686047f0a33faa21ed"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "24a4cce7958e3905080069a18952f1f35796fcd861b4c5686047f0a33faa21ed",
+        "size": 1068
+      }
+    ],
+    "expandedBytes": 6012,
+    "packageIdentity": {
+      "author": "Corey Farrell",
+      "homepage": "https://github.com/cfware/get-package-type#readme",
+      "license": "MIT",
+      "name": "get-package-type",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cfware/get-package-type.git"
+      },
+      "version": "0.1.0"
+    },
+    "packageMetadata": {
+      "author": "Corey Farrell",
+      "bugs": {
+        "url": "https://github.com/cfware/get-package-type/issues"
+      },
+      "dependencies": {},
+      "description": "Determine the `package.json#type` which applies to a location",
+      "devDependencies": {
+        "@cfware/lint": "^1.4.3",
+        "@cfware/nyc": "^0.7.0",
+        "if-ver": "^1.1.0",
+        "libtap": "^0.3.0",
+        "nyc": "^15.0.1"
+      },
+      "engines": {
+        "node": ">=8.0.0"
+      },
+      "exports": "./index.cjs",
+      "homepage": "https://github.com/cfware/get-package-type#readme",
+      "license": "MIT",
+      "main": "index.cjs",
+      "name": "get-package-type",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cfware/get-package-type.git"
+      },
+      "scripts": {
+        "posttest": "nyc report --check-coverage",
+        "pretest": "if-ver -ge 10 || exit 0; cfware-lint .",
+        "test": "npm run -s tests-only",
+        "tests-only": "nyc -s node test.cjs"
+      },
+      "type": "module",
+      "version": "0.1.0"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 2604,
+      "sha256": "f1c3619acfbbbb090e054336310cf1cdb7761a0a843733e77b1d5b877f72b210"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

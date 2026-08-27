@@ -1,0 +1,121 @@
+{
+  "artifactId": "e685742855121100ff19e2f91a2254eabab3f9852caa726ba23659b8df9acf51",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2383,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "902dbb4154679fb2b8d7c33878183f45b268d01eae5e5033dddaa8852d45f213",
+        "size": 745,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "de7b6d277d23b5b8a3cc7d31c7a0ba19972363df2818b88573b4a29e3e89ba07",
+        "size": 1068,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "ac26d4fa29d2ba00092c3ed61a3cefbd0391b2d9fe95072c40072102da8b34be",
+        "size": 71,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "583aba43e0ae0ccfb6c3a790019486990ac9241337dc38005f0189586e18295a",
+        "size": 1108,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js.map",
+        "sha256": "f2d123b5756280a04cf41e21594ace05b6f6cb4629361ed1c998c8f57d90c6fa",
+        "size": 773,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "680a080d2885c05bc51dde429c80784bfb248ca3ef3685438079c5015721e2ae",
+        "size": 954,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 745,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/90/902dbb4154679fb2b8d7c33878183f45b268d01eae5e5033dddaa8852d45f213",
+          "sha256": "902dbb4154679fb2b8d7c33878183f45b268d01eae5e5033dddaa8852d45f213"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "902dbb4154679fb2b8d7c33878183f45b268d01eae5e5033dddaa8852d45f213",
+        "size": 745
+      }
+    ],
+    "expandedBytes": 4719,
+    "packageIdentity": {
+      "author": "Stefan Penner",
+      "homepage": "https://github.com/stefanpenner/get-caller-file#readme",
+      "license": "ISC",
+      "name": "get-caller-file",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/stefanpenner/get-caller-file.git"
+      },
+      "version": "2.0.5"
+    },
+    "packageMetadata": {
+      "author": "Stefan Penner",
+      "bugs": {
+        "url": "https://github.com/stefanpenner/get-caller-file/issues"
+      },
+      "description": "",
+      "devDependencies": {
+        "@types/chai": "^4.1.7",
+        "@types/ensure-posix-path": "^1.0.0",
+        "@types/mocha": "^5.2.6",
+        "@types/node": "^11.10.5",
+        "chai": "^4.1.2",
+        "ensure-posix-path": "^1.0.1",
+        "mocha": "^5.2.0",
+        "typescript": "^3.3.3333"
+      },
+      "directories": {
+        "test": "tests"
+      },
+      "engines": {
+        "node": "6.* || 8.* || >= 10.*"
+      },
+      "files": [
+        "index.js",
+        "index.js.map",
+        "index.d.ts"
+      ],
+      "homepage": "https://github.com/stefanpenner/get-caller-file#readme",
+      "license": "ISC",
+      "main": "index.js",
+      "name": "get-caller-file",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/stefanpenner/get-caller-file.git"
+      },
+      "scripts": {
+        "prepare": "tsc",
+        "test": "mocha test",
+        "test:debug": "mocha test"
+      },
+      "version": "2.0.5"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 2383,
+      "sha256": "7b13e1c81949ff4c1baae4ac4e34990492d5e8a86dab7e3b90027b1f5126935f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

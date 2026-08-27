@@ -1,0 +1,124 @@
+{
+  "artifactId": "de4167a0765b4d9c7ef87cb3c0e8609eb07e602c7b5530a4dbd390597d006475",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 9691,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.claude/settings.local.json",
+        "sha256": "587cb3fd646c452cc79ed7329504892a6333af82db1c9d1fbfa560ed2f794ec9",
+        "size": 1515,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.travis.yml",
+        "sha256": "8812a3867a290d4369e65104b12de0b569826934934b1420659005741c84cc73",
+        "size": 119,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "3e526a368b41f7c4f51ade5c4ee11c910b5e3259227df77bf52065baf0c462c6",
+        "size": 1090,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "70f94bf20f4e1b3260347b0cf083030c033a5aaad9f95a47c075de392973b4f4",
+        "size": 7785,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "c00ff13dbc7c5eb84bec72963f7df76a4a4ab9034fa0fd3a7217a28b18654364",
+        "size": 2147,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "00db3cb224cfeb9afac00bfcd677cb27536c6ac4b5caaa179a1d222ec1166b2d",
+        "size": 615,
+        "type": "FILE"
+      },
+      {
+        "path": "package/sver.js",
+        "sha256": "7108468681dab08489b3fe0e1a7d5bd89d09ec1ad27c3d70600225242a5cdaa8",
+        "size": 25847,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1090,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/3e/3e526a368b41f7c4f51ade5c4ee11c910b5e3259227df77bf52065baf0c462c6",
+          "sha256": "3e526a368b41f7c4f51ade5c4ee11c910b5e3259227df77bf52065baf0c462c6"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "3e526a368b41f7c4f51ade5c4ee11c910b5e3259227df77bf52065baf0c462c6",
+        "size": 1090
+      },
+      {
+        "blob": {
+          "bytes": 7785,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/70/70f94bf20f4e1b3260347b0cf083030c033a5aaad9f95a47c075de392973b4f4",
+          "sha256": "70f94bf20f4e1b3260347b0cf083030c033a5aaad9f95a47c075de392973b4f4"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "70f94bf20f4e1b3260347b0cf083030c033a5aaad9f95a47c075de392973b4f4",
+        "size": 7785
+      }
+    ],
+    "expandedBytes": 39118,
+    "packageIdentity": {
+      "author": "Guy Bedford",
+      "homepage": "https://github.com/guybedford/sver#readme",
+      "license": "MIT",
+      "name": "sver",
+      "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/guybedford/sver.git"
+      },
+      "version": "2.0.1"
+    },
+    "packageMetadata": {
+      "author": "Guy Bedford",
+      "bugs": {
+        "url": "https://github.com/guybedford/sver/issues"
+      },
+      "description": "Simple Semver and SemverRange classes",
+      "devDependencies": {
+        "mocha": "^10.2.0",
+        "semver": "^6.3.0"
+      },
+      "homepage": "https://github.com/guybedford/sver#readme",
+      "keywords": [
+        "semver"
+      ],
+      "license": "MIT",
+      "main": "sver.js",
+      "name": "sver",
+      "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/guybedford/sver.git"
+      },
+      "scripts": {
+        "test": "mocha -u tdd -R dot"
+      },
+      "types": "index.d.ts",
+      "version": "2.0.1"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 9691,
+      "sha256": "9eb05cb0c9970074ba7e9147d55c4eff9d258f075de85f712e6e9352249f83a3"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

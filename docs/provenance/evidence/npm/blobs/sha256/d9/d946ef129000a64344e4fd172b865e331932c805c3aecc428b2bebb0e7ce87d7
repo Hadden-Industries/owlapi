@@ -1,0 +1,100 @@
+{
+  "artifactId": "23f0e9dbff8750356fbe9d4cea8cd0e054b340bbcfce9a502f2e37090a49cb23",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2227,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.travis.yml",
+        "sha256": "361533fab39fb2222969b63b8228fa70dbe2fb95467af9520ecc15aea3eeb0ea",
+        "size": 35,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "555e1f70ce6b9b7ce77ad07ba8b2b6b3a543b2c7cc8fe15a2c30ad1b89667e21",
+        "size": 550,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/walker.js",
+        "sha256": "02c310358da1109511cbbd1b4b69becbedb700599420117dacd9783ae3eb9e7e",
+        "size": 2901,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "f4834397defd26f1a6e7f549d6a9033f60af89cda4be087048ad332ac79a9532",
+        "size": 569,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "cce9b980eb88b65ff9326a1d5f7bb7fe58231ac0cad982a8d16397a74b84d929",
+        "size": 1744,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 550,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/55/555e1f70ce6b9b7ce77ad07ba8b2b6b3a543b2c7cc8fe15a2c30ad1b89667e21",
+          "sha256": "555e1f70ce6b9b7ce77ad07ba8b2b6b3a543b2c7cc8fe15a2c30ad1b89667e21"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "555e1f70ce6b9b7ce77ad07ba8b2b6b3a543b2c7cc8fe15a2c30ad1b89667e21",
+        "size": 550
+      }
+    ],
+    "expandedBytes": 5799,
+    "packageIdentity": {
+      "author": "Naitik Shah <n@daaku.org>",
+      "homepage": "https://github.com/daaku/nodejs-walker",
+      "license": "Apache-2.0",
+      "name": "walker",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/daaku/nodejs-walker"
+      },
+      "version": "1.0.8"
+    },
+    "packageMetadata": {
+      "author": "Naitik Shah <n@daaku.org>",
+      "dependencies": {
+        "makeerror": "1.0.12"
+      },
+      "description": "A simple directory tree walker.",
+      "devDependencies": {
+        "mocha": "9.1.3"
+      },
+      "homepage": "https://github.com/daaku/nodejs-walker",
+      "keywords": [
+        "utils",
+        "fs",
+        "filesystem"
+      ],
+      "license": "Apache-2.0",
+      "main": "lib/walker",
+      "name": "walker",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/daaku/nodejs-walker"
+      },
+      "scripts": {
+        "test": "NODE_PATH=./lib mocha --ui exports"
+      },
+      "version": "1.0.8"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2227,
+      "sha256": "51866c2bcb7ab53e1bc63b558e6635789920ff77b3a1a26974124024b1cbd56a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

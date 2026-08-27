@@ -1,0 +1,171 @@
+{
+  "artifactId": "e03ffacc2d3ec16e13d60b34e16a0d6dce3bc745752e0b2d28eb6ff7e7fd8ba8",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3400,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.travis.yml",
+        "sha256": "5a5a9eaf02c033e6a116e63f7ed8f00a9b06fe5f16b828a5066d460e50061b44",
+        "size": 52,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "f2042f3634c4136d06b5139c9c6aefb81a3a462b514548bc1845953233dfba98",
+        "size": 1237,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.markdown",
+        "sha256": "63d3f40cf0adf0bd9d1ab4460c822f48c8e71c4cfe903e7a00dee20f20c31b15",
+        "size": 1443,
+        "type": "FILE"
+      },
+      {
+        "path": "package/example/cmp.js",
+        "sha256": "8af8be4e5b71ccccb1b35162030fa43fcc4c7c89e74d9a353b3d4a30086a930a",
+        "size": 207,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "07518b0fdc381fa83e14506eafe54921c98c9035823a8a373904ba9adcdc6f50",
+        "size": 3104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "5caed41b62144a29c30415d2d92293c8122b4adeb281bffd097cbfca0f70645d",
+        "size": 953,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/NaN.js",
+        "sha256": "09c77aea01c1bd2b7286da8d406b56551b7e554e9233f895c98e81ccf3788eb9",
+        "size": 329,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/cmp.js",
+        "sha256": "d1942b16f15601548b0d0e661aff445c03d44309dc9f61ce408b5e54863a75ba",
+        "size": 446,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/neg-vs-pos-0.js",
+        "sha256": "d7b564c960f0eac461eea5f7a50946337afec4d242d11dd40d777e30f31c15dd",
+        "size": 343,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1237,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/f2/f2042f3634c4136d06b5139c9c6aefb81a3a462b514548bc1845953233dfba98",
+          "sha256": "f2042f3634c4136d06b5139c9c6aefb81a3a462b514548bc1845953233dfba98"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "f2042f3634c4136d06b5139c9c6aefb81a3a462b514548bc1845953233dfba98",
+        "size": 1237
+      },
+      {
+        "blob": {
+          "bytes": 1443,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/63/63d3f40cf0adf0bd9d1ab4460c822f48c8e71c4cfe903e7a00dee20f20c31b15",
+          "sha256": "63d3f40cf0adf0bd9d1ab4460c822f48c8e71c4cfe903e7a00dee20f20c31b15"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.markdown",
+        "sha256": "63d3f40cf0adf0bd9d1ab4460c822f48c8e71c4cfe903e7a00dee20f20c31b15",
+        "size": 1443
+      }
+    ],
+    "expandedBytes": 8114,
+    "packageIdentity": {
+      "author": {
+        "email": "thlorenz@gmx.de",
+        "name": "Thorsten Lorenz",
+        "url": "http://thlorenz.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "deep-is",
+      "repository": {
+        "type": "git",
+        "url": "http://github.com/thlorenz/deep-is.git"
+      },
+      "version": "0.1.4"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "thlorenz@gmx.de",
+        "name": "Thorsten Lorenz",
+        "url": "http://thlorenz.com"
+      },
+      "description": "node's assert.deepEqual algorithm except for NaN being equal to NaN",
+      "devDependencies": {
+        "tape": "~1.0.2"
+      },
+      "directories": {
+        "example": "example",
+        "lib": ".",
+        "test": "test"
+      },
+      "keywords": [
+        "equality",
+        "equal",
+        "compare"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "deep-is",
+      "repository": {
+        "type": "git",
+        "url": "http://github.com/thlorenz/deep-is.git"
+      },
+      "scripts": {
+        "test": "tape test/*.js"
+      },
+      "testling": {
+        "browsers": {
+          "chrome": [
+            10,
+            22
+          ],
+          "ff": [
+            3.5,
+            10,
+            15
+          ],
+          "ie": [
+            6,
+            7,
+            8,
+            9
+          ],
+          "opera": [
+            12
+          ],
+          "safari": [
+            5.1
+          ]
+        },
+        "files": "test/*.js"
+      },
+      "version": "0.1.4"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 3400,
+      "sha256": "0c03aa83c6bf68e7c2cc2c5b5a2d732c1879e7711b08011b0bc48df10d10bf3c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,166 @@
+{
+  "artifactId": "7f6f4f7ae3607acaba9588dddb64f9e2d787110f1facb1a36d9af31215e7ba68",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 10551,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "925ac099cc8f1a5fd4a442212048f4e26bc3ad740eb7b490b3a2044c6abf9fe8",
+        "size": 5979,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "e09f9b52c6ce5c17ba8103cd0cbf446c33b5448b0c1d01d711b36a1f15a501ba",
+        "size": 1488,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a6e0aa889c5218b71b13839de892c83ae3b32ac58c2728a798d4852a5cf412be",
+        "size": 1270,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "91be712158815e06d5fac5df62b714d54a0fbe2f13471750e606df7ffec9ad04",
+        "size": 986,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/context.js",
+        "sha256": "351d5e777dd06a47d0fa8b3a1adf7e1f845e72ee4701812f8aa805457298fd48",
+        "size": 4021,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/file-writer.js",
+        "sha256": "f5f8372a8eee1c23e2c34f4d496432c4421fdff9db1c7d578d00269de388ecb7",
+        "size": 4943,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/path.js",
+        "sha256": "1b7de1548967f95c2fa05fe5da34b399e1d7643314932448f8ee1ee78b978924",
+        "size": 3709,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/report-base.js",
+        "sha256": "c4bd92c7ed823a13d02518181b739af3752d54f253e8b97bfaee6815469dfc8e",
+        "size": 362,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/summarizer-factory.js",
+        "sha256": "134a3f0c2c6c52793e8583838b296d2070ea4a9b1339fc1e3fe6ee542b00ab5b",
+        "size": 7356,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/tree.js",
+        "sha256": "13df69465e237fb2d1b9b70f2b89f5bad1a8adb4cd39aa186195bfc8276e9c97",
+        "size": 3809,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/watermarks.js",
+        "sha256": "a2ae96e7c8ca5ffacd76d47771f893a8795f0a2e3b83597f9f1730e98be1192b",
+        "size": 349,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/xml-writer.js",
+        "sha256": "607789ad2c221902b95baba5034fe9ec26dd6aa3e1ea80dd7f8282af8f29d1f1",
+        "size": 2415,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "2c9e77d8fe3b5ef7c763f77d6eb7f85f327f68a46f8460b2b5a4f95bed87ed65",
+        "size": 954,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1488,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e0/e09f9b52c6ce5c17ba8103cd0cbf446c33b5448b0c1d01d711b36a1f15a501ba",
+          "sha256": "e09f9b52c6ce5c17ba8103cd0cbf446c33b5448b0c1d01d711b36a1f15a501ba"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "e09f9b52c6ce5c17ba8103cd0cbf446c33b5448b0c1d01d711b36a1f15a501ba",
+        "size": 1488
+      }
+    ],
+    "expandedBytes": 37641,
+    "packageIdentity": {
+      "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
+      "homepage": "https://istanbul.js.org/",
+      "license": "BSD-3-Clause",
+      "name": "istanbul-lib-report",
+      "repository": {
+        "directory": "packages/istanbul-lib-report",
+        "type": "git",
+        "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
+      },
+      "version": "3.0.1"
+    },
+    "packageMetadata": {
+      "author": "Krishnan Anantheswaran <kananthmail-github@yahoo.com>",
+      "bugs": {
+        "url": "https://github.com/istanbuljs/istanbuljs/issues"
+      },
+      "dependencies": {
+        "istanbul-lib-coverage": "^3.0.0",
+        "make-dir": "^4.0.0",
+        "supports-color": "^7.1.0"
+      },
+      "description": "Base reporting library for istanbul",
+      "devDependencies": {
+        "chai": "^4.2.0",
+        "mocha": "^6.2.2",
+        "nyc": "^15.0.0-beta.2",
+        "rimraf": "^3.0.0"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "files": [
+        "lib",
+        "index.js"
+      ],
+      "homepage": "https://istanbul.js.org/",
+      "keywords": [
+        "istanbul",
+        "report",
+        "api",
+        "lib"
+      ],
+      "license": "BSD-3-Clause",
+      "main": "index.js",
+      "name": "istanbul-lib-report",
+      "repository": {
+        "directory": "packages/istanbul-lib-report",
+        "type": "git",
+        "url": "git+ssh://git@github.com/istanbuljs/istanbuljs.git"
+      },
+      "scripts": {
+        "test": "nyc mocha"
+      },
+      "version": "3.0.1"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 10551,
+      "sha256": "5e76c0ef8344193fddd98a3c0da90f06d4a54b36110466a8b8538f538d470d3d"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

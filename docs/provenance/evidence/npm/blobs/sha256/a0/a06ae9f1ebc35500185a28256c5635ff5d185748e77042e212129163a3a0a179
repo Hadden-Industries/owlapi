@@ -1,0 +1,108 @@
+{
+  "artifactId": "f70a70eeee5fd230e9d84f9ae93679193d0c3af51ac5e40f78e53a4e982d04f4",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1816,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.js",
+        "sha256": "cb059342a762b955997bf780f3693add176922727f2fa9f11fcaf1b3fc323239",
+        "size": 866,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "6ee0feb1f6ef996ff5a68600f8cf98909cf412d39ef3cdceaefd87d636fa1b7f",
+        "size": 1128,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "c0002f7d4c7d7e2a885cf0f97226344902417c3a0980f2beca41962d2bc1f6d8",
+        "size": 511,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "969286b710026d911ed5e09e5bdca2dbf1c921662defa2ad3a1b3760a0bdb213",
+        "size": 917,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1128,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6e/6ee0feb1f6ef996ff5a68600f8cf98909cf412d39ef3cdceaefd87d636fa1b7f",
+          "sha256": "6ee0feb1f6ef996ff5a68600f8cf98909cf412d39ef3cdceaefd87d636fa1b7f"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "6ee0feb1f6ef996ff5a68600f8cf98909cf412d39ef3cdceaefd87d636fa1b7f",
+        "size": 1128
+      },
+      {
+        "blob": {
+          "bytes": 917,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/96/969286b710026d911ed5e09e5bdca2dbf1c921662defa2ad3a1b3760a0bdb213",
+          "sha256": "969286b710026d911ed5e09e5bdca2dbf1c921662defa2ad3a1b3760a0bdb213"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "969286b710026d911ed5e09e5bdca2dbf1c921662defa2ad3a1b3760a0bdb213",
+        "size": 917
+      }
+    ],
+    "expandedBytes": 3422,
+    "packageIdentity": {
+      "author": {
+        "email": "floatdrop@gmail.com",
+        "name": "Vsevolod Strukchinsky",
+        "url": "github.com/floatdrop"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "require-from-string",
+      "repository": "floatdrop/require-from-string",
+      "version": "2.0.2"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "floatdrop@gmail.com",
+        "name": "Vsevolod Strukchinsky",
+        "url": "github.com/floatdrop"
+      },
+      "dependencies": {},
+      "description": "Require module from string",
+      "devDependencies": {
+        "mocha": "*"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      },
+      "files": [
+        "index.js"
+      ],
+      "keywords": [
+        ""
+      ],
+      "license": "MIT",
+      "name": "require-from-string",
+      "repository": "floatdrop/require-from-string",
+      "scripts": {
+        "test": "mocha"
+      },
+      "version": "2.0.2"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1816,
+      "sha256": "cb694a4965908f7775a0c757f00cf4e624d193cd71d77988fbcca0f597b88d82"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

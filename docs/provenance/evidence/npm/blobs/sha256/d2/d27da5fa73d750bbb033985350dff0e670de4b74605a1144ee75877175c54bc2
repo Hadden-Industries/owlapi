@@ -1,0 +1,182 @@
+{
+  "artifactId": "298511f717b16eb68327c5e5690b6bb48aad54eb5a0419e73149709b0f647a39",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 73417,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "fcf6eabf68ca96988a6b506b4fdc6cc32535d80eb2e11c79724af5ac6f50262b",
+        "size": 1071,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "711a373313841ec60eee6bebdf1a5a07a0e290cb25e3fdbbd16fb8165861283e",
+        "size": 5663,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "aca61784f6440624deb451957e49633daa8e8d6009625f8f30b9b56e67bda265",
+        "size": 37807,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "8f9526195a26cb0d47a48528e61f0083596d397092296a44fc1c1ac470aba336",
+        "size": 109704,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js.map",
+        "sha256": "12faf4cad465f87c4df7b9648e6b7430ad52751997222b49b9949d37b46a33e1",
+        "size": 103754,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.mjs",
+        "sha256": "48785b8d5347601f1be180d0ff0ea1d87b51cb7886790c3caae8795f4339a1f3",
+        "size": 109467,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.mjs.map",
+        "sha256": "27596035d52e1777443855a42656917913823655a2a7b38aa46b47d9b28b6b30",
+        "size": 103745,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "63a3c5c082235b46ac213fe91d4b8869d16b0e90d8047f5fe50aefa2dd11d292",
+        "size": 2783,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1071,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/fc/fcf6eabf68ca96988a6b506b4fdc6cc32535d80eb2e11c79724af5ac6f50262b",
+          "sha256": "fcf6eabf68ca96988a6b506b4fdc6cc32535d80eb2e11c79724af5ac6f50262b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "fcf6eabf68ca96988a6b506b4fdc6cc32535d80eb2e11c79724af5ac6f50262b",
+        "size": 1071
+      }
+    ],
+    "expandedBytes": 473994,
+    "packageIdentity": {
+      "author": "Toru Nagashima",
+      "homepage": "https://github.com/eslint-community/regexpp#readme",
+      "license": "MIT",
+      "name": "@eslint-community/regexpp",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/eslint-community/regexpp"
+      },
+      "version": "4.12.2"
+    },
+    "packageMetadata": {
+      "author": "Toru Nagashima",
+      "bugs": {
+        "url": "https://github.com/eslint-community/regexpp/issues"
+      },
+      "dependencies": {},
+      "description": "Regular expression parser for ECMAScript.",
+      "devDependencies": {
+        "@eslint-community/eslint-plugin-mysticatea": "^15.5.1",
+        "@rollup/plugin-node-resolve": "^14.1.0",
+        "@types/eslint": "^8.44.3",
+        "@types/jsdom": "^16.2.15",
+        "@types/mocha": "^9.1.1",
+        "@types/node": "^12.20.55",
+        "dts-bundle": "^0.7.3",
+        "eslint": "^8.50.0",
+        "js-tokens": "^8.0.2",
+        "jsdom": "^19.0.0",
+        "mocha": "^9.2.2",
+        "npm-run-all2": "^6.2.2",
+        "nyc": "^14.1.1",
+        "rimraf": "^3.0.2",
+        "rollup": "^2.79.1",
+        "rollup-plugin-sourcemaps": "^0.6.3",
+        "ts-node": "^10.9.1",
+        "typescript": "~5.0.2"
+      },
+      "engines": {
+        "node": "^12.0.0 || ^14.0.0 || >=16.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./index.js",
+          "import": "./index.mjs",
+          "types": "./index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "index.*"
+      ],
+      "homepage": "https://github.com/eslint-community/regexpp#readme",
+      "keywords": [
+        "regexp",
+        "regular",
+        "expression",
+        "parser",
+        "validator",
+        "ast",
+        "abstract",
+        "syntax",
+        "tree",
+        "ecmascript",
+        "es2015",
+        "es2016",
+        "es2017",
+        "es2018",
+        "es2019",
+        "es2020",
+        "es2021",
+        "annexB"
+      ],
+      "license": "MIT",
+      "main": "index",
+      "name": "@eslint-community/regexpp",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/eslint-community/regexpp"
+      },
+      "scripts": {
+        "build": "run-s build:*",
+        "build:dts": "npm run -s build:tsc -- --removeComments false && dts-bundle --name @eslint-community/regexpp --main .temp/index.d.ts --out ../index.d.ts && prettier --write index.d.ts",
+        "build:rollup": "rollup -c",
+        "build:tsc": "tsc --module es2015",
+        "clean": "rimraf .temp index.*",
+        "debug": "mocha --require ts-node/register/transpile-only \"test/*.ts\" --reporter dot --timeout 10000",
+        "lint": "eslint . --ext .ts",
+        "postversion": "git push && git push --tags",
+        "prebuild": "npm run -s clean",
+        "preversion": "npm test && npm run -s build",
+        "prewatch": "npm run -s clean",
+        "test": "nyc _mocha \"test/*.ts\" --reporter dot --timeout 10000",
+        "update:test": "ts-node scripts/update-fixtures.ts",
+        "update:test262:extract": "ts-node -T scripts/extract-test262.ts",
+        "update:unicode": "run-s update:unicode:*",
+        "update:unicode:ids": "ts-node scripts/update-unicode-ids.ts",
+        "update:unicode:props": "ts-node scripts/update-unicode-properties.ts",
+        "watch": "_mocha \"test/*.ts\" --require ts-node/register --reporter dot --timeout 10000 --watch-extensions ts --watch --growl"
+      },
+      "version": "4.12.2"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 73417,
+      "sha256": "b5cb22e604ad47f511e96b7aa57910995994f3e48744fbc507018da9efae0f12"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

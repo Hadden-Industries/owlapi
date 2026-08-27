@@ -1,0 +1,207 @@
+{
+  "artifactId": "53a9472a773d98245a003b16b647056b4629fa9c396b6adee44caaa0d1d245d7",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 16391,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "a806e21000ee60cfd64a6f1416f29c7552b4834701974e86c0156f99c0cdd806",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "636ebf11ef90495737099c86fbfc0c3680b6b6a1dc36d5b4c12514d1e5f63436",
+        "size": 14465,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/cache/entry.js",
+        "sha256": "c448d1d1601ad2ec99c2963fc4dd093a57d884ff4ea089bb08a05496d01015c7",
+        "size": 16421,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/cache/errors.js",
+        "sha256": "5e8a91f9e801e9eb81e00c52451c7fe4e354674cdd671713299f392ddc8ff324",
+        "size": 284,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/cache/index.js",
+        "sha256": "b9a47e604b9d6ec9211e5129636ba7366c408c074ea1d4b8c859cf221c347071",
+        "size": 1792,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/cache/key.js",
+        "sha256": "ae7da8b3fbc282391fc70df8a625de765062f955fc85587e575479cbe9c33adb",
+        "size": 430,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/cache/policy.js",
+        "sha256": "2014cf549fceb8808cba81e8760315b9060f502b6c62b7cb79e1b024abde54c3",
+        "size": 4527,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/fetch.js",
+        "sha256": "7d57bfd656a6ae2a53738fb3f25365d074d9cb7364794005bc70317ff2bf81e8",
+        "size": 3947,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "c6fa07e324498f7bbd05e98892790186556bf55c6265d0c07f45900a6941a57c",
+        "size": 1173,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/options.js",
+        "sha256": "b067a3566cf03d9a4cc77478efb88c2b3d8cc4081a311b2ae9ea67a500bf3c0e",
+        "size": 1688,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/pipeline.js",
+        "sha256": "082bb7c9c7f020c816c2582fe436c992b9851e0727339723337b580d6f6c1707",
+        "size": 1114,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/remote.js",
+        "sha256": "c951fc8a2d17f469c9c6a01bbf7747cf3095fd4958d29d284b6325eb571708bb",
+        "size": 4785,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "279b653b3c792aefb9cef4f0822747a5d81c1fd135bc92bc1251112ddc695b84",
+        "size": 1763,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a8/a806e21000ee60cfd64a6f1416f29c7552b4834701974e86c0156f99c0cdd806",
+          "sha256": "a806e21000ee60cfd64a6f1416f29c7552b4834701974e86c0156f99c0cdd806"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "a806e21000ee60cfd64a6f1416f29c7552b4834701974e86c0156f99c0cdd806",
+        "size": 765
+      },
+      {
+        "blob": {
+          "bytes": 14465,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/63/636ebf11ef90495737099c86fbfc0c3680b6b6a1dc36d5b4c12514d1e5f63436",
+          "sha256": "636ebf11ef90495737099c86fbfc0c3680b6b6a1dc36d5b4c12514d1e5f63436"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "636ebf11ef90495737099c86fbfc0c3680b6b6a1dc36d5b4c12514d1e5f63436",
+        "size": 14465
+      }
+    ],
+    "expandedBytes": 53154,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "make-fetch-happen",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/make-fetch-happen.git"
+      },
+      "version": "14.0.3"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "dependencies": {
+        "@npmcli/agent": "^3.0.0",
+        "cacache": "^19.0.1",
+        "http-cache-semantics": "^4.1.1",
+        "minipass": "^7.0.2",
+        "minipass-fetch": "^4.0.0",
+        "minipass-flush": "^1.0.5",
+        "minipass-pipeline": "^1.2.4",
+        "negotiator": "^1.0.0",
+        "proc-log": "^5.0.0",
+        "promise-retry": "^2.0.1",
+        "ssri": "^12.0.0"
+      },
+      "description": "Opinionated, caching, retrying fetch client",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^5.0.0",
+        "@npmcli/template-oss": "4.23.4",
+        "nock": "^13.2.4",
+        "safe-buffer": "^5.2.1",
+        "standard-version": "^9.3.2",
+        "tap": "^16.0.0"
+      },
+      "engines": {
+        "node": "^18.17.0 || >=20.5.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "keywords": [
+        "http",
+        "request",
+        "fetch",
+        "mean girls",
+        "caching",
+        "cache",
+        "subresource integrity"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "make-fetch-happen",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/make-fetch-happen.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "check-coverage": true,
+        "color": 1,
+        "files": "test/*.js",
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ],
+        "timeout": 60
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": "true",
+        "version": "4.23.4"
+      },
+      "version": "14.0.3"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 16391,
+      "sha256": "531bffa3b442fcf4385d682459667609270b4d7b3b0ebcc19b0d3f18b280842b"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

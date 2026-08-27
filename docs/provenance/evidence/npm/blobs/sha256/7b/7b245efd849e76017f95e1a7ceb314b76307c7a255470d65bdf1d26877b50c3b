@@ -1,0 +1,270 @@
+{
+  "artifactId": "a9dc14a0361615f455695b166fb25b928471fa627a87e595f3ef7bcd6d39d2e6",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 136147,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CMakeLists.txt",
+        "sha256": "38319382b46920dff0eb60ce667ce4e31f06810575042872b6066627a7dd6a54",
+        "size": 209,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/NOTICE",
+        "sha256": "fd4098360de4b9fb2e003ac7c852e8c86f264a1d6e27c47128e8c8075c81249b",
+        "size": 1174,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "44b8395bb567fb3c33f6345db58314026a9719cadb207e2ee1e7e60f895d9edd",
+        "size": 224,
+        "type": "FILE"
+      },
+      {
+        "path": "package/binding.c",
+        "sha256": "f0781f48e1b25cd2fe1472ec028df7e68c7c4718bcbdc57c5ba449fedacb3b04",
+        "size": 2320,
+        "type": "FILE"
+      },
+      {
+        "path": "package/binding.js",
+        "sha256": "884e9b3f3c0a760a12a43a0925e9db2596524614b0065f7e7152ceca63b49953",
+        "size": 33,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "490c80177f4ad61c2fedbffe0d058f6ea48b6911ea56c765a61be949c5a33937",
+        "size": 661,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "bec10c50dc9e7bba7f54ee5dd3e5e040c82e5c1d4ec6a1e80812f941d397011c",
+        "size": 287,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/constants.js",
+        "sha256": "aa5992b91f09fcba238d2be10c8000598a55c9369ec92e7504e970ba913ba6f6",
+        "size": 247,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/posix.js",
+        "sha256": "842cff50edf782293013477e53051d35e40e0492d5b1b2e97dc8e230375d6aed",
+        "size": 6399,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/shared.js",
+        "sha256": "a8601612f5fc474ee3062856af7ad73a3bc36b6f52541443a61bfcc8e29351d2",
+        "size": 2148,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/win32.js",
+        "sha256": "dd5ca2835c0d021eaa07eeafea9105a2de31bdaabe669a530b2f421bc958468c",
+        "size": 13987,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "28e90022832f4853d2758f5c89043849af2d199981dd45f6b4a8b86567617fb2",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/android-arm/bare-path.bare",
+        "sha256": "9a33de9d177d5b3e0cf2ab76dd35ea3fa6850592d2a8c30385b931b44d12feb5",
+        "size": 6236,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/android-arm64/bare-path.bare",
+        "sha256": "2eb41967d1a26703b29acf01ba0306440a1ce09c64a5c12358286c44c5ad2bc3",
+        "size": 7696,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/android-ia32/bare-path.bare",
+        "sha256": "10c6c6952b954dec23262bb676ca0a9da0dd42e6b3f0a5afbe519c0b6a6fb947",
+        "size": 5700,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/android-x64/bare-path.bare",
+        "sha256": "28bfc78dd91bfecca2ccb7d2915c17011955c8026acbd777ab2e794078d0260b",
+        "size": 7240,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/darwin-arm64/bare-path.bare",
+        "sha256": "95eac77befe2966d0b301a13759a92f9bb8545c8dd2cefb716c98d8c666a427a",
+        "size": 50848,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/darwin-x64/bare-path.bare",
+        "sha256": "f1a51bd28fc1b2cf2b5b81afae3a988e10f0a1caf56e1ba8ade9ccab0e904f3d",
+        "size": 17536,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/ios-arm64-simulator/bare-path.bare",
+        "sha256": "4e95858c2a308d755f53e6fac4d39ec11406c1bda163033f076b308444714aca",
+        "size": 50784,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/ios-arm64/bare-path.bare",
+        "sha256": "31d25c527a1aa0215d514ccca982ff404b17634b25775bda528d63a7eaa65c1f",
+        "size": 66680,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/ios-x64-simulator/bare-path.bare",
+        "sha256": "94c47d45f2c385a6c5b1548674308b0696a7f290ac1b446b9418093237c4e7d0",
+        "size": 17472,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/linux-arm64/bare-path.bare",
+        "sha256": "289db200a61b3abea97d2a9e45a4961d40fc9fd220175ca2ec1468e19144dc10",
+        "size": 8008,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/linux-x64/bare-path.bare",
+        "sha256": "5bf04da01e3dff8b2126e3f84efd784f51e5570dae409dd41e3c3019c3008212",
+        "size": 7264,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/win32-arm64/bare-path.bare",
+        "sha256": "59cdf72c2b40683ce760f191c224873d18fa0f895e9b0168af67e8e1bb374887",
+        "size": 108544,
+        "type": "FILE"
+      },
+      {
+        "path": "package/prebuilds/win32-x64/bare-path.bare",
+        "sha256": "4941e83933334fc09e6ef546522181a72975184de926c29412bb0982bc7dac0a",
+        "size": 112640,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11357,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357
+      },
+      {
+        "blob": {
+          "bytes": 1174,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/fd/fd4098360de4b9fb2e003ac7c852e8c86f264a1d6e27c47128e8c8075c81249b",
+          "sha256": "fd4098360de4b9fb2e003ac7c852e8c86f264a1d6e27c47128e8c8075c81249b"
+        },
+        "kind": "NOTICE",
+        "path": "package/NOTICE",
+        "sha256": "fd4098360de4b9fb2e003ac7c852e8c86f264a1d6e27c47128e8c8075c81249b",
+        "size": 1174
+      },
+      {
+        "blob": {
+          "bytes": 224,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/44/44b8395bb567fb3c33f6345db58314026a9719cadb207e2ee1e7e60f895d9edd",
+          "sha256": "44b8395bb567fb3c33f6345db58314026a9719cadb207e2ee1e7e60f895d9edd"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "44b8395bb567fb3c33f6345db58314026a9719cadb207e2ee1e7e60f895d9edd",
+        "size": 224
+      }
+    ],
+    "expandedBytes": 506800,
+    "packageIdentity": {
+      "author": "Holepunch",
+      "homepage": "https://github.com/holepunchto/bare-path#readme",
+      "license": "Apache-2.0",
+      "name": "bare-path",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/holepunchto/bare-path.git"
+      },
+      "version": "3.1.1"
+    },
+    "packageMetadata": {
+      "addon": true,
+      "author": "Holepunch",
+      "bugs": {
+        "url": "https://github.com/holepunchto/bare-path/issues"
+      },
+      "description": "Path manipulation library for JavaScript",
+      "devDependencies": {
+        "brittle": "^3.3.2",
+        "cmake-bare": "^1.1.6",
+        "lunte": "^1.8.0",
+        "prettier": "^3.6.2",
+        "prettier-config-holepunch": "^2.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./index.js",
+          "types": "./index.d.ts"
+        },
+        "./package": "./package.json",
+        "./posix": "./lib/posix.js",
+        "./win32": "./lib/win32.js"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts",
+        "binding.c",
+        "binding.js",
+        "CMakeLists.txt",
+        "lib",
+        "prebuilds",
+        "NOTICE"
+      ],
+      "homepage": "https://github.com/holepunchto/bare-path#readme",
+      "license": "Apache-2.0",
+      "name": "bare-path",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/holepunchto/bare-path.git"
+      },
+      "scripts": {
+        "format": "prettier --write . && lunte --fix",
+        "lint": "prettier --check . && lunte",
+        "test": "brittle-bare --coverage test.js"
+      },
+      "version": "3.1.1"
+    },
+    "physicalEntryCount": 26,
+    "tarball": {
+      "bytes": 136147,
+      "sha256": "09854a47dc24863c9e23822fe82dc5df942c09613e6da039a1b61551da688bae"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

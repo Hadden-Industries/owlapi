@@ -1,0 +1,87 @@
+{
+  "artifactId": "ce66338492dcb695ec028f9b244c9680a15d33284ede2c7e3b606f0859fb63c1",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1460,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "2003244fa2549b7322dc76f057c144144105f67de8e8ce352d1a06aa46b83755",
+        "size": 416,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "8ac594702bd25069d432a8750edabe23c68eed129e4cef6a6600e7dc26944900",
+        "size": 437,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "a3b9d86e558ee2e82d84fd462211b6276b38b833118400100c6e7f548d848894",
+        "size": 565,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 2524,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-async-generators",
+      "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-async-generators",
+      "version": "7.8.4"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.8.0"
+      },
+      "description": "Allow parsing of async generator functions",
+      "devDependencies": {
+        "@babel/core": "^7.8.0"
+      },
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "@babel/plugin-syntax-async-generators",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-async-generators",
+      "version": "7.8.4"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1460,
+      "sha256": "341910e96d259bf18961c23710fdcfc3cea736c95e0b807d90bda6c2a2196e9c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,136 @@
+{
+  "artifactId": "27a1d2fc3e6b425487ba41905ed09c8daab87cb1e41d9caf2cab42140de7f261",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4669,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "657992da76c3bb5294b826969bd1609141f9b26ad141e61d83b43103b548d2f5",
+        "size": 197,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bare.js",
+        "sha256": "6f19461e81217d6982047180c81e2b3c3dbd2953879357fad0d502b614e6c8d6",
+        "size": 40,
+        "type": "FILE"
+      },
+      {
+        "path": "package/default.js",
+        "sha256": "3a8a88d5ea97d50729d66de5128cdd1864cbc555122406034afa59d53e52479b",
+        "size": 35,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "6f19461e81217d6982047180c81e2b3c3dbd2953879357fad0d502b614e6c8d6",
+        "size": 40,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8f495538444b4876e5d075b0b7c4156832bf55042ec620dd12bfdc402b7ba11c",
+        "size": 908,
+        "type": "FILE"
+      },
+      {
+        "path": "package/react-native.js",
+        "sha256": "6f19461e81217d6982047180c81e2b3c3dbd2953879357fad0d502b614e6c8d6",
+        "size": 40,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11357,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357
+      },
+      {
+        "blob": {
+          "bytes": 197,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/65/657992da76c3bb5294b826969bd1609141f9b26ad141e61d83b43103b548d2f5",
+          "sha256": "657992da76c3bb5294b826969bd1609141f9b26ad141e61d83b43103b548d2f5"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "657992da76c3bb5294b826969bd1609141f9b26ad141e61d83b43103b548d2f5",
+        "size": 197
+      }
+    ],
+    "expandedBytes": 12617,
+    "packageIdentity": {
+      "author": "Holepunch",
+      "homepage": "https://github.com/holepunchto/events-universal#readme",
+      "license": "Apache-2.0",
+      "name": "events-universal",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/holepunchto/events-universal.git"
+      },
+      "version": "1.0.1"
+    },
+    "packageMetadata": {
+      "author": "Holepunch",
+      "bugs": {
+        "url": "https://github.com/holepunchto/events-universal/issues"
+      },
+      "dependencies": {
+        "bare-events": "^2.7.0"
+      },
+      "description": "Universal wrapper for the Node.js events module",
+      "devDependencies": {
+        "prettier": "^3.4.2",
+        "prettier-config-holepunch": "^1.0.0"
+      },
+      "exports": {
+        ".": {
+          "bare": "./bare.js",
+          "default": "./default.js",
+          "react-native": "./react-native.js"
+        },
+        "./package": "./package.json"
+      },
+      "files": [
+        "index.js",
+        "default.js",
+        "bare.js",
+        "react-native.js"
+      ],
+      "homepage": "https://github.com/holepunchto/events-universal#readme",
+      "license": "Apache-2.0",
+      "name": "events-universal",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/holepunchto/events-universal.git"
+      },
+      "scripts": {
+        "test": "prettier . --check"
+      },
+      "version": "1.0.1"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 4669,
+      "sha256": "88f0401d15b30be897e2504bbf2df4cc401eb9970a3373877ecb680d68bdd2ea"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

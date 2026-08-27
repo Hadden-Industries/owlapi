@@ -1,0 +1,104 @@
+{
+  "artifactId": "7dd9fd1b114772c03269c49f90cc8c947f1f53c4872d408ad8c26a1264a741f9",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1381,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "2281f2db407bdbb54f069eec38128b2dee2c0c952f52b786ef1faecb81767b3c",
+        "size": 1079,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "389703f7ccc014447721fcbfdbd041a9dd70e6efc734b009a13b9778c232d5c7",
+        "size": 528,
+        "type": "FILE"
+      },
+      {
+        "path": "package/browser.js",
+        "sha256": "b575b19b26a6c95048bbb9372440d1a37178a2d4e9ea98115f27121fa804d7ce",
+        "size": 38,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "0018c44a4f4577ed7e94b66d768eab3a822bc96fda9131cfb7e4dea99eb1b9b0",
+        "size": 65,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9cefec768b4f8c52591b840367d077a46a5a2b72ea2778dcf037afd96b234671",
+        "size": 513,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1079,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/22/2281f2db407bdbb54f069eec38128b2dee2c0c952f52b786ef1faecb81767b3c",
+          "sha256": "2281f2db407bdbb54f069eec38128b2dee2c0c952f52b786ef1faecb81767b3c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2281f2db407bdbb54f069eec38128b2dee2c0c952f52b786ef1faecb81767b3c",
+        "size": 1079
+      },
+      {
+        "blob": {
+          "bytes": 528,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/38/389703f7ccc014447721fcbfdbd041a9dd70e6efc734b009a13b9778c232d5c7",
+          "sha256": "389703f7ccc014447721fcbfdbd041a9dd70e6efc734b009a13b9778c232d5c7"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "389703f7ccc014447721fcbfdbd041a9dd70e6efc734b009a13b9778c232d5c7",
+        "size": 528
+      }
+    ],
+    "expandedBytes": 2223,
+    "packageIdentity": {
+      "author": "Mathias Buus (@mafintosh)",
+      "homepage": "https://github.com/mafintosh/fs-constants",
+      "license": "MIT",
+      "name": "fs-constants",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mafintosh/fs-constants.git"
+      },
+      "version": "1.0.0"
+    },
+    "packageMetadata": {
+      "author": "Mathias Buus (@mafintosh)",
+      "browser": "browser.js",
+      "bugs": {
+        "url": "https://github.com/mafintosh/fs-constants/issues"
+      },
+      "dependencies": {},
+      "description": "Require constants across node and the browser",
+      "devDependencies": {},
+      "homepage": "https://github.com/mafintosh/fs-constants",
+      "license": "MIT",
+      "main": "index.js",
+      "name": "fs-constants",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/mafintosh/fs-constants.git"
+      },
+      "version": "1.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 1381,
+      "sha256": "e7936d7e1b24475bd59312c4005f30d42539627dfc1c4f5dfe2326d7b7c7c5fa"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

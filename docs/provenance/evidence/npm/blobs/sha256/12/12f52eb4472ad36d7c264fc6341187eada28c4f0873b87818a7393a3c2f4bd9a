@@ -1,0 +1,122 @@
+{
+  "artifactId": "23061a4a7f31ae60634cb25ce2f169e9fc90af5b3c94276315eeca12d00b2b13",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7442,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "e3a956681ee067f971ac413994171b3d90ca801ec6324e76c9c55366cfe31cb0",
+        "size": 1075,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "099a826a3857b43a116013330d5c0c514f24aa3d72eca88292b19d16a86516a9",
+        "size": 5350,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "09e82a13eb50d14b42acdfd1db8fbde8f17e99527aa1bd5a489094e9a48a855a",
+        "size": 9627,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js.flow",
+        "sha256": "3b6a6cc22e3f9f1bfb85f8f4949577d1410085220bb391d445b6e9ca0f51f66b",
+        "size": 846,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "80cddca71baa1ba0cf44f65585e1c1ed7576abdb759ed391007925c961ca6334",
+        "size": 906,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/.babelrc",
+        "sha256": "27064c2840500bf100d82ea6e584d8f065ddb360a7a574b555a0b6c882af2fa2",
+        "size": 68,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/index.test.js",
+        "sha256": "2787927b0f01763f77587babe1d85b68b1630c60a946ce54679d56aab3efdf10",
+        "size": 11019,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1075,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e3/e3a956681ee067f971ac413994171b3d90ca801ec6324e76c9c55366cfe31cb0",
+          "sha256": "e3a956681ee067f971ac413994171b3d90ca801ec6324e76c9c55366cfe31cb0"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "e3a956681ee067f971ac413994171b3d90ca801ec6324e76c9c55366cfe31cb0",
+        "size": 1075
+      }
+    ],
+    "expandedBytes": 28891,
+    "packageIdentity": {
+      "author": "Logan Smyth <loganfsmyth@gmail.com>",
+      "homepage": "https://github.com/loganfsmyth/gensync",
+      "license": "MIT",
+      "name": "gensync",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/loganfsmyth/gensync.git"
+      },
+      "version": "1.0.0-beta.2"
+    },
+    "packageMetadata": {
+      "author": "Logan Smyth <loganfsmyth@gmail.com>",
+      "description": "Allows users to use generators in order to write common functions that can be both sync or async.",
+      "devDependencies": {
+        "babel-core": "^6.26.3",
+        "babel-preset-env": "^1.6.1",
+        "eslint": "^4.19.1",
+        "eslint-config-prettier": "^2.9.0",
+        "eslint-plugin-node": "^6.0.1",
+        "eslint-plugin-prettier": "^2.6.0",
+        "flow-bin": "^0.71.0",
+        "jest": "^22.4.3",
+        "prettier": "^1.12.1"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "homepage": "https://github.com/loganfsmyth/gensync",
+      "keywords": [
+        "async",
+        "sync",
+        "generators",
+        "async-await",
+        "callbacks"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "gensync",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/loganfsmyth/gensync.git"
+      },
+      "scripts": {
+        "test": "jest"
+      },
+      "version": "1.0.0-beta.2"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 7442,
+      "sha256": "df9f92ef26a35d4f92cb8a73415dfea8dadaf294a03e60e4d176df82f38d17c9"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

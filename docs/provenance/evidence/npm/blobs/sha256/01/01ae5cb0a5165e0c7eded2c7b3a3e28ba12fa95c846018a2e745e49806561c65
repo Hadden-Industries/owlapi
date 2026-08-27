@@ -1,0 +1,107 @@
+{
+  "artifactId": "2f9b745a2a2b13176b0fc2016e1d4ae8a5dfc12939d20112a8a2f7c1f14f17bd",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2625,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "6582629e2979466878f6014313dcc2f3756c9616148682227ce3063dde310750",
+        "size": 787,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "5027b2836551ea0f91fa27b97335de905e24e1459d590eacfa45c0156962b70c",
+        "size": 622,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "ef2ac226c4811d312e12c64214c453878653e834482125ae475f27cea60de737",
+        "size": 552,
+        "type": "FILE"
+      },
+      {
+        "path": "package/picocolors.browser.js",
+        "sha256": "a2e045ba16013e35c7045797ae940e3ea1c0e0ada13467bc73f7538690ea091a",
+        "size": 598,
+        "type": "FILE"
+      },
+      {
+        "path": "package/picocolors.d.ts",
+        "sha256": "8c5f0739f00f89f89b03a1fe6658c6d78000d7ebd7f556f0f8d6908fa679de35",
+        "size": 138,
+        "type": "FILE"
+      },
+      {
+        "path": "package/picocolors.js",
+        "sha256": "213bb870fcaad4def0215fe34fbb0f529836cc4d2462e02f14f1a49d09781625",
+        "size": 2663,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types.d.ts",
+        "sha256": "590595c1230ebb7c43ebac51b2b2da956a719b213355b4358e2a6b16a8b5936c",
+        "size": 1013,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 787,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/65/6582629e2979466878f6014313dcc2f3756c9616148682227ce3063dde310750",
+          "sha256": "6582629e2979466878f6014313dcc2f3756c9616148682227ce3063dde310750"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "6582629e2979466878f6014313dcc2f3756c9616148682227ce3063dde310750",
+        "size": 787
+      }
+    ],
+    "expandedBytes": 6373,
+    "packageIdentity": {
+      "author": "Alexey Raspopov",
+      "homepage": null,
+      "license": "ISC",
+      "name": "picocolors",
+      "repository": "alexeyraspopov/picocolors",
+      "version": "1.1.1"
+    },
+    "packageMetadata": {
+      "author": "Alexey Raspopov",
+      "browser": {
+        "./picocolors.js": "./picocolors.browser.js"
+      },
+      "description": "The tiniest and the fastest library for terminal output formatting with ANSI colors",
+      "files": [
+        "picocolors.*",
+        "types.d.ts"
+      ],
+      "keywords": [
+        "terminal",
+        "colors",
+        "formatting",
+        "cli",
+        "console"
+      ],
+      "license": "ISC",
+      "main": "./picocolors.js",
+      "name": "picocolors",
+      "repository": "alexeyraspopov/picocolors",
+      "sideEffects": false,
+      "types": "./picocolors.d.ts",
+      "version": "1.1.1"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 2625,
+      "sha256": "d3aedb2807967b7eb37fd11b03b7e3701e725af79c650d0812ff7213f8f882d9"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

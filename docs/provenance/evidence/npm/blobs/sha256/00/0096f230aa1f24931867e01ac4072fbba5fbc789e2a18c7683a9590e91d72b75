@@ -1,0 +1,113 @@
+{
+  "artifactId": "3bf881ecfc215513b17b664aba065726081c85bde833764222b2c74145e53bc5",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4561,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "50627796eb4236cd05674e71d090e594447995225b7d94cd59e57c25fa3a0217",
+        "size": 1209,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "5140bf2eb5c60aa64dcafaad7a263d443ac5d6f502bb04330280aeeaf7064355",
+        "size": 3388,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "b6275e33aee68655ee69516b67955530a06f013b39a46464589d5d7df2aa20fe",
+        "size": 4204,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "2bbd08ac4290a63c55fe5ed28bade9aff1d7630ba86568adffd0a10712fde320",
+        "size": 1429,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1209,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/50/50627796eb4236cd05674e71d090e594447995225b7d94cd59e57c25fa3a0217",
+          "sha256": "50627796eb4236cd05674e71d090e594447995225b7d94cd59e57c25fa3a0217"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "50627796eb4236cd05674e71d090e594447995225b7d94cd59e57c25fa3a0217",
+        "size": 1209
+      }
+    ],
+    "expandedBytes": 10230,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "MIT",
+      "name": "json-parse-even-better-errors",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/json-parse-even-better-errors.git"
+      },
+      "version": "6.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "description": "JSON.parse with context information on error",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^6.0.0",
+        "@npmcli/template-oss": "5.0.0"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "keywords": [
+        "JSON",
+        "parser"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "json-parse-even-better-errors",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/json-parse-even-better-errors.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "node --test --test-update-snapshots './test/**/*.js'",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "node --test './test/**/*.js'",
+        "test:cover": "node --test --experimental-test-coverage --test-timeout=3000 --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 './test/**/*.js'",
+        "test:node20": "node --test test"
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "latestCiVersion": 24,
+        "publish": true,
+        "testRunner": "node:test",
+        "version": "5.0.0"
+      },
+      "version": "6.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 4561,
+      "sha256": "aadd1d564b77d017289401105431d72ff13112f0397e4ca113bff6d6da6369c4"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

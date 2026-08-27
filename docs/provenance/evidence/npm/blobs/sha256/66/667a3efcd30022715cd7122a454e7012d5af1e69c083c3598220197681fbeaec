@@ -1,0 +1,131 @@
+{
+  "artifactId": "17ed45795c1a4c19289f3f0406e72dd900d4e73ca850d0cdbe5048830ebb9aa5",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4818,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "cd7e23d61e0d81a13b5ac4cae07effba388dd57294c08d1eeab9be922472e5cb",
+        "size": 2064,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "10610ac2fdc62669c21893f3ff772f2dc8b5831b54d80040629a121aae70c0d6",
+        "size": 8795,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d7119f0f3ea970d6bf75ad0f391dca2a35ac3e14f28afa162ffe7a303d001f5d",
+        "size": 1625,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 13249,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "ignore-walk",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/ignore-walk.git"
+      },
+      "version": "9.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "dependencies": {
+        "minimatch": "^10.0.3"
+      },
+      "description": "Nested/recursive `.gitignore`/`.npmignore` parsing and filtering.",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^5.0.0",
+        "@npmcli/template-oss": "5.0.0",
+        "mutate-fs": "^2.1.1",
+        "tap": "^16.0.1"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "keywords": [
+        "ignorefile",
+        "ignore",
+        "file",
+        ".gitignore",
+        ".npmignore",
+        "glob"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "ignore-walk",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/ignore-walk.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap",
+        "test:windows-coverage": "npm pkg set tap.statements=99 --json && npm pkg set tap.branches=98 --json && npm pkg set tap.lines=99 --json"
+      },
+      "tap": {
+        "after": "test/zz-cleanup.js",
+        "before": "test/00-setup.js",
+        "jobs": 1,
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ],
+        "test-env": "LC_ALL=sk",
+        "timeout": 600
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "content": "scripts/template-oss",
+        "publish": "true",
+        "version": "5.0.0"
+      },
+      "version": "9.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 4818,
+      "sha256": "c249162bad67f9a601a073eac0302bc32eb1eca6e4f9ba2cdb0d74bbf729465a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

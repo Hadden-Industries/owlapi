@@ -1,0 +1,131 @@
+{
+  "artifactId": "0a46b980fb719f4e050c37c58623dd518e9b032d93847072059e145fed3ddd93",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8052,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.jshintrc",
+        "sha256": "48460ff8874f6b68482ec068c01f7246ae406b891749f92f3d06180b3c70fc35",
+        "size": 242,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE.BSD",
+        "sha256": "0e74697a68cebdcd61502c30fe80ab7f9e341d995dcd452023654d57133534b1",
+        "size": 1231,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "623a48ac487901c20b18ff241617efb3adf6a3b8c077073fccdddc770404c991",
+        "size": 4865,
+        "type": "FILE"
+      },
+      {
+        "path": "package/estraverse.js",
+        "sha256": "818578222a4686be24197cac7e9ea00a6b32a0312c86a2bb946ec4b7faeee93c",
+        "size": 26957,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gulpfile.js",
+        "sha256": "02601a92111d2c67d2f9bc725a66c80aceb7e24a9e266a2ab5e83c5b9e01b27a",
+        "size": 2790,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "133a5be160a0123ad20ab8f2bdaa9da2fd94ebf3403996bf4cb69606e6a84a65",
+        "size": 1009,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1231,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/0e/0e74697a68cebdcd61502c30fe80ab7f9e341d995dcd452023654d57133534b1",
+          "sha256": "0e74697a68cebdcd61502c30fe80ab7f9e341d995dcd452023654d57133534b1"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.BSD",
+        "sha256": "0e74697a68cebdcd61502c30fe80ab7f9e341d995dcd452023654d57133534b1",
+        "size": 1231
+      },
+      {
+        "blob": {
+          "bytes": 4865,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/62/623a48ac487901c20b18ff241617efb3adf6a3b8c077073fccdddc770404c991",
+          "sha256": "623a48ac487901c20b18ff241617efb3adf6a3b8c077073fccdddc770404c991"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "623a48ac487901c20b18ff241617efb3adf6a3b8c077073fccdddc770404c991",
+        "size": 4865
+      }
+    ],
+    "expandedBytes": 37094,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/estools/estraverse",
+      "license": "BSD-2-Clause",
+      "name": "estraverse",
+      "repository": {
+        "type": "git",
+        "url": "http://github.com/estools/estraverse.git"
+      },
+      "version": "5.3.0"
+    },
+    "packageMetadata": {
+      "description": "ECMAScript JS AST traversal functions",
+      "devDependencies": {
+        "babel-preset-env": "^1.6.1",
+        "babel-register": "^6.3.13",
+        "chai": "^2.1.1",
+        "espree": "^1.11.0",
+        "gulp": "^3.8.10",
+        "gulp-bump": "^0.2.2",
+        "gulp-filter": "^2.0.0",
+        "gulp-git": "^1.0.1",
+        "gulp-tag-version": "^1.3.0",
+        "jshint": "^2.5.6",
+        "mocha": "^2.1.0"
+      },
+      "engines": {
+        "node": ">=4.0"
+      },
+      "homepage": "https://github.com/estools/estraverse",
+      "license": "BSD-2-Clause",
+      "main": "estraverse.js",
+      "maintainers": [
+        {
+          "email": "utatane.tea@gmail.com",
+          "name": "Yusuke Suzuki",
+          "web": "http://github.com/Constellation"
+        }
+      ],
+      "name": "estraverse",
+      "repository": {
+        "type": "git",
+        "url": "http://github.com/estools/estraverse.git"
+      },
+      "scripts": {
+        "lint": "jshint estraverse.js",
+        "test": "npm run-script lint && npm run-script unit-test",
+        "unit-test": "mocha --compilers js:babel-register"
+      },
+      "version": "5.3.0"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 8052,
+      "sha256": "3e8d45da5b8085a4a8d51368ffead5b551a502c286978962a05d5c8e0d72fda6"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

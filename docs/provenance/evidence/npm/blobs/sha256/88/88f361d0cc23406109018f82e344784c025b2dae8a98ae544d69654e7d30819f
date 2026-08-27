@@ -1,0 +1,137 @@
+{
+  "artifactId": "eb6888da48a0f98445ad2d382f69b82b4bfe06142f5499a9301acbe264c862cc",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3433,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.editorconfig",
+        "sha256": "11d51d79c3c77de54d65b5d8bb3aef11dcc44ba7346379bf4d6e2b1dea7512cf",
+        "size": 179,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.eslintrc.json",
+        "sha256": "40a49a05cd0651e460fbad5728dcc2268ec93add68266efc045d1df5f18eead1",
+        "size": 127,
+        "type": "FILE"
+      },
+      {
+        "path": "package/.travis.yml",
+        "sha256": "b6c02fcf5c124c981f16f605b05c78b55bb592b2ac8241c602a85ecae5e3b5ea",
+        "size": 43,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "2d89bcf41bb06b2eddbe129a75abd418ef92a5f633accec609fd22a4843a5a93",
+        "size": 2482,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bower.json",
+        "sha256": "df976fe4bf93ac8ff560126417996ebb67c60fb31e1b1ce38ed83ede7b859978",
+        "size": 589,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "d523ab544dd4e8d0b4b48e7d47c37addd2d53d28a98fe799ed63862ae1efb6db",
+        "size": 933,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.umd.js",
+        "sha256": "b21b9af33fceb86a5a2bbcccb9f97a0c6319448f74acf4a3993804ea56097980",
+        "size": 1821,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "ff5360c17c3e197fc4a4a4fa0d07640292556d585a49c8651fd198e926d47bcc",
+        "size": 844,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/.eslintrc.json",
+        "sha256": "792c8d5ba2e884521785d294c665bdc0b079b4f7ad432ea56864a7286e6b1749",
+        "size": 44,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test/test.js",
+        "sha256": "437d84a26aacafaaef2d886444323b2aefa76b69655e17e3b2968b1dd65229ac",
+        "size": 5218,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 2482,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2d/2d89bcf41bb06b2eddbe129a75abd418ef92a5f633accec609fd22a4843a5a93",
+          "sha256": "2d89bcf41bb06b2eddbe129a75abd418ef92a5f633accec609fd22a4843a5a93"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "2d89bcf41bb06b2eddbe129a75abd418ef92a5f633accec609fd22a4843a5a93",
+        "size": 2482
+      }
+    ],
+    "expandedBytes": 12280,
+    "packageIdentity": {
+      "author": "IndigoUnited <hello@indigounited.com> (http://indigounited.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "err-code",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/IndigoUnited/js-err-code.git"
+      },
+      "version": "2.0.3"
+    },
+    "packageMetadata": {
+      "author": "IndigoUnited <hello@indigounited.com> (http://indigounited.com)",
+      "bugs": {
+        "url": "https://github.com/IndigoUnited/js-err-code/issues/"
+      },
+      "description": "Create an error with a code",
+      "devDependencies": {
+        "@satazor/eslint-config": "^3.0.0",
+        "browserify": "^16.5.1",
+        "eslint": "^7.2.0",
+        "expect.js": "^0.3.1",
+        "mocha": "^8.0.1"
+      },
+      "keywords": [
+        "error",
+        "err",
+        "code",
+        "properties",
+        "property"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "err-code",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/IndigoUnited/js-err-code.git"
+      },
+      "scripts": {
+        "browserify": "browserify -s err-code index.js > index.umd.js",
+        "lint": "eslint '{*.js,test/**/*.js}' --ignore-pattern *.umd.js",
+        "test": "mocha --bail"
+      },
+      "version": "2.0.3"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 3433,
+      "sha256": "a5664f4a04152f1dcfa51035879284895c5e104aa13d9e0627567ead2eb248e2"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

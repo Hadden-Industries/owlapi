@@ -1,0 +1,163 @@
+{
+  "artifactId": "4f8209fca4550c0b8b416a8b09ee33abd1bc3af134d3243537339cb121863722",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 34076,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "4946c33fa1646b0f57e98116812e116664024bc2c2546cd6519679afdbd89a4f",
+        "size": 379,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/const-enum.js",
+        "sha256": "419bd17fbe4ac94e2b6ba574454d96e468aecc808df3e9dfc7586755ad0d7685",
+        "size": 2255,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/const-enum.js.map",
+        "sha256": "cf3d10fb32f5ac08bd2872307e029d171a0af65eb1809a84357bd7128f4f8aa6",
+        "size": 6506,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/enum.js",
+        "sha256": "4a258eed4554810540e8a555344d44e5940e27e893693c2cb079e4b5a76c1e63",
+        "size": 10089,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/enum.js.map",
+        "sha256": "d20a84c53f0651f314d89f0488ebaff310bfce44e065415dc88303f78defca8d",
+        "size": 26289,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/global-types.js",
+        "sha256": "a25f563e1c1fba6ca32cc602e85afc0bb4341921255a9be8907a87e64d61185c",
+        "size": 1063,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/global-types.js.map",
+        "sha256": "0d17f9d789b701aa44bfbc14625749a2639c3a79c825c613e973fab06e220ffc",
+        "size": 1830,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "05051950491661693dbc90e3d8ed1e6cb99e9bb2f952d2b65f7ce02e029dacb9",
+        "size": 18279,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "0cfba48f4ae915472f7311283cc8be2cc4b95c6898e266d5c9d2167c7648e59e",
+        "size": 49825,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/namespace.js",
+        "sha256": "ca0e9f1f8480ef99599f57fe137dff22568f5c4734d6a07fab76b7fe97bf9949",
+        "size": 6839,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/namespace.js.map",
+        "sha256": "c7755aef757a0f186aa0152d9b54e77747465310bfba6621139d49b36186ef8a",
+        "size": 17888,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9988bb94d4b39d69433fde46f724d589881f0f7d621f99595f00e17034aad90e",
+        "size": 1166,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 143514,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-transform-typescript",
+      "license": "MIT",
+      "name": "@babel/plugin-transform-typescript",
+      "repository": {
+        "directory": "packages/babel-plugin-transform-typescript",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "dependencies": {
+        "@babel/helper-annotate-as-pure": "^7.29.7",
+        "@babel/helper-create-class-features-plugin": "^7.29.7",
+        "@babel/helper-plugin-utils": "^7.29.7",
+        "@babel/helper-skip-transparent-expression-wrappers": "^7.29.7",
+        "@babel/plugin-syntax-typescript": "^7.29.7"
+      },
+      "description": "Transform TypeScript into ES.next",
+      "devDependencies": {
+        "@babel/core": "^7.29.7",
+        "@babel/helper-plugin-test-runner": "^7.29.7",
+        "@babel/traverse": "^7.29.7",
+        "@babel/types": "^7.29.7"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-plugin-transform-typescript",
+      "keywords": [
+        "babel-plugin",
+        "typescript"
+      ],
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/plugin-transform-typescript",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-plugin-transform-typescript",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 34076,
+      "sha256": "e06f4e06719a6ed1068b0f915389ee20c8206e171eed556f1bbdaf145d6cf079"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

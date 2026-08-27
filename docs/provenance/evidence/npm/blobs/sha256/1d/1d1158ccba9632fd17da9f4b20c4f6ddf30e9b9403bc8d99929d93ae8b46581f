@@ -1,0 +1,612 @@
+{
+  "artifactId": "14e19bb71017d5215bf4c4034ab4bc5e794954a44c6fa0f40eca609bc32e09e1",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 4,
+      "digestVerifiedFileCount": 4,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 4
+    },
+    "artifactId": "14e19bb71017d5215bf4c4034ab4bc5e794954a44c6fa0f40eca609bc32e09e1",
+    "dependencies": [],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Shinnosuke Watanabe (https://github.com/shinnn)",
+            "end_line": 6,
+            "start_line": 6
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "cc0-1.0",
+        "detected_license_expression_spdx": "CC0-1.0",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/spdx-license-ids@3.0.23"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "cc0_1_0-1d6b7759-f524-6c1c-e284-2ef992e991e1",
+            "license_expression": "cc0-1.0",
+            "license_expression_spdx": "CC0-1.0",
+            "matches": [
+              {
+                "end_line": 7,
+                "from_file": "14e19bb71017d5215bf4c4034ab4bc5e794954a44c6fa0f40eca609bc32e09e1/package/package.json",
+                "license_expression": "cc0-1.0",
+                "license_expression_spdx": "CC0-1.0",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "\t\"license\": \"CC0-1.0\",",
+                "matcher": "2-aho",
+                "rule_identifier": "cc0-1.0_12.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/cc0-1.0_12.RULE",
+                "score": 100,
+                "start_line": 7
+              }
+            ]
+          }
+        ],
+        "md5": "d07b8189a6a3a213ac144b47310465e4",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/spdx-license-ids/3.0.23",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "cc0-1.0",
+            "declared_license_expression_spdx": "CC0-1.0",
+            "dependencies": [],
+            "description": "A list of SPDX license identifiers",
+            "download_url": "https://registry.npmjs.org/spdx-license-ids/-/spdx-license-ids-3.0.23.tgz",
+            "extra_data": {},
+            "extracted_license_statement": "- CC0-1.0\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "array",
+              "id",
+              "identifier",
+              "identifiers",
+              "json",
+              "license",
+              "licenses",
+              "oss",
+              "spdx"
+            ],
+            "license_detections": [
+              {
+                "identifier": "cc0_1_0-a115fa78-d690-c749-d4bf-3a118899256b",
+                "license_expression": "cc0-1.0",
+                "license_expression_spdx": "CC0-1.0",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "14e19bb71017d5215bf4c4034ab4bc5e794954a44c6fa0f40eca609bc32e09e1/package/package.json",
+                    "license_expression": "cc0-1.0",
+                    "license_expression_spdx": "CC0-1.0",
+                    "match_coverage": 100,
+                    "matched_length": 3,
+                    "matched_text": "CC0-1.0",
+                    "matcher": "1-hash",
+                    "rule_identifier": "spdx_license_id_cc0-1.0_for_cc0-1.0.RULE",
+                    "rule_relevance": 100,
+                    "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_cc0-1.0_for_cc0-1.0.RULE",
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "spdx-license-ids",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": null,
+                "name": "Shinnosuke Watanabe",
+                "role": "author",
+                "type": "person",
+                "url": "https://github.com/shinnn"
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/spdx-license-ids@3.0.23",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/spdx-license-ids/-/spdx-license-ids-3.0.23.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/spdx-license-ids",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "https://github.com/jslicense/spdx-license-ids",
+            "version": "3.0.23"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 6.45,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "e804161e6108792db7c0d626338f51b2dcf9bf7f",
+        "sha1_git": "9c9ba083889a7e9831fd000d5c2796ba53066695",
+        "sha256": "669d0ba75505d331031cf79b0d208393601307f41cd4ae4355ce99e6eaef4c8c",
+        "size": 547,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": "cc0-1.0",
+        "detected_license_expression_spdx": "CC0-1.0",
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/spdx-license-ids@3.0.23"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "cc0_1_0-25ce30bc-600f-b55a-29ca-24da3f4fcd8a",
+            "license_expression": "cc0-1.0",
+            "license_expression_spdx": "CC0-1.0",
+            "matches": [
+              {
+                "end_line": 51,
+                "from_file": "14e19bb71017d5215bf4c4034ab4bc5e794954a44c6fa0f40eca609bc32e09e1/package/README.md",
+                "license_expression": "cc0-1.0",
+                "license_expression_spdx": "CC0-1.0",
+                "match_coverage": 100,
+                "matched_length": 15,
+                "matched_text": "## License\n\n[Creative Commons Zero v1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/deed)",
+                "matcher": "2-aho",
+                "rule_identifier": "cc0-1.0_13.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/cc0-1.0_13.RULE",
+                "score": 100,
+                "start_line": 49
+              }
+            ]
+          }
+        ],
+        "md5": "b4ad50a48508857c730805a6e2f732c8",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 7.21,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "d90e0d405cab0d253e7bfa29cb0273ff912b1d81",
+        "sha1_git": "ba650628aeb637a4791007f6b0dde09e8b6a78c7",
+        "sha256": "b4807793db6058c819f76c023362b7d522b3d19c9b41563fcc01c2b2c5b1ccd3",
+        "size": 1394,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "deprecated",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/spdx-license-ids@3.0.23"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "9c30c6befc3d6166bf249dae4fc4a0e4",
+        "name": "deprecated.json",
+        "package_data": [],
+        "path": "package/deprecated.json",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "142e9719e14cffd6842efa28ac3ecb50b59d2fab",
+        "sha1_git": "4f70a14c7469da6cd3d6d52936d08d5e1d95d060",
+        "sha256": "29c9e630daa0adc09dec96ddeb6f81d1046210e81824bebda6486250450fb130",
+        "size": 512,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/spdx-license-ids@3.0.23"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "814af74c3e8869a6e2ed2b75b9c6df84",
+        "name": "index.json",
+        "package_data": [],
+        "path": "package/index.json",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "58370f0d93fed85eca0cc54240502b35913154ba",
+        "sha1_git": "f51552687007bd796bb3dd4b396e3555aa77452f",
+        "sha256": "d5ef45aff38fd904a68c563bf5814172bb0caa656220be820b3a81601e637241",
+        "size": 11283,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "cc0_1_0-1d6b7759-f524-6c1c-e284-2ef992e991e1",
+        "license_expression": "cc0-1.0",
+        "license_expression_spdx": "CC0-1.0",
+        "reference_matches": [
+          {
+            "end_line": 7,
+            "from_file": "14e19bb71017d5215bf4c4034ab4bc5e794954a44c6fa0f40eca609bc32e09e1/package/package.json",
+            "license_expression": "cc0-1.0",
+            "license_expression_spdx": "CC0-1.0",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "\t\"license\": \"CC0-1.0\",",
+            "matcher": "2-aho",
+            "rule_identifier": "cc0-1.0_12.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/cc0-1.0_12.RULE",
+            "score": 100,
+            "start_line": 7
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "cc0_1_0-25ce30bc-600f-b55a-29ca-24da3f4fcd8a",
+        "license_expression": "cc0-1.0",
+        "license_expression_spdx": "CC0-1.0",
+        "reference_matches": [
+          {
+            "end_line": 51,
+            "from_file": "14e19bb71017d5215bf4c4034ab4bc5e794954a44c6fa0f40eca609bc32e09e1/package/README.md",
+            "license_expression": "cc0-1.0",
+            "license_expression_spdx": "CC0-1.0",
+            "match_coverage": 100,
+            "matched_length": 15,
+            "matched_text": "## License\n\n[Creative Commons Zero v1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/deed)",
+            "matcher": "2-aho",
+            "rule_identifier": "cc0-1.0_13.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/cc0-1.0_13.RULE",
+            "score": 100,
+            "start_line": 49
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "cc0_1_0-a115fa78-d690-c749-d4bf-3a118899256b",
+        "license_expression": "cc0-1.0",
+        "license_expression_spdx": "CC0-1.0",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "14e19bb71017d5215bf4c4034ab4bc5e794954a44c6fa0f40eca609bc32e09e1/package/package.json",
+            "license_expression": "cc0-1.0",
+            "license_expression_spdx": "CC0-1.0",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "CC0-1.0",
+            "matcher": "1-hash",
+            "rule_identifier": "spdx_license_id_cc0-1.0_for_cc0-1.0.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_cc0-1.0_for_cc0-1.0.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Public Domain",
+        "faq_url": "http://wiki.creativecommons.org/CC0_FAQ",
+        "homepage_url": "http://creativecommons.org/publicdomain/zero/1.0/",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "cc0-1.0",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/cc0-1.0",
+        "minimum_coverage": 0,
+        "name": "Creative Commons CC0 1.0 Universal",
+        "notes": null,
+        "osi_license_key": null,
+        "osi_url": null,
+        "other_spdx_license_keys": [],
+        "other_urls": [
+          "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+        ],
+        "owner": "Creative Commons",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/cc0-1.0.LICENSE",
+        "short_name": "CC0-1.0",
+        "spdx_license_key": "CC0-1.0",
+        "spdx_url": "https://spdx.org/licenses/CC0-1.0",
+        "standard_notice": null,
+        "text": "Creative Commons Legal Code\n\nCC0 1.0 Universal\n\n    CREATIVE COMMONS CORPORATION IS NOT A LAW FIRM AND DOES NOT PROVIDE\n    LEGAL SERVICES. DISTRIBUTION OF THIS DOCUMENT DOES NOT CREATE AN\n    ATTORNEY-CLIENT RELATIONSHIP. CREATIVE COMMONS PROVIDES THIS\n    INFORMATION ON AN \"AS-IS\" BASIS. CREATIVE COMMONS MAKES NO WARRANTIES\n    REGARDING THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS\n    PROVIDED HEREUNDER, AND DISCLAIMS LIABILITY FOR DAMAGES RESULTING FROM\n    THE USE OF THIS DOCUMENT OR THE INFORMATION OR WORKS PROVIDED\n    HEREUNDER.\n\nStatement of Purpose\n\nThe laws of most jurisdictions throughout the world automatically confer\nexclusive Copyright and Related Rights (defined below) upon the creator\nand subsequent owner(s) (each and all, an \"owner\") of an original work of\nauthorship and/or a database (each, a \"Work\").\n\nCertain owners wish to permanently relinquish those rights to a Work for\nthe purpose of contributing to a commons of creative, cultural and\nscientific works (\"Commons\") that the public can reliably and without fear\nof later claims of infringement build upon, modify, incorporate in other\nworks, reuse and redistribute as freely as possible in any form whatsoever\nand for any purposes, including without limitation commercial purposes.\nThese owners may contribute to the Commons to promote the ideal of a free\nculture and the further production of creative, cultural and scientific\nworks, or to gain reputation or greater distribution for their Work in\npart through the use and efforts of others.\n\nFor these and/or other purposes and motivations, and without any\nexpectation of additional consideration or compensation, the person\nassociating CC0 with a Work (the \"Affirmer\"), to the extent that he or she\nis an owner of Copyright and Related Rights in the Work, voluntarily\nelects to apply CC0 to the Work and publicly distribute the Work under its\nterms, with knowledge of his or her Copyright and Related Rights in the\nWork and the meaning and intended legal effect of CC0 on those rights.\n\n1. Copyright and Related Rights. A Work made available under CC0 may be\nprotected by copyright and related or neighboring rights (\"Copyright and\nRelated Rights\"). Copyright and Related Rights include, but are not\nlimited to, the following:\n\n  i. the right to reproduce, adapt, distribute, perform, display,\n     communicate, and translate a Work;\n ii. moral rights retained by the original author(s) and/or performer(s);\niii. publicity and privacy rights pertaining to a person's image or\n     likeness depicted in a Work;\n iv. rights protecting against unfair competition in regards to a Work,\n     subject to the limitations in paragraph 4(a), below;\n  v. rights protecting the extraction, dissemination, use and reuse of data\n     in a Work;\n vi. database rights (such as those arising under Directive 96/9/EC of the\n     European Parliament and of the Council of 11 March 1996 on the legal\n     protection of databases, and under any national implementation\n     thereof, including any amended or successor version of such\n     directive); and\nvii. other similar, equivalent or corresponding rights throughout the\n     world based on applicable law or treaty, and any national\n     implementations thereof.\n\n2. Waiver. To the greatest extent permitted by, but not in contravention\nof, applicable law, Affirmer hereby overtly, fully, permanently,\nirrevocably and unconditionally waives, abandons, and surrenders all of\nAffirmer's Copyright and Related Rights and associated claims and causes\nof action, whether now known or unknown (including existing as well as\nfuture claims and causes of action), in the Work (i) in all territories\nworldwide, (ii) for the maximum duration provided by applicable law or\ntreaty (including future time extensions), (iii) in any current or future\nmedium and for any number of copies, and (iv) for any purpose whatsoever,\nincluding without limitation commercial, advertising or promotional\npurposes (the \"Waiver\"). Affirmer makes the Waiver for the benefit of each\nmember of the public at large and to the detriment of Affirmer's heirs and\nsuccessors, fully intending that such Waiver shall not be subject to\nrevocation, rescission, cancellation, termination, or any other legal or\nequitable action to disrupt the quiet enjoyment of the Work by the public\nas contemplated by Affirmer's express Statement of Purpose.\n\n3. Public License Fallback. Should any part of the Waiver for any reason\nbe judged legally invalid or ineffective under applicable law, then the\nWaiver shall be preserved to the maximum extent permitted taking into\naccount Affirmer's express Statement of Purpose. In addition, to the\nextent the Waiver is so judged Affirmer hereby grants to each affected\nperson a royalty-free, non transferable, non sublicensable, non exclusive,\nirrevocable and unconditional license to exercise Affirmer's Copyright and\nRelated Rights in the Work (i) in all territories worldwide, (ii) for the\nmaximum duration provided by applicable law or treaty (including future\ntime extensions), (iii) in any current or future medium and for any number\nof copies, and (iv) for any purpose whatsoever, including without\nlimitation commercial, advertising or promotional purposes (the\n\"License\"). The License shall be deemed effective as of the date CC0 was\napplied by Affirmer to the Work. Should any part of the License for any\nreason be judged legally invalid or ineffective under applicable law, such\npartial invalidity or ineffectiveness shall not invalidate the remainder\nof the License, and in such case Affirmer hereby affirms that he or she\nwill not (i) exercise any of his or her remaining Copyright and Related\nRights in the Work or (ii) assert any associated claims and causes of\naction with respect to the Work, in either case contrary to Affirmer's\nexpress Statement of Purpose.\n\n4. Limitations and Disclaimers.\n\n a. No trademark or patent rights held by Affirmer are waived, abandoned,\n    surrendered, licensed or otherwise affected by this document.\n b. Affirmer offers the Work as-is and makes no representations or\n    warranties of any kind concerning the Work, express, implied,\n    statutory or otherwise, including without limitation warranties of\n    title, merchantability, fitness for a particular purpose, non\n    infringement, or the absence of latent or other defects, accuracy, or\n    the present or absence of errors, whether or not discoverable, all to\n    the greatest extent permissible under applicable law.\n c. Affirmer disclaims responsibility for clearing rights of other persons\n    that may apply to the Work or any use thereof, including without\n    limitation any person's Copyright and Related Rights in the Work.\n    Further, Affirmer disclaims responsibility for obtaining any necessary\n    consents, permissions or other rights required for any use of the\n    Work.\n d. Affirmer understands and acknowledges that Creative Commons is not a\n    party to this document and has no duty or obligation with respect to\n    this CC0 or use of the Work.",
+        "text_urls": [
+          "http://creativecommons.org/publicdomain/zero/1.0/legalcode"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "cc0-1.0_12.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "cc0-1.0",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/cc0-1.0_12.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License:  CC0-1.0"
+      },
+      {
+        "identifier": "cc0-1.0_13.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [
+          "https://creativecommons.org/publicdomain/zero/1.0/deed"
+        ],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 15,
+        "license_expression": "cc0-1.0",
+        "minimum_coverage": 50,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/cc0-1.0_13.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "## {{License\n\n[Creative Commons Zero v1.0 Universal}}](https://creativecommons.org/publicdomain/zero/1.0/deed)"
+      },
+      {
+        "identifier": "spdx_license_id_cc0-1.0_for_cc0-1.0.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "cc0-1.0",
+        "minimum_coverage": 80,
+        "notes": "Used to detect a bare SPDX license id",
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_cc0-1.0_for_cc0-1.0.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "CC0-1.0"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/spdx-license-ids/3.0.23",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "cc0-1.0",
+        "declared_license_expression_spdx": "CC0-1.0",
+        "description": "A list of SPDX license identifiers",
+        "download_url": "https://registry.npmjs.org/spdx-license-ids/-/spdx-license-ids-3.0.23.tgz",
+        "extra_data": {},
+        "extracted_license_statement": "- CC0-1.0\n",
+        "holder": null,
+        "homepage_url": null,
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "array",
+          "id",
+          "identifier",
+          "identifiers",
+          "json",
+          "license",
+          "licenses",
+          "oss",
+          "spdx"
+        ],
+        "license_detections": [
+          {
+            "identifier": "cc0_1_0-a115fa78-d690-c749-d4bf-3a118899256b",
+            "license_expression": "cc0-1.0",
+            "license_expression_spdx": "CC0-1.0",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "14e19bb71017d5215bf4c4034ab4bc5e794954a44c6fa0f40eca609bc32e09e1/package/package.json",
+                "license_expression": "cc0-1.0",
+                "license_expression_spdx": "CC0-1.0",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "CC0-1.0",
+                "matcher": "1-hash",
+                "rule_identifier": "spdx_license_id_cc0-1.0_for_cc0-1.0.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/spdx_license_id_cc0-1.0_for_cc0-1.0.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "spdx-license-ids",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": null,
+            "name": "Shinnosuke Watanabe",
+            "role": "author",
+            "type": "person",
+            "url": "https://github.com/shinnn"
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/spdx-license-ids@3.0.23",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/spdx-license-ids/-/spdx-license-ids-3.0.23.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/spdx-license-ids",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "https://github.com/jslicense/spdx-license-ids",
+        "version": "3.0.23"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

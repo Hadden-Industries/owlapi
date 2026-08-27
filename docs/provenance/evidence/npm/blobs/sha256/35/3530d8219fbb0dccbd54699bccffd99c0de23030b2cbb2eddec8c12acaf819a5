@@ -1,0 +1,131 @@
+{
+  "artifactId": "281199f1a801406fc48a3a557f434a0352e5c6b7def22eb7bb49e830071f2093",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3411,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "6bc60b4956b1e7f38b44938f14aeaf6fc79f1aa72a8a3281116521a418c968af",
+        "size": 3074,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "84351667051b005f9856319267407b06affad12888355462c7c8740f22ca3999",
+        "size": 2155,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b92833e5851ec53bd4cd8093f6099d0c6e6818c4374ec1d09aa25d4f9ba91ec4",
+        "size": 698,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "0e7e14cbbc73f780195e6115b26acfb561741bab0860e954b1780271b1566966",
+        "size": 3127,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 3127,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/0e/0e7e14cbbc73f780195e6115b26acfb561741bab0860e954b1780271b1566966",
+          "sha256": "0e7e14cbbc73f780195e6115b26acfb561741bab0860e954b1780271b1566966"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "0e7e14cbbc73f780195e6115b26acfb561741bab0860e954b1780271b1566966",
+        "size": 3127
+      }
+    ],
+    "expandedBytes": 10163,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "env-paths",
+      "repository": "sindresorhus/env-paths",
+      "version": "2.2.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "description": "Get paths for storing things like data, config, cache, etc",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "tsd": "^0.7.1",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=6"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "keywords": [
+        "common",
+        "user",
+        "paths",
+        "env",
+        "environment",
+        "directory",
+        "dir",
+        "appdir",
+        "path",
+        "data",
+        "config",
+        "cache",
+        "logs",
+        "temp",
+        "linux",
+        "unix"
+      ],
+      "license": "MIT",
+      "name": "env-paths",
+      "repository": "sindresorhus/env-paths",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "version": "2.2.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3411,
+      "sha256": "5a0b894f4158809ffc408c6a9274cbca434472802128f6d80e5755fad0e6769e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

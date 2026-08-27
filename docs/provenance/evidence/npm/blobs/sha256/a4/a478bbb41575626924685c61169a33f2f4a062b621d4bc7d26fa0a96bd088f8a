@@ -1,0 +1,153 @@
+{
+  "artifactId": "c9a6be022720eaaefa38bf69b0920823a290654a1ed32ea39267a4263ad95c56",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 22808,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "2a8a5d6197bb97a018b8a190dd3ed853d750ca87c8e80c17aad41d6c6ff448e1",
+        "size": 1133,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "0311b7e1a5a37192243d37889a838d2252b2201554e9db49b57a657f9fb517c7",
+        "size": 3203,
+        "type": "FILE"
+      },
+      {
+        "path": "package/fsevents.d.ts",
+        "sha256": "5c246116b08ff4de6926ed0d5d065249857b256fb45ef3681b46a4bdc03412ec",
+        "size": 1431,
+        "type": "FILE"
+      },
+      {
+        "path": "package/fsevents.js",
+        "sha256": "1d75660f48786792f0e98d6dabfd301883c8f2a8f61aa690cbf58fb4386c0f1a",
+        "size": 2483,
+        "type": "FILE"
+      },
+      {
+        "path": "package/fsevents.node",
+        "sha256": "40f2f51199e4f5fc46fa6b985fb3461bb63e6cd86c62bfa9bcee45ed4438d5fb",
+        "size": 163626,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "500839fcc76f6c5efcb454e6614b23c26775e75e1140619fff9ca64c291aec2b",
+        "size": 1348,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1133,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2a/2a8a5d6197bb97a018b8a190dd3ed853d750ca87c8e80c17aad41d6c6ff448e1",
+          "sha256": "2a8a5d6197bb97a018b8a190dd3ed853d750ca87c8e80c17aad41d6c6ff448e1"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2a8a5d6197bb97a018b8a190dd3ed853d750ca87c8e80c17aad41d6c6ff448e1",
+        "size": 1133
+      },
+      {
+        "blob": {
+          "bytes": 3203,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/03/0311b7e1a5a37192243d37889a838d2252b2201554e9db49b57a657f9fb517c7",
+          "sha256": "0311b7e1a5a37192243d37889a838d2252b2201554e9db49b57a657f9fb517c7"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "0311b7e1a5a37192243d37889a838d2252b2201554e9db49b57a657f9fb517c7",
+        "size": 3203
+      }
+    ],
+    "expandedBytes": 173224,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/fsevents/fsevents",
+      "license": "MIT",
+      "name": "fsevents",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/fsevents/fsevents.git"
+      },
+      "version": "2.3.3"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/fsevents/fsevents/issues"
+      },
+      "contributors": [
+        {
+          "email": "pip@pipobscure.com",
+          "name": "Philipp Dunkel"
+        },
+        {
+          "email": "info@bnoordhuis.nl",
+          "name": "Ben Noordhuis"
+        },
+        {
+          "email": "elan.shanker@gmail.com",
+          "name": "Elan Shankar"
+        },
+        {
+          "email": "mbajtoss@gmail.com",
+          "name": "Miroslav Bajtoš"
+        },
+        {
+          "name": "Paul Miller",
+          "url": "https://paulmillr.com"
+        }
+      ],
+      "description": "Native Access to MacOS FSEvents",
+      "devDependencies": {
+        "node-gyp": "^9.4.0"
+      },
+      "engines": {
+        "node": "^8.16.0 || ^10.6.0 || >=11.0.0"
+      },
+      "files": [
+        "fsevents.d.ts",
+        "fsevents.js",
+        "fsevents.node"
+      ],
+      "homepage": "https://github.com/fsevents/fsevents",
+      "keywords": [
+        "fsevents",
+        "mac"
+      ],
+      "license": "MIT",
+      "main": "fsevents.js",
+      "name": "fsevents",
+      "os": [
+        "darwin"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/fsevents/fsevents.git"
+      },
+      "scripts": {
+        "build": "node-gyp clean && rm -f fsevents.node && node-gyp rebuild && node-gyp clean",
+        "clean": "node-gyp clean && rm -f fsevents.node",
+        "prepublishOnly": "npm run build",
+        "test": "/bin/bash ./test.sh 2>/dev/null"
+      },
+      "types": "fsevents.d.ts",
+      "version": "2.3.3"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 22808,
+      "sha256": "c77e7a5d5ff31dd7acea7c44d4a0455e0528cdacbd24a8cb6c82b66d239b587e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

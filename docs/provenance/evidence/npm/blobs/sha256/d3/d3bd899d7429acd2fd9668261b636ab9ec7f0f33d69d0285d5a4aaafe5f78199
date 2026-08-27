@@ -1,0 +1,93 @@
+{
+  "artifactId": "a03d3e45a43ddf9fe82d801e697ca1bc686f95df4ec9f515df5e522f50dc5c92",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3001,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a5e4f64767152cefb73b78f2b97a3a27fe319d1d17c6021966c0b6f7b20da414",
+        "size": 2239,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "3deadcd27f94ba4ebff5affcaaaa5241ef441444e9169d6c37ac069c6b008cf1",
+        "size": 3412,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "c20f059ca6012af5a3d255948c7ab1fccc06ad1d0019c669b08ba251cd4b281d",
+        "size": 588,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 7004,
+    "packageIdentity": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (https://izs.me)",
+      "homepage": null,
+      "license": "ISC",
+      "name": "minipass-pipeline",
+      "repository": null,
+      "version": "1.2.4"
+    },
+    "packageMetadata": {
+      "author": "Isaac Z. Schlueter <i@izs.me> (https://izs.me)",
+      "dependencies": {
+        "minipass": "^3.0.0"
+      },
+      "description": "create a pipeline of streams using Minipass",
+      "devDependencies": {
+        "tap": "^14.6.9"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js"
+      ],
+      "license": "ISC",
+      "name": "minipass-pipeline",
+      "scripts": {
+        "postpublish": "git push origin --follow-tags",
+        "postversion": "npm publish",
+        "preversion": "npm test",
+        "snap": "tap",
+        "test": "tap"
+      },
+      "tap": {
+        "check-coverage": true
+      },
+      "version": "1.2.4"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 3001,
+      "sha256": "0b64f23832fd6391b879182615c6d0363371b0df2fa37a7d63e30903b156078f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

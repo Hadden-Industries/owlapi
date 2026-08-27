@@ -1,0 +1,87 @@
+{
+  "artifactId": "2c78c1ee97eb5a47de84313c2be017b3df989285f238f9f3f2f10f5dbaf3d88b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1463,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "c33950e1808f4b9b7169a66e6baf801d533cf888073785fb4885bb7c171ab957",
+        "size": 419,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "2ffcb90eb67155da3a0e4c2c5e50f806028efeceda012a0606881f4bdb5d12aa",
+        "size": 440,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "aceb63cb4f425ef07c070571a288b0a8e86a805733e68b711594dd57016131c5",
+        "size": 562,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 2527,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/plugin-syntax-object-rest-spread",
+      "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-object-rest-spread",
+      "version": "7.8.3"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@babel/helper-plugin-utils": "^7.8.0"
+      },
+      "description": "Allow parsing of object rest/spread",
+      "devDependencies": {
+        "@babel/core": "^7.8.0"
+      },
+      "keywords": [
+        "babel-plugin"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "@babel/plugin-syntax-object-rest-spread",
+      "peerDependencies": {
+        "@babel/core": "^7.0.0-0"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-object-rest-spread",
+      "version": "7.8.3"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1463,
+      "sha256": "42270bd145c3ead5a167574cde7798958b5b31b138f10deced0c685bfcc86d32"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

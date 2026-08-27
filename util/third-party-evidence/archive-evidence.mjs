@@ -424,34 +424,78 @@ const normalizeExcludedFileSuffixes = (suffixes) => {
   return [...suffixes];
 };
 
-export const materializePackageForScan = async (
-  tarballPath,
-  inventory,
-  destinationRoot,
-  { limits = ARCHIVE_LIMITS, excludedFileSuffixes = [] } = {},
-) => {
+const analyzeArchiveInventory = (inventory, limits) => {
   if (
     !Array.isArray(inventory?.entries) ||
+    inventory.entries.length === 0 ||
     !Array.isArray(inventory?.duplicateEntries) ||
+    !Array.isArray(inventory?.evidenceFiles) ||
     !Number.isSafeInteger(inventory?.physicalEntryCount) ||
-    typeof inventory.archiveRoot !== "string"
+    inventory.physicalEntryCount < 1 ||
+    !Number.isSafeInteger(inventory?.compressedBytes) ||
+    inventory.compressedBytes < 1 ||
+    !Number.isSafeInteger(inventory?.expandedBytes) ||
+    inventory.expandedBytes < 0 ||
+    typeof inventory.archiveRoot !== "string" ||
+    inventory.archiveRoot.length === 0
   ) {
     throw new TypeError("A validated archive inventory is required");
   }
-  const excludedSuffixes = normalizeExcludedFileSuffixes(excludedFileSuffixes);
+  assertLimit(
+    inventory.compressedBytes,
+    limits.compressedBytes,
+    "compressed byte limit",
+  );
+  assertLimit(
+    inventory.physicalEntryCount,
+    limits.entries,
+    "entry count limit",
+  );
+
   const expectedByPath = new Map();
+  const foldedPaths = new Map();
+  let maximumEntryBytes = 0;
+  let maximumPathBytes = 0;
   for (const entry of inventory.entries) {
     const path = validatePath(entry.path, limits);
+    if (path !== entry.path) {
+      throw new TypeError(
+        `Non-canonical validated inventory path: ${entry.path}`,
+      );
+    }
     if (path.split("/", 1)[0] !== inventory.archiveRoot) {
       throw new TypeError(
         `Validated inventory path is outside archive root ${inventory.archiveRoot}: ${path}`,
       );
     }
-    if (expectedByPath.has(entry.path)) {
-      throw new TypeError(`Duplicate validated inventory path: ${entry.path}`);
+    if (
+      !["DIRECTORY", "FILE"].includes(entry.type) ||
+      !Number.isSafeInteger(entry.size) ||
+      entry.size < 0 ||
+      !/^[0-9a-f]{64}$/u.test(entry.sha256)
+    ) {
+      throw new TypeError(`Invalid validated inventory entry: ${path}`);
     }
-    expectedByPath.set(entry.path, entry);
+    assertLimit(entry.size, limits.entryBytes, "entry byte limit");
+    if (expectedByPath.has(path)) {
+      throw new TypeError(`Duplicate validated inventory path: ${path}`);
+    }
+    const folded = path.toLocaleLowerCase("en-US");
+    const collision = foldedPaths.get(folded);
+    if (collision && collision !== path) {
+      throw new TypeError(
+        `Validated inventory path case-folding collision: ${collision} and ${path}`,
+      );
+    }
+    expectedByPath.set(path, entry);
+    foldedPaths.set(folded, path);
+    maximumEntryBytes = Math.max(maximumEntryBytes, entry.size);
+    maximumPathBytes = Math.max(
+      maximumPathBytes,
+      Buffer.byteLength(path, "utf8"),
+    );
   }
+
   const expectedOccurrences = new Map(
     [...expectedByPath.keys()].map((path) => [path, 1]),
   );
@@ -479,6 +523,73 @@ export const materializePackageForScan = async (
   if (inventory.physicalEntryCount !== expectedPhysicalEntryCount) {
     throw new TypeError("Validated physical entry count is inconsistent");
   }
+  const expandedBytes = [...expectedByPath].reduce(
+    (total, [path, entry]) =>
+      total + entry.size * expectedOccurrences.get(path),
+    0,
+  );
+  if (
+    !Number.isSafeInteger(expandedBytes) ||
+    inventory.expandedBytes !== expandedBytes
+  ) {
+    throw new TypeError("Validated expanded byte count is inconsistent");
+  }
+  assertLimit(expandedBytes, limits.expandedBytes, "expanded byte limit");
+
+  const evidencePaths = new Set();
+  let retainedEvidenceBytes = 0;
+  for (const evidence of inventory.evidenceFiles) {
+    const entry = expectedByPath.get(evidence?.path);
+    if (
+      !entry ||
+      entry.type !== "FILE" ||
+      evidencePaths.has(evidence.path) ||
+      evidence.size !== entry.size ||
+      evidence.sha256 !== entry.sha256
+    ) {
+      throw new TypeError(
+        `Invalid retained legal-evidence inventory for ${String(evidence?.path)}`,
+      );
+    }
+    evidencePaths.add(evidence.path);
+    retainedEvidenceBytes += evidence.size;
+  }
+  assertLimit(
+    retainedEvidenceBytes,
+    limits.retainedEvidenceBytes,
+    "retained evidence byte limit",
+  );
+
+  return {
+    expectedByPath,
+    expectedOccurrences,
+    measurements: {
+      compressedBytes: inventory.compressedBytes,
+      expandedBytes,
+      maximumEntryBytes,
+      maximumPathBytes,
+      physicalEntryCount: inventory.physicalEntryCount,
+      retainedEvidenceBytes,
+    },
+  };
+};
+
+export const validateArchiveInventory = (
+  inventory,
+  { limits = ARCHIVE_LIMITS } = {},
+) => analyzeArchiveInventory(inventory, limits).measurements;
+
+export const materializePackageForScan = async (
+  tarballPath,
+  inventory,
+  destinationRoot,
+  { limits = ARCHIVE_LIMITS, excludedFileSuffixes = [] } = {},
+) => {
+  const excludedSuffixes = normalizeExcludedFileSuffixes(excludedFileSuffixes);
+  const { expectedByPath, expectedOccurrences } = analyzeArchiveInventory(
+    inventory,
+    limits,
+  );
 
   try {
     await mkdir(destinationRoot, { recursive: false });

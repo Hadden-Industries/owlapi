@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
 import { computeCorpusRoot, verifyBlob } from "./blob-store.mjs";
+import { validateArchiveInventory } from "./archive-evidence.mjs";
 import { compareCodeUnits, stableJson } from "./digests.mjs";
 import {
   canonicalizeEvidenceBlobs,
@@ -228,6 +229,8 @@ const verifyArtifactEvidence = async ({
   blobRoot,
   blobByReference,
   referencedBlobs,
+  allowLegacyArchiveInventory,
+  allowLegacyScancodeNormalization,
 }) => {
   verifyCompletionStates(artifact);
   const expectedKinds = new Set(EVIDENCE_KINDS);
@@ -281,6 +284,20 @@ const verifyArtifactEvidence = async ({
       "ARCHIVE_INVENTORY_INVALID",
       `Archive inventory is incomplete for ${artifact.artifactId}`,
     );
+  }
+  const isLegacyOccurrenceInventory =
+    archive.duplicateEntries === undefined &&
+    archive.physicalEntryCount === undefined;
+  if (!isLegacyOccurrenceInventory || !allowLegacyArchiveInventory) {
+    try {
+      validateArchiveInventory(archive);
+    } catch (error) {
+      controlFailure(
+        "ARCHIVE_INVENTORY_INVALID",
+        `Archive inventory is invalid for ${artifact.artifactId}`,
+        error,
+      );
+    }
   }
   const entryByPath = indexUnique(
     archive.entries,
@@ -424,10 +441,15 @@ const verifyArtifactEvidence = async ({
     artifact.scan.evidence,
     artifact.artifactId,
   );
+  const normalizationVersion = scan?.scanner?.normalizationVersion;
   if (
     scan?.scanner?.name !== "scancode-toolkit" ||
     scan?.scanner?.version !== "32.5.0" ||
-    scan?.scanner?.outputFormatVersion !== "4.1.0"
+    scan?.scanner?.outputFormatVersion !== "4.1.0" ||
+    !(
+      normalizationVersion === 1 ||
+      (allowLegacyScancodeNormalization && normalizationVersion === undefined)
+    )
   ) {
     productFailure(
       "SCANCODE_EVIDENCE_INVALID",
@@ -436,7 +458,13 @@ const verifyArtifactEvidence = async ({
   }
 };
 
-const verifyEvidenceDocument = async ({ manifest, graph, blobRoot }) => {
+const verifyEvidenceDocument = async ({
+  manifest,
+  graph,
+  blobRoot,
+  allowLegacyArchiveInventory = false,
+  allowLegacyScancodeNormalization = false,
+}) => {
   try {
     if (!manifest || typeof manifest !== "object") {
       controlFailure("MANIFEST_INVALID", "Evidence manifest must be an object");
@@ -535,6 +563,8 @@ const verifyEvidenceDocument = async ({ manifest, graph, blobRoot }) => {
         blobRoot,
         blobByReference,
         referencedBlobs,
+        allowLegacyArchiveInventory,
+        allowLegacyScancodeNormalization,
       });
     }
     if (
@@ -571,11 +601,15 @@ export const verifyEvidenceManifest = async ({
   manifest,
   lockfileBytes,
   blobRoot,
+  allowLegacyArchiveInventory = false,
+  allowLegacyScancodeNormalization = false,
 }) =>
   verifyEvidenceDocument({
     manifest,
     graph: normalizeLockedRegistryGraph(lockfileBytes),
     blobRoot,
+    allowLegacyArchiveInventory,
+    allowLegacyScancodeNormalization,
   });
 
 export const verifyEvidenceShard = async ({

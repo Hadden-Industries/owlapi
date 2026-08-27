@@ -1,0 +1,660 @@
+{
+  "artifactId": "024ba017f057220e501f68f46b94e6573aa0307aa260553ec8b0d51adf0ca239",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 4,
+      "digestVerifiedFileCount": 4,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 4
+    },
+    "artifactId": "024ba017f057220e501f68f46b94e6573aa0307aa260553ec8b0d51adf0ca239",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^15.1.6",
+        "for_package_purl": "pkg:npm/minipass-flush@1.0.7",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/tap",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.0.0",
+        "for_package_purl": "pkg:npm/minipass-flush@1.0.7",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/minipass",
+        "resolved_package": {},
+        "scope": "dependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Isaac Z. Schlueter <i@izs.me> (https://izs.me)",
+            "end_line": 8,
+            "start_line": 8
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "blueoak-1.0.0",
+        "detected_license_expression_spdx": "BlueOak-1.0.0",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/minipass-flush@1.0.7"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "blueoak_1_0_0-a010b21c-7420-e77f-a484-8c3f32bc60b5",
+            "license_expression": "blueoak-1.0.0",
+            "license_expression_spdx": "BlueOak-1.0.0",
+            "matches": [
+              {
+                "end_line": 9,
+                "from_file": "024ba017f057220e501f68f46b94e6573aa0307aa260553ec8b0d51adf0ca239/package/package.json",
+                "license_expression": "blueoak-1.0.0",
+                "license_expression_spdx": "BlueOak-1.0.0",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "  \"license\": \"BlueOak-1.0.0\",",
+                "matcher": "2-aho",
+                "rule_identifier": "blueoak-1.0.0_5.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/blueoak-1.0.0_5.RULE",
+                "score": 100,
+                "start_line": 9
+              }
+            ]
+          }
+        ],
+        "md5": "d0b1882ffbafda187b88d74b792b60e6",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/minipass-flush/1.0.7",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "blueoak-1.0.0",
+            "declared_license_expression_spdx": "BlueOak-1.0.0",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^15.1.6",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/tap",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.0.0",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/minipass",
+                "resolved_package": {},
+                "scope": "dependencies"
+              }
+            ],
+            "description": "A Minipass stream that calls a flush function before emitting 'end'",
+            "download_url": "https://registry.npmjs.org/minipass-flush/-/minipass-flush-1.0.7.tgz",
+            "extra_data": {
+              "engines": {
+                "node": ">= 8"
+              }
+            },
+            "extracted_license_statement": "- BlueOak-1.0.0\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "flush",
+              "minipass",
+              "stream"
+            ],
+            "license_detections": [
+              {
+                "identifier": "blueoak_1_0_0-3c25fef0-5634-6497-b6c8-0c16ab8320b3",
+                "license_expression": "blueoak-1.0.0",
+                "license_expression_spdx": "BlueOak-1.0.0",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "024ba017f057220e501f68f46b94e6573aa0307aa260553ec8b0d51adf0ca239/package/package.json",
+                    "license_expression": "blueoak-1.0.0",
+                    "license_expression_spdx": "BlueOak-1.0.0",
+                    "match_coverage": 100,
+                    "matched_length": 4,
+                    "matched_text": "BlueOak-1.0.0",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-blueoak_1_0_0-a27d3d91aab5047de087c05901869c5f4a1f12e7",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "minipass-flush",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "i@izs.me",
+                "name": "Isaac Z. Schlueter",
+                "role": "author",
+                "type": "person",
+                "url": "https://izs.me"
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/minipass-flush@1.0.7",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/minipass-flush/-/minipass-flush-1.0.7.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/minipass-flush",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/isaacs/minipass-flush.git",
+            "version": "1.0.7"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 5.49,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "30f27741b9d1e471f8c4546c5fbe6fc3c3754821",
+        "sha1_git": "2a2fa55ad398c3b6f74021278195c491b7dbbc78",
+        "sha256": "00eb6d6a76a29658c56bfc079f9e5ec008ae6ba136b83467777948280077185c",
+        "size": 858,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [],
+        "detected_license_expression": "blueoak-1.0.0",
+        "detected_license_expression_spdx": "BlueOak-1.0.0",
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/minipass-flush@1.0.7"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "blueoak_1_0_0-803e6ff6-8abf-f6d2-52f0-f6362b7a2354",
+            "license_expression": "blueoak-1.0.0",
+            "license_expression_spdx": "BlueOak-1.0.0",
+            "matches": [
+              {
+                "end_line": 55,
+                "from_file": "024ba017f057220e501f68f46b94e6573aa0307aa260553ec8b0d51adf0ca239/package/LICENSE.md",
+                "license_expression": "blueoak-1.0.0",
+                "license_expression_spdx": "BlueOak-1.0.0",
+                "match_coverage": 100,
+                "matched_length": 252,
+                "matched_text": "# Blue Oak Model License\n\nVersion 1.0.0\n\n## Purpose\n\nThis license gives everyone as much permission to work with\nthis software as possible, while protecting contributors\nfrom liability.\n\n## Acceptance\n\nIn order to receive this license, you must agree to its\nrules.  The rules of this license are both obligations\nunder that agreement and conditions to your license.\nYou must not do anything with this software that triggers\na rule that you cannot or will not follow.\n\n## Copyright\n\nEach contributor licenses you to do everything with this\nsoftware that would otherwise infringe that contributor's\ncopyright in it.\n\n## Notices\n\nYou must ensure that everyone who gets a copy of\nany part of this software from you, with or without\nchanges, also gets the text of this license or a link to\n<https://blueoakcouncil.org/license/1.0.0>.\n\n## Excuse\n\nIf anyone notifies you in writing that you have not\ncomplied with [Notices](#notices), you can keep your\nlicense by taking all practical steps to comply within 30\ndays after the notice.  If you do not do so, your license\nends immediately.\n\n## Patent\n\nEach contributor licenses you to do everything with this\nsoftware that would otherwise infringe any patent claims\nthey can license or become able to license.\n\n## Reliability\n\nNo contributor can revoke this license.\n\n## No Liability\n\n***As far as the law allows, this software comes as is,\nwithout any warranty or condition, and no contributor\nwill be liable to anyone for any damages related to this\nsoftware or this license, under any kind of legal claim.***",
+                "matcher": "1-hash",
+                "rule_identifier": "blueoak-1.0.0.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/blueoak-1.0.0.LICENSE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": "95e9f67f2840df3a3a09a77ef3aea34b",
+        "name": "LICENSE.md",
+        "package_data": [],
+        "path": "package/LICENSE.md",
+        "percentage_of_license_text": 100,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "04b424df89f0c4840f5f64286a19afd84bee2466",
+        "sha1_git": "c5402b9577a8cdd966c0974e5b74cc7b85f536c5",
+        "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+        "size": 1552,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/minipass-flush@1.0.7"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "9fcfbb73bfece8cf5d483ea13da344ba",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "d840c6ec53b2182bd51a4b1f0a907e40e881d447",
+        "sha1_git": "d2ed7e06238f300cf88ba758e209919f16d309ca",
+        "sha256": "4a98617b437c20d4a47d6322176dc662b55bd7a875fa419d40a7b317c577c74b",
+        "size": 1197,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/minipass-flush@1.0.7"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "1708ee52a31b5270443552f0156ef0fa",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/index.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "c54ee32daccbc0fd273221e9891b359d137d78c5",
+        "sha1_git": "cb2537fa6b2b57b790cf6e8704a90ea52351e638",
+        "sha256": "56d0dfbd2acbaffd7a592eb25130eed4ab12bc1c10844677b2d869d5992c36a9",
+        "size": 1011,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "blueoak_1_0_0-3c25fef0-5634-6497-b6c8-0c16ab8320b3",
+        "license_expression": "blueoak-1.0.0",
+        "license_expression_spdx": "BlueOak-1.0.0",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "024ba017f057220e501f68f46b94e6573aa0307aa260553ec8b0d51adf0ca239/package/package.json",
+            "license_expression": "blueoak-1.0.0",
+            "license_expression_spdx": "BlueOak-1.0.0",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "BlueOak-1.0.0",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-blueoak_1_0_0-a27d3d91aab5047de087c05901869c5f4a1f12e7",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "blueoak_1_0_0-803e6ff6-8abf-f6d2-52f0-f6362b7a2354",
+        "license_expression": "blueoak-1.0.0",
+        "license_expression_spdx": "BlueOak-1.0.0",
+        "reference_matches": [
+          {
+            "end_line": 55,
+            "from_file": "024ba017f057220e501f68f46b94e6573aa0307aa260553ec8b0d51adf0ca239/package/LICENSE.md",
+            "license_expression": "blueoak-1.0.0",
+            "license_expression_spdx": "BlueOak-1.0.0",
+            "match_coverage": 100,
+            "matched_length": 252,
+            "matched_text": "# Blue Oak Model License\n\nVersion 1.0.0\n\n## Purpose\n\nThis license gives everyone as much permission to work with\nthis software as possible, while protecting contributors\nfrom liability.\n\n## Acceptance\n\nIn order to receive this license, you must agree to its\nrules.  The rules of this license are both obligations\nunder that agreement and conditions to your license.\nYou must not do anything with this software that triggers\na rule that you cannot or will not follow.\n\n## Copyright\n\nEach contributor licenses you to do everything with this\nsoftware that would otherwise infringe that contributor's\ncopyright in it.\n\n## Notices\n\nYou must ensure that everyone who gets a copy of\nany part of this software from you, with or without\nchanges, also gets the text of this license or a link to\n<https://blueoakcouncil.org/license/1.0.0>.\n\n## Excuse\n\nIf anyone notifies you in writing that you have not\ncomplied with [Notices](#notices), you can keep your\nlicense by taking all practical steps to comply within 30\ndays after the notice.  If you do not do so, your license\nends immediately.\n\n## Patent\n\nEach contributor licenses you to do everything with this\nsoftware that would otherwise infringe any patent claims\nthey can license or become able to license.\n\n## Reliability\n\nNo contributor can revoke this license.\n\n## No Liability\n\n***As far as the law allows, this software comes as is,\nwithout any warranty or condition, and no contributor\nwill be liable to anyone for any damages related to this\nsoftware or this license, under any kind of legal claim.***",
+            "matcher": "1-hash",
+            "rule_identifier": "blueoak-1.0.0.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/blueoak-1.0.0.LICENSE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "blueoak_1_0_0-a010b21c-7420-e77f-a484-8c3f32bc60b5",
+        "license_expression": "blueoak-1.0.0",
+        "license_expression_spdx": "BlueOak-1.0.0",
+        "reference_matches": [
+          {
+            "end_line": 9,
+            "from_file": "024ba017f057220e501f68f46b94e6573aa0307aa260553ec8b0d51adf0ca239/package/package.json",
+            "license_expression": "blueoak-1.0.0",
+            "license_expression_spdx": "BlueOak-1.0.0",
+            "match_coverage": 100,
+            "matched_length": 5,
+            "matched_text": "  \"license\": \"BlueOak-1.0.0\",",
+            "matcher": "2-aho",
+            "rule_identifier": "blueoak-1.0.0_5.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/blueoak-1.0.0_5.RULE",
+            "score": 100,
+            "start_line": 9
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "https://blueoakcouncil.org/license/1.0.0",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [
+          "https://blueoakcouncil.org/license/1.0.0"
+        ],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "blueoak-1.0.0",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/blueoak-1.0.0",
+        "minimum_coverage": 0,
+        "name": "Blue Oak Model License 1.0.0",
+        "notes": null,
+        "osi_license_key": null,
+        "osi_url": null,
+        "other_spdx_license_keys": [],
+        "other_urls": [
+          "https://blueoakcouncil.org/license/1.0.0"
+        ],
+        "owner": "Blue Oak Council",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/blueoak-1.0.0.LICENSE",
+        "short_name": "Blue Oak Model License 1.0.0",
+        "spdx_license_key": "BlueOak-1.0.0",
+        "spdx_url": "https://spdx.org/licenses/BlueOak-1.0.0",
+        "standard_notice": null,
+        "text": "# Blue Oak Model License\n\nVersion 1.0.0\n\n## Purpose\n\nThis license gives everyone as much permission to work with\nthis software as possible, while protecting contributors\nfrom liability.\n\n## Acceptance\n\nIn order to receive this license, you must agree to its\nrules.  The rules of this license are both obligations\nunder that agreement and conditions to your license.\nYou must not do anything with this software that triggers\na rule that you cannot or will not follow.\n\n## Copyright\n\nEach contributor licenses you to do everything with this\nsoftware that would otherwise infringe that contributor's\ncopyright in it.\n\n## Notices\n\nYou must ensure that everyone who gets a copy of\nany part of this software from you, with or without\nchanges, also gets the text of this license or a link to\n<https://blueoakcouncil.org/license/1.0.0>.\n\n## Excuse\n\nIf anyone notifies you in writing that you have not\ncomplied with [Notices](#notices), you can keep your\nlicense by taking all practical steps to comply within 30\ndays after the notice.  If you do not do so, your license\nends immediately.\n\n## Patent\n\nEach contributor licenses you to do everything with this\nsoftware that would otherwise infringe any patent claims\nthey can license or become able to license.\n\n## Reliability\n\nNo contributor can revoke this license.\n\n## No Liability\n\n***As far as the law allows, this software comes as is,\nwithout any warranty or condition, and no contributor\nwill be liable to anyone for any damages related to this\nsoftware or this license, under any kind of legal claim.***",
+        "text_urls": []
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "blueoak-1.0.0.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [
+          "https://blueoakcouncil.org/license/1.0.0"
+        ],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 252,
+        "license_expression": "blueoak-1.0.0",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/blueoak-1.0.0.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "# Blue Oak Model License\n\nVersion 1.0.0\n\n## Purpose\n\nThis license gives everyone as much permission to work with\nthis software as possible, while protecting contributors\nfrom liability.\n\n## Acceptance\n\nIn order to receive this license, you must agree to its\nrules.  The rules of this license are both obligations\nunder that agreement and conditions to your license.\nYou must not do anything with this software that triggers\na rule that you cannot or will not follow.\n\n## Copyright\n\nEach contributor licenses you to do everything with this\nsoftware that would otherwise infringe that contributor's\ncopyright in it.\n\n## Notices\n\nYou must ensure that everyone who gets a copy of\nany part of this software from you, with or without\nchanges, also gets the text of this license or a link to\n<https://blueoakcouncil.org/license/1.0.0>.\n\n## Excuse\n\nIf anyone notifies you in writing that you have not\ncomplied with [Notices](#notices), you can keep your\nlicense by taking all practical steps to comply within 30\ndays after the notice.  If you do not do so, your license\nends immediately.\n\n## Patent\n\nEach contributor licenses you to do everything with this\nsoftware that would otherwise infringe any patent claims\nthey can license or become able to license.\n\n## Reliability\n\nNo contributor can revoke this license.\n\n## No Liability\n\n***As far as the law allows, this software comes as is,\nwithout any warranty or condition, and no contributor\nwill be liable to anyone for any damages related to this\nsoftware or this license, under any kind of legal claim.***"
+      },
+      {
+        "identifier": "blueoak-1.0.0_5.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": true,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 5,
+        "license_expression": "blueoak-1.0.0",
+        "minimum_coverage": 100,
+        "notes": "Rule based on an SPDX license identifier and name",
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/blueoak-1.0.0_5.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "license: BlueOak-1.0.0"
+      },
+      {
+        "identifier": "spdx-license-identifier-blueoak_1_0_0-a27d3d91aab5047de087c05901869c5f4a1f12e7",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 4,
+        "license_expression": "blueoak-1.0.0",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "BlueOak-1.0.0"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/minipass-flush/1.0.7",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "blueoak-1.0.0",
+        "declared_license_expression_spdx": "BlueOak-1.0.0",
+        "description": "A Minipass stream that calls a flush function before emitting 'end'",
+        "download_url": "https://registry.npmjs.org/minipass-flush/-/minipass-flush-1.0.7.tgz",
+        "extra_data": {
+          "engines": {
+            "node": ">= 8"
+          }
+        },
+        "extracted_license_statement": "- BlueOak-1.0.0\n",
+        "holder": null,
+        "homepage_url": null,
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "flush",
+          "minipass",
+          "stream"
+        ],
+        "license_detections": [
+          {
+            "identifier": "blueoak_1_0_0-3c25fef0-5634-6497-b6c8-0c16ab8320b3",
+            "license_expression": "blueoak-1.0.0",
+            "license_expression_spdx": "BlueOak-1.0.0",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "024ba017f057220e501f68f46b94e6573aa0307aa260553ec8b0d51adf0ca239/package/package.json",
+                "license_expression": "blueoak-1.0.0",
+                "license_expression_spdx": "BlueOak-1.0.0",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "BlueOak-1.0.0",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-blueoak_1_0_0-a27d3d91aab5047de087c05901869c5f4a1f12e7",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "minipass-flush",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "i@izs.me",
+            "name": "Isaac Z. Schlueter",
+            "role": "author",
+            "type": "person",
+            "url": "https://izs.me"
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/minipass-flush@1.0.7",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/minipass-flush/-/minipass-flush-1.0.7.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/minipass-flush",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/isaacs/minipass-flush.git",
+        "version": "1.0.7"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

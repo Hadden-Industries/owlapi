@@ -1,0 +1,4388 @@
+{
+  "artifactId": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 35,
+      "digestVerifiedFileCount": 35,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 35
+    },
+    "artifactId": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "0.0.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/join-path-js",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "0.0.6",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-tap-reporter",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.4.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-sourcemap-loader",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.4.2",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-edge-launcher",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.0.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-safari-launcher",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.3.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/mocha-lcov-reporter",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^10.0.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/babel-loader",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^11.3.2",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/fs-extra",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^11.7.5",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/mocha",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^17.0.1",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/browserify",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^17.1.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/nyc",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.0.1",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-mocha",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.0.6",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/klona",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.1.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/canonicalize",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.1.1",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/esmify",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.1.3",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-firefox-launcher",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.1.4",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/benchmark",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.2.5",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-mocha-reporter",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.8.5",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/cors",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.2.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-chrome-launcher",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.47.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/core-js",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.0.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/watchify",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.1.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/envify",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.2.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/%40digitalbazaar/http-client",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.5.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/chai",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.0.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/rdf-canonize",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.0.1",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-webpack",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.1.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/express",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.103.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/webpack",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.2.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint-config-digitalbazaar",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.0.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/lru-cache",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.0.1",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/webpack-cli",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.0.1",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/webpack-merge",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.4.4",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^7.0.3",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/cross-env",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^7.27.1",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40babel/plugin-transform-modules-commonjs",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^7.28.4",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40babel/runtime",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^7.28.5",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40babel/core",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^7.28.5",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40babel/plugin-transform-runtime",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^7.28.5",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40babel/preset-env",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^8.0.2",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-babel-preprocessor",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^8.1.0",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/karma-browserify",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^8.57.1",
+        "for_package_purl": "pkg:npm/jsonld@9.0.0",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Dave Longley",
+            "end_line": 15333,
+            "start_line": 15333
+          },
+          {
+            "author": "Dave Longley",
+            "end_line": 6399,
+            "start_line": 6399
+          }
+        ],
+        "base_name": "jsonld.esm",
+        "copyrights": [
+          {
+            "copyright": "(c) Steven Levithan <stevenlevithan.com>",
+            "end_line": 8384,
+            "start_line": 8384
+          },
+          {
+            "copyright": "Copyright (c) 2011-2022 Digital Bazaar, Inc.",
+            "end_line": 6402,
+            "start_line": 6402
+          },
+          {
+            "copyright": "Copyright (c) 2016-2021 Digital Bazaar, Inc.",
+            "end_line": 15349,
+            "start_line": 15349
+          },
+          {
+            "copyright": "Copyright (c) 2016-2022 Digital Bazaar, Inc.",
+            "end_line": 15490,
+            "start_line": 15490
+          },
+          {
+            "copyright": "Copyright (c) 2016-2022 Digital Bazaar, Inc.",
+            "end_line": 15908,
+            "start_line": 15908
+          },
+          {
+            "copyright": "Copyright (c) 2016-2023 Digital Bazaar, Inc.",
+            "end_line": 15443,
+            "start_line": 15443
+          },
+          {
+            "copyright": "Copyright (c) 2016-2023 Digital Bazaar, Inc.",
+            "end_line": 16001,
+            "start_line": 16001
+          },
+          {
+            "copyright": "Copyright (c) 2016-2023 Digital Bazaar, Inc.",
+            "end_line": 16584,
+            "start_line": 16584
+          },
+          {
+            "copyright": "Copyright (c) 2016-2023 Digital Bazaar, Inc.",
+            "end_line": 17161,
+            "start_line": 17161
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 1674,
+            "start_line": 1674
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 296,
+            "start_line": 296
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 330,
+            "start_line": 330
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 3335,
+            "start_line": 3335
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 3654,
+            "start_line": 3654
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 393,
+            "start_line": 393
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 4946,
+            "start_line": 4946
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 4995,
+            "start_line": 4995
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 501,
+            "start_line": 501
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 6267,
+            "start_line": 6267
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 7486,
+            "start_line": 7486
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 8270,
+            "start_line": 8270
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 8373,
+            "start_line": 8373
+          },
+          {
+            "copyright": "Copyright (c) 2017-2019 Digital Bazaar, Inc.",
+            "end_line": 1717,
+            "start_line": 1717
+          },
+          {
+            "copyright": "Copyright (c) 2017-2019 Digital Bazaar, Inc.",
+            "end_line": 411,
+            "start_line": 411
+          },
+          {
+            "copyright": "Copyright (c) 2017-2019 Digital Bazaar, Inc.",
+            "end_line": 8685,
+            "start_line": 8685
+          },
+          {
+            "copyright": "Copyright (c) 2017-2023 Digital Bazaar, Inc.",
+            "end_line": 5832,
+            "start_line": 5832
+          },
+          {
+            "copyright": "Copyright (c) 2017-2023 Digital Bazaar, Inc.",
+            "end_line": 7837,
+            "start_line": 7837
+          },
+          {
+            "copyright": "Copyright (c) 2019 Digital Bazaar, Inc.",
+            "end_line": 22,
+            "start_line": 22
+          },
+          {
+            "copyright": "Copyright (c) 2019 Digital Bazaar, Inc.",
+            "end_line": 460,
+            "start_line": 460
+          },
+          {
+            "copyright": "Copyright (c) 2020 Digital Bazaar, Inc.",
+            "end_line": 3463,
+            "start_line": 3463
+          },
+          {
+            "copyright": "Copyright (c) 2021 Digital Bazaar, Inc.",
+            "end_line": 7787,
+            "start_line": 7787
+          },
+          {
+            "copyright": "Copyright (c) 2023 Digital Bazaar, Inc.",
+            "end_line": 17378,
+            "start_line": 17378
+          },
+          {
+            "copyright": "Copyright 2010-2021 Digital Bazaar, Inc.",
+            "end_line": 15335,
+            "start_line": 15335
+          },
+          {
+            "copyright": "copyright (c) 2014-2025 Denis Pushkarev",
+            "end_line": 13002,
+            "start_line": 13002
+          }
+        ],
+        "detected_license_expression": "bsd-new AND mit",
+        "detected_license_expression_spdx": "BSD-3-Clause AND MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 13002,
+            "holder": "Denis Pushkarev",
+            "start_line": 13002
+          },
+          {
+            "end_line": 15335,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 15335
+          },
+          {
+            "end_line": 15349,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 15349
+          },
+          {
+            "end_line": 15443,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 15443
+          },
+          {
+            "end_line": 15490,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 15490
+          },
+          {
+            "end_line": 15908,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 15908
+          },
+          {
+            "end_line": 16001,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 16001
+          },
+          {
+            "end_line": 16584,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 16584
+          },
+          {
+            "end_line": 1674,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 1674
+          },
+          {
+            "end_line": 17161,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 17161
+          },
+          {
+            "end_line": 1717,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 1717
+          },
+          {
+            "end_line": 17378,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 17378
+          },
+          {
+            "end_line": 22,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 22
+          },
+          {
+            "end_line": 296,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 296
+          },
+          {
+            "end_line": 330,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 330
+          },
+          {
+            "end_line": 3335,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 3335
+          },
+          {
+            "end_line": 3463,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 3463
+          },
+          {
+            "end_line": 3654,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 3654
+          },
+          {
+            "end_line": 393,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 393
+          },
+          {
+            "end_line": 411,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 411
+          },
+          {
+            "end_line": 460,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 460
+          },
+          {
+            "end_line": 4946,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 4946
+          },
+          {
+            "end_line": 4995,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 4995
+          },
+          {
+            "end_line": 501,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 501
+          },
+          {
+            "end_line": 5832,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 5832
+          },
+          {
+            "end_line": 6267,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 6267
+          },
+          {
+            "end_line": 6402,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 6402
+          },
+          {
+            "end_line": 7486,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 7486
+          },
+          {
+            "end_line": 7787,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 7787
+          },
+          {
+            "end_line": 7837,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 7837
+          },
+          {
+            "end_line": 8270,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 8270
+          },
+          {
+            "end_line": 8373,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 8373
+          },
+          {
+            "end_line": 8384,
+            "holder": "Steven Levithan",
+            "start_line": 8384
+          },
+          {
+            "end_line": 8685,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 8685
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-7e2f7566-2195-266f-5076-bc1533da40cd",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 6429,
+                "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/dist/jsonld.esm.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 95.22,
+                "matched_length": 219,
+                "matched_text": " * @license BSD 3-Clause License\n * Copyright (c) 2011-2022 Digital Bazaar, Inc.\n * All rights reserved.\n *\n * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are met:\n *\n * Redistributions of source code must retain the above copyright notice,\n * this list of conditions and the following disclaimer.\n *\n * Redistributions in binary form must reproduce the above copyright\n * notice, this list of conditions and the following disclaimer in the\n * documentation and/or other materials provided with the distribution.\n *\n * Neither the name of the Digital Bazaar, Inc. nor the names of its\n * contributors may be used to endorse or promote products derived from\n * this software without specific prior written permission.\n *\n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS\n * IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED\n * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A\n * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\n * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\n * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED\n * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR\n * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF\n * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING\n * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\n * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-new_1145.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1145.RULE",
+                "score": 95.22,
+                "start_line": 6401
+              }
+            ]
+          },
+          {
+            "identifier": "bsd_new-86886923-dc80-ea14-0200-e6078d3d91b6",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 17188,
+                "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/dist/jsonld.esm.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 95.22,
+                "matched_length": 219,
+                "matched_text": " * BSD 3-Clause License\n * Copyright (c) 2016-2023 Digital Bazaar, Inc.\n * All rights reserved.\n *\n * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are met:\n *\n * Redistributions of source code must retain the above copyright notice,\n * this list of conditions and the following disclaimer.\n *\n * Redistributions in binary form must reproduce the above copyright\n * notice, this list of conditions and the following disclaimer in the\n * documentation and/or other materials provided with the distribution.\n *\n * Neither the name of the Digital Bazaar, Inc. nor the names of its\n * contributors may be used to endorse or promote products derived from\n * this software without specific prior written permission.\n *\n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS\n * IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED\n * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A\n * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\n * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\n * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED\n * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR\n * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF\n * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING\n * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\n * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-new_1145.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1145.RULE",
+                "score": 95.22,
+                "start_line": 17160
+              }
+            ]
+          },
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 8385,
+                "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/dist/jsonld.esm.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "// MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 8385
+              }
+            ]
+          }
+        ],
+        "md5": "f9f46c492fcbe0c1fbd2e7e7882463f7",
+        "name": "jsonld.esm.js",
+        "package_data": [],
+        "path": "package/dist/jsonld.esm.js",
+        "percentage_of_license_text": 0.66,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "dd0f186227806d62cca0eeae169d196b9c06af30",
+        "sha1_git": "d2bab461873b454246440e2df3d1d85f2a41d8b2",
+        "sha256": "d4cfcc3ad466b29fdc49b8eb0c7ed2545830fae79c99526999db2c5d6e913f7f",
+        "size": 623245,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Dave Longley",
+            "end_line": 19110,
+            "start_line": 19110
+          },
+          {
+            "author": "Dave Longley",
+            "end_line": 6399,
+            "start_line": 6399
+          }
+        ],
+        "base_name": "jsonld",
+        "copyrights": [
+          {
+            "copyright": "(c) Steven Levithan <stevenlevithan.com>",
+            "end_line": 8384,
+            "start_line": 8384
+          },
+          {
+            "copyright": "Copyright (c) 2011-2022 Digital Bazaar, Inc.",
+            "end_line": 6402,
+            "start_line": 6402
+          },
+          {
+            "copyright": "Copyright (c) 2016-2021 Digital Bazaar, Inc.",
+            "end_line": 19126,
+            "start_line": 19126
+          },
+          {
+            "copyright": "Copyright (c) 2016-2022 Digital Bazaar, Inc.",
+            "end_line": 19270,
+            "start_line": 19270
+          },
+          {
+            "copyright": "Copyright (c) 2016-2022 Digital Bazaar, Inc.",
+            "end_line": 19695,
+            "start_line": 19695
+          },
+          {
+            "copyright": "Copyright (c) 2016-2023 Digital Bazaar, Inc.",
+            "end_line": 19221,
+            "start_line": 19221
+          },
+          {
+            "copyright": "Copyright (c) 2016-2023 Digital Bazaar, Inc.",
+            "end_line": 19790,
+            "start_line": 19790
+          },
+          {
+            "copyright": "Copyright (c) 2016-2023 Digital Bazaar, Inc.",
+            "end_line": 20376,
+            "start_line": 20376
+          },
+          {
+            "copyright": "Copyright (c) 2016-2023 Digital Bazaar, Inc.",
+            "end_line": 20956,
+            "start_line": 20956
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 1674,
+            "start_line": 1674
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 296,
+            "start_line": 296
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 330,
+            "start_line": 330
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 3335,
+            "start_line": 3335
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 3654,
+            "start_line": 3654
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 393,
+            "start_line": 393
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 4946,
+            "start_line": 4946
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 4995,
+            "start_line": 4995
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 501,
+            "start_line": 501
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 6267,
+            "start_line": 6267
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 7486,
+            "start_line": 7486
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 8270,
+            "start_line": 8270
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 8373,
+            "start_line": 8373
+          },
+          {
+            "copyright": "Copyright (c) 2017-2019 Digital Bazaar, Inc.",
+            "end_line": 1717,
+            "start_line": 1717
+          },
+          {
+            "copyright": "Copyright (c) 2017-2019 Digital Bazaar, Inc.",
+            "end_line": 411,
+            "start_line": 411
+          },
+          {
+            "copyright": "Copyright (c) 2017-2019 Digital Bazaar, Inc.",
+            "end_line": 8685,
+            "start_line": 8685
+          },
+          {
+            "copyright": "Copyright (c) 2017-2023 Digital Bazaar, Inc.",
+            "end_line": 5832,
+            "start_line": 5832
+          },
+          {
+            "copyright": "Copyright (c) 2017-2023 Digital Bazaar, Inc.",
+            "end_line": 7837,
+            "start_line": 7837
+          },
+          {
+            "copyright": "Copyright (c) 2019 Digital Bazaar, Inc.",
+            "end_line": 22,
+            "start_line": 22
+          },
+          {
+            "copyright": "Copyright (c) 2019 Digital Bazaar, Inc.",
+            "end_line": 460,
+            "start_line": 460
+          },
+          {
+            "copyright": "Copyright (c) 2020 Digital Bazaar, Inc.",
+            "end_line": 3463,
+            "start_line": 3463
+          },
+          {
+            "copyright": "Copyright (c) 2021 Digital Bazaar, Inc.",
+            "end_line": 7787,
+            "start_line": 7787
+          },
+          {
+            "copyright": "Copyright (c) 2023 Digital Bazaar, Inc.",
+            "end_line": 21175,
+            "start_line": 21175
+          },
+          {
+            "copyright": "Copyright 2010-2021 Digital Bazaar, Inc.",
+            "end_line": 19112,
+            "start_line": 19112
+          },
+          {
+            "copyright": "copyright (c) 2014-2025 Denis Pushkarev",
+            "end_line": 15002,
+            "start_line": 15002
+          }
+        ],
+        "detected_license_expression": "bsd-new AND mit",
+        "detected_license_expression_spdx": "BSD-3-Clause AND MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 15002,
+            "holder": "Denis Pushkarev",
+            "start_line": 15002
+          },
+          {
+            "end_line": 1674,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 1674
+          },
+          {
+            "end_line": 1717,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 1717
+          },
+          {
+            "end_line": 19112,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 19112
+          },
+          {
+            "end_line": 19126,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 19126
+          },
+          {
+            "end_line": 19221,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 19221
+          },
+          {
+            "end_line": 19270,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 19270
+          },
+          {
+            "end_line": 19695,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 19695
+          },
+          {
+            "end_line": 19790,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 19790
+          },
+          {
+            "end_line": 20376,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 20376
+          },
+          {
+            "end_line": 20956,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 20956
+          },
+          {
+            "end_line": 21175,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 21175
+          },
+          {
+            "end_line": 22,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 22
+          },
+          {
+            "end_line": 296,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 296
+          },
+          {
+            "end_line": 330,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 330
+          },
+          {
+            "end_line": 3335,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 3335
+          },
+          {
+            "end_line": 3463,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 3463
+          },
+          {
+            "end_line": 3654,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 3654
+          },
+          {
+            "end_line": 393,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 393
+          },
+          {
+            "end_line": 411,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 411
+          },
+          {
+            "end_line": 460,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 460
+          },
+          {
+            "end_line": 4946,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 4946
+          },
+          {
+            "end_line": 4995,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 4995
+          },
+          {
+            "end_line": 501,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 501
+          },
+          {
+            "end_line": 5832,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 5832
+          },
+          {
+            "end_line": 6267,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 6267
+          },
+          {
+            "end_line": 6402,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 6402
+          },
+          {
+            "end_line": 7486,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 7486
+          },
+          {
+            "end_line": 7787,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 7787
+          },
+          {
+            "end_line": 7837,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 7837
+          },
+          {
+            "end_line": 8270,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 8270
+          },
+          {
+            "end_line": 8373,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 8373
+          },
+          {
+            "end_line": 8384,
+            "holder": "Steven Levithan",
+            "start_line": 8384
+          },
+          {
+            "end_line": 8685,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 8685
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-7e2f7566-2195-266f-5076-bc1533da40cd",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 6429,
+                "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/dist/jsonld.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 95.22,
+                "matched_length": 219,
+                "matched_text": " * @license BSD 3-Clause License\n * Copyright (c) 2011-2022 Digital Bazaar, Inc.\n * All rights reserved.\n *\n * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are met:\n *\n * Redistributions of source code must retain the above copyright notice,\n * this list of conditions and the following disclaimer.\n *\n * Redistributions in binary form must reproduce the above copyright\n * notice, this list of conditions and the following disclaimer in the\n * documentation and/or other materials provided with the distribution.\n *\n * Neither the name of the Digital Bazaar, Inc. nor the names of its\n * contributors may be used to endorse or promote products derived from\n * this software without specific prior written permission.\n *\n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS\n * IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED\n * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A\n * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\n * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\n * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED\n * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR\n * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF\n * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING\n * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\n * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-new_1145.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1145.RULE",
+                "score": 95.22,
+                "start_line": 6401
+              }
+            ]
+          },
+          {
+            "identifier": "bsd_new-86886923-dc80-ea14-0200-e6078d3d91b6",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 20983,
+                "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/dist/jsonld.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 95.22,
+                "matched_length": 219,
+                "matched_text": " * BSD 3-Clause License\n * Copyright (c) 2016-2023 Digital Bazaar, Inc.\n * All rights reserved.\n *\n * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are met:\n *\n * Redistributions of source code must retain the above copyright notice,\n * this list of conditions and the following disclaimer.\n *\n * Redistributions in binary form must reproduce the above copyright\n * notice, this list of conditions and the following disclaimer in the\n * documentation and/or other materials provided with the distribution.\n *\n * Neither the name of the Digital Bazaar, Inc. nor the names of its\n * contributors may be used to endorse or promote products derived from\n * this software without specific prior written permission.\n *\n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS\n * IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED\n * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A\n * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\n * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\n * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED\n * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR\n * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF\n * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING\n * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\n * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-new_1145.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1145.RULE",
+                "score": 95.22,
+                "start_line": 20955
+              }
+            ]
+          },
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 8385,
+                "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/dist/jsonld.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "// MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 8385
+              }
+            ]
+          }
+        ],
+        "md5": "364eb87e0ffcd4323c6f0b3897882d5f",
+        "name": "jsonld.js",
+        "package_data": [],
+        "path": "package/dist/jsonld.js",
+        "percentage_of_license_text": 0.52,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "5f7b7d192dfc7d6abfa16fbc7df4132552e0af64",
+        "sha1_git": "318ecc776374378f2c133996ec0329b65cb848a1",
+        "sha256": "9524f41aa6dad64af0adeed097d179787c6581833a45327262f733d3dabf6242",
+        "size": 791593,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Dave Longley",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright 2010-2021 Digital Bazaar, Inc.",
+            "end_line": 6,
+            "start_line": 6
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 6,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 6
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "41c530ed38b25bc9026494130f48b94b",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/lib/index.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "e75a40ee0cc6a61bb6e181aa07c68c80024aa01c",
+        "sha1_git": "93a12da4d1f7cdef0824ccb9f5f2c261313b5e1d",
+        "sha256": "34f3d2e69fb0bd1fbf8ebe573651688d80d48deb64776072553358aacd36c42d",
+        "size": 142,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Dave Longley",
+            "end_line": 4,
+            "start_line": 4
+          }
+        ],
+        "base_name": "jsonld",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2011-2022 Digital Bazaar, Inc.",
+            "end_line": 7,
+            "start_line": 7
+          }
+        ],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 7,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 7
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-7e2f7566-2195-266f-5076-bc1533da40cd",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 34,
+                "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/lib/jsonld.js",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 95.22,
+                "matched_length": 219,
+                "matched_text": " * @license BSD 3-Clause License\n * Copyright (c) 2011-2022 Digital Bazaar, Inc.\n * All rights reserved.\n *\n * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are met:\n *\n * Redistributions of source code must retain the above copyright notice,\n * this list of conditions and the following disclaimer.\n *\n * Redistributions in binary form must reproduce the above copyright\n * notice, this list of conditions and the following disclaimer in the\n * documentation and/or other materials provided with the distribution.\n *\n * Neither the name of the Digital Bazaar, Inc. nor the names of its\n * contributors may be used to endorse or promote products derived from\n * this software without specific prior written permission.\n *\n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS\n * IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED\n * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A\n * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\n * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\n * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED\n * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR\n * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF\n * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING\n * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\n * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-new_1145.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1145.RULE",
+                "score": 95.22,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "8d8e4e20fb9dbc61e7658492e21d9a21",
+        "name": "jsonld.js",
+        "package_data": [],
+        "path": "package/lib/jsonld.js",
+        "percentage_of_license_text": 5.8,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "a3e76b7661fbd7fd8d7f9aaa32e19cbf0c815e76",
+        "sha1_git": "b420e42da9c78c5a93b66e4588338398cce4dc73",
+        "sha256": "14fd60de8ce342f47c105e6fa4ceeae1278452536de5fa8b79332f0487c8f252",
+        "size": 33578,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Digital Bazaar, Inc",
+            "end_line": 7,
+            "start_line": 6
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "bsd-new",
+        "detected_license_expression_spdx": "BSD-3-Clause",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-008266ae-6939-ad31-3617-228b0809863c",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 23,
+                "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/package.json",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "  \"license\": \"BSD-3-Clause\",",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_195.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+                "score": 100,
+                "start_line": 23
+              }
+            ]
+          }
+        ],
+        "md5": "8c3c21c2fd1407e362c9fe5134576b3b",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/jsonld/9.0.0",
+            "bug_tracking_url": "https://github.com/digitalbazaar/jsonld.js/issues",
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "bsd-new",
+            "declared_license_expression_spdx": "BSD-3-Clause",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "0.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/join-path-js",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "0.0.6",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-tap-reporter",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.4.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-sourcemap-loader",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.4.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-edge-launcher",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-safari-launcher",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.3.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/mocha-lcov-reporter",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^10.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/babel-loader",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^11.3.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/fs-extra",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^11.7.5",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/mocha",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^17.0.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/browserify",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^17.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/nyc",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.0.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-mocha",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.0.6",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/klona",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.1.0",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/canonicalize",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.1.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/esmify",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.1.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-firefox-launcher",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.1.4",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/benchmark",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.2.5",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-mocha-reporter",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.8.5",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/cors",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.2.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-chrome-launcher",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.47.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/core-js",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/watchify",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/envify",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.2.0",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/%40digitalbazaar/http-client",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.5.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/chai",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.0.0",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/rdf-canonize",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.0.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-webpack",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/express",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.103.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/webpack",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.2.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint-config-digitalbazaar",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.0.0",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/lru-cache",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.0.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/webpack-cli",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.0.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/webpack-merge",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.4.4",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^7.0.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/cross-env",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^7.27.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40babel/plugin-transform-modules-commonjs",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^7.28.4",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40babel/runtime",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^7.28.5",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40babel/core",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^7.28.5",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40babel/plugin-transform-runtime",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^7.28.5",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40babel/preset-env",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^8.0.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-babel-preprocessor",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^8.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/karma-browserify",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^8.57.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "A JSON-LD Processor and API implementation in JavaScript.",
+            "download_url": "https://registry.npmjs.org/jsonld/-/jsonld-9.0.0.tgz",
+            "extra_data": {
+              "engines": {
+                "node": ">=18"
+              }
+            },
+            "extracted_license_statement": "- BSD-3-Clause\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://github.com/digitalbazaar/jsonld.js",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "JSON",
+              "JSON-LD",
+              "Linked Data",
+              "RDF",
+              "Semantic Web",
+              "jsonld"
+            ],
+            "license_detections": [
+              {
+                "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/package.json",
+                    "license_expression": "bsd-new",
+                    "license_expression_spdx": "BSD-3-Clause",
+                    "match_coverage": 100,
+                    "matched_length": 3,
+                    "matched_text": "BSD-3-Clause",
+                    "matcher": "1-hash",
+                    "rule_identifier": "bsd-new_10.RULE",
+                    "rule_relevance": 100,
+                    "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "jsonld",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "dlehn@digitalbazaar.com",
+                "name": "David I. Lehn",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "dlongley@digitalbazaar.com",
+                "name": "Dave Longley",
+                "role": "contributor",
+                "type": "person",
+                "url": null
+              },
+              {
+                "email": "support@digitalbazaar.com",
+                "name": "Digital Bazaar, Inc.",
+                "role": "author",
+                "type": "person",
+                "url": "https://digitalbazaar.com/"
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/jsonld@9.0.0",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/jsonld/-/jsonld-9.0.0.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/jsonld",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/digitalbazaar/jsonld.js",
+            "version": "9.0.0"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 0.63,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "a024bef3dccb0380718ef06821ece08aa8f090d5",
+        "sha1_git": "cb73d70a1acec2927d1df0e1f73339b20a9bc3b5",
+        "sha256": "055ed69d0e7ac0f5f813667c106cb90191dbeef0a91454b3c42b2b9cf3819d21",
+        "size": 4458,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "ContextResolver",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2019 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "436b0ffb5cc7bb3fd4b43725a356dcc2",
+        "name": "ContextResolver.js",
+        "package_data": [],
+        "path": "package/lib/ContextResolver.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "ffd1a8ee3ebb2953b9858b7905eb9d451ac3517e",
+        "sha1_git": "29579ac6d0c7df1a5ff1566c76caeab7c14d97ec",
+        "sha256": "2f8e65f3d73c5309e4312e7e81da427533745b800030f591a55056c69d1d3bf6",
+        "size": 7576,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "JsonLdError",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "3fa766bcf077fb78fcb842f7c5ea4f0d",
+        "name": "JsonLdError.js",
+        "package_data": [],
+        "path": "package/lib/JsonLdError.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "68a6af913b94f75d1617c8b404d42dcf6d049ab4",
+        "sha1_git": "5972d1580d60d3e76e2d69c3ac0cbac8b7c1f35c",
+        "sha256": "743345136e24ef00c4dc5ac8673c248685d0f11ac9661b90e55df7ee1008e1ca",
+        "size": 514,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "JsonLdProcessor",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "95c02080474d19cb51cacbf8bd5c5484",
+        "name": "JsonLdProcessor.js",
+        "package_data": [],
+        "path": "package/lib/JsonLdProcessor.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "9b9cbfe1eb306f4aa3e00d22a9d1814a44d7794f",
+        "sha1_git": "9b1c12394e97ecddf221129ceea21fda966c872e",
+        "sha256": "4f212aea363632dd3e830955ee0ff83eb9881d88c95c705718ef75238d65da29",
+        "size": 1485,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2010, Digital Bazaar, Inc.",
+            "end_line": 17,
+            "start_line": 17
+          }
+        ],
+        "detected_license_expression": "bsd-new AND unknown",
+        "detected_license_expression_spdx": "BSD-3-Clause AND LicenseRef-scancode-unknown",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 17,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 17
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "bsd_new_and_unknown-fbf52e3f-9f1d-ff48-75da-3a1dde8e7057",
+            "license_expression": "bsd-new AND unknown",
+            "license_expression_spdx": "BSD-3-Clause AND LicenseRef-scancode-unknown",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 7,
+                "matched_text": "You may use the jsonld.js project under the terms of the BSD License.",
+                "matcher": "2-aho",
+                "rule_identifier": "bsd-new_906.RULE",
+                "rule_relevance": 99,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_906.RULE",
+                "score": 99,
+                "start_line": 1
+              },
+              {
+                "end_line": 13,
+                "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/LICENSE",
+                "license_expression": "unknown",
+                "license_expression_spdx": "LicenseRef-scancode-unknown",
+                "match_coverage": 100,
+                "matched_length": 67,
+                "matched_text": "You are free to use this project in commercial projects as long as the \ncopyright header is left intact.\n\nIf you are a commercial entity and use this set of libraries in your\ncommercial software then reasonable payment to Digital Bazaar, if you can\nafford it, is not required but is expected and would be appreciated. If this\nlibrary saves you time, then it's saving you money. The cost of developing\nJSON-LD was on the order of several months of work and tens of\nthousands of dollars. We are attempting to strike a balance between helping\nthe development community while not being taken advantage of by lucrative\ncommercial entities for our efforts.",
+                "matcher": "6-unknown",
+                "rule_identifier": "license-detection-unknown-ae7dcb7c87e73b30943857e4d14183043ab6481c",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 62.04,
+                "start_line": 3
+              },
+              {
+                "end_line": 40,
+                "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/LICENSE",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 97.65,
+                "matched_length": 208,
+                "matched_text": "New BSD License (3-clause)\nCopyright (c) 2010, Digital Bazaar, Inc.\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of Digital Bazaar, Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL DIGITAL BAZAAR BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+                "matcher": "3-seq",
+                "rule_identifier": "bsd-new_readme3.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_readme3.RULE",
+                "score": 97.65,
+                "start_line": 16
+              }
+            ]
+          }
+        ],
+        "md5": "d78e5e430433dfb889863bf7a7f57047",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 80.57,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "3285d341f89c13509cd0bc56b81187ec761dd0ed",
+        "sha1_git": "5a8c53e4fc6dc5f5b9333adf881dc737893652ca",
+        "sha256": "0707101bd4a2fc564788b1ba03c53615e35388dad33879663db263e724a6bd4a",
+        "size": 2336,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "NQuads",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "dbd6026a0d191a8d3644ce0b98365a2f",
+        "name": "NQuads.js",
+        "package_data": [],
+        "path": "package/lib/NQuads.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "3c8132d09353800b0039f307149f6dfddf8e3ece",
+        "sha1_git": "9c4d03e687eecc968fa5e6bb9f3722ceaf31b9ab",
+        "sha256": "e37f0cd14b1fc01b6e846318ff9dbc4b6227569da852dd614096f09637c73b8a",
+        "size": 177,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "af1dce696b1feb9c01e11dd4e7d540e2",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "2b42e6df708f18f7f253f050397b6b322f38d8aa",
+        "sha1_git": "9848deca8a1735c1a32209394f2bd8fef3483858",
+        "sha256": "065c72e4eb81b47b2fcf9449304c120ae0956d1340d4404b594ed0e5e6b0f99c",
+        "size": 16805,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "RequestQueue",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-2019 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "e3f486260ee106a70b8de5b8963328d6",
+        "name": "RequestQueue.js",
+        "package_data": [],
+        "path": "package/lib/RequestQueue.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "7ca7392671b14f683277804a01695c9b06ebf20f",
+        "sha1_git": "9928239b92e7674d93b1ba56265015e0f431f131",
+        "sha256": "69738752d6dde37b44b60a0bd05c478aefed3c08b60deb823154769049c6b143",
+        "size": 764,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "ResolvedContext",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2019 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "12f9614fd150262e5b150ceff5234bef",
+        "name": "ResolvedContext.js",
+        "package_data": [],
+        "path": "package/lib/ResolvedContext.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "5bcdfb4dbe681255184eb231cbb2bfd7c4fe0317",
+        "sha1_git": "d2a908de20482a2872f86bd78251d7f61573f903",
+        "sha256": "a63af18a67418c8bb49dd34be25a69c9868becfeeb516da96ad7d0dcca6e00ba",
+        "size": 704,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "compact",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "5956c7494223dfa9d626437e69d5d312",
+        "name": "compact.js",
+        "package_data": [],
+        "path": "package/lib/compact.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "3e38661fd28c854dace0ad36ef21b62c206daf4e",
+        "sha1_git": "8fd82eac6f018aa26f15e75df677aa13dfcf2215",
+        "sha256": "7ccfe8996cb335e7b6c66f61f9d6cdb98aedf94a286d2eb4e92b967f77aac071",
+        "size": 38367,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "constants",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "58951e2716bea11b2e5ecf6c860ed8ef",
+        "name": "constants.js",
+        "package_data": [],
+        "path": "package/lib/constants.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "7b0f9759ba9955d8badcfb7a07937ebda8cc082d",
+        "sha1_git": "9bd2c3d5f13983612175131d2e4c7352cf2c0830",
+        "sha256": "12280956c21c8dd3e3a50d04656503fb91bfc5294755718913e36f7f681b67e3",
+        "size": 868,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "context",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-2019 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "5b2b2037369704fb75a6059a8c661a18",
+        "name": "context.js",
+        "package_data": [],
+        "path": "package/lib/context.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "d26ea6bbbc2d7e1ff064bba71971aad280220d5c",
+        "sha1_git": "f9fdcc842752a1240f417d4386496c6f7da420ba",
+        "sha256": "eaa538a319076e8750299817ae51cd253bcea2a3aa1fdf15c15297aedcf720af",
+        "size": 50000,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "events",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2020 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "4d2840deda2b75892f1c59c6b56f2c0d",
+        "name": "events.js",
+        "package_data": [],
+        "path": "package/lib/events.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "59d4152cca547ae138393837e280cd9d889f8d73",
+        "sha1_git": "89c32f17ff9a3cabeebea4bcd799fcb11fac68d9",
+        "sha256": "f3e4ce80b42758305c8e77af375598e0ec12648791ce6602d25672d9d3d39be6",
+        "size": 5200,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "expand",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "e0396ad473a8caf3ce1fb96007197e4f",
+        "name": "expand.js",
+        "package_data": [],
+        "path": "package/lib/expand.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "87b6f3f0680d59d3711037c5e632e5a269e02436",
+        "sha1_git": "dc52fc680e5a75ef80c36a0cba8b55f58bc21a2c",
+        "sha256": "ca0d293995542784d8ce0851c135993043d13b6c13f918b4f870cde297ddefef",
+        "size": 39859,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "flatten",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "cd84b575f71bbaf8712d1f6c69500319",
+        "name": "flatten.js",
+        "package_data": [],
+        "path": "package/lib/flatten.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "06837037badd457004d788e988c1b840301d28bc",
+        "sha1_git": "d8b34bbeb60d1c593dea4494a442b60c54800efc",
+        "sha256": "a1a4c36cdece1aad52e37bd436348e2582daa823fc220b7cee736e64d4466d97",
+        "size": 819,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "frame",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "97cf295fedd7ab5faf1dcd7bcc4c59a6",
+        "name": "frame.js",
+        "package_data": [],
+        "path": "package/lib/frame.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "9464b27a1d320b70f6d01611efa35c5deba5a396",
+        "sha1_git": "5244d04ef059dc6fbdf9797175feb706cb1d09d7",
+        "sha256": "ee82b013b3097f718e66aaa9f8d623f6f772f9952ec63b582d759a2c9c9b7cec",
+        "size": 25273,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "fromRdf",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-2023 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "8f7e42828bd7e98c14c74c693eca35d4",
+        "name": "fromRdf.js",
+        "package_data": [],
+        "path": "package/lib/fromRdf.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "4cdacb405d57bcf4913d6ae968818bab026c5647",
+        "sha1_git": "ee5ec9ab38370d117508a1b0f59e94214c7d8f63",
+        "sha256": "f5a515d7755777b4f787e5c65fd1399db646a20649a8715c51fe477f3499b804",
+        "size": 11593,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "graphTypes",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "4d9fb29d116c323bd942acdb023b4323",
+        "name": "graphTypes.js",
+        "package_data": [],
+        "path": "package/lib/graphTypes.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "adf7db595dba1e000521e8fad93c431d3bf69615",
+        "sha1_git": "3d06d6cf46693f210830853125d037eb61243015",
+        "sha256": "8ca15b8bf7960ed06151286069ceca5a0c0a0de04d809e55c1c5522e7eca1c34",
+        "size": 3300,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "jsonld.esm.min",
+        "copyrights": [
+          {
+            "copyright": "(c) 2014-2025 Denis Pushkarev",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Denis Pushkarev",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "6b7e1b5a5d99f9c28632f5934a8ab12b",
+        "name": "jsonld.esm.min.js",
+        "package_data": [],
+        "path": "package/dist/jsonld.esm.min.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "2af5d23fc7baef0db60809562bb0f915e2a7bddf",
+        "sha1_git": "3cda262c767ea2e12c986e0ab2d829809f222daa",
+        "sha256": "1878ed3ef5cb87e7514d36dbb575d5a9004fa7cb452cff4f945eb891ac87f4eb",
+        "size": 164446,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "jsonld.esm.min.js",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "44f6102c283f5ae523b49a9aeec83014",
+        "name": "jsonld.esm.min.js.map",
+        "package_data": [],
+        "path": "package/dist/jsonld.esm.min.js.map",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "c2007cd540fb3bff92244a4af8bf4a870ddaaa07",
+        "sha1_git": "7f2409c7397689856cadfb4d613fdf8f1ab6eb04",
+        "sha256": "50479b62392b0ef5dd826a8943a248aab1dbdcfe45cfb5a4d9621fe118fd4b11",
+        "size": 575,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "jsonld.min",
+        "copyrights": [
+          {
+            "copyright": "(c) 2014-2025 Denis Pushkarev",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Denis Pushkarev",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "a4e32d780ddeb670475cac822a4ce93c",
+        "name": "jsonld.min.js",
+        "package_data": [],
+        "path": "package/dist/jsonld.min.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "467b3d6378cd8cd8e44ff859429eeb0d39aaec2b",
+        "sha1_git": "f9e0b6ebc06f134b448b86b13c6b02c269f484be",
+        "sha256": "380e91a398c55b86e88ba7aef93f7512e0a9540c7065e6e84190e0aa43bbf8ea",
+        "size": 197279,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "jsonld.min.js",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "061c7f7cd6ab15ed841b9cd861c21d97",
+        "name": "jsonld.min.js.map",
+        "package_data": [],
+        "path": "package/dist/jsonld.min.js.map",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "608f1dc3ef38264c6b2ee705b503726ae3e3569a",
+        "sha1_git": "b16e71761a7a140179dc1c01c86a477411b7a6fe",
+        "sha256": "e83ed798a9e853fcd9a022f2eb585e127b6b91e4916ef98bec9ba84ee4e48d45",
+        "size": 571,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "node",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-2021 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "5d4afaa0f8013b493a4b1781be2f6b51",
+        "name": "node.js",
+        "package_data": [],
+        "path": "package/lib/documentLoaders/node.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "1600d268c951f862dc862e26c512aa7b57ed1b9a",
+        "sha1_git": "61ad6b301ed1fa293aa0a0974892013171f4783d",
+        "sha256": "5afc0904dffe7b60c9375c9c3ffe239b649255e9adf360348481feb50b7d2898",
+        "size": 6441,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nodeMap",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "ad1ee90b512904d2373f6240eadc08d5",
+        "name": "nodeMap.js",
+        "package_data": [],
+        "path": "package/lib/nodeMap.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "401432b49202c7cb2a99e04db23ba73b6d8519c3",
+        "sha1_git": "9e61d5e03b530e2273773f60dc21c151610d6dba",
+        "sha256": "4d1d60c5cec708b6377b40497b0655b991aa0e76e365a48a0c1029a70e4b8631",
+        "size": 8379,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "platform",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2021 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "653ce191aa429ee62ab716d57641c5d6",
+        "name": "platform.js",
+        "package_data": [],
+        "path": "package/lib/platform.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "a53bc59707c83496647e48ed210d9e5a267c823e",
+        "sha1_git": "49d1f9c82f86d3851cf67a182856002e5a37342e",
+        "sha256": "84d90a61fc41343420b431ad1f54a18b0299263936ee65030284211b692b1a9c",
+        "size": 609,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "platform-browser",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2021 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "633fb04681ae7661b05c62160592064c",
+        "name": "platform-browser.js",
+        "package_data": [],
+        "path": "package/lib/platform-browser.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "b40da2db16b90424d2e6c1df8d2f07c82d753cd2",
+        "sha1_git": "5afa26e859de217eb59502745ce94ba3be65cbba",
+        "sha256": "e56bfa5fff87ceaf625bc681a87b773c846a54a1269163e843cd210f683e3e73",
+        "size": 871,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "toRdf",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-2023 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "4a9d5660f5c529d2c9880022cbdd933e",
+        "name": "toRdf.js",
+        "package_data": [],
+        "path": "package/lib/toRdf.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "1b5b5ee3608645292e2cab7347ccd6ac3c62a3da",
+        "sha1_git": "e8a54844605d39d679e4dc94fdfc51da3b859d40",
+        "sha256": "569a8cc0cee3c06c8b217f0c7682c7c792a17c43e6e61301a5150022ee7f866c",
+        "size": 11782,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "types",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "f93137e5c647baa94a46eaecc20ad6b1",
+        "name": "types.js",
+        "package_data": [],
+        "path": "package/lib/types.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "7915b140ada7d091679d795f04c07e34d4bb3ecb",
+        "sha1_git": "d07e4fa1827614ce5f7add89af3ce3982f5d4487",
+        "sha256": "3d11e664de2a672f01abe029ca89cbb4f8704ad0d6aa7c18a9c9ffb82d47cea7",
+        "size": 2206,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "url",
+        "copyrights": [
+          {
+            "copyright": "(c) Steven Levithan <stevenlevithan.com>",
+            "end_line": 13,
+            "start_line": 13
+          },
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 13,
+            "holder": "Steven Levithan",
+            "start_line": 13
+          },
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 14,
+                "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/lib/url.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "// MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 14
+              }
+            ]
+          }
+        ],
+        "md5": "3e2c3f0b6c219f71c3fc5b2f867591c5",
+        "name": "url.js",
+        "package_data": [],
+        "path": "package/lib/url.js",
+        "percentage_of_license_text": 0.24,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "8986fc551bf83e2770503105699517e20d241a6d",
+        "sha1_git": "7e59779188bbb47aeb415b872eb67de89cad1b9e",
+        "sha256": "8774106ffc62553976cc3b29d93fbf135fbbe3ab482d27fa245e5a8158e3a560",
+        "size": 7347,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "util",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017-2019 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "d7a33768e2df51f2d8df8326ecef220e",
+        "name": "util.js",
+        "package_data": [],
+        "path": "package/lib/util.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "e07829276164efacaccb892206791000d924513e",
+        "sha1_git": "57bf9f74a0e7aad5d01d3fbc15accc338c7c61e0",
+        "sha256": "032b1b1a852d502cd194f73ddccacf10cf8a5b0fa38b9e82ea1b24ea47a1d251",
+        "size": 12638,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "xhr",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017 Digital Bazaar, Inc.",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/jsonld@9.0.0"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Digital Bazaar, Inc.",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "3b7274777bb4ec44a5a18f421f6e6e38",
+        "name": "xhr.js",
+        "package_data": [],
+        "path": "package/lib/documentLoaders/xhr.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "505f6c4dfed9d926293a98a01e7c87d3404acf63",
+        "sha1_git": "806888175989a00919a90d21e6bb5fa66a8e829a",
+        "sha256": "6cd215fd118c6036eabc0884222d11c6e9b0839007237df41f0deb1b456bd4c9",
+        "size": 3735,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-008266ae-6939-ad31-3617-228b0809863c",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 23,
+            "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/package.json",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "  \"license\": \"BSD-3-Clause\",",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_195.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+            "score": 100,
+            "start_line": 23
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/package.json",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 3,
+            "matched_text": "BSD-3-Clause",
+            "matcher": "1-hash",
+            "rule_identifier": "bsd-new_10.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "bsd_new_and_unknown-fbf52e3f-9f1d-ff48-75da-3a1dde8e7057",
+        "license_expression": "bsd-new AND unknown",
+        "license_expression_spdx": "BSD-3-Clause AND LicenseRef-scancode-unknown",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/LICENSE",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 100,
+            "matched_length": 7,
+            "matched_text": "You may use the jsonld.js project under the terms of the BSD License.",
+            "matcher": "2-aho",
+            "rule_identifier": "bsd-new_906.RULE",
+            "rule_relevance": 99,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_906.RULE",
+            "score": 99,
+            "start_line": 1
+          },
+          {
+            "end_line": 13,
+            "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/LICENSE",
+            "license_expression": "unknown",
+            "license_expression_spdx": "LicenseRef-scancode-unknown",
+            "match_coverage": 100,
+            "matched_length": 67,
+            "matched_text": "You are free to use this project in commercial projects as long as the \ncopyright header is left intact.\n\nIf you are a commercial entity and use this set of libraries in your\ncommercial software then reasonable payment to Digital Bazaar, if you can\nafford it, is not required but is expected and would be appreciated. If this\nlibrary saves you time, then it's saving you money. The cost of developing\nJSON-LD was on the order of several months of work and tens of\nthousands of dollars. We are attempting to strike a balance between helping\nthe development community while not being taken advantage of by lucrative\ncommercial entities for our efforts.",
+            "matcher": "6-unknown",
+            "rule_identifier": "license-detection-unknown-c9c476950ae6be770bd17eba1bcc33936f2ba87b",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 62.04,
+            "start_line": 3
+          },
+          {
+            "end_line": 40,
+            "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/LICENSE",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 97.65,
+            "matched_length": 208,
+            "matched_text": "New BSD License (3-clause)\nCopyright (c) 2010, Digital Bazaar, Inc.\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of Digital Bazaar, Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL DIGITAL BAZAAR BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "3-seq",
+            "rule_identifier": "bsd-new_readme3.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_readme3.RULE",
+            "score": 97.65,
+            "start_line": 16
+          }
+        ]
+      },
+      {
+        "detection_count": 2,
+        "identifier": "bsd_new-86886923-dc80-ea14-0200-e6078d3d91b6",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 17188,
+            "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/dist/jsonld.esm.js",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 95.22,
+            "matched_length": 219,
+            "matched_text": " * BSD 3-Clause License\n * Copyright (c) 2016-2023 Digital Bazaar, Inc.\n * All rights reserved.\n *\n * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are met:\n *\n * Redistributions of source code must retain the above copyright notice,\n * this list of conditions and the following disclaimer.\n *\n * Redistributions in binary form must reproduce the above copyright\n * notice, this list of conditions and the following disclaimer in the\n * documentation and/or other materials provided with the distribution.\n *\n * Neither the name of the Digital Bazaar, Inc. nor the names of its\n * contributors may be used to endorse or promote products derived from\n * this software without specific prior written permission.\n *\n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS\n * IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED\n * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A\n * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\n * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\n * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED\n * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR\n * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF\n * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING\n * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\n * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "3-seq",
+            "rule_identifier": "bsd-new_1145.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1145.RULE",
+            "score": 95.22,
+            "start_line": 17160
+          }
+        ]
+      },
+      {
+        "detection_count": 3,
+        "identifier": "bsd_new-7e2f7566-2195-266f-5076-bc1533da40cd",
+        "license_expression": "bsd-new",
+        "license_expression_spdx": "BSD-3-Clause",
+        "reference_matches": [
+          {
+            "end_line": 6429,
+            "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/dist/jsonld.esm.js",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "match_coverage": 95.22,
+            "matched_length": 219,
+            "matched_text": " * @license BSD 3-Clause License\n * Copyright (c) 2011-2022 Digital Bazaar, Inc.\n * All rights reserved.\n *\n * Redistribution and use in source and binary forms, with or without\n * modification, are permitted provided that the following conditions are met:\n *\n * Redistributions of source code must retain the above copyright notice,\n * this list of conditions and the following disclaimer.\n *\n * Redistributions in binary form must reproduce the above copyright\n * notice, this list of conditions and the following disclaimer in the\n * documentation and/or other materials provided with the distribution.\n *\n * Neither the name of the Digital Bazaar, Inc. nor the names of its\n * contributors may be used to endorse or promote products derived from\n * this software without specific prior written permission.\n *\n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS\n * IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED\n * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A\n * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\n * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\n * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED\n * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR\n * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF\n * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING\n * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\n * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+            "matcher": "3-seq",
+            "rule_identifier": "bsd-new_1145.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1145.RULE",
+            "score": 95.22,
+            "start_line": 6401
+          }
+        ]
+      },
+      {
+        "detection_count": 3,
+        "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 8385,
+            "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/dist/jsonld.esm.js",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "// MIT License",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_14.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+            "score": 100,
+            "start_line": 8385
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      },
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "http://www.opensource.org/licenses/BSD-3-Clause",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "bsd-new",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/bsd-new",
+        "minimum_coverage": 0,
+        "name": "BSD-3-Clause",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": "BSD-3-Clause",
+        "osi_url": "http://www.opensource.org/licenses/BSD-3-Clause",
+        "other_spdx_license_keys": [
+          "LicenseRef-scancode-libzip"
+        ],
+        "other_urls": [
+          "http://framework.zend.com/license/new-bsd",
+          "https://opensource.org/licenses/BSD-3-Clause",
+          "https://www.eclipse.org/org/documents/edl-v10.php"
+        ],
+        "owner": "Regents of the University of California",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/bsd-new.LICENSE",
+        "short_name": "BSD-3-Clause",
+        "spdx_license_key": "BSD-3-Clause",
+        "spdx_url": "https://spdx.org/licenses/BSD-3-Clause",
+        "standard_notice": null,
+        "text": "Redistribution and use in source and binary forms, with or without modification,\nare permitted provided that the following conditions are met:\n\nRedistributions of source code must retain the above copyright notice, this list\nof conditions and the following disclaimer.\n\nRedistributions in binary form must reproduce the above copyright notice, this\nlist of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.\n\nNeither the name of the ORGANIZATION nor the names of its contributors may be\nused to endorse or promote products derived from this software without specific\nprior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,\nTHE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\nARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS\nBE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR\nCONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE\nGOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)\nHOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT\nLIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF\nTHE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+        "text_urls": [
+          "http://www.opensource.org/licenses/BSD-3-Clause"
+        ]
+      },
+      {
+        "category": "Unstated License",
+        "faq_url": null,
+        "homepage_url": null,
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": true,
+        "key": "unknown",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/unknown",
+        "minimum_coverage": 0,
+        "name": "Unknown license detected but not recognized",
+        "notes": "This applies to the case where there is text referring to a license, but it is not possible to determine exactly which license.",
+        "osi_license_key": null,
+        "osi_url": null,
+        "other_spdx_license_keys": [],
+        "other_urls": [],
+        "owner": "Unspecified",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/unknown.LICENSE",
+        "short_name": "unknown",
+        "spdx_license_key": "LicenseRef-scancode-unknown",
+        "spdx_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/unknown.LICENSE",
+        "standard_notice": null,
+        "text": "",
+        "text_urls": []
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "bsd-new_10.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 3,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "BSD-3-Clause"
+      },
+      {
+        "identifier": "bsd-new_1145.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [
+          "Copyright (c) 2010-2021, Deusty, LLC"
+        ],
+        "ignorable_emails": [],
+        "ignorable_holders": [
+          "Deusty, LLC"
+        ],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 230,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 95,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_1145.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "BSD 3-Clause License\n\nCopyright (c) 2010-2021, Deusty, LLC\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.\n\n3. Neither the name of Deusty nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission of Deusty, LLC.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+      },
+      {
+        "identifier": "bsd-new_195.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_195.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: BSD-3-Clause"
+      },
+      {
+        "identifier": "bsd-new_906.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 7,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 99,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_906.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "UNDER THE TERMS OF {{THE BSD LICENSE}}"
+      },
+      {
+        "identifier": "bsd-new_readme3.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 213,
+        "license_expression": "bsd-new",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_readme3.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Software License Agreement (BSD License)\n========================================\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n\n    * Neither the name of the  Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL  INC. BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+      },
+      {
+        "identifier": "license-detection-unknown-c9c476950ae6be770bd17eba1bcc33936f2ba87b",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 67,
+        "license_expression": "unknown",
+        "minimum_coverage": 0,
+        "notes": "Unknown license based on a composite of license words.",
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "You are free to use this project in commercial projects as long as the \ncopyright header is left intact.\n\nIf you are a commercial entity and use this set of libraries in your\ncommercial software then reasonable payment to Digital Bazaar, if you can\nafford it, is not required but is expected and would be appreciated. If this\nlibrary saves you time, then it's saving you money. The cost of developing\nJSON-LD was on the order of several months of work and tens of\nthousands of dollars. We are attempting to strike a balance between helping\nthe development community while not being taken advantage of by lucrative\ncommercial entities for our efforts."
+      },
+      {
+        "identifier": "mit_14.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT License"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/jsonld/9.0.0",
+        "bug_tracking_url": "https://github.com/digitalbazaar/jsonld.js/issues",
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "bsd-new",
+        "declared_license_expression_spdx": "BSD-3-Clause",
+        "description": "A JSON-LD Processor and API implementation in JavaScript.",
+        "download_url": "https://registry.npmjs.org/jsonld/-/jsonld-9.0.0.tgz",
+        "extra_data": {
+          "engines": {
+            "node": ">=18"
+          }
+        },
+        "extracted_license_statement": "- BSD-3-Clause\n",
+        "holder": null,
+        "homepage_url": "https://github.com/digitalbazaar/jsonld.js",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "JSON",
+          "JSON-LD",
+          "Linked Data",
+          "RDF",
+          "Semantic Web",
+          "jsonld"
+        ],
+        "license_detections": [
+          {
+            "identifier": "bsd_new-50fa5753-f24d-ec04-33a1-36bb8ac0492c",
+            "license_expression": "bsd-new",
+            "license_expression_spdx": "BSD-3-Clause",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "6879cfa20d8625f0af5f87e1e20f212919c9fceeb7345c9fcfc90e33b7e5acf2/package/package.json",
+                "license_expression": "bsd-new",
+                "license_expression_spdx": "BSD-3-Clause",
+                "match_coverage": 100,
+                "matched_length": 3,
+                "matched_text": "BSD-3-Clause",
+                "matcher": "1-hash",
+                "rule_identifier": "bsd-new_10.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/bsd-new_10.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "jsonld",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "dlehn@digitalbazaar.com",
+            "name": "David I. Lehn",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "dlongley@digitalbazaar.com",
+            "name": "Dave Longley",
+            "role": "contributor",
+            "type": "person",
+            "url": null
+          },
+          {
+            "email": "support@digitalbazaar.com",
+            "name": "Digital Bazaar, Inc.",
+            "role": "author",
+            "type": "person",
+            "url": "https://digitalbazaar.com/"
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/jsonld@9.0.0",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/jsonld/-/jsonld-9.0.0.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/jsonld",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/digitalbazaar/jsonld.js",
+        "version": "9.0.0"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

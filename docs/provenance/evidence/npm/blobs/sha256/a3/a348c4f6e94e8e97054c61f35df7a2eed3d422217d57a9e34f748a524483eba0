@@ -1,0 +1,87 @@
+{
+  "artifactId": "dba6f1f3a0ca301e89ed04d2c8611487671029187787bf94293159b644ae356f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5571,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "fbc3054ed9e51cce426c17344d2c0b9a3792e7f13828c2da2941e92032571650",
+        "size": 1661,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "c62fdb182214f4d56354b4955f3beebd3a50da617eef8a8937fcaddf8adc2f7d",
+        "size": 15614,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "1e90f98039f760ebd91af36846690b70a09154608f228967d3fa7858402b3de6",
+        "size": 711,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 17986,
+    "packageIdentity": {
+      "author": "Wez Furlong <wez@fb.com> (http://wezfurlong.org)",
+      "homepage": "https://facebook.github.io/watchman/docs/bser.html",
+      "license": "Apache-2.0",
+      "name": "bser",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/facebook/watchman"
+      },
+      "version": "2.1.1"
+    },
+    "packageMetadata": {
+      "author": "Wez Furlong <wez@fb.com> (http://wezfurlong.org)",
+      "bugs": {
+        "url": "https://github.com/facebook/watchman/issues"
+      },
+      "dependencies": {
+        "node-int64": "^0.4.0"
+      },
+      "description": "JavaScript implementation of the BSER Binary Serialization",
+      "directories": {
+        "test": "test"
+      },
+      "files": [
+        "index.js"
+      ],
+      "homepage": "https://facebook.github.io/watchman/docs/bser.html",
+      "keywords": [
+        "bser",
+        "binary",
+        "protocol"
+      ],
+      "license": "Apache-2.0",
+      "main": "index.js",
+      "name": "bser",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/facebook/watchman"
+      },
+      "scripts": {
+        "test": "node test/bser.js"
+      },
+      "version": "2.1.1"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 5571,
+      "sha256": "729d1b9694f6e4c58b340d52dead3bf24533e0b7a0d37ab5d8eaa2a4b36aee9e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,187 @@
+{
+  "artifactId": "6b0206f608fcf49d39c946a8f8bcc4710f33dea0ba119f589560f080a42cc1e4",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 23492,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "d0cd141b0c322fded5dfad1d4645bb2fedfc05b7321fe1009469638190d59ef9",
+        "size": 1091,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "f4653b68a1883a32f852083c1b93381ce87f44c6855ce1f01854d39d0563c98c",
+        "size": 27999,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "5695ff5dfcd5a338a40630bd506056f2950bcb08fe1cc068519cbbfe60add480",
+        "size": 60,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/constants.js",
+        "sha256": "980225ab847a88a784f6d315557b8434f7742b2551ce20e354455c61b938c0a5",
+        "size": 4563,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/parse.js",
+        "sha256": "3a91656f440069aa8f8e15c9d695b9f6b2209df1eab2be8127c72cbcca45ff5f",
+        "size": 33950,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/picomatch.js",
+        "sha256": "2cb169cbe17d356036c5f62a377318b85e30817877e59797842aec9d8b15f54b",
+        "size": 9956,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/scan.js",
+        "sha256": "227fcc994a477ea95c5a0435d32783566334c6bd0dcc4a103029735ad8c9c535",
+        "size": 9189,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/utils.js",
+        "sha256": "809fc29cf35ab0aa76b99cad29182f62c0ae598902481d10f9868eaef71981ee",
+        "size": 1885,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "63264d817e856a4bff57d4304f2b38d2964a4f6df520eb169e7bcdb619f13e9a",
+        "size": 1912,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1091,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d0/d0cd141b0c322fded5dfad1d4645bb2fedfc05b7321fe1009469638190d59ef9",
+          "sha256": "d0cd141b0c322fded5dfad1d4645bb2fedfc05b7321fe1009469638190d59ef9"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "d0cd141b0c322fded5dfad1d4645bb2fedfc05b7321fe1009469638190d59ef9",
+        "size": 1091
+      },
+      {
+        "blob": {
+          "bytes": 27999,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/f4/f4653b68a1883a32f852083c1b93381ce87f44c6855ce1f01854d39d0563c98c",
+          "sha256": "f4653b68a1883a32f852083c1b93381ce87f44c6855ce1f01854d39d0563c98c"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "f4653b68a1883a32f852083c1b93381ce87f44c6855ce1f01854d39d0563c98c",
+        "size": 27999
+      }
+    ],
+    "expandedBytes": 90605,
+    "packageIdentity": {
+      "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+      "homepage": "https://github.com/micromatch/picomatch",
+      "license": "MIT",
+      "name": "picomatch",
+      "repository": "micromatch/picomatch",
+      "version": "2.3.2"
+    },
+    "packageMetadata": {
+      "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+      "bugs": {
+        "url": "https://github.com/micromatch/picomatch/issues"
+      },
+      "description": "Blazing fast and accurate glob matcher written in JavaScript, with no dependencies and full support for standard and extended Bash glob features, including braces, extglobs, POSIX brackets, and regular expressions.",
+      "devDependencies": {
+        "eslint": "^6.8.0",
+        "fill-range": "^7.0.1",
+        "gulp-format-md": "^2.0.0",
+        "mocha": "^6.2.2",
+        "nyc": "^15.0.0",
+        "time-require": "github:jonschlinkert/time-require"
+      },
+      "engines": {
+        "node": ">=8.6"
+      },
+      "files": [
+        "index.js",
+        "lib"
+      ],
+      "funding": "https://github.com/sponsors/jonschlinkert",
+      "homepage": "https://github.com/micromatch/picomatch",
+      "keywords": [
+        "glob",
+        "match",
+        "picomatch"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "picomatch",
+      "nyc": {
+        "reporter": [
+          "html",
+          "lcov",
+          "text-summary"
+        ]
+      },
+      "repository": "micromatch/picomatch",
+      "scripts": {
+        "lint": "eslint --cache --cache-location node_modules/.cache/.eslintcache --report-unused-disable-directives --ignore-path .gitignore .",
+        "mocha": "mocha --reporter dot",
+        "test": "npm run lint && npm run mocha",
+        "test:ci": "npm run test:cover",
+        "test:cover": "nyc npm run mocha"
+      },
+      "verb": {
+        "layout": "empty",
+        "lint": {
+          "reflinks": true
+        },
+        "plugins": [
+          "gulp-format-md"
+        ],
+        "reflinks": [
+          "braces",
+          "expand-brackets",
+          "extglob",
+          "fill-range",
+          "micromatch",
+          "minimatch",
+          "nanomatch",
+          "picomatch"
+        ],
+        "related": {
+          "list": [
+            "braces",
+            "micromatch"
+          ]
+        },
+        "tasks": [
+          "readme"
+        ],
+        "toc": {
+          "maxdepth": 3,
+          "method": "preWrite",
+          "render": true
+        }
+      },
+      "version": "2.3.2"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 23492,
+      "sha256": "4c843ba015bec815ac52116162559ab7b4b4efbd3b86f7fcf38f3d770decace6"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

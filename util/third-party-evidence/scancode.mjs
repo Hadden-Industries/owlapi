@@ -1,6 +1,13 @@
 import { compareCodeUnits, stableJson } from "./digests.mjs";
 
 const SCANCODE_OUTPUT_FORMAT_VERSION = "4.1.0";
+export const SCANCODE_NORMALIZATION_VERSION = 1;
+export const SCANCODE_NON_SEMANTIC_FILE_FIELDS = Object.freeze([
+  "date",
+  "file_type",
+  "is_script",
+  "mime_type",
+]);
 
 // These switches define the semantic scan. Execution-only settings such as the
 // input directory are intentionally excluded from the normalized evidence.
@@ -281,6 +288,198 @@ const sortEvidenceCollections = (value) => {
   );
 };
 
+const splitTransientUuid = (value, location) => {
+  if (typeof value !== "string" || value.length === 0) {
+    throw new Error(`ScanCode returned an invalid package UID at ${location}`);
+  }
+
+  let url;
+  try {
+    url = new URL(value);
+  } catch {
+    throw new Error(`ScanCode returned an invalid package UID at ${location}`);
+  }
+  if (url.protocol !== "pkg:") {
+    throw new Error(`ScanCode returned a non-purl package UID at ${location}`);
+  }
+
+  const uuidValues = url.searchParams.getAll("uuid");
+  if (uuidValues.length === 0) {
+    return { purl: value, transient: false };
+  }
+  if (uuidValues.length !== 1 || uuidValues[0].length === 0) {
+    throw new Error(
+      `ScanCode returned an ambiguous package UID at ${location}`,
+    );
+  }
+  url.searchParams.delete("uuid");
+  return { purl: url.toString(), transient: true };
+};
+
+const validateSemanticPurl = (value, location) => {
+  const { purl, transient } = splitTransientUuid(value, location);
+  if (transient) {
+    throw new Error(
+      `ScanCode returned a transient UUID in a semantic PURL at ${location}`,
+    );
+  }
+  return purl;
+};
+
+const normalizePackageGraphIdentities = (findings) => {
+  const packageUidMap = new Map();
+  const packagePurls = new Set();
+
+  for (const [index, package_] of (findings.packages ?? []).entries()) {
+    if (!isObject(package_)) {
+      throw new Error(
+        `ScanCode returned an invalid package at packages[${index}]`,
+      );
+    }
+    const purl = validateSemanticPurl(package_.purl, `packages[${index}].purl`);
+    if (packagePurls.has(purl)) {
+      throw new Error(`ScanCode returned a duplicate package PURL: ${purl}`);
+    }
+    packagePurls.add(purl);
+    packageUidMap.set(purl, purl);
+
+    if (package_.package_uid === undefined) {
+      continue;
+    }
+    const rawUid = package_.package_uid;
+    const normalizedUid = splitTransientUuid(
+      rawUid,
+      `packages[${index}].package_uid`,
+    ).purl;
+    if (normalizedUid !== purl) {
+      throw new Error(
+        `ScanCode package UID does not match packages[${index}].purl`,
+      );
+    }
+    packageUidMap.set(rawUid, purl);
+    delete package_.package_uid;
+  }
+
+  const normalizePackageReference = (value, location) => {
+    const parsed = splitTransientUuid(value, location);
+    const exact = packageUidMap.get(value);
+    if (parsed.transient && exact === undefined) {
+      throw new Error(
+        `ScanCode returned an unresolved package UID reference at ${location}`,
+      );
+    }
+    const purl = exact ?? parsed.purl;
+    if (!packagePurls.has(purl)) {
+      throw new Error(
+        `ScanCode returned an unresolved package UID reference at ${location}`,
+      );
+    }
+    return purl;
+  };
+
+  for (const [fileIndex, file] of (findings.files ?? []).entries()) {
+    if (file.for_packages === undefined) {
+      continue;
+    }
+    if (!Array.isArray(file.for_packages)) {
+      throw new Error(
+        `ScanCode returned invalid package references at files[${fileIndex}].for_packages`,
+      );
+    }
+    file.for_packages = file.for_packages.map((uid, uidIndex) =>
+      normalizePackageReference(
+        uid,
+        `files[${fileIndex}].for_packages[${uidIndex}]`,
+      ),
+    );
+  }
+
+  for (const [index, dependency] of (findings.dependencies ?? []).entries()) {
+    if (!isObject(dependency)) {
+      throw new Error(
+        `ScanCode returned an invalid dependency at dependencies[${index}]`,
+      );
+    }
+    if (Object.hasOwn(dependency, "for_package_purl")) {
+      throw new Error(
+        `ScanCode returned a reserved normalized field at dependencies[${index}].for_package_purl`,
+      );
+    }
+    if (Object.hasOwn(dependency, "for_package_uid")) {
+      dependency.for_package_purl =
+        dependency.for_package_uid === null
+          ? null
+          : normalizePackageReference(
+              dependency.for_package_uid,
+              `dependencies[${index}].for_package_uid`,
+            );
+      delete dependency.for_package_uid;
+    }
+    if (dependency.dependency_uid === undefined) {
+      continue;
+    }
+    const purl = validateSemanticPurl(
+      dependency.purl,
+      `dependencies[${index}].purl`,
+    );
+    const normalizedUid = splitTransientUuid(
+      dependency.dependency_uid,
+      `dependencies[${index}].dependency_uid`,
+    ).purl;
+    if (normalizedUid !== purl) {
+      throw new Error(
+        `ScanCode dependency UID does not match dependencies[${index}].purl`,
+      );
+    }
+    delete dependency.dependency_uid;
+  }
+
+  // ScanCode's UUIDv4 qualifiers identify one in-memory scan invocation. npm
+  // PURLs identify the package release across tools and runs, while dependency
+  // assertions remain distinct through their complete requirement/scope record.
+  return findings;
+};
+
+const omitNonSemanticFileFields = (findings) => {
+  for (const file of findings.files ?? []) {
+    // ScanCode obtains classifications from host libmagic/filesystem state and
+    // the date from the newly materialized scan tree. Neither describes the
+    // authenticated archive bytes or a substantive legal finding.
+    for (const field of SCANCODE_NON_SEMANTIC_FILE_FIELDS) {
+      delete file[field];
+    }
+  }
+  return findings;
+};
+
+export const canonicalizeScancodeFindings = (findings, { artifactId } = {}) => {
+  if (!isObject(findings)) {
+    throw new TypeError("ScanCode findings must be an object");
+  }
+  assertString(artifactId, "artifactId");
+  const canonical = cloneEvidence(findings);
+  if (
+    canonical.artifactId !== undefined &&
+    canonical.artifactId !== artifactId
+  ) {
+    throw new Error("ScanCode findings do not match their artifact identity");
+  }
+  canonical.artifactId = artifactId;
+  if (!isObject(canonical.scanner)) {
+    throw new Error("ScanCode findings must record their scanner");
+  }
+  if (
+    canonical.scanner.normalizationVersion !== undefined &&
+    canonical.scanner.normalizationVersion !== SCANCODE_NORMALIZATION_VERSION
+  ) {
+    throw new Error("Unsupported ScanCode normalization version");
+  }
+  canonical.scanner.normalizationVersion = SCANCODE_NORMALIZATION_VERSION;
+  normalizePackageGraphIdentities(canonical);
+  omitNonSemanticFileFields(canonical);
+  return sortEvidenceCollections(canonical);
+};
+
 export const normalizeScancodeReport = (
   report,
   { artifactId, inputRoot } = {},
@@ -349,18 +548,22 @@ export const normalizeScancodeReport = (
     return entry.type === "file";
   });
 
-  return sortEvidenceCollections({
-    artifactId,
-    scanner: {
-      name: SCANCODE_TOOL.name,
-      version: SCANCODE_TOOL.version,
-      outputFormatVersion: SCANCODE_OUTPUT_FORMAT_VERSION,
-      semanticOptions: SCANCODE_SEMANTIC_OPTIONS,
-      preScanExcludedFileSuffixes: SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES,
-      executionOptions: SCANCODE_EXECUTION_OPTIONS,
-      message: header.message ?? null,
-      warnings: header.warnings ?? [],
+  return canonicalizeScancodeFindings(
+    {
+      artifactId,
+      scanner: {
+        name: SCANCODE_TOOL.name,
+        version: SCANCODE_TOOL.version,
+        outputFormatVersion: SCANCODE_OUTPUT_FORMAT_VERSION,
+        normalizationVersion: SCANCODE_NORMALIZATION_VERSION,
+        semanticOptions: SCANCODE_SEMANTIC_OPTIONS,
+        preScanExcludedFileSuffixes: SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES,
+        executionOptions: SCANCODE_EXECUTION_OPTIONS,
+        message: header.message ?? null,
+        warnings: header.warnings ?? [],
+      },
+      ...findings,
     },
-    ...findings,
-  });
+    { artifactId },
+  );
 };

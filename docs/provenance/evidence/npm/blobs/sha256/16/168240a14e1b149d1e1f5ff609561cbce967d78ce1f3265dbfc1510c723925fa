@@ -1,0 +1,127 @@
+{
+  "artifactId": "d133f4c65be1e9ff74754f7a55202dd330cde9bfa46a7675511de4516e85223b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5283,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c7b6718db5ace1d13eb030d29c53eb2b02f90e84ba21ba59eee63dfd4fcbefee",
+        "size": 1061,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "41e181ad4d78917ca3e0fdb7f1475b5f04aea3fe5d9f186ecebc5e82fc496794",
+        "size": 4419,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/randexp.js",
+        "sha256": "75ef2fed19a5e674674ce5966f4f1c94f1f407409595dda0de79682a1b0fec85",
+        "size": 5741,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "bf38922f992fcb5b1c837232734f2e2f1191ffb2c47f190d410321e965c3e375",
+        "size": 1077,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1061,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c7b6718db5ace1d13eb030d29c53eb2b02f90e84ba21ba59eee63dfd4fcbefee",
+          "sha256": "c7b6718db5ace1d13eb030d29c53eb2b02f90e84ba21ba59eee63dfd4fcbefee"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c7b6718db5ace1d13eb030d29c53eb2b02f90e84ba21ba59eee63dfd4fcbefee",
+        "size": 1061
+      },
+      {
+        "blob": {
+          "bytes": 4419,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/41/41e181ad4d78917ca3e0fdb7f1475b5f04aea3fe5d9f186ecebc5e82fc496794",
+          "sha256": "41e181ad4d78917ca3e0fdb7f1475b5f04aea3fe5d9f186ecebc5e82fc496794"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "41e181ad4d78917ca3e0fdb7f1475b5f04aea3fe5d9f186ecebc5e82fc496794",
+        "size": 4419
+      }
+    ],
+    "expandedBytes": 12298,
+    "packageIdentity": {
+      "author": "Roly Fentanes (https://github.com/fent)",
+      "homepage": "http://fent.github.io/randexp.js/",
+      "license": "MIT",
+      "name": "randexp",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/fent/randexp.js.git"
+      },
+      "version": "0.4.6"
+    },
+    "packageMetadata": {
+      "author": "Roly Fentanes (https://github.com/fent)",
+      "dependencies": {
+        "discontinuous-range": "1.0.0",
+        "ret": "~0.1.10"
+      },
+      "description": "Create random strings that match a given regular expression.",
+      "devDependencies": {
+        "browserify": "^14.0.0",
+        "gulp": "^3.9.0",
+        "gulp-header": "^1.7.1",
+        "gulp-insert": "^0.5.0",
+        "gulp-uglify": "^3.0.0",
+        "istanbul": "*",
+        "mocha": "*",
+        "vinyl-buffer": "^1.0.0",
+        "vinyl-source-stream": "^1.1.0"
+      },
+      "directories": {
+        "lib": "./lib"
+      },
+      "engines": {
+        "node": ">=0.12"
+      },
+      "files": [
+        "lib"
+      ],
+      "homepage": "http://fent.github.io/randexp.js/",
+      "keywords": [
+        "regex",
+        "regexp",
+        "regular expression",
+        "random",
+        "test"
+      ],
+      "license": "MIT",
+      "main": "./lib/randexp.js",
+      "name": "randexp",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/fent/randexp.js.git"
+      },
+      "scripts": {
+        "test": "istanbul cover node_modules/.bin/_mocha -- test/*-test.js",
+        "version": "gulp build && git add build"
+      },
+      "version": "0.4.6"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 5283,
+      "sha256": "ea473d07093cc57efd482f3287e5add292522acb2c763007ee4b1be5f0e45307"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,137 @@
+{
+  "artifactId": "94362f5cfe4d1fe9ba0efe34f269245b37d1ed3dfcbfbf5a90169c49a4f925ab",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3769,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.cts",
+        "sha256": "50d2261a14b2ac591ecca97eacc69093b0245a2f2bc9da45b6167dbd6a9406da",
+        "size": 54,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/constants.d.ts",
+        "sha256": "1da074b872ef21f9981d59b9ca44e3075b231591d79085e415331038fec38260",
+        "size": 214,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/constants.js",
+        "sha256": "ff89a278326d8a6bcffd839fd6ec251b27856d46d152dcbf44aaa6880004c0d1",
+        "size": 387,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/constants.js.map",
+        "sha256": "149561ad4dfe612c4961035bccbffa53b07c021816a6836f65ee99c774cbf944",
+        "size": 509,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/helpers.d.ts",
+        "sha256": "ec665d2969be2c38f8855fbb57aaf3dbd2834616dfb67f1af5979ba5d860a059",
+        "size": 1006,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/helpers.js",
+        "sha256": "a518a8e1c3662dd2a4b5bedf8758eb875f6b548f699235194112b339d33bee30",
+        "size": 2267,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/helpers.js.map",
+        "sha256": "84effc8aef052213f84d824ce3adf267e8b3e3e01c923bfc46dbd445d971406a",
+        "size": 2972,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.cjs",
+        "sha256": "f80fb8e2cc7c4550d29bad282789ae804c8a0d8880d930fae6bfe57128e38d71",
+        "size": 3016,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "27756203a19715802609144d47331c5b1360cba8480571b0b98bbd0d3365b07b",
+        "size": 62,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "85721b1550efd693888f48cbe1dcbebf7fa3eb9402833e7f2a992d9d8c1eec76",
+        "size": 95,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "7d9c65882178235781d4dd59d44652bf2f00e685db32b697f7f2b70a13d2aa2e",
+        "size": 144,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "fb3f554e4ac4d5b1733812110270d8a8ffec1d328f9a1e725c8465bfd20ad664",
+        "size": 945,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [],
+    "expandedBytes": 11671,
+    "packageIdentity": {
+      "author": "JounQin <admin@1stg.me> (https://www.1stG.me)",
+      "homepage": "https://github.com/un-ts/pkgr/blob/master/packages/core",
+      "license": "MIT",
+      "name": "@pkgr/core",
+      "repository": "git+https://github.com/un-ts/pkgr.git",
+      "version": "0.3.6"
+    },
+    "packageMetadata": {
+      "author": "JounQin <admin@1stg.me> (https://www.1stG.me)",
+      "description": "Shared core module for `@pkgr` packages or any package else",
+      "engines": {
+        "node": "^14.18.0 || >=16.0.0"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./lib/index.js",
+            "types": "./lib/index.d.ts"
+          },
+          "require": {
+            "default": "./lib/index.cjs",
+            "types": "./index.d.cts"
+          }
+        },
+        "./package.json": "./package.json"
+      },
+      "files": [
+        "index.d.cts",
+        "lib"
+      ],
+      "funding": "https://opencollective.com/pkgr",
+      "homepage": "https://github.com/un-ts/pkgr/blob/master/packages/core",
+      "license": "MIT",
+      "main": "./lib/index.cjs",
+      "module": "./lib/index.js",
+      "name": "@pkgr/core",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": "git+https://github.com/un-ts/pkgr.git",
+      "sideEffects": false,
+      "type": "module",
+      "types": "./index.d.cts",
+      "version": "0.3.6"
+    },
+    "physicalEntryCount": 12,
+    "tarball": {
+      "bytes": 3769,
+      "sha256": "e2e38238b7d1fb836f2fb59adb1aae9d82eefdbbd1285d5798d41df7f475e5e3"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

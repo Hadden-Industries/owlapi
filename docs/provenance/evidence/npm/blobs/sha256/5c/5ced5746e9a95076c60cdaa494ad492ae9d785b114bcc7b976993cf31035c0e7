@@ -1,0 +1,130 @@
+{
+  "artifactId": "255159559f3e1d2363281c21c55d3c043a82169af3310fb5c4846b90c34fe1ff",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6779,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "b9eb082c39fe245e38793699074c394c43a722c51fce031c3c165cb92a31035c",
+        "size": 1054,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "5e5efe282abe9330ce63c054ce28d3c6711fdabe19d8b595b288300a16b45ee2",
+        "size": 10220,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/check.js",
+        "sha256": "3420aeaef410af8aa43bc84f4cfb44691cccb4b9cfc69b7f4be0037396a00f68",
+        "size": 3542,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "82e58c7bac292f0d47de84e68b6bbc42c9cc8ba04cfaa47e6de9be6cd18a359a",
+        "size": 464,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/parse-type.js",
+        "sha256": "1d43f7cafa18b3c3a425973f74c0e6c536f4b97fa6fd9e909941d150d3a603d7",
+        "size": 5040,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "f52058410cf8e57ed28dd462eece693ba490c619c70c17caef8af60b84dc4ed0",
+        "size": 847,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1054,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b9/b9eb082c39fe245e38793699074c394c43a722c51fce031c3c165cb92a31035c",
+          "sha256": "b9eb082c39fe245e38793699074c394c43a722c51fce031c3c165cb92a31035c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "b9eb082c39fe245e38793699074c394c43a722c51fce031c3c165cb92a31035c",
+        "size": 1054
+      },
+      {
+        "blob": {
+          "bytes": 10220,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5e/5e5efe282abe9330ce63c054ce28d3c6711fdabe19d8b595b288300a16b45ee2",
+          "sha256": "5e5efe282abe9330ce63c054ce28d3c6711fdabe19d8b595b288300a16b45ee2"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "5e5efe282abe9330ce63c054ce28d3c6711fdabe19d8b595b288300a16b45ee2",
+        "size": 10220
+      }
+    ],
+    "expandedBytes": 21167,
+    "packageIdentity": {
+      "author": "George Zahariev <z@georgezahariev.com>",
+      "homepage": "https://github.com/gkz/type-check",
+      "license": "MIT",
+      "name": "type-check",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/gkz/type-check.git"
+      },
+      "version": "0.4.0"
+    },
+    "packageMetadata": {
+      "author": "George Zahariev <z@georgezahariev.com>",
+      "bugs": "https://github.com/gkz/type-check/issues",
+      "dependencies": {
+        "prelude-ls": "^1.2.1"
+      },
+      "description": "type-check allows you to check the types of JavaScript values at runtime with a Haskell like type syntax.",
+      "devDependencies": {
+        "browserify": "^16.5.1",
+        "livescript": "^1.6.0",
+        "mocha": "^7.1.1"
+      },
+      "engines": {
+        "node": ">= 0.8.0"
+      },
+      "files": [
+        "lib",
+        "README.md",
+        "LICENSE"
+      ],
+      "homepage": "https://github.com/gkz/type-check",
+      "keywords": [
+        "type",
+        "check",
+        "checking",
+        "library"
+      ],
+      "license": "MIT",
+      "main": "./lib/",
+      "name": "type-check",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/gkz/type-check.git"
+      },
+      "scripts": {
+        "test": "make test"
+      },
+      "version": "0.4.0"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 6779,
+      "sha256": "8035d10cc48e2692358ac06cbadfa795279aaf6b3c04f29bd322f6df09513f8e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

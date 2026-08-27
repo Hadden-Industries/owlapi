@@ -1,0 +1,121 @@
+{
+  "artifactId": "1357741c57b69ba855336d49f47b81ccaabd3903fe58143020fb6f6d35855ada",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4516,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "9b8fde0e2eb47e34ff39349c4dd2dfe0329c8c3ca1b92f8d0540b238257f5a5a",
+        "size": 2469,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "912b77fd03d013203ad1c3fa7c8712660f599e4d194af41815fceb059ff88faf",
+        "size": 9884,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e90117e65341117ce56ab6aaa8b59291210601f69c63996fbe446a9a30237fc6",
+        "size": 1295,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4e/4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+          "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 14413,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": "https://github.com/npm/fs-minipass#readme",
+      "license": "ISC",
+      "name": "fs-minipass",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/npm/fs-minipass.git"
+      },
+      "version": "3.0.3"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "bugs": {
+        "url": "https://github.com/npm/fs-minipass/issues"
+      },
+      "dependencies": {
+        "minipass": "^7.0.3"
+      },
+      "description": "fs read and write streams based on minipass",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^4.0.1",
+        "@npmcli/template-oss": "4.18.0",
+        "mutate-fs": "^2.1.1",
+        "tap": "^16.3.2"
+      },
+      "engines": {
+        "node": "^14.17.0 || ^16.13.0 || >=18.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "homepage": "https://github.com/npm/fs-minipass#readme",
+      "keywords": [],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "fs-minipass",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/npm/fs-minipass.git"
+      },
+      "scripts": {
+        "lint": "eslint \"**/*.js\"",
+        "lintfix": "npm run lint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "check-coverage": true,
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": "true",
+        "version": "4.18.0"
+      },
+      "version": "3.0.3"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 4516,
+      "sha256": "413d98ddd5b14e4ad826be254208e3b376acdcb9cafb72b397dc26dc59406a58"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

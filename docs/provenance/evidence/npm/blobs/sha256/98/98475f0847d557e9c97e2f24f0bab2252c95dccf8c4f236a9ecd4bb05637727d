@@ -1,0 +1,107 @@
+{
+  "artifactId": "2fb5ddcb39e67ab2499a3b6cb2b7b4a862e52946185c87f2baf557cb13b2913b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2868,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c064f7a3e353bc1bc977f3c897941c75ef763f44f41677e0a15370ca0853d6e2",
+        "size": 1085,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "796aef7006b975d2a8a5bad00219c9884e67a51ef96d36b3a0df622e60924c1c",
+        "size": 384,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "97dabd7ebb70c33c19ccfa6956377fc722d9769924903f42a3bede30d83a8592",
+        "size": 4617,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4a557ea373907e4643badb89ff21b3f4b969d20631086d78eab2e03d05c2efa4",
+        "size": 607,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1085,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c0/c064f7a3e353bc1bc977f3c897941c75ef763f44f41677e0a15370ca0853d6e2",
+          "sha256": "c064f7a3e353bc1bc977f3c897941c75ef763f44f41677e0a15370ca0853d6e2"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c064f7a3e353bc1bc977f3c897941c75ef763f44f41677e0a15370ca0853d6e2",
+        "size": 1085
+      },
+      {
+        "blob": {
+          "bytes": 384,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/79/796aef7006b975d2a8a5bad00219c9884e67a51ef96d36b3a0df622e60924c1c",
+          "sha256": "796aef7006b975d2a8a5bad00219c9884e67a51ef96d36b3a0df622e60924c1c"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "796aef7006b975d2a8a5bad00219c9884e67a51ef96d36b3a0df622e60924c1c",
+        "size": 384
+      }
+    ],
+    "expandedBytes": 6693,
+    "packageIdentity": {
+      "author": "DY <dfcreative@gmail.com>",
+      "homepage": "https://github.com/colorjs/color-name",
+      "license": "MIT",
+      "name": "color-name",
+      "repository": {
+        "type": "git",
+        "url": "git@github.com:colorjs/color-name.git"
+      },
+      "version": "1.1.4"
+    },
+    "packageMetadata": {
+      "author": "DY <dfcreative@gmail.com>",
+      "bugs": {
+        "url": "https://github.com/colorjs/color-name/issues"
+      },
+      "description": "A list of color names and its values",
+      "files": [
+        "index.js"
+      ],
+      "homepage": "https://github.com/colorjs/color-name",
+      "keywords": [
+        "color-name",
+        "color",
+        "color-keyword",
+        "keyword"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "color-name",
+      "repository": {
+        "type": "git",
+        "url": "git@github.com:colorjs/color-name.git"
+      },
+      "scripts": {
+        "test": "node test.js"
+      },
+      "version": "1.1.4"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 2868,
+      "sha256": "507b7c4461e8eb941355af9a59e9a7e02cd0e7c6176b48d1809766344f3f1708"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

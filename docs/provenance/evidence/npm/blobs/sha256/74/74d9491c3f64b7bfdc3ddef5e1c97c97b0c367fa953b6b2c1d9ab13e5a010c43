@@ -1,0 +1,180 @@
+{
+  "artifactId": "40fb853939bd2160f650ea1b4bdc9778a7687abf23db65bdd09db91a8863b94f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7090,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "8cd3187c3cc753990b83073f3463144fb813ee52fc617731e4cd761815776b4a",
+        "size": 530,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "842d8294b4ce3ed1549ebaa2c87326c2f0d0258eee5fe97a4d6117968c48507c",
+        "size": 2092,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/module-importer.cjs",
+        "sha256": "08cf677938905723b0ae3ce9f8f7e9c1c4ee164b63937527638c5b63d7dd286b",
+        "size": 854,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/module-importer.d.cts",
+        "sha256": "e319eadb58f16c55ede3839e14835da7cf978c7993b51cc6866166e0aa2d7c09",
+        "size": 910,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/module-importer.d.ts",
+        "sha256": "39a295cd5a1b06368c951fe64de2a695406e891278ae011a07068439bb0b7993",
+        "size": 83,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/module-importer.js",
+        "sha256": "50e52412b4e341025fe999618d30a8f4c776f67ee9124f8287aa3f054d4eae67",
+        "size": 561,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8c22f2bce041e8f99fb983b622ed64efb8098e75d9b01e9cddc3254f5731045b",
+        "size": 1490,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/module-importer.cjs",
+        "sha256": "2287cda3eb6734a66d1f350631e7e7ce8f8405908b4ea485b9a555a891e3803d",
+        "size": 2567,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/module-importer.js",
+        "sha256": "cf6fec0ae3361b902b1f00db3abe4321a63c9206ab652a7a48e0f77476426cca",
+        "size": 733,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 11357,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c7/c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size": 11357
+      },
+      {
+        "blob": {
+          "bytes": 2092,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/84/842d8294b4ce3ed1549ebaa2c87326c2f0d0258eee5fe97a4d6117968c48507c",
+          "sha256": "842d8294b4ce3ed1549ebaa2c87326c2f0d0258eee5fe97a4d6117968c48507c"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "842d8294b4ce3ed1549ebaa2c87326c2f0d0258eee5fe97a4d6117968c48507c",
+        "size": 2092
+      }
+    ],
+    "expandedBytes": 21177,
+    "packageIdentity": {
+      "author": "Nicholas C. Zaks",
+      "homepage": null,
+      "license": "Apache-2.0",
+      "name": "@humanwhocodes/module-importer",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/humanwhocodes/module-importer.git"
+      },
+      "version": "1.0.1"
+    },
+    "packageMetadata": {
+      "author": "Nicholas C. Zaks",
+      "description": "Universal module importer for Node.js",
+      "devDependencies": {
+        "@types/node": "^18.7.6",
+        "c8": "7.12.0",
+        "chai": "4.3.6",
+        "eslint": "8.22.0",
+        "lint-staged": "13.0.3",
+        "mocha": "9.2.2",
+        "rollup": "2.78.0",
+        "typescript": "4.7.4",
+        "yorkie": "2.0.0"
+      },
+      "engines": {
+        "node": ">=12.22"
+      },
+      "exports": {
+        "import": "./src/module-importer.js",
+        "require": "./src/module-importer.cjs"
+      },
+      "files": [
+        "dist",
+        "src"
+      ],
+      "funding": {
+        "type": "github",
+        "url": "https://github.com/sponsors/nzakas"
+      },
+      "gitHooks": {
+        "pre-commit": "lint-staged"
+      },
+      "keywords": [
+        "modules",
+        "esm",
+        "commonjs"
+      ],
+      "license": "Apache-2.0",
+      "lint-staged": {
+        "*.js": [
+          "eslint --fix"
+        ]
+      },
+      "main": "src/module-importer.cjs",
+      "module": "src/module-importer.js",
+      "name": "@humanwhocodes/module-importer",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/humanwhocodes/module-importer.git"
+      },
+      "scripts": {
+        "build": "rollup -c && tsc",
+        "lint": "eslint src/ tests/",
+        "prepare": "npm run build",
+        "test": "npm run test:unit && npm run test:build",
+        "test:build": "node tests/pkg.test.cjs && node tests/pkg.test.mjs",
+        "test:unit": "c8 mocha tests/module-importer.test.js"
+      },
+      "type": "module",
+      "types": "dist/module-importer.d.ts",
+      "version": "1.0.1"
+    },
+    "physicalEntryCount": 10,
+    "tarball": {
+      "bytes": 7090,
+      "sha256": "6916df30c976c50fb67af9d9693728b1d93e501f8fb4a46731b4ca3a0d1d0f1a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,113 @@
+{
+  "artifactId": "fa01d7cb0ac23ccef372d9880bda4f6431499232412e2a3027a28a469ca815d3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 39740,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "c3f89be070b29b2db49d6ecee73e5e2a50dd32e8b68dc9a8ca1a959fc14fe451",
+        "size": 5966,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "de4d1f2d2ad5ad0cfd1657a106476b31cb5db5ef9d1ff842b237c0c81f0c8a23",
+        "size": 12775,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "44161d4e4baf71c745a327a5d05ee4a762c3004db5453aca221e3d0a3fa52ba6",
+        "size": 2768,
+        "type": "FILE"
+      },
+      {
+        "path": "package/argparse.js",
+        "sha256": "2e73e7a3167ba840dbcf41feeafc3544a3e2b39220b5e997133c519861febf16",
+        "size": 129714,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/sub.js",
+        "sha256": "2bc4ef9e87c47f1a4e0cfcb3706d886e0d73edce88149e300d2364066f396ed6",
+        "size": 2252,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/textwrap.js",
+        "sha256": "2550466c9a0425fa583a70e25bb93e190fe09b61f7de4861ea8ec54b7b899db0",
+        "size": 17391,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "688bace28e14392b3a1c4137eb56bc48b684dbf5cb56278ed7056cd2ece07990",
+        "size": 682,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 12775,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/de/de4d1f2d2ad5ad0cfd1657a106476b31cb5db5ef9d1ff842b237c0c81f0c8a23",
+          "sha256": "de4d1f2d2ad5ad0cfd1657a106476b31cb5db5ef9d1ff842b237c0c81f0c8a23"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "de4d1f2d2ad5ad0cfd1657a106476b31cb5db5ef9d1ff842b237c0c81f0c8a23",
+        "size": 12775
+      }
+    ],
+    "expandedBytes": 171548,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "Python-2.0",
+      "name": "argparse",
+      "repository": "nodeca/argparse",
+      "version": "2.0.1"
+    },
+    "packageMetadata": {
+      "description": "CLI arguments parser. Native port of python's argparse.",
+      "devDependencies": {
+        "@babel/eslint-parser": "^7.11.0",
+        "@babel/plugin-syntax-class-properties": "^7.10.4",
+        "eslint": "^7.5.0",
+        "mocha": "^8.0.1",
+        "nyc": "^15.1.0"
+      },
+      "files": [
+        "argparse.js",
+        "lib/"
+      ],
+      "keywords": [
+        "cli",
+        "parser",
+        "argparse",
+        "option",
+        "args"
+      ],
+      "license": "Python-2.0",
+      "main": "argparse.js",
+      "name": "argparse",
+      "repository": "nodeca/argparse",
+      "scripts": {
+        "coverage": "npm run test && nyc report --reporter html",
+        "lint": "eslint .",
+        "test": "npm run lint && nyc mocha"
+      },
+      "version": "2.0.1"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 39740,
+      "sha256": "27903847fc8215e6fc5a33e81490f7baba66403f8aade33771b988cca097728c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

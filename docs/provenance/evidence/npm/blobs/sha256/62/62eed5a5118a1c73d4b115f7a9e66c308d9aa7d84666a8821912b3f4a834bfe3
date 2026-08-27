@@ -1,0 +1,129 @@
+{
+  "artifactId": "0abaea3fd804678b2aa3229b5f134eb6435bd921883c8aa9ad02528904d720bc",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 14245,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "42b17e7ea124f5656c2f1bb33dd7c80043a72d3dc061d7ee28bb411ac66f32cb",
+        "size": 369,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/identifier.js",
+        "sha256": "1f6f6c5d3b2ed3bc6613ad93fc0c9eb54c04be5013241bf391f3825c16b4432c",
+        "size": 12543,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/identifier.js.map",
+        "sha256": "de9b9683f1e8258256db82b7df7e1019c6d3322ae8f6b77e99c6f1464c1ed524",
+        "size": 26771,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "98df6c259dc29b4082858573ffd24930ca68a7bf531a10f48d856ae813b9acbb",
+        "size": 1362,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "f259f5d9c9f57990390d948c1c77254a1da17849c941ae1604e1e8022094751b",
+        "size": 505,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/keyword.js",
+        "sha256": "1f27b5bd2ad2601730b85d1391a242604414a66026651d762179d5639b0b4c73",
+        "size": 1577,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/keyword.js.map",
+        "sha256": "d00ea3fc5b5b4f32bcc48d5d897760b8ea00f7bcad609a90de718a4021261668",
+        "size": 3842,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "1ad6aeced8b186ac259da45fea50ab9d65d3d958f6458c80e3c8013649d1b12d",
+        "size": 738,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1106,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/11/117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+          "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "size": 1106
+      }
+    ],
+    "expandedBytes": 48813,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@babel/helper-validator-identifier",
+      "repository": {
+        "directory": "packages/babel-helper-validator-identifier",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.7"
+    },
+    "packageMetadata": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "description": "Validate identifier/keywords name",
+      "devDependencies": {
+        "@unicode/unicode-17.0.0": "^1.6.10",
+        "charcodes": "^0.2.0"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./lib/index.js",
+          "types": "./lib/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/helper-validator-identifier",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-helper-validator-identifier",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "version": "7.29.7"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 14245,
+      "sha256": "7a31904bc45f1bb232d5e5dd797d12296f4a27fb4bf0f6d517827700f997dc1f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

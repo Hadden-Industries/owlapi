@@ -1,0 +1,135 @@
+{
+  "artifactId": "73482ebf543a9017a6173760a73d864228b3ea9f3cdd8f23d5ba9e62ffa2a0bb",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2971,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "5945276e86aeb3f247c3c19f586f2a7c30ef04f0a53c161c853080157186edb5",
+        "size": 689,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "2a559673ea6761000b019f83b538a6912cc11d62c72c192c8edea0ced9c77973",
+        "size": 793,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d830a75e5562db83080f23b769f7db26194a746911833504c38de61668882943",
+        "size": 1035,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "58e5913e1fca8c33a0976482c3bc93ba431a2f99eaaddf04147463ed03ad0e19",
+        "size": 2434,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      }
+    ],
+    "expandedBytes": 6068,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "ansi-regex",
+      "repository": "chalk/ansi-regex",
+      "version": "6.3.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "description": "Regular expression for matching ANSI escape codes",
+      "devDependencies": {
+        "ansi-escapes": "^5.0.0",
+        "ava": "^3.15.0",
+        "tsd": "^0.21.0",
+        "xo": "^0.54.2"
+      },
+      "engines": {
+        "node": ">=12"
+      },
+      "exports": "./index.js",
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/chalk/ansi-regex?sponsor=1",
+      "keywords": [
+        "ansi",
+        "styles",
+        "color",
+        "colour",
+        "colors",
+        "terminal",
+        "console",
+        "cli",
+        "string",
+        "tty",
+        "escape",
+        "formatting",
+        "rgb",
+        "256",
+        "shell",
+        "xterm",
+        "command-line",
+        "text",
+        "regex",
+        "regexp",
+        "re",
+        "match",
+        "test",
+        "find",
+        "pattern"
+      ],
+      "license": "MIT",
+      "name": "ansi-regex",
+      "repository": "chalk/ansi-regex",
+      "scripts": {
+        "test": "xo && ava && tsd",
+        "view-supported": "node fixtures/view-codes.js"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "types": "./index.d.ts",
+      "version": "6.3.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2971,
+      "sha256": "a370c58847035217626014ac6fce094a1420fdf0d033a68c2cf8fab77e1c6789"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

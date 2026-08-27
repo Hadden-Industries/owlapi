@@ -1,0 +1,142 @@
+{
+  "artifactId": "a489683a2904d6478c747070c0fb08f41d1cb2a794f8a8a2ad7439c0fb4ed964",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4193,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "3b6be04f862a077a4b97929dbf247299360824d9365f8603c263769303ace18c",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "c50afc8fa27ef88f62c5d89a3c35a770d1fc1b62694618bd79bb1857e663f41c",
+        "size": 2577,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "866d0fa98ddf79c7d2c0a9865a330f9ba1a415877407b1859223a84fea84bf68",
+        "size": 911,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/configs/eslint-all.js",
+        "sha256": "0e064264714e7dd047045f432efd9a47769b4cb58264eb246bba63d27e682b81",
+        "size": 7591,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/configs/eslint-recommended.js",
+        "sha256": "e5d27db4e1af67131f1107461ef8dbbf0ef2f9e5d39c7fcecd5452b58216e7f4",
+        "size": 2699,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.js",
+        "sha256": "eda1bbf9d8857cc961633a39704100ab5a97f81429d8d6164b7be0ea6c61f029",
+        "size": 499,
+        "type": "FILE"
+      },
+      {
+        "path": "package/types/index.d.ts",
+        "sha256": "0cbdc76a71578cb1a06a59fbc0b42efe0a89aecbcf9924b55bccd969de595e8a",
+        "size": 316,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1094,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/3b/3b6be04f862a077a4b97929dbf247299360824d9365f8603c263769303ace18c",
+          "sha256": "3b6be04f862a077a4b97929dbf247299360824d9365f8603c263769303ace18c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "3b6be04f862a077a4b97929dbf247299360824d9365f8603c263769303ace18c",
+        "size": 1094
+      },
+      {
+        "blob": {
+          "bytes": 2577,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c5/c50afc8fa27ef88f62c5d89a3c35a770d1fc1b62694618bd79bb1857e663f41c",
+          "sha256": "c50afc8fa27ef88f62c5d89a3c35a770d1fc1b62694618bd79bb1857e663f41c"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "c50afc8fa27ef88f62c5d89a3c35a770d1fc1b62694618bd79bb1857e663f41c",
+        "size": 2577
+      }
+    ],
+    "expandedBytes": 15687,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://eslint.org",
+      "license": "MIT",
+      "name": "@eslint/js",
+      "repository": {
+        "directory": "packages/js",
+        "type": "git",
+        "url": "https://github.com/eslint/eslint.git"
+      },
+      "version": "10.0.1"
+    },
+    "packageMetadata": {
+      "bugs": "https://github.com/eslint/eslint/issues/",
+      "description": "ESLint JavaScript language implementation",
+      "engines": {
+        "node": "^20.19.0 || ^22.13.0 || >=24"
+      },
+      "files": [
+        "LICENSE",
+        "README.md",
+        "src",
+        "types"
+      ],
+      "funding": "https://eslint.org/donate",
+      "homepage": "https://eslint.org",
+      "keywords": [
+        "javascript",
+        "eslint-plugin",
+        "eslint"
+      ],
+      "license": "MIT",
+      "main": "./src/index.js",
+      "name": "@eslint/js",
+      "peerDependencies": {
+        "eslint": "^10.0.0"
+      },
+      "peerDependenciesMeta": {
+        "eslint": {
+          "optional": true
+        }
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/js",
+        "type": "git",
+        "url": "https://github.com/eslint/eslint.git"
+      },
+      "scripts": {
+        "test:types": "tsc -p tests/types/tsconfig.json"
+      },
+      "types": "./types/index.d.ts",
+      "version": "10.0.1"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 4193,
+      "sha256": "8ecd352ee99b1c8291bee007f43d58356ae5057782de9635563aec2e604dcee2"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

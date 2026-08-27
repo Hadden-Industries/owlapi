@@ -1,0 +1,183 @@
+{
+  "artifactId": "b2e867809c381a38279f2d63044312d181e68f8501cc6adf933fbff97c630311",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 39359,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+        "size": 1076,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "4508eed20dcb00b1b39b38a89ee0c8f2d2b32cd9b65890b3d446bd2448397140",
+        "size": 5888,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/wasi-threads.cjs.js",
+        "sha256": "63087e52175b714b3ba38d055a08b65c9bcfa536d749dea103090a898a3edb2b",
+        "size": 32244,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/wasi-threads.cjs.min.d.ts",
+        "sha256": "f784ac8daf672661fb8944a46fd5d1b1ad7db7c0751df05d1a18eebfa223887c",
+        "size": 9049,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/wasi-threads.cjs.min.js",
+        "sha256": "bf62bb1fdd5a2e7ba0b1604ca8cafb427d94714fd6249d9097c2b41203bd3495",
+        "size": 14083,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/wasi-threads.d.mts",
+        "sha256": "f784ac8daf672661fb8944a46fd5d1b1ad7db7c0751df05d1a18eebfa223887c",
+        "size": 9049,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/wasi-threads.d.ts",
+        "sha256": "4cdc410a6df162afabb00fd495b2bbe1693c83595c943269873afc1d82fc8e3c",
+        "size": 9083,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/wasi-threads.esm-bundler.js",
+        "sha256": "a5b5ba9e6e58c7ca63bb56d71086902d8aa445fd0d645eb217f55c562dfa5edf",
+        "size": 35485,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/wasi-threads.js",
+        "sha256": "7cf10241ea82d1291d20d3d891f6b3193d1f649e414578ef2cc52d0e4b6a7437",
+        "size": 39744,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/wasi-threads.min.d.mts",
+        "sha256": "f784ac8daf672661fb8944a46fd5d1b1ad7db7c0751df05d1a18eebfa223887c",
+        "size": 9049,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/wasi-threads.min.js",
+        "sha256": "9b6cde97b304ef4fa1f53058f35e9f0448195b2ff432ca10d508f55f36b23c3c",
+        "size": 15144,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/wasi-threads.min.mjs",
+        "sha256": "39bb8f9ed1625e4f52bdbd4a494c7d323e490149540ae5c9571b39a17d5763ca",
+        "size": 14067,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/wasi-threads.mjs",
+        "sha256": "bba9a37a4d89cb1d72afb051943d36eca2a2426fc6fb5c0ace186e7c30504eab",
+        "size": 32096,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "361727fd102c97a1248b1a95f7508cd08b4774259323c65a101ea67c1c7d8d7d",
+        "size": 208,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "16d921d0acc045e7dea6f46fa64a5e8c40269e0c027915d0da98b1ae8a0436ad",
+        "size": 1383,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1076,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/20/2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+          "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+        "size": 1076
+      }
+    ],
+    "expandedBytes": 227648,
+    "packageIdentity": {
+      "author": "toyobayashi",
+      "homepage": "https://github.com/toyobayashi/emnapi#readme",
+      "license": "MIT",
+      "name": "@emnapi/wasi-threads",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/toyobayashi/emnapi.git"
+      },
+      "version": "1.2.1"
+    },
+    "packageMetadata": {
+      "author": "toyobayashi",
+      "bugs": {
+        "url": "https://github.com/toyobayashi/emnapi/issues"
+      },
+      "dependencies": {
+        "tslib": "^2.4.0"
+      },
+      "description": "WASI threads proposal implementation in JavaScript",
+      "exports": {
+        ".": {
+          "default": "./index.js",
+          "import": "./dist/wasi-threads.mjs",
+          "module": "./dist/wasi-threads.esm-bundler.js",
+          "types": {
+            "default": "./dist/wasi-threads.d.ts",
+            "import": "./dist/wasi-threads.d.mts",
+            "module": "./dist/wasi-threads.d.ts"
+          }
+        },
+        "./dist/wasi-threads.cjs.min": {
+          "default": "./dist/wasi-threads.cjs.min.js",
+          "types": "./dist/wasi-threads.d.ts"
+        },
+        "./dist/wasi-threads.min.mjs": {
+          "default": "./dist/wasi-threads.min.mjs",
+          "types": "./dist/wasi-threads.d.mts"
+        }
+      },
+      "homepage": "https://github.com/toyobayashi/emnapi#readme",
+      "license": "MIT",
+      "main": "index.js",
+      "module": "./dist/wasi-threads.esm-bundler.js",
+      "name": "@emnapi/wasi-threads",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/toyobayashi/emnapi.git"
+      },
+      "scripts": {
+        "build": "node ./script/build.js",
+        "build:test": "node ./test/build.js",
+        "test": "node ./test/index.js"
+      },
+      "sideEffects": false,
+      "types": "./dist/wasi-threads.d.ts",
+      "version": "1.2.1"
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 39359,
+      "sha256": "30e4e3be96d12edba357579ec9924b1e59333db18a18f49efdb63e531cea8bb9"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

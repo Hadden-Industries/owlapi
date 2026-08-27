@@ -1,0 +1,107 @@
+{
+  "artifactId": "2d23aa383cab43ebb62be4a3fccb6209f4e6f13bf007220a60ec28a1d6ef94bf",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4553,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "81f7a3280e3513b9ec18ce413e889452c3458c1ccf59971eebdc1aa4c30ff7a8",
+        "size": 1246,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "50627796eb4236cd05674e71d090e594447995225b7d94cd59e57c25fa3a0217",
+        "size": 1209,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "5140bf2eb5c60aa64dcafaad7a263d443ac5d6f502bb04330280aeeaf7064355",
+        "size": 3388,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "845e747355d66a712f6570f3a76dec12cb2dfd7e6796dd49d4339fb72fbf3864",
+        "size": 3899,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0123899e4b5f12ca5e290ae5e29fe95879cb1c5ec797e933e6de563648e4e8bf",
+        "size": 684,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1209,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/50/50627796eb4236cd05674e71d090e594447995225b7d94cd59e57c25fa3a0217",
+          "sha256": "50627796eb4236cd05674e71d090e594447995225b7d94cd59e57c25fa3a0217"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.md",
+        "sha256": "50627796eb4236cd05674e71d090e594447995225b7d94cd59e57c25fa3a0217",
+        "size": 1209
+      }
+    ],
+    "expandedBytes": 10426,
+    "packageIdentity": {
+      "author": {
+        "email": "kzm@zkat.tech",
+        "name": "Kat Marchán",
+        "twitter": "maybekatz"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "json-parse-even-better-errors",
+      "repository": "https://github.com/npm/json-parse-even-better-errors",
+      "version": "2.3.1"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "kzm@zkat.tech",
+        "name": "Kat Marchán",
+        "twitter": "maybekatz"
+      },
+      "description": "JSON.parse with context information on error",
+      "devDependencies": {
+        "tap": "^14.6.5"
+      },
+      "files": [
+        "*.js"
+      ],
+      "keywords": [
+        "JSON",
+        "parser"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "json-parse-even-better-errors",
+      "repository": "https://github.com/npm/json-parse-even-better-errors",
+      "scripts": {
+        "postversion": "npm publish",
+        "prepublishOnly": "git push --follow-tags",
+        "preversion": "npm t",
+        "snap": "tap",
+        "test": "tap"
+      },
+      "tap": {
+        "check-coverage": true
+      },
+      "version": "2.3.1"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 4553,
+      "sha256": "2a8777d261ab081cd4ccb41b79d26d48e877dba14ba4ae12dec2d4b6ef852569"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

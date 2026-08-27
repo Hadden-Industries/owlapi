@@ -1,0 +1,212 @@
+{
+  "artifactId": "daf91c293e1db61890668fefe0b0d82178b255faf6e766ed0f040dd215f7ba03",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 11276,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "7e4c2d7091ded670df5a2ee11eec9e04308a734aa14dc5f03aad2aa3f760ad0c",
+        "size": 6287,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CONTRIBUTING.md",
+        "sha256": "e65a6c8971149d9c0bc4721cedcf99f86ec37df9fa7bdf28858ee4d59383c7bb",
+        "size": 218,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "0aa9add6a9158efad3e6649e3affd607c7e2629f6677af19f9988c8fbb0757b0",
+        "size": 1079,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "56e2065c004fadd2ff5f78c02daab3db47d8477a7bf97ff87f815971839ee25b",
+        "size": 7451,
+        "type": "FILE"
+      },
+      {
+        "path": "package/asset.js",
+        "sha256": "7d45fb08fb0829581dd00268f1d98f147b659d1cdd8b293d0ddd26fbda941a25",
+        "size": 1128,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin.js",
+        "sha256": "27e6a2d2e63549eb0b3c2d9a9067b7646f9157a120b7f345a12a1e20c997a998",
+        "size": 2304,
+        "type": "FILE"
+      },
+      {
+        "path": "package/download.js",
+        "sha256": "91663d22ce22740be17b6f22868e3d2687ea5a759c50b75322f597f0f6ccfb15",
+        "size": 4098,
+        "type": "FILE"
+      },
+      {
+        "path": "package/error.js",
+        "sha256": "0df3fa571a7fb2563113d8a7ea83c79e769830abbe7b5d5d9cd430c3ea893f68",
+        "size": 355,
+        "type": "FILE"
+      },
+      {
+        "path": "package/help.txt",
+        "sha256": "e8e4b86f73fedb870c61bb8ebebe03ca817f33ff75f7bf75ba158e69224d52d6",
+        "size": 1079,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "51c1dae166a7da3717cc50ba36118c12f5351ff07a7d23d6dd53828bd857f5b6",
+        "size": 41,
+        "type": "FILE"
+      },
+      {
+        "path": "package/log.js",
+        "sha256": "0bf1d515cc020b8f18cfd91783b2905034cc6886b18a774a615eddfd96580bd9",
+        "size": 627,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d8502f5ce977ea10cc7e91e95b595ce845e838cf412801230e9a2f211ad68039",
+        "size": 1953,
+        "type": "FILE"
+      },
+      {
+        "path": "package/proxy.js",
+        "sha256": "ead9b672f19d036389a4d7c2e8712314f200837e8428402f4a0dad5d19cb744f",
+        "size": 1147,
+        "type": "FILE"
+      },
+      {
+        "path": "package/rc.js",
+        "sha256": "a112308f308c194b38f0e5084b12e4b52779d7f3101b0471e01bc3fa66d60cda",
+        "size": 2133,
+        "type": "FILE"
+      },
+      {
+        "path": "package/util.js",
+        "sha256": "587f23cf9216dfa7e162d83d9760a2daf2744623c38f5576fb3e5ef6d21d6c6c",
+        "size": 4280,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1079,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/0a/0aa9add6a9158efad3e6649e3affd607c7e2629f6677af19f9988c8fbb0757b0",
+          "sha256": "0aa9add6a9158efad3e6649e3affd607c7e2629f6677af19f9988c8fbb0757b0"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "0aa9add6a9158efad3e6649e3affd607c7e2629f6677af19f9988c8fbb0757b0",
+        "size": 1079
+      },
+      {
+        "blob": {
+          "bytes": 7451,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/56/56e2065c004fadd2ff5f78c02daab3db47d8477a7bf97ff87f815971839ee25b",
+          "sha256": "56e2065c004fadd2ff5f78c02daab3db47d8477a7bf97ff87f815971839ee25b"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "56e2065c004fadd2ff5f78c02daab3db47d8477a7bf97ff87f815971839ee25b",
+        "size": 7451
+      }
+    ],
+    "expandedBytes": 34180,
+    "packageIdentity": {
+      "author": "Mathias Buus (@mafintosh)",
+      "homepage": "https://github.com/prebuild/prebuild-install",
+      "license": "MIT",
+      "name": "prebuild-install",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/prebuild/prebuild-install.git"
+      },
+      "version": "7.1.3"
+    },
+    "packageMetadata": {
+      "author": "Mathias Buus (@mafintosh)",
+      "bin": "./bin.js",
+      "bugs": {
+        "url": "https://github.com/prebuild/prebuild-install/issues"
+      },
+      "contributors": [
+        "Julian Gruber <julian@juliangruber.com> (https://github.com/juliangruber)",
+        "Brett Lawson <brett19@gmail.com> (https://github.com/brett19)",
+        "Pieter Hintjens <ph@imatix.com> (https://github.com/hintjens)",
+        "Lars-Magnus Skog <ralphtheninja@riseup.net> (https://github.com/ralphtheninja)",
+        "Jesús Leganés Combarro <piranna@gmail.com> (https://github.com/piranna)",
+        "Mathias Küsel <mathiask@hotmail.de> (https://github.com/mathiask88)",
+        "Lukas Geiger <lukas.geiger94@gmail.com> (https://github.com/lgeiger)"
+      ],
+      "dependencies": {
+        "detect-libc": "^2.0.0",
+        "expand-template": "^2.0.3",
+        "github-from-package": "0.0.0",
+        "minimist": "^1.2.3",
+        "mkdirp-classic": "^0.5.3",
+        "napi-build-utils": "^2.0.0",
+        "node-abi": "^3.3.0",
+        "pump": "^3.0.0",
+        "rc": "^1.2.7",
+        "simple-get": "^4.0.0",
+        "tar-fs": "^2.0.0",
+        "tunnel-agent": "^0.6.0"
+      },
+      "description": "A command line tool to easily install prebuilt binaries for multiple version of node/iojs on a specific platform",
+      "devDependencies": {
+        "a-native-module": "^1.0.0",
+        "hallmark": "^4.0.0",
+        "nock": "^10.0.6",
+        "rimraf": "^2.5.2",
+        "standard": "^16.0.4",
+        "tape": "^5.3.1",
+        "tempy": "0.2.1"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "homepage": "https://github.com/prebuild/prebuild-install",
+      "keywords": [
+        "prebuilt",
+        "binaries",
+        "native",
+        "addon",
+        "module",
+        "c",
+        "c++",
+        "bindings",
+        "devops",
+        "napi"
+      ],
+      "license": "MIT",
+      "name": "prebuild-install",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/prebuild/prebuild-install.git"
+      },
+      "scripts": {
+        "hallmark": "hallmark --fix",
+        "test": "standard && hallmark && tape test/*-test.js"
+      },
+      "version": "7.1.3"
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 11276,
+      "sha256": "6741b8ecf3c24c0a652748ca362560405b38797c760ccff531ab61f14930f9ab"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

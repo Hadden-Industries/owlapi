@@ -1,0 +1,117 @@
+{
+  "artifactId": "240a088c61b6383b6e7438e8b64fb87151958c8298abb89aa248fcba4347bf32",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1598,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "8da13c785af46eb3d0bf2ce4c34bdf191b8c57bf43e410e9359d5b5eab5f4b0f",
+        "size": 746,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "9fcd381828b654d8bc70e6755fae7afefc5e4066da87f29983b4a6c6dba308c7",
+        "size": 444,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "0208905f53bda93670e98e3ee145ad9f87469d9375001f7f913c99b8ef25c228",
+        "size": 349,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b0017afac8507e491663adf5c12c155c63b5cd1aa4cd852f6c8e4ff51caea966",
+        "size": 1153,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 746,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8d/8da13c785af46eb3d0bf2ce4c34bdf191b8c57bf43e410e9359d5b5eab5f4b0f",
+          "sha256": "8da13c785af46eb3d0bf2ce4c34bdf191b8c57bf43e410e9359d5b5eab5f4b0f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "8da13c785af46eb3d0bf2ce4c34bdf191b8c57bf43e410e9359d5b5eab5f4b0f",
+        "size": 746
+      }
+    ],
+    "expandedBytes": 2692,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "@npmcli/node-gyp",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/node-gyp.git"
+      },
+      "version": "6.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "description": "Tools for dealing with node-gyp packages",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^6.0.0",
+        "@npmcli/template-oss": "5.0.0",
+        "tap": "^16.0.1"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "keywords": [
+        "npm",
+        "cli",
+        "node-gyp"
+      ],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "@npmcli/node-gyp",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/node-gyp.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ]
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": true,
+        "version": "5.0.0"
+      },
+      "version": "6.0.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 1598,
+      "sha256": "525da3cf7843c2315aa1ad70e41e4f1704bfa11b2edb44dd2a7c225f1baf16a3"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

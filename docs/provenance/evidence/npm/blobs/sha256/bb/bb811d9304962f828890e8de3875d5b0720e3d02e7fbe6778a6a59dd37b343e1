@@ -1,0 +1,142 @@
+{
+  "artifactId": "48a4e7344019113319cc566cd2097486baaf871393cb86001ee4c052ed1496e3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8996,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "ee2ea4fe91d043ec4214aa60aeaff595009acdfdbb9ed4030896191126d70849",
+        "size": 1417,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "693866fc419c6f61c8570438ec00659d156ec2b4d4a4d04091711f5f11a365d4",
+        "size": 1087,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "8cb35dae3a64e6edf1a680fecb9a850ea866795715aa46e09e211a1ba662d1c2",
+        "size": 2853,
+        "type": "FILE"
+      },
+      {
+        "path": "package/conversions.js",
+        "sha256": "7225058075157fc78115b8be998a2effdfc1e5b3316b004a130ee5f19303574b",
+        "size": 17040,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "adb610f9a2fbba92548161871075262496b563dcd0e5e8f5c20f562160a74b34",
+        "size": 1708,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9471d21744ca3137410448da6b3bd7b30ee91d42edce3b82ebcbf84faef74fb4",
+        "size": 827,
+        "type": "FILE"
+      },
+      {
+        "path": "package/route.js",
+        "sha256": "5f1420af4a106eaa68ed7b4bb5e46f47e0f251169e38841ec8262447e4691b5d",
+        "size": 2257,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1087,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/69/693866fc419c6f61c8570438ec00659d156ec2b4d4a4d04091711f5f11a365d4",
+          "sha256": "693866fc419c6f61c8570438ec00659d156ec2b4d4a4d04091711f5f11a365d4"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "693866fc419c6f61c8570438ec00659d156ec2b4d4a4d04091711f5f11a365d4",
+        "size": 1087
+      },
+      {
+        "blob": {
+          "bytes": 2853,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/8c/8cb35dae3a64e6edf1a680fecb9a850ea866795715aa46e09e211a1ba662d1c2",
+          "sha256": "8cb35dae3a64e6edf1a680fecb9a850ea866795715aa46e09e211a1ba662d1c2"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "8cb35dae3a64e6edf1a680fecb9a850ea866795715aa46e09e211a1ba662d1c2",
+        "size": 2853
+      }
+    ],
+    "expandedBytes": 27189,
+    "packageIdentity": {
+      "author": "Heather Arthur <fayearthur@gmail.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "color-convert",
+      "repository": "Qix-/color-convert",
+      "version": "2.0.1"
+    },
+    "packageMetadata": {
+      "author": "Heather Arthur <fayearthur@gmail.com>",
+      "dependencies": {
+        "color-name": "~1.1.4"
+      },
+      "description": "Plain color conversion functions",
+      "devDependencies": {
+        "chalk": "^2.4.2",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=7.0.0"
+      },
+      "files": [
+        "index.js",
+        "conversions.js",
+        "route.js"
+      ],
+      "keywords": [
+        "color",
+        "colour",
+        "convert",
+        "converter",
+        "conversion",
+        "rgb",
+        "hsl",
+        "hsv",
+        "hwb",
+        "cmyk",
+        "ansi",
+        "ansi16"
+      ],
+      "license": "MIT",
+      "name": "color-convert",
+      "repository": "Qix-/color-convert",
+      "scripts": {
+        "pretest": "xo",
+        "test": "node test/basic.js"
+      },
+      "version": "2.0.1",
+      "xo": {
+        "rules": {
+          "default-case": 0,
+          "no-inline-comments": 0,
+          "operator-linebreak": 0
+        }
+      }
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 8996,
+      "sha256": "920fa43538c019a085dbbf04cb6f72cc337624e5f5217519f0e7b2ef784e7ce1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

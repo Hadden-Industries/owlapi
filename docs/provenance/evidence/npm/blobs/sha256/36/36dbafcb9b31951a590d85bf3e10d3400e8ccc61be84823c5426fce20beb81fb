@@ -1,0 +1,133 @@
+{
+  "artifactId": "936aa8638c1da6e30c975756cbef1800b56082770fab318285ebdedce3990f13",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6944,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14",
+        "size": 1096,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "0218f69610a394f499f63e81f83892da50e9198da00a518a7561433cd9828c68",
+        "size": 4704,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "1bb0239fdd42bc5c9778007575ecb2cbf23daa4512a82866f4c997dbd82345ef",
+        "size": 11721,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b3d90a29e25c740191374e4ac67f6a4503f28e3b3ffa25e20d534c57419155d4",
+        "size": 1156,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1096,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/68/68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14",
+          "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14",
+        "size": 1096
+      },
+      {
+        "blob": {
+          "bytes": 4704,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/02/0218f69610a394f499f63e81f83892da50e9198da00a518a7561433cd9828c68",
+          "sha256": "0218f69610a394f499f63e81f83892da50e9198da00a518a7561433cd9828c68"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "0218f69610a394f499f63e81f83892da50e9198da00a518a7561433cd9828c68",
+        "size": 4704
+      }
+    ],
+    "expandedBytes": 18677,
+    "packageIdentity": {
+      "author": {
+        "email": "mail@juliangruber.com",
+        "name": "Julian Gruber",
+        "url": "http://juliangruber.com"
+      },
+      "homepage": "https://github.com/juliangruber/brace-expansion",
+      "license": "MIT",
+      "name": "brace-expansion",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/juliangruber/brace-expansion.git"
+      },
+      "version": "1.1.18"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "mail@juliangruber.com",
+        "name": "Julian Gruber",
+        "url": "http://juliangruber.com"
+      },
+      "dependencies": {
+        "balanced-match": "^1.0.0",
+        "concat-map": "0.0.1"
+      },
+      "description": "Brace expansion as known from sh/bash",
+      "devDependencies": {
+        "matcha": "^0.7.0",
+        "tape": "^4.6.0"
+      },
+      "homepage": "https://github.com/juliangruber/brace-expansion",
+      "keywords": [],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "brace-expansion",
+      "publishConfig": {
+        "tag": "1.x"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/juliangruber/brace-expansion.git"
+      },
+      "scripts": {
+        "bench": "matcha test/perf/bench.js",
+        "gentest": "bash test/generate.sh",
+        "test": "tape test/*.js"
+      },
+      "testling": {
+        "browsers": [
+          "ie/8..latest",
+          "firefox/20..latest",
+          "firefox/nightly",
+          "chrome/25..latest",
+          "chrome/canary",
+          "opera/12..latest",
+          "opera/next",
+          "safari/5.1..latest",
+          "ipad/6.0..latest",
+          "iphone/6.0..latest",
+          "android-browser/4.2..latest"
+        ],
+        "files": "test/*.js"
+      },
+      "version": "1.1.18"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 6944,
+      "sha256": "a389b049d80469568280b906a8c6d210c7f7f1d2070d3e55cff9d59b526f69a4"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

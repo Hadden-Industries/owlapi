@@ -1,0 +1,116 @@
+{
+  "artifactId": "102ca4cf3a90842f6d6aa15bdcb001b082ead80b4ade08060f785d0ee5185221",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2729,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "c98cc8dba220103450a22775c64354d8e3786d9b7299912f75c1f7ffdbf00e98",
+        "size": 2157,
+        "type": "FILE"
+      },
+      {
+        "path": "package/createRequire.js",
+        "sha256": "0fa44e45573eaa8c4bb0c13b604bd9dcc755921ad3fd1ce98b039b63beed896a",
+        "size": 693,
+        "type": "FILE"
+      },
+      {
+        "path": "package/getDefaultResolver.js",
+        "sha256": "8aa1b4052bf8cb926b63c3853c3feac6fae99d4d9bda0df77ad00104275e8952",
+        "size": 304,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "1b8612374ed7a39712985c024b2fb3a0e61600410097540e087dc91914c19aec",
+        "size": 236,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "3842b13bf30da4d06580e1885d995cce7e437126c75cacc01831f659ddf6f64c",
+        "size": 1578,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8d1bfc1c9310a4444c6214e47910d4bc29d4934be6d43153666c6b551bc114b8",
+        "size": 708,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 2157,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c9/c98cc8dba220103450a22775c64354d8e3786d9b7299912f75c1f7ffdbf00e98",
+          "sha256": "c98cc8dba220103450a22775c64354d8e3786d9b7299912f75c1f7ffdbf00e98"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "c98cc8dba220103450a22775c64354d8e3786d9b7299912f75c1f7ffdbf00e98",
+        "size": 2157
+      }
+    ],
+    "expandedBytes": 5676,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/arcanis/jest-pnp-resolver",
+      "license": "MIT",
+      "name": "jest-pnp-resolver",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/arcanis/jest-pnp-resolver.git"
+      },
+      "version": "1.2.3"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/arcanis/jest-pnp-resolver/issues"
+      },
+      "description": "plug'n'play resolver for Webpack",
+      "engines": {
+        "node": ">=6"
+      },
+      "homepage": "https://github.com/arcanis/jest-pnp-resolver",
+      "keywords": [
+        "jest",
+        "yarn",
+        "plugnplay",
+        "pnp"
+      ],
+      "license": "MIT",
+      "name": "jest-pnp-resolver",
+      "peerDependencies": {
+        "jest-resolve": "*"
+      },
+      "peerDependenciesMeta": {
+        "jest-resolve": {
+          "optional": true
+        }
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/arcanis/jest-pnp-resolver.git"
+      },
+      "version": "1.2.3"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 2729,
+      "sha256": "9fc11384a3d0a2f0fafb54826435924003749d3051e4fac5ddc1cb2a3edb61dc"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,128 @@
+{
+  "artifactId": "faba09119511f3b3bad143a7cb59b550353f7e788d4bea54093268f00633e3d9",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4327,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "fca277421f64fff17733e15bbfe5674c758311392b47ea6338d196ee7d60b1c8",
+        "size": 2332,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "6a29f2a84a4df3a25f1eca7e35bd4604d88275e25f6240eb017a77ce884bd577",
+        "size": 744,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "e4847121e41848da7b018c93dca01f794fdf93067fa055491e51b49888fb95e1",
+        "size": 2182,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "08a76701beb1a8802dd35932260d558df4370cbce87574a46dbd8e260462b0f2",
+        "size": 4259,
+        "type": "FILE"
+      },
+      {
+        "path": "package/load-esm.js",
+        "sha256": "324ef8c9c3de528d9d58947f3000643bbe15d98e9f3a5ffadc787168554b3629",
+        "size": 264,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6698530aca800a3e8556c1f708995e8ddeb719eda980d411efc73d2328532979",
+        "size": 1092,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 744,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/6a/6a29f2a84a4df3a25f1eca7e35bd4604d88275e25f6240eb017a77ce884bd577",
+          "sha256": "6a29f2a84a4df3a25f1eca7e35bd4604d88275e25f6240eb017a77ce884bd577"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "6a29f2a84a4df3a25f1eca7e35bd4604d88275e25f6240eb017a77ce884bd577",
+        "size": 744
+      }
+    ],
+    "expandedBytes": 10873,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/istanbuljs/load-nyc-config#readme",
+      "license": "ISC",
+      "name": "@istanbuljs/load-nyc-config",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/istanbuljs/load-nyc-config.git"
+      },
+      "version": "1.1.0"
+    },
+    "packageMetadata": {
+      "bugs": {
+        "url": "https://github.com/istanbuljs/load-nyc-config/issues"
+      },
+      "dependencies": {
+        "camelcase": "^5.3.1",
+        "find-up": "^4.1.0",
+        "get-package-type": "^0.1.0",
+        "js-yaml": "^3.13.1",
+        "resolve-from": "^5.0.0"
+      },
+      "description": "Utility function to load nyc configuration",
+      "devDependencies": {
+        "semver": "^6.3.0",
+        "standard-version": "^7.0.0",
+        "tap": "^14.10.5",
+        "xo": "^0.25.3"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "homepage": "https://github.com/istanbuljs/load-nyc-config#readme",
+      "license": "ISC",
+      "main": "index.js",
+      "name": "@istanbuljs/load-nyc-config",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/istanbuljs/load-nyc-config.git"
+      },
+      "scripts": {
+        "pretest": "xo",
+        "release": "standard-version",
+        "snap": "npm test -- --snapshot",
+        "test": "tap"
+      },
+      "version": "1.1.0",
+      "xo": {
+        "ignores": [
+          "test/fixtures/extends/invalid.*"
+        ],
+        "rules": {
+          "capitalized-comments": 0,
+          "import/extensions": 0,
+          "import/no-useless-path-segments": 0,
+          "require-atomic-updates": 0,
+          "unicorn/import-index": 0
+        }
+      }
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 4327,
+      "sha256": "4ad534a19208b4f8ae1b7e659635c2a74933f1ee0061de7adf100c6e1128b39e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

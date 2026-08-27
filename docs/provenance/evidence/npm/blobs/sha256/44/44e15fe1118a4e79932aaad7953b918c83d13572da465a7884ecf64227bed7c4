@@ -1,0 +1,222 @@
+{
+  "artifactId": "976a7373704c9634861b5aa3eedb87b682b6763ff543a961f20888c4f7d52d0f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 109708,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "5138fc1f8c15712ed7ede448a53f06fad0c15f1f94b57b4cb74ccfe694329c5a",
+        "size": 69194,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "4da724fc305d81606b245b324d4d2586916b9d248b23d82183df753ace0fdf71",
+        "size": 1298,
+        "type": "FILE"
+      },
+      {
+        "path": "package/SECURITY.md",
+        "sha256": "a17b482b11a4f3ff0aa20bad116c49472c5ba9417223adf915eb739d194aceea",
+        "size": 3980,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "342163401aa45f329d6b07a70d878ec9d1dfbf1630ee389ac242309178833baf",
+        "size": 73605,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/.eslintrc.yml",
+        "sha256": "8962d52a0bb86f17e764dfaf160d265eaa969ed3d67da747b59c1df6eb4833c2",
+        "size": 63,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/conventions.js",
+        "sha256": "da57fbe2b07f5a4aaee9217b49778936c11a1108da1761b2f24f356a900ff124",
+        "size": 13399,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dom-parser.js",
+        "sha256": "4188e24b953e2c70b66150306c66547495ad968d040e31dd65f22a7b3485da28",
+        "size": 20276,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/dom.js",
+        "sha256": "bea9ba89adfec227e9e572ee934a48223a170c5cf96b7087d7e3d3023ac47be3",
+        "size": 133234,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/entities.js",
+        "sha256": "ef333b680379392e8ee120e1cc77e0a8ff99a135e3b365b048f69c0df5f571f9",
+        "size": 44533,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/errors.js",
+        "sha256": "3e97f9c4f0a189346e2621b29c7c5a3899cd7375d1d15cbfbddd044fb781cb9f",
+        "size": 6817,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/grammar.js",
+        "sha256": "144f27b46adfb4a139adeb7483820def568b3940a6893194c03f5a71a94babc0",
+        "size": 23776,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "418c42598a45290498f4350b6b6f531ceeb25e8d4d9a107db2448a1c0b5b784e",
+        "size": 1595,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/sax.js",
+        "sha256": "324e8a0c7b475c645efcd1736b634733e133150849bff741fa0e2215e7017d02",
+        "size": 32465,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b61c2dd342e0e1abb800302ec62c0b06ae7a07cd9b907c88428ff80100f64c6a",
+        "size": 2253,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "5ee9af83f442f300bf14d6ba8a79a6708f4f721a68ce79ce6fb701bc9ccd2de7",
+        "size": 13763,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1298,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/4d/4da724fc305d81606b245b324d4d2586916b9d248b23d82183df753ace0fdf71",
+          "sha256": "4da724fc305d81606b245b324d4d2586916b9d248b23d82183df753ace0fdf71"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "4da724fc305d81606b245b324d4d2586916b9d248b23d82183df753ace0fdf71",
+        "size": 1298
+      },
+      {
+        "blob": {
+          "bytes": 13763,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5e/5ee9af83f442f300bf14d6ba8a79a6708f4f721a68ce79ce6fb701bc9ccd2de7",
+          "sha256": "5ee9af83f442f300bf14d6ba8a79a6708f4f721a68ce79ce6fb701bc9ccd2de7"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "5ee9af83f442f300bf14d6ba8a79a6708f4f721a68ce79ce6fb701bc9ccd2de7",
+        "size": 13763
+      }
+    ],
+    "expandedBytes": 440251,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/xmldom/xmldom",
+      "license": "MIT",
+      "name": "@xmldom/xmldom",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/xmldom/xmldom.git"
+      },
+      "version": "0.9.12"
+    },
+    "packageMetadata": {
+      "auto-changelog": {
+        "prepend": true,
+        "remote": "origin",
+        "tagPrefix": "",
+        "template": "./auto-changelog.hbs"
+      },
+      "bugs": {
+        "url": "https://github.com/xmldom/xmldom/issues"
+      },
+      "config": {
+        "test_stack_size": 256
+      },
+      "description": "A pure JavaScript W3C standard-based (XML DOM Level 2 Core) DOMParser and XMLSerializer module.",
+      "devDependencies": {
+        "@homer0/prettier-plugin-jsdoc": "10.0.1",
+        "auto-changelog": "2.5.1",
+        "eslint": "8.57.1",
+        "eslint-config-prettier": "10.1.8",
+        "eslint-plugin-anti-trojan-source": "1.1.7",
+        "eslint-plugin-es5": "1.5.0",
+        "eslint-plugin-n": "17.24.0",
+        "eslint-plugin-prettier": "5.5.6",
+        "get-stream": "6.0.1",
+        "jest": "29.7.0",
+        "nodemon": "3.1.14",
+        "np": "9.2.0",
+        "prettier": "3.8.3",
+        "xmltest": "2.0.3",
+        "yauzl": "3.4.0"
+      },
+      "engines": {
+        "node": ">=14.6"
+      },
+      "files": [
+        "CHANGELOG.md",
+        "LICENSE",
+        "readme.md",
+        "SECURITY.md",
+        "index.d.ts",
+        "lib"
+      ],
+      "homepage": "https://github.com/xmldom/xmldom",
+      "keywords": [
+        "w3c",
+        "dom",
+        "xml",
+        "parser",
+        "javascript",
+        "DOMParser",
+        "XMLSerializer",
+        "ponyfill"
+      ],
+      "license": "MIT",
+      "main": "lib/index.js",
+      "name": "@xmldom/xmldom",
+      "packageManager": "npm@11.19.0+sha512.48377f8478372aa1c4e47b763475b135836da82436a5700f2e5e8eb5084fc840f93c7b117eb3ad3b5f7d3194c81b6710a10d59448f6ddbcb21ac3fb672bdc003",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/xmldom/xmldom.git"
+      },
+      "scripts": {
+        "changelog": "auto-changelog --unreleased-only",
+        "format": "prettier --write examples lib test index.d.ts",
+        "format:check": "prettier --check examples lib test index.d.ts",
+        "fuzz": "jest --config=./jest.fuzz.config.js",
+        "lint": "eslint examples lib test",
+        "release": "np --no-yarn --test-script testrelease",
+        "start": "nodemon --watch package.json --watch lib --watch test --exec 'npm --silent run test && npm --silent run lint'",
+        "test": "node --stack-size=$npm_package_config_test_stack_size ./node_modules/.bin/jest",
+        "test:types": "cd examples/typescript-node-es6 && ./pretest.sh 3 && ./pretest.sh 4 && ./pretest.sh 5 && node dist/index.js",
+        "testrelease": "npm test && eslint lib",
+        "version": "./changelog-has-version.sh"
+      },
+      "types": "index.d.ts",
+      "version": "0.9.12"
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 109708,
+      "sha256": "08245e18c248b957b4c6e07f8549ad5f55ae11b7a8abd4c1113a0fd61ddc67ee"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,1070 @@
+{
+  "artifactId": "7900ead7f2d523a73422f7424705018cf510f24474230380d1e7a979d1a5b2ad",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1300009,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "0c7dac6da1732f78a027e36ff05d3a3119beec92b1decaac40976dfcc20ca598",
+        "size": 1081,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Makefile",
+        "sha256": "de71c9e6976241edd8cad95ecf5a50482fc58e4cace843a3e664f29021fcb7ee",
+        "size": 207,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "b8165a8eb5217b1b473812cddd2dcbcf4f9a37ec27abbc8a05629c566302c997",
+        "size": 1577,
+        "type": "FILE"
+      },
+      {
+        "path": "package/binding.gyp",
+        "sha256": "ca5b17bdeae827f8f390f8c5807af2d495fa57ef2a2b5da46828fcc190900b2b",
+        "size": 3230,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "d3675dd059e01653e11c1f3908bae90e254dc69f691372d5297d951bdf058efc",
+        "size": 6990,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "6f430b6b83d113370522685a0918e6b60beb1ce22368f97f52dec83e72d508a8",
+        "size": 1650,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/bindings.js",
+        "sha256": "e7e3b9be92259356d4fa68de0468410ebdbbd8938ad0436a06d77148030385e3",
+        "size": 47,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/document.js",
+        "sha256": "6098a5245a4cce7f704745c4fd55de81c82f3654ca2a9f534dd57854c28905df",
+        "size": 3102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/element.js",
+        "sha256": "b5e7e9de5e45ea3d7baf648477daa1d4427a5a3b5398960b6479fc354a84cf02",
+        "size": 1970,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/sax_parser.js",
+        "sha256": "64421991804a6e5f903ffc6618b1bff99429ef6f7f39b17efe91630b5e83967c",
+        "size": 1088,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9f6e576adad1199ac47aaf3c8b2ecd28c4acbb9bd70c01d2772f319757e7102e",
+        "size": 1294,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/html_document.cc",
+        "sha256": "250ea4b2a90dc1171f39785986119b69157ea1c7ae33e7337780c1e089bade81",
+        "size": 174,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/html_document.h",
+        "sha256": "2c4f9528ffcc6632a9b80f5848c922028e4200f89ac56ca60c7b153756a343a2",
+        "size": 392,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/libxmljs.cc",
+        "sha256": "7bced577f5fc2685cd3a728edc19e1ac86558bf41446a40f59098839fcea5c7b",
+        "size": 6685,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/libxmljs.h",
+        "sha256": "8e247d1c6a286e0353f49d3a0fd5558e4e15f9ad3ae9dbc1cbdae7d68e347cad",
+        "size": 1976,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_attribute.cc",
+        "sha256": "196b8b5e402124d30745b50ac545dbab04b4985fb2e95249bb8d17465428d2d0",
+        "size": 4843,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_attribute.h",
+        "sha256": "d94e8d629b1e0745ee2a131e153bd0ae77eef58ef596c15e6259c85b258fd394",
+        "size": 1042,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_comment.cc",
+        "sha256": "ac306ab8a0676b54af913551761962e19df56b1de7c4991cc6a2c5be0a740759",
+        "size": 3131,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_comment.h",
+        "sha256": "5624234884e751101176303b5f83619f6b44cd52a68e175adb24666ed029d464",
+        "size": 631,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_document.cc",
+        "sha256": "0bf98432ba9cde4e17b31120b1dbd22204fb66ecbf7491a6db10578d8f652980",
+        "size": 27437,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_document.h",
+        "sha256": "01169305017affcfcefbb99a43ceb9f552c5442dabe050f4094094d82007ebd7",
+        "size": 1665,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_element.cc",
+        "sha256": "86ab2f596c070048b0936bda1e82db339614b0b69af3b9179dde7e3186a8f4f1",
+        "size": 16147,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_element.h",
+        "sha256": "e02f3d783f5c38e2ebabb92bdba58bb7d561125d771467472351139851e3f5ef",
+        "size": 1706,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_namespace.cc",
+        "sha256": "79de2e7941a875bb0a4944cd5a81035ab838e4dcb2a4fbbee7d5dac4dd07cd5e",
+        "size": 4501,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_namespace.h",
+        "sha256": "78012e3d44f01b3fba04f590d3cacddac63722ba5deb6452281376dccc6e6a4e",
+        "size": 846,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_node.cc",
+        "sha256": "c4b677a090408b1b3d21fa0234ac02c0aecfa424e53fea921fafa304393a34fb",
+        "size": 22966,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_node.h",
+        "sha256": "a05d052d1e5e8f495f3c7014c2bd0463d3e854ff5714a98980b0ec3816e6942b",
+        "size": 2056,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_pi.cc",
+        "sha256": "fa86800f7e9ddad55b78bcb85cedcdf000a8d383987772e46492682a3ea25bdf",
+        "size": 4778,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_pi.h",
+        "sha256": "6cb629c2c7c64e157fc200b0a3574e36bd998a33e3399212cf22619ea49a5eb0",
+        "size": 742,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_sax_parser.cc",
+        "sha256": "6e2242f3f8a8798226d985761c6b98030e16ea7407e38ce2cc94d6537d6440f6",
+        "size": 12696,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_sax_parser.h",
+        "sha256": "29e5121d2c65d95f2e15d745731e505bcf696eafb59fa8d70de996d71c3b4c98",
+        "size": 1978,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_syntax_error.cc",
+        "sha256": "790e67fd63a8acdab69de9c553b5c4749dfb691c7dc4f40d9fe8f2c1be563508",
+        "size": 1974,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_syntax_error.h",
+        "sha256": "ce0ea4c1e4e1b7b5fdbea4052f6ae2bdf0379861f4491a3352742a56be1fba4c",
+        "size": 583,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_text.cc",
+        "sha256": "22de0351862cba3f4d67e40f7870d2ab7bfaba9efa4fc7afe6c926faab0268ee",
+        "size": 8828,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_text.h",
+        "sha256": "db7b6c5d9e3836865075dabebd633ccfa71c96e23309766f51a3d596b16f708f",
+        "size": 1263,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_textwriter.cc",
+        "sha256": "b184518e5d35bcf6b909fdf51e74c89c8b5e7117bf092d0eba5be536c8e0e8b6",
+        "size": 9415,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_textwriter.h",
+        "sha256": "51eb1d1312971895b53910fa7d6f1e070d4b84303d7892710efc162fb9684e23",
+        "size": 1115,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_xpath_context.cc",
+        "sha256": "802a4f66f40df51706a85957eccdb18b4f4c1037315116d1e553810655a8308e",
+        "size": 1653,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/xml_xpath_context.h",
+        "sha256": "3648bcf9c8ffd89d281816caf231552afac600c9e89da46df1ace68e1d565621",
+        "size": 481,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/Copyright",
+        "sha256": "c5c63674f8a83c4d2e385d96d1c670a03cb871ba2927755467017317878574bd",
+        "size": 1289,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/DOCBparser.c",
+        "sha256": "28f296755846498f0fe364fd18e88688c5f4bce0617de22e443bc596a4996d0c",
+        "size": 8776,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/HTMLparser.c",
+        "sha256": "03226919906cd2894754c9c40f52800f682182097077ee01abaabbefa2a2a7c2",
+        "size": 213669,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/HTMLtree.c",
+        "sha256": "61bd3e6cd65031498854eecb853b81225d9dfe0887beae01b2ee1bc9f23476fa",
+        "size": 33899,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/Makefile",
+        "sha256": "49c1dd54ece36b35504e2833eb7aeb389c35a1a78176940718360d356b207c9f",
+        "size": 121303,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/SAX.c",
+        "sha256": "fc121bf398501d381bff87772888e927a6980c148fb94661a26f3cc68415ace0",
+        "size": 5531,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/SAX2.c",
+        "sha256": "d54663cbe56254475de3650e49524bccf19cf7c5c1d37d8382581c2421a2142c",
+        "size": 86332,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/buf.c",
+        "sha256": "e738057a89a813a567f98fbc35f8f2127349f19b52a4f55a0ab329b2b3087bab",
+        "size": 34112,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/buf.h",
+        "sha256": "d5b73de7520128de16ec540050f80662166401def40eb2a84b72cdc9db8a43bf",
+        "size": 2343,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/c14n.c",
+        "sha256": "bcb25f1b7e16939fa8f333ece488076c7e822120e881fa1dfc2fe4dfe81f41d1",
+        "size": 70780,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/catalog.c",
+        "sha256": "fcd9f1d13727fac0f28885b5f18154014f1f4636d8d49362ae0f8b6be60f6102",
+        "size": 99229,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/chvalid.c",
+        "sha256": "d1c0ffe47457af124132266ad8c1a8d6809ced0eedcbc8cdba27734d3eedbfe1",
+        "size": 12247,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/config.h",
+        "sha256": "913b9cd18d4062abe2ab35d562a6d132753724485fa92a81357e03d9c897af28",
+        "size": 7938,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/config.h.gch",
+        "sha256": "f24431044eed1d63a46eb2decbe9303a35966adc712270cb2eeb0882da97bb59",
+        "size": 172766,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/debugXML.c",
+        "sha256": "5f981c2c1e8abc2a1deeedbda73c8da29d80e2f6b9758b77c7772f2ed32c9582",
+        "size": 104148,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/dict.c",
+        "sha256": "e21c6b69086a616d9242e679767150a047c81aa74af94343ae1c54cdd4bff279",
+        "size": 31530,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/elfgcchack.h",
+        "sha256": "6fcb2022f08ec414953430e4795bf44b27750c7840976d3d817103655ddbe5e8",
+        "size": 672056,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/enc.h",
+        "sha256": "62e9ca40e3c44dd554a0c4b45ccefcf01ec05b1dde00ae6fa500aea092c3f885",
+        "size": 827,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/encoding.c",
+        "sha256": "7247ce447e48efd65f7fbd39043437a31d7a0f2d2dd5e136e65c35a1451de05d",
+        "size": 145836,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/entities.c",
+        "sha256": "df645d0232de1e3267cd04b657894454e0a96463846d04cba704ffb6f3ba5055",
+        "size": 32087,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/error.c",
+        "sha256": "0924e677b9dfe302e45461b6018befa76967a197c645b62dc7987c9e6ffd5d25",
+        "size": 27388,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/globals.c",
+        "sha256": "01a3a825765b4d150684799f2ea3dd9ea6f849c8c595ef1adc9a07605969817e",
+        "size": 29771,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/hash.c",
+        "sha256": "32cb45bb6e7ca148ca1c45ec6a0955992f65dc22412dd928a379abba34a45d76",
+        "size": 30265,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/DOCBparser.h",
+        "sha256": "402cdfa43f9ae70fb74fd7db08b849235d87fe23792d5b4e896bb72f6d5ec89a",
+        "size": 3157,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/HTMLparser.h",
+        "sha256": "dcb63d3115ece5908c6c5f75813428977ddc791a5a99b59563472210fbbaa2d2",
+        "size": 9410,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/HTMLtree.h",
+        "sha256": "fa2dfbf88a92fcb53d8de8bff72522e85b3cd1912b96b086656c1a4c7220f69f",
+        "size": 3646,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/Makefile",
+        "sha256": "189d1ed81b2b7b7b06d30fd59277a9d5d3cef5db69f2ee9c2e3f4a8a3c26e02a",
+        "size": 19966,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/Makefile.am",
+        "sha256": "3ada35355e56d9ebb7a25227b822e3f0c4b9307cf600ff10943f0c47c10ac1e1",
+        "size": 869,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/Makefile.in",
+        "sha256": "8488bdaded42e792c3ba145fcf455cf8f52a5bbe237b69f98674788d0ce32a09",
+        "size": 20718,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/SAX.h",
+        "sha256": "1201236d73ffd0eb5f49811be851c79d698f1209d0619e48697f04861ed8bd58",
+        "size": 4341,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/SAX2.h",
+        "sha256": "f59eaf4ca872b2ab272ccbfadda25373244b87a426f016ac7b8f2a45958c4343",
+        "size": 4949,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/c14n.h",
+        "sha256": "33369486eaf76ec6aa0521cf32648493ed5e7f8289609cc6b2562adafb87cfdd",
+        "size": 3117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/catalog.h",
+        "sha256": "f97637b7664ad2b889009107c2a141a381da983d081f4e0ceceab894da9dd06b",
+        "size": 4906,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/chvalid.h",
+        "sha256": "1fdfcd21e2f20e174a0d983d7ae2bfe5be5099e5d658dab829310d16471452d0",
+        "size": 5159,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/debugXML.h",
+        "sha256": "79ab5f96bc907dc9ae0209b2cff7f72684a94e6bc3036ea6adc52377bbf048b6",
+        "size": 5152,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/dict.h",
+        "sha256": "59fab8e17d855cacadc9b360248e6fabe18da20074fc97c2a43e37248f2817a1",
+        "size": 1814,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/encoding.h",
+        "sha256": "6f398752753ea548d022a30eaab12697929aa4c3a667c31ea0d3b9548ae8d1c9",
+        "size": 8507,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/entities.h",
+        "sha256": "b89f08defa2a7f0304c3c31026f78bb52d2639a9e3cf3444ade2ab4acf3fd35f",
+        "size": 4712,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/globals.h",
+        "sha256": "6e390eb5aad9a541456b941813980ddedd11b5122c5c7410260f2e97140700a4",
+        "size": 14670,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/hash.h",
+        "sha256": "ad7834001c04ca81a19874f74e85bd67ea7e187d96fd43f53fb55aaea5228c21",
+        "size": 6601,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/list.h",
+        "sha256": "6fb878db01ac0d04d5597b11bad8cd7b59f4d3fcd77c3217afe881387bd24e18",
+        "size": 3348,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/nanoftp.h",
+        "sha256": "1ce5b5e4570b603ec0ee1bdd72acf7271198541adaaa3893a1db71fa906a4398",
+        "size": 3758,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/nanohttp.h",
+        "sha256": "2cb80dfc972ea553b6e3f3a48bcf79c952ac27315ee66705daf1fc124ca6abf2",
+        "size": 2005,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/parser.h",
+        "sha256": "8f9351437b67a56cd3b0b7f3e0db300678ed856f92778200e14a66141a11d476",
+        "size": 39734,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/parserInternals.h",
+        "sha256": "9b806257f94a8b3e9758c2ea97fc853ee41791ec0ac5803195cdb5d1e0d9c93a",
+        "size": 17419,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/pattern.h",
+        "sha256": "14af39bf18e46b69334cf65e09ea79ec731aeea73e238e961f77ce91460eb167",
+        "size": 2586,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/relaxng.h",
+        "sha256": "0f5b9f76a8b30d23f1f3038bfd9b23b8897efa72b9d9c58c899c0874421b8527",
+        "size": 5996,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/schemasInternals.h",
+        "sha256": "ba91462b95a82d58e52046afcaa68f127d1cdb381be885d9283352a65976e6bb",
+        "size": 26224,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/schematron.h",
+        "sha256": "94d39ef6815b841aa4d4656fe27278799477b6278956ec3e82a6eb98fb46dcae",
+        "size": 4371,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/threads.h",
+        "sha256": "e0ea29c851260c889c9ac8fb718cf396912cc1b5d28871cce4b25a919f55c396",
+        "size": 1958,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/tree.h",
+        "sha256": "9e5da9a2eb2702285c637c36b90ce9fd24362d28cb9b89d20bcec1f2e15160c6",
+        "size": 38105,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/uri.h",
+        "sha256": "9c65353157b6cebedede345e0d828230f4244e441137e88d94b7b09293fd70ba",
+        "size": 2664,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/valid.h",
+        "sha256": "fffa02a7d88ad6725ceecda2459aadcfc887bbafbef7e5c8fcc58b5c806afc2d",
+        "size": 13622,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xinclude.h",
+        "sha256": "88bfeca9f6962214e185e1d605b11442de7dfec77e8e7131871698797c489ea9",
+        "size": 2967,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xlink.h",
+        "sha256": "b88cb344fbbabaccef193a29b9fe697b127ffce23ed25e043c1678be16ec31a3",
+        "size": 5042,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xmlIO.h",
+        "sha256": "824c0c4f69226674c6d7e033464692657fb8fc1424cc0a2b6151a5b32c940cfc",
+        "size": 10660,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xmlautomata.h",
+        "sha256": "ac82712d604666b7e41580d7749641a00872829f77bc504efd623a9d40b104de",
+        "size": 3956,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xmlerror.h",
+        "sha256": "ca7700cec8cbd1c447a048f5e4e50c38b3ef4600cda08606c08f4c3c08e24364",
+        "size": 36809,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xmlexports.h",
+        "sha256": "dd35dc5489c6c2b73ba85743732f47b0fe9a7cc8f5e5352202becdbdca9a0a48",
+        "size": 1339,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xmlmemory.h",
+        "sha256": "67acb42100882977d59d838f886a05c1ce47ab8ad4759e4027028979abf44cdc",
+        "size": 5945,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xmlmodule.h",
+        "sha256": "739bd7bac663e3a16c33d50f1c6b7c83d81d3e14d5387d6b24415fda927c2b87",
+        "size": 1170,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xmlreader.h",
+        "sha256": "980015cfe658aceb79e9fccb76cfb2b6eb16ed4a84192e4bf411a2e64ce94efe",
+        "size": 12607,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xmlregexp.h",
+        "sha256": "5076d90c3dc26559f834389a1c1eb801afbdd29c734ac7289ccaa7782a756437",
+        "size": 5458,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xmlsave.h",
+        "sha256": "f10941282eadb99ee5150aff2890d3031a788265ed65683e28698b3240fb4c2c",
+        "size": 2337,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xmlschemas.h",
+        "sha256": "eaff644b642dcb5d1161644225846819bc11e038dc1145e20b91659be6d70a32",
+        "size": 7068,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xmlschemastypes.h",
+        "sha256": "6a530bcd939db34d8ab1bbfb2bcea8c2bd3f2178c53d0d8a93df6b1a19e264f1",
+        "size": 4841,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xmlstring.h",
+        "sha256": "3ffe34172104e347bff21f13964f5348dcded73ac9ca0160b31905c9d3e79cfb",
+        "size": 5511,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xmlunicode.h",
+        "sha256": "4e94d9f017f7d7746cf66fb0c35701087c2f5beb878fdb50d76e6241f683a2b5",
+        "size": 9993,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xmlversion.h",
+        "sha256": "511dfd6cd68d94f32afa6cfdecc86a7a5b301d7e153db02e2f93ff540fe920ef",
+        "size": 8089,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xmlwin32version.h",
+        "sha256": "05c02279b5e2a861d89a031f819bf5dd663b264dc4bee840754b8ac506090c90",
+        "size": 4449,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xmlwriter.h",
+        "sha256": "75d8dd461f4f047f85ca798d823911835245051ce56413f2ca1ec55f7257d656",
+        "size": 21265,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xpath.h",
+        "sha256": "199f62da361af1e62f5c44e1bab015524fe04105d06fb17e6c8750081a897e67",
+        "size": 16559,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xpathInternals.h",
+        "sha256": "1167845f5c82547b1451e0f1c4e7bee233b6e4b0440e8339eb80a83dcd583465",
+        "size": 19353,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/libxml/xpointer.h",
+        "sha256": "e8c430846c88cb73caa7dc96697460d0b01d2fe6d1da38c535853151291cea59",
+        "size": 3359,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/win32config.h",
+        "sha256": "063f415defd520d8a4e879610d22eba367a4df3669309a86b79fbe4975b6f21f",
+        "size": 2855,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/include/wsockcompat.h",
+        "sha256": "9fa3434364bfe314b9ec1d1d426b810d2f892160fd384fce415af055dcd2e930",
+        "size": 1088,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/legacy.c",
+        "sha256": "fd75cecea3f1e3e68b2fc34a382f455c5db4f378de345a4e61a0bd25227755a8",
+        "size": 38766,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/libxml.h",
+        "sha256": "31d750ba3a4afbc24313c1855abbd5dbcd2b9b734978eeb56f0870265fc82eb2",
+        "size": 3410,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/list.c",
+        "sha256": "2ffa46db433ec7b16e1938aec27d4782b7cb49633320ba1cfdbe5d89281bf3d2",
+        "size": 16308,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/nanoftp.c",
+        "sha256": "2df98c22d03976953f1317e78835d37ec2e7c91939aa44f700b34047ae6d82b6",
+        "size": 53076,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/nanohttp.c",
+        "sha256": "463b3781c4ef0c626eecda10d867bba5d2d3f24042b7bf444728f697cfbf7f54",
+        "size": 48511,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/parser.c",
+        "sha256": "48c9079ff79bee13c34d4b02f7a06425c247eb19245b2c66a3e6acda11c709bb",
+        "size": 440171,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/parserInternals.c",
+        "sha256": "682065ccdae3d0dd208fbe7eeecd1c43914ee7f9147751159ba6a41caed668e6",
+        "size": 62935,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/pattern.c",
+        "sha256": "3974b9ed49ea7d25b60211b32a1fdf561e8c5fe7118154161bd02b22e6bab6ea",
+        "size": 63585,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/relaxng.c",
+        "sha256": "ac3b84329b58bbb2eb9024b515032b1f6336c882bb02ed27e136e7a26deb9f64",
+        "size": 368235,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/rngparser.c",
+        "sha256": "33c39894e8204127655bf49e26c3ec926f1acd7fcb38d534cb8a0ea31fe8e47f",
+        "size": 47666,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/runsuite.c",
+        "sha256": "2d24fb17b80d7adef70d48df44c2dd33ce35775d50b81ebe372dfbcbf4650bc0",
+        "size": 31731,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/save.h",
+        "sha256": "c21887d684edb0f720543f876571aead135b36a005a0258af66475cd79400745",
+        "size": 1018,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/schematron.c",
+        "sha256": "e18adfef86579f087b11990c7295d1a908757fe57be71d286df2aae913d5f4c5",
+        "size": 48216,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/threads.c",
+        "sha256": "b31e841fa7d427a23e83640a1e185681394d8e0b476487619362c38764262b0e",
+        "size": 27164,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/timsort.h",
+        "sha256": "cadcd5cb3004e6b9565cdbd0db7251821928ac00b4a70c688ee4a549d025c098",
+        "size": 14178,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/tree.c",
+        "sha256": "c574cb72b358fab50bc4b15ca76ef46a99dc683c395c210755e77fd6e1c8dc6d",
+        "size": 263209,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/trio.c",
+        "sha256": "e892f47745f0b0b24d30cac4e22b847d961a0d845c567b8a6e1f184c98916756",
+        "size": 160606,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/trio.h",
+        "sha256": "776e2eca70f8e52f3c69063b68fde8af85de22b5bb35936bcd13631c3b8223fd",
+        "size": 7427,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/triodef.h",
+        "sha256": "64e0ef161f064f9c166f73deb33f87427850bc23878a85fffcf76f81898d0f57",
+        "size": 6964,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/trionan.c",
+        "sha256": "408f9d4693cd9acbfcc4016f1321d3fd1e062718eac1f792bc25c13a78f757c4",
+        "size": 23082,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/trionan.h",
+        "sha256": "4fdf44f1f96902e5fe499d1c29ad8804ffefe64fb0a1c6f921da7a1fccaaaebf",
+        "size": 2058,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/triop.h",
+        "sha256": "547d2a4aac0a643219f9fbec117da38880e8c11473f827413779f9e38ff619ed",
+        "size": 5694,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/triostr.c",
+        "sha256": "a9281f72f562992a6f354ab13a1c7dacf67a2caa5138e3f746acb622c205f9d6",
+        "size": 42049,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/triostr.h",
+        "sha256": "2a35f8584c15495c559610413cb8c60a5c8cf0d2734259240e9f6a13447e4dd8",
+        "size": 8227,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/uri.c",
+        "sha256": "950d0c86f8874596495ef4c13c5cc9a0e779d6052a6e8844b53c8b1dd73e6226",
+        "size": 66776,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/valid.c",
+        "sha256": "2ad892d5f7fa1c537f88c24f6065120d643391bd574a8ce4e3046be189f6e762",
+        "size": 195613,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xinclude.c",
+        "sha256": "d3b04f5c56c9a412b4d059da46a11ae60f71498b2d9be248b7a7fb439925e274",
+        "size": 70702,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xlink.c",
+        "sha256": "a5f4fa44101c4e5da792a81276e422650e596f2ca6490a9e4eccc5c703e477b6",
+        "size": 4615,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xmlIO.c",
+        "sha256": "ed74b5d5655a54b29edc7eeeb770d1f286d4a7e0c8fc5368622688c3800a0f6f",
+        "size": 106196,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xmlcatalog.c",
+        "sha256": "c44993cb2aa216679ec91b85af07a53f22f8efa09ddf217b7fd180caf531c8f8",
+        "size": 15200,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xmllint.c",
+        "sha256": "d14786ab39120937e7bc2148300588e7c53fd24be4151abc7d0bc15419021cb1",
+        "size": 100767,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xmlmemory.c",
+        "sha256": "19aa1e54b9adf17abc080ce5becc2fbca74b8238b2455618ae9766d0bfbbfe68",
+        "size": 27096,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xmlmodule.c",
+        "sha256": "9a679ac32324f1fcc5b54f5e9a4cafd03bdb1a5f40dc95cc27cc8b348d688f9e",
+        "size": 10809,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xmlreader.c",
+        "sha256": "0c22c4957fcf7c1ed11a5970e9281dd98200970b211752b1bc8eaed861ab0dcd",
+        "size": 170497,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xmlregexp.c",
+        "sha256": "155676defd1597166050ed664ef8b3b89f6a0fd9cb8eabdaa87ca9aae1b7f18d",
+        "size": 222917,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xmlsave.c",
+        "sha256": "07e2984f2395966ff02ade84bc7ba65f47a12916bea41d574148b623c4ccccee",
+        "size": 80920,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xmlschemas.c",
+        "sha256": "4333983b3911c33abe5aa59dcad18a8b8257f6fe15e00413bf1aad934ee52000",
+        "size": 831929,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xmlschemastypes.c",
+        "sha256": "b1760fc7fbe2ca7a47c7719924cb6227d1cb54164b7b147f5cfb32eaa1126ccb",
+        "size": 180547,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xmlstring.c",
+        "sha256": "56a9927ed8fe32827b3ce0b48b8883c213519ed5064f57dae68267c73912a39f",
+        "size": 26837,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xmlunicode.c",
+        "sha256": "71a9de5d8fed6c4a75ce4f834df3bdf3359502a6ced7cf38f29c3c0e12eb0fa8",
+        "size": 102256,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xmlwriter.c",
+        "sha256": "d2c494f74789e30ed920b4df70eebb70a5f8158236770334f2ea2e91d02ce1ed",
+        "size": 125047,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xpath.c",
+        "sha256": "ca6a3cd999f19da6046a0e279f9ec47454d1a53ebbbd2e56a1fed9f57a117791",
+        "size": 409437,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xpointer.c",
+        "sha256": "ae806d956e8d0c9aadd1df68a7bcc5256801a71b20b0b2b99d888f39e5b6d625",
+        "size": 77256,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xzlib.c",
+        "sha256": "96a8fce92570ddfdd96a6aa6a93f8a4a9ae3772409b96cdd2b4a4dc154dfa929",
+        "size": 24741,
+        "type": "FILE"
+      },
+      {
+        "path": "package/vendor/libxml/xzlib.h",
+        "sha256": "169a5513d18741a083af698aa630f4bad5b4442846fc1898c2af78d3b3c434cd",
+        "size": 620,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1081,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/0c/0c7dac6da1732f78a027e36ff05d3a3119beec92b1decaac40976dfcc20ca598",
+          "sha256": "0c7dac6da1732f78a027e36ff05d3a3119beec92b1decaac40976dfcc20ca598"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "0c7dac6da1732f78a027e36ff05d3a3119beec92b1decaac40976dfcc20ca598",
+        "size": 1081
+      },
+      {
+        "blob": {
+          "bytes": 1289,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c5/c5c63674f8a83c4d2e385d96d1c670a03cb871ba2927755467017317878574bd",
+          "sha256": "c5c63674f8a83c4d2e385d96d1c670a03cb871ba2927755467017317878574bd"
+        },
+        "kind": "COPYRIGHT",
+        "path": "package/vendor/libxml/Copyright",
+        "sha256": "c5c63674f8a83c4d2e385d96d1c670a03cb871ba2927755467017317878574bd",
+        "size": 1289
+      }
+    ],
+    "expandedBytes": 7219330,
+    "packageIdentity": {
+      "author": "marudor",
+      "homepage": null,
+      "license": "MIT",
+      "name": "libxmljs2",
+      "repository": {
+        "type": "git",
+        "url": "http://github.com/marudor/libxmljs2.git"
+      },
+      "version": "0.37.0"
+    },
+    "packageMetadata": {
+      "author": "marudor",
+      "bugs": {
+        "url": "http://github.com/marudor/libxmljs2/issues"
+      },
+      "contributors": [
+        "Jeff Smick",
+        "Marco Rogers"
+      ],
+      "dependencies": {
+        "bindings": "~1.5.0",
+        "nan": "~2.22.2",
+        "node-gyp": "^11.2.0",
+        "prebuild-install": "^7.1.3"
+      },
+      "description": "libxml bindings for v8 javascript engine",
+      "devDependencies": {
+        "@types/node": "^22.15.29",
+        "jest": "^29.7.0",
+        "jest-watch-typeahead": "^2.2.2",
+        "prebuild": "^13.0.1",
+        "prettier": "^3.5.3",
+        "tsd": "^0.32.0",
+        "typescript": "^5.8.3"
+      },
+      "engines": {
+        "node": ">=22"
+      },
+      "files": [
+        "index.js",
+        "index.d.ts",
+        "src",
+        "lib",
+        "vendor",
+        "binding.gyp",
+        "Makefile"
+      ],
+      "license": "MIT",
+      "main": "./index",
+      "name": "libxmljs2",
+      "packageManager": "pnpm@8.10.2+sha256.487609e857f1c11780cc98dd0bfe4c8a8b11c7f23bc3a4493ac7d263d6fb6c8c",
+      "repository": {
+        "type": "git",
+        "url": "http://github.com/marudor/libxmljs2.git"
+      },
+      "scripts": {
+        "build": "node-gyp rebuild",
+        "install": "prebuild-install || node-gyp rebuild",
+        "prebuild": "prebuild",
+        "prebuild:macArm": "prebuild -t 127 -t 137",
+        "test": "node --expose_gc ./node_modules/jest/bin/jest.js",
+        "tsd": "tsd"
+      },
+      "version": "0.37.0"
+    },
+    "physicalEntryCount": 160,
+    "tarball": {
+      "bytes": 1300009,
+      "sha256": "3d48b0c92fe3353fcc24f5260c440cf37d34887114d31f45d09c506c0bf0b44e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

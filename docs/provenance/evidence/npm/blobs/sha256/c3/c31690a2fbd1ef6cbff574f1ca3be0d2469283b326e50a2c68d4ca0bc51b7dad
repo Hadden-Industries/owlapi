@@ -1,0 +1,139 @@
+{
+  "artifactId": "7b5c8c94faa6907debfbef3757a495417c25851769126c3ffe06e5045db96af0",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3210,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/browser.js",
+        "sha256": "03b3defae5a0801f91bc78f5f3ff2b13dec13df4cef4c0a94554b2d1183da1d1",
+        "size": 67,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "479fd04f71a0fed642baa7e57c7e0701ae6f4a450bde8179f96815e6a26752b0",
+        "size": 2748,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d410a772f9f64b224482ec13815a4bbf1837c533e1be04b3687755c48b2efa1f",
+        "size": 817,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "baf9e8e934c7d2de2bb02516c8c75f23f7c23f7b5af794a96bccc0a14eb1c2c6",
+        "size": 2294,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1109,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/48/48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+          "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0",
+        "size": 1109
+      },
+      {
+        "blob": {
+          "bytes": 2294,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ba/baf9e8e934c7d2de2bb02516c8c75f23f7c23f7b5af794a96bccc0a14eb1c2c6",
+          "sha256": "baf9e8e934c7d2de2bb02516c8c75f23f7c23f7b5af794a96bccc0a14eb1c2c6"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "baf9e8e934c7d2de2bb02516c8c75f23f7c23f7b5af794a96bccc0a14eb1c2c6",
+        "size": 2294
+      }
+    ],
+    "expandedBytes": 7035,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "supports-color",
+      "repository": "chalk/supports-color",
+      "version": "7.2.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "sindresorhus.com"
+      },
+      "browser": "browser.js",
+      "dependencies": {
+        "has-flag": "^4.0.0"
+      },
+      "description": "Detect whether a terminal supports color",
+      "devDependencies": {
+        "ava": "^1.4.1",
+        "import-fresh": "^3.0.0",
+        "xo": "^0.24.0"
+      },
+      "engines": {
+        "node": ">=8"
+      },
+      "files": [
+        "index.js",
+        "browser.js"
+      ],
+      "keywords": [
+        "color",
+        "colour",
+        "colors",
+        "terminal",
+        "console",
+        "cli",
+        "ansi",
+        "styles",
+        "tty",
+        "rgb",
+        "256",
+        "shell",
+        "xterm",
+        "command-line",
+        "support",
+        "supports",
+        "capability",
+        "detect",
+        "truecolor",
+        "16m"
+      ],
+      "license": "MIT",
+      "name": "supports-color",
+      "repository": "chalk/supports-color",
+      "scripts": {
+        "test": "xo && ava"
+      },
+      "version": "7.2.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3210,
+      "sha256": "f16acafd1634624e60c24a5538004c4e168c82607f10dbe28395e9df3e7d5e4a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

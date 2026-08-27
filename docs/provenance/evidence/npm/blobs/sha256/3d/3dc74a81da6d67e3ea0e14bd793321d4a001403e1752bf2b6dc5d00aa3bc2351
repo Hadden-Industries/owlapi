@@ -1,0 +1,803 @@
+{
+  "artifactId": "3d2cab5587616e09d6c5f5845e1adc2c4c3a0806de970034fe15e009ab737ed7",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 460185,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.release-please-manifest.json",
+        "sha256": "e0a86e8f6f2589e613c276eca0adb00311f9c374265c897c04717f7531ce44ce",
+        "size": 22,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "9aa2f61af73bdff2292c574feb448dcac0965a62cb6f136d0f4e559036f6b187",
+        "size": 116498,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CODE_OF_CONDUCT.md",
+        "sha256": "9cc19e7fa9e850763a8c5c95ca432016cd16a66edc266895a2ff19c0153f2255",
+        "size": 207,
+        "type": "FILE"
+      },
+      {
+        "path": "package/CONTRIBUTING.md",
+        "sha256": "1fada4e39801764d153a6b49bb6b93bc767c19471b8fda22a337c0757bf0c8f3",
+        "size": 1381,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "662a1b0115251cfb29c6aed0f221f8847bc49c6365d1c53a62c9f4bccc2489c3",
+        "size": 1102,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "57b9ee4cb878904f0d420bef5d9d8d23c06ba4f4d58403ce0c28dbc0cf8a4d11",
+        "size": 12524,
+        "type": "FILE"
+      },
+      {
+        "path": "package/SECURITY.md",
+        "sha256": "40a07f31349a8e6c42298a5bd21ab2dbdc6dc89b6c1d4c2f943096df822c9c6f",
+        "size": 151,
+        "type": "FILE"
+      },
+      {
+        "path": "package/addon.gypi",
+        "sha256": "ab6904affe2b17de17b0450bada73243e62c841295a3efd69403e269f6eddbee",
+        "size": 5952,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/node-gyp.js",
+        "sha256": "fe32cca2954bb37ac0c600ade11cf8a204184d04c3ce0176ca6a7831c644d0ab",
+        "size": 3414,
+        "type": "FILE"
+      },
+      {
+        "path": "package/eslint.config.js",
+        "sha256": "44f2ae8aadd8d676a4ce2ac98a6d779aca5f1f1c507b9965b534ea0004a81283",
+        "size": 58,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/.release-please-manifest.json",
+        "sha256": "5868f77b09730fb94ab6be4884cc31d594b55cb3e484b9573a0f1b63edff5c17",
+        "size": 22,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/LICENSE",
+        "sha256": "ca90abb6ed71de0774461ef9f928de33e748b617aeb79f9e52415cf08d69230e",
+        "size": 1537,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/data/ninja/build.ninja",
+        "sha256": "d67fbbbf43d27816323c80fef7dad205536c831e521e650579074d82499b5b1b",
+        "size": 56,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/data/win/large-pdb-shim.cc",
+        "sha256": "e1c759dda39fa50264575092a136e33f28211139b332d88e933a1b953d564f90",
+        "size": 653,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/docs/GypVsCMake.md",
+        "sha256": "661f31a5b1cd975c1c0680338d8ccddbf9fe471a7cc2354fa1604e5f583d1ac6",
+        "size": 6291,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/docs/Hacking.md",
+        "sha256": "35732810f1ba9366f2b5c9d776e2041cc983d3f43866317aa4c09ed2a017ac20",
+        "size": 1185,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/docs/InputFormatReference.md",
+        "sha256": "d41307fc22f5d56147185313ddec2d9c20baf6402187f0c3055eaff4b884d506",
+        "size": 39057,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/docs/LanguageSpecification.md",
+        "sha256": "3a0b842eff9d1bba15ee1ff115a0ddf3e4ba91b04c4e8268ba700b970a5dd818",
+        "size": 22149,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/docs/README.md",
+        "sha256": "ec1ccc502553d20884ff1b32561509089c40ce019dec5ec2a4ff65b7c2f115d5",
+        "size": 1143,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/docs/Testing.md",
+        "sha256": "189bcf45daf9554786bbc300789d7a68c426eedef92c55f271ec58251a8c4189",
+        "size": 11874,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/docs/UserDocumentation.md",
+        "sha256": "aa56dc173b55c46d5b49a8ee003a9909f0407b62bf1fbdd9ecb22c420e7c11a0",
+        "size": 25796,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/gyp",
+        "sha256": "38e8b886cf06fe7cec4d89634fd2850891706308e2bbbc0556b3d299bd6a7993",
+        "size": 240,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/gyp.bat",
+        "sha256": "77bf45e8c077df03d65e6c076920f24bee04752e29bcb21b63d3622fffe84f10",
+        "size": 201,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/gyp_main.py",
+        "sha256": "80eb0a1948230c832f17bf99f31a8729d54044d80469cfe0fecace69e7ab66a6",
+        "size": 1250,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/MSVSNew.py",
+        "sha256": "34280ad132f575938b99decb17460fd444067ce12bade05e2af3e4e99a644432",
+        "size": 13191,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/MSVSProject.py",
+        "sha256": "c7e611ab14306def936c6dc47304b0f44d053c1e1f701081edff16659108313a",
+        "size": 6940,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/MSVSSettings.py",
+        "sha256": "13c9006c1af1bf40389eadbb1f303221544a37bcb4615be8e3d227856c40280c",
+        "size": 45747,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/MSVSSettings_test.py",
+        "sha256": "8c30d346ac54fb1d2a5f15a2f91be068336f490e1e5b648de7a5dba9eaade742",
+        "size": 74434,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/MSVSToolFile.py",
+        "sha256": "bddfddd604777a0f1b9e3fa344b8bef2a90a18fd1ed14e6b9e7142ab4785b995",
+        "size": 1830,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/MSVSUserFile.py",
+        "sha256": "97bb28014bc84494b9e0397481c9749c94f0c04f73a03a632b2cace4d0f38b29",
+        "size": 5376,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/MSVSUtil.py",
+        "sha256": "c9e2bd297d2ea44b32e6b6d7697c1aeb0709ef3728dc06b8e3d29f8e3844f1fb",
+        "size": 10326,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/MSVSVersion.py",
+        "sha256": "6d51c2d7ba18b8f7f36a75a91af6053ccabddc4a031f6b72b44f8190e7ced98b",
+        "size": 19878,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/__init__.py",
+        "sha256": "a7333a360f53319d1992bc3d71a010ef5a02effb23b93ecfd8be75edf5716065",
+        "size": 24653,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/common.py",
+        "sha256": "cbbc59947402ff878a121a6d95034e8b04016486154502beb9f9b84c4b2d8db8",
+        "size": 25313,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/common_test.py",
+        "sha256": "d9831158cb9393a3d3b8d626731298e883602fffaaf2394ee6db658d01b92c70",
+        "size": 6252,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/easy_xml.py",
+        "sha256": "4604946abac2a8cb6dd24ad2f35c0644f6c0f2342967ce916ab3091fd41477ad",
+        "size": 5487,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/easy_xml_test.py",
+        "sha256": "d4ca2f5b01ab57596bcee58881a75759f00cd978c413cb7d814c174f22d91229",
+        "size": 3941,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/flock_tool.py",
+        "sha256": "36a3f8725c44fbaa555d57c39c3896d170283e164c53ff3ebe59cb43db393c1a",
+        "size": 1886,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/generator/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/generator/analyzer.py",
+        "sha256": "8acc9c46eb01b763453bf72174243e451df1e6f992c634b0bdac4d44d68a9d3e",
+        "size": 31639,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/generator/android.py",
+        "sha256": "fc3591b7740e964bccaf7b7e54d5b08652030c6b503d95b661c3edb29fb7f995",
+        "size": 49773,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/generator/cmake.py",
+        "sha256": "3a2b1c63330afa01368b38e08340eac30850110e75959da07a823c185d22a792",
+        "size": 49299,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/generator/compile_commands_json.py",
+        "sha256": "4b4be68b5e9c8d2392ad81ff7ec3d16204876cf6e553c83e003a37b307c19a5f",
+        "size": 4851,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/generator/dump_dependency_json.py",
+        "sha256": "be29b3c4cccaed8a29f78f933f0d864e95e5223010f70b7d9593e4a756ae5a55",
+        "size": 3104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/generator/eclipse.py",
+        "sha256": "309aaac9b59683cbfaa72f4d5906c9d9da88cc50a55164c043a240adfd53129d",
+        "size": 17519,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/generator/gypd.py",
+        "sha256": "327da16f225f0b25ad0468b3b1e5cad5e5b5f7943adae943345647796835a2ca",
+        "size": 3505,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/generator/gypsh.py",
+        "sha256": "712cd6f9d744c7680250f20e8fd6b87d74408264f3dafd5e0b28e9fc084f6938",
+        "size": 1692,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/generator/make.py",
+        "sha256": "db1ebe035be361f799b34e89e7e2de4c8aa61b00364b2fb5775f6ad493252b12",
+        "size": 111762,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/generator/msvs.py",
+        "sha256": "4a6cc9e56495afeaff0aada577cbf3d8641010040c37cede2af3804e0b46ae8f",
+        "size": 151277,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/generator/msvs_test.py",
+        "sha256": "fff6c3e2608ad9d70dc3a8d73d55546bdefb6a9c01af3feeed608b03adc20f95",
+        "size": 1261,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/generator/ninja.py",
+        "sha256": "b55814602684fc3929bb884766746607eb4621160f8707f95446c7580b30774c",
+        "size": 119441,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/generator/ninja_test.py",
+        "sha256": "c9909846524136d0a689082e2ea09bf37f36b31f7223e081b077726e3f27de35",
+        "size": 2414,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/generator/xcode.py",
+        "sha256": "bcdb30428678fff56b512e598fa949485d4451d2c9797af9adda2188ae269947",
+        "size": 66005,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/generator/xcode_test.py",
+        "sha256": "000187305f0f180a71e6540de9e5665bf6fbf4f082148674b4b2a69aa55b644e",
+        "size": 667,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/input.py",
+        "sha256": "4030bc4af92103bd4fa31412185e0a647871042a5f0b0705f30e9499f33f20c9",
+        "size": 126437,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/input_test.py",
+        "sha256": "9c2bfb6b356f492faf17d12e8b5d6abbf4554f6bcf1befc4ae3fa852681aceab",
+        "size": 3426,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/mac_tool.py",
+        "sha256": "fd4123551c1b966388a0bae0a5f76e1f7db315ea6ff1e257738a3c4dc68db216",
+        "size": 30482,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/msvs_emulation.py",
+        "sha256": "b534670aa6cdcabca7637168fac52727e3ca6534aa7c77b7643cdeba67788a59",
+        "size": 54021,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/ninja_syntax.py",
+        "sha256": "ccc1e407c9743bba1192e605a1a37d768b676c04c11d9804ad0cedc04fd6eb8f",
+        "size": 5640,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/simple_copy.py",
+        "sha256": "831875d88420293e45550d239c1e44e10b90681397f512497a40b317ad240901",
+        "size": 1297,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/win_tool.py",
+        "sha256": "601401e4e26c3f6211943b4062f9e72dbe8b21870c8b8e0ecdc66ac4152a7c27",
+        "size": 15178,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/xcode_emulation.py",
+        "sha256": "153b5cdec70c1875efbfb391df371d9650e55effaf572fc500dba14289f7cf01",
+        "size": 82454,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/xcode_emulation_test.py",
+        "sha256": "784a6188ed50125e6a74d72e5b57bba2076d0d5693c523776542a5530091cab7",
+        "size": 1489,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/xcode_ninja.py",
+        "sha256": "e2a5068a09bb4b832fe29532d9b2519be768898fbd89f72390a9c30e1020f527",
+        "size": 12132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/xcodeproj_file.py",
+        "sha256": "60bc9398248ffef90c514a9a8bc6f84bcaba0783228d167a2dc6e8fad46b6fc6",
+        "size": 136272,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/gyp/xml_fix.py",
+        "sha256": "f688dfce0efe63cc5c28ddd7d85a5fb9d3ecb14840ac7925f1f814d04164ca52",
+        "size": 2244,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/LICENSE",
+        "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48",
+        "size": 197,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/LICENSE.APACHE",
+        "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+        "size": 10174,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/LICENSE.BSD",
+        "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5",
+        "size": 1344,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/__init__.py",
+        "sha256": "2a00427c7cfdbe084df43b72682531c9ec1f7b956b8d50ed89ab40d66e8287b4",
+        "size": 501,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/_elffile.py",
+        "sha256": "e0cd8d28e5072aa90b5e2bc1009a7ff7d88846e1ccd500163965612520872e7b",
+        "size": 3255,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/_manylinux.py",
+        "sha256": "46aea9a570311fc5c5b4d7fab42f81fb548abaf08e0cf06f702a12ba532d6ed9",
+        "size": 9526,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/_musllinux.py",
+        "sha256": "92098118b1726e9cbceb4f7e293bf39addb30a108f598be1a790563f8257edd1",
+        "size": 2676,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/_parser.py",
+        "sha256": "e4384aff3609138538cb34a4804053e05eed4f6c59e8f931e204912b2bd79de4",
+        "size": 10382,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/_structures.py",
+        "sha256": "ab77953666d62461bf4b40e2b7f4b7028f2a42acffe4f6135c500a0597b9cabe",
+        "size": 1431,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/_tokenizer.py",
+        "sha256": "6a50ad6f05e138502614667a050fb0093485a11009db3fb2b087fbfff31327f9",
+        "size": 5292,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/markers.py",
+        "sha256": "72c7d49e0186aa124fd8c46e32caeb048c0360f1e7bf5515b4b8d26c2f467c33",
+        "size": 8202,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/metadata.py",
+        "sha256": "50d566cd2cc178b235f961aea0f3dfa651f2f67397ffe6a16d36e6a4b1019fe6",
+        "size": 33017,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/py.typed",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/requirements.py",
+        "sha256": "c2cc06e265c74a013dc38363367952be02c6a3ac98bdf1d51059d686e1265f18",
+        "size": 2952,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/specifiers.py",
+        "sha256": "7e6392c8cebfd4ab851cb5d0b117c883a2a2a806b937244f797bb1ca8a0f2f90",
+        "size": 39969,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/tags.py",
+        "sha256": "a641ba810dbc465852d3d573ca65615691ab585e5da075df2b55711bd71d8686",
+        "size": 18355,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/utils.py",
+        "sha256": "5e07663f7cb1f7ec101058ceecebcc8fd46311fe49951e4714547af6fed243d1",
+        "size": 5268,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pylib/packaging/version.py",
+        "sha256": "5e34412cd2b5ed430380b78ff141e7ab0898dd37528b4df1150511b5e736d750",
+        "size": 16236,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/pyproject.toml",
+        "sha256": "ac5675d40ea38eef8dc6d75ba762e3f6f0763e50a574a3d34c3731ce47bb4879",
+        "size": 2888,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/release-please-config.json",
+        "sha256": "e60dec6429d83a7578464d52669f17053481f1ec408671b1a56b470ee454837c",
+        "size": 279,
+        "type": "FILE"
+      },
+      {
+        "path": "package/gyp/test_gyp.py",
+        "sha256": "c47a7aade761cd8092d6169ac3c478ce45e2efa13bd3e8406bba715ede229264",
+        "size": 7724,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/Find-VisualStudio.cs",
+        "sha256": "bdb19763c5d23fab534ddc945f64c4cd956584eac934f0bed96c536d3fc53502",
+        "size": 7931,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/build.js",
+        "sha256": "fd1969a2097abc1bffa983c56cbeeefc029ac37324fceeccf69a90080aa8c81a",
+        "size": 6706,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/clean.js",
+        "sha256": "5a4f5a39a10523fd559e262bd0e4b00816b3274912de6d8637904180484b0df0",
+        "size": 414,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/configure.js",
+        "sha256": "640d14e5719d34a4b5f1b7728cd94f383b0992a6089f3a133ecb9a349625d861",
+        "size": 11915,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/create-config-gypi.js",
+        "sha256": "b634df313bd97a588d7e235e4043128d71571d1ea7e4282906170d58d9f6e504",
+        "size": 4798,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/download.js",
+        "sha256": "471ec288a37bb8d2c71017b306eabb3b3080746363fa6c714b588271eeedc207",
+        "size": 976,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/find-node-directory.js",
+        "sha256": "aa15c361f9703bf37d99d5d1d6b85491987bfa170d8403f3b5d50696b409d4a9",
+        "size": 2378,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/find-python.js",
+        "sha256": "cf320a028208d5b38fdf81ecb54231277d6a9d9afb6f40c3ad9f4889afc25559",
+        "size": 10981,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/find-visualstudio.js",
+        "sha256": "6aca4447094aece6cab8c9ea492421be58ebc13f33bf955aa4b27ef4bddb503f",
+        "size": 20192,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/install.js",
+        "sha256": "f1dd462e1ad2618c758de94301181132a15a10686f5cad324d01bd36e6be0259",
+        "size": 13975,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/list.js",
+        "sha256": "6d727b4490ec61d795c7e0ac01af7d00fb185a56c27437dfbc5ab511fe9e919c",
+        "size": 580,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/log.js",
+        "sha256": "8a8be6cc02b9803fbdff0e7e7b25a50ea2e221b53ba59e146fadc6448578ba5d",
+        "size": 3462,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/node-gyp.js",
+        "sha256": "6221f4df47b863bcff62ae052d53f11b7487c9ea015f787771323c4c232a2139",
+        "size": 5651,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/process-release.js",
+        "sha256": "347776c4407a92e870e4d408069e523c0bfb25b7a59197244b639451b4ff402a",
+        "size": 5727,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/rebuild.js",
+        "sha256": "8e061a061f56fcc329eba702d5e2b08107ea1d2d0f64a29f93291e2d3fae43a9",
+        "size": 281,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/remove.js",
+        "sha256": "887a83966f9739067be94d9e0aa71197fcadafc55d7e3b4cfebe62e6a4ba260f",
+        "size": 1233,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/util.js",
+        "sha256": "6a806d26943f783094826cb23ff23b85b112e98f86e3d2508f16d1d5c13586d8",
+        "size": 2228,
+        "type": "FILE"
+      },
+      {
+        "path": "package/macOS_Catalina_acid_test.sh",
+        "sha256": "c4ff0028080b20ec21f77b06dc84f27110e3c925e0cb65553a64d08f0989ef6a",
+        "size": 495,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "11896cdb5e5657602a5e6163c5a8fa145011b7feb27ce5d5222b1c82df84314a",
+        "size": 1271,
+        "type": "FILE"
+      },
+      {
+        "path": "package/release-please-config.json",
+        "sha256": "5e3fcb59fead830b74d15d69261a11347aa205bc63fa1fae6fc957838f3cf165",
+        "size": 2405,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/win_delay_load_hook.cc",
+        "sha256": "ec2357ffdf512151c21a52326ad3396aaa650b83e5c4a31153d216a155f68ecc",
+        "size": 1003,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1102,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/66/662a1b0115251cfb29c6aed0f221f8847bc49c6365d1c53a62c9f4bccc2489c3",
+          "sha256": "662a1b0115251cfb29c6aed0f221f8847bc49c6365d1c53a62c9f4bccc2489c3"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "662a1b0115251cfb29c6aed0f221f8847bc49c6365d1c53a62c9f4bccc2489c3",
+        "size": 1102
+      },
+      {
+        "blob": {
+          "bytes": 12524,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/57/57b9ee4cb878904f0d420bef5d9d8d23c06ba4f4d58403ce0c28dbc0cf8a4d11",
+          "sha256": "57b9ee4cb878904f0d420bef5d9d8d23c06ba4f4d58403ce0c28dbc0cf8a4d11"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "57b9ee4cb878904f0d420bef5d9d8d23c06ba4f4d58403ce0c28dbc0cf8a4d11",
+        "size": 12524
+      },
+      {
+        "blob": {
+          "bytes": 1537,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ca/ca90abb6ed71de0774461ef9f928de33e748b617aeb79f9e52415cf08d69230e",
+          "sha256": "ca90abb6ed71de0774461ef9f928de33e748b617aeb79f9e52415cf08d69230e"
+        },
+        "kind": "LICENCE",
+        "path": "package/gyp/LICENSE",
+        "sha256": "ca90abb6ed71de0774461ef9f928de33e748b617aeb79f9e52415cf08d69230e",
+        "size": 1537
+      },
+      {
+        "blob": {
+          "bytes": 197,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ca/cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48",
+          "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+        },
+        "kind": "LICENCE",
+        "path": "package/gyp/pylib/packaging/LICENSE",
+        "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48",
+        "size": 197
+      },
+      {
+        "blob": {
+          "bytes": 10174,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/0d/0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        "kind": "LICENCE",
+        "path": "package/gyp/pylib/packaging/LICENSE.APACHE",
+        "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+        "size": 10174
+      },
+      {
+        "blob": {
+          "bytes": 1344,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b7/b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5",
+          "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+        },
+        "kind": "LICENCE",
+        "path": "package/gyp/pylib/packaging/LICENSE.BSD",
+        "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5",
+        "size": 1344
+      }
+    ],
+    "expandedBytes": 1867568,
+    "packageIdentity": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "node-gyp",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/nodejs/node-gyp.git"
+      },
+      "version": "11.5.0"
+    },
+    "packageMetadata": {
+      "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)",
+      "bin": "./bin/node-gyp.js",
+      "dependencies": {
+        "env-paths": "^2.2.0",
+        "exponential-backoff": "^3.1.1",
+        "graceful-fs": "^4.2.6",
+        "make-fetch-happen": "^14.0.3",
+        "nopt": "^8.0.0",
+        "proc-log": "^5.0.0",
+        "semver": "^7.3.5",
+        "tar": "^7.4.3",
+        "tinyglobby": "^0.2.12",
+        "which": "^5.0.0"
+      },
+      "description": "Node.js native addon build tool",
+      "devDependencies": {
+        "bindings": "^1.5.0",
+        "cross-env": "^7.0.3",
+        "eslint": "^9.16.0",
+        "mocha": "^11.0.1",
+        "nan": "^2.14.2",
+        "neostandard": "^0.11.9",
+        "require-inject": "^1.4.4"
+      },
+      "engines": {
+        "node": "^18.17.0 || >=20.5.0"
+      },
+      "installVersion": 11,
+      "keywords": [
+        "native",
+        "addon",
+        "module",
+        "c",
+        "c++",
+        "bindings",
+        "gyp"
+      ],
+      "license": "MIT",
+      "main": "./lib/node-gyp.js",
+      "name": "node-gyp",
+      "preferGlobal": true,
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/nodejs/node-gyp.git"
+      },
+      "scripts": {
+        "lint": "eslint \"*/*.js\" \"test/**/*.js\" \".github/**/*.js\"",
+        "test": "cross-env NODE_GYP_NULL_LOGGER=true mocha --timeout 15000 test/test-download.js test/test-*"
+      },
+      "version": "11.5.0"
+    },
+    "physicalEntryCount": 108,
+    "tarball": {
+      "bytes": 460185,
+      "sha256": "d5d805d43a57bf3e526627e1abaf0382f488a46959a5aeaf147b0c183c37b3da"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

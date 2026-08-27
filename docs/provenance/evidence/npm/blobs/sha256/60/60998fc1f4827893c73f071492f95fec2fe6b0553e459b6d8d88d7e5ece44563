@@ -1,0 +1,136 @@
+{
+  "artifactId": "557954e35b39e7d029e790097ea46eba8407ba34a35b5d961223b29fafa03205",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8620,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "c39e1b3f735bb9302eb3cbd84aeb48c4311db64381f9e0a1aa4a61ddf59ce890",
+        "size": 15631,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "e8afd30f2f2a40ef5023928b50fdaed3a3338aa7e1c4e86205413afb05e8a099",
+        "size": 1297,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "package/src/index.d.ts",
+        "sha256": "42baf4ca38c38deaf411ea73f37bc39ff56c6e5c761a968b64ac1b25c92b5cd8",
+        "size": 4220,
+        "type": "FILE"
+      },
+      {
+        "path": "package/src/index.js",
+        "sha256": "4987708b4b13159c654c09d239bd0c439533b0b792a6fd4e8769d8a509ad4da6",
+        "size": 6603,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 15631,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c3/c39e1b3f735bb9302eb3cbd84aeb48c4311db64381f9e0a1aa4a61ddf59ce890",
+          "sha256": "c39e1b3f735bb9302eb3cbd84aeb48c4311db64381f9e0a1aa4a61ddf59ce890"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "c39e1b3f735bb9302eb3cbd84aeb48c4311db64381f9e0a1aa4a61ddf59ce890",
+        "size": 15631
+      }
+    ],
+    "expandedBytes": 27751,
+    "packageIdentity": {
+      "author": "Jared Wray <me@jaredwray.com> (http://jaredwray.com)",
+      "homepage": "https://github.com/jaredwray/keyv",
+      "license": "MIT",
+      "name": "keyv",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/keyv.git"
+      },
+      "version": "4.5.4"
+    },
+    "packageMetadata": {
+      "author": "Jared Wray <me@jaredwray.com> (http://jaredwray.com)",
+      "bugs": {
+        "url": "https://github.com/jaredwray/keyv/issues"
+      },
+      "dependencies": {
+        "json-buffer": "3.0.1"
+      },
+      "description": "Simple key-value storage with support for multiple backends",
+      "devDependencies": {
+        "@keyv/test-suite": "*",
+        "eslint": "^8.51.0",
+        "eslint-plugin-promise": "^6.1.1",
+        "pify": "^5.0.0",
+        "timekeeper": "^2.3.1",
+        "tsd": "^0.29.0"
+      },
+      "files": [
+        "src"
+      ],
+      "homepage": "https://github.com/jaredwray/keyv",
+      "keywords": [
+        "key",
+        "value",
+        "store",
+        "cache",
+        "ttl"
+      ],
+      "license": "MIT",
+      "main": "src/index.js",
+      "name": "keyv",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/keyv.git"
+      },
+      "scripts": {
+        "build": "echo 'No build step required.'",
+        "clean": "rm -rf node_modules && rm -rf ./coverage && rm -rf ./test/testdb.sqlite",
+        "prepare": "yarn build",
+        "test": "xo && c8 ava --serial",
+        "test:ci": "xo && ava --serial"
+      },
+      "tsd": {
+        "directory": "test"
+      },
+      "types": "./src/index.d.ts",
+      "version": "4.5.4",
+      "xo": {
+        "rules": {
+          "@typescript-eslint/consistent-type-definitions": 0,
+          "unicorn/no-typeof-undefined": 0,
+          "unicorn/prefer-event-target": 0,
+          "unicorn/prefer-module": 0,
+          "unicorn/prefer-node-protocol": 0
+        }
+      }
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 8620,
+      "sha256": "eb26f1c561e57af4a4365e6b54f5f3e745e3963747a93845af1f000a747b6098"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

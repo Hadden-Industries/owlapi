@@ -1,0 +1,149 @@
+{
+  "artifactId": "d362d938165054a1d1f1eb453cffb0d130c1c9ffab1b5b27d8c9cf1854dd0b02",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5843,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "d0b7cddf14a2005e05b397a950b9f69e1de412b8c6749e5b5d70610fb119e9ee",
+        "size": 1060,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "d664dc870ea42ad76b2b8ca5f4d03eb990cb0b46670d4fc57c5057571e3f89c7",
+        "size": 978,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/deep-map.js",
+        "sha256": "b4a3a6e1d55cb83e5692dc81cdf3898f183c775cfc9fff4d1cb80db419f17483",
+        "size": 2261,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/error.js",
+        "sha256": "672e2601b6de6d6a1f2213f2b7e1495c0092f66c698e3d4399dc3068c1b2d77b",
+        "size": 1089,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "9ccb5d4a8da4f242d4890d49fe366e964aefd07ce48582cc930005c7287c864a",
+        "size": 1093,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/matchers.js",
+        "sha256": "6816dd0f44a9f8027c42dd046df4bf4b80016eaa8580e8de3ea7917d030048b7",
+        "size": 2010,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/server.js",
+        "sha256": "8b67f497c78741d6746e19da0aaba6605587d63d95b827d65adadb6cdc28b2bf",
+        "size": 1370,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/utils.js",
+        "sha256": "885bd8e64c2a098ff8273103eb4c5216b66e4f7fb41f09d2e3010ec786a6ca9c",
+        "size": 5744,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "9954e4f5b0e7aa04fa807982012f0e558119121c56e0666c541d47256dfaba47",
+        "size": 1255,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1060,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/d0/d0b7cddf14a2005e05b397a950b9f69e1de412b8c6749e5b5d70610fb119e9ee",
+          "sha256": "d0b7cddf14a2005e05b397a950b9f69e1de412b8c6749e5b5d70610fb119e9ee"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "d0b7cddf14a2005e05b397a950b9f69e1de412b8c6749e5b5d70610fb119e9ee",
+        "size": 1060
+      }
+    ],
+    "expandedBytes": 16860,
+    "packageIdentity": {
+      "author": "GitHub Inc.",
+      "homepage": null,
+      "license": "ISC",
+      "name": "@npmcli/redact",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/redact.git"
+      },
+      "version": "5.0.0"
+    },
+    "packageMetadata": {
+      "author": "GitHub Inc.",
+      "description": "Redact sensitive npm information from output",
+      "devDependencies": {
+        "@npmcli/eslint-config": "^5.0.0",
+        "@npmcli/template-oss": "5.0.0",
+        "tap": "^16.3.10"
+      },
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "exports": {
+        ".": "./lib/index.js",
+        "./package.json": "./package.json",
+        "./server": "./lib/server.js"
+      },
+      "files": [
+        "bin/",
+        "lib/"
+      ],
+      "keywords": [],
+      "license": "ISC",
+      "main": "lib/index.js",
+      "name": "@npmcli/redact",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/redact.git"
+      },
+      "scripts": {
+        "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\"",
+        "lint": "npm run eslint",
+        "lintfix": "npm run eslint -- --fix",
+        "postlint": "template-oss-check",
+        "posttest": "npm run lint",
+        "snap": "tap",
+        "template-oss-apply": "template-oss-apply --force",
+        "test": "tap"
+      },
+      "tap": {
+        "nyc-arg": [
+          "--exclude",
+          "tap-snapshots/**"
+        ],
+        "timeout": 120
+      },
+      "templateOSS": {
+        "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
+        "publish": true,
+        "version": "5.0.0"
+      },
+      "version": "5.0.0"
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 5843,
+      "sha256": "fcb701861706437c91b0b4d75aafc86432b740ba9fc4e4f6aab469c1eb9b22c1"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}
