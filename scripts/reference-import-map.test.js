@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 
 import {
   hydrateReferenceImportMap,
+  resolveReferenceBrowserDependency,
   toLocalProviderPath,
   verifySubresourceIntegrity,
 } from "./reference-import-map.mjs";
@@ -23,6 +24,31 @@ describe("reference import-map evidence", () => {
     expect(() =>
       verifySubresourceIntegrity(Buffer.from("changed"), integrity),
     ).toThrow(/do not match/u);
+  });
+
+  it("selects jsonld's browser bundle only for owlapi's native module graph", () => {
+    const packageUrl = "file:///fixture/node_modules/owlapi/";
+    expect(
+      resolveReferenceBrowserDependency({
+        packageUrl,
+        parentUrl: `${packageUrl}internal/parsing/jsonld/parser.js`,
+        specifier: "jsonld",
+      }),
+    ).toBe("https://ga.jspm.io/npm:jsonld@9.0.0/dist/jsonld.js");
+    expect(
+      resolveReferenceBrowserDependency({
+        packageUrl,
+        parentUrl: "file:///fixture/main.js",
+        specifier: "jsonld",
+      }),
+    ).toBeUndefined();
+    expect(
+      resolveReferenceBrowserDependency({
+        packageUrl,
+        parentUrl: `${packageUrl}internal/parsing/rdf/n3SyntaxAdapter.js`,
+        specifier: "n3",
+      }),
+    ).toBeUndefined();
   });
 
   it("hydrates every provider URL and rewrites map keys and values", async () => {

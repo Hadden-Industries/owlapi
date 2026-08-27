@@ -19,6 +19,21 @@ const ENVIRONMENT_CONDITIONS = Object.freeze([
 ]);
 const NODE_XML_FALLBACK = "@xmldom/xmldom";
 const XML_ADAPTER_URL_SUFFIX = "/internal/parsing/xml/xmlParserAdapter.js";
+const JSON_LD_SPECIFIER = "jsonld";
+const JSPM_PROVIDER_BASE_URL = "https://ga.jspm.io/";
+const repositoryManifest = JSON.parse(
+  readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+);
+const jsonLdVersion = repositoryManifest.dependencies?.[JSON_LD_SPECIFIER];
+if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/u.test(jsonLdVersion ?? "")) {
+  throw new Error(
+    "Reference import-map generation requires an exact jsonld dependency version",
+  );
+}
+const JSON_LD_BROWSER_BUNDLE_URL = new URL(
+  `./npm:jsonld@${jsonLdVersion}/dist/jsonld.js`,
+  JSPM_PROVIDER_BASE_URL,
+).href;
 
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
@@ -41,6 +56,26 @@ export const stableJson = (value) =>
   `${JSON.stringify(stableObject(value), null, 2)}\n`;
 
 const withTrailingSlash = (url) => (url.endsWith("/") ? url : `${url}/`);
+
+export const resolveReferenceBrowserDependency = ({
+  packageUrl,
+  parentUrl,
+  specifier,
+}) => {
+  if (
+    specifier !== JSON_LD_SPECIFIER ||
+    !parentUrl.startsWith(withTrailingSlash(packageUrl))
+  ) {
+    return undefined;
+  }
+
+  // jsonld publishes this bundle specifically for browser consumers. Asking
+  // JSPM to convert that supported subpath keeps the native import-map graph
+  // standards-based while avoiding the split CommonJS conversion graph whose
+  // export-initialization order fails in the pre-Safari-27 WebKit ESM loader.
+  // Node and bundler consumers continue to resolve jsonld's ordinary entry.
+  return JSON_LD_BROWSER_BUNDLE_URL;
+};
 
 export const toLocalProviderPath = (providerUrl) => {
   const url = new URL(providerUrl);
@@ -161,6 +196,13 @@ export const generateReferenceImportMap = async ({
   const generator = new Generator({
     baseUrl: pathToFileURL(`${dirname(resolve(applicationPath))}${sep}`),
     cache: false,
+    customResolver(specifier, parentUrl) {
+      return resolveReferenceBrowserDependency({
+        packageUrl,
+        parentUrl,
+        specifier,
+      });
+    },
     defaultProvider: "jspm.io",
     // Generator appends its always-supported `import` condition in place, so
     // give the tool a fresh array while keeping our canonical inputs immutable.

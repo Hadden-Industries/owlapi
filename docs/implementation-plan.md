@@ -46,7 +46,7 @@
 > **Package-entry-point decision:** 24 August 2026 — expose the five approved unconditional native-ESM roots through one exact `exports` map, with no `main`, `module`, `browser`, conditional, wildcard, extension-alias or `package.json` export that could create a second or accidental public boundary.<br>
 > **Import-purity decision:** 24 August 2026 — require the complete package-owned production module closure to be side-effect-free on import, publish `sideEffects: false`, and treat any required import-time registration, I/O or global mutation as a release-blocking design defect.<br>
 > **Development-tooling decision:** 24 August 2026, hardened 26 August 2026 — declare `engines.node` exactly `>=22.23.2 <23 || >=24.19.0 <25` so each admitted minimum is a blocking consumer floor; use npm-native `devEngines` to require Node as the source runtime and exact npm `12.0.2` as the repository package manager; make npm 12's default-deny dependency lifecycle policy fail closed through project-local `strict-allow-scripts=true` and an exact-version `allowScripts` decision for every locked install script; and introduce neither `engines.npm` nor a separate Corepack/`packageManager` authority.<br>
-> **Reference-import-map-tooling decision:** 24 August 2026, hardened 25 August 2026 — generate the application-owned reference map with exact `@jspm/generator@2.16.3`, the `jspm.io` provider, `production`/`browser`/`module` conditions and integrity metadata; test an integrity-verified local mirror in all required engines and retain its content-addressed hydrated closure as candidate evidence while keeping the provider a replaceable reference rather than a package runtime dependency or second canonical source tree.<br>
+> **Reference-import-map-tooling decision:** 24 August 2026, hardened 25 and 28 August 2026 — generate the application-owned reference map with exact `@jspm/generator@2.16.3`, the `jspm.io` provider, `production`/`browser`/`module` conditions and integrity metadata; map owlapi's native-document `jsonld` dependency to JSPM's conversion of the upstream `jsonld@9.0.0/dist/jsonld.js` browser bundle while leaving Node and bundler resolution at the public package root; test an integrity-verified local mirror in all required engines and retain its content-addressed hydrated closure as candidate evidence while keeping the provider a replaceable reference rather than a package runtime dependency or second canonical source tree.<br>
 > **Release-artifact-tooling decision:** 24 August 2026 — generate a validated reproducible production-only CycloneDX 1.6 library SBOM with exact `@cyclonedx/cyclonedx-npm@6.0.1`, validate versioned Draft 2020-12 release evidence with exact `ajv@8.20.0` plus `ajv-formats@3.0.1`, keep tooling outside the production subject tree, and rely on immutable release attestation rather than a redundant evidence signature.<br>
 > **Published-dependency-tree decision:** 24 August 2026 — publish the six exact direct runtime dependencies as ordinary library dependencies, keep `package-lock.json` repository-only, publish no shrinkwrap/bundled/peer/optional/override dependency authority, and verify both the locked release graph and the graph resolved by a lockless fresh consumer.<br>
 > **Independent-package-lint decision:** 24 August 2026 — use exact-pinned `publint@0.3.24` as the present baseline, permit a later exact version only after the same tool-update review, run it in strict mode against the retained tarball before publication and the registry-downloaded tarball afterwards, and permit only narrow versioned, expiring warning exceptions rather than weakening the project-specific package gates.<br>
@@ -1721,6 +1721,20 @@ hand-vendored dependency bundle, a hidden second implementation, or a CDN-
 specific source branch merely to claim raw-tree compatibility. A future CDN-
 neutral raw-tree claim requires its own dependency, licence/SBOM,
 reproducibility and maintenance decision.
+
+For `jsonld@9.0.0`, the native-document reference consumer **MUST** resolve only
+owlapi's package-scoped bare `jsonld` import to JSPM's ESM conversion of the
+upstream-built `jsonld/dist/jsonld.js` browser bundle. The package source keeps
+its public `import("jsonld")`, and Node and ordinary bundlers keep resolving the
+dependency's root; this is an application-owned import-map choice, not a deep
+import embedded in `owlapi`. The narrower selection is required because JSPM's
+split CommonJS conversion of the root entry exposes an export-initialization
+ordering failure in the Safari 26-era WebKit module loader, whereas the
+upstream browser bundle internalizes that graph. The generated map and retained
+mirror still bind the converted bundle and its remaining shim closure to exact
+URLs and integrity digests and execute them in Chromium, Firefox and WebKit.
+Do not patch provider bytes, relax the WebKit gate, or generalize this override
+to imports outside the installed `owlapi` package scope.
 
 Document import maps do not apply to workers or worklets. Dedicated module
 workers are nevertheless part of the 0.1.0 support surface through the primary
@@ -15360,6 +15374,12 @@ https://vite.dev/guide/
     https://docs.github.com/en/code-security/concepts/supply-chain-security/immutable-releases<br>
     https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/verify-release-integrity<br>
     https://github.com/cli/cli/releases/tag/v2.98.0
+
+95. **WebKit — Safari 27 module-loader rewrite** — the WebKit project's account
+    of its standards-conforming ESM-loader rewrite and corrected module
+    execution/export-initialization ordering, used to bound the Safari 26-era
+    failure reproduced by the native jsonld reference graph.<br>
+    https://webkit.org/blog/17967/news-from-wwdc26-webkit-in-safari-27-beta/
 
 ---
 
