@@ -264,6 +264,8 @@ const verifyArtifactEvidence = async ({
   if (
     archive?.packageIdentity?.name !== artifact.name ||
     archive?.packageIdentity?.version !== artifact.version ||
+    archive?.packageMetadata?.name !== artifact.name ||
+    archive?.packageMetadata?.version !== artifact.version ||
     stableJson(archive?.tarball) !== stableJson(artifact.tarball)
   ) {
     productFailure(
@@ -285,6 +287,25 @@ const verifyArtifactEvidence = async ({
     ({ path }) => path,
     "archive inventory path",
   );
+  const archiveRoot = archive.archiveRoot;
+  const rootPrefix = `${archiveRoot}/`;
+  if (
+    typeof archiveRoot !== "string" ||
+    archiveRoot.length === 0 ||
+    archiveRoot === "." ||
+    archiveRoot === ".." ||
+    archiveRoot.includes("/") ||
+    archiveRoot.includes("\\") ||
+    archive.entries.some(
+      ({ path }) => path !== archiveRoot && !path.startsWith(rootPrefix),
+    ) ||
+    entryByPath.get(`${rootPrefix}package.json`)?.type !== "FILE"
+  ) {
+    controlFailure(
+      "ARCHIVE_ROOT_MISMATCH",
+      `Archive inventory does not have one authenticated package root for ${artifact.artifactId}`,
+    );
+  }
   for (const evidenceFile of archive.evidenceFiles) {
     const reference = evidenceFile?.blob;
     if (reference?.kind !== "PACKAGE_EVIDENCE_FILE") {

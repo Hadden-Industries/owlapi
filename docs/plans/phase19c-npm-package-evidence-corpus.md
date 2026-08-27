@@ -114,7 +114,9 @@ v2 human-reviewed third-party-material conclusion layer.
 - `.github/workflows/release.yml` and `.github/workflows/extended-tests.yml` —
   required fresh Ubuntu sharded release verification plus manually dispatched
   Ubuntu/Windows baseline and parity proof, after exact configuration approval;
-  ordinary `.github/workflows/ci.yml` behavior remains unchanged.
+  the transparent extended-environment observation remains schedule-only so a
+  manual evidence dispatch runs only the acquisition graph; ordinary
+  `.github/workflows/ci.yml` behavior remains unchanged.
 - `scripts/workflow-governance.mjs`, `scripts/workflow-governance.test.js`,
   `scripts/require-job-success.mjs` and `scripts/require-job-success.test.js` —
   make the Action/input/matrix/transport contract executable and add the stable
@@ -172,18 +174,22 @@ export const ARCHIVE_LIMITS = Object.freeze({
 });
 
 export async function inspectPackageTarball(tarballPath, expected, options = {})
-// -> { packageIdentity, entries, evidenceFiles, expandedBytes }
+// -> { archiveRoot, packageIdentity, entries, evidenceFiles, expandedBytes }
 ```
 
 - [ ] Construct minimal test archives for nested `LICENSE`, `NOTICE`,
       `COPYING`, `AUTHORS`, `PATENTS`, mixed-case and suffixed names.
 - [ ] Add one independently expected rejection fixture for absolute, traversal,
-      drive/UNC/NUL, unexpected-root, link-mediated evidence, special entry,
-      duplicate/case-colliding evidence, truncation and each configured limit.
+      drive/UNC/NUL, multiple-root, missing-root-manifest, link-mediated evidence,
+      special entry, duplicate/case-colliding evidence, truncation and each
+      configured limit.
 - [ ] Observe focused RED failures before importing `tar` in production code.
 - [ ] Read entries as streams, normalize exact POSIX paths, hash each regular
-      file, retain only selected evidence bytes and compare
-      `package/package.json` name/version with the expected coordinate.
+      file, retain only selected evidence bytes, require exactly one safe archive
+      root and compare `<archive-root>/package.json` name/version with the expected
+      coordinate. Modern npm-produced archives normally use `package/`; accept a
+      different historical root only under the same one-root, exact-identity and
+      path/link/collision controls, and retain that root in authenticated evidence.
 - [ ] Re-run focused tests and prove the test process creates no extracted
       package path outside its temporary fixture directory.
 
@@ -461,7 +467,9 @@ export async function acquireEvidence(options)
       aggregate matrix and cross-platform parity job to `extended-tests.yml`; do
       not compare the bootstrap aggregate with an absent committed corpus, run
       this heavy baseline on its weekly schedule, or make it a required ordinary
-      CI check.
+      CI check. Keep the transparent extended-environment observation job
+      schedule-only so `workflow_dispatch` cannot couple the pre-corpus full test
+      state to a manual acquisition baseline.
 - [ ] Govern the sixth Action, exact setup-python inputs, fixed runner/shell matrix,
       environment-only expression crossings, closed artifact patterns, one-day
       retention, exact shard coordinates and all fail-closed aggregates; grant only

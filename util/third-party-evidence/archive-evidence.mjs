@@ -66,11 +66,6 @@ const validatePath = (path, limits) => {
   ) {
     throw new Error(`Unsafe archive path: ${path}`);
   }
-  if (segments[0] !== "package") {
-    throw new Error(
-      `Archive entry is outside the expected package root: ${path}`,
-    );
-  }
   return normalized;
 };
 
@@ -151,6 +146,7 @@ export const inspectPackageTarball = async (
   let controlError;
   let expandedBytes = 0;
   let retainedEvidenceBytes = 0;
+  let archiveRoot;
 
   try {
     await list({
@@ -169,6 +165,17 @@ export const inspectPackageTarball = async (
           if (rawPath !== path) {
             throw new Error(`Unsafe archive path representation: ${rawPath}`);
           }
+          // Current npm tooling writes `package/`, but npm still installs older
+          // registry artifacts after stripping whichever first component they
+          // contain. Treat one root plus exact root-level package identity as
+          // authoritative; the historical directory name is not an identity.
+          const entryRoot = path.split("/", 1)[0];
+          if (archiveRoot && entryRoot !== archiveRoot) {
+            throw new Error(
+              `Archive entries do not share a single package root: ${archiveRoot} and ${entryRoot}`,
+            );
+          }
+          archiveRoot ??= entryRoot;
           if (exactPaths.has(path)) {
             throw new Error(`Duplicate archive path: ${path}`);
           }
@@ -272,13 +279,18 @@ export const inspectPackageTarball = async (
   }
   await Promise.all(pendingEntries);
 
+  if (!archiveRoot) {
+    throw new Error("Archive contains no package entries");
+  }
+
   entries.sort((left, right) => compareCodeUnits(left.path, right.path));
   evidenceFiles.sort((left, right) => compareCodeUnits(left.path, right.path));
+  const packageMetadataPath = `${archiveRoot}/package.json`;
   const packageEntry = entries.find(
-    ({ path, type }) => path === "package/package.json" && type === "FILE",
+    ({ path, type }) => path === packageMetadataPath && type === "FILE",
   );
   if (!packageEntry) {
-    throw new Error("Archive is missing package/package.json");
+    throw new Error(`Archive is missing ${packageMetadataPath}`);
   }
   // package.json is always needed for identity even though it is not classified
   // as legal evidence. Read it in one bounded second pass to avoid retaining all
@@ -288,7 +300,7 @@ export const inspectPackageTarball = async (
     file: tarballPath,
     strict: true,
     win32: false,
-    filter: (path) => path.replace(/\/$/u, "") === "package/package.json",
+    filter: (path) => path.replace(/\/$/u, "") === packageMetadataPath,
     onReadEntry: (entry) => {
       const chunks = [];
       entry.on("data", (chunk) => chunks.push(Buffer.from(chunk)));
@@ -298,13 +310,13 @@ export const inspectPackageTarball = async (
     },
   });
   if (!packageBytes || packageBytes.length !== packageEntry.size) {
-    throw new Error("Unable to read package/package.json from archive");
+    throw new Error(`Unable to read ${packageMetadataPath} from archive`);
   }
   let packageMetadata;
   try {
     packageMetadata = JSON.parse(UTF8_DECODER.decode(packageBytes));
   } catch (error) {
-    throw new Error("package/package.json is not valid UTF-8 JSON", {
+    throw new Error(`${packageMetadataPath} is not valid UTF-8 JSON`, {
       cause: error,
     });
   }
@@ -318,6 +330,7 @@ export const inspectPackageTarball = async (
   }
 
   return {
+    archiveRoot,
     compressedBytes: compressed.size,
     expandedBytes,
     packageIdentity: normalizePackageIdentity(packageMetadata),
@@ -344,11 +357,20 @@ export const materializePackageForScan = async (
   destinationRoot,
   { limits = ARCHIVE_LIMITS } = {},
 ) => {
-  if (!Array.isArray(inventory?.entries)) {
+  if (
+    !Array.isArray(inventory?.entries) ||
+    typeof inventory.archiveRoot !== "string"
+  ) {
     throw new TypeError("A validated archive inventory is required");
   }
   const expectedByPath = new Map();
   for (const entry of inventory.entries) {
+    const path = validatePath(entry.path, limits);
+    if (path.split("/", 1)[0] !== inventory.archiveRoot) {
+      throw new TypeError(
+        `Validated inventory path is outside archive root ${inventory.archiveRoot}: ${path}`,
+      );
+    }
     if (expectedByPath.has(entry.path)) {
       throw new TypeError(`Duplicate validated inventory path: ${entry.path}`);
     }
@@ -464,7 +486,7 @@ export const materializePackageForScan = async (
         new Error("Tarball no longer matches the validated inventory")
       );
     }
-    return join(destinationRoot, "package");
+    return join(destinationRoot, inventory.archiveRoot);
   } catch (error) {
     await Promise.allSettled(pendingEntries);
     await rm(destinationRoot, { recursive: true, force: true });

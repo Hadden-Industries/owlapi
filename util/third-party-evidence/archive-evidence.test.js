@@ -60,16 +60,15 @@ const baseEntries = () => [
   { path: "package/package.json", body: packageJson() },
 ];
 
-const inspect = async (entries, options = {}) => {
+const inspect = async (
+  entries,
+  { expected = { name: "alpha", version: "1.0.0" }, ...options } = {},
+) => {
   const directory = await mkdtemp(join(tmpdir(), "owlapi-archive-test-"));
   const path = join(directory, "fixture.tgz");
   try {
     await writeFile(path, tar(entries));
-    return await inspectPackageTarball(
-      path,
-      { name: "alpha", version: "1.0.0" },
-      options,
-    );
+    return await inspectPackageTarball(path, expected, options);
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
@@ -142,6 +141,29 @@ describe("inspectPackageTarball", () => {
     ).toBe(true);
   });
 
+  it("accepts a valid historical registry package with one nonstandard archive root", async () => {
+    const result = await inspect(
+      [
+        {
+          path: "yargs/package.json",
+          body: packageJson({ name: "@types/yargs", version: "17.0.35" }),
+        },
+        { path: "yargs/LICENSE", body: "MIT licence text\n" },
+      ],
+      { expected: { name: "@types/yargs", version: "17.0.35" } },
+    );
+
+    expect(result.archiveRoot).toBe("yargs");
+    expect(result.packageIdentity).toMatchObject({
+      name: "@types/yargs",
+      version: "17.0.35",
+      license: "MIT",
+    });
+    expect(result.evidenceFiles.map(({ path }) => path)).toEqual([
+      "yargs/LICENSE",
+    ]);
+  });
+
   it("does not retain a README that contains no legal or attribution evidence", async () => {
     const result = await inspect([
       ...baseEntries(),
@@ -173,7 +195,7 @@ describe("inspectPackageTarball", () => {
       /unsafe archive path/iu,
     ],
     ["Windows-trimmed name", "package/LICENSE. ", "0", /unsafe archive path/iu],
-    ["unexpected root", "other/LICENSE", "0", /expected package root/iu],
+    ["second package root", "other/LICENSE", "0", /single package root/iu],
     [
       "symbolic link",
       "package/LICENSE",
@@ -276,6 +298,41 @@ describe("inspectPackageTarball", () => {
       await expect(
         materializePackageForScan(tarballPath, inventory, destination),
       ).rejects.toThrow(/fresh scan destination/iu);
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
+  });
+
+  it("returns the validated nonstandard package root after materialization", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "owlapi-materialize-test-"));
+    const tarballPath = join(directory, "fixture.tgz");
+    const destination = join(directory, "scan");
+    try {
+      await writeFile(
+        tarballPath,
+        tar([
+          {
+            path: "yargs/package.json",
+            body: packageJson({ name: "@types/yargs", version: "17.0.35" }),
+          },
+          { path: "yargs/LICENSE", body: "MIT licence text\n" },
+        ]),
+      );
+      const inventory = await inspectPackageTarball(tarballPath, {
+        name: "@types/yargs",
+        version: "17.0.35",
+      });
+
+      const packageRoot = await materializePackageForScan(
+        tarballPath,
+        inventory,
+        destination,
+      );
+
+      expect(packageRoot).toBe(join(destination, "yargs"));
+      await expect(
+        readFile(join(packageRoot, "LICENSE"), "utf8"),
+      ).resolves.toBe("MIT licence text\n");
     } finally {
       await rm(directory, { recursive: true, force: true });
     }

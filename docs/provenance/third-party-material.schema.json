@@ -237,7 +237,7 @@
       "additionalProperties": false,
       "required": ["path", "kind", "sha256", "blobSha256", "blobPath"],
       "properties": {
-        "path": { "type": "string", "pattern": "^package/" },
+        "path": { "type": "string", "pattern": "^[^/\\\\]+/.+" },
         "kind": {
           "enum": [
             "AUTHORS",

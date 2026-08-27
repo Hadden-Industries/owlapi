@@ -60,7 +60,16 @@ const SHARD_MANIFEST_NAME = "npm-package-evidence-shard.json";
 
 export class AcquisitionError extends Error {
   constructor(classification, code, message, options = undefined) {
-    super(message, options);
+    // Error.stack omits `cause` in Node's plain string representation, which is
+    // what GitHub Actions receives below. Carry the immediate cause into the
+    // message while preserving the structured Error.cause chain for callers.
+    const causeMessage = options?.cause?.message;
+    super(
+      typeof causeMessage === "string" && causeMessage.length > 0
+        ? `${message}: ${causeMessage}`
+        : message,
+      options,
+    );
     this.name = "AcquisitionError";
     this.classification = classification;
     this.code = code;
@@ -618,6 +627,7 @@ const acquireArtifact = async ({
       evidenceFiles.push({ ...facts, blob });
     }
     const archiveEvidence = {
+      archiveRoot: inventory.archiveRoot,
       compressedBytes: inventory.compressedBytes,
       expandedBytes: inventory.expandedBytes,
       packageIdentity: inventory.packageIdentity,

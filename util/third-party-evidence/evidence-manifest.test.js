@@ -113,18 +113,34 @@ const makeFixture = async () => {
             kind: "PACKAGE_EVIDENCE_FILE",
           }
         : null;
+    const packageMetadata = {
+      name: identity.name,
+      version: identity.version,
+    };
+    const packageMetadataBytes = Buffer.from(
+      `${JSON.stringify(packageMetadata)}\n`,
+    );
+    const packageEntry = {
+      path: "package/package.json",
+      type: "FILE",
+      size: packageMetadataBytes.length,
+      sha256: sha256(packageMetadataBytes),
+    };
     const archive = await retainEvidence(
       blobRoot,
       "ARCHIVE_INVENTORY",
       identity.artifactId,
       {
+        archiveRoot: "package",
         packageIdentity: {
           name: identity.name,
           version: identity.version,
         },
+        packageMetadata,
         tarball,
         entries: legalEvidence
           ? [
+              packageEntry,
               {
                 path: "package/LICENSE",
                 type: "FILE",
@@ -132,7 +148,7 @@ const makeFixture = async () => {
                 sha256: legalEvidence.sha256,
               },
             ]
-          : [],
+          : [packageEntry],
         evidenceFiles: legalEvidence
           ? [
               {
@@ -144,7 +160,8 @@ const makeFixture = async () => {
               },
             ]
           : [],
-        expandedBytes: 0,
+        expandedBytes:
+          packageEntry.size + (legalEvidence ? legalEvidence.bytes : 0),
       },
     );
     const signatureEvidence = await retainEvidence(
@@ -374,6 +391,37 @@ describe("npm package evidence manifest", () => {
     await expectClassifiedFailure(
       verifyEvidenceManifest({ ...fixture, manifest }),
       "PRODUCT_FAILURE",
+    );
+  });
+
+  it("rejects a digest-consistent archive root that does not own the inventory paths", async () => {
+    const fixture = await makeFixture();
+    const manifest = structuredClone(fixture.manifest);
+    const artifact = manifest.artifacts[0];
+    const previous = artifact.archive.evidence;
+    const envelope = JSON.parse(
+      await readFile(join(fixture.blobRoot, previous.path), "utf8"),
+    );
+    envelope.evidence.archiveRoot = "other";
+    const replacement = {
+      ...(await retainBlob(fixture.blobRoot, stableJson(envelope))),
+      kind: "ARCHIVE_INVENTORY",
+    };
+    artifact.archive.evidence = replacement;
+    manifest.blobs = manifest.blobs.map((reference) =>
+      reference.kind === previous.kind && reference.sha256 === previous.sha256
+        ? replacement
+        : reference,
+    );
+    manifest.summary.retainedBytes = manifest.blobs.reduce(
+      (total, reference) => total + reference.bytes,
+      0,
+    );
+    manifest.corpusRoot = computeCorpusRoot(manifest.blobs);
+
+    await expectClassifiedFailure(
+      verifyEvidenceManifest({ ...fixture, manifest }),
+      "CONTROL_FAILURE",
     );
   });
 

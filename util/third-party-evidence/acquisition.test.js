@@ -94,18 +94,18 @@ const makeTarball = (entries) => {
 const integrity = (bytes) =>
   `sha512-${createHash("sha512").update(bytes).digest("base64")}`;
 
-const makeRegistryFixture = () => {
+const makeRegistryFixture = ({ archiveRoot = "package" } = {}) => {
   const tarball = makeTarball([
     {
-      path: "package/package.json",
+      path: `${archiveRoot}/package.json`,
       body: `${JSON.stringify({
         name: "alpha",
         version: "1.0.0",
         license: "MIT",
       })}\n`,
     },
-    { path: "package/LICENSE", body: "MIT licence fixture\n" },
-    { path: "package/index.js", body: "export default 1;\n" },
+    { path: `${archiveRoot}/LICENSE`, body: "MIT licence fixture\n" },
+    { path: `${archiveRoot}/index.js`, body: "export default 1;\n" },
   ]);
   const lockedIntegrity = integrity(tarball);
   const resolved = "https://registry.npmjs.org/alpha/-/alpha-1.0.0.tgz";
@@ -282,7 +282,7 @@ const fixtureScan = async ({ artifactId, inputRoot, inventory }) => ({
 
 describe("acquireEvidence", () => {
   it("acquires, authenticates, scans and writes a platform-neutral fixture corpus", async () => {
-    const fixture = makeRegistryFixture();
+    const fixture = makeRegistryFixture({ archiveRoot: "alpha" });
     const registry = await startRegistryServer(fixture);
     const repositoryRoot = await mkdtemp(
       join(tmpdir(), "owlapi-acquire-test-"),
@@ -332,6 +332,23 @@ describe("acquireEvidence", () => {
     const retainedLicence = result.manifest.blobs.find(
       ({ kind }) => kind === "PACKAGE_EVIDENCE_FILE",
     );
+    const retainedArchive = result.manifest.blobs.find(
+      ({ kind }) => kind === "ARCHIVE_INVENTORY",
+    );
+    const archiveEnvelope = JSON.parse(
+      await readFile(
+        join(
+          repositoryRoot,
+          "docs",
+          "provenance",
+          "evidence",
+          "npm",
+          retainedArchive.path,
+        ),
+        "utf8",
+      ),
+    );
+    expect(archiveEnvelope.evidence.archiveRoot).toBe("alpha");
     await expect(
       readFile(
         join(
@@ -636,6 +653,23 @@ describe("acquisition CLI", () => {
       classification: "EXTERNAL_BLOCKED",
       code: "NETWORK",
     });
+  });
+
+  it("preserves the immediate cause in command-line diagnostics", () => {
+    const cause = new Error(
+      "Archive entries do not share a single package root",
+    );
+    const error = new AcquisitionError(
+      "PRODUCT_FAILURE",
+      "ARCHIVE_INSPECTION_FAILED",
+      "Archive inspection failed for artifact-id",
+      { cause },
+    );
+
+    expect(error.message).toBe(
+      "Archive inspection failed for artifact-id: Archive entries do not share a single package root",
+    );
+    expect(error.cause).toBe(cause);
   });
 });
 

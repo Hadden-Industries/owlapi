@@ -498,6 +498,12 @@ const validateEvidenceWorkflows = (sources, violations) => {
   );
 
   const extended = sources["extended-tests.yml"] ?? "";
+  const extendedEvidence = jobBlock(extended, "extended_evidence");
+  add(
+    violations,
+    extendedEvidence.includes("if: ${{ github.event_name == 'schedule' }}"),
+    "extended-tests.yml:extended_evidence must run only for scheduled observations",
+  );
   const extendedShard = jobBlock(extended, "third_party_evidence_shard");
   const extendedAggregate = jobBlock(
     extended,

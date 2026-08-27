@@ -3256,7 +3256,7 @@ HTTPS beneath `https://registry.npmjs.org/` and supplies supported SRI. It
 deduplicates identical artifacts without losing any occurrence path, rejects
 Git/file/directory/arbitrary-remote/private-registry inputs, never installs or
 executes package contents, independently rehashes downloaded bytes, and compares
-the lock record, registry metadata, archive `package/package.json` and tarball
+the lock record, registry metadata, the archive root's `package.json` and tarball
 identity. A unique artifact is keyed by package coordinate plus immutable
 content identity, not by `name@version` alone.
 
@@ -3268,16 +3268,24 @@ absence is an explicit `NOT_PUBLISHED` observation rather than a failure, while
 an invalid or identity-mismatched attestation fails closed.
 
 Archive inspection reads entries without extracting them to host-selected
-paths. It rejects absolute/traversing/drive/UNC/NUL or malformed paths,
-unexpected roots, dangerous special entries, evidence reached through links,
-retained-path duplicates or case-folding collisions, malformed/truncated
-archives and fixed compressed/expanded/entry-count/entry-size/path-length limit
-violations. It records every normalized POSIX entry and recursively identifies
-licence, notice, copyright, author, patent and material third-party-attribution
-files. An absent licence file is a valid observed fact, not proof of compatible
-licensing. Immutable external evidence may close a documented tarball gap only
-when it is separately digested, retained and distinguished from tarball bytes;
-it cannot silently override contradictory package evidence.
+paths. Modern npm-produced archives conventionally use `package/`, but historical
+installable registry artifacts may use another first component because npm
+installation strips that component. The inspector therefore treats the root name
+as an observed layout fact, not package identity: it requires exactly one safe
+root, a regular `<archive-root>/package.json` whose name and version exactly match
+the authenticated lock/registry coordinate, and records the root in the retained
+archive inventory. It rejects zero or multiple roots, a missing root-level
+manifest, absolute/traversing/drive/UNC/NUL or malformed paths, dangerous special
+entries, evidence reached through links, retained-path duplicates or case-folding
+collisions, malformed/truncated archives and fixed compressed/expanded/entry-
+count/entry-size/path-length limit violations. Offline verification rechecks the
+recorded root against every inventory path and the root manifest. The inspector
+records every normalized POSIX entry and recursively identifies licence, notice,
+copyright, author, patent and material third-party-attribution files. An absent
+licence file is a valid observed fact, not proof of compatible licensing.
+Immutable external evidence may close a documented tarball gap only when it is
+separately digested, retained and distinguished from tarball bytes; it cannot
+silently override contradictory package evidence.
 
 The initial manually dispatched baseline **MUST** run all 32 shards using the
 official checksum-pinned ScanCode Toolkit `32.5.0` Python 3.14 archives
@@ -3314,7 +3322,11 @@ aggregate validates and reconstructs a **candidate** corpus without
 and human review all precede promotion of those byte-identical candidate bytes
 into the repository. This bootstrap rule creates no release exception: every
 release aggregate uses `--verify-committed` and fails unless its fresh result is
-byte-for-byte identical to the reviewed committed corpus.
+byte-for-byte identical to the reviewed committed corpus. The separate
+transparent extended-environment observation job runs only for the weekly
+schedule; `workflow_dispatch` selects the acquisition/parity graph alone, so an
+intentionally absent bootstrap corpus cannot make that manual graph fail through
+an unrelated full-suite prerequisite.
 
 ScanCode supplies evidence rather than the legal conclusion. The incompatible
 schema transition from third-party-material v1 to v2 **MUST** separately record
