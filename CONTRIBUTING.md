@@ -59,6 +59,38 @@ copyrightability is genuinely unclear, treat the contribution as in scope until
 the uncertainty is resolved. A later policy or CLA does not apply retroactively
 without the actual rights holder's agreement.
 
+## Source text, syntax, and formatting
+
+Repository text is UTF-8 with LF line endings and a final newline. The root
+`.gitattributes` makes that representation independent of a contributor's Git
+settings, while the nested override under `docs/conformance/upstream/` preserves
+pinned third-party fixtures byte for byte. Do not reformat or normalize those
+upstream evidence files.
+
+The root `.editorconfig` defines the shared editor baseline: spaces, two-space
+indentation for ordinary project files, four spaces for Python, no YAML tabs,
+final newlines, and trailing-whitespace removal. Native ESM and supported
+JavaScript syntax are defined separately by `package.json` and
+`eslint.config.js`.
+
+The exact repository Prettier version is the canonical formatter for every
+supported file not excluded by `.prettierignore`. The empty `.prettierrc.json`
+deliberately selects that version's defaults; `.editorconfig` supplies the common
+indentation and line-ending settings. ESLint remains the canonical JavaScript
+grammar, compatibility, and static-quality check. Run both gates before opening
+or updating a pull request:
+
+```shell
+npm run format:check
+npm run lint
+```
+
+To apply the canonical formatter locally, run:
+
+```shell
+npm run format
+```
+
 ## Preparing a pull request
 
 - Keep each change cohesive and explain its user-visible, compatibility, and

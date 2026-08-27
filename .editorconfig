@@ -1,0 +1,25 @@
+# EditorConfig helps developers define and maintain consistent
+# coding styles between different editors and IDEs.
+# https://editorconfig.org
+
+# Source: https://chatgpt.com/c/6a778fe9-92c4-83ed-92d8-3b15c8ec1a43
+
+root = true
+
+# Global defaults
+# 2-space indentation covers modern Web (HTML/CSS/JS), JSON, XML, RDF, OWL, Turtle, etc.
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# PEP 8 recommends 4 spaces per indentation level
+[*.py]
+indent_size = 4
+
+# YAML parser syntax strictly forbids tab characters
+[*.{yml,yaml}]
+indent_style = space

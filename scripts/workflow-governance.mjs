@@ -31,6 +31,7 @@ const EXPECTED_ISSUE_FORMS = Object.freeze([
 const ACTIONS = Object.freeze({
   "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1": "v7.0.1",
   "actions/setup-node@820762786026740c76f36085b0efc47a31fe5020": "v7.0.0",
+  "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97": "v7.0.0",
   "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a": "v7.0.1",
   "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c":
     "v8.0.1",
@@ -146,6 +147,41 @@ const validateActionUses = (fileName, source, violations) => {
         `${fileName}: ordinary setup-node block broadens registry authority`,
       );
     }
+    if (identity.startsWith("actions/setup-python@")) {
+      const inputKeys = [
+        ...block.matchAll(/^          ([a-z][a-z0-9-]*):/gmu),
+      ].map(([, key]) => key);
+      add(
+        violations,
+        JSON.stringify(inputKeys) ===
+          JSON.stringify([
+            "python-version",
+            "architecture",
+            "check-latest",
+            "update-environment",
+            "cache",
+          ]),
+        `${fileName}: setup-python inputs must match the exact approved surface`,
+      );
+      for (const setting of [
+        'python-version: "3.14.7"',
+        'architecture: "x64"',
+        "check-latest: false",
+        "update-environment: false",
+        'cache: ""',
+      ]) {
+        add(
+          violations,
+          block.includes(setting),
+          `${fileName}: setup-python is missing ${setting}`,
+        );
+      }
+      add(
+        violations,
+        !/(?:token|registry-url|mirror):/u.test(block),
+        `${fileName}: setup-python broadens download authority`,
+      );
+    }
   }
 };
 
@@ -153,12 +189,22 @@ const validateJobs = (fileName, source, violations) => {
   const allowedRunners = new Set(["ubuntu-24.04", "windows-2025", "macos-15"]);
   for (const id of jobIds(source)) {
     const block = jobBlock(source, id);
-    const runner = block.match(/^    runs-on: ([^\s]+)$/mu)?.[1];
-    add(
-      violations,
-      allowedRunners.has(runner),
-      `${fileName}:${id} must use an approved explicit runner`,
-    );
+    const runner = block.match(/^    runs-on: (.+)$/mu)?.[1];
+    const isEvidencePlatformMatrix =
+      fileName === "extended-tests.yml" && id === "third_party_evidence_shard";
+    if (isEvidencePlatformMatrix) {
+      add(
+        violations,
+        runner === "${{ matrix.os.runner }}",
+        `${fileName}:${id} must select only its closed runner matrix`,
+      );
+    } else {
+      add(
+        violations,
+        allowedRunners.has(runner),
+        `${fileName}:${id} must use an approved explicit runner`,
+      );
+    }
     add(
       violations,
       /^    timeout-minutes: \d+$/mu.test(block),
@@ -169,10 +215,15 @@ const validateJobs = (fileName, source, violations) => {
       /^    permissions:\r?$/mu.test(block),
       `${fileName}:${id} must declare job-minimal permissions`,
     );
-    const expectedShell = runner === "windows-2025" ? "pwsh" : "bash";
+    const expectedShell = isEvidencePlatformMatrix
+      ? "${{ matrix.os.shell }}"
+      : runner === "windows-2025"
+        ? "pwsh"
+        : "bash";
+    const shell = block.match(/^        shell: (.+)$/mu)?.[1];
     add(
       violations,
-      new RegExp(`^        shell: ${expectedShell}$`, "mu").test(block),
+      shell === expectedShell,
       `${fileName}:${id} must select ${expectedShell}`,
     );
   }
@@ -202,38 +253,55 @@ const validateAggregate = (fileName, source, workflow, violations) => {
 };
 
 const validateCandidateTransport = (fileName, source, violations) => {
-  if (!/^(?:ci|release)\.yml$/u.test(fileName)) {
+  const hasCandidateTransport = /^(?:ci|release)\.yml$/u.test(fileName);
+  const hasEvidenceTransport = /^(?:extended-tests|release)\.yml$/u.test(
+    fileName,
+  );
+  if (!hasCandidateTransport && !hasEvidenceTransport) {
     return;
   }
-  const candidate = jobBlock(source, "candidate");
-  for (const setting of [
-    "if-no-files-found: error",
-    "retention-days: 90",
-    "compression-level: 0",
-    "overwrite: false",
-    "include-hidden-files: false",
-    "archive: true",
-  ]) {
+  if (hasCandidateTransport) {
+    const candidate = jobBlock(source, "candidate");
+    for (const setting of [
+      "if-no-files-found: error",
+      "retention-days: 90",
+      "compression-level: 0",
+      "overwrite: false",
+      "include-hidden-files: false",
+      "archive: true",
+    ]) {
+      add(
+        violations,
+        candidate.includes(setting),
+        `${fileName}: candidate upload is missing ${setting}`,
+      );
+    }
     add(
       violations,
-      candidate.includes(setting),
-      `${fileName}: candidate upload is missing ${setting}`,
+      (candidate.match(/^            \.release\/candidate\/.+$/gmu) ?? [])
+        .length === 3,
+      `${fileName}: candidate upload must name exactly three explicit paths`,
     );
   }
-  add(
-    violations,
-    (candidate.match(/^            \.release\/candidate\/.+$/gmu) ?? [])
-      .length === 3,
-    `${fileName}: candidate upload must name exactly three explicit paths`,
-  );
   const lines = source.split(/\r?\n/u);
   for (let index = 0; index < lines.length; index += 1) {
     if (!lines[index].includes("actions/download-artifact@")) {
       continue;
     }
     const block = stepBlockAt(lines, index);
-    for (const setting of [
+    const isCandidateDownload = block.includes(
       "artifact-ids: ${{ needs.candidate.outputs.artifact_id }}",
+    );
+    const isEvidenceDownload = /^\s+pattern: npm-evidence-/mu.test(block);
+    add(
+      violations,
+      isCandidateDownload || isEvidenceDownload,
+      `${fileName}: download-artifact must use an approved closed selector`,
+    );
+    if (!isCandidateDownload && !isEvidenceDownload) {
+      continue;
+    }
+    for (const setting of [
       "merge-multiple: false",
       "skip-decompress: false",
       "digest-mismatch: error",
@@ -241,15 +309,345 @@ const validateCandidateTransport = (fileName, source, violations) => {
       add(
         violations,
         block.includes(setting),
-        `${fileName}: candidate download is missing ${setting}`,
+        `${fileName}: artifact download is missing ${setting}`,
       );
     }
+    if (isCandidateDownload) {
+      add(
+        violations,
+        !/^\s+(?:name|pattern|github-token|repository|run-id):/mu.test(block),
+        `${fileName}: candidate download broadens same-run artifact selection`,
+      );
+    } else {
+      add(
+        violations,
+        /pattern: npm-evidence-(?:release-\*|aggregate-\*|\$\{\{ matrix\.os \}\}-\*)/u.test(
+          block,
+        ),
+        `${fileName}: evidence download uses an unapproved artifact pattern`,
+      );
+      add(
+        violations,
+        !/^\s+(?:artifact-ids|name|github-token|repository|run-id):/mu.test(
+          block,
+        ),
+        `${fileName}: evidence download broadens same-run artifact selection`,
+      );
+    }
+  }
+};
+
+const EXPECTED_SHARD_COORDINATES = Object.freeze(
+  Array.from({ length: 32 }, (_, index) => index),
+);
+
+const shardCoordinates = (block) => {
+  const match =
+    /^        shard:\r?\n          \[\r?\n([\s\S]*?)^          \]\r?$/mu.exec(
+      block,
+    );
+  return match
+    ? [...match[1].matchAll(/^            (\d+),$/gmu)].map(([, value]) =>
+        Number(value),
+      )
+    : [];
+};
+
+const matrixKeys = (block) => {
+  const matrix = /^      matrix:\r?\n([\s\S]*?)^    steps:/mu.exec(block)?.[1];
+  return matrix
+    ? [...matrix.matchAll(/^        ([a-z][a-z0-9_]*):/gmu)].map(
+        ([, key]) => key,
+      )
+    : [];
+};
+
+const validateEvidenceUpload = (
+  fileName,
+  jobId,
+  block,
+  { name, path },
+  violations,
+) => {
+  for (const setting of [
+    `name: ${name}`,
+    `path: ${path}`,
+    "if-no-files-found: error",
+    "retention-days: 1",
+    "compression-level: 0",
+    "overwrite: false",
+    "include-hidden-files: false",
+    "archive: true",
+  ]) {
     add(
       violations,
-      !/^\s+(?:name|pattern|github-token|repository|run-id):/mu.test(block),
-      `${fileName}: candidate download broadens same-run artifact selection`,
+      block.includes(setting),
+      `${fileName}:${jobId} evidence upload is missing ${setting}`,
     );
   }
+  add(
+    violations,
+    (block.match(/uses: actions\/upload-artifact@/gu) ?? []).length === 1,
+    `${fileName}:${jobId} must contain exactly one evidence upload`,
+  );
+};
+
+const validateReadOnlyEvidenceJob = (fileName, jobId, block, violations) => {
+  add(
+    violations,
+    /^    permissions:\r?\n      contents: read\r?\n    defaults:/mu.test(
+      block,
+    ),
+    `${fileName}:${jobId} must have contents-read as its sole authority`,
+  );
+  for (const forbidden of [
+    "id-token: write",
+    "contents: write",
+    "actions: write",
+    "issues: write",
+  ]) {
+    add(
+      violations,
+      !block.includes(forbidden),
+      `${fileName}:${jobId} contains forbidden authority ${forbidden}`,
+    );
+  }
+};
+
+const validateEvidenceWorkflows = (sources, violations) => {
+  const release = sources["release.yml"] ?? "";
+  const releaseShard = jobBlock(release, "third_party_evidence_shard");
+  const releaseAggregate = jobBlock(release, "third_party_evidence");
+  for (const setting of [
+    "name: Release / third-party evidence / shard ${{ matrix.shard }}",
+    "needs: release_preflight",
+    "timeout-minutes: 120",
+    "fail-fast: false",
+    "max-parallel: 8",
+    "uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0",
+    "SCANCODE_PLATFORM: linux",
+    "SCANCODE_PYTHON: ${{ steps.scancode_python.outputs.python-path }}",
+    "EVIDENCE_SHARD_INDEX: ${{ matrix.shard }}",
+    "SCANCODE_COMMAND: .release/tools/scancode/scancode-toolkit-v32.5.0/venv/bin/scancode",
+    "run: node util/prepare-scancode.mjs --platform-env=SCANCODE_PLATFORM --output=.release/tools/scancode --python-env=SCANCODE_PYTHON",
+    "run: node util/acquire-npm-package-evidence.mjs --shard-count=32 --shard-index-env=EVIDENCE_SHARD_INDEX --output=.release/evidence-shard --scancode-env=SCANCODE_COMMAND",
+  ]) {
+    add(
+      violations,
+      releaseShard.includes(setting),
+      `release.yml:third_party_evidence_shard is missing ${setting}`,
+    );
+  }
+  add(
+    violations,
+    JSON.stringify(shardCoordinates(releaseShard)) ===
+      JSON.stringify(EXPECTED_SHARD_COORDINATES),
+    "release.yml:third_party_evidence_shard must contain exactly indices 0..31",
+  );
+  add(
+    violations,
+    JSON.stringify(matrixKeys(releaseShard)) === JSON.stringify(["shard"]),
+    "release.yml:third_party_evidence_shard must have only the shard matrix axis",
+  );
+  validateReadOnlyEvidenceJob(
+    "release.yml",
+    "third_party_evidence_shard",
+    releaseShard,
+    violations,
+  );
+  validateEvidenceUpload(
+    "release.yml",
+    "third_party_evidence_shard",
+    releaseShard,
+    {
+      name: "npm-evidence-release-${{ matrix.shard }}",
+      path: ".release/evidence-shard",
+    },
+    violations,
+  );
+
+  for (const setting of [
+    "name: Release / third-party evidence",
+    "if: ${{ always() }}",
+    "needs: third_party_evidence_shard",
+    "pattern: npm-evidence-release-*",
+    "run: node util/merge-npm-package-evidence.mjs --input=.release/evidence-shards --output=.release/evidence-aggregate --verify-committed",
+  ]) {
+    add(
+      violations,
+      releaseAggregate.includes(setting),
+      `release.yml:third_party_evidence is missing ${setting}`,
+    );
+  }
+  add(
+    violations,
+    (releaseAggregate.match(/uses: actions\/download-artifact@/gu) ?? [])
+      .length === 1,
+    "release.yml:third_party_evidence must contain exactly one shard download",
+  );
+  validateReadOnlyEvidenceJob(
+    "release.yml",
+    "third_party_evidence",
+    releaseAggregate,
+    violations,
+  );
+  add(
+    violations,
+    listNeeds(jobBlock(release, "candidate")).includes("third_party_evidence"),
+    "release.yml:candidate must wait for the closed third-party evidence aggregate",
+  );
+
+  const extended = sources["extended-tests.yml"] ?? "";
+  const extendedShard = jobBlock(extended, "third_party_evidence_shard");
+  const extendedAggregate = jobBlock(
+    extended,
+    "third_party_evidence_aggregate",
+  );
+  const parity = jobBlock(extended, "third_party_evidence_parity");
+  for (const setting of [
+    "name: Extended tests / third-party evidence / ${{ matrix.os.id }} / shard ${{ matrix.shard }}",
+    "if: ${{ github.event_name == 'workflow_dispatch' }}",
+    "runs-on: ${{ matrix.os.runner }}",
+    "shell: ${{ matrix.os.shell }}",
+    "fail-fast: false",
+    "max-parallel: 8",
+    "uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0",
+    "SCANCODE_PLATFORM: ${{ matrix.os.platform }}",
+    "SCANCODE_PYTHON: ${{ steps.scancode_python.outputs.python-path }}",
+    "EVIDENCE_SHARD_INDEX: ${{ matrix.shard }}",
+    "SCANCODE_COMMAND: ${{ matrix.os.scancode_command }}",
+    "run: node util/prepare-scancode.mjs --platform-env=SCANCODE_PLATFORM --output=.release/tools/scancode --python-env=SCANCODE_PYTHON",
+    "run: node util/acquire-npm-package-evidence.mjs --shard-count=32 --shard-index-env=EVIDENCE_SHARD_INDEX --output=.release/evidence-shard --scancode-env=SCANCODE_COMMAND",
+  ]) {
+    add(
+      violations,
+      extendedShard.includes(setting),
+      `extended-tests.yml:third_party_evidence_shard is missing ${setting}`,
+    );
+  }
+  add(
+    violations,
+    JSON.stringify(shardCoordinates(extendedShard)) ===
+      JSON.stringify(EXPECTED_SHARD_COORDINATES),
+    "extended-tests.yml:third_party_evidence_shard must contain exactly indices 0..31",
+  );
+  add(
+    violations,
+    JSON.stringify(matrixKeys(extendedShard)) ===
+      JSON.stringify(["os", "shard"]),
+    "extended-tests.yml:third_party_evidence_shard must have only OS and shard matrix axes",
+  );
+  const expectedOperatingSystemMatrix = [
+    "        os:",
+    "          - id: ubuntu",
+    "            runner: ubuntu-24.04",
+    "            shell: bash",
+    "            platform: linux",
+    "            scancode_command: .release/tools/scancode/scancode-toolkit-v32.5.0/venv/bin/scancode",
+    "          - id: windows",
+    "            runner: windows-2025",
+    "            shell: pwsh",
+    "            platform: windows",
+    "            scancode_command: .release/tools/scancode/scancode-toolkit-v32.5.0/venv/Scripts/scancode.exe",
+    "        shard:",
+  ].join("\n");
+  add(
+    violations,
+    extendedShard
+      .replaceAll("\r\n", "\n")
+      .includes(expectedOperatingSystemMatrix),
+    "extended-tests.yml:third_party_evidence_shard OS matrix differs from the closed platform contract",
+  );
+  validateReadOnlyEvidenceJob(
+    "extended-tests.yml",
+    "third_party_evidence_shard",
+    extendedShard,
+    violations,
+  );
+  validateEvidenceUpload(
+    "extended-tests.yml",
+    "third_party_evidence_shard",
+    extendedShard,
+    {
+      name: "npm-evidence-${{ matrix.os.id }}-${{ matrix.shard }}",
+      path: ".release/evidence-shard",
+    },
+    violations,
+  );
+
+  for (const setting of [
+    "name: Extended tests / third-party evidence / ${{ matrix.os }} aggregate",
+    "if: ${{ always() && github.event_name == 'workflow_dispatch' }}",
+    "needs: third_party_evidence_shard",
+    "fail-fast: false",
+    "os: [ubuntu, windows]",
+    "pattern: npm-evidence-${{ matrix.os }}-*",
+    "run: node util/merge-npm-package-evidence.mjs --input=.release/evidence-shards --output=.release/evidence-aggregate",
+  ]) {
+    add(
+      violations,
+      extendedAggregate.includes(setting),
+      `extended-tests.yml:third_party_evidence_aggregate is missing ${setting}`,
+    );
+  }
+  add(
+    violations,
+    (extendedAggregate.match(/uses: actions\/download-artifact@/gu) ?? [])
+      .length === 1,
+    "extended-tests.yml:third_party_evidence_aggregate must contain exactly one shard download",
+  );
+  validateReadOnlyEvidenceJob(
+    "extended-tests.yml",
+    "third_party_evidence_aggregate",
+    extendedAggregate,
+    violations,
+  );
+  validateEvidenceUpload(
+    "extended-tests.yml",
+    "third_party_evidence_aggregate",
+    extendedAggregate,
+    {
+      name: "npm-evidence-aggregate-${{ matrix.os }}",
+      path: ".release/evidence-aggregate",
+    },
+    violations,
+  );
+
+  for (const setting of [
+    "name: Extended tests / third-party evidence / cross-platform parity",
+    "if: ${{ always() && github.event_name == 'workflow_dispatch' }}",
+    "needs: third_party_evidence_aggregate",
+    "pattern: npm-evidence-aggregate-*",
+    "run: node util/verify-npm-package-evidence-parity.mjs --left=.release/evidence-aggregates/npm-evidence-aggregate-ubuntu --right=.release/evidence-aggregates/npm-evidence-aggregate-windows",
+  ]) {
+    add(
+      violations,
+      parity.includes(setting),
+      `extended-tests.yml:third_party_evidence_parity is missing ${setting}`,
+    );
+  }
+  add(
+    violations,
+    (parity.match(/uses: actions\/download-artifact@/gu) ?? []).length === 1,
+    "extended-tests.yml:third_party_evidence_parity must contain exactly one aggregate download",
+  );
+  validateReadOnlyEvidenceJob(
+    "extended-tests.yml",
+    "third_party_evidence_parity",
+    parity,
+    violations,
+  );
+
+  const setupPythonUses = Object.values(sources).reduce(
+    (count, source) =>
+      count + (source.match(/uses: actions\/setup-python@/gu) ?? []).length,
+    0,
+  );
+  add(
+    violations,
+    setupPythonUses === 2,
+    "setup-python is allowed exactly once in each evidence-shard job",
+  );
 };
 
 const validateMaintenanceReporter = (source, violations) => {
@@ -378,6 +776,7 @@ export const auditRepositoryControls = () => {
     validateJobs(fileName, source, violations);
     validateCandidateTransport(fileName, source, violations);
   }
+  validateEvidenceWorkflows(sources, violations);
 
   const ci = sources["ci.yml"] ?? "";
   add(violations, ci.startsWith("name: CI\n"), "ci.yml: wrong workflow name");
@@ -416,7 +815,6 @@ export const auditRepositoryControls = () => {
   for (const authority of [
     "id-token: write",
     "contents: write",
-    "environment:",
     "npm publish",
     "npm stage publish",
   ]) {
@@ -426,6 +824,11 @@ export const auditRepositoryControls = () => {
       `release.yml: disabled Phase 19C boundary contains ${authority}`,
     );
   }
+  add(
+    violations,
+    !/^\s+environment:/mu.test(release),
+    "release.yml: disabled Phase 19C boundary contains a deployment environment",
+  );
 
   for (const [fileName, group] of [
     ["maintenance.yml", "owlapi-maintenance"],
@@ -447,11 +850,25 @@ export const auditRepositoryControls = () => {
   }
   validateMaintenanceReporter(sources["maintenance.yml"] ?? "", violations);
 
+  const alwaysJobs = [
+    ["ci.yml", "required"],
+    ["release.yml", "third_party_evidence"],
+    ["release.yml", "required"],
+    ["extended-tests.yml", "third_party_evidence_aggregate"],
+    ["extended-tests.yml", "third_party_evidence_parity"],
+  ];
+  for (const [fileName, jobId] of alwaysJobs) {
+    add(
+      violations,
+      jobBlock(sources[fileName] ?? "", jobId).includes("always()"),
+      `${fileName}:${jobId} must retain fail-closed always() evaluation`,
+    );
+  }
   const allSources = Object.values(sources).join("\n");
   add(
     violations,
-    (allSources.match(/\$\{\{ always\(\) \}\}/gu) ?? []).length === 2,
-    "always() is allowed only on the two fail-closed aggregates",
+    (allSources.match(/always\(\)/gu) ?? []).length === alwaysJobs.length,
+    "always() is allowed only on the five named fail-closed aggregates",
   );
   const webVowlControl = JSON.parse(
     readFileSync(

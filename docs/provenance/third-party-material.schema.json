@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://haddenindustries.com/schemas/owlapi/third-party-material.v1.schema.json",
+  "$id": "https://haddenindustries.com/schemas/owlapi/third-party-material.v2.schema.json",
   "title": "owlapi third-party material inventory",
   "type": "object",
   "additionalProperties": false,
@@ -16,7 +16,7 @@
   ],
   "properties": {
     "$schema": { "const": "./third-party-material.schema.json" },
-    "schemaVersion": { "const": 1 },
+    "schemaVersion": { "const": 2 },
     "generatedBy": {
       "type": "object",
       "additionalProperties": false,
@@ -40,6 +40,9 @@
         "lockfile",
         "lockfileVersion",
         "lockfileSha256",
+        "evidenceManifest",
+        "evidenceManifestSha256",
+        "evidenceCorpusRoot",
         "tarballDependenciesBundled"
       ],
       "properties": {
@@ -51,6 +54,11 @@
         "lockfile": { "const": "package-lock.json" },
         "lockfileVersion": { "type": "integer", "minimum": 3 },
         "lockfileSha256": { "$ref": "#/$defs/sha256" },
+        "evidenceManifest": {
+          "const": "docs/provenance/npm-package-evidence.json"
+        },
+        "evidenceManifestSha256": { "$ref": "#/$defs/sha256" },
+        "evidenceCorpusRoot": { "$ref": "#/$defs/sha256" },
         "tarballDependenciesBundled": { "type": "boolean" }
       }
     },
@@ -60,19 +68,22 @@
       "additionalProperties": false,
       "required": [
         "componentCount",
+        "artifactCount",
         "productionComponentCount",
         "developmentComponentCount",
-        "installedInspectionCount",
-        "metadataOnlyInspectionCount",
-        "metadataOnlyProductionComponentCount",
-        "metadataOnlyDevelopmentComponentCount",
+        "authenticatedTarballArtifactCount",
+        "registrySignatureVerifiedArtifactCount",
+        "provenanceVerifiedArtifactCount",
+        "provenanceNotPublishedArtifactCount",
+        "scanVerifiedArtifactCount",
+        "evidenceBlobCount",
+        "evidenceRetainedBytes",
         "inspectedLicenceFileCount",
         "inspectedNoticeFileCount",
         "productionInspectedLicenceFileCount",
         "productionInspectedNoticeFileCount",
         "productionComponentsWithoutInspectedLicence",
         "productionComponentsWithoutLicenceEvidence",
-        "metadataOnlyDevelopmentComponents",
         "licenceDeclarationMismatchCount",
         "noAssertionCount",
         "declaredLicenseCounts",
@@ -82,15 +93,34 @@
       ],
       "properties": {
         "componentCount": { "type": "integer", "minimum": 0 },
+        "artifactCount": { "type": "integer", "minimum": 0 },
         "productionComponentCount": { "type": "integer", "minimum": 0 },
         "developmentComponentCount": { "type": "integer", "minimum": 0 },
-        "installedInspectionCount": { "type": "integer", "minimum": 0 },
-        "metadataOnlyInspectionCount": { "type": "integer", "minimum": 0 },
-        "metadataOnlyProductionComponentCount": {
+        "authenticatedTarballArtifactCount": {
           "type": "integer",
           "minimum": 0
         },
-        "metadataOnlyDevelopmentComponentCount": {
+        "registrySignatureVerifiedArtifactCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "provenanceVerifiedArtifactCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "provenanceNotPublishedArtifactCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "scanVerifiedArtifactCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "evidenceBlobCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "evidenceRetainedBytes": {
           "type": "integer",
           "minimum": 0
         },
@@ -111,10 +141,6 @@
         "productionComponentsWithoutLicenceEvidence": {
           "type": "array",
           "maxItems": 0
-        },
-        "metadataOnlyDevelopmentComponents": {
-          "type": "array",
-          "items": { "type": "string", "pattern": "^node_modules/" }
         },
         "licenceDeclarationMismatchCount": { "type": "integer", "minimum": 0 },
         "noAssertionCount": { "type": "integer", "minimum": 0 },
@@ -209,11 +235,26 @@
     "inspectedFile": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["path", "kind", "sha256"],
+      "required": ["path", "kind", "sha256", "blobSha256", "blobPath"],
       "properties": {
-        "path": { "type": "string", "minLength": 1 },
-        "kind": { "enum": ["LICENCE", "NOTICE"] },
-        "sha256": { "$ref": "#/$defs/sha256" }
+        "path": { "type": "string", "pattern": "^package/" },
+        "kind": {
+          "enum": [
+            "AUTHORS",
+            "COPYRIGHT",
+            "LICENCE",
+            "NOTICE",
+            "PATENTS",
+            "README_ATTRIBUTION",
+            "THIRD_PARTY_LICENCE"
+          ]
+        },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "blobSha256": { "$ref": "#/$defs/sha256" },
+        "blobPath": {
+          "type": "string",
+          "pattern": "^blobs/sha256/[0-9a-f]{2}/[0-9a-f]{64}$"
+        }
       }
     },
     "component": {
@@ -221,17 +262,24 @@
       "additionalProperties": false,
       "required": [
         "dependencyPath",
+        "artifactId",
         "name",
         "version",
         "relationship",
+        "lockfileDeclaredLicenseExpressions",
+        "tarballDeclaredLicenseExpression",
+        "scanObservedLicenseExpressions",
         "declaredLicenseExpression",
         "concludedLicenseExpression",
         "licenseQualification",
         "licenseConclusionRationale",
         "distributionDisposition",
         "inspectionBasis",
+        "licenseFilePresence",
         "inspectedFiles",
         "externalLicenseEvidence",
+        "authentication",
+        "artifactEvidence",
         "registryUrl",
         "sourceReference",
         "sourceUrl",
@@ -244,10 +292,22 @@
       ],
       "properties": {
         "dependencyPath": { "type": "string", "pattern": "^node_modules/" },
+        "artifactId": { "$ref": "#/$defs/sha256" },
         "name": { "type": "string", "minLength": 1 },
         "version": { "type": "string", "minLength": 1 },
         "relationship": {
           "enum": ["EXTERNAL_RUNTIME_DEPENDENCY", "DEVELOPMENT_ONLY"]
+        },
+        "lockfileDeclaredLicenseExpressions": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "tarballDeclaredLicenseExpression": {
+          "oneOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }]
+        },
+        "scanObservedLicenseExpressions": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
         },
         "declaredLicenseExpression": { "type": "string", "minLength": 1 },
         "concludedLicenseExpression": { "type": "string", "minLength": 1 },
@@ -260,8 +320,9 @@
             "REQUIRES_HUMAN_REVIEW"
           ]
         },
-        "inspectionBasis": {
-          "enum": ["INSTALLED_PACKAGE_FILES", "LOCKFILE_METADATA_ONLY"]
+        "inspectionBasis": { "const": "LOCKED_REGISTRY_TARBALL" },
+        "licenseFilePresence": {
+          "enum": ["PRESENT", "EXTERNAL_EVIDENCE_ONLY", "ABSENT"]
         },
         "inspectedFiles": {
           "type": "array",
@@ -283,6 +344,33 @@
               },
               "reason": { "type": "string", "minLength": 1 }
             }
+          }
+        },
+        "authentication": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["registrySignature", "provenance", "archive", "scan"],
+          "properties": {
+            "registrySignature": { "const": "VERIFIED" },
+            "provenance": { "enum": ["VERIFIED", "NOT_PUBLISHED"] },
+            "archive": { "const": "VERIFIED" },
+            "scan": { "const": "VERIFIED" }
+          }
+        },
+        "artifactEvidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "archiveSha256",
+            "provenanceSha256",
+            "registrySignatureSha256",
+            "scanSha256"
+          ],
+          "properties": {
+            "archiveSha256": { "$ref": "#/$defs/sha256" },
+            "provenanceSha256": { "$ref": "#/$defs/sha256" },
+            "registrySignatureSha256": { "$ref": "#/$defs/sha256" },
+            "scanSha256": { "$ref": "#/$defs/sha256" }
           }
         },
         "registryUrl": { "type": "string", "minLength": 1 },

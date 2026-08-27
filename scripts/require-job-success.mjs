@@ -18,7 +18,23 @@ const COMMON_REQUIRED_JOB_IDS = Object.freeze([
 
 export const REQUIRED_JOB_IDS = Object.freeze({
   ci: COMMON_REQUIRED_JOB_IDS,
-  release: Object.freeze(["release_preflight", ...COMMON_REQUIRED_JOB_IDS]),
+  release: Object.freeze([
+    "release_preflight",
+    "metadata",
+    "source_node_22",
+    "source_node_24",
+    "dependency_review",
+    "third_party_evidence",
+    "candidate",
+    "portability_windows_node_22",
+    "portability_windows_node_24",
+    "portability_macos_node_22",
+    "portability_macos_node_24",
+    "browser_chromium",
+    "browser_firefox",
+    "browser_webkit",
+    "webvowl",
+  ]),
 });
 
 export const requireSuccessfulJobs = (workflow, needs) => {

@@ -4,8 +4,9 @@ import { dirname, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import parseSpdxExpression from "spdx-expression-parse";
 import { format as formatWithPrettier } from "prettier";
+import { verifyEvidenceManifest } from "./third-party-evidence/evidence-manifest.mjs";
 
-export const GENERATOR_VERSION = "2.0.0";
+export const GENERATOR_VERSION = "3.0.0";
 
 // Legal evidence must be byte-for-byte reproducible on every platform. JavaScript
 // code-unit ordering avoids host locale and ICU-version differences.
@@ -39,6 +40,11 @@ const outputPath = resolve(
 );
 const lockfilePath = resolve(repositoryRoot, "package-lock.json");
 const packageJsonPath = resolve(repositoryRoot, "package.json");
+const evidenceManifestPath = resolve(
+  repositoryRoot,
+  "docs/provenance/npm-package-evidence.json",
+);
+const evidenceRoot = resolve(repositoryRoot, "docs/provenance/evidence/npm");
 
 const toRepositoryPath = (path) =>
   path
@@ -102,65 +108,6 @@ const normalizeSourceUrl = (candidate) => {
   return /^https:\/\//u.test(value) ? value : null;
 };
 
-const dependencyNameFromPath = (dependencyPath) => {
-  const marker = "node_modules/";
-  const suffix = dependencyPath.slice(
-    dependencyPath.lastIndexOf(marker) + marker.length,
-  );
-  const segments = suffix.split("/");
-  return suffix.startsWith("@") ? `${segments[0]}/${segments[1]}` : segments[0];
-};
-
-const classifyEvidenceFile = (name) =>
-  /notice|copyright/iu.test(name) ? "NOTICE" : "LICENCE";
-
-const isEvidenceFile = (name) =>
-  /^(?:(?:licen[cs]e|copying|notice|copyright|unlicense)(?:[._ -].*)?|third[ _-]?party[ _-]?(?:notices?|licen[cs]es?)(?:[._ -].*)?|mit[ _-]?licen[cs]e(?:[._ -].*)?)$/iu.test(
-    name,
-  );
-
-const inspectInstalledPackage = (dependencyPath) => {
-  const packageDirectory = resolve(
-    repositoryRoot,
-    ...dependencyPath.split("/"),
-  );
-  const packageJsonPath = resolve(packageDirectory, "package.json");
-  if (!existsSync(packageJsonPath)) {
-    return {
-      inspectionBasis: "LOCKFILE_METADATA_ONLY",
-      inspectedFiles: [],
-      packageAuthor: null,
-      packageJson: undefined,
-    };
-  }
-
-  const packageJson = readJson(packageJsonPath);
-  const evidence = readdirSync(packageDirectory, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && isEvidenceFile(entry.name))
-    .sort((left, right) => compareCodeUnits(left.name, right.name))
-    .map((entry) => {
-      const absolutePath = resolve(packageDirectory, entry.name);
-      const bytes = readFileSync(absolutePath);
-      return {
-        bytes,
-        kind: classifyEvidenceFile(entry.name),
-        path: toRepositoryPath(absolutePath),
-        sha256: sha256(bytes),
-      };
-    });
-
-  return {
-    inspectionBasis: "INSTALLED_PACKAGE_FILES",
-    inspectedFiles: evidence.map(({ kind, path, sha256: digest }) => ({
-      path,
-      kind,
-      sha256: digest,
-    })),
-    packageAuthor: normalizePerson(packageJson.author) || null,
-    packageJson,
-  };
-};
-
 const normalizeLicence = (value) => {
   if (typeof value === "string" && value.trim()) {
     return value.trim();
@@ -192,66 +139,178 @@ const SEPARATELY_INSTALLED_RUNTIME_LICENSES = new Set([
   "MIT",
 ]);
 
-const createComponentFacts = (dependencyPath, lockEntry) => {
-  const inspection = inspectInstalledPackage(dependencyPath);
-  const name =
-    inspection.packageJson?.name || dependencyNameFromPath(dependencyPath);
-  const lockLicence = normalizeLicence(lockEntry.license);
-  const packageLicence = normalizeLicence(inspection.packageJson?.license);
-  const declaredLicenseExpression = validateSpdxExpression(
-    lockLicence !== "NOASSERTION" ? lockLicence : packageLicence,
-    `${name}@${lockEntry.version}`,
+const readEvidenceEnvelope = (reference, expectedKind, artifactId) => {
+  const envelope = readJson(
+    resolve(evidenceRoot, ...reference.path.split("/")),
   );
-  let licenseQualification = "LOCKFILE_DECLARATION_ONLY";
-  if (inspection.packageJson) {
-    if (packageLicence === "NOASSERTION") {
-      licenseQualification = "LOCKFILE_DECLARATION_PACKAGE_FILE_OMITS_LICENCE";
-    } else if (lockLicence === "NOASSERTION") {
-      licenseQualification = "INSTALLED_PACKAGE_DECLARATION_ONLY";
-    } else if (lockLicence === packageLicence) {
-      licenseQualification = "LOCKFILE_AND_INSTALLED_PACKAGE_METADATA_AGREE";
-    } else {
-      licenseQualification = `DECLARATION_MISMATCH: lockfile=${lockLicence}; package=${packageLicence}`;
-    }
+  if (
+    envelope.schemaVersion !== 1 ||
+    envelope.kind !== expectedKind ||
+    envelope.artifactId !== artifactId
+  ) {
+    throw new Error(
+      `Evidence envelope ${reference.path} is not bound to ${artifactId}/${expectedKind}`,
+    );
   }
+  return envelope.evidence;
+};
 
-  const relationship = lockEntry.dev
+const scanObservedLicences = (scan) =>
+  [
+    ...(scan.packages || []).map(
+      ({ declared_license_expression_spdx: expression }) => expression,
+    ),
+    ...(scan.license_detections || []).map(
+      ({ license_expression_spdx: expression }) => expression,
+    ),
+    ...(scan.files || []).map(
+      ({ detected_license_expression_spdx: expression }) => expression,
+    ),
+  ]
+    .filter((expression) => typeof expression === "string" && expression)
+    .filter(
+      (expression, index, expressions) =>
+        expressions.indexOf(expression) === index,
+    )
+    .sort(compareCodeUnits);
+
+const isSpdxExpression = (expression) => {
+  try {
+    parseSpdxExpression(expression);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const artifactContext = (artifact) => ({
+  artifact,
+  archive: readEvidenceEnvelope(
+    artifact.archive.evidence,
+    "ARCHIVE_INVENTORY",
+    artifact.artifactId,
+  ),
+  scan: readEvidenceEnvelope(
+    artifact.scan.evidence,
+    "SCANCODE_FINDINGS",
+    artifact.artifactId,
+  ),
+});
+
+const createComponentFacts = ({ occurrence, context, existingComponent }) => {
+  const { artifact, archive, scan } = context;
+  const packageJson = archive.packageMetadata;
+  const lockfileDeclaredLicenseExpressions = artifact.lockfileLicenses;
+  const rawTarballLicence = normalizeLicence(packageJson?.license);
+  const tarballDeclaredLicenseExpression =
+    rawTarballLicence === "NOASSERTION" ? null : rawTarballLicence;
+  const scanObservedLicenseExpressions = scanObservedLicences(scan);
+  const candidates = [
+    ...lockfileDeclaredLicenseExpressions,
+    tarballDeclaredLicenseExpression,
+    ...scanObservedLicenseExpressions,
+  ].filter(Boolean);
+  const declaredLicenseExpression =
+    candidates.find(isSpdxExpression) || "NOASSERTION";
+  if (declaredLicenseExpression !== "NOASSERTION") {
+    validateSpdxExpression(
+      declaredLicenseExpression,
+      `${artifact.name}@${artifact.version}`,
+    );
+  }
+  // ScanCode observations include embedded third-party snippets and therefore
+  // complement, rather than redefine, the package's declared licence. Only the
+  // lockfile and authenticated package.json declarations are compared here.
+  const distinctDeclarations = [
+    ...new Set(
+      [
+        ...lockfileDeclaredLicenseExpressions,
+        tarballDeclaredLicenseExpression,
+      ].filter(Boolean),
+    ),
+  ];
+  const licenseQualification =
+    distinctDeclarations.length <= 1
+      ? "LOCKFILE_TARBALL_AND_SCAN_EVIDENCE_AGREE"
+      : `DECLARATION_MISMATCH: ${distinctDeclarations.join(" | ")}`;
+  const relationship = occurrence.development
     ? "DEVELOPMENT_ONLY"
     : "EXTERNAL_RUNTIME_DEPENDENCY";
-  const sourceReference = repositoryReference(inspection.packageJson);
+  const canPreserveConclusion =
+    existingComponent?.name === artifact.name &&
+    existingComponent?.version === artifact.version &&
+    existingComponent?.declaredLicenseExpression ===
+      declaredLicenseExpression &&
+    isSpdxExpression(existingComponent?.concludedLicenseExpression);
+  const concludedLicenseExpression = canPreserveConclusion
+    ? existingComponent.concludedLicenseExpression
+    : declaredLicenseExpression;
+  const sourceReference = repositoryReference(packageJson);
   const sourceUrl = normalizeSourceUrl(
-    sourceReference || inspection.packageJson?.homepage,
+    sourceReference || packageJson?.homepage,
   );
-  const distributionDisposition =
-    relationship === "DEVELOPMENT_ONLY"
+  const distributionDisposition = canPreserveConclusion
+    ? existingComponent.distributionDisposition
+    : relationship === "DEVELOPMENT_ONLY"
       ? "DEVELOPMENT_ONLY_NOT_DISTRIBUTED"
-      : SEPARATELY_INSTALLED_RUNTIME_LICENSES.has(declaredLicenseExpression)
+      : SEPARATELY_INSTALLED_RUNTIME_LICENSES.has(concludedLicenseExpression)
         ? "ALLOWED_SEPARATELY_INSTALLED_EXTERNAL_RUNTIME"
         : "REQUIRES_HUMAN_REVIEW";
+  const inspectedFiles = archive.evidenceFiles.map(
+    ({ path, kind, sha256: digest, blob }) => ({
+      path,
+      kind,
+      sha256: digest,
+      blobSha256: blob.sha256,
+      blobPath: blob.path,
+    }),
+  );
+  const externalLicenseEvidence =
+    EXTERNAL_LICENSE_EVIDENCE.get(occurrence.dependencyPath) || [];
+  const hasLicenceFile = inspectedFiles.some(({ kind }) =>
+    new Set(["LICENCE", "THIRD_PARTY_LICENCE"]).has(kind),
+  );
 
   return {
-    dependencyPath,
-    name,
-    version: lockEntry.version,
+    dependencyPath: occurrence.dependencyPath,
+    artifactId: artifact.artifactId,
+    name: artifact.name,
+    version: artifact.version,
     relationship,
+    lockfileDeclaredLicenseExpressions,
+    tarballDeclaredLicenseExpression,
+    scanObservedLicenseExpressions,
     declaredLicenseExpression,
-    concludedLicenseExpression: declaredLicenseExpression,
+    concludedLicenseExpression,
     licenseQualification,
-    licenseConclusionRationale:
-      licenseQualification === "LOCKFILE_AND_INSTALLED_PACKAGE_METADATA_AGREE"
-        ? "The exact lockfile and installed package metadata declare the same SPDX expression, so no different conclusion is asserted."
-        : "The conclusion preserves the best available package declaration identified by licenseQualification; any metadata mismatch remains explicit rather than being silently normalized.",
+    licenseConclusionRationale: canPreserveConclusion
+      ? existingComponent.licenseConclusionRationale
+      : "The conclusion selects the first SPDX-valid declaration in lockfile, authenticated tarball, then ScanCode order; every differing observation remains explicit for human review.",
     distributionDisposition,
-    inspectionBasis: inspection.inspectionBasis,
-    inspectedFiles: inspection.inspectedFiles,
-    externalLicenseEvidence:
-      EXTERNAL_LICENSE_EVIDENCE.get(dependencyPath) || [],
-    registryUrl:
-      lockEntry.resolved ||
-      `https://registry.npmjs.org/${encodeURIComponent(name)}`,
+    inspectionBasis: "LOCKED_REGISTRY_TARBALL",
+    licenseFilePresence: hasLicenceFile
+      ? "PRESENT"
+      : externalLicenseEvidence.length > 0
+        ? "EXTERNAL_EVIDENCE_ONLY"
+        : "ABSENT",
+    inspectedFiles,
+    externalLicenseEvidence,
+    authentication: {
+      registrySignature: artifact.registrySignature.state,
+      provenance: artifact.provenance.state,
+      archive: artifact.archive.state,
+      scan: artifact.scan.state,
+    },
+    artifactEvidence: {
+      archiveSha256: artifact.archive.evidence.sha256,
+      provenanceSha256: artifact.provenance.evidence.sha256,
+      registrySignatureSha256: artifact.registrySignature.evidence.sha256,
+      scanSha256: artifact.scan.evidence.sha256,
+    },
+    registryUrl: artifact.resolved,
     sourceReference,
     sourceUrl,
-    packageAuthor: inspection.packageAuthor,
+    packageAuthor: normalizePerson(packageJson?.author) || null,
     packageTarballScope: false,
     noticeDisposition:
       relationship === "EXTERNAL_RUNTIME_DEPENDENCY"
@@ -259,14 +318,10 @@ const createComponentFacts = (dependencyPath, lockEntry) => {
         : "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
     rationale:
       relationship === "EXTERNAL_RUNTIME_DEPENDENCY"
-        ? "npm installs this component outside the owlapi tarball. Its own licence remains authoritative, while every downstream physical bundle must perform a separate distribution-scope review."
-        : "This component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
-    optional: lockEntry.optional === true,
-    platformSelectors: {
-      cpu: lockEntry.cpu || [],
-      os: lockEntry.os || [],
-      libc: lockEntry.libc || [],
-    },
+        ? "npm installs this authenticated component outside the owlapi tarball. Its own licence remains authoritative, while every downstream physical bundle must perform a separate distribution-scope review."
+        : "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
+    optional: occurrence.optional,
+    platformSelectors: occurrence.platformSelectors,
   };
 };
 
@@ -622,15 +677,38 @@ const createMaterialFacts = () => [
   },
 ];
 
-const createInventory = () => {
+const createInventory = async () => {
   const lockfileBytes = readFileSync(lockfilePath);
   const lockfile = JSON.parse(lockfileBytes.toString("utf8"));
   const rootPackage = lockfile.packages[""];
   const packageManifest = readJson(packageJsonPath);
-  const componentFacts = Object.entries(lockfile.packages)
-    .filter(([dependencyPath]) => dependencyPath.length > 0)
-    .map(([dependencyPath, lockEntry]) =>
-      createComponentFacts(dependencyPath, lockEntry),
+  const evidenceManifestBytes = readFileSync(evidenceManifestPath);
+  const evidenceManifest = JSON.parse(evidenceManifestBytes.toString("utf8"));
+  await verifyEvidenceManifest({
+    manifest: evidenceManifest,
+    lockfileBytes,
+    blobRoot: evidenceRoot,
+  });
+  const existing = existsSync(outputPath) ? readJson(outputPath) : undefined;
+  const existingByPath = new Map(
+    (existing?.components || []).map((component) => [
+      component.dependencyPath,
+      component,
+    ]),
+  );
+  const contextByArtifact = new Map(
+    evidenceManifest.artifacts.map((artifact) => [
+      artifact.artifactId,
+      artifactContext(artifact),
+    ]),
+  );
+  const componentFacts = evidenceManifest.occurrences
+    .map((occurrence) =>
+      createComponentFacts({
+        occurrence,
+        context: contextByArtifact.get(occurrence.artifactId),
+        existingComponent: existingByPath.get(occurrence.dependencyPath),
+      }),
     )
     .sort((left, right) =>
       compareCodeUnits(left.dependencyPath, right.dependencyPath),
@@ -653,6 +731,9 @@ const createInventory = () => {
     lockfile: "package-lock.json",
     lockfileVersion: lockfile.lockfileVersion,
     lockfileSha256: sha256(lockfileBytes),
+    evidenceManifest: "docs/provenance/npm-package-evidence.json",
+    evidenceManifestSha256: sha256(evidenceManifestBytes),
+    evidenceCorpusRoot: evidenceManifest.corpusRoot,
     tarballDependenciesBundled:
       manifestRequestsBundling || lockfileMarksBundledContent,
   };
@@ -662,52 +743,51 @@ const createInventory = () => {
   const developmentComponents = componentFacts.filter(
     ({ relationship }) => relationship === "DEVELOPMENT_ONLY",
   );
+  const uniqueInspectedFiles = [
+    ...new Map(
+      componentFacts.flatMap(({ artifactId, inspectedFiles }) =>
+        inspectedFiles.map((file) => [`${artifactId}:${file.path}`, file]),
+      ),
+    ).values(),
+  ];
+  const isLicenceEvidence = ({ kind }) =>
+    new Set(["LICENCE", "THIRD_PARTY_LICENCE"]).has(kind);
   const summary = {
     componentCount: componentFacts.length,
+    artifactCount: evidenceManifest.summary.artifactCount,
     productionComponentCount: productionComponents.length,
     developmentComponentCount: developmentComponents.length,
-    installedInspectionCount: componentFacts.filter(
-      ({ inspectionBasis }) => inspectionBasis === "INSTALLED_PACKAGE_FILES",
-    ).length,
-    metadataOnlyInspectionCount: componentFacts.filter(
-      ({ inspectionBasis }) => inspectionBasis === "LOCKFILE_METADATA_ONLY",
-    ).length,
-    metadataOnlyProductionComponentCount: productionComponents.filter(
-      ({ inspectionBasis }) => inspectionBasis === "LOCKFILE_METADATA_ONLY",
-    ).length,
-    metadataOnlyDevelopmentComponentCount: developmentComponents.filter(
-      ({ inspectionBasis }) => inspectionBasis === "LOCKFILE_METADATA_ONLY",
-    ).length,
-    inspectedLicenceFileCount: componentFacts.flatMap(({ inspectedFiles }) =>
-      inspectedFiles.filter(({ kind }) => kind === "LICENCE"),
-    ).length,
-    inspectedNoticeFileCount: componentFacts.flatMap(({ inspectedFiles }) =>
-      inspectedFiles.filter(({ kind }) => kind === "NOTICE"),
+    authenticatedTarballArtifactCount:
+      evidenceManifest.summary.archiveVerifiedCount,
+    registrySignatureVerifiedArtifactCount:
+      evidenceManifest.summary.registrySignatureVerifiedCount,
+    provenanceVerifiedArtifactCount:
+      evidenceManifest.summary.provenanceVerifiedCount,
+    provenanceNotPublishedArtifactCount:
+      evidenceManifest.summary.provenanceNotPublishedCount,
+    scanVerifiedArtifactCount: evidenceManifest.summary.scanVerifiedCount,
+    evidenceBlobCount: evidenceManifest.summary.blobCount,
+    evidenceRetainedBytes: evidenceManifest.summary.retainedBytes,
+    inspectedLicenceFileCount:
+      uniqueInspectedFiles.filter(isLicenceEvidence).length,
+    inspectedNoticeFileCount: uniqueInspectedFiles.filter(
+      (file) => !isLicenceEvidence(file),
     ).length,
     productionInspectedLicenceFileCount: productionComponents.flatMap(
-      ({ inspectedFiles }) =>
-        inspectedFiles.filter(({ kind }) => kind === "LICENCE"),
+      ({ inspectedFiles }) => inspectedFiles.filter(isLicenceEvidence),
     ).length,
     productionInspectedNoticeFileCount: productionComponents.flatMap(
       ({ inspectedFiles }) =>
-        inspectedFiles.filter(({ kind }) => kind === "NOTICE"),
+        inspectedFiles.filter((file) => !isLicenceEvidence(file)),
     ).length,
     productionComponentsWithoutInspectedLicence: productionComponents
-      .filter(
-        ({ inspectedFiles }) =>
-          !inspectedFiles.some(({ kind }) => kind === "LICENCE"),
-      )
+      .filter(({ inspectedFiles }) => !inspectedFiles.some(isLicenceEvidence))
       .map(({ dependencyPath }) => dependencyPath),
     productionComponentsWithoutLicenceEvidence: productionComponents
       .filter(
         ({ inspectedFiles, externalLicenseEvidence }) =>
-          !inspectedFiles.some(({ kind }) => kind === "LICENCE") &&
+          !inspectedFiles.some(isLicenceEvidence) &&
           externalLicenseEvidence.length === 0,
-      )
-      .map(({ dependencyPath }) => dependencyPath),
-    metadataOnlyDevelopmentComponents: developmentComponents
-      .filter(
-        ({ inspectionBasis }) => inspectionBasis === "LOCKFILE_METADATA_ONLY",
       )
       .map(({ dependencyPath }) => dependencyPath),
     licenceDeclarationMismatchCount: componentFacts.filter(
@@ -735,7 +815,6 @@ const createInventory = () => {
     }),
   );
 
-  const existing = existsSync(outputPath) ? readJson(outputPath) : undefined;
   // A review attests to one exact machine-generated fact set. Any dependency,
   // evidence-file, or scope change alters this digest and deliberately returns
   // the inventory to a human-review gate instead of carrying approval forward.
@@ -752,13 +831,13 @@ const createInventory = () => {
         };
   return {
     $schema: "./third-party-material.schema.json",
-    schemaVersion: 1,
+    schemaVersion: 2,
     generatedBy: {
       path: "util/generate-third-party-material.mjs",
       version: GENERATOR_VERSION,
       authorities: [
-        "package-lock.json for exact dependency paths, versions, integrity, platform selectors, and declared licences",
-        "installed package metadata plus top-level licence and notice files for locally applicable file inspection",
+        "package-lock.json and the authenticated npm package evidence corpus for exact dependency occurrences, tarball identities, recursive legal files, registry signatures, provenance, and ScanCode observations",
+        "docs/provenance/npm-package-evidence.json plus its content-addressed blobs as the platform-independent authority for every required and optional npm artifact",
         "docs/conformance/suites.json and retained upstream trees for copied/generated standards-test provenance",
         "one atomic human review of the generated root facts digest",
       ],
@@ -782,7 +861,7 @@ if (unknownArguments.length > 0) {
 // The facts digest uses stable JSON member ordering; the checked-in artifact is
 // additionally rendered by the repository formatter so generation and the
 // formatting gate have one canonical representation instead of fighting.
-const expected = await formatWithPrettier(stableJson(createInventory()), {
+const expected = await formatWithPrettier(stableJson(await createInventory()), {
   parser: "json",
 });
 if (requestedWrite) {

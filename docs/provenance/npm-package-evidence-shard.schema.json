@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haddenindustries.com/schemas/owlapi/npm-package-evidence-shard.v1.schema.json",
+  "title": "owlapi authenticated npm package evidence shard",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "generatedBy",
+    "package",
+    "lockfile",
+    "policy",
+    "shard",
+    "registryKeys",
+    "occurrences",
+    "artifacts",
+    "blobs",
+    "summary",
+    "corpusRoot"
+  ],
+  "properties": {
+    "$schema": { "const": "./npm-package-evidence-shard.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "generatedBy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "version"],
+      "properties": {
+        "path": { "const": "util/acquire-npm-package-evidence.mjs" },
+        "version": { "const": "1.0.0" }
+      }
+    },
+    "package": {
+      "$ref": "https://haddenindustries.com/schemas/owlapi/npm-package-evidence.v1.schema.json#/properties/package"
+    },
+    "lockfile": {
+      "$ref": "https://haddenindustries.com/schemas/owlapi/npm-package-evidence.v1.schema.json#/properties/lockfile"
+    },
+    "policy": {
+      "$ref": "https://haddenindustries.com/schemas/owlapi/npm-package-evidence.v1.schema.json#/properties/policy"
+    },
+    "shard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "count", "index", "artifactIds"],
+      "properties": {
+        "algorithm": { "const": "ARTIFACT_ID_UNSIGNED_PREFIX32_MODULO" },
+        "count": { "type": "integer", "minimum": 1, "maximum": 256 },
+        "index": { "type": "integer", "minimum": 0, "maximum": 255 },
+        "artifactIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://haddenindustries.com/schemas/owlapi/npm-package-evidence.v1.schema.json#/$defs/sha256"
+          }
+        }
+      }
+    },
+    "registryKeys": {
+      "type": "array",
+      "items": {
+        "$ref": "https://haddenindustries.com/schemas/owlapi/npm-package-evidence.v1.schema.json#/$defs/registryKey"
+      }
+    },
+    "occurrences": {
+      "type": "array",
+      "items": {
+        "$ref": "https://haddenindustries.com/schemas/owlapi/npm-package-evidence.v1.schema.json#/$defs/occurrence"
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "https://haddenindustries.com/schemas/owlapi/npm-package-evidence.v1.schema.json#/$defs/artifact"
+      }
+    },
+    "blobs": {
+      "type": "array",
+      "items": {
+        "$ref": "https://haddenindustries.com/schemas/owlapi/npm-package-evidence.v1.schema.json#/$defs/blobReference"
+      }
+    },
+    "summary": {
+      "$ref": "https://haddenindustries.com/schemas/owlapi/npm-package-evidence.v1.schema.json#/$defs/summary"
+    },
+    "corpusRoot": {
+      "$ref": "https://haddenindustries.com/schemas/owlapi/npm-package-evidence.v1.schema.json#/$defs/sha256"
+    }
+  }
+}

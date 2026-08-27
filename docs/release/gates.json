@@ -247,7 +247,7 @@
       "requirementId": "P19-TOOLCHAIN-001",
       "phase": 19,
       "sourceAnchor": "p19-toolchain-001",
-      "requirementDigest": "sha256:c301ea7e478b97a76ee5d92b3fdd3d4d6ca7089195ff66c6ac30be5527cabb4d",
+      "requirementDigest": "sha256:0a458e760cca55a5782444a294956294213f1d9b11b60eeed6ff71d2379b74ec",
       "checkpoint": "19C",
       "owner": "RELEASE_ENGINEER",
       "applicability": {
@@ -359,7 +359,7 @@
       "requirementId": "P19-EVIDENCE-001",
       "phase": 19,
       "sourceAnchor": "p19-evidence-001",
-      "requirementDigest": "sha256:e8b4ae87b28223d2f4f64505fbf1299a6b70163a4a1262b8e06fecc715276ed1",
+      "requirementDigest": "sha256:f47ae9864e40e321a5558fe78c3680f4c3007c900831c4293ec8d3cd849a02fd",
       "checkpoint": "19C",
       "owner": "RELEASE_CUSTODIAN",
       "applicability": {
@@ -1609,8 +1609,12 @@
     {
       "gateId": "P19-CHECK-057",
       "phase": 19,
-      "rowDigest": "sha256:6c3eedbac1b6a7bfec46b7c4f9d8c7ee2ab54bb7d22dfe55e1baa0ff0a346b30",
-      "coveredRequirementIds": ["P19-RIGHTS-001", "P19-DEPENDENCIES-001"]
+      "rowDigest": "sha256:feccd1274a315d1a4d7bb036810418701064136be9239dea23d67d2356c38cf1",
+      "coveredRequirementIds": [
+        "P19-RIGHTS-001",
+        "P19-DEPENDENCIES-001",
+        "P19-EVIDENCE-001"
+      ]
     },
     {
       "gateId": "P19-CHECK-058",
@@ -1633,7 +1637,7 @@
     {
       "gateId": "P19-CHECK-061",
       "phase": 19,
-      "rowDigest": "sha256:4238f052287f7a8c659cc892f0a08180c2f8e71406c8dd38f0366e77ddf302ad",
+      "rowDigest": "sha256:dbd7b17f679a61bb253df1072550791c21c74b821486e6837f371be29b7a31dd",
       "coveredRequirementIds": [
         "P19-DEPENDENCIES-001",
         "P19-SECURITY-GOVERNANCE-001",
@@ -1661,13 +1665,13 @@
     {
       "gateId": "P19-CHECK-065",
       "phase": 19,
-      "rowDigest": "sha256:5aa298e9546ba8fc7b8164fe51ae0323367902e8c8666eccc7d609da85b36622",
+      "rowDigest": "sha256:ba99ed23804e9cb37727d92c4a4a3a63d343a453b0dea26f653482f78597b6e7",
       "coveredRequirementIds": ["P19-CI-CONTROLS-001", "P19-EVIDENCE-001"]
     },
     {
       "gateId": "P19-CHECK-066",
       "phase": 19,
-      "rowDigest": "sha256:d281bfe401847fd6e048414477c652d055c88da438cb028645f3832cfbc9a178",
+      "rowDigest": "sha256:41788d0a0060e5db04f384f4777bde40f56efdce7470dfb48ebd908b481724ac",
       "coveredRequirementIds": ["P19-CI-CONTROLS-001", "P19-NODE-001"]
     },
     {
@@ -1734,7 +1738,7 @@
     {
       "gateId": "P19-CHECK-076",
       "phase": 19,
-      "rowDigest": "sha256:4d7106664cdc6703f575f81bf8b5be7c6f85d8453e854fecc7937c1932707ad2",
+      "rowDigest": "sha256:615728f821bc803fa1c9d072aa1cd205336a54e1d8e90de8cf9543f04c821c4e",
       "coveredRequirementIds": ["P19-TOOLCHAIN-001", "P19-CI-CONTROLS-001"]
     },
     {
@@ -2428,6 +2432,7 @@
       "ownerRequirementId": "P19-EVIDENCE-001",
       "checklistGateIds": [
         "P19-CHECK-028",
+        "P19-CHECK-057",
         "P19-CHECK-065",
         "P19-CHECK-078",
         "P19-CHECK-079",

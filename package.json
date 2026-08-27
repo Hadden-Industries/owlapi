@@ -73,6 +73,8 @@
     "browser:serve": "node scripts/serve-browser-consumers.mjs",
     "candidate:prepare": "node scripts/prepare-downloaded-candidate.mjs",
     "candidate:portable": "node scripts/qualify-installed-candidate.mjs",
+    "evidence:acquire": "node util/acquire-npm-package-evidence.mjs",
+    "evidence:verify": "node util/verify-npm-package-evidence.mjs",
     "generate:release-gates": "node scripts/generate-release-gate-registry.mjs --write",
     "maintenance:published-health": "node scripts/maintenance-published-health.mjs",
     "playwright:install": "playwright install",
@@ -119,10 +121,12 @@
     "eslint-plugin-compat": "7.0.2",
     "globals": "17.11.0",
     "jest": "30.4.2",
+    "pacote": "22.0.0",
     "prettier": "3.9.6",
     "publint": "0.3.24",
     "semver": "7.8.5",
     "spdx-expression-parse": "4.0.0",
+    "tar": "7.5.22",
     "vite": "8.2.2"
   },
   "repository": {

@@ -1,0 +1,116 @@
+{
+  "headers": [
+    {
+      "tool_name": "scancode-toolkit",
+      "tool_version": "32.5.0",
+      "output_format_version": "4.1.0",
+      "options": {
+        "input": ["/home/runner/work/owlapi/.release/scan/artifact-a"],
+        "--package-in-compiled": true,
+        "--license-references": true,
+        "--license-text": true,
+        "--processes": 1,
+        "--unknown-licenses": true,
+        "--generated": true,
+        "--info": true,
+        "--package": true,
+        "--copyright": true,
+        "--license": true
+      },
+      "start_timestamp": "2026-08-27T08:10:00.000000",
+      "end_timestamp": "2026-08-27T08:10:00.800000",
+      "duration": 0.8,
+      "message": null,
+      "errors": [],
+      "warnings": [],
+      "extra_data": {
+        "system_environment": {
+          "operating_system": "linux"
+        }
+      }
+    }
+  ],
+  "packages": [
+    {
+      "version": "1.0.0",
+      "name": "alpha",
+      "type": "npm",
+      "declared_license_expression_spdx": "MIT",
+      "declared_license_expression": "mit"
+    }
+  ],
+  "dependencies": [],
+  "license_detections": [
+    {
+      "license_expression_spdx": "MIT",
+      "license_expression": "mit",
+      "identifier": "mit-0001",
+      "matches": [
+        {
+          "matched_text": "Permission is hereby granted...",
+          "end_line": 3,
+          "start_line": 1,
+          "license_expression_spdx": "MIT",
+          "license_expression": "mit"
+        }
+      ]
+    }
+  ],
+  "license_references": [],
+  "license_rule_references": [],
+  "files": [
+    {
+      "path": "artifact-a",
+      "type": "directory",
+      "name": "artifact-a",
+      "size": 0,
+      "scan_errors": []
+    },
+    {
+      "scan_errors": [],
+      "for_packages": ["pkg:npm/alpha@1.0.0"],
+      "package_data": [],
+      "authors": [],
+      "holders": [
+        {
+          "end_line": 1,
+          "start_line": 1,
+          "holder": "Example"
+        }
+      ],
+      "copyrights": [
+        {
+          "end_line": 1,
+          "start_line": 1,
+          "copyright": "Copyright Example"
+        }
+      ],
+      "license_detections": ["mit-0001"],
+      "detected_license_expression_spdx": "MIT",
+      "detected_license_expression": "mit",
+      "is_legal": true,
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "size": 42,
+      "name": "LICENSE",
+      "type": "file",
+      "path": "artifact-a/package/LICENSE"
+    },
+    {
+      "scan_errors": [],
+      "for_packages": [],
+      "package_data": [],
+      "authors": [],
+      "holders": [],
+      "copyrights": [],
+      "license_detections": [],
+      "detected_license_expression_spdx": null,
+      "detected_license_expression": null,
+      "is_legal": false,
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "size": 18,
+      "name": "index.js",
+      "type": "file",
+      "path": "artifact-a/package/lib/index.js"
+    }
+  ]
+}

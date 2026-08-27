@@ -14,6 +14,11 @@ const successfulNeeds = (workflow) =>
   );
 
 describe("required workflow aggregation", () => {
+  test("adds evidence closure to releases without slowing ordinary CI", () => {
+    expect(REQUIRED_JOB_IDS.release).toContain("third_party_evidence");
+    expect(REQUIRED_JOB_IDS.ci).not.toContain("third_party_evidence");
+  });
+
   test.each(["ci", "release"])(
     "accepts the complete successful %s inventory",
     (workflow) => {

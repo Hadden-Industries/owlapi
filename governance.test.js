@@ -1029,7 +1029,11 @@ bundle licence and notice review.
     const expectedIds = new Map([
       [
         "./docs/provenance/third-party-material.schema.json",
-        "https://haddenindustries.com/schemas/owlapi/third-party-material.v1.schema.json",
+        "https://haddenindustries.com/schemas/owlapi/third-party-material.v2.schema.json",
+      ],
+      [
+        "./docs/provenance/npm-package-evidence.schema.json",
+        "https://haddenindustries.com/schemas/owlapi/npm-package-evidence.v1.schema.json",
       ],
       [
         "./docs/provenance/rights-inventory.schema.json",
@@ -1053,6 +1057,17 @@ bundle licence and notice review.
       ).toBeUndefined();
       expect(schema.properties.package.properties.version.pattern).toBeTruthy();
     }
+
+    const shardSchemaPath =
+      "./docs/provenance/npm-package-evidence-shard.schema.json";
+    expect(existsSync(new URL(shardSchemaPath, import.meta.url))).toBe(true);
+    const shardSchema = readJson(shardSchemaPath);
+    expect(shardSchema.$id).toBe(
+      "https://haddenindustries.com/schemas/owlapi/npm-package-evidence-shard.v1.schema.json",
+    );
+    expect(shardSchema.properties.package.$ref).toBe(
+      "https://haddenindustries.com/schemas/owlapi/npm-package-evidence.v1.schema.json#/properties/package",
+    );
   });
 
   it("rejects contradictory pending and reviewed release attestations", () => {
@@ -1105,33 +1120,84 @@ bundle licence and notice review.
 
   it("records exact component evidence without heuristic attribution or duplicated review state", () => {
     const inventory = readJson("./docs/provenance/third-party-material.json");
-    const inspectedPaths = new Set(
-      inventory.components.flatMap(({ inspectedFiles }) =>
-        inspectedFiles.map(({ path }) => path),
-      ),
-    );
-
     for (const component of inventory.components) {
       expect(component).not.toHaveProperty("attributionText");
       expect(component).not.toHaveProperty("reviewStatus");
       expect(component).toHaveProperty("packageAuthor");
       expect(component).toHaveProperty("sourceReference");
-      expect(["INSTALLED_PACKAGE_FILES", "LOCKFILE_METADATA_ONLY"]).toContain(
-        component.inspectionBasis,
+      expect(component.inspectionBasis).toBe("LOCKED_REGISTRY_TARBALL");
+      expect(component.artifactId).toMatch(/^[0-9a-f]{64}$/u);
+      expect(component.lockfileDeclaredLicenseExpressions).toBeInstanceOf(
+        Array,
       );
+      expect(component.scanObservedLicenseExpressions).toBeInstanceOf(Array);
+      expect(component.authentication).toMatchObject({
+        registrySignature: "VERIFIED",
+        provenance: expect.stringMatching(/^(?:VERIFIED|NOT_PUBLISHED)$/u),
+        archive: "VERIFIED",
+        scan: "VERIFIED",
+      });
       if (component.sourceUrl !== null) {
         expect(component.sourceUrl).toMatch(/^https:\/\//u);
       }
+      for (const evidence of component.inspectedFiles) {
+        expect(evidence.path).toMatch(/^package\//u);
+        expect(evidence.sha256).toBe(evidence.blobSha256);
+        expect(evidence.blobPath).toBe(
+          `blobs/sha256/${evidence.sha256.slice(0, 2)}/${evidence.sha256}`,
+        );
+      }
     }
+  });
 
-    for (const evidencePath of [
-      "node_modules/prettier/THIRD-PARTY-NOTICES.md",
-      "node_modules/playwright/ThirdPartyNotices.txt",
-      "node_modules/playwright-core/ThirdPartyNotices.txt",
-      "node_modules/rolldown/THIRD-PARTY-LICENSE",
-    ]) {
-      expect(inspectedPaths).toContain(evidencePath);
-    }
+  it("schema-validates and offline-verifies the authenticated npm evidence corpus", () => {
+    const { document: evidence, errors } = validateAgainstSchema(
+      "./docs/provenance/npm-package-evidence.json",
+      "./docs/provenance/npm-package-evidence.schema.json",
+    );
+
+    expect(errors).toEqual([]);
+    expect(evidence.schemaVersion).toBe(1);
+    expect(evidence.summary.artifactCount).toBeGreaterThan(0);
+    expect(evidence.summary.archiveVerifiedCount).toBe(
+      evidence.summary.artifactCount,
+    );
+    expect(evidence.summary.registrySignatureVerifiedCount).toBe(
+      evidence.summary.artifactCount,
+    );
+    expect(evidence.summary.scanVerifiedCount).toBe(
+      evidence.summary.artifactCount,
+    );
+    execFileSync(process.execPath, ["util/verify-npm-package-evidence.mjs"], {
+      cwd: REPOSITORY_ROOT,
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+  });
+
+  it("authenticates optional dependency evidence independently of the host platform", () => {
+    const inventory = readJson("./docs/provenance/third-party-material.json");
+    const lockfile = readJson("./package-lock.json");
+    const optionalComponents = inventory.components.filter(
+      ({ dependencyPath }) =>
+        lockfile.packages[dependencyPath]?.optional === true,
+    );
+
+    expect(optionalComponents.length).toBeGreaterThan(0);
+    expect(
+      optionalComponents
+        .filter(
+          ({ inspectionBasis, authentication }) =>
+            inspectionBasis !== "LOCKED_REGISTRY_TARBALL" ||
+            authentication.registrySignature !== "VERIFIED" ||
+            authentication.archive !== "VERIFIED" ||
+            authentication.scan !== "VERIFIED",
+        )
+        .map(({ dependencyPath, authentication, inspectionBasis }) => ({
+          dependencyPath,
+          inspectionBasis,
+          authentication,
+        })),
+    ).toEqual([]);
   });
 
   it("uses SPDX-valid scoped licence conclusions and an explicit distribution policy", () => {
@@ -1681,7 +1747,7 @@ bundle licence and notice review.
     },
   );
 
-  it("reconciles the generated third-party inventory with the installed lock graph", () => {
+  it("reconciles the generated third-party inventory with the authenticated lock graph", () => {
     execFileSync(process.execPath, ["util/generate-third-party-material.mjs"], {
       cwd: REPOSITORY_ROOT,
       stdio: ["ignore", "pipe", "pipe"],
@@ -1689,6 +1755,7 @@ bundle licence and notice review.
 
     const lockfile = readJson("./package-lock.json");
     const inventory = readJson("./docs/provenance/third-party-material.json");
+    const evidence = readJson("./docs/provenance/npm-package-evidence.json");
     const lockPaths = Object.keys(lockfile.packages)
       .filter(Boolean)
       .sort(compareCodeUnits);
@@ -1697,6 +1764,11 @@ bundle licence and notice review.
       .sort(compareCodeUnits);
 
     expect(inventoryPaths).toEqual(lockPaths);
+    expect(inventory.schemaVersion).toBe(2);
+    expect(inventory.package).toMatchObject({
+      evidenceManifest: "docs/provenance/npm-package-evidence.json",
+      evidenceCorpusRoot: evidence.corpusRoot,
+    });
     expect(["PENDING_HUMAN_REVIEW", "REVIEWED"]).toContain(
       inventory.review.status,
     );
@@ -1710,6 +1782,10 @@ bundle licence and notice review.
       licenceDeclarationMismatchCount: 0,
       noAssertionCount: 0,
       productionComponentsWithoutLicenceEvidence: [],
+      artifactCount: evidence.summary.artifactCount,
+      authenticatedTarballArtifactCount: evidence.summary.artifactCount,
+      registrySignatureVerifiedArtifactCount: evidence.summary.artifactCount,
+      scanVerifiedArtifactCount: evidence.summary.artifactCount,
     });
 
     const saxes = inventory.components.find(
@@ -1719,6 +1795,7 @@ bundle licence and notice review.
     expect(saxes).toMatchObject({
       version: "6.0.1",
       declaredLicenseExpression: "ISC",
+      licenseFilePresence: "EXTERNAL_EVIDENCE_ONLY",
       inspectedFiles: [],
       externalLicenseEvidence: [
         {
@@ -1732,7 +1809,14 @@ bundle licence and notice review.
     for (const component of inventory.components) {
       for (const evidence of component.inspectedFiles) {
         const actual = createHash("sha256")
-          .update(readFileSync(new URL(`./${evidence.path}`, import.meta.url)))
+          .update(
+            readFileSync(
+              new URL(
+                `./docs/provenance/evidence/npm/${evidence.blobPath}`,
+                import.meta.url,
+              ),
+            ),
+          )
           .digest("hex");
         expect({ path: evidence.path, sha256: actual }).toEqual({
           path: evidence.path,

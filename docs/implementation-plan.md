@@ -20,8 +20,9 @@
 > **npm-custody decision:** 25 August 2026 — Maksym Shostak's `maksymshostak` npm account remains the sole natural-person npm custodian required through this plan; Phase 19 first tests the real stage-only trusted-publisher capability for the reclaimed package identity, uses OIDC staging for the first successful prerelease if npm permits it, and otherwise applies the one-time direct bootstrap to whichever alpha becomes the first public version; the project tests organization-team access without treating it as human redundancy, prohibits shared npm identities and accepts the resulting single-person availability risk.<br>
 > **Staged-candidate binding decision:** 25 August 2026, hardened 25 August 2026 — publication mode follows actual package/registry capability rather than a literal version: namespace/control support is resolved outside live release runs; any genuinely necessary direct bootstrap uses one explicitly bounded, immediately revoked npm granular access token; every release for which stage-only OIDC is available stages the already-retained tarball, downloads npm's immutable candidate before approval, proves its SHA-256 is byte-for-byte identical to that retained tarball, and binds the human approval record to the stage ID, package coordinate, distribution tag, source tag/commit and digest; an undocumented stage lifetime is never assumed, and missing state permits a freshly authorized identical restage only when read-only evidence proves the coordinate and exact bytes remain reusable.<br>
 > **Release-control toolchain decision:** 24 August 2026 — Phase 19 freezes exact Node 22/24, npm, SemVer, import-map, SBOM, schema, package-lint, Playwright, fixture-bundler, GitHub CLI and history-filter versions; npm tools run only from the repository lockfile through named scripts, non-npm executables are checksum-verified, the SBOM generator is isolated from its production-only subject tree, and any replacement is a separately reviewed exact configuration change.<br>
+> **Standalone source-policy decision:** 27 August 2026 — correct the Phase 19A omission of WebVOWL's formerly inherited Git/editor policy before the Phase 19C bootstrap commit: repository-owned attributes normalize first-party text to LF while preserving upstream evidence bytes, root EditorConfig defines the cross-editor baseline, an empty Prettier declaration intentionally selects exact `prettier@3.9.6` defaults, exact ESLint defines native-ESM grammar/static quality, contributor documentation names the canonical commands, and behavioral governance invokes real Git and Prettier resolution.<br>
 > **Workflow-trust-boundary decision:** 24 August 2026 — use separate read-only CI, manually dispatched late-tag release, maintenance and extended-test workflows; keep each release's retained artefact chain inside one serialized `release.yml` run; deny token authority by default; isolate npm OIDC, GitHub-release writes and maintenance issue writes in different least-privilege jobs; and forbid privileged execution or cross-workflow artefact promotion of untrusted pull-request content.<br>
-> **GitHub-Action inventory decision:** 24 August 2026 — allow exactly five GitHub-maintained Actions at reviewed full commit SHAs; disable `setup-node`'s implicit npm cache everywhere; remove persisted checkout credentials; transport the three-file release candidate by exact same-run artefact ID with digest enforcement; and configure dependency review solely for newly introduced high/critical runtime vulnerabilities.<br>
+> **GitHub-Action inventory decision:** 24 August 2026, hardened 27 August 2026 — allow exactly six GitHub-maintained Actions at reviewed full commit SHAs; disable `setup-node`'s implicit npm cache everywhere; select the evidence scanner's exact isolated Python through cache-free `setup-python`; remove persisted checkout credentials; transport the three-file release candidate by exact same-run artefact ID and the deterministic evidence shards by closed same-run patterns with digest enforcement; and configure dependency review solely for newly introduced high/critical runtime vulnerabilities.<br>
 > **Hosted-runner and shell decision:** 24 August 2026 — use only explicit GA `ubuntu-24.04` x64, `windows-2025` x64 and `macos-15` arm64 GitHub-hosted labels; build every release artefact only on Ubuntu/Node 24; qualify the installed tarball on both Node patches across Windows and macOS; run the three Playwright engines separately on Ubuntu; make Bash/PowerShell Core selection explicit; record each mutable runner-image identity as evidence; and consume no runner-preinstalled release tool.<br>
 > **Automation-failure-semantics decision:** 24 August 2026, hardened 25 August 2026 — protect `main` with one stable fail-closed `CI / required` aggregate plus CodeQL, place an equivalent `Release / qualified` aggregate directly before npm authority, disable required-matrix fail-fast/allow-failure behavior, give every job and vulnerable step an exact timeout, serialize each workflow with its approved cancellation/queue policy, reject a second active/pending release run, record queue and runner time separately, retry only bounded idempotent reads, and reconcile an ambiguous external write before any renewed explicitly authorized mutation.<br>
 > **Untrusted-contributor execution decision:** 24 August 2026 — require approval for every external contributor’s fork-workflow run; execute proposed code only through unprivileged `pull_request` CI with no secrets, OIDC, environment or write authority; quarantine fork-produced artefacts to that same run; treat event/external text as validated data rather than shell or workflow syntax; and make automatic log masking defense in depth rather than a substitute for narrow credential flow and incident revocation.<br>
@@ -3208,6 +3209,138 @@ lockfile/build manifest and preserve all applicable notices. Passing the
 `owlapi` tarball notice gate is not evidence that the WebVOWL bundle's separate
 review passed.
 
+#### 2.50.1 Decision: derive platform-independent legal evidence from authenticated locked tarballs
+
+Installed `node_modules` is not the evidence authority for the complete locked
+graph. npm legitimately materializes different optional packages on different
+operating systems, so a host installation can prove only what that host
+installed. The canonical evidence process **MUST** instead authenticate and
+inspect every unique public-registry tarball selected by `package-lock.json`,
+including optional OS/CPU/libc variants that are absent from the current host.
+
+The repository retains a bounded, content-addressed evidence corpus rather than
+whole dependency tarballs:
+
+```text
+docs/provenance/npm-package-evidence.json
+docs/provenance/npm-package-evidence.schema.json
+docs/provenance/evidence/npm/README.md
+docs/provenance/evidence/npm/blobs/sha256/<first-two-hex>/<sha256>
+```
+
+`npm-package-evidence.json` **MUST** bind the exact lockfile bytes, generator and
+scanner versions, every lockfile occurrence, every unique registry artifact,
+the lockfile and downloaded integrity values, a repository SHA-256 of the
+downloaded bytes, package identity, registry-signature result, published npm
+provenance result where present, a complete normalized archive-entry inventory,
+all retained legal-evidence blobs and normalized ScanCode findings. The blob
+filename is the lowercase SHA-256 with no suffix; the manifest preserves the
+original archive path, byte length, classification and encoding. Full tarballs
+and raw scanner reports remain temporary under `.release/` and **MUST NOT** be
+committed or packed.
+
+Full acquisition is deterministically divided into exactly 32 shards. For each
+artifact, the sharder interprets the first eight hexadecimal characters of its
+lowercase SHA-256 artifact identity as an unsigned 32-bit integer and assigns it
+to `value modulo 32`. Each closed shard document binds the exact lockfile digest,
+package and tool policy, shard count/index/algorithm, complete expected artifact-
+ID membership, registry keys, occurrences, artifacts, blob references, partial
+corpus root and summary. A shard is independently verifiable, but it is never a
+substitute for the full graph. The aggregator **MUST** reject any missing,
+duplicate, misassigned, policy-mismatched or corrupt shard/blob; permit only
+byte-identical content-addressed-blob deduplication; prove exact lock-graph
+closure; and reconstruct the one canonical full manifest and corpus root.
+
+Acquisition accepts only exact registry packages whose lock entry resolves by
+HTTPS beneath `https://registry.npmjs.org/` and supplies supported SRI. It
+deduplicates identical artifacts without losing any occurrence path, rejects
+Git/file/directory/arbitrary-remote/private-registry inputs, never installs or
+executes package contents, independently rehashes downloaded bytes, and compares
+the lock record, registry metadata, archive `package/package.json` and tarball
+identity. A unique artifact is keyed by package coordinate plus immutable
+content identity, not by `name@version` alone.
+
+Each artifact **MUST** have a valid npm registry signature over the exact package
+identity and integrity value. Public keys and replayable verification facts are
+retained for offline validation, and the installed subset is cross-checked with
+`npm audit signatures`. npm provenance is verified and recorded when published;
+absence is an explicit `NOT_PUBLISHED` observation rather than a failure, while
+an invalid or identity-mismatched attestation fails closed.
+
+Archive inspection reads entries without extracting them to host-selected
+paths. It rejects absolute/traversing/drive/UNC/NUL or malformed paths,
+unexpected roots, dangerous special entries, evidence reached through links,
+retained-path duplicates or case-folding collisions, malformed/truncated
+archives and fixed compressed/expanded/entry-count/entry-size/path-length limit
+violations. It records every normalized POSIX entry and recursively identifies
+licence, notice, copyright, author, patent and material third-party-attribution
+files. An absent licence file is a valid observed fact, not proof of compatible
+licensing. Immutable external evidence may close a documented tarball gap only
+when it is separately digested, retained and distinguished from tarball bytes;
+it cannot silently override contradictory package evidence.
+
+The initial manually dispatched baseline **MUST** run all 32 shards using the
+official checksum-pinned ScanCode Toolkit `32.5.0` Python 3.14 archives
+independently on Windows and Ubuntu over all
+authenticated unique tarballs, collecting licence matches/text/references,
+copyrights, package and file information, generated/unknown-licence findings and
+package information inside compiled files. Each invocation **MUST** use
+`--processes 1` to keep the upstream-reported Python 3.14 worker-memory regression
+resource-bounded and reproducible. ScanCode dependencies remain isolated in a
+disposable release-tool environment and MUST NOT alter a user-level Python
+installation or enter the published npm package. Each shard selects exact Python
+`3.14.7` x64 through the §2.56 full-SHA `actions/setup-python` use with caching,
+latest-version lookup and ambient PATH mutation disabled; its returned executable
+path crosses into the fixed project command only through an environment value.
+A deterministic normalizer removes only enumerated
+non-semantic timing/temporary-path fields, preserves scan errors and all
+substantive findings, sorts unordered collections and binds each result to the
+artifact and scanner-option digests. The two normalized corpus roots must agree;
+the process may not choose one platform's result silently. macOS and ordinary CI
+run offline corpus/fixture verification. Later acquisition scans only changed
+artifacts keyed by tarball identity plus scanner/options digest. Every release
+runs the same 32 Ubuntu shards with `fail-fast: false`, `max-parallel: 8` and a
+120-minute ceiling per shard; one stable fail-closed `Release / third-party
+evidence` aggregate downloads only the same-run one-day shard artifacts,
+reconstructs the complete corpus and requires byte-for-byte equality with the
+committed evidence before candidate construction. It performs that complete
+fresh registry/signature/ScanCode verification without relying on a previous
+successful network run. The manual two-OS baseline separately reconstructs one
+aggregate per operating system and requires both canonical manifests and corpus
+roots to match; its work is non-blocking outside that explicit observation run.
+Because that bootstrap run precedes the first committed corpus, each manual
+aggregate validates and reconstructs a **candidate** corpus without
+`--verify-committed`. Cross-platform parity, offline schema/digest verification
+and human review all precede promotion of those byte-identical candidate bytes
+into the repository. This bootstrap rule creates no release exception: every
+release aggregate uses `--verify-committed` and fails unless its fresh result is
+byte-for-byte identical to the reviewed committed corpus.
+
+ScanCode supplies evidence rather than the legal conclusion. The incompatible
+schema transition from third-party-material v1 to v2 **MUST** separately record
+lockfile and tarball declarations, observed evidence and ScanCode findings,
+registry-signature/provenance status, explicit licence-file presence or absence,
+the concluded SPDX expression, distribution disposition and human rationale.
+The v2 facts digest binds the lockfile, evidence-manifest digest, corpus root and
+conclusions while excluding timestamps, retries, temporary locations and live
+registry metadata. `rights-inventory.json` remains package-tarball-scoped and
+binds only the resulting third-party-material facts digest.
+
+Every run ends as `PRODUCT_FAILURE`, `CONTROL_FAILURE` or `EXTERNAL_BLOCKED` when
+it does not succeed. Integrity, identity, signature, unsafe-archive, incomplete
+scan, schema or digest failures are release-blocking controls; an unresolved
+licence conflict is a product failure; and an unavailable required public
+service after bounded retry is externally blocked. There is no terminal
+`INFRASTRUCTURE_ERROR`, stale-success substitution or ordinary waiver for a
+missing required signature. A successful reviewed facts set requires zero
+incomplete artifacts, integrity/identity/signature/archive/scan failures and zero
+unresolved production conclusions; missing provenance is counted transparently
+but does not fail that closed summary.
+
+The executable task, file, interface, test and checkpoint sequence is maintained
+in `docs/plans/phase19c-npm-package-evidence-corpus.md`; it is subordinate to
+this decision and may not weaken these controls.
+
 ### 2.51 Decision: verify the exact npm package attestation, not a badge or aggregate count
 
 After every registry publication, the fresh consumer **MUST** use the exact
@@ -3449,6 +3582,56 @@ gate governed by that tool. A security update may accelerate that review but
 never substitutes a moving tag/range or silent workflow upgrade. The approved
 values above remain normative until such a replacement is explicitly accepted.
 
+#### 2.54.1 Decision: make the standalone source-text and formatting policy repository-owned
+
+Phases 0 through 18 developed `owlapi-js` inside WebVOWL, where WebVOWL's root
+Git attributes, EditorConfig, ESLint and Prettier policy applied to the nested
+source. The Phase 19A history partition correctly avoided importing unrelated
+repository-wide WebVOWL formatting history, and standalone commit
+`0d756f37d967383b2989beebbb161cc8b465412e` recreated the applicable ESLint,
+Prettier dependency, ignore and command surface. It did not recreate the root
+`.gitattributes` or `.editorconfig`. Phase 19C discovered and corrects that
+standalone-repository omission before the first evidence-bootstrap commit; this
+is a Phase 19A source-policy remediation, not an intrinsic npm-evidence
+requirement and not evidence that accepted source bytes were previously
+misformatted.
+
+The source-policy toolchain separately exact-pins `eslint@10.9.0`,
+`@eslint/js@10.0.1`, `eslint-config-prettier@10.1.8`,
+`eslint-plugin-compat@7.0.2`, `globals@17.11.0` and `prettier@3.9.6` as
+package-owned lint/format development dependencies. They remain fully governed
+but are not additional release-control authorities in the preceding eight-tool
+table.
+
+The repository root **MUST** contain:
+
+- `.gitattributes` with repository-wide `* text=auto eol=lf`, so checked-in and
+  checked-out first-party text does not depend on a contributor's
+  `core.autocrlf`; the nested `docs/conformance/upstream/.gitattributes` **MUST**
+  retain `* -text !eol` so pinned third-party evidence remains byte-exact;
+- `.editorconfig` with `root = true`, UTF-8, LF, spaces, ordinary two-space
+  indentation, four-space Python indentation, final newlines,
+  trailing-whitespace removal and the explicit YAML no-tab rule; and
+- `.prettierrc.json` containing the empty JSON object plus a final LF. The empty
+  object deliberately declares the exact-pinned Prettier version's defaults to
+  editors and tools; `.editorconfig` supplies the shared indentation and EOL
+  values rather than duplicating them in a second formatter policy.
+
+`npm run format` is the sole automatic project formatter, while
+`npm run format:check` and `npm run lint` are the required non-mutating formatter
+and JavaScript grammar/static-quality gates. `.prettierignore` owns the narrow
+corpus/generated-material exclusions. CI and release qualification run both
+non-mutating gates. `CONTRIBUTING.md` states the same human-facing contract, and a
+behavioral repository test invokes real Git attribute and Prettier resolution so
+removing either portable boundary fails before publication.
+
+Introducing or changing any file in this source-policy set is a repository
+configuration change under `AGENTS.md`: it requires exact prior approval, an
+inspected normalization effect and the applicable formatter, lint, workflow and
+governance gates. The initial `.gitattributes` checkpoint **MUST** inspect the
+would-be normalized index and preserve the upstream `-text` exception; it may not
+hide a broad source rewrite inside the policy commit.
+
 ### 2.55 Decision: separate workflow trust boundaries and retain one manually dispatched late-tag release chain
 
 The independent repository **MUST** use these four purpose-specific workflow
@@ -3590,23 +3773,25 @@ timeout class; only bounded idempotent reads may retry, while every external
 write receives one automatic attempt followed by read-only reconciliation of an
 ambiguous result.
 
-### 2.56 Decision: freeze a five-Action allowlist and every security-relevant input
+### 2.56 Decision: freeze a six-Action allowlist and every security-relevant input
 
 The initial repository **MUST** permit exactly these GitHub-maintained Actions.
 Every `uses:` reference names the complete 40-character commit SHA shown below
 and has the reviewed release tag in an adjacent comment:
 
-| Action                             | Reviewed release | Required full commit SHA                   | Sole approved role                                                |
-| ---------------------------------- | ---------------- | ------------------------------------------ | ----------------------------------------------------------------- |
-| `actions/checkout`                 | `v7.0.1`         | `3d3c42e5aac5ba805825da76410c181273ba90b1` | read the captured accepted source and later verify its signed tag |
-| `actions/setup-node`               | `v7.0.0`         | `820762786026740c76f36085b0efc47a31fe5020` | install an exact approved Node patch                              |
-| `actions/upload-artifact`          | `v7.0.1`         | `043fb46d1a93c77aae656e7c1c64a875d1fc6a0a` | retain the exact same-run candidate bundle                        |
-| `actions/download-artifact`        | `v8.0.1`         | `3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c` | retrieve that bundle by immutable artefact ID                     |
-| `actions/dependency-review-action` | `v5.0.0`         | `a1d282b36b6f3519aa1f3fc636f609c47dddb294` | block introduced high/critical runtime vulnerabilities            |
+| Action                             | Reviewed release | Required full commit SHA                   | Sole approved role                                                                |
+| ---------------------------------- | ---------------- | ------------------------------------------ | --------------------------------------------------------------------------------- |
+| `actions/checkout`                 | `v7.0.1`         | `3d3c42e5aac5ba805825da76410c181273ba90b1` | read the captured accepted source and later verify its signed tag                 |
+| `actions/setup-node`               | `v7.0.0`         | `820762786026740c76f36085b0efc47a31fe5020` | install an exact approved Node patch                                              |
+| `actions/setup-python`             | `v7.0.0`         | `5fda3b95a4ea91299a34e894583c3862153e4b97` | select exact isolated Python solely for the §2.50.1 ScanCode evidence-shard jobs  |
+| `actions/upload-artifact`          | `v7.0.1`         | `043fb46d1a93c77aae656e7c1c64a875d1fc6a0a` | retain the same-run candidate or bounded independently verifiable evidence shards |
+| `actions/download-artifact`        | `v8.0.1`         | `3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c` | retrieve a candidate by ID or evidence shards by a closed same-run pattern        |
+| `actions/dependency-review-action` | `v5.0.0`         | `a1d282b36b6f3519aa1f3fc636f609c47dddb294` | block introduced high/critical runtime vulnerabilities                            |
 
-Those tag-to-commit mappings were resolved directly from the five official Git
-repositories on 24 August 2026. The repository selected-Action allowlist names
-only those five repositories and the repository requires full-SHA references.
+The original five tag-to-commit mappings were resolved directly from their
+official Git repositories on 24 August 2026; `actions/setup-python@v7.0.0` was
+resolved the same way on 27 August 2026. The selected-Action allowlist names
+only those six repositories and the repository requires full-SHA references.
 GitHub authorship does not exempt an Action from the immutable-pin rule. There is
 no separate Action lockfile: each workflow reference is the authority and the
 adjacent tag is a review aid.
@@ -3624,14 +3809,27 @@ Every `actions/setup-node` use **MUST** name literal Node `22.23.2` or
 
 ```yaml
 check-latest: false
+cache: ""
 package-manager-cache: false
 ```
 
 The explicit cache setting applies to all four workflows. `setup-node@v7.0.0`
 otherwise automatically enables npm caching when `devEngines.packageManager`
-declares npm, as this package is required to do. No workflow supplies `cache` or
-`cache-dependency-path`, and no release job restores a dependency, browser or
-build cache indirectly through `setup-node`.
+declares npm, as this package is required to do. No workflow supplies a non-empty
+`cache` or `cache-dependency-path`, and no release job restores a dependency,
+browser or build cache indirectly through `setup-node`.
+
+Only the Ubuntu release evidence-shard job and the manually dispatched Ubuntu/
+Windows baseline evidence-shard job may use `actions/setup-python`. Each use
+selects literal Python `3.14.7`, architecture `x64`, `check-latest: false`,
+`update-environment: false` and `cache: ""`; supplies no token override, mirror or
+registry authority; and passes `steps.scancode_python.outputs.python-path`
+through an environment value to the fixed project bootstrap command. The
+Action's built-in GitHub.com token default remains bounded by the job's sole
+`contents: read` permission rather than being replaced by a PAT or secret. No
+other job may use that Action, no ambient Python may satisfy the scanner gate,
+and the selected runtime is neither a user-level installation nor package
+content.
 
 The steady OIDC path also omits `registry-url`, `scope` and `NODE_AUTH_TOKEN`:
 trusted publishing neither requires nor receives token-authentication
@@ -3681,6 +3879,19 @@ inventory other than the three files above, verifies `SHA256SUMS` strictly and
 recomputes the tarball/SBOM digests independently of the Action's own artefact-
 archive digest check.
 
+The §2.50.1 evidence path is the only approved pattern-selected exception to the
+candidate-by-ID rule. Each shard uploads exactly its closed shard directory under
+`npm-evidence-release-<index>` or `npm-evidence-<os>-<index>` with missing-file
+failure, one-day retention, zero compression, no overwrite, no hidden files and
+ordinary archive transport. Its aggregate downloads only the matching same-run
+prefix with `merge-multiple: false`, `skip-decompress: false` and
+`digest-mismatch: error`, and supplies no artifact ID, repository, run ID or
+token capable of crossing the current workflow run. The merger independently
+validates all 32 shard memberships and every content digest, so the Action's
+pattern and archive digest remain transport controls rather than evidence truth.
+The manually dispatched OS aggregates use the same bounded upload settings and
+the parity job selects only `npm-evidence-aggregate-*` from that same run.
+
 `actions/dependency-review-action` runs only for `pull_request` and has only
 `contents: read`. Its exact policy inputs are:
 
@@ -3728,11 +3939,11 @@ Every required job **MUST** use one of these explicit generally available
 standard GitHub-hosted runner labels and **MUST** verify that the observed
 architecture matches the table:
 
-| Runner label   | Required architecture | Approved role                                                                                                                            |
-| -------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `ubuntu-24.04` | `x64`                 | authoritative source/build/release environment; full Node matrix; required browser, WebVOWL, maintenance and ordinary extended-test host |
-| `windows-2025` | `x64`                 | blocking installed-tarball Node portability qualification only                                                                           |
-| `macos-15`     | `arm64`               | blocking installed-tarball Node portability qualification only                                                                           |
+| Runner label   | Required architecture | Approved role                                                                                                                                              |
+| -------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ubuntu-24.04` | `x64`                 | authoritative source/build/release environment; full Node matrix; required browser, WebVOWL, maintenance, release evidence and ordinary extended-test host |
+| `windows-2025` | `x64`                 | blocking installed-tarball Node portability qualification and manual §2.50.1 cross-platform evidence baseline                                              |
+| `macos-15`     | `arm64`               | blocking installed-tarball Node portability qualification only                                                                                             |
 
 `ubuntu-latest`, `windows-latest`, `macos-latest`, preview, `ubuntu-slim`, larger
 and self-hosted runners are forbidden in the required package/release path. A
@@ -3745,9 +3956,11 @@ identity rather than falsely treating `runs-on` as an immutable VM digest.
 suite runs there on both Node `22.23.2` and `24.19.0`; only the latter may pack
 the retained tarball, generate its SBOM/checksums, run release-side WebVOWL,
 stage/publish to npm, verify the registry result, mutate/finalize the GitHub
-release or execute the final immutable-release check. Windows and macOS jobs
-download the already-fixed same-run §2.56 candidate by artefact ID and **MUST
-NOT** rebuild, repack, normalize or publish it.
+release or execute the final immutable-release check. Windows and macOS candidate-
+portability jobs download the already-fixed same-run §2.56 candidate by artefact
+ID and **MUST NOT** rebuild, repack, normalize or publish it. The distinct manual
+Windows evidence job creates no package candidate and has only §2.50.1's bounded
+corpus-acquisition role.
 
 The blocking portability matrix runs that installed tarball on all four of:
 
@@ -7996,7 +8209,7 @@ approval the exact proposed contents/setting changes for:
 - the exact §§2.55–2.61 `.github/workflows/ci.yml`, `release.yml`,
   `maintenance.yml` and `extended-tests.yml` files, including their literal
   triggers, root `permissions: {}`, job-level permissions, read-only repository
-  token default, the exact five-repository selected-Action allowlist and five
+  token default, the exact six-repository selected-Action allowlist and six
   reviewed full-SHA/release-tag references, `checkout` credential/ref/depth/tag
   inputs, literal `setup-node` patches with `check-latest: false` and
   `package-manager-cache: false`, the temporary bootstrap-only npm registry/auth
@@ -8103,9 +8316,9 @@ The approved package manifest **MUST** give all six §2.32 foundational runtime
 dependencies exact versions, and the lockfile **MUST** resolve those same
 versions. The approved Dependabot configuration proposes updates under §2.32
 without introducing Renovate or auto-merge. Every Action reference in an
-approved workflow is one of the five exact §2.56 repository/release/full-SHA
+approved workflow is one of the six exact §2.56 repository/release/full-SHA
 rows, with its reviewed release tag in an adjacent comment. The repository
-setting requires full-SHA pins and restricts Actions to those five repositories;
+setting requires full-SHA pins and restricts Actions to those six repositories;
 no external reusable workflow is an additional release authority.
 
 The approved workflow configuration has exactly the §§2.55, 2.60 and 2.61 trust and
@@ -9411,9 +9624,10 @@ These bullets replace the former single compound completion sentence.
 - <a id="p19-toolchain-001"></a> **`P19-TOOLCHAIN-001` — Exact release-control
   toolchain.** Every npm tool runs from the accepted lockfile through a named
   script; external GitHub/history tools have verified identities and digests;
-  SBOM subject/tool workspaces remain isolated; and no global, remote-`npx` or
-  runner-preinstalled release tool supplies evidence. **Constraints:** §§2.47,
-  2.49, 2.54.
+  SBOM subject/tool workspaces remain isolated; repository-owned Git,
+  EditorConfig, Prettier and ESLint policy makes source handling portable; and no
+  global, remote-`npx` or runner-preinstalled release tool supplies evidence.
+  **Constraints:** §§2.47, 2.49, 2.54–2.54.1.
 - <a id="p19-ci-controls-001"></a> **`P19-CI-CONTROLS-001` — Closed workflow
   authority.** The four workflow triggers, least-privilege jobs, exact Action
   pins/inputs, aggregate results, runner identities, timeouts, release queue,
@@ -9433,10 +9647,11 @@ These bullets replace the former single compound completion sentence.
   integrity graph, public-provider proof and content-addressed local-mirror
   evidence agree. **Constraints:** §§2.20–2.22, 2.32.1, 2.46, 17.26.1.1–.2.
 - <a id="p19-evidence-001"></a> **`P19-EVIDENCE-001` — Candidate-bound evidence.**
-  Strict retained/registry tarball lint, CycloneDX 1.6, checksums, schema-valid
-  evidence, npm root signature/attestation, immutable GitHub release and
-  per-asset/tag verification all identify the same source commit and bytes and
-  survive ordinary workflow-log expiry. **Constraints:** §§2.40, 2.47,
+  The authenticated locked-dependency corpus and human conclusions close first;
+  strict retained/registry tarball lint, CycloneDX 1.6, checksums, schema-valid
+  release evidence, npm root signature/attestation, immutable GitHub release and
+  per-asset/tag verification then all identify the same source commit and bytes
+  and survive ordinary workflow-log expiry. **Constraints:** §§2.40, 2.47,
   2.49–2.52.
 - <a id="p19-gates-001"></a> **`P19-GATES-001` — Executable closed acceptance.**
   Catalogue IDs, derived §30 coverage and `gates.json` reconcile exactly; every
@@ -11928,7 +12143,7 @@ review job with write/comment or licence policy outside the approved release
 gate can likewise expand scope while appearing security-oriented.
 
 **Mitigation:** enforce the complete §2.56 contract as one review unit: exactly
-five official Action repositories at the recorded tag-to-SHA mappings; explicit
+six official Action repositories at the recorded tag-to-SHA mappings; explicit
 checkout depth/tag/credential inputs per role; exact Node patches with both
 setup-node cache switches disabled; no steady-state registry/token setup;
 candidate upload/download by immutable artefact ID with closed inventories,
@@ -12286,13 +12501,14 @@ The extraction is successful when all of the following are true:
 - the exact four-workflow topology, root-denied/job-minimal permissions,
   manually dispatched same-run candidate chain, protected environments, serialized
   non-cancelling releases and full-SHA selected-Action policy implement §2.55;
-- exactly the five §2.56 Action tag/SHA pairs are executable, checkout never
+- exactly the six §2.56 Action tag/SHA pairs are executable, checkout never
   persists credentials, setup-node never creates an implicit dependency cache,
+  setup-python supplies only exact isolated Python 3.14.7 to evidence shards,
   steady OIDC publication has no checkout/registry/token configuration, the
-  three-file candidate travels by immutable artefact ID with independent digest
-  and inventory checks, dependency review is read-only and runtime-
-  vulnerability-only, and no wrapper/cache/release/attestation Action supplies a
-  second authority;
+  three-file candidate travels by immutable artefact ID while one-day evidence
+  shards use closed same-run patterns before independent closure/digest checks,
+  dependency review is read-only and runtime-vulnerability-only, and no wrapper/
+  cache/release/attestation Action supplies a second authority;
 - only `ubuntu-24.04` x64 produces release bytes; the full Ubuntu Node matrix,
   four blocking `windows-2025` x64/`macos-15` arm64 installed-tarball lanes and
   three separate one-worker Ubuntu browser jobs pass; explicit Bash/PowerShell
@@ -12720,11 +12936,25 @@ precise subset; this summary is not the machine mapping.
 - [ ] <!-- Gate: P19-CHECK-056; Covers: P19-RIGHTS-001 --> attest that every copyrightable item in the reviewed alpha scope has an
       identified holder and adequate distribution authority, with no unresolved
       external contribution.
-- [ ] <!-- Gate: P19-CHECK-057; Covers: P19-RIGHTS-001, P19-DEPENDENCIES-001 --> Generate and human-review the complete §2.50
-      `docs/provenance/third-party-material.json` inventory for the production graph,
-      release-relevant development material and copied/generated third-party files,
-      with inspected licence/notice-file digests, SPDX expressions, relationships
-      and distribution scopes; mechanically reconcile the tarball `NOTICE`, and
+- [ ] <!-- Gate: P19-CHECK-057; Covers: P19-RIGHTS-001, P19-DEPENDENCIES-001, P19-EVIDENCE-001 --> Generate and independently verify the complete §2.50/§2.50.1
+      `docs/provenance/npm-package-evidence.json` graph and bounded content-addressed
+      corpus from every unique authenticated public-registry tarball in the exact
+      lockfile, including optional platform packages; require SRI, identity, npm
+      registry signature, safe complete archive inventory and normalized ScanCode
+      `32.5.0` evidence. Assign artifacts through the exact unsigned-first-eight-
+      hex modulo-32 algorithm; require every independently verifiable shard to bind
+      its exact membership, lockfile/tool policy and partial CAS root; reject any
+      missing, duplicate, misassigned, mismatched or corrupt shard during canonical
+      reconstruction. Use exact Python `3.14.7` x64 from the full-SHA §2.56
+      `setup-python` Action only in shard jobs, with caching/latest/PATH mutation
+      disabled. Verify published provenance where present, establish complete
+      Windows/Ubuntu canonical-manifest/root parity through the manual 32×2
+      baseline, and require the 32-shard Ubuntu aggregate before each release
+      candidate. Generate and human-review the v2
+      `docs/provenance/third-party-material.json` conclusions for the production
+      graph, release-relevant development material and copied/generated third-party
+      files; bind every inspected licence/notice blob, SPDX expression, relationship
+      and distribution scope; mechanically reconcile the tarball `NOTICE`; and
       separately reconcile WebVOWL's emitted bundle with its own deployment-scope
       inventory/notices.
 - [ ] <!-- Gate: P19-CHECK-058; Covers: P19-PACKAGE-001, P19-DOCUMENTATION-001 --> complete Public API Surface Registry and generated Java compatibility/gap view.
@@ -12735,7 +12965,7 @@ precise subset; this summary is not the machine mapping.
       forward the qualified 24 August 2026 WebVOWL staging baseline; isolate every
       later foundational runtime update in its own fully gated pull request.
 - [ ] <!-- Gate: P19-CHECK-061; Covers: P19-DEPENDENCIES-001, P19-SECURITY-GOVERNANCE-001, P19-CI-CONTROLS-001 --> Enable Dependabot alerts, security updates and weekly proposal-only version
-      updates with the §2.32 grouping; allow exactly the five §2.56 Action
+      updates with the §2.32 grouping; allow exactly the six §2.56 Action
       repositories, pin each recorded release to its exact full SHA with an adjacent
       tag comment, require full-SHA pins in repository settings, prohibit
       auto-merge, and do not run Renovate for the same responsibility.
@@ -12757,17 +12987,21 @@ precise subset; this summary is not the machine mapping.
       `cache-dependency-path`; steady OIDC publication has no `registry-url`, scope,
       `always-auth` or `NODE_AUTH_TOKEN`, and the temporary bootstrap credential is
       exposed only to its one publish step before that branch is removed.
-- [ ] <!-- Gate: P19-CHECK-065; Covers: P19-CI-CONTROLS-001, P19-EVIDENCE-001 --> The exact §2.56 upload/download Actions move only the tarball, CycloneDX
-      SBOM and `SHA256SUMS` under a version/run/attempt-specific candidate name.
-      Upload records its ID/digest and uses the closed retention/compression/
-      overwrite/hidden-file policy; download selects that immutable ID into a new
-      fixed directory without merge, broad selectors or cross-run credentials, then
-      rejects an unexpected inventory and independently verifies every checksum.
+- [ ] <!-- Gate: P19-CHECK-065; Covers: P19-CI-CONTROLS-001, P19-EVIDENCE-001 --> The exact §2.56 upload/download Actions keep two transport classes closed.
+      The release candidate contains only the tarball, CycloneDX SBOM and
+      `SHA256SUMS` under a version/run/attempt-specific name; upload records its ID/
+      digest and download selects only that immutable ID into a new fixed directory
+      before independent inventory/checksum verification. Evidence shards contain
+      only their closed manifest/CAS directory, expire after one day, and download
+      only by the approved same-run release/OS/aggregate prefix without merge,
+      repository, run-ID or token broadening; the project merger independently
+      proves all 32 memberships and content digests.
 - [ ] <!-- Gate: P19-CHECK-066; Covers: P19-CI-CONTROLS-001, P19-NODE-001 --> Every required job uses and validates exactly `ubuntu-24.04` x64,
       `windows-2025` x64 or `macos-15` arm64 according to §2.57; no moving, preview,
       slim, larger, self-hosted or container runner appears. Ubuntu alone builds,
-      packs, publishes and finalizes; Windows/macOS can qualify only the downloaded
-      candidate.
+      packs, publishes and finalizes; Windows/macOS never rebuild or publish that
+      candidate, while Windows additionally supplies the independently aggregated
+      half of the manually dispatched §2.50.1 evidence-baseline parity proof.
 - [ ] <!-- Gate: P19-CHECK-067; Covers: P19-NODE-001, P19-CI-CONTROLS-001 --> Run the complete package suite on Ubuntu under Node `22.23.2` and
       `24.19.0`; run the focused installed-tarball public-boundary/representative-
       load/import-purity/no-network suite on both patches under Windows and macOS;
@@ -12831,8 +13065,10 @@ precise subset; this summary is not the machine mapping.
       fields and 30-day maximum, block reachable critical findings and never run an
       automatic audit fix on release inputs.
 - [ ] <!-- Gate: P19-CHECK-076; Covers: P19-TOOLCHAIN-001, P19-CI-CONTROLS-001 --> The source manifest and lockfile contain the exact §2.54 development-tool
-      versions, `devEngines.packageManager.version` is `12.0.2`, blocking workflows
-      use Node `22.23.2`/`24.19.0`, project-local
+      versions; the approved `.gitattributes`, `.editorconfig`, empty
+      `.prettierrc.json` and behavioral source-policy test enforce §2.54.1;
+      `devEngines.packageManager.version` is `12.0.2`; blocking workflows use Node
+      `22.23.2`/`24.19.0`; project-local
       `strict-allow-scripts=true` makes any uncovered dependency lifecycle script
       fatal, every lockfile `hasInstallScript` entry has one exact-version
       reviewed `allowScripts` decision, every npm tool runs through a named local
@@ -15048,9 +15284,11 @@ The final architectural rules are:
 
 > **Every public version is human-authored in a dedicated release pull request that reconciles the exact version, changelog, API, compatibility metadata and evidence. Release automation verifies the accepted squash commit, creates no tracked change/commit/tag or improvised notes, and manually dispatches one retained-artefact chain at that protected-`main` commit. It completes all deterministic gates—and steady-state stage/download byte proof—before the human creates the canonical SSH-signed tag, then verifies that tag before draft/public promotion. Heavy release-authoring frameworks and mandatory Conventional Commits are deferred until actual release volume justifies them.**
 
+> **The standalone repository owns its complete source policy rather than relying on the former WebVOWL parent or a contributor's machine: Git normalizes first-party text to LF while the nested upstream boundary preserves evidence bytes; root EditorConfig fixes the cross-editor baseline; empty `.prettierrc.json` deliberately exposes exact `prettier@3.9.6` defaults; exact ESLint defines native-ESM grammar, compatibility and static quality; and contributor documentation plus a real Git/Prettier behavioral test make those boundaries reviewable. This corrects a Phase 19A extraction omission discovered before the Phase 19C bootstrap commit and does not imply that accepted source was previously misformatted.**
+
 > **GitHub Actions uses exactly four trust-separated workflow files: read-only `ci.yml`, protected-`main` manually dispatched late-tag `release.yml`, `maintenance.yml` and non-blocking `extended-tests.yml`. Each denies token authority at its root and grants only job-minimal permissions. One serialized, non-cancelling, cache-free `release.yml` run owns the complete retained candidate; npm OIDC, no-authority `release-manual` review jobs, GitHub-release writes and maintenance issue writes remain separate. Privileged `pull_request_target`/`workflow_run`, cross-workflow candidate promotion, runner-based human-wait polling, external reusable workflows, floating Actions and unselected Action repositories are forbidden.**
 
-> **Exactly five GitHub-maintained Action releases are executable, each by the §2.56 full SHA with its reviewed tag beside it: checkout v7.0.1, setup-node v7.0.0, upload-artifact v7.0.1, download-artifact v8.0.1 and dependency-review-action v5.0.0. Checkout never persists credentials; setup-node uses literal Node patches with both implicit and explicit dependency caching disabled; steady OIDC publication performs no checkout and receives no registry/token setup; the three-file candidate is uploaded once, recorded and downloaded by immutable artefact ID with closed inventory and independent hashes; dependency review is read-only and blocks only introduced high/critical runtime vulnerabilities. Cache, script, publish, release, SBOM, provenance and attestation wrapper Actions are absent. An update proposal must revalidate the tag-to-SHA mapping and every relevant runtime/default/input/output/permission behavior, never merely replace a hash.**
+> **Exactly six GitHub-maintained Action releases are executable, each by the §2.56 full SHA with its reviewed tag beside it: checkout v7.0.1, setup-node v7.0.0, setup-python v7.0.0, upload-artifact v7.0.1, download-artifact v8.0.1 and dependency-review-action v5.0.0. Checkout never persists credentials; setup-node uses literal Node patches with both implicit and explicit dependency caching disabled; setup-python selects exact isolated Python 3.14.7 only for deterministic ScanCode shards and changes neither PATH nor caches; steady OIDC publication performs no checkout and receives no registry/token setup; the three-file candidate is uploaded once, recorded and downloaded by immutable artefact ID with closed inventory and independent hashes; one-day evidence shards move only by closed same-run patterns before independent closure/digest verification; dependency review is read-only and blocks only introduced high/critical runtime vulnerabilities. Cache, script, publish, release, SBOM, provenance and attestation wrapper Actions are absent. An update proposal must revalidate the tag-to-SHA mapping and every relevant runtime/default/input/output/permission behavior, never merely replace a hash.**
 
 > **Required automation uses only explicit GA `ubuntu-24.04` x64, `windows-2025` x64 and `macos-15` arm64 hosted labels. Ubuntu alone builds and publishes; its complete Node 22/24 suite is joined by four blocking Windows/macOS installed-tarball lanes and three separate one-worker, cache-free Ubuntu Playwright-engine jobs. Linux/macOS use explicit Bash, Windows uses PowerShell Core, and substantive policy stays in cross-platform `.mjs` scripts. Each job validates and records the requested label, OS/architecture, mutable GitHub image version, OS/kernel and actual runtime/browser identities. Moving/latest, preview, slim, larger, self-hosted and container runners are absent, as is every runner-preinstalled release tool.**
 
@@ -15143,7 +15381,7 @@ physical legacy deletion
    ↓ frozen-history inventory / partition / canonical repository gate
 independent Hadden-Industries/owlapi extraction
    ↓ protected main/v* rulesets + Issues + CodeQL/secret protection + exact ordinary dependencies/tooling/Dependabot/audit
-four-workflow trust split + root-denied/job-minimal permissions + exact five-Action SHA/input allowlist + explicit hosted-OS/shell/image-evidence matrix
+four-workflow trust split + root-denied/job-minimal permissions + exact six-Action SHA/input allowlist + explicit hosted-OS/shell/image-evidence matrix
    ↓ stable CI/release aggregates + complete required conclusions + exact timeouts/concurrency queues + read-only retry/single-write reconciliation policy
    ↓ all-external fork-run approval + no-secret/read-only PR execution + same-run artefact quarantine + validated workflow data/log hygiene
 dedicated alpha release PR → accepted squash commit
