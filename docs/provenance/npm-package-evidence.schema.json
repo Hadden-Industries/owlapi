@@ -68,7 +68,7 @@
             "pythonVersion",
             "outputFormatVersion",
             "semanticOptions",
-            "ignoredPathPatterns",
+            "preScanExcludedFileSuffixes",
             "executionOptions"
           ],
           "properties": {
@@ -88,7 +88,7 @@
                 "--unknown-licenses"
               ]
             },
-            "ignoredPathPatterns": { "const": ["*.node"] },
+            "preScanExcludedFileSuffixes": { "const": [".node"] },
             "executionOptions": { "const": ["--processes", "1"] }
           }
         }

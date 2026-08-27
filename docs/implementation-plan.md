@@ -3301,16 +3301,20 @@ independently on Windows and Ubuntu over all
 authenticated unique tarballs, collecting licence matches/text/references,
 copyrights, package and file information, generated/unknown-licence findings and
 ordinary package-manifest information. The canonical scan deliberately excludes
-ScanCode's `--package-in-compiled` and passes the exact `--ignore "*.node"`
-pre-scan policy on both hosts: compiled-package extraction and ordinary file
-identification can each abort on authenticated foreign-ABI native npm artifacts
-and would therefore make the required evidence runner-dependent. Every native
-binary remains path/size/SHA-256 authenticated in the archive inventory, and its
-scanner exclusion is retained explicitly rather than represented as a scanned
-finding. A `.node` path selected independently as legal evidence cannot use that
-exception and fails closed. Any future compiled-package introspection must be a
-separate supplemental channel and must not enter canonical release evidence until
-it has a deterministic cross-platform success and normalization contract. Each
+ScanCode's `--package-in-compiled`. After authenticating every archive entry, the
+materializer omits only regular files whose case-insensitive suffix is `.node`
+from ScanCode's temporary input on both hosts: compiled-package extraction and
+ordinary file identification can each abort on authenticated foreign-ABI native
+npm artifacts and would therefore make the required evidence runner-dependent.
+The exclusion **MUST NOT** be expressed as ScanCode's `--ignore "*.node"` glob,
+because ScanCode applies name globs to directories and would suppress ordinary
+source beneath a package directory such as `_optPlug.node`. Every native binary
+remains path/size/SHA-256 authenticated in the archive inventory, and its scanner
+exclusion is retained explicitly rather than represented as a scanned finding. A
+`.node` path selected independently as legal evidence cannot use that exception
+and fails closed. Any future compiled-package introspection must be a separate
+supplemental channel and must not enter canonical release evidence until it has a
+deterministic cross-platform success and normalization contract. Each
 invocation **MUST** use
 `--processes 1` to keep the upstream-reported Python 3.14 worker-memory regression
 resource-bounded and reproducible. ScanCode dependencies remain isolated in a
@@ -3326,7 +3330,12 @@ reports the exact required npm version. It never executes a Windows command shim
 A deterministic normalizer removes only enumerated
 non-semantic timing/temporary-path fields, preserves scan errors and all
 substantive findings, sorts unordered collections and binds each result to the
-artifact and scanner-option digests. The authenticated archive inventory, not
+artifact and scanner-option digests. It treats only `files[].path`,
+`packages[].datafile_paths` and `dependencies[].datafile_path` as execution-rooted
+ScanCode codebase locations. Package-model fields such as
+`file_references[].path` remain semantic package metadata because their values can
+be dependency identities such as scoped npm names rather than filesystem paths.
+The authenticated archive inventory, not
 ScanCode's resource list, remains the complete file ledger. Every reported
 ScanCode file must match one archive file by normalized path, size and SHA-256.
 The sole narrower reported-file condition is a zero-byte path for which ScanCode

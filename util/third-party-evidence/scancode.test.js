@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import {
   SCANCODE_EXECUTION_OPTIONS,
-  SCANCODE_IGNORED_PATH_PATTERNS,
+  SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES,
   SCANCODE_SEMANTIC_OPTIONS,
   SCANCODE_TOOL,
   buildScancodeArguments,
@@ -37,7 +37,7 @@ describe("normalizeScancodeReport", () => {
         version: "32.5.0",
         outputFormatVersion: "4.1.0",
         semanticOptions: SCANCODE_SEMANTIC_OPTIONS,
-        ignoredPathPatterns: SCANCODE_IGNORED_PATH_PATTERNS,
+        preScanExcludedFileSuffixes: SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES,
         executionOptions: SCANCODE_EXECUTION_OPTIONS,
       },
     });
@@ -67,6 +67,40 @@ describe("normalizeScancodeReport", () => {
     expect(sha256(stableJson(changed))).not.toBe(sha256(stableJson(baseline)));
   });
 
+  it("distinguishes codebase paths from package-model file references", () => {
+    const report = readFixture("scancode-report.ubuntu.json");
+    report.packages = [
+      {
+        datafile_paths: ["artifact-a/package/package-lock.json"],
+        file_references: [{ path: "@babel/code-frame" }],
+      },
+    ];
+    report.dependencies = [
+      {
+        datafile_path: "artifact-a/package/package-lock.json",
+        resolved_package: {
+          file_references: [{ path: "@babel/code-frame" }],
+        },
+      },
+    ];
+
+    const normalized = normalizeScancodeReport(report, {
+      artifactId: "artifact-a",
+      inputRoot: UBUNTU_ROOT,
+    });
+
+    expect(normalized.packages[0]).toMatchObject({
+      datafile_paths: ["package/package-lock.json"],
+      file_references: [{ path: "@babel/code-frame" }],
+    });
+    expect(normalized.dependencies[0]).toMatchObject({
+      datafile_path: "package/package-lock.json",
+      resolved_package: {
+        file_references: [{ path: "@babel/code-frame" }],
+      },
+    });
+  });
+
   it.each([
     [
       "wrong scanner version",
@@ -90,11 +124,11 @@ describe("normalizeScancodeReport", () => {
       /execution option/iu,
     ],
     [
-      "different ignored path pattern",
+      "path-ignore option",
       (report) => {
         report.headers[0].options["--ignore"] = ["vendor/**"];
       },
-      /ignored path pattern/iu,
+      /path ignores are not permitted/iu,
     ],
     [
       "header error",
@@ -121,6 +155,26 @@ describe("normalizeScancodeReport", () => {
       "relative sibling-root path",
       (report) => {
         report.files[1].path = "different-artifact/package/LICENSE";
+      },
+      /outside the ScanCode input root/iu,
+    ],
+    [
+      "outside-root package datafile path",
+      (report) => {
+        report.packages[0].datafile_paths = [
+          "different-artifact/package/package.json",
+        ];
+      },
+      /outside the ScanCode input root/iu,
+    ],
+    [
+      "outside-root dependency datafile path",
+      (report) => {
+        report.dependencies = [
+          {
+            datafile_path: "different-artifact/package/package-lock.json",
+          },
+        ];
       },
       /outside the ScanCode input root/iu,
     ],
@@ -158,7 +212,7 @@ describe("SCANCODE_TOOL", () => {
 
   it("bounds Python 3.14 scans to one worker without changing the semantic option set", () => {
     expect(SCANCODE_EXECUTION_OPTIONS).toEqual(["--processes", "1"]);
-    expect(SCANCODE_IGNORED_PATH_PATTERNS).toEqual(["*.node"]);
+    expect(SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES).toEqual([".node"]);
     expect(
       buildScancodeArguments({
         outputPath: "C:\\release\\report.json",
@@ -166,8 +220,6 @@ describe("SCANCODE_TOOL", () => {
       }),
     ).toEqual([
       ...SCANCODE_SEMANTIC_OPTIONS,
-      "--ignore",
-      "*.node",
       "--processes",
       "1",
       "--json-pp",

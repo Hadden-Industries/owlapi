@@ -44,7 +44,7 @@ import {
 } from "./third-party-evidence/registry-signatures.mjs";
 import {
   SCANCODE_EXECUTION_OPTIONS,
-  SCANCODE_IGNORED_PATH_PATTERNS,
+  SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES,
   SCANCODE_SEMANTIC_OPTIONS,
   SCANCODE_TOOL,
   buildScancodeArguments,
@@ -436,8 +436,8 @@ const bindScanCoverage = (scan, inventory, artifactId) => {
       entry.path.toLowerCase().endsWith(".node") &&
       !retainedEvidencePaths.has(entry.path)
     ) {
-      // The scanner command deliberately excludes native Node add-ons on every
-      // host. Their immutable tar bytes remain authenticated and reviewable.
+      // The authenticated scan materializer deliberately omits native Node
+      // add-ons on every host. Their immutable tar bytes remain reviewable.
       reason = "NATIVE_NODE_BINARY_NOT_SCANNED";
     } else if (entry.size === 0) {
       // A zero-byte file has no semantic content for ScanCode to inspect, but
@@ -757,7 +757,9 @@ const acquireArtifact = async ({
 
     try {
       await mkdir(dirname(scanRoot), { recursive: true });
-      await materializePackageForScan(tarballPath, inventory, scanRoot);
+      await materializePackageForScan(tarballPath, inventory, scanRoot, {
+        excludedFileSuffixes: SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES,
+      });
     } catch (error) {
       controlFailure(
         "SCAN_MATERIALIZATION_FAILED",
@@ -937,7 +939,7 @@ const evidencePolicy = () => ({
     pythonVersion: SCANCODE_TOOL.pythonVersion,
     outputFormatVersion: SCANCODE_TOOL.outputFormatVersion,
     semanticOptions: SCANCODE_SEMANTIC_OPTIONS,
-    ignoredPathPatterns: SCANCODE_IGNORED_PATH_PATTERNS,
+    preScanExcludedFileSuffixes: SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES,
     executionOptions: SCANCODE_EXECUTION_OPTIONS,
   },
 });

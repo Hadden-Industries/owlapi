@@ -406,11 +406,29 @@ const materializedPath = (destinationRoot, archivePath) => {
   return target;
 };
 
+const normalizeExcludedFileSuffixes = (suffixes) => {
+  if (
+    !Array.isArray(suffixes) ||
+    suffixes.some(
+      (suffix) =>
+        typeof suffix !== "string" ||
+        !/^\.[a-z0-9]+$/u.test(suffix) ||
+        suffix !== suffix.toLowerCase(),
+    ) ||
+    new Set(suffixes).size !== suffixes.length
+  ) {
+    throw new TypeError(
+      "Excluded scan file suffixes must be unique lowercase extensions",
+    );
+  }
+  return [...suffixes];
+};
+
 export const materializePackageForScan = async (
   tarballPath,
   inventory,
   destinationRoot,
-  { limits = ARCHIVE_LIMITS } = {},
+  { limits = ARCHIVE_LIMITS, excludedFileSuffixes = [] } = {},
 ) => {
   if (
     !Array.isArray(inventory?.entries) ||
@@ -420,6 +438,7 @@ export const materializePackageForScan = async (
   ) {
     throw new TypeError("A validated archive inventory is required");
   }
+  const excludedSuffixes = normalizeExcludedFileSuffixes(excludedFileSuffixes);
   const expectedByPath = new Map();
   for (const entry of inventory.entries) {
     const path = validatePath(entry.path, limits);
@@ -542,6 +561,15 @@ export const materializePackageForScan = async (
             }
             seenCounts.set(path, occurrenceCount);
 
+            // Exclusions apply only to authenticated regular files. Checking
+            // the entry type prevents a package directory such as
+            // `_optPlug.node` from hiding otherwise scannable descendants.
+            const excludedFromScan =
+              type === "FILE" &&
+              excludedSuffixes.some((suffix) =>
+                path.toLowerCase().endsWith(suffix),
+              );
+
             const pending = new Promise((resolveEntry, rejectEntry) => {
               const hash = createHash("sha256");
               const chunks = [];
@@ -549,7 +577,7 @@ export const materializePackageForScan = async (
               entry.on("data", (chunk) => {
                 received += chunk.length;
                 hash.update(chunk);
-                if (type === "FILE") {
+                if (type === "FILE" && !excludedFromScan) {
                   chunks.push(Buffer.from(chunk));
                 }
               });
@@ -568,7 +596,7 @@ export const materializePackageForScan = async (
                   }
                   if (type === "DIRECTORY") {
                     await mkdir(target, { recursive: true });
-                  } else {
+                  } else if (!excludedFromScan) {
                     await mkdir(dirname(target), { recursive: true });
                     await writeFile(target, Buffer.concat(chunks, received), {
                       flag: "wx",

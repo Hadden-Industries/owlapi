@@ -252,7 +252,6 @@ const fixtureScan = async ({ artifactId, inputRoot, inventory }) => ({
         "--unknown-licenses": true,
         "--license-text": true,
         "--license-references": true,
-        "--ignore": ["*.node"],
         "--processes": 1,
       },
       errors: [],

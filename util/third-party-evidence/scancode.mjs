@@ -22,11 +22,14 @@ export const SCANCODE_SEMANTIC_OPTIONS = Object.freeze(
 );
 
 // Native Node add-ons are platform-specific opaque binaries. ScanCode 32.5.0
-// can abort while identifying a foreign-ABI `.node` file, so every host applies
-// the same documented pre-scan exclusion. The authenticated archive inventory
-// still binds those bytes, and archiveCoverage records each exclusion rather
-// than representing it as scanned source.
-export const SCANCODE_IGNORED_PATH_PATTERNS = Object.freeze(["*.node"]);
+// can abort while identifying a foreign-ABI `.node` file, so the acquisition
+// layer omits only regular files with this suffix after authenticating them.
+// This must not become a ScanCode `--ignore` glob: ScanCode applies that glob
+// to names, and a source directory such as `_optPlug.node` would hide all of
+// its otherwise scannable descendants.
+export const SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES = Object.freeze([
+  ".node",
+]);
 
 // ScanCode 32.5.0's Python 3.14 distribution has an upstream-reported memory
 // regression when it fans out across many workers. A single worker also makes
@@ -66,10 +69,6 @@ export const buildScancodeArguments = ({ outputPath, inputRoot } = {}) => {
   assertString(inputRoot, "inputRoot");
   return [
     ...SCANCODE_SEMANTIC_OPTIONS,
-    ...SCANCODE_IGNORED_PATH_PATTERNS.flatMap((pattern) => [
-      "--ignore",
-      pattern,
-    ]),
     ...SCANCODE_EXECUTION_OPTIONS,
     "--json-pp",
     outputPath,
@@ -168,25 +167,97 @@ const validateRelativePath = (value) => {
   return normalized;
 };
 
-const isPathProperty = (key) => key === "path" || key.endsWith("_path");
-
-const normalizePaths = (value, inputRoot, propertyName = "") => {
+const cloneEvidence = (value) => {
   if (Array.isArray(value)) {
-    return value.map((entry) => normalizePaths(entry, inputRoot, propertyName));
+    return value.map(cloneEvidence);
   }
   if (!isObject(value)) {
-    if (typeof value === "string" && isPathProperty(propertyName)) {
-      const relative = relativeScancodePath(value, inputRoot);
-      return relative === "" ? "" : validateRelativePath(relative);
-    }
     return value;
   }
   return Object.fromEntries(
-    Object.entries(value).map(([key, entry]) => [
-      key,
-      normalizePaths(entry, inputRoot, key),
-    ]),
+    Object.entries(value).map(([key, entry]) => [key, cloneEvidence(entry)]),
   );
+};
+
+const normalizeCodebasePath = (value, inputRoot, location) => {
+  if (typeof value !== "string" || value.length === 0) {
+    throw new Error(
+      `ScanCode returned an invalid codebase path at ${location}`,
+    );
+  }
+  const relative = relativeScancodePath(value, inputRoot);
+  return relative === "" ? "" : validateRelativePath(relative);
+};
+
+const normalizeCodebaseLocations = (findings, inputRoot) => {
+  if (Array.isArray(findings.files)) {
+    findings.files.forEach((file, index) => {
+      if (!isObject(file)) {
+        throw new Error(`ScanCode returned an invalid file at files[${index}]`);
+      }
+      file.path = normalizeCodebasePath(
+        file.path,
+        inputRoot,
+        `files[${index}].path`,
+      );
+    });
+  }
+
+  if (findings.packages !== undefined) {
+    if (!Array.isArray(findings.packages)) {
+      throw new Error("ScanCode returned an invalid package inventory");
+    }
+    findings.packages.forEach((package_, packageIndex) => {
+      if (!isObject(package_)) {
+        throw new Error(
+          `ScanCode returned an invalid package at packages[${packageIndex}]`,
+        );
+      }
+      if (package_.datafile_paths === undefined) {
+        return;
+      }
+      if (!Array.isArray(package_.datafile_paths)) {
+        throw new Error(
+          `ScanCode returned invalid datafile paths at packages[${packageIndex}].datafile_paths`,
+        );
+      }
+      package_.datafile_paths = package_.datafile_paths.map((path, pathIndex) =>
+        normalizeCodebasePath(
+          path,
+          inputRoot,
+          `packages[${packageIndex}].datafile_paths[${pathIndex}]`,
+        ),
+      );
+    });
+  }
+
+  if (findings.dependencies !== undefined) {
+    if (!Array.isArray(findings.dependencies)) {
+      throw new Error("ScanCode returned an invalid dependency inventory");
+    }
+    findings.dependencies.forEach((dependency, dependencyIndex) => {
+      if (!isObject(dependency)) {
+        throw new Error(
+          `ScanCode returned an invalid dependency at dependencies[${dependencyIndex}]`,
+        );
+      }
+      if (dependency.datafile_path === undefined) {
+        return;
+      }
+      dependency.datafile_path = normalizeCodebasePath(
+        dependency.datafile_path,
+        inputRoot,
+        `dependencies[${dependencyIndex}].datafile_path`,
+      );
+    });
+  }
+
+  // ScanCode's package model also has semantic `path` fields. For example,
+  // npm lockfile dependency roots live in `file_references[].path` and may be
+  // scoped package names such as `@babel/code-frame`. Only the three documented
+  // codebase-location surfaces above are execution-rooted; retaining all other
+  // path-shaped values prevents package metadata from being misclassified.
+  return findings;
 };
 
 const sortEvidenceCollections = (value) => {
@@ -248,17 +319,8 @@ export const normalizeScancodeReport = (
       throw new Error(`Required ScanCode semantic option is absent: ${option}`);
     }
   }
-  const ignoredPathPatterns = header.options["--ignore"];
-  if (
-    !Array.isArray(ignoredPathPatterns) ||
-    ignoredPathPatterns.length !== SCANCODE_IGNORED_PATH_PATTERNS.length ||
-    ignoredPathPatterns.some(
-      (pattern, index) => pattern !== SCANCODE_IGNORED_PATH_PATTERNS[index],
-    )
-  ) {
-    throw new Error(
-      "Required ScanCode ignored path pattern is absent or changed",
-    );
+  if (header.options["--ignore"] !== undefined) {
+    throw new Error("ScanCode path ignores are not permitted");
   }
   if (header.options["--processes"] !== 1) {
     throw new Error(
@@ -271,8 +333,9 @@ export const normalizeScancodeReport = (
   const findings = Object.fromEntries(
     Object.entries(report)
       .filter(([key]) => key !== "headers")
-      .map(([key, value]) => [key, normalizePaths(value, inputRoot)]),
+      .map(([key, value]) => [key, cloneEvidence(value)]),
   );
+  normalizeCodebaseLocations(findings, inputRoot);
   if (!Array.isArray(findings.files)) {
     throw new Error("ScanCode report must contain a file inventory");
   }
@@ -293,7 +356,7 @@ export const normalizeScancodeReport = (
       version: SCANCODE_TOOL.version,
       outputFormatVersion: SCANCODE_OUTPUT_FORMAT_VERSION,
       semanticOptions: SCANCODE_SEMANTIC_OPTIONS,
-      ignoredPathPatterns: SCANCODE_IGNORED_PATH_PATTERNS,
+      preScanExcludedFileSuffixes: SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES,
       executionOptions: SCANCODE_EXECUTION_OPTIONS,
       message: header.message ?? null,
       warnings: header.warnings ?? [],

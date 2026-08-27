@@ -418,6 +418,51 @@ describe("inspectPackageTarball", () => {
     }
   });
 
+  it("excludes native add-on files without excluding similarly named directories", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "owlapi-materialize-test-"));
+    const tarballPath = join(directory, "fixture.tgz");
+    const destination = join(directory, "scan");
+    try {
+      await writeFile(
+        tarballPath,
+        tar([
+          ...baseEntries(),
+          {
+            path: "package/native/addon.node",
+            body: Buffer.from([0, 1, 2, 3]),
+          },
+          {
+            path: "package/dist.d/_optPlug.node/_wrapper.d.ts",
+            body: "export declare const wrapper: unknown;\n",
+          },
+        ]),
+      );
+      const inventory = await inspectPackageTarball(tarballPath, {
+        name: "alpha",
+        version: "1.0.0",
+      });
+
+      const packageRoot = await materializePackageForScan(
+        tarballPath,
+        inventory,
+        destination,
+        { excludedFileSuffixes: [".node"] },
+      );
+
+      await expect(
+        access(join(packageRoot, "native", "addon.node")),
+      ).rejects.toMatchObject({ code: "ENOENT" });
+      await expect(
+        readFile(
+          join(packageRoot, "dist.d", "_optPlug.node", "_wrapper.d.ts"),
+          "utf8",
+        ),
+      ).resolves.toBe("export declare const wrapper: unknown;\n");
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
+  });
+
   it("removes the scan tree if any duplicate occurrence changes after inspection", async () => {
     const directory = await mkdtemp(join(tmpdir(), "owlapi-materialize-test-"));
     const tarballPath = join(directory, "fixture.tgz");

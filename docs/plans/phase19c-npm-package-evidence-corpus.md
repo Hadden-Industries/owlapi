@@ -256,7 +256,7 @@ export function verifyRegistrySignature({ name, version, integrity, signature, k
 ```js
 export const SCANCODE_TOOL = Object.freeze({ version: "32.5.0", ... });
 export const SCANCODE_SEMANTIC_OPTIONS = Object.freeze([...]);
-export const SCANCODE_IGNORED_PATH_PATTERNS = Object.freeze(["*.node"]);
+export const SCANCODE_PRE_SCAN_EXCLUDED_FILE_SUFFIXES = Object.freeze([".node"]);
 export const SCANCODE_EXECUTION_OPTIONS = Object.freeze(["--processes", "1"]);
 export function buildScancodeArguments({ outputPath, inputRoot })
 export function normalizeScancodeReport(report, { artifactId, inputRoot })
@@ -272,12 +272,14 @@ export function normalizeScancodeReport(report, { artifactId, inputRoot })
       execution limit in normalized provenance without treating it as a semantic
       scan option.
 - [ ] Keep ordinary package discovery and every licence/copyright/information
-      scan fail-closed, but exclude `--package-in-compiled` and apply the exact
-      host-independent `--ignore "*.node"` pre-scan policy because both compiled-
-      package extraction and ordinary information identification can abort on
-      authenticated foreign-platform native packages. Continue to authenticate
-      every native binary in the archive ledger, record each scanner exclusion,
-      and reserve compiled introspection for a separate deterministic channel.
+      scan fail-closed, but exclude `--package-in-compiled` and omit only regular
+      files whose case-insensitive suffix is `.node` from the temporary ScanCode
+      input after their archive bytes have been authenticated. Do not express
+      this as a ScanCode `--ignore` glob: ScanCode applies name globs to
+      directories too, so a directory such as `_optPlug.node` would hide
+      otherwise scannable descendants. Continue to authenticate every native
+      binary in the archive ledger, record each exact scanner exclusion, and
+      reserve compiled introspection for a separate deterministic channel.
 - [ ] Assert any scan error, unexpected ScanCode version, extra or changed file,
       omitted non-empty legal-evidence file, or otherwise unaccounted omission
       fails. Permit only authenticated zero-byte omissions, non-evidence hidden
@@ -286,7 +288,12 @@ export function normalizeScancodeReport(report, { artifactId, inputRoot })
       an entirely omitted file; retain each limitation's exact path, size, archive
       SHA-256 and fixed reason in the normalized findings envelope.
 - [ ] Observe RED, implement an allowlist of removable fields and canonical
-      ordering, then re-run focused tests.
+      ordering, then re-run focused tests. Normalize execution-rooted paths only
+      at ScanCode's codebase-location fields (`files[].path`,
+      `packages[].datafile_paths` and `dependencies[].datafile_path`); preserve
+      package-model fields such as `file_references[].path`, whose values may be
+      dependency identities including scoped npm names rather than filesystem
+      locations.
 
 ## Task 6: Define and validate the evidence manifest
 
@@ -492,11 +499,45 @@ the exact npm version. Archive inspection counts every physical member and byte
 toward safety ceilings, permits a repeated canonical path only after independently
 proving identical type, size and digest for every occurrence, records the
 occurrence count, and re-hashes all occurrences while materializing one file.
-ScanCode applies one recorded `*.node` exclusion on both hosts while the archive
-ledger retains each binary's path, size and digest. A reported zero-byte file
-without a ScanCode digest is recorded as an incomplete scanner identity, never as
-digest-verified. A third complete 64-shard run, two successful aggregates and
-byte-identical parity remain mandatory before Task 9 can be checked off.
+The correction used one recorded `*.node` ScanCode exclusion on both hosts while
+the archive ledger retained each binary's path, size and digest. A reported
+zero-byte file without a ScanCode digest was recorded as an incomplete scanner
+identity, never as digest-verified. The third diagnostic below subsequently
+proved that the scanner glob itself was too broad and superseded only that
+delivery mechanism; the authenticated-native-binary policy remains unchanged.
+
+### Third diagnostic baseline: run 33076167863
+
+The third manually dispatched matrix was run on 27 August 2026 at exact source
+commit `b4b25f0a9e7b407e80b6b3eedc2d797e06d33d56`. All 64 acquisition lanes
+completed: 60 succeeded, while the same two bounded defects failed one Ubuntu and
+one Windows shard each. The two host aggregates and cross-platform parity then
+failed closed, and the schedule-only observation job was correctly skipped. The
+68-job result therefore comprised 60 successes, seven failures and one skip. No
+candidate corpus was promoted. The retained diagnostic is
+[GitHub Actions run 33076167863](https://github.com/Hadden-Industries/owlapi/actions/runs/33076167863).
+
+- Shard 11 failed for `minipass-sized@1.0.3` (artifact
+  `19d7cd8bf0c9e466ba54079b60608ba63aac711c776c5784711b4a804c7482d1`).
+  ScanCode uses package-model `file_references[].path` values such as the scoped
+  dependency identity `@babel/code-frame`; the generic normalizer incorrectly
+  treated every property named `path` as an execution-rooted codebase path.
+- Shard 29 failed for `@cyclonedx/cyclonedx-library@10.2.0` (artifact
+  `80338c1d62e6e784ce3a7d2588471c8b333f14ba6a6e715af1d03756ad2d46e3`).
+  Its ordinary declarations and source live beneath directories such as
+  `_optPlug.node`, so ScanCode's name-based `--ignore "*.node"` glob suppressed
+  scannable descendants including `package/dist.d/_optPlug.node/_wrapper.d.ts`.
+
+The third bounded correction is schema-aware rather than heuristic. It normalizes
+only ScanCode's three execution-rooted codebase-location surfaces and preserves
+package-model paths verbatim. It also removes `--ignore`, authenticates every
+archive member as before, and omits only regular files with the case-insensitive
+`.node` suffix from the temporary scan tree; directories with that suffix and
+their descendants remain present. The evidence policy and schema record the
+exact pre-scan file-suffix exclusion, and archive coverage continues to fail if a
+native file selected as legal evidence is absent from ScanCode. A fourth complete
+64-shard run, two successful aggregates and byte-identical parity remain mandatory
+before Task 9 can be checked off.
 
 ## Task 10: Reconcile rights and human review
 
