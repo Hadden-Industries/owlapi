@@ -2,55 +2,5 @@
   "$schema": "./dependency-seams.schema.json",
   "schemaVersion": 1,
   "packageVersion": "0.1.0-alpha.0",
-  "seams": [
-    {
-      "id": "n3-browser-esm",
-      "package": "n3",
-      "version": "2.3.0",
-      "literalSpecifier": "n3/browser/n3.min.js",
-      "dependencySurface": "PUBLISHED_UNEXPORTED",
-      "reason": "The accepted Phase 18 implementation uses N3's published browser UMD artifact as one Node/browser parser implementation. Phase 19B records this existing private seam honestly; Phase 19C must replace it with the maintained browser ESM artifact and qualify that resolution in installed Node, Vite, and native import-map consumers before publication.",
-      "consumers": ["NODE", "BROWSER_BUNDLER", "NATIVE_IMPORT_MAP"],
-      "expectedResolvedSuffix": "node_modules/n3/browser/n3.min.js",
-      "moduleFormat": "UMD",
-      "releaseDisposition": "REPLACE_BEFORE_PUBLICATION",
-      "requiredNamespacePaths": ["Lexer", "StreamParser"],
-      "fallbackBehavior": "No silent fallback. Resolution, import, namespace-shape, or conformance failure rejects the dependency update or release candidate.",
-      "sourceModule": "internal/parsing/rdf/n3SyntaxAdapter.js",
-      "evidence": [
-        "internal/parsing/rdf/n3SyntaxAdapter.test.js",
-        "internal/parsing/rdf/n3SyntaxAdapter.resource.test.js",
-        "internal/parsing/turtle/turtle.browser.test.js",
-        "internal/parsing/ntriples/nTriples.browser.test.js",
-        "internal/parsing/nquads/nQuads.browser.test.js",
-        "internal/parsing/trig/trig.browser.test.js"
-      ]
-    },
-    {
-      "id": "jsonld-browser-esm",
-      "package": "jsonld",
-      "version": "9.0.0",
-      "literalSpecifier": "jsonld/dist/jsonld.esm.js",
-      "dependencySurface": "PUBLISHED_UNEXPORTED",
-      "reason": "jsonld.js 9 publishes its browser-compatible ESM processor only under dist and declares no package exports map; the adapter keeps this private seam lazy and normalizes the module default before invoking the processor API.",
-      "consumers": ["NODE", "BROWSER_BUNDLER", "NATIVE_IMPORT_MAP"],
-      "expectedResolvedSuffix": "node_modules/jsonld/dist/jsonld.esm.js",
-      "moduleFormat": "ESM",
-      "releaseDisposition": "RETAIN_QUALIFIED",
-      "requiredNamespacePaths": [
-        "default.compact",
-        "default.expand",
-        "default.fromRDF",
-        "default.toRDF"
-      ],
-      "fallbackBehavior": "No silent fallback to jsonld's CommonJS root. Resolution, import, namespace-shape, or conformance failure rejects the dependency update or release candidate.",
-      "sourceModule": "internal/parsing/jsonld/jsonLdSyntaxAdapter.js",
-      "evidence": [
-        "internal/parsing/jsonld/jsonLdSyntaxAdapter.test.js",
-        "internal/parsing/jsonld/jsonLdSyntaxAdapter.resource.test.js",
-        "internal/parsing/jsonld/jsonLd.browser.test.js",
-        "internal/parsing/jsonld/jsonLd.conformance.test.js"
-      ]
-    }
-  ]
+  "seams": []
 }

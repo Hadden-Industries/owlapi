@@ -1,5 +1,6 @@
 import { StringDocumentSource } from "../../../index.js";
 import { rdfDataFactory } from "../../rdfjs/environment.js";
+import * as n3Implementation from "n3";
 
 import { createTurtleSyntaxAdapter } from "../rdf/n3SyntaxAdapter.js";
 
@@ -29,7 +30,12 @@ describe("Turtle browser contract", () => {
       });
     }
 
-    const { dataset, prefixes } = await createTurtleSyntaxAdapter().parse(
+    // Resolve the dependency before removing Node globals. This unit test owns
+    // execution portability; installed Playwright consumers own browser
+    // resolution of N3's documented dual-entry package root.
+    const { dataset, prefixes } = await createTurtleSyntaxAdapter({
+      loadImplementation: async () => n3Implementation,
+    }).parse(
       new StringDocumentSource(`
         @prefix ex: <urn:test:> .
         ex:subject ex:label "browser"@EN .

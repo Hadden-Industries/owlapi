@@ -13,10 +13,10 @@ import {
   rejectJsonLd10ListsOfLists,
 } from "./jsonLd10Compatibility.js";
 
-// One browser-compatible ESM implementation serves Node and browser consumers;
-// keeping the import lazy preserves startup cost without inventing conditional
-// package exports or a second platform-specific public surface.
-const defaultImplementationLoader = () => import("jsonld/dist/jsonld.esm.js");
+// Use JSON-LD's documented root and normalize its CJS/ESM namespace below.
+// Keeping the dependency lazy preserves startup cost while letting each
+// supported resolver select the package's own declared environment entry.
+const defaultImplementationLoader = () => import("jsonld");
 
 const freezeJson = (value) => {
   if (Array.isArray(value)) {

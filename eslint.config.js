@@ -44,6 +44,7 @@ export default [
   {
     ignores: [
       "coverage/**",
+      ".release/**",
       "node_modules/**",
       "playwright-report/**",
       "test-results/**",

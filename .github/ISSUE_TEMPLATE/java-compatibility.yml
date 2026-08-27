@@ -1,0 +1,32 @@
+name: Java OWLAPI compatibility request
+description: Identify a Java OWLAPI concept, type, or member needed at the JavaScript public boundary.
+title: "[Java compatibility]: "
+body:
+  - type: input
+    id: java_symbol
+    attributes:
+      label: Java OWLAPI package, type, and member
+      placeholder: org.semanticweb.owlapi…
+    validations:
+      required: true
+  - type: input
+    id: registry
+    attributes:
+      label: Existing public-surface registry entry
+      description: Provide the symbol or capability ID, or state that no entry was found.
+    validations:
+      required: true
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Concrete Java-to-JavaScript workflow
+      description: Show how Java callers use the API and the equivalent JavaScript outcome you need.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility details
+      description: Describe required names, return values, errors, mutability, and observable semantics.
+    validations:
+      required: true

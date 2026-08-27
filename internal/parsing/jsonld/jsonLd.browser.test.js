@@ -1,5 +1,6 @@
 import { StringDocumentSource } from "../../../index.js";
 import { rdfDataFactory } from "../../rdfjs/environment.js";
+import jsonLdImplementation from "jsonld";
 
 import { JsonLdSyntaxAdapter } from "./jsonLdSyntaxAdapter.js";
 
@@ -28,7 +29,12 @@ describe("JSON-LD browser contract", () => {
         value: name === "window" ? {} : undefined,
       });
     }
-    const { dataset } = await new JsonLdSyntaxAdapter().parse(
+    // Resolve the dependency before removing Node globals. This unit test owns
+    // execution portability; installed Playwright consumers own resolution of
+    // JSON-LD's documented environment-aware package root in real browsers.
+    const { dataset } = await new JsonLdSyntaxAdapter({
+      loadImplementation: async () => jsonLdImplementation,
+    }).parse(
       new StringDocumentSource(
         JSON.stringify({
           "@id": "urn:test:BrowserClass",

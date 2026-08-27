@@ -1,5 +1,6 @@
 import { StringDocumentSource } from "../../../index.js";
 import { rdfDataFactory } from "../../rdfjs/environment.js";
+import * as n3Implementation from "n3";
 import { createNTriplesSyntaxAdapter } from "../rdf/n3SyntaxAdapter.js";
 
 const descriptors = new Map(
@@ -28,7 +29,11 @@ describe("N-Triples browser contract", () => {
       });
     }
 
-    const { dataset, prefixes } = await createNTriplesSyntaxAdapter().parse(
+    // Browser resolution is covered by the installed Playwright fixture; this
+    // focused test removes globals only after obtaining the implementation.
+    const { dataset, prefixes } = await createNTriplesSyntaxAdapter({
+      loadImplementation: async () => n3Implementation,
+    }).parse(
       new StringDocumentSource(
         '<urn:test:subject> <urn:test:label> "browser"@EN .',
       ),

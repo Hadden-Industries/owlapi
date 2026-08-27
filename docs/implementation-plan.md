@@ -2303,9 +2303,11 @@ bundler consumers, expected resolved file and module format, required export or
 namespace shape, selected fallback behavior and the tests/evidence that own it.
 The initial inventory explicitly examines the staging paths
 `n3/browser/n3.min.js` and `jsonld/dist/jsonld.esm.js`; it does not preserve them
-merely because they presently resolve. Section 2.21's native-browser work is
-expected to replace the N3 UMD path with the selected maintained browser ESM
-surface before freezing the published registry.
+merely because they presently resolve. Section 2.21's native-browser work first
+prefers each dependency's documented package root when its Node, bundler and
+provider-selected entries preserve the required adapter contract. An empty
+registry is a valid and preferable result when no package-private runtime
+specifier remains; the schema must not force a fictitious coupling.
 
 A clean-consumer gate resolves and actually imports every retained seam under
 both Node floor versions, exercises it through the Vite fixture and, where
@@ -8544,10 +8546,11 @@ availability guarantee. The mirror is a test transport artefact, not committed
 package source or a second supported build.
 
 Write the runtime tests before portability corrections. The initial native-map
-test is expected to expose the selected N3 UMD deep path and the CommonJS
-RDF/XML implementation boundary. Correct N3 to its documented maintained browser
-ESM artefact and protect equivalence through focused adapter, Node and browser
-tests. Let the approved ESM provider perform any reference-consumer CommonJS
+test is expected to expose the selected N3 UMD deep path, the unpublished
+JSON-LD ESM deep path and the CommonJS RDF/XML implementation boundary. Prefer
+the dependencies' documented roots where their environment-selected entries
+preserve the adapter contracts, and protect equivalence through focused adapter,
+Node and browser tests. Let the approved ESM provider perform any reference-consumer CommonJS
 conversion; inventory every converted module and introduced builtin shim under
 the integrity/licence/security/SBOM/size gates, and do not
 check generated third-party bundles into package source or turn them into
@@ -12495,50 +12498,50 @@ Continue the same cumulative ingestion-learning sequence rather than treating RD
 `P19-CHECKPOINT-001`. The normalized checked-in form assigns each row to its
 precise subset; this summary is not the machine mapping.
 
-- [ ] Public manifest is unscoped `owlapi`; the intended first version is
+- [ ] <!-- Gate: P19-CHECK-001; Covers: P19-PACKAGE-001, P19-PUBLICATION-001, P19-NAMESPACE-001 --> Public manifest is unscoped `owlapi`; the intended first version is
       `0.1.0-alpha.0`, with only §2.60 permitting `0.1.0-alpha.1` after an immutable
       prepublication tag abandonment; `publishConfig` and the explicit authorized command target
       the npm public registry with `next`, never `latest`, and the executable §2.38
       check rejects any version/manifest/request/command disagreement.
-- [ ] Every manifest has the exact §2.39 description and keywords, advertises no
+- [ ] <!-- Gate: P19-CHECK-002; Covers: P19-DOCUMENTATION-001 --> Every manifest has the exact §2.39 description and keywords, advertises no
       reasoner/knowledge-graph/WebVOWL-specific identity, and omits `funding`,
       `contributors`, author email and invented maintainer metadata until each has a
       genuine approved purpose.
-- [ ] Freeze `0.1.0-alpha.0` to the accepted Phase 18 public capability
+- [ ] <!-- Gate: P19-CHECK-003; Covers: P19-SCOPE-001 --> Freeze `0.1.0-alpha.0` to the accepted Phase 18 public capability
       snapshot; negative tests prove no nominal follow-on mutation, merger, save or
       storer API and no direct RDF translator/factory export leaked into packaging
       work.
-- [ ] Create public `Hadden-Industries/owlapi` as an independent repository—not
+- [ ] <!-- Gate: P19-CHECK-004; Covers: P19-REPOSITORY-001 --> Create public `Hadden-Industries/owlapi` as an independent repository—not
       a GitHub fork or mirror—with exact case-consistent package metadata, issues,
       homepage and later trusted-publisher identity.
-- [ ] Configure `main` as the sole standing integration branch with squash-only
+- [ ] <!-- Gate: P19-CHECK-005; Covers: P19-REPOSITORY-001 --> Configure `main` as the sole standing integration branch with squash-only
       pull-request merges, required CI/resolved conversations/linear history,
       `MaksymShostak` administrator coverage and a narrow audited bypass; do not
       require a second-person approving review anywhere in this plan. Any later
       independent-review rule is a separately approved post-plan configuration
       change.
-- [ ] Configure a separate `v*` tag ruleset that restricts creation and prevents
+- [ ] <!-- Gate: P19-CHECK-006; Covers: P19-REPOSITORY-001 --> Configure a separate `v*` tag ruleset that restricts creation and prevents
       update/deletion; do not create a ceremonial `develop`, release or version
       branch, and do not require every ordinary commit to be signed.
-- [ ] Enable GitHub Issues with the six approved structured forms and an
+- [ ] <!-- Gate: P19-CHECK-007; Covers: P19-REPOSITORY-001, P19-SECURITY-GOVERNANCE-001 --> Enable GitHub Issues with the six approved structured forms and an
       engineering-focused pull-request template; disable blank issues and
       Discussions, publish no generic support mailbox, and omit `CODEOWNERS` until
       real ownership/review routing exists.
-- [ ] Configure 90-day Actions artifact/log retention as diagnostic only, enable
+- [ ] <!-- Gate: P19-CHECK-008; Covers: P19-SECURITY-GOVERNANCE-001, P19-CI-CONTROLS-001 --> Configure 90-day Actions artifact/log retention as diagnostic only, enable
       CodeQL JavaScript default setup/default query suite with required
       high/critical `main` merge protection, and enable secret scanning plus push
       protection without a custom CodeQL workflow or speculative custom patterns.
-- [ ] Freeze the exact original WebVOWL source checkpoint and relevant ref tips;
+- [ ] <!-- Gate: P19-CHECK-009; Covers: P19-HISTORY-001 --> Freeze the exact original WebVOWL source checkpoint and relevant ref tips;
       before any ref movement, create and digest the immutable pre-rewrite commit
       inventory and history-partition decisions outside the frozen graph, initialize
       the ref-operation journal, and regenerate/re-review them on any tip or ancestry
       drift.
-- [ ] Create and verify the §2.65 pre-rewrite bundle, then consolidate
+- [ ] <!-- Gate: P19-CHECK-010; Covers: P19-HISTORY-001 --> Create and verify the §2.65 pre-rewrite bundle, then consolidate
       `refactor/java-to-javascript` only through an ancestry-checked,
       expected-old-OID fast-forward to the exact frozen
       `feature/ui-ux-enhancements` tip; create no merge/rebase/replay commit and
       retain the refactor tip plus bundle as original-history reachability anchors.
-- [ ] Split mixed commits in disposable reconstruction clones; retain the exact
+- [ ] <!-- Gate: P19-CHECK-011; Covers: P19-HISTORY-001 --> Split mixed commits in disposable reconstruction clones; retain the exact
       unchanged native filter map, extraction commands/tool version,
       path-normalized before/after SHA-256 manifest and separate schema-validated
       project 1:N lineage map without modifying the original inventory or partition
@@ -12546,19 +12549,19 @@ precise subset; this summary is not the machine mapping.
       outcome, record the literal `--prune-empty` behavior and parent topology, and
       qualify verified issue/PR references to their original repository while
       retaining the exact original message in the immutable inventory.
-- [ ] Only after reconstructed WebVOWL `main` passes its final-tree gates,
+- [ ] <!-- Gate: P19-CHECK-012; Covers: P19-HISTORY-001, P19-REPOSITORY-001 --> Only after reconstructed WebVOWL `main` passes its final-tree gates,
       repoint `feature/ui-ux-enhancements` through an authorized expected-old-OID
       update and replay only classified UI/UX changes; record every new replay hash
       and keep UI/UX history out of `owlapi`.
-- [ ] The root of `Hadden-Industries/owlapi` is the single canonical package
+- [ ] <!-- Gate: P19-CHECK-013; Covers: P19-REPOSITORY-001 --> The root of `Hadden-Industries/owlapi` is the single canonical package
       source; its clean clone/install/test requires no WebVOWL checkout, and
       production import-closure checks prove no WebVOWL path or copied second source
       tree exists.
-- [ ] After public alpha verification, WebVOWL root `dependencies` pins
+- [ ] <!-- Gate: P19-CHECK-014; Covers: P19-WEBVOWL-001 --> After public alpha verification, WebVOWL root `dependencies` pins
       `"owlapi": "0.1.0-alpha.0"`, has no package workspace/local/Git specifier,
       removes the staging source tree, and records the exact registry tarball and
       integrity in its lockfile.
-- [ ] Audit the extracted WebVOWL manifest and remove every direct dependency
+- [ ] <!-- Gate: P19-CHECK-015; Covers: P19-WEBVOWL-001, P19-DEPENDENCIES-001 --> Audit the extracted WebVOWL manifest and remove every direct dependency
       used only by `owlapi`; retain a candidate RDF/JSON-LD/XML dependency only with
       a recorded WebVOWL-owned production or build consumer. Inventory imports,
       export-from declarations, literal dynamic imports, retained CommonJS loads,
@@ -12566,214 +12569,214 @@ precise subset; this summary is not the machine mapping.
       consumers; then re-run the clean install/test/build and isolated-boundary gates
       without an ancestor `node_modules` tree after the approved manifest/lockfile
       change.
-- [ ] ESM `type: module`.
-- [ ] Publish the canonical readable ESM modules directly from the package root;
+- [ ] <!-- Gate: P19-CHECK-016; Covers: P19-PACKAGE-001 --> ESM `type: module`.
+- [ ] <!-- Gate: P19-CHECK-017; Covers: P19-PACKAGE-001 --> Publish the canonical readable ESM modules directly from the package root;
       no parallel `src/`→`dist/` copy, generated/minified production JavaScript,
       package transpilation or source maps exist in source, exports or tarball.
-- [ ] `exports` exposes exactly `owlapi`, `owlapi/apibinding`, `owlapi/model`,
+- [ ] <!-- Gate: P19-CHECK-018; Covers: P19-PACKAGE-001 --> `exports` exposes exactly `owlapi`, `owlapi/apibinding`, `owlapi/model`,
       `owlapi/io`, and `owlapi/formats` through the exact unconditional §2.43
       targets; the manifest has no `main`, `module`, `browser`, condition, wildcard,
       extension alias or `./package.json` export, and installed-consumer tests prove
       every representative alternate/deep path fails.
-- [ ] The positive `files` allowlist contains every public facade and transitive
+- [ ] <!-- Gate: P19-CHECK-019; Covers: P19-PACKAGE-001 --> The positive `files` allowlist contains every public facade and transitive
       private runtime module plus exactly README, API, changelog, licence, notice and
       the three approved compatibility documents; executable negatives reject all
       other documentation/development/release artefacts.
-- [ ] Keep the six exact foundational packages as ordinary `dependencies`;
+- [ ] <!-- Gate: P19-CHECK-020; Covers: P19-DEPENDENCIES-001 --> Keep the six exact foundational packages as ordinary `dependencies`;
       publish no `npm-shrinkwrap.json`, package lock, bundled/bundle, peer, optional
       or override dependency authority; and record both the locked release graph
       and a newly resolved lockless/cache-empty consumer graph under §2.48.
-- [ ] Create and schema-validate the §2.32.1 dependency-seam registry; resolve
+- [ ] <!-- Gate: P19-CHECK-021; Covers: P19-DEPENDENCIES-001, P19-BROWSER-001 --> Create and schema-validate the §2.32.1 dependency-seam registry; resolve
       and actually import every retained non-root dependency specifier under both
       Node floors and its Vite/native-map consumers; inspect installed tarball layout
       and namespace shape; replace the staging N3 UMD seam rather than freezing it;
       and make every later dependency update rerun the seam gate.
-- [ ] No `preinstall`, `install`, `postinstall`, `prepare`, `prepack`,
+- [ ] <!-- Gate: P19-CHECK-022; Covers: P19-PACKAGE-001 --> No `preinstall`, `install`, `postinstall`, `prepare`, `prepack`,
       `postpack`, `prepublish` or `prepublishOnly` hook can execute during consumer
       installation, packing or publication; the release workflow invokes named
       verification commands explicitly.
-- [ ] `docs/compatibility/java-api-surface.json` accounts for every pinned Java
+- [ ] <!-- Gate: P19-CHECK-023; Covers: P19-PACKAGE-001, P19-DOCUMENTATION-001 --> `docs/compatibility/java-api-surface.json` accounts for every pinned Java
       public package/type with zero unclassified rows; its generated human gap view,
       capability links, `exports` map, source-module paths and packed-package tests
       agree.
-- [ ] Every public binding has an approved §2.10.4 classification and Java API
+- [ ] <!-- Gate: P19-CHECK-024; Covers: P19-PACKAGE-001 --> Every public binding has an approved §2.10.4 classification and Java API
       mapping, one canonical definition in its Java-shaped public namespace and no
       mirrored duplicate beneath `internal/`; explicit facades prevent accidental
       exports, paired primary-workflow examples pass, and duplicate root/subpath
       exports have identical identity.
-- [ ] `src/owlapiConsumerBoundary.architecture.test.js` rejects WebVOWL
+- [ ] <!-- Gate: P19-CHECK-025; Covers: P19-WEBVOWL-001 --> `src/owlapiConsumerBoundary.architecture.test.js` rejects WebVOWL
       retention/reach-in to `src/owlapi-js/`, unexported `owlapi/*` imports,
       dev-only/ranged/non-registry dependency declarations and Vite/Jest aliases
       that bypass package `exports`.
-- [ ] Publish the required `sideEffects: false`; instrumented fresh-process
+- [ ] <!-- Gate: P19-CHECK-026; Covers: P19-PACKAGE-001 --> Publish the required `sideEffects: false`; instrumented fresh-process
       imports prove the complete package-owned production closure performs no
       registration/I/O/global mutation, and used/unused production-bundler fixtures
       prove tree shaking preserves required behaviour. Fix any failure rather than
       weakening the field.
-- [ ] Add npm-native `devEngines` with `runtime.name=node`, no runtime version,
+- [ ] <!-- Gate: P19-CHECK-027; Covers: P19-NODE-001, P19-TOOLCHAIN-001 --> Add npm-native `devEngines` with `runtime.name=node`, no runtime version,
       and exact npm `12.0.2` with `onFail=error`; make every workflow use and record
       that patch, while omitting `engines.npm` and top-level
       `packageManager`.
-- [ ] Exact-pin `publint@0.3.24` as the present baseline, or a separately
+- [ ] <!-- Gate: P19-CHECK-028; Covers: P19-TOOLCHAIN-001, P19-PACKAGE-001, P19-EVIDENCE-001 --> Exact-pin `publint@0.3.24` as the present baseline, or a separately
       reviewed later exact version satisfying the `0.3.24`-or-greater floor; reject
       ranges and floating tags; run its installed binary in strict mode against the
       retained tarball and registry-downloaded bytes; retain suggestions for review;
       and allow only schema-valid exact-rule/tool/version warning exceptions with
       evidence, reviewer and expiry.
-- [ ] Native ESM JavaScript build/test/release path with no TypeScript/`tsc`/`checkJs` dependency.
-- [ ] JSDoc only where useful for documentation; the manifest has no
+- [ ] <!-- Gate: P19-CHECK-029; Covers: P19-PACKAGE-001, P19-TOOLCHAIN-001 --> Native ESM JavaScript build/test/release path with no TypeScript/`tsc`/`checkJs` dependency.
+- [ ] <!-- Gate: P19-CHECK-030; Covers: P19-DOCUMENTATION-001, P19-PACKAGE-001 --> JSDoc only where useful for documentation; the manifest has no
       `types`/`typings`, the tarball has no `.d.ts`, and README/package metadata make
       no official TypeScript-support claim for `0.1.0-alpha.0` or `0.1.0`.
-- [ ] Node CI tests the exact admitted engine floors. Browser qualification
+- [ ] <!-- Gate: P19-CHECK-031; Covers: P19-NODE-001, P19-BROWSER-001 --> Node CI tests the exact admitted engine floors. Browser qualification
       inventories the complete locked and lockless executed closure, statically
       checks its syntax/materially used APIs against the dated Baseline inputs, and
       runs current managed Chromium/Firefox/WebKit without representing those
       current engines as exhaustive historical-floor runtime evidence. Ordinary
       WebVOWL Jest and development/production Vite builds use package-installed—not
       source-relative—imports.
-- [ ] Exact-pin `@jspm/generator@2.16.3` as development tooling; generate with
+- [ ] <!-- Gate: P19-CHECK-032; Covers: P19-BROWSER-001, P19-TOOLCHAIN-001 --> Exact-pin `@jspm/generator@2.16.3` as development tooling; generate with
       `jspm.io`, `production`/`browser`/`module` and complete integrity metadata;
       verify reference URLs, hydrate/check the closure, run its untransformed local
       mirror in Chromium/Firefox/WebKit, retain the content-addressed hydrated
       closure and URL/digest/licence/conversion manifest as candidate evidence, and
       ship no provider module, `es-module-shims` or package-owned universal map.
-- [ ] package README identifies the new OWL implementation as unrelated
+- [ ] <!-- Gate: P19-CHECK-033; Covers: P19-DOCUMENTATION-001 --> package README identifies the new OWL implementation as unrelated
       to the fully unpublished historical Overwatch package and as independent of
       and not endorsed by Java OWLAPI; documents `npm install owlapi@next`;
       enumerates the Phase 18 alpha surface; accurately describes a JavaScript-
       native compatible subset; and explicitly places the
       `universal-ontology` workflow capabilities in the follow-on plan.
-- [ ] README contains the §2.15 “Why `owlapi` exists” section, including the
+- [ ] <!-- Gate: P19-CHECK-034; Covers: P19-DOCUMENTATION-001 --> README contains the §2.15 “Why `owlapi` exists” section, including the
       practical gap between the project's complete requirements and the adjacent
       implementations evaluated when the work began.
-- [ ] README states the §2.42 zero-telemetry/no-automatic-network contract,
+- [ ] <!-- Gate: P19-CHECK-035; Covers: P19-DOCUMENTATION-001, P19-SECURITY-GOVERNANCE-001 --> README states the §2.42 zero-telemetry/no-automatic-network contract,
       distinguishes caller-enabled imports/context retrieval from telemetry, and
       makes no unnecessary standalone privacy-policy claim for a package that
       collects no data.
-- [ ] `API.md` covers every public binding exactly once with public specifier,
+- [ ] <!-- Gate: P19-CHECK-036; Covers: P19-DOCUMENTATION-001, P19-PACKAGE-001 --> `API.md` covers every public binding exactly once with public specifier,
       JavaScript call shape, Java OWLAPI relationship, capability/stability status,
       observable semantics, errors and material qualifications; its examples run
       against the retained tarball and it agrees with both machine registries and
       the executable export inventory.
-- [ ] `CHANGELOG.md` is human-curated by version and records user-visible
+- [ ] <!-- Gate: P19-CHECK-037; Covers: P19-DOCUMENTATION-001 --> `CHANGELOG.md` is human-curated by version and records user-visible
       changes, controlled corrections/deviations, deprecations and compatibility
       consequences rather than raw commits or release-workflow logs.
-- [ ] Prepare every public version through a dedicated release pull request that
+- [ ] <!-- Gate: P19-CHECK-038; Covers: P19-PUBLICATION-001, P19-CI-CONTROLS-001 --> Prepare every public version through a dedicated release pull request that
       synchronizes exact manifest/lockfile version, changelog, API, compatibility
       and evidence; tag only its accepted squash commit, and prove the release
       workflow neither edits tracked files nor authors a version, commit, tag or
       release notes.
-- [ ] Enable GitHub private vulnerability reporting and publish root
+- [ ] <!-- Gate: P19-CHECK-039; Covers: P19-SECURITY-GOVERNANCE-001 --> Enable GitHub private vulnerability reporting and publish root
       `SECURITY.md` with `security@haddenindustries.com` as fallback, no-public-
       report guidance, the exact supported-version table, the five-working-day
       acknowledgement target as non-SLA, and advisory/CVE handling; verify external
       delivery and sole individually authenticated, MFA-protected access by Maksym
       Shostak.
-- [ ] Publish Contributor Covenant 3.0-based root `CODE_OF_CONDUCT.md` with
+- [ ] <!-- Gate: P19-CHECK-040; Covers: P19-SECURITY-GOVERNANCE-001 --> Publish Contributor Covenant 3.0-based root `CODE_OF_CONDUCT.md` with
       `conduct@haddenindustries.com`, Maksym Shostak as the sole initial HADDEN
       INDUSTRIES LTD-appointed moderator, restricted handling and non-adjudication
       when he is conflicted; verify external delivery, separation from the security
       channel and exclusion from the npm tarball. Do not make a second moderator a
       release gate.
-- [ ] historical versions `1.0.0`, `1.1.0`, `1.2.0`, `1.2.1`, `1.3.0`,
+- [ ] <!-- Gate: P19-CHECK-041; Covers: P19-NAMESPACE-001 --> historical versions `1.0.0`, `1.1.0`, `1.2.0`, `1.2.1`, `1.3.0`,
       `2.0.0` and `2.0.1` are treated as permanently consumed and never reused.
-- [ ] After production `0.1.0`, use available `0.1.x` patch coordinates,
+- [ ] <!-- Gate: P19-CHECK-042; Covers: P19-NAMESPACE-001, P19-DOCUMENTATION-001 --> After production `0.1.0`, use available `0.1.x` patch coordinates,
       beginning with `0.1.1`, only for compatible corrections that are actually
       required. Expect the ontology-lifecycle capability programme at `0.2.0`, but
       advance it to the next available zero-minor if an intervening incompatible
       correction consumes that coordinate. Do not reserve any later zero-major or
       post-zero coordinate in advance.
-- [ ] Before production `0.1.0`, refresh the §2.10.1 package-identity and
+- [ ] <!-- Gate: P19-CHECK-043; Covers: P19-NAMESPACE-001 --> Before production `0.1.0`, refresh the §2.10.1 package-identity and
       immutable-coordinate evidence; retain the dated registry probes/results and
       block for a separate version decision only on an unexpected coordinate
       conflict. Defer the comprehensive exact/range consumer audit to a separately
       authorized post-zero stability-promotion programme.
-- [ ] complete §22 source-provenance audit and machine-readable provenance manifest.
-- [ ] every relevant legacy module/fragment has exactly one provenance disposition: `REUSE_ALLOWED`, `REFERENCE_ONLY`, `REIMPLEMENT`, `EXCLUDE`, or `REVIEW_EXCEPTION`.
-- [ ] no new production module was mechanically translated from Java OWLAPI implementation source/comments/control flow.
-- [ ] Java OWLAPI compatibility tooling is isolated to development/test infrastructure and absent from runtime/package bundles.
-- [ ] public/normative implementation sources and project-owned differential fixtures are recorded for each semantic module.
-- [x] select `AGPL-3.0-only` as the `owlapi` package licence after provenance
+- [ ] <!-- Gate: P19-CHECK-044; Covers: P19-RIGHTS-001 --> complete §22 source-provenance audit and machine-readable provenance manifest.
+- [ ] <!-- Gate: P19-CHECK-045; Covers: P19-RIGHTS-001 --> every relevant legacy module/fragment has exactly one provenance disposition: `REUSE_ALLOWED`, `REFERENCE_ONLY`, `REIMPLEMENT`, `EXCLUDE`, or `REVIEW_EXCEPTION`.
+- [ ] <!-- Gate: P19-CHECK-046; Covers: P19-RIGHTS-001 --> no new production module was mechanically translated from Java OWLAPI implementation source/comments/control flow.
+- [ ] <!-- Gate: P19-CHECK-047; Covers: P19-RIGHTS-001, P19-PACKAGE-001 --> Java OWLAPI compatibility tooling is isolated to development/test infrastructure and absent from runtime/package bundles.
+- [ ] <!-- Gate: P19-CHECK-048; Covers: P19-RIGHTS-001 --> public/normative implementation sources and project-owned differential fixtures are recorded for each semantic module.
+- [x] <!-- Gate: P19-CHECK-049; Covers: P19-RIGHTS-001 --> select `AGPL-3.0-only` as the `owlapi` package licence after provenance
       separation, for deliberate network-aware source reciprocity rather than
       because of avoidable OWLAPI implementation derivation.
-- [x] identify Maksym Shostak as the current personal copyright owner of his
+- [x] <!-- Gate: P19-CHECK-050; Covers: P19-RIGHTS-001 --> identify Maksym Shostak as the current personal copyright owner of his
       existing contributions and HADDEN INDUSTRIES LTD, registered in England and
       Wales under company number 07862561, separately as project steward; do not
       infer copyright title from the company, repository or npm identity.
-- [x] record that assignment to HADDEN INDUSTRIES LTD is optional and is not an
+- [x] <!-- Gate: P19-CHECK-051; Covers: P19-RIGHTS-001 --> record that assignment to HADDEN INDUSTRIES LTD is optional and is not an
       alpha, production-release or implementation-plan completion gate; keep any estate
       planning or private legal instrument outside Git/npm.
-- [ ] make `package.json`, README, `NOTICE`, `LICENSE`, provenance and the exact
+- [ ] <!-- Gate: P19-CHECK-052; Covers: P19-RIGHTS-001, P19-DOCUMENTATION-001 --> make `package.json`, README, `NOTICE`, `LICENSE`, provenance and the exact
       retained tarball agree on the §2.13 author URL, personal copyright ownership,
       company-stewardship boilerplate and authoritative AGPLv3 link.
-- [ ] complete a tarball-scoped rights inventory identifying each copyright
+- [ ] <!-- Gate: P19-CHECK-053; Covers: P19-RIGHTS-001 --> complete a tarball-scoped rights inventory identifying each copyright
       holder or authorized licensor and the basis for distribution authority.
-- [x] select `AGPL-3.0-only` inbound=outbound as the initial
+- [x] <!-- Gate: P19-CHECK-054; Covers: P19-RIGHTS-001 --> select `AGPL-3.0-only` inbound=outbound as the initial
       outside-contribution model, with no speculative CLA required before an
       external copyrightable contribution exists and a mandatory decision gate
       before the first such contribution is merged.
-- [ ] obtain exact approval for and publish the root `CONTRIBUTING.md`; link it
+- [ ] <!-- Gate: P19-CHECK-055; Covers: P19-RIGHTS-001, P19-DOCUMENTATION-001 --> obtain exact approval for and publish the root `CONTRIBUTING.md`; link it
       from the package README and make the policy-consistency governance test green.
-- [ ] attest that every copyrightable item in the reviewed alpha scope has an
+- [ ] <!-- Gate: P19-CHECK-056; Covers: P19-RIGHTS-001 --> attest that every copyrightable item in the reviewed alpha scope has an
       identified holder and adequate distribution authority, with no unresolved
       external contribution.
-- [ ] Generate and human-review the complete §2.50
+- [ ] <!-- Gate: P19-CHECK-057; Covers: P19-RIGHTS-001, P19-DEPENDENCIES-001 --> Generate and human-review the complete §2.50
       `docs/provenance/third-party-material.json` inventory for the production graph,
       release-relevant development material and copied/generated third-party files,
       with inspected licence/notice-file digests, SPDX expressions, relationships
       and distribution scopes; mechanically reconcile the tarball `NOTICE`, and
       separately reconcile WebVOWL's emitted bundle with its own deployment-scope
       inventory/notices.
-- [ ] complete Public API Surface Registry and generated Java compatibility/gap view.
-- [ ] dependency-governance/conformance manifest for foundational syntax parsers.
-- [ ] Pin `@rdfjs/data-model@2.1.2`, `@rdfjs/dataset@2.0.3`,
+- [ ] <!-- Gate: P19-CHECK-058; Covers: P19-PACKAGE-001, P19-DOCUMENTATION-001 --> complete Public API Surface Registry and generated Java compatibility/gap view.
+- [ ] <!-- Gate: P19-CHECK-059; Covers: P19-DEPENDENCIES-001 --> dependency-governance/conformance manifest for foundational syntax parsers.
+- [ ] <!-- Gate: P19-CHECK-060; Covers: P19-DEPENDENCIES-001 --> Pin `@rdfjs/data-model@2.1.2`, `@rdfjs/dataset@2.0.3`,
       `@xmldom/xmldom@0.9.12`, `jsonld@9.0.0`, `n3@2.3.0` and
       `rdfxml-streaming-parser@3.3.0` in the initial manifest/lockfile by carrying
       forward the qualified 24 August 2026 WebVOWL staging baseline; isolate every
       later foundational runtime update in its own fully gated pull request.
-- [ ] Enable Dependabot alerts, security updates and weekly proposal-only version
+- [ ] <!-- Gate: P19-CHECK-061; Covers: P19-DEPENDENCIES-001, P19-SECURITY-GOVERNANCE-001, P19-CI-CONTROLS-001 --> Enable Dependabot alerts, security updates and weekly proposal-only version
       updates with the §2.32 grouping; allow exactly the five §2.56 Action
       repositories, pin each recorded release to its exact full SHA with an adjacent
       tag comment, require full-SHA pins in repository settings, prohibit
       auto-merge, and do not run Renovate for the same responsibility.
-- [ ] Create exactly `ci.yml`, `release.yml`, `maintenance.yml` and
+- [ ] <!-- Gate: P19-CHECK-062; Covers: P19-CI-CONTROLS-001 --> Create exactly `ci.yml`, `release.yml`, `maintenance.yml` and
       `extended-tests.yml` under `.github/workflows/` with the §§2.55–2.61 triggers,
       trust boundaries and Action/input contract. Each has root `permissions: {}`
       and job-minimal authority;
       none uses `pull_request_target`, privileged `workflow_run`, a cross-workflow
       release candidate or an external reusable workflow.
-- [ ] Every checkout uses exact `actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1`
+- [ ] <!-- Gate: P19-CHECK-063; Covers: P19-CI-CONTROLS-001 --> Every checkout uses exact `actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1`
       (`v7.0.1`) with `persist-credentials: false`; ordinary jobs use depth one,
       while only the release source/tag-verification job checks out the captured
       `github.sha` with full history and tags. The npm publication job performs no
       checkout.
-- [ ] Every Node setup uses exact
+- [ ] <!-- Gate: P19-CHECK-064; Covers: P19-CI-CONTROLS-001, P19-NODE-001 --> Every Node setup uses exact
       `actions/setup-node@820762786026740c76f36085b0efc47a31fe5020`
       (`v7.0.0`), a literal approved Node patch, `check-latest: false` and
       `package-manager-cache: false`, with neither `cache` nor
       `cache-dependency-path`; steady OIDC publication has no `registry-url`, scope,
       `always-auth` or `NODE_AUTH_TOKEN`, and the temporary bootstrap credential is
       exposed only to its one publish step before that branch is removed.
-- [ ] The exact §2.56 upload/download Actions move only the tarball, CycloneDX
+- [ ] <!-- Gate: P19-CHECK-065; Covers: P19-CI-CONTROLS-001, P19-EVIDENCE-001 --> The exact §2.56 upload/download Actions move only the tarball, CycloneDX
       SBOM and `SHA256SUMS` under a version/run/attempt-specific candidate name.
       Upload records its ID/digest and uses the closed retention/compression/
       overwrite/hidden-file policy; download selects that immutable ID into a new
       fixed directory without merge, broad selectors or cross-run credentials, then
       rejects an unexpected inventory and independently verifies every checksum.
-- [ ] Every required job uses and validates exactly `ubuntu-24.04` x64,
+- [ ] <!-- Gate: P19-CHECK-066; Covers: P19-CI-CONTROLS-001, P19-NODE-001 --> Every required job uses and validates exactly `ubuntu-24.04` x64,
       `windows-2025` x64 or `macos-15` arm64 according to §2.57; no moving, preview,
       slim, larger, self-hosted or container runner appears. Ubuntu alone builds,
       packs, publishes and finalizes; Windows/macOS can qualify only the downloaded
       candidate.
-- [ ] Run the complete package suite on Ubuntu under Node `22.23.2` and
+- [ ] <!-- Gate: P19-CHECK-067; Covers: P19-NODE-001, P19-CI-CONTROLS-001 --> Run the complete package suite on Ubuntu under Node `22.23.2` and
       `24.19.0`; run the focused installed-tarball public-boundary/representative-
       load/import-purity/no-network suite on both patches under Windows and macOS;
       and make all six Node/host combinations blocking in CI and release.
-- [ ] Select explicit `bash` for Ubuntu/macOS and `pwsh` for Windows, keep
+- [ ] <!-- Gate: P19-CHECK-068; Covers: P19-CI-CONTROLS-001, P19-TOOLCHAIN-001 --> Select explicit `bash` for Ubuntu/macOS and `pwsh` for Windows, keep
       nontrivial workflow policy in cross-platform repository `.mjs` scripts, and
       emit the requested label, OS/architecture, ImageOS/ImageVersion, OS/kernel,
       Node/npm and applicable browser identity for every required job.
-- [ ] `release.yml` uses the repository-wide `owlapi-release` concurrency group
+- [ ] <!-- Gate: P19-CHECK-069; Covers: P19-CI-CONTROLS-001 --> `release.yml` uses the repository-wide `owlapi-release` concurrency group
       with `cancel-in-progress: false` and `queue: max`; CI cancels only superseded
       work for the same PR/ref, while maintenance and extended workflows use their
       distinct non-cancelling single-pending groups. Release preflight rejects
@@ -12785,7 +12788,7 @@ precise subset; this summary is not the machine mapping.
       `actions: read` to `contents: read`; only separate GitHub-release mutation
       jobs have `contents: write`; and no job combines those authorities. The maintenance
       health check is read-only and its separate reporter has only `issues: write`.
-- [ ] Expose exactly one GitHub-Actions-owned `CI / required` branch-protection
+- [ ] <!-- Gate: P19-CHECK-070; Covers: P19-CI-CONTROLS-001, P19-GATES-001 --> Expose exactly one GitHub-Actions-owned `CI / required` branch-protection
       aggregate plus separately required CodeQL, and one pre-publication
       `Release / qualified` aggregate on which the protected npm job directly
       depends. Governance checks keep each explicit `needs` inventory synchronized;
@@ -12793,31 +12796,31 @@ precise subset; this summary is not the machine mapping.
       review emits its closed push-only non-applicability reason; and every skipped,
       cancelled, timed-out, missing or otherwise non-success mandatory conclusion
       fails closed.
-- [ ] Every required matrix uses `strategy.fail-fast: false` with no effective
+- [ ] <!-- Gate: P19-CHECK-071; Covers: P19-CI-CONTROLS-001 --> Every required matrix uses `strategy.fail-fast: false` with no effective
       `continue-on-error`, swallowed status or neutralized report; every job/step
       has the exact §2.58 timeout; npm and project-owned HTTP reads use only the
       approved bounded retry settings; every external write receives one automatic
       attempt; and any ambiguous response is reconciled read-only against the exact
       remote identity/digest before either verification resumes or renewed explicit
       authorization is requested for a new write.
-- [ ] Set fork workflow approval to `all_external_contributors`, keep Actions
+- [ ] <!-- Gate: P19-CHECK-072; Covers: P19-CI-CONTROLS-001 --> Set fork workflow approval to `all_external_contributors`, keep Actions
       creation/approval of pull requests disabled, and prove every external-fork and
       Dependabot run uses only `pull_request` with root-denied/job-read-only
       permission, no secret/OIDC/environment/write authority and a new maintainer
       execution approval for each run; the approval is not represented as code
       review or continuing contributor trust.
-- [ ] Governance proves the ephemeral fork candidate stays inside unprivileged
+- [ ] <!-- Gate: P19-CHECK-073; Covers: P19-CI-CONTROLS-001, P19-SECURITY-GOVERNANCE-001 --> Governance proves the ephemeral fork candidate stays inside unprivileged
       jobs of the same CI run/attempt; no privileged event fetches or executes fork
       code/output; contributor/external values are validated as data rather than
       interpolated into shell or written raw to workflow-command files; credential
       jobs prohibit context dumps/tracing/debug authentication output; retained
       outputs are sanitized; and suspected exposure triggers immediate revoke/
       rotate/removal/inspection rather than reliance on masking.
-- [ ] Configure the read-only weekly §2.48 `owlapi@latest` monitor to create or
+- [ ] <!-- Gate: P19-CHECK-074; Covers: P19-DEPENDENCIES-001, P19-CI-CONTROLS-001 --> Configure the read-only weekly §2.48 `owlapi@latest` monitor to create or
       update one structured finding when a clean lockless consumer's smoke,
       production-audit or signature gate fails; grant it no npm-write or automatic
       source/dependency/tag/release mutation authority.
-- [ ] Require a full `npm audit --json`, blocking
+- [ ] <!-- Gate: P19-CHECK-075; Covers: P19-DEPENDENCIES-001, P19-SECURITY-GOVERNANCE-001, P19-CI-CONTROLS-001 --> Require a full `npm audit --json`, blocking
       `npm audit --omit=dev --audit-level=high` and exact
       `actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294`
       (`v5.0.0`) on pull requests with `contents: read`, runtime scope, high severity,
@@ -12827,7 +12830,7 @@ precise subset; this summary is not the machine mapping.
       validate every false-positive/inapplicability exception against the §2.34
       fields and 30-day maximum, block reachable critical findings and never run an
       automatic audit fix on release inputs.
-- [ ] The source manifest and lockfile contain the exact §2.54 development-tool
+- [ ] <!-- Gate: P19-CHECK-076; Covers: P19-TOOLCHAIN-001, P19-CI-CONTROLS-001 --> The source manifest and lockfile contain the exact §2.54 development-tool
       versions, `devEngines.packageManager.version` is `12.0.2`, blocking workflows
       use Node `22.23.2`/`24.19.0`, project-local
       `strict-allow-scripts=true` makes any uncovered dependency lifecycle script
@@ -12836,17 +12839,17 @@ precise subset; this summary is not the machine mapping.
       `npm run` script, and executable negatives reject remote `npx`,
       `npm exec --package`, global-development-tool and runner-preinstalled-tool
       release paths.
-- [ ] Exact `vite@8.2.2` produces the package-fixture bundle-size report for
+- [ ] <!-- Gate: P19-CHECK-077; Covers: P19-PACKAGE-001, P19-BROWSER-001 --> Exact `vite@8.2.2` produces the package-fixture bundle-size report for
       mandatory and optional syntax adapters; the isolated WebVOWL consumer records
       and uses its own independently accepted Vite lockfile version without a
       synchronization update.
-- [ ] `npm pack --dry-run --json` packlist and actual tarball contents agree;
+- [ ] <!-- Gate: P19-CHECK-078; Covers: P19-PACKAGE-001, P19-EVIDENCE-001 --> `npm pack --dry-run --json` packlist and actual tarball contents agree;
       executable negatives exclude tests, corpora, JARs, oracle fixtures,
       benchmarks, WebVOWL/VOWLBuilder, credentials, duplicate/generated/minified
       code, source maps, TypeScript declarations and non-shipped repository docs.
-- [ ] The actual retained tarball and the independent registry download both
+- [ ] <!-- Gate: P19-CHECK-079; Covers: P19-PACKAGE-001, P19-EVIDENCE-001 --> The actual retained tarball and the independent registry download both
       pass local exact `publint@0.3.24` in strict mode with identical relevant findings.
-- [ ] The GitHub-hosted, manually dispatched `release.yml` run accepts only the
+- [ ] <!-- Gate: P19-CHECK-080; Covers: P19-PUBLICATION-001, P19-EVIDENCE-001, P19-CI-CONTROLS-001 --> The GitHub-hosted, manually dispatched `release.yml` run accepts only the
       captured protected-`main` head, derives version/tag/channel from reviewed
       files, proves the canonical tag is initially absent, and builds one retained
       tarball before that tag exists. At §§2.60–2.61's late boundary it waits without
@@ -12867,7 +12870,7 @@ precise subset; this summary is not the machine mapping.
       tree. A rerun never republishes an existing coordinate and can resume
       verification only after proving the public bytes/attestation/tag match the
       retained subject.
-- [ ] After npm fresh-cache verification, generate and schema-check
+- [ ] <!-- Gate: P19-CHECK-081; Covers: P19-EVIDENCE-001 --> After npm fresh-cache verification, generate and schema-check
       `owlapi-<version>.release-evidence.json` with exact `ajv@8.20.0` plus
       `ajv-formats@3.0.1` against its versioned Draft 2020-12 schema, attach it before
       immutable release publication, then use checksum-verified GitHub CLI `2.98.0`
@@ -12878,7 +12881,7 @@ precise subset; this summary is not the machine mapping.
       repository `release.json` with evidence digest, immutable release URL and all
       attestation/verification identities; do not treat expiring Actions logs/
       artifacts as the canonical record.
-- [ ] the retained tarball passes exact `@playwright/test@1.62.1` in its matching
+- [ ] <!-- Gate: P19-CHECK-082; Covers: P19-BROWSER-001 --> the retained tarball passes exact `@playwright/test@1.62.1` in its matching
       Chromium, Firefox and WebKit revisions as three separate, one-worker,
       cache-free `ubuntu-24.04` jobs against exact `vite@8.2.2` package fixtures;
       install each engine/dependency set through the lockfile-owned CLI and a named
@@ -12886,10 +12889,10 @@ precise subset; this summary is not the machine mapping.
       branded/historical/real-device
       evidence is reported only as `PASS`, `FAIL` or reasoned/date-stamped `NOT_RUN`,
       never terminal `INFRASTRUCTURE_ERROR`.
-- [ ] Later extended-environment executions add dated files beneath
+- [ ] <!-- Gate: P19-CHECK-083; Covers: P19-BROWSER-001, P19-EVIDENCE-001 --> Later extended-environment executions add dated files beneath
       `docs/provenance/releases/<version>/extended-tests/` and may regenerate a
       summary, but never overwrite an earlier observation or rebuild the package.
-- [ ] The reviewed release pull request is squash-merged and manually dispatched
+- [ ] <!-- Gate: P19-CHECK-084; Covers: P19-PUBLICATION-001, P19-CI-CONTROLS-001 --> The reviewed release pull request is squash-merged and manually dispatched
       at its accepted protected-`main` commit. Every deterministic gate and, for
       steady-state publication, stage download/byte equality/revalidation completes
       before the human creates the immutable release-specific SSH-signed annotated
@@ -12897,7 +12900,7 @@ precise subset; this summary is not the machine mapping.
       draft-release mutation. In steady state, interactive 2FA promotion completes
       before the second `Release / publication confirmed` approval and fresh-
       registry verification.
-- [ ] `npm-release` always requires explicit human approval of the exact
+- [ ] <!-- Gate: P19-CHECK-085; Covers: P19-PUBLICATION-001, P19-CI-CONTROLS-001 --> `npm-release` always requires explicit human approval of the exact
       registry operation, permits only protected `main` and contains the bootstrap-
       only secret until removal. The separate `release-manual` environment permits
       only protected `main`, names `MaksymShostak` as required reviewer, has no wait
@@ -12905,12 +12908,12 @@ precise subset; this summary is not the machine mapping.
       `deployment: false`. Both permit the initiating named custodian to approve and
       leave prevent-self-review disabled; independent deployment approval is not a
       Phase 19/20 gate unless separately approved later.
-- [ ] The `maksymshostak` npm account's first direct write either succeeds as
+- [ ] <!-- Gate: P19-CHECK-086; Covers: P19-PUBLICATION-001, P19-NAMESPACE-001 --> The `maksymshostak` npm account's first direct write either succeeds as
       retained `owlapi@0.1.0-alpha.0` under `next`, uses the explicitly recorded
       §2.60 `0.1.0-alpha.1` successor after immutable prepublication abandonment, or
       produces preserved classified evidence for npm Support; no shared login or
       unrecorded fallback name/version is used.
-- [ ] fresh-cache post-publication verification proves `next` resolution,
+- [ ] <!-- Gate: P19-CHECK-087; Covers: P19-PUBLIC-VERIFICATION-001, P19-EVIDENCE-001 --> fresh-cache post-publication verification proves `next` resolution,
       registry integrity/content equality, exact root-package registry signature/
       provenance/publish-attestation/source-workflow/transparency identity under
       §2.51, absence of `latest`,
@@ -12921,29 +12924,29 @@ precise subset; this summary is not the machine mapping.
       local parsing and
       expected failure of an unqualified prerelease install; only then publish and
       verify the immutable GitHub release and every automatic tag/asset binding.
-- [ ] Exercise the §2.33 bad-release procedure as a non-mutating rehearsal over
+- [ ] <!-- Gate: P19-CHECK-088; Covers: P19-PUBLICATION-001 --> Exercise the §2.33 bad-release procedure as a non-mutating rehearsal over
       fixture metadata: select/remove the affected channel, construct an exact-
       version deprecation record, preserve immutable evidence and reject routine
       unpublish or any unrelated historical fallback coordinate.
-- [ ] Exercise §2.60's four failure boundaries with fixture state: correct and
+- [ ] <!-- Gate: P19-CHECK-089; Covers: P19-PUBLICATION-001 --> Exercise §2.60's four failure boundaries with fixture state: correct and
       reuse an untouched version before tag creation; reconcile an unchanged-input
       ambiguous write without duplicating it; reject the stage, preserve the signed
       tag and emit the append-only failed-attempt record when a deterministic
       correction is required after tag creation; and advance an abandoned alpha to
       `0.1.0-alpha.1` or production to `0.1.1` without ever reusing/moving that tag.
-- [ ] Exercise §2.61's manual hand-offs with workflow/API fixtures: bootstrap
+- [ ] <!-- Gate: P19-CHECK-090; Covers: P19-CI-CONTROLS-001, P19-PUBLICATION-001 --> Exercise §2.61's manual hand-offs with workflow/API fixtures: bootstrap
       requires one `release-manual` approval after tag creation and before draft/npm
       authority; staged release requires that gate plus a second approval after 2FA
       promotion and before registry verification; rejection, premature approval,
       30-day expiry and re-run reconciliation fail closed without polling, duplicate
       mutation or bespoke tag/comment trailers. Retain and schema-validate the
       read-only workflow-review history and authorized reviewer identity.
-- [ ] Test and record whether `@hadden-industries:owlapi-maintainers` can receive
+- [ ] <!-- Gate: P19-CHECK-091; Covers: P19-CUSTODY-001 --> Test and record whether `@hadden-industries:owlapi-maintainers` can receive
       verified read-write access to the unscoped package with Maksym Shostak as its
       only required natural-person member; regardless of that result, npm
       custodianship remains solely `maksymshostak`, with no generic/shared account or
       claim that the team supplies human redundancy.
-- [ ] Maksym Shostak's GitHub organization/repository authority, 2FA/package-access
+- [ ] <!-- Gate: P19-CHECK-092; Covers: P19-CUSTODY-001, P19-NAMESPACE-001 --> Maksym Shostak's GitHub organization/repository authority, 2FA/package-access
       controls and GitHub Actions OIDC trusted publishing are configured
       for exact `Hadden-Industries/owlapi`, `.github/workflows/release.yml` and
       `npm-release` identities;
@@ -12963,7 +12966,7 @@ precise subset; this summary is not the machine mapping.
       read-only evidence proves npm permits the same version and bytes. Maksym
       Shostak rehearses and records the release/recovery runbook, and no redundant
       `actions/attest` step exists.
-- [ ] canonical source commit, `v0.1.0-alpha.0` Git tag, WebVOWL-origin commit
+- [ ] <!-- Gate: P19-CHECK-093; Covers: P19-EVIDENCE-001, P19-GATES-001, P19-CHECKPOINT-001 --> canonical source commit, `v0.1.0-alpha.0` Git tag, WebVOWL-origin commit
       map, tarball/SBOM checksums, registry integrity, normalized npm root
       attestation, immutable GitHub release/per-asset verification,
       `owlapi-0.1.0-alpha.0.release-evidence.json`,
@@ -12986,17 +12989,17 @@ precise subset; this summary is not the machine mapping.
 `P20-FUTURE-001`. The normalized checked-in form assigns every row to one or
 more of these IDs before any production qualification result can be accepted.
 
-- [ ] Stabilize only the accepted capability families through test-proven
+- [ ] <!-- Gate: P20-CHECK-001; Covers: P20-FUTURE-001, P20-RELEASE-001 --> Stabilize only the accepted capability families through test-proven
       defect, security, portability, diagnostic, documentation, and packaging
       corrections; direct all new semantic feature families to
       `ontology-lifecycle-capability-implementation-plan.md`.
-- [ ] Refresh the package-identity and immutable-coordinate evidence no more
+- [ ] <!-- Gate: P20-CHECK-002; Covers: P20-GOVERNANCE-001, P20-METADATA-001 --> Refresh the package-identity and immutable-coordinate evidence no more
       than seven days before production publication and resolve any unexpected
       coordinate conflict; do not impose the deferred post-zero range audit here.
-- [ ] Record the schema-valid production-path decision. Require
+- [ ] <!-- Gate: P20-CHECK-003; Covers: P20-PATH-001 --> Record the schema-valid production-path decision. Require
       `RC_REQUIRED` only for a material public-observation or concrete external-soak
       need; otherwise select `DIRECT_STABLE_CANDIDATE` and do not manufacture an RC.
-- [ ] When `RC_REQUIRED`, publish and verify each exact `0.1.0-rc.N` retained
+- [ ] <!-- Gate: P20-CHECK-004; Covers: P20-PATH-001, P20-RELEASE-001, P20-LATE-TAG-001, P20-MANUAL-001 --> When `RC_REQUIRED`, publish and verify each exact `0.1.0-rc.N` retained
       tarball through all package, four required Windows/macOS portability, three
       required Ubuntu Chromium/Firefox/WebKit, immutable-release and isolated
       public-registry WebVOWL gates in one serialized manually dispatched late-tag
@@ -13008,7 +13011,7 @@ more of these IDs before any production qualification result can be accepted.
       stage with interactive 2FA followed by `Release / publication confirmed`,
       without creating or moving `latest`. Mark this item `NOT_APPLICABLE` with the
       path-decision evidence when the direct path is selected.
-- [ ] Freeze observable behaviour after the accepted RC when one exists; in the
+- [ ] <!-- Gate: P20-CHECK-005; Covers: P20-RELEASE-001, P20-PATH-001, P20-LATE-TAG-001 --> Freeze observable behaviour after the accepted RC when one exists; in the
       direct path, fully qualify and freeze the actual retained/staged
       `owlapi-0.1.0.tgz`. Account for every comparison difference and publish only
       that separately authorized artefact through the same §§2.55–2.61 workflow/
@@ -13017,16 +13020,16 @@ more of these IDs before any production qualification result can be accepted.
       bind the stage ID, downloaded candidate's matching SHA-256, source tag/commit,
       fixed tag, both ordered `release-manual` review records and interactive-2FA
       approval before verification/finalization.
-- [ ] Mark every accepted public binding `INITIAL_DEVELOPMENT`, every retained deprecated
+- [ ] <!-- Gate: P20-CHECK-006; Covers: P20-DOCUMENTATION-001, P20-PACKAGE-001 --> Mark every accepted public binding `INITIAL_DEVELOPMENT`, every retained deprecated
       binding `DEPRECATED_INITIAL_DEVELOPMENT` and every private engine `INTERNAL_ONLY`; reconcile
       those rows with `API.md`, compatibility data and executable exports.
-- [ ] Enforce §2.27 zero-major SemVer/deprecation rules: compatible corrections
+- [ ] <!-- Gate: P20-CHECK-007; Covers: P20-RELEASE-001, P20-PATH-001, P20-DOCUMENTATION-001 --> Enforce §2.27 zero-major SemVer/deprecation rules: compatible corrections
       use available `0.1.x` patches beginning with `0.1.1`; material additions or
       incompatible protected-surface changes use the next available zero-minor;
       the lifecycle programme normally uses `0.2.0`; and a deprecated binding
       remains operational throughout its current 0.minor patch line without
       unsolicited console output.
-- [ ] Verify from a fresh cache that `latest` resolves exactly to the production
+- [ ] <!-- Gate: P20-CHECK-008; Covers: P20-RELEASE-001, P20-CHANNEL-001, P20-EVIDENCE-001, P20-PACKAGE-001, P20-METADATA-001, P20-RUNTIME-001, P20-PORTABILITY-001, P20-CI-001, P20-BROWSER-001, P20-TOOLCHAIN-001, P20-DEPENDENCIES-001, P20-GOVERNANCE-001 --> Verify from a fresh cache that `latest` resolves exactly to the production
       cutover version—normally `0.1.0`—all five public entry points work,
       internal/deep/metadata/alias paths fail, discovery/channel metadata and the
       exact npm `12.0.2` `devEngines` value agree, import purity/tree shaking and the
@@ -13040,21 +13043,21 @@ more of these IDs before any production qualification result can be accepted.
       pass with their exact runner-image records,
       local parsing is zero-telemetry/no-network, CodeQL/secret state is accepted,
       and registry integrity/content match the retained evidence.
-- [ ] Pass the approved performance, finite-resource, installed-package-size and
+- [ ] <!-- Gate: P20-CHECK-009; Covers: P20-RESOURCES-001 --> Pass the approved performance, finite-resource, installed-package-size and
       browser-bundle-size budgets against the exact retained production tarball and
       retain the raw measurements, baselines and blocking decisions.
-- [ ] Validate `docs/release/gates.schema.json`, `gates.json` and the exact-version
+- [ ] <!-- Gate: P20-CHECK-010; Covers: P20-GATES-001 --> Validate `docs/release/gates.schema.json`, `gates.json` and the exact-version
       results; reconcile every stable catalogue ID, §30 `Covers` marker, source
       anchor and requirement digest under §2.62, including the explicit
       §§2.10–2.69 constraint coverage named by §§17.26.5 and 17.27.6; and
       leave no required gate outside `PASS` or validated `NOT_APPLICABLE`, no ordinary
       waiver, and no unresolved `PRODUCT_FAILURE`, `CONTROL_FAILURE` or
       `EXTERNAL_BLOCKED` state.
-- [ ] Complete the fresh §2.66 release-time control audit, §2.63 privacy record,
+- [ ] <!-- Gate: P20-CHECK-011; Covers: P20-GOVERNANCE-001 --> Complete the fresh §2.66 release-time control audit, §2.63 privacy record,
       §2.64 accessibility checks, §2.67 bounded/non-certifying W3C claims and §2.68
       package-name/non-affiliation record; do not leave a transient infrastructure
       state as a release result.
-- [ ] After production verification, separately authorize removal of the stale
+- [ ] <!-- Gate: P20-CHECK-012; Covers: P20-CHANNEL-001, P20-DOCUMENTATION-001 --> After production verification, separately authorize removal of the stale
       `next` pointer; verify that `latest` remains the production cutover version,
       `next` is absent, no unapproved tag exists and bare `npm install owlapi`
       selects the production cutover. In the same production documentation state,
@@ -13062,28 +13065,28 @@ more of these IDs before any production qualification result can be accepted.
       instructions that still direct ordinary users to `owlapi@next`; allow only
       unmistakably historical mentions. Recreate `next` only for a genuine future
       prerelease.
-- [ ] Update WebVOWL to exact public-registry `owlapi@0.1.0`, or only after a
+- [ ] <!-- Gate: P20-CHECK-013; Covers: P20-WEBVOWL-001, P20-WEBVOWL-DEPENDENCIES-001 --> Update WebVOWL to exact public-registry `owlapi@0.1.0`, or only after a
       recorded §2.60 or §2.33 activation the exact applicable same-surface patch, regenerate its
       registry-backed lockfile, and pass its boundary, Jest, development/production
       build, corpus, RDF/XML, imports-aware workload and deployment-scope third-
       party-material/notice gates.
-- [ ] Before WebVOWL production cutover, retain encrypted off-platform backups
+- [ ] <!-- Gate: P20-CHECK-014; Covers: P20-BACKUP-001 --> Before WebVOWL production cutover, retain encrypted off-platform backups
       and the complete known-good application artefact, source commit, manifest,
       lockfile, deployment-configuration digest, runbook and health checks required
       by §2.65. Do not claim a restore rehearsal; an actual rollback restores the
       complete target and never mutates npm or creates a hybrid dependency state.
-- [ ] If `0.1.0` fails a mandatory check after publication, preserve it,
+- [ ] <!-- Gate: P20-CHECK-015; Covers: P20-RELEASE-001, P20-PATH-001 --> If `0.1.0` fails a mandatory check after publication, preserve it,
       remove `latest`, deprecate it when safe, rerun the §17.27.4 path decision and
       complete production process for the first corrective patch, including an RC
       only when that decision requires one, and record why that patch became the cutover;
       never unpublish or silently substitute a version as ordinary rollback.
-- [ ] If deterministic correction becomes necessary only after immutable
+- [ ] <!-- Gate: P20-CHECK-016; Covers: P20-RELEASE-001, P20-PATH-001, P20-LATE-TAG-001 --> If deterministic correction becomes necessary only after immutable
       `v0.1.0` exists but before npm publication, reject the stage, leave the tag
       untouched, retain the §2.60 failed-attempt record, and run the same frozen
       surface through the §17.27.4 decision and complete `0.1.1` production gate;
       record that this—not a
       post-publication rollback—made `0.1.1` the first production release and WebVOWL cutover.
-- [ ] Record the production source commit, signed tag, tarball digest, registry
+- [ ] <!-- Gate: P20-CHECK-017; Covers: P20-EVIDENCE-001, P20-PORTABILITY-001, P20-CI-001, P20-MANUAL-001, P20-UNTRUSTED-001, P20-BROWSER-001, P20-TOOLCHAIN-001, P20-GOVERNANCE-001 --> Record the production source commit, signed tag, tarball digest, registry
       integrity, validated reproducible CycloneDX 1.6 SBOM, `SHA256SUMS`, npm
       root-package attestation, stage ID/view/download/status/timestamp metadata at
       both required boundaries, retained-versus-staged
@@ -13107,7 +13110,7 @@ more of these IDs before any production qualification result can be accepted.
       WebVOWL consumer commit, security
       support-window update and final verification evidence before declaring this
       plan complete.
-- [ ] Prove that npm provenance names the actual triggering ref, workflow run and
+- [ ] <!-- Gate: P20-CHECK-018; Covers: P20-PROVENANCE-001 --> Prove that npm provenance names the actual triggering ref, workflow run and
       source commit for the published bytes, and separately prove that the later
       signed canonical tag and immutable GitHub release resolve to that source
       commit; never represent the later tag as part of the earlier attestation.

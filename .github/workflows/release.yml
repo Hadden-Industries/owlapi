@@ -1,0 +1,834 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: owlapi-release
+  cancel-in-progress: false
+  queue: max
+
+env:
+  npm_config_fetch_retries: "2"
+  npm_config_fetch_retry_factor: "10"
+  npm_config_fetch_retry_mintimeout: "10000"
+  npm_config_fetch_retry_maxtimeout: "60000"
+  npm_config_fetch_timeout: "300000"
+
+jobs:
+  release_preflight:
+    name: Release / protected-main preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      actions: read
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the captured dispatch commit and complete tag graph
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+      - name: Select authoritative Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 10
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        timeout-minutes: 5
+      - name: Install the reviewed preflight tools
+        run: npm ci
+        timeout-minutes: 15
+      - name: Verify the protected-main, tag-absence, and disabled-publication boundary
+        run: npm run release:preflight
+        timeout-minutes: 10
+      - name: Record the hosted runner identity
+        run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
+        timeout-minutes: 5
+
+  metadata:
+    name: Release / metadata
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      artifact_name: ${{ steps.metadata.outputs.artifact_name }}
+      publication_enabled: ${{ steps.metadata.outputs.publication_enabled }}
+      publication_mode: ${{ steps.metadata.outputs.publication_mode }}
+      version: ${{ steps.metadata.outputs.version }}
+    steps:
+      - name: Check out the accepted source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 5
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        timeout-minutes: 5
+      - name: Install the reviewed tool graph
+        run: npm ci
+        timeout-minutes: 8
+      - name: Derive validated package metadata
+        id: metadata
+        run: npm run workflow:metadata
+        timeout-minutes: 5
+      - name: Record the hosted runner identity
+        run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
+        timeout-minutes: 5
+
+  source_node_22:
+    name: Release / Ubuntu / Node 22.23.2
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the proposed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 22.23.2 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "22.23.2"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 20
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 22.23.2 --npm 12.0.2
+        timeout-minutes: 5
+      - name: Install the reviewed dependency graph
+        run: npm ci
+        timeout-minutes: 20
+      - name: Record the hosted runner identity
+        run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
+        timeout-minutes: 5
+      - name: Verify formatting
+        run: npm run format:check
+        timeout-minutes: 45
+      - name: Verify static quality
+        run: npm run lint
+        timeout-minutes: 45
+      - name: Run the full package suite
+        run: npm test -- --runInBand
+        timeout-minutes: 45
+      - name: Verify the public package boundary
+        run: npm run test:boundary
+        timeout-minutes: 45
+      - name: Verify the release-gate registry
+        run: npm run verify:release-gates
+        timeout-minutes: 45
+      - name: Verify repository workflow governance
+        run: npm run verify:workflow-governance
+        timeout-minutes: 45
+
+  source_node_24:
+    name: Release / Ubuntu / Node 24.19.0
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the proposed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 20
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        timeout-minutes: 5
+      - name: Install the reviewed dependency graph
+        run: npm ci
+        timeout-minutes: 20
+      - name: Record the hosted runner identity
+        run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
+        timeout-minutes: 5
+      - name: Verify formatting
+        run: npm run format:check
+        timeout-minutes: 45
+      - name: Verify static quality
+        run: npm run lint
+        timeout-minutes: 45
+      - name: Run the full package suite
+        run: npm test -- --runInBand
+        timeout-minutes: 45
+      - name: Verify the public package boundary
+        run: npm run test:boundary
+        timeout-minutes: 45
+      - name: Verify the release-gate registry
+        run: npm run verify:release-gates
+        timeout-minutes: 45
+      - name: Verify repository workflow governance
+        run: npm run verify:workflow-governance
+        timeout-minutes: 45
+
+  dependency_review:
+    name: Release / dependency policy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the proposed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 10
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        timeout-minutes: 5
+      - name: Install the reviewed dependency graph
+        run: npm ci
+        timeout-minutes: 15
+      - name: Record the hosted runner identity
+        run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
+        timeout-minutes: 5
+      - name: Record dependency-review applicability for the fixed release commit
+        run: npm run workflow:dependency-review-applicability
+        timeout-minutes: 5
+
+  candidate:
+    name: Release / retained candidate
+    needs:
+      - release_preflight
+      - metadata
+      - source_node_22
+      - source_node_24
+      - dependency_review
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+      artifact_digest: ${{ steps.upload.outputs.artifact-digest }}
+    steps:
+      - name: Check out the proposed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select authoritative Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 20
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        timeout-minutes: 5
+      - name: Install the reviewed dependency graph
+        run: npm ci
+        timeout-minutes: 20
+      - name: Record the hosted runner identity
+        run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
+        timeout-minutes: 5
+      - name: Build and qualify the closed candidate bundle
+        run: npm run release:pack
+        timeout-minutes: 45
+      - name: Upload the exact same-run candidate
+        id: upload
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ needs.metadata.outputs.artifact_name }}
+          path: |
+            .release/candidate/${{ needs.metadata.outputs.version }}/owlapi-${{ needs.metadata.outputs.version }}.tgz
+            .release/candidate/${{ needs.metadata.outputs.version }}/owlapi-${{ needs.metadata.outputs.version }}.cdx.json
+            .release/candidate/${{ needs.metadata.outputs.version }}/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+          archive: true
+
+  portability_windows_node_22:
+    name: Release / Windows / Node 22.23.2
+    needs: candidate
+    runs-on: windows-2025
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Check out the proposed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 22.23.2 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "22.23.2"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 20
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 22.23.2 --npm 12.0.2
+        timeout-minutes: 5
+      - name: Install the reviewed qualification tools
+        run: npm ci
+        timeout-minutes: 20
+      - name: Record the hosted runner identity
+        run: npm run workflow:runner-record -- --expected-os Windows --expected-arch X64 --label windows-2025 --shell pwsh
+        timeout-minutes: 5
+      - name: Download the exact same-run candidate by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
+          path: .release/download
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Verify the closed candidate inventory and checksums
+        run: npm run candidate:prepare -- --candidate .release/download
+        timeout-minutes: 5
+      - name: Qualify the installed public package boundary
+        run: npm run candidate:portable -- --candidate .release/download --output .release/download/portability.json
+        timeout-minutes: 20
+
+  portability_windows_node_24:
+    name: Release / Windows / Node 24.19.0
+    needs: candidate
+    runs-on: windows-2025
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Check out the proposed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 20
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        timeout-minutes: 5
+      - name: Install the reviewed qualification tools
+        run: npm ci
+        timeout-minutes: 20
+      - name: Record the hosted runner identity
+        run: npm run workflow:runner-record -- --expected-os Windows --expected-arch X64 --label windows-2025 --shell pwsh
+        timeout-minutes: 5
+      - name: Download the exact same-run candidate by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
+          path: .release/download
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Verify the closed candidate inventory and checksums
+        run: npm run candidate:prepare -- --candidate .release/download
+        timeout-minutes: 5
+      - name: Qualify the installed public package boundary
+        run: npm run candidate:portable -- --candidate .release/download --output .release/download/portability.json
+        timeout-minutes: 20
+
+  portability_macos_node_22:
+    name: Release / macOS / Node 22.23.2
+    needs: candidate
+    runs-on: macos-15
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the proposed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 22.23.2 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "22.23.2"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 20
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 22.23.2 --npm 12.0.2
+        timeout-minutes: 5
+      - name: Install the reviewed qualification tools
+        run: npm ci
+        timeout-minutes: 20
+      - name: Record the hosted runner identity
+        run: npm run workflow:runner-record -- --expected-os macOS --expected-arch ARM64 --label macos-15 --shell bash
+        timeout-minutes: 5
+      - name: Download the exact same-run candidate by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
+          path: .release/download
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Verify the closed candidate inventory and checksums
+        run: npm run candidate:prepare -- --candidate .release/download
+        timeout-minutes: 5
+      - name: Qualify the installed public package boundary
+        run: npm run candidate:portable -- --candidate .release/download --output .release/download/portability.json
+        timeout-minutes: 20
+
+  portability_macos_node_24:
+    name: Release / macOS / Node 24.19.0
+    needs: candidate
+    runs-on: macos-15
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the proposed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 20
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        timeout-minutes: 5
+      - name: Install the reviewed qualification tools
+        run: npm ci
+        timeout-minutes: 20
+      - name: Record the hosted runner identity
+        run: npm run workflow:runner-record -- --expected-os macOS --expected-arch ARM64 --label macos-15 --shell bash
+        timeout-minutes: 5
+      - name: Download the exact same-run candidate by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
+          path: .release/download
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Verify the closed candidate inventory and checksums
+        run: npm run candidate:prepare -- --candidate .release/download
+        timeout-minutes: 5
+      - name: Qualify the installed public package boundary
+        run: npm run candidate:portable -- --candidate .release/download --output .release/download/portability.json
+        timeout-minutes: 20
+
+  browser_chromium:
+    name: Release / browser / Chromium
+    needs: candidate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the proposed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 20
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        timeout-minutes: 5
+      - name: Install the reviewed browser qualification tools
+        run: npm ci
+        timeout-minutes: 20
+      - name: Download the exact same-run candidate by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
+          path: .release/download
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Verify the closed candidate inventory and checksums
+        run: npm run candidate:prepare -- --candidate .release/download
+        timeout-minutes: 5
+      - name: Prepare the bundler, import-map, and worker consumers
+        run: npm run browser:prepare -- --candidate .release/download --output .release/browser/qualified
+        timeout-minutes: 20
+      - name: Install only the managed Chromium revision
+        run: npm run playwright:install -- --with-deps chromium
+        timeout-minutes: 20
+      - name: Record the hosted runner and browser identity
+        run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash --browser-project chromium
+        timeout-minutes: 5
+      - name: Exercise all browser consumer modes in Chromium
+        run: npm run test:browser -- --fixture-root .release/browser/qualified --project chromium
+        timeout-minutes: 45
+
+  browser_firefox:
+    name: Release / browser / Firefox
+    needs: candidate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the proposed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 20
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        timeout-minutes: 5
+      - name: Install the reviewed browser qualification tools
+        run: npm ci
+        timeout-minutes: 20
+      - name: Download the exact same-run candidate by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
+          path: .release/download
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Verify the closed candidate inventory and checksums
+        run: npm run candidate:prepare -- --candidate .release/download
+        timeout-minutes: 5
+      - name: Prepare the bundler, import-map, and worker consumers
+        run: npm run browser:prepare -- --candidate .release/download --output .release/browser/qualified
+        timeout-minutes: 20
+      - name: Install only the managed Firefox revision
+        run: npm run playwright:install -- --with-deps firefox
+        timeout-minutes: 20
+      - name: Record the hosted runner and browser identity
+        run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash --browser-project firefox
+        timeout-minutes: 5
+      - name: Exercise all browser consumer modes in Firefox
+        run: npm run test:browser -- --fixture-root .release/browser/qualified --project firefox
+        timeout-minutes: 45
+
+  browser_webkit:
+    name: Release / browser / WebKit
+    needs: candidate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the proposed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 20
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        timeout-minutes: 5
+      - name: Install the reviewed browser qualification tools
+        run: npm ci
+        timeout-minutes: 20
+      - name: Download the exact same-run candidate by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
+          path: .release/download
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Verify the closed candidate inventory and checksums
+        run: npm run candidate:prepare -- --candidate .release/download
+        timeout-minutes: 5
+      - name: Prepare the bundler, import-map, and worker consumers
+        run: npm run browser:prepare -- --candidate .release/download --output .release/browser/qualified
+        timeout-minutes: 20
+      - name: Install only the managed WebKit revision
+        run: npm run playwright:install -- --with-deps webkit
+        timeout-minutes: 20
+      - name: Record the hosted runner and browser identity
+        run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash --browser-project webkit
+        timeout-minutes: 5
+      - name: Exercise all browser consumer modes in WebKit
+        run: npm run test:browser -- --fixture-root .release/browser/qualified --project webkit
+        timeout-minutes: 45
+
+  webvowl:
+    name: Release / isolated WebVOWL consumer
+    needs: candidate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+        working-directory: owlapi
+    steps:
+      - name: Check out the proposed owlapi source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          path: owlapi
+          persist-credentials: false
+      - name: Check out the fixed WebVOWL consumer
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Hadden-Industries/webvowl
+          ref: f7444ce3971621e6af6d38ebd4b5ce9b03f3e235
+          fetch-depth: 1
+          path: consumer-workspace/webvowl
+          persist-credentials: false
+      - name: Check out the fixed representative ontology corpus
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Hadden-Industries/universal-ontology
+          ref: e2c667f3584b8fb705671cada0fe205b1000b617
+          fetch-depth: 1
+          path: consumer-workspace/universal-ontology
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 20
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        timeout-minutes: 5
+      - name: Install the independently locked owlapi qualification tools
+        run: npm ci
+        timeout-minutes: 20
+      - name: Install the managed Chromium revision
+        run: npm run playwright:install -- --with-deps chromium
+        timeout-minutes: 20
+      - name: Record the hosted runner and browser identity
+        run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash --browser-project chromium
+        timeout-minutes: 5
+      - name: Download the exact same-run candidate by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
+          path: owlapi/.release/download
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Verify the closed candidate inventory and checksums
+        run: npm run candidate:prepare -- --candidate .release/download
+        timeout-minutes: 5
+      - name: Qualify the retained package through isolated WebVOWL
+        run: npm run test:webvowl-consumer -- --candidate-dir .release/download --webvowl-repository ../consumer-workspace/webvowl --expected-webvowl-commit f7444ce3971621e6af6d38ebd4b5ce9b03f3e235 --expected-ontology-commit e2c667f3584b8fb705671cada0fe205b1000b617 --output .release/webvowl-result
+        timeout-minutes: 45
+
+  required:
+    name: Release / qualified
+    if: ${{ always() }}
+    needs:
+      - release_preflight
+      - metadata
+      - source_node_22
+      - source_node_24
+      - dependency_review
+      - candidate
+      - portability_windows_node_22
+      - portability_windows_node_24
+      - portability_macos_node_22
+      - portability_macos_node_24
+      - browser_chromium
+      - browser_firefox
+      - browser_webkit
+      - webvowl
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the aggregate evaluator
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 5
+      - name: Install the aggregate evaluator
+        run: npm ci
+        timeout-minutes: 8
+      - name: Require every registered release-qualification job to succeed
+        env:
+          REQUIRED_JOB_RESULTS_JSON: ${{ toJSON(needs) }}
+        run: npm run workflow:aggregate -- --workflow release
+        timeout-minutes: 5
+
+  phase_19c_boundary:
+    name: Release / Phase 19C boundary
+    needs:
+      - metadata
+      - required
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the reviewed publication-control record
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 5
+      - name: Install the publication-boundary validator
+        run: npm ci
+        timeout-minutes: 8
+      - name: Prove Phase 19C authorizes no external mutation
+        run: npm run release:assert-publication-disabled
+        timeout-minutes: 5

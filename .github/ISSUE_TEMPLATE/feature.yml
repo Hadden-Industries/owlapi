@@ -1,0 +1,30 @@
+name: Capability proposal
+description: Propose a new ontology-processing capability with a concrete consumer need.
+title: "[Feature]: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Consumer problem
+      description: Explain the workflow that cannot be completed with the current public API.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed capability
+      description: Describe observable behavior without assuming a particular internal implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: java_relationship
+    attributes:
+      label: Java OWLAPI relationship
+      description: Identify the corresponding Java namespace/type, or explain why this is a necessary JavaScript adaptation.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Standards and test evidence
+      description: Link relevant specifications, real ontologies, fixtures, or interoperability cases.

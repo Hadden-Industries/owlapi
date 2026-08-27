@@ -1,5 +1,6 @@
 import { StringDocumentSource } from "../../../index.js";
 import { rdfDataFactory } from "../../rdfjs/environment.js";
+import * as n3Implementation from "n3";
 import { createTriGSyntaxAdapter } from "../rdf/n3SyntaxAdapter.js";
 
 const descriptors = new Map(
@@ -28,7 +29,11 @@ describe("TriG browser contract", () => {
       });
     }
 
-    const { dataset, prefixes } = await createTriGSyntaxAdapter().parse(
+    // Browser resolution is covered by the installed Playwright fixture; this
+    // focused test removes globals only after obtaining the implementation.
+    const { dataset, prefixes } = await createTriGSyntaxAdapter({
+      loadImplementation: async () => n3Implementation,
+    }).parse(
       new StringDocumentSource(
         '@prefix ex: <urn:test:> . ex:graph { ex:subject ex:label "browser"@EN . }',
       ),

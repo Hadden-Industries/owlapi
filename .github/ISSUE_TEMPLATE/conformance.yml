@@ -1,0 +1,50 @@
+name: Syntax or conformance discrepancy
+description: Report a standards-test, parser, mapping, or serialization discrepancy.
+title: "[Conformance]: "
+body:
+  - type: dropdown
+    id: syntax
+    attributes:
+      label: Syntax or mapping surface
+      options:
+        - Functional Syntax
+        - Manchester Syntax
+        - OWL/XML
+        - RDF/XML
+        - Turtle
+        - N-Triples
+        - N-Quads
+        - TriG
+        - JSON-LD
+        - KRSS1
+        - KRSS2
+        - RDF-to-OWL mapping
+        - OWL-to-RDF mapping
+    validations:
+      required: true
+  - type: input
+    id: authority
+    attributes:
+      label: Normative specification or test identifier
+      placeholder: Stable section URL, manifest test IRI, and upstream revision
+    validations:
+      required: true
+  - type: textarea
+    id: input
+    attributes:
+      label: Minimal input and invocation
+    validations:
+      required: true
+  - type: textarea
+    id: discrepancy
+    attributes:
+      label: Observed and required result
+    validations:
+      required: true
+  - type: textarea
+    id: deviation
+    attributes:
+      label: Known controlled-deviation context
+      description: Link any relevant compatibility or conformance registry entry, or state “none known”.
+    validations:
+      required: true

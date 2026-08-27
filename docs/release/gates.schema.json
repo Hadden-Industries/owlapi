@@ -1,0 +1,252 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Hadden-Industries/owlapi/main/docs/release/gates.schema.json",
+  "title": "owlapi release-gate definition registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "catalogue",
+    "policy",
+    "requirements",
+    "checklistGates",
+    "leafGates"
+  ],
+  "properties": {
+    "$schema": { "const": "./gates.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "catalogue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "normalizationAlgorithm",
+        "checklistNormalizationAlgorithm",
+        "phase19Section",
+        "phase20Section",
+        "checklistSection"
+      ],
+      "properties": {
+        "normalizationAlgorithm": {
+          "const": "markdown-catalogue-bullet-v1"
+        },
+        "checklistNormalizationAlgorithm": {
+          "const": "markdown-checklist-row-v1"
+        },
+        "phase19Section": { "const": "17.26.5" },
+        "phase20Section": { "const": "17.27.6" },
+        "checklistSection": { "const": "30" }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "successfulFinalResults",
+        "failureClasses",
+        "transientDiagnosticResult",
+        "waiverPolicy"
+      ],
+      "properties": {
+        "successfulFinalResults": {
+          "const": ["PASS", "NOT_APPLICABLE"]
+        },
+        "failureClasses": {
+          "const": ["PRODUCT_FAILURE", "CONTROL_FAILURE", "EXTERNAL_BLOCKED"]
+        },
+        "transientDiagnosticResult": { "const": "INFRASTRUCTURE_ERROR" },
+        "waiverPolicy": { "const": "NO_ORDINARY_WAIVER" }
+      }
+    },
+    "requirements": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/requirement" }
+    },
+    "checklistGates": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/checklistGate" }
+    },
+    "leafGates": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/leafGate" }
+    }
+  },
+  "$defs": {
+    "requirementId": {
+      "type": "string",
+      "pattern": "^P(?:19|20)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "leafGateId": {
+      "type": "string",
+      "pattern": "^P(?:19|20)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}-[A-Z0-9]+(?:-[A-Z0-9]+)*$"
+    },
+    "owner": {
+      "enum": [
+        "PACKAGE_MAINTAINER",
+        "HISTORY_CUSTODIAN",
+        "REPOSITORY_ADMINISTRATOR",
+        "RIGHTS_REVIEWER",
+        "DEPENDENCY_MAINTAINER",
+        "SECURITY_MAINTAINER",
+        "RELEASE_ENGINEER",
+        "RELEASE_CUSTODIAN",
+        "CONSUMER_MAINTAINER"
+      ]
+    },
+    "applicability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": { "const": "ALWAYS" }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "command"],
+      "properties": {
+        "kind": {
+          "enum": [
+            "AUTOMATED",
+            "HUMAN_REVIEW",
+            "EXTERNAL_OBSERVATION",
+            "HYBRID"
+          ]
+        },
+        "command": {
+          "type": "string",
+          "pattern": "^npm run qualify:release -- --requirement P(?:19|20)-"
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recordPath", "jsonPointer"],
+      "properties": {
+        "recordPath": {
+          "const": "docs/provenance/releases/<version>/gates.json"
+        },
+        "jsonPointer": {
+          "type": "string",
+          "pattern": "^/requirements/P(?:19|20)-"
+        }
+      }
+    },
+    "requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requirementId",
+        "phase",
+        "sourceAnchor",
+        "requirementDigest",
+        "checkpoint",
+        "owner",
+        "applicability",
+        "blocking",
+        "verification",
+        "evidence",
+        "permittedFinalResults",
+        "failureClasses",
+        "waiverPolicy",
+        "childGateIds"
+      ],
+      "properties": {
+        "requirementId": { "$ref": "#/$defs/requirementId" },
+        "phase": { "enum": [19, 20] },
+        "sourceAnchor": {
+          "type": "string",
+          "pattern": "^p(?:19|20)-[a-z0-9]+(?:-[a-z0-9]+)*-[0-9]{3}$"
+        },
+        "requirementDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "checkpoint": { "enum": ["19A", "19B", "19C", "19D", "20"] },
+        "owner": { "$ref": "#/$defs/owner" },
+        "applicability": { "$ref": "#/$defs/applicability" },
+        "blocking": { "const": "REQUIRED" },
+        "verification": { "$ref": "#/$defs/verification" },
+        "evidence": { "$ref": "#/$defs/evidence" },
+        "permittedFinalResults": { "const": ["PASS"] },
+        "failureClasses": {
+          "const": ["PRODUCT_FAILURE", "CONTROL_FAILURE", "EXTERNAL_BLOCKED"]
+        },
+        "waiverPolicy": { "const": "NO_ORDINARY_WAIVER" },
+        "childGateIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/leafGateId" }
+        }
+      }
+    },
+    "checklistGate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gateId", "phase", "rowDigest", "coveredRequirementIds"],
+      "properties": {
+        "gateId": {
+          "type": "string",
+          "pattern": "^P(?:19|20)-CHECK-[0-9]{3}$"
+        },
+        "phase": { "enum": [19, 20] },
+        "rowDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "coveredRequirementIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/requirementId" }
+        }
+      }
+    },
+    "leafGate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gateId",
+        "ownerRequirementId",
+        "checklistGateIds",
+        "owner",
+        "applicability",
+        "blocking",
+        "verification",
+        "evidence",
+        "permittedFinalResults",
+        "failureClasses",
+        "waiverPolicy"
+      ],
+      "properties": {
+        "gateId": { "$ref": "#/$defs/leafGateId" },
+        "ownerRequirementId": { "$ref": "#/$defs/requirementId" },
+        "checklistGateIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^P(?:19|20)-CHECK-[0-9]{3}$"
+          }
+        },
+        "owner": { "$ref": "#/$defs/owner" },
+        "applicability": { "$ref": "#/$defs/applicability" },
+        "blocking": { "const": "REQUIRED" },
+        "verification": { "$ref": "#/$defs/verification" },
+        "evidence": { "$ref": "#/$defs/evidence" },
+        "permittedFinalResults": { "const": ["PASS"] },
+        "failureClasses": {
+          "const": ["PRODUCT_FAILURE", "CONTROL_FAILURE", "EXTERNAL_BLOCKED"]
+        },
+        "waiverPolicy": { "const": "NO_ORDINARY_WAIVER" }
+      }
+    }
+  }
+}

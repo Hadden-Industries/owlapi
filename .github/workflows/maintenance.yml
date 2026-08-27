@@ -1,0 +1,114 @@
+name: Maintenance
+
+on:
+  schedule:
+    - cron: "17 5 * * 3"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: owlapi-maintenance
+  cancel-in-progress: false
+
+env:
+  npm_config_fetch_retries: "2"
+  npm_config_fetch_retry_factor: "10"
+  npm_config_fetch_retry_mintimeout: "10000"
+  npm_config_fetch_retry_maxtimeout: "60000"
+  npm_config_fetch_timeout: "300000"
+
+jobs:
+  health:
+    name: Maintenance / dependency and package health
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    outputs:
+      reporter_artifact_id: ${{ steps.reporter_bundle.outputs.artifact-id }}
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the default branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      # Transporting only the reporter source lets the later issues-only job run
+      # reviewed logic without checking out the repository or gaining contents access.
+      - name: Retain the maintenance reporter for the write-only job
+        id: reporter_bundle
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: maintenance-reporter-${{ github.run_id }}-${{ github.run_attempt }}
+          path: scripts/report-maintenance-failure.mjs
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+          archive: true
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 20
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        timeout-minutes: 5
+      - name: Install the reviewed dependency graph
+        run: npm ci
+        timeout-minutes: 20
+      - name: Record the hosted runner identity
+        run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
+        timeout-minutes: 5
+      - name: Run the complete package suite
+        run: npm test -- --runInBand
+        timeout-minutes: 45
+      - name: Rebuild and audit a disposable retained candidate
+        run: npm run release:pack
+        timeout-minutes: 45
+      - name: Observe the active public production coordinate
+        run: npm run maintenance:published-health
+        timeout-minutes: 20
+
+  reporter:
+    name: Maintenance / isolated finding reporter
+    needs: health
+    if: ${{ !cancelled() && needs.health.outputs.reporter_artifact_id != '' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      issues: write
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Select the reporter runtime
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Download the same-run reporter by immutable artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.health.outputs.reporter_artifact_id }}
+          path: .maintenance-reporter
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Reconcile the maintenance finding
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          MAINTENANCE_HEALTH_RESULT: ${{ needs.health.result }}
+        run: node .maintenance-reporter/report-maintenance-failure.mjs
+        timeout-minutes: 5

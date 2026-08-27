@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Hadden-Industries/owlapi/blob/main/docs/release/publication-control.schema.json",
+  "title": "owlapi release publication control",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "enabled",
+    "mode",
+    "coordinate",
+    "channel",
+    "reason",
+    "reviewedOn"
+  ],
+  "properties": {
+    "$schema": { "const": "./publication-control.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "enabled": { "type": "boolean" },
+    "mode": {
+      "enum": ["UNRESOLVED", "OIDC_STAGED", "DIRECT_BOOTSTRAP"]
+    },
+    "coordinate": { "const": "owlapi@0.1.0-alpha.0" },
+    "channel": { "const": "next" },
+    "reason": { "type": "string", "minLength": 1 },
+    "reviewedOn": {
+      "oneOf": [{ "type": "null" }, { "type": "string", "format": "date" }]
+    }
+  }
+}

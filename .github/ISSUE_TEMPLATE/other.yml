@@ -1,0 +1,18 @@
+name: Other project question
+description: Raise a scoped matter that does not fit the other forms and is not a security or conduct report.
+title: "[Other]: "
+body:
+  - type: checkboxes
+    id: routing
+    attributes:
+      label: Public-channel check
+      options:
+        - label: This report contains no vulnerability details, private ontology data, or private conduct information.
+          required: true
+  - type: textarea
+    id: request
+    attributes:
+      label: Request
+      description: Explain the concrete project question, desired outcome, and relevant context.
+    validations:
+      required: true

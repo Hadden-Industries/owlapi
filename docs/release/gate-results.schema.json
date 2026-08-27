@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Hadden-Industries/owlapi/main/docs/release/gate-results.schema.json",
+  "title": "owlapi exact-version release-gate result record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "package",
+    "phase",
+    "sourceCommit",
+    "recordedAt",
+    "accepted",
+    "definitionDigests",
+    "requirements"
+  ],
+  "properties": {
+    "$schema": { "const": "../../../release/gate-results.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "const": "owlapi" },
+        "version": {
+          "type": "string",
+          "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+        }
+      }
+    },
+    "phase": { "enum": [19, 20] },
+    "sourceCommit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "recordedAt": { "type": "string", "format": "date-time" },
+    "accepted": { "type": "boolean" },
+    "definitionDigests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gateRegistrySha256",
+        "gateSchemaSha256",
+        "resultSchemaSha256",
+        "catalogueSha256",
+        "checklistCoverageSha256"
+      ],
+      "properties": {
+        "gateRegistrySha256": { "$ref": "#/$defs/sha256" },
+        "gateSchemaSha256": { "$ref": "#/$defs/sha256" },
+        "resultSchemaSha256": { "$ref": "#/$defs/sha256" },
+        "catalogueSha256": { "$ref": "#/$defs/sha256" },
+        "checklistCoverageSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "requirements": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/requirementResult" }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "requirementId": {
+      "type": "string",
+      "pattern": "^P(?:19|20)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "leafGateId": {
+      "type": "string",
+      "pattern": "^P(?:19|20)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}-[A-Z0-9]+(?:-[A-Z0-9]+)*$"
+    },
+    "terminalResult": {
+      "enum": [
+        "PASS",
+        "NOT_APPLICABLE",
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "location", "sha256"],
+      "properties": {
+        "kind": { "enum": ["FILE", "URL_SNAPSHOT", "COMMAND_OUTPUT"] },
+        "location": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observedAt", "result", "detail"],
+      "properties": {
+        "observedAt": { "type": "string", "format": "date-time" },
+        "result": {
+          "enum": [
+            "PASS",
+            "NOT_APPLICABLE",
+            "PRODUCT_FAILURE",
+            "CONTROL_FAILURE",
+            "EXTERNAL_BLOCKED",
+            "INFRASTRUCTURE_ERROR"
+          ]
+        },
+        "detail": { "type": "string", "minLength": 1 }
+      }
+    },
+    "leafResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gateId", "finalResult", "evidence"],
+      "properties": {
+        "gateId": { "$ref": "#/$defs/leafGateId" },
+        "finalResult": { "$ref": "#/$defs/terminalResult" },
+        "applicabilityReason": { "type": "string", "minLength": 1 },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/evidence" }
+        },
+        "attemptHistory": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/attempt" }
+        }
+      },
+      "allOf": [{ "$ref": "#/$defs/applicabilityReasonRule" }]
+    },
+    "requirementResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requirementId",
+        "requirementDigest",
+        "finalResult",
+        "leafResults",
+        "evidence"
+      ],
+      "properties": {
+        "requirementId": { "$ref": "#/$defs/requirementId" },
+        "requirementDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "finalResult": { "$ref": "#/$defs/terminalResult" },
+        "applicabilityReason": { "type": "string", "minLength": 1 },
+        "leafResults": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/leafResult" }
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/evidence" }
+        },
+        "attemptHistory": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/attempt" }
+        }
+      },
+      "allOf": [{ "$ref": "#/$defs/applicabilityReasonRule" }]
+    },
+    "applicabilityReasonRule": {
+      "type": "object",
+      "if": {
+        "type": "object",
+        "properties": { "finalResult": { "const": "NOT_APPLICABLE" } },
+        "required": ["finalResult"]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "applicabilityReason": { "type": "string", "minLength": 1 }
+        },
+        "required": ["applicabilityReason"]
+      },
+      "else": {
+        "type": "object",
+        "properties": {
+          "applicabilityReason": { "type": "string", "minLength": 1 }
+        },
+        "not": {
+          "type": "object",
+          "properties": {
+            "applicabilityReason": { "type": "string", "minLength": 1 }
+          },
+          "required": ["applicabilityReason"]
+        }
+      }
+    }
+  }
+}

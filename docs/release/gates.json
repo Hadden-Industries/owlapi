@@ -1,0 +1,3274 @@
+{
+  "$schema": "./gates.schema.json",
+  "schemaVersion": 1,
+  "catalogue": {
+    "normalizationAlgorithm": "markdown-catalogue-bullet-v1",
+    "checklistNormalizationAlgorithm": "markdown-checklist-row-v1",
+    "phase19Section": "17.26.5",
+    "phase20Section": "17.27.6",
+    "checklistSection": "30"
+  },
+  "policy": {
+    "successfulFinalResults": ["PASS", "NOT_APPLICABLE"],
+    "failureClasses": [
+      "PRODUCT_FAILURE",
+      "CONTROL_FAILURE",
+      "EXTERNAL_BLOCKED"
+    ],
+    "transientDiagnosticResult": "INFRASTRUCTURE_ERROR",
+    "waiverPolicy": "NO_ORDINARY_WAIVER"
+  },
+  "requirements": [
+    {
+      "requirementId": "P19-SCOPE-001",
+      "phase": 19,
+      "sourceAnchor": "p19-scope-001",
+      "requirementDigest": "sha256:e60976da690d11c32cd6171a87c52d7e9b596e4d5dd192c0e23aec8aa93c9aeb",
+      "checkpoint": "19C",
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P19-SCOPE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-SCOPE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-SCOPE-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-HISTORY-001",
+      "phase": 19,
+      "sourceAnchor": "p19-history-001",
+      "requirementDigest": "sha256:29e0ac757f99cc8c2f5ff3958a5fecfebef7ffa4d1cd1b8192b79678395ac589",
+      "checkpoint": "19A",
+      "owner": "HISTORY_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HUMAN_REVIEW",
+        "command": "npm run qualify:release -- --requirement P19-HISTORY-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-HISTORY-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-HISTORY-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-REPOSITORY-001",
+      "phase": 19,
+      "sourceAnchor": "p19-repository-001",
+      "requirementDigest": "sha256:99370c8988bf8bd6fadd367ecd493f64b4b4fd9cbc7e397d7776e3e70f8c57ac",
+      "checkpoint": "19B",
+      "owner": "REPOSITORY_ADMINISTRATOR",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "EXTERNAL_OBSERVATION",
+        "command": "npm run qualify:release -- --requirement P19-REPOSITORY-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-REPOSITORY-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-REPOSITORY-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-RIGHTS-001",
+      "phase": 19,
+      "sourceAnchor": "p19-rights-001",
+      "requirementDigest": "sha256:ee534ee2cc4de504d862868f3eaaa1589d3929f4b685311d5bfde0023603b048",
+      "checkpoint": "19B",
+      "owner": "RIGHTS_REVIEWER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HUMAN_REVIEW",
+        "command": "npm run qualify:release -- --requirement P19-RIGHTS-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-RIGHTS-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-RIGHTS-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-PACKAGE-001",
+      "phase": 19,
+      "sourceAnchor": "p19-package-001",
+      "requirementDigest": "sha256:6e982c13b892d076d216d18961ec2bbb84b732717c4f9ebc91480a8ad3c52f74",
+      "checkpoint": "19C",
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P19-PACKAGE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-PACKAGE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-PACKAGE-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-DEPENDENCIES-001",
+      "phase": 19,
+      "sourceAnchor": "p19-dependencies-001",
+      "requirementDigest": "sha256:1731085edd39101d5cae9f4c7c53e70aa463d8a7ebebdaba376cb658b4980bae",
+      "checkpoint": "19C",
+      "owner": "DEPENDENCY_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P19-DEPENDENCIES-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-DEPENDENCIES-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-DEPENDENCIES-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-DOCUMENTATION-001",
+      "phase": 19,
+      "sourceAnchor": "p19-documentation-001",
+      "requirementDigest": "sha256:7d57ebbfa00c3f0acebb32fe302eb1d743e8160468a98c8857114c9b8905af6a",
+      "checkpoint": "19C",
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P19-DOCUMENTATION-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-DOCUMENTATION-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-DOCUMENTATION-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-SECURITY-GOVERNANCE-001",
+      "phase": 19,
+      "sourceAnchor": "p19-security-governance-001",
+      "requirementDigest": "sha256:09e41bc43816d8833dc595ff8e7e14ab2da824b5f4845a743da623daf60805df",
+      "checkpoint": "19C",
+      "owner": "SECURITY_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P19-SECURITY-GOVERNANCE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-SECURITY-GOVERNANCE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-SECURITY-GOVERNANCE-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-TOOLCHAIN-001",
+      "phase": 19,
+      "sourceAnchor": "p19-toolchain-001",
+      "requirementDigest": "sha256:c301ea7e478b97a76ee5d92b3fdd3d4d6ca7089195ff66c6ac30be5527cabb4d",
+      "checkpoint": "19C",
+      "owner": "RELEASE_ENGINEER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P19-TOOLCHAIN-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-TOOLCHAIN-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-TOOLCHAIN-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-CI-CONTROLS-001",
+      "phase": 19,
+      "sourceAnchor": "p19-ci-controls-001",
+      "requirementDigest": "sha256:459f2b7e719984559c523fd2a8ca0bcdd15ef54e92e5c4a6f6985e064a36ed05",
+      "checkpoint": "19C",
+      "owner": "RELEASE_ENGINEER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P19-CI-CONTROLS-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-CI-CONTROLS-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-CI-CONTROLS-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-NODE-001",
+      "phase": 19,
+      "sourceAnchor": "p19-node-001",
+      "requirementDigest": "sha256:749271fd729452fdf6ad0ceacae5cfcc931c0d3e0ab36611f482ccf2755eb031",
+      "checkpoint": "19C",
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P19-NODE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-NODE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-NODE-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-BROWSER-001",
+      "phase": 19,
+      "sourceAnchor": "p19-browser-001",
+      "requirementDigest": "sha256:630e47eb6ec7e973c8a3ce494da1818e974a349b0714dbcde22e7872d3dc08f4",
+      "checkpoint": "19C",
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P19-BROWSER-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-BROWSER-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-BROWSER-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-EVIDENCE-001",
+      "phase": 19,
+      "sourceAnchor": "p19-evidence-001",
+      "requirementDigest": "sha256:e8b4ae87b28223d2f4f64505fbf1299a6b70163a4a1262b8e06fecc715276ed1",
+      "checkpoint": "19C",
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P19-EVIDENCE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-EVIDENCE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-EVIDENCE-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-GATES-001",
+      "phase": 19,
+      "sourceAnchor": "p19-gates-001",
+      "requirementDigest": "sha256:c847f507758a01248e8e8ec2f6f1e4cbc7b5dbece9d90cfff6eee5917792f699",
+      "checkpoint": "19C",
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P19-GATES-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-GATES-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-GATES-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-NAMESPACE-001",
+      "phase": 19,
+      "sourceAnchor": "p19-namespace-001",
+      "requirementDigest": "sha256:7ff925433c8ec50225c5316b7e33388d79baade7103bb1ff3bec726f45623579",
+      "checkpoint": "19D",
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "EXTERNAL_OBSERVATION",
+        "command": "npm run qualify:release -- --requirement P19-NAMESPACE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-NAMESPACE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-NAMESPACE-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-PUBLICATION-001",
+      "phase": 19,
+      "sourceAnchor": "p19-publication-001",
+      "requirementDigest": "sha256:35020ea5ed1dfd47b700d374fa975cce7c6e5ef1f739a41ea160a38073986654",
+      "checkpoint": "19D",
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "EXTERNAL_OBSERVATION",
+        "command": "npm run qualify:release -- --requirement P19-PUBLICATION-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-PUBLICATION-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-PUBLICATION-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-PUBLIC-VERIFICATION-001",
+      "phase": 19,
+      "sourceAnchor": "p19-public-verification-001",
+      "requirementDigest": "sha256:9005af493a7423f6149693df12652ec914032f077b19193698c8cd55b5eb3392",
+      "checkpoint": "19D",
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P19-PUBLIC-VERIFICATION-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-PUBLIC-VERIFICATION-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-PUBLIC-VERIFICATION-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-WEBVOWL-001",
+      "phase": 19,
+      "sourceAnchor": "p19-webvowl-001",
+      "requirementDigest": "sha256:1f9f90fdd4a8c8f13a1bd33b0ccaf475b5bed233719df1f18defe41c74468505",
+      "checkpoint": "19D",
+      "owner": "CONSUMER_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P19-WEBVOWL-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-WEBVOWL-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-WEBVOWL-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-CUSTODY-001",
+      "phase": 19,
+      "sourceAnchor": "p19-custody-001",
+      "requirementDigest": "sha256:fa79ce8936304baa6cefe2c3ed9c6a7d913aa0a7a5bb940321ca41ae581ea475",
+      "checkpoint": "19D",
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HUMAN_REVIEW",
+        "command": "npm run qualify:release -- --requirement P19-CUSTODY-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-CUSTODY-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-CUSTODY-001-VERIFY"]
+    },
+    {
+      "requirementId": "P19-CHECKPOINT-001",
+      "phase": 19,
+      "sourceAnchor": "p19-checkpoint-001",
+      "requirementDigest": "sha256:375d55b286a0aeab7e7b1d0b06319e9ce02a5ad949c73b1a627152b44d902160",
+      "checkpoint": "19D",
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HUMAN_REVIEW",
+        "command": "npm run qualify:release -- --requirement P19-CHECKPOINT-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-CHECKPOINT-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P19-CHECKPOINT-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-RELEASE-001",
+      "phase": 20,
+      "sourceAnchor": "p20-release-001",
+      "requirementDigest": "sha256:fdb197c912201760ad0a7d693b001bc9eab9dd3956f22da9e0f6aeed184cbd81",
+      "checkpoint": "20",
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-RELEASE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-RELEASE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-RELEASE-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-PATH-001",
+      "phase": 20,
+      "sourceAnchor": "p20-path-001",
+      "requirementDigest": "sha256:452a55ea4ee34bb39e168357674bbfa79b3a55e841cdc4fcd70ef3a2e7b4b0c1",
+      "checkpoint": "20",
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HUMAN_REVIEW",
+        "command": "npm run qualify:release -- --requirement P20-PATH-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-PATH-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-PATH-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-CHANNEL-001",
+      "phase": 20,
+      "sourceAnchor": "p20-channel-001",
+      "requirementDigest": "sha256:09831d77c85a40ca2110952ecc501d3277ef054953fa3bc6e803bddb83b810f5",
+      "checkpoint": "20",
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-CHANNEL-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-CHANNEL-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-CHANNEL-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-EVIDENCE-001",
+      "phase": 20,
+      "sourceAnchor": "p20-evidence-001",
+      "requirementDigest": "sha256:b2f1ec410d7b84726e0a4715673e4299cfc38471268ffaadd7271a23f06bc4a6",
+      "checkpoint": "20",
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-EVIDENCE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-EVIDENCE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-EVIDENCE-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-PROVENANCE-001",
+      "phase": 20,
+      "sourceAnchor": "p20-provenance-001",
+      "requirementDigest": "sha256:b2caa9e96da24337ce0435a838296e6bf1403f17164ac534a36cf4e14f59dd82",
+      "checkpoint": "20",
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-PROVENANCE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-PROVENANCE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-PROVENANCE-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-PACKAGE-001",
+      "phase": 20,
+      "sourceAnchor": "p20-package-001",
+      "requirementDigest": "sha256:3f4febabac2a00387f3208f0d9c1b108c7a6e4ab42aac4296eef1ba03e135963",
+      "checkpoint": "20",
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-PACKAGE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-PACKAGE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-PACKAGE-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-DOCUMENTATION-001",
+      "phase": 20,
+      "sourceAnchor": "p20-documentation-001",
+      "requirementDigest": "sha256:4b65c6e809d6b8b3bdcf186b447ef50c67d2a55d5ffd2f37ae2a95f102bb0438",
+      "checkpoint": "20",
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-DOCUMENTATION-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-DOCUMENTATION-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-DOCUMENTATION-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-METADATA-001",
+      "phase": 20,
+      "sourceAnchor": "p20-metadata-001",
+      "requirementDigest": "sha256:31d3db46fa7bfecd1815310e88ec2ef02dbeb22fb8c12394b4bafb944ea34b21",
+      "checkpoint": "20",
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-METADATA-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-METADATA-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-METADATA-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-RUNTIME-001",
+      "phase": 20,
+      "sourceAnchor": "p20-runtime-001",
+      "requirementDigest": "sha256:c8096017aaf6c34bddf8cd9cb570a536055b6a7ae8b53aef3113e998380c06f1",
+      "checkpoint": "20",
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-RUNTIME-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-RUNTIME-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-RUNTIME-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-PORTABILITY-001",
+      "phase": 20,
+      "sourceAnchor": "p20-portability-001",
+      "requirementDigest": "sha256:3637493ea84b17a4950d9a7f88b405cf7b6dd4fb8b3d092a3ea743239f33b7aa",
+      "checkpoint": "20",
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-PORTABILITY-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-PORTABILITY-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-PORTABILITY-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-CI-001",
+      "phase": 20,
+      "sourceAnchor": "p20-ci-001",
+      "requirementDigest": "sha256:dab3cbdcc05c5b238b2d8609ae6e896abf662635286c87b808116e4e6e00d8f4",
+      "checkpoint": "20",
+      "owner": "RELEASE_ENGINEER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-CI-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-CI-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-CI-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-LATE-TAG-001",
+      "phase": 20,
+      "sourceAnchor": "p20-late-tag-001",
+      "requirementDigest": "sha256:f963142c552ce9cce7504d3b7e1f789a19a222b9739c85323e6f373656e6f7f9",
+      "checkpoint": "20",
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-LATE-TAG-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-LATE-TAG-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-LATE-TAG-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-MANUAL-001",
+      "phase": 20,
+      "sourceAnchor": "p20-manual-001",
+      "requirementDigest": "sha256:087336ff6cd21bfed3c77c9621ab192b4848a859e6bf7f8594b9d858622a0e62",
+      "checkpoint": "20",
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-MANUAL-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-MANUAL-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-MANUAL-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-UNTRUSTED-001",
+      "phase": 20,
+      "sourceAnchor": "p20-untrusted-001",
+      "requirementDigest": "sha256:c7e639f049133b2ada920bae2add0befd444497558a3507d38d1e02e5f94f3ae",
+      "checkpoint": "20",
+      "owner": "RELEASE_ENGINEER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-UNTRUSTED-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-UNTRUSTED-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-UNTRUSTED-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-BROWSER-001",
+      "phase": 20,
+      "sourceAnchor": "p20-browser-001",
+      "requirementDigest": "sha256:2ecb9692e95eac9db829f8c263f50c51b0c24ba9a493b2c7d7230c1cadee80ec",
+      "checkpoint": "20",
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-BROWSER-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-BROWSER-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-BROWSER-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-RESOURCES-001",
+      "phase": 20,
+      "sourceAnchor": "p20-resources-001",
+      "requirementDigest": "sha256:25d4919bdf8de55df44934f95442df555e07579489a082ebbc21842ed8b7818b",
+      "checkpoint": "20",
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-RESOURCES-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-RESOURCES-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-RESOURCES-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-GATES-001",
+      "phase": 20,
+      "sourceAnchor": "p20-gates-001",
+      "requirementDigest": "sha256:122fc639a35183f2e4612524eedbc743330c2e65a3a257be7c0749881d9fc6c7",
+      "checkpoint": "20",
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-GATES-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-GATES-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-GATES-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-TOOLCHAIN-001",
+      "phase": 20,
+      "sourceAnchor": "p20-toolchain-001",
+      "requirementDigest": "sha256:a56fb0225075abd0965c5f1d3a621877426e01e0a086da063a7b066efc02438f",
+      "checkpoint": "20",
+      "owner": "RELEASE_ENGINEER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-TOOLCHAIN-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-TOOLCHAIN-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-TOOLCHAIN-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-DEPENDENCIES-001",
+      "phase": 20,
+      "sourceAnchor": "p20-dependencies-001",
+      "requirementDigest": "sha256:7dea7a27c53efaece911ba0592ddb8695dc8cd4262a7073f4b1dbeb003522fb8",
+      "checkpoint": "20",
+      "owner": "DEPENDENCY_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-DEPENDENCIES-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-DEPENDENCIES-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-DEPENDENCIES-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-WEBVOWL-001",
+      "phase": 20,
+      "sourceAnchor": "p20-webvowl-001",
+      "requirementDigest": "sha256:6470b7d647061fb10ae51b8c2e1152f83e5289990246b14c5d028fb16fa9145d",
+      "checkpoint": "20",
+      "owner": "CONSUMER_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-WEBVOWL-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-WEBVOWL-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-WEBVOWL-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-WEBVOWL-DEPENDENCIES-001",
+      "phase": 20,
+      "sourceAnchor": "p20-webvowl-dependencies-001",
+      "requirementDigest": "sha256:016eb5867fff98eaa592d345f111d206e4ed0bd1dc193c60af4586628e48b6e9",
+      "checkpoint": "20",
+      "owner": "CONSUMER_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-WEBVOWL-DEPENDENCIES-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-WEBVOWL-DEPENDENCIES-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-WEBVOWL-DEPENDENCIES-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-BACKUP-001",
+      "phase": 20,
+      "sourceAnchor": "p20-backup-001",
+      "requirementDigest": "sha256:137fc2f213724031e7d8b74c2a5da20b3cb8eb02f081dec4ea00fd79418c85c7",
+      "checkpoint": "20",
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HUMAN_REVIEW",
+        "command": "npm run qualify:release -- --requirement P20-BACKUP-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-BACKUP-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-BACKUP-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-GOVERNANCE-001",
+      "phase": 20,
+      "sourceAnchor": "p20-governance-001",
+      "requirementDigest": "sha256:609cce3a8d967841fa4fe74d82cef7f06175505c55161cad47f6a07b887b791a",
+      "checkpoint": "20",
+      "owner": "SECURITY_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-GOVERNANCE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-GOVERNANCE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-GOVERNANCE-001-VERIFY"]
+    },
+    {
+      "requirementId": "P20-FUTURE-001",
+      "phase": 20,
+      "sourceAnchor": "p20-future-001",
+      "requirementDigest": "sha256:53ed4d3c69c6e73c394a8c89cc4ca29a9ec381d5ff9098a6339a3620fb733d85",
+      "checkpoint": "20",
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-FUTURE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-FUTURE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER",
+      "childGateIds": ["P20-FUTURE-001-VERIFY"]
+    }
+  ],
+  "checklistGates": [
+    {
+      "gateId": "P19-CHECK-001",
+      "phase": 19,
+      "rowDigest": "sha256:ba27565ca89c148d5ca223da930a7a67f89b77118ab2d81cc634c3c9e0b00c91",
+      "coveredRequirementIds": [
+        "P19-PACKAGE-001",
+        "P19-PUBLICATION-001",
+        "P19-NAMESPACE-001"
+      ]
+    },
+    {
+      "gateId": "P19-CHECK-002",
+      "phase": 19,
+      "rowDigest": "sha256:4a6ed40f4eada4247cac1fa84497b108cc9f0ac0d77fa3966343e5506d1fa610",
+      "coveredRequirementIds": ["P19-DOCUMENTATION-001"]
+    },
+    {
+      "gateId": "P19-CHECK-003",
+      "phase": 19,
+      "rowDigest": "sha256:be6d76807755dab5f9863fea5cde3515071960d6dfd74f9ba3a4d1fce52a5ff5",
+      "coveredRequirementIds": ["P19-SCOPE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-004",
+      "phase": 19,
+      "rowDigest": "sha256:3abd7094b893b58c301c3f7ecc9c9128038dbee3a852ddcdcf8443c545baf7c6",
+      "coveredRequirementIds": ["P19-REPOSITORY-001"]
+    },
+    {
+      "gateId": "P19-CHECK-005",
+      "phase": 19,
+      "rowDigest": "sha256:1009a40aa436704de0196bee6b46c387773ebae987a1e3632b371035e10d7875",
+      "coveredRequirementIds": ["P19-REPOSITORY-001"]
+    },
+    {
+      "gateId": "P19-CHECK-006",
+      "phase": 19,
+      "rowDigest": "sha256:2b03bf75b5af2fb984e907e0685088fea0537c875d78b34161dce017c1288de3",
+      "coveredRequirementIds": ["P19-REPOSITORY-001"]
+    },
+    {
+      "gateId": "P19-CHECK-007",
+      "phase": 19,
+      "rowDigest": "sha256:b604d64f76b76d04a8fae8f7e625c9517c710dba897b575fa2f32c4e6d8169e2",
+      "coveredRequirementIds": [
+        "P19-REPOSITORY-001",
+        "P19-SECURITY-GOVERNANCE-001"
+      ]
+    },
+    {
+      "gateId": "P19-CHECK-008",
+      "phase": 19,
+      "rowDigest": "sha256:84f6416c48088011188260a110b636b30da77ac8e99fae4334c581de0a1b76b1",
+      "coveredRequirementIds": [
+        "P19-SECURITY-GOVERNANCE-001",
+        "P19-CI-CONTROLS-001"
+      ]
+    },
+    {
+      "gateId": "P19-CHECK-009",
+      "phase": 19,
+      "rowDigest": "sha256:5a30250ddfc24ceff98431d0d77a05c522850bff5680f04d958b64656db4b7ca",
+      "coveredRequirementIds": ["P19-HISTORY-001"]
+    },
+    {
+      "gateId": "P19-CHECK-010",
+      "phase": 19,
+      "rowDigest": "sha256:28ccd8a2398031727a82fa0e489df928de55f2ef93bc7a367a37107d584fedd2",
+      "coveredRequirementIds": ["P19-HISTORY-001"]
+    },
+    {
+      "gateId": "P19-CHECK-011",
+      "phase": 19,
+      "rowDigest": "sha256:5d7a8148429c460fcf7a26d111117547f3d9cb7074917997d3d44b69cc891eca",
+      "coveredRequirementIds": ["P19-HISTORY-001"]
+    },
+    {
+      "gateId": "P19-CHECK-012",
+      "phase": 19,
+      "rowDigest": "sha256:425400986330cf8e7c80c743f3b0fbda241c1b76403024c05c7275ac00e6029b",
+      "coveredRequirementIds": ["P19-HISTORY-001", "P19-REPOSITORY-001"]
+    },
+    {
+      "gateId": "P19-CHECK-013",
+      "phase": 19,
+      "rowDigest": "sha256:15ad769203fb282f9fc07cfcde398ee1056ff4f12773dd1a6e5e30e10ef6a195",
+      "coveredRequirementIds": ["P19-REPOSITORY-001"]
+    },
+    {
+      "gateId": "P19-CHECK-014",
+      "phase": 19,
+      "rowDigest": "sha256:1eb0153a290797ad5ffba8215b3bd6cd651604271917eab275b89a45a8817ff1",
+      "coveredRequirementIds": ["P19-WEBVOWL-001"]
+    },
+    {
+      "gateId": "P19-CHECK-015",
+      "phase": 19,
+      "rowDigest": "sha256:d4d34e5e2dd3fd9f13536c8a84813e15bb0a77c04f51b95364e7aceac25ef09b",
+      "coveredRequirementIds": ["P19-WEBVOWL-001", "P19-DEPENDENCIES-001"]
+    },
+    {
+      "gateId": "P19-CHECK-016",
+      "phase": 19,
+      "rowDigest": "sha256:3683dc0547467f47d8f38adff75f6d2a8610e2aeccb15a2e6919991651df9a95",
+      "coveredRequirementIds": ["P19-PACKAGE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-017",
+      "phase": 19,
+      "rowDigest": "sha256:4ef49dc382127a7d43f06cc4994a5487bf6dd6ed5f95b5d73ad1c244d233ee28",
+      "coveredRequirementIds": ["P19-PACKAGE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-018",
+      "phase": 19,
+      "rowDigest": "sha256:5922f214ccccd899a892c5ae0fb2f0b8770c8130a24ac98b82126f02a27e4579",
+      "coveredRequirementIds": ["P19-PACKAGE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-019",
+      "phase": 19,
+      "rowDigest": "sha256:10be0a6fc19e4bed0a93cbf4a5312921dc89946b248f5784f907a725c3beea59",
+      "coveredRequirementIds": ["P19-PACKAGE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-020",
+      "phase": 19,
+      "rowDigest": "sha256:0b75150d1b51b2e5681694abde8a2067e2c3d2a1b5fc13739d9a36b8e9f0aa0c",
+      "coveredRequirementIds": ["P19-DEPENDENCIES-001"]
+    },
+    {
+      "gateId": "P19-CHECK-021",
+      "phase": 19,
+      "rowDigest": "sha256:809745510e7bb00bc7caac55cc4fa22bb2ec707e52aa024175563cf5ffc8dfcc",
+      "coveredRequirementIds": ["P19-DEPENDENCIES-001", "P19-BROWSER-001"]
+    },
+    {
+      "gateId": "P19-CHECK-022",
+      "phase": 19,
+      "rowDigest": "sha256:34d08b53cf4c8ce0ed60cd59acb37cfd971546668f959dae59065a630cbfe796",
+      "coveredRequirementIds": ["P19-PACKAGE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-023",
+      "phase": 19,
+      "rowDigest": "sha256:079eee9f4b32711bef89d58423881475086a8f523d36a017064b46bb627b2a35",
+      "coveredRequirementIds": ["P19-PACKAGE-001", "P19-DOCUMENTATION-001"]
+    },
+    {
+      "gateId": "P19-CHECK-024",
+      "phase": 19,
+      "rowDigest": "sha256:49466cc5239620570f64616e74656118ac8f25c56d6f99097161ea699030a1ea",
+      "coveredRequirementIds": ["P19-PACKAGE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-025",
+      "phase": 19,
+      "rowDigest": "sha256:5bea9792c79720a11ad6c0613502f76b5c129e0ea871bbc4decfc5b3509f6ed7",
+      "coveredRequirementIds": ["P19-WEBVOWL-001"]
+    },
+    {
+      "gateId": "P19-CHECK-026",
+      "phase": 19,
+      "rowDigest": "sha256:15dffe1b2124b3439ea5f21d0a30be76ee21bf2231750f4b0657e334367f6309",
+      "coveredRequirementIds": ["P19-PACKAGE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-027",
+      "phase": 19,
+      "rowDigest": "sha256:d2adfe5f9733c1fdacf67851d5aba5e951f5d77124941bb0edbab67d681c5956",
+      "coveredRequirementIds": ["P19-NODE-001", "P19-TOOLCHAIN-001"]
+    },
+    {
+      "gateId": "P19-CHECK-028",
+      "phase": 19,
+      "rowDigest": "sha256:00549e243d81620ca84801d969e7fb80e3dbdc4da7a0ba3495ab587ffa3c3c0c",
+      "coveredRequirementIds": [
+        "P19-TOOLCHAIN-001",
+        "P19-PACKAGE-001",
+        "P19-EVIDENCE-001"
+      ]
+    },
+    {
+      "gateId": "P19-CHECK-029",
+      "phase": 19,
+      "rowDigest": "sha256:cce65549b01fbba896bc646700cedf6110b5d665d2fc23748eef5e18e3ff43a0",
+      "coveredRequirementIds": ["P19-PACKAGE-001", "P19-TOOLCHAIN-001"]
+    },
+    {
+      "gateId": "P19-CHECK-030",
+      "phase": 19,
+      "rowDigest": "sha256:173bc730704c5a6ad921c0c9542ffa734c7d1afcfbd7ea84a607ef32e83f38ce",
+      "coveredRequirementIds": ["P19-DOCUMENTATION-001", "P19-PACKAGE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-031",
+      "phase": 19,
+      "rowDigest": "sha256:170d34cd2c40414e66082485fce08d49c08f3da1412ee7ad489bf042cc3d7392",
+      "coveredRequirementIds": ["P19-NODE-001", "P19-BROWSER-001"]
+    },
+    {
+      "gateId": "P19-CHECK-032",
+      "phase": 19,
+      "rowDigest": "sha256:54b71f2e58f2538f4526fadf95201c11c61122f1435b9426788639267ae517fb",
+      "coveredRequirementIds": ["P19-BROWSER-001", "P19-TOOLCHAIN-001"]
+    },
+    {
+      "gateId": "P19-CHECK-033",
+      "phase": 19,
+      "rowDigest": "sha256:2a9f889ee0cdd60ed1666982ed2f63fc2e7e673dbfb1652037c783b96c4d0aa2",
+      "coveredRequirementIds": ["P19-DOCUMENTATION-001"]
+    },
+    {
+      "gateId": "P19-CHECK-034",
+      "phase": 19,
+      "rowDigest": "sha256:4546daeb4854d2da3f53f5033fca4e013e3ec5845aa9bf49302131d73a4f3079",
+      "coveredRequirementIds": ["P19-DOCUMENTATION-001"]
+    },
+    {
+      "gateId": "P19-CHECK-035",
+      "phase": 19,
+      "rowDigest": "sha256:94a0b350022fce153f33b9dc7ad22611b14834b95ec519905103fbfae23f0113",
+      "coveredRequirementIds": [
+        "P19-DOCUMENTATION-001",
+        "P19-SECURITY-GOVERNANCE-001"
+      ]
+    },
+    {
+      "gateId": "P19-CHECK-036",
+      "phase": 19,
+      "rowDigest": "sha256:37cd82a187769e0693c650c1ce9676f725dca397ffb79dd50a0ddd9742639176",
+      "coveredRequirementIds": ["P19-DOCUMENTATION-001", "P19-PACKAGE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-037",
+      "phase": 19,
+      "rowDigest": "sha256:3f4df8fb3afd4e5c2f587c4e0e2adbb90db0009c8173ab38344ac65078efe449",
+      "coveredRequirementIds": ["P19-DOCUMENTATION-001"]
+    },
+    {
+      "gateId": "P19-CHECK-038",
+      "phase": 19,
+      "rowDigest": "sha256:e19d04ad74821a1628263a6abf60cebeea5f61979f5050702c81f94031fc76a3",
+      "coveredRequirementIds": ["P19-PUBLICATION-001", "P19-CI-CONTROLS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-039",
+      "phase": 19,
+      "rowDigest": "sha256:7ade4e5b0a82ca35e775c37893b45421a7ae0fd8b9b4d895547aefc4f8157962",
+      "coveredRequirementIds": ["P19-SECURITY-GOVERNANCE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-040",
+      "phase": 19,
+      "rowDigest": "sha256:047e7e3a9c06c265e9668447542932ce2c7b246b883ca99c4d71740793b023c1",
+      "coveredRequirementIds": ["P19-SECURITY-GOVERNANCE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-041",
+      "phase": 19,
+      "rowDigest": "sha256:4ab31f70dd797c96e07eede5d33ed77c26031b71f5b65156d2fd5fb3c05638c0",
+      "coveredRequirementIds": ["P19-NAMESPACE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-042",
+      "phase": 19,
+      "rowDigest": "sha256:b0ddbf99bbb307e59e6d24fce4ead178aebc472fb6b1af1483c98481b7cd2a4f",
+      "coveredRequirementIds": ["P19-NAMESPACE-001", "P19-DOCUMENTATION-001"]
+    },
+    {
+      "gateId": "P19-CHECK-043",
+      "phase": 19,
+      "rowDigest": "sha256:dba3e578a8d13b7299ef2fa4f46944b0a118bd4ae0bbc877c59418f1d5ae45cd",
+      "coveredRequirementIds": ["P19-NAMESPACE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-044",
+      "phase": 19,
+      "rowDigest": "sha256:dbd108b253afc5962848d8e8924bd61fd07cc4bd2d628875db207cbf097515e1",
+      "coveredRequirementIds": ["P19-RIGHTS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-045",
+      "phase": 19,
+      "rowDigest": "sha256:4685c86ec6bcb8b7ab200ff02402734417349f4070256c63975238d53278299a",
+      "coveredRequirementIds": ["P19-RIGHTS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-046",
+      "phase": 19,
+      "rowDigest": "sha256:9949936948b5ff3bbb010e9bd3b0905612e7126e8e2adc2be1d49b7a915b4d43",
+      "coveredRequirementIds": ["P19-RIGHTS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-047",
+      "phase": 19,
+      "rowDigest": "sha256:b5ebc38767c641043c2f9c54d19ec13c501c4d01cacfffd0cba3291f825e7955",
+      "coveredRequirementIds": ["P19-RIGHTS-001", "P19-PACKAGE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-048",
+      "phase": 19,
+      "rowDigest": "sha256:62947f6da334d8584811544e0f7589904886975e15bae52f902a3ef89d5f16f6",
+      "coveredRequirementIds": ["P19-RIGHTS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-049",
+      "phase": 19,
+      "rowDigest": "sha256:594dcab02a1b912aeb1347d421ba1449f19929b3ed0d53593fa977fc1b5229c8",
+      "coveredRequirementIds": ["P19-RIGHTS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-050",
+      "phase": 19,
+      "rowDigest": "sha256:201be49891aace747dac4cb932b764fbadc2dda6ba1e54a11c64b6622820198c",
+      "coveredRequirementIds": ["P19-RIGHTS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-051",
+      "phase": 19,
+      "rowDigest": "sha256:cbe8095a112e90c07bea5eb56d7965a48ffcc82de27bb3cae28f73de9eb3326d",
+      "coveredRequirementIds": ["P19-RIGHTS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-052",
+      "phase": 19,
+      "rowDigest": "sha256:de5a1fdffdd2aefea08472185328737a0135cc0088d1edeb8a7e8883f242f8c3",
+      "coveredRequirementIds": ["P19-RIGHTS-001", "P19-DOCUMENTATION-001"]
+    },
+    {
+      "gateId": "P19-CHECK-053",
+      "phase": 19,
+      "rowDigest": "sha256:2379f4cebe70dfe6a2a8802bb963000413d243ea0d3a804c93bbb49cd921bcf4",
+      "coveredRequirementIds": ["P19-RIGHTS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-054",
+      "phase": 19,
+      "rowDigest": "sha256:2b5bb614d4b0647a5181722561448b3dea9c819368a2b393c447b92b99b74d64",
+      "coveredRequirementIds": ["P19-RIGHTS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-055",
+      "phase": 19,
+      "rowDigest": "sha256:09943adb4b34db617fd14caaa72d1ef76587c6e8074113d0e249df9091c84a94",
+      "coveredRequirementIds": ["P19-RIGHTS-001", "P19-DOCUMENTATION-001"]
+    },
+    {
+      "gateId": "P19-CHECK-056",
+      "phase": 19,
+      "rowDigest": "sha256:0445319f52b43c8708124a8883cbc4f27fcafb24d809ff48bae24d8057ac34bd",
+      "coveredRequirementIds": ["P19-RIGHTS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-057",
+      "phase": 19,
+      "rowDigest": "sha256:6c3eedbac1b6a7bfec46b7c4f9d8c7ee2ab54bb7d22dfe55e1baa0ff0a346b30",
+      "coveredRequirementIds": ["P19-RIGHTS-001", "P19-DEPENDENCIES-001"]
+    },
+    {
+      "gateId": "P19-CHECK-058",
+      "phase": 19,
+      "rowDigest": "sha256:2ef80de1fdc38e81fe8ed80b9f5a4840c7479514946c3f6d8cafc26970566695",
+      "coveredRequirementIds": ["P19-PACKAGE-001", "P19-DOCUMENTATION-001"]
+    },
+    {
+      "gateId": "P19-CHECK-059",
+      "phase": 19,
+      "rowDigest": "sha256:aef7b3a8ae46e7b21534aed621d28f59da186c55cb1242f2ef1e53c36b42ade5",
+      "coveredRequirementIds": ["P19-DEPENDENCIES-001"]
+    },
+    {
+      "gateId": "P19-CHECK-060",
+      "phase": 19,
+      "rowDigest": "sha256:b25153aa37a0228487f10ded36a0490f32c6f40e362d318f3840cea5b3c2b580",
+      "coveredRequirementIds": ["P19-DEPENDENCIES-001"]
+    },
+    {
+      "gateId": "P19-CHECK-061",
+      "phase": 19,
+      "rowDigest": "sha256:4238f052287f7a8c659cc892f0a08180c2f8e71406c8dd38f0366e77ddf302ad",
+      "coveredRequirementIds": [
+        "P19-DEPENDENCIES-001",
+        "P19-SECURITY-GOVERNANCE-001",
+        "P19-CI-CONTROLS-001"
+      ]
+    },
+    {
+      "gateId": "P19-CHECK-062",
+      "phase": 19,
+      "rowDigest": "sha256:09155b98c0ce1f983b8ea0e529c1eeb626afad5e3d9b54783d19068d338b908d",
+      "coveredRequirementIds": ["P19-CI-CONTROLS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-063",
+      "phase": 19,
+      "rowDigest": "sha256:5c061abc6e4c77bcd394804f5bd35d96b8241d6cdc1251eb555931fe32b893c5",
+      "coveredRequirementIds": ["P19-CI-CONTROLS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-064",
+      "phase": 19,
+      "rowDigest": "sha256:a5752df47a138a66d08c68a68e66747f694a5719f1390dfcde9909b25d7b69bd",
+      "coveredRequirementIds": ["P19-CI-CONTROLS-001", "P19-NODE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-065",
+      "phase": 19,
+      "rowDigest": "sha256:5aa298e9546ba8fc7b8164fe51ae0323367902e8c8666eccc7d609da85b36622",
+      "coveredRequirementIds": ["P19-CI-CONTROLS-001", "P19-EVIDENCE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-066",
+      "phase": 19,
+      "rowDigest": "sha256:d281bfe401847fd6e048414477c652d055c88da438cb028645f3832cfbc9a178",
+      "coveredRequirementIds": ["P19-CI-CONTROLS-001", "P19-NODE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-067",
+      "phase": 19,
+      "rowDigest": "sha256:7f82d24cfe47b0465e1139bcf17506f7741c8e14c2780427fd3929b54d9ff034",
+      "coveredRequirementIds": ["P19-NODE-001", "P19-CI-CONTROLS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-068",
+      "phase": 19,
+      "rowDigest": "sha256:2e18eae3dab76345db9ecfdb27fad465bb6835ebe18b58511a6be2a48ce2a642",
+      "coveredRequirementIds": ["P19-CI-CONTROLS-001", "P19-TOOLCHAIN-001"]
+    },
+    {
+      "gateId": "P19-CHECK-069",
+      "phase": 19,
+      "rowDigest": "sha256:efbbc74f305cc0937fa8d9c45b462549f460312ef704e970fa2b37607468700f",
+      "coveredRequirementIds": ["P19-CI-CONTROLS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-070",
+      "phase": 19,
+      "rowDigest": "sha256:3ab1ca1da54ee7890ec9672bd466bee02ea8b85533d9da7111c2151aa9100571",
+      "coveredRequirementIds": ["P19-CI-CONTROLS-001", "P19-GATES-001"]
+    },
+    {
+      "gateId": "P19-CHECK-071",
+      "phase": 19,
+      "rowDigest": "sha256:d61168359c6f50420f2a4deb6e13ab0316718c946a096df0dc9d441398cafaa6",
+      "coveredRequirementIds": ["P19-CI-CONTROLS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-072",
+      "phase": 19,
+      "rowDigest": "sha256:db9457cfc9548db67b93a9e4b5609da2cd40c3153d20820e5475dad9ccfe4f3e",
+      "coveredRequirementIds": ["P19-CI-CONTROLS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-073",
+      "phase": 19,
+      "rowDigest": "sha256:0b8767986356bbbff0289c0bd87da878d729991bd8a15d421f87393363d4a189",
+      "coveredRequirementIds": [
+        "P19-CI-CONTROLS-001",
+        "P19-SECURITY-GOVERNANCE-001"
+      ]
+    },
+    {
+      "gateId": "P19-CHECK-074",
+      "phase": 19,
+      "rowDigest": "sha256:94de1f47ef04d08e5924fe795cb9787bfb19f7747e918a856a78f928548a82b8",
+      "coveredRequirementIds": ["P19-DEPENDENCIES-001", "P19-CI-CONTROLS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-075",
+      "phase": 19,
+      "rowDigest": "sha256:608c148cdc8da6e151e30797e11842795b0579d4f3dd392be385783c3f0cb62a",
+      "coveredRequirementIds": [
+        "P19-DEPENDENCIES-001",
+        "P19-SECURITY-GOVERNANCE-001",
+        "P19-CI-CONTROLS-001"
+      ]
+    },
+    {
+      "gateId": "P19-CHECK-076",
+      "phase": 19,
+      "rowDigest": "sha256:4d7106664cdc6703f575f81bf8b5be7c6f85d8453e854fecc7937c1932707ad2",
+      "coveredRequirementIds": ["P19-TOOLCHAIN-001", "P19-CI-CONTROLS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-077",
+      "phase": 19,
+      "rowDigest": "sha256:76d833a1181aaaa908e65b30bdb1f706a73ff586806da8e440064f6229cb8160",
+      "coveredRequirementIds": ["P19-PACKAGE-001", "P19-BROWSER-001"]
+    },
+    {
+      "gateId": "P19-CHECK-078",
+      "phase": 19,
+      "rowDigest": "sha256:275a3eec656e54863694053360a8464622087ec83489929a660d4b3cffa70ace",
+      "coveredRequirementIds": ["P19-PACKAGE-001", "P19-EVIDENCE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-079",
+      "phase": 19,
+      "rowDigest": "sha256:7939bf5c0ecd7b4c2e0aaa8f5675135f46465b6e9d9b81ce6510eae0d5f7e431",
+      "coveredRequirementIds": ["P19-PACKAGE-001", "P19-EVIDENCE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-080",
+      "phase": 19,
+      "rowDigest": "sha256:aceed8c733046313e19d93935d1fd5ce806ce84f214da96b5893caa1bcca051c",
+      "coveredRequirementIds": [
+        "P19-PUBLICATION-001",
+        "P19-EVIDENCE-001",
+        "P19-CI-CONTROLS-001"
+      ]
+    },
+    {
+      "gateId": "P19-CHECK-081",
+      "phase": 19,
+      "rowDigest": "sha256:feffe065418a63380d9575aa4d2d478fb1db61df345d7905a0339afde250cd18",
+      "coveredRequirementIds": ["P19-EVIDENCE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-082",
+      "phase": 19,
+      "rowDigest": "sha256:691a00f3720bcd1dfab735c6f7b27f8f13051ffa2298725fa13b364d9212958a",
+      "coveredRequirementIds": ["P19-BROWSER-001"]
+    },
+    {
+      "gateId": "P19-CHECK-083",
+      "phase": 19,
+      "rowDigest": "sha256:c268d95c244044efa082f05657742912c7bd07e6f36fc636a15e7b511068cbd8",
+      "coveredRequirementIds": ["P19-BROWSER-001", "P19-EVIDENCE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-084",
+      "phase": 19,
+      "rowDigest": "sha256:edf3ff4a556eb4d82482f3316472e416712532a898d3e31871c8dc47bbac40e8",
+      "coveredRequirementIds": ["P19-PUBLICATION-001", "P19-CI-CONTROLS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-085",
+      "phase": 19,
+      "rowDigest": "sha256:a8d51e409f495c110154b8a0c801bab33cbd006a13fddea124e392a22d5cd269",
+      "coveredRequirementIds": ["P19-PUBLICATION-001", "P19-CI-CONTROLS-001"]
+    },
+    {
+      "gateId": "P19-CHECK-086",
+      "phase": 19,
+      "rowDigest": "sha256:a5f38ea9a654889e5404b0f88efbd082d89f44e67b37243f39388b254e99aa61",
+      "coveredRequirementIds": ["P19-PUBLICATION-001", "P19-NAMESPACE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-087",
+      "phase": 19,
+      "rowDigest": "sha256:e9f2c402e1547e4b7e1bf6ac2ce8a38fb5d3743f0fcb5c863544a46a4a656ce3",
+      "coveredRequirementIds": [
+        "P19-PUBLIC-VERIFICATION-001",
+        "P19-EVIDENCE-001"
+      ]
+    },
+    {
+      "gateId": "P19-CHECK-088",
+      "phase": 19,
+      "rowDigest": "sha256:6ca37e354c2b41cca5ffc3bbef438b6ce7aee0aa485069d918d6279cf3a96a79",
+      "coveredRequirementIds": ["P19-PUBLICATION-001"]
+    },
+    {
+      "gateId": "P19-CHECK-089",
+      "phase": 19,
+      "rowDigest": "sha256:16dd16f6bf4818ba86a627b8b6f3d82ea2921fae3f63514ba2ef5fd1d0a63876",
+      "coveredRequirementIds": ["P19-PUBLICATION-001"]
+    },
+    {
+      "gateId": "P19-CHECK-090",
+      "phase": 19,
+      "rowDigest": "sha256:8f9e7f5209bf6c80c33261779dd26ca6d43a23a7b7c07d9211ea77ab2be129b8",
+      "coveredRequirementIds": ["P19-CI-CONTROLS-001", "P19-PUBLICATION-001"]
+    },
+    {
+      "gateId": "P19-CHECK-091",
+      "phase": 19,
+      "rowDigest": "sha256:583579b1730c58d0a3881567a4e9585c2c8370341c49a4e615b2daf8b663c8f7",
+      "coveredRequirementIds": ["P19-CUSTODY-001"]
+    },
+    {
+      "gateId": "P19-CHECK-092",
+      "phase": 19,
+      "rowDigest": "sha256:e8f415fcefdbc3a86b1b5cc398f768c1e830e2af535b22a2515772e7977d0d8e",
+      "coveredRequirementIds": ["P19-CUSTODY-001", "P19-NAMESPACE-001"]
+    },
+    {
+      "gateId": "P19-CHECK-093",
+      "phase": 19,
+      "rowDigest": "sha256:93e159fc50af5393a519fcb881633f54a14274c3a2b9197089bc73d686222ad1",
+      "coveredRequirementIds": [
+        "P19-EVIDENCE-001",
+        "P19-GATES-001",
+        "P19-CHECKPOINT-001"
+      ]
+    },
+    {
+      "gateId": "P20-CHECK-001",
+      "phase": 20,
+      "rowDigest": "sha256:f2e8a65254c08806806505b3988450e7b6498d2f9d5fefb99d5ecc8de8c876e3",
+      "coveredRequirementIds": ["P20-FUTURE-001", "P20-RELEASE-001"]
+    },
+    {
+      "gateId": "P20-CHECK-002",
+      "phase": 20,
+      "rowDigest": "sha256:49f439d2ea3a8589c117916be31be87600929571fe04a103057da06dd89c3ecb",
+      "coveredRequirementIds": ["P20-GOVERNANCE-001", "P20-METADATA-001"]
+    },
+    {
+      "gateId": "P20-CHECK-003",
+      "phase": 20,
+      "rowDigest": "sha256:a4b1f6a42f945fdc2f7b6656f269cc50017a683e16c405159df409196403dfd9",
+      "coveredRequirementIds": ["P20-PATH-001"]
+    },
+    {
+      "gateId": "P20-CHECK-004",
+      "phase": 20,
+      "rowDigest": "sha256:6fe29671273cc8337f56e2eca542debf70b9d9dceaf6ac7e741b63f772151834",
+      "coveredRequirementIds": [
+        "P20-PATH-001",
+        "P20-RELEASE-001",
+        "P20-LATE-TAG-001",
+        "P20-MANUAL-001"
+      ]
+    },
+    {
+      "gateId": "P20-CHECK-005",
+      "phase": 20,
+      "rowDigest": "sha256:52f56a490199480de9a4af69445f0c1d5badfff6cbb4ca4a42b7d1d9f05f1fd8",
+      "coveredRequirementIds": [
+        "P20-RELEASE-001",
+        "P20-PATH-001",
+        "P20-LATE-TAG-001"
+      ]
+    },
+    {
+      "gateId": "P20-CHECK-006",
+      "phase": 20,
+      "rowDigest": "sha256:047b98c501e3e32716103e66f11097728b18b7f6ce2a5bcc6afb437bcd3d6cfb",
+      "coveredRequirementIds": ["P20-DOCUMENTATION-001", "P20-PACKAGE-001"]
+    },
+    {
+      "gateId": "P20-CHECK-007",
+      "phase": 20,
+      "rowDigest": "sha256:bca40ae31d75e0ad51830c543c53946451f310fc2f71de82fa8f3fc33408ae64",
+      "coveredRequirementIds": [
+        "P20-RELEASE-001",
+        "P20-PATH-001",
+        "P20-DOCUMENTATION-001"
+      ]
+    },
+    {
+      "gateId": "P20-CHECK-008",
+      "phase": 20,
+      "rowDigest": "sha256:88d0aeb9744accdd39e8b078d6ea0aab15ce80fef98a5f4eb3529a21a6726af4",
+      "coveredRequirementIds": [
+        "P20-RELEASE-001",
+        "P20-CHANNEL-001",
+        "P20-EVIDENCE-001",
+        "P20-PACKAGE-001",
+        "P20-METADATA-001",
+        "P20-RUNTIME-001",
+        "P20-PORTABILITY-001",
+        "P20-CI-001",
+        "P20-BROWSER-001",
+        "P20-TOOLCHAIN-001",
+        "P20-DEPENDENCIES-001",
+        "P20-GOVERNANCE-001"
+      ]
+    },
+    {
+      "gateId": "P20-CHECK-009",
+      "phase": 20,
+      "rowDigest": "sha256:714b0f37193196f33cbf91e3e135a0c69f371036be6cf8d3153494f957949997",
+      "coveredRequirementIds": ["P20-RESOURCES-001"]
+    },
+    {
+      "gateId": "P20-CHECK-010",
+      "phase": 20,
+      "rowDigest": "sha256:25401db426a011b3cf6485007924417e582beba6c769c1d22f9635a325db1bd6",
+      "coveredRequirementIds": ["P20-GATES-001"]
+    },
+    {
+      "gateId": "P20-CHECK-011",
+      "phase": 20,
+      "rowDigest": "sha256:d0eee8f0a6ba83a4d67887ebb710799c8cb3a6ad223af7a921cd3c4e45650ff9",
+      "coveredRequirementIds": ["P20-GOVERNANCE-001"]
+    },
+    {
+      "gateId": "P20-CHECK-012",
+      "phase": 20,
+      "rowDigest": "sha256:96e324ad9dafa28bd24dc10577121665c398d2fef2bc2f2c1cdda9c6039ce2f8",
+      "coveredRequirementIds": ["P20-CHANNEL-001", "P20-DOCUMENTATION-001"]
+    },
+    {
+      "gateId": "P20-CHECK-013",
+      "phase": 20,
+      "rowDigest": "sha256:6b503ae4ad97a0c02f150fb7a22c713e8239f3643e3d653d725b3f299090ee5e",
+      "coveredRequirementIds": [
+        "P20-WEBVOWL-001",
+        "P20-WEBVOWL-DEPENDENCIES-001"
+      ]
+    },
+    {
+      "gateId": "P20-CHECK-014",
+      "phase": 20,
+      "rowDigest": "sha256:914231ca3125dabf3689b2b8f10d28111670d7e025926fc3ba086e987405a67f",
+      "coveredRequirementIds": ["P20-BACKUP-001"]
+    },
+    {
+      "gateId": "P20-CHECK-015",
+      "phase": 20,
+      "rowDigest": "sha256:6a0671aff6090ee70f41551666c888e9f7abf7933bdd9ad7f73f6940af34bd60",
+      "coveredRequirementIds": ["P20-RELEASE-001", "P20-PATH-001"]
+    },
+    {
+      "gateId": "P20-CHECK-016",
+      "phase": 20,
+      "rowDigest": "sha256:8264bc067e0dbe26891419c11c9210d7337b5b866fd8d1190c4899434a0f2fb3",
+      "coveredRequirementIds": [
+        "P20-RELEASE-001",
+        "P20-PATH-001",
+        "P20-LATE-TAG-001"
+      ]
+    },
+    {
+      "gateId": "P20-CHECK-017",
+      "phase": 20,
+      "rowDigest": "sha256:8271bf818a042fd7d89da59e5b3fea3de8cb73c21dff995fb30ccfd568188175",
+      "coveredRequirementIds": [
+        "P20-EVIDENCE-001",
+        "P20-PORTABILITY-001",
+        "P20-CI-001",
+        "P20-MANUAL-001",
+        "P20-UNTRUSTED-001",
+        "P20-BROWSER-001",
+        "P20-TOOLCHAIN-001",
+        "P20-GOVERNANCE-001"
+      ]
+    },
+    {
+      "gateId": "P20-CHECK-018",
+      "phase": 20,
+      "rowDigest": "sha256:776862e0e89846858defe7d352ef3fb75f56a273b9cf7914880d713163f66d17",
+      "coveredRequirementIds": ["P20-PROVENANCE-001"]
+    }
+  ],
+  "leafGates": [
+    {
+      "gateId": "P19-SCOPE-001-VERIFY",
+      "ownerRequirementId": "P19-SCOPE-001",
+      "checklistGateIds": ["P19-CHECK-003"],
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P19-SCOPE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-SCOPE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-HISTORY-001-VERIFY",
+      "ownerRequirementId": "P19-HISTORY-001",
+      "checklistGateIds": [
+        "P19-CHECK-009",
+        "P19-CHECK-010",
+        "P19-CHECK-011",
+        "P19-CHECK-012"
+      ],
+      "owner": "HISTORY_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HUMAN_REVIEW",
+        "command": "npm run qualify:release -- --requirement P19-HISTORY-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-HISTORY-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-REPOSITORY-001-VERIFY",
+      "ownerRequirementId": "P19-REPOSITORY-001",
+      "checklistGateIds": [
+        "P19-CHECK-004",
+        "P19-CHECK-005",
+        "P19-CHECK-006",
+        "P19-CHECK-007",
+        "P19-CHECK-012",
+        "P19-CHECK-013"
+      ],
+      "owner": "REPOSITORY_ADMINISTRATOR",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "EXTERNAL_OBSERVATION",
+        "command": "npm run qualify:release -- --requirement P19-REPOSITORY-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-REPOSITORY-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-RIGHTS-001-VERIFY",
+      "ownerRequirementId": "P19-RIGHTS-001",
+      "checklistGateIds": [
+        "P19-CHECK-044",
+        "P19-CHECK-045",
+        "P19-CHECK-046",
+        "P19-CHECK-047",
+        "P19-CHECK-048",
+        "P19-CHECK-049",
+        "P19-CHECK-050",
+        "P19-CHECK-051",
+        "P19-CHECK-052",
+        "P19-CHECK-053",
+        "P19-CHECK-054",
+        "P19-CHECK-055",
+        "P19-CHECK-056",
+        "P19-CHECK-057"
+      ],
+      "owner": "RIGHTS_REVIEWER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HUMAN_REVIEW",
+        "command": "npm run qualify:release -- --requirement P19-RIGHTS-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-RIGHTS-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-PACKAGE-001-VERIFY",
+      "ownerRequirementId": "P19-PACKAGE-001",
+      "checklistGateIds": [
+        "P19-CHECK-001",
+        "P19-CHECK-016",
+        "P19-CHECK-017",
+        "P19-CHECK-018",
+        "P19-CHECK-019",
+        "P19-CHECK-022",
+        "P19-CHECK-023",
+        "P19-CHECK-024",
+        "P19-CHECK-026",
+        "P19-CHECK-028",
+        "P19-CHECK-029",
+        "P19-CHECK-030",
+        "P19-CHECK-036",
+        "P19-CHECK-047",
+        "P19-CHECK-058",
+        "P19-CHECK-077",
+        "P19-CHECK-078",
+        "P19-CHECK-079"
+      ],
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P19-PACKAGE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-PACKAGE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-DEPENDENCIES-001-VERIFY",
+      "ownerRequirementId": "P19-DEPENDENCIES-001",
+      "checklistGateIds": [
+        "P19-CHECK-015",
+        "P19-CHECK-020",
+        "P19-CHECK-021",
+        "P19-CHECK-057",
+        "P19-CHECK-059",
+        "P19-CHECK-060",
+        "P19-CHECK-061",
+        "P19-CHECK-074",
+        "P19-CHECK-075"
+      ],
+      "owner": "DEPENDENCY_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P19-DEPENDENCIES-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-DEPENDENCIES-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-DOCUMENTATION-001-VERIFY",
+      "ownerRequirementId": "P19-DOCUMENTATION-001",
+      "checklistGateIds": [
+        "P19-CHECK-002",
+        "P19-CHECK-023",
+        "P19-CHECK-030",
+        "P19-CHECK-033",
+        "P19-CHECK-034",
+        "P19-CHECK-035",
+        "P19-CHECK-036",
+        "P19-CHECK-037",
+        "P19-CHECK-042",
+        "P19-CHECK-052",
+        "P19-CHECK-055",
+        "P19-CHECK-058"
+      ],
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P19-DOCUMENTATION-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-DOCUMENTATION-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-SECURITY-GOVERNANCE-001-VERIFY",
+      "ownerRequirementId": "P19-SECURITY-GOVERNANCE-001",
+      "checklistGateIds": [
+        "P19-CHECK-007",
+        "P19-CHECK-008",
+        "P19-CHECK-035",
+        "P19-CHECK-039",
+        "P19-CHECK-040",
+        "P19-CHECK-061",
+        "P19-CHECK-073",
+        "P19-CHECK-075"
+      ],
+      "owner": "SECURITY_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P19-SECURITY-GOVERNANCE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-SECURITY-GOVERNANCE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-TOOLCHAIN-001-VERIFY",
+      "ownerRequirementId": "P19-TOOLCHAIN-001",
+      "checklistGateIds": [
+        "P19-CHECK-027",
+        "P19-CHECK-028",
+        "P19-CHECK-029",
+        "P19-CHECK-032",
+        "P19-CHECK-068",
+        "P19-CHECK-076"
+      ],
+      "owner": "RELEASE_ENGINEER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P19-TOOLCHAIN-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-TOOLCHAIN-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-CI-CONTROLS-001-VERIFY",
+      "ownerRequirementId": "P19-CI-CONTROLS-001",
+      "checklistGateIds": [
+        "P19-CHECK-008",
+        "P19-CHECK-038",
+        "P19-CHECK-061",
+        "P19-CHECK-062",
+        "P19-CHECK-063",
+        "P19-CHECK-064",
+        "P19-CHECK-065",
+        "P19-CHECK-066",
+        "P19-CHECK-067",
+        "P19-CHECK-068",
+        "P19-CHECK-069",
+        "P19-CHECK-070",
+        "P19-CHECK-071",
+        "P19-CHECK-072",
+        "P19-CHECK-073",
+        "P19-CHECK-074",
+        "P19-CHECK-075",
+        "P19-CHECK-076",
+        "P19-CHECK-080",
+        "P19-CHECK-084",
+        "P19-CHECK-085",
+        "P19-CHECK-090"
+      ],
+      "owner": "RELEASE_ENGINEER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P19-CI-CONTROLS-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-CI-CONTROLS-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-NODE-001-VERIFY",
+      "ownerRequirementId": "P19-NODE-001",
+      "checklistGateIds": [
+        "P19-CHECK-027",
+        "P19-CHECK-031",
+        "P19-CHECK-064",
+        "P19-CHECK-066",
+        "P19-CHECK-067"
+      ],
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P19-NODE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-NODE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-BROWSER-001-VERIFY",
+      "ownerRequirementId": "P19-BROWSER-001",
+      "checklistGateIds": [
+        "P19-CHECK-021",
+        "P19-CHECK-031",
+        "P19-CHECK-032",
+        "P19-CHECK-077",
+        "P19-CHECK-082",
+        "P19-CHECK-083"
+      ],
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P19-BROWSER-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-BROWSER-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-EVIDENCE-001-VERIFY",
+      "ownerRequirementId": "P19-EVIDENCE-001",
+      "checklistGateIds": [
+        "P19-CHECK-028",
+        "P19-CHECK-065",
+        "P19-CHECK-078",
+        "P19-CHECK-079",
+        "P19-CHECK-080",
+        "P19-CHECK-081",
+        "P19-CHECK-083",
+        "P19-CHECK-087",
+        "P19-CHECK-093"
+      ],
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P19-EVIDENCE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-EVIDENCE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-GATES-001-VERIFY",
+      "ownerRequirementId": "P19-GATES-001",
+      "checklistGateIds": ["P19-CHECK-070", "P19-CHECK-093"],
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P19-GATES-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-GATES-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-NAMESPACE-001-VERIFY",
+      "ownerRequirementId": "P19-NAMESPACE-001",
+      "checklistGateIds": [
+        "P19-CHECK-001",
+        "P19-CHECK-041",
+        "P19-CHECK-042",
+        "P19-CHECK-043",
+        "P19-CHECK-086",
+        "P19-CHECK-092"
+      ],
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "EXTERNAL_OBSERVATION",
+        "command": "npm run qualify:release -- --requirement P19-NAMESPACE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-NAMESPACE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-PUBLICATION-001-VERIFY",
+      "ownerRequirementId": "P19-PUBLICATION-001",
+      "checklistGateIds": [
+        "P19-CHECK-001",
+        "P19-CHECK-038",
+        "P19-CHECK-080",
+        "P19-CHECK-084",
+        "P19-CHECK-085",
+        "P19-CHECK-086",
+        "P19-CHECK-088",
+        "P19-CHECK-089",
+        "P19-CHECK-090"
+      ],
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "EXTERNAL_OBSERVATION",
+        "command": "npm run qualify:release -- --requirement P19-PUBLICATION-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-PUBLICATION-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-PUBLIC-VERIFICATION-001-VERIFY",
+      "ownerRequirementId": "P19-PUBLIC-VERIFICATION-001",
+      "checklistGateIds": ["P19-CHECK-087"],
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P19-PUBLIC-VERIFICATION-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-PUBLIC-VERIFICATION-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-WEBVOWL-001-VERIFY",
+      "ownerRequirementId": "P19-WEBVOWL-001",
+      "checklistGateIds": ["P19-CHECK-014", "P19-CHECK-015", "P19-CHECK-025"],
+      "owner": "CONSUMER_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P19-WEBVOWL-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-WEBVOWL-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-CUSTODY-001-VERIFY",
+      "ownerRequirementId": "P19-CUSTODY-001",
+      "checklistGateIds": ["P19-CHECK-091", "P19-CHECK-092"],
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HUMAN_REVIEW",
+        "command": "npm run qualify:release -- --requirement P19-CUSTODY-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-CUSTODY-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P19-CHECKPOINT-001-VERIFY",
+      "ownerRequirementId": "P19-CHECKPOINT-001",
+      "checklistGateIds": ["P19-CHECK-093"],
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HUMAN_REVIEW",
+        "command": "npm run qualify:release -- --requirement P19-CHECKPOINT-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P19-CHECKPOINT-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-RELEASE-001-VERIFY",
+      "ownerRequirementId": "P20-RELEASE-001",
+      "checklistGateIds": [
+        "P20-CHECK-001",
+        "P20-CHECK-004",
+        "P20-CHECK-005",
+        "P20-CHECK-007",
+        "P20-CHECK-008",
+        "P20-CHECK-015",
+        "P20-CHECK-016"
+      ],
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-RELEASE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-RELEASE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-PATH-001-VERIFY",
+      "ownerRequirementId": "P20-PATH-001",
+      "checklistGateIds": [
+        "P20-CHECK-003",
+        "P20-CHECK-004",
+        "P20-CHECK-005",
+        "P20-CHECK-007",
+        "P20-CHECK-015",
+        "P20-CHECK-016"
+      ],
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HUMAN_REVIEW",
+        "command": "npm run qualify:release -- --requirement P20-PATH-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-PATH-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-CHANNEL-001-VERIFY",
+      "ownerRequirementId": "P20-CHANNEL-001",
+      "checklistGateIds": ["P20-CHECK-008", "P20-CHECK-012"],
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-CHANNEL-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-CHANNEL-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-EVIDENCE-001-VERIFY",
+      "ownerRequirementId": "P20-EVIDENCE-001",
+      "checklistGateIds": ["P20-CHECK-008", "P20-CHECK-017"],
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-EVIDENCE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-EVIDENCE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-PROVENANCE-001-VERIFY",
+      "ownerRequirementId": "P20-PROVENANCE-001",
+      "checklistGateIds": ["P20-CHECK-018"],
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-PROVENANCE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-PROVENANCE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-PACKAGE-001-VERIFY",
+      "ownerRequirementId": "P20-PACKAGE-001",
+      "checklistGateIds": ["P20-CHECK-006", "P20-CHECK-008"],
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-PACKAGE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-PACKAGE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-DOCUMENTATION-001-VERIFY",
+      "ownerRequirementId": "P20-DOCUMENTATION-001",
+      "checklistGateIds": ["P20-CHECK-006", "P20-CHECK-007", "P20-CHECK-012"],
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-DOCUMENTATION-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-DOCUMENTATION-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-METADATA-001-VERIFY",
+      "ownerRequirementId": "P20-METADATA-001",
+      "checklistGateIds": ["P20-CHECK-002", "P20-CHECK-008"],
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-METADATA-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-METADATA-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-RUNTIME-001-VERIFY",
+      "ownerRequirementId": "P20-RUNTIME-001",
+      "checklistGateIds": ["P20-CHECK-008"],
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-RUNTIME-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-RUNTIME-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-PORTABILITY-001-VERIFY",
+      "ownerRequirementId": "P20-PORTABILITY-001",
+      "checklistGateIds": ["P20-CHECK-008", "P20-CHECK-017"],
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-PORTABILITY-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-PORTABILITY-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-CI-001-VERIFY",
+      "ownerRequirementId": "P20-CI-001",
+      "checklistGateIds": ["P20-CHECK-008", "P20-CHECK-017"],
+      "owner": "RELEASE_ENGINEER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-CI-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-CI-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-LATE-TAG-001-VERIFY",
+      "ownerRequirementId": "P20-LATE-TAG-001",
+      "checklistGateIds": ["P20-CHECK-004", "P20-CHECK-005", "P20-CHECK-016"],
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-LATE-TAG-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-LATE-TAG-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-MANUAL-001-VERIFY",
+      "ownerRequirementId": "P20-MANUAL-001",
+      "checklistGateIds": ["P20-CHECK-004", "P20-CHECK-017"],
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-MANUAL-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-MANUAL-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-UNTRUSTED-001-VERIFY",
+      "ownerRequirementId": "P20-UNTRUSTED-001",
+      "checklistGateIds": ["P20-CHECK-017"],
+      "owner": "RELEASE_ENGINEER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-UNTRUSTED-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-UNTRUSTED-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-BROWSER-001-VERIFY",
+      "ownerRequirementId": "P20-BROWSER-001",
+      "checklistGateIds": ["P20-CHECK-008", "P20-CHECK-017"],
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-BROWSER-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-BROWSER-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-RESOURCES-001-VERIFY",
+      "ownerRequirementId": "P20-RESOURCES-001",
+      "checklistGateIds": ["P20-CHECK-009"],
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-RESOURCES-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-RESOURCES-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-GATES-001-VERIFY",
+      "ownerRequirementId": "P20-GATES-001",
+      "checklistGateIds": ["P20-CHECK-010"],
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-GATES-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-GATES-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-TOOLCHAIN-001-VERIFY",
+      "ownerRequirementId": "P20-TOOLCHAIN-001",
+      "checklistGateIds": ["P20-CHECK-008", "P20-CHECK-017"],
+      "owner": "RELEASE_ENGINEER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-TOOLCHAIN-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-TOOLCHAIN-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-DEPENDENCIES-001-VERIFY",
+      "ownerRequirementId": "P20-DEPENDENCIES-001",
+      "checklistGateIds": ["P20-CHECK-008"],
+      "owner": "DEPENDENCY_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-DEPENDENCIES-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-DEPENDENCIES-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-WEBVOWL-001-VERIFY",
+      "ownerRequirementId": "P20-WEBVOWL-001",
+      "checklistGateIds": ["P20-CHECK-013"],
+      "owner": "CONSUMER_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-WEBVOWL-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-WEBVOWL-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-WEBVOWL-DEPENDENCIES-001-VERIFY",
+      "ownerRequirementId": "P20-WEBVOWL-DEPENDENCIES-001",
+      "checklistGateIds": ["P20-CHECK-013"],
+      "owner": "CONSUMER_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-WEBVOWL-DEPENDENCIES-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-WEBVOWL-DEPENDENCIES-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-BACKUP-001-VERIFY",
+      "ownerRequirementId": "P20-BACKUP-001",
+      "checklistGateIds": ["P20-CHECK-014"],
+      "owner": "RELEASE_CUSTODIAN",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HUMAN_REVIEW",
+        "command": "npm run qualify:release -- --requirement P20-BACKUP-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-BACKUP-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-GOVERNANCE-001-VERIFY",
+      "ownerRequirementId": "P20-GOVERNANCE-001",
+      "checklistGateIds": [
+        "P20-CHECK-002",
+        "P20-CHECK-008",
+        "P20-CHECK-011",
+        "P20-CHECK-017"
+      ],
+      "owner": "SECURITY_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "HYBRID",
+        "command": "npm run qualify:release -- --requirement P20-GOVERNANCE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-GOVERNANCE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    },
+    {
+      "gateId": "P20-FUTURE-001-VERIFY",
+      "ownerRequirementId": "P20-FUTURE-001",
+      "checklistGateIds": ["P20-CHECK-001"],
+      "owner": "PACKAGE_MAINTAINER",
+      "applicability": {
+        "mode": "ALWAYS"
+      },
+      "blocking": "REQUIRED",
+      "verification": {
+        "kind": "AUTOMATED",
+        "command": "npm run qualify:release -- --requirement P20-FUTURE-001"
+      },
+      "evidence": {
+        "recordPath": "docs/provenance/releases/<version>/gates.json",
+        "jsonPointer": "/requirements/P20-FUTURE-001"
+      },
+      "permittedFinalResults": ["PASS"],
+      "failureClasses": [
+        "PRODUCT_FAILURE",
+        "CONTROL_FAILURE",
+        "EXTERNAL_BLOCKED"
+      ],
+      "waiverPolicy": "NO_ORDINARY_WAIVER"
+    }
+  ]
+}

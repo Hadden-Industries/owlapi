@@ -1,0 +1,22 @@
+name: Documentation correction
+description: Report inaccurate, inaccessible, incomplete, or confusing documentation.
+title: "[Docs]: "
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Documentation location
+      placeholder: URL, file, heading, or public symbol
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong or missing?
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Suggested correction and supporting authority
+      description: Include a specification or source link where the correction is factual.

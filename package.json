@@ -69,9 +69,32 @@
   },
   "browserslist": "baseline widely available",
   "scripts": {
+    "browser:prepare": "node scripts/prepare-browser-consumers.mjs",
+    "browser:serve": "node scripts/serve-browser-consumers.mjs",
+    "candidate:prepare": "node scripts/prepare-downloaded-candidate.mjs",
+    "candidate:portable": "node scripts/qualify-installed-candidate.mjs",
+    "generate:release-gates": "node scripts/generate-release-gate-registry.mjs --write",
+    "maintenance:published-health": "node scripts/maintenance-published-health.mjs",
+    "playwright:install": "playwright install",
+    "workflow:runner-record": "node scripts/record-runner.mjs",
+    "workflow:metadata": "node scripts/workflow-metadata.mjs",
+    "workflow:aggregate": "node scripts/require-job-success.mjs",
+    "workflow:dependency-review-applicability": "node scripts/report-dependency-review-applicability.mjs",
     "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules --disable-warning=ExperimentalWarning\" jest",
     "test:boundary": "node --test test/package-boundary.test.mjs",
+    "test:browser": "node scripts/run-browser-tests.mjs",
+    "test:webvowl-browser": "node scripts/test-webvowl-browser.mjs",
+    "test:webvowl-consumer": "node scripts/qualify-webvowl-consumer.mjs",
+    "verify:release-gates": "node scripts/verify-release-gates.mjs --json",
+    "verify:workflow-governance": "node scripts/workflow-governance.mjs",
+    "release:lint-package": "publint --strict",
+    "release:pack": "node scripts/build-release-candidate.mjs",
+    "release:preflight": "node scripts/release-preflight.mjs",
+    "release:assert-publication-disabled": "node scripts/assert-publication-disabled.mjs",
+    "extended:record-status": "node scripts/record-extended-test-status.mjs",
+    "release:sbom": "cyclonedx-npm --spec-version 1.6 --output-format JSON --output-reproducible --validate --mc-type library --omit dev",
     "lint": "eslint .",
+    "lint:files": "eslint",
     "format": "prettier --write --ignore-unknown .",
     "format:check": "prettier --check --ignore-unknown ."
   },
@@ -121,6 +144,9 @@
     "tag": "next"
   },
   "jest": {
+    "modulePathIgnorePatterns": [
+      "<rootDir>/.release/"
+    ],
     "testEnvironment": "node",
     "testPathIgnorePatterns": [
       "/node_modules/",

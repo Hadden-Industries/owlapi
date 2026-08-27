@@ -47,7 +47,11 @@ const MAIN_THREAD_BUDGET_MS = 50;
 const MAX_TIMER_DELAY_MS = 2_147_483_647;
 const textEncoder = new TextEncoder();
 
-const defaultImplementationLoader = () => import("n3/browser/n3.min.js");
+// Use N3's documented package root rather than coupling owlapi to a private
+// distribution path. Node, bundlers and the reference provider may select
+// environment-appropriate files, but the adapter verifies one Lexer/StreamParser
+// namespace contract before any parser implementation is used.
+const defaultImplementationLoader = () => import("n3");
 
 const normalizeConfiguration = (configuration) =>
   configuration instanceof OWLOntologyLoaderConfiguration

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Hadden-Industries/owlapi/blob/main/docs/release/webvowl-consumer.schema.json",
+  "title": "owlapi retained-package WebVOWL qualification input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schemaVersion", "webvowl", "ontologyCorpus"],
+  "properties": {
+    "$schema": { "const": "./webvowl-consumer.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "webvowl": { "$ref": "#/$defs/repository" },
+    "ontologyCorpus": { "$ref": "#/$defs/corpusRepository" }
+  },
+  "$defs": {
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "commit"],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        },
+        "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" }
+      }
+    },
+    "corpusRepository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "commit", "root"],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        },
+        "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "root": { "const": "dist" }
+      }
+    }
+  }
+}
