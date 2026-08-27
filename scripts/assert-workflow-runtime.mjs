@@ -1,4 +1,6 @@
 import { spawnSync } from "node:child_process";
+import { existsSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 export const assertWorkflowRuntime = ({
@@ -28,16 +30,54 @@ const valueAfter = (name) => {
   return process.argv[index + 1];
 };
 
-const main = () => {
-  const npmExecutable = process.platform === "win32" ? "npm.cmd" : "npm";
-  const observation = spawnSync(npmExecutable, ["--version"], {
-    encoding: "utf8",
-    shell: false,
-  });
-  if (observation.status !== 0) {
+const bundledNpmCli = () => {
+  const executableDirectory = dirname(process.execPath);
+  // Official Windows Node distributions keep npm beside node.exe; official
+  // POSIX distributions (including setup-node) keep it in the sibling lib tree.
+  // Invoke npm's JavaScript entry point with the selected Node executable so a
+  // `.cmd` shim or a command shell is never part of the runtime assertion.
+  const candidates =
+    process.platform === "win32"
+      ? [join(executableDirectory, "node_modules", "npm", "bin", "npm-cli.js")]
+      : [
+          resolve(
+            executableDirectory,
+            "..",
+            "lib",
+            "node_modules",
+            "npm",
+            "bin",
+            "npm-cli.js",
+          ),
+          join(executableDirectory, "node_modules", "npm", "bin", "npm-cli.js"),
+        ];
+  const npmCli = candidates.find((candidate) => existsSync(candidate));
+  if (!npmCli) {
     throw new Error(
-      `Unable to observe npm: ${observation.stdout}${observation.stderr}`,
+      `Unable to locate npm's JavaScript CLI for ${process.execPath}.`,
     );
+  }
+  return npmCli;
+};
+
+const main = () => {
+  const observation = spawnSync(
+    process.execPath,
+    [bundledNpmCli(), "--version"],
+    {
+      encoding: "utf8",
+      shell: false,
+    },
+  );
+  if (observation.error || observation.status !== 0) {
+    const details = [
+      observation.error?.message,
+      observation.stdout,
+      observation.stderr,
+    ]
+      .filter((value) => typeof value === "string" && value.trim().length > 0)
+      .join("\n");
+    throw new Error(`Unable to observe npm${details ? `: ${details}` : "."}`);
   }
   const accepted = assertWorkflowRuntime({
     expectedNode: valueAfter("--node"),

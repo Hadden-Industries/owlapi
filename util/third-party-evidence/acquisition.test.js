@@ -94,7 +94,10 @@ const makeTarball = (entries) => {
 const integrity = (bytes) =>
   `sha512-${createHash("sha512").update(bytes).digest("base64")}`;
 
-const makeRegistryFixture = ({ archiveRoot = "package" } = {}) => {
+const makeRegistryFixture = ({
+  archiveRoot = "package",
+  additionalEntries = [],
+} = {}) => {
   const tarball = makeTarball([
     {
       path: `${archiveRoot}/package.json`,
@@ -106,6 +109,7 @@ const makeRegistryFixture = ({ archiveRoot = "package" } = {}) => {
     },
     { path: `${archiveRoot}/LICENSE`, body: "MIT licence fixture\n" },
     { path: `${archiveRoot}/index.js`, body: "export default 1;\n" },
+    ...additionalEntries,
   ]);
   const lockedIntegrity = integrity(tarball);
   const resolved = "https://registry.npmjs.org/alpha/-/alpha-1.0.0.tgz";
@@ -248,7 +252,6 @@ const fixtureScan = async ({ artifactId, inputRoot, inventory }) => ({
         "--unknown-licenses": true,
         "--license-text": true,
         "--license-references": true,
-        "--package-in-compiled": true,
         "--processes": 1,
       },
       errors: [],
@@ -279,6 +282,19 @@ const fixtureScan = async ({ artifactId, inputRoot, inventory }) => ({
     })),
   ],
 });
+
+const fixtureScanWithout =
+  (...archivePaths) =>
+  async (options) => {
+    const report = await fixtureScan(options);
+    const omittedPaths = new Set(
+      archivePaths.map(
+        (archivePath) => `${basename(options.inputRoot)}/${archivePath}`,
+      ),
+    );
+    report.files = report.files.filter(({ path }) => !omittedPaths.has(path));
+    return report;
+  };
 
 describe("acquireEvidence", () => {
   it("acquires, authenticates, scans and writes a platform-neutral fixture corpus", async () => {
@@ -366,6 +382,107 @@ describe("acquireEvidence", () => {
       [],
     );
   });
+
+  it("records authenticated zero-byte and hidden files that ScanCode does not report", async () => {
+    const fixture = makeRegistryFixture({
+      additionalEntries: [
+        {
+          path: "package/.gitattributes",
+          body: "* text=auto\n",
+        },
+        { path: "package/docs/empty.md", body: "" },
+      ],
+    });
+    const registry = await startRegistryServer(fixture);
+    const repositoryRoot = await mkdtemp(
+      join(tmpdir(), "owlapi-scan-coverage-test-"),
+    );
+    temporaryRoots.push(repositoryRoot);
+    await writeFile(
+      join(repositoryRoot, "package-lock.json"),
+      fixture.lockfileBytes,
+    );
+
+    const result = await acquireEvidence({
+      repositoryRoot,
+      fetchImpl: mappedFetch(registry.origin),
+      downloadTarball: fixtureDownload,
+      verifyPackageMetadata: fixtureMetadataVerification,
+      scanArtifact: fixtureScanWithout(
+        "package/.gitattributes",
+        "package/docs/empty.md",
+      ),
+      write: true,
+      sleep: async () => {},
+    });
+    const retainedScan = result.manifest.blobs.find(
+      ({ kind }) => kind === "SCANCODE_FINDINGS",
+    );
+    const scanEnvelope = JSON.parse(
+      await readFile(
+        join(
+          repositoryRoot,
+          "docs",
+          "provenance",
+          "evidence",
+          "npm",
+          retainedScan.path,
+        ),
+        "utf8",
+      ),
+    );
+
+    expect(scanEnvelope.evidence.archiveCoverage).toEqual({
+      authenticatedFileCount: 5,
+      reportedFileCount: 3,
+      omittedFiles: [
+        {
+          path: "package/.gitattributes",
+          reason: "HIDDEN_PATH_NOT_REPORTED",
+          size: 12,
+          sha256: createHash("sha256").update("* text=auto\n").digest("hex"),
+        },
+        {
+          path: "package/docs/empty.md",
+          reason: "EMPTY_FILE_NOT_REPORTED",
+          size: 0,
+          sha256: createHash("sha256").update("").digest("hex"),
+        },
+      ],
+    });
+  });
+
+  it.each(["package/LICENSE", "package/index.js"])(
+    "fails closed when ScanCode omits required authenticated file %s",
+    async (omittedPath) => {
+      const fixture = makeRegistryFixture();
+      const registry = await startRegistryServer(fixture);
+      const repositoryRoot = await mkdtemp(
+        join(tmpdir(), "owlapi-scan-coverage-test-"),
+      );
+      temporaryRoots.push(repositoryRoot);
+      await writeFile(
+        join(repositoryRoot, "package-lock.json"),
+        fixture.lockfileBytes,
+      );
+
+      await expect(
+        acquireEvidence({
+          repositoryRoot,
+          fetchImpl: mappedFetch(registry.origin),
+          downloadTarball: fixtureDownload,
+          verifyPackageMetadata: fixtureMetadataVerification,
+          scanArtifact: fixtureScanWithout(omittedPath),
+          write: true,
+          sleep: async () => {},
+        }),
+      ).rejects.toMatchObject({
+        name: "AcquisitionError",
+        classification: "PRODUCT_FAILURE",
+        code: "SCANCODE_FINDINGS_INVALID",
+      });
+    },
+  );
 
   it("fails authentication when downloaded bytes do not match the locked SRI", async () => {
     const fixture = makeRegistryFixture();

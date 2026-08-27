@@ -362,7 +362,7 @@ const retainEnvelope = async (corpusRoot, kind, artifactId, evidence) => ({
   kind,
 });
 
-const assertScanClosure = (scan, inventory, artifactId) => {
+const bindScanCoverage = (scan, inventory, artifactId) => {
   if (!Array.isArray(scan.files)) {
     productFailure(
       "SCANCODE_FILE_INVENTORY_MISSING",
@@ -380,26 +380,75 @@ const assertScanClosure = (scan, inventory, artifactId) => {
     files.set(file.path, file);
   }
   const expectedFiles = inventory.entries.filter(({ type }) => type === "FILE");
-  for (const entry of expectedFiles) {
-    const file = files.get(entry.path);
+  const expectedByPath = new Map(
+    expectedFiles.map((entry) => [entry.path, entry]),
+  );
+  for (const file of files.values()) {
+    const entry = expectedByPath.get(file.path);
     if (
-      !file ||
+      !entry ||
       file.type !== "file" ||
       file.size !== entry.size ||
       file.sha256 !== entry.sha256
     ) {
       productFailure(
         "SCANCODE_FILE_INVENTORY_INVALID",
-        `ScanCode did not cover authenticated archive path ${entry.path}`,
+        `ScanCode reported an unauthenticated or changed archive path ${file.path}`,
       );
     }
   }
-  if (files.size !== expectedFiles.length) {
+
+  const retainedEvidencePaths = new Set(
+    inventory.evidenceFiles.map(({ path }) => path),
+  );
+  const omittedFiles = [];
+  for (const entry of expectedFiles) {
+    if (files.has(entry.path)) {
+      continue;
+    }
+    const hiddenPath = entry.path
+      .split("/")
+      .some((segment) => segment.startsWith("."));
+    let reason;
+    if (entry.size === 0) {
+      // A zero-byte file has no semantic content for ScanCode to inspect, but
+      // the authenticated archive inventory still binds its path and digest.
+      reason = "EMPTY_FILE_NOT_REPORTED";
+    } else if (hiddenPath && !retainedEvidencePaths.has(entry.path)) {
+      // ScanCode 32.5.0 can omit hidden resources from its JSON file report.
+      // Permit that observed representation gap only for files that the
+      // independent archive classifier did not select as legal evidence.
+      reason = "HIDDEN_PATH_NOT_REPORTED";
+    } else {
+      productFailure(
+        "SCANCODE_FILE_INVENTORY_INVALID",
+        `ScanCode did not cover required authenticated archive path ${entry.path}`,
+      );
+    }
+    omittedFiles.push({
+      path: entry.path,
+      reason,
+      size: entry.size,
+      sha256: entry.sha256,
+    });
+  }
+  if (Object.hasOwn(scan, "archiveCoverage")) {
     productFailure(
       "SCANCODE_FILE_INVENTORY_INVALID",
-      `ScanCode file inventory does not close over ${artifactId}`,
+      `ScanCode returned the reserved archiveCoverage field for ${artifactId}`,
     );
   }
+  // Keep the archive inventory authoritative for byte-for-byte closure and bind
+  // ScanCode's actual reporting coverage into the retained findings envelope.
+  // This makes scanner omissions reviewable without treating them as scanned.
+  return {
+    ...scan,
+    archiveCoverage: {
+      authenticatedFileCount: expectedFiles.length,
+      reportedFileCount: files.size,
+      omittedFiles,
+    },
+  };
 };
 
 const selectPackumentVersion = (packument, identity) => {
@@ -708,7 +757,11 @@ const acquireArtifact = async ({
         artifactId: identity.artifactId,
         inputRoot: scanRoot,
       });
-      assertScanClosure(normalizedScan, inventory, identity.artifactId);
+      normalizedScan = bindScanCoverage(
+        normalizedScan,
+        inventory,
+        identity.artifactId,
+      );
     } catch (error) {
       productFailure(
         "SCANCODE_FINDINGS_INVALID",

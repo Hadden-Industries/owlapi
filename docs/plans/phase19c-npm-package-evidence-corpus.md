@@ -190,6 +190,9 @@ export async function inspectPackageTarball(tarballPath, expected, options = {})
       coordinate. Modern npm-produced archives normally use `package/`; accept a
       different historical root only under the same one-root, exact-identity and
       path/link/collision controls, and retain that root in authenticated evidence.
+- [ ] Canonicalize harmless POSIX `.` components before root/collision checks,
+      including during the authenticated materialization pass; continue to reject
+      empty components and `..`, and detect duplicates after canonicalization.
 - [ ] Re-run focused tests and prove the test process creates no extracted
       package path outside its temporary fixture directory.
 
@@ -267,7 +270,17 @@ export function normalizeScancodeReport(report, { artifactId, inputRoot })
       to bound the upstream-reported Python 3.14 memory regression; retain that
       execution limit in normalized provenance without treating it as a semantic
       scan option.
-- [ ] Assert any scan error, skipped file or unexpected ScanCode version fails.
+- [ ] Keep ordinary package discovery and every licence/copyright/information
+      scan fail-closed, but exclude `--package-in-compiled` from the canonical
+      option set because its Go/Rust-specific extraction aborts on authenticated
+      foreign-platform native packages. Continue to authenticate every compiled
+      file in the archive ledger; reserve any future compiled introspection for a
+      separate, deterministic supplemental evidence channel.
+- [ ] Assert any scan error, unexpected ScanCode version, extra or changed file,
+      omitted non-empty legal-evidence file, or otherwise unaccounted omission
+      fails. Permit only authenticated zero-byte omissions and non-evidence hidden
+      paths that ScanCode does not report, and retain each omission's exact path,
+      size, SHA-256 and fixed reason in the normalized findings envelope.
 - [ ] Observe RED, implement an allowlist of removable fields and canonical
       ordering, then re-run focused tests.
 
@@ -350,6 +363,8 @@ export async function acquireEvidence(options)
       platform, ScanCode executable and setup-python output from explicitly named
       environment variables, reject absent/invalid variable names and never place
       GitHub expressions in `run:` text.
+- [ ] Observe npm by launching the installed `npm-cli.js` with `process.execPath`
+      and `shell: false`; never attempt to spawn a Windows `.cmd` shim directly.
 
 ## Task 8: Generate third-party-material v2 from the corpus
 
@@ -412,6 +427,29 @@ export async function acquireEvidence(options)
       every unique artifact passes identity/SRI/signature/archive/scan controls,
       and provenance counts distinguish verified from not published; do not
       preserve the pre-tool counts as constants after the lockfile changes.
+
+### First diagnostic baseline: run 33066704132
+
+The manually dispatched two-host baseline on 27 August 2026 deliberately drained
+all 64 shard lanes under `fail-fast: false`. It is diagnostic evidence, not a
+completed Phase 19C baseline: 18 jobs succeeded, 49 failed and the schedule-only
+observation job was correctly skipped. All 32 Windows shards reached the same
+pre-acquisition defect because Node cannot execute `npm.cmd` directly with
+`shell: false`. Ubuntu completed 18 shards and exposed three authenticated
+historical-layout classes across the remaining 14: harmless `package/./...` tar
+paths, zero-byte or hidden resources absent from ScanCode's file report, and
+foreign-platform native `.node` artifacts that make `--package-in-compiled`
+abort. Both host aggregates and parity therefore failed closed; no candidate
+corpus was promoted. The retained run is
+[GitHub Actions run 33066704132](https://github.com/Hadden-Industries/owlapi/actions/runs/33066704132).
+
+The bounded correction keeps the archive inventory authoritative, canonicalizes
+only POSIX `.` components, records only the two proved ScanCode-report omission
+classes, rejects every unaccounted or legally significant omission, removes
+host-dependent compiled-package introspection from the canonical scan, and
+executes npm's JavaScript CLI through the selected Node binary. A new complete
+64-shard run and cross-platform parity result remain mandatory before this task
+can be checked off.
 
 ## Task 10: Reconcile rights and human review
 

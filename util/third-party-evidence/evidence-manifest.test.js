@@ -231,7 +231,6 @@ const makeFixture = async () => {
           "--license-references",
           "--license-text",
           "--package",
-          "--package-in-compiled",
           "--unknown-licenses",
         ],
         executionOptions: ["--processes", "1"],

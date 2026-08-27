@@ -56,17 +56,24 @@ const validatePath = (path, limits) => {
     segments.some(
       (segment) =>
         !segment ||
-        segment === "." ||
         segment === ".." ||
-        containsControlCharacter(segment) ||
-        /[<>:"|?*]/u.test(segment) ||
-        /[. ]$/u.test(segment) ||
-        WINDOWS_RESERVED_NAME.test(segment),
+        (segment !== "." &&
+          (containsControlCharacter(segment) ||
+            /[<>:"|?*]/u.test(segment) ||
+            /[. ]$/u.test(segment) ||
+            WINDOWS_RESERVED_NAME.test(segment))),
     )
   ) {
     throw new Error(`Unsafe archive path: ${path}`);
   }
-  return normalized;
+  // POSIX treats `.` as the current directory. Canonicalize that harmless
+  // historical tar spelling before collision checks while continuing to reject
+  // traversal, empty components and every Windows-ambiguous representation.
+  const canonical = segments.filter((segment) => segment !== ".").join("/");
+  if (!canonical) {
+    throw new Error(`Unsafe archive path: ${path}`);
+  }
+  return canonical;
 };
 
 const namedEvidenceKind = (path) => {
@@ -300,7 +307,7 @@ export const inspectPackageTarball = async (
     file: tarballPath,
     strict: true,
     win32: false,
-    filter: (path) => path.replace(/\/$/u, "") === packageMetadataPath,
+    filter: (path) => validatePath(path, limits) === packageMetadataPath,
     onReadEntry: (entry) => {
       const chunks = [];
       entry.on("data", (chunk) => chunks.push(Buffer.from(chunk)));

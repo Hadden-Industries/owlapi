@@ -164,6 +164,43 @@ describe("inspectPackageTarball", () => {
     ]);
   });
 
+  it("canonicalizes harmless dot components before inventorying and materializing files", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "owlapi-dot-path-test-"));
+    const tarballPath = join(directory, "fixture.tgz");
+    const destination = join(directory, "scan");
+    try {
+      await writeFile(
+        tarballPath,
+        tar([
+          ...baseEntries(),
+          {
+            path: "package/./dist/index.js",
+            body: "export default 1;\n",
+          },
+        ]),
+      );
+
+      const inventory = await inspectPackageTarball(tarballPath, {
+        name: "alpha",
+        version: "1.0.0",
+      });
+      expect(inventory.entries.map(({ path }) => path)).toContain(
+        "package/dist/index.js",
+      );
+
+      const packageRoot = await materializePackageForScan(
+        tarballPath,
+        inventory,
+        destination,
+      );
+      await expect(
+        readFile(join(packageRoot, "dist", "index.js"), "utf8"),
+      ).resolves.toBe("export default 1;\n");
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
+  });
+
   it("does not retain a README that contains no legal or attribution evidence", async () => {
     const result = await inspect([
       ...baseEntries(),
@@ -227,6 +264,13 @@ describe("inspectPackageTarball", () => {
         { path: "package/license", body: "two" },
       ]),
     ).rejects.toThrow(/case-folding collision/iu);
+    await expect(
+      inspect([
+        ...baseEntries(),
+        { path: "package/dist/index.js", body: "one" },
+        { path: "package/./dist/index.js", body: "two" },
+      ]),
+    ).rejects.toThrow(/duplicate archive path/iu);
   });
 
   it("rejects package metadata whose identity does not match the locked artifact", async () => {

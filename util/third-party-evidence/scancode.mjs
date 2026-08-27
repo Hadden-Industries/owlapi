@@ -4,6 +4,10 @@ const SCANCODE_OUTPUT_FORMAT_VERSION = "4.1.0";
 
 // These switches define the semantic scan. Execution-only settings such as the
 // input directory are intentionally excluded from the normalized evidence.
+// `--package` covers package manifests. `--package-in-compiled` is deliberately
+// absent: optional npm artifacts include foreign-ABI native binaries, while
+// ScanCode 32.5.0 only supports compiled-package extraction for Go and Rust and
+// can abort the otherwise portable licence scan when it encounters those files.
 export const SCANCODE_SEMANTIC_OPTIONS = Object.freeze(
   [
     "--copyright",
@@ -13,7 +17,6 @@ export const SCANCODE_SEMANTIC_OPTIONS = Object.freeze(
     "--license-references",
     "--license-text",
     "--package",
-    "--package-in-compiled",
     "--unknown-licenses",
   ].sort(compareCodeUnits),
 );

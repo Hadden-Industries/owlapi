@@ -3280,7 +3280,9 @@ entries, evidence reached through links, retained-path duplicates or case-foldin
 collisions, malformed/truncated archives and fixed compressed/expanded/entry-
 count/entry-size/path-length limit violations. Offline verification rechecks the
 recorded root against every inventory path and the root manifest. The inspector
-records every normalized POSIX entry and recursively identifies licence, notice,
+canonicalizes harmless POSIX current-directory (`.`) components before applying
+root and collision controls, while empty components and parent traversal (`..`)
+remain invalid. It records every normalized POSIX entry and recursively identifies licence, notice,
 copyright, author, patent and material third-party-attribution files. An absent
 licence file is a valid observed fact, not proof of compatible licensing.
 Immutable external evidence may close a documented tarball gap only when it is
@@ -3292,7 +3294,15 @@ official checksum-pinned ScanCode Toolkit `32.5.0` Python 3.14 archives
 independently on Windows and Ubuntu over all
 authenticated unique tarballs, collecting licence matches/text/references,
 copyrights, package and file information, generated/unknown-licence findings and
-package information inside compiled files. Each invocation **MUST** use
+ordinary package-manifest information. The canonical scan deliberately excludes
+ScanCode's `--package-in-compiled`: the option's Go/Rust-specific supplemental
+metadata extraction aborts on some authenticated foreign-platform native npm
+artifacts and would therefore make the required evidence depend on the runner
+host. Every compiled file remains path/size/SHA-256 authenticated in the archive
+inventory and remains within the ordinary licence, copyright, information and
+unknown-licence scan. Any future compiled-package introspection must be a separate
+supplemental channel and must not enter canonical release evidence until it has a
+deterministic cross-platform success and normalization contract. Each invocation **MUST** use
 `--processes 1` to keep the upstream-reported Python 3.14 worker-memory regression
 resource-bounded and reproducible. ScanCode dependencies remain isolated in a
 disposable release-tool environment and MUST NOT alter a user-level Python
@@ -3303,7 +3313,15 @@ path crosses into the fixed project command only through an environment value.
 A deterministic normalizer removes only enumerated
 non-semantic timing/temporary-path fields, preserves scan errors and all
 substantive findings, sorts unordered collections and binds each result to the
-artifact and scanner-option digests. The two normalized corpus roots must agree;
+artifact and scanner-option digests. The authenticated archive inventory, not
+ScanCode's resource list, remains the complete file ledger. Every reported
+ScanCode file must match one archive file by normalized path, size and SHA-256;
+extra or changed reports fail. An unreported file also fails except when it is
+provably zero-byte, or is a hidden path not selected as legal evidence by the
+independent archive classifier. Each such representation-level omission is
+retained explicitly with its path, size, digest and fixed reason; a non-empty
+legal-evidence omission and every other unaccounted omission still fail. Recorded
+omissions are never represented as scanned findings. The two normalized corpus roots must agree;
 the process may not choose one platform's result silently. macOS and ordinary CI
 run offline corpus/fixture verification. Later acquisition scans only changed
 artifacts keyed by tarball identity plus scanner/options digest. Every release
