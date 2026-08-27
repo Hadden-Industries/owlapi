@@ -249,7 +249,32 @@ describe("inspectPackageTarball", () => {
     ).rejects.toThrow(message);
   });
 
-  it("rejects duplicate and case-folding-colliding archive paths", async () => {
+  it("retains one canonical entry for byte-identical duplicate tar members", async () => {
+    const result = await inspect([
+      ...baseEntries(),
+      { path: "package/dist/index.js", body: "same" },
+      { path: "package/dist/index.js", body: "same" },
+    ]);
+
+    expect(result.physicalEntryCount).toBe(3);
+    expect(
+      result.entries.filter(({ path }) => path === "package/dist/index.js"),
+    ).toHaveLength(1);
+    expect(result.duplicateEntries).toEqual([
+      {
+        path: "package/dist/index.js",
+        type: "FILE",
+        size: 4,
+        sha256: expect.stringMatching(/^[0-9a-f]{64}$/u),
+        occurrenceCount: 2,
+      },
+    ]);
+    expect(result.expandedBytes).toBe(
+      result.entries.reduce((sum, { size }) => sum + size, 0) + 4,
+    );
+  });
+
+  it("rejects conflicting duplicate and case-folding-colliding archive paths", async () => {
     await expect(
       inspect([
         ...baseEntries(),
@@ -299,6 +324,16 @@ describe("inspectPackageTarball", () => {
       inspect(
         [
           ...baseEntries(),
+          { path: "package/dist/index.js", body: "same" },
+          { path: "package/dist/index.js", body: "same" },
+        ],
+        { limits: { ...ARCHIVE_LIMITS, entries: 2 } },
+      ),
+    ).rejects.toThrow(/entry count limit/iu);
+    await expect(
+      inspect(
+        [
+          ...baseEntries(),
           { path: "package/LICENSE", body: "one" },
           { path: "package/NOTICE", body: "two" },
         ],
@@ -319,6 +354,7 @@ describe("inspectPackageTarball", () => {
         tar([
           ...baseEntries(),
           { path: "package/LICENSE", body: "MIT licence text\n" },
+          { path: "package/lib/index.js", body: "export default 1;\n" },
           { path: "package/lib/index.js", body: "export default 1;\n" },
         ]),
       );
@@ -377,6 +413,43 @@ describe("inspectPackageTarball", () => {
       await expect(
         readFile(join(packageRoot, "LICENSE"), "utf8"),
       ).resolves.toBe("MIT licence text\n");
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
+  });
+
+  it("removes the scan tree if any duplicate occurrence changes after inspection", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "owlapi-materialize-test-"));
+    const tarballPath = join(directory, "fixture.tgz");
+    const destination = join(directory, "scan");
+    try {
+      await writeFile(
+        tarballPath,
+        tar([
+          ...baseEntries(),
+          { path: "package/lib/index.js", body: "same" },
+          { path: "package/lib/index.js", body: "same" },
+        ]),
+      );
+      const inventory = await inspectPackageTarball(tarballPath, {
+        name: "alpha",
+        version: "1.0.0",
+      });
+      await writeFile(
+        tarballPath,
+        tar([
+          ...baseEntries(),
+          { path: "package/lib/index.js", body: "same" },
+          { path: "package/lib/index.js", body: "evil" },
+        ]),
+      );
+
+      await expect(
+        materializePackageForScan(tarballPath, inventory, destination),
+      ).rejects.toThrow(/content no longer matches/iu);
+      await expect(access(destination)).rejects.toMatchObject({
+        code: "ENOENT",
+      });
     } finally {
       await rm(directory, { recursive: true, force: true });
     }

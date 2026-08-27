@@ -252,6 +252,7 @@ const fixtureScan = async ({ artifactId, inputRoot, inventory }) => ({
         "--unknown-licenses": true,
         "--license-text": true,
         "--license-references": true,
+        "--ignore": ["*.node"],
         "--processes": 1,
       },
       errors: [],
@@ -293,6 +294,23 @@ const fixtureScanWithout =
       ),
     );
     report.files = report.files.filter(({ path }) => !omittedPaths.has(path));
+    return report;
+  };
+
+const fixtureScanWithoutDigest =
+  (...archivePaths) =>
+  async (options) => {
+    const report = await fixtureScan(options);
+    const selectedPaths = new Set(
+      archivePaths.map(
+        (archivePath) => `${basename(options.inputRoot)}/${archivePath}`,
+      ),
+    );
+    for (const file of report.files) {
+      if (selectedPaths.has(file.path)) {
+        delete file.sha256;
+      }
+    }
     return report;
   };
 
@@ -435,6 +453,8 @@ describe("acquireEvidence", () => {
     expect(scanEnvelope.evidence.archiveCoverage).toEqual({
       authenticatedFileCount: 5,
       reportedFileCount: 3,
+      digestVerifiedFileCount: 3,
+      incompleteIdentityFiles: [],
       omittedFiles: [
         {
           path: "package/.gitattributes",
@@ -449,6 +469,151 @@ describe("acquireEvidence", () => {
           sha256: createHash("sha256").update("").digest("hex"),
         },
       ],
+    });
+  });
+
+  it("records a reported empty file whose ScanCode digest is absent", async () => {
+    const fixture = makeRegistryFixture({
+      additionalEntries: [{ path: "package/docs/empty.md", body: "" }],
+    });
+    const registry = await startRegistryServer(fixture);
+    const repositoryRoot = await mkdtemp(
+      join(tmpdir(), "owlapi-scan-coverage-test-"),
+    );
+    temporaryRoots.push(repositoryRoot);
+    await writeFile(
+      join(repositoryRoot, "package-lock.json"),
+      fixture.lockfileBytes,
+    );
+
+    const result = await acquireEvidence({
+      repositoryRoot,
+      fetchImpl: mappedFetch(registry.origin),
+      downloadTarball: fixtureDownload,
+      verifyPackageMetadata: fixtureMetadataVerification,
+      scanArtifact: fixtureScanWithoutDigest("package/docs/empty.md"),
+      write: true,
+      sleep: async () => {},
+    });
+    const retainedScan = result.manifest.blobs.find(
+      ({ kind }) => kind === "SCANCODE_FINDINGS",
+    );
+    const scanEnvelope = JSON.parse(
+      await readFile(
+        join(
+          repositoryRoot,
+          "docs",
+          "provenance",
+          "evidence",
+          "npm",
+          retainedScan.path,
+        ),
+        "utf8",
+      ),
+    );
+
+    expect(scanEnvelope.evidence.archiveCoverage).toEqual({
+      authenticatedFileCount: 4,
+      reportedFileCount: 4,
+      digestVerifiedFileCount: 3,
+      incompleteIdentityFiles: [
+        {
+          path: "package/docs/empty.md",
+          reason: "EMPTY_FILE_DIGEST_NOT_REPORTED",
+          size: 0,
+          sha256: createHash("sha256").update("").digest("hex"),
+        },
+      ],
+      omittedFiles: [],
+    });
+  });
+
+  it("records native Node binaries intentionally excluded from ScanCode", async () => {
+    const fixture = makeRegistryFixture({
+      additionalEntries: [
+        { path: "package/native/addon.node", body: Buffer.from([0, 1, 2, 3]) },
+      ],
+    });
+    const registry = await startRegistryServer(fixture);
+    const repositoryRoot = await mkdtemp(
+      join(tmpdir(), "owlapi-scan-coverage-test-"),
+    );
+    temporaryRoots.push(repositoryRoot);
+    await writeFile(
+      join(repositoryRoot, "package-lock.json"),
+      fixture.lockfileBytes,
+    );
+
+    const result = await acquireEvidence({
+      repositoryRoot,
+      fetchImpl: mappedFetch(registry.origin),
+      downloadTarball: fixtureDownload,
+      verifyPackageMetadata: fixtureMetadataVerification,
+      scanArtifact: fixtureScanWithout("package/native/addon.node"),
+      write: true,
+      sleep: async () => {},
+    });
+    const retainedScan = result.manifest.blobs.find(
+      ({ kind }) => kind === "SCANCODE_FINDINGS",
+    );
+    const scanEnvelope = JSON.parse(
+      await readFile(
+        join(
+          repositoryRoot,
+          "docs",
+          "provenance",
+          "evidence",
+          "npm",
+          retainedScan.path,
+        ),
+        "utf8",
+      ),
+    );
+
+    expect(scanEnvelope.evidence.archiveCoverage).toEqual({
+      authenticatedFileCount: 4,
+      reportedFileCount: 3,
+      digestVerifiedFileCount: 3,
+      incompleteIdentityFiles: [],
+      omittedFiles: [
+        {
+          path: "package/native/addon.node",
+          reason: "NATIVE_NODE_BINARY_NOT_SCANNED",
+          size: 4,
+          sha256: createHash("sha256")
+            .update(Buffer.from([0, 1, 2, 3]))
+            .digest("hex"),
+        },
+      ],
+    });
+  });
+
+  it("fails closed when ScanCode omits a digest for a non-empty file", async () => {
+    const fixture = makeRegistryFixture();
+    const registry = await startRegistryServer(fixture);
+    const repositoryRoot = await mkdtemp(
+      join(tmpdir(), "owlapi-scan-coverage-test-"),
+    );
+    temporaryRoots.push(repositoryRoot);
+    await writeFile(
+      join(repositoryRoot, "package-lock.json"),
+      fixture.lockfileBytes,
+    );
+
+    await expect(
+      acquireEvidence({
+        repositoryRoot,
+        fetchImpl: mappedFetch(registry.origin),
+        downloadTarball: fixtureDownload,
+        verifyPackageMetadata: fixtureMetadataVerification,
+        scanArtifact: fixtureScanWithoutDigest("package/index.js"),
+        write: true,
+        sleep: async () => {},
+      }),
+    ).rejects.toMatchObject({
+      name: "AcquisitionError",
+      classification: "PRODUCT_FAILURE",
+      code: "SCANCODE_FINDINGS_INVALID",
     });
   });
 

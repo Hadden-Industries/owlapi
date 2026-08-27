@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import {
   SCANCODE_EXECUTION_OPTIONS,
+  SCANCODE_IGNORED_PATH_PATTERNS,
   SCANCODE_SEMANTIC_OPTIONS,
   SCANCODE_TOOL,
   buildScancodeArguments,
@@ -36,6 +37,7 @@ describe("normalizeScancodeReport", () => {
         version: "32.5.0",
         outputFormatVersion: "4.1.0",
         semanticOptions: SCANCODE_SEMANTIC_OPTIONS,
+        ignoredPathPatterns: SCANCODE_IGNORED_PATH_PATTERNS,
         executionOptions: SCANCODE_EXECUTION_OPTIONS,
       },
     });
@@ -86,6 +88,13 @@ describe("normalizeScancodeReport", () => {
         report.headers[0].options["--processes"] = 2;
       },
       /execution option/iu,
+    ],
+    [
+      "different ignored path pattern",
+      (report) => {
+        report.headers[0].options["--ignore"] = ["vendor/**"];
+      },
+      /ignored path pattern/iu,
     ],
     [
       "header error",
@@ -149,6 +158,7 @@ describe("SCANCODE_TOOL", () => {
 
   it("bounds Python 3.14 scans to one worker without changing the semantic option set", () => {
     expect(SCANCODE_EXECUTION_OPTIONS).toEqual(["--processes", "1"]);
+    expect(SCANCODE_IGNORED_PATH_PATTERNS).toEqual(["*.node"]);
     expect(
       buildScancodeArguments({
         outputPath: "C:\\release\\report.json",
@@ -156,6 +166,8 @@ describe("SCANCODE_TOOL", () => {
       }),
     ).toEqual([
       ...SCANCODE_SEMANTIC_OPTIONS,
+      "--ignore",
+      "*.node",
       "--processes",
       "1",
       "--json-pp",

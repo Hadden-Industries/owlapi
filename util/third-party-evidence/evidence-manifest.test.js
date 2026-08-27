@@ -233,6 +233,7 @@ const makeFixture = async () => {
           "--package",
           "--unknown-licenses",
         ],
+        ignoredPathPatterns: ["*.node"],
         executionOptions: ["--processes", "1"],
       },
     },

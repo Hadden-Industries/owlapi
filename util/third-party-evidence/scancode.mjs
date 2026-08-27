@@ -21,6 +21,13 @@ export const SCANCODE_SEMANTIC_OPTIONS = Object.freeze(
   ].sort(compareCodeUnits),
 );
 
+// Native Node add-ons are platform-specific opaque binaries. ScanCode 32.5.0
+// can abort while identifying a foreign-ABI `.node` file, so every host applies
+// the same documented pre-scan exclusion. The authenticated archive inventory
+// still binds those bytes, and archiveCoverage records each exclusion rather
+// than representing it as scanned source.
+export const SCANCODE_IGNORED_PATH_PATTERNS = Object.freeze(["*.node"]);
+
 // ScanCode 32.5.0's Python 3.14 distribution has an upstream-reported memory
 // regression when it fans out across many workers. A single worker also makes
 // release-evidence acquisition resource-bounded and repeatable across hosts.
@@ -59,6 +66,10 @@ export const buildScancodeArguments = ({ outputPath, inputRoot } = {}) => {
   assertString(inputRoot, "inputRoot");
   return [
     ...SCANCODE_SEMANTIC_OPTIONS,
+    ...SCANCODE_IGNORED_PATH_PATTERNS.flatMap((pattern) => [
+      "--ignore",
+      pattern,
+    ]),
     ...SCANCODE_EXECUTION_OPTIONS,
     "--json-pp",
     outputPath,
@@ -237,6 +248,18 @@ export const normalizeScancodeReport = (
       throw new Error(`Required ScanCode semantic option is absent: ${option}`);
     }
   }
+  const ignoredPathPatterns = header.options["--ignore"];
+  if (
+    !Array.isArray(ignoredPathPatterns) ||
+    ignoredPathPatterns.length !== SCANCODE_IGNORED_PATH_PATTERNS.length ||
+    ignoredPathPatterns.some(
+      (pattern, index) => pattern !== SCANCODE_IGNORED_PATH_PATTERNS[index],
+    )
+  ) {
+    throw new Error(
+      "Required ScanCode ignored path pattern is absent or changed",
+    );
+  }
   if (header.options["--processes"] !== 1) {
     throw new Error(
       "Required ScanCode execution option is absent: --processes must be 1",
@@ -270,6 +293,7 @@ export const normalizeScancodeReport = (
       version: SCANCODE_TOOL.version,
       outputFormatVersion: SCANCODE_OUTPUT_FORMAT_VERSION,
       semanticOptions: SCANCODE_SEMANTIC_OPTIONS,
+      ignoredPathPatterns: SCANCODE_IGNORED_PATH_PATTERNS,
       executionOptions: SCANCODE_EXECUTION_OPTIONS,
       message: header.message ?? null,
       warnings: header.warnings ?? [],

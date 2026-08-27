@@ -145,12 +145,14 @@ export const inspectPackageTarball = async (
   assertLimit(compressed.size, limits.compressedBytes, "compressed byte limit");
 
   const entries = [];
+  const physicalEntries = [];
   const evidenceFiles = [];
   const pendingEntries = [];
   const exactPaths = new Set();
   const foldedPaths = new Map();
   const abortController = new AbortController();
   let controlError;
+  let physicalEntryCount = 0;
   let expandedBytes = 0;
   let retainedEvidenceBytes = 0;
   let archiveRoot;
@@ -183,9 +185,6 @@ export const inspectPackageTarball = async (
             );
           }
           archiveRoot ??= entryRoot;
-          if (exactPaths.has(path)) {
-            throw new Error(`Duplicate archive path: ${path}`);
-          }
           const folded = path.toLocaleLowerCase("en-US");
           const collision = foldedPaths.get(folded);
           if (collision && collision !== path) {
@@ -196,7 +195,10 @@ export const inspectPackageTarball = async (
           exactPaths.add(path);
           foldedPaths.set(folded, path);
 
-          assertLimit(exactPaths.size, limits.entries, "entry count limit");
+          // Count physical tar members, including exact-path duplicates, so a
+          // valid canonical inventory cannot hide an archive-bombing primitive.
+          physicalEntryCount += 1;
+          assertLimit(physicalEntryCount, limits.entries, "entry count limit");
           const size = Number(entry.size || 0);
           if (!Number.isSafeInteger(size) || size < 0) {
             throw new Error(`Invalid archive entry size for ${path}`);
@@ -239,7 +241,7 @@ export const inspectPackageTarball = async (
                 }
                 const bytes = Buffer.concat(chunks, received);
                 const digest = hash.digest("hex");
-                entries.push({
+                physicalEntries.push({
                   path,
                   type: DIRECTORY_TYPES.has(entry.type) ? "DIRECTORY" : "FILE",
                   size,
@@ -290,7 +292,46 @@ export const inspectPackageTarball = async (
     throw new Error("Archive contains no package entries");
   }
 
-  entries.sort((left, right) => compareCodeUnits(left.path, right.path));
+  physicalEntries.sort((left, right) =>
+    compareCodeUnits(left.path, right.path),
+  );
+  const occurrencesByPath = new Map();
+  for (const entry of physicalEntries) {
+    const occurrence = occurrencesByPath.get(entry.path);
+    if (!occurrence) {
+      occurrencesByPath.set(entry.path, { entry, occurrenceCount: 1 });
+      entries.push(entry);
+      continue;
+    }
+    if (
+      occurrence.entry.type !== entry.type ||
+      occurrence.entry.size !== entry.size ||
+      occurrence.entry.sha256 !== entry.sha256
+    ) {
+      throw new Error(`Conflicting duplicate archive path: ${entry.path}`);
+    }
+    occurrence.occurrenceCount += 1;
+  }
+  const duplicateEntries = [...occurrencesByPath.values()]
+    .filter(({ occurrenceCount }) => occurrenceCount > 1)
+    .map(({ entry, occurrenceCount }) => ({
+      ...entry,
+      occurrenceCount,
+    }));
+
+  // Evidence retention is canonical by path even when an immutable historical
+  // npm tarball repeats the same bytes. Physical duplicates still count toward
+  // every archive safety ceiling above and remain explicit in the inventory.
+  const uniqueEvidenceFiles = new Map();
+  for (const evidence of evidenceFiles) {
+    uniqueEvidenceFiles.set(evidence.path, evidence);
+  }
+  evidenceFiles.splice(
+    0,
+    evidenceFiles.length,
+    ...uniqueEvidenceFiles.values(),
+  );
+
   evidenceFiles.sort((left, right) => compareCodeUnits(left.path, right.path));
   const packageMetadataPath = `${archiveRoot}/package.json`;
   const packageEntry = entries.find(
@@ -316,7 +357,12 @@ export const inspectPackageTarball = async (
       });
     },
   });
-  if (!packageBytes || packageBytes.length !== packageEntry.size) {
+  if (
+    !packageBytes ||
+    packageBytes.length !== packageEntry.size ||
+    createHash("sha256").update(packageBytes).digest("hex") !==
+      packageEntry.sha256
+  ) {
     throw new Error(`Unable to read ${packageMetadataPath} from archive`);
   }
   let packageMetadata;
@@ -340,6 +386,8 @@ export const inspectPackageTarball = async (
     archiveRoot,
     compressedBytes: compressed.size,
     expandedBytes,
+    physicalEntryCount,
+    duplicateEntries,
     packageIdentity: normalizePackageIdentity(packageMetadata),
     packageMetadata,
     entries,
@@ -366,6 +414,8 @@ export const materializePackageForScan = async (
 ) => {
   if (
     !Array.isArray(inventory?.entries) ||
+    !Array.isArray(inventory?.duplicateEntries) ||
+    !Number.isSafeInteger(inventory?.physicalEntryCount) ||
     typeof inventory.archiveRoot !== "string"
   ) {
     throw new TypeError("A validated archive inventory is required");
@@ -383,6 +433,33 @@ export const materializePackageForScan = async (
     }
     expectedByPath.set(entry.path, entry);
   }
+  const expectedOccurrences = new Map(
+    [...expectedByPath.keys()].map((path) => [path, 1]),
+  );
+  for (const duplicate of inventory.duplicateEntries) {
+    const expected = expectedByPath.get(duplicate.path);
+    if (
+      !expected ||
+      duplicate.type !== expected.type ||
+      duplicate.size !== expected.size ||
+      duplicate.sha256 !== expected.sha256 ||
+      !Number.isSafeInteger(duplicate.occurrenceCount) ||
+      duplicate.occurrenceCount < 2 ||
+      expectedOccurrences.get(duplicate.path) !== 1
+    ) {
+      throw new TypeError(
+        `Invalid duplicate-entry inventory for ${String(duplicate.path)}`,
+      );
+    }
+    expectedOccurrences.set(duplicate.path, duplicate.occurrenceCount);
+  }
+  const expectedPhysicalEntryCount = [...expectedOccurrences.values()].reduce(
+    (sum, count) => sum + count,
+    0,
+  );
+  if (inventory.physicalEntryCount !== expectedPhysicalEntryCount) {
+    throw new TypeError("Validated physical entry count is inconsistent");
+  }
 
   try {
     await mkdir(destinationRoot, { recursive: false });
@@ -398,10 +475,12 @@ export const materializePackageForScan = async (
     throw error;
   }
 
-  const seen = new Set();
+  const seenCounts = new Map();
   const pendingEntries = [];
   const abortController = new AbortController();
   let controlError;
+  let physicalEntryCount = 0;
+  let expandedBytes = 0;
 
   try {
     try {
@@ -415,7 +494,7 @@ export const materializePackageForScan = async (
           try {
             const rawPath = validatePath(entry.header?.path, limits);
             const path = validatePath(entry.path, limits);
-            if (rawPath !== path || seen.has(path)) {
+            if (rawPath !== path) {
               throw new Error(
                 `Tarball no longer matches the validated inventory: ${path}`,
               );
@@ -432,7 +511,36 @@ export const materializePackageForScan = async (
                 `Tarball no longer matches the validated inventory: ${path}`,
               );
             }
-            seen.add(path);
+            const size = Number(entry.size || 0);
+            if (
+              !Number.isSafeInteger(size) ||
+              size < 0 ||
+              size !== expected.size
+            ) {
+              throw new Error(
+                `Tarball no longer matches the validated inventory: ${path}`,
+              );
+            }
+            assertLimit(size, limits.entryBytes, "entry byte limit");
+            physicalEntryCount += 1;
+            assertLimit(
+              physicalEntryCount,
+              limits.entries,
+              "entry count limit",
+            );
+            expandedBytes += size;
+            assertLimit(
+              expandedBytes,
+              limits.expandedBytes,
+              "expanded byte limit",
+            );
+            const occurrenceCount = (seenCounts.get(path) || 0) + 1;
+            if (occurrenceCount > expectedOccurrences.get(path)) {
+              throw new Error(
+                `Tarball no longer matches the validated inventory: ${path}`,
+              );
+            }
+            seenCounts.set(path, occurrenceCount);
 
             const pending = new Promise((resolveEntry, rejectEntry) => {
               const hash = createHash("sha256");
@@ -449,15 +557,15 @@ export const materializePackageForScan = async (
               entry.once("end", () => {
                 void (async () => {
                   const digest = hash.digest("hex");
-                  if (
-                    received !== expected.size ||
-                    digest !== expected.sha256
-                  ) {
+                  if (received !== size || digest !== expected.sha256) {
                     throw new Error(
                       `Tarball content no longer matches the validated inventory: ${path}`,
                     );
                   }
                   const target = materializedPath(destinationRoot, path);
+                  if (occurrenceCount > 1) {
+                    return;
+                  }
                   if (type === "DIRECTORY") {
                     await mkdir(target, { recursive: true });
                   } else {
@@ -485,8 +593,10 @@ export const materializePackageForScan = async (
     await Promise.all(pendingEntries);
     if (
       controlError ||
-      seen.size !== expectedByPath.size ||
-      [...expectedByPath.keys()].some((path) => !seen.has(path))
+      physicalEntryCount !== inventory.physicalEntryCount ||
+      [...expectedOccurrences].some(
+        ([path, count]) => seenCounts.get(path) !== count,
+      )
     ) {
       throw (
         controlError ||

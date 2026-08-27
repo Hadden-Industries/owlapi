@@ -256,6 +256,7 @@ export function verifyRegistrySignature({ name, version, integrity, signature, k
 ```js
 export const SCANCODE_TOOL = Object.freeze({ version: "32.5.0", ... });
 export const SCANCODE_SEMANTIC_OPTIONS = Object.freeze([...]);
+export const SCANCODE_IGNORED_PATH_PATTERNS = Object.freeze(["*.node"]);
 export const SCANCODE_EXECUTION_OPTIONS = Object.freeze(["--processes", "1"]);
 export function buildScancodeArguments({ outputPath, inputRoot })
 export function normalizeScancodeReport(report, { artifactId, inputRoot })
@@ -271,16 +272,19 @@ export function normalizeScancodeReport(report, { artifactId, inputRoot })
       execution limit in normalized provenance without treating it as a semantic
       scan option.
 - [ ] Keep ordinary package discovery and every licence/copyright/information
-      scan fail-closed, but exclude `--package-in-compiled` from the canonical
-      option set because its Go/Rust-specific extraction aborts on authenticated
-      foreign-platform native packages. Continue to authenticate every compiled
-      file in the archive ledger; reserve any future compiled introspection for a
-      separate, deterministic supplemental evidence channel.
+      scan fail-closed, but exclude `--package-in-compiled` and apply the exact
+      host-independent `--ignore "*.node"` pre-scan policy because both compiled-
+      package extraction and ordinary information identification can abort on
+      authenticated foreign-platform native packages. Continue to authenticate
+      every native binary in the archive ledger, record each scanner exclusion,
+      and reserve compiled introspection for a separate deterministic channel.
 - [ ] Assert any scan error, unexpected ScanCode version, extra or changed file,
       omitted non-empty legal-evidence file, or otherwise unaccounted omission
-      fails. Permit only authenticated zero-byte omissions and non-evidence hidden
-      paths that ScanCode does not report, and retain each omission's exact path,
-      size, SHA-256 and fixed reason in the normalized findings envelope.
+      fails. Permit only authenticated zero-byte omissions, non-evidence hidden
+      paths and exact non-evidence `.node` exclusions. Distinguish a zero-byte file
+      that ScanCode reports without a digest from both a digest-verified file and
+      an entirely omitted file; retain each limitation's exact path, size, archive
+      SHA-256 and fixed reason in the normalized findings envelope.
 - [ ] Observe RED, implement an allowlist of removable fields and canonical
       ordering, then re-run focused tests.
 
@@ -363,8 +367,10 @@ export async function acquireEvidence(options)
       platform, ScanCode executable and setup-python output from explicitly named
       environment variables, reject absent/invalid variable names and never place
       GitHub expressions in `run:` text.
-- [ ] Observe npm by launching the installed `npm-cli.js` with `process.execPath`
-      and `shell: false`; never attempt to spawn a Windows `.cmd` shim directly.
+- [ ] Discover bounded `npm-cli.js` candidates beside PATH-visible global npm
+      prefixes and in the selected Node distribution, invoke each with
+      `process.execPath` and `shell: false`, and accept only the candidate reporting
+      the exact required npm version; never spawn a Windows `.cmd` shim directly.
 
 ## Task 8: Generate third-party-material v2 from the corpus
 
@@ -450,6 +456,47 @@ host-dependent compiled-package introspection from the canonical scan, and
 executes npm's JavaScript CLI through the selected Node binary. A new complete
 64-shard run and cross-platform parity result remain mandatory before this task
 can be checked off.
+
+### Second diagnostic baseline: run 33071551094
+
+The corrected matrix was manually dispatched on 27 August 2026 at exact source
+commit `42cb4b532804e77e78c0a33cb0d78e72fefa927d` and again drained all lanes. Its
+68 jobs ended with 19 successes, 48 failures and the expected one skipped
+schedule-only observation. No candidate corpus was promoted.
+
+All 32 Windows shards failed the runtime preflight before acquisition: installing
+npm `12.0.2` globally left Node's bundled npm `11.17.0` present, and the preflight
+selected only that bundled JavaScript CLI. Ubuntu completed 19 shards and exposed
+three bounded artifact-representation classes in the other 13:
+
+- shards 8, 12, 17 and 27 encountered a repeated
+  `package/dist/index.js` member in `socks-proxy-agent@8.0.5`,
+  `https-proxy-agent@7.0.6`, `agent-base@7.1.4` and
+  `http-proxy-agent@7.0.2` respectively;
+- shards 11, 13 and 23 reached foreign-ABI `.node` binaries in
+  `@rolldown/binding-win32-x64-msvc@1.2.6`,
+  `@rolldown/binding-linux-arm-gnueabihf@1.2.6` and
+  `@rolldown/binding-darwin-x64@1.2.6`, for which ScanCode's ordinary information
+  scan returned a non-zero failure; and
+- shards 9, 20, 21, 22, 28 and 29 reported authenticated zero-byte files without
+  a SHA-256 in `node-gyp@13.0.2`, `tar-fs@2.1.5`, `node-gyp@11.5.0`,
+  `smart-buffer@4.2.0`, `napi-build-utils@2.0.0` and `undici@6.28.0`.
+
+Both per-host aggregates and cross-platform parity failed closed because their
+shard sets were incomplete. The retained diagnostic is
+[GitHub Actions run 33071551094](https://github.com/Hadden-Industries/owlapi/actions/runs/33071551094).
+
+The second bounded correction does not waive any evidence. Runtime discovery
+tests every bounded PATH-prefix and Node-bundled JavaScript CLI and selects only
+the exact npm version. Archive inspection counts every physical member and byte
+toward safety ceilings, permits a repeated canonical path only after independently
+proving identical type, size and digest for every occurrence, records the
+occurrence count, and re-hashes all occurrences while materializing one file.
+ScanCode applies one recorded `*.node` exclusion on both hosts while the archive
+ledger retains each binary's path, size and digest. A reported zero-byte file
+without a ScanCode digest is recorded as an incomplete scanner identity, never as
+digest-verified. A third complete 64-shard run, two successful aggregates and
+byte-identical parity remain mandatory before Task 9 can be checked off.
 
 ## Task 10: Reconcile rights and human review
 

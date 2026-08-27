@@ -23,6 +23,7 @@ import {
 } from "./third-party-evidence/archive-evidence.mjs";
 import { retainBlob } from "./third-party-evidence/blob-store.mjs";
 import {
+  compareCodeUnits,
   sha256,
   stableJson,
   verifySha512Sri,
@@ -43,6 +44,7 @@ import {
 } from "./third-party-evidence/registry-signatures.mjs";
 import {
   SCANCODE_EXECUTION_OPTIONS,
+  SCANCODE_IGNORED_PATH_PATTERNS,
   SCANCODE_SEMANTIC_OPTIONS,
   SCANCODE_TOOL,
   buildScancodeArguments,
@@ -383,19 +385,39 @@ const bindScanCoverage = (scan, inventory, artifactId) => {
   const expectedByPath = new Map(
     expectedFiles.map((entry) => [entry.path, entry]),
   );
+  const incompleteIdentityFiles = [];
+  let digestVerifiedFileCount = 0;
   for (const file of files.values()) {
     const entry = expectedByPath.get(file.path);
-    if (
-      !entry ||
-      file.type !== "file" ||
-      file.size !== entry.size ||
-      file.sha256 !== entry.sha256
-    ) {
+    if (!entry || file.type !== "file" || file.size !== entry.size) {
       productFailure(
         "SCANCODE_FILE_INVENTORY_INVALID",
         `ScanCode reported an unauthenticated or changed archive path ${file.path}`,
       );
     }
+    if (file.sha256 === entry.sha256) {
+      digestVerifiedFileCount += 1;
+      continue;
+    }
+    if (
+      entry.size === 0 &&
+      (file.sha256 === null || file.sha256 === undefined)
+    ) {
+      // ScanCode 32.5.0 can inventory an empty file without emitting a digest.
+      // Preserve that narrower fact explicitly; the authenticated tar digest
+      // remains authoritative, but the scanner is not credited with verifying it.
+      incompleteIdentityFiles.push({
+        path: entry.path,
+        reason: "EMPTY_FILE_DIGEST_NOT_REPORTED",
+        size: entry.size,
+        sha256: entry.sha256,
+      });
+      continue;
+    }
+    productFailure(
+      "SCANCODE_FILE_INVENTORY_INVALID",
+      `ScanCode reported an unauthenticated or changed archive path ${file.path}`,
+    );
   }
 
   const retainedEvidencePaths = new Set(
@@ -410,7 +432,14 @@ const bindScanCoverage = (scan, inventory, artifactId) => {
       .split("/")
       .some((segment) => segment.startsWith("."));
     let reason;
-    if (entry.size === 0) {
+    if (
+      entry.path.toLowerCase().endsWith(".node") &&
+      !retainedEvidencePaths.has(entry.path)
+    ) {
+      // The scanner command deliberately excludes native Node add-ons on every
+      // host. Their immutable tar bytes remain authenticated and reviewable.
+      reason = "NATIVE_NODE_BINARY_NOT_SCANNED";
+    } else if (entry.size === 0) {
       // A zero-byte file has no semantic content for ScanCode to inspect, but
       // the authenticated archive inventory still binds its path and digest.
       reason = "EMPTY_FILE_NOT_REPORTED";
@@ -446,6 +475,10 @@ const bindScanCoverage = (scan, inventory, artifactId) => {
     archiveCoverage: {
       authenticatedFileCount: expectedFiles.length,
       reportedFileCount: files.size,
+      digestVerifiedFileCount,
+      incompleteIdentityFiles: incompleteIdentityFiles.sort((left, right) =>
+        compareCodeUnits(left.path, right.path),
+      ),
       omittedFiles,
     },
   };
@@ -904,6 +937,7 @@ const evidencePolicy = () => ({
     pythonVersion: SCANCODE_TOOL.pythonVersion,
     outputFormatVersion: SCANCODE_TOOL.outputFormatVersion,
     semanticOptions: SCANCODE_SEMANTIC_OPTIONS,
+    ignoredPathPatterns: SCANCODE_IGNORED_PATH_PATTERNS,
     executionOptions: SCANCODE_EXECUTION_OPTIONS,
   },
 });

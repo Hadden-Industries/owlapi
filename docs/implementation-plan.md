@@ -3276,14 +3276,20 @@ root, a regular `<archive-root>/package.json` whose name and version exactly mat
 the authenticated lock/registry coordinate, and records the root in the retained
 archive inventory. It rejects zero or multiple roots, a missing root-level
 manifest, absolute/traversing/drive/UNC/NUL or malformed paths, dangerous special
-entries, evidence reached through links, retained-path duplicates or case-folding
-collisions, malformed/truncated archives and fixed compressed/expanded/entry-
-count/entry-size/path-length limit violations. Offline verification rechecks the
-recorded root against every inventory path and the root manifest. The inspector
-canonicalizes harmless POSIX current-directory (`.`) components before applying
-root and collision controls, while empty components and parent traversal (`..`)
-remain invalid. It records every normalized POSIX entry and recursively identifies licence, notice,
-copyright, author, patent and material third-party-attribution files. An absent
+entries, evidence reached through links, conflicting exact-path duplicates or
+case-folding collisions, malformed/truncated archives and fixed compressed/
+expanded/entry-count/entry-size/path-length limit violations. An immutable
+historical tarball may repeat one canonical path only when every physical member
+has independently identical type, size and SHA-256. The inventory retains one
+canonical entry plus the occurrence count, while every physical member and byte
+still consumes the safety ceilings; scan materialization re-hashes every
+occurrence and writes the authenticated file once. Offline verification rechecks
+the recorded root against every inventory path and the root manifest. The
+inspector canonicalizes harmless POSIX current-directory (`.`) components before
+applying root and collision controls, while empty components and parent traversal
+(`..`) remain invalid. It records every normalized POSIX entry and recursively
+identifies licence, notice, copyright, author, patent and material third-party-
+attribution files. An absent
 licence file is a valid observed fact, not proof of compatible licensing.
 Immutable external evidence may close a documented tarball gap only when it is
 separately digested, retained and distinguished from tarball bytes; it cannot
@@ -3295,14 +3301,17 @@ independently on Windows and Ubuntu over all
 authenticated unique tarballs, collecting licence matches/text/references,
 copyrights, package and file information, generated/unknown-licence findings and
 ordinary package-manifest information. The canonical scan deliberately excludes
-ScanCode's `--package-in-compiled`: the option's Go/Rust-specific supplemental
-metadata extraction aborts on some authenticated foreign-platform native npm
-artifacts and would therefore make the required evidence depend on the runner
-host. Every compiled file remains path/size/SHA-256 authenticated in the archive
-inventory and remains within the ordinary licence, copyright, information and
-unknown-licence scan. Any future compiled-package introspection must be a separate
-supplemental channel and must not enter canonical release evidence until it has a
-deterministic cross-platform success and normalization contract. Each invocation **MUST** use
+ScanCode's `--package-in-compiled` and passes the exact `--ignore "*.node"`
+pre-scan policy on both hosts: compiled-package extraction and ordinary file
+identification can each abort on authenticated foreign-ABI native npm artifacts
+and would therefore make the required evidence runner-dependent. Every native
+binary remains path/size/SHA-256 authenticated in the archive inventory, and its
+scanner exclusion is retained explicitly rather than represented as a scanned
+finding. A `.node` path selected independently as legal evidence cannot use that
+exception and fails closed. Any future compiled-package introspection must be a
+separate supplemental channel and must not enter canonical release evidence until
+it has a deterministic cross-platform success and normalization contract. Each
+invocation **MUST** use
 `--processes 1` to keep the upstream-reported Python 3.14 worker-memory regression
 resource-bounded and reproducible. ScanCode dependencies remain isolated in a
 disposable release-tool environment and MUST NOT alter a user-level Python
@@ -3310,18 +3319,27 @@ installation or enter the published npm package. Each shard selects exact Python
 `3.14.7` x64 through the §2.56 full-SHA `actions/setup-python` use with caching,
 latest-version lookup and ambient PATH mutation disabled; its returned executable
 path crosses into the fixed project command only through an environment value.
+The runtime preflight discovers only bounded npm JavaScript-CLI layouts beside
+PATH-visible global prefixes and the selected Node distribution, invokes each
+candidate with `process.execPath` and `shell: false`, and accepts only the CLI that
+reports the exact required npm version. It never executes a Windows command shim.
 A deterministic normalizer removes only enumerated
 non-semantic timing/temporary-path fields, preserves scan errors and all
 substantive findings, sorts unordered collections and binds each result to the
 artifact and scanner-option digests. The authenticated archive inventory, not
 ScanCode's resource list, remains the complete file ledger. Every reported
-ScanCode file must match one archive file by normalized path, size and SHA-256;
-extra or changed reports fail. An unreported file also fails except when it is
-provably zero-byte, or is a hidden path not selected as legal evidence by the
-independent archive classifier. Each such representation-level omission is
-retained explicitly with its path, size, digest and fixed reason; a non-empty
-legal-evidence omission and every other unaccounted omission still fail. Recorded
-omissions are never represented as scanned findings. The two normalized corpus roots must agree;
+ScanCode file must match one archive file by normalized path, size and SHA-256.
+The sole narrower reported-file condition is a zero-byte path for which ScanCode
+emits no digest: it is retained as an incomplete scanner identity with the
+authoritative archive digest and is not counted as digest-verified. Extra,
+changed, nonempty digestless or null-digest-mismatched reports fail. An unreported
+file also fails except when it is provably zero-byte, is a hidden path not selected
+as legal evidence by the independent archive classifier, or is an exact
+non-evidence `.node` path covered by the recorded scanner exclusion. Each such
+representation-level omission is retained explicitly with its path, size, digest
+and fixed reason; a non-empty legal-evidence omission and every other unaccounted
+omission still fail. Recorded omissions are never represented as scanned
+findings. The two normalized corpus roots must agree;
 the process may not choose one platform's result silently. macOS and ordinary CI
 run offline corpus/fixture verification. Later acquisition scans only changed
 artifacts keyed by tarball identity plus scanner/options digest. Every release
