@@ -803,6 +803,33 @@ const validateMaintenanceReporter = (source, violations) => {
   }
 };
 
+const validateWebVowlCorpusMaterialization = (fileName, source, violations) => {
+  const webVowl = jobBlock(source, "webvowl");
+  const installStep = [
+    "      - name: Install the fixed ontology corpus dependencies",
+    "        working-directory: consumer-workspace/universal-ontology",
+    "        run: npm ci",
+  ].join("\n");
+  const materializeStep = [
+    "      - name: Materialize the fixed representative ontology corpus",
+    "        working-directory: consumer-workspace/universal-ontology",
+    "        run: npm run build",
+  ].join("\n");
+  const qualificationStep =
+    "      - name: Qualify the retained package through isolated WebVOWL";
+  const installIndex = webVowl.indexOf(installStep);
+  const materializeIndex = webVowl.indexOf(materializeStep);
+  const qualificationIndex = webVowl.indexOf(qualificationStep);
+
+  add(
+    violations,
+    installIndex !== -1 &&
+      materializeIndex > installIndex &&
+      qualificationIndex > materializeIndex,
+    `${fileName}:webvowl must install and materialize the fixed ontology corpus before qualification`,
+  );
+};
+
 const validateJsonRecord = (schemaName, recordName, violations) => {
   const directory = join(REPOSITORY_ROOT, "docs", "release");
   const schema = JSON.parse(readFileSync(join(directory, schemaName), "utf8"));
@@ -947,6 +974,8 @@ export const auditRepositoryControls = () => {
     );
   }
   validateMaintenanceReporter(sources["maintenance.yml"] ?? "", violations);
+  validateWebVowlCorpusMaterialization("ci.yml", ci, violations);
+  validateWebVowlCorpusMaterialization("release.yml", release, violations);
 
   const alwaysJobs = [["ci.yml", "required"]];
   for (const [fileName, jobId] of alwaysJobs) {

@@ -9188,13 +9188,17 @@ job/step timeouts. The exact public-candidate sequence is:
     URL health observation under §2.46 without treating provider uptime as a
     package runtime promise;
 11. on `ubuntu-24.04` x64, create one isolated WebVOWL checkout at the recorded
-    source commit; run baseline `npm ci`, Jest and development/production Vite
-    builds; generate the WebVOWL import/dependency-ownership inventory; apply the
-    reviewed consumer-cutover patch; install the retained tarball exactly while
-    removing every dependency proven package-only in the same reviewed manifest/
-    lockfile operation; then run a second clean `npm ci` in an isolated directory
-    without an ancestor `node_modules` tree so residual hoisting or the old
-    application dependency graph cannot satisfy `owlapi` accidentally;
+    source commit and check out the representative `universal-ontology` corpus at
+    its separately recorded commit; because that repository intentionally omits
+    generated `dist/` output, install its exact lockfile and run its ordinary
+    build to materialize the corpus before qualification; run baseline WebVOWL
+    `npm ci`, Jest and development/production Vite builds; generate the WebVOWL
+    import/dependency-ownership inventory; apply the reviewed consumer-cutover
+    patch; install the retained tarball exactly while removing every dependency
+    proven package-only in the same reviewed manifest/lockfile operation; then
+    run a second clean `npm ci` in an isolated directory without an ancestor
+    `node_modules` tree so residual hoisting or the old application dependency
+    graph cannot satisfy `owlapi` accidentally;
 12. inspect the second checkout state with `npm ls`, verify the boundary
     architecture test is green, no source package tree/alias/local dependency or
     WebVOWL-only copy of a transferred dependency remains, confirm the installed

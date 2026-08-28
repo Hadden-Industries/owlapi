@@ -940,6 +940,16 @@ jobs:
       - name: Verify the exact runtime pair
         run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
         timeout-minutes: 5
+      # universal-ontology intentionally ignores dist/, so the pinned source
+      # checkout must materialize the exact corpus before WebVOWL can consume it.
+      - name: Install the fixed ontology corpus dependencies
+        working-directory: consumer-workspace/universal-ontology
+        run: npm ci
+        timeout-minutes: 20
+      - name: Materialize the fixed representative ontology corpus
+        working-directory: consumer-workspace/universal-ontology
+        run: npm run build
+        timeout-minutes: 20
       - name: Install the independently locked owlapi qualification tools
         run: npm ci
         timeout-minutes: 20
