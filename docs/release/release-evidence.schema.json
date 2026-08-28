@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haddenindustries.com/schemas/owlapi/release-evidence.v1.schema.json",
+  "title": "owlapi immutable-release evidence asset",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "package",
+    "generatedAt",
+    "source",
+    "workflow",
+    "candidate",
+    "publication",
+    "signing",
+    "githubRelease",
+    "approvals",
+    "requiredJobs",
+    "extendedTests",
+    "inputEvidence"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "pattern": "^https://raw\\.githubusercontent\\.com/Hadden-Industries/owlapi/[0-9a-f]{40}/docs/release/release-evidence\\.schema\\.json$"
+    },
+    "schemaVersion": { "const": 1 },
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "coordinate", "channel", "registry"],
+      "properties": {
+        "name": { "const": "owlapi" },
+        "version": { "const": "0.1.0-alpha.0" },
+        "coordinate": { "const": "owlapi@0.1.0-alpha.0" },
+        "channel": { "const": "next" },
+        "registry": { "const": "https://registry.npmjs.org/" }
+      }
+    },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "ref", "commit", "tag"],
+      "properties": {
+        "repository": { "const": "Hadden-Industries/owlapi" },
+        "ref": { "const": "refs/heads/main" },
+        "commit": { "$ref": "#/$defs/commit" },
+        "tag": { "const": "v0.1.0-alpha.0" }
+      }
+    },
+    "workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "runId", "runAttempt", "url", "actor"],
+      "properties": {
+        "name": { "const": "Release" },
+        "runId": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+        "runAttempt": { "type": "integer", "minimum": 1 },
+        "url": { "type": "string", "format": "uri" },
+        "actor": { "type": "string", "minLength": 1 }
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifactId",
+        "artifactDigest",
+        "tarball",
+        "sbom",
+        "checksums"
+      ],
+      "properties": {
+        "artifactId": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+        "artifactDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "tarball": { "$ref": "#/$defs/asset" },
+        "sbom": { "$ref": "#/$defs/asset" },
+        "checksums": { "$ref": "#/$defs/asset" }
+      }
+    },
+    "publication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "registry",
+        "coordinate",
+        "channel",
+        "integrity",
+        "tarballUrl",
+        "verifiedAt",
+        "next",
+        "latestPresent",
+        "signatureAuditResult"
+      ],
+      "properties": {
+        "mode": { "const": "DIRECT_BOOTSTRAP" },
+        "registry": { "const": "https://registry.npmjs.org/" },
+        "coordinate": { "const": "owlapi@0.1.0-alpha.0" },
+        "channel": { "const": "next" },
+        "integrity": {
+          "type": "string",
+          "pattern": "^sha512-[A-Za-z0-9+/]+={0,2}$"
+        },
+        "tarballUrl": { "type": "string", "format": "uri" },
+        "verifiedAt": { "type": "string", "format": "date-time" },
+        "next": { "const": "0.1.0-alpha.0" },
+        "latestPresent": { "const": false },
+        "signatureAuditResult": { "const": "PASS" }
+      }
+    },
+    "signing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "signerId",
+        "signerPrincipal",
+        "fingerprint",
+        "githubVerifiedAt"
+      ],
+      "properties": {
+        "signerId": { "type": "string", "minLength": 1 },
+        "signerPrincipal": { "type": "string", "minLength": 1 },
+        "fingerprint": {
+          "type": "string",
+          "pattern": "^SHA256:[A-Za-z0-9+/]{43}$"
+        },
+        "githubVerifiedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "githubRelease": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "url", "draft", "assets"],
+      "properties": {
+        "id": { "type": "integer", "minimum": 1 },
+        "url": { "type": "string", "format": "uri" },
+        "draft": { "const": true },
+        "assets": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/asset" }
+        }
+      }
+    },
+    "approvals": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/approval" }
+    },
+    "requiredJobs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/job" }
+    },
+    "extendedTests": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/extendedTest" }
+    },
+    "inputEvidence": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/inputEvidence" }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "bytes", "sha256"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["environment", "reviewer", "state", "observedAt"],
+      "properties": {
+        "environment": { "enum": ["release-manual", "npm-release"] },
+        "reviewer": { "const": "MaksymShostak" },
+        "state": { "const": "approved" },
+        "observedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "job": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "conclusion", "url"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "conclusion": { "const": "success" },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+    "extendedTest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["environment", "result", "reason"],
+      "properties": {
+        "environment": { "type": "string", "minLength": 1 },
+        "result": { "enum": ["PASS", "FAIL", "NOT_RUN"] },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    },
+    "inputEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "sha256"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "./release-signers.schema.json",
+  "schemaVersion": 1,
+  "signers": [
+    {
+      "id": "maksym-shostak-github-ssh-2026",
+      "naturalPersonName": "Maksym Shostak",
+      "githubIdentity": "MaksymShostak",
+      "npmIdentity": "maksymshostak",
+      "publicKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGpqSjJMHCFWXzxM8jB87C66pKkTWLNi4a7scQ/KSDo/",
+      "fingerprint": "SHA256:0lELaqBbgGHdSctv4GOpPmROX56wNCaii2PLZI5pXCU",
+      "validFrom": "2026-08-01",
+      "validUntil": null,
+      "revokedOn": null,
+      "status": "ACTIVE",
+      "rationale": "Initial individually controlled SSH signing identity for owlapi release tags.",
+      "evidence": [
+        "https://api.github.com/users/MaksymShostak/ssh_signing_keys"
+      ]
+    }
+  ]
+}

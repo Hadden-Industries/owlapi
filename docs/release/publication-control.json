@@ -1,10 +1,10 @@
 {
   "$schema": "./publication-control.schema.json",
   "schemaVersion": 1,
-  "enabled": false,
-  "mode": "UNRESOLVED",
+  "enabled": true,
+  "mode": "DIRECT_BOOTSTRAP",
   "coordinate": "owlapi@0.1.0-alpha.0",
   "channel": "next",
-  "reason": "Phase 19C qualifies release controls but authorizes no npm, tag, or GitHub release mutation; Phase 19D must record the empirically selected publication mode before enabling this boundary.",
-  "reviewedOn": null
+  "reason": "npm requires an existing package before its trusted-publisher identity and staged-publication path can be configured; owlapi is absent from the public registry, so the first successful write requires the reviewed bounded direct-bootstrap path.",
+  "reviewedOn": "2026-08-28"
 }

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haddenindustries.com/schemas/owlapi/release-signers.v1.schema.json",
+  "title": "owlapi release signer registry",
+  "description": "The reviewed SSH identities permitted to sign owlapi release tags.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schemaVersion", "signers"],
+  "properties": {
+    "$schema": { "const": "./release-signers.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "signers": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/signer" }
+    }
+  },
+  "$defs": {
+    "nullableDate": {
+      "oneOf": [{ "type": "string", "format": "date" }, { "type": "null" }]
+    },
+    "signer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "naturalPersonName",
+        "githubIdentity",
+        "npmIdentity",
+        "publicKey",
+        "fingerprint",
+        "validFrom",
+        "validUntil",
+        "revokedOn",
+        "status",
+        "rationale",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "naturalPersonName": { "type": "string", "minLength": 1 },
+        "githubIdentity": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$"
+        },
+        "npmIdentity": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "publicKey": {
+          "type": "string",
+          "pattern": "^ssh-ed25519 [A-Za-z0-9+/]+={0,2}$"
+        },
+        "fingerprint": {
+          "type": "string",
+          "pattern": "^SHA256:[A-Za-z0-9+/]{43}$"
+        },
+        "validFrom": { "type": "string", "format": "date" },
+        "validUntil": { "$ref": "#/$defs/nullableDate" },
+        "revokedOn": { "$ref": "#/$defs/nullableDate" },
+        "status": { "enum": ["ACTIVE", "REVOKED", "RETIRED"] },
+        "rationale": { "type": "string", "minLength": 1 },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "format": "uri" }
+        }
+      }
+    }
+  }
+}

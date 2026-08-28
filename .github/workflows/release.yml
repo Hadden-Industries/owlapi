@@ -52,7 +52,7 @@ jobs:
       - name: Install the reviewed preflight tools
         run: npm ci
         timeout-minutes: 15
-      - name: Verify the protected-main, tag-absence, and disabled-publication boundary
+      - name: Verify the protected-main, tag-absence, and reviewed direct-bootstrap boundary
         run: npm run release:preflight
         timeout-minutes: 10
       - name: Record the hosted runner identity
@@ -70,8 +70,11 @@ jobs:
         shell: bash
     outputs:
       artifact_name: ${{ steps.metadata.outputs.artifact_name }}
+      channel: ${{ steps.metadata.outputs.channel }}
+      coordinate: ${{ steps.metadata.outputs.coordinate }}
       publication_enabled: ${{ steps.metadata.outputs.publication_enabled }}
       publication_mode: ${{ steps.metadata.outputs.publication_mode }}
+      tag: ${{ steps.metadata.outputs.tag }}
       version: ${{ steps.metadata.outputs.version }}
     steps:
       - name: Check out the accepted source
@@ -1027,22 +1030,148 @@ jobs:
         run: npm run workflow:aggregate -- --workflow release
         timeout-minutes: 5
 
-  phase_19c_boundary:
-    name: Release / Phase 19C boundary
+  publication_preflight:
+    name: Release / publication preflight
     needs:
+      - candidate
       - metadata
       - required
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 20
     permissions:
       contents: read
     defaults:
       run:
         shell: bash
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
     steps:
-      - name: Check out the reviewed publication-control record
+      - name: Check out the accepted source and complete tag graph
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 10
+      - name: Install the reviewed release tools
+        run: npm ci
+        timeout-minutes: 15
+      - name: Download the exact same-run candidate by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
+          path: .release/download
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Rehearse the normative release failure states
+        run: npm run release:rehearse-state
+        timeout-minutes: 5
+      - name: Verify the retained tarball, dry run, absent tag, and absent coordinate
+        run: npm run qualify:release -- --candidate .release/download --output .release/publication-preflight.json
+        timeout-minutes: 10
+      - name: Retain the publication-preflight evidence
+        id: upload
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-publication-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/publication-preflight.json
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+          archive: true
+
+  tag_accepted:
+    name: Release / tag accepted
+    needs:
+      - metadata
+      - publication_preflight
+      - required
+    environment:
+      name: release-manual
+      deployment: false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+    steps:
+      - name: Check out the accepted commit and human-created tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 10
+      - name: Install the reviewed tag-verification tools
+        run: npm ci
+        timeout-minutes: 15
+      - name: Verify the annotated tag, registered SSH signer, target, and GitHub result
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.metadata.outputs.tag }}
+          SOURCE_COMMIT: ${{ github.sha }}
+        run: npm run release:verify-tag -- --tag "$RELEASE_TAG" --commit "$SOURCE_COMMIT" --output .release/tag-verification.json
+        timeout-minutes: 5
+      - name: Retain the accepted-tag evidence
+        id: upload
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-tag-verification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/tag-verification.json
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+          archive: true
+
+  draft_release:
+    name: Release / GitHub draft
+    needs:
+      - candidate
+      - metadata
+      - tag_accepted
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+    steps:
+      - name: Check out the accepted release-write implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
           fetch-depth: 1
           persist-credentials: false
       - name: Select Node 24.19.0 without package caching
@@ -1054,10 +1183,352 @@ jobs:
           package-manager-cache: false
       - name: Establish the exact repository npm
         run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
-        timeout-minutes: 5
-      - name: Install the publication-boundary validator
+        timeout-minutes: 10
+      - name: Install the reviewed GitHub-release tools
         run: npm ci
-        timeout-minutes: 8
-      - name: Prove Phase 19C authorizes no external mutation
-        run: npm run release:assert-publication-disabled
+        timeout-minutes: 15
+      - name: Download the exact same-run candidate by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
+          path: .release/download
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Create or exactly reconcile the draft and three candidate assets
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.metadata.outputs.tag }}
+          RELEASE_VERSION: ${{ needs.metadata.outputs.version }}
+          SOURCE_COMMIT: ${{ github.sha }}
+        run: npm run release:draft-github -- --candidate .release/download --version "$RELEASE_VERSION" --tag "$RELEASE_TAG" --commit "$SOURCE_COMMIT" --output .release/draft-release.json
+        timeout-minutes: 5
+      - name: Retain the draft-release evidence
+        id: upload
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-draft-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/draft-release.json
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+          archive: true
+
+  npm_release:
+    name: Release / npm direct bootstrap
+    needs:
+      - candidate
+      - draft_release
+      - metadata
+      - publication_preflight
+      - required
+      - tag_accepted
+    environment:
+      name: npm-release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Select Node 24.19.0 and the exact public npm registry
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+          registry-url: https://registry.npmjs.org/
+      - name: Establish the exact publication npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 10
+      - name: Download the exact same-run candidate by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
+          path: .release/download
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Verify the retained candidate checksums without executing package code
+        working-directory: .release/download
+        run: sha256sum --check --strict SHA256SUMS
+        timeout-minutes: 5
+      - name: Perform the single authorized direct-bootstrap write
+        working-directory: .release/download
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_BOOTSTRAP_TOKEN }}
+        run: npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/
+        timeout-minutes: 5
+
+  registry_verification:
+    name: Release / fresh public registry
+    needs:
+      - candidate
+      - metadata
+      - npm_release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+    steps:
+      - name: Check out the accepted registry-verification implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 10
+      - name: Install the reviewed public-verification tools
+        run: npm ci
+        timeout-minutes: 15
+      - name: Download the exact same-run candidate by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
+          path: .release/download
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Verify the fresh public coordinate, bytes, channel, signatures, and exports
+        run: npm run release:qualify-registry -- --candidate .release/download --output .release/registry-verification.json
+        timeout-minutes: 15
+      - name: Retain the public-registry evidence
+        id: upload
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-registry-verification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/registry-verification.json
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+          archive: true
+
+  release_evidence:
+    name: Release / evidence
+    needs:
+      - candidate
+      - draft_release
+      - metadata
+      - npm_release
+      - publication_preflight
+      - registry_verification
+      - required
+      - tag_accepted
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      actions: read
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+    steps:
+      - name: Check out the accepted evidence implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 10
+      - name: Install the reviewed evidence tools
+        run: npm ci
+        timeout-minutes: 15
+      - name: Download the exact same-run candidate by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
+          path: .release/download
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Download the publication-preflight evidence by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.publication_preflight.outputs.artifact_id }}
+          path: .release/evidence-input/publication
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Download the tag-verification evidence by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.tag_accepted.outputs.artifact_id }}
+          path: .release/evidence-input/tag
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Download the draft-release evidence by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.draft_release.outputs.artifact_id }}
+          path: .release/evidence-input/draft
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Download the public-registry evidence by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.registry_verification.outputs.artifact_id }}
+          path: .release/evidence-input/registry
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Generate and strictly validate the fourth release asset
+        env:
+          CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
+          CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run release:evidence -- --candidate .release/download --publication-preflight .release/evidence-input/publication/publication-preflight.json --tag-verification .release/evidence-input/tag/tag-verification.json --draft-release .release/evidence-input/draft/draft-release.json --registry-verification .release/evidence-input/registry/registry-verification.json --output .release/owlapi-0.1.0-alpha.0.release-evidence.json
+        timeout-minutes: 5
+      - name: Retain the strict release-evidence asset
+        id: upload
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/owlapi-0.1.0-alpha.0.release-evidence.json
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+          archive: true
+
+  finalize_release:
+    name: Release / finalize immutable GitHub release
+    needs:
+      - metadata
+      - release_evidence
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the accepted finalization implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 10
+      - name: Install the reviewed finalization tools
+        run: npm ci
+        timeout-minutes: 15
+      - name: Download the exact same-run release evidence by artifact ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ needs.release_evidence.outputs.artifact_id }}
+          path: .release/evidence
+          merge-multiple: false
+          skip-decompress: false
+          digest-mismatch: error
+      - name: Attach the fourth asset and publish the immutable prerelease
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run release:finalize-github -- --evidence .release/evidence/owlapi-0.1.0-alpha.0.release-evidence.json --output .release/finalization.json
+        timeout-minutes: 5
+
+  immutable_verification:
+    name: Release / immutable verification
+    needs:
+      - finalize_release
+      - metadata
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the accepted source and signed tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+      - name: Select Node 24.19.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.19.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 10
+      - name: Install the reviewed immutable-verification tools
+        run: npm ci
+        timeout-minutes: 15
+      - name: Download and checksum-verify GitHub CLI 2.98.0
+        run: npm run release:prepare-github-cli -- --output .release/tools/github-cli
+        timeout-minutes: 5
+      - name: Reverify the independent signed tag
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.metadata.outputs.tag }}
+          SOURCE_COMMIT: ${{ github.sha }}
+        run: npm run release:verify-tag -- --tag "$RELEASE_TAG" --commit "$SOURCE_COMMIT" --output .release/final-tag-verification.json
+        timeout-minutes: 5
+      - name: Verify release immutability and all four release attestations
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run release:verify-immutable -- --gh .release/tools/github-cli/gh_2.98.0_linux_amd64/bin/gh --output-directory .release/immutable-assets --report .release/immutable-verification.json
+        timeout-minutes: 10
+      - name: Retain the final immutable-verification report
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-immutable-verification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/immutable-verification.json
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+          archive: true
         timeout-minutes: 5

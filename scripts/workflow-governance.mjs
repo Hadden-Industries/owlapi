@@ -125,6 +125,9 @@ const validateActionUses = (fileName, source, violations) => {
       );
     }
     if (identity.startsWith("actions/setup-node@")) {
+      const isBootstrapSetupNode =
+        fileName === "release.yml" &&
+        block.includes("registry-url: https://registry.npmjs.org/");
       add(
         violations,
         /node-version: "(?:22\.23\.2|24\.19\.0)"/u.test(block),
@@ -141,11 +144,20 @@ const validateActionUses = (fileName, source, violations) => {
           `${fileName}: setup-node is missing ${setting}`,
         );
       }
-      add(
-        violations,
-        !/(?:registry-url|always-auth|mirror|token):/u.test(block),
-        `${fileName}: ordinary setup-node block broadens registry authority`,
-      );
+      if (isBootstrapSetupNode) {
+        add(
+          violations,
+          block.includes("registry-url: https://registry.npmjs.org/") &&
+            !/(?:always-auth|mirror|token):/u.test(block),
+          `${fileName}: bootstrap setup-node must configure only the public npm registry`,
+        );
+      } else {
+        add(
+          violations,
+          !/(?:registry-url|always-auth|mirror|token):/u.test(block),
+          `${fileName}: ordinary setup-node block broadens registry authority`,
+        );
+      }
     }
     if (identity.startsWith("actions/setup-python@")) {
       const inputKeys = [
@@ -183,6 +195,150 @@ const validateActionUses = (fileName, source, violations) => {
       );
     }
   }
+};
+
+const validateReleaseMutationBoundary = (source, violations) => {
+  const tagAccepted = jobBlock(source, "tag_accepted");
+  for (const setting of [
+    "name: Release / tag accepted",
+    "name: release-manual",
+    "deployment: false",
+    "contents: read",
+    "npm run release:verify-tag",
+  ]) {
+    add(
+      violations,
+      tagAccepted.includes(setting),
+      `release.yml:tag_accepted is missing ${setting}`,
+    );
+  }
+  for (const forbidden of [
+    "id-token: write",
+    "contents: write",
+    "NPM_BOOTSTRAP_TOKEN",
+    "npm publish",
+  ]) {
+    add(
+      violations,
+      !tagAccepted.includes(forbidden),
+      `release.yml:tag_accepted contains forbidden authority ${forbidden}`,
+    );
+  }
+
+  const draft = jobBlock(source, "draft_release");
+  add(
+    violations,
+    /^    permissions:\r?\n      contents: write\r?\n    defaults:/mu.test(
+      draft,
+    ),
+    "release.yml:draft_release must have contents-write as its sole authority",
+  );
+  for (const setting of [
+    "needs:",
+    "- tag_accepted",
+    "- candidate",
+    "npm run release:draft-github",
+  ]) {
+    add(
+      violations,
+      draft.includes(setting),
+      `release.yml:draft_release is missing ${setting}`,
+    );
+  }
+
+  const publication = jobBlock(source, "npm_release");
+  for (const setting of [
+    "name: Release / npm direct bootstrap",
+    "name: npm-release",
+    "contents: read",
+    "id-token: write",
+    "artifact-ids: ${{ needs.candidate.outputs.artifact_id }}",
+    "registry-url: https://registry.npmjs.org/",
+    "NODE_AUTH_TOKEN: ${{ secrets.NPM_BOOTSTRAP_TOKEN }}",
+    "npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/",
+  ]) {
+    add(
+      violations,
+      publication.includes(setting),
+      `release.yml:npm_release is missing ${setting}`,
+    );
+  }
+  add(
+    violations,
+    !publication.includes("actions/checkout@") &&
+      !publication.includes("contents: write") &&
+      (publication.match(/NPM_BOOTSTRAP_TOKEN/gu) ?? []).length === 1 &&
+      (publication.match(/npm publish /gu) ?? []).length === 1,
+    "release.yml:npm_release must have no checkout/write expansion or duplicate token/publish authority",
+  );
+
+  const finalize = jobBlock(source, "finalize_release");
+  add(
+    violations,
+    /^    permissions:\r?\n      contents: write\r?\n    defaults:/mu.test(
+      finalize,
+    ) &&
+      finalize.includes("npm run release:finalize-github") &&
+      !finalize.includes("id-token: write") &&
+      !finalize.includes("NPM_BOOTSTRAP_TOKEN") &&
+      !finalize.includes("npm publish"),
+    "release.yml:finalize_release must isolate the final GitHub release write",
+  );
+
+  for (const id of [
+    "publication_preflight",
+    "registry_verification",
+    "release_evidence",
+    "immutable_verification",
+  ]) {
+    const block = jobBlock(source, id);
+    add(
+      violations,
+      block.length > 0 &&
+        !block.includes("contents: write") &&
+        !block.includes("id-token: write") &&
+        !block.includes("NPM_BOOTSTRAP_TOKEN") &&
+        !block.includes("npm publish"),
+      `release.yml:${id} must exist and remain read-only`,
+    );
+  }
+
+  // These global cardinalities prevent a locally valid-looking job from
+  // coexisting with a second, less visible release authority elsewhere.
+  add(
+    violations,
+    (source.match(/^      contents: write\r?$/gmu) ?? []).length === 2,
+    "release.yml must contain exactly two isolated contents writers",
+  );
+  add(
+    violations,
+    (source.match(/^      id-token: write\r?$/gmu) ?? []).length === 1,
+    "release.yml must contain exactly one id-token writer",
+  );
+  add(
+    violations,
+    (source.match(/NPM_BOOTSTRAP_TOKEN/gu) ?? []).length === 1,
+    "release.yml must contain exactly one bootstrap-token reference",
+  );
+  add(
+    violations,
+    (source.match(/npm publish /gu) ?? []).length === 1 &&
+      !source.includes("npm stage publish"),
+    "release.yml must contain exactly one direct publish and no staged publish",
+  );
+  add(
+    violations,
+    (source.match(/^      name: release-manual\r?$/gmu) ?? []).length === 1 &&
+      (source.match(/^      deployment: false\r?$/gmu) ?? []).length === 1 &&
+      (source.match(/^      name: npm-release\r?$/gmu) ?? []).length === 1,
+    "release.yml must use each reviewed environment exactly once and suppress only the manual gate deployment",
+  );
+};
+
+export const auditReleaseMutationBoundary = (source) => {
+  const violations = [];
+  validateReleaseMutationBoundary(source, violations);
+  return violations;
 };
 
 const validateJobs = (fileName, source, violations) => {
@@ -294,6 +450,11 @@ const validateCandidateTransport = (fileName, source, violations) => {
     const isCandidateDownload = block.includes(
       "artifact-ids: ${{ needs.candidate.outputs.artifact_id }}",
     );
+    const isReleaseReportDownload =
+      fileName === "release.yml" &&
+      /artifact-ids: \$\{\{ needs\.(?:publication_preflight|tag_accepted|draft_release|registry_verification|release_evidence)\.outputs\.artifact_id \}\}/u.test(
+        block,
+      );
     const isEvidencePatternDownload = /^\s+pattern: npm-evidence-/mu.test(
       block,
     );
@@ -303,10 +464,14 @@ const validateCandidateTransport = (fileName, source, violations) => {
       isEvidencePatternDownload || isEvidenceKeyDownload;
     add(
       violations,
-      isCandidateDownload || isEvidenceDownload,
+      isCandidateDownload || isReleaseReportDownload || isEvidenceDownload,
       `${fileName}: download-artifact must use an approved closed selector`,
     );
-    if (!isCandidateDownload && !isEvidenceDownload) {
+    if (
+      !isCandidateDownload &&
+      !isReleaseReportDownload &&
+      !isEvidenceDownload
+    ) {
       continue;
     }
     for (const setting of [
@@ -320,7 +485,7 @@ const validateCandidateTransport = (fileName, source, violations) => {
         `${fileName}: artifact download is missing ${setting}`,
       );
     }
-    if (isCandidateDownload) {
+    if (isCandidateDownload || isReleaseReportDownload) {
       add(
         violations,
         !/^\s+(?:name|pattern|github-token|repository|run-id):/mu.test(block),
@@ -956,23 +1121,7 @@ export const auditRepositoryControls = () => {
     );
   }
   validateAggregate("release.yml", release, "release", violations);
-  for (const authority of [
-    "id-token: write",
-    "contents: write",
-    "npm publish",
-    "npm stage publish",
-  ]) {
-    add(
-      violations,
-      !release.includes(authority),
-      `release.yml: disabled Phase 19C boundary contains ${authority}`,
-    );
-  }
-  add(
-    violations,
-    !/^\s+environment:/mu.test(release),
-    "release.yml: disabled Phase 19C boundary contains a deployment environment",
-  );
+  validateReleaseMutationBoundary(release, violations);
 
   for (const [fileName, group] of [
     ["maintenance.yml", "owlapi-maintenance"],
