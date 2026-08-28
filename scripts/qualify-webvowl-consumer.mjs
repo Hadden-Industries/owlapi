@@ -205,6 +205,7 @@ const candidateMutationCache = join(
   "candidate-mutation-npm-cache",
 );
 const candidateCleanCache = join(temporaryRoot, "candidate-clean-npm-cache");
+const repositoryMirror = join(temporaryRoot, "webvowl.git");
 
 const TEXT_EXTENSIONS = new Set([
   ".cjs",
@@ -283,18 +284,40 @@ try {
     join(temporaryRoot, "universal-ontology"),
     process.platform === "win32" ? "junction" : "dir",
   );
+  // A normal clone does not carry the source checkout's remote-tracking refs.
+  // Those refs retain the original pre-reconstruction commits proved by
+  // WebVOWL's governance suite, so mirror the complete local ref namespace and
+  // attach a disposable worktree at the pinned source commit.
   runGit(
-    ["clone", "--no-local", "--no-hardlinks", sourceRepository, checkout],
+    [
+      "clone",
+      "--mirror",
+      "--no-local",
+      "--no-hardlinks",
+      sourceRepository,
+      repositoryMirror,
+    ],
     {
-      label: "isolated WebVOWL clone",
+      label: "isolated WebVOWL mirror clone",
       logFile: "clone.log",
     },
   );
-  runGit(["checkout", "--detach", sourceCommit], {
+  runGit(
+    [
+      `--git-dir=${repositoryMirror}`,
+      "worktree",
+      "add",
+      "--detach",
+      checkout,
+      sourceCommit,
+    ],
+    {
+      label: "WebVOWL source-commit worktree",
+    },
+  );
+  const clonedCommit = runGit(["rev-parse", "HEAD"], {
     cwd: checkout,
-    label: "WebVOWL source-commit checkout",
-  });
-  const clonedCommit = runGit(["rev-parse", "HEAD"], { cwd: checkout }).trim();
+  }).trim();
   if (clonedCommit !== sourceCommit) {
     throw new Error(
       `WebVOWL clone resolved ${clonedCommit}, expected ${sourceCommit}.`,

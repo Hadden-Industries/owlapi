@@ -9204,12 +9204,16 @@ job/step timeouts. The exact public-candidate sequence is:
     package runtime promise;
 11. on `ubuntu-24.04` x64, create one isolated WebVOWL checkout with complete
     retained history at the recorded source commit—its baseline governance suite
-    proves recorded reconstruction ancestry, so a shallow checkout is invalid—and
-    check out the representative `universal-ontology` corpus at its separately
-    recorded commit; because that repository intentionally omits generated `dist/`
-    output, install its exact lockfile and run its ordinary build to materialize
-    the corpus before qualification; run baseline WebVOWL `npm ci`, Jest and
-    development/production Vite builds; generate the WebVOWL
+    proves recorded reconstruction ancestry, so a shallow checkout is invalid;
+    preserve that checkout's complete ref namespace when deriving the disposable
+    mutation checkout, using a mirror plus detached worktree or an equivalent
+    topology, because a second ordinary clone drops remote-tracking refs that
+    retain original pre-reconstruction objects; check out the representative
+    `universal-ontology` corpus at its separately recorded commit; because that
+    repository intentionally omits generated `dist/` output, install its exact
+    lockfile and run its ordinary build to materialize the corpus before
+    qualification; run baseline WebVOWL `npm ci`, Jest and development/production
+    Vite builds; generate the WebVOWL
     import/dependency-ownership inventory; apply the reviewed consumer-cutover
     patch; install the retained tarball exactly while removing every dependency
     proven package-only in the same reviewed manifest/lockfile operation; then
