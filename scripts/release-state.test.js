@@ -4,6 +4,17 @@ import {
   requiredManualHandoffs,
 } from "./release-state.mjs";
 
+const eligibleReconciliation = {
+  enabled: true,
+  sourceCommit: "a".repeat(40),
+  tagTargetCommit: "a".repeat(40),
+  qualificationResult: "PASS",
+  publicationPreflightResult: "PASS",
+  candidateArtifactVerified: true,
+  githubReleaseAbsent: true,
+  reproducedSha256: "b".repeat(64),
+};
+
 describe("release state classification", () => {
   test("permits the direct bootstrap only while both coordinate and tag are absent", () => {
     expect(
@@ -49,6 +60,42 @@ describe("release state classification", () => {
         retainedSha256: "a".repeat(64),
       }),
     ).toEqual({ action: "ABANDON_TAGGED_VERSION" });
+  });
+
+  test("continues an unpublished tag only for a fully proved exact-artifact reconciliation", () => {
+    expect(
+      classifyReleaseState({
+        canonicalTagExists: true,
+        registryVersion: null,
+        retainedSha256: "b".repeat(64),
+        reconciliation: eligibleReconciliation,
+      }),
+    ).toEqual({ action: "RECONCILE_QUALIFIED_CANDIDATE" });
+  });
+
+  test("rejects reconciliation when the reproduced package bytes differ", () => {
+    expect(() =>
+      classifyReleaseState({
+        canonicalTagExists: true,
+        registryVersion: null,
+        retainedSha256: "b".repeat(64),
+        reconciliation: {
+          ...eligibleReconciliation,
+          reproducedSha256: "c".repeat(64),
+        },
+      }),
+    ).toThrow(/reproduced package bytes/u);
+  });
+
+  test("rejects reconciliation metadata when no immutable tag exists", () => {
+    expect(() =>
+      classifyReleaseState({
+        canonicalTagExists: false,
+        registryVersion: null,
+        retainedSha256: "b".repeat(64),
+        reconciliation: eligibleReconciliation,
+      }),
+    ).toThrow(/requires an existing canonical tag/u);
   });
 });
 

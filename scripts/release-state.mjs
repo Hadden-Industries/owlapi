@@ -6,6 +6,46 @@ const assertSha256 = (value, label) => {
   }
 };
 
+const assertExactArtifactReconciliation = (reconciliation, retainedSha256) => {
+  if (reconciliation.enabled !== true) {
+    throw new Error("Exact-artifact reconciliation is not enabled.");
+  }
+  if (
+    !/^[0-9a-f]{40}$/u.test(reconciliation.sourceCommit ?? "") ||
+    reconciliation.tagTargetCommit !== reconciliation.sourceCommit
+  ) {
+    throw new Error(
+      "Exact-artifact reconciliation does not bind the tag target to its source commit.",
+    );
+  }
+  if (reconciliation.qualificationResult !== "PASS") {
+    throw new Error(
+      "Exact-artifact reconciliation lacks successful qualification.",
+    );
+  }
+  if (reconciliation.publicationPreflightResult !== "PASS") {
+    throw new Error(
+      "Exact-artifact reconciliation lacks successful publication preflight.",
+    );
+  }
+  if (reconciliation.candidateArtifactVerified !== true) {
+    throw new Error(
+      "Exact-artifact reconciliation lacks a verified retained artifact.",
+    );
+  }
+  if (reconciliation.githubReleaseAbsent !== true) {
+    throw new Error(
+      "Exact-artifact reconciliation requires the GitHub release to remain absent.",
+    );
+  }
+  assertSha256(reconciliation.reproducedSha256, "Reproduced tarball");
+  if (reconciliation.reproducedSha256 !== retainedSha256) {
+    throw new Error(
+      "Exact-artifact reconciliation reproduced package bytes that differ from the retained candidate.",
+    );
+  }
+};
+
 /**
  * Classify remote state before any publication attempt. Keeping this policy
  * pure is intentional: a workflow may observe external state, but it must not
@@ -15,8 +55,14 @@ export const classifyReleaseState = ({
   canonicalTagExists,
   registryVersion,
   retainedSha256,
+  reconciliation,
 }) => {
   assertSha256(retainedSha256, "Retained tarball");
+  if (reconciliation && !canonicalTagExists) {
+    throw new Error(
+      "Exact-artifact reconciliation requires an existing canonical tag.",
+    );
+  }
 
   if (registryVersion) {
     assertSha256(registryVersion.tarballSha256, "Registry tarball");
@@ -29,6 +75,10 @@ export const classifyReleaseState = ({
   }
 
   if (canonicalTagExists) {
+    if (reconciliation) {
+      assertExactArtifactReconciliation(reconciliation, retainedSha256);
+      return { action: "RECONCILE_QUALIFIED_CANDIDATE" };
+    }
     return { action: "ABANDON_TAGGED_VERSION" };
   }
   return { action: "DIRECT_BOOTSTRAP_READY" };

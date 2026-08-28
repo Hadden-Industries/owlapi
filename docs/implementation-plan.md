@@ -22,12 +22,13 @@
 > **Release-control toolchain decision:** 24 August 2026 — Phase 19 freezes exact Node 22/24, npm, SemVer, import-map, SBOM, schema, package-lint, Playwright, fixture-bundler, GitHub CLI and history-filter versions; npm tools run only from the repository lockfile through named scripts, non-npm executables are checksum-verified, the SBOM generator is isolated from its production-only subject tree, and any replacement is a separately reviewed exact configuration change.<br>
 > **Standalone source-policy decision:** 27 August 2026 — correct the Phase 19A omission of WebVOWL's formerly inherited Git/editor policy before the Phase 19C bootstrap commit: repository-owned attributes normalize first-party text to LF while preserving upstream evidence bytes, root EditorConfig defines the cross-editor baseline, an empty Prettier declaration intentionally selects exact `prettier@3.9.6` defaults, exact ESLint defines native-ESM grammar/static quality, contributor documentation names the canonical commands, and behavioral governance invokes real Git and Prettier resolution.<br>
 > **Repository-evidence checkout decision:** 28 August 2026 — retain evidence payloads as individually reviewable content-addressed files on the primary branch, with no aggregate archive or `linguist-generated` diff suppression; provide an optional blobless partial-clone plus positive cone-mode sparse profile that omits bulk provenance/release payloads but retains their indexes, schemas, review records and ordinary conformance inputs; and require a complete checkout for governance, evidence verification and every release gate.<br>
-> **Workflow-trust-boundary decision:** 24 August 2026 — use separate read-only CI, manually dispatched late-tag release, maintenance and extended-test workflows; keep each release's retained artefact chain inside one serialized `release.yml` run; deny token authority by default; isolate npm OIDC, GitHub-release writes and maintenance issue writes in different least-privilege jobs; and forbid privileged execution or cross-workflow artefact promotion of untrusted pull-request content.<br>
-> **GitHub-Action inventory decision:** 24 August 2026, hardened 27 August 2026 — allow exactly six GitHub-maintained Actions at reviewed full commit SHAs; disable `setup-node`'s implicit npm cache everywhere; select the evidence scanner's exact isolated Python through cache-free `setup-python`; remove persisted checkout credentials; transport the three-file release candidate by exact same-run artefact ID and the deterministic evidence shards by closed same-run patterns with digest enforcement; and configure dependency review solely for newly introduced high/critical runtime vulnerabilities.<br>
+> **Workflow-trust-boundary decision:** 24 August 2026, hardened 28 August 2026 — use separate read-only CI, manually dispatched late-tag release, maintenance and extended-test workflows; normally keep each release's retained artefact chain inside one serialized `release.yml` run; permit only §2.60's reviewed exact-artifact reconciliation workflow to import already-qualified candidate/preflight artefacts by pinned source run/attempt and artefact IDs after a post-qualification evidence-persistence failure; deny token authority by default; isolate npm OIDC, GitHub-release writes and maintenance issue writes in different least-privilege jobs; and forbid privileged execution or cross-workflow artefact promotion of untrusted pull-request content.<br>
+> **GitHub-Action inventory decision:** 24 August 2026, hardened 27 and 28 August 2026 — allow exactly six GitHub-maintained Actions at reviewed full commit SHAs; disable `setup-node`'s implicit npm cache everywhere; select the evidence scanner's exact isolated Python through cache-free `setup-python`; remove persisted checkout credentials; normally transport the three-file release candidate by exact same-run artefact ID and the deterministic evidence shards by closed same-run patterns with digest enforcement; allow only §2.60's fixed-source reconciliation to download the reviewed prior-run candidate and preflight by exact repository/run/artefact identities before re-uploading the proved byte-identical candidate into its own same-run chain; and configure dependency review solely for newly introduced high/critical runtime vulnerabilities.<br>
 > **Hosted-runner and shell decision:** 24 August 2026 — use only explicit GA `ubuntu-24.04` x64, `windows-2025` x64 and `macos-15` arm64 GitHub-hosted labels; build every release artefact only on Ubuntu/Node 24; qualify the installed tarball on both Node patches across Windows and macOS; run the three Playwright engines separately on Ubuntu; make Bash/PowerShell Core selection explicit; record each mutable runner-image identity as evidence; and consume no runner-preinstalled release tool.<br>
 > **Automation-failure-semantics decision:** 24 August 2026, hardened 25 August 2026 — protect `main` with one stable fail-closed `CI / required` aggregate plus CodeQL, place an equivalent `Release / qualified` aggregate directly before npm authority, disable required-matrix fail-fast/allow-failure behavior, give every job and vulnerable step an exact timeout, serialize each workflow with its approved cancellation/queue policy, reject a second active/pending release run, record queue and runner time separately, retry only bounded idempotent reads, and reconcile an ambiguous external write before any renewed explicitly authorized mutation.<br>
 > **Untrusted-contributor execution decision:** 24 August 2026 — require approval for every external contributor’s fork-workflow run; execute proposed code only through unprivileged `pull_request` CI with no secrets, OIDC, environment or write authority; quarantine fork-produced artefacts to that same run; treat event/external text as validated data rather than shell or workflow syntax; and make automatic log masking defense in depth rather than a substitute for narrow credential flow and incident revocation.<br>
-> **Late-tag release-ordering decision:** 24 August 2026 — dispatch `release.yml` manually only at an accepted protected-`main` commit, complete every deterministic candidate gate before creating the immutable canonical tag, and for every `OIDC_STAGED` release—including the first alpha when supported—also stage, download and byte-verify the retained tarball before that tag; the human then signs and pushes `v<version>` at the already-fixed commit, the same run verifies it before draft-release or public-promotion authority, and an extraordinary deterministic failure after that point abandons rather than moves the tag.<br>
+> **Late-tag release-ordering decision:** 24 August 2026, hardened 28 August 2026 — dispatch `release.yml` manually only at an accepted protected-`main` commit, complete every deterministic candidate gate before creating the immutable canonical tag, and for every `OIDC_STAGED` release—including the first alpha when supported—also stage, download and byte-verify the retained tarball before that tag; the human then signs and pushes `v<version>` at the already-fixed commit and the same run normally verifies it before draft-release or public-promotion authority; a deterministic input correction after that point abandons rather than moves the tag, while §2.60's closed exact-artifact reconciliation may preserve it only when the qualified candidate bytes, source commit, tag and remote coordinates remain unchanged and the prior failure was solely post-qualification evidence persistence/orchestration.<br>
+> **Exact-artifact reconciliation decision:** 28 August 2026 — preserve an immutable canonical tag after a post-qualification/prepublication tooling failure only through the dedicated `release-reconciliation.yml` route: a schema-validated reviewed control pins the original workflow run/attempt, tagged source commit, failed boundary, successful qualification/preflight jobs and retained artefact identities; a later protected-`main` descendant independently revalidates those facts, proves a fresh `npm pack` is byte-identical to the retained tarball and proves the GitHub release/npm coordinate remain absent; the route reruns no completed qualification workload, transports only that retained candidate into its own same-run chain, preserves distinct package-source/qualification and publication-tooling provenance, and fails into immutable-version abandonment on any identity, ancestry, byte, evidence or remote-state mismatch.<br>
 > **Same-run human-handoff decision:** 24 August 2026 — pause the release chain through one no-secret/no-variable/no-OIDC `release-manual` environment restricted to protected `main`, with required reviewer approval, self-review permitted and `deployment: false`; use it once after human tag creation in every release and a second time after interactive staged promotion, retain authenticated review history as evidence, and never occupy a runner with tag/publication polling.<br>
 > **Distribution-tag decision:** 25 August 2026 — prereleases use `next`; production-recommended `0.1.0`—or solely its §2.60 prepublication-abandonment successor—is the first version allowed to establish `latest`; `next` is removed after production verification whenever it would otherwise remain a stale pointer to an older prerelease; and only the §2.33 bad-release contingency may later move `latest` to the first accepted corrective patch.<br>
 > **Repository-workflow decision:** 24 August 2026 — `main` is the only standing integration branch, short-lived pull requests squash to one curated commit, and branch plus `v*` tag rulesets protect accepted history; no second-person review is a completion gate in this plan, while any future independent-review rule requires a separate post-plan governance/configuration decision.<br>
@@ -51,7 +52,7 @@
 > **Published-dependency-tree decision:** 24 August 2026 — publish the six exact direct runtime dependencies as ordinary library dependencies, keep `package-lock.json` repository-only, publish no shrinkwrap/bundled/peer/optional/override dependency authority, and verify both the locked release graph and the graph resolved by a lockless fresh consumer.<br>
 > **Independent-package-lint decision:** 24 August 2026 — use exact-pinned `publint@0.3.24` as the present baseline, permit a later exact version only after the same tool-update review, run it in strict mode against the retained tarball before publication and the registry-downloaded tarball afterwards, and permit only narrow versioned, expiring warning exceptions rather than weakening the project-specific package gates.<br>
 > **Third-party-material decision:** 24 August 2026, hardened 26 August 2026 — maintain a schema-validated, human-reviewed third-party-material inventory for the exact production graph, release-relevant development material and copied/generated third-party files; explicitly elect Apache-2.0 for the packed Java OWLAPI public-identity/declaration facts while preserving their upstream dual-licence declaration and packing the elected licence text; preserve the W3C test-suite dual-licence expression with retained repository-only licence evidence rather than making a use-independent election; render `NOTICE` according to what the `owlapi` tarball actually distributes; and require WebVOWL to review its separately bundled deployment scope rather than pretending one package notice covers both distributions.<br>
-> **npm-provenance-verification decision:** 25 August 2026 — verify `owlapi@<version>` itself with npm's signature/attestation JSON; bind its registry signature, provenance/publish attestations, subject digest, repository, authorized workflow, actual triggering ref/run and captured source commit; verify the subsequently created signed canonical tag independently against that same commit; and never claim that an attestation generated before tag creation retroactively contains the later tag as its triggering ref.<br>
+> **npm-provenance-verification decision:** 25 August 2026, hardened 28 August 2026 — verify `owlapi@<version>` itself with npm's signature/attestation JSON; bind its registry signature, provenance/publish attestations, subject digest, repository, authorized workflow, actual triggering ref/run and publication commit; verify the signed canonical tag independently against the canonical package-source commit; normally require those commits to be the same, but under §2.60's exact-artifact reconciliation record the later descendant publication-tooling commit and original tagged/qualified package-source commit as distinct, digest-bound provenance stages; and never claim that an attestation generated before tag creation retroactively contains the later tag as its triggering ref.<br>
 > **Conditional-prerelease decision:** 25 August 2026 — at least one useful public alpha is required, but an additional alpha or public release candidate is required only when material behavior, public API, dependency, environment, security, networking or resource semantics need another public observation period; otherwise Phase 20 fully qualifies the actual retained/staged `0.1.0` candidate and may proceed directly from the accepted alpha to production.<br>
 > **Executable-release-gate decision:** 25 August 2026, hardened 25 August 2026 — make §§17.26.5 and 17.27.6 the sole authoritative Phase 19/20 acceptance catalogues; assign every requirement a stable anchored ID and explicit decision-section coverage; make §30 a derived marked checklist rather than a fictitious phase or second authority; reconcile catalogue IDs, checklist coverage and the versioned machine-readable gate registry mechanically; accept required gates only as `PASS` or validated `NOT_APPLICABLE`; and distinguish unresolved product, control and external-service failures without permitting any of them to reach publication authority.<br>
 > **Phase 19 checkpointing decision:** 25 August 2026 — execute Phase 19 as four sequential reviewable checkpoints—19A history reconstruction, 19B standalone package boundary, 19C consumer/browser/release-control qualification and 19D public alpha/WebVOWL cutover—with a focused evidence/commit pause at each and no npm or public-release mutation before 19D.<br>
@@ -1360,12 +1361,16 @@ the accepted protected-`main` commit while no canonical `v<version>` tag exists.
 For every `OIDC_STAGED` release, including the first alpha when supported, the same run also stages, downloads and proves
 the byte identity of that retained tarball before the tag is created. A human
 then signs and pushes the canonical tag at the already-fixed commit, and the
-same run verifies its target, signature, authorized signer and GitHub result
+same run normally verifies its target, signature, authorized signer and GitHub result
 before the staged package may be promoted. A `DIRECT_BOOTSTRAP` cannot stage by
 definition; when the §2.10.2 capability preflight proves that mode necessary, its tag is therefore
 created after all non-mutating gates and immediately before the separately
 authorized direct publication boundary. If the first alpha can use OIDC staging,
 it follows the ordinary pre-tag staged-byte path instead.
+Only the exact §2.60 post-qualification evidence-persistence exception may move
+that verification/publication continuation to a later descendant workflow run;
+it retains the original tagged source and candidate bytes and proves the dual
+provenance rather than rebuilding or retagging them.
 
 Once the verified tag exists, the GitHub release is created as a draft so the
 retained tarball, SBOM and `SHA256SUMS` can be attached and reviewed before the
@@ -3481,19 +3486,24 @@ coordinate and proves all of the following:
 - the source identity is exactly the case-sensitive public
   `Hadden-Industries/owlapi` repository;
 - the authorized workflow path/identity, actual triggering branch ref,
-  workflow/run identity, captured source commit, hosted build identity and
+  workflow/run identity, captured publication commit, hosted build identity and
   public transparency-log evidence match the registry event that generated the
   attestation;
-- the later SSH-signed annotated canonical tag independently targets that same
-  captured source commit and passes the signer/GitHub verification gates; and
+- the SSH-signed annotated canonical tag independently targets the canonical
+  package-source commit and passes the signer/GitHub verification gates; in the
+  ordinary path that commit equals the publication commit, while §2.60's exact-
+  artefact path instead proves the publication commit is a later descendant and
+  the complete tarball bytes are identical to the tagged/qualified candidate; and
 - no attestation belonging only to another package/version is counted as
   `owlapi` evidence.
 
 The validator **MUST NOT** require an npm attestation generated before tag
 creation to claim that later-created tag as its triggering Git ref. “Provenance
-and tag agree” means that the independently authenticated paths converge on the
-same source commit and package subject; it never means that a `workflow_dispatch`
-attestation on protected `main` is rewritten retroactively.
+and tag agree” normally means that the independently authenticated paths converge
+on the same source commit and package subject. Under §2.60 it instead means that
+the distinct original source/qualification and later descendant publication-
+tooling identities are both recorded and converge on one byte-identical package
+subject; neither commit is rewritten or described as the other.
 
 Any release using the bounded direct-bootstrap mode explicitly requests npm
 provenance because it uses the one-day, single-attempt granular access token
@@ -3754,17 +3764,18 @@ governance gates. The initial `.gitattributes` checkpoint **MUST** inspect the
 would-be normalized index and preserve the upstream `-text` exception; it may not
 hide a broad source rewrite inside the policy commit.
 
-### 2.55 Decision: separate workflow trust boundaries and retain one manually dispatched late-tag release chain
+### 2.55 Decision: separate workflow trust boundaries and retain one ordinary late-tag chain plus one closed reconciliation route
 
-The independent repository **MUST** use these four purpose-specific workflow
+The independent repository **MUST** use these five purpose-specific workflow
 files:
 
-| Workflow                               | Exact trigger                                                                            | Responsibility                                                                                                                     |
-| -------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `.github/workflows/ci.yml`             | `pull_request` targeting `main`; `push` to `main`                                        | required package, Node, browser, dependency-review and ordinary quality gates                                                      |
-| `.github/workflows/release.yml`        | manual `workflow_dispatch` accepted only at the exact release commit on protected `main` | build, qualify, perform the §§2.60–2.61 late-tag/manual-handoff boundary, publish, registry-verify and finalize one public version |
-| `.github/workflows/maintenance.yml`    | scheduled and manual default-branch runs                                                 | lockless `owlapi@latest` and other read-only dependency-health monitors, with separate failure reporting                           |
-| `.github/workflows/extended-tests.yml` | scheduled and manual default-branch runs                                                 | non-blocking branded, historical and extended-environment evidence                                                                 |
+| Workflow                                       | Exact trigger                                                                            | Responsibility                                                                                                                                                                             |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `.github/workflows/ci.yml`                     | `pull_request` targeting `main`; `push` to `main`                                        | required package, Node, browser, dependency-review and ordinary quality gates                                                                                                              |
+| `.github/workflows/release.yml`                | manual `workflow_dispatch` accepted only at the exact release commit on protected `main` | build, qualify, perform the §§2.60–2.61 late-tag/manual-handoff boundary, publish, registry-verify and finalize one public version                                                         |
+| `.github/workflows/release-reconciliation.yml` | manual `workflow_dispatch` accepted only at a later reviewed protected-`main` descendant | execute only §2.60's schema-pinned exact-artifact continuation after a proved post-qualification evidence-persistence failure; never repeat deterministic qualification or admit new bytes |
+| `.github/workflows/maintenance.yml`            | scheduled and manual default-branch runs                                                 | lockless `owlapi@latest` and other read-only dependency-health monitors, with separate failure reporting                                                                                   |
+| `.github/workflows/extended-tests.yml`         | scheduled and manual default-branch runs                                                 | non-blocking branded, historical and extended-environment evidence                                                                                                                         |
 
 `ci.yml` exposes one stable, unprivileged `CI / required` aggregate and
 `release.yml` exposes one stable, unprivileged pre-publication
@@ -3852,7 +3863,7 @@ queue order, and each must revalidate the current tag and registry state before
 mutation. Ordinarily, a maintainer dispatches no second release while one is
 outstanding.
 
-One `release.yml` run owns the complete candidate chain. It builds the retained
+Ordinarily, one `release.yml` run owns the complete candidate chain. It builds the retained
 tarball, SBOM and checksums; transfers those bytes only among its own jobs through
 the exact §2.56 full-SHA-pinned GitHub artefact actions and input policy;
 independently verifies SHA-256 after
@@ -3863,9 +3874,12 @@ the immutable GitHub release. The same run performs every §2.60 pre-tag gate,
 uses §2.61's no-runner manual gates to acknowledge and verify the separately
 created canonical tag and completed staged promotion, and records the ordering
 without rebuilding the candidate. The privileged release workflow does not restore
-an Actions dependency/browser/build cache. A CI, maintenance, extended-test or
-earlier release artefact can be evidence to inspect, but can never become the
-publishable subject.
+an Actions dependency/browser/build cache. A CI, maintenance or extended-test
+artefact can be evidence to inspect, but can never become the publishable subject.
+An earlier release artefact is equally ineligible by default; solely §2.60's
+schema-pinned exact-artifact route may promote the retained candidate from its
+reviewed prior release run after revalidating that run and proving complete byte
+identity, and every subsequent transfer remains inside the reconciliation run.
 
 Runner allocation follows §2.57. Every artefact-producing, privileged,
 browser, WebVOWL and final-verification job in `release.yml` uses explicit
@@ -3950,7 +3964,7 @@ cache: ""
 package-manager-cache: false
 ```
 
-The explicit cache setting applies to all four workflows. `setup-node@v7.0.0`
+The explicit cache setting applies to all five workflows. `setup-node@v7.0.0`
 otherwise automatically enables npm caching when `devEngines.packageManager`
 declares npm, as this package is required to do. No workflow supplies a non-empty
 `cache` or `cache-dependency-path`, and no release job restores a dependency,
@@ -4015,6 +4029,18 @@ artefact, run, workflow or repository. After extraction, the job rejects any
 inventory other than the three files above, verifies `SHA256SUMS` strictly and
 recomputes the tarball/SBOM digests independently of the Action's own artefact-
 archive digest check.
+
+Section 2.60's exact-artifact reconciliation is the sole candidate-transport
+exception across workflow runs. Its unprivileged source-verification job supplies
+all four `download-artifact` cross-run inputs—numeric `artifact-ids`, the exact
+`Hadden-Industries/owlapi` repository, reviewed source `run-id` and the ordinary
+job token—only for the pinned candidate and preflight artefacts; the publication-
+control schema fixes their expected names/digests/expiry, and the job re-queries
+and verifies those server records plus candidate contents and full tarball-byte
+reproduction. It then uploads those exact three candidate files once under a new
+run/attempt-qualified transport identity. Every later reconciliation job returns
+to the ordinary exact same-run ID rule. No other workflow or artefact class may
+use `github-token`, `repository` or `run-id` to cross this boundary.
 
 The §2.50.1 evidence path is the only approved pattern-selected exception to the
 candidate-by-ID rule. Each shard uploads exactly its closed shard directory under
@@ -4483,6 +4509,63 @@ The late-tag sequence has exactly two publication modes:
 | `DIRECT_BOOTSTRAP` only while no Hadden Industries `owlapi` version exists and the recorded preflight proves OIDC staging cannot establish that identity | fully qualify the selected `alpha.N` retained candidate without npm/GitHub mutation; let the tag-acceptance job wait at `release-manual`; have the authorized human create and push its SSH-signed annotated canonical tag at the captured commit and then approve that waiting job; verify the tag locally and through GitHub; create and populate the draft release; then separately approve `npm-release` and perform the one authorized direct npm write                                                                                                                                                                                                                 |
 | `OIDC_STAGED` whenever the exact package/trusted-publisher state supports staging, including the first alpha if the preflight succeeds                   | after `Release / qualified`, use the protected `npm-release` environment and stage-only OIDC to stage the retained tarball while the canonical tag is still absent; have an interactively authenticated maintainer run `stage view`/`stage download`, prove byte identity and rerun the required tarball checks; only then create and push the SSH-signed annotated `v<version>` tag at the captured commit and approve the first `release-manual` job; have the same run verify it and create/populate the draft release; after interactive 2FA promotion of that exact stage, approve the second `release-manual` job so the same run performs fresh-registry verification |
 
+`EXACT_ARTIFACT_RECONCILIATION` is **not** a third publication mode and is not a
+general workflow retry. It is a closed continuation of the mode already selected
+for one immutable package identity. It may be enabled only when the original run
+completed `Release / qualified` and publication preflight successfully, created
+the complete retained three-file candidate, failed after canonical-tag creation
+solely because release-control/evidence tooling could not persist or transport
+its result, made no npm or GitHub-release mutation, and requires no package,
+metadata, dependency, source-tag or retained-byte correction. Ordinary runner,
+authentication, provider or ambiguous-write failures remain governed by
+§§2.58–2.61; deterministic candidate defects remain abandonment cases below.
+
+The exception requires a human-reviewed, schema-validated publication-control
+record that fixes the source repository, workflow path, run ID and attempt,
+source commit, canonical tag, exact failed job/failure class, every required
+successful source job, and each imported artefact's numeric ID, name, GitHub
+digest and expiry. A dedicated manually dispatched
+`.github/workflows/release-reconciliation.yml` at a later accepted protected-
+`main` commit must then, before requesting any environment or write authority:
+
+1. prove the dispatch commit is the captured `origin/main` and a strict
+   descendant of the tagged source commit;
+2. download only the pinned retained candidate and publication-preflight
+   artefacts from the pinned source run/attempt, with GitHub digest enforcement;
+3. re-query the original run, jobs and artefact records and require the reviewed
+   qualification/preflight successes and exact post-qualification failure;
+4. independently reverify the annotated SSH-signed GitHub tag and its unchanged
+   target through the reviewed signer registry;
+5. prove the npm coordinate and GitHub release are still absent; and
+6. execute `npm pack` with the original exact Node/npm pair and require complete
+   tarball byte equality—not merely a packlist or file-digest subset—with the
+   retained candidate.
+
+The reconciliation workflow deliberately reruns none of the already-successful
+ScanCode, browser, WebVOWL, ontology-corpus, portability, benchmark, build, lint
+or test workloads. Their provenance remains the original qualification run. It
+re-uploads the proved retained three-file candidate into a new exact same-run
+artefact-ID chain only to supply the existing draft, one-time npm publication,
+fresh-registry, release-evidence, finalization and immutable-verification jobs.
+It uses the same `release-manual` and `npm-release` approvals and the same
+least-privilege split as the ordinary mode: exactly two isolated
+`contents: write` jobs, one isolated `id-token: write`/bootstrap-token npm job,
+one `npm publish` attempt and no checkout in that npm job. Repository governance
+pins this job inventory, every Action and artefact selector, the no-repeat-
+qualification boundary and those global authority cardinalities.
+
+The resulting release evidence has two explicit provenance stages. The
+canonical package source, signed tag and deterministic qualification remain
+bound to the original source commit/run; the npm publish attestation, recovery
+workflow and publication controls identify the later descendant promotion
+commit/run. The evidence also records the original failed job, original
+preflight artefact, new transport artefact and byte-reproduction proof. Neither
+commit may be described as the other. Any missing, expired, conflicting or
+unprovable source artefact; failed prerequisite; non-descendant promotion;
+changed tarball byte; tag mismatch; existing remote coordinate/release; or
+unexpected permission/selector fails closed without a publication write and
+activates the ordinary immutable-version abandonment analysis.
+
 The `npm-release` environment's deployment policy therefore permits only the
 protected `main` branch, because the run's `GITHUB_REF` is `refs/heads/main`; it
 does not pretend that a not-yet-created tag triggered the run. The environment
@@ -4556,20 +4639,29 @@ Failure handling is ordered by the irreversible boundary:
    draft, asset or public package may resume at verification; an absent,
    conflicting or unprovable result requires renewed authorization before any
    new write.
-3. **Deterministic correction required after the immutable canonical tag exists
-   but before npm publication:** do not move, delete or recreate the tag, and do
-   not publish known-defective bytes merely to satisfy the planned version.
+3. **Exact post-qualification evidence-persistence failure after the immutable
+   tag exists but before npm/GitHub-release publication:** preserve the tag and
+   retained candidate only when every closed eligibility proof above passes.
+   Execute the dedicated exact-artifact reconciliation from its reviewed later
+   protected-`main` descendant; do not reinterpret it as renewed qualification,
+   rebuild the candidate for publication, or admit any package-byte change. This
+   branch preserves rather than burns a valid package version because it proves
+   that only the release-control implementation changed.
+4. **Deterministic correction required after the immutable canonical tag exists
+   but before npm publication, or exact-artifact reconciliation cannot prove its
+   closed inputs:** do not move, delete or recreate the tag, and do not publish
+   known-defective or unproven bytes merely to satisfy the planned version.
    Reject a pending stage, preserve a sanitized append-only failed-attempt record
    at `docs/provenance/release-attempts/<version>/<run-id>-<attempt>.json`, and
    permanently abandon that package version under project policy even if npm has
    not consumed it. The next reviewed prerelease advances the applicable
-   `0.1.0-alpha.N` or `0.1.0-rc.N` component; an abandoned production `v0.1.0` advances the
-   same frozen production surface to the next available patch, normally `0.1.1`,
-   which becomes the first Hadden Industries production release and WebVOWL cutover only
-   after the complete applicable production gate, including an RC only when
-   §2.27 requires one. This is the sole prepublication exception
-   to the plan's normal exact-version terminal target.
-4. **After npm publication:** preserve the coordinate, tag and evidence and use
+   `0.1.0-alpha.N` or `0.1.0-rc.N` component; an abandoned production `v0.1.0`
+   advances the same frozen production surface to the next available patch,
+   normally `0.1.1`, which becomes the first Hadden Industries production
+   release and WebVOWL cutover only after the complete applicable production
+   gate, including an RC only when §2.27 requires one. This is the sole
+   prepublication exception to the plan's normal exact-version terminal target.
+5. **After npm publication:** preserve the coordinate, tag and evidence and use
    §2.33's bad-release containment/corrective-version process. The prepublication
    abandoned-tag rule cannot be invoked retroactively to erase a public release.
 
@@ -4578,14 +4670,21 @@ intended coordinate/channel, retained candidate and stage digests when present,
 tag/signer verification, completed gates, exact failure boundary, remote-state
 reconciliation, rejection result, abandonment decision and successor version;
 it contains no credential or private report data and is excluded from the npm
-tarball. Successful §2.40 evidence records the dispatch and initial tag-absence
-state, completion of deterministic qualification, pre-tag stage identity and
-byte equality where applicable, later tag creation/verification, draft creation,
-public promotion and final verification as an ordered timeline. Governance tests
-must fail if a canonical tag is required before candidate qualification, if a
-public promotion or GitHub draft can precede tag verification, if the environment
-admits a ref other than protected `main`, or if a corrected commit can reuse an
-already-created canonical version tag.
+tarball. A successful exact-artifact reconciliation instead preserves its
+schema-validated control and machine evidence for the original run/jobs/
+artefacts, tag reverification, descendant promotion commit, absent remote
+coordinates and complete tarball-byte reproduction; it does not mislabel that
+tooling-only repair as a failed candidate or as a second qualification. Successful
+§2.40 evidence records the dispatch and initial tag-absence state, completion of
+deterministic qualification, pre-tag stage identity and byte equality where
+applicable, later tag creation/verification, draft creation, public promotion and
+final verification as an ordered timeline. Governance tests must fail if a
+canonical tag is required before candidate qualification, if a public promotion
+or GitHub draft can precede tag verification, if the environment admits a ref
+other than protected `main`, if a corrected package commit can reuse an already-
+created canonical version tag, or if reconciliation can import an unpinned prior-
+run artefact, repeat expensive qualification, conflate source and promotion
+provenance, or expand publication authority.
 
 ### 2.61 Decision: pause human hand-offs through one no-authority `release-manual` environment
 
@@ -9452,7 +9551,9 @@ the evidence-required direct-bootstrap branch.
 Publication is an explicit external-state gate and requires separate approval
 for the exact retained tarball digest, publishing custodian, package coordinate,
 distribution tag and registry. The protected `npm-release` environment in the
-same manually dispatched `release.yml` run is the npm-write approval boundary.
+same manually dispatched `release.yml` run is normally the npm-write approval
+boundary; §2.60's approved exact-artifact continuation uses that same environment
+and authority shape in its dedicated serialized reconciliation run.
 Before reaching it, a read-only Node `24.19.0` preflight job downloads the exact §2.56
 same-run artefact ID, records Node `24.19.0`/npm `12.0.2`, rejects any other
 value, verifies the captured dispatch commit and initial canonical-tag absence,
@@ -9529,6 +9630,13 @@ The outcome branches are normative:
   or tag exists; return to the release gate, make the reviewable correction and
   create a new source candidate at the same still-unused version after fresh tag/
   registry checks; do not mutate retained assets or weaken validation.
+- **Post-qualification evidence-persistence/tooling failure after canonical-tag
+  creation:** only when §2.60's exact-artifact eligibility proofs all pass, keep
+  the signed tag and original retained candidate and continue through the
+  dedicated reconciliation workflow. The recovery commit may correct only
+  release-control/evidence tooling; it may neither alter package bytes nor
+  inherit qualification by assertion. Its full-tarball reproduction, source-
+  run/job/artefact checks and absent-coordinate/release checks are blocking.
 - **Deterministic correction required after canonical-tag creation but before a
   successful registry write:** leave the tag untouched, keep any draft
   unpublished while preserving its failed-attempt meaning, record and abandon
@@ -9544,6 +9652,23 @@ The outcome branches are normative:
 - **Version conflict:** investigate previously undiscovered immutable registry
   history; do not increment candidate versions until the conflict is explained
   and the plan is amended if necessary.
+
+For the initial alpha, the sole approved reconciliation instance is pinned in
+`docs/release/publication-control.json` and its strict schema: source workflow
+run `33160042447`, attempt `1`, source/tag target
+`caabb1197ffdab91c1e10d596d177b5142aea5c1` /
+`v0.1.0-alpha.0`, failed job `Release / tag accepted`, successful jobs
+`Release / qualified` and `Release / publication preflight`, candidate artefact
+ID `9682090118` with GitHub digest
+`sha256:f5967321e1c18a9c5aa14ad44a1d45fe3606605453866ce7746afe9c394f52d7`,
+and preflight artefact ID `9682247101` with digest
+`sha256:324472ff607ce6bbaebf30fe1e1a1db40a78da54f0877a712001a3c9ee84157e`.
+Both artefacts expire on `2026-11-26T09:36:09Z`; expiry or any API/byte mismatch
+invalidates this route rather than relaxing it. The accepted reconciliation
+commit must remain a later `main` descendant and the final v2 release-evidence
+asset must identify the original package-source/qualification run and later
+publication-tooling run separately. No future coordinate inherits this incident
+record or workflow authority by analogy.
 
 If a defect is discovered only after a successful registry write, preserve that
 published version and execute §2.33. For the initial alpha, remove `next` when no
@@ -9564,7 +9689,7 @@ no latest tag exists
 npm install owlapi@next installs the expected public dependency closure
 the fresh lockless consumer graph is recorded and every difference from the locked release/SBOM graph is explained
 the registry integrity/tarball content agrees with the retained artefact
-the exact root owlapi coordinate passes npm registry-signature, provenance, publish-attestation, subject, repository, actual triggering ref/workflow/run/source-commit and transparency validation, while the later signed tag independently targets that same commit
+the exact root owlapi coordinate passes npm registry-signature, provenance, publish-attestation, subject, repository, actual triggering ref/workflow/run/publication-commit and transparency validation, while the signed tag independently targets the canonical package-source commit; those commits are identical in the ordinary flow, or are separately recorded source and descendant promotion commits only under the approved exact-artifact reconciliation
 the installed manifest has the exact description/keywords, the deliberately omitted metadata fields are absent, and publishConfig.tag=next
 the installed manifest has only the exact unconditional exports map, sideEffects=false and the approved devEngines npm patch, with no forbidden fallback/package-manager fields
 the manifest/tarball has no shrinkwrap, bundled, peer, optional or override dependency authority and no package lock
@@ -9792,7 +9917,8 @@ These bullets replace the former single compound completion sentence.
   global, remote-`npx` or runner-preinstalled release tool supplies evidence.
   **Constraints:** §§2.47, 2.49, 2.54–2.54.1.
 - <a id="p19-ci-controls-001"></a> **`P19-CI-CONTROLS-001` — Closed workflow
-  authority.** The four workflow triggers, least-privilege jobs, exact Action
+  authority.** The five workflow triggers—including the closed exact-artifact
+  reconciliation exception—least-privilege jobs, exact Action
   pins/inputs, aggregate results, runner identities, timeouts, release queue,
   untrusted-contribution isolation, one-attempt mutation and reconciliation
   evidence pass; the authenticated single-custodian checkpoints are not
@@ -9813,8 +9939,11 @@ These bullets replace the former single compound completion sentence.
   The authenticated locked-dependency corpus and human conclusions close first;
   strict retained/registry tarball lint, CycloneDX 1.6, checksums, schema-valid
   release evidence, npm root signature/attestation, immutable GitHub release and
-  per-asset/tag verification then all identify the same source commit and bytes
-  and survive ordinary workflow-log expiry. **Constraints:** §§2.40, 2.47,
+  per-asset/tag verification then all identify the same canonical source commit
+  and bytes and survive ordinary workflow-log expiry; when §2.60's exception is
+  activated, v2 evidence additionally distinguishes the original qualification/
+  tagged-source commit from the later descendant publication-tooling commit and
+  binds both to the same tarball bytes. **Constraints:** §§2.40, 2.47,
   2.49–2.52.
 - <a id="p19-gates-001"></a> **`P19-GATES-001` — Executable closed acceptance.**
   Catalogue IDs, derived §30 coverage and `gates.json` reconcile exactly; every
@@ -9831,7 +9960,11 @@ These bullets replace the former single compound completion sentence.
   alpha.** The applicable `OIDC_STAGED` or one-time `DIRECT_BOOTSTRAP` state
   machine publishes the exact useful alpha under `next` with no `latest`, proves
   pre-tag candidate/staged-byte identity, and creates and verifies the signed
-  immutable tag only at the authorized late boundary. **Constraints:** §§2.10,
+  immutable tag only at the authorized late boundary; if the reviewed §2.60
+  reconciliation exception is used, its pinned source run, exact imported
+  artefacts, descendant promotion, full-tarball byte reproduction, absent remote
+  identities and non-repeated qualification are all proved before write
+  authority. **Constraints:** §§2.10,
   2.29, 2.33, 2.38, 2.53, 2.60–2.61, 17.26.2–.3.
 - <a id="p19-public-verification-001"></a> **`P19-PUBLIC-VERIFICATION-001` —
   Fresh public verification.** Cache-empty registry installation, root
@@ -10295,7 +10428,7 @@ the installed manifest has the exact sole exports map, sideEffects=false and app
 the manifest/tarball contains no shrinkwrap, bundled, peer, optional, override or package-lock authority
 local publint@0.3.24 passes the registry-downloaded tarball in strict mode
 the production graph, third-party-material record, SBOM, package NOTICE and WebVOWL deployment-scope notices reconcile
-the exact root owlapi coordinate passes registry-signature, provenance, publish-attestation, subject, repository, actual triggering ref/run/source-commit and transparency validation; the later canonical tag independently verifies to that same source commit
+the exact root owlapi coordinate passes registry-signature, provenance, publish-attestation, subject, repository, actual triggering ref/run/publication-commit and transparency validation; the canonical tag independently verifies to the package-source commit, which is the same commit ordinarily or the separately recorded original commit only under a fully proved §2.60 exact-artifact reconciliation
 the @jspm/generator@2.16.3 reference/public-URL/local-mirror browser gate passes
 the @playwright/test@1.62.1/vite@8.2.2 package-fixture matrix passes
 the separate-workspace @cyclonedx/cyclonedx-npm@6.0.1 production graph validates and reconciles independently
@@ -10332,7 +10465,11 @@ first Hadden Industries production release and exact WebVOWL cutover, and the pl
 later reuse `0.1.0` merely because npm still reports that coordinate available.
 Authentication, availability or ambiguous-write failures that require no input
 change follow §2.58 reconciliation/retry rules and do not alone abandon the
-version.
+version. A post-qualification evidence-persistence/tooling failure likewise does
+not alone abandon it when a new reviewed §2.60 control can prove the exact source
+run, candidate, tag, ancestry, absent remote identities and complete tarball-byte
+equality; only the dedicated exact-artifact route may continue that coordinate,
+and any failed proof returns to the abandonment branch above.
 
 If any mandatory post-publication check rejects `0.1.0`, stop before the WebVOWL
 production cutover and execute §2.33: remove `latest` because no earlier Hadden
@@ -13332,11 +13469,16 @@ precise subset; this summary is not the machine mapping.
       fixture metadata: select/remove the affected channel, construct an exact-
       version deprecation record, preserve immutable evidence and reject routine
       unpublish or any unrelated historical fallback coordinate.
-- [ ] <!-- Gate: P19-CHECK-089; Covers: P19-PUBLICATION-001 --> Exercise §2.60's four failure boundaries with fixture state: correct and
+- [ ] <!-- Gate: P19-CHECK-089; Covers: P19-PUBLICATION-001 --> Exercise §2.60's five failure boundaries with fixture state: correct and
       reuse an untouched version before tag creation; reconcile an unchanged-input
-      ambiguous write without duplicating it; reject the stage, preserve the signed
-      tag and emit the append-only failed-attempt record when a deterministic
-      correction is required after tag creation; and advance an abandoned alpha to
+      ambiguous write without duplicating it; accept post-tag exact-artifact
+      continuation only from a reviewed later `main` descendant when the pinned
+      source run/jobs/artefacts, signed tag, absent coordinate/release and complete
+      reproduced tarball bytes all match, while proving that no completed
+      qualification workload reruns and source/promotion provenance stays distinct;
+      reject the stage, preserve the signed tag and emit the append-only failed-
+      attempt record when a deterministic correction or unprovable reconciliation
+      is required after tag creation; and advance an abandoned alpha to
       `0.1.0-alpha.1` or production to `0.1.1` without ever reusing/moving that tag.
 - [ ] <!-- Gate: P19-CHECK-090; Covers: P19-CI-CONTROLS-001, P19-PUBLICATION-001 --> Exercise §2.61's manual hand-offs with workflow/API fixtures: bootstrap
       requires one `release-manual` approval after tag creation and before draft/npm
@@ -13378,7 +13520,11 @@ precise subset; this summary is not the machine mapping.
       path/blob/run/attempt, effective permissions/environment/concurrency,
       `release-manual` review history/gate ordering/no-polling result, same-run
       artefact IDs/digests, custodian and verification evidence are recorded before
-      the Phase 19 checkpoint.
+      the Phase 19 checkpoint. When exact-artifact reconciliation is used, also
+      record its reviewed control, original candidate/preflight artefact IDs and
+      digests, failed source job, successful source qualifications, descendant
+      promotion commit, new same-run transport artefact, complete tarball-byte
+      reproduction and distinct canonical-source/publication provenance.
 
 ### Production `0.1.0` completion
 
@@ -13484,12 +13630,16 @@ more of these IDs before any production qualification result can be accepted.
       complete production process for the first corrective patch, including an RC
       only when that decision requires one, and record why that patch became the cutover;
       never unpublish or silently substitute a version as ordinary rollback.
-- [ ] <!-- Gate: P20-CHECK-016; Covers: P20-RELEASE-001, P20-PATH-001, P20-LATE-TAG-001 --> If deterministic correction becomes necessary only after immutable
-      `v0.1.0` exists but before npm publication, reject the stage, leave the tag
-      untouched, retain the §2.60 failed-attempt record, and run the same frozen
-      surface through the §17.27.4 decision and complete `0.1.1` production gate;
-      record that this—not a
-      post-publication rollback—made `0.1.1` the first production release and WebVOWL cutover.
+- [ ] <!-- Gate: P20-CHECK-016; Covers: P20-RELEASE-001, P20-PATH-001, P20-LATE-TAG-001 --> If a failure occurs only after immutable `v0.1.0` exists but before npm
+      publication, first classify it under §2.60: preserve and continue the exact
+      candidate only through a newly reviewed, fully pinned exact-artifact
+      reconciliation when the source qualifications, retained bytes, tag,
+      ancestry and absent remote identities all prove unchanged; otherwise, when
+      deterministic correction is required or any proof fails, reject the stage,
+      leave the tag untouched, retain the failed-attempt record, and run the same
+      frozen surface through the §17.27.4 decision and complete `0.1.1` production
+      gate. In the latter case record that this—not a post-publication rollback—
+      made `0.1.1` the first production release and WebVOWL cutover.
 - [ ] <!-- Gate: P20-CHECK-017; Covers: P20-EVIDENCE-001, P20-PORTABILITY-001, P20-CI-001, P20-MANUAL-001, P20-UNTRUSTED-001, P20-BROWSER-001, P20-TOOLCHAIN-001, P20-GOVERNANCE-001 --> Record the production source commit, signed tag, tarball digest, registry
       integrity, validated reproducible CycloneDX 1.6 SBOM, `SHA256SUMS`, npm
       root-package attestation, stage ID/view/download/status/timestamp metadata at
@@ -15460,9 +15610,9 @@ The final architectural rules are:
 
 > **The standalone repository owns its complete source policy rather than relying on the former WebVOWL parent or a contributor's machine: Git normalizes first-party text to LF while the nested upstream boundary preserves evidence bytes; root EditorConfig fixes the cross-editor baseline; empty `.prettierrc.json` deliberately exposes exact `prettier@3.9.6` defaults; exact ESLint defines native-ESM grammar, compatibility and static quality; and contributor documentation plus a real Git/Prettier behavioral test make those boundaries reviewable. This corrects a Phase 19A extraction omission discovered before the Phase 19C bootstrap commit and does not imply that accepted source was previously misformatted.**
 
-> **GitHub Actions uses exactly four trust-separated workflow files: read-only `ci.yml`, protected-`main` manually dispatched late-tag `release.yml`, `maintenance.yml` and non-blocking `extended-tests.yml`. Each denies token authority at its root and grants only job-minimal permissions. One serialized, non-cancelling, cache-free `release.yml` run owns the complete retained candidate; npm OIDC, no-authority `release-manual` review jobs, GitHub-release writes and maintenance issue writes remain separate. Privileged `pull_request_target`/`workflow_run`, cross-workflow candidate promotion, runner-based human-wait polling, external reusable workflows, floating Actions and unselected Action repositories are forbidden.**
+> **GitHub Actions uses exactly five trust-separated workflow files: read-only `ci.yml`, protected-`main` manually dispatched late-tag `release.yml`, the schema-pinned `release-reconciliation.yml` exception, `maintenance.yml` and non-blocking `extended-tests.yml`. Each denies token authority at its root and grants only job-minimal permissions. Ordinarily one serialized, non-cancelling, cache-free `release.yml` run owns the complete retained candidate; solely after §2.60's proved post-qualification evidence-persistence failure may the reconciliation route import the exact reviewed prior-run candidate/preflight and prove full byte equality before its own same-run publication chain. npm OIDC, no-authority `release-manual` review jobs, GitHub-release writes and maintenance issue writes remain separate. Privileged `pull_request_target`/`workflow_run`, any other cross-workflow candidate promotion, runner-based human-wait polling, external reusable workflows, floating Actions and unselected Action repositories are forbidden.**
 
-> **Exactly six GitHub-maintained Action releases are executable, each by the §2.56 full SHA with its reviewed tag beside it: checkout v7.0.1, setup-node v7.0.0, setup-python v7.0.0, upload-artifact v7.0.1, download-artifact v8.0.1 and dependency-review-action v5.0.0. Checkout never persists credentials; setup-node uses literal Node patches with both implicit and explicit dependency caching disabled; setup-python selects exact isolated Python 3.14.7 only for deterministic ScanCode shards and changes neither PATH nor caches; steady OIDC publication performs no checkout and receives no registry/token setup; the three-file candidate is uploaded once, recorded and downloaded by immutable artefact ID with closed inventory and independent hashes; a validated same-run npm signing-key snapshot and one-day evidence shards move only by exact closed selectors with deterministic coordinate replacement, seven-day aggregate retention and independent source/key/closure/digest verification; dependency review is read-only and blocks only introduced high/critical runtime vulnerabilities. Cache, script, publish, release, SBOM, provenance and attestation wrapper Actions are absent. An update proposal must revalidate the tag-to-SHA mapping and every relevant runtime/default/input/output/permission behavior, never merely replace a hash.**
+> **Exactly six GitHub-maintained Action releases are executable, each by the §2.56 full SHA with its reviewed tag beside it: checkout v7.0.1, setup-node v7.0.0, setup-python v7.0.0, upload-artifact v7.0.1, download-artifact v8.0.1 and dependency-review-action v5.0.0. Checkout never persists credentials; setup-node uses literal Node patches with both implicit and explicit dependency caching disabled; setup-python selects exact isolated Python 3.14.7 only for deterministic ScanCode shards and changes neither PATH nor caches; steady OIDC publication performs no checkout and receives no registry/token setup; the three-file candidate is normally uploaded once, recorded and downloaded by immutable same-run artefact ID with closed inventory and independent hashes; solely under §2.60, a reviewed reconciliation may import the pinned prior-run candidate/preflight by exact repository/run/artefact IDs, revalidate their server identities and complete tarball-byte equality, and then re-upload those same candidate bytes into its own same-run chain; a validated same-run npm signing-key snapshot and one-day evidence shards move only by exact closed selectors with deterministic coordinate replacement, seven-day aggregate retention and independent source/key/closure/digest verification; dependency review is read-only and blocks only introduced high/critical runtime vulnerabilities. Cache, script, publish, release, SBOM, provenance and attestation wrapper Actions are absent. An update proposal must revalidate the tag-to-SHA mapping and every relevant runtime/default/input/output/permission behavior, never merely replace a hash.**
 
 > **Required automation uses only explicit GA `ubuntu-24.04` x64, `windows-2025` x64 and `macos-15` arm64 hosted labels. Ubuntu alone builds and publishes; its complete Node 22/24 suite is joined by four blocking Windows/macOS installed-tarball lanes and three separate one-worker, cache-free Ubuntu Playwright-engine jobs. Linux/macOS use explicit Bash, Windows uses PowerShell Core, and substantive policy stays in cross-platform `.mjs` scripts. Each job validates and records the requested label, OS/architecture, mutable GitHub image version, OS/kernel and actual runtime/browser identities. Moving/latest, preview, slim, larger, self-hosted and container runners are absent, as is every runner-preinstalled release tool.**
 
@@ -15472,7 +15622,7 @@ The final architectural rules are:
 
 > **Every external contributor's fork-workflow run requires per-run maintainer approval after inspection of all executable inputs, but that click authorizes only unprivileged compute. External and Dependabot code runs solely through read-only, no-secret/no-OIDC/no-environment `pull_request` CI; its candidate is quarantined to unprivileged jobs in that same run and can never enter release. Contributor/external strings are validated as data rather than interpolated into shell or written raw to workflow-command files. Credential jobs prohibit context dumps, tracing and authentication debug output; automatic masking is defense in depth, and suspected exposure triggers immediate revoke/rotate and sanitized incident handling.**
 
-> **Every public version is one retained GitHub-Actions-built tarball plus a validated reproducible CycloneDX 1.6 JSON library SBOM and an exact sorted two-entry `SHA256SUMS`. Exact `@cyclonedx/cyclonedx-npm@6.0.1` runs from a full tool workspace against a separate production-only subject workspace; independent npm/lockfile/pack inventories confirm its unflattened/full-PURL graph. The same tarball passes exact Node, `@playwright/test@1.62.1` Chromium/Firefox/WebKit and independently tooled WebVOWL consumer gates, is published to npm with provenance, is re-downloaded and verified from a fresh cache, and only then joins a machine-readable release-evidence manifest in the published immutable GitHub release. Exact `ajv@8.20.0` plus `ajv-formats@3.0.1` validates every evidence family; exact npm attestation JSON proves the root coordinate's signature, subject, repository/workflow, actual triggering ref/run/source commit and transparency identity, while the independently created later signed tag and immutable release resolve to that same source commit without being misrepresented as earlier attestation input. Checksum-verified GitHub CLI `2.98.0` verifies the immutable release plus each of four freshly downloaded assets and that independent signed tag. A repository-only append-only record preserves those identities and later dated extended evidence; 90-day Actions logs/artifacts are diagnostic, not canonical, and immutable release attestation replaces a redundant detached evidence signature. The first-publication preflight uses stage-only OIDC if npm supports it for the absent/reclaimed identity; only a recorded inability activates the one-day, single-attempt, immediately revoked direct-bootstrap token branch. Every OIDC release downloads the staged tarball and requires its SHA-256 to match the retained candidate before interactive approval; automatic provenance replaces an explicit provenance flag, traditional token publishing is disabled after bootstrap if it existed, and no redundant attestation step is added.**
+> **Every public version is one retained GitHub-Actions-built tarball plus a validated reproducible CycloneDX 1.6 JSON library SBOM and an exact sorted two-entry `SHA256SUMS`. Exact `@cyclonedx/cyclonedx-npm@6.0.1` runs from a full tool workspace against a separate production-only subject workspace; independent npm/lockfile/pack inventories confirm its unflattened/full-PURL graph. The same tarball passes exact Node, `@playwright/test@1.62.1` Chromium/Firefox/WebKit and independently tooled WebVOWL consumer gates, is published to npm with provenance, is re-downloaded and verified from a fresh cache, and only then joins a machine-readable release-evidence manifest in the published immutable GitHub release. Exact `ajv@8.20.0` plus `ajv-formats@3.0.1` validates every evidence family; exact npm attestation JSON proves the root coordinate's signature, subject, repository/workflow, actual triggering ref/run/publication commit and transparency identity, while the signed tag and deterministic qualification resolve to the canonical package-source commit. Those commits are identical ordinarily; only §2.60's exact-artifact route may record a later descendant publication-tooling commit while proving the original tagged candidate tarball byte-identical. Checksum-verified GitHub CLI `2.98.0` verifies the immutable release plus each of four freshly downloaded assets and that independent signed tag. A repository-only append-only record preserves those identities and later dated extended evidence; 90-day Actions logs/artifacts are diagnostic, not canonical, and immutable release attestation replaces a redundant detached evidence signature. The first-publication preflight uses stage-only OIDC if npm supports it for the absent/reclaimed identity; only a recorded inability activates the one-day, single-attempt, immediately revoked direct-bootstrap token branch. Every OIDC release downloads the staged tarball and requires its SHA-256 to match the retained candidate before interactive approval; automatic provenance replaces an explicit provenance flag, traditional token publishing is disabled after bootstrap if it existed, and no redundant attestation step is added.**
 
 > **The named `maksymshostak` npm account performs or authorizes the unscoped-coordinate bootstrap and remains the sole natural-person npm custodian required through this implementation plan. The project then empirically tests `@hadden-industries:owlapi-maintainers` team access and records rather than assumes the result, but does not misrepresent a one-person team as human redundancy. Shared npm logins are prohibited. The exact `Hadden-Industries/owlapi`/`.github/workflows/release.yml`/`npm-release` stage-only OIDC trusted publisher is used from the first public alpha when npm's capability preflight permits; otherwise only that first-publication attempt uses the bounded direct-bootstrap token branch, which is revoked/deleted and removed before OIDC becomes exclusive. Every staged candidate is identified, inspected, downloaded, revalidated and matched byte-for-byte to the retained tarball before Maksym Shostak approves that exact stage with interactive 2FA. The plan knowingly accepts sole-custodian availability and recovery risk; adding another human custodian is post-plan governance.**
 

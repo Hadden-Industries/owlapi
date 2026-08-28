@@ -10,6 +10,7 @@ import {
 } from "./github-release.mjs";
 import { GITHUB_CLI_IDENTITY } from "./github-cli.mjs";
 import { sha256File } from "./release-artifacts.mjs";
+import { assertReleaseExecutionIdentity } from "./release-evidence.mjs";
 import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 
 const version = "0.1.0-alpha.0";
@@ -77,13 +78,16 @@ const main = async () => {
   const reportPath = argumentValue("--report");
   const repository = process.env.GITHUB_REPOSITORY;
   const token = process.env.GITHUB_TOKEN;
-  const commit = process.env.GITHUB_SHA;
+  const promotionCommit = process.env.GITHUB_SHA;
+  const sourceCommit =
+    argumentValue("--source-commit") ?? process.env.GITHUB_SHA;
   const tag = `v${version}`;
   if (
     !reportPath ||
     repository !== "Hadden-Industries/owlapi" ||
     !token ||
-    !/^[0-9a-f]{40}$/u.test(commit ?? "")
+    !/^[0-9a-f]{40}$/u.test(promotionCommit ?? "") ||
+    !/^[0-9a-f]{40}$/u.test(sourceCommit ?? "")
   ) {
     throw new Error(
       "Immutable-release verification received an invalid identity.",
@@ -116,7 +120,7 @@ const main = async () => {
   }
   const accepted = assertPublishedRelease(release, {
     tag,
-    commit,
+    commit: sourceCommit,
     requireImmutable: true,
   });
   const expectedNames = [
@@ -150,11 +154,12 @@ const main = async () => {
   const evidence = validateReleaseEvidence(
     JSON.parse(readFileSync(evidencePath, "utf8")),
   );
-  if (evidence.source.commit !== commit || evidence.source.tag !== tag) {
-    throw new Error(
-      "Downloaded release evidence belongs to a different source.",
-    );
-  }
+  assertReleaseExecutionIdentity({
+    evidence,
+    promotionCommit,
+    sourceCommit,
+    tag,
+  });
   const expectedAssets = [
     ...evidence.githubRelease.assets,
     {
@@ -209,7 +214,6 @@ const main = async () => {
     verifiedAt: new Date().toISOString(),
     release: accepted,
     tag,
-    sourceCommit: commit,
     githubCli: {
       version: GITHUB_CLI_IDENTITY.version,
       archiveSha256: GITHUB_CLI_IDENTITY.sha256,
@@ -218,6 +222,8 @@ const main = async () => {
     assets: expectedAssets,
     releaseAttestation,
     assetAttestations,
+    promotionCommit,
+    sourceCommit,
   };
   writeFileSync(
     resolve(reportPath),

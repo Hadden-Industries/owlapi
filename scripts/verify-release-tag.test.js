@@ -1,7 +1,10 @@
-import {
-  parseSshVerification,
-  verifyReleaseTagFacts,
-} from "./verify-release-tag.mjs";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+import * as releaseTagVerifier from "./verify-release-tag.mjs";
+
+const { parseSshVerification, verifyReleaseTagFacts } = releaseTagVerifier;
 
 const registry = {
   schemaVersion: 1,
@@ -23,6 +26,20 @@ const registry = {
 };
 
 describe("release-tag verification", () => {
+  test("creates the parent directory before persisting tag evidence", () => {
+    const temporaryRoot = mkdtempSync(join(tmpdir(), "owlapi-tag-evidence-"));
+    const outputPath = join(temporaryRoot, "nested", "tag-verification.json");
+    const report = { result: "PASS", tag: "v0.1.0-alpha.0" };
+
+    try {
+      expect(typeof releaseTagVerifier.writeReleaseTagReport).toBe("function");
+      releaseTagVerifier.writeReleaseTagReport(outputPath, report);
+      expect(JSON.parse(readFileSync(outputPath, "utf8"))).toEqual(report);
+    } finally {
+      rmSync(temporaryRoot, { recursive: true, force: true });
+    }
+  });
+
   test("extracts the verified SSH fingerprint and principal", () => {
     expect(
       parseSshVerification(
