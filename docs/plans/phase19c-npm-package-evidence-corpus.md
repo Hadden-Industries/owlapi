@@ -803,13 +803,13 @@ contents from validation.
       successful acquisitions were preserved and independently recanonicalized.
 - [x] Inspect `git diff --check`, the complete file list, corpus size, generated
       summaries and pending/reviewed states.
-- [ ] From the committed GitHub tree, exercise the documented blobless
+- [x] From the committed GitHub tree, exercise the documented blobless
       source-development clone in a disposable directory: prove bulk evidence
       payloads are absent, indexes and ordinary conformance fixtures remain,
       focused source checks run, full evidence gates do not report false success,
       and `git sparse-checkout disable` hydrates a corpus that passes the offline
       verifier.
-- [ ] Pause for user review and a detailed file-by-file Phase 19C checkpoint
+- [x] Pause for user review and a detailed file-by-file Phase 19C checkpoint
       commit; do not commit or push without separate explicit authorization.
 
 The pre-commit local checkpoint completed on 27 August 2026. All 127 Jest suites
@@ -824,3 +824,20 @@ and 64,563,161 on-disk bytes, of which 64,555,601 bytes are authenticated retain
 evidence. Both human-review states are `REVIEWED`, generator currentness and
 `git diff --check` pass, and the fresh post-commit 32-shard Ubuntu comparison
 remains deliberately pending until Git can supply the committed reference corpus.
+
+The post-commit sparse-checkout exercise completed on 28 August 2026 against
+GitHub-hosted branch tip `85f20bc489edae4f8970e5a12c4a57f6bc0bb039`. The
+documented blobless cone omitted `docs/provenance/evidence/npm/blobs/` and the
+bulky history-reconstruction subtrees while retaining the evidence indexes,
+schemas, human-review records and representative W3C RDF/XML and Turtle-family
+fixtures. The focused WebVOWL cutover suite passed all five tests. The complete
+evidence verifier then failed closed on absent blob
+`ARCHIVE_INVENTORY:0026998e50cd0c83e70e0f6d45339a9dcaabb0d055fb58d9babd733a5ed731fe`;
+it did not report a sparse corpus as complete. After `git sparse-checkout
+disable` hydrated the checkout, the offline verifier returned `VERIFIED` for all
+714 occurrences, 639 artifacts and 3,112 blobs with 64,555,601 retained bytes,
+and the disposable worktree remained clean. Required CI run `33134176675` and
+CodeQL run `33134174820` also completed successfully at that tip, including the
+full isolated WebVOWL candidate qualification. The one fresh 32-shard Ubuntu
+equality run remains a protected-`main` release-workflow gate and therefore
+follows pull-request acceptance rather than being simulated on this topic branch.
