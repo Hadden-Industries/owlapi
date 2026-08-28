@@ -2,6 +2,17 @@
 
 > **For agentic workers:** Execute this plan one task at a time. Keep each red/green/refactor cycle reviewable, run the listed focused verification before continuing, and pause at every approval gate. Do not publish, change repository configuration, or create commits without the repository owner's explicit authorization.
 
+> **Java parity invariant — non-negotiable:** Exact Java OWLAPI names,
+> responsibilities, inheritance, and observable behaviour are the default for
+> every public Java-shaped addition. Only the bounded, machine-recorded
+> adaptations approved by the completed
+> [Java API parity precondition](plans/java-api-parity-precondition.md) and the
+> explicit pinned-authority ledger in §3.1 may differ. Classification as an
+> adaptation is not permission by itself. This plan authorizes no new public
+> `JS_EXTENSION`; if exact parity proves infeasible beyond an already approved
+> case, stop and obtain a reviewed plan and compatibility-ledger amendment
+> before implementing it.
+
 **Goal:** Release the public, additive `owlapi@0.2.0` functionality that Universal Ontology needs to construct a self-contained import closure from source ontologies using only Java-OWLAPI-shaped public APIs.
 
 **Architecture:** The ontology manager owns a transactional registry of loaded ontology identities and resolved import edges. Public model objects remain externally immutable; manager methods operate through package-private state and package-private serialization engines. The public merger is deliberately policy-neutral: Universal Ontology supplies the root identity and explicitly copies root annotations, while `owlapi` provides closure traversal, change application, structural set union, and manager-selected storers.
@@ -10,9 +21,11 @@
 
 **Normative specification:** `../universal-ontology/docs/specs/2026-08-22-self-contained-owl-import-closure-contract.md`, its machine-readable companion `../universal-ontology/docs/import-closure/contract.v1.json`, and the consumer execution plan `../universal-ontology/docs/plans/2026-08-22-self-contained-owl-import-closure.md`.
 
-**Status:** Design-complete implementation plan. Execution is deferred until the accepted production `0.1.x` baseline exists. The consumer contract requires exactly `owlapi@0.2.0`; if that coordinate is unavailable or its required surface differs, stop for a cross-repository contract amendment instead of silently selecting another version.
+**Required predecessor:** [`docs/plans/java-api-parity-precondition.md`](plans/java-api-parity-precondition.md), completed as Phase 21 from the accepted `owlapi@0.1.0` release.
 
-**Revised:** 2026-08-28.
+**Status:** Design-complete Phase 22 implementation plan. Execution is deferred until the accepted production `0.1.0` release exists and the Phase 21 Java-parity precondition has completed on a commit in this branch's ancestry. The consumer contract requires exactly `owlapi@0.2.0`; if that coordinate is unavailable or its required surface differs, stop for a cross-repository contract amendment instead of silently selecting another version.
+
+**Revised:** 2026-08-29.
 
 ---
 
@@ -20,27 +33,31 @@
 
 The Universal Ontology specification, JSON contract, and execution plan are the authority for consumer behaviour. This repository owns the implementation design and API compatibility records. The files under `../webvowl/docs/owlapi-js/` are staging or historical copies, not a second authority:
 
+Non-normative design provenance: the cross-repository design originated in Codex task `codex://threads/01a02818-89e7-7252-b30e-7368fd9a36b7`, titled `UO's merge_owl_imports.py`. That task records the migration rationale and sequencing history; it is not a substitute for the Universal Ontology contracts, this implementation plan, or the pinned Java source.
+
 | Subject                                 | Canonical source                                                                            | Copy finding                                                                                            |
 | --------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | Consumer behaviour and exact dependency | `../universal-ontology/docs/specs/2026-08-22-self-contained-owl-import-closure-contract.md` | No normative duplicate in this repository                                                               |
 | Consumer build and acceptance sequence  | `../universal-ontology/docs/plans/2026-08-22-self-contained-owl-import-closure.md`          | No normative duplicate in this repository                                                               |
 | Machine-readable consumer contract      | `../universal-ontology/docs/import-closure/contract.v1.json`                                | No normative duplicate in this repository                                                               |
 | Package prerequisite summary            | `docs/compatibility/standalone-import-closure-prerequisites.md`                             | Byte-identical copy exists under `../webvowl/docs/owlapi-js/compatibility/`                             |
+| Java-parity implementation precondition | `docs/plans/java-api-parity-precondition.md`                                                | Canonical prerequisite plan; no WebVOWL copy is authoritative                                           |
 | Package lifecycle plan                  | This file                                                                                   | A historical copy under `../webvowl/docs/owlapi-js/` is intentionally not synchronized by this revision |
 | Original package programme              | `docs/implementation-plan.md`                                                               | The WebVOWL copy predates canonical extraction changes                                                  |
 
 Do not update the WebVOWL copies as part of this programme. If they are retained, a separate documentation cleanup should replace them with links to canonical files.
 
-Execution starts only after the predecessor package programme has produced an accepted public production `0.1.x` release and WebVOWL consumes that registry package. Until then, all eight capabilities below remain `DEFERRED` and `NOT_STARTED`.
+Execution starts only after the predecessor package programme has produced the accepted public production `0.1.0` release, WebVOWL consumes that registry package, and Phase 21 has completed. The Phase 21 completion commit and the accepted `v0.1.0` commit must both be ancestors of the Phase 22 implementation HEAD. Until then, all eight lifecycle capabilities below remain `DEFERRED` and `NOT_STARTED`.
 
 The predecessor predates Universal Ontology's exact-version contract and forecasts that an occupied `0.2.0` coordinate could automatically advance this programme. That forecast is not authority to diverge from the later consumer contract: Task 1 must correct the predecessor's forward references, and any actual coordinate change requires coordinated amendments in both repositories.
 
-The current implementation already loads an ontology graph transactionally and returns a one-shot `importsClosure` array from `loadOntologyGraphFromOntologyDocument()`. It does not retain resolved direct-import edges after the call; it does not expose closure queries, ontology changes, a public `owlapi/util` namespace, document targets, or manager-selected storers. Strict RDF reconstruction also currently ignores some unconsumed, non-OWL-significant statements. Those are the concrete gaps this plan closes.
+The design-time implementation already loads an ontology graph transactionally and returns a one-shot `importsClosure` array from `loadOntologyGraphFromOntologyDocument()`. It does not retain resolved direct-import edges after the call; it does not expose closure queries, ontology changes, a public `owlapi/util` namespace, or manager-selected storers. Phase 21 separately establishes `StringDocumentTarget`, the storage-error hierarchy, and their parity decisions before this plan begins. Strict RDF reconstruction also currently ignores some unconsumed, non-OWL-significant statements. The remaining gaps are the ones this plan closes.
 
 ## 2. Global constraints
 
 Every task must preserve these rules:
 
+- Before Task 1 changes any lifecycle state, validate the completed Phase 21 capability rows, parity-decision record, generated registry, forbidden-export assertions, and Git ancestry. Recreating or partially duplicating the precondition is not permitted.
 - The only release coordinate authorized by the consumer contract is exact `0.2.0`. A conflicting release history is a blocker requiring a coordinated contract change.
 - Do not add a materialize, collapse, catalog, network, retry, or atomic-publication convenience API. Universal Ontology owns those policies and composes the standard APIs.
 - Preserve the current public subpaths. The only new subpath is `owlapi/util`, because it maps to Java OWLAPI's `org.semanticweb.owlapi.util` package.
@@ -50,8 +67,9 @@ Every task must preserve these rules:
 - Store resolved import relationships as ontology-object edges. Do not recompute them by treating an import IRI as an ontology ID after loading.
 - Strict RDF mode must reject every unconsumed statement. Compatible mode may retain the current diagnostic/ignore policy.
 - Functional Syntax and RDF/XML concrete storer constructors remain private. Selection occurs through `manager.saveOntology(ontology, format, target)`.
-- A write to `StringDocumentTarget` is all-or-nothing. Failed representability, rendering, or validation leaves the prior target text unchanged.
+- Preserve the Phase 21 `StringDocumentTarget` contract: `toString()` is the sole public text reader, Java `getWriter()` remains an explicitly justified omission, and the package-private complete-text replacement is all-or-nothing. Failed representability, rendering, or validation leaves prior text unchanged.
 - Anonymous-individual identity is document-scoped. Preserve sharing within one source ontology, standardize apart across different source documents, and compare outputs modulo one consistent blank-node bijection.
+- Every Java-shaped public binding must cite the exact OWLAPI 5.5.1 type or member at revision `d7e997a53b470e32700de89cc610d9daf01ea769`, classify itself accurately, and have any deviation recorded in `docs/compatibility/java-api-parity-decisions.json`. Exact parity is mandatory whenever JavaScript can express the Java contract coherently. This plan permits only `JAVA_ANALOGUE` and the specifically justified `JS_ADAPTATION` rows in §3.1; it permits no new public `JS_EXTENSION`, convenience alias, or unreviewed strengthening or weakening of Java behaviour.
 - Any package configuration, workflow, dependency, release, commit, or publication change requires its normal repository approval. The task checklists identify the earliest point at which each change is needed; they do not grant that approval.
 
 ## 3. Fixed capability and API contract
@@ -106,7 +124,7 @@ await outputManager.saveOntology(
   OWLDocumentFormats.FUNCTIONAL,
   documentTarget,
 );
-const document = documentTarget.getText(); // toString() returns the same text
+const document = documentTarget.toString();
 ```
 
 Detailed call semantics:
@@ -119,32 +137,94 @@ Detailed call semantics:
 - `OWLOntologyImportsClosureSetProvider.ontologies()` returns a fresh defensive `Set` from the constructor-time closure snapshot.
 - `OWLOntologyMerger.createMergedOntology(manager, ontologyIRI)` creates a new ontology and copies the structural set union of each provider ontology's direct axioms. It does not copy imports, ontology annotations, or an input ontology ID. Omitting `ontologyIRI` creates an anonymous ontology.
 - `saveOntology` returns `Promise<void>`, selects exactly one compatible internal storer from the requested format object, validates before target commit, and throws rather than falling back to a different syntax.
-- `StringDocumentTarget` begins with empty text and exposes `getText()` plus `toString()`. Only a successful storer operation replaces its text.
+- `StringDocumentTarget` is supplied by completed Phase 21. It begins with empty text, exposes only Java's `toString()` as its public text reader, and accepts replacement only through the package-private storage seam after a successful storer operation.
 
-Add these public storage errors to `owlapi/io`:
+Consume these Phase 21 public storage errors from `owlapi/io`:
 
-| Error                          | Stable code                  | Trigger                                                                 |
-| ------------------------------ | ---------------------------- | ----------------------------------------------------------------------- |
-| `OWLOntologyStorageError`      | `ONTOLOGY_STORAGE_FAILED`    | Base/wrapper for a save failure                                         |
-| `OWLStorerNotFoundError`       | `STORER_NOT_FOUND`           | No internal storer accepts the requested format                         |
-| `UnrepresentableOntologyError` | `ONTOLOGY_NOT_REPRESENTABLE` | The requested syntax cannot encode the ontology without structural loss |
+| Error                     | Stable code               | Trigger                                                                                                                                                                                   |
+| ------------------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `OWLOntologyStorageError` | `ONTOLOGY_STORAGE_FAILED` | Base/wrapper for a save failure. When the requested syntax cannot preserve the ontology structurally, the same error carries the stable own field `reason: "ONTOLOGY_NOT_REPRESENTABLE"`. |
+| `OWLStorerNotFoundError`  | `STORER_NOT_FOUND`        | No internal storer accepts the requested format.                                                                                                                                          |
+
+There is no public representability-specific subclass. Structural mismatch
+category and path are safe details on `OWLOntologyStorageError`; a failure still
+leaves the target unchanged.
+
+### 3.1 Pinned Java authority and adaptation ledger
+
+The exact Java authority is OWLAPI 5.5.1 at revision `d7e997a53b470e32700de89cc610d9daf01ea769`. The source paths below are relative to that revision's repository root. A matching Java name establishes responsibility, not automatic signature or behavioural parity: the generated registry must record every supported member, omitted overload, and semantic qualification in the final two columns.
+
+| Planned JavaScript surface                                                                                   | Pinned Java 5.5.1 authority                                                                                                                                           | Required registry relationship | Deliberate JavaScript difference or omission                                                                                                                                       |
+| ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `OWLOntologyManager.importsClosure(ontology)`                                                                | `Stream<OWLOntology> importsClosure(OWLOntology)` in `api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyManager.java`                                         | `JAVA_ANALOGUE` / `ADAPTED`    | Returns a frozen root-first array rather than a Java `Stream`; rejects a foreign ontology with a typed state error instead of Java's empty stream.                                 |
+| `OWLOntologyManager.getImportsClosure(ontology)`                                                             | `default Set<OWLOntology> getImportsClosure(OWLOntology)` in the same interface                                                                                       | `JAVA_ANALOGUE` / `ADAPTED`    | Returns a fresh JavaScript `Set`; rejects a foreign ontology instead of returning Java's empty set.                                                                                |
+| `addAxiom(ontology, axiom)` and `addAxioms(ontology, iterable)`                                              | `HasAddAxiom.addAxiom(OWLOntology, OWLAxiom)` and the `Collection`/`Stream` `HasAddAxioms` forms                                                                      | `JAVA_ANALOGUE` / `ADAPTED`    | Accepts one JavaScript iterable form and returns `boolean`, not Java's `ChangeApplied`.                                                                                            |
+| `applyChange(change)` and `applyChanges(iterable)`                                                           | `HasApplyChange.applyChange(OWLOntologyChange)` and the `List`/varargs `HasApplyChanges` forms                                                                        | `JAVA_ANALOGUE` / `ADAPTED`    | Accepts one JavaScript iterable form, applies the complete iterable atomically, and returns `boolean`; `ChangeApplied` and Java detail objects remain unexposed.                   |
+| `new SetOntologyID(ontology, ontologyID)`                                                                    | `SetOntologyID(OWLOntology, OWLOntologyID)`, inherited `getOntology()`, and class methods `getOriginalOntologyID()`/`getNewOntologyID()`                              | `JAVA_ANALOGUE` / `ADAPTED`    | Omits the Java `IRI` constructor, change-data objects, reverse operation, and visitor overloads.                                                                                   |
+| `new AddOntologyAnnotation(ontology, annotation)`                                                            | `AddOntologyAnnotation(OWLOntology, OWLAnnotation)`, inherited `getOntology()`, and inherited `getAnnotation()`                                                       | `JAVA_ANALOGUE` / `ADAPTED`    | Omits change-data objects, reverse operation, and visitor overloads.                                                                                                               |
+| `new OWLOntologyImportsClosureSetProvider(manager, root)` and `ontologies()`                                 | The same constructor and `Stream<OWLOntology> ontologies()` in `api/src/main/java/org/semanticweb/owlapi/util/OWLOntologyImportsClosureSetProvider.java`              | `JS_ADAPTATION` / `ADAPTED`    | Returns a fresh defensive `Set` instead of a Java `Stream` and freezes membership at construction; Java's provider is a live view whose later calls observe closure changes.       |
+| `new OWLOntologyMerger(provider, mergeOnlyLogicalAxioms?)` and `createMergedOntology(manager, ontologyIRI?)` | The two matching constructors and `createMergedOntology(OWLOntologyManager, @Nullable IRI)` in `api/src/main/java/org/semanticweb/owlapi/util/OWLOntologyMerger.java` | `JAVA_ANALOGUE` / `ADAPTED`    | Uses omitted/`undefined` instead of Java `null`; omits the `OWLAxiomFilter` constructor and exposes no direct mutable-ontology operations.                                         |
+| `await manager.saveOntology(ontology, format, target)`                                                       | `void saveOntology(OWLOntology, OWLDocumentFormat, OWLOntologyDocumentTarget)` in `OWLOntologyManager`                                                                | `JAVA_ANALOGUE` / `ADAPTED`    | Returns `Promise<void>` and exposes only the explicit format/target overload; IRI, stream, implicit-format, and default-document overloads remain omitted.                         |
+| Phase 21 `StringDocumentTarget` and `toString()`                                                             | Java `StringDocumentTarget` implements `toString()` and `getWriter()` in `api/src/main/java/org/semanticweb/owlapi/io/StringDocumentTarget.java`                      | `JS_ADAPTATION` / `ADAPTED`    | Preserve the exact public text-reader name. Java's `Writer` accessor remains omitted under `PARITY-TARGET-WRITER-OMISSION`; no `getText()` or writer-like replacement is allowed.  |
+| Phase 21 `OWLOntologyStorageError` and `OWLStorerNotFoundError`                                              | Java `OWLOntologyStorageException` and `OWLStorerNotFoundException` under `org.semanticweb.owlapi.model`                                                              | `JS_ADAPTATION` / `ADAPTED`    | Preserve the approved `Error` suffix, existing `owlapi/io` error namespace, stable codes, superclass relationship, and safe-detail convention; do not add duplicate model exports. |
+| `OWLOntologyStorageError` with `reason: "ONTOLOGY_NOT_REPRESENTABLE"`                                        | Java storage failures remain within `OWLOntologyStorageException`; OWLAPI 5.5.1 has no dedicated public representability exception                                    | `JS_ADAPTATION` / `ADAPTED`    | Use the existing base binding and Phase 21 safe-detail convention. Do not introduce a representability-specific public class.                                                      |
+| Internal Functional Syntax and RDF/XML storers                                                               | Java `FunctionalSyntaxStorer` and `RDFXMLStorer` responsibilities                                                                                                     | `INTERNAL` / `ADAPTED`         | Concrete storer constructors remain non-public; only manager selection through public format identities is supported.                                                              |
+
+Every `ADAPTED` lifecycle row must be represented by one of these exact Phase 22
+decision IDs in `docs/compatibility/java-api-parity-decisions.json` before its
+production surface is implemented:
+
+| Decision ID                            | Bounded justification                                                                                                                                                                                      |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `LIFECYCLE-CLOSURE-COLLECTION-MAPPING` | Java `Stream`/`Set` map to frozen array and defensive JavaScript `Set` results while retaining the Java member names and closure responsibility.                                                           |
+| `LIFECYCLE-FOREIGN-ONTOLOGY-STATE`     | Existing manager-ownership safety rejects a foreign ontology explicitly instead of allowing Java's empty closure to conceal a caller state error.                                                          |
+| `LIFECYCLE-MUTATION-RESULT-ATOMICITY`  | The package's boolean mutation convention and the consumer's all-or-nothing requirement replace `ChangeApplied`/detail results without adding a second operation name.                                     |
+| `LIFECYCLE-CHANGE-OVERLOAD-SUBSET`     | One JavaScript iterable form and the `OWLOntologyID` constructor retain Java responsibilities while omitting Java collection, stream, varargs, `IRI`, visitor, reverse, and change-data overload families. |
+| `LIFECYCLE-PROVIDER-SNAPSHOT`          | A constructor-time defensive closure snapshot supplies the deterministic materialization input required by the accepted consumer contract; the registry must disclose that Java's provider is live.        |
+| `LIFECYCLE-MERGER-OPTIONAL-FILTER`     | Omitted/`undefined` maps Java nullable input, while the unneeded `OWLAxiomFilter` constructor remains an explicit omission rather than a renamed helper.                                                   |
+| `LIFECYCLE-ASYNC-SAVE-OVERLOAD`        | JavaScript storage is asynchronous, so the exact explicit format/target responsibility returns `Promise<void>` and omits unrelated Java output overloads.                                                  |
+| `LIFECYCLE-LOSSLESS-STORAGE`           | Lossless-or-fail validation strengthens storage for the normative consumer contract but remains within the Java-shaped manager method and Phase 21 base storage error.                                     |
+
+The decision record must cite the exact Java signature, the controlling
+consumer or runtime constraint, the narrower rejected alternative, and focused
+tests. If that evidence does not demonstrate that the difference is necessary,
+implement the exact Java behaviour and amend this plan instead. No decision ID
+may be reused to authorize a different member, namespace, error class, or
+semantic difference.
+
+### 3.2 Required Phase 21 checkpoint to `0.2.0` surface delta
+
+The accepted `v0.1.0` `docs/compatibility/java-api-surface.json` is the execution baseline; the tagged `v0.1.0-alpha.0` surface remains design-time evidence that must be reconciled during Phase 21. The completed Phase 21 checkpoint adds only its approved target, error, and parity-decision surface. Each Phase 22 task that changes a public member must regenerate the JSON, Markdown, and `API.md` in the same review unit. The final release gate must reject any Phase 22 delta not listed here and any complete `v0.1.0`-to-`0.2.0` delta not equal to the union of the Phase 21 decision record and this table.
+
+| Registry binding or namespace                                                                                                               | Phase 22 starting state                                                                         | Required lifecycle delta                                                                                                                                                                                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `model.OWLOntologyManager`                                                                                                                  | Public with creation/loading members; mutation and storage broadly omitted                      | Add `prototype.importsClosure`, `prototype.getImportsClosure`, `prototype.addAxiom`, `prototype.addAxioms`, `prototype.applyChange`, `prototype.applyChanges`, and `prototype.saveOntology`; replace the broad mutation omission with exact remaining omissions; add the two Phase 21 storage errors as reachable public errors. |
+| `model.SetOntologyID` and `model.AddOntologyAnnotation`                                                                                     | Java types classified `DEFERRED_NOT_EXPOSED`                                                    | Promote to canonical `owlapi/model` `PUBLIC_MAPPED` bindings with the exact supported and omitted members from §3.1.                                                                                                                                                                                                             |
+| `io.StringDocumentTarget`                                                                                                                   | Phase 21 `PUBLIC_MAPPED` binding with only `toString()` and the approved `getWriter()` omission | Preserve the binding and its decision rows unchanged. Add no member, alias, second export, or public target-mutator surface.                                                                                                                                                                                                     |
+| Storage error bindings                                                                                                                      | Phase 21 `PUBLIC_MAPPED` adaptations of the two Java storage exceptions                         | Preserve both bindings and their hierarchy unchanged; attach them to `OWLOntologyManager.saveOntology`. Representability uses the base storage error reason, never a third public class.                                                                                                                                         |
+| `util` namespace                                                                                                                            | No public `owlapi/util` namespace                                                               | Add exactly one canonical package namespace containing `OWLOntologyImportsClosureSetProvider` and `OWLOntologyMerger`; block every development utility and unexported deep import.                                                                                                                                               |
+| Provider and merger Java types                                                                                                              | Both classified `DEFERRED_NOT_EXPOSED`                                                          | Promote both to `PUBLIC_MAPPED`, record the provider's snapshot/collection adaptation and the merger's omitted filter overload.                                                                                                                                                                                                  |
+| `OWLManager`, `IRI`, `OWLOntology`, `OWLOntologyLoaderConfiguration`, `OWLDocumentFormat`, `StringDocumentSource`, and `OWLDocumentFormats` | Existing public bindings                                                                        | Preserve their accepted supported members, omissions, canonical modules, and relationships; this programme consumes them but does not broaden them.                                                                                                                                                                              |
+| Concrete Functional Syntax and RDF/XML storer types                                                                                         | Not public bindings                                                                             | Keep them non-public and record only package-private implementation evidence.                                                                                                                                                                                                                                                    |
+
+Task-level regeneration is not a substitute for the final comparison. Task 15 must compare the accepted generated registry with both the Phase 21 checkpoint and `v0.1.0`, proving that every addition, removal, relationship change, supported-member change, omitted-member change, public-error change, and package-namespace change is authorized by the exact union described above.
 
 ## 4. File responsibility map
 
-| Concern                            | Public files                                                                                 | Private implementation and primary tests                                                                         |
-| ---------------------------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Retained identity/import graph     | `model/owlOntologyManager.js`                                                                | `internal/loading/managedOntologyIndex.js`, `internal/loading/managedOntologyIndex.test.js`, manager tests       |
-| Mutable ontology state             | `model/owlOntology.js`, manager and model exports                                            | `internal/model/ontologyState.js`, `internal/model/axiomSemantics.js`, their tests                               |
-| Change records                     | `model/setOntologyID.js`, `model/addOntologyAnnotation.js`, `model/index.js`                 | manager change tests                                                                                             |
-| Closure provider and merger        | `util/owlOntologyImportsClosureSetProvider.js`, `util/owlOntologyMerger.js`, `util/index.js` | colocated tests plus installed-package boundary tests                                                            |
-| Document target and storage errors | `io/stringDocumentTarget.js`, `io/errors.js`, `io/index.js`                                  | IO and manager storage tests                                                                                     |
-| Storer selection                   | manager public method only                                                                   | `internal/storage/storerRegistry.js`, registry tests                                                             |
-| Functional Syntax output           | format objects already public                                                                | `internal/storage/functional/functionalSyntaxRenderer.js`, `functionalSyntaxStorer.js`, tests and Java snapshots |
-| Structural equivalence             | none                                                                                         | `internal/model/ontologyStructuralIsomorphism.js`, tests                                                         |
-| Strict RDF reconstruction          | existing loader configuration                                                                | `internal/mapping/rdfToOwlTranslator.js` and strict-mode tests                                                   |
-| RDF/XML output                     | format object already public                                                                 | `internal/storage/rdfxml/rdfXmlGraphWriter.js`, `rdfXmlStorer.js`, tests                                         |
-| Java/UO oracle                     | none                                                                                         | `util/owlapi-reference/RunImportClosureContract.java`, launcher, fixtures, tests                                 |
-| Capability/docs/release            | package metadata only at approval gate                                                       | compatibility JSON/generator/docs, package and release gates                                                     |
+| Concern                                     | Public files                                                                                 | Private implementation and primary tests                                                                         |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Retained identity/import graph              | `model/owlOntologyManager.js`                                                                | `internal/loading/managedOntologyIndex.js`, `internal/loading/managedOntologyIndex.test.js`, manager tests       |
+| Mutable ontology state                      | `model/owlOntology.js`, manager and model exports                                            | `internal/model/ontologyState.js`, `internal/model/axiomSemantics.js`, their tests                               |
+| Change records                              | `model/setOntologyID.js`, `model/addOntologyAnnotation.js`, `model/index.js`                 | manager change tests                                                                                             |
+| Closure provider and merger                 | `util/owlOntologyImportsClosureSetProvider.js`, `util/owlOntologyMerger.js`, `util/index.js` | colocated tests plus installed-package boundary tests                                                            |
+| Phase 21 document target and storage errors | `io/stringDocumentTarget.js`, `io/errors.js`, `io/index.js`                                  | Preserve unchanged; consume through Phase 21 IO, parity, and manager storage tests                               |
+| Storer selection                            | manager public method only                                                                   | `internal/storage/storerRegistry.js`, registry tests                                                             |
+| Functional Syntax output                    | format objects already public                                                                | `internal/storage/functional/functionalSyntaxRenderer.js`, `functionalSyntaxStorer.js`, tests and Java snapshots |
+| Structural equivalence                      | none                                                                                         | `internal/model/ontologyStructuralIsomorphism.js`, tests                                                         |
+| Strict RDF reconstruction                   | existing loader configuration                                                                | `internal/mapping/rdfToOwlTranslator.js` and strict-mode tests                                                   |
+| RDF/XML output                              | format object already public                                                                 | `internal/storage/rdfxml/rdfXmlGraphWriter.js`, `rdfXmlStorer.js`, tests                                         |
+| Java/UO oracle                              | none                                                                                         | `util/owlapi-reference/RunImportClosureContract.java`, launcher, fixtures, tests                                 |
+| Capability/docs/release                     | package metadata only at approval gate                                                       | compatibility JSON/generator/docs, package and release gates                                                     |
 
 ---
 
@@ -154,6 +234,9 @@ Add these public storage errors to `owlapi/io`:
 
 **Files**
 
+- Verify unchanged: `docs/plans/java-api-parity-precondition.md`
+- Modify only after prerequisite validation: `docs/compatibility/java-api-parity-decisions.json`
+- Verify unchanged: `docs/compatibility/java-api-surface.json`
 - Modify: `docs/compatibility/capabilities.json`
 - Modify: `docs/compatibility/standalone-import-closure-prerequisites.md`
 - Modify only the superseded feature-line forward references: `docs/implementation-plan.md`
@@ -161,10 +244,13 @@ Add these public storage errors to `owlapi/io`:
 
 **Steps**
 
-1. Add a failing governance test that loads the capability matrix and requires the exact eight IDs from §3, each with `status: "DEFERRED"`, `progress: "NOT_STARTED"`, and `phase: null`. Assert that the old umbrella `storer.concrete-serializers` row is absent, so it cannot obscure partial completion.
-2. Extend the existing uniqueness/status checks to require one row per capability. For these eight IDs, reject `progress: "COMPLETE"` unless the phase is `21`—the first semantic phase after the predecessor's production Phase 20—and the matrix's global release is exact `0.2.0`.
-3. Update the capability matrix and prerequisite note without claiming implementation. Record the exact `0.2.0` dependency and the stop-for-amendment rule. Correct only the predecessor plan's forward-looking sentences that currently authorize automatic version advance; do not reopen its accepted `0.1.x` decisions.
-4. Run:
+1. Before writing a RED test, verify that the accepted `v0.1.0` commit and the approved Phase 21 completion commit are ancestors of HEAD. Validate the closed parity-decision record and require `phase21.status: "COMPLETE"`, the exact pinned Java revision, the accepted baseline identifiers, and the Phase 21 registry digest match. Stop instead of repairing Phase 21 from this plan.
+2. Add a failing governance test requiring the three Phase 21 capability rows to remain `REQUIRED_V1` / `COMPLETE` / phase `21`; `StringDocumentTarget` to expose only `toString()`; both storage-error adaptations to retain their exact Java authorities; and `StringDocumentTarget.prototype.getText` plus `UnrepresentableOntologyError` to remain absent. Preserve the unrelated accepted `StringDocumentSource.prototype.getText` member.
+3. Add a failing governance test that loads the capability matrix and requires the exact eight IDs from §3, each with `status: "DEFERRED"`, `progress: "NOT_STARTED"`, and `phase: null`. Assert that the old umbrella `storer.concrete-serializers` row is absent, so it cannot obscure partial completion.
+4. Extend the existing uniqueness/status checks to require one row per capability. For these eight IDs, reject `progress: "COMPLETE"` unless the phase is `22`—the first semantic phase after the Phase 21 parity precondition—and the matrix's global release is exact `0.2.0`.
+5. Extend the validated parity-decision record with the exact eight Phase 22 decision IDs below §3.1, each tied to its precise Java signature, bounded rationale, rejected exact-parity alternative, and focused future verification. Set the Phase 22 portion to `IN_PROGRESS`; do not alter an approved Phase 21 row and do not add an extension category.
+6. Update the capability matrix and prerequisite note without claiming lifecycle implementation. Record the exact `0.2.0` dependency, Phase 21 dependency, and stop-for-amendment rule. Correct only the predecessor plan's forward-looking sentences that currently authorize automatic version advance; do not reopen its accepted `0.1.0` decisions.
+7. Run:
 
    ```powershell
    npm test -- --runInBand governance.test.js
@@ -172,7 +258,7 @@ Add these public storage errors to `owlapi/io`:
    npx --no-install prettier --check docs/compatibility/capabilities.json docs/compatibility/standalone-import-closure-prerequisites.md docs/implementation-plan.md governance.test.js
    ```
 
-5. Request a review checkpoint before any commit. A commit, if separately authorized, should contain only the governance baseline for this programme.
+8. Request a review checkpoint before any commit. Include both ancestor OIDs, the parity-decision-record digest, and generated-registry digest. A commit, if separately authorized, should contain only the governance baseline for this programme.
 
 ### Task 2: Retain ontology identity aliases and resolved import edges transactionally
 
@@ -218,6 +304,8 @@ Add these public storage errors to `owlapi/io`:
 - Modify: `model/owlOntologyManager.js`
 - Modify: `model/owlOntologyManager.test.js`
 - Modify: `model/owlOntologyManager.integration.test.js`
+- Modify: `util/generate-java-api-surface.mjs`
+- Regenerate: `docs/compatibility/java-api-surface.json`, `docs/compatibility/java-api-surface.md`, `API.md`
 
 **Algorithm**
 
@@ -240,14 +328,16 @@ Use an explicit stack rather than recursion. Mark the root visited before traver
 3. Assert manager ownership: a structurally equal ontology owned by another manager and an unmanaged ontology object both throw `OWLOntologyStateError` with stable operation details.
 4. Implement `importsClosure` and `getImportsClosure` over `ManagedOntologyIndex`. Do not initiate document loading and do not consult document loaders or IRI mappers.
 5. Make the load-graph convenience result call this same traversal after commit. Remove the duplicate local closure algorithm.
-6. Run:
+6. Update the existing `model.OWLOntologyManager` registry binding with `prototype.importsClosure` and `prototype.getImportsClosure`. Record the frozen-array/Java-`Stream` adaptation and the foreign-ontology error difference from §3.1; preserve every unrelated supported member and omission. Regenerate all three API views and require the delta from the tagged baseline to contain only those member and qualification changes.
+7. Run:
 
    ```powershell
    npm test -- --runInBand model/owlOntologyManager.test.js model/owlOntologyManager.integration.test.js
    npm run lint:files -- model/owlOntologyManager.js model/owlOntologyManager.test.js model/owlOntologyManager.integration.test.js
+   node util/generate-java-api-surface.mjs
    ```
 
-7. Request a checkpoint. The focused tests must prove zero loader calls during both closure query methods.
+8. Request a checkpoint. The focused tests must prove zero loader calls during both closure query methods, and the generated surface diff must match the Task 3 portion of §3.2 exactly.
 
 ### Task 4: Introduce package-private mutable ontology state and atomic axiom addition
 
@@ -261,6 +351,8 @@ Use an explicit stack rather than recursion. Mark the root visited before traver
 - Modify: `model/owlOntologyManager.js`
 - Modify: `model/owlOntologyManager.test.js`
 - Modify: `model/model.test.js`
+- Modify: `util/generate-java-api-surface.mjs`
+- Regenerate: `docs/compatibility/java-api-surface.json`, `docs/compatibility/java-api-surface.md`, `API.md`
 
 **Private contract**
 
@@ -282,14 +374,16 @@ Use an explicit stack rather than recursion. Mark the root visited before traver
 
 5. Commit a cloned structural set once. Return `false` for a duplicate-only call and `true` when at least one new structural member is added. Recompute all derived signature and referencing queries from the committed state; do not maintain a second mutable cache.
 6. Add regression tests for empty iterables, generators, duplicates within one call, a late invalid element, cross-manager calls, signatures, referencing axioms, and closure snapshots whose ontology objects expose the newly added direct axiom.
-7. Run:
+7. Update the existing `model.OWLOntologyManager` registry binding with `prototype.addAxiom` and `prototype.addAxioms`, the boolean/iterable adaptation from §3.1, and the exact remaining mutation omissions. Preserve the existing `model.OWLOntology` supported-member list: its state source changes, but its public query surface does not.
+8. Run:
 
    ```powershell
    npm test -- --runInBand internal/model/axiomSemantics.test.js internal/model/ontologyState.test.js model/owlOntologyManager.test.js model/model.test.js
    npm run lint:files -- internal/model model/owlOntology.js model/owlOntologyManager.js
+   node util/generate-java-api-surface.mjs
    ```
 
-8. Request a checkpoint after confirming that no mutable collection or state-authority token is reachable from a public object.
+9. Request a checkpoint after confirming that no mutable collection or state-authority token is reachable from a public object and the generated surface diff matches the Task 4 portion of §3.2 exactly.
 
 ### Task 5: Add immutable changes and atomic `applyChange(s)`
 
@@ -304,23 +398,25 @@ Use an explicit stack rather than recursion. Mark the root visited before traver
 - Modify: `model/owlOntologyManager.test.js`
 - Modify: `internal/loading/managedOntologyIndex.js`
 - Modify: `internal/loading/managedOntologyIndex.test.js`
+- Modify: `test/package-boundary.test.mjs`
 - Modify: `util/generate-java-api-surface.mjs`
 - Regenerate: `docs/compatibility/java-api-surface.json`, `docs/compatibility/java-api-surface.md`, `API.md`
 
 **Steps**
 
-1. Add failing constructor tests requiring frozen `SetOntologyID` and `AddOntologyAnnotation` records with Java-shaped accessors for their target ontology and value. Reject a missing ontology, non-`OWLOntologyID`, or non-annotation object during construction.
+1. Add failing constructor tests requiring frozen `SetOntologyID` and `AddOntologyAnnotation` records. `SetOntologyID` exposes `getOntology()`, `getOriginalOntologyID()`, and `getNewOntologyID()`; `AddOntologyAnnotation` exposes `getOntology()` and `getAnnotation()`. Reject a missing ontology, non-`OWLOntologyID`, or non-annotation object during construction. Do not expose Java's `SetOntologyID(ontology, IRI)` overload, change-data objects, reverse operations, or visitor overloads.
 2. Add failing manager tests for one change, a mixed change list, duplicate annotation no-op, replacement of both ontology and version IRI, conflicting target identity, unsupported change class, foreign target, and a valid first change followed by an invalid later change.
-3. Export both change classes from `owlapi/model` and the existing bare convenience aggregate. Do not create a new parameters namespace or expose Java's `ChangeApplied` enum; the boolean contract in §3 is sufficient for this release.
+3. Export both change classes from `owlapi/model` and the existing bare convenience aggregate. Extend installed-package boundary tests for both canonical imports and blocked deep imports. Do not create a new parameters namespace or expose Java's `ChangeApplied` enum; the boolean contract in §3 is sufficient for this release.
 4. Implement `applyChange(change)` as the single-item form of `applyChanges(iterable)`. Materialize and validate all changes, group them by managed ontology, clone all affected states and index aliases, apply in order to the clones, then commit all affected state and aliases together.
 5. `SetOntologyID` must update the unique full-ID key and the one-to-many ontology-IRI/version-IRI indexes atomically while preserving the document alias and resolved import edges. Reject a duplicate full ID before replacing any state; sharing only an ontology IRI remains legal and produces an explicitly ambiguous IRI-only lookup.
 6. `AddOntologyAnnotation` changes only the target ontology's direct annotation set. It must not manufacture an annotation assertion axiom and must use structural set semantics.
-7. Add both change records to the Java API registry generator under `org.semanticweb.owlapi.model`, then regenerate the JSON and Markdown surfaces.
+7. Add both change records to the Java API registry generator under `org.semanticweb.owlapi.model`. Update the existing manager binding with `prototype.applyChange` and `prototype.applyChanges`, replace the now-obsolete broad mutation omission with exact remaining omissions, and record the boolean/iterable adaptation. Regenerate all three API views and require the accumulated Tasks 3–5 delta to match §3.2 exactly.
 8. Return `false` only when the complete change set is a no-op. A thrown error leaves every ontology, alias, and revision unchanged.
 9. Run:
 
    ```powershell
    npm test -- --runInBand model/ontologyChanges.test.js model/owlOntologyManager.test.js internal/loading/managedOntologyIndex.test.js
+   npm run test:boundary
    npm run lint:files -- model/setOntologyID.js model/addOntologyAnnotation.js model/owlOntologyManager.js internal/loading/managedOntologyIndex.js
    node util/generate-java-api-surface.mjs
    ```
@@ -376,7 +472,7 @@ The provider captures the closure at construction. The merger calls `provider.on
    Never add `"util/"`; that directory contains development, release-evidence, benchmark, and Java-reference programs that are not package API.
 
 7. Extend boundary tests to prove the approved bare and `owlapi/util` specifiers work from a packed-and-installed tarball, `owlapi/util` works in the browser consumers, and `owlapi/util/owlOntologyMerger.js` plus existing development utilities are blocked as deep imports.
-8. Add both util classes to the Java API registry generator under `org.semanticweb.owlapi.util`; then regenerate the registry and API views.
+8. Add both util classes to the Java API registry generator under `org.semanticweb.owlapi.util`; then regenerate the registry and API views. Classify the provider as the explicit snapshot/`Set` `JS_ADAPTATION` from §3.1, and classify the merger as a Java analogue with the `OWLAxiomFilter` constructor omitted. Require the new namespace and both bindings—and no other repository `util/` entry—to be the complete Task 6 registry delta.
 9. Run:
 
    ```powershell
@@ -388,19 +484,20 @@ The provider captures the closure at construction. The merger calls `provider.on
 
 10. Request a checkpoint. Inspect `npm pack --dry-run --json` evidence and fail the task if any non-approved `util/` file is packed.
 
-### Task 7: Add an atomic string target and exact manager storer selection
+### Task 7: Consume the parity-locked target and add exact manager storer selection
 
 **Files**
 
-- Create: `io/stringDocumentTarget.js`
-- Modify: `io/errors.js`
-- Modify: `io/index.js`
-- Modify: `io/io.test.js`
+- Verify unchanged: `io/stringDocumentTarget.js`
+- Verify unchanged: `io/stringDocumentTarget.test.js`
+- Verify unchanged: `io/errors.js`
+- Verify unchanged: `io/index.js`
+- Verify unchanged: `io/io.test.js`
+- Modify: `test/package-boundary.test.mjs`
 - Create: `internal/storage/storerRegistry.js`
 - Create: `internal/storage/storerRegistry.test.js`
 - Modify: `model/owlOntologyManager.js`
 - Create: `model/owlOntologyManager.storage.test.js`
-- Modify: `index.js`
 - Modify: `util/generate-java-api-surface.mjs`
 - Regenerate: `docs/compatibility/java-api-surface.json`, `docs/compatibility/java-api-surface.md`, `API.md`
 
@@ -413,15 +510,13 @@ The provider captures the closure at construction. The merger calls `provider.on
 }
 ```
 
-`StorerRegistry.select(format)` matches the requested `OWLDocumentFormat.key` exactly. It does not select by extension, media type, `isRdf`, or a fallback list. The manager obtains complete text first and invokes the package-private target replacement function only after rendering succeeds.
+`StorerRegistry.select(format)` matches the requested `OWLDocumentFormat.key` exactly. It does not select by extension, media type, `isRdf`, or a fallback list. The manager obtains complete text first and invokes the Phase 21 package-private target replacement function only after rendering succeeds.
 
 **Steps**
 
-1. Add failing `StringDocumentTarget` tests for initial empty text, identical `getText()`/`toString()` results, preservation of Unicode text, and the absence of public append/write methods.
-2. Add the three typed errors from §3 to `io/errors.js`, export them through `owlapi/io` and the bare aggregate, and test stable names, codes, causes, and safe detail fields.
-3. Implement target storage with module-private state, for example a `WeakMap`, and a non-public-index helper that atomically replaces a target's text. Reject any object other than a genuine `StringDocumentTarget`.
-4. Add registry unit tests with fake storers for exact format-key selection, duplicate registration at manager construction, unsupported format, asynchronous render success, synchronous throw, and rejected promise.
-5. Have each manager construct the package-private default storer registry; do not accept a storer registry, storer list, or registration hook as a public constructor option. Implement:
+1. Re-run the Phase 21 target, error, package-boundary, governance, and registry tests before adding a storer. Require `toString()` to remain the sole public target text reader, both storage errors to retain one binding identity, and the forbidden target member and error class to remain absent.
+2. Add registry unit tests with fake storers for exact format-key selection, duplicate registration at manager construction, unsupported format, asynchronous render success, synchronous throw, and rejected promise.
+3. Have each manager construct the package-private default storer registry; do not accept a storer registry, storer list, or registration hook as a public constructor option. Implement:
 
    ```js
    await manager.saveOntology(ontology, format, target);
@@ -429,18 +524,19 @@ The provider captures the closure at construction. The merger calls `provider.on
 
    Validate the managed ontology, `OWLDocumentFormat`, and target before selecting. Wrap unexpected renderer failures in `OWLOntologyStorageError` with `cause`; preserve already typed storage errors.
 
-6. Assert at manager level that an unsupported format throws `OWLStorerNotFoundError` and prior target text is unchanged. Exercise renderer rejection and successful replace-not-append behaviour at the private registry/target protocol boundary until Tasks 9 and 12 register real manager-selected storers.
-7. Register no real storers yet. Production Functional and RDF/XML registrations arrive in Tasks 9 and 12; manager-level success and renderer-failure atomicity become required regression cases in those tasks.
-8. Add target/error classifications to the Java surface generator and regenerate after exports exist.
-9. Run:
+4. Assert at manager level that an unsupported format throws `OWLStorerNotFoundError` and prior target text is unchanged. Exercise renderer rejection and successful replace-not-append behaviour at the private registry/target protocol boundary until Tasks 9 and 12 register real manager-selected storers.
+5. Register no real storers yet. Production Functional and RDF/XML registrations arrive in Tasks 9 and 12; manager-level success and renderer-failure atomicity become required regression cases in those tasks.
+6. Update only the existing `model.OWLOntologyManager` registry binding with `prototype.saveOntology` and the two reachable Phase 21 public storage errors, then regenerate. Preserve the manager's storer-registration omission and every Phase 21 target/error binding byte-for-byte. Require the Task 7 registry delta to match §3.2 exactly and add no parity-decision row beyond those already authorized for `saveOntology` in §3.1.
+7. Run:
 
    ```powershell
    npm test -- --runInBand io/io.test.js internal/storage/storerRegistry.test.js model/owlOntologyManager.storage.test.js
+   npm run test:boundary
    npm run lint:files -- io internal/storage model/owlOntologyManager.js
    node util/generate-java-api-surface.mjs
    ```
 
-10. Request a checkpoint. The tests must demonstrate target atomicity using pre-populated text, not only an initially empty target.
+8. Request a checkpoint. The tests must demonstrate target atomicity using pre-populated text, not only an initially empty target, and the surface diff must prove the Phase 21 target/error contract did not drift.
 
 ### Task 8: Implement structural ontology comparison modulo anonymous-individual bijection
 
@@ -469,7 +565,7 @@ All named structural values compare exactly. Two ontology IDs compare equal when
 2. Build label-independent skeleton fingerprints for each axiom and annotation. Bucket candidates by kind, arity, named terms, literal values, and anonymous occurrence pattern before backtracking.
 3. Backtrack only within matching buckets, choosing the smallest candidate bucket first. Carry forward and reverse anonymous maps in each branch. Memoize failed states by bucket position plus current bijection.
 4. Return the first stable mismatch category and structural path when no bijection succeeds. Do not expose the comparator publicly and do not use blank-node labels as a deterministic tie-breaker for semantic equality.
-5. Add adversarial symmetric fixtures and enforce a test-time search-state ceiling so an accidental factorial regression fails predictably. If the ceiling is exceeded, throw a package-private structural-comparison limit error; storage callers translate it to `UnrepresentableOntologyError` with comparison-limit details rather than accepting an unverified save.
+5. Add adversarial symmetric fixtures and enforce a test-time search-state ceiling so an accidental factorial regression fails predictably. If the ceiling is exceeded, throw a package-private structural-comparison limit error; storage callers translate it to `OWLOntologyStorageError` with `reason: "ONTOLOGY_NOT_REPRESENTABLE"` and comparison-limit details rather than accepting an unverified save.
 6. Run:
 
    ```powershell
@@ -569,7 +665,7 @@ Use the conservative RDF/XML form: one `rdf:Description` per subject; full `rdf:
 1. Add failing graph tests for named and blank subjects, named and blank objects, plain/datatype/language literals, repeated predicates, RDF collections as ordinary triples, Unicode IRIs/literals, XML metacharacters, and different insertion orders.
 2. Add negative tests for named-graph quads, relative or invalid IRIs, a predicate IRI with no legal XML QName split, a blank-node predicate, invalid language/datatype terms, and characters forbidden by the selected XML 1.0 encoding.
 3. Implement deterministic subject/triple sorting with RDF-term structural keys. Assign `rdf:nodeID` values from sorted encounter order; never expose input blank-node labels.
-4. Derive namespaces by choosing a deterministic IRI split whose local part is an XML `NCName`; prefer the longest namespace among legal splits, deduplicate namespaces, and allocate `ns0`, `ns1`, and so on in lexical namespace order. Throw `UnrepresentableOntologyError` when no legal split exists.
+4. Derive namespaces by choosing a deterministic IRI split whose local part is an XML `NCName`; prefer the longest namespace among legal splits, deduplicate namespaces, and allocate `ns0`, `ns1`, and so on in lexical namespace order. Throw `OWLOntologyStorageError` with `reason: "ONTOLOGY_NOT_REPRESENTABLE"` when no legal split exists.
 5. Escape XML text and attribute values separately. Preserve the exact literal lexical form, datatype IRI, and normalized language tag supplied by the structural model. Use character references where XML end-of-line or attribute normalization would otherwise change an allowed character such as carriage return; reject rather than replace, delete, or escape characters forbidden by XML 1.0.
 6. Parse every successful result with the existing RDF/XML adapter into a fresh RDF/JS dataset and require dataset isomorphism with the input. Compare datasets modulo blank-node bijection, not serialized text or generated prefixes.
 7. Run:
@@ -613,7 +709,7 @@ committed OWLOntology snapshot
 **Steps**
 
 1. Add failing all-kinds and focused round-trip tests covering the complete current `OWL_OBJECT_KINDS` surface, ontology/version IDs, root annotations, annotation assertion axioms, annotated axioms, imports, literals, and shared anonymous individuals.
-2. Add the required non-injective case where an ontology annotation and an annotation assertion about the ontology IRI map to RDF that cannot reconstruct their distinct structural roles. Require `UnrepresentableOntologyError`, a mismatch category/path, and an unchanged pre-populated target.
+2. Add the required non-injective case where an ontology annotation and an annotation assertion about the ontology IRI map to RDF that cannot reconstruct their distinct structural roles. Require `OWLOntologyStorageError` with `reason: "ONTOLOGY_NOT_REPRESENTABLE"`, a mismatch category/path, and an unchanged pre-populated target.
 3. Add negative tests for every graph-writer limitation from Task 11, multiple/default-graph leakage, a deliberately unconsumed output quad, and a deliberately lossy OWL-to-RDF mapping branch.
 4. Implement the storer without reaching through manager public APIs during validation. Use a fresh strict reconstruction context with no IRI mapper or ambient document loader. Require exactly one reconstructed ontology, zero external loads, empty diagnostics, and structural equality across ID, direct imports, direct annotations, and direct axioms.
 5. Register the storer only for `OWLDocumentFormats.RDF_XML.key`. Never fall back to Functional Syntax; the caller may select Functional explicitly after handling the typed failure.
@@ -674,7 +770,7 @@ outputManager.applyChanges(
    - output direct axioms equal the structural set union of every closure ontology's direct axioms; and
    - anonymous individuals preserve within-source identity and remain distinct across sources.
 
-4. Save the result once as Functional Syntax and once as RDF/XML through `manager.saveOntology`. Reload each text in a fresh strict manager whose document loader increments a counter and throws. Require closure cardinality one, zero loader calls, no diagnostics, and structural equivalence modulo one anonymous-individual bijection.
+4. Save the result once as Functional Syntax and once as RDF/XML through `manager.saveOntology`, obtaining each complete text only through `target.toString()`. Reload each text in a fresh strict manager whose document loader increments a counter and throws. Require closure cardinality one, zero loader calls, no diagnostics, and structural equivalence modulo one anonymous-individual bijection.
 5. Mutate each saved artefact independently by removing or adding an axiom, root annotation, version IRI, imports declaration, anonymous sharing edge, literal datatype, or language tag. Require the verifier to reject every mutation. Exercise the strict ignored-RDF and RDF/XML non-injective failures too.
 6. Run the same successful composition from a packed-and-installed candidate with deep imports disabled and network denied. Add it to `qualify-installed-candidate.mjs`, not only the source-tree Jest suite.
 7. Run the composition in the import-map, bundler, dedicated-worker, and WebVOWL browser-consumer boundaries. Do not polyfill filesystem or Node-only modules into the production package.
@@ -750,6 +846,7 @@ node util/owlapi-reference/run-import-closure-contract.mjs \
 **Files**
 
 - Modify: `docs/compatibility/capabilities.json`
+- Modify: `docs/compatibility/java-api-parity-decisions.json`
 - Modify/regenerate: `docs/compatibility/java-api-surface.json`
 - Modify/regenerate: `docs/compatibility/java-api-surface.md`
 - Modify/regenerate: `API.md`
@@ -763,11 +860,11 @@ node util/owlapi-reference/run-import-closure-contract.mjs \
 **Steps**
 
 1. Check the public registry and accepted repository release history before changing versions. If exact `0.2.0` is occupied, yanked, or incompatible with this contract, stop and coordinate an amendment to the Universal Ontology Markdown and JSON contracts. Do not choose `0.3.0`, a prerelease, a range, Git dependency, tarball, or workspace link silently.
-2. Once all prior tasks are green, change the eight capability rows to `status: "REQUIRED_V1"`, `progress: "COMPLETE"`, and `phase: 21`, and set the matrix's global release to exact `0.2.0`. Do not mark a capability complete based solely on source-tree tests.
-3. Regenerate Java API surface data and confirm every new binding has one canonical public module, an exact Java authority, documented supported members, and explicit omitted overloads. Confirm the concrete storer classes remain non-public.
-4. Extend the release-gate catalogue/generator/verifier so Phase 21 requirements are derived from this canonical plan in addition to the predecessor plan. Add explicit gate IDs for the eight-capability matrix, installed import-closure composition, both storage round trips, strict RDF completeness, the mandated RDF/XML failure, and the pinned Java/real-consumer evidence. Regenerate `docs/release/gates.json`; do not hand-edit generated rows. If `.github/workflows/release.yml` needs a new job or step to produce one of those results, request exact workflow approval and update the workflow-governance assertions in the same change.
-5. Update user documentation with the exact public imports, the composition recipe from Task 13, typed failures, deterministic offline-verification expectations, and the RDF/XML representability limitation. Replace the obsolete umbrella-storer comments in `index.js` with the precise implemented/deferred boundary.
-6. Request explicit approval, then set package and lockfile versions to exact `0.2.0` and the production `latest` channel selected by the post-`0.1.x` workflow metadata. Preserve the export allowlist and inspect the tarball so no tests, fixtures, Java utilities, benchmarks, or release-evidence utilities ship.
+2. Once all prior tasks are green, change the eight lifecycle capability rows to `status: "REQUIRED_V1"`, `progress: "COMPLETE"`, and `phase: 22`, preserve the three completed Phase 21 rows, and set the matrix's global release to exact `0.2.0`. Do not mark a capability complete based solely on source-tree tests.
+3. Regenerate Java API surface data and confirm every new binding and every changed existing binding has one canonical public module, an exact Java authority, documented supported members, public errors, semantic qualifications, and explicit omitted overloads. Every difference from exact Java parity must have a specific approved row in `docs/compatibility/java-api-parity-decisions.json`; fail on any new `JS_EXTENSION`. Compare the generated JSON first to the Phase 21 checkpoint and then to accepted `v0.1.0`. Reject any package, binding, relationship, compatibility, member, omission, public-error, or namespace delta outside the exact union of the Phase 21 record and §3.2. Confirm the concrete storer classes remain non-public, preserve the immutable Phase 21 checkpoint, and only after all corresponding gates pass set `phase22.status` to `COMPLETE` with the final registry digest.
+4. Extend the release-gate catalogue/generator/verifier so Phase 22 requirements are derived from this canonical plan and Phase 21 remains a required predecessor result. Add explicit gate IDs for Phase 21 ancestry/parity preservation, the eight-capability matrix, installed import-closure composition, both storage round trips, strict RDF completeness, the mandated RDF/XML failure, and the pinned Java/real-consumer evidence. Regenerate `docs/release/gates.json`; do not hand-edit generated rows. If `.github/workflows/release.yml` needs a new job or step to produce one of those results, request exact workflow approval and update the workflow-governance assertions in the same change.
+5. Update user documentation with the exact public imports, the composition recipe from Task 13, `StringDocumentTarget.toString()` as the sole target reader, representability through the base storage-error reason, deterministic offline-verification expectations, and the RDF/XML representability limitation. Replace the obsolete umbrella-storer comments in `index.js` with the precise implemented/deferred boundary.
+6. Request explicit approval, then set package and lockfile versions to exact `0.2.0` and the production `latest` channel selected by the post-`0.1.0` workflow metadata. Preserve the export allowlist and inspect the tarball so no tests, fixtures, Java utilities, benchmarks, or release-evidence utilities ship.
 7. Run source, generated-document, packaging, installed-candidate, browser, and real-consumer gates:
 
    Use fresh, previously absent `0.2.0` qualification paths:
@@ -788,7 +885,7 @@ node util/owlapi-reference/run-import-closure-contract.mjs \
    npm run qualify:release -- --candidate .release/0.2.0-qualification-candidate --output .release/0.2.0-publication-preflight.json
    ```
 
-8. Inspect the downloaded candidate in a clean temporary directory. Require exact version `0.2.0`, only approved exports, zero source-tree resolution, zero network during closure/reload tests, both storage formats, and the mandated RDF/XML failure.
+8. Inspect the downloaded candidate in a clean temporary directory. Require exact version `0.2.0`, only approved exports, zero source-tree resolution, zero network during closure/reload tests, both storage formats, and the mandated RDF/XML failure. Re-run the tagged-to-candidate API-surface comparison against the installed package evidence rather than trusting the source-tree registry alone.
 9. Run the four Java commands in Task 14 against artefacts produced by the exact candidate and run Universal Ontology's own contract suite against that installed candidate from an isolated qualification directory. Do not edit Universal Ontology's package manifest, lockfile, or checked-in build artefacts during package qualification.
 10. Record provenance, source tag, tarball digest, registry integrity, runtime versions, and all gate results through the existing release-evidence workflow.
 11. Stop and request authorization for the exact release-candidate commit. If approved, load the repository's commit workflow, stage only the reviewed programme files, create the authorized signed commit, and rerun tag preflight against that immutable commit.
@@ -800,31 +897,34 @@ node util/owlapi-reference/run-import-closure-contract.mjs \
 
 ## 6. Requirement-to-task traceability
 
-| Universal Ontology requirement                       | Primary tasks  | Acceptance evidence                                                        |
-| ---------------------------------------------------- | -------------- | -------------------------------------------------------------------------- |
-| Resolve and retain a cyclic/duplicate import graph   | 2–3            | Transaction rollback, alias, diamond, cycle, and zero-loader closure tests |
-| Closure structural set union                         | 4, 6, 13       | Provider/merger tests and exact public composition fixture                 |
-| Root full ID and root-only annotations               | 5, 13          | Atomic change tests plus collapsed postconditions                          |
-| Empty output imports                                 | 6, 13          | Merger omission and offline closure-cardinality-one assertions             |
-| Anonymous sharing and standardization apart          | 6, 8, 13–14    | Source-scope fixture and bijective JS/Java comparison                      |
-| Fatal missing/ambiguous/unsupported/unconsumed input | 2, 10, 13      | Typed loader failures and strict complete-consumption suite                |
-| Functional Syntax lossless storage                   | 7–9, 13        | Exhaustive fresh-manager strict round trip through `saveOntology`          |
-| RDF/XML lossless-or-fail storage                     | 7–8, 11–13     | Dataset isomorphism, structural validation, required non-injective failure |
-| Fresh offline reload with zero loader calls          | 9, 12–13       | Throwing/counting-loader tests for both formats                            |
-| Public Java-shaped entry points only                 | 1, 5–7, 13, 15 | API registry, installed-package boundary, and browser consumers            |
-| No library-owned materialization policy              | 3, 6, 13       | Public surface inventory and consumer-owned composition code               |
-| Pinned Java acceptance oracle                        | 8, 14–15       | Synthetic plus four real Universal Ontology family comparisons             |
-| Exact public `owlapi@0.2.0`                          | 1, 15          | Registry/history check and clean installed-candidate evidence              |
+| Universal Ontology requirement                       | Primary tasks            | Acceptance evidence                                                                           |
+| ---------------------------------------------------- | ------------------------ | --------------------------------------------------------------------------------------------- |
+| Resolve and retain a cyclic/duplicate import graph   | 2–3                      | Transaction rollback, alias, diamond, cycle, and zero-loader closure tests                    |
+| Closure structural set union                         | 4, 6, 13                 | Provider/merger tests and exact public composition fixture                                    |
+| Root full ID and root-only annotations               | 5, 13                    | Atomic change tests plus collapsed postconditions                                             |
+| Empty output imports                                 | 6, 13                    | Merger omission and offline closure-cardinality-one assertions                                |
+| Anonymous sharing and standardization apart          | 6, 8, 13–14              | Source-scope fixture and bijective JS/Java comparison                                         |
+| Fatal missing/ambiguous/unsupported/unconsumed input | 2, 10, 13                | Typed loader failures and strict complete-consumption suite                                   |
+| Functional Syntax lossless storage                   | 7–9, 13                  | Exhaustive fresh-manager strict round trip through `saveOntology`                             |
+| RDF/XML lossless-or-fail storage                     | 7–8, 11–13               | Dataset isomorphism, structural validation, required non-injective failure                    |
+| Fresh offline reload with zero loader calls          | 9, 12–13                 | Throwing/counting-loader tests for both formats                                               |
+| Parity-safe public Java-shaped entry points          | Phase 21; 1, 3–7, 13, 15 | Prerequisite decision ledger, tagged surface delta, installed boundary, and browser consumers |
+| No library-owned materialization policy              | 3, 6, 13                 | Public surface inventory and consumer-owned composition code                                  |
+| Pinned Java acceptance oracle                        | 8, 14–15                 | Synthetic plus four real Universal Ontology family comparisons                                |
+| Exact public `owlapi@0.2.0`                          | 1, 15                    | Registry/history check and clean installed-candidate evidence                                 |
 
 ## 7. Completion gate
 
 This programme is complete only when all of the following are simultaneously true:
 
+- the accepted `v0.1.0` commit and approved Phase 21 completion commit are ancestors of the qualified Phase 22 commit;
+- the Phase 21 capability rows, parity-decision record, `StringDocumentTarget.toString()` surface, and two-class storage error hierarchy remain complete and unchanged;
 - the eight capability rows are complete and backed by generated compatibility evidence;
+- the generated Java API registry differs from accepted `v0.1.0` only by the exact union of the completed Phase 21 decisions and the new bindings or changed existing members authorized in §3.2, with every adaptation recorded and no new `JS_EXTENSION`;
 - manager closure queries use retained resolved edges and make no loader calls;
 - every manager mutation is validated and atomic, including identity aliases;
 - `owlapi/util` contains exactly the approved Java-shaped bindings and the tarball contains no development utilities;
-- both storers are selected exclusively through `saveOntology` and leave targets unchanged on failure;
+- both storers are selected exclusively through `saveOntology`, expose stored text only through `StringDocumentTarget.toString()`, report non-representability through the base storage-error reason, and leave targets unchanged on failure;
 - Functional Syntax passes the exhaustive structural round trip;
 - RDF/XML passes the exhaustive representable round trip and rejects the mandated non-injective case;
 - strict RDF reconstruction fails on every unconsumed selected-graph statement;
@@ -838,8 +938,8 @@ This programme is complete only when all of the following are simultaneously tru
 
 ## 8. Execution handoff
 
-Execute in order. Tasks 2–5 establish state semantics; Task 6 depends on them. Task 7 establishes the storage protocol; Tasks 8–12 establish lossless serializers. Task 13 is the public acceptance slice, Task 14 supplies independent Java evidence, and Task 15 alone qualifies the exact release.
+Execute only after the separate Phase 21 parity precondition is complete and present in branch ancestry. Within Phase 22, Tasks 2–5 establish state semantics; Task 6 depends on them. Task 7 consumes the parity-locked target/error boundary and establishes manager storer selection; Tasks 8–12 establish lossless serializers. Task 13 is the public acceptance slice, Task 14 supplies independent Java evidence, and Task 15 alone qualifies the exact release.
 
 At every task, follow red → green → refactor: add the focused failing test, run it and confirm the intended failure, implement the minimum coherent behaviour, rerun the focused test, then run the listed regression boundary. Do not combine tasks to bypass a failing intermediate contract.
 
-The first execution decision is whether the production `0.1.x` starting checkpoint has been accepted. If it has not, leave all capability work deferred. If it has, begin Task 1 and request the documented checkpoint before moving to manager-state changes.
+The first execution decision is whether exact production `0.1.0` and the Phase 21 completion checkpoint have both been accepted and are ancestors of the active implementation branch. If either condition is false, leave all lifecycle capability work deferred. If both are true, begin Task 1 and request the documented checkpoint before moving to manager-state changes.
