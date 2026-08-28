@@ -673,7 +673,9 @@ jobs:
         with:
           repository: Hadden-Industries/webvowl
           ref: f7444ce3971621e6af6d38ebd4b5ce9b03f3e235
-          fetch-depth: 1
+          # WebVOWL's governance suite proves retained reconstruction ancestry.
+          # A shallow checkout would make valid recorded commits unreachable.
+          fetch-depth: 0
           path: consumer-workspace/webvowl
           persist-credentials: false
       - name: Check out the fixed representative ontology corpus

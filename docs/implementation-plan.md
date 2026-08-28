@@ -9202,12 +9202,14 @@ job/step timeouts. The exact public-candidate sequence is:
     and report any later live-
     URL health observation under §2.46 without treating provider uptime as a
     package runtime promise;
-11. on `ubuntu-24.04` x64, create one isolated WebVOWL checkout at the recorded
-    source commit and check out the representative `universal-ontology` corpus at
-    its separately recorded commit; because that repository intentionally omits
-    generated `dist/` output, install its exact lockfile and run its ordinary
-    build to materialize the corpus before qualification; run baseline WebVOWL
-    `npm ci`, Jest and development/production Vite builds; generate the WebVOWL
+11. on `ubuntu-24.04` x64, create one isolated WebVOWL checkout with complete
+    retained history at the recorded source commit—its baseline governance suite
+    proves recorded reconstruction ancestry, so a shallow checkout is invalid—and
+    check out the representative `universal-ontology` corpus at its separately
+    recorded commit; because that repository intentionally omits generated `dist/`
+    output, install its exact lockfile and run its ordinary build to materialize
+    the corpus before qualification; run baseline WebVOWL `npm ci`, Jest and
+    development/production Vite builds; generate the WebVOWL
     import/dependency-ownership inventory; apply the reviewed consumer-cutover
     patch; install the retained tarball exactly while removing every dependency
     proven package-only in the same reviewed manifest/lockfile operation; then

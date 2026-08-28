@@ -805,6 +805,15 @@ const validateMaintenanceReporter = (source, violations) => {
 
 const validateWebVowlCorpusMaterialization = (fileName, source, violations) => {
   const webVowl = jobBlock(source, "webvowl");
+  const webVowlLines = webVowl.split(/\r?\n/u);
+  const webVowlCheckoutIndex = webVowlLines.indexOf(
+    "      - name: Check out the fixed WebVOWL consumer",
+  );
+  const webVowlCheckout =
+    webVowlCheckoutIndex === -1
+      ? ""
+      : stepBlockAt(webVowlLines, webVowlCheckoutIndex);
+  const webVowlCheckoutLines = webVowlCheckout.split(/\r?\n/u);
   const installStep = [
     "      - name: Install the fixed ontology corpus dependencies",
     "        working-directory: consumer-workspace/universal-ontology",
@@ -821,6 +830,16 @@ const validateWebVowlCorpusMaterialization = (fileName, source, violations) => {
   const materializeIndex = webVowl.indexOf(materializeStep);
   const qualificationIndex = webVowl.indexOf(qualificationStep);
 
+  add(
+    violations,
+    [
+      "        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1",
+      "          repository: Hadden-Industries/webvowl",
+      "          ref: f7444ce3971621e6af6d38ebd4b5ce9b03f3e235",
+      "          fetch-depth: 0",
+    ].every((setting) => webVowlCheckoutLines.includes(setting)),
+    `${fileName}:webvowl must retain complete WebVOWL history for governance tests`,
+  );
   add(
     violations,
     installIndex !== -1 &&
