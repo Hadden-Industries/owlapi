@@ -105,14 +105,37 @@ const artifact = ({ id, name, digest }) => ({
 });
 
 const publicationPreflight = {
+  schemaVersion: 1,
   result: "PASS",
-  sourceCommit,
-  sourceRef: "refs/heads/main",
-  canonicalTagAbsent: "v0.1.0-alpha.0",
-  publicationEnabled: true,
-  publicationMode: "DIRECT_BOOTSTRAP",
-  coordinate: "owlapi@0.1.0-alpha.0",
+  checkedAt: "2026-08-28T10:14:47.638Z",
+  registry: "https://registry.npmjs.org/",
   channel: "next",
+  canonicalTag: "v0.1.0-alpha.0",
+  registryState: "DIRECT_BOOTSTRAP_READY",
+  candidate: {
+    coordinate: "owlapi@0.1.0-alpha.0",
+    fileName: "owlapi-0.1.0-alpha.0.tgz",
+    bytes: 179949,
+    sha256: "80d56eb103c1a94dcdc006b4549e91cce16f7ed0eb076e0e26053e3d670704a3",
+    fileCount: 72,
+  },
+  dryRun: {
+    command:
+      "npm publish <retained-tarball> --dry-run --tag next --access public --registry=https://registry.npmjs.org/ --json",
+    entryCount: 72,
+    integrity:
+      "sha512-m6H5akkbspCsOzPNAjneRG+hWjphqfXHQXOqzFbHeEkdABOufEZKIS4rjvQDpartQRilsr+ux5UmKJZMfL8Mkg==",
+    shasum: "5d7e46c1118b3be07044b4a0797aa04aac82d694",
+  },
+};
+
+const retainedCandidate = {
+  package: { name: "owlapi", version: "0.1.0-alpha.0" },
+  tarball: {
+    fileName: "owlapi-0.1.0-alpha.0.tgz",
+    bytes: 179949,
+    sha256: "80d56eb103c1a94dcdc006b4549e91cce16f7ed0eb076e0e26053e3d670704a3",
+  },
 };
 
 const tagVerification = {
@@ -256,6 +279,7 @@ describe("exact-artifact release reconciliation", () => {
           publicationControl.reconciliation.publicationPreflightArtifact,
         ),
         publicationPreflight,
+        retainedCandidate,
         tagVerification,
         githubRelease: null,
         registryVersion: null,
@@ -300,6 +324,66 @@ describe("exact-artifact release reconciliation", () => {
     });
   });
 
+  test.each([
+    [
+      "registry state",
+      { ...publicationPreflight, registryState: "ABANDON_TAGGED_VERSION" },
+    ],
+    [
+      "canonical tag",
+      { ...publicationPreflight, canonicalTag: "v0.1.0-alpha.1" },
+    ],
+    [
+      "package coordinate",
+      {
+        ...publicationPreflight,
+        candidate: {
+          ...publicationPreflight.candidate,
+          coordinate: "owlapi@0.1.0-alpha.1",
+        },
+      },
+    ],
+    [
+      "tarball digest",
+      {
+        ...publicationPreflight,
+        candidate: {
+          ...publicationPreflight.candidate,
+          sha256: "0".repeat(64),
+        },
+      },
+    ],
+    [
+      "tarball byte count",
+      {
+        ...publicationPreflight,
+        candidate: {
+          ...publicationPreflight.candidate,
+          bytes: publicationPreflight.candidate.bytes + 1,
+        },
+      },
+    ],
+  ])("rejects a retained preflight with the wrong %s", (_field, report) => {
+    expect(() =>
+      reconciliation.assertReconciliationSourceFacts({
+        control: publicationControl,
+        sourceRun,
+        sourceJobs,
+        candidateArtifact: artifact(
+          publicationControl.reconciliation.candidateArtifact,
+        ),
+        publicationPreflightArtifact: artifact(
+          publicationControl.reconciliation.publicationPreflightArtifact,
+        ),
+        publicationPreflight: report,
+        retainedCandidate,
+        tagVerification,
+        githubRelease: null,
+        registryVersion: null,
+      }),
+    ).toThrow(/retained publication-preflight report/iu);
+  });
+
   test("rejects a source run whose qualification aggregate did not pass", () => {
     expect(() =>
       reconciliation.assertReconciliationSourceFacts({
@@ -317,6 +401,7 @@ describe("exact-artifact release reconciliation", () => {
           publicationControl.reconciliation.publicationPreflightArtifact,
         ),
         publicationPreflight,
+        retainedCandidate,
         tagVerification,
         githubRelease: null,
         registryVersion: null,

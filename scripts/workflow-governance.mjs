@@ -76,6 +76,18 @@ const jobBlock = (source, id) => {
   return source.slice(startMatch.index, end);
 };
 
+const hasBootstrapCredentialGuard = (block) => {
+  const guardIndex = block.indexOf('if [[ -z "$NODE_AUTH_TOKEN" ]]; then');
+  const publishIndex = block.indexOf("npm publish ");
+  if (guardIndex === -1 || publishIndex === -1 || guardIndex >= publishIndex) {
+    return false;
+  }
+
+  // The guard must terminate the credential-bearing step before its only npm
+  // mutation. A mere warning would still spend the authorized publish attempt.
+  return block.slice(guardIndex, publishIndex).includes("exit 1");
+};
+
 const listNeeds = (block) => {
   const list = block.match(/^    needs:\r?\n((?:      - [a-z0-9_]+\r?\n?)+)/mu);
   if (list) {
@@ -271,6 +283,11 @@ const validateReleaseMutationBoundary = (source, violations) => {
       (publication.match(/NPM_BOOTSTRAP_TOKEN/gu) ?? []).length === 1 &&
       (publication.match(/npm publish /gu) ?? []).length === 1,
     "release.yml:npm_release must have no checkout/write expansion or duplicate token/publish authority",
+  );
+  add(
+    violations,
+    hasBootstrapCredentialGuard(publication),
+    "release.yml:npm_release is missing bootstrap credential fail-closed behavior",
   );
 
   const finalize = jobBlock(source, "finalize_release");
@@ -603,6 +620,11 @@ const validateReleaseReconciliationMutationBoundary = (source, violations) => {
       (publication.match(/NPM_BOOTSTRAP_TOKEN/gu) ?? []).length === 1 &&
       (publication.match(/npm publish /gu) ?? []).length === 1,
     "release-reconciliation.yml:npm_release must have no checkout/write expansion or duplicate token/publish authority",
+  );
+  add(
+    violations,
+    hasBootstrapCredentialGuard(publication),
+    "release-reconciliation.yml:npm_release is missing bootstrap credential fail-closed behavior",
   );
 
   const finalize = jobBlock(source, "finalize_release");

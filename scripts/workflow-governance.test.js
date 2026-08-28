@@ -7,6 +7,12 @@ import {
   auditRepositoryControls,
 } from "./workflow-governance.mjs";
 
+const withInvertedBootstrapCredentialGuard = (source) =>
+  source.replace(
+    'if [[ -z "$NODE_AUTH_TOKEN" ]]; then',
+    'if [[ -n "$NODE_AUTH_TOKEN" ]]; then',
+  );
+
 describe("repository workflow governance", () => {
   test("the checked-in controls match the closed Phase 19 workflow policy", () => {
     const report = auditRepositoryControls();
@@ -64,6 +70,28 @@ describe("repository workflow governance", () => {
       ]),
     );
   });
+
+  test.each([
+    ["release", ".github/workflows/release.yml", auditReleaseMutationBoundary],
+    [
+      "reconciliation",
+      ".github/workflows/release-reconciliation.yml",
+      auditReleaseReconciliationMutationBoundary,
+    ],
+  ])(
+    "rejects the %s workflow when its bootstrap credential guard is inverted",
+    (_name, path, audit) => {
+      const source = readFileSync(path, "utf8");
+      const inverted = withInvertedBootstrapCredentialGuard(source);
+
+      expect(inverted).not.toBe(source);
+      expect(audit(inverted)).toEqual(
+        expect.arrayContaining([
+          expect.stringMatching(/missing bootstrap credential/iu),
+        ]),
+      );
+    },
+  );
 
   test("rejects a reconciliation download detached from the pinned source run", () => {
     const reconciliation = readFileSync(
