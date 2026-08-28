@@ -198,6 +198,7 @@ export const assertReconciliationSourceFacts = ({
   candidateArtifact,
   publicationPreflightArtifact,
   publicationPreflight,
+  retainedCandidate,
   tagVerification,
   githubRelease,
   registryVersion,
@@ -236,15 +237,36 @@ export const assertReconciliationSourceFacts = ({
     expected: reconciliation.publicationPreflightArtifact,
     source,
   });
+
+  // qualify-release.mjs owns the retained preflight's v1 schema. Source-run,
+  // ref, and publication-authority facts are authenticated independently from
+  // GitHub and the reviewed control record; requiring duplicate fields here
+  // would create a second, incompatible evidence contract.
+  const expectedVersion = source.tag.slice(1);
+  const preflightCandidate = publicationPreflight?.candidate;
+  const preflightDryRun = publicationPreflight?.dryRun;
+  const retainedTarball = retainedCandidate?.tarball;
   if (
+    publicationPreflight?.schemaVersion !== 1 ||
     publicationPreflight?.result !== "PASS" ||
-    publicationPreflight.sourceCommit !== source.commit ||
-    publicationPreflight.sourceRef !== "refs/heads/main" ||
-    publicationPreflight.canonicalTagAbsent !== source.tag ||
-    publicationPreflight.publicationEnabled !== true ||
-    publicationPreflight.publicationMode !== "DIRECT_BOOTSTRAP" ||
-    publicationPreflight.coordinate !== control.coordinate ||
-    publicationPreflight.channel !== control.channel
+    !Number.isFinite(Date.parse(publicationPreflight.checkedAt ?? "")) ||
+    publicationPreflight.registry !== "https://registry.npmjs.org/" ||
+    publicationPreflight.channel !== control.channel ||
+    publicationPreflight.canonicalTag !== source.tag ||
+    publicationPreflight.registryState !== "DIRECT_BOOTSTRAP_READY" ||
+    retainedCandidate?.package?.name !== "owlapi" ||
+    retainedCandidate.package.version !== expectedVersion ||
+    preflightCandidate?.coordinate !== control.coordinate ||
+    preflightCandidate.fileName !== retainedTarball?.fileName ||
+    preflightCandidate.bytes !== retainedTarball?.bytes ||
+    preflightCandidate.sha256 !== retainedTarball?.sha256 ||
+    !Number.isSafeInteger(preflightCandidate.fileCount) ||
+    preflightCandidate.fileCount < 1 ||
+    preflightDryRun?.command !==
+      "npm publish <retained-tarball> --dry-run --tag next --access public --registry=https://registry.npmjs.org/ --json" ||
+    preflightDryRun.entryCount !== preflightCandidate.fileCount ||
+    !/^sha512-[A-Za-z0-9+/]+={0,2}$/u.test(preflightDryRun.integrity ?? "") ||
+    !/^[0-9a-f]{40}$/u.test(preflightDryRun.shasum ?? "")
   ) {
     throw new Error(
       "The retained publication-preflight report is not the reviewed PASS result.",
@@ -605,6 +627,7 @@ const main = async () => {
     candidateArtifact,
     publicationPreflightArtifact,
     publicationPreflight: readJson(resolve(publicationPreflightPath)),
+    retainedCandidate: retained,
     tagVerification: readJson(resolve(tagVerificationPath)),
     githubRelease,
     registryVersion,

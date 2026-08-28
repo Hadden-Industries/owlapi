@@ -1263,7 +1263,15 @@ jobs:
         working-directory: .release/download
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_BOOTSTRAP_TOKEN }}
-        run: npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/
+        # GitHub resolves an absent secret to an empty string. Keep the guard
+        # inside the sole credential-bearing step so missing authority fails
+        # before npm receives the single authorized registry-write request.
+        run: |
+          if [[ -z "$NODE_AUTH_TOKEN" ]]; then
+            echo "::error::The npm-release environment is missing its bootstrap credential."
+            exit 1
+          fi
+          npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/
         timeout-minutes: 5
 
   registry_verification:
