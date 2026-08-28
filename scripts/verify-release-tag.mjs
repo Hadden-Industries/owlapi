@@ -1,7 +1,13 @@
 import { spawnSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
-import { existsSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
-import { join, resolve } from "node:path";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  unlinkSync,
+  writeFileSync,
+} from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -117,6 +123,12 @@ const argumentValue = (name) => {
   return index === -1 ? undefined : process.argv[index + 1];
 };
 
+export const writeReleaseTagReport = (outputPath, report) => {
+  const resolvedOutput = resolve(outputPath);
+  mkdirSync(dirname(resolvedOutput), { recursive: true });
+  writeFileSync(resolvedOutput, `${JSON.stringify(report, null, 2)}\n`, "utf8");
+};
+
 const main = async () => {
   const expectedTag = argumentValue("--tag");
   const expectedCommit = argumentValue("--commit");
@@ -191,8 +203,7 @@ const main = async () => {
     registry,
     releaseDate: new Date().toISOString().slice(0, 10),
   });
-  const resolvedOutput = resolve(outputPath);
-  writeFileSync(resolvedOutput, `${JSON.stringify(report, null, 2)}\n`, "utf8");
+  writeReleaseTagReport(outputPath, report);
   process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
 };
 

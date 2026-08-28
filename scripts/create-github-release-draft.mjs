@@ -46,7 +46,7 @@ const readCandidateAssets = (candidateDirectory, version) => {
 
 const releaseBody = (version) => `# owlapi ${version}
 
-This draft contains the exact retained candidate that passed the required pre-publication qualification in this workflow. It remains unpublished until npm registry verification and the fourth machine-readable release-evidence asset pass.
+This draft contains the exact retained candidate that passed the required pre-publication qualification recorded for this release identity. It remains unpublished until npm registry verification and the fourth machine-readable release-evidence asset pass.
 
 The package is an initial-development JavaScript implementation of a documented subset of Java OWLAPI concepts. See \`CHANGELOG.md\`, \`API.md\`, and the compatibility registry in the package for the exact implemented surface and known gaps.
 `;

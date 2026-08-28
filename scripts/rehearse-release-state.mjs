@@ -20,6 +20,21 @@ export const rehearseReleaseStates = () => {
       registryVersion: null,
       retainedSha256: digest,
     }),
+    exactArtifactReconciliation: classifyReleaseState({
+      canonicalTagExists: true,
+      registryVersion: null,
+      retainedSha256: digest,
+      reconciliation: {
+        enabled: true,
+        sourceCommit: "b".repeat(40),
+        tagTargetCommit: "b".repeat(40),
+        qualificationResult: "PASS",
+        publicationPreflightResult: "PASS",
+        candidateArtifactVerified: true,
+        githubReleaseAbsent: true,
+        reproducedSha256: digest,
+      },
+    }),
     reconciledExistingPublication: classifyReleaseState({
       canonicalTagExists: true,
       registryVersion: { tarballSha256: digest },
@@ -30,6 +45,8 @@ export const rehearseReleaseStates = () => {
     scenarios.pristineBootstrap.action !== "DIRECT_BOOTSTRAP_READY" ||
     scenarios.immutableTagWithoutPublication.action !==
       "ABANDON_TAGGED_VERSION" ||
+    scenarios.exactArtifactReconciliation.action !==
+      "RECONCILE_QUALIFIED_CANDIDATE" ||
     scenarios.reconciledExistingPublication.action !==
       "VERIFY_EXISTING_PUBLICATION"
   ) {

@@ -18,6 +18,7 @@ const EXPECTED_WORKFLOWS = Object.freeze([
   "ci.yml",
   "extended-tests.yml",
   "maintenance.yml",
+  "release-reconciliation.yml",
   "release.yml",
 ]);
 const EXPECTED_ISSUE_FORMS = Object.freeze([
@@ -126,7 +127,7 @@ const validateActionUses = (fileName, source, violations) => {
     }
     if (identity.startsWith("actions/setup-node@")) {
       const isBootstrapSetupNode =
-        fileName === "release.yml" &&
+        ["release-reconciliation.yml", "release.yml"].includes(fileName) &&
         block.includes("registry-url: https://registry.npmjs.org/");
       add(
         violations,
@@ -338,6 +339,355 @@ const validateReleaseMutationBoundary = (source, violations) => {
 export const auditReleaseMutationBoundary = (source) => {
   const violations = [];
   validateReleaseMutationBoundary(source, violations);
+  return violations;
+};
+
+const RECONCILIATION_JOB_IDS = Object.freeze([
+  "source_verification",
+  "accepted",
+  "draft_release",
+  "npm_release",
+  "registry_verification",
+  "release_evidence",
+  "finalize_release",
+  "immutable_verification",
+]);
+
+const validateReleaseReconciliationTransport = (source, violations) => {
+  const sourceVerification = jobBlock(source, "source_verification");
+  for (const setting of [
+    "artifact-ids: ${{ steps.metadata.outputs.candidate_artifact_id }}",
+    "github-token: ${{ github.token }}",
+    "repository: Hadden-Industries/owlapi",
+    "run-id: ${{ steps.metadata.outputs.source_run_id }}",
+    "path: .release/source-candidate",
+  ]) {
+    add(
+      violations,
+      sourceVerification.includes(setting),
+      `release-reconciliation.yml: retained candidate selector is missing ${setting}`,
+    );
+  }
+  for (const setting of [
+    "artifact-ids: ${{ steps.metadata.outputs.publication_preflight_artifact_id }}",
+    "path: .release/source-preflight",
+  ]) {
+    add(
+      violations,
+      sourceVerification.includes(setting),
+      `release-reconciliation.yml: retained preflight selector is missing ${setting}`,
+    );
+  }
+  add(
+    violations,
+    (
+      sourceVerification.match(/github-token: \$\{\{ github\.token \}\}/gu) ??
+      []
+    ).length === 2 &&
+      (
+        sourceVerification.match(/repository: Hadden-Industries\/owlapi/gu) ??
+        []
+      ).length === 2 &&
+      (
+        sourceVerification.match(
+          /run-id: \$\{\{ steps\.metadata\.outputs\.source_run_id \}\}/gu,
+        ) ?? []
+      ).length === 2,
+    "release-reconciliation.yml: both retained artifacts must use the same closed source-run selector",
+  );
+  for (const setting of [
+    "if-no-files-found: error",
+    "retention-days: 90",
+    "compression-level: 0",
+    "overwrite: false",
+    "include-hidden-files: false",
+    "archive: true",
+  ]) {
+    add(
+      violations,
+      sourceVerification.includes(setting),
+      `release-reconciliation.yml: reconciled candidate upload is missing ${setting}`,
+    );
+  }
+  add(
+    violations,
+    (
+      sourceVerification.match(
+        /^            \.release\/source-candidate\/.+$/gmu,
+      ) ?? []
+    ).length === 3,
+    "release-reconciliation.yml: reconciled candidate upload must name exactly three explicit paths",
+  );
+
+  const approvedSameRunSelectors = new Set([
+    "${{ needs.source_verification.outputs.candidate_artifact_id }}",
+    "${{ needs.source_verification.outputs.reconciliation_artifact_id }}",
+    "${{ needs.accepted.outputs.artifact_id }}",
+    "${{ needs.draft_release.outputs.artifact_id }}",
+    "${{ needs.registry_verification.outputs.artifact_id }}",
+    "${{ needs.release_evidence.outputs.artifact_id }}",
+  ]);
+  const lines = source.split(/\r?\n/u);
+  let downloadCount = 0;
+  for (let index = 0; index < lines.length; index += 1) {
+    if (!lines[index].includes("actions/download-artifact@")) {
+      continue;
+    }
+    downloadCount += 1;
+    const block = stepBlockAt(lines, index);
+    const selector = block.match(/^          artifact-ids: (.+)$/mu)?.[1];
+    const isPinnedSourceDownload =
+      selector === "${{ steps.metadata.outputs.candidate_artifact_id }}" ||
+      selector ===
+        "${{ steps.metadata.outputs.publication_preflight_artifact_id }}";
+    const isApprovedSameRunDownload = approvedSameRunSelectors.has(selector);
+    add(
+      violations,
+      isPinnedSourceDownload || isApprovedSameRunDownload,
+      "release-reconciliation.yml: download-artifact must use a closed artifact-ID selector",
+    );
+    for (const setting of [
+      "merge-multiple: false",
+      "skip-decompress: false",
+      "digest-mismatch: error",
+    ]) {
+      add(
+        violations,
+        block.includes(setting),
+        `release-reconciliation.yml: artifact download is missing ${setting}`,
+      );
+    }
+    if (isPinnedSourceDownload) {
+      for (const setting of [
+        "github-token: ${{ github.token }}",
+        "repository: Hadden-Industries/owlapi",
+        "run-id: ${{ steps.metadata.outputs.source_run_id }}",
+      ]) {
+        add(
+          violations,
+          block.includes(setting),
+          `release-reconciliation.yml: cross-run artifact download is missing ${setting}`,
+        );
+      }
+    }
+    if (isApprovedSameRunDownload) {
+      add(
+        violations,
+        !/^          (?:name|pattern|github-token|repository|run-id):/mu.test(
+          block,
+        ),
+        "release-reconciliation.yml: same-run artifact download broadens selection",
+      );
+    }
+  }
+  add(
+    violations,
+    downloadCount === 11,
+    "release-reconciliation.yml: expected exactly eleven closed artifact downloads",
+  );
+};
+
+const validateReleaseReconciliationMutationBoundary = (source, violations) => {
+  add(
+    violations,
+    JSON.stringify(jobIds(source)) === JSON.stringify(RECONCILIATION_JOB_IDS),
+    "release-reconciliation.yml: job inventory differs from the closed recovery design",
+  );
+  add(
+    violations,
+    /^on:\r?\n  workflow_dispatch:\s*$/mu.test(source),
+    "release-reconciliation.yml: workflow_dispatch must be the sole trigger",
+  );
+  for (const setting of [
+    "group: owlapi-release",
+    "cancel-in-progress: false",
+    "queue: max",
+  ]) {
+    add(
+      violations,
+      source.includes(setting),
+      `release-reconciliation.yml: missing concurrency setting ${setting}`,
+    );
+  }
+
+  const sourceVerification = jobBlock(source, "source_verification");
+  for (const setting of [
+    "name: Release reconciliation / source verified",
+    "candidate_artifact_name: owlapi-${{ steps.metadata.outputs.version }}-reconciled-candidate-${{ github.run_id }}-${{ github.run_attempt }}",
+    "actions: read",
+    "contents: read",
+    "node scripts/release-reconciliation.mjs --emit-metadata",
+    "node scripts/verify-release-tag.mjs",
+    "node scripts/release-reconciliation.mjs --candidate",
+  ]) {
+    add(
+      violations,
+      sourceVerification.includes(setting),
+      `release-reconciliation.yml:source_verification is missing ${setting}`,
+    );
+  }
+  for (const forbidden of [
+    "id-token: write",
+    "contents: write",
+    "NPM_BOOTSTRAP_TOKEN",
+    "npm publish",
+  ]) {
+    add(
+      violations,
+      !sourceVerification.includes(forbidden),
+      `release-reconciliation.yml:source_verification contains forbidden authority ${forbidden}`,
+    );
+  }
+
+  const accepted = jobBlock(source, "accepted");
+  for (const setting of [
+    "name: Release reconciliation / accepted",
+    "name: release-manual",
+    "deployment: false",
+    "contents: read",
+    "node scripts/verify-release-tag.mjs",
+  ]) {
+    add(
+      violations,
+      accepted.includes(setting),
+      `release-reconciliation.yml:accepted is missing ${setting}`,
+    );
+  }
+  for (const forbidden of [
+    "id-token: write",
+    "contents: write",
+    "NPM_BOOTSTRAP_TOKEN",
+    "npm publish",
+  ]) {
+    add(
+      violations,
+      !accepted.includes(forbidden),
+      `release-reconciliation.yml:accepted contains forbidden authority ${forbidden}`,
+    );
+  }
+
+  const draft = jobBlock(source, "draft_release");
+  add(
+    violations,
+    /^    permissions:\r?\n      contents: write\r?\n    defaults:/mu.test(
+      draft,
+    ) &&
+      draft.includes("npm run release:draft-github") &&
+      draft.includes(
+        "SOURCE_COMMIT: ${{ needs.source_verification.outputs.source_commit }}",
+      ),
+    "release-reconciliation.yml:draft_release must isolate the GitHub draft write and bind it to the source commit",
+  );
+
+  const publication = jobBlock(source, "npm_release");
+  for (const setting of [
+    "name: Release reconciliation / npm direct bootstrap",
+    "name: npm-release",
+    "contents: read",
+    "id-token: write",
+    "artifact-ids: ${{ needs.source_verification.outputs.candidate_artifact_id }}",
+    "registry-url: https://registry.npmjs.org/",
+    "NODE_AUTH_TOKEN: ${{ secrets.NPM_BOOTSTRAP_TOKEN }}",
+    "npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/",
+  ]) {
+    add(
+      violations,
+      publication.includes(setting),
+      `release-reconciliation.yml:npm_release is missing ${setting}`,
+    );
+  }
+  add(
+    violations,
+    !publication.includes("actions/checkout@") &&
+      !publication.includes("contents: write") &&
+      (publication.match(/NPM_BOOTSTRAP_TOKEN/gu) ?? []).length === 1 &&
+      (publication.match(/npm publish /gu) ?? []).length === 1,
+    "release-reconciliation.yml:npm_release must have no checkout/write expansion or duplicate token/publish authority",
+  );
+
+  const finalize = jobBlock(source, "finalize_release");
+  add(
+    violations,
+    /^    permissions:\r?\n      contents: write\r?\n    defaults:/mu.test(
+      finalize,
+    ) &&
+      finalize.includes("npm run release:finalize-github") &&
+      finalize.includes('--source-commit "$SOURCE_COMMIT"') &&
+      !finalize.includes("id-token: write") &&
+      !finalize.includes("NPM_BOOTSTRAP_TOKEN") &&
+      !finalize.includes("npm publish"),
+    "release-reconciliation.yml:finalize_release must isolate the final GitHub release write and retain source identity",
+  );
+
+  const readOnlyPermissions = Object.freeze({
+    registry_verification:
+      /^    permissions:\r?\n      contents: read\r?\n    defaults:/mu,
+    release_evidence:
+      /^    permissions:\r?\n      actions: read\r?\n      contents: read\r?\n    defaults:/mu,
+    immutable_verification:
+      /^    permissions:\r?\n      contents: read\r?\n    defaults:/mu,
+  });
+  add(
+    violations,
+    jobBlock(source, "release_evidence").includes(
+      "CANDIDATE_ARTIFACT_NAME: ${{ needs.source_verification.outputs.candidate_artifact_name }}",
+    ),
+    "release-reconciliation.yml:release_evidence must inherit the source job's immutable transport name",
+  );
+  for (const [id, permissionPattern] of Object.entries(readOnlyPermissions)) {
+    const block = jobBlock(source, id);
+    add(
+      violations,
+      permissionPattern.test(block) &&
+        !block.includes("contents: write") &&
+        !block.includes("id-token: write") &&
+        !block.includes("NPM_BOOTSTRAP_TOKEN") &&
+        !block.includes("npm publish"),
+      `release-reconciliation.yml:${id} must exist and remain read-only`,
+    );
+  }
+
+  add(
+    violations,
+    (source.match(/^      contents: write\r?$/gmu) ?? []).length === 2,
+    "release-reconciliation.yml must contain exactly two isolated contents writers",
+  );
+  add(
+    violations,
+    (source.match(/^      id-token: write\r?$/gmu) ?? []).length === 1,
+    "release-reconciliation.yml must contain exactly one id-token writer",
+  );
+  add(
+    violations,
+    (source.match(/NPM_BOOTSTRAP_TOKEN/gu) ?? []).length === 1,
+    "release-reconciliation.yml must contain exactly one bootstrap-token reference",
+  );
+  add(
+    violations,
+    (source.match(/npm publish /gu) ?? []).length === 1 &&
+      !source.includes("npm stage publish"),
+    "release-reconciliation.yml must contain exactly one direct publish and no staged publish",
+  );
+  add(
+    violations,
+    (source.match(/^      name: release-manual\r?$/gmu) ?? []).length === 1 &&
+      (source.match(/^      deployment: false\r?$/gmu) ?? []).length === 1 &&
+      (source.match(/^      name: npm-release\r?$/gmu) ?? []).length === 1,
+    "release-reconciliation.yml must use each reviewed environment exactly once and suppress only the manual gate deployment",
+  );
+  add(
+    violations,
+    !/(?:scancode|playwright|universal-ontology|webvowl|benchmark|npm test|npm run (?:test|lint|build))/iu.test(
+      source,
+    ),
+    "release-reconciliation.yml must not repeat completed qualification workloads",
+  );
+  validateReleaseReconciliationTransport(source, violations);
+};
+
+export const auditReleaseReconciliationMutationBoundary = (source) => {
+  const violations = [];
+  validateReleaseReconciliationMutationBoundary(source, violations);
   return violations;
 };
 
@@ -1037,7 +1387,7 @@ export const auditRepositoryControls = () => {
   add(
     violations,
     JSON.stringify(workflowFiles) === JSON.stringify(EXPECTED_WORKFLOWS),
-    "The repository must contain exactly the four approved workflow files.",
+    "The repository must contain exactly the five approved workflow files.",
   );
   add(
     violations,
@@ -1122,6 +1472,12 @@ export const auditRepositoryControls = () => {
   }
   validateAggregate("release.yml", release, "release", violations);
   validateReleaseMutationBoundary(release, violations);
+
+  const releaseReconciliation = sources["release-reconciliation.yml"] ?? "";
+  validateReleaseReconciliationMutationBoundary(
+    releaseReconciliation,
+    violations,
+  );
 
   for (const [fileName, group] of [
     ["maintenance.yml", "owlapi-maintenance"],

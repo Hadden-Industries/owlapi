@@ -52,19 +52,40 @@ const flattenApprovals = (history, observedAt) =>
     })),
   );
 
-const requiredSuccessfulJobs = (jobs) => {
-  const requiredNames = [
+export const requiredSuccessfulJobs = ({ sourceJobs, currentJobs }) => {
+  const sourceNames = [
     "Release / qualified",
-    "Release / tag accepted",
-    "Release / GitHub draft",
-    "Release / npm direct bootstrap",
-    "Release / fresh public registry",
+    "Release / publication preflight",
   ];
-  return requiredNames.map((name) => {
-    const matches = jobs.filter((job) => job.name === name);
-    if (matches.length !== 1 || matches[0].conclusion !== "success") {
+  const currentNames = [
+    "Release reconciliation / source verified",
+    "Release reconciliation / accepted",
+    "Release reconciliation / GitHub draft",
+    "Release reconciliation / npm direct bootstrap",
+    "Release reconciliation / fresh public registry",
+  ];
+  const acceptedSource = sourceNames.map((name) => {
+    const matches = sourceJobs.filter((job) => job.name === name);
+    if (
+      matches.length !== 1 ||
+      matches[0].conclusion !== "success" ||
+      !matches[0].url
+    ) {
       throw new Error(
-        `Required release job ${name} did not succeed exactly once.`,
+        `Required source qualification job ${name} did not succeed exactly once.`,
+      );
+    }
+    return matches[0];
+  });
+  const acceptedCurrent = currentNames.map((name) => {
+    const matches = currentJobs.filter((job) => job.name === name);
+    if (
+      matches.length !== 1 ||
+      matches[0].conclusion !== "success" ||
+      !matches[0].html_url
+    ) {
+      throw new Error(
+        `Required reconciliation job ${name} did not succeed exactly once.`,
       );
     }
     return {
@@ -73,14 +94,13 @@ const requiredSuccessfulJobs = (jobs) => {
       url: matches[0].html_url,
     };
   });
+  return [...acceptedSource, ...acceptedCurrent];
 };
 
 const main = async () => {
   const candidateDirectory = resolve(argumentValue("--candidate") ?? "");
   const reportPaths = {
-    publicationPreflight: resolve(
-      argumentValue("--publication-preflight") ?? "",
-    ),
+    reconciliation: resolve(argumentValue("--reconciliation") ?? ""),
     tag: resolve(argumentValue("--tag-verification") ?? ""),
     draft: resolve(argumentValue("--draft-release") ?? ""),
     registry: resolve(argumentValue("--registry-verification") ?? ""),
@@ -93,6 +113,7 @@ const main = async () => {
   const commit = process.env.GITHUB_SHA;
   const artifactId = process.env.CANDIDATE_ARTIFACT_ID;
   const rawArtifactDigest = process.env.CANDIDATE_ARTIFACT_DIGEST;
+  const artifactName = process.env.CANDIDATE_ARTIFACT_NAME;
   if (
     !output ||
     repository !== "Hadden-Industries/owlapi" ||
@@ -101,7 +122,11 @@ const main = async () => {
     !Number.isInteger(runAttempt) ||
     !/^[0-9a-f]{40}$/u.test(commit ?? "") ||
     !/^[1-9][0-9]*$/u.test(artifactId ?? "") ||
-    !/^(?:sha256:)?[0-9a-f]{64}$/u.test(rawArtifactDigest ?? "")
+    !/^(?:sha256:)?[0-9a-f]{64}$/u.test(rawArtifactDigest ?? "") ||
+    !new RegExp(
+      `^owlapi-${version.replaceAll(".", "\\.")}-reconciled-candidate-${runId}-[1-9][0-9]*$`,
+      "u",
+    ).test(artifactName ?? "")
   ) {
     throw new Error(
       "Release-evidence generation received incomplete workflow identity.",
@@ -117,7 +142,7 @@ const main = async () => {
     Object.entries(reportPaths).map(([name, path]) => [name, readJson(path)]),
   );
   if (
-    reports.publicationPreflight.result !== "PASS" ||
+    reports.reconciliation.result !== "PASS" ||
     reports.tag.result !== "PASS" ||
     reports.draft.result !== "PASS" ||
     reports.registry.result !== "PASS"
@@ -128,22 +153,42 @@ const main = async () => {
   const artifactDigest = rawArtifactDigest.startsWith("sha256:")
     ? rawArtifactDigest
     : `sha256:${rawArtifactDigest}`;
+  const sourceVerification = reports.reconciliation.source;
+  const qualificationSource = sourceVerification.source;
+  const sourceJobs = sourceVerification.requiredJobs.map((job) => ({
+    name: job.name,
+    conclusion: job.conclusion,
+    url: job.url,
+  }));
   const evidence = buildReleaseEvidence({
     generatedAt,
     source: {
       repository,
-      ref: process.env.GITHUB_REF,
-      commit,
-      tag: `v${version}`,
+      ref: `refs/tags/${qualificationSource.tag}`,
+      commit: qualificationSource.commit,
+      tag: qualificationSource.tag,
     },
     workflow: {
-      name: "Release",
+      name: "Release reconciliation",
+      commit,
       runId,
       runAttempt,
       url: `https://github.com/${repository}/actions/runs/${runId}`,
       actor: process.env.GITHUB_TRIGGERING_ACTOR ?? process.env.GITHUB_ACTOR,
     },
-    candidate: { artifactId, artifactDigest, ...candidate },
+    qualificationWorkflow: {
+      name: "Release",
+      commit: qualificationSource.commit,
+      runId: qualificationSource.runId,
+      runAttempt: qualificationSource.runAttempt,
+      url: qualificationSource.url,
+      actor: qualificationSource.actor,
+    },
+    candidate: {
+      artifactId: sourceVerification.candidateArtifact.id,
+      artifactDigest: sourceVerification.candidateArtifact.digest,
+      ...candidate,
+    },
     publication: {
       mode: "DIRECT_BOOTSTRAP",
       registry: "https://registry.npmjs.org/",
@@ -155,6 +200,28 @@ const main = async () => {
       next: version,
       latestPresent: false,
       signatureAuditResult: "PASS",
+      provenance: {
+        sourceCommit: commit,
+        sourceRef: process.env.GITHUB_REF,
+        workflow: ".github/workflows/release-reconciliation.yml",
+        subjectSha256: candidate.tarball.sha256,
+      },
+    },
+    reconciliation: {
+      failureClass: sourceVerification.failureClass,
+      sourceFailureJob: {
+        name: sourceVerification.failedJob.name,
+        conclusion: sourceVerification.failedJob.conclusion,
+        url: sourceVerification.failedJob.url,
+      },
+      publicationPreflightArtifact:
+        sourceVerification.publicationPreflightArtifact,
+      transportArtifact: {
+        id: artifactId,
+        name: artifactName,
+        digest: artifactDigest,
+      },
+      packageReproduction: reports.reconciliation.packageReproduction,
     },
     signing: {
       signerId: reports.tag.signerId,
@@ -169,7 +236,10 @@ const main = async () => {
       assets: reports.draft.assets,
     },
     approvals: flattenApprovals(approvalHistory, generatedAt),
-    requiredJobs: requiredSuccessfulJobs(jobsResponse.jobs ?? []),
+    requiredJobs: requiredSuccessfulJobs({
+      sourceJobs,
+      currentJobs: jobsResponse.jobs ?? [],
+    }),
     extendedTests: [
       {
         environment: "branded-safari",

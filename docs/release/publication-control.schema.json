@@ -11,21 +11,123 @@
     "mode",
     "coordinate",
     "channel",
+    "reconciliation",
     "reason",
     "reviewedOn"
   ],
   "properties": {
     "$schema": { "const": "./publication-control.schema.json" },
-    "schemaVersion": { "const": 1 },
+    "schemaVersion": { "const": 2 },
     "enabled": { "type": "boolean" },
     "mode": {
       "enum": ["UNRESOLVED", "OIDC_STAGED", "DIRECT_BOOTSTRAP"]
     },
     "coordinate": { "const": "owlapi@0.1.0-alpha.0" },
     "channel": { "const": "next" },
+    "reconciliation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "mode",
+        "failureClass",
+        "source",
+        "candidateArtifact",
+        "publicationPreflightArtifact",
+        "requiredSuccessfulJobs",
+        "packageReproduction",
+        "reviewedOn"
+      ],
+      "properties": {
+        "enabled": { "const": true },
+        "mode": { "const": "EXACT_ARTIFACT_RECONCILIATION" },
+        "failureClass": {
+          "const": "POST_QUALIFICATION_EVIDENCE_PERSISTENCE_FAILURE"
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "repository",
+            "workflow",
+            "runId",
+            "runAttempt",
+            "commit",
+            "tag",
+            "failedJob"
+          ],
+          "properties": {
+            "repository": { "const": "Hadden-Industries/owlapi" },
+            "workflow": { "const": ".github/workflows/release.yml" },
+            "runId": { "const": 33160042447 },
+            "runAttempt": { "const": 1 },
+            "commit": {
+              "const": "caabb1197ffdab91c1e10d596d177b5142aea5c1"
+            },
+            "tag": { "const": "v0.1.0-alpha.0" },
+            "failedJob": { "const": "Release / tag accepted" }
+          }
+        },
+        "candidateArtifact": {
+          "allOf": [
+            { "$ref": "#/$defs/artifact" },
+            {
+              "type": "object",
+              "properties": {
+                "id": { "const": 9682090118 },
+                "name": {
+                  "const": "owlapi-0.1.0-alpha.0-candidate-33160042447-1"
+                },
+                "digest": {
+                  "const": "sha256:f5967321e1c18a9c5aa14ad44a1d45fe3606605453866ce7746afe9c394f52d7"
+                }
+              }
+            }
+          ]
+        },
+        "publicationPreflightArtifact": {
+          "allOf": [
+            { "$ref": "#/$defs/artifact" },
+            {
+              "type": "object",
+              "properties": {
+                "id": { "const": 9682247101 },
+                "name": {
+                  "const": "release-publication-preflight-33160042447-1"
+                },
+                "digest": {
+                  "const": "sha256:324472ff607ce6bbaebf30fe1e1a1db40a78da54f0877a712001a3c9ee84157e"
+                }
+              }
+            }
+          ]
+        },
+        "requiredSuccessfulJobs": {
+          "const": ["Release / qualified", "Release / publication preflight"]
+        },
+        "packageReproduction": { "const": "BYTE_IDENTICAL" },
+        "reviewedOn": { "const": "2026-08-28" }
+      }
+    },
     "reason": { "type": "string", "minLength": 1 },
     "reviewedOn": {
       "oneOf": [{ "type": "null" }, { "type": "string", "format": "date" }]
+    }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "digest", "expiresAt"],
+      "properties": {
+        "id": { "type": "integer", "minimum": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "expiresAt": { "const": "2026-11-26T09:36:09Z" }
+      }
     }
   }
 }

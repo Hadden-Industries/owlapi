@@ -9,6 +9,7 @@ import {
   GitHubReleaseClient,
 } from "./github-release.mjs";
 import { sha256File } from "./release-artifacts.mjs";
+import { assertReleaseExecutionIdentity } from "./release-evidence.mjs";
 import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 
 const version = "0.1.0-alpha.0";
@@ -51,13 +52,16 @@ const main = async () => {
   const output = argumentValue("--output");
   const repository = process.env.GITHUB_REPOSITORY;
   const token = process.env.GITHUB_TOKEN;
-  const commit = process.env.GITHUB_SHA;
+  const promotionCommit = process.env.GITHUB_SHA;
+  const sourceCommit =
+    argumentValue("--source-commit") ?? process.env.GITHUB_SHA;
   const tag = `v${version}`;
   if (
     !output ||
     repository !== "Hadden-Industries/owlapi" ||
     !token ||
-    !/^[0-9a-f]{40}$/u.test(commit ?? "")
+    !/^[0-9a-f]{40}$/u.test(promotionCommit ?? "") ||
+    !/^[0-9a-f]{40}$/u.test(sourceCommit ?? "")
   ) {
     throw new Error(
       "GitHub finalization received an invalid workflow identity.",
@@ -66,12 +70,18 @@ const main = async () => {
   const evidence = validateReleaseEvidence(
     JSON.parse(readFileSync(evidencePath, "utf8")),
   );
-  if (evidence.source.commit !== commit || evidence.source.tag !== tag) {
-    throw new Error("Release evidence does not belong to this source commit.");
-  }
+  assertReleaseExecutionIdentity({
+    evidence,
+    promotionCommit,
+    sourceCommit,
+    tag,
+  });
   const client = new GitHubReleaseClient({ repository, token });
   const release = await client.getReleaseByTag(tag);
-  const acceptedDraft = assertDraftRelease(release, { tag, commit });
+  const acceptedDraft = assertDraftRelease(release, {
+    tag,
+    commit: sourceCommit,
+  });
   assertReleaseAssets({
     assets: release.assets,
     expected: evidence.githubRelease.assets,
@@ -128,7 +138,10 @@ const main = async () => {
     published = await client.getReleaseByTag(tag);
     mutationState = "RECONCILED_AMBIGUOUS_WRITE";
   }
-  const accepted = assertPublishedRelease(published, { tag, commit });
+  const accepted = assertPublishedRelease(published, {
+    tag,
+    commit: sourceCommit,
+  });
   assertReleaseAssets({ assets: published.assets, expected: expectedAssets });
   const report = {
     schemaVersion: 1,
@@ -136,7 +149,8 @@ const main = async () => {
     releaseId: accepted.id,
     releaseUrl: accepted.url,
     tag,
-    sourceCommit: commit,
+    sourceCommit,
+    promotionCommit,
     publishedAt: accepted.publishedAt,
     immutableAtResponse: accepted.immutable,
     mutationState,
