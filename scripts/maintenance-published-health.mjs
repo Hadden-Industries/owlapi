@@ -1,29 +1,41 @@
 import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
-const control = JSON.parse(
-  readFileSync(
-    join(repositoryRoot, "docs", "release", "publication-control.json"),
-    "utf8",
-  ),
-);
+export const maintenanceTarget = (control) => {
+  if (!control.enabled) {
+    return {
+      action: "NOT_APPLICABLE",
+      reason: "PUBLICATION_BOUNDARY_DISABLED",
+      coordinate: "owlapi@latest",
+    };
+  }
+  if (control.channel !== "latest") {
+    return {
+      action: "NOT_APPLICABLE",
+      reason: "NO_PRODUCTION_RELEASE",
+      coordinate: "owlapi@latest",
+    };
+  }
+  return { action: "QUERY", coordinate: "owlapi@latest" };
+};
 
-if (!control.enabled) {
-  process.stdout.write(
-    `${JSON.stringify(
-      {
-        result: "NOT_APPLICABLE",
-        reason: "PUBLICATION_BOUNDARY_DISABLED",
-        coordinate: "owlapi@latest",
-      },
-      null,
-      2,
-    )}\n`,
+const main = () => {
+  const control = JSON.parse(
+    readFileSync(
+      join(repositoryRoot, "docs", "release", "publication-control.json"),
+      "utf8",
+    ),
   );
-} else {
+  const target = maintenanceTarget(control);
+  if (target.action === "NOT_APPLICABLE") {
+    process.stdout.write(
+      `${JSON.stringify({ result: "NOT_APPLICABLE", reason: target.reason, coordinate: target.coordinate }, null, 2)}\n`,
+    );
+    return;
+  }
   const npmCli = process.env.npm_execpath;
   if (!npmCli) {
     throw new Error("Run maintenance health through its named npm script.");
@@ -49,4 +61,11 @@ if (!control.enabled) {
       2,
     )}\n`,
   );
+};
+
+if (
+  process.argv[1] &&
+  pathToFileURL(process.argv[1]).href === import.meta.url
+) {
+  main();
 }
