@@ -3810,6 +3810,21 @@ The separate `release-manual` environment also permits only protected `main` and
 the same approved reviewer/self-review model, but has no secret, variable, OIDC
 or write authority and every reference sets `deployment: false` under §2.61.
 
+Every GitHub bearer credential, including the Actions `GITHUB_TOKEN`, **MUST** be
+handled as an opaque, variable-length string. Repository code and workflow logic
+must not decode it, validate it with a shape or fixed-length expression,
+normalize or truncate it, or persist it beyond the request that needs it. This
+contract covers GitHub's longer dotted stateless installation tokens as well as
+the legacy format described in GitHub's
+[15 May 2026 transition notice](https://github.blog/changelog/2026-05-15-github-app-installation-tokens-per-request-override-header/).
+The repository does not directly call
+`POST /app/installations/{installation_id}/access_tokens`; therefore the
+temporary per-request format-override header does not belong in these workflows.
+If direct installation-token minting is introduced later, its separately
+reviewed implementation must test both formats with that temporary override
+while GitHub supports it, remove the override after the migration test, and keep
+all downstream consumers token-shape-independent.
+
 The immutable release identity is the conjunction of the captured manual-
 dispatch commit, the repository-derived package version and the later verified
 canonical tag—not free-form dispatch text. At startup, `release.yml` rejects any

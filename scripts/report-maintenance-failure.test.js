@@ -15,6 +15,17 @@ const context = Object.freeze({
   token: "test-token",
 });
 
+// GitHub's stateless installation-token format is substantially longer than
+// the legacy token shape and contains JWT separators. Keep this synthetic
+// credential obviously non-secret while exercising the full opaque value.
+const STATELESS_INSTALLATION_TOKEN =
+  "ghs_1234567890123_" +
+  "a".repeat(160) +
+  "." +
+  "b".repeat(170) +
+  "." +
+  "c".repeat(170);
+
 const response = (status, body, headers = {}) => ({
   ok: status >= 200 && status < 300,
   status,
@@ -42,6 +53,29 @@ describe("maintenance finding reporter", () => {
       title: MAINTENANCE_ISSUE_TITLE,
     });
     expect(mutation[1].headers.authorization).toBe("Bearer test-token");
+  });
+
+  test("forwards stateless installation tokens as opaque credentials", async () => {
+    const fetchImpl = jest
+      .fn()
+      .mockResolvedValueOnce(response(200, []))
+      .mockResolvedValueOnce(response(201, { number: 17 }));
+
+    await expect(
+      reportMaintenanceResult({
+        ...context,
+        result: "failure",
+        token: STATELESS_INSTALLATION_TOKEN,
+        fetchImpl,
+      }),
+    ).resolves.toEqual({ action: "CREATED", issueNumber: 17 });
+
+    expect(STATELESS_INSTALLATION_TOKEN).toHaveLength(520);
+    for (const [, request] of fetchImpl.mock.calls) {
+      expect(request.headers.authorization).toBe(
+        `Bearer ${STATELESS_INSTALLATION_TOKEN}`,
+      );
+    }
   });
 
   test("adds a run-specific comment instead of creating duplicate issues", async () => {
