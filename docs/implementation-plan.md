@@ -8306,12 +8306,12 @@ records and backups are accepted. Once they are accepted, replace mutable branch
 reachability with the following durable Git landmarks **before** retiring or
 integrating any of those branches:
 
-| Repository | Signed annotated tag | Role | Entity | Commit OID | Tree OID | Normalized tree SHA-256 |
-| --- | --- | --- | --- | --- | --- | --- |
-| `Hadden-Industries/webvowl` | `provenance/history-reconstruction/phase-19a/input/frozen-webvowl-source` | `input` | `frozen-webvowl-source` | `8a40694950d4997141fcb039b4ac45bc19a224e3` | `41bc8712efd5b3c4bfbfa72e50ff8bf1528b758b` | `38e3297c3f180e529c69a5ce64f6febc670ab250b336845389c5ba3ad25d3930` |
-| `Hadden-Industries/webvowl` | `provenance/history-reconstruction/phase-19a/output/webvowl-main` | `output` | `webvowl-main` | `81b4cff89cece60ff5b8c30255658fbd770d01cc` | `772eee3afac9b71f72ca634ca4b397a1b5d17acb` | `0b7afca2d7631c42ee7aaf0d8561646632fa5fd11c036cffd65a4a44079a1332` |
-| `Hadden-Industries/webvowl` | `provenance/history-reconstruction/phase-19a/output/webvowl-ui` | `output` | `webvowl-ui` | `fde346f09e1f395646d6e3577930d23875a2a2c2` | `cf03115fc5269d95c7cee3f568b061281b82b970` | `e61c95e10d340e4c4eb73e184914cdbdc2aa70224e40b2b3a5e7fa5e7ada61f6` |
-| `Hadden-Industries/owlapi` | `provenance/history-reconstruction/phase-19a/output/owlapi` | `output` | `owlapi` | `739e988b6b3196c626247713a6f3d2801a57d210` | `850f1289f254d174ef05080c2378e2e3497c00b6` | `c44b5a13f5406a858c261a9e0e98c922c7c251086c79181115c834c024f6b28e` |
+| Repository                  | Signed annotated tag                                                      | Role     | Entity                  | Commit OID                                 | Tree OID                                   | Normalized tree SHA-256                                            |
+| --------------------------- | ------------------------------------------------------------------------- | -------- | ----------------------- | ------------------------------------------ | ------------------------------------------ | ------------------------------------------------------------------ |
+| `Hadden-Industries/webvowl` | `provenance/history-reconstruction/phase-19a/input/frozen-webvowl-source` | `input`  | `frozen-webvowl-source` | `8a40694950d4997141fcb039b4ac45bc19a224e3` | `41bc8712efd5b3c4bfbfa72e50ff8bf1528b758b` | `38e3297c3f180e529c69a5ce64f6febc670ab250b336845389c5ba3ad25d3930` |
+| `Hadden-Industries/webvowl` | `provenance/history-reconstruction/phase-19a/output/webvowl-main`         | `output` | `webvowl-main`          | `81b4cff89cece60ff5b8c30255658fbd770d01cc` | `772eee3afac9b71f72ca634ca4b397a1b5d17acb` | `0b7afca2d7631c42ee7aaf0d8561646632fa5fd11c036cffd65a4a44079a1332` |
+| `Hadden-Industries/webvowl` | `provenance/history-reconstruction/phase-19a/output/webvowl-ui`           | `output` | `webvowl-ui`            | `fde346f09e1f395646d6e3577930d23875a2a2c2` | `cf03115fc5269d95c7cee3f568b061281b82b970` | `e61c95e10d340e4c4eb73e184914cdbdc2aa70224e40b2b3a5e7fa5e7ada61f6` |
+| `Hadden-Industries/owlapi`  | `provenance/history-reconstruction/phase-19a/output/owlapi`               | `output` | `owlapi`                | `739e988b6b3196c626247713a6f3d2801a57d210` | `850f1289f254d174ef05080c2378e2e3497c00b6` | `c44b5a13f5406a858c261a9e0e98c922c7c251086c79181115c834c024f6b28e` |
 
 The visible tag-name grammar is
 `provenance/<activity>/<stable-event-id>/<role>/<entity>`; machine-readable
