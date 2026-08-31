@@ -13,6 +13,23 @@ const withInvertedBootstrapCredentialGuard = (source) =>
     'if [[ -n "$NODE_AUTH_TOKEN" ]]; then',
   );
 
+const withShallowSourceCheckout = (source, jobId) => {
+  const startMatch = new RegExp(`^  ${jobId}:\\r?$`, "mu").exec(source);
+  expect(startMatch).not.toBeNull();
+  const remainder = source.slice(startMatch.index + startMatch[0].length);
+  const nextMatch = /^ {2}[a-z][a-z0-9_]*:\r?$/mu.exec(remainder);
+  const end = nextMatch
+    ? startMatch.index + startMatch[0].length + nextMatch.index
+    : source.length;
+  const block = source.slice(startMatch.index, end);
+  const shallowBlock = block.replace(
+    /^ {10}fetch-depth: [01]\r?$/mu,
+    "          fetch-depth: 1",
+  );
+
+  return `${source.slice(0, startMatch.index)}${shallowBlock}${source.slice(end)}`;
+};
+
 describe("repository workflow governance", () => {
   test("the checked-in controls match the closed Phase 19 workflow policy", () => {
     const report = auditRepositoryControls();
@@ -34,6 +51,28 @@ describe("repository workflow governance", () => {
     ]);
     expect(report.violations).toEqual([]);
   });
+
+  test.each([
+    ["ci.yml", "source_node_22"],
+    ["ci.yml", "source_node_24"],
+    ["release.yml", "source_node_22"],
+    ["release.yml", "source_node_24"],
+    ["maintenance.yml", "health"],
+    ["extended-tests.yml", "extended_evidence"],
+  ])(
+    "rejects shallow history in the required %s:%s governance job",
+    (fileName, jobId) => {
+      const source = readFileSync(`.github/workflows/${fileName}`, "utf8");
+      const shallow = withShallowSourceCheckout(source, jobId);
+      const report = auditRepositoryControls({
+        workflowSourceOverrides: { [fileName]: shallow },
+      });
+
+      expect(report.violations).toContain(
+        `${fileName}:${jobId} must retain complete owlapi history for governance tests`,
+      );
+    },
+  );
 
   test("rejects publication authority duplicated outside the release job", () => {
     const release = readFileSync(".github/workflows/release.yml", "utf8");

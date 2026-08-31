@@ -1,0 +1,123 @@
+{
+  "$schema": "./pre-registry-git-equivalence.schema.json",
+  "schemaVersion": 1,
+  "result": "PASS",
+  "observedAt": "2026-08-31T12:55:06.121Z",
+  "source": {
+    "repository": "Hadden-Industries/owlapi",
+    "workflowRun": {
+      "id": 33160042447,
+      "attempt": 1
+    },
+    "candidateArtifact": {
+      "id": 9682090118,
+      "name": "owlapi-0.1.0-alpha.0-candidate-33160042447-1",
+      "bytes": 248448,
+      "digest": "sha256:f5967321e1c18a9c5aa14ad44a1d45fe3606605453866ce7746afe9c394f52d7"
+    },
+    "candidateTarball": {
+      "fileName": "owlapi-0.1.0-alpha.0.tgz",
+      "bytes": 179949,
+      "digest": "sha256:80d56eb103c1a94dcdc006b4549e91cce16f7ed0eb076e0e26053e3d670704a3"
+    },
+    "git": {
+      "repositoryUrl": "git+https://github.com/Hadden-Industries/owlapi.git",
+      "packageSpecifier": "git+https://github.com/Hadden-Industries/owlapi.git#caabb1197ffdab91c1e10d596d177b5142aea5c1",
+      "commit": "caabb1197ffdab91c1e10d596d177b5142aea5c1",
+      "tag": "v0.1.0-alpha.0"
+    }
+  },
+  "package": {
+    "name": "owlapi",
+    "version": "0.1.0-alpha.0",
+    "exports": {
+      ".": "./index.js",
+      "./apibinding": "./apibinding/index.js",
+      "./model": "./model/index.js",
+      "./io": "./io/index.js",
+      "./formats": "./formats/index.js"
+    }
+  },
+  "runtime": {
+    "node": "v24.19.0",
+    "npm": "12.0.2",
+    "platform": "win32",
+    "architecture": "x64",
+    "osRelease": "10.0.26200"
+  },
+  "npmConfiguration": {
+    "userConfig": "GENERATED_EMPTY",
+    "globalConfig": "GENERATED_EMPTY",
+    "registry": "https://registry.npmjs.org/",
+    "nodeEnvironment": "development",
+    "ignoreScripts": false,
+    "strictAllowScripts": false,
+    "packageLock": true,
+    "installStrategy": "hoisted",
+    "include": ["prod", "dev", "optional", "peer"],
+    "omit": []
+  },
+  "installedPackageTree": {
+    "retainedCandidate": {
+      "fileCount": 72,
+      "rootSha256": "sha256:f9e8045a4abd81ea45a54614ac9b3a29c2d12c129d292936ed32f2146be5362b"
+    },
+    "gitInstallation": {
+      "fileCount": 72,
+      "rootSha256": "sha256:f9e8045a4abd81ea45a54614ac9b3a29c2d12c129d292936ed32f2146be5362b"
+    },
+    "equal": true,
+    "differences": []
+  },
+  "productionGraph": {
+    "retainedCandidate": {
+      "packageCount": 38,
+      "edgeCount": 38,
+      "rootSha256": "sha256:cf46885a6ce26d3c53291f2e4ce49d69afddfa054947861c395f3af6f93698d7"
+    },
+    "gitInstallation": {
+      "packageCount": 38,
+      "edgeCount": 38,
+      "rootSha256": "sha256:cf46885a6ce26d3c53291f2e4ce49d69afddfa054947861c395f3af6f93698d7"
+    },
+    "equal": true
+  },
+  "installedTests": [
+    {
+      "script": "installed-package-smoke.mjs",
+      "retainedCandidate": "PASS",
+      "gitInstallation": "PASS"
+    },
+    {
+      "script": "installed-package-boundary.mjs",
+      "retainedCandidate": "PASS",
+      "gitInstallation": "PASS"
+    },
+    {
+      "script": "installed-package-import-purity.mjs",
+      "retainedCandidate": "PASS",
+      "gitInstallation": "PASS"
+    },
+    {
+      "script": "installed-package-no-network.mjs",
+      "retainedCandidate": "PASS",
+      "gitInstallation": "PASS"
+    }
+  ],
+  "limitations": [
+    "NO_REGISTRY_INTEGRITY",
+    "NO_REGISTRY_SIGNATURE",
+    "NO_NPM_PROVENANCE",
+    "NO_PUBLICATION_ATTESTATION",
+    "NO_DISTRIBUTION_TAG",
+    "NO_IMMUTABLE_PUBLIC_COORDINATE"
+  ],
+  "qualificationSummarySha256": "sha256:2a05663b2970dcf30c2b6af9bf51e01ff7c464475b9df01a753a4dd46e66fabf",
+  "review": {
+    "status": "REVIEWED",
+    "reviewer": "Maksym Shostak",
+    "reviewedOn": "2026-08-31",
+    "capacity": "Package maintainer and release-evidence reviewer",
+    "conclusion": "The original controlled GitHub artifact archive was cryptographically verified before its exact closed candidate bundle was read. Under generated empty npm configuration and the recorded accepted ordinary-install policy, the retained candidate tarball and exact full-commit Git installation produced identical installed package trees and production dependency graphs and passed every required installed-package check. The recorded limitations remain applicable."
+  }
+}
