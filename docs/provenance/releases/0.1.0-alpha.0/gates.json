@@ -1,0 +1,85 @@
+{
+  "$schema": "../../../release/gate-results.schema.json",
+  "schemaVersion": 1,
+  "package": {
+    "name": "owlapi",
+    "version": "0.1.0-alpha.0"
+  },
+  "phase": 19,
+  "sourceCommit": "caabb1197ffdab91c1e10d596d177b5142aea5c1",
+  "recordedAt": "2026-08-31T01:28:03.415Z",
+  "accepted": false,
+  "definitionDigests": {
+    "gateRegistrySha256": "65778189b6cd9252cceb57a8025c881352ca92492b625b2dd9c9b925762407d0",
+    "gateSchemaSha256": "3bea36d361acc77a653832a71d25de8b14fbdbdb12f730260281594e65d575a7",
+    "resultSchemaSha256": "755c1c29e1b41e77beefa412af5a2ccab3f87c44f27e2bc0f032f8c34d6ecf48",
+    "catalogueSha256": "689fa4bd0f05925ae0feaf7cb06b3ab6d717ac8ed6cdf33134468adc965e1cb8",
+    "checklistCoverageSha256": "a27452682acb05784ce9ad62d9cf64c3cda934490ed7ed004fe44249f16b6612"
+  },
+  "requirements": [
+    {
+      "requirementId": "P19-NAMESPACE-001",
+      "requirementDigest": "sha256:7ff925433c8ec50225c5316b7e33388d79baade7103bb1ff3bec726f45623579",
+      "finalResult": "EXTERNAL_BLOCKED",
+      "leafResults": [
+        {
+          "gateId": "P19-NAMESPACE-001-VERIFY",
+          "finalResult": "EXTERNAL_BLOCKED",
+          "evidence": [
+            {
+              "kind": "FILE",
+              "location": "npm-publication-attempt-2026-08-28.txt",
+              "sha256": "4d6ad37db6b286ea0625d493e52b53d70c39cd6ea96846c5e5ae8ef20c707400"
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "FILE",
+          "location": "npm-publication-attempt-2026-08-28.txt",
+          "sha256": "4d6ad37db6b286ea0625d493e52b53d70c39cd6ea96846c5e5ae8ef20c707400"
+        }
+      ],
+      "attemptHistory": [
+        {
+          "observedAt": "2026-08-28T14:46:56Z",
+          "result": "EXTERNAL_BLOCKED",
+          "detail": "The authenticated direct-bootstrap PUT was rejected by npm's package-name similarity control, so namespace authority remains pending npm Support."
+        }
+      ]
+    },
+    {
+      "requirementId": "P19-PUBLICATION-001",
+      "requirementDigest": "sha256:35020ea5ed1dfd47b700d374fa975cce7c6e5ef1f739a41ea160a38073986654",
+      "finalResult": "EXTERNAL_BLOCKED",
+      "leafResults": [
+        {
+          "gateId": "P19-PUBLICATION-001-VERIFY",
+          "finalResult": "EXTERNAL_BLOCKED",
+          "evidence": [
+            {
+              "kind": "FILE",
+              "location": "npm-publication-attempt-2026-08-28.txt",
+              "sha256": "4d6ad37db6b286ea0625d493e52b53d70c39cd6ea96846c5e5ae8ef20c707400"
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "FILE",
+          "location": "npm-publication-attempt-2026-08-28.txt",
+          "sha256": "4d6ad37db6b286ea0625d493e52b53d70c39cd6ea96846c5e5ae8ef20c707400"
+        }
+      ],
+      "attemptHistory": [
+        {
+          "observedAt": "2026-08-28T14:46:56Z",
+          "result": "EXTERNAL_BLOCKED",
+          "detail": "The exact retained candidate was not published, and all post-registry release jobs were skipped after npm returned E403."
+        }
+      ]
+    }
+  ]
+}

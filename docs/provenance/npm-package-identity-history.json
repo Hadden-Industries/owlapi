@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "review": {
     "status": "REVIEWED",
-    "reviewedOn": "2026-08-26",
+    "reviewedOn": "2026-08-31",
     "reviewer": "Maksym Shostak",
     "capacity": "Authorized representative of project steward HADDEN INDUSTRIES LTD"
   },
@@ -68,13 +68,32 @@
       "resultCode": "E404",
       "summary": "The intended first coordinate did not resolve and the registry repeated the package unpublication response.",
       "interpretation": "The result is consistent with an unused coordinate but cannot reserve it or prove authority to publish it."
+    },
+    {
+      "observedAt": "2026-08-28T14:46:56Z",
+      "toolchain": "GitHub-hosted ubuntu-24.04 x64, Node.js 24.19.0, and npm 12.0.2 in Hadden-Industries/owlapi Actions run 33180218814, job 98881292478",
+      "commandShape": "npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/",
+      "requestedSpecifiers": ["owlapi@0.1.0-alpha.0"],
+      "resultCode": "E403",
+      "summary": "The authenticated write of the byte-verified retained tarball was rejected because npm's package-name similarity control compared owlapi with nwsapi. No version or distribution tag became public. Sanitized, digest-bound evidence is retained in releases/0.1.0-alpha.0/npm-publication-attempt-2026-08-28.txt.",
+      "interpretation": "This real publication attempt is the decisive authority observation. P19-NAMESPACE-001 and P19-PUBLICATION-001 are EXTERNAL_BLOCKED pending npm Support; the outcome is not a package defect and does not authorize renaming the package or abandoning the coordinate."
+    },
+    {
+      "observedAt": "2026-08-31T01:23:13.939Z",
+      "toolchain": "Node.js 24.19.0 and npm 12.0.2",
+      "commandShape": "npm view owlapi@0.1.0-alpha.0 version --json --registry=https://registry.npmjs.org/",
+      "requestedSpecifiers": ["owlapi@0.1.0-alpha.0"],
+      "resultCode": "E404",
+      "summary": "The intended alpha remained publicly unresolved after the authenticated write failed, and the registry repeated the 2021-12-21 unpublication response.",
+      "interpretation": "The observation confirms that the failed write did not publish or consume owlapi@0.1.0-alpha.0; it does not supersede the E403 authority result or resolve the external block."
     }
   ],
   "conclusions": [
     "The known 1.0.0, 1.1.0, 1.2.0, 1.2.1, 1.3.0, 2.0.0, and 2.0.1 coordinates are permanently consumed by unrelated historical publication and must never be reused.",
     "A 0.1.x version does not satisfy ordinary former 1.x or 2.x semantic-version ranges.",
     "The new package has no code, API, ownership, or provenance relationship with the unpublished Overwatch package.",
-    "Read-only registry and installation probes cannot prove publishing authority; the complete qualified real publication attempt remains decisive.",
+    "The complete qualified real publication attempt on 2026-08-28 is the decisive authority observation: npm accepted authentication but rejected the unscoped name through its package-name similarity control, leaving namespace and publication gates EXTERNAL_BLOCKED pending npm Support.",
+    "The E403 did not publish or consume owlapi@0.1.0-alpha.0, and the coordinate remained publicly unresolved on 2026-08-31.",
     "The bounded evidence does not claim that no private consumer or unusually broad historical range exists."
   ]
 }
