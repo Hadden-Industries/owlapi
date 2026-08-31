@@ -18,6 +18,7 @@ import {
   INDIVIDUAL_KINDS,
   OBJECT_PROPERTY_EXPRESSION_KINDS,
 } from "./model/index.js";
+import { verifyLocalReleaseTag } from "./scripts/verify-release-tag.mjs";
 
 const require = createRequire(import.meta.url);
 const {
@@ -37,6 +38,19 @@ const stableJson = (value) => `${JSON.stringify(value, null, 2)}\n`;
 // which is sufficient because every governed path and identifier is normalized.
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
+
+const canonicalizeJson = (value) => {
+  if (Array.isArray(value)) {
+    return `[${value.map(canonicalizeJson).join(",")}]`;
+  }
+  if (value && typeof value === "object") {
+    return `{${Object.keys(value)
+      .sort(compareCodeUnits)
+      .map((key) => `${JSON.stringify(key)}:${canonicalizeJson(value[key])}`)
+      .join(",")}}`;
+  }
+  return JSON.stringify(value);
+};
 
 const validateAgainstSchema = (documentPath, schemaPath) => {
   const document = readJson(documentPath);
@@ -1068,6 +1082,130 @@ bundle licence and notice review.
     expect(shardSchema.properties.package.$ref).toBe(
       "https://haddenindustries.com/schemas/owlapi/npm-package-evidence.v1.schema.json#/properties/package",
     );
+  });
+
+  it("accepts only reviewed equivalence evidence bound to the retained candidate and exact Git source", () => {
+    const documentPath = "./docs/release/pre-registry-git-equivalence.json";
+    const schemaPath =
+      "./docs/release/pre-registry-git-equivalence.schema.json";
+
+    expect({
+      document: existsSync(new URL(documentPath, import.meta.url)),
+      schema: existsSync(new URL(schemaPath, import.meta.url)),
+    }).toEqual({ document: true, schema: true });
+
+    const { document, errors } = validateAgainstSchema(
+      documentPath,
+      schemaPath,
+    );
+    const schema = readJson(schemaPath);
+    const publication = readJson("./docs/release/publication-control.json");
+    const manifest = readJson("./package.json");
+
+    expect(errors).toEqual([]);
+    expect(schema.$id).toBe(
+      "https://haddenindustries.com/schemas/owlapi/pre-registry-git-equivalence.v1.schema.json",
+    );
+    expect(document.package).toEqual({
+      name: manifest.name,
+      version: manifest.version,
+      exports: manifest.exports,
+    });
+    expect(document.source).toMatchObject({
+      repository: publication.reconciliation.source.repository,
+      workflowRun: {
+        id: publication.reconciliation.source.runId,
+        attempt: publication.reconciliation.source.runAttempt,
+      },
+      candidateArtifact: {
+        id: publication.reconciliation.candidateArtifact.id,
+        name: publication.reconciliation.candidateArtifact.name,
+        bytes: expect.any(Number),
+        digest: publication.reconciliation.candidateArtifact.digest,
+      },
+      git: {
+        repositoryUrl: manifest.repository.url,
+        packageSpecifier: `${manifest.repository.url}#${publication.reconciliation.source.commit}`,
+        commit: publication.reconciliation.source.commit,
+        tag: publication.reconciliation.source.tag,
+      },
+    });
+    expect(document.source.candidateArtifact.bytes).toBeGreaterThan(0);
+    expect(document.npmConfiguration).toEqual({
+      userConfig: "GENERATED_EMPTY",
+      globalConfig: "GENERATED_EMPTY",
+      registry: "https://registry.npmjs.org/",
+      nodeEnvironment: "development",
+      ignoreScripts: false,
+      strictAllowScripts: false,
+      packageLock: true,
+      installStrategy: "hoisted",
+      include: ["prod", "dev", "optional", "peer"],
+      omit: [],
+    });
+
+    expect(document.installedPackageTree).toMatchObject({
+      equal: true,
+      differences: [],
+    });
+    expect(document.installedPackageTree.retainedCandidate).toEqual(
+      document.installedPackageTree.gitInstallation,
+    );
+    expect(document.productionGraph.equal).toBe(true);
+    expect(document.productionGraph.retainedCandidate).toEqual(
+      document.productionGraph.gitInstallation,
+    );
+    expect(document.installedTests).toEqual(
+      [
+        "installed-package-smoke.mjs",
+        "installed-package-boundary.mjs",
+        "installed-package-import-purity.mjs",
+        "installed-package-no-network.mjs",
+      ].map((script) => ({
+        script,
+        retainedCandidate: "PASS",
+        gitInstallation: "PASS",
+      })),
+    );
+    expect(document.limitations).toEqual([
+      "NO_REGISTRY_INTEGRITY",
+      "NO_REGISTRY_SIGNATURE",
+      "NO_NPM_PROVENANCE",
+      "NO_PUBLICATION_ATTESTATION",
+      "NO_DISTRIBUTION_TAG",
+      "NO_IMMUTABLE_PUBLIC_COORDINATE",
+    ]);
+
+    // Reconstruct the digest with test-owned canonicalization so changing the
+    // implementation's projection algorithm cannot make stale evidence pass.
+    const { qualificationSummarySha256, review } = document;
+    const summary = Object.fromEntries(
+      Object.entries(document).filter(
+        ([key]) =>
+          !["$schema", "qualificationSummarySha256", "review"].includes(key),
+      ),
+    );
+    expect(qualificationSummarySha256).toBe(
+      `sha256:${sha256(canonicalizeJson(summary))}`,
+    );
+    expect(review.status).toBe("REVIEWED");
+    expect(review.reviewer).toBeTruthy();
+    expect(review.reviewedOn).toBeTruthy();
+    expect(review.capacity).toBeTruthy();
+    expect(review.conclusion).toBeTruthy();
+
+    const tagVerification = verifyLocalReleaseTag({
+      repositoryRoot: REPOSITORY_ROOT,
+      expectedTag: document.source.git.tag,
+      expectedCommit: document.source.git.commit,
+      registry: readJson("./docs/provenance/release-signers.json"),
+      releaseDate: document.observedAt.slice(0, 10),
+    });
+    expect(tagVerification).toMatchObject({
+      result: "PASS",
+      tag: document.source.git.tag,
+      sourceCommit: document.source.git.commit,
+    });
   });
 
   it("rejects contradictory pending and reviewed release attestations", () => {

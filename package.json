@@ -73,6 +73,7 @@
     "browser:serve": "node scripts/serve-browser-consumers.mjs",
     "candidate:prepare": "node scripts/prepare-downloaded-candidate.mjs",
     "candidate:portable": "node scripts/qualify-installed-candidate.mjs",
+    "qualify:git-package-equivalence": "node scripts/qualify-git-package-equivalence.mjs",
     "evidence:acquire": "node util/acquire-npm-package-evidence.mjs",
     "evidence:verify": "node util/verify-npm-package-evidence.mjs",
     "generate:release-gates": "node scripts/generate-release-gate-registry.mjs --write",

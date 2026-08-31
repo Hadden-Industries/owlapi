@@ -1386,6 +1386,55 @@ const validateWebVowlCorpusMaterialization = (fileName, source, violations) => {
   );
 };
 
+const validateSourceGovernanceHistory = (sources, violations) => {
+  for (const { fileName, jobId, checkoutName } of [
+    {
+      fileName: "ci.yml",
+      jobId: "source_node_22",
+      checkoutName: "Check out the proposed source",
+    },
+    {
+      fileName: "ci.yml",
+      jobId: "source_node_24",
+      checkoutName: "Check out the proposed source",
+    },
+    {
+      fileName: "release.yml",
+      jobId: "source_node_22",
+      checkoutName: "Check out the proposed source",
+    },
+    {
+      fileName: "release.yml",
+      jobId: "source_node_24",
+      checkoutName: "Check out the proposed source",
+    },
+    {
+      fileName: "maintenance.yml",
+      jobId: "health",
+      checkoutName: "Check out the default branch",
+    },
+    {
+      fileName: "extended-tests.yml",
+      jobId: "extended_evidence",
+      checkoutName: "Check out the default branch",
+    },
+  ]) {
+    const source = sources[fileName] ?? "";
+    const sourceJobLines = jobBlock(source, jobId).split(/\r?\n/u);
+    const checkoutIndex = sourceJobLines.indexOf(
+      `      - name: ${checkoutName}`,
+    );
+    const checkout =
+      checkoutIndex === -1 ? "" : stepBlockAt(sourceJobLines, checkoutIndex);
+
+    add(
+      violations,
+      checkout.split(/\r?\n/u).includes("          fetch-depth: 0"),
+      `${fileName}:${jobId} must retain complete owlapi history for governance tests`,
+    );
+  }
+};
+
 const validateJsonRecord = (schemaName, recordName, violations) => {
   const directory = join(REPOSITORY_ROOT, "docs", "release");
   const schema = JSON.parse(readFileSync(join(directory, schemaName), "utf8"));
@@ -1400,7 +1449,9 @@ const validateJsonRecord = (schemaName, recordName, violations) => {
   );
 };
 
-export const auditRepositoryControls = () => {
+export const auditRepositoryControls = ({
+  workflowSourceOverrides = {},
+} = {}) => {
   const violations = [];
   const workflowFiles = sortedYamlFiles(WORKFLOW_DIRECTORY);
   const issueFormFiles = sortedYamlFiles(ISSUE_FORM_DIRECTORY, {
@@ -1420,7 +1471,8 @@ export const auditRepositoryControls = () => {
   const sources = Object.fromEntries(
     workflowFiles.map((fileName) => [
       fileName,
-      readFileSync(join(WORKFLOW_DIRECTORY, fileName), "utf8"),
+      workflowSourceOverrides[fileName] ??
+        readFileSync(join(WORKFLOW_DIRECTORY, fileName), "utf8"),
     ]),
   );
   for (const [fileName, source] of Object.entries(sources)) {
@@ -1520,6 +1572,7 @@ export const auditRepositoryControls = () => {
     );
   }
   validateMaintenanceReporter(sources["maintenance.yml"] ?? "", violations);
+  validateSourceGovernanceHistory(sources, violations);
   validateWebVowlCorpusMaterialization("ci.yml", ci, violations);
   validateWebVowlCorpusMaterialization("release.yml", release, violations);
 

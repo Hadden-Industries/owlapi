@@ -3,7 +3,7 @@
 > **Status:** Final architecture and implementation blueprint  
 > **Research baseline:** 8 August 2026  
 > **Package identity and versioning decision:** 25 August 2026 — publish the unscoped npm package `owlapi`; begin with the useful `0.1.0-alpha.0` prerelease under `next`; publish another alpha or an `0.1.0-rc.N` only when it supplies material public validation rather than as ceremony; target the production-recommended initial-development `0.1.0` under `latest`; apply only §2.60's immutable-tag contingency to a consumed coordinate; permanently avoid every consumed historical coordinate; and defer any post-zero version choice to a future stability-promotion decision.<br>
-> **Canonical repository decision:** 23 August 2026 — `https://github.com/Hadden-Industries/owlapi` is the sole canonical source and release repository; WebVOWL consumes registry artefacts and does not retain a second maintained package tree.<br>
+> **Canonical repository decision:** 23 August 2026, amended 31 August 2026 — `https://github.com/Hadden-Industries/owlapi` is the sole canonical source and release repository; WebVOWL consumes only the package's declared public entry points and does not retain a second maintained package tree. Before npm makes the accepted coordinate available, a reviewed transitional dependency may resolve only the exact full Git commit proved installation-equivalent to the retained alpha tarball; public-alpha verification must replace that transport with the exact registry version and integrity rather than supplement it.<br>
 > **History-reconstruction ordering decision:** 25 August 2026, hardened 25 August 2026 — before any ref movement, freeze and catalogue the exact original graph outside that graph, approve immutable partition decisions, inventory candidate issue/PR references, initialize the ref journal and verify the pre-rewrite bundle; then advance `refactor/java-to-javascript` only by an ancestry-checked expected-old-OID fast-forward, give every original commit an explicit mapped/excluded/newly-empty/degenerate/manual lineage outcome, qualify only verified repository references while preserving original messages, reconstruct and map new identities separately, and repoint/rebuild `feature/ui-ux-enhancements` only after reconstructed WebVOWL `main` passes its final-tree gates.<br>
 > **History-landmark and branch-retirement decision:** 31 August 2026 — preserve the accepted Phase 19A input and three outputs with four SSH-signed annotated, non-release tags under the protected `provenance/history-reconstruction/phase-19a/<role>/<entity>` namespace before any temporary branch is retired; integrate the accepted WebVOWL UI/UX reconstruction into WebVOWL `main` with an ordinary two-parent merge rather than a squash or rebase; then delete the exhausted `refactor/java-to-javascript` and `feature/ui-ux-enhancements` branches after their remote updates, tags, signatures, merge ancestry and evidence bindings verify. Future UI/UX work starts on new short-lived branches; the frozen mixed source is never merged into reconstructed `main`; `feature/webmcp-integration` remains outside this transition; and release tags remain separately governed `v*` references.<br>
 > **Contributor-governance decision:** 23 August 2026 — begin with explicit `AGPL-3.0-only` inbound=outbound; defer any CLA until an external copyrightable contribution exists, but prohibit merging the first such contribution until the contributor-rights model is separately confirmed.<br>
@@ -56,10 +56,10 @@
 > **npm-provenance-verification decision:** 25 August 2026, hardened 28 August 2026 — verify `owlapi@<version>` itself with npm's signature/attestation JSON; bind its registry signature, provenance/publish attestations, subject digest, repository, authorized workflow, actual triggering ref/run and publication commit; verify the signed canonical tag independently against the canonical package-source commit; normally require those commits to be the same, but under §2.60's exact-artifact reconciliation record the later descendant publication-tooling commit and original tagged/qualified package-source commit as distinct, digest-bound provenance stages; and never claim that an attestation generated before tag creation retroactively contains the later tag as its triggering ref.<br>
 > **Conditional-prerelease decision:** 25 August 2026 — at least one useful public alpha is required, but an additional alpha or public release candidate is required only when material behavior, public API, dependency, environment, security, networking or resource semantics need another public observation period; otherwise Phase 20 fully qualifies the actual retained/staged `0.1.0` candidate and may proceed directly from the accepted alpha to production.<br>
 > **Executable-release-gate decision:** 25 August 2026, hardened 25 August 2026 — make §§17.26.5 and 17.27.6 the sole authoritative Phase 19/20 acceptance catalogues; assign every requirement a stable anchored ID and explicit decision-section coverage; make §30 a derived marked checklist rather than a fictitious phase or second authority; reconcile catalogue IDs, checklist coverage and the versioned machine-readable gate registry mechanically; accept required gates only as `PASS` or validated `NOT_APPLICABLE`; and distinguish unresolved product, control and external-service failures without permitting any of them to reach publication authority.<br>
-> **Phase 19 checkpointing decision:** 25 August 2026 — execute Phase 19 as four sequential reviewable checkpoints—19A history reconstruction, 19B standalone package boundary, 19C consumer/browser/release-control qualification and 19D public alpha/WebVOWL cutover—with a focused evidence/commit pause at each and no npm or public-release mutation before 19D.<br>
+> **Phase 19 checkpointing decision:** 25 August 2026, amended 31 August 2026 — execute Phase 19 as four sequential reviewable checkpoints—19A history reconstruction, 19B standalone package boundary, 19C consumer/browser/release-control qualification and 19D consumer/publication completion—with a focused evidence/commit pause at each. Phase 19D contains ordered subcheckpoints: 19D1 proves retained-tarball/exact-Git installation equivalence and removes WebVOWL's package source copy so repository development can continue independently; 19D2 publishes and verifies the public alpha and replaces the Git transport with the exact registry coordinate. Only 19D may mutate npm or create a public release, and 19D1 is not Phase 19 completion.<br>
 > **Operational-readiness decision:** 25 August 2026 — before each release, revalidate mutable GitHub/npm/provider/mailbox/quota controls, maintain checksummed encrypted non-authoritative off-platform backups without requiring a restore drill in this plan, publish the repository-governance privacy notice and proportionate accessible documentation, record the package-name/non-affiliation review, retain a complete known-good WebVOWL rollback artefact/runbook without a rehearsal, and keep scheduled control-plane maintenance optional rather than a substitute for the release-time audit.<br>
 > **Immutable-release-verification decision:** 24 August 2026 — define `SHA256SUMS` as sorted lowercase SHA-256 entries for the retained tarball and SBOM, verify exact GitHub CLI `2.98.0` against its official binary checksum, and close each release only after a fresh download passes immutable-release verification, per-asset attestation checks, checksums, evidence-schema validation and independent signed-tag verification.<br>
-> **Purpose:** Define the standards-grounded, migration-safe extraction of reusable OWL parsing and ontology-model functionality from WebVOWL into a standalone JavaScript core, normally publish `owlapi@0.1.0` as its first Hadden Industries production-recommended initial-development release under the narrowly bounded §2.60 prepublication-tag contingency, and prove the improved WebVOWL fork uses that production-verified npm package without a privileged source-tree path.
+> **Purpose:** Define the standards-grounded, migration-safe extraction of reusable OWL parsing and ontology-model functionality from WebVOWL into a standalone JavaScript core, decouple both repositories without waiting for npm namespace administration by using one equivalence-proved exact-commit package transport, normally publish `owlapi@0.1.0` as its first Hadden Industries production-recommended initial-development release under the narrowly bounded §2.60 prepublication-tag contingency, and ultimately prove the improved WebVOWL fork uses that production-verified npm package without a privileged source-tree path.
 
 ---
 
@@ -661,13 +661,15 @@ failed normal-publication evidence and the no-live-version evidence above. A
 version conflict is investigated as additional immutable history rather than
 worked around by repeatedly burning candidate versions.
 
-While npm Support is investigating package control, the programme state is
-`EXTERNAL_BLOCKED`; it is neither success nor a package defect. A final support
-denial is recorded as `OWLAPI_NPM_NAMESPACE_UNAVAILABLE` and terminates this
-implementation plan without renaming the package. Selecting a scope, `owlapi-js`
-or another identity requires a separately approved identity amendment; fully
-qualified unpublished assets and all sanitized namespace evidence remain
-preserved.
+While npm Support is investigating package control, the publication substate
+and Phase 19D2 are `EXTERNAL_BLOCKED`; this is neither success nor a package
+defect. The separately reviewed Phase 19D1 exact-Git consumer checkpoint may
+still decouple WebVOWL under §2.10.3, but it supplies none of the missing public-
+registry evidence and does not complete Phase 19. A final support denial is
+recorded as `OWLAPI_NPM_NAMESPACE_UNAVAILABLE` and terminates this implementation
+plan without renaming the package. Selecting a scope, `owlapi-js` or another
+identity requires a separately approved identity amendment; fully qualified
+unpublished assets and all sanitized namespace evidence remain preserved.
 
 Namespace control, package-owner visibility, trusted-publisher eligibility and
 the availability of staged publication for the reclaimed identity **MUST** be
@@ -714,15 +716,37 @@ or give the first-party consumer a privileged development path:
 a release-only mirror of source maintained in WebVOWL
 a hand-copied or generated second production tree
 a Git submodule or Git subtree in WebVOWL
-a committed file:, link:, Git URL or sibling-directory dependency
+a committed file:, link:, sibling-directory or mutable/ranged Git dependency
 an npm workspace link to the extracted source
 a Vite/Jest resolver alias to an owlapi checkout
 ```
 
-WebVOWL itself **MUST** consume `owlapi` through a declared exact registry
+WebVOWL itself **MUST** consume `owlapi` through a declared production
 dependency and bare package specifiers—never through relative source-tree
-paths—so every committed application test and build exercises the same public
-entry-point and installed-artefact boundary that external consumers receive.
+paths—so every committed application test and build exercises the package's
+public entry-point and installed-package boundary. Before the accepted alpha is
+available from npm, Phase 19D1 permits exactly one transitional transport:
+
+```text
+git+https://github.com/Hadden-Industries/owlapi.git#caabb1197ffdab91c1e10d596d177b5142aea5c1
+```
+
+That exception is valid only after a normal npm Git install of the full commit
+has been proved byte-for-byte package-tree equivalent to the exact retained
+alpha tarball selected by `docs/release/publication-control.json`. The proof
+also requires equal normalized production dependency graphs, the same package
+identity and five-entry export map, absence of Git-install lifecycle triggers,
+and the installed-package smoke, boundary, import-purity and no-network checks
+against both installations. A source checkout, branch, abbreviated commit,
+SemVer-like Git selector, GitHub tarball URL, local pack, workspace, link or
+resolver alias does not satisfy this exception.
+
+After public-alpha verification, Phase 19D2 **MUST** replace—not retain beside
+or fall back to—the exact-Git transport with the exact accepted registry
+version and integrity. From that point every committed application test and
+build exercises the same registry artefact boundary that external consumers
+receive.
+
 The only permitted imports of the core are:
 
 ```text
@@ -741,7 +765,17 @@ repository may use relative imports within that repository; that is
 implementation structure, not a consumer bypass.
 
 The private WebVOWL root manifest **MUST** declare `owlapi` in `dependencies`,
-not only in `devDependencies`, and pin the exact accepted registry version:
+not only in `devDependencies`. The two ordered manifest states are:
+
+```json
+{
+  "dependencies": {
+    "owlapi": "git+https://github.com/Hadden-Industries/owlapi.git#caabb1197ffdab91c1e10d596d177b5142aea5c1"
+  }
+}
+```
+
+followed, after public-alpha verification, by:
 
 ```json
 {
@@ -752,21 +786,25 @@ not only in `devDependencies`, and pin the exact accepted registry version:
 ```
 
 Phase 19 must still obtain the exact WebVOWL configuration approval required
-before applying this manifest and lockfile change. The committed lockfile
-**MUST** resolve the version from `https://registry.npmjs.org/` with registry
-integrity; it must not record a local tarball, checkout or filesystem link.
-Vite, Jest and other tooling **MUST NOT** receive a compensating `owlapi` source
-alias.
+before applying either manifest and lockfile change. During 19D1 the committed
+lockfile **MUST** identify the exact repository and full commit in both its root
+specifier and `node_modules/owlapi` resolution, and contain no branch, range,
+local tarball, checkout, workspace or filesystem link. During 19D2 it **MUST**
+instead resolve `0.1.0-alpha.0` from `https://registry.npmjs.org/` with registry
+integrity and contain no Git resolution. Vite, Jest and other tooling **MUST
+NOT** receive a compensating `owlapi` source alias in either state.
 
 Before a prerelease exists in the registry, the exact retained `npm pack`
 tarball is tested in an isolated, disposable WebVOWL checkout using the proposed
 bare-import/application patch and a no-save/no-lockfile candidate install. That
-procedure may alter only the disposable checkout. After publication, the same
-reviewed WebVOWL changes are applied to the maintained branch, the exact
-registry version is installed normally and the resulting registry lockfile is
-committed. Local tarball testing proves the candidate before a registry write;
-ordinary WebVOWL CI thereafter proves the actual external-consumer path. Both
-gates are mandatory.
+procedure may alter only the disposable checkout. Phase 19D1 then independently
+proves the retained tarball and normal exact-Git installation equivalent before
+the maintained WebVOWL branch may commit the Git transport and remove its frozen
+package staging tree. After publication, Phase 19D2 replaces only the transport,
+installs the exact registry version normally, commits the registry lockfile and
+reruns the consumer gates. Candidate-tarball qualification, maintained exact-Git
+integration and maintained registry integration are three distinct mandatory
+gates; none substitutes for another.
 
 #### 2.10.4 Public API Surface Registry and two-zone source layout
 
@@ -3948,13 +3986,15 @@ GitHub authorship does not exempt an Action from the immutable-pin rule. There i
 no separate Action lockfile: each workflow reference is the authority and the
 adjacent tag is a review aid.
 
-Every `actions/checkout` use **MUST** set `persist-credentials: false`. Ordinary
-CI, maintenance and extended-test jobs use `fetch-depth: 1`; the release source
-job instead uses the captured `${{ github.sha }}`, `fetch-depth: 0` and
-`fetch-tags: true` so it can first verify protected-`main` ancestry and later
-fetch/verify the annotated tag object, signer and exact target. The npm OIDC publication job does not check out source
-at all; it receives only the qualified candidate artefact. No workflow enables
-`allow-unsafe-pr-checkout`.
+Every `actions/checkout` use **MUST** set `persist-credentials: false`. Every job
+that runs the complete package suite and its fail-closed governance assertions
+uses `fetch-depth: 0` so the recorded annotated tag, its signature and its
+peeled commit are available; other read-only jobs ordinarily use
+`fetch-depth: 1`. The release preflight instead uses the captured
+`${{ github.sha }}`, `fetch-depth: 0` and `fetch-tags: true` so it can verify the
+protected-`main` ancestry and complete tag graph. The npm OIDC publication job
+does not check out source at all; it receives only the qualified candidate
+artefact. No workflow enables `allow-unsafe-pr-checkout`.
 
 Every `actions/setup-node` use **MUST** name literal Node `22.23.2` or
 `24.19.0`, as assigned by §§2.19 and 2.54, and set:
@@ -5000,13 +5040,18 @@ project. It may accurately describe compatibility with Java OWLAPI concepts and
 the registered Java mappings, but it may not imply organizational continuity,
 official status or sponsorship.
 
-### 2.69 Decision: keep the public-alpha WebVOWL cutover non-production and maintained
+### 2.69 Decision: keep both maintained Phase 19D WebVOWL cutovers non-production
 
-Phase 19's maintained WebVOWL switch to an exact registry alpha is package-
-boundary integration evidence. A WebVOWL artefact containing a prerelease
-`owlapi` **MUST NOT** be promoted to production without a separate deployment
-decision outside this plan that accepts the support, rollback and security
-consequences. There is no legacy/source-tree escape hatch.
+Phase 19D1's maintained WebVOWL switch to the equivalence-proved exact Git
+commit is repository-decoupling and installed-package-boundary evidence. It is
+not a public-alpha, registry-integrity, npm-provenance, distribution-tag or
+immutable-coordinate result. Phase 19D2's replacement of that transport with
+the exact verified registry alpha is public-package-boundary integration
+evidence. A WebVOWL artefact containing either the transitional Git-installed
+prerelease or the registry prerelease **MUST NOT** be promoted to production
+without a separate deployment decision outside this plan that accepts the
+support, rollback and security consequences. There is no legacy/source-tree
+escape hatch, and after 19D2 there is no Git fallback.
 
 While Phase 20 is open, a material semantic, public-contract, security or
 development-blocking defect requires a new fully gated `alpha.N` or, once the
@@ -8189,17 +8234,24 @@ focused verification, evidence snapshot, Git commit and requested pause. Passing
 an earlier checkpoint does not make a later one optional, and only checkpoint D
 may mutate npm or create a public GitHub release.
 
-| Checkpoint                                                    | Scope                                                                                                                                                                                                                 | Required stopping state                                                                                                                |
-| ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| **19A — provenance-preserving reconstruction**                | freeze original refs/evidence; consolidate the reconstruction source; extract and mechanically validate the independent `owlapi` and reconstructed WebVOWL histories; qualify issue-reference and zero-result lineage | reconstructed tips, mapping records and verified backups exist; no npm write, release tag or public package exists                     |
-| **19B — standalone package and public boundary**              | establish the canonical repository tree, manifest/exports, compatibility and dependency-seam registries, rights/governance documents and package-owned test/tool boundaries                                           | a clean canonical clone installs and tests independently; configuration has received the exact required approvals; no npm write exists |
-| **19C — consumer, browser and release-control qualification** | create the machine gate registry, build the retained tarball/evidence closure, pass locked/lockless, Node, browser, WebVOWL-isolation, security, material and release-workflow governance gates                       | `Release / qualified` can be reproduced from the accepted commit; no npm write, canonical release tag or GitHub release exists         |
-| **19D — public alpha and maintained consumer cutover**        | select the valid namespace/publication mode, stage or bootstrap the exact qualified alpha, complete late-tag/immutable-release/public-registry verification, then make WebVOWL consume that exact public package      | every Phase 19 acceptance requirement is satisfied and the alpha checkpoint is committed and pushed                                    |
+| Checkpoint                                                    | Scope                                                                                                                                                                                                                                                                                                                             | Required stopping state                                                                                                                                                                   |
+| ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **19A — provenance-preserving reconstruction**                | freeze original refs/evidence; consolidate the reconstruction source; extract and mechanically validate the independent `owlapi` and reconstructed WebVOWL histories; qualify issue-reference and zero-result lineage                                                                                                             | reconstructed tips, mapping records and verified backups exist; no npm write, release tag or public package exists                                                                        |
+| **19B — standalone package and public boundary**              | establish the canonical repository tree, manifest/exports, compatibility and dependency-seam registries, rights/governance documents and package-owned test/tool boundaries                                                                                                                                                       | a clean canonical clone installs and tests independently; configuration has received the exact required approvals; no npm write exists                                                    |
+| **19C — consumer, browser and release-control qualification** | create the machine gate registry, build the retained tarball/evidence closure, pass locked/lockless, Node, browser, WebVOWL-isolation, security, material and release-workflow governance gates                                                                                                                                   | `Release / qualified` can be reproduced from the accepted commit; no npm write, canonical release tag or GitHub release exists                                                            |
+| **19D — consumer decoupling and public-alpha completion**     | **19D1:** prove retained-tarball/exact-Git installation equivalence, make maintained WebVOWL consume the full-SHA package and remove its package source copy; **19D2:** select the valid namespace/publication mode, publish and verify the exact qualified alpha, then replace the Git transport with the exact registry package | 19D1 has an independently reviewed and pushed decoupling checkpoint; after 19D2 every Phase 19 acceptance requirement is satisfied and the final alpha checkpoint is committed and pushed |
 
 Work does not begin checkpoint B until A is accepted, C until B is accepted, or D
 until C is accepted. A defect may return work to the earliest affected checkpoint;
 later evidence is then regenerated rather than treated as reusable merely because
 its former workflow run was green.
+
+Within checkpoint D, 19D1 may complete while npm namespace administration is
+`EXTERNAL_BLOCKED`. That state deliberately unblocks independent `owlapi` and
+WebVOWL development, but it satisfies neither the public-alpha requirements nor
+Phase 19 completion. Work proceeds to 19D2 only after namespace/publication
+authority is available; 19D2 must remove every transitional Git allowance and
+resolution before the checkpoint and phase can close.
 
 #### 17.26.1 History partition, repository handoff and configuration approval
 
@@ -8870,8 +8922,12 @@ dynamic module specifiers in all WebVOWL source/tests and fail on:
 - package metadata, test-helper or other unexported deep imports;
 - an `owlapi` resolver alias in Vite or Jest configuration;
 - `owlapi` being absent from root `dependencies`, present only in
-  `devDependencies`, declared with a range/local/Git specifier, or resolved by
-  npm/lockfile to a workspace, filesystem, Git or non-registry source.
+  `devDependencies`, declared with a range/local/workspace/link/tarball or
+  mutable/non-full-SHA Git specifier, or resolved by npm/lockfile to an
+  unapproved source. During 19D1 the test permits only the exact §2.10.3 Git
+  coordinate and requires the lockfile to identify its full commit; during 19D2
+  it rejects every Git specifier/resolution and requires the exact registry
+  version and integrity.
 
 Then replace the current reach-ins in
 `src/owl2vowl/js/index.js`, `src/owl2vowl/js/importResolver.js` and
@@ -9733,7 +9789,73 @@ wording is safe, and prepare a new prerelease version through the full gate. Do
 not use unpublish as routine rollback or mutate the draft/immutable artefact to
 pretend the original write did not occur.
 
-#### 17.26.4 Post-publication verification, WebVOWL cutover and custody
+#### 17.26.4 Pre-registry decoupling, post-publication verification, WebVOWL cutover and custody
+
+Phase 19D begins with a non-public 19D1 decoupling gate. Download the exact
+candidate artefact selected by `docs/release/publication-control.json` from
+source workflow run `33160042447`, attempt `1`, artefact ID `9682090118`, and
+retain the original GitHub Actions ZIP. Measure its byte count and require its
+SHA-256 to be
+`sha256:f5967321e1c18a9c5aa14ad44a1d45fe3606605453866ce7746afe9c394f52d7`.
+Only after that match, parse the ZIP fail-closed, require its exact closed
+three-file candidate bundle, verify those entries, and derive the retained
+tarball bytes directly from the archive. Do not qualify a separately extracted
+directory, substitute a newly packed tarball, or use another local release
+directory.
+
+In separate ordinary npm consumers with separate caches, install that retained
+tarball and
+`git+https://github.com/Hadden-Industries/owlapi.git#caabb1197ffdab91c1e10d596d177b5142aea5c1`.
+Generate empty user and global npm configuration files in the bounded temporary
+root, remove inherited `npm_config_*`, `npm_package_*`, npm-token and `NODE_ENV`
+variables, and explicitly pin ordinary install semantics: lifecycle scripts
+enabled, strict script allowlisting disabled, lockfile enabled, hoisted install
+strategy, and production/development/optional/peer dependency classes included.
+Before either install, query npm through the same configuration boundary and
+reject any accepted effective setting that differs; record the accepted safe
+policy in canonical evidence. The proof must observe normal Git-install
+semantics rather than suppressing lifecycle scripts. Also inspect the selected
+commit's manifest through local Git object access and reject any package
+identity, version, exports, workspace, bundled-dependency or lifecycle-trigger
+drift, including npm's `build` Git-preparation trigger. After installation,
+require all of the following:
+
+```text
+both installed manifests identify owlapi@0.1.0-alpha.0 and expose exactly the five approved unconditional exports
+neither installed package contains Git metadata, package-development tests, fixtures or release tooling
+complete node_modules/owlapi trees have identical normalized paths, bytes, portable executable-mode classes and root digest
+neither tree contains a symlink, junction, special file, escaped/duplicate normalized path or case collision
+normalized npm ls --omit=dev --all --json production package identities and dependency edges are identical
+the Git consumer lockfile names the exact canonical repository and full 40-hex commit in both the root specifier and installed resolution
+installed-package smoke, public-boundary, import-purity and no-network checks pass independently against both consumers
+```
+
+Persist the deterministic observation in
+`docs/release/pre-registry-git-equivalence.json`, validate it against the closed
+Draft 2020-12
+`docs/release/pre-registry-git-equivalence.schema.json`, bind the candidate
+identity to `publication-control.json`, bind name/version/exports to the package
+manifest, and bind the Git commit to the signed `v0.1.0-alpha.0` tag target. The
+record must bind the measured original artifact-archive byte count and digest to
+the candidate bytes, preserve the enclosed tarball digest separately, record the
+generated/accepted npm configuration policy, distinguish those facts from the
+Git source identity, and not imply registry integrity, registry signature, npm
+provenance, publication attestation, distribution-tag or immutable public-
+coordinate evidence. Human review of the exact evidence content is required
+before its result can be accepted.
+
+Only after that equivalence gate and the exact WebVOWL configuration approval,
+apply the reviewed consumer patch to maintained WebVOWL: declare the exact Git
+coordinate in production `dependencies`, import only approved public package
+specifiers, remove the frozen `src/owlapi-js/` staging tree and transferred
+package-only material, and perform the complete direct-dependency ownership
+cleanup below. The committed lockfile must prove the full Git commit, and no
+source alias, workspace, local path, local tarball, branch or Git range may
+exist. From a clean clone with no ancestor `node_modules`, pass the architecture,
+Jest, development/production build and focused browser gates. Commit and push
+the reviewed WebVOWL 19D1 checkpoint. This permits independent repository
+development but does not satisfy `P19-WEBVOWL-001`, public-alpha verification or
+Phase 19 completion.
 
 Registry success text alone does not close the phase. From a fresh npm cache and
 consumer directory, verify all of the following against the public registry:
@@ -9817,22 +9939,26 @@ immutable evidence-asset digest and release/attestation URLs and remains outside
 the npm tarball. The already-pushed signed `v0.1.0-alpha.0` tag must still
 resolve to the exact release source commit.
 
-After registry verification and the exact WebVOWL configuration approval, apply
-the reviewed consumer-cutover patch to the maintained WebVOWL branch, remove the
-frozen `src/owlapi-js/` staging tree and any transferred package-only working-
-tree documentation/tooling, and install the exact selected public
-`owlapi@0.1.0-alpha.N` with exact-save semantics from the registry. The committed WebVOWL lockfile must contain
-the registry tarball URL/integrity and no workspace, local tarball, filesystem,
-Git or link resolution. Compare the final diff with the recorded candidate patch
-apart from the deliberately post-publication registry lockfile and source-tree
-deletion, then repeat the boundary, Jest and development/production build gates.
-Commit and push that WebVOWL consumer checkpoint only with their separately
-required authorizations. Mark the maintained integration explicitly non-
-production under §2.69; it proves the public package boundary and does not
-authorize deployment of a prerelease-backed WebVOWL artefact.
+After registry verification and the exact WebVOWL configuration approval,
+perform the 19D2 transport normalization on the maintained WebVOWL branch.
+Replace the exact Git dependency with the exact selected public
+`owlapi@0.1.0-alpha.N` using exact-save semantics from the registry; do not
+reintroduce, regenerate or copy any package source. The committed WebVOWL
+lockfile must contain the registry tarball URL/integrity and no workspace, local
+tarball, filesystem, Git or link resolution. Compare the application/source
+portion with the accepted 19D1 checkpoint and require that only the reviewed
+manifest/lockfile transport normalization and any independently required
+registry evidence changed, then repeat the architecture, dependency-ownership,
+Jest, browser and development/production build gates. Commit and push that final
+WebVOWL consumer checkpoint only with their separately required authorizations.
+Mark the maintained integration explicitly non-production under §2.69; it proves
+the public package boundary and does not authorize deployment of a prerelease-
+backed WebVOWL artefact. No Git fallback or Git-specific consumer allowance may
+remain after this point.
 
-The same cutover includes a complete direct-dependency ownership audit of
-WebVOWL's root manifest. Inventory external package references in production
+The 19D1 source-removal cutover includes a complete direct-dependency ownership
+audit of WebVOWL's root manifest, and 19D2 revalidates its result after registry
+normalization. Inventory external package references in production
 source, tests, npm scripts, build/release utilities, Vite/Jest configuration,
 HTML entry points and static-copy declarations, including static imports,
 `export ... from`, statically analyzable literal `import()`, any retained
@@ -9850,16 +9976,19 @@ Present the exact `package.json` removals and resulting lockfile change for the
 repository's required configuration approval before applying them. Traditional
 Node/npm ancestor lookup and hoisting can make an undeclared import appear to
 work, so a clean `npm ci` alone is not evidence of ownership. Run the static
-ownership check and a second clean `npm ci` after the exact registry install and
-removals, then execute the production-dependency inventory, Jest suite,
+ownership check and a second clean `npm ci` after the exact Git install and
+removals, then repeat it after the exact registry replacement. At both
+maintained checkpoints execute the production-dependency inventory, Jest suite,
 development/production Vite builds and isolated installed-package boundary
 fixture with neither the removed package source nor another ancestor
-`node_modules` tree available. All must remain green after the cleanup.
+`node_modules` tree available. All must remain green after the cleanup and the
+later transport normalization.
 
 As part of that production build, create or update WebVOWL's own deployment-
 scope third-party inventory from the exact emitted bundle/asset graph. Reconcile
-it with WebVOWL's registry-backed lockfile and preserve all notices applicable to
-code physically redistributed by the application. The §2.50 `owlapi` tarball
+it first with WebVOWL's exact-Git lockfile and then with its registry-backed
+lockfile, preserving all notices applicable to code physically redistributed by
+the application. The §2.50 `owlapi` tarball
 record is an input to this review, not a substitute for it; package-external
 dependencies may become embedded application code only at this later bundling
 boundary.
@@ -10029,12 +10158,16 @@ These bullets replace the former single compound completion sentence.
   accepted retained candidate; `npm install owlapi` fails as documented while
   only the prerelease channel exists. **Constraints:** §§2.16, 2.24, 2.29,
   2.39–2.40, 2.51–2.52, 17.26.4.
-- <a id="p19-webvowl-001"></a> **`P19-WEBVOWL-001` — Ordinary public-package
-  consumer.** WebVOWL declares the exact public alpha, contains no staging copy,
-  relative/deep/local/Git/workspace import or resolver alias, passes boundary/
-  Jest/build/browser gates, and retains only dependencies with a statically and
-  operationally proven WebVOWL owner. Its prerelease integration is explicitly
-  non-production. **Constraints:** §§2.10.3, 2.50, 2.69, 17.26.4.
+- <a id="p19-webvowl-001"></a> **`P19-WEBVOWL-001` — Ordered external-package
+  consumer.** In 19D1 WebVOWL declares only the equivalence-proved exact full-SHA
+  Git coordinate, removes its staging copy, uses no relative/deep/local/workspace
+  import or resolver alias, passes clean boundary/Jest/build/browser gates, and
+  retains only dependencies with a statically and operationally proven WebVOWL
+  owner. In 19D2 it replaces every Git allowance and resolution with the exact
+  verified public alpha plus registry integrity and repeats those gates. The
+  requirement is not satisfied until the registry state passes, and both
+  prerelease integrations are explicitly non-production. **Constraints:**
+  §§2.10.3, 2.50, 2.69, 17.26.4.
 - <a id="p19-custody-001"></a> **`P19-CUSTODY-001` — Honest steady-state
   custody.** The organization-team experiment, sole natural-person authority,
   OIDC publisher, 2FA, removal of any bootstrap secret/path and account-loss
@@ -10042,21 +10175,25 @@ These bullets replace the former single compound completion sentence.
   assignment dependency. **Constraints:** §§2.13, 2.28, 2.35, 2.53,
   17.26.4.
 - <a id="p19-checkpoint-001"></a> **`P19-CHECKPOINT-001` — Accepted Phase 19
-  handoff.** Checkpoints 19A–19D have their committed evidence, the public alpha
-  and immutable release remain verified, and the maintained WebVOWL alpha
-  consumer checkpoint is committed and pushed before Phase 20 begins.
+  handoff.** Checkpoints 19A–19C and the independently reviewed/pushed 19D1
+  decoupling checkpoint have their committed evidence; 19D2 then verifies the
+  public alpha and immutable release, removes every Git transport from maintained
+  WebVOWL, and commits and pushes the registry-backed consumer checkpoint before
+  Phase 20 begins.
   **Constraints:** §§17.26.0–17.26.5.
 
-If npm namespace control is pending, the phase remains `EXTERNAL_BLOCKED`; a
-final npm denial records `OWLAPI_NPM_NAMESPACE_UNAVAILABLE` and terminates this
-plan rather than renaming or reporting completion. Pause at this gate for the requested Git
+If npm namespace control is pending, 19D2 and Phase 19 completion remain
+`EXTERNAL_BLOCKED`; accepted 19D1 nevertheless permits independent repository
+development and must not be reported as public-package evidence. A final npm
+denial records `OWLAPI_NPM_NAMESPACE_UNAVAILABLE` and terminates this plan rather
+than renaming or reporting completion. Pause at this gate for the requested Git
 checkpoint. Promotion to the normal production `owlapi@0.1.0` target is a later separately approved
 release gate; the alpha **MUST NOT** be converted into a production release merely
 by moving its distribution tag to `latest`.
 
 ### 17.27 Phase 20 — qualify and publish production-recommended `owlapi@0.1.0`
 
-Phase 20 begins only after Phase 19 has published and verified the accepted
+Phase 20 begins only after Phase 19D2 has published and verified the accepted
 alpha—normally `owlapi@0.1.0-alpha.0`, or solely after §2.60 abandonment its next
 prerelease—and WebVOWL consumes that exact public-registry package; the Phase 19
 checkpoint must also have been committed and pushed. It runs release work in
@@ -11548,12 +11685,22 @@ behaviour rather than assuming it.
 
 #### 21.2.1 WebVOWL must use the external package boundary
 
-After Phase 19, WebVOWL and `owlapi` do not share a repository or package-manager
-workspace. WebVOWL declares an exact registry version in production
-dependencies and imports the same public specifiers documented for third
-parties. Node, Jest and Vite select entry points through the installed package's
-`exports` map. The committed lockfile resolves the npm registry artefact and its
-integrity, not a mutable branch, sibling checkout, local tarball or link.
+After Phase 19D1, WebVOWL and `owlapi` do not share a repository, source copy or
+package-manager workspace. WebVOWL temporarily declares the single approved
+full-commit Git coordinate in production dependencies and imports the same
+public specifiers documented for third parties. Node, Jest and Vite select entry
+points through the normally installed package's `exports` map. The committed
+lockfile resolves that exact canonical repository commit, not a mutable branch,
+sibling checkout, local tarball or link. The separately retained tarball/Git
+equivalence record proves that this provisional transport installed the same
+package tree and production graph as the qualified candidate; it does not claim
+any registry property.
+
+After Phase 19D2, the WebVOWL manifest and lockfile instead declare and resolve
+the exact npm registry version and integrity. No Git dependency, Git lock
+resolution or Git-specific consumer exception remains. This registry-backed
+state—not the provisional transport—is the accepted Phase 19 and ordinary
+external-consumer boundary.
 
 Do not add a convenience alias such as
 `owlapi → ../owlapi/index.js`: it would make application builds pass even if
@@ -11563,17 +11710,20 @@ Package-internal tests may test internals in `Hadden-Industries/owlapi`;
 WebVOWL tests demonstrate only what a real installed-package consumer can
 construct and observe.
 
-This is intentionally a three-part verification model:
+This is intentionally a four-part verification model:
 
 1. package-repository CI verifies implementation, conformance and packability;
 2. the retained tarball is exercised in isolated generic consumers and an
    isolated WebVOWL candidate checkout before publication; and
-3. normal WebVOWL installs, tests and builds continuously verify the exact
-   public-registry artefact after publication.
+3. retained-tarball/exact-Git equivalence plus normal maintained WebVOWL
+   installation, tests and builds verify the decoupled pre-registry state; and
+4. normal WebVOWL installs, tests and builds continuously verify the exact
+   public-registry artefact after publication and removal of the Git transport.
 
 No gate substitutes for another. Local exploratory tools may unpack the
-candidate in disposable directories, but no committed consumer configuration
-may encode a development-only route.
+candidate in disposable directories. The only committed pre-registry transport
+is the approved exact full-SHA Git coordinate after equivalence review; no local,
+workspace, alias, mutable-Git or second-source development route may be encoded.
 
 #### 21.2.2 Browser resolution has two supported owners
 
@@ -13139,18 +13289,27 @@ precise subset; this summary is not the machine mapping.
       source; its clean clone/install/test requires no WebVOWL checkout, and
       production import-closure checks prove no WebVOWL path or copied second source
       tree exists.
-- [ ] <!-- Gate: P19-CHECK-014; Covers: P19-WEBVOWL-001 --> After public alpha verification, WebVOWL root `dependencies` pins
-      `"owlapi": "0.1.0-alpha.0"`, has no package workspace/local/Git specifier,
-      removes the staging source tree, and records the exact registry tarball and
-      integrity in its lockfile.
-- [ ] <!-- Gate: P19-CHECK-015; Covers: P19-WEBVOWL-001, P19-DEPENDENCIES-001 --> Audit the extracted WebVOWL manifest and remove every direct dependency
+- [ ] <!-- Gate: P19-CHECK-014; Covers: P19-WEBVOWL-001 --> In 19D1, schema-valid reviewed evidence proves a normal install of the exact
+      retained candidate and
+      `git+https://github.com/Hadden-Industries/owlapi.git#caabb1197ffdab91c1e10d596d177b5142aea5c1`
+      has an identical complete package tree and normalized production graph and
+      passes the four installed-package gates. Maintained WebVOWL then pins that
+      full-SHA dependency, removes the staging source tree, records only that exact
+      Git resolution in its lockfile, passes its clean consumer gates and commits/
+      pushes the reviewed decoupling checkpoint. After public-alpha verification,
+      19D2 replaces the Git specifier/resolution with `"owlapi":
+"0.1.0-alpha.0"` and the exact registry tarball URL/integrity; no Git,
+      workspace, local, link or source alias remains. This row passes only after
+      the registry-backed state passes.
+- [ ] <!-- Gate: P19-CHECK-015; Covers: P19-WEBVOWL-001, P19-DEPENDENCIES-001 --> During 19D1 audit the extracted WebVOWL manifest and remove every direct dependency
       used only by `owlapi`; retain a candidate RDF/JSON-LD/XML dependency only with
       a recorded WebVOWL-owned production or build consumer. Inventory imports,
       export-from declarations, literal dynamic imports, retained CommonJS loads,
       npm/build/test utilities, HTML/static-copy asset paths and configuration
       consumers; then re-run the clean install/test/build and isolated-boundary gates
-      without an ancestor `node_modules` tree after the approved manifest/lockfile
-      change.
+      without an ancestor `node_modules` tree after the approved exact-Git
+      manifest/lockfile change, and repeat the ownership proof after 19D2's exact
+      registry replacement.
 - [ ] <!-- Gate: P19-CHECK-016; Covers: P19-PACKAGE-001 --> ESM `type: module`.
 - [ ] <!-- Gate: P19-CHECK-017; Covers: P19-PACKAGE-001 --> Publish the canonical readable ESM modules directly from the package root;
       no parallel `src/`→`dist/` copy, generated/minified production JavaScript,
@@ -13188,8 +13347,10 @@ precise subset; this summary is not the machine mapping.
       exports have identical identity.
 - [ ] <!-- Gate: P19-CHECK-025; Covers: P19-WEBVOWL-001 --> `src/owlapiConsumerBoundary.architecture.test.js` rejects WebVOWL
       retention/reach-in to `src/owlapi-js/`, unexported `owlapi/*` imports,
-      dev-only/ranged/non-registry dependency declarations and Vite/Jest aliases
-      that bypass package `exports`.
+      dev-only/local/workspace/link/tarball/mutable-or-non-full-SHA Git dependency
+      declarations and Vite/Jest aliases that bypass package `exports`; it permits
+      only the exact approved full-SHA Git coordinate during 19D1 and requires the
+      exact registry dependency with no Git allowance after 19D2.
 - [ ] <!-- Gate: P19-CHECK-026; Covers: P19-PACKAGE-001 --> Publish the required `sideEffects: false`; instrumented fresh-process
       imports prove the complete package-owned production closure performs no
       registration/I/O/global mutation, and used/unused production-bundler fixtures
@@ -15736,7 +15897,7 @@ The final architectural rules are:
 
 > **The Public API Surface Registry is the release-versioned Java compatibility and gap authority. Except for the bare aggregate, every public npm subpath maps exactly to an approved `org.semanticweb.owlapi` package; a Java package's existence is necessary but does not itself authorize exposure. Public bindings have one canonical definition in the matching Java-shaped namespace. Private engines use cohesive JavaScript-oriented `internal/` ownership and are never duplicated into a mirrored public-package tree.**
 
-> **WebVOWL is a required first-party consumer of `owlapi`: its production code, tests and builds use an exact npm-registry dependency and only the applicable declared `owlapi`, `owlapi/apibinding`, `owlapi/model`, `owlapi/io` and `owlapi/formats` package specifiers. RDF translators/factories are internal. Relative source-tree imports, workspaces/local dependencies, `owlapi/rdf`, unexported deep imports and resolver aliases that bypass package `exports` are forbidden. A static ownership inventory covers source, tests, scripts, configuration, HTML and copied assets before package-only dependencies are removed; an isolated clean install/build/test without the staging tree or ancestor `node_modules` then proves npm hoisting did not hide an undeclared WebVOWL dependency.**
+> **WebVOWL is a required first-party consumer of `owlapi`: its production code, tests and builds use only the applicable declared `owlapi`, `owlapi/apibinding`, `owlapi/model`, `owlapi/io` and `owlapi/formats` package specifiers. During 19D1 its sole provisional transport is the exact full-SHA Git commit proved installation-equivalent to the retained alpha tarball; during 19D2 that transport is removed and replaced by the exact npm-registry dependency and integrity. RDF translators/factories are internal. Relative source-tree imports, workspaces/local dependencies, mutable Git, `owlapi/rdf`, unexported deep imports and resolver aliases that bypass package `exports` are forbidden. A static ownership inventory covers source, tests, scripts, configuration, HTML and copied assets before package-only dependencies are removed; an isolated clean install/build/test without the staging tree or ancestor `node_modules` then proves npm hoisting did not hide an undeclared WebVOWL dependency.**
 
 The normative delivery sequence is:
 
@@ -15784,12 +15945,15 @@ dedicated alpha release PR → accepted squash commit
    ↓ manual release.yml dispatch at captured protected-main head
 exact exports/sideEffects/devEngines + publishConfig/next agreement + retained tarball/CycloneDX-1.6/exact checksums
 required Node/Chromium/Firefox/WebKit + JSPM local mirror + locked/lockless graphs + strict publint + material/NOTICE + import-purity/zero-telemetry + isolated WebVOWL candidate gate
+   ↓ exact retained-candidate/full-SHA Git installed-tree + production-graph equivalence
+maintained exact-Git WebVOWL consumer cutover → remove WebVOWL package staging tree → clean consumer/dependency/browser gates → reviewed pushed 19D1 checkpoint
+   ↓ repositories develop independently while npm namespace state may remain EXTERNAL_BLOCKED; Phase 19 remains incomplete
    ↓ separately SSH-signed v0.1.0-alpha.0 tag → release-manual tag acceptance → same-run verification → draft release
    ↓ explicit self-approvable protected npm publication authorization
 owlapi@0.1.0-alpha.0 under next
    ↓ exact npm root-attestation + fresh-registry verification + Draft 2020-12/Ajv release evidence + per-asset immutable GitHub release verification
 exact public-registry WebVOWL consumer cutover
-remove WebVOWL package staging tree
+remove every transitional Git dependency/resolution/allowance
    ↓ WebVOWL deployed-bundle third-party-material/notice reconciliation
    ↓ public API inventory / stability corrections
 schema-validated production-path decision

@@ -34,7 +34,8 @@ jobs:
       - name: Check out the default branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 1
+          # Governance verifies the recorded annotated tag and peeled commit.
+          fetch-depth: 0
           persist-credentials: false
       # Transporting only the reporter source lets the later issues-only job run
       # reviewed logic without checking out the repository or gaining contents access.
