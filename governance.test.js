@@ -294,6 +294,64 @@ describe("owlapi governance artifacts", () => {
     ).toBe(true);
   });
 
+  it("records the exact provisional Task 3 manager closure surface", () => {
+    const registry = readJson("./docs/compatibility/java-api-surface.json");
+    const managerBinding = registry.bindings.find(
+      ({ id }) => id === "model.OWLOntologyManager",
+    );
+
+    expect(managerBinding).toMatchObject({
+      capabilityIds: ["manager.narrow-v1-surface", "loading.import-closure"],
+      compatibility: "ADAPTED",
+      javaType: "org.semanticweb.owlapi.model.OWLOntologyManager",
+      publicErrors: [
+        "DocumentLoadError",
+        "MissingImportError",
+        "OWLOntologyCreationError",
+        "OWLOntologyStateError",
+        "UnparsableOntologyException",
+      ],
+      relationship: "JAVA_ANALOGUE",
+    });
+    expect(managerBinding.supportedMembers).toEqual([
+      "prototype.createOntology",
+      "prototype.getImportsClosure",
+      "prototype.getOWLDataFactory",
+      "prototype.getOntology",
+      "prototype.importsClosure",
+      "prototype.loadOntologyFromOntologyDocument",
+      "prototype.loadOntologyGraphFromOntologyDocument",
+    ]);
+    expect(managerBinding.omittedMembers).toEqual([
+      "Change and progress listeners",
+      "Ontology mutation and transactional change application",
+      "Storer and ontology-factory registration",
+    ]);
+    expect(managerBinding.semanticQualifications).toEqual([
+      "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
+      "importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership.",
+      "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
+    ]);
+    expect(managerBinding.verification).toEqual([
+      "model/model.test.js",
+      "model/owlOntologyManager.integration.test.js",
+      "model/owlOntologyManager.test.js",
+      "test/package-boundary.test.mjs",
+    ]);
+
+    expect(
+      registry.javaTypes.find(
+        ({ javaName }) =>
+          javaName === "org.semanticweb.owlapi.model.OWLOntologyManager",
+      ),
+    ).toMatchObject({
+      disposition: "PUBLIC_MAPPED",
+      omittedMembers: managerBinding.omittedMembers,
+      supportedMembers: managerBinding.supportedMembers,
+      verification: managerBinding.verification,
+    });
+  });
+
   it("pins the approved post-Phase-4 delivery order", () => {
     const matrix = readJson("./docs/compatibility/capabilities.json");
     const byId = new Map(

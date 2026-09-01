@@ -335,6 +335,20 @@ export class OWLOntologyManager {
     return this.#managedOntologyIndex.getOntologyByID(ontologyID);
   }
 
+  importsClosure(ontology) {
+    return this.#managedOntologyIndex.createImportsClosureSnapshot(ontology, {
+      operation: "importsClosure",
+    });
+  }
+
+  getImportsClosure(ontology) {
+    return new Set(
+      this.#managedOntologyIndex.createImportsClosureSnapshot(ontology, {
+        operation: "getImportsClosure",
+      }),
+    );
+  }
+
   async loadOntologyFromOntologyDocument(source, configuration) {
     const result = await this.loadOntologyGraphFromOntologyDocument(
       source,
@@ -382,9 +396,7 @@ export class OWLOntologyManager {
     for (const { context, ontology } of documents) {
       this.#contexts.set(ontology, context);
     }
-    const importsClosure = Object.freeze([
-      ...this.#managedOntologyIndex.getImportsClosure(root),
-    ]);
+    const importsClosure = this.importsClosure(root);
     return Object.freeze({
       documents,
       importsClosure,

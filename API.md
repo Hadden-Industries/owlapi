@@ -1,4 +1,4 @@
-<!-- registry-sha256: 186fec565c561946b590e352bbb16396642c27377ffb54ab1ca3d13daeb3f76b -->
+<!-- registry-sha256: cc4d93fe4bed49868d05a29495c41139b5c09a90d71f20001f05e55d02aa4e99 -->
 
 # owlapi API reference
 
@@ -288,11 +288,11 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
 - Release status: PRERELEASE from 0.1.0-alpha.0
 - Call shape: new OWLOntologyManager(...arguments)
-- Supported members: prototype.createOntology; prototype.getOWLDataFactory; prototype.getOntology; prototype.loadOntologyFromOntologyDocument; prototype.loadOntologyGraphFromOntologyDocument
+- Supported members: prototype.createOntology; prototype.getImportsClosure; prototype.getOWLDataFactory; prototype.getOntology; prototype.importsClosure; prototype.loadOntologyFromOntologyDocument; prototype.loadOntologyGraphFromOntologyDocument
 - Omitted Java members: Change and progress listeners; Ontology mutation and transactional change application; Storer and ontology-factory registration
 - Public errors: DocumentLoadError; MissingImportError; OWLOntologyCreationError; OWLOntologyStateError; UnparsableOntologyException
-- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.
-- Evidence: model/model.test.js, test/package-boundary.test.mjs
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership. Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.
+- Evidence: model/model.test.js, model/owlOntologyManager.integration.test.js, model/owlOntologyManager.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 

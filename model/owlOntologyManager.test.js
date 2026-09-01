@@ -3,6 +3,8 @@ import {
   MissingImportError,
   OWLDataFactory,
   OWLDocumentFormats,
+  OWLOntology,
+  OWLOntologyStateError,
   ParserMismatchError,
   StringDocumentSource,
   UnloadableImportError,
@@ -525,12 +527,18 @@ describe("OWLOntologyManager", () => {
 
     expect(root.getImportsDeclarations().size).toBe(1);
     expect(loadCalls).toBe(2);
-    expect(
-      manager.getOntology(dataFactory.getOWLOntologyID(ontologyIris.middle)),
-    ).toBeDefined();
-    expect(
-      manager.getOntology(dataFactory.getOWLOntologyID(ontologyIris.leaf)),
-    ).toBeDefined();
+    const middle = manager.getOntology(
+      dataFactory.getOWLOntologyID(ontologyIris.middle),
+    );
+    const leaf = manager.getOntology(
+      dataFactory.getOWLOntologyID(ontologyIris.leaf),
+    );
+    expect(middle).toBeDefined();
+    expect(leaf).toBeDefined();
+    expect(manager.importsClosure(root)).toEqual([root, middle, leaf]);
+    expect(manager.getImportsClosure(root)).toEqual(
+      new Set([root, middle, leaf]),
+    );
   });
 
   it("reuses one mapped document for distinct import IRIs", async () => {
@@ -764,4 +772,133 @@ describe("OWLOntologyManager", () => {
       manager.getOntology(dataFactory.getOWLOntologyID(ontologyIri)),
     ).toBeUndefined();
   });
+
+  it("returns immutable and defensive isolated closure snapshots without loading", () => {
+    const dataFactory = new OWLDataFactory();
+    let documentLoaderCalls = 0;
+    let iriMapperCalls = 0;
+    const manager = new OWLOntologyManager({
+      dataFactory,
+      documentLoader: {
+        load() {
+          documentLoaderCalls += 1;
+          throw new Error("closure queries must not load documents");
+        },
+      },
+      iriMappers: [
+        {
+          getDocumentIRI() {
+            iriMapperCalls += 1;
+            throw new Error("closure queries must not map document IRIs");
+          },
+        },
+      ],
+    });
+    const root = manager.createOntology(
+      dataFactory.getOWLOntologyID(IRI.create("urn:closure:isolated")),
+    );
+
+    const frozenArraySnapshot = manager.importsClosure(root);
+    const stableSetSnapshot = manager.getImportsClosure(root);
+    const mutableSetSnapshot = manager.getImportsClosure(root);
+
+    expect(frozenArraySnapshot).toEqual([root]);
+    expect(Object.isFrozen(frozenArraySnapshot)).toBe(true);
+    expect(() => frozenArraySnapshot.push(root)).toThrow(TypeError);
+    expect(stableSetSnapshot).toEqual(new Set([root]));
+
+    mutableSetSnapshot.clear();
+    manager.createOntology(
+      dataFactory.getOWLOntologyID(IRI.create("urn:closure:later-ontology")),
+    );
+
+    expect(frozenArraySnapshot).toEqual([root]);
+    expect([...stableSetSnapshot]).toEqual([root]);
+    expect(manager.getImportsClosure(root)).toEqual(new Set([root]));
+    expect(documentLoaderCalls).toBe(0);
+    expect(iriMapperCalls).toBe(0);
+  });
+
+  it("rejects foreign and unmanaged closure roots with operation details", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const foreignManager = new OWLOntologyManager({ dataFactory });
+    const sharedOntologyID = dataFactory.getOWLOntologyID(
+      IRI.create("urn:closure:structurally-equal"),
+    );
+    const managed = manager.createOntology(sharedOntologyID);
+    const foreign = foreignManager.createOntology(sharedOntologyID);
+    const unmanaged = new OWLOntology({
+      ontologyID: dataFactory.getOWLOntologyID(
+        IRI.create("urn:closure:unmanaged"),
+      ),
+    });
+
+    expect(manager.importsClosure(managed)).toEqual([managed]);
+    for (const operation of ["importsClosure", "getImportsClosure"]) {
+      for (const ontology of [foreign, unmanaged]) {
+        let thrown;
+        try {
+          manager[operation](ontology);
+        } catch (error) {
+          thrown = error;
+        }
+        expect(thrown).toBeInstanceOf(OWLOntologyStateError);
+        expect(thrown).toMatchObject({
+          code: "ONTOLOGY_STATE_INVALID",
+          ontology,
+          operation,
+        });
+      }
+    }
+  });
+
+  it("traverses a closure deeper than the JavaScript call stack without recursion", async () => {
+    const ontologyCount = 12000;
+    const dataFactory = new OWLDataFactory();
+    const ontologyIRIAt = (index) =>
+      IRI.create(`urn:closure:deep:${String(index).padStart(5, "0")}`);
+    const registry = new OWLParserRegistry([
+      new ParserDescriptor({
+        createParser: () => ({
+          parse(source, transaction) {
+            const index = Number(source.getText());
+            transaction.setOntologyID(
+              dataFactory.getOWLOntologyID(ontologyIRIAt(index)),
+            );
+            if (index + 1 < ontologyCount) {
+              transaction.addImportsDeclaration(
+                dataFactory.getOWLImportsDeclaration(ontologyIRIAt(index + 1)),
+              );
+            }
+          },
+        }),
+        detect: match,
+        format: OWLDocumentFormats.FUNCTIONAL,
+        id: "deep-closure-fixture",
+        priority: 0,
+      }),
+    ]);
+    const manager = new OWLOntologyManager({
+      dataFactory,
+      documentLoader: {
+        load(documentIRI) {
+          return documentIRI.value.slice("urn:closure:deep:".length);
+        },
+      },
+      registry,
+    });
+    const root = await manager.loadOntologyFromOntologyDocument("0", {
+      maxImportCount: ontologyCount,
+      maxImportDepth: ontologyCount,
+    });
+
+    const closure = manager.importsClosure(root);
+
+    expect(closure).toHaveLength(ontologyCount);
+    expect(closure[0]).toBe(root);
+    expect(closure.at(-1).getOntologyID().ontologyIRI).toEqual(
+      ontologyIRIAt(ontologyCount - 1),
+    );
+  }, 60000);
 });

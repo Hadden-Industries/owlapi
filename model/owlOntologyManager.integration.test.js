@@ -105,25 +105,212 @@ describe("OWLOntologyManager integration load result", () => {
 
     const result = await manager.loadOntologyGraphFromOntologyDocument(
       new StringDocumentSource(
-        "Ontology(<urn:graph:root> Import(<urn:graph:left>) Import(<urn:graph:right>))",
+        "Ontology(<urn:graph:root> Import(<urn:graph:right>) Import(<urn:graph:left>))",
         { documentIRI: IRI.create("urn:document:root") },
       ),
     );
 
     expect(loadedDocumentIRIs).toEqual([
-      "urn:document:left",
-      "urn:document:shared",
       "urn:document:right",
+      "urn:document:shared",
+      "urn:document:left",
     ]);
-    expect(
-      result.importsClosure.map(
-        (ontology) => ontology.getOntologyID().ontologyIRI.value,
-      ),
-    ).toEqual([
+    const expectedClosureIRIs = [
       "urn:graph:root",
       "urn:graph:left",
       "urn:graph:shared",
       "urn:graph:right",
+    ];
+    const closureSnapshot = manager.importsClosure(result.ontology);
+    const closureSetSnapshot = manager.getImportsClosure(result.ontology);
+    expect(
+      result.importsClosure.map(
+        (ontology) => ontology.getOntologyID().ontologyIRI.value,
+      ),
+    ).toEqual(expectedClosureIRIs);
+    expect(closureSnapshot).toEqual(result.importsClosure);
+    expect([...closureSetSnapshot]).toEqual(result.importsClosure);
+
+    await manager.loadOntologyFromOntologyDocument(
+      new StringDocumentSource("Ontology(<urn:graph:later-unrelated>)", {
+        documentIRI: IRI.create("urn:document:later-unrelated"),
+      }),
+    );
+
+    expect(closureSnapshot).toEqual(result.importsClosure);
+    expect([...closureSetSnapshot]).toEqual(result.importsClosure);
+    expect(Object.isFrozen(closureSnapshot)).toBe(true);
+    expect(() => closureSnapshot.reverse()).toThrow(TypeError);
+    closureSetSnapshot.clear();
+    expect(manager.getImportsClosure(result.ontology)).toEqual(
+      new Set(result.importsClosure),
+    );
+  });
+
+  it("returns a reflexive closure for a self-import without loading", async () => {
+    let documentLoaderCalls = 0;
+    const manager = new OWLOntologyManager({
+      documentLoader: {
+        load() {
+          documentLoaderCalls += 1;
+          throw new Error("a retained self edge must not load");
+        },
+      },
+    });
+
+    const result = await manager.loadOntologyGraphFromOntologyDocument(
+      new StringDocumentSource(
+        "Ontology(<urn:graph:self> Import(<urn:graph:self>))",
+        { documentIRI: IRI.create("urn:document:self") },
+      ),
+    );
+
+    expect(result.importsClosure).toEqual([result.ontology]);
+    expect(manager.importsClosure(result.ontology)).toEqual([result.ontology]);
+    expect(manager.getImportsClosure(result.ontology)).toEqual(
+      new Set([result.ontology]),
+    );
+    expect(documentLoaderCalls).toBe(0);
+  });
+
+  it("traverses a multi-ontology cycle once per retained ontology", async () => {
+    const documentByOntologyIRI = new Map([
+      ["urn:graph:cycle:b", "urn:document:cycle:b"],
+      ["urn:graph:cycle:c", "urn:document:cycle:c"],
+    ]);
+    const ontologyDocumentByIRI = new Map([
+      [
+        "urn:document:cycle:b",
+        "Ontology(<urn:graph:cycle:b> Import(<urn:graph:cycle:c>))",
+      ],
+      [
+        "urn:document:cycle:c",
+        "Ontology(<urn:graph:cycle:c> Import(<urn:graph:cycle:root>))",
+      ],
+    ]);
+    const manager = new OWLOntologyManager({
+      documentLoader: {
+        load(documentIRI) {
+          return new StringDocumentSource(
+            ontologyDocumentByIRI.get(documentIRI.value),
+            { documentIRI },
+          );
+        },
+      },
+      iriMappers: [
+        {
+          getDocumentIRI(ontologyIRI) {
+            return documentByOntologyIRI.get(ontologyIRI.value);
+          },
+        },
+      ],
+    });
+
+    const result = await manager.loadOntologyGraphFromOntologyDocument(
+      new StringDocumentSource(
+        "Ontology(<urn:graph:cycle:root> Import(<urn:graph:cycle:b>))",
+        { documentIRI: IRI.create("urn:document:cycle:root") },
+      ),
+    );
+
+    expect(
+      manager
+        .importsClosure(result.ontology)
+        .map((ontology) => ontology.getOntologyID().ontologyIRI.value),
+    ).toEqual([
+      "urn:graph:cycle:root",
+      "urn:graph:cycle:b",
+      "urn:graph:cycle:c",
+    ]);
+  });
+
+  it("orders named ontology versions by ontology and version IRI", async () => {
+    const ontologyIRI = IRI.create("urn:graph:versioned");
+    const firstVersionIRI = IRI.create("urn:graph:versioned:1");
+    const secondVersionIRI = IRI.create("urn:graph:versioned:2");
+    const documentByVersionIRI = new Map([
+      [firstVersionIRI.value, IRI.create("urn:document:versioned:1")],
+      [secondVersionIRI.value, IRI.create("urn:document:versioned:2")],
+    ]);
+    const manager = new OWLOntologyManager({
+      documentLoader: {
+        load(documentIRI) {
+          const version = documentIRI.value.endsWith(":1") ? "1" : "2";
+          return new StringDocumentSource(
+            `Ontology(<${ontologyIRI.value}> <urn:graph:versioned:${version}>)`,
+            { documentIRI },
+          );
+        },
+      },
+      iriMappers: [
+        {
+          getDocumentIRI(importIRI) {
+            return documentByVersionIRI.get(importIRI.value);
+          },
+        },
+      ],
+    });
+
+    const result = await manager.loadOntologyGraphFromOntologyDocument(
+      `Ontology(<urn:graph:version-root> Import(<${secondVersionIRI.value}>) Import(<${firstVersionIRI.value}>))`,
+    );
+
+    expect(
+      manager.importsClosure(result.ontology).map((ontology) => ({
+        ontologyIRI: ontology.getOntologyID().ontologyIRI?.value,
+        versionIRI: ontology.getOntologyID().versionIRI?.value,
+      })),
+    ).toEqual([
+      { ontologyIRI: "urn:graph:version-root", versionIRI: undefined },
+      {
+        ontologyIRI: ontologyIRI.value,
+        versionIRI: firstVersionIRI.value,
+      },
+      {
+        ontologyIRI: ontologyIRI.value,
+        versionIRI: secondVersionIRI.value,
+      },
+    ]);
+  });
+
+  it("orders anonymous imported ontologies by resolved document IRI", async () => {
+    const firstImportIRI = IRI.create("urn:graph:anonymous:z");
+    const secondImportIRI = IRI.create("urn:graph:anonymous:a");
+    const firstDocumentIRI = IRI.create("urn:document:anonymous:z");
+    const secondDocumentIRI = IRI.create("urn:document:anonymous:a");
+    const documentByImportIRI = new Map([
+      [firstImportIRI.value, firstDocumentIRI],
+      [secondImportIRI.value, secondDocumentIRI],
+    ]);
+    const manager = new OWLOntologyManager({
+      documentLoader: {
+        load(documentIRI) {
+          return new StringDocumentSource("Ontology()", { documentIRI });
+        },
+      },
+      iriMappers: [
+        {
+          getDocumentIRI(importIRI) {
+            return documentByImportIRI.get(importIRI.value);
+          },
+        },
+      ],
+    });
+
+    const result = await manager.loadOntologyGraphFromOntologyDocument(
+      `Ontology(<urn:graph:anonymous-root> Import(<${firstImportIRI.value}>) Import(<${secondImportIRI.value}>))`,
+    );
+    const ontologyByDocumentIRI = new Map(
+      result.documents.map(({ context, ontology }) => [
+        context.documentIRI?.value,
+        ontology,
+      ]),
+    );
+
+    expect(manager.importsClosure(result.ontology)).toEqual([
+      result.ontology,
+      ontologyByDocumentIRI.get(secondDocumentIRI.value),
+      ontologyByDocumentIRI.get(firstDocumentIRI.value),
     ]);
   });
 

@@ -24,6 +24,7 @@ const iriKey = (iri, name) => {
 
 const createEmptyState = () => ({
   directImportsByOntology: new Map(),
+  documentIRIByOntology: new Map(),
   ontologies: new Set(),
   ontologiesByOntologyIRI: new Map(),
   ontologiesByVersionIRI: new Map(),
@@ -96,6 +97,7 @@ const validateOntologyRegistrationAgainstState = (state, registration) => {
 
 const applyOntologyRegistrationToState = (state, registration) => {
   const {
+    documentIRI,
     documentIRIKey,
     ontology,
     ontologyIDKey: structuralOntologyIDKey,
@@ -108,15 +110,18 @@ const applyOntologyRegistrationToState = (state, registration) => {
   addToSetIndex(state.ontologiesByVersionIRI, versionIRIKey, ontology);
   if (documentIRIKey !== undefined) {
     state.ontologyByDocumentIRI.set(documentIRIKey, ontology);
+    if (!state.documentIRIByOntology.has(ontology)) {
+      state.documentIRIByOntology.set(ontology, documentIRI);
+    }
   }
 };
 
-const requireManagedOntology = (state, ontology) => {
+const requireManagedOntology = (state, ontology, operation) => {
   requireOntology(ontology);
   if (!state.ontologies.has(ontology)) {
     throw new OWLOntologyStateError(
-      "The ontology is not managed by this ontology index",
-      { ontology },
+      "The ontology is not managed by this ontology manager",
+      { ontology, operation },
     );
   }
 };
@@ -178,6 +183,51 @@ const getOntologyByDocumentIRIFromStates = (states, documentIRI) => {
     }
   }
   return undefined;
+};
+
+const compareCodeUnitStrings = (left, right) => {
+  if (left < right) {
+    return -1;
+  }
+  return left > right ? 1 : 0;
+};
+
+const ontologyImportOrderKey = (state, ontology, operation) => {
+  const ontologyID = ontology.getOntologyID();
+  const documentIRI = state.documentIRIByOntology.get(ontology);
+  if (ontologyID.ontologyIRI !== undefined) {
+    return Object.freeze([
+      0,
+      ontologyID.ontologyIRI.value,
+      ontologyID.versionIRI?.value ?? "",
+      documentIRI?.value ?? "",
+    ]);
+  }
+  if (documentIRI === undefined) {
+    throw new OWLOntologyStateError(
+      "A managed anonymous imported ontology has no resolved document IRI",
+      { ontology, operation },
+    );
+  }
+  return Object.freeze([1, documentIRI.value]);
+};
+
+const compareOntologyImportOrder = (state, left, right, operation) => {
+  const leftKey = ontologyImportOrderKey(state, left, operation);
+  const rightKey = ontologyImportOrderKey(state, right, operation);
+  const componentCount = Math.max(leftKey.length, rightKey.length);
+  for (let index = 0; index < componentCount; index += 1) {
+    const leftComponent = leftKey[index] ?? "";
+    const rightComponent = rightKey[index] ?? "";
+    const comparison =
+      typeof leftComponent === "number"
+        ? leftComponent - rightComponent
+        : compareCodeUnitStrings(leftComponent, rightComponent);
+    if (comparison !== 0) {
+      return comparison;
+    }
+  }
+  return 0;
 };
 
 class ManagedOntologyLoadSession {
@@ -296,24 +346,28 @@ export class ManagedOntologyIndex {
     return new Set(this.#state.directImportsByOntology.get(ontology) || []);
   }
 
-  getImportsClosure(ontology) {
-    requireManagedOntology(this.#state, ontology);
-    const closure = new Set();
+  createImportsClosureSnapshot(ontology, { operation } = {}) {
+    requireManagedOntology(this.#state, ontology, operation);
+    const closure = [];
+    const visited = new Set([ontology]);
     const pending = [ontology];
     while (pending.length > 0) {
       const current = pending.pop();
-      if (closure.has(current)) {
-        continue;
-      }
-      closure.add(current);
+      closure.push(current);
       const directImports = [
         ...(this.#state.directImportsByOntology.get(current) || []),
-      ];
+      ].sort((left, right) =>
+        compareOntologyImportOrder(this.#state, left, right, operation),
+      );
       for (let index = directImports.length - 1; index >= 0; index -= 1) {
-        pending.push(directImports[index]);
+        const importedOntology = directImports[index];
+        if (!visited.has(importedOntology)) {
+          visited.add(importedOntology);
+          pending.push(importedOntology);
+        }
       }
     }
-    return closure;
+    return Object.freeze(closure);
   }
 
   registerOntology(ontology, options = {}) {

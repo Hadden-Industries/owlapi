@@ -898,8 +898,10 @@
       "callShapes": ["new OWLOntologyManager(...arguments)"],
       "supportedMembers": [
         "prototype.createOntology",
+        "prototype.getImportsClosure",
         "prototype.getOWLDataFactory",
         "prototype.getOntology",
+        "prototype.importsClosure",
         "prototype.loadOntologyFromOntologyDocument",
         "prototype.loadOntologyGraphFromOntologyDocument"
       ],
@@ -916,9 +918,16 @@
         "UnparsableOntologyException"
       ],
       "semanticQualifications": [
-        "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised."
+        "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
+        "importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership.",
+        "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure."
       ],
-      "verification": ["model/model.test.js", "test/package-boundary.test.mjs"],
+      "verification": [
+        "model/model.test.js",
+        "model/owlOntologyManager.integration.test.js",
+        "model/owlOntologyManager.test.js",
+        "test/package-boundary.test.mjs"
+      ],
       "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
@@ -12806,8 +12815,10 @@
       "disposition": "PUBLIC_MAPPED",
       "supportedMembers": [
         "prototype.createOntology",
+        "prototype.getImportsClosure",
         "prototype.getOWLDataFactory",
         "prototype.getOntology",
+        "prototype.importsClosure",
         "prototype.loadOntologyFromOntologyDocument",
         "prototype.loadOntologyGraphFromOntologyDocument"
       ],
@@ -12816,7 +12827,12 @@
         "Ontology mutation and transactional change application",
         "Storer and ontology-factory registration"
       ],
-      "verification": ["model/model.test.js", "test/package-boundary.test.mjs"],
+      "verification": [
+        "model/model.test.js",
+        "model/owlOntologyManager.integration.test.js",
+        "model/owlOntologyManager.test.js",
+        "test/package-boundary.test.mjs"
+      ],
       "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {

@@ -169,6 +169,22 @@ const VERIFICATION_BY_GROUP = Object.freeze({
   model: ["model/model.test.js", "test/package-boundary.test.mjs"],
 });
 
+const VERIFICATION_BY_EXPORT = Object.freeze({
+  OWLOntologyManager: [
+    "model/model.test.js",
+    "model/owlOntologyManager.integration.test.js",
+    "model/owlOntologyManager.test.js",
+    "test/package-boundary.test.mjs",
+  ],
+});
+
+const SEMANTIC_QUALIFICATIONS_BY_EXPORT = Object.freeze({
+  OWLOntologyManager: [
+    "importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership.",
+    "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
+  ],
+});
+
 const OMITTED_MEMBERS = Object.freeze({
   IRI: [
     "Java URI/File overloads and scheme helpers",
@@ -491,6 +507,13 @@ const summaryFor = (exportName, kind, relationship) => {
     : "A JavaScript-specific helper at an approved Java OWLAPI namespace boundary.";
 };
 
+const semanticQualificationsFor = (exportName, javaType) => [
+  javaType
+    ? "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised."
+    : "This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation.",
+  ...(SEMANTIC_QUALIFICATIONS_BY_EXPORT[exportName] ?? []),
+];
+
 const buildBindings = () => {
   const bindings = [];
   for (const namespace of MODULES.filter(({ id }) => id !== "root")) {
@@ -529,12 +552,10 @@ const buildBindings = () => {
         supportedMembers: ownMembers(binding),
         omittedMembers: OMITTED_MEMBERS[exportName] ?? [],
         publicErrors: PUBLIC_ERRORS_BY_EXPORT[exportName] ?? [],
-        semanticQualifications: [
-          javaType
-            ? "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised."
-            : "This helper is public because it makes the supported structural API practical in JavaScript; it is not claimed as a Java type translation.",
-        ],
-        verification: VERIFICATION_BY_GROUP[namespace.id],
+        semanticQualifications: semanticQualificationsFor(exportName, javaType),
+        verification:
+          VERIFICATION_BY_EXPORT[exportName] ??
+          VERIFICATION_BY_GROUP[namespace.id],
         guidance: javaType
           ? "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
           : "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.",

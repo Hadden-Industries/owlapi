@@ -335,7 +335,7 @@
       "id": "PHASE1-MANAGER-ONTOLOGY-MANAGER",
       "path": "model/owlOntologyManager.js",
       "phase": 1,
-      "scope": "narrow manager API, transactional parser attempts, import closure, cancellation, diagnostics, and registration",
+      "scope": "narrow manager API, transactional parser attempts, retained import-closure queries, cancellation, diagnostics, and registration",
       "legacyWebVowlSources": [
         "src/owl2vowl/js/importLoader.js",
         "src/owl2vowl/js/iriResolver.js",
@@ -347,7 +347,7 @@
         "docs/implementation-plan.md sections 9.4, 10.4-10.9, and 11.3-11.5"
       ],
       "compatibilityReferences": [
-        "OWLAPI 5.5.1 public OWLOntologyManager loading API plus pinned black-box reference harness"
+        "OWLAPI 5.5.1 public OWLOntologyManager loading and importsClosure/getImportsClosure APIs plus pinned black-box reference harness"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": ["model/owlOntologyManager.test.js"],
@@ -448,6 +448,20 @@
           ],
           "focusedEvidence": ["internal/parsing/nquads/nQuads.test.js"],
           "decisionRef": "PHASE13-2026-08-22"
+        },
+        {
+          "phase": 22,
+          "scope": "pre-build Java-aligned importsClosure and getImportsClosure manager queries as deterministic retained-graph snapshots, with frozen-array and defensive-Set adaptations and explicit foreign-manager rejection",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/owl2-syntax/#Imports",
+            "docs/ontology-lifecycle-capability-implementation-plan.md sections 3, 3.1, 3.2, and Task 3"
+          ],
+          "focusedEvidence": [
+            "model/owlOntologyManager.test.js",
+            "model/owlOntologyManager.integration.test.js",
+            "governance.test.js"
+          ],
+          "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
         }
       ],
       "thirdPartyDependencies": [],
@@ -479,20 +493,21 @@
       "id": "PHASE1-MANAGER-MANAGED-ONTOLOGY-INDEX",
       "path": "internal/loading/managedOntologyIndex.js",
       "phase": 1,
-      "scope": "transactional managed-ontology membership, full structural identity, ontology-IRI and version-IRI lookup, unique document aliases, and resolved direct-import object edges",
+      "scope": "transactional managed-ontology membership, full structural identity, ontology-IRI and version-IRI lookup, unique document aliases, resolved direct-import object edges, and deterministic cycle-safe closure snapshots",
       "legacyWebVowlSources": [],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/#Ontology_IRI_and_Version_IRI",
         "https://www.w3.org/TR/owl2-syntax/#Imports",
-        "docs/ontology-lifecycle-capability-implementation-plan.md sections 1.1, 2, 3.1, and Task 2"
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 1.1, 2, 3.1, and Tasks 2-3"
       ],
       "compatibilityReferences": [
-        "OWLAPI 5.5.1 OWLOntologyManager and OWLOntologyManagerImpl identity, version, document-IRI, imported-ontology, and direct-import responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+        "OWLAPI 5.5.1 OWLOntologyManager and OWLOntologyManagerImpl identity, version, document-IRI, imported-ontology, direct-import, importsClosure, and getImportsClosure responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
         "internal/loading/managedOntologyIndex.test.js",
+        "model/owlOntologyManager.test.js",
         "model/owlOntologyManager.integration.test.js"
       ],
       "thirdPartyDependencies": [],
