@@ -1,10 +1,23 @@
 import { OWLOntologyStateError } from "../../io/errors.js";
+import { OWLObjectKind } from "../../model/kinds.js";
+import {
+  isCanonicalStructuralObject,
+  OWLStructuralObject,
+} from "../../model/structural.js";
 
-const ontologyIDKey = (ontologyID) => {
-  if (!ontologyID || typeof ontologyID.structuralKey !== "function") {
-    throw new TypeError("ontologyID must be an OWLOntologyID");
+const ontologyIDKey = (ontologyID, name = "ontologyID") => {
+  if (
+    !isCanonicalStructuralObject(ontologyID) ||
+    ontologyID.kind !== OWLObjectKind.ONTOLOGY_ID ||
+    Object.getPrototypeOf(ontologyID) !== OWLStructuralObject.prototype
+  ) {
+    throw new TypeError(`${name} must be an OWLOntologyID`);
   }
-  return ontologyID.structuralKey();
+  try {
+    return OWLStructuralObject.prototype.structuralKey.call(ontologyID);
+  } catch {
+    throw new TypeError(`${name} must be an OWLOntologyID`);
+  }
 };
 
 const requireOntology = (ontology) => {
@@ -23,6 +36,7 @@ const iriKey = (iri, name) => {
 };
 
 const createEmptyState = () => ({
+  deterministicImportOrderKeyByOntology: new Map(),
   directImportsByOntology: new Map(),
   documentIRIByOntology: new Map(),
   ontologies: new Set(),
@@ -30,6 +44,24 @@ const createEmptyState = () => ({
   ontologiesByVersionIRI: new Map(),
   ontologyByDocumentIRI: new Map(),
   ontologyByID: new Map(),
+  revision: 0,
+});
+
+const cloneSetIndex = (index) =>
+  new Map([...index].map(([key, ontologies]) => [key, new Set(ontologies)]));
+
+const cloneManagedOntologyState = (state) => ({
+  deterministicImportOrderKeyByOntology: new Map(
+    state.deterministicImportOrderKeyByOntology,
+  ),
+  directImportsByOntology: cloneSetIndex(state.directImportsByOntology),
+  documentIRIByOntology: new Map(state.documentIRIByOntology),
+  ontologies: new Set(state.ontologies),
+  ontologiesByOntologyIRI: cloneSetIndex(state.ontologiesByOntologyIRI),
+  ontologiesByVersionIRI: cloneSetIndex(state.ontologiesByVersionIRI),
+  ontologyByDocumentIRI: new Map(state.ontologyByDocumentIRI),
+  ontologyByID: new Map(state.ontologyByID),
+  revision: state.revision,
 });
 
 const addToSetIndex = (index, key, ontology) => {
@@ -44,6 +76,52 @@ const addToSetIndex = (index, key, ontology) => {
   matches.add(ontology);
 };
 
+const removeFromSetIndex = (index, key, ontology) => {
+  if (key === undefined) {
+    return;
+  }
+  const matches = index.get(key);
+  if (!matches) {
+    return;
+  }
+  matches.delete(ontology);
+  if (matches.size === 0) {
+    index.delete(key);
+  }
+};
+
+const normalizeOntologyIdentity = (
+  ontology,
+  ontologyID,
+  name = "ontologyID",
+) => ({
+  ontology,
+  ontologyID,
+  ontologyIDKey: ontologyIDKey(ontologyID, name),
+  ontologyIRIKey:
+    ontologyID.ontologyIRI === undefined
+      ? undefined
+      : iriKey(ontologyID.ontologyIRI, "ontology IRI"),
+  versionIRIKey:
+    ontologyID.versionIRI === undefined
+      ? undefined
+      : iriKey(ontologyID.versionIRI, "version IRI"),
+});
+
+const createDeterministicImportOrderKey = (ontologyID, documentIRI) => {
+  if (ontologyID.ontologyIRI !== undefined) {
+    return Object.freeze([
+      0,
+      ontologyID.ontologyIRI.value,
+      ontologyID.versionIRI?.value ?? "",
+      documentIRI?.value ?? "",
+    ]);
+  }
+  return documentIRI === undefined
+    ? undefined
+    : Object.freeze([1, documentIRI.value]);
+};
+
 const normalizeOntologyRegistration = (ontology, { documentIRI } = {}) => {
   requireOntology(ontology);
   const ontologyID = ontology.getOntologyID();
@@ -53,17 +131,7 @@ const normalizeOntologyRegistration = (ontology, { documentIRI } = {}) => {
       documentIRI === undefined
         ? undefined
         : iriKey(documentIRI, "documentIRI"),
-    ontology,
-    ontologyID,
-    ontologyIDKey: ontologyIDKey(ontologyID),
-    ontologyIRIKey:
-      ontologyID.ontologyIRI === undefined
-        ? undefined
-        : iriKey(ontologyID.ontologyIRI, "ontology IRI"),
-    versionIRIKey:
-      ontologyID.versionIRI === undefined
-        ? undefined
-        : iriKey(ontologyID.versionIRI, "version IRI"),
+    ...normalizeOntologyIdentity(ontology, ontologyID),
   };
 };
 
@@ -100,11 +168,22 @@ const applyOntologyRegistrationToState = (state, registration) => {
     documentIRI,
     documentIRIKey,
     ontology,
+    ontologyID,
     ontologyIDKey: structuralOntologyIDKey,
     ontologyIRIKey,
     versionIRIKey,
   } = registration;
   state.ontologies.add(ontology);
+  const deterministicImportOrderKey = createDeterministicImportOrderKey(
+    ontologyID,
+    documentIRI,
+  );
+  if (deterministicImportOrderKey !== undefined) {
+    state.deterministicImportOrderKeyByOntology.set(
+      ontology,
+      deterministicImportOrderKey,
+    );
+  }
   state.ontologyByID.set(structuralOntologyIDKey, ontology);
   addToSetIndex(state.ontologiesByOntologyIRI, ontologyIRIKey, ontology);
   addToSetIndex(state.ontologiesByVersionIRI, versionIRIKey, ontology);
@@ -116,12 +195,12 @@ const applyOntologyRegistrationToState = (state, registration) => {
   }
 };
 
-const requireManagedOntology = (state, ontology, operation) => {
+const requireManagedOntology = (state, ontology, operation, details = {}) => {
   requireOntology(ontology);
   if (!state.ontologies.has(ontology)) {
     throw new OWLOntologyStateError(
       "The ontology is not managed by this ontology manager",
-      { ontology, operation },
+      { ...details, ontology, operation },
     );
   }
 };
@@ -193,23 +272,15 @@ const compareCodeUnitStrings = (left, right) => {
 };
 
 const ontologyImportOrderKey = (state, ontology, operation) => {
-  const ontologyID = ontology.getOntologyID();
-  const documentIRI = state.documentIRIByOntology.get(ontology);
-  if (ontologyID.ontologyIRI !== undefined) {
-    return Object.freeze([
-      0,
-      ontologyID.ontologyIRI.value,
-      ontologyID.versionIRI?.value ?? "",
-      documentIRI?.value ?? "",
-    ]);
-  }
-  if (documentIRI === undefined) {
+  const deterministicImportOrderKey =
+    state.deterministicImportOrderKeyByOntology.get(ontology);
+  if (deterministicImportOrderKey === undefined) {
     throw new OWLOntologyStateError(
       "A managed anonymous imported ontology has no resolved document IRI",
       { ontology, operation },
     );
   }
-  return Object.freeze([1, documentIRI.value]);
+  return deterministicImportOrderKey;
 };
 
 const compareOntologyImportOrder = (state, left, right, operation) => {
@@ -232,13 +303,13 @@ const compareOntologyImportOrder = (state, left, right, operation) => {
 
 class ManagedOntologyLoadSession {
   #closed = false;
-  #committedState;
   #commitStagedChanges;
+  #getCommittedState;
   #stagedOntologyRegistrations = [];
   #stagedState = createEmptyState();
 
-  constructor(committedState, commitStagedChanges) {
-    this.#committedState = committedState;
+  constructor(getCommittedState, commitStagedChanges) {
+    this.#getCommittedState = getCommittedState;
     this.#commitStagedChanges = commitStagedChanges;
   }
 
@@ -254,7 +325,7 @@ class ManagedOntologyLoadSession {
     this.#requireOpen();
     return (
       this.#stagedState.ontologies.has(ontology) ||
-      this.#committedState.ontologies.has(ontology)
+      this.#getCommittedState().ontologies.has(ontology)
     );
   }
 
@@ -263,14 +334,14 @@ class ManagedOntologyLoadSession {
     const key = ontologyIDKey(ontologyID);
     return (
       this.#stagedState.ontologyByID.get(key) ||
-      this.#committedState.ontologyByID.get(key)
+      this.#getCommittedState().ontologyByID.get(key)
     );
   }
 
   getOntologyByIRI(iri) {
     this.#requireOpen();
     return getOntologyByIRIFromStates(
-      [this.#stagedState, this.#committedState],
+      [this.#stagedState, this.#getCommittedState()],
       iri,
     );
   }
@@ -278,7 +349,7 @@ class ManagedOntologyLoadSession {
   getOntologyByDocumentIRI(documentIRI) {
     this.#requireOpen();
     return getOntologyByDocumentIRIFromStates(
-      [this.#stagedState, this.#committedState],
+      [this.#stagedState, this.#getCommittedState()],
       documentIRI,
     );
   }
@@ -287,7 +358,7 @@ class ManagedOntologyLoadSession {
     this.#requireOpen();
     const registration = normalizeOntologyRegistration(ontology, options);
     validateOntologyRegistrationAgainstState(
-      this.#committedState,
+      this.#getCommittedState(),
       registration,
     );
     validateOntologyRegistrationAgainstState(this.#stagedState, registration);
@@ -297,7 +368,7 @@ class ManagedOntologyLoadSession {
 
   stageDirectImport(importingOntology, importedOntology) {
     this.#requireOpen();
-    const visibleStates = [this.#stagedState, this.#committedState];
+    const visibleStates = [this.#stagedState, this.#getCommittedState()];
     requireManagedOntologyInStates(visibleStates, importingOntology);
     requireManagedOntologyInStates(visibleStates, importedOntology);
     applyDirectImportToState(
@@ -315,6 +386,198 @@ class ManagedOntologyLoadSession {
       ontologyRegistrations: this.#stagedOntologyRegistrations,
       stagedState: this.#stagedState,
     });
+  }
+
+  discard() {
+    this.#requireOpen();
+    this.#closed = true;
+  }
+}
+
+class ManagedOntologyIdentityMutation {
+  #baseRevision;
+  #changesState = false;
+  #closed = false;
+  #currentRevision;
+  #originalIdentityStateByOntology = new Map();
+  #publishPreparedState;
+  #stagedState;
+
+  constructor(committedState, currentRevision, publishPreparedState) {
+    this.#baseRevision = committedState.revision;
+    this.#currentRevision = currentRevision;
+    this.#publishPreparedState = publishPreparedState;
+    this.#stagedState = cloneManagedOntologyState(committedState);
+  }
+
+  #requireOpen() {
+    if (this.#closed) {
+      throw new OWLOntologyStateError(
+        "The managed ontology identity mutation is already closed",
+      );
+    }
+  }
+
+  #requireCurrentRevision() {
+    const currentRevision = this.#currentRevision();
+    if (currentRevision !== this.#baseRevision) {
+      throw new OWLOntologyStateError(
+        `The managed ontology identity mutation revision ${this.#baseRevision} does not match current revision ${currentRevision}`,
+        {
+          baseRevision: this.#baseRevision,
+          currentRevision,
+        },
+      );
+    }
+  }
+
+  stageOntologyIDReplacement(
+    ontology,
+    currentOntologyID,
+    newOntologyID,
+    { change, index, operation } = {},
+  ) {
+    this.#requireOpen();
+    requireManagedOntology(this.#stagedState, ontology, operation, {
+      change,
+      index,
+    });
+    const currentIdentity = normalizeOntologyIdentity(
+      ontology,
+      currentOntologyID,
+      "currentOntologyID",
+    );
+    const newIdentity = normalizeOntologyIdentity(
+      ontology,
+      newOntologyID,
+      "newOntologyID",
+    );
+    if (
+      this.#stagedState.ontologyByID.get(currentIdentity.ontologyIDKey) !==
+      ontology
+    ) {
+      throw new OWLOntologyStateError(
+        "The ontology identity mutation does not match the staged current ID",
+        {
+          change,
+          index,
+          ontology,
+          ontologyID: currentOntologyID,
+          operation,
+        },
+      );
+    }
+    if (currentIdentity.ontologyIDKey === newIdentity.ontologyIDKey) {
+      return false;
+    }
+
+    const conflictingOntology = this.#stagedState.ontologyByID.get(
+      newIdentity.ontologyIDKey,
+    );
+    if (conflictingOntology && conflictingOntology !== ontology) {
+      throw new OWLOntologyStateError(
+        "An ontology with this ID already exists",
+        {
+          change,
+          conflictingOntology,
+          index,
+          ontology,
+          ontologyID: newOntologyID,
+          operation,
+        },
+      );
+    }
+
+    if (!this.#originalIdentityStateByOntology.has(ontology)) {
+      this.#originalIdentityStateByOntology.set(
+        ontology,
+        Object.freeze({
+          deterministicImportOrderKey:
+            this.#stagedState.deterministicImportOrderKeyByOntology.get(
+              ontology,
+            ),
+          deterministicImportOrderKeyWasPresent:
+            this.#stagedState.deterministicImportOrderKeyByOntology.has(
+              ontology,
+            ),
+          ontologyIDKey: currentIdentity.ontologyIDKey,
+        }),
+      );
+    }
+
+    this.#stagedState.ontologyByID.delete(currentIdentity.ontologyIDKey);
+    removeFromSetIndex(
+      this.#stagedState.ontologiesByOntologyIRI,
+      currentIdentity.ontologyIRIKey,
+      ontology,
+    );
+    removeFromSetIndex(
+      this.#stagedState.ontologiesByVersionIRI,
+      currentIdentity.versionIRIKey,
+      ontology,
+    );
+    this.#stagedState.ontologyByID.set(newIdentity.ontologyIDKey, ontology);
+    const replacementImportOrderKey = createDeterministicImportOrderKey(
+      newIdentity.ontologyID,
+      this.#stagedState.documentIRIByOntology.get(ontology),
+    );
+    if (replacementImportOrderKey !== undefined) {
+      this.#stagedState.deterministicImportOrderKeyByOntology.set(
+        ontology,
+        replacementImportOrderKey,
+      );
+    }
+    addToSetIndex(
+      this.#stagedState.ontologiesByOntologyIRI,
+      newIdentity.ontologyIRIKey,
+      ontology,
+    );
+    addToSetIndex(
+      this.#stagedState.ontologiesByVersionIRI,
+      newIdentity.versionIRIKey,
+      ontology,
+    );
+    const originalIdentityState =
+      this.#originalIdentityStateByOntology.get(ontology);
+    if (originalIdentityState.ontologyIDKey === newIdentity.ontologyIDKey) {
+      if (originalIdentityState.deterministicImportOrderKeyWasPresent) {
+        this.#stagedState.deterministicImportOrderKeyByOntology.set(
+          ontology,
+          originalIdentityState.deterministicImportOrderKey,
+        );
+      } else {
+        this.#stagedState.deterministicImportOrderKeyByOntology.delete(
+          ontology,
+        );
+      }
+      this.#originalIdentityStateByOntology.delete(ontology);
+    }
+    this.#changesState = this.#originalIdentityStateByOntology.size > 0;
+    return true;
+  }
+
+  preflight() {
+    this.assertPreparedMutationIsCurrent();
+    return Object.freeze({
+      baseRevision: this.#baseRevision,
+      changesState: this.#changesState,
+    });
+  }
+
+  assertPreparedMutationIsCurrent() {
+    this.#requireOpen();
+    this.#requireCurrentRevision();
+  }
+
+  commit() {
+    this.assertPreparedMutationIsCurrent();
+    this.#closed = true;
+    if (!this.#changesState) {
+      return false;
+    }
+    this.#stagedState.revision = this.#baseRevision + 1;
+    this.#publishPreparedState(this.#stagedState);
+    return true;
   }
 
   discard() {
@@ -374,42 +637,57 @@ export class ManagedOntologyIndex {
     const registration = normalizeOntologyRegistration(ontology, options);
     validateOntologyRegistrationAgainstState(this.#state, registration);
     applyOntologyRegistrationToState(this.#state, registration);
+    this.#state.revision += 1;
+  }
+
+  beginOntologyIdentityMutation() {
+    return new ManagedOntologyIdentityMutation(
+      this.#state,
+      () => this.#state.revision,
+      (preparedState) => {
+        this.#state = preparedState;
+      },
+    );
   }
 
   beginLoadSession() {
-    return new ManagedOntologyLoadSession(this.#state, (stagedChanges) => {
-      for (const registration of stagedChanges.ontologyRegistrations) {
-        validateOntologyRegistrationAgainstState(this.#state, registration);
-      }
-      for (const [
-        importingOntology,
-        importedOntologies,
-      ] of stagedChanges.directImportsByOntology) {
-        const statesAfterCommit = [this.#state, stagedChanges.stagedState];
-        requireManagedOntologyInStates(statesAfterCommit, importingOntology);
-        importedOntologies.forEach((importedOntology) =>
-          requireManagedOntologyInStates(statesAfterCommit, importedOntology),
-        );
-      }
-
-      // All operations below are synchronous, non-observable index mutations.
-      // Complete validation above therefore makes the publication atomic
-      // without copying retained ontology or edge buckets.
-      for (const registration of stagedChanges.ontologyRegistrations) {
-        applyOntologyRegistrationToState(this.#state, registration);
-      }
-      for (const [
-        importingOntology,
-        importedOntologies,
-      ] of stagedChanges.directImportsByOntology) {
-        importedOntologies.forEach((importedOntology) => {
-          applyDirectImportToState(
-            this.#state,
-            importingOntology,
-            importedOntology,
+    return new ManagedOntologyLoadSession(
+      () => this.#state,
+      (stagedChanges) => {
+        for (const registration of stagedChanges.ontologyRegistrations) {
+          validateOntologyRegistrationAgainstState(this.#state, registration);
+        }
+        for (const [
+          importingOntology,
+          importedOntologies,
+        ] of stagedChanges.directImportsByOntology) {
+          const statesAfterCommit = [this.#state, stagedChanges.stagedState];
+          requireManagedOntologyInStates(statesAfterCommit, importingOntology);
+          importedOntologies.forEach((importedOntology) =>
+            requireManagedOntologyInStates(statesAfterCommit, importedOntology),
           );
-        });
-      }
-    });
+        }
+
+        // All operations below are synchronous, non-observable index mutations.
+        // Complete validation above therefore makes the publication atomic
+        // without copying retained ontology or edge buckets.
+        for (const registration of stagedChanges.ontologyRegistrations) {
+          applyOntologyRegistrationToState(this.#state, registration);
+        }
+        for (const [
+          importingOntology,
+          importedOntologies,
+        ] of stagedChanges.directImportsByOntology) {
+          importedOntologies.forEach((importedOntology) => {
+            applyDirectImportToState(
+              this.#state,
+              importingOntology,
+              importedOntology,
+            );
+          });
+        }
+        this.#state.revision += 1;
+      },
+    );
   }
 }

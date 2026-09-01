@@ -1,4 +1,4 @@
-<!-- registry-sha256: d7811471d02784abad084d5c3a531d8b363274124b78da40c774612f31023842 -->
+<!-- registry-sha256: 1498a19971870c70891bc3ecb5886968aa43364199d61927c25272cbcc80f8e2 -->
 
 # Java OWLAPI compatibility surface
 
@@ -11,17 +11,17 @@ A mapped name does not promise every Java overload or method. The relationship, 
 ## Inventory summary
 
 - Public package namespaces: 5
-- Public JavaScript bindings: 45
+- Public JavaScript bindings: 47
 - Public Java types inspected: 1013
 - Unclassified Java types: 0
 
 | Java disposition                           | Count |
 | ------------------------------------------ | ----: |
-| PUBLIC_MAPPED                              |    14 |
+| PUBLIC_MAPPED                              |    16 |
 | STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT    |    73 |
 | FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT |     8 |
 | INTERNAL_IMPLEMENTATION_ONLY               |     2 |
-| DEFERRED_NOT_EXPOSED                       |   872 |
+| DEFERRED_NOT_EXPOSED                       |   870 |
 | UNSUPPORTED_BY_DESIGN                      |    44 |
 | UNCLASSIFIED                               |     0 |
 
@@ -32,6 +32,7 @@ A mapped name does not promise every Java overload or method. The relationship, 
 | `OWLManager`                       | owlapi/apibinding | org.semanticweb.owlapi.apibinding.OWLManager                | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
 | `ANNOTATION_VALUE_KINDS`           | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                      | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
 | `AXIOM_KINDS`                      | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                      | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
+| `AddOntologyAnnotation`            | owlapi/model      | org.semanticweb.owlapi.model.AddOntologyAnnotation          | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
 | `CLASS_EXPRESSION_KINDS`           | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                      | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
 | `DATA_PROPERTY_EXPRESSION_KINDS`   | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                      | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
 | `DATA_RANGE_KINDS`                 | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                      | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
@@ -47,6 +48,7 @@ A mapped name does not promise every Java overload or method. The relationship, 
 | `OWLOntologyManager`               | owlapi/model      | org.semanticweb.owlapi.model.OWLOntologyManager             | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
 | `OWLStructuralObject`              | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                      | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
 | `OWL_OBJECT_KINDS`                 | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                      | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
+| `SetOntologyID`                    | owlapi/model      | org.semanticweb.owlapi.model.SetOntologyID                  | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
 | `StructuralSet`                    | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                      | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
 | `dispatchAnnotationValue`          | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx             | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
 | `dispatchAxiom`                    | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx             | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
@@ -101,7 +103,7 @@ Every public Java type is classified in the machine-readable registry. This comp
 | org.semanticweb.owlapi.manchestersyntax.parser       | DEFERRED_NOT_EXPOSED: 11                                                                  |
 | org.semanticweb.owlapi.manchestersyntax.renderer     | DEFERRED_NOT_EXPOSED: 13                                                                  |
 | org.semanticweb.owlapi.metrics                       | DEFERRED_NOT_EXPOSED: 23                                                                  |
-| org.semanticweb.owlapi.model                         | DEFERRED_NOT_EXPOSED: 262; PUBLIC_MAPPED: 10; STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT: 73 |
+| org.semanticweb.owlapi.model                         | DEFERRED_NOT_EXPOSED: 260; PUBLIC_MAPPED: 12; STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT: 73 |
 | org.semanticweb.owlapi.model.axiomproviders          | DEFERRED_NOT_EXPOSED: 11                                                                  |
 | org.semanticweb.owlapi.model.parameters              | DEFERRED_NOT_EXPOSED: 6                                                                   |
 | org.semanticweb.owlapi.model.providers               | DEFERRED_NOT_EXPOSED: 30                                                                  |

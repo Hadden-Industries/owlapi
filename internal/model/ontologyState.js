@@ -270,6 +270,15 @@ export const createImmutableDocumentMetadataSnapshot = (documentMetadata) => {
 
 const mutationDraftRecords = new WeakMap();
 
+const refreshMutationDraftChangeStatus = (record) => {
+  record.changesState =
+    record.directAxioms.size !== record.baseDirectAxiomCount ||
+    record.directOntologyAnnotations.size !==
+      record.baseDirectOntologyAnnotationCount ||
+    record.documentMetadata !== record.baseDocumentMetadata ||
+    record.ontologyID.structuralKey() !== record.baseOntologyID.structuralKey();
+};
+
 class OntologyStateMutationDraft {
   constructor(record) {
     mutationDraftRecords.set(this, record);
@@ -282,8 +291,59 @@ class OntologyStateMutationDraft {
       throw new Error("The ontology state mutation draft is closed");
     }
     const changed = record.directAxioms.add(axiom);
-    record.changesState ||= changed;
+    if (changed) {
+      refreshMutationDraftChangeStatus(record);
+      record.preparedSnapshot = undefined;
+    }
     return changed;
+  }
+
+  getStagedOntologyID() {
+    const record = mutationDraftRecords.get(this);
+    if (!record.open) {
+      throw new Error("The ontology state mutation draft is closed");
+    }
+    return record.ontologyID;
+  }
+
+  stageOntologyIDReplacement(ontologyID) {
+    const record = mutationDraftRecords.get(this);
+    if (!record.open) {
+      throw new Error("The ontology state mutation draft is closed");
+    }
+    const normalizedOntologyID = requireStructuralKind(
+      ontologyID,
+      ONTOLOGY_ID_KINDS,
+      "ontologyID",
+    );
+    if (
+      record.ontologyID.structuralKey() === normalizedOntologyID.structuralKey()
+    ) {
+      return false;
+    }
+    record.ontologyID = normalizedOntologyID;
+    refreshMutationDraftChangeStatus(record);
+    record.preparedSnapshot = undefined;
+    return true;
+  }
+
+  stageOntologyAnnotationAddition(annotation) {
+    const record = mutationDraftRecords.get(this);
+    if (!record.open) {
+      throw new Error("The ontology state mutation draft is closed");
+    }
+    const normalizedAnnotation = requireStructuralKind(
+      annotation,
+      ONTOLOGY_ANNOTATION_KINDS,
+      "annotation",
+    );
+    if (record.directOntologyAnnotations.has(normalizedAnnotation)) {
+      return false;
+    }
+    record.directOntologyAnnotations.add(normalizedAnnotation);
+    refreshMutationDraftChangeStatus(record);
+    record.preparedSnapshot = undefined;
+    return true;
   }
 
   stageDocumentMetadataReplacement(documentMetadata) {
@@ -297,7 +357,8 @@ class OntologyStateMutationDraft {
       return false;
     }
     record.documentMetadata = normalizedMetadata;
-    record.changesState = true;
+    refreshMutationDraftChangeStatus(record);
+    record.preparedSnapshot = undefined;
     return true;
   }
 }
@@ -349,6 +410,10 @@ export class OntologyState {
         this.#authoredImportDeclarations,
       ),
       authorityIdentity: this.#mutationAuthorityIdentity,
+      baseDirectAxiomCount: this.#directAxioms.size,
+      baseDirectOntologyAnnotationCount: this.#directOntologyAnnotations.size,
+      baseDocumentMetadata: this.#documentMetadata,
+      baseOntologyID: this.#ontologyID,
       baseRevision: this.#revision,
       changesState: false,
       directAxioms: this.#directAxioms.clone(),
@@ -358,15 +423,30 @@ export class OntologyState {
       documentMetadata: this.#documentMetadata,
       ontologyID: this.#ontologyID,
       open: true,
+      preparedSnapshot: undefined,
     });
   }
 
   preflightMutation(mutationDraft) {
     const record = this.#requireCurrentDraft(mutationDraft);
+    const preparedSnapshot = record.changesState
+      ? this.#createMutationSnapshot(record)
+      : this.#snapshot;
+    this.#requireCurrentDraft(mutationDraft);
+    record.preparedSnapshot = preparedSnapshot;
     return Object.freeze({
       baseRevision: record.baseRevision,
       changesState: record.changesState,
     });
+  }
+
+  assertPreparedMutationIsCurrent(mutationDraft) {
+    const record = this.#requireCurrentDraft(mutationDraft);
+    if (record.preparedSnapshot === undefined) {
+      throw new Error(
+        "The ontology state mutation draft must be preflighted before publication",
+      );
+    }
   }
 
   commitMutation(mutationDraft) {
@@ -376,13 +456,16 @@ export class OntologyState {
       return false;
     }
 
+    const preparedSnapshot =
+      record.preparedSnapshot ?? this.#createMutationSnapshot(record);
+
     this.#authoredImportDeclarations = record.authoredImportDeclarations;
     this.#directAxioms = record.directAxioms;
     this.#directOntologyAnnotations = record.directOntologyAnnotations;
     this.#documentMetadata = record.documentMetadata;
     this.#ontologyID = record.ontologyID;
     this.#revision += 1;
-    this.#snapshot = this.#createCurrentSnapshot();
+    this.#snapshot = preparedSnapshot;
     return true;
   }
 
@@ -432,6 +515,21 @@ export class OntologyState {
       documentMetadata: this.#documentMetadata,
       ontologyID: this.#ontologyID,
       revision: this.#revision,
+    });
+  }
+
+  #createMutationSnapshot(record) {
+    return Object.freeze({
+      authoredImportDeclarations: Object.freeze([
+        ...record.authoredImportDeclarations,
+      ]),
+      directAxioms: record.directAxioms.toFrozenArray(),
+      directOntologyAnnotations: Object.freeze([
+        ...record.directOntologyAnnotations,
+      ]),
+      documentMetadata: record.documentMetadata,
+      ontologyID: record.ontologyID,
+      revision: record.baseRevision + 1,
     });
   }
 }

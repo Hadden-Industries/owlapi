@@ -1,4 +1,4 @@
-<!-- registry-sha256: d7811471d02784abad084d5c3a531d8b363274124b78da40c774612f31023842 -->
+<!-- registry-sha256: 1498a19971870c70891bc3ecb5886968aa43364199d61927c25272cbcc80f8e2 -->
 
 # owlapi API reference
 
@@ -61,6 +61,24 @@ An immutable vocabulary used to classify supported OWL structural values.
 - Evidence: model/model.test.js, test/package-boundary.test.mjs
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
+
+## `AddOntologyAnnotation`
+
+A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to the documented initial surface.
+
+- Import: `owlapi/model`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.model.AddOntologyAnnotation
+- Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
+- Release status: PRERELEASE from 0.2.0
+- Call shape: new AddOntologyAnnotation(ontology, annotation)
+- Supported members: prototype.getAnnotation; prototype.getOntology
+- Omitted Java members: Change-data, reverse-change, and visitor APIs
+- Public errors: TypeError
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. AddOntologyAnnotation is a frozen immutable record; Java change-data, reverse-change, and visitor APIs remain deliberately unavailable.
+- Evidence: model/ontologyChanges.test.js, model/owlOntologyManager.test.js, test/package-boundary.test.mjs
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
 ## `CLASS_EXPRESSION_KINDS`
 
@@ -288,11 +306,11 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
 - Release status: PRERELEASE from 0.1.0-alpha.0
 - Call shape: new OWLOntologyManager(...arguments)
-- Supported members: prototype.addAxiom; prototype.addAxioms; prototype.createOntology; prototype.getImportsClosure; prototype.getOWLDataFactory; prototype.getOntology; prototype.importsClosure; prototype.loadOntologyFromOntologyDocument; prototype.loadOntologyGraphFromOntologyDocument
-- Omitted Java members: Change and progress listeners; applyChange/applyChanges, axiom removal, and other ontology changes; Storer and ontology-factory registration
+- Supported members: prototype.addAxiom; prototype.addAxioms; prototype.applyChange; prototype.applyChanges; prototype.createOntology; prototype.getImportsClosure; prototype.getOWLDataFactory; prototype.getOntology; prototype.importsClosure; prototype.loadOntologyFromOntologyDocument; prototype.loadOntologyGraphFromOntologyDocument
+- Omitted Java members: Change and progress listeners; AddAxiom/RemoveAxiom change records and axiom removal operations; AddImport/RemoveImport changes; RemoveOntologyAnnotation changes; Storer and ontology-factory registration
 - Public errors: DocumentLoadError; MissingImportError; OWLOntologyCreationError; OWLOntologyStateError; UnparsableOntologyException
-- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership. Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure. addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically.
-- Evidence: internal/model/axiomSemantics.test.js, internal/model/ontologyState.test.js, model/model.test.js, model/owlOntologyManager.integration.test.js, model/owlOntologyManager.test.js, test/package-boundary.test.mjs
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership. Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure. addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically. applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails.
+- Evidence: internal/loading/managedOntologyIndex.test.js, internal/model/axiomSemantics.test.js, internal/model/ontologyState.test.js, model/model.test.js, model/ontologyChanges.test.js, model/owlOntologyManager.integration.test.js, model/owlOntologyManager.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
@@ -331,6 +349,24 @@ An immutable vocabulary used to classify supported OWL structural values.
 - Evidence: model/model.test.js, test/package-boundary.test.mjs
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
+
+## `SetOntologyID`
+
+A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to the documented initial surface.
+
+- Import: `owlapi/model`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.model.SetOntologyID
+- Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
+- Release status: PRERELEASE from 0.2.0
+- Call shape: new SetOntologyID(ontology, ontologyID)
+- Supported members: prototype.getNewOntologyID; prototype.getOntology; prototype.getOriginalOntologyID
+- Omitted Java members: Java IRI constructor overload; Change-data, reverse-change, and visitor APIs
+- Public errors: TypeError
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. SetOntologyID is a frozen immutable record and accepts only OWLOntologyID; Java's IRI constructor overload and change-operation helpers remain deliberately unavailable.
+- Evidence: internal/loading/managedOntologyIndex.test.js, model/ontologyChanges.test.js, model/owlOntologyManager.test.js, test/package-boundary.test.mjs
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
 ## `StructuralSet`
 

@@ -96,6 +96,9 @@
     "nullableString": {
       "oneOf": [{ "$ref": "#/$defs/nonEmptyString" }, { "type": "null" }]
     },
+    "publicReleaseVersion": {
+      "enum": ["0.1.0-alpha.0", "0.1.0", "0.2.0"]
+    },
     "stringArray": {
       "type": "array",
       "minItems": 1,
@@ -170,7 +173,9 @@
         "progress": { "enum": ["NOT_STARTED", "IN_PROGRESS", "COMPLETE"] },
         "exposure": { "const": "PUBLIC" },
         "stability": { "const": "PRERELEASE" },
-        "firstPublicRelease": { "const": "0.1.0-alpha.0" },
+        "firstPublicRelease": {
+          "$ref": "#/$defs/publicReleaseVersion"
+        },
         "publicSpecifier": { "$ref": "#/$defs/nonEmptyString" },
         "sourceModule": { "$ref": "#/$defs/nonEmptyString" },
         "javaPackage": { "$ref": "#/$defs/nonEmptyString" },

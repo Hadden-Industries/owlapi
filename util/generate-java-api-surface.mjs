@@ -85,6 +85,7 @@ const MODULES = Object.freeze([
 ]);
 
 const SOURCE_MODULES = Object.freeze({
+  AddOntologyAnnotation: "model/addOntologyAnnotation.js",
   OWLManager: "apibinding/owlManager.js",
   OWLDocumentFormats: "formats/owlDocumentFormats.js",
   StringDocumentSource: "io/stringDocumentSource.js",
@@ -95,10 +96,12 @@ const SOURCE_MODULES = Object.freeze({
   OWLOntologyLoaderConfiguration: "model/owlOntologyLoaderConfiguration.js",
   OWLOntologyManager: "model/owlOntologyManager.js",
   OWLStructuralObject: "model/structural.js",
+  SetOntologyID: "model/setOntologyID.js",
   StructuralSet: "model/structural.js",
 });
 
 const JAVA_TYPES_BY_EXPORT = Object.freeze({
+  AddOntologyAnnotation: "org.semanticweb.owlapi.model.AddOntologyAnnotation",
   IRI: "org.semanticweb.owlapi.model.IRI",
   OWLAPIError: "org.semanticweb.owlapi.model.OWLRuntimeException",
   OWLDataFactory: "org.semanticweb.owlapi.model.OWLDataFactory",
@@ -112,11 +115,17 @@ const JAVA_TYPES_BY_EXPORT = Object.freeze({
   OWLOntologyManager: "org.semanticweb.owlapi.model.OWLOntologyManager",
   OWLParserError: "org.semanticweb.owlapi.io.OWLParserException",
   OWLStructuralObject: "org.semanticweb.owlapi.model.OWLObject",
+  SetOntologyID: "org.semanticweb.owlapi.model.SetOntologyID",
   StringDocumentSource: "org.semanticweb.owlapi.io.StringDocumentSource",
   UnloadableImportError:
     "org.semanticweb.owlapi.model.UnloadableImportException",
   UnparsableOntologyException:
     "org.semanticweb.owlapi.io.UnparsableOntologyException",
+});
+
+const FIRST_PUBLIC_RELEASE_BY_EXPORT = Object.freeze({
+  AddOntologyAnnotation: "0.2.0",
+  SetOntologyID: "0.2.0",
 });
 
 const CLOSEST_JAVA_AUTHORITY = Object.freeze({
@@ -141,6 +150,7 @@ const CLOSEST_JAVA_AUTHORITY = Object.freeze({
 });
 
 const CAPABILITIES_BY_EXPORT = Object.freeze({
+  AddOntologyAnnotation: ["compatibility.owlapi-5.5.1"],
   OWLManager: ["manager.narrow-v1-surface"],
   OWLOntologyManager: ["manager.narrow-v1-surface", "loading.import-closure"],
   OWLOntologyLoaderConfiguration: [
@@ -157,6 +167,7 @@ const CAPABILITIES_BY_EXPORT = Object.freeze({
   StructuralSet: ["model.structural-equality"],
   OWLObjectKind: ["model.exhaustive-kind-dispatch"],
   StringDocumentSource: ["loading.import-closure"],
+  SetOntologyID: ["compatibility.owlapi-5.5.1"],
 });
 
 const VERIFICATION_BY_GROUP = Object.freeze({
@@ -170,11 +181,24 @@ const VERIFICATION_BY_GROUP = Object.freeze({
 });
 
 const VERIFICATION_BY_EXPORT = Object.freeze({
+  AddOntologyAnnotation: [
+    "model/ontologyChanges.test.js",
+    "model/owlOntologyManager.test.js",
+    "test/package-boundary.test.mjs",
+  ],
   OWLOntologyManager: [
+    "internal/loading/managedOntologyIndex.test.js",
     "internal/model/axiomSemantics.test.js",
     "internal/model/ontologyState.test.js",
     "model/model.test.js",
+    "model/ontologyChanges.test.js",
     "model/owlOntologyManager.integration.test.js",
+    "model/owlOntologyManager.test.js",
+    "test/package-boundary.test.mjs",
+  ],
+  SetOntologyID: [
+    "internal/loading/managedOntologyIndex.test.js",
+    "model/ontologyChanges.test.js",
     "model/owlOntologyManager.test.js",
     "test/package-boundary.test.mjs",
   ],
@@ -185,6 +209,13 @@ const SEMANTIC_QUALIFICATIONS_BY_EXPORT = Object.freeze({
     "importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership.",
     "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
     "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically.",
+    "applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails.",
+  ],
+  AddOntologyAnnotation: [
+    "AddOntologyAnnotation is a frozen immutable record; Java change-data, reverse-change, and visitor APIs remain deliberately unavailable.",
+  ],
+  SetOntologyID: [
+    "SetOntologyID is a frozen immutable record and accepts only OWLOntologyID; Java's IRI constructor overload and change-operation helpers remain deliberately unavailable.",
   ],
 });
 
@@ -216,7 +247,9 @@ const OMITTED_MEMBERS = Object.freeze({
   ],
   OWLOntologyManager: [
     "Change and progress listeners",
-    "applyChange/applyChanges, axiom removal, and other ontology changes",
+    "AddAxiom/RemoveAxiom change records and axiom removal operations",
+    "AddImport/RemoveImport changes",
+    "RemoveOntologyAnnotation changes",
     "Storer and ontology-factory registration",
   ],
   OWLParserError: ["Java exception constructor and line/column overloads"],
@@ -228,6 +261,11 @@ const OMITTED_MEMBERS = Object.freeze({
     "Java Reader/InputStream accessors",
     "Java constructor overloads using OWLDocumentFormat and MIME metadata",
   ],
+  AddOntologyAnnotation: ["Change-data, reverse-change, and visitor APIs"],
+  SetOntologyID: [
+    "Java IRI constructor overload",
+    "Change-data, reverse-change, and visitor APIs",
+  ],
   UnloadableImportError: [
     "Java import-declaration and creation-exception accessors",
   ],
@@ -237,6 +275,7 @@ const OMITTED_MEMBERS = Object.freeze({
 });
 
 const PUBLIC_ERRORS_BY_EXPORT = Object.freeze({
+  AddOntologyAnnotation: ["TypeError"],
   OWLManager: ["OWLOntologyCreationError", "UnparsableOntologyException"],
   OWLOntologyManager: [
     "DocumentLoadError",
@@ -246,6 +285,7 @@ const PUBLIC_ERRORS_BY_EXPORT = Object.freeze({
     "UnparsableOntologyException",
   ],
   StringDocumentSource: ["TypeError"],
+  SetOntologyID: ["TypeError"],
 });
 
 const FORMAT_CAPABILITY_BY_JAVA_TYPE = Object.freeze({
@@ -429,6 +469,12 @@ const callShapesFor = (binding, exportName, publicSpecifier) => {
   if (exportName === "OWLManager") {
     return ["OWLManager.createOWLOntologyManager(options?)"];
   }
+  if (exportName === "AddOntologyAnnotation") {
+    return ["new AddOntologyAnnotation(ontology, annotation)"];
+  }
+  if (exportName === "SetOntologyID") {
+    return ["new SetOntologyID(ontology, ontologyID)"];
+  }
   if (kindOfBinding(binding, exportName) === "CLASS") {
     return [`new ${exportName}(...arguments)`];
   }
@@ -524,7 +570,10 @@ const buildBindings = () => {
       const binding = namespace.module[exportName];
       const javaType = JAVA_TYPES_BY_EXPORT[exportName] ?? null;
       const relationship = javaType
-        ? exportName === "IRI" || exportName.startsWith("OWL")
+        ? exportName === "IRI" ||
+          exportName === "AddOntologyAnnotation" ||
+          exportName === "SetOntologyID" ||
+          exportName.startsWith("OWL")
           ? "JAVA_ANALOGUE"
           : "JS_ADAPTATION"
         : "JS_EXTENSION";
@@ -539,7 +588,8 @@ const buildBindings = () => {
         progress: "COMPLETE",
         exposure: "PUBLIC",
         stability: "PRERELEASE",
-        firstPublicRelease: "0.1.0-alpha.0",
+        firstPublicRelease:
+          FIRST_PUBLIC_RELEASE_BY_EXPORT[exportName] ?? "0.1.0-alpha.0",
         publicSpecifier: namespace.npmSpecifier,
         sourceModule: sourceModuleFor(exportName),
         javaPackage: namespace.javaPackage,

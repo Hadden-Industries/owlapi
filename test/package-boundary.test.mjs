@@ -26,6 +26,7 @@ const EXPECTED_EXPORTS = Object.freeze({
   model: [
     "ANNOTATION_VALUE_KINDS",
     "AXIOM_KINDS",
+    "AddOntologyAnnotation",
     "CLASS_EXPRESSION_KINDS",
     "DATA_PROPERTY_EXPRESSION_KINDS",
     "DATA_RANGE_KINDS",
@@ -41,6 +42,7 @@ const EXPECTED_EXPORTS = Object.freeze({
     "OWLOntologyManager",
     "OWLStructuralObject",
     "OWL_OBJECT_KINDS",
+    "SetOntologyID",
     "StructuralSet",
     "dispatchAnnotationValue",
     "dispatchAxiom",
@@ -98,6 +100,8 @@ test("the export map rejects legacy, metadata, extension, and deep paths", async
     "owlapi/package.json",
     "owlapi/rdf",
     "owlapi/model/index.js",
+    "owlapi/model/addOntologyAnnotation.js",
+    "owlapi/model/setOntologyID.js",
     "owlapi/model/structural.js",
     "owlapi/internal/parsing/parserRegistry.js",
   ]) {

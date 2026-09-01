@@ -57,6 +57,7 @@
         "apibinding.OWLManager",
         "model.ANNOTATION_VALUE_KINDS",
         "model.AXIOM_KINDS",
+        "model.AddOntologyAnnotation",
         "model.CLASS_EXPRESSION_KINDS",
         "model.DATA_PROPERTY_EXPRESSION_KINDS",
         "model.DATA_RANGE_KINDS",
@@ -72,6 +73,7 @@
         "model.OWLOntologyManager",
         "model.OWLStructuralObject",
         "model.OWL_OBJECT_KINDS",
+        "model.SetOntologyID",
         "model.StructuralSet",
         "model.dispatchAnnotationValue",
         "model.dispatchAxiom",
@@ -120,6 +122,7 @@
       "ownedBindingIds": [
         "model.ANNOTATION_VALUE_KINDS",
         "model.AXIOM_KINDS",
+        "model.AddOntologyAnnotation",
         "model.CLASS_EXPRESSION_KINDS",
         "model.DATA_PROPERTY_EXPRESSION_KINDS",
         "model.DATA_RANGE_KINDS",
@@ -135,6 +138,7 @@
         "model.OWLOntologyManager",
         "model.OWLStructuralObject",
         "model.OWL_OBJECT_KINDS",
+        "model.SetOntologyID",
         "model.StructuralSet",
         "model.dispatchAnnotationValue",
         "model.dispatchAxiom",
@@ -315,6 +319,39 @@
       ],
       "verification": ["model/model.test.js", "test/package-boundary.test.mjs"],
       "guidance": "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace."
+    },
+    {
+      "id": "model.AddOntologyAnnotation",
+      "jsExport": "AddOntologyAnnotation",
+      "kind": "CLASS",
+      "summary": "A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to the documented initial surface.",
+      "capabilityIds": ["compatibility.owlapi-5.5.1"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.2.0",
+      "publicSpecifier": "owlapi/model",
+      "sourceModule": "model/addOntologyAnnotation.js",
+      "javaPackage": "org.semanticweb.owlapi.model",
+      "javaType": "org.semanticweb.owlapi.model.AddOntologyAnnotation",
+      "closestJavaAuthority": "org.semanticweb.owlapi.model.AddOntologyAnnotation",
+      "relationship": "JAVA_ANALOGUE",
+      "compatibility": "ADAPTED",
+      "callShapes": ["new AddOntologyAnnotation(ontology, annotation)"],
+      "supportedMembers": ["prototype.getAnnotation", "prototype.getOntology"],
+      "omittedMembers": ["Change-data, reverse-change, and visitor APIs"],
+      "publicErrors": ["TypeError"],
+      "semanticQualifications": [
+        "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
+        "AddOntologyAnnotation is a frozen immutable record; Java change-data, reverse-change, and visitor APIs remain deliberately unavailable."
+      ],
+      "verification": [
+        "model/ontologyChanges.test.js",
+        "model/owlOntologyManager.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "id": "model.CLASS_EXPRESSION_KINDS",
@@ -899,6 +936,8 @@
       "supportedMembers": [
         "prototype.addAxiom",
         "prototype.addAxioms",
+        "prototype.applyChange",
+        "prototype.applyChanges",
         "prototype.createOntology",
         "prototype.getImportsClosure",
         "prototype.getOWLDataFactory",
@@ -909,7 +948,9 @@
       ],
       "omittedMembers": [
         "Change and progress listeners",
-        "applyChange/applyChanges, axiom removal, and other ontology changes",
+        "AddAxiom/RemoveAxiom change records and axiom removal operations",
+        "AddImport/RemoveImport changes",
+        "RemoveOntologyAnnotation changes",
         "Storer and ontology-factory registration"
       ],
       "publicErrors": [
@@ -923,12 +964,15 @@
         "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
         "importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership.",
         "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
-        "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically."
+        "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically.",
+        "applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails."
       ],
       "verification": [
+        "internal/loading/managedOntologyIndex.test.js",
         "internal/model/axiomSemantics.test.js",
         "internal/model/ontologyState.test.js",
         "model/model.test.js",
+        "model/ontologyChanges.test.js",
         "model/owlOntologyManager.integration.test.js",
         "model/owlOntologyManager.test.js",
         "test/package-boundary.test.mjs"
@@ -1074,6 +1118,47 @@
       ],
       "verification": ["model/model.test.js", "test/package-boundary.test.mjs"],
       "guidance": "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace."
+    },
+    {
+      "id": "model.SetOntologyID",
+      "jsExport": "SetOntologyID",
+      "kind": "CLASS",
+      "summary": "A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to the documented initial surface.",
+      "capabilityIds": ["compatibility.owlapi-5.5.1"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.2.0",
+      "publicSpecifier": "owlapi/model",
+      "sourceModule": "model/setOntologyID.js",
+      "javaPackage": "org.semanticweb.owlapi.model",
+      "javaType": "org.semanticweb.owlapi.model.SetOntologyID",
+      "closestJavaAuthority": "org.semanticweb.owlapi.model.SetOntologyID",
+      "relationship": "JAVA_ANALOGUE",
+      "compatibility": "ADAPTED",
+      "callShapes": ["new SetOntologyID(ontology, ontologyID)"],
+      "supportedMembers": [
+        "prototype.getNewOntologyID",
+        "prototype.getOntology",
+        "prototype.getOriginalOntologyID"
+      ],
+      "omittedMembers": [
+        "Java IRI constructor overload",
+        "Change-data, reverse-change, and visitor APIs"
+      ],
+      "publicErrors": ["TypeError"],
+      "semanticQualifications": [
+        "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
+        "SetOntologyID is a frozen immutable record and accepts only OWLOntologyID; Java's IRI constructor overload and change-operation helpers remain deliberately unavailable."
+      ],
+      "verification": [
+        "internal/loading/managedOntologyIndex.test.js",
+        "model/ontologyChanges.test.js",
+        "model/owlOntologyManager.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "id": "model.StructuralSet",
@@ -7069,20 +7154,24 @@
       "javaPackage": "org.semanticweb.owlapi.model",
       "simpleName": "AddOntologyAnnotation",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["compatibility.owlapi-5.5.1"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "AddOntologyAnnotation",
+      "publicSpecifier": "owlapi/model",
+      "sourceModule": "model/addOntologyAnnotation.js",
+      "relationship": "JAVA_ANALOGUE",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": ["prototype.getAnnotation", "prototype.getOntology"],
+      "omittedMembers": ["Change-data, reverse-change, and visitor APIs"],
+      "verification": [
+        "model/ontologyChanges.test.js",
+        "model/owlOntologyManager.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.model.AnnotationChange",
@@ -12821,6 +12910,8 @@
       "supportedMembers": [
         "prototype.addAxiom",
         "prototype.addAxioms",
+        "prototype.applyChange",
+        "prototype.applyChanges",
         "prototype.createOntology",
         "prototype.getImportsClosure",
         "prototype.getOWLDataFactory",
@@ -12831,13 +12922,17 @@
       ],
       "omittedMembers": [
         "Change and progress listeners",
-        "applyChange/applyChanges, axiom removal, and other ontology changes",
+        "AddAxiom/RemoveAxiom change records and axiom removal operations",
+        "AddImport/RemoveImport changes",
+        "RemoveOntologyAnnotation changes",
         "Storer and ontology-factory registration"
       ],
       "verification": [
+        "internal/loading/managedOntologyIndex.test.js",
         "internal/model/axiomSemantics.test.js",
         "internal/model/ontologyState.test.js",
         "model/model.test.js",
+        "model/ontologyChanges.test.js",
         "model/owlOntologyManager.integration.test.js",
         "model/owlOntologyManager.test.js",
         "test/package-boundary.test.mjs"
@@ -14678,20 +14773,32 @@
       "javaPackage": "org.semanticweb.owlapi.model",
       "simpleName": "SetOntologyID",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["compatibility.owlapi-5.5.1"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "SetOntologyID",
+      "publicSpecifier": "owlapi/model",
+      "sourceModule": "model/setOntologyID.js",
+      "relationship": "JAVA_ANALOGUE",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": [
+        "prototype.getNewOntologyID",
+        "prototype.getOntology",
+        "prototype.getOriginalOntologyID"
+      ],
+      "omittedMembers": [
+        "Java IRI constructor overload",
+        "Change-data, reverse-change, and visitor APIs"
+      ],
+      "verification": [
+        "internal/loading/managedOntologyIndex.test.js",
+        "model/ontologyChanges.test.js",
+        "model/owlOntologyManager.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.model.SpecificOntologyChangeBroadcastStrategy",
@@ -22538,14 +22645,14 @@
   ],
   "summary": {
     "namespaceCount": 5,
-    "publicBindingCount": 45,
+    "publicBindingCount": 47,
     "javaTypeCount": 1013,
     "javaDispositionCounts": {
-      "PUBLIC_MAPPED": 14,
+      "PUBLIC_MAPPED": 16,
       "STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT": 73,
       "FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT": 8,
       "INTERNAL_IMPLEMENTATION_ONLY": 2,
-      "DEFERRED_NOT_EXPOSED": 872,
+      "DEFERRED_NOT_EXPOSED": 870,
       "UNSUPPORTED_BY_DESIGN": 44,
       "UNCLASSIFIED": 0
     },

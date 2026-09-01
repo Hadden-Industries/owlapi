@@ -294,7 +294,7 @@ describe("owlapi governance artifacts", () => {
     ).toBe(true);
   });
 
-  it("records the exact provisional Task 4 manager mutation surface", () => {
+  it("records the exact provisional Task 5 ontology-change surface", () => {
     const registry = readJson("./docs/compatibility/java-api-surface.json");
     const managerBinding = registry.bindings.find(
       ({ id }) => id === "model.OWLOntologyManager",
@@ -316,6 +316,8 @@ describe("owlapi governance artifacts", () => {
     expect(managerBinding.supportedMembers).toEqual([
       "prototype.addAxiom",
       "prototype.addAxioms",
+      "prototype.applyChange",
+      "prototype.applyChanges",
       "prototype.createOntology",
       "prototype.getImportsClosure",
       "prototype.getOWLDataFactory",
@@ -326,7 +328,9 @@ describe("owlapi governance artifacts", () => {
     ]);
     expect(managerBinding.omittedMembers).toEqual([
       "Change and progress listeners",
-      "applyChange/applyChanges, axiom removal, and other ontology changes",
+      "AddAxiom/RemoveAxiom change records and axiom removal operations",
+      "AddImport/RemoveImport changes",
+      "RemoveOntologyAnnotation changes",
       "Storer and ontology-factory registration",
     ]);
     expect(managerBinding.semanticQualifications).toEqual([
@@ -334,11 +338,14 @@ describe("owlapi governance artifacts", () => {
       "importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership.",
       "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
       "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically.",
+      "applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails.",
     ]);
     expect(managerBinding.verification).toEqual([
+      "internal/loading/managedOntologyIndex.test.js",
       "internal/model/axiomSemantics.test.js",
       "internal/model/ontologyState.test.js",
       "model/model.test.js",
+      "model/ontologyChanges.test.js",
       "model/owlOntologyManager.integration.test.js",
       "model/owlOntologyManager.test.js",
       "test/package-boundary.test.mjs",
@@ -355,6 +362,49 @@ describe("owlapi governance artifacts", () => {
       supportedMembers: managerBinding.supportedMembers,
       verification: managerBinding.verification,
     });
+
+    const bindingById = new Map(
+      registry.bindings.map((binding) => [binding.id, binding]),
+    );
+    expect(bindingById.get("model.AddOntologyAnnotation")).toMatchObject({
+      callShapes: ["new AddOntologyAnnotation(ontology, annotation)"],
+      capabilityIds: ["compatibility.owlapi-5.5.1"],
+      compatibility: "ADAPTED",
+      firstPublicRelease: "0.2.0",
+      javaType: "org.semanticweb.owlapi.model.AddOntologyAnnotation",
+      omittedMembers: ["Change-data, reverse-change, and visitor APIs"],
+      relationship: "JAVA_ANALOGUE",
+      supportedMembers: ["prototype.getAnnotation", "prototype.getOntology"],
+    });
+    expect(bindingById.get("model.SetOntologyID")).toMatchObject({
+      callShapes: ["new SetOntologyID(ontology, ontologyID)"],
+      capabilityIds: ["compatibility.owlapi-5.5.1"],
+      compatibility: "ADAPTED",
+      firstPublicRelease: "0.2.0",
+      javaType: "org.semanticweb.owlapi.model.SetOntologyID",
+      omittedMembers: [
+        "Java IRI constructor overload",
+        "Change-data, reverse-change, and visitor APIs",
+      ],
+      relationship: "JAVA_ANALOGUE",
+      supportedMembers: [
+        "prototype.getNewOntologyID",
+        "prototype.getOntology",
+        "prototype.getOriginalOntologyID",
+      ],
+    });
+    for (const javaName of [
+      "org.semanticweb.owlapi.model.AddOntologyAnnotation",
+      "org.semanticweb.owlapi.model.SetOntologyID",
+    ]) {
+      expect(
+        registry.javaTypes.find((javaType) => javaType.javaName === javaName),
+      ).toMatchObject({
+        disposition: "PUBLIC_MAPPED",
+        exposure: "PUBLIC",
+        progress: "COMPLETE",
+      });
+    }
   });
 
   it("pins the approved post-Phase-4 delivery order", () => {

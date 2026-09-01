@@ -493,6 +493,23 @@
             "governance.test.js"
           ],
           "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
+        },
+        {
+          "phase": 22,
+          "scope": "pre-build manager-owned applyChange and applyChanges operations for immutable SetOntologyID and AddOntologyAnnotation records, with complete iterable validation, per-ontology prepared snapshots, cloned identity aliases, all-or-nothing publication, and boolean adaptation",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/owl2-syntax/#Ontology_IRI_and_Version_IRI",
+            "https://www.w3.org/TR/owl2-syntax/#Ontology_Annotations",
+            "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, 3.2, and Task 5"
+          ],
+          "focusedEvidence": [
+            "model/ontologyChanges.test.js",
+            "model/owlOntologyManager.test.js",
+            "internal/loading/managedOntologyIndex.test.js",
+            "internal/model/ontologyState.test.js",
+            "governance.test.js"
+          ],
+          "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
         }
       ],
       "thirdPartyDependencies": [],
@@ -541,6 +558,22 @@
         "model/owlOntologyManager.test.js",
         "model/owlOntologyManager.integration.test.js"
       ],
+      "laterPhaseChanges": [
+        {
+          "phase": 22,
+          "scope": "add revision-checked cloned ontology-identity transactions that replace full-ID, ontology-IRI, and version-IRI aliases atomically while retaining document aliases and resolved direct-import object edges",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/owl2-syntax/#Ontology_IRI_and_Version_IRI",
+            "https://www.w3.org/TR/owl2-syntax/#Imports",
+            "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, and Task 5"
+          ],
+          "focusedEvidence": [
+            "internal/loading/managedOntologyIndex.test.js",
+            "model/owlOntologyManager.test.js"
+          ],
+          "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
+        }
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
@@ -572,22 +605,73 @@
       "id": "PHASE22-MODEL-ONTOLOGY-STATE",
       "path": "internal/model/ontologyState.js",
       "phase": 22,
-      "scope": "package-private revisioned ontology state, immutable direct-state snapshots, isolated mutation drafts, side-effect-free preflight, atomic snapshot replacement, and explicit draft discard",
+      "scope": "package-private revisioned ontology state, immutable direct-state snapshots, isolated axiom, identity, annotation, and metadata mutation drafts, prepared side-effect-free preflight snapshots, atomic snapshot replacement, and explicit draft discard",
       "legacyWebVowlSources": [],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
         "https://www.w3.org/TR/owl2-syntax/#Ontologies",
         "https://www.w3.org/TR/owl2-syntax/#Imports",
-        "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, and Task 4"
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, and Tasks 4-5"
       ],
       "compatibilityReferences": [
-        "OWLAPI 5.5.1 OWLOntology, OWLOntologyManager, HasAddAxiom, and HasAddAxioms state and mutation responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+        "OWLAPI 5.5.1 OWLOntology, OWLOntologyManager, HasAddAxiom, HasAddAxioms, HasApplyChange, HasApplyChanges, SetOntologyID, and AddOntologyAnnotation state and mutation responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": [
         "internal/model/ontologyState.test.js",
         "model/model.test.js",
         "model/owlOntologyManager.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-01"
+    },
+    {
+      "id": "PHASE22-MODEL-ADD-ONTOLOGY-ANNOTATION",
+      "path": "model/addOntologyAnnotation.js",
+      "phase": 22,
+      "scope": "frozen Java-shaped AddOntologyAnnotation record with a manager target and structurally validated direct ontology annotation",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/#Ontology_Annotations",
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, 3.2, and Task 5"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 AddOntologyAnnotation(OWLOntology, OWLAnnotation), OWLOntologyChange.getOntology(), and AnnotationChange.getAnnotation() responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "model/ontologyChanges.test.js",
+        "model/owlOntologyManager.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-01"
+    },
+    {
+      "id": "PHASE22-MODEL-SET-ONTOLOGY-ID",
+      "path": "model/setOntologyID.js",
+      "phase": 22,
+      "scope": "frozen Java-shaped SetOntologyID record that captures the target's original full identity and requires an explicit replacement OWLOntologyID",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/#Ontology_IRI_and_Version_IRI",
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, 3.2, and Task 5"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 SetOntologyID(OWLOntology, OWLOntologyID), getOntology(), getOriginalOntologyID(), and getNewOntologyID() responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "model/ontologyChanges.test.js",
+        "internal/loading/managedOntologyIndex.test.js",
+        "model/owlOntologyManager.test.js",
+        "test/package-boundary.test.mjs"
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",

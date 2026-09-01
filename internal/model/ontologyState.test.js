@@ -1,4 +1,9 @@
-import { IRI, OWLDataFactory, OWLObjectKind } from "../../model/index.js";
+import {
+  IRI,
+  OWLDataFactory,
+  OWLObjectKind,
+  StructuralSet,
+} from "../../model/index.js";
 import { createManagerOwnedOWLOntology } from "../../model/owlOntology.js";
 import { rdfDataFactory } from "../rdfjs/environment.js";
 import { OntologyState } from "./ontologyState.js";
@@ -184,6 +189,68 @@ describe("OntologyState", () => {
     });
   });
 
+  it("stages ontology identity and direct annotations as one prepared revision", () => {
+    const state = createState();
+    const replacementOntologyID = dataFactory.getOWLOntologyID(
+      IRI.create("urn:ontology-state:replacement"),
+      IRI.create("urn:ontology-state:replacement:version"),
+    );
+    const addedAnnotation = dataFactory.getOWLAnnotation(
+      dataFactory.getRDFSLabel(),
+      dataFactory.getOWLLiteral("added ontology annotation", "en"),
+    );
+    const structuralDuplicate = dataFactory.getOWLAnnotation(
+      dataFactory.getRDFSLabel(),
+      dataFactory.getOWLLiteral("added ontology annotation", "en"),
+    );
+    const draft = state.createMutationDraft();
+
+    expect(draft.getStagedOntologyID()).toBe(ontologyID);
+    expect(draft.stageOntologyIDReplacement(replacementOntologyID)).toBe(true);
+    expect(draft.getStagedOntologyID()).toBe(replacementOntologyID);
+    expect(draft.stageOntologyAnnotationAddition(addedAnnotation)).toBe(true);
+    expect(draft.stageOntologyAnnotationAddition(structuralDuplicate)).toBe(
+      false,
+    );
+
+    const before = state.createSnapshot();
+    expect(state.preflightMutation(draft)).toEqual({
+      baseRevision: 0,
+      changesState: true,
+    });
+    expect(state.createSnapshot()).toBe(before);
+    expect(state.commitMutation(draft)).toBe(true);
+    expect(state.createSnapshot()).toMatchObject({
+      directAxioms: [initialAxiom],
+      directOntologyAnnotations: [annotation, addedAnnotation],
+      ontologyID: replacementOntologyID,
+      revision: 1,
+    });
+  });
+
+  it("keeps identity, annotations, and revision unchanged when a draft is discarded", () => {
+    const state = createState();
+    const before = state.createSnapshot();
+    const draft = state.createMutationDraft();
+    draft.stageOntologyIDReplacement(
+      dataFactory.getOWLOntologyID(
+        IRI.create("urn:ontology-state:discarded-replacement"),
+      ),
+    );
+    draft.stageOntologyAnnotationAddition(
+      dataFactory.getOWLAnnotation(
+        dataFactory.getRDFSLabel(),
+        dataFactory.getOWLLiteral("discarded annotation"),
+      ),
+    );
+
+    state.preflightMutation(draft);
+    state.discardMutation(draft);
+
+    expect(state.createSnapshot()).toBe(before);
+    expect(state.createSnapshot()).toMatchObject({ revision: 0 });
+  });
+
   it("discards a staged mutation without changing any queryable state", () => {
     const state = createState();
     const before = state.createSnapshot();
@@ -209,6 +276,43 @@ describe("OntologyState", () => {
     expect(() => state.preflightMutation(staleDraft)).toThrow(/revision/i);
     expect(() => state.commitMutation(staleDraft)).toThrow(/revision/i);
     expect(state.createSnapshot()).toBe(beforeRejectedCommit);
+  });
+
+  it("rechecks the revision after preparing a snapshot that permits reentrant code", () => {
+    const state = createState();
+    const outerDraft = state.createMutationDraft();
+    outerDraft.stageOntologyAnnotationAddition(
+      dataFactory.getOWLAnnotation(
+        dataFactory.getRDFSLabel(),
+        dataFactory.getOWLLiteral("outer annotation"),
+      ),
+    );
+    const nestedAxiom = dataFactory.getOWLDeclarationAxiom(classB);
+    const originalIterator = StructuralSet.prototype[Symbol.iterator];
+    let nestedMutationCommitted = false;
+    StructuralSet.prototype[Symbol.iterator] = function reentrantIterator() {
+      if (!nestedMutationCommitted) {
+        nestedMutationCommitted = true;
+        const nestedDraft = state.createMutationDraft();
+        nestedDraft.stageAxiomAddition(nestedAxiom);
+        state.preflightMutation(nestedDraft);
+        state.commitMutation(nestedDraft);
+      }
+      return originalIterator.call(this);
+    };
+
+    try {
+      expect(() => state.preflightMutation(outerDraft)).toThrow(/revision/i);
+    } finally {
+      StructuralSet.prototype[Symbol.iterator] = originalIterator;
+    }
+
+    expect(state.createSnapshot()).toMatchObject({
+      directAxioms: [initialAxiom, nestedAxiom],
+      directOntologyAnnotations: [annotation],
+      revision: 1,
+    });
+    state.discardMutation(outerDraft);
   });
 
   it("validates a staged axiom before any state replacement", () => {

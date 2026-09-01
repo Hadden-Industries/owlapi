@@ -20,6 +20,7 @@ export {
   XmlParseError,
 } from "./io/index.js";
 export {
+  AddOntologyAnnotation,
   ANNOTATION_VALUE_KINDS,
   AXIOM_KINDS,
   CLASS_EXPRESSION_KINDS,
@@ -38,6 +39,7 @@ export {
   OWLOntologyManager,
   OWLStructuralObject,
   StructuralSet,
+  SetOntologyID,
   dispatchAnnotationValue,
   dispatchAxiom,
   dispatchClassExpression,

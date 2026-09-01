@@ -25,12 +25,65 @@ import { rdfXmlParserDescriptor } from "../internal/parsing/rdfxml/descriptor.js
 import { triGParserDescriptor } from "../internal/parsing/trig/descriptor.js";
 import { turtleParserDescriptor } from "../internal/parsing/turtle/descriptor.js";
 import { OWLDataFactory } from "./owlDataFactory.js";
+import { readAddOntologyAnnotationChange } from "./addOntologyAnnotation.js";
 import { createManagerOwnedOWLOntology } from "./owlOntology.js";
 import { OWLOntologyLoaderConfiguration } from "./owlOntologyLoaderConfiguration.js";
+import { readSetOntologyIDChange } from "./setOntologyID.js";
 import { IRI, StructuralSet } from "./structural.js";
 
 const DIAGNOSTIC_SEVERITIES = new Set(["info", "warning"]);
 const SOURCE_LOCATION_FIELDS = ["line", "column", "offset"];
+
+const createUnsupportedOntologyChangeError = (change, index, operation) => {
+  const error = new TypeError(
+    `changes[${index}] must be a supported ontology change`,
+  );
+  error.change = change;
+  error.index = index;
+  error.operation = operation;
+  return error;
+};
+
+const materializeOntologyChanges = (changes, operation) => {
+  if (!changes || typeof changes[Symbol.iterator] !== "function") {
+    const error = new TypeError("changes must be iterable");
+    error.operation = operation;
+    throw error;
+  }
+
+  const materializedChanges = [];
+  let index = 0;
+  for (const change of changes) {
+    const setOntologyID = readSetOntologyIDChange(change);
+    if (setOntologyID) {
+      materializedChanges.push(
+        Object.freeze({
+          change,
+          index,
+          kind: "SET_ONTOLOGY_ID",
+          ...setOntologyID,
+        }),
+      );
+      index += 1;
+      continue;
+    }
+    const addOntologyAnnotation = readAddOntologyAnnotationChange(change);
+    if (addOntologyAnnotation) {
+      materializedChanges.push(
+        Object.freeze({
+          change,
+          index,
+          kind: "ADD_ONTOLOGY_ANNOTATION",
+          ...addOntologyAnnotation,
+        }),
+      );
+      index += 1;
+      continue;
+    }
+    throw createUnsupportedOntologyChangeError(change, index, operation);
+  }
+  return Object.freeze(materializedChanges);
+};
 
 const freezeDiagnostic = (diagnostic) => {
   if (
@@ -344,6 +397,14 @@ export class OWLOntologyManager {
     return this.#addAxiomIterable(ontology, axioms, "addAxioms");
   }
 
+  applyChange(change) {
+    return this.#applyChangeIterable([change], "applyChange");
+  }
+
+  applyChanges(changes) {
+    return this.#applyChangeIterable(changes, "applyChanges");
+  }
+
   importsClosure(ontology) {
     return this.#managedOntologyIndex.createImportsClosureSnapshot(ontology, {
       operation: "importsClosure",
@@ -636,12 +697,109 @@ export class OWLOntologyManager {
     return ontologyState.commitMutation(mutationDraft);
   }
 
-  #requireManagedOntologyState(ontology, operation) {
+  #applyChangeIterable(changes, operation) {
+    const materializedChanges = materializeOntologyChanges(changes, operation);
+    const ontologyStates = new Map();
+    for (const descriptor of materializedChanges) {
+      if (!ontologyStates.has(descriptor.ontology)) {
+        ontologyStates.set(
+          descriptor.ontology,
+          this.#requireManagedOntologyState(descriptor.ontology, operation, {
+            change: descriptor.change,
+            index: descriptor.index,
+          }),
+        );
+      }
+    }
+
+    const identityMutation = materializedChanges.some(
+      ({ kind }) => kind === "SET_ONTOLOGY_ID",
+    )
+      ? this.#managedOntologyIndex.beginOntologyIdentityMutation()
+      : undefined;
+    const ontologyMutations = new Map(
+      [...ontologyStates].map(([ontology, ontologyState]) => [
+        ontology,
+        Object.freeze({
+          mutationDraft: ontologyState.createMutationDraft(),
+          ontologyState,
+        }),
+      ]),
+    );
+
+    let changesState = false;
+    try {
+      for (const descriptor of materializedChanges) {
+        const { mutationDraft } = ontologyMutations.get(descriptor.ontology);
+        if (descriptor.kind === "ADD_ONTOLOGY_ANNOTATION") {
+          mutationDraft.stageOntologyAnnotationAddition(descriptor.annotation);
+          continue;
+        }
+
+        const currentOntologyID = mutationDraft.getStagedOntologyID();
+        mutationDraft.stageOntologyIDReplacement(descriptor.newOntologyID);
+        identityMutation.stageOntologyIDReplacement(
+          descriptor.ontology,
+          currentOntologyID,
+          descriptor.newOntologyID,
+          {
+            change: descriptor.change,
+            index: descriptor.index,
+            operation,
+          },
+        );
+      }
+
+      for (const {
+        mutationDraft,
+        ontologyState,
+      } of ontologyMutations.values()) {
+        const preflight = ontologyState.preflightMutation(mutationDraft);
+        changesState = preflight.changesState || changesState;
+      }
+      if (identityMutation) {
+        const preflight = identityMutation.preflight();
+        changesState = preflight.changesState || changesState;
+      }
+
+      // Snapshot preparation can invoke public structural iterators. Recheck
+      // every participant together after all such observable work, then publish
+      // without another caller-controlled operation between these checks and
+      // the private state swaps below.
+      for (const {
+        mutationDraft,
+        ontologyState,
+      } of ontologyMutations.values()) {
+        ontologyState.assertPreparedMutationIsCurrent(mutationDraft);
+      }
+      identityMutation?.assertPreparedMutationIsCurrent();
+    } catch (error) {
+      for (const {
+        mutationDraft,
+        ontologyState,
+      } of ontologyMutations.values()) {
+        ontologyState.discardMutation(mutationDraft);
+      }
+      identityMutation?.discard();
+      throw error;
+    }
+
+    // All potentially observable validation and snapshot construction has
+    // completed. These commits only swap prepared private state, so no caller
+    // can observe one ontology or alias set without the others.
+    identityMutation?.commit();
+    for (const { mutationDraft, ontologyState } of ontologyMutations.values()) {
+      ontologyState.commitMutation(mutationDraft);
+    }
+    return changesState;
+  }
+
+  #requireManagedOntologyState(ontology, operation, details = {}) {
     const ontologyState = this.#managedOntologyStates.get(ontology);
     if (!this.#managedOntologyIndex.hasOntology(ontology) || !ontologyState) {
       throw new OWLOntologyStateError(
         "The ontology is not managed by this manager",
-        { ontology, operation },
+        { ...details, ontology, operation },
       );
     }
     return ontologyState;
