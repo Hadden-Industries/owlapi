@@ -43,6 +43,7 @@ describe("RdfToOwlTranslator ontology boundary", () => {
 
   it("selects a graph and reconstructs ontology identity, imports, annotations, and declarations", async () => {
     const graph = namedNode("https://example.com/graph");
+    const unselectedGraph = namedNode("https://example.com/unselected-graph");
     const ontology = namedNode("https://example.com/ontology");
     const version = namedNode("https://example.com/ontology/1");
     const imported = namedNode("https://example.com/imported");
@@ -97,6 +98,12 @@ describe("RdfToOwlTranslator ontology boundary", () => {
         namedNode(`${RDF}type`),
         namedNode(`${OWL}NamedIndividual`),
         graph,
+      ),
+      quad(
+        namedNode(`${EX}unselectedSubject`),
+        namedNode(`${EX}unselectedPredicate`),
+        namedNode(`${EX}unselectedObject`),
+        unselectedGraph,
       ),
     );
     const configuration = new OWLOntologyLoaderConfiguration({

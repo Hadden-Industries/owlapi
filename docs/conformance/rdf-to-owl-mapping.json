@@ -695,8 +695,8 @@
       "policy": "A dataset with no owl:Ontology type reconstructs an anonymous ontology, matching the public OWLAPI loading model for headerless RDF documents."
     },
     {
-      "id": "OWL-SIGNIFICANT-UNCONSUMED",
-      "policy": "Strict mode rejects unconsumed OWL-significant triples; compatible mode emits a structured warning rather than silently discarding them."
+      "id": "STRICT-COMPLETE-RECONSTRUCTION",
+      "policy": "Strict mode rejects every unconsumed statement in the graph presented for OWL reconstruction; compatible mode retains its existing recovery, diagnostic, and ignore policy."
     },
     {
       "id": "RDF-1.2-TRIPLE-TERMS",

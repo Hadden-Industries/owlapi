@@ -2514,10 +2514,14 @@ bundle licence and notice review.
       ({ classification }) => classification === "NOT_APPLICABLE",
     );
     expect(rdfToOwlManifest).toMatchObject({
+      compatibleReconstructionSuccessDocumentCount: 2,
+      expectedStrictCompletenessRejectionDocumentCount: 2,
       requiredDocumentCount: 312,
       requiredTestCount: 233,
       runner: "internal/mapping/rdfToOwlTranslator.conformance.test.js",
       sourceTestCount: 338,
+      strictReconstructionSuccessDocumentCount: 308,
+      successfulReconstructionDocumentCount: 310,
     });
     expect(rdfToOwlManifest.entries).toHaveLength(338);
     expect(rdfToOwlRequired).toHaveLength(233);
@@ -2539,6 +2543,54 @@ bundle licence and notice review.
         ({ reasonCategory }) => reasonCategory === "DIFFERENT_SYNTAX",
       ),
     ).toHaveLength(16);
+    expect(rdfToOwlManifest.expectedStrictCompletenessRejections).toEqual([
+      {
+        errorCode: "UNSUPPORTED_CONSTRUCT",
+        governingRules: ["Table 9", "Table 16", "final graph emptiness"],
+        governingSpecification:
+          "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        predicate: "http://example.org/hasAunt",
+        rdfDocument: "rdfXmlConclusionOntology",
+        reasonCategory: "UNDECLARED_ASSERTION_PREDICATE",
+        testId: "New-Feature-ObjectPropertyChain-001",
+      },
+      {
+        errorCode: "UNSUPPORTED_CONSTRUCT",
+        governingRules: ["Table 9", "Table 16", "final graph emptiness"],
+        governingSpecification:
+          "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        predicate: "http://example.org/p",
+        rdfDocument: "rdfXmlConclusionOntology",
+        reasonCategory: "UNDECLARED_ASSERTION_PREDICATE",
+        testId: "New-Feature-ObjectPropertyChain-BJP-003",
+      },
+    ]);
+    expect(
+      rdfToOwlManifest.strictReconstructionSuccessDocumentCount +
+        rdfToOwlManifest.compatibleReconstructionSuccessDocumentCount +
+        rdfToOwlManifest.expectedStrictCompletenessRejectionDocumentCount,
+    ).toBe(rdfToOwlManifest.requiredDocumentCount);
+    const migrationStatus = readFileSync(
+      new URL("./docs/migration/migration-status.md", import.meta.url),
+      "utf8",
+    );
+    const rdfToOwlLesson = readFileSync(
+      new URL("./docs/migration/lessons/004-rdf-to-owl.md", import.meta.url),
+      "utf8",
+    );
+    expect(migrationStatus).toContain(
+      "310/312 reconstructed; 2/2 governed strict rejections",
+    );
+    const normalizedRdfToOwlLesson = rdfToOwlLesson.replace(/\s+/gu, " ");
+    expect(normalizedRdfToOwlLesson).toContain(
+      "A total of 310 reconstruct successfully: strict mode reconstructs 308",
+    );
+    expect(normalizedRdfToOwlLesson).toContain(
+      "OWL 2 reverse-mapping Tables 9 and 16 and the final graph-emptiness condition",
+    );
+    expect(normalizedRdfToOwlLesson).not.toContain(
+      "All 312 documents reconstruct successfully",
+    );
 
     const rdfXmlManifest = byId.get("w3c-rdf-tests.rdfxml");
     const rdfXmlRequired = rdfXmlManifest.entries.filter(
@@ -2745,6 +2797,14 @@ bundle licence and notice review.
       status: "COMPLETE",
     });
     expect(inventory.tables.map(({ table }) => table)).toEqual(expectedTables);
+    expect(inventory.extensionsAndPolicies).toContainEqual({
+      id: "STRICT-COMPLETE-RECONSTRUCTION",
+      policy:
+        "Strict mode rejects every unconsumed statement in the graph presented for OWL reconstruction; compatible mode retains its existing recovery, diagnostic, and ignore policy.",
+    });
+    expect(inventory.extensionsAndPolicies).not.toContainEqual(
+      expect.objectContaining({ id: "OWL-SIGNIFICANT-UNCONSUMED" }),
+    );
     expect(new Set(ruleIds).size).toBe(ruleIds.length);
     for (const table of inventory.tables) {
       expect(table.status).toBe("COMPLETE");

@@ -36,6 +36,11 @@ const OBJECT_ONLY_CHARACTERISTICS = new Set([
 
 const OBJECT_TERM_TYPES = new Set(["BlankNode", "Literal", "NamedNode"]);
 const GRAPH_TERM_TYPES = new Set(["BlankNode", "DefaultGraph", "NamedNode"]);
+const SOURCE_LOCATION_FIELDS = Object.freeze([
+  ["column", 1],
+  ["line", 1],
+  ["offset", 0],
+]);
 const XSD_INTEGER_DATATYPE_BOUNDS = new Map([
   [`${XSD_NAMESPACE}integer`, {}],
   [`${XSD_NAMESPACE}nonPositiveInteger`, { maximum: 0n }],
@@ -136,6 +141,7 @@ const termKey = (term) => {
       term.termType,
       term.value,
       term.language,
+      term.direction ?? "",
       term.datatype?.termType,
       term.datatype?.value,
     ]);
@@ -153,6 +159,120 @@ const quadKey = (quad) =>
 
 const tripleKey = (subject, predicate, object) =>
   JSON.stringify([termKey(subject), termKey(predicate), termKey(object)]);
+
+const rdfTermDescriptor = (term) => {
+  const descriptor = {
+    termType: term.termType,
+    value: term.value,
+  };
+  if (term.termType === "Literal") {
+    descriptor.datatype = Object.freeze({
+      termType: term.datatype.termType,
+      value: term.datatype.value,
+    });
+    if (term.direction) {
+      descriptor.direction = term.direction;
+    }
+    descriptor.language = term.language;
+  }
+  return Object.freeze(descriptor);
+};
+
+const statementCanEnterConfiguredReconstructionGraph = (
+  quad,
+  configuration,
+) => {
+  if (configuration.rdfDatasetGraphPolicy === "defaultGraphOnly") {
+    return quad.graph.termType === "DefaultGraph";
+  }
+  if (configuration.rdfDatasetGraphPolicy === "selectGraph") {
+    return quad.graph.equals(configuration.selectedGraph);
+  }
+  return true;
+};
+
+const shouldCaptureUnconsumedStatementSourceLocations = (quad, configuration) =>
+  configuration.sourceLocations &&
+  (configuration.parsingMode === "strict" || configuration.collectWarnings) &&
+  statementCanEnterConfiguredReconstructionGraph(quad, configuration);
+
+const snapshotQuadSourceLocation = (quad, configuration) => {
+  if (!shouldCaptureUnconsumedStatementSourceLocations(quad, configuration)) {
+    return undefined;
+  }
+  const sourceLocation = quad.sourceLocation;
+  if (!sourceLocation || typeof sourceLocation !== "object") {
+    return undefined;
+  }
+  const snapshot = {};
+  for (const [field, minimum] of SOURCE_LOCATION_FIELDS) {
+    const value = sourceLocation[field];
+    if (Number.isSafeInteger(value) && value >= minimum) {
+      snapshot[field] = value;
+    }
+  }
+  return Object.keys(snapshot).length === 0
+    ? undefined
+    : Object.freeze(snapshot);
+};
+
+const reconstructionInputSourceLocations = async (
+  sourceDataset,
+  sourceLocatedStatements,
+  graphSelection,
+  execution,
+) => {
+  const locationsByTriple = new Map();
+  if (sourceLocatedStatements.length === 0) {
+    return locationsByTriple;
+  }
+
+  const selectedGraphKey = termKey(graphSelection.selectedGraph);
+  const occurrenceCountByTriple = graphSelection.merged ? new Map() : undefined;
+  let observed = 0;
+  for (const statement of sourceLocatedStatements) {
+    if (graphSelection.merged || statement.graphKey === selectedGraphKey) {
+      locationsByTriple.set(statement.tripleKey, statement.sourceLocation);
+      occurrenceCountByTriple?.set(statement.tripleKey, 0);
+    }
+    observed += 1;
+    if (observed % CHECK_INTERVAL === 0) {
+      await execution.cooperate();
+    }
+  }
+  if (!graphSelection.merged || locationsByTriple.size === 0) {
+    execution.check();
+    return locationsByTriple;
+  }
+
+  observed = 0;
+  for (const currentQuad of sourceDataset) {
+    const key = tripleKey(
+      currentQuad.subject,
+      currentQuad.predicate,
+      currentQuad.object,
+    );
+    if (occurrenceCountByTriple.has(key)) {
+      occurrenceCountByTriple.set(key, occurrenceCountByTriple.get(key) + 1);
+    }
+    observed += 1;
+    if (observed % CHECK_INTERVAL === 0) {
+      await execution.cooperate();
+    }
+  }
+  observed = 0;
+  for (const [key, occurrenceCount] of occurrenceCountByTriple) {
+    if (occurrenceCount !== 1) {
+      locationsByTriple.delete(key);
+    }
+    observed += 1;
+    if (observed % CHECK_INTERVAL === 0) {
+      await execution.cooperate();
+    }
+  }
+  execution.check();
+  return locationsByTriple;
+};
 
 const requireTerm = (term, allowedTypes, name) => {
   if (
@@ -341,6 +461,8 @@ class RdfGraphInterpreter {
     OWL_VOCABULARY.topObjectProperty,
   ]);
   #owl1DataRangeNodes = new Set();
+  #selectedGraph;
+  #sourceLocationsByTriple;
   #transaction;
 
   constructor({
@@ -350,6 +472,8 @@ class RdfGraphInterpreter {
     diagnostics,
     documentScope,
     execution,
+    selectedGraph,
+    sourceLocationsByTriple,
     transaction,
   }) {
     this.#configuration = configuration;
@@ -358,6 +482,8 @@ class RdfGraphInterpreter {
     this.#diagnostics = diagnostics;
     this.#documentScope = documentScope;
     this.#execution = execution;
+    this.#selectedGraph = selectedGraph;
+    this.#sourceLocationsByTriple = sourceLocationsByTriple;
     this.#transaction = transaction;
   }
 
@@ -1998,27 +2124,23 @@ class RdfGraphInterpreter {
   async #accountForUnconsumedTriples() {
     let visited = 0;
     for (const currentQuad of this.#dataset) {
-      if (
-        this.#isConsumed(currentQuad) ||
-        !this.#isOwlSignificant(currentQuad)
-      ) {
+      if (this.#isConsumed(currentQuad)) {
+        continue;
+      }
+      if (this.#configuration.parsingMode === "strict") {
+        throw new UnsupportedConstructError(
+          "The RDF graph presented for OWL reconstruction contains an unconsumed statement",
+          this.#unconsumedStatementDetails(currentQuad),
+        );
+      }
+      if (!this.#isOwlSignificant(currentQuad)) {
         continue;
       }
       if (this.#recoverUndeclaredAnnotation(currentQuad)) {
         continue;
       }
-      const details = {
-        object: currentQuad.object.value,
-        predicate: currentQuad.predicate.value,
-        subject: currentQuad.subject.value,
-      };
-      if (this.#configuration.parsingMode === "strict") {
-        throw new UnsupportedConstructError(
-          "The RDF graph contains an unconsumed OWL-significant triple",
-          details,
-        );
-      }
       if (this.#configuration.collectWarnings) {
+        const details = this.#unconsumedStatementDetails(currentQuad);
         this.#diagnostics.push({
           code: "RDF_UNCONSUMED_OWL_TRIPLE",
           message:
@@ -2032,6 +2154,25 @@ class RdfGraphInterpreter {
         await this.#execution.cooperate();
       }
     }
+  }
+
+  #unconsumedStatementDetails(currentQuad) {
+    const sourceLocation = this.#sourceLocationsByTriple.get(
+      tripleKey(currentQuad.subject, currentQuad.predicate, currentQuad.object),
+    );
+    return {
+      graph: this.#selectedGraph.value,
+      object: currentQuad.object.value,
+      predicate: currentQuad.predicate.value,
+      quad: Object.freeze({
+        graph: rdfTermDescriptor(this.#selectedGraph),
+        object: rdfTermDescriptor(currentQuad.object),
+        predicate: rdfTermDescriptor(currentQuad.predicate),
+        subject: rdfTermDescriptor(currentQuad.subject),
+      }),
+      ...(sourceLocation ?? {}),
+      subject: currentQuad.subject.value,
+    };
   }
 
   #isOwlSignificant(currentQuad) {
@@ -3277,9 +3418,27 @@ const validateDataset = async (dataset, configuration, execution) => {
   }
 
   const blankNodes = new Set();
+  const sourceLocatedStatements = [];
   let observed = 0;
   for (const currentQuad of dataset) {
     requireQuad(currentQuad);
+    const sourceLocation = snapshotQuadSourceLocation(
+      currentQuad,
+      configuration,
+    );
+    if (sourceLocation) {
+      sourceLocatedStatements.push(
+        Object.freeze({
+          graphKey: termKey(currentQuad.graph),
+          sourceLocation,
+          tripleKey: tripleKey(
+            currentQuad.subject,
+            currentQuad.predicate,
+            currentQuad.object,
+          ),
+        }),
+      );
+    }
     observed += 1;
     for (const term of [
       currentQuad.subject,
@@ -3305,6 +3464,7 @@ const validateDataset = async (dataset, configuration, execution) => {
     throw new TypeError("dataset.size must equal its iterable quad count");
   }
   execution.check();
+  return Object.freeze(sourceLocatedStatements);
 };
 
 const documentScopeFor = (documentIRI) => {
@@ -3338,13 +3498,23 @@ export class RdfToOwlTranslator {
     const normalizedDocumentIRI =
       effectiveIRI === undefined ? undefined : IRI.create(effectiveIRI);
     const execution = new ExecutionController(normalizedConfiguration);
-    await validateDataset(dataset, normalizedConfiguration, execution);
+    const sourceLocatedStatements = await validateDataset(
+      dataset,
+      normalizedConfiguration,
+      execution,
+    );
     const graphSelection = selectOntologyGraph(
       dataset,
       normalizedConfiguration,
     );
     execution.check();
     const diagnostics = [...graphSelection.diagnostics];
+    const sourceLocationsByTriple = await reconstructionInputSourceLocations(
+      dataset,
+      sourceLocatedStatements,
+      graphSelection,
+      execution,
+    );
 
     const transaction = new OntologyTransaction(
       this.#dataFactory,
@@ -3357,6 +3527,8 @@ export class RdfToOwlTranslator {
       diagnostics,
       documentScope: documentScopeFor(normalizedDocumentIRI),
       execution,
+      selectedGraph: graphSelection.selectedGraph,
+      sourceLocationsByTriple,
       transaction,
     });
     await interpreter.interpret();

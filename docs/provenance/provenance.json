@@ -1226,6 +1226,33 @@
             "internal/mapping/owlToRdfTranslator.roundTrip.test.js"
           ],
           "decisionRef": "PHASE16-2026-08-22"
+        },
+        {
+          "phase": 22,
+          "scope": "require strict RDF-to-OWL reconstruction to reject every unconsumed statement in the graph presented for reconstruction before applying compatible-mode OWL-significance policy; retain exact immutable quad identity and cooperatively captured available source-location evidence in failures and ignored-statement diagnostics; and govern required W3C inputs by explicit successful-reconstruction or expected strict-rejection dispositions",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification",
+            "https://www.w3.org/TR/owl2-conformance/#Document_Conformance",
+            "https://www.w3.org/TR/rdf12-concepts/#section-dataset",
+            "https://rdf.js.org/data-model-spec/",
+            "docs/ontology-lifecycle-capability-implementation-plan.md Task 10"
+          ],
+          "focusedEvidence": [
+            "docs/conformance/classification-manifests.json",
+            "docs/conformance/generated/w3c-owl2-rdf-to-owl.json",
+            "docs/conformance/rdf-to-owl-mapping.json",
+            "docs/migration/lessons/004-rdf-to-owl.md",
+            "docs/migration/migration-status.md",
+            "docs/provenance/third-party-material.json",
+            "docs/provenance/rights-inventory.json",
+            "governance.test.js",
+            "internal/mapping/rdfToOwlTranslator.strictComplete.test.js",
+            "internal/mapping/rdfToOwlTranslator.test.js",
+            "internal/mapping/rdfToOwlTranslator.conformance.test.js",
+            "internal/parsing/trig/trig.test.js",
+            "util/generate-w3c-rdf-to-owl-fixtures.mjs"
+          ],
+          "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
         }
       ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],

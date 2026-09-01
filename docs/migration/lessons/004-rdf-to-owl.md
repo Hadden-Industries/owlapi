@@ -109,14 +109,31 @@ Phase 5 handoff evidence.
 - Finite semantic inventory:
   `docs/owlapi-js/conformance/rdf-to-owl-mapping.json`.
 
-All 312 documents reconstruct successfully. Strict mode handles 310. Two
-premise documents in `New-Feature-Rational-002` and
+All 312 required documents are executed with an explicit, machine-governed
+disposition. A total of 310 reconstruct successfully: strict mode reconstructs
+308, while two premise documents in `New-Feature-Rational-002` and
 `New-Feature-Rational-003` terminate `owl:oneOf` lists at the RDF namespace IRI
-instead of `rdf:nil`. Strict mode rejects both. The declared compatible run
+instead of `rdf:nil` and use the declared compatible recovery. That recovery
 accepts only an unstructured named-IRI terminal, emits exactly one
 `RDF_LIST_NON_NIL_TERMINATOR` warning per document, and reconstructs both list
-literals. The classification manifest records the defect, strict result, Java
-OWLAPI 5.5.1 behavior and runner policy.
+literals.
+
+The two isolated conclusion documents for
+`New-Feature-ObjectPropertyChain-001` and
+`New-Feature-ObjectPropertyChain-BJP-003` instead require exact
+strict-completeness rejections. Each uses an assertion predicate that the
+document does not declare. Under the
+[OWL 2 reverse mapping](https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/),
+Table 9 therefore leaves the predicate's object-property expression undefined,
+Table 16 cannot consume the assertion, and the final graph-emptiness condition
+is not met. The governed outcome records the OWL 2 reverse-mapping Tables 9 and
+16 and the final graph-emptiness condition, the exact predicate, and the typed
+error. Both inputs remain `REQUIRED`: the runner must execute and reject them,
+not silently omit their statements or report successful reconstruction.
+
+The classification manifest records both recovery and rejection dispositions,
+their exact counts, the malformed-list strict result, Java OWLAPI 5.5.1
+behavior, and the runner policy.
 
 The generated fixture pins its generator identity and source hash. The runner
 asserts exact equality between the 233 required manifest entries, their 312 RDF

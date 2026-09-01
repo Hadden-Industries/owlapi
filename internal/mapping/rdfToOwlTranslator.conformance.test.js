@@ -59,6 +59,14 @@ const fixture = JSON.parse(readFileSync(FIXTURE_URL, "utf8"));
 const classifications = JSON.parse(
   readFileSync(CLASSIFICATIONS_URL, "utf8"),
 ).manifests.find(({ id }) => id === "w3c-owl2.rdf-to-owl");
+const expectedStrictCompletenessRejections =
+  classifications.expectedStrictCompletenessRejections ?? [];
+const expectedStrictCompletenessRejectionByDocument = new Map(
+  expectedStrictCompletenessRejections.map((expectation) => [
+    `${expectation.testId}\u0000${expectation.rdfDocument}`,
+    expectation,
+  ]),
+);
 
 describe("pinned W3C OWL 2 RDF-to-OWL mapping documents", () => {
   it("pins, exhaustively classifies, and preconstructs the applicable mapping scope", () => {
@@ -71,9 +79,13 @@ describe("pinned W3C OWL 2 RDF-to-OWL mapping documents", () => {
       sourceSha256: EXPECTED_SOURCE_SHA256,
     });
     expect(classifications).toMatchObject({
+      compatibleReconstructionSuccessDocumentCount: 2,
+      expectedStrictCompletenessRejectionDocumentCount: 2,
       requiredDocumentCount: 312,
       requiredTestCount: 233,
       sourceTestCount: 338,
+      strictReconstructionSuccessDocumentCount: 308,
+      successfulReconstructionDocumentCount: 310,
     });
     expect(classifications.entries).toHaveLength(338);
     expect(
@@ -94,14 +106,35 @@ describe("pinned W3C OWL 2 RDF-to-OWL mapping documents", () => {
         .map(({ caseId, property }) => `${caseId}\u0000${property}`)
         .sort(),
     ).toEqual(requiredDocuments);
+    expect(expectedStrictCompletenessRejections).toHaveLength(2);
+    expect(expectedStrictCompletenessRejectionByDocument.size).toBe(2);
+    expect(
+      expectedStrictCompletenessRejections.every(
+        ({ errorCode, rdfDocument, testId }) =>
+          errorCode === "UNSUPPORTED_CONSTRUCT" &&
+          requiredDocuments.includes(`${testId}\u0000${rdfDocument}`),
+      ),
+    ).toBe(true);
   });
 
   it.each(fixture.documents)(
-    "reconstructs $caseId / $property from a constructed DatasetCore",
+    "$caseId / $property satisfies its complete-reconstruction disposition",
     async (document) => {
-      const sourceDefect = COMPATIBLE_SOURCE_DEFECTS.has(
-        `${document.caseId}\u0000${document.property}`,
-      );
+      const documentKey = `${document.caseId}\u0000${document.property}`;
+      const strictCompletenessExpectation =
+        expectedStrictCompletenessRejectionByDocument.get(documentKey);
+      if (strictCompletenessExpectation) {
+        await expect(
+          new RdfToOwlTranslator().translate(constructDataset(document), {
+            documentIRI: IRI.create(document.baseIRI),
+          }),
+        ).rejects.toMatchObject({
+          code: strictCompletenessExpectation.errorCode,
+          predicate: strictCompletenessExpectation.predicate,
+        });
+        return;
+      }
+      const sourceDefect = COMPATIBLE_SOURCE_DEFECTS.has(documentKey);
       const result = await new RdfToOwlTranslator().translate(
         constructDataset(document),
         {
@@ -125,4 +158,47 @@ describe("pinned W3C OWL 2 RDF-to-OWL mapping documents", () => {
       );
     },
   );
+});
+
+describe("strict RDF completeness regressions", () => {
+  it("rejects the Universal Ontology ignored-RDF-statement shape", async () => {
+    const rdfType = rdfDataFactory.namedNode(
+      "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+    );
+    const owlOntology = rdfDataFactory.namedNode(
+      "http://www.w3.org/2002/07/owl#Ontology",
+    );
+    const ontology = rdfDataFactory.namedNode(
+      "https://example.com/universal/reference-data/ontology",
+    );
+    const ignoredPredicate = rdfDataFactory.namedNode(
+      "https://example.com/universal/reference-data/ignored-statement",
+    );
+    const dataset = rdfDatasetFactory.dataset([
+      rdfDataFactory.quad(ontology, rdfType, owlOntology),
+      rdfDataFactory.quad(
+        ontology,
+        ignoredPredicate,
+        rdfDataFactory.literal("must not disappear in strict mode"),
+      ),
+    ]);
+
+    await expect(
+      new RdfToOwlTranslator().translate(dataset),
+    ).rejects.toMatchObject({
+      code: "UNSUPPORTED_CONSTRUCT",
+      graph: "",
+      predicate: ignoredPredicate.value,
+      quad: {
+        graph: {
+          termType: "DefaultGraph",
+          value: "",
+        },
+        predicate: {
+          termType: "NamedNode",
+          value: ignoredPredicate.value,
+        },
+      },
+    });
+  });
 });

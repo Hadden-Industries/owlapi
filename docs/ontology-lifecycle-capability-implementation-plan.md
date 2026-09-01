@@ -136,6 +136,7 @@ Every task must preserve these rules:
   forbidden-export assertions, WebVOWL evidence, and Git ancestry.
 - The only release coordinate authorized by the consumer contract is exact `0.2.0`. A conflicting release history is a blocker requiring a coordinated contract change.
 - Do not add a materialize, collapse, catalog, network, retry, or atomic-publication convenience API. Universal Ontology owns those policies and composes the standard APIs.
+- Use authoritative tools to execute and validate their own formats. Write repository code only for lifecycle, atomicity, identity, comparison, and integration invariants those tools cannot know; do not duplicate an available authoritative parser, generator, schema validator, package manager, Java runtime, or Java OWLAPI execution path.
 - Preserve the current public subpaths. The only new subpath is `owlapi/util`, because it maps to Java OWLAPI's `org.semanticweb.owlapi.util` package.
 - Never export the existing development scripts in repository `util/`. The package allowlist must name only the three production binding files introduced by Task 6.
 - Keep ontology instances externally immutable. Mutations must be manager-owned, validated, atomic, and reflected in subsequent direct queries, closure queries, and saves.
@@ -850,6 +851,17 @@ Emit complete IRIs for this release; correctness and reproducibility never depen
 - Modify: `internal/mapping/rdfToOwlTranslator.test.js`
 - Modify: `internal/mapping/rdfToOwlTranslator.conformance.test.js`
 - Create: `internal/mapping/rdfToOwlTranslator.strictComplete.test.js`
+- Modify: `internal/parsing/trig/trig.test.js`
+- Modify: `docs/conformance/classification-manifests.json`
+- Regenerate: `docs/conformance/generated/w3c-owl2-rdf-to-owl.json`
+- Modify: `docs/conformance/rdf-to-owl-mapping.json`
+- Modify: `docs/migration/migration-status.md`
+- Modify: `docs/migration/lessons/004-rdf-to-owl.md`
+- Modify: `docs/provenance/provenance.json`
+- Regenerate and review: `docs/provenance/third-party-material.json`
+- Rebind and review: `docs/provenance/rights-inventory.json`
+- Modify: `governance.test.js`
+- Modify: `util/generate-w3c-rdf-to-owl-fixtures.mjs`
 - Modify: `docs/compatibility/expected-differences.json` only if a previously documented compatible-mode diagnostic needs clarification
 
 **Steps**
@@ -858,14 +870,15 @@ Emit complete IRIs for this release; correctness and reproducibility never depen
 2. Add paired compatible-mode tests to preserve the deliberately non-fatal diagnostic policy where the current compatibility contract allows it. The result must identify every ignored quad by graph, subject, predicate, object, and source location when available.
 3. Move the strict unconsumed-quad check ahead of the current `#isOwlSignificant` filtering. Treat parser-consumed syntax scaffolding as consumed at the point that reconstruction uses it; do not create a vocabulary allowlist that silently discards statements.
 4. Keep selected-graph policy separate: graph selection decides which graph enters reconstruction, while strict completeness decides whether every statement in that selected input was consumed. Dataset ambiguity remains its existing typed error.
-5. Run the entire RDF mapping suite because consumption accounting crosses many constructors:
+5. Reconcile every mandatory conformance input whose former success depended on a discarded statement. Keep applicable inputs `REQUIRED`, but record an exact machine-readable successful-reconstruction or expected strict-rejection disposition, require the runner to assert that disposition, and align current status text with the governed counts. Regenerate the W3C fixtures with their authoritative generator; then regenerate the derived third-party-material inventory and rebind the package rights inventory rather than hand-editing tool-owned facts.
+6. Run the entire RDF mapping suite because consumption accounting crosses many constructors:
 
    ```powershell
    npm test -- --runInBand internal/mapping/rdfToOwlTranslator.strictComplete.test.js internal/mapping/rdfToOwlTranslator.test.js internal/mapping/rdfToOwlTranslator.conformance.test.js internal/mapping/rdfToOwlTranslator.axioms.test.js internal/mapping/rdfToOwlTranslator.expressions.test.js
    npm run lint:files -- internal/mapping/rdfToOwlTranslator.js internal/mapping/rdfToOwlTranslator.strictComplete.test.js
    ```
 
-6. Request a checkpoint. Include a regression assertion that the Universal Ontology “ignored RDF statement” fixture now fails in strict mode.
+7. Request a checkpoint. Include a regression assertion that the Universal Ontology “ignored RDF statement” fixture now fails in strict mode.
 
 ### Task 11: Implement a standards-conforming RDF/XML graph writer
 
