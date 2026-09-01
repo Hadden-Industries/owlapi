@@ -22,7 +22,8 @@
     "./apibinding": "./apibinding/index.js",
     "./model": "./model/index.js",
     "./io": "./io/index.js",
-    "./formats": "./formats/index.js"
+    "./formats": "./formats/index.js",
+    "./util": "./util/index.js"
   },
   "files": [
     "index.js",
@@ -30,6 +31,9 @@
     "model/",
     "io/",
     "formats/",
+    "util/index.js",
+    "util/owlOntologyImportsClosureSetProvider.js",
+    "util/owlOntologyMerger.js",
     "internal/",
     "README.md",
     "API.md",

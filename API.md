@@ -1,4 +1,4 @@
-<!-- registry-sha256: 1498a19971870c70891bc3ecb5886968aa43364199d61927c25272cbcc80f8e2 -->
+<!-- registry-sha256: 5fcaf1e0ae5bf8d4193bbbd0ae9b38d8132223524a41aa15e99e846b5f52f428 -->
 
 # owlapi API reference
 
@@ -6,7 +6,7 @@ This reference is generated from the authoritative compatibility registry for `o
 
 This is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project; Java names identify compatibility authorities, not organizational continuity or complete parity.
 
-The package exposes one convenience aggregate and four Java-recognizable namespace entry points. Import from declared package specifiers only; paths below `internal/` are intentionally outside the public contract.
+The package exposes one convenience aggregate and 5 Java-recognizable namespace entry points. Import from declared package specifiers only; paths below `internal/` are intentionally outside the public contract.
 
 ## `OWLManager`
 
@@ -853,3 +853,39 @@ Immutable identities for every ontology document format supported by the initial
 - Evidence: model/model.test.js, test/package-boundary.test.mjs
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
+
+## `OWLOntologyImportsClosureSetProvider`
+
+A constructor-time imports-closure snapshot provider with defensive JavaScript Set results.
+
+- Import: `owlapi/util`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider
+- Relationship: JS_ADAPTATION; compatibility: ADAPTED
+- Release status: PRERELEASE from 0.2.0
+- Call shape: new OWLOntologyImportsClosureSetProvider(manager, rootOntology)
+- Supported members: prototype.ontologies
+- Omitted Java members: none recorded
+- Public errors: OWLOntologyStateError; TypeError
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. ontologies returns a fresh defensive JavaScript Set instead of Java's Stream<OWLOntology>. The imports-closure membership is captured at construction instead of remaining a live Java view.
+- Evidence: util/owlOntologyImportsClosureSetProvider.test.js, test/package-boundary.test.mjs, test/installed-package-smoke.mjs, test/consumers/browser/browser-consumers.playwright.js
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
+
+## `OWLOntologyMerger`
+
+A Java-shaped ontology merger that materializes the structural union of supplied direct axioms.
+
+- Import: `owlapi/util`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.util.OWLOntologyMerger
+- Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
+- Release status: PRERELEASE from 0.2.0
+- Call shape: new OWLOntologyMerger(provider); new OWLOntologyMerger(provider, mergeOnlyLogicalAxioms)
+- Supported members: prototype.createMergedOntology
+- Omitted Java members: OWLAxiomFilter constructor overload and passes(axiom) surface
+- Public errors: OWLOntologyStateError; TypeError
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. createMergedOntology builds a structural set union from each supplied ontology's direct axioms before creating the target, then mutates the target only through public manager methods. The optional boolean constructor form selects Java-compatible logical-axiom filtering; the OWLAxiomFilter constructor remains unavailable. An omitted ontologyIRI creates an anonymous target; a supplied value must be an IRI.
+- Evidence: util/owlOntologyMerger.test.js, test/package-boundary.test.mjs, test/installed-package-smoke.mjs, test/consumers/browser/browser-consumers.playwright.js
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.

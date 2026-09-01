@@ -124,9 +124,9 @@ const listProductionModules = (directory, prefix) =>
     .sort();
 
 // Index modules are public facades rather than independent implementations.
-// Enumerating only the five public namespaces and the private implementation
-// root also prevents installed dependencies and repository tooling from being
-// mistaken for governed package source.
+// Enumerating the five directory-wide production roots plus the exact
+// provisional util implementations prevents repository-only util tooling from
+// being mistaken for governed package source.
 const PRODUCTION_MODULE_ROOTS = [
   ["apibinding", "apibinding"],
   ["formats", "formats"],
@@ -135,10 +135,21 @@ const PRODUCTION_MODULE_ROOTS = [
   ["model", "model"],
 ];
 
+const PROVISIONAL_PRODUCTION_MODULES = [
+  "util/owlOntologyImportsClosureSetProvider.js",
+  "util/owlOntologyMerger.js",
+];
+
 const currentProductionModules = () =>
-  PRODUCTION_MODULE_ROOTS.flatMap(([directory, prefix]) =>
-    listProductionModules(new URL(`./${directory}/`, import.meta.url), prefix),
-  ).sort();
+  [
+    ...PRODUCTION_MODULE_ROOTS.flatMap(([directory, prefix]) =>
+      listProductionModules(
+        new URL(`./${directory}/`, import.meta.url),
+        prefix,
+      ),
+    ),
+    ...PROVISIONAL_PRODUCTION_MODULES,
+  ].sort();
 
 describe("owlapi governance artifacts", () => {
   it("classifies every capability exactly once with a normative status", () => {
@@ -403,6 +414,115 @@ describe("owlapi governance artifacts", () => {
         disposition: "PUBLIC_MAPPED",
         exposure: "PUBLIC",
         progress: "COMPLETE",
+      });
+    }
+  });
+
+  it("records the exact provisional Task 6 util surface and packlist allowlist", () => {
+    const packageManifest = readJson("./package.json");
+    const registry = readJson("./docs/compatibility/java-api-surface.json");
+    const utilNamespace = registry.namespaces.find(({ id }) => id === "util");
+    const utilBindings = registry.bindings.filter(
+      ({ publicSpecifier }) => publicSpecifier === "owlapi/util",
+    );
+
+    expect(packageManifest.exports["./util"]).toBe("./util/index.js");
+    expect(
+      packageManifest.files
+        .filter((path) => path.startsWith("util/"))
+        .sort(compareCodeUnits),
+    ).toEqual([
+      "util/index.js",
+      "util/owlOntologyImportsClosureSetProvider.js",
+      "util/owlOntologyMerger.js",
+    ]);
+    expect(packageManifest.files).not.toContain("util/");
+    expect(utilNamespace).toEqual({
+      id: "util",
+      javaPackage: "org.semanticweb.owlapi.util",
+      npmSpecifier: "owlapi/util",
+      exposure: "PUBLIC",
+      firstPublicRelease: "0.2.0",
+      rationale:
+        "Mirrors the Java OWLAPI util namespace for the exact approved closure provider and ontology merger entry points.",
+      ownedBindingIds: [
+        "util.OWLOntologyImportsClosureSetProvider",
+        "util.OWLOntologyMerger",
+      ],
+    });
+    expect(utilBindings.map(({ id }) => id)).toEqual(
+      utilNamespace.ownedBindingIds,
+    );
+
+    const bindingById = new Map(
+      utilBindings.map((binding) => [binding.id, binding]),
+    );
+    expect(
+      bindingById.get("util.OWLOntologyImportsClosureSetProvider"),
+    ).toMatchObject({
+      callShapes: [
+        "new OWLOntologyImportsClosureSetProvider(manager, rootOntology)",
+      ],
+      capabilityIds: ["compatibility.owlapi-5.5.1"],
+      compatibility: "ADAPTED",
+      firstPublicRelease: "0.2.0",
+      javaType:
+        "org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider",
+      omittedMembers: [],
+      publicErrors: ["OWLOntologyStateError", "TypeError"],
+      relationship: "JS_ADAPTATION",
+      supportedMembers: ["prototype.ontologies"],
+      semanticQualifications: [
+        "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
+        "ontologies returns a fresh defensive JavaScript Set instead of Java's Stream<OWLOntology>.",
+        "The imports-closure membership is captured at construction instead of remaining a live Java view.",
+      ],
+      verification: [
+        "util/owlOntologyImportsClosureSetProvider.test.js",
+        "test/package-boundary.test.mjs",
+        "test/installed-package-smoke.mjs",
+        "test/consumers/browser/browser-consumers.playwright.js",
+      ],
+    });
+    expect(bindingById.get("util.OWLOntologyMerger")).toMatchObject({
+      callShapes: [
+        "new OWLOntologyMerger(provider)",
+        "new OWLOntologyMerger(provider, mergeOnlyLogicalAxioms)",
+      ],
+      capabilityIds: ["compatibility.owlapi-5.5.1"],
+      compatibility: "ADAPTED",
+      firstPublicRelease: "0.2.0",
+      javaType: "org.semanticweb.owlapi.util.OWLOntologyMerger",
+      omittedMembers: [
+        "OWLAxiomFilter constructor overload and passes(axiom) surface",
+      ],
+      publicErrors: ["OWLOntologyStateError", "TypeError"],
+      relationship: "JAVA_ANALOGUE",
+      supportedMembers: ["prototype.createMergedOntology"],
+      semanticQualifications: [
+        "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
+        "createMergedOntology builds a structural set union from each supplied ontology's direct axioms before creating the target, then mutates the target only through public manager methods.",
+        "The optional boolean constructor form selects Java-compatible logical-axiom filtering; the OWLAxiomFilter constructor remains unavailable.",
+        "An omitted ontologyIRI creates an anonymous target; a supplied value must be an IRI.",
+      ],
+      verification: [
+        "util/owlOntologyMerger.test.js",
+        "test/package-boundary.test.mjs",
+        "test/installed-package-smoke.mjs",
+        "test/consumers/browser/browser-consumers.playwright.js",
+      ],
+    });
+    for (const javaName of [
+      "org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider",
+      "org.semanticweb.owlapi.util.OWLOntologyMerger",
+    ]) {
+      expect(
+        registry.javaTypes.find((javaType) => javaType.javaName === javaName),
+      ).toMatchObject({
+        disposition: "PUBLIC_MAPPED",
+        exposure: "PUBLIC",
+        progress: "COMPLETE",
+        publicSpecifier: "owlapi/util",
       });
     }
   });
@@ -1351,6 +1471,8 @@ bundle licence and notice review.
     const schema = readJson(schemaPath);
     const publication = readJson("./docs/release/publication-control.json");
     const manifest = readJson("./package.json");
+    const { "./util": provisionalUtilExport, ...retainedCandidateExports } =
+      manifest.exports;
 
     expect(errors).toEqual([]);
     expect(schema.$id).toBe(
@@ -1359,8 +1481,10 @@ bundle licence and notice review.
     expect(document.package).toEqual({
       name: manifest.name,
       version: manifest.version,
-      exports: manifest.exports,
+      exports: retainedCandidateExports,
     });
+    expect(provisionalUtilExport).toBe("./util/index.js");
+    expect(document.package.exports).not.toHaveProperty("./util");
     expect(document.source).toMatchObject({
       repository: publication.reconciliation.source.repository,
       workflowRun: {

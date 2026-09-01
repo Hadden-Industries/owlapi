@@ -100,7 +100,9 @@
         "io.UnparsableOntologyException",
         "io.UnsupportedConstructError",
         "io.XmlParseError",
-        "formats.OWLDocumentFormats"
+        "formats.OWLDocumentFormats",
+        "util.OWLOntologyImportsClosureSetProvider",
+        "util.OWLOntologyMerger"
       ]
     },
     {
@@ -185,6 +187,18 @@
       "firstPublicRelease": "0.1.0-alpha.0",
       "rationale": "Mirrors the Java OWLAPI formats namespace while exposing stable format identities rather than parser internals.",
       "ownedBindingIds": ["formats.OWLDocumentFormats"]
+    },
+    {
+      "id": "util",
+      "javaPackage": "org.semanticweb.owlapi.util",
+      "npmSpecifier": "owlapi/util",
+      "exposure": "PUBLIC",
+      "firstPublicRelease": "0.2.0",
+      "rationale": "Mirrors the Java OWLAPI util namespace for the exact approved closure provider and ontology merger entry points.",
+      "ownedBindingIds": [
+        "util.OWLOntologyImportsClosureSetProvider",
+        "util.OWLOntologyMerger"
+      ]
     }
   ],
   "bindings": [
@@ -1952,6 +1966,84 @@
       ],
       "verification": ["model/model.test.js", "test/package-boundary.test.mjs"],
       "guidance": "Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace."
+    },
+    {
+      "id": "util.OWLOntologyImportsClosureSetProvider",
+      "jsExport": "OWLOntologyImportsClosureSetProvider",
+      "kind": "CLASS",
+      "summary": "A constructor-time imports-closure snapshot provider with defensive JavaScript Set results.",
+      "capabilityIds": ["compatibility.owlapi-5.5.1"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.2.0",
+      "publicSpecifier": "owlapi/util",
+      "sourceModule": "util/owlOntologyImportsClosureSetProvider.js",
+      "javaPackage": "org.semanticweb.owlapi.util",
+      "javaType": "org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider",
+      "closestJavaAuthority": "org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "new OWLOntologyImportsClosureSetProvider(manager, rootOntology)"
+      ],
+      "supportedMembers": ["prototype.ontologies"],
+      "omittedMembers": [],
+      "publicErrors": ["OWLOntologyStateError", "TypeError"],
+      "semanticQualifications": [
+        "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
+        "ontologies returns a fresh defensive JavaScript Set instead of Java's Stream<OWLOntology>.",
+        "The imports-closure membership is captured at construction instead of remaining a live Java view."
+      ],
+      "verification": [
+        "util/owlOntologyImportsClosureSetProvider.test.js",
+        "test/package-boundary.test.mjs",
+        "test/installed-package-smoke.mjs",
+        "test/consumers/browser/browser-consumers.playwright.js"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "util.OWLOntologyMerger",
+      "jsExport": "OWLOntologyMerger",
+      "kind": "CLASS",
+      "summary": "A Java-shaped ontology merger that materializes the structural union of supplied direct axioms.",
+      "capabilityIds": ["compatibility.owlapi-5.5.1"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.2.0",
+      "publicSpecifier": "owlapi/util",
+      "sourceModule": "util/owlOntologyMerger.js",
+      "javaPackage": "org.semanticweb.owlapi.util",
+      "javaType": "org.semanticweb.owlapi.util.OWLOntologyMerger",
+      "closestJavaAuthority": "org.semanticweb.owlapi.util.OWLOntologyMerger",
+      "relationship": "JAVA_ANALOGUE",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "new OWLOntologyMerger(provider)",
+        "new OWLOntologyMerger(provider, mergeOnlyLogicalAxioms)"
+      ],
+      "supportedMembers": ["prototype.createMergedOntology"],
+      "omittedMembers": [
+        "OWLAxiomFilter constructor overload and passes(axiom) surface"
+      ],
+      "publicErrors": ["OWLOntologyStateError", "TypeError"],
+      "semanticQualifications": [
+        "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
+        "createMergedOntology builds a structural set union from each supplied ontology's direct axioms before creating the target, then mutates the target only through public manager methods.",
+        "The optional boolean constructor form selects Java-compatible logical-axiom filtering; the OWLAxiomFilter constructor remains unavailable.",
+        "An omitted ontologyIRI creates an anonymous target; a supplied value must be an IRI."
+      ],
+      "verification": [
+        "util/owlOntologyMerger.test.js",
+        "test/package-boundary.test.mjs",
+        "test/installed-package-smoke.mjs",
+        "test/consumers/browser/browser-consumers.playwright.js"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     }
   ],
   "javaTypes": [
@@ -21547,20 +21639,25 @@
       "javaPackage": "org.semanticweb.owlapi.util",
       "simpleName": "OWLOntologyImportsClosureSetProvider",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
+      "capabilityIds": ["compatibility.owlapi-5.5.1"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "OWLOntologyImportsClosureSetProvider",
+      "publicSpecifier": "owlapi/util",
+      "sourceModule": "util/owlOntologyImportsClosureSetProvider.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": ["prototype.ontologies"],
       "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "verification": [
+        "util/owlOntologyImportsClosureSetProvider.test.js",
+        "test/package-boundary.test.mjs",
+        "test/installed-package-smoke.mjs",
+        "test/consumers/browser/browser-consumers.playwright.js"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.util.OWLOntologyIRIChanger",
@@ -21587,20 +21684,27 @@
       "javaPackage": "org.semanticweb.owlapi.util",
       "simpleName": "OWLOntologyMerger",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["compatibility.owlapi-5.5.1"],
+      "progress": "COMPLETE",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "OWLOntologyMerger",
+      "publicSpecifier": "owlapi/util",
+      "sourceModule": "util/owlOntologyMerger.js",
+      "relationship": "JAVA_ANALOGUE",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": ["prototype.createMergedOntology"],
+      "omittedMembers": [
+        "OWLAxiomFilter constructor overload and passes(axiom) surface"
+      ],
+      "verification": [
+        "util/owlOntologyMerger.test.js",
+        "test/package-boundary.test.mjs",
+        "test/installed-package-smoke.mjs",
+        "test/consumers/browser/browser-consumers.playwright.js"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.util.OWLOntologySingletonSetProvider",
@@ -22644,15 +22748,15 @@
     }
   ],
   "summary": {
-    "namespaceCount": 5,
-    "publicBindingCount": 47,
+    "namespaceCount": 6,
+    "publicBindingCount": 49,
     "javaTypeCount": 1013,
     "javaDispositionCounts": {
-      "PUBLIC_MAPPED": 16,
+      "PUBLIC_MAPPED": 18,
       "STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT": 73,
       "FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT": 8,
       "INTERNAL_IMPLEMENTATION_ONLY": 2,
-      "DEFERRED_NOT_EXPOSED": 870,
+      "DEFERRED_NOT_EXPOSED": 868,
       "UNSUPPORTED_BY_DESIGN": 44,
       "UNCLASSIFIED": 0
     },

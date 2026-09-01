@@ -3,6 +3,7 @@ import * as apibinding from "owlapi/apibinding";
 import * as formats from "owlapi/formats";
 import * as io from "owlapi/io";
 import * as model from "owlapi/model";
+import * as util from "owlapi/util";
 
 const DOCUMENTS = Object.freeze([
   Object.freeze({
@@ -68,6 +69,10 @@ export const exerciseInstalledPackage = async () => {
     formats: root.OWLDocumentFormats === formats.OWLDocumentFormats,
     io: root.StringDocumentSource === io.StringDocumentSource,
     model: root.OWLOntologyManager === model.OWLOntologyManager,
+    util:
+      root.OWLOntologyMerger === util.OWLOntologyMerger &&
+      root.OWLOntologyImportsClosureSetProvider ===
+        util.OWLOntologyImportsClosureSetProvider,
   };
 
   if (Object.values(bindingIdentity).includes(false)) {
@@ -83,9 +88,19 @@ export const exerciseInstalledPackage = async () => {
         documentIRI: document.documentIRI,
       }),
     );
+    const outputManager = apibinding.OWLManager.createOWLOntologyManager();
+    const provider = new util.OWLOntologyImportsClosureSetProvider(
+      manager,
+      ontology,
+    );
+    const merged = new util.OWLOntologyMerger(provider).createMergedOntology(
+      outputManager,
+    );
     documents[document.key] = {
       axiomCount: ontology.getAxioms().size,
       importCount: ontology.getImportsDeclarations().size,
+      mergedAxiomCount: merged.getAxioms().size,
+      mergedImportCount: merged.getImportsDeclarations().size,
     };
   }
 

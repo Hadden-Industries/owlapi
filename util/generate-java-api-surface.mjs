@@ -10,6 +10,7 @@ import * as apibinding from "../apibinding/index.js";
 import * as formats from "../formats/index.js";
 import * as io from "../io/index.js";
 import * as model from "../model/index.js";
+import * as util from "./index.js";
 
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const EXPECTED_JAVA_REVISION = "d7e997a53b470e32700de89cc610d9daf01ea769";
@@ -46,7 +47,7 @@ const MODULES = Object.freeze([
     id: "root",
     javaPackage: null,
     npmSpecifier: "owlapi",
-    module: { ...apibinding, ...formats, ...io, ...model },
+    module: { ...apibinding, ...formats, ...io, ...model, ...util },
     rationale:
       "Convenience aggregate that re-exports every approved binding without creating a second implementation identity.",
   },
@@ -82,6 +83,15 @@ const MODULES = Object.freeze([
     rationale:
       "Mirrors the Java OWLAPI formats namespace while exposing stable format identities rather than parser internals.",
   },
+  {
+    id: "util",
+    javaPackage: "org.semanticweb.owlapi.util",
+    npmSpecifier: "owlapi/util",
+    module: util,
+    firstPublicRelease: "0.2.0",
+    rationale:
+      "Mirrors the Java OWLAPI util namespace for the exact approved closure provider and ontology merger entry points.",
+  },
 ]);
 
 const SOURCE_MODULES = Object.freeze({
@@ -94,7 +104,10 @@ const SOURCE_MODULES = Object.freeze({
   OWLDocumentFormat: "model/owlDocumentFormat.js",
   OWLOntology: "model/owlOntology.js",
   OWLOntologyLoaderConfiguration: "model/owlOntologyLoaderConfiguration.js",
+  OWLOntologyImportsClosureSetProvider:
+    "util/owlOntologyImportsClosureSetProvider.js",
   OWLOntologyManager: "model/owlOntologyManager.js",
+  OWLOntologyMerger: "util/owlOntologyMerger.js",
   OWLStructuralObject: "model/structural.js",
   SetOntologyID: "model/setOntologyID.js",
   StructuralSet: "model/structural.js",
@@ -112,7 +125,10 @@ const JAVA_TYPES_BY_EXPORT = Object.freeze({
     "org.semanticweb.owlapi.model.OWLOntologyCreationException",
   OWLOntologyLoaderConfiguration:
     "org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration",
+  OWLOntologyImportsClosureSetProvider:
+    "org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider",
   OWLOntologyManager: "org.semanticweb.owlapi.model.OWLOntologyManager",
+  OWLOntologyMerger: "org.semanticweb.owlapi.util.OWLOntologyMerger",
   OWLParserError: "org.semanticweb.owlapi.io.OWLParserException",
   OWLStructuralObject: "org.semanticweb.owlapi.model.OWLObject",
   SetOntologyID: "org.semanticweb.owlapi.model.SetOntologyID",
@@ -125,6 +141,8 @@ const JAVA_TYPES_BY_EXPORT = Object.freeze({
 
 const FIRST_PUBLIC_RELEASE_BY_EXPORT = Object.freeze({
   AddOntologyAnnotation: "0.2.0",
+  OWLOntologyImportsClosureSetProvider: "0.2.0",
+  OWLOntologyMerger: "0.2.0",
   SetOntologyID: "0.2.0",
 });
 
@@ -151,6 +169,8 @@ const CLOSEST_JAVA_AUTHORITY = Object.freeze({
 
 const CAPABILITIES_BY_EXPORT = Object.freeze({
   AddOntologyAnnotation: ["compatibility.owlapi-5.5.1"],
+  OWLOntologyImportsClosureSetProvider: ["compatibility.owlapi-5.5.1"],
+  OWLOntologyMerger: ["compatibility.owlapi-5.5.1"],
   OWLManager: ["manager.narrow-v1-surface"],
   OWLOntologyManager: ["manager.narrow-v1-surface", "loading.import-closure"],
   OWLOntologyLoaderConfiguration: [
@@ -178,6 +198,11 @@ const VERIFICATION_BY_GROUP = Object.freeze({
   formats: ["model/model.test.js", "test/package-boundary.test.mjs"],
   io: ["io/io.test.js", "test/package-boundary.test.mjs"],
   model: ["model/model.test.js", "test/package-boundary.test.mjs"],
+  util: [
+    "util/owlOntologyImportsClosureSetProvider.test.js",
+    "util/owlOntologyMerger.test.js",
+    "test/package-boundary.test.mjs",
+  ],
 });
 
 const VERIFICATION_BY_EXPORT = Object.freeze({
@@ -196,6 +221,18 @@ const VERIFICATION_BY_EXPORT = Object.freeze({
     "model/owlOntologyManager.test.js",
     "test/package-boundary.test.mjs",
   ],
+  OWLOntologyImportsClosureSetProvider: [
+    "util/owlOntologyImportsClosureSetProvider.test.js",
+    "test/package-boundary.test.mjs",
+    "test/installed-package-smoke.mjs",
+    "test/consumers/browser/browser-consumers.playwright.js",
+  ],
+  OWLOntologyMerger: [
+    "util/owlOntologyMerger.test.js",
+    "test/package-boundary.test.mjs",
+    "test/installed-package-smoke.mjs",
+    "test/consumers/browser/browser-consumers.playwright.js",
+  ],
   SetOntologyID: [
     "internal/loading/managedOntologyIndex.test.js",
     "model/ontologyChanges.test.js",
@@ -210,6 +247,15 @@ const SEMANTIC_QUALIFICATIONS_BY_EXPORT = Object.freeze({
     "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
     "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically.",
     "applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails.",
+  ],
+  OWLOntologyImportsClosureSetProvider: [
+    "ontologies returns a fresh defensive JavaScript Set instead of Java's Stream<OWLOntology>.",
+    "The imports-closure membership is captured at construction instead of remaining a live Java view.",
+  ],
+  OWLOntologyMerger: [
+    "createMergedOntology builds a structural set union from each supplied ontology's direct axioms before creating the target, then mutates the target only through public manager methods.",
+    "The optional boolean constructor form selects Java-compatible logical-axiom filtering; the OWLAxiomFilter constructor remains unavailable.",
+    "An omitted ontologyIRI creates an anonymous target; a supplied value must be an IRI.",
   ],
   AddOntologyAnnotation: [
     "AddOntologyAnnotation is a frozen immutable record; Java change-data, reverse-change, and visitor APIs remain deliberately unavailable.",
@@ -252,6 +298,10 @@ const OMITTED_MEMBERS = Object.freeze({
     "RemoveOntologyAnnotation changes",
     "Storer and ontology-factory registration",
   ],
+  OWLOntologyImportsClosureSetProvider: [],
+  OWLOntologyMerger: [
+    "OWLAxiomFilter constructor overload and passes(axiom) surface",
+  ],
   OWLParserError: ["Java exception constructor and line/column overloads"],
   OWLStructuralObject: [
     "Java concrete OWLObject subtype hierarchy",
@@ -284,6 +334,8 @@ const PUBLIC_ERRORS_BY_EXPORT = Object.freeze({
     "OWLOntologyStateError",
     "UnparsableOntologyException",
   ],
+  OWLOntologyImportsClosureSetProvider: ["OWLOntologyStateError", "TypeError"],
+  OWLOntologyMerger: ["OWLOntologyStateError", "TypeError"],
   StringDocumentSource: ["TypeError"],
   SetOntologyID: ["TypeError"],
 });
@@ -475,6 +527,15 @@ const callShapesFor = (binding, exportName, publicSpecifier) => {
   if (exportName === "SetOntologyID") {
     return ["new SetOntologyID(ontology, ontologyID)"];
   }
+  if (exportName === "OWLOntologyImportsClosureSetProvider") {
+    return ["new OWLOntologyImportsClosureSetProvider(manager, rootOntology)"];
+  }
+  if (exportName === "OWLOntologyMerger") {
+    return [
+      "new OWLOntologyMerger(provider)",
+      "new OWLOntologyMerger(provider, mergeOnlyLogicalAxioms)",
+    ];
+  }
   if (kindOfBinding(binding, exportName) === "CLASS") {
     return [`new ${exportName}(...arguments)`];
   }
@@ -536,6 +597,12 @@ const closestJavaAuthorityFor = (exportName, javaType, javaPackage) => {
 };
 
 const summaryFor = (exportName, kind, relationship) => {
+  if (exportName === "OWLOntologyImportsClosureSetProvider") {
+    return "A constructor-time imports-closure snapshot provider with defensive JavaScript Set results.";
+  }
+  if (exportName === "OWLOntologyMerger") {
+    return "A Java-shaped ontology merger that materializes the structural union of supplied direct axioms.";
+  }
   if (exportName === "OWLDocumentFormats") {
     return "Immutable identities for every ontology document format supported by the initial parser set.";
   }
@@ -570,12 +637,14 @@ const buildBindings = () => {
       const binding = namespace.module[exportName];
       const javaType = JAVA_TYPES_BY_EXPORT[exportName] ?? null;
       const relationship = javaType
-        ? exportName === "IRI" ||
-          exportName === "AddOntologyAnnotation" ||
-          exportName === "SetOntologyID" ||
-          exportName.startsWith("OWL")
-          ? "JAVA_ANALOGUE"
-          : "JS_ADAPTATION"
+        ? exportName === "OWLOntologyImportsClosureSetProvider"
+          ? "JS_ADAPTATION"
+          : exportName === "IRI" ||
+              exportName === "AddOntologyAnnotation" ||
+              exportName === "SetOntologyID" ||
+              exportName.startsWith("OWL")
+            ? "JAVA_ANALOGUE"
+            : "JS_ADAPTATION"
         : "JS_EXTENSION";
       const kind = kindOfBinding(binding, exportName);
       bindings.push({
@@ -825,7 +894,7 @@ const buildRegistry = async (javaRoot) => {
     javaPackage: namespace.javaPackage,
     npmSpecifier: namespace.npmSpecifier,
     exposure: "PUBLIC",
-    firstPublicRelease: "0.1.0-alpha.0",
+    firstPublicRelease: namespace.firstPublicRelease ?? "0.1.0-alpha.0",
     rationale: namespace.rationale,
     ownedBindingIds:
       namespace.id === "root"
@@ -937,7 +1006,7 @@ const renderApiView = (registry, digest) => {
     "",
     "This is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project; Java names identify compatibility authorities, not organizational continuity or complete parity.",
     "",
-    "The package exposes one convenience aggregate and four Java-recognizable namespace entry points. Import from declared package specifiers only; paths below `internal/` are intentionally outside the public contract.",
+    `The package exposes one convenience aggregate and ${registry.namespaces.length - 1} Java-recognizable namespace entry points. Import from declared package specifiers only; paths below \`internal/\` are intentionally outside the public contract.`,
     "",
     ...sections,
     "",

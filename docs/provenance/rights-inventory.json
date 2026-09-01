@@ -7,13 +7,13 @@
     "repository": "https://github.com/Hadden-Industries/owlapi",
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
-      "fileCount": 77,
-      "sourceManifestSha256": "2a2f75f6ff546414b3f8981dadd9b9b9ea393105453806be6d16d7644b81adc3"
+      "fileCount": 80,
+      "sourceManifestSha256": "29afa11f5bd1c4e9bc79362daa5429cced31ad4ee8fe7efa23099265da9b3dae"
     }
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "3e289def1b43390812c76d1b64a0cf0e737c30ebd8f435cb35fc05d44f48ae6b",
+    "factsSha256": "d737a78e25b3a21ace1b3c1b9aa630d30d5843eea82a53aa5524be7cafeca4cd",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -45,6 +45,9 @@
         "io/",
         "formats/",
         "internal/",
+        "util/index.js",
+        "util/owlOntologyImportsClosureSetProvider.js",
+        "util/owlOntologyMerger.js",
         "README.md",
         "CHANGELOG.md",
         "NOTICE",
@@ -98,7 +101,7 @@
   "externalDependencies": {
     "bundled": false,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "ca9d8c3df3e502a918cd1fba9ea6f37e0357efca819d8be4c376ae897b74782a",
+    "inventoryFactsSha256": "e19bf5eb5ddfdefc7a485acadeb66c3350feb5c8cf30df6334588a386bbb0f61",
     "noticeRule": "Ordinary npm dependencies are installed separately and remain under their own licences. Their licence texts are not copied into the owlapi tarball merely because they appear in the installed dependency graph."
   },
   "unresolvedExternalContributions": [],

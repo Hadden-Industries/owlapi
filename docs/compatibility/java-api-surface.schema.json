@@ -122,7 +122,9 @@
         "javaPackage": { "$ref": "#/$defs/nullableString" },
         "npmSpecifier": { "$ref": "#/$defs/nonEmptyString" },
         "exposure": { "const": "PUBLIC" },
-        "firstPublicRelease": { "const": "0.1.0-alpha.0" },
+        "firstPublicRelease": {
+          "$ref": "#/$defs/publicReleaseVersion"
+        },
         "rationale": { "$ref": "#/$defs/nonEmptyString" },
         "ownedBindingIds": { "$ref": "#/$defs/stringArray" }
       }

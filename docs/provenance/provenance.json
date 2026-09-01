@@ -679,6 +679,62 @@
       "reviewDate": "2026-09-01"
     },
     {
+      "id": "PHASE22-UTIL-IMPORTS-CLOSURE-SET-PROVIDER",
+      "path": "util/owlOntologyImportsClosureSetProvider.js",
+      "phase": 22,
+      "scope": "constructor-time capture of a manager-resolved, cycle-safe imports-closure membership with validated ontology elements and a fresh defensive Set for every public read",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/#Imports",
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, and Task 6"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 OWLOntologyImportsClosureSetProvider(OWLOntologyManager, OWLOntology) and ontologies() responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "util/owlOntologyImportsClosureSetProvider.test.js",
+        "model/owlOntologyManager.test.js",
+        "test/package-boundary.test.mjs",
+        "test/installed-package-smoke.mjs",
+        "test/consumers/browser/browser-consumers.playwright.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-01"
+    },
+    {
+      "id": "PHASE22-UTIL-ONTOLOGY-MERGER",
+      "path": "util/owlOntologyMerger.js",
+      "phase": 22,
+      "scope": "complete prevalidation and structural set union of provider-supplied ontologies' direct axioms, optional exhaustive logical-axiom filtering, and anonymous or IRI-identified target creation and mutation exclusively through the public ontology-manager surface",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/#Ontologies",
+        "https://www.w3.org/TR/owl2-syntax/#Axioms",
+        "https://www.w3.org/TR/owl2-syntax/#Imports",
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, and Task 6"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 OWLOntologyMerger constructor, logical-axiom selection, and createMergedOntology(OWLOntologyManager, IRI) responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "util/owlOntologyMerger.test.js",
+        "internal/model/axiomSemantics.test.js",
+        "test/package-boundary.test.mjs",
+        "test/installed-package-smoke.mjs",
+        "test/consumers/browser/browser-consumers.playwright.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-01"
+    },
+    {
       "id": "PHASE1-RDF-ENVIRONMENT",
       "path": "internal/rdfjs/environment.js",
       "phase": 1,

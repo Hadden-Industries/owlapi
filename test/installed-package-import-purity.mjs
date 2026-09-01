@@ -25,12 +25,13 @@ for (const [container, methods, prefix] of [
 }
 
 const globalKeysBefore = new Set(Reflect.ownKeys(globalThis));
-const [root, apibinding, model, io, formats] = await Promise.all([
+const [root, apibinding, model, io, formats, util] = await Promise.all([
   import("owlapi"),
   import("owlapi/apibinding"),
   import("owlapi/model"),
   import("owlapi/io"),
   import("owlapi/formats"),
+  import("owlapi/util"),
 ]);
 const globalKeysAfter = Reflect.ownKeys(globalThis).filter(
   (key) => !globalKeysBefore.has(key),
@@ -42,5 +43,10 @@ assert.strictEqual(root.OWLManager, apibinding.OWLManager);
 assert.strictEqual(root.OWLDataFactory, model.OWLDataFactory);
 assert.strictEqual(root.StringDocumentSource, io.StringDocumentSource);
 assert.strictEqual(root.OWLDocumentFormats, formats.OWLDocumentFormats);
+assert.strictEqual(root.OWLOntologyMerger, util.OWLOntologyMerger);
+assert.strictEqual(
+  root.OWLOntologyImportsClosureSetProvider,
+  util.OWLOntologyImportsClosureSetProvider,
+);
 
 process.stdout.write("Installed owlapi imports are pure\n");

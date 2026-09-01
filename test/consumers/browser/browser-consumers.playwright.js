@@ -51,6 +51,7 @@ const runConsumer = async (page, mode) => {
     formats: true,
     io: true,
     model: true,
+    util: true,
   });
   expect(Object.keys(result.documents).sort()).toEqual([
     "functional",
@@ -61,6 +62,8 @@ const runConsumer = async (page, mode) => {
   for (const document of Object.values(result.documents)) {
     expect(Number.isSafeInteger(document.axiomCount)).toBe(true);
     expect(Number.isSafeInteger(document.importCount)).toBe(true);
+    expect(document.mergedAxiomCount).toBe(document.axiomCount);
+    expect(document.mergedImportCount).toBe(0);
   }
 
   return requests;
