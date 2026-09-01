@@ -628,6 +628,32 @@
       "reviewDate": "2026-09-01"
     },
     {
+      "id": "PHASE22-MODEL-ONTOLOGY-STRUCTURAL-ISOMORPHISM",
+      "path": "internal/model/ontologyStructuralIsomorphism.js",
+      "phase": 22,
+      "scope": "package-private structural ontology comparison across selected identity, import, annotation, and axiom components using one injective forward-and-reverse anonymous-individual mapping, label-independent structural candidate fingerprints with anonymous position-sharing profiles, bounded backtracking, failed-state memoization, and stable mismatch diagnostics",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/#Ontologies",
+        "https://www.w3.org/TR/owl2-syntax/#Anonymous_Individuals",
+        "https://www.w3.org/TR/owl2-syntax/#Axioms",
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, and Task 8"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 OWLOntology component-access and OWLObject structural-equality responsibilities, with package-private anonymous-individual renaming accommodation for storage round-trip verification, at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/model/ontologyStructuralIsomorphism.test.js",
+        "internal/rdfjs/datasetIsomorphism.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-01"
+    },
+    {
       "id": "PHASE22-MODEL-ADD-ONTOLOGY-ANNOTATION",
       "path": "model/addOntologyAnnotation.js",
       "phase": 22,
