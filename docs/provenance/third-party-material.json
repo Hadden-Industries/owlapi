@@ -23,12 +23,12 @@
     "tarballDependenciesBundled": false
   },
   "review": {
-    "status": "REVIEWED",
-    "factsSha256": "8505fbe24f3ad1cb7be5245927311ab6b9b033c641eea06eeffefd886486d41f",
-    "reviewer": "Maksym Shostak",
-    "reviewedOn": "2026-08-27",
-    "capacity": "Project maintainer",
-    "conclusion": "Reviewed against the authenticated locked-tarball evidence corpus. All runtime dependency occurrences have a concluded SPDX expression and retained licence evidence, all development-only occurrences are explicitly excluded from the owlapi tarball, and no declaration mismatch, NOASSERTION result, or unresolved production distribution disposition remains. Additional ScanCode file-level observations remain explicit and do not silently redefine package declarations; separately installed dependencies and downstream bundles retain their own applicable notice obligations."
+    "status": "PENDING_HUMAN_REVIEW",
+    "factsSha256": "f8233fa8e37ce765708665afb620816cff5eb3b4e7db3662620b7a22491e055c",
+    "reviewer": null,
+    "reviewedOn": null,
+    "capacity": null,
+    "conclusion": null
   },
   "summary": {
     "componentCount": 714,
@@ -39618,15 +39618,15 @@
       "evidenceFiles": [
         {
           "path": "API.md",
-          "sha256": "fddab93b86b8fb65aceaadd93c3439b75abbdacca873407ecd20d809b300b78f"
+          "sha256": "4750ff9c214dc2d9681619fae1366e687a0d967d1aa9fa0ef35adcfa6356584b"
         },
         {
           "path": "docs/compatibility/java-api-surface.json",
-          "sha256": "b0a23731b2c59b49d6671c07d51d9fb1a1b173077ecd81fd81eb59c55cc2d267"
+          "sha256": "186fec565c561946b590e352bbb16396642c27377ffb54ab1ca3d13daeb3f76b"
         },
         {
           "path": "docs/compatibility/java-api-surface.md",
-          "sha256": "9fae1468c98e381d51f91438c097430a114b5938030d8b995ad8340e216a0ab3"
+          "sha256": "98fdf5c88efb31024b0e3243fe812af904632e93c0da77082052f48e2da4dfa6"
         }
       ],
       "treeEvidence": null,

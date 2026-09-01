@@ -378,10 +378,16 @@ surface.
 - Verify unchanged: `docs/migration/0.2.0-java-api-parity.md`
 - Modify only during baseline reconciliation:
   `docs/compatibility/java-api-parity-decisions.json`
-- Verify unchanged: `docs/compatibility/java-api-surface.json`
+- Regenerate: `docs/compatibility/java-api-surface.json`
+- Regenerate: `docs/compatibility/java-api-surface.md`
+- Regenerate: `API.md`
+- Regenerate and review: `docs/provenance/third-party-material.json`
+- Rebind and review: `docs/provenance/rights-inventory.json`
 - Modify: `docs/compatibility/capabilities.json`
 - Modify: `docs/compatibility/standalone-import-closure-prerequisites.md`
 - Modify only the superseded feature-line forward references: `docs/implementation-plan.md`
+- Modify: `util/generate-java-api-surface.mjs`
+- Modify only the superseded umbrella-capability comment: `index.js`
 - Modify: `governance.test.js`
 
 **Steps**
@@ -405,14 +411,27 @@ surface.
    capability. For these eight IDs, reject `progress: "COMPLETE"` unless the
    phase is `22`—the first semantic phase after the Phase 21 parity
    precondition—and the matrix's global release is exact `0.2.0`.
-4. Update the capability matrix, prerequisite note, and predecessor release
+4. Replace the generated registry's broad storer/renderer/document-target
+   classification with exact Java-type classifications. Map only Java
+   `FunctionalSyntaxStorer` to `storer.functional` and Java `RDFXMLStorer` to
+   `storer.rdfxml`; classify every other unexposed type formerly covered by the
+   umbrella as `compatibility.java-api-gaps`. Regenerate the authoritative JSON
+   registry and both derived Markdown views. Do not expose a binding or broaden
+   a namespace in this governance task.
+5. Because the three generated Java compatibility views are packed evidence,
+   regenerate the third-party-material inventory, refresh the exact packed-file
+   source-manifest digest and third-party facts binding in the rights inventory,
+   and leave both review records pending until a human reviews their complete
+   prospective facts. Preserve the material classifications, dependency facts,
+   legal conclusions, reviewer capacity requirements, and 72-file package scope.
+6. Update the capability matrix, prerequisite note, and predecessor release
    plan without claiming lifecycle implementation. Record the exact `0.2.0`
    dependency, Phase 21 release-integration dependency, pre-integration branch
    status, provisional-evidence rule, reconciliation requirement, and
    stop-for-amendment rule. Correct only superseded forward-looking sentences;
    do not reopen accepted `0.1.0` scope decisions or place lifecycle code in a
    `0.1.0` candidate.
-5. In pre-integration mode, use the exact approved ledger in §3.1 as the
+7. In pre-integration mode, use the exact approved ledger in §3.1 as the
    provisional authority and do not create, backfill, or partially reproduce
    Phase 21's machine record. During baseline reconciliation, first add failing
    governance assertions requiring the three Phase 21 capability rows to
@@ -423,26 +442,28 @@ surface.
    `StringDocumentSource.prototype.getText` member, migration note, WebVOWL
    audit digest/disposition, complete source-reader allowlist, and passing
    installed-candidate result.
-6. During baseline reconciliation, extend the validated parity-decision record
+8. During baseline reconciliation, extend the validated parity-decision record
    with the exact eight Phase 22 decision IDs below §3.1, each tied to its
    precise Java signature, bounded rationale, rejected exact-parity alternative,
    and focused future verification. Set the Phase 22 portion to `IN_PROGRESS`;
    do not alter an approved Phase 21 row and do not add an extension category.
-7. Run the checks applicable to the current stage:
+9. Run the checks applicable to the current stage:
 
    ```powershell
+   node util/generate-java-api-surface.mjs --java-root <pinned-owlapi-checkout>
    npm test -- --runInBand governance.test.js
-   npm run lint:files -- governance.test.js
-   npx --no-install prettier --check docs/compatibility/capabilities.json docs/compatibility/standalone-import-closure-prerequisites.md docs/implementation-plan.md governance.test.js
+   npm run lint:files -- governance.test.js index.js util/generate-java-api-surface.mjs
+   npx --no-install prettier --check API.md docs/compatibility/capabilities.json docs/compatibility/java-api-surface.json docs/compatibility/java-api-surface.md docs/compatibility/standalone-import-closure-prerequisites.md docs/implementation-plan.md docs/ontology-lifecycle-capability-implementation-plan.md governance.test.js index.js util/generate-java-api-surface.mjs
    ```
 
-8. Request a review checkpoint before any commit. For a pre-integration
-   checkpoint, include the branch base, package version, capability diff, and
-   an explicit statement that Phase 21 and release evidence are not claimed.
-   For a reconciliation checkpoint, include both ancestor OIDs, the
-   parity-decision-record digest, generated-registry digest, and the disposition
-   of every conflict or regenerated surface difference. A commit, if separately
-   authorized, should contain only the governance baseline for this programme.
+10. Request a review checkpoint before any commit. For a pre-integration
+    checkpoint, include the branch base, package version, capability diff,
+    third-party-material and rights facts digests, and an explicit statement
+    that Phase 21 and release evidence are not claimed.
+    For a reconciliation checkpoint, include both ancestor OIDs, the
+    parity-decision-record digest, generated-registry digest, and the disposition
+    of every conflict or regenerated surface difference. A commit, if separately
+    authorized, should contain only the governance baseline for this programme.
 
 ### Task 2: Retain ontology identity aliases and resolved import edges transactionally
 

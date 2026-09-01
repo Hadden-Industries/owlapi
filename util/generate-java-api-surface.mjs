@@ -35,6 +35,12 @@ const COMPATIBILITY_VIEW_PATH = join(
 );
 const API_VIEW_PATH = join(PACKAGE_ROOT, "API.md");
 
+const LIFECYCLE_STORER_CAPABILITY_BY_JAVA_TYPE = Object.freeze({
+  "org.semanticweb.owlapi.functional.renderer.FunctionalSyntaxStorer":
+    "storer.functional",
+  "org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLStorer": "storer.rdfxml",
+});
+
 const MODULES = Object.freeze([
   {
     id: "root",
@@ -666,14 +672,13 @@ const classifyJavaType = (type, bindingByJavaType) => {
 
   const isReasoner = type.javaPackage.includes(".reasoner");
   const isSwrl = type.simpleName.startsWith("SWRL");
-  const isStorer = /(Storer|DocumentTarget|Renderer)/u.test(type.simpleName);
+  const lifecycleStorerCapabilityId =
+    LIFECYCLE_STORER_CAPABILITY_BY_JAVA_TYPE[type.javaName];
   const capabilityId = isReasoner
     ? "reasoner"
     : isSwrl
       ? "swrl"
-      : isStorer
-        ? "storer.concrete-serializers"
-        : "compatibility.java-api-gaps";
+      : (lifecycleStorerCapabilityId ?? "compatibility.java-api-gaps");
   const unsupported = isReasoner;
   return {
     ...type,

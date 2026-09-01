@@ -157,6 +157,143 @@ describe("owlapi governance artifacts", () => {
     ).toBe(true);
   });
 
+  it("keeps pre-integration lifecycle governance split by deliverable", () => {
+    const matrix = readJson("./docs/compatibility/capabilities.json");
+    const registry = readJson("./docs/compatibility/java-api-surface.json");
+    const lifecycleCapabilityIds = [
+      "manager.imports-closure-query",
+      "ontology.change-required-surface",
+      "util.imports-closure-set-provider",
+      "util.ontology-merger",
+      "manager.save-ontology",
+      "storer.functional",
+      "storer.rdfxml",
+      "rdf.strict-complete-reconstruction",
+    ];
+    const lifecycleCapabilities = matrix.capabilities
+      .filter(({ id }) => lifecycleCapabilityIds.includes(id))
+      .sort(({ id: left }, { id: right }) => compareCodeUnits(left, right));
+
+    expect(lifecycleCapabilities).toEqual([
+      {
+        id: "manager.imports-closure-query",
+        category: "public-api",
+        status: "DEFERRED",
+        progress: "NOT_STARTED",
+        phase: null,
+      },
+      {
+        id: "manager.save-ontology",
+        category: "public-api",
+        status: "DEFERRED",
+        progress: "NOT_STARTED",
+        phase: null,
+      },
+      {
+        id: "ontology.change-required-surface",
+        category: "public-api",
+        status: "DEFERRED",
+        progress: "NOT_STARTED",
+        phase: null,
+      },
+      {
+        id: "rdf.strict-complete-reconstruction",
+        category: "mapping",
+        status: "DEFERRED",
+        progress: "NOT_STARTED",
+        phase: null,
+      },
+      {
+        id: "storer.functional",
+        category: "storage",
+        status: "DEFERRED",
+        progress: "NOT_STARTED",
+        phase: null,
+      },
+      {
+        id: "storer.rdfxml",
+        category: "storage",
+        status: "DEFERRED",
+        progress: "NOT_STARTED",
+        phase: null,
+      },
+      {
+        id: "util.imports-closure-set-provider",
+        category: "public-api",
+        status: "DEFERRED",
+        progress: "NOT_STARTED",
+        phase: null,
+      },
+      {
+        id: "util.ontology-merger",
+        category: "public-api",
+        status: "DEFERRED",
+        progress: "NOT_STARTED",
+        phase: null,
+      },
+    ]);
+    expect(matrix.capabilities).not.toContainEqual(
+      expect.objectContaining({ id: "storer.concrete-serializers" }),
+    );
+    expect(
+      lifecycleCapabilities.every(
+        ({ phase, progress }) =>
+          progress !== "COMPLETE" ||
+          (phase === 22 && matrix.release === "0.2.0"),
+      ),
+    ).toBe(true);
+
+    const javaTypesByName = new Map(
+      registry.javaTypes.map((javaType) => [javaType.javaName, javaType]),
+    );
+    expect(
+      javaTypesByName.get(
+        "org.semanticweb.owlapi.functional.renderer.FunctionalSyntaxStorer",
+      ),
+    ).toMatchObject({
+      capabilityIds: ["storer.functional"],
+      disposition: "DEFERRED_NOT_EXPOSED",
+      exposure: "NOT_EXPOSED",
+      progress: "NOT_STARTED",
+    });
+    expect(
+      javaTypesByName.get(
+        "org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLStorer",
+      ),
+    ).toMatchObject({
+      capabilityIds: ["storer.rdfxml"],
+      disposition: "DEFERRED_NOT_EXPOSED",
+      exposure: "NOT_EXPOSED",
+      progress: "NOT_STARTED",
+    });
+    expect(
+      registry.javaTypes.filter(({ capabilityIds }) =>
+        capabilityIds.includes("storer.concrete-serializers"),
+      ),
+    ).toEqual([]);
+
+    const plannedLifecycleStorerJavaNames = new Set([
+      "org.semanticweb.owlapi.functional.renderer.FunctionalSyntaxStorer",
+      "org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLStorer",
+    ]);
+    const otherFormerUmbrellaUnexposedJavaTypes = registry.javaTypes.filter(
+      ({ exposure, javaName, javaPackage, simpleName }) =>
+        exposure === "NOT_EXPOSED" &&
+        !javaPackage.includes(".reasoner") &&
+        !simpleName.startsWith("SWRL") &&
+        /(Storer|DocumentTarget|Renderer)/u.test(simpleName) &&
+        !plannedLifecycleStorerJavaNames.has(javaName),
+    );
+    expect(otherFormerUmbrellaUnexposedJavaTypes.length).toBeGreaterThan(0);
+    expect(
+      otherFormerUmbrellaUnexposedJavaTypes.every(
+        ({ capabilityIds }) =>
+          capabilityIds.length === 1 &&
+          capabilityIds[0] === "compatibility.java-api-gaps",
+      ),
+    ).toBe(true);
+  });
+
   it("pins the approved post-Phase-4 delivery order", () => {
     const matrix = readJson("./docs/compatibility/capabilities.json");
     const byId = new Map(
