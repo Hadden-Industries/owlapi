@@ -897,6 +897,8 @@
       "compatibility": "ADAPTED",
       "callShapes": ["new OWLOntologyManager(...arguments)"],
       "supportedMembers": [
+        "prototype.addAxiom",
+        "prototype.addAxioms",
         "prototype.createOntology",
         "prototype.getImportsClosure",
         "prototype.getOWLDataFactory",
@@ -907,7 +909,7 @@
       ],
       "omittedMembers": [
         "Change and progress listeners",
-        "Ontology mutation and transactional change application",
+        "applyChange/applyChanges, axiom removal, and other ontology changes",
         "Storer and ontology-factory registration"
       ],
       "publicErrors": [
@@ -920,9 +922,12 @@
       "semanticQualifications": [
         "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
         "importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership.",
-        "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure."
+        "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
+        "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically."
       ],
       "verification": [
+        "internal/model/axiomSemantics.test.js",
+        "internal/model/ontologyState.test.js",
         "model/model.test.js",
         "model/owlOntologyManager.integration.test.js",
         "model/owlOntologyManager.test.js",
@@ -12814,6 +12819,8 @@
       "compatibility": "ADAPTED",
       "disposition": "PUBLIC_MAPPED",
       "supportedMembers": [
+        "prototype.addAxiom",
+        "prototype.addAxioms",
         "prototype.createOntology",
         "prototype.getImportsClosure",
         "prototype.getOWLDataFactory",
@@ -12824,10 +12831,12 @@
       ],
       "omittedMembers": [
         "Change and progress listeners",
-        "Ontology mutation and transactional change application",
+        "applyChange/applyChanges, axiom removal, and other ontology changes",
         "Storer and ontology-factory registration"
       ],
       "verification": [
+        "internal/model/axiomSemantics.test.js",
+        "internal/model/ontologyState.test.js",
         "model/model.test.js",
         "model/owlOntologyManager.integration.test.js",
         "model/owlOntologyManager.test.js",

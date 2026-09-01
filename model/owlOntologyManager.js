@@ -5,9 +5,12 @@ import {
   SecurityPolicyError,
   UnloadableImportError,
   UnparsableOntologyException,
+  OWLOntologyStateError,
 } from "../io/errors.js";
 import { StringDocumentSource } from "../io/stringDocumentSource.js";
 import { ManagedOntologyIndex } from "../internal/loading/managedOntologyIndex.js";
+import { materializeAxiomIterable } from "../internal/model/axiomSemantics.js";
+import { createImmutableDocumentMetadataSnapshot } from "../internal/model/ontologyState.js";
 import { dlSyntaxParserDescriptor } from "../internal/parsing/dl/descriptor.js";
 import { functionalSyntaxParserDescriptor } from "../internal/parsing/functional/descriptor.js";
 import { jsonLdParserDescriptor } from "../internal/parsing/jsonld/descriptor.js";
@@ -22,7 +25,7 @@ import { rdfXmlParserDescriptor } from "../internal/parsing/rdfxml/descriptor.js
 import { triGParserDescriptor } from "../internal/parsing/trig/descriptor.js";
 import { turtleParserDescriptor } from "../internal/parsing/turtle/descriptor.js";
 import { OWLDataFactory } from "./owlDataFactory.js";
-import { OWLOntology } from "./owlOntology.js";
+import { createManagerOwnedOWLOntology } from "./owlOntology.js";
 import { OWLOntologyLoaderConfiguration } from "./owlOntologyLoaderConfiguration.js";
 import { IRI, StructuralSet } from "./structural.js";
 
@@ -195,6 +198,12 @@ class ParseTransaction {
 
   commit(defaultFormat, documentIRI) {
     const ontologyID = this.#ontologyID || this.#dataFactory.getOWLOntologyID();
+    const managedOntology = createManagerOwnedOWLOntology({
+      annotations: this.#annotations,
+      axioms: this.#axioms,
+      imports: this.#imports,
+      ontologyID,
+    });
     return {
       context: {
         diagnostics: [...this.#diagnostics],
@@ -208,12 +217,7 @@ class ParseTransaction {
           ? {}
           : this.#rdfDatasetContext),
       },
-      ontology: new OWLOntology({
-        annotations: this.#annotations,
-        axioms: this.#axioms,
-        imports: this.#imports,
-        ontologyID,
-      }),
+      ...managedOntology,
     };
   }
 }
@@ -260,18 +264,12 @@ const isHttpIRI = (iri) => {
   }
 };
 
-const freezeContext = (context) =>
-  Object.freeze({
-    ...context,
-    diagnostics: Object.freeze([...context.diagnostics]),
-  });
-
 export class OWLOntologyManager {
-  #contexts = new WeakMap();
   #dataFactory;
   #documentLoader;
   #iriMappers;
   #managedOntologyIndex = new ManagedOntologyIndex();
+  #managedOntologyStates = new WeakMap();
   #registry;
 
   constructor({ dataFactory, documentLoader, iriMappers = [], registry } = {}) {
@@ -326,13 +324,24 @@ export class OWLOntologyManager {
   }
 
   createOntology(ontologyID = this.#dataFactory.getOWLOntologyID()) {
-    const ontology = new OWLOntology({ ontologyID });
+    const { ontology, ontologyState } = createManagerOwnedOWLOntology({
+      ontologyID,
+    });
     this.#managedOntologyIndex.registerOntology(ontology);
+    this.#managedOntologyStates.set(ontology, ontologyState);
     return ontology;
   }
 
   getOntology(ontologyID) {
     return this.#managedOntologyIndex.getOntologyByID(ontologyID);
+  }
+
+  addAxiom(ontology, axiom) {
+    return this.#addAxiomIterable(ontology, [axiom], "addAxiom");
+  }
+
+  addAxioms(ontology, axioms) {
+    return this.#addAxiomIterable(ontology, axioms, "addAxioms");
   }
 
   importsClosure(ontology) {
@@ -369,7 +378,7 @@ export class OWLOntologyManager {
       importCount: 0,
       managedOntologyIndexSession: managedOntologyLoadSession,
     };
-    let documents;
+    let documentPublications;
     let root;
     try {
       root = await this.#loadDocument(
@@ -379,23 +388,34 @@ export class OWLOntologyManager {
         0,
       );
       this.#throwIfAborted(normalizedConfiguration);
-      documents = Object.freeze(
-        session.entries.map((entry) =>
-          Object.freeze({
-            context: freezeContext(entry.context),
-            ontology: entry.ontology,
-          }),
-        ),
-      );
+      documentPublications = session.entries.map((entry) => {
+        const context = createImmutableDocumentMetadataSnapshot(entry.context);
+        const ontologyState = this.#managedOntologyStates.get(entry.ontology);
+        if (!ontologyState) {
+          throw new OWLOntologyStateError(
+            "Loaded ontology state was not retained by its manager",
+            { ontology: entry.ontology, operation: "loadOntologyGraph" },
+          );
+        }
+        const mutationDraft = ontologyState.createMutationDraft();
+        mutationDraft.stageDocumentMetadataReplacement(context);
+        ontologyState.preflightMutation(mutationDraft);
+        return { context, entry, mutationDraft, ontologyState };
+      });
     } catch (error) {
       managedOntologyLoadSession.discard();
       throw error;
     }
 
     managedOntologyLoadSession.commit();
-    for (const { context, ontology } of documents) {
-      this.#contexts.set(ontology, context);
+    for (const publication of documentPublications) {
+      publication.ontologyState.commitMutation(publication.mutationDraft);
     }
+    const documents = Object.freeze(
+      documentPublications.map(({ context, entry }) =>
+        Object.freeze({ context, ontology: entry.ontology }),
+      ),
+    );
     const importsClosure = this.importsClosure(root);
     return Object.freeze({
       documents,
@@ -420,7 +440,10 @@ export class OWLOntologyManager {
     }
 
     const committed = await this.#parseDocument(source, configuration);
-    committed.context.documentIRI = sourceDocumentIRI;
+    this.#managedOntologyStates.set(
+      committed.ontology,
+      committed.ontologyState,
+    );
     session.managedOntologyIndexSession.stageOntology(committed.ontology, {
       documentIRI: sourceDocumentIRI,
     });
@@ -595,6 +618,33 @@ export class OWLOntologyManager {
       }
     }
     return importIRI;
+  }
+
+  #addAxiomIterable(ontology, axioms, operation) {
+    const ontologyState = this.#requireManagedOntologyState(
+      ontology,
+      operation,
+    );
+    const materializedAxioms = materializeAxiomIterable(axioms, {
+      operation,
+    });
+    const mutationDraft = ontologyState.createMutationDraft();
+    for (const axiom of materializedAxioms) {
+      mutationDraft.stageAxiomAddition(axiom);
+    }
+    ontologyState.preflightMutation(mutationDraft);
+    return ontologyState.commitMutation(mutationDraft);
+  }
+
+  #requireManagedOntologyState(ontology, operation) {
+    const ontologyState = this.#managedOntologyStates.get(ontology);
+    if (!this.#managedOntologyIndex.hasOntology(ontology) || !ontologyState) {
+      throw new OWLOntologyStateError(
+        "The ontology is not managed by this manager",
+        { ontology, operation },
+      );
+    }
+    return ontologyState;
   }
 
   async #parseDocument(source, configuration) {

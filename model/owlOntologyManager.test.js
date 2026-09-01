@@ -375,6 +375,37 @@ describe("OWLOntologyManager", () => {
     ).rejects.toThrow(/documentFormat metadata must be immutable/);
   });
 
+  it("rejects frozen mutable diagnostic collections before publication", async () => {
+    const retainedDiagnosticDetails = Object.freeze(
+      new Map([["before", "retained"]]),
+    );
+    const registry = new OWLParserRegistry([
+      new ParserDescriptor({
+        createParser: () => ({
+          parse(_source, transaction) {
+            transaction.addDiagnostic({
+              code: "MUTABLE_INTERNAL_SLOTS",
+              details: retainedDiagnosticDetails,
+              message: "The diagnostic carries a frozen Map",
+              severity: "info",
+            });
+          },
+        }),
+        detect: match,
+        format: OWLDocumentFormats.FUNCTIONAL,
+        id: "functional",
+        priority: 2,
+      }),
+    ]);
+    const manager = new OWLOntologyManager({ registry });
+
+    await expect(
+      manager.loadOntologyGraphFromOntologyDocument("Ontology()"),
+    ).rejects.toThrow(
+      /documentMetadata\.diagnostics\[0\]\.details must be immutable data/,
+    );
+  });
+
   it("rejects sentinel line and column locations in diagnostics", async () => {
     const registry = new OWLParserRegistry([
       new ParserDescriptor({
@@ -851,6 +882,138 @@ describe("OWLOntologyManager", () => {
         });
       }
     }
+  });
+
+  it("adds direct axioms atomically and updates existing closure façade objects", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const ontology = manager.createOntology(
+      dataFactory.getOWLOntologyID(IRI.create("urn:mutation:ontology")),
+    );
+    const closureSnapshot = manager.importsClosure(ontology);
+    const classA = dataFactory.getOWLClass(IRI.create("urn:mutation:A"));
+    const classB = dataFactory.getOWLClass(IRI.create("urn:mutation:B"));
+    const axiom = dataFactory.getOWLSubClassOfAxiom(classA, classB);
+
+    expect(manager.addAxiom(ontology, axiom)).toBe(true);
+    expect(
+      manager.addAxiom(
+        ontology,
+        dataFactory.getOWLSubClassOfAxiom(classA, classB),
+      ),
+    ).toBe(false);
+
+    expect(closureSnapshot).toEqual([ontology]);
+    expect(closureSnapshot[0].getAxioms()).toEqual(new Set([axiom]));
+    expect(ontology.getClassesInSignature()).toEqual(new Set([classA, classB]));
+    expect(ontology.getReferencingAxioms(classA)).toEqual(new Set([axiom]));
+  });
+
+  it("materializes an axiom iterable once and commits its structural union once", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const ontology = manager.createOntology();
+    const classA = dataFactory.getOWLClass(
+      IRI.create("urn:mutation:iterable:A"),
+    );
+    const classB = dataFactory.getOWLClass(
+      IRI.create("urn:mutation:iterable:B"),
+    );
+    const first = dataFactory.getOWLDeclarationAxiom(classA);
+    const firstDuplicate = dataFactory.getOWLDeclarationAxiom(classA);
+    const second = dataFactory.getOWLSubClassOfAxiom(classA, classB);
+    let iteratorCreations = 0;
+    const axioms = {
+      [Symbol.iterator]() {
+        iteratorCreations += 1;
+        if (iteratorCreations > 1) {
+          throw new Error("axiom iterable was consumed more than once");
+        }
+        return [first, firstDuplicate, second][Symbol.iterator]();
+      },
+    };
+
+    expect(manager.addAxioms(ontology, axioms)).toBe(true);
+    expect(iteratorCreations).toBe(1);
+    expect(ontology.getAxioms()).toEqual(new Set([first, second]));
+    expect(manager.addAxioms(ontology, [])).toBe(false);
+  });
+
+  it("validates every axiom before mutation and reports the offending index", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const ontology = manager.createOntology();
+    const validAxiom = dataFactory.getOWLDeclarationAxiom(
+      dataFactory.getOWLClass(IRI.create("urn:mutation:valid")),
+    );
+    const invalidAxiom = dataFactory.getOWLClass(
+      IRI.create("urn:mutation:not-an-axiom"),
+    );
+
+    let thrown;
+    try {
+      manager.addAxioms(ontology, [validAxiom, invalidAxiom]);
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(thrown).toBeInstanceOf(TypeError);
+    expect(thrown).toMatchObject({
+      axiom: invalidAxiom,
+      index: 1,
+      operation: "addAxioms",
+    });
+    expect(ontology.getAxioms()).toEqual(new Set());
+
+    expect(() => manager.addAxiom(ontology, invalidAxiom)).toThrow(TypeError);
+    try {
+      manager.addAxiom(ontology, invalidAxiom);
+    } catch (error) {
+      expect(error).toMatchObject({
+        axiom: invalidAxiom,
+        index: 0,
+        operation: "addAxiom",
+      });
+    }
+  });
+
+  it("rejects non-iterables and foreign ontology mutations with operation details", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const foreignManager = new OWLOntologyManager({ dataFactory });
+    const ontology = manager.createOntology();
+    const foreignOntology = foreignManager.createOntology();
+    const axiom = dataFactory.getOWLDeclarationAxiom(
+      dataFactory.getOWLClass(IRI.create("urn:mutation:foreign")),
+    );
+
+    let invalidIterableError;
+    try {
+      manager.addAxioms(ontology, 42);
+    } catch (error) {
+      invalidIterableError = error;
+    }
+    expect(invalidIterableError).toBeInstanceOf(TypeError);
+    expect(invalidIterableError).toMatchObject({ operation: "addAxioms" });
+
+    for (const [operation, argument] of [
+      ["addAxiom", axiom],
+      ["addAxioms", [axiom]],
+    ]) {
+      let thrown;
+      try {
+        manager[operation](foreignOntology, argument);
+      } catch (error) {
+        thrown = error;
+      }
+      expect(thrown).toBeInstanceOf(OWLOntologyStateError);
+      expect(thrown).toMatchObject({
+        code: "ONTOLOGY_STATE_INVALID",
+        ontology: foreignOntology,
+        operation,
+      });
+    }
+    expect(foreignOntology.getAxioms()).toEqual(new Set());
   });
 
   it("traverses a closure deeper than the JavaScript call stack without recursion", async () => {

@@ -171,6 +171,8 @@ const VERIFICATION_BY_GROUP = Object.freeze({
 
 const VERIFICATION_BY_EXPORT = Object.freeze({
   OWLOntologyManager: [
+    "internal/model/axiomSemantics.test.js",
+    "internal/model/ontologyState.test.js",
     "model/model.test.js",
     "model/owlOntologyManager.integration.test.js",
     "model/owlOntologyManager.test.js",
@@ -182,6 +184,7 @@ const SEMANTIC_QUALIFICATIONS_BY_EXPORT = Object.freeze({
   OWLOntologyManager: [
     "importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership.",
     "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
+    "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically.",
   ],
 });
 
@@ -213,7 +216,7 @@ const OMITTED_MEMBERS = Object.freeze({
   ],
   OWLOntologyManager: [
     "Change and progress listeners",
-    "Ontology mutation and transactional change application",
+    "applyChange/applyChanges, axiom removal, and other ontology changes",
     "Storer and ontology-factory registration",
   ],
   OWLParserError: ["Java exception constructor and line/column overloads"],

@@ -294,7 +294,7 @@ describe("owlapi governance artifacts", () => {
     ).toBe(true);
   });
 
-  it("records the exact provisional Task 3 manager closure surface", () => {
+  it("records the exact provisional Task 4 manager mutation surface", () => {
     const registry = readJson("./docs/compatibility/java-api-surface.json");
     const managerBinding = registry.bindings.find(
       ({ id }) => id === "model.OWLOntologyManager",
@@ -314,6 +314,8 @@ describe("owlapi governance artifacts", () => {
       relationship: "JAVA_ANALOGUE",
     });
     expect(managerBinding.supportedMembers).toEqual([
+      "prototype.addAxiom",
+      "prototype.addAxioms",
       "prototype.createOntology",
       "prototype.getImportsClosure",
       "prototype.getOWLDataFactory",
@@ -324,15 +326,18 @@ describe("owlapi governance artifacts", () => {
     ]);
     expect(managerBinding.omittedMembers).toEqual([
       "Change and progress listeners",
-      "Ontology mutation and transactional change application",
+      "applyChange/applyChanges, axiom removal, and other ontology changes",
       "Storer and ontology-factory registration",
     ]);
     expect(managerBinding.semanticQualifications).toEqual([
       "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
       "importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership.",
       "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
+      "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically.",
     ]);
     expect(managerBinding.verification).toEqual([
+      "internal/model/axiomSemantics.test.js",
+      "internal/model/ontologyState.test.js",
       "model/model.test.js",
       "model/owlOntologyManager.integration.test.js",
       "model/owlOntologyManager.test.js",
@@ -632,7 +637,7 @@ describe("owlapi governance artifacts", () => {
     expect(paths).toEqual(productionModules);
     for (const record of records) {
       expect([
-        1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19,
+        1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 22,
       ]).toContain(record.phase);
       expect(manifest.provenanceCategories).toHaveProperty(
         record.provenanceCategory,

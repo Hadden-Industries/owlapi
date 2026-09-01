@@ -57,6 +57,58 @@ describe("OWL structural model", () => {
     expect(ontology.getReferencingAxioms(classA)).toEqual(new Set([axiom]));
   });
 
+  it("exposes only defensive collections from the frozen ontology façade", () => {
+    const factory = new OWLDataFactory();
+    const cls = factory.getOWLClass(IRI.create("urn:ontology-facade:Class"));
+    const axiom = factory.getOWLDeclarationAxiom(cls);
+    const ontology = new OWLOntology({ axioms: [axiom] });
+    const returnedAxioms = ontology.getAxioms();
+
+    returnedAxioms.clear();
+
+    expect(Object.isFrozen(ontology)).toBe(true);
+    expect(Reflect.ownKeys(ontology)).toEqual([]);
+    expect(ontology.getAxioms()).toEqual(new Set([axiom]));
+  });
+
+  it("does not reveal manager-owned state capabilities to constructor proxies", () => {
+    const factory = new OWLDataFactory();
+    const ontologyID = factory.getOWLOntologyID(
+      IRI.create("urn:ontology-facade:proxy"),
+    );
+    const axiom = factory.getOWLDeclarationAxiom(
+      factory.getOWLClass(IRI.create("urn:ontology-facade:Injected")),
+    );
+    const observedPropertyKeys = [];
+    let suppliedSnapshot = {
+      authoredImportDeclarations: [],
+      directAxioms: [],
+      directOntologyAnnotations: [],
+      ontologyID,
+    };
+    const constructorOptions = new Proxy(
+      { ontologyID },
+      {
+        get(target, propertyKey, receiver) {
+          observedPropertyKeys.push(propertyKey);
+          if (typeof propertyKey === "symbol") {
+            return () => suppliedSnapshot;
+          }
+          return Reflect.get(target, propertyKey, receiver);
+        },
+      },
+    );
+    const ontology = new OWLOntology(constructorOptions);
+
+    suppliedSnapshot = { ...suppliedSnapshot, directAxioms: [axiom] };
+
+    expect(
+      observedPropertyKeys.filter((key) => typeof key === "symbol"),
+    ).toEqual([]);
+    expect(ontology.getOntologyID()).toBe(ontologyID);
+    expect(ontology.getAxioms()).toEqual(new Set());
+  });
+
   it("includes nested ontology annotation properties in the signature", () => {
     const factory = new OWLDataFactory();
     const outerProperty = factory.getRDFSLabel();

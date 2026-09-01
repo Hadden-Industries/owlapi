@@ -87,6 +87,12 @@ describe("N-Quads manager integration", () => {
         value: "urn:test:graph",
       },
     });
+    const publishedSelectedGraph = result.documents[0].context.selectedGraph;
+    expect(Object.isFrozen(publishedSelectedGraph)).toBe(true);
+    expect(() => {
+      publishedSelectedGraph.value = "urn:test:mutated-graph";
+    }).toThrow(TypeError);
+    expect(publishedSelectedGraph.value).toBe("urn:test:graph");
   });
 
   it("auto-detects a graph-labelled statement ahead of graph syntaxes", async () => {
