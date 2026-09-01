@@ -15,9 +15,17 @@ const createManager = (options = {}) =>
     ...options,
     registry: new OWLParserRegistry([dlSyntaxParserDescriptor]),
   });
-const load = (manager, text, values = {}) =>
+let resourceDocumentSequence = 0;
+const nextResourceDocumentIRI = () =>
+  `urn:test:dl-resource:load:${++resourceDocumentSequence}`;
+const load = (
+  manager,
+  text,
+  values = {},
+  documentIRI = nextResourceDocumentIRI(),
+) =>
   manager.loadOntologyFromOntologyDocument(
-    new StringDocumentSource(text, { documentIRI: "urn:test:dl-resource" }),
+    new StringDocumentSource(text, { documentIRI }),
     configuration(values),
   );
 const expectResource = async (promise, resource, limit, observed) => {
@@ -117,11 +125,12 @@ describe("OWL DL Syntax resource safety and diagnostics", () => {
     await expect(load(manager, "A ⊑ B\nC")).rejects.toMatchObject({
       code: "OWL_SYNTAX_ERROR",
     });
-    const ontology = await load(manager, "D ⊑ E");
+    const recoveredDocumentIRI = "urn:test:dl-resource:recovered";
+    const ontology = await load(manager, "D ⊑ E", {}, recoveredDocumentIRI);
 
     expect(ontology.getAxioms().size).toBe(1);
     const [axiom] = ontology.getAxioms();
-    expect(axiom.subClass.iri.value).toBe("urn:test:dl-resource#D");
+    expect(axiom.subClass.iri.value).toBe(`${recoveredDocumentIRI}#D`);
   });
 
   it("cooperatively yields so an in-flight parse can be aborted", async () => {

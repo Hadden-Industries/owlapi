@@ -33,6 +33,7 @@
     "PHASE17-2026-08-22": "Repository-owner approval to implement Phase 17 and its distinct original KRSS/KRSS1 parser, shared KRSS core, deterministic dialect selection, finite grammar and controlled-correction inventory, zero-corpus register, Java oracle, cross-format, resource, import, WebVOWL, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
     "PHASE18-2026-08-22": "Repository-owner approval to implement Phase 18 physical legacy deletion, preserve retired-artifact provenance, remove the obsolete legacy test command and ignore rule, and close the migration gate before Phase 19 packaging on 22 August 2026",
     "PHASE19B-2026-08-26": "Repository-owner approval of the Phase 19B standalone package manifest, public package boundary, canonical Java-compatible namespaces, private implementation ownership, and associated configuration changes on 26 August 2026",
+    "ONTOLOGY-LIFECYCLE-2026-09-01": "Repository-owner approval to pre-build the ontology lifecycle capability programme on its dedicated branch before owlapi 0.1.0 lands, subject to reconciliation with that release before integration, on 1 September 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026"
   },
   "provenanceCategories": {
@@ -473,6 +474,31 @@
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE0-2026-08-10",
       "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE1-MANAGER-MANAGED-ONTOLOGY-INDEX",
+      "path": "internal/loading/managedOntologyIndex.js",
+      "phase": 1,
+      "scope": "transactional managed-ontology membership, full structural identity, ontology-IRI and version-IRI lookup, unique document aliases, and resolved direct-import object edges",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/#Ontology_IRI_and_Version_IRI",
+        "https://www.w3.org/TR/owl2-syntax/#Imports",
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 1.1, 2, 3.1, and Task 2"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 OWLOntologyManager and OWLOntologyManagerImpl identity, version, document-IRI, imported-ontology, and direct-import responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/loading/managedOntologyIndex.test.js",
+        "model/owlOntologyManager.integration.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-01"
     },
     {
       "id": "PHASE1-RDF-ENVIRONMENT",

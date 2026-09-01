@@ -1,6 +1,5 @@
 import {
   MissingImportError,
-  OWLOntologyStateError,
   ParserMismatchError,
   ResourceLimitError,
   SecurityPolicyError,
@@ -8,6 +7,7 @@ import {
   UnparsableOntologyException,
 } from "../io/errors.js";
 import { StringDocumentSource } from "../io/stringDocumentSource.js";
+import { ManagedOntologyIndex } from "../internal/loading/managedOntologyIndex.js";
 import { dlSyntaxParserDescriptor } from "../internal/parsing/dl/descriptor.js";
 import { functionalSyntaxParserDescriptor } from "../internal/parsing/functional/descriptor.js";
 import { jsonLdParserDescriptor } from "../internal/parsing/jsonld/descriptor.js";
@@ -218,15 +218,6 @@ class ParseTransaction {
   }
 }
 
-const ontologyKey = (ontologyID) => {
-  if (!ontologyID || typeof ontologyID.structuralKey !== "function") {
-    throw new TypeError("ontologyID must be an OWLOntologyID");
-  }
-  return ontologyID.structuralKey();
-};
-
-const documentKey = (documentIRI) => documentIRI?.value;
-
 const normalizeConfiguration = (configuration) => {
   if (configuration instanceof OWLOntologyLoaderConfiguration) {
     return configuration;
@@ -280,7 +271,7 @@ export class OWLOntologyManager {
   #dataFactory;
   #documentLoader;
   #iriMappers;
-  #ontologies = new Map();
+  #managedOntologyIndex = new ManagedOntologyIndex();
   #registry;
 
   constructor({ dataFactory, documentLoader, iriMappers = [], registry } = {}) {
@@ -335,22 +326,13 @@ export class OWLOntologyManager {
   }
 
   createOntology(ontologyID = this.#dataFactory.getOWLOntologyID()) {
-    const key = ontologyKey(ontologyID);
-    if (this.#ontologies.has(key)) {
-      throw new OWLOntologyStateError(
-        "An ontology with this ID already exists",
-        {
-          ontologyID,
-        },
-      );
-    }
     const ontology = new OWLOntology({ ontologyID });
-    this.#ontologies.set(key, ontology);
+    this.#managedOntologyIndex.registerOntology(ontology);
     return ontology;
   }
 
   getOntology(ontologyID) {
-    return this.#ontologies.get(ontologyKey(ontologyID));
+    return this.#managedOntologyIndex.getOntologyByID(ontologyID);
   }
 
   async loadOntologyFromOntologyDocument(source, configuration) {
@@ -366,45 +348,46 @@ export class OWLOntologyManager {
     this.#throwIfAborted(normalizedConfiguration);
     const normalizedSource = normalizeSource(source);
 
+    const managedOntologyLoadSession =
+      this.#managedOntologyIndex.beginLoadSession();
     const session = {
-      byDocument: new Map(),
-      byOntology: new Map(),
       entries: [],
       importCount: 0,
+      managedOntologyIndexSession: managedOntologyLoadSession,
     };
-    const root = await this.#loadDocument(
-      normalizedSource,
-      normalizedConfiguration,
-      session,
-      0,
-    );
-    this.#throwIfAborted(normalizedConfiguration);
+    let documents;
+    let root;
+    try {
+      root = await this.#loadDocument(
+        normalizedSource,
+        normalizedConfiguration,
+        session,
+        0,
+      );
+      this.#throwIfAborted(normalizedConfiguration);
+      documents = Object.freeze(
+        session.entries.map((entry) =>
+          Object.freeze({
+            context: freezeContext(entry.context),
+            ontology: entry.ontology,
+          }),
+        ),
+      );
+    } catch (error) {
+      managedOntologyLoadSession.discard();
+      throw error;
+    }
 
-    for (const entry of session.entries) {
-      const key = ontologyKey(entry.ontology.getOntologyID());
-      if (this.#ontologies.has(key)) {
-        throw new OWLOntologyStateError(
-          "An ontology with this ID already exists",
-          { ontologyID: entry.ontology.getOntologyID() },
-        );
-      }
+    managedOntologyLoadSession.commit();
+    for (const { context, ontology } of documents) {
+      this.#contexts.set(ontology, context);
     }
-    for (const entry of session.entries) {
-      const key = ontologyKey(entry.ontology.getOntologyID());
-      this.#ontologies.set(key, entry.ontology);
-      this.#contexts.set(entry.ontology, freezeContext(entry.context));
-    }
-    const documents = Object.freeze(
-      session.entries.map((entry) =>
-        Object.freeze({
-          context: this.#contexts.get(entry.ontology),
-          ontology: entry.ontology,
-        }),
-      ),
-    );
+    const importsClosure = Object.freeze([
+      ...this.#managedOntologyIndex.getImportsClosure(root),
+    ]);
     return Object.freeze({
       documents,
-      importsClosure: Object.freeze(documents.map(({ ontology }) => ontology)),
+      importsClosure,
       ontology: root,
     });
   }
@@ -414,39 +397,27 @@ export class OWLOntologyManager {
     this.#checkInputSize(source, configuration);
 
     const sourceDocumentIRI = source.getDocumentIRI?.();
-    const sourceDocumentKey = documentKey(sourceDocumentIRI);
-    const existingDocument = sourceDocumentKey
-      ? session.byDocument.get(sourceDocumentKey)
-      : undefined;
-    if (existingDocument) {
-      return existingDocument.ontology;
+    const existingOntology =
+      depth > 0 && sourceDocumentIRI
+        ? session.managedOntologyIndexSession.getOntologyByDocumentIRI(
+            sourceDocumentIRI,
+          )
+        : undefined;
+    if (existingOntology) {
+      return existingOntology;
     }
 
     const committed = await this.#parseDocument(source, configuration);
     committed.context.documentIRI = sourceDocumentIRI;
-    const key = ontologyKey(committed.ontology.getOntologyID());
-    const duplicate = session.byOntology.get(key);
-    if (duplicate) {
-      throw new OWLOntologyStateError(
-        "Two ontology documents produced the same ontology ID",
-        {
-          documentIRI: sourceDocumentIRI,
-          ontologyID: committed.ontology.getOntologyID(),
-        },
-      );
-    }
+    session.managedOntologyIndexSession.stageOntology(committed.ontology, {
+      documentIRI: sourceDocumentIRI,
+    });
 
     const entry = {
       context: committed.context,
-      documentKey: sourceDocumentKey,
       ontology: committed.ontology,
-      state: "LOADING",
     };
     session.entries.push(entry);
-    session.byOntology.set(key, entry);
-    if (sourceDocumentKey) {
-      session.byDocument.set(sourceDocumentKey, entry);
-    }
 
     for (const declaration of committed.ontology.getImportsDeclarations()) {
       await this.#loadImport(
@@ -457,26 +428,29 @@ export class OWLOntologyManager {
         depth,
       );
     }
-    entry.state = "LOADED";
     return committed.ontology;
   }
 
   async #loadImport(importIRI, importingEntry, configuration, session, depth) {
-    const importedOntologyID = this.#dataFactory.getOWLOntologyID(importIRI);
-    const importedKey = ontologyKey(importedOntologyID);
-    const sessionOntology = session.byOntology.get(importedKey);
-    if (sessionOntology) {
-      return sessionOntology.ontology;
-    }
-    const registeredOntology = this.#ontologies.get(importedKey);
-    if (registeredOntology) {
-      return registeredOntology;
+    let importedOntology =
+      session.managedOntologyIndexSession.getOntologyByIRI(importIRI);
+    if (importedOntology) {
+      session.managedOntologyIndexSession.stageDirectImport(
+        importingEntry.ontology,
+        importedOntology,
+      );
+      return importedOntology;
     }
 
     const documentIRI = this.#mapDocumentIRI(importIRI);
-    const existingDocument = session.byDocument.get(documentKey(documentIRI));
-    if (existingDocument) {
-      return existingDocument.ontology;
+    importedOntology =
+      session.managedOntologyIndexSession.getOntologyByDocumentIRI(documentIRI);
+    if (importedOntology) {
+      session.managedOntologyIndexSession.stageDirectImport(
+        importingEntry.ontology,
+        importedOntology,
+      );
+      return importedOntology;
     }
     session.importCount += 1;
     if (session.importCount > configuration.maxImportCount) {
@@ -572,12 +546,17 @@ export class OWLOntologyManager {
         { documentIRI, importIRI },
       );
     }
-    return this.#loadDocument(
+    importedOntology = await this.#loadDocument(
       importedSource,
       configuration,
       session,
       depth + 1,
     );
+    session.managedOntologyIndexSession.stageDirectImport(
+      importingEntry.ontology,
+      importedOntology,
+    );
+    return importedOntology;
   }
 
   #handleMissingImport(error, importingEntry, configuration) {
