@@ -1071,6 +1071,13 @@ The absent slice is owned by
 `docs/owlapi-js/ontology-lifecycle-capability-implementation-plan.md`. It is not a
 prerequisite for a production-worthy WebVOWL ingestion package and **MUST NOT**
 be pulled into the current plan merely to broaden the first production version.
+That release-scope boundary does not prohibit pre-integration development on
+the separate lifecycle feature branch. Such commits must remain outside every
+`0.1.0` candidate and release claim, retain deferred capability status, and be
+reconciled and fully reverified after accepted `v0.1.0` and the Phase 21
+checkpoint become ancestors of the qualifying branch. Reconciliation changes
+the canonical implementation directly; it never introduces a shim to preserve
+a provisional branch shape.
 
 Phase 20 productionizes the same declared capability families as the alpha. It
 may correct demonstrated defects, security problems, portability failures,

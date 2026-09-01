@@ -10,6 +10,34 @@ The canonical consumer artifacts are:
 - [task-by-task implementation plan](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/plans/2026-08-22-self-contained-owl-import-closure.md)
 - [machine-readable policy](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/import-closure/contract.v1.json)
 
+## Delivery sequencing
+
+The capability slice is being pre-built on the dedicated
+`feature/ontology-import-closure-lifecycle` branch before public
+`owlapi@0.1.0` lands. This separates implementation lead time from release
+scope: no lifecycle commit, export, test result, or package candidate belongs
+to or broadens `0.1.0`, and every lifecycle capability remains
+`DEFERRED` / `NOT_STARTED` while development is based on a pre-release branch.
+
+Only work that does not consume the completed Phase 21 target/error boundary
+may proceed before that boundary exists. The feature branch must not recreate
+`StringDocumentTarget`, the storage-error hierarchy, their parity decisions,
+or WebVOWL acceptance evidence. Those are integrated from their canonical
+Phase 21 commit.
+
+After accepted `v0.1.0` and Phase 21 are available, the reviewed lifecycle task
+commits are integrated or replayed onto a branch containing both predecessors.
+All affected tests, generated API views, installed-package checks, and consumer
+checks are rerun against that accepted baseline. Conflicts are resolved in the
+canonical implementation; no shim, forwarding module, compatibility alias,
+duplicate binding, or fallback export is permitted. A bounded amount of
+alignment rework is expected. A material public-contract difference instead
+requires a reviewed plan and compatibility-ledger amendment.
+
+Only the reconciled branch may complete the lifecycle rows or qualify exact
+`owlapi@0.2.0`. Pre-integration evidence is development evidence and is never
+copied forward as release evidence.
+
 ## Compatibility boundary
 
 `owlapi` must not export `materializeImportClosure`, `collapseImports`, `collapseImportsClosure`, or an equivalent project-invented operation. Materializing a distribution artifact is private `universal-ontology` process logic.

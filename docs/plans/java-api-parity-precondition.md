@@ -29,13 +29,14 @@ pinned Java OWLAPI 5.5.1 source at revision
 
 **Status:** Design-complete prerequisite. Execute only after the exact accepted
 public `owlapi@0.1.0` release exists. Complete this plan as Phase 21 before
-starting any task in
+starting any Phase 21-dependent task or claiming completion in
 [`docs/ontology-lifecycle-capability-implementation-plan.md`](../ontology-lifecycle-capability-implementation-plan.md),
-which becomes Phase 22. This checkpoint does not publish an intermediate npm
-release; its public additions first ship as part of the separately qualified
-`owlapi@0.2.0` release.
+which becomes Phase 22. Phase 21-independent lifecycle work may be pre-built
+under the isolation and reconciliation rules in §8. This checkpoint does not
+publish an intermediate npm release; its public additions first ship as part
+of the separately qualified `owlapi@0.2.0` release.
 
-**Revised:** 2026-08-29.
+**Revised:** 2026-09-01.
 
 ---
 
@@ -694,10 +695,21 @@ Phase 21 is complete only when all of the following are true:
 ## 8. Phase 22 handoff
 
 The import-closure lifecycle plan consumes, rather than recreates, the Phase 21
-target and storage-error boundary. Its first task must validate the decision
-record, capability rows, generated registry, forbidden-export assertions,
-WebVOWL audit/candidate evidence, and Git ancestry before changing manager
-state. Its storage task may add
+target and storage-error boundary. Phase 21-independent lifecycle work may be
+pre-built on its dedicated feature branch before this prerequisite is complete,
+provided that work remains outside every `0.1.0` candidate and release claim.
+Pre-integration work must keep lifecycle capability rows deferred, label its
+evidence provisional, and must not create, copy, simulate, or partially
+backfill this plan's target, errors, decision record, WebVOWL evidence, or
+installed-candidate result.
+
+Before any Phase 21-dependent lifecycle task or Phase 22 completion claim, the
+integration branch must contain the accepted `v0.1.0` and approved Phase 21
+completion commits in its ancestry. The lifecycle plan must then validate the
+decision record, capability rows, generated registry, forbidden-export
+assertions, WebVOWL audit/candidate evidence, and Git ancestry, reconcile every
+pre-built commit against that accepted baseline, and rerun affected tests and
+generated-surface checks. Its storage task may add
 `OWLOntologyManager.saveOntology` and internal storers, but it must preserve
 `StringDocumentTarget.toString()`, the package-private atomic replacement seam,
 the two-class storage error hierarchy, and the base-error representability
@@ -705,7 +717,10 @@ reason. Its installed WebVOWL gate must add the first real save and
 non-representability exercise; surface-only Phase 21 evidence is not a substitute
 for that semantic consumer test.
 
-Any Phase 22 worker who finds that the accepted Phase 21 surface is missing,
-different, or not in branch ancestry must stop. Re-running or partially
-duplicating Phase 21 inside the lifecycle task is not an acceptable substitute
-for satisfying this dependency.
+Any Phase 22 worker who reaches a Phase 21-dependent task while the accepted
+surface is missing or not in branch ancestry must stop that task. If the
+accepted surface differs materially from the lifecycle contract, stop for a
+reviewed plan and parity-ledger amendment. Re-running or partially duplicating
+Phase 21 inside the lifecycle task, or retaining the pre-integration shape with
+a shim, is not an acceptable substitute for satisfying and reconciling this
+dependency.
