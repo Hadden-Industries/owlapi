@@ -11,7 +11,11 @@ import { dirname, join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-import { assertReleaseTag, buildAllowedSigners } from "./release-signers.mjs";
+import {
+  assertLocalReleaseTag,
+  assertReleaseTag,
+  buildAllowedSigners,
+} from "./release-signers.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 const FINGERPRINT_PATTERN = "SHA256:[A-Za-z0-9+/]{43}";
@@ -25,6 +29,46 @@ export const parseSshVerification = (output) => {
     throw new Error("Git did not report a valid SSH signature.");
   }
   return match.groups;
+};
+
+const assertRegisteredPrincipal = ({ accepted, local, registry }) => {
+  const signer = registry.signers.find(({ id }) => id === accepted.signerId);
+  if (local.principal !== signer?.githubIdentity) {
+    throw new Error(
+      `SSH principal ${local.principal} does not match registered identity ${signer?.githubIdentity}.`,
+    );
+  }
+};
+
+export const verifyLocalReleaseTagFacts = ({
+  expectedTag,
+  expectedCommit,
+  objectType,
+  targetCommit,
+  localVerification,
+  registry,
+  releaseDate,
+}) => {
+  const local = parseSshVerification(localVerification);
+  const accepted = assertLocalReleaseTag({
+    actualTag: expectedTag,
+    expectedTag,
+    objectType,
+    targetCommit,
+    expectedCommit,
+    fingerprint: local.fingerprint,
+    registry,
+    releaseDate,
+  });
+  assertRegisteredPrincipal({ accepted, local, registry });
+  return {
+    result: "PASS",
+    tag: expectedTag,
+    sourceCommit: expectedCommit,
+    signerId: accepted.signerId,
+    signerPrincipal: local.principal,
+    fingerprint: accepted.fingerprint,
+  };
 };
 
 export const verifyReleaseTagFacts = ({
@@ -58,12 +102,7 @@ export const verifyReleaseTagFacts = ({
     registry,
     releaseDate,
   });
-  const signer = registry.signers.find(({ id }) => id === accepted.signerId);
-  if (local.principal !== signer?.githubIdentity) {
-    throw new Error(
-      `SSH principal ${local.principal} does not match registered identity ${signer?.githubIdentity}.`,
-    );
-  }
+  assertRegisteredPrincipal({ accepted, local, registry });
   return {
     result: "PASS",
     tag: expectedTag,
@@ -75,9 +114,9 @@ export const verifyReleaseTagFacts = ({
   };
 };
 
-const runGit = (arguments_) => {
+const runGit = (cwd, arguments_) => {
   const result = spawnSync("git", arguments_, {
-    cwd: repositoryRoot,
+    cwd,
     encoding: "utf8",
   });
   if (result.status !== 0) {
@@ -86,6 +125,89 @@ const runGit = (arguments_) => {
     );
   }
   return result;
+};
+
+const inspectLocalReleaseTag = ({
+  repositoryRoot: localRepositoryRoot,
+  expectedTag,
+  expectedCommit,
+  registry,
+  temporaryDirectory = tmpdir(),
+}) => {
+  const reference = `refs/tags/${expectedTag}`;
+  const objectType = runGit(localRepositoryRoot, [
+    "cat-file",
+    "-t",
+    reference,
+  ]).stdout.trim();
+  const targetCommit = runGit(localRepositoryRoot, [
+    "rev-list",
+    "-n",
+    "1",
+    reference,
+  ]).stdout.trim();
+  if (objectType !== "tag") {
+    throw new Error(`${expectedTag} is not an annotated tag.`);
+  }
+  if (targetCommit !== expectedCommit) {
+    throw new Error(
+      `${expectedTag} targets ${targetCommit}, not captured commit ${expectedCommit}.`,
+    );
+  }
+
+  const allowedSignersPath = join(
+    temporaryDirectory,
+    `owlapi-release-signers-${randomUUID()}`,
+  );
+  let localVerification;
+  try {
+    // Trust is derived exclusively from the reviewed registry; private keys
+    // and ambient Git trust configuration are never consulted.
+    writeFileSync(allowedSignersPath, buildAllowedSigners(registry), {
+      encoding: "utf8",
+      mode: 0o600,
+      flag: "wx",
+    });
+    const verification = runGit(localRepositoryRoot, [
+      "-c",
+      "gpg.format=ssh",
+      "-c",
+      `gpg.ssh.allowedSignersFile=${allowedSignersPath}`,
+      "verify-tag",
+      "--raw",
+      expectedTag,
+    ]);
+    localVerification = `${verification.stdout}${verification.stderr}`;
+  } finally {
+    if (existsSync(allowedSignersPath)) {
+      unlinkSync(allowedSignersPath);
+    }
+  }
+  return { localVerification, objectType, targetCommit };
+};
+
+export const verifyLocalReleaseTag = ({
+  repositoryRoot: localRepositoryRoot,
+  expectedTag,
+  expectedCommit,
+  registry,
+  releaseDate,
+  temporaryDirectory,
+}) => {
+  const inspection = inspectLocalReleaseTag({
+    repositoryRoot: localRepositoryRoot,
+    expectedTag,
+    expectedCommit,
+    registry,
+    temporaryDirectory,
+  });
+  return verifyLocalReleaseTagFacts({
+    expectedTag,
+    expectedCommit,
+    ...inspection,
+    registry,
+    releaseDate,
+  });
 };
 
 const fetchJson = async (url, token) => {
@@ -152,37 +274,13 @@ const main = async () => {
       "utf8",
     ),
   );
-  const reference = `refs/tags/${expectedTag}`;
-  const objectType = runGit(["cat-file", "-t", reference]).stdout.trim();
-  const targetCommit = runGit(["rev-list", "-n", "1", reference]).stdout.trim();
-  const allowedSignersPath = join(
-    tmpdir(),
-    `owlapi-release-signers-${randomUUID()}`,
-  );
-  let localVerification;
-  try {
-    // The temporary trust file is derived exclusively from the reviewed registry;
-    // a human private key never crosses into the workflow.
-    writeFileSync(allowedSignersPath, buildAllowedSigners(registry), {
-      encoding: "utf8",
-      mode: 0o600,
-      flag: "wx",
-    });
-    const verification = runGit([
-      "-c",
-      "gpg.format=ssh",
-      "-c",
-      `gpg.ssh.allowedSignersFile=${allowedSignersPath}`,
-      "verify-tag",
-      "--raw",
+  const { localVerification, objectType, targetCommit } =
+    inspectLocalReleaseTag({
+      repositoryRoot,
       expectedTag,
-    ]);
-    localVerification = `${verification.stdout}${verification.stderr}`;
-  } finally {
-    if (existsSync(allowedSignersPath)) {
-      unlinkSync(allowedSignersPath);
-    }
-  }
+      expectedCommit,
+      registry,
+    });
 
   const encodedTag = encodeURIComponent(expectedTag);
   const referenceRecord = await fetchJson(
