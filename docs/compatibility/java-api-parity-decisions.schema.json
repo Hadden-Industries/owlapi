@@ -1,0 +1,609 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hadden-industries.github.io/owlapi/java-api-parity-decisions.schema.json",
+  "title": "Java API parity decisions and qualification evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "qualification",
+    "developmentBaseline",
+    "acceptedReleaseBaseline",
+    "javaAuthority",
+    "decisions",
+    "forbiddenMembers",
+    "forbiddenBindings",
+    "consumerMigrations",
+    "phase21"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "qualification": {
+      "enum": ["PRE_INTEGRATION", "RECONCILED"]
+    },
+    "developmentBaseline": {
+      "$ref": "#/$defs/baseline"
+    },
+    "acceptedReleaseBaseline": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/releaseBaseline"
+        }
+      ]
+    },
+    "javaAuthority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "revision"],
+      "properties": {
+        "version": {
+          "const": "5.5.1"
+        },
+        "revision": {
+          "const": "d7e997a53b470e32700de89cc610d9daf01ea769"
+        }
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/decision"
+      },
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "const": "PARITY-TARGET-WRITER-OMISSION"
+              }
+            }
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "const": "PARITY-TARGET-ATOMIC-COMMIT"
+              }
+            }
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "const": "PARITY-ERROR-SUFFIX"
+              }
+            }
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "const": "PARITY-ERROR-HIERARCHY"
+              }
+            }
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "const": "PARITY-ERROR-NAMESPACE"
+              }
+            }
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "const": "PARITY-STORAGE-REASON"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "forbiddenMembers": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "io.StringDocumentTarget.prototype.getText",
+          "io.StringDocumentTarget.prototype.getWriter",
+          "io.StringDocumentTarget.prototype.write",
+          "io.StringDocumentTarget.prototype.append"
+        ]
+      }
+    },
+    "forbiddenBindings": {
+      "const": [
+        "io.UnrepresentableOntologyError",
+        "model.OWLOntologyStorageError",
+        "model.OWLStorerNotFoundError"
+      ]
+    },
+    "consumerMigrations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["webvowl"],
+      "properties": {
+        "webvowl": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/webvowl"
+            }
+          ]
+        }
+      }
+    },
+    "phase21": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "registrySha256",
+        "publicBindings",
+        "newNamespaces"
+      ],
+      "properties": {
+        "status": {
+          "enum": ["IN_PROGRESS", "COMPLETE"]
+        },
+        "registrySha256": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          ]
+        },
+        "publicBindings": {
+          "const": [
+            "io.StringDocumentTarget",
+            "io.OWLOntologyStorageError",
+            "io.OWLStorerNotFoundError"
+          ]
+        },
+        "newNamespaces": {
+          "const": []
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "qualification": {
+            "const": "PRE_INTEGRATION"
+          }
+        },
+        "type": "object"
+      },
+      "then": {
+        "properties": {
+          "acceptedReleaseBaseline": {
+            "type": "null"
+          },
+          "consumerMigrations": {
+            "properties": {
+              "webvowl": {
+                "type": "null"
+              }
+            },
+            "type": "object"
+          },
+          "phase21": {
+            "properties": {
+              "status": {
+                "const": "IN_PROGRESS"
+              },
+              "registrySha256": {
+                "type": "null"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "else": {
+        "properties": {
+          "acceptedReleaseBaseline": {
+            "$ref": "#/$defs/releaseBaseline"
+          }
+        },
+        "type": "object"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "phase21": {
+            "properties": {
+              "status": {
+                "const": "COMPLETE"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "then": {
+        "properties": {
+          "qualification": {
+            "const": "RECONCILED"
+          },
+          "phase21": {
+            "properties": {
+              "registrySha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "type": "object"
+          },
+          "consumerMigrations": {
+            "properties": {
+              "webvowl": {
+                "$ref": "#/$defs/webvowl"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      }
+    }
+  ],
+  "$defs": {
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "registrySha256"],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "registrySha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "releaseBaseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tag", "commit", "packageIntegrity", "registrySha256"],
+      "properties": {
+        "tag": {
+          "const": "v0.1.0"
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "packageIntegrity": {
+          "type": "string",
+          "pattern": "^sha512-[A-Za-z0-9+/]{86}==$"
+        },
+        "registrySha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "phase",
+        "javaAuthorities",
+        "jsBindings",
+        "category",
+        "rationale",
+        "rule",
+        "approvalSource",
+        "verificationPaths"
+      ],
+      "properties": {
+        "id": {
+          "enum": [
+            "PARITY-TARGET-WRITER-OMISSION",
+            "PARITY-TARGET-ATOMIC-COMMIT",
+            "PARITY-ERROR-SUFFIX",
+            "PARITY-ERROR-HIERARCHY",
+            "PARITY-ERROR-NAMESPACE",
+            "PARITY-STORAGE-REASON"
+          ]
+        },
+        "phase": {
+          "const": 21
+        },
+        "javaAuthorities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "sourcePath", "members"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "pattern": "^org\\.semanticweb\\.owlapi\\.(io|model)\\.[A-Za-z]+$"
+              },
+              "sourcePath": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[A-Za-z0-9._/-]+$"
+              },
+              "members": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true,
+                "minItems": 1
+              }
+            }
+          }
+        },
+        "jsBindings": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "io.StringDocumentTarget",
+              "io.OWLOntologyStorageError",
+              "io.OWLStorerNotFoundError"
+            ]
+          }
+        },
+        "category": {
+          "enum": [
+            "OMISSION",
+            "BEHAVIOR_ADAPTATION",
+            "NAME_ADAPTATION",
+            "HIERARCHY_ADAPTATION",
+            "NAMESPACE_ADAPTATION",
+            "DIAGNOSTIC_ADAPTATION"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "approvalSource": {
+          "const": "docs/plans/java-api-parity-precondition.md"
+        },
+        "verificationPaths": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[A-Za-z0-9._/-]+$"
+          }
+        }
+      }
+    },
+    "webvowl": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "baselineCommit",
+        "auditedPathClasses",
+        "excludedPathClasses",
+        "sourceReaderAllowlist",
+        "obsoleteUseCount",
+        "scanSha256",
+        "disposition",
+        "changedPaths",
+        "migrationCommit",
+        "reviewedPatchSha256",
+        "installedCandidate"
+      ],
+      "properties": {
+        "repository": {
+          "const": "https://github.com/Hadden-Industries/webvowl"
+        },
+        "baselineCommit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "auditedPathClasses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "excludedPathClasses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "sourceReaderAllowlist": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "line",
+              "expression",
+              "receiverType",
+              "evidence"
+            ],
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[A-Za-z0-9._/-]+$"
+              },
+              "line": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "expression": {
+                "type": "string",
+                "minLength": 1
+              },
+              "receiverType": {
+                "const": "StringDocumentSource"
+              },
+              "evidence": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "obsoleteUseCount": {
+          "const": 0
+        },
+        "scanSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "disposition": {
+          "enum": ["NO_OBSOLETE_USAGE", "MIGRATED"]
+        },
+        "changedPaths": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[A-Za-z0-9._/-]+$"
+          }
+        },
+        "migrationCommit": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{40}$"
+            }
+          ]
+        },
+        "reviewedPatchSha256": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          ]
+        },
+        "installedCandidate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sha256", "evidenceSha256", "result"],
+          "properties": {
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "evidenceSha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "result": {
+              "const": "PASS"
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "const": "NO_OBSOLETE_USAGE"
+              }
+            },
+            "type": "object"
+          },
+          "then": {
+            "properties": {
+              "changedPaths": {
+                "maxItems": 0,
+                "type": "array"
+              },
+              "migrationCommit": {
+                "type": "null"
+              },
+              "reviewedPatchSha256": {
+                "type": "null"
+              }
+            },
+            "type": "object"
+          },
+          "else": {
+            "properties": {
+              "changedPaths": {
+                "minItems": 1,
+                "type": "array"
+              },
+              "reviewedPatchSha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "type": "object"
+          }
+        }
+      ]
+    }
+  }
+}

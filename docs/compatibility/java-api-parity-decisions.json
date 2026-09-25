@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "qualification": "PRE_INTEGRATION",
+  "developmentBaseline": {
+    "commit": "1e588030c6ba7cdc24fbf6c055c3c02ceb388a65",
+    "registrySha256": "5fcaf1e0ae5bf8d4193bbbd0ae9b38d8132223524a41aa15e99e846b5f52f428"
+  },
+  "acceptedReleaseBaseline": null,
+  "javaAuthority": {
+    "version": "5.5.1",
+    "revision": "d7e997a53b470e32700de89cc610d9daf01ea769"
+  },
+  "decisions": [
+    {
+      "id": "PARITY-TARGET-WRITER-OMISSION",
+      "phase": 21,
+      "javaAuthorities": [
+        {
+          "type": "org.semanticweb.owlapi.io.StringDocumentTarget",
+          "sourcePath": "api/src/main/java/org/semanticweb/owlapi/io/StringDocumentTarget.java",
+          "members": [
+            "StringDocumentTarget()",
+            "String toString()",
+            "Optional<Writer> getWriter()"
+          ]
+        }
+      ],
+      "jsBindings": ["io.StringDocumentTarget"],
+      "category": "OMISSION",
+      "rationale": "JavaScript has no java.io.Writer protocol; an exposed writer would defeat complete-text atomicity.",
+      "rule": "Expose only constructor and toString; omit getWriter, getText, write, append, and constructor text.",
+      "approvalSource": "docs/plans/java-api-parity-precondition.md",
+      "verificationPaths": [
+        "governance.test.js",
+        "io/io.test.js",
+        "test/package-boundary.test.mjs"
+      ]
+    },
+    {
+      "id": "PARITY-TARGET-ATOMIC-COMMIT",
+      "phase": 21,
+      "javaAuthorities": [
+        {
+          "type": "org.semanticweb.owlapi.io.StringDocumentTarget",
+          "sourcePath": "api/src/main/java/org/semanticweb/owlapi/io/StringDocumentTarget.java",
+          "members": [
+            "StringDocumentTarget()",
+            "String toString()",
+            "Optional<Writer> getWriter()"
+          ]
+        }
+      ],
+      "jsBindings": ["io.StringDocumentTarget"],
+      "category": "BEHAVIOR_ADAPTATION",
+      "rationale": "The consumer requires failed saves to preserve prior text, unlike incremental Java writer mutation.",
+      "rule": "Replace complete text through one package-private helper only after target identity and string validation; expose no mutator.",
+      "approvalSource": "docs/plans/java-api-parity-precondition.md",
+      "verificationPaths": [
+        "governance.test.js",
+        "io/io.test.js",
+        "test/package-boundary.test.mjs"
+      ]
+    },
+    {
+      "id": "PARITY-ERROR-SUFFIX",
+      "phase": 21,
+      "javaAuthorities": [
+        {
+          "type": "org.semanticweb.owlapi.model.OWLOntologyStorageException",
+          "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyStorageException.java",
+          "members": [
+            "OWLOntologyStorageException(String)",
+            "OWLOntologyStorageException(String, Throwable)",
+            "OWLOntologyStorageException(Throwable)"
+          ]
+        },
+        {
+          "type": "org.semanticweb.owlapi.model.OWLStorerNotFoundException",
+          "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLStorerNotFoundException.java",
+          "members": ["OWLStorerNotFoundException(OWLDocumentFormat)"]
+        }
+      ],
+      "jsBindings": ["io.OWLOntologyStorageError", "io.OWLStorerNotFoundError"],
+      "category": "NAME_ADAPTATION",
+      "rationale": "The established JavaScript throwable convention uses the Error suffix.",
+      "rule": "Use the two canonical Error names and no Exception aliases.",
+      "approvalSource": "docs/plans/java-api-parity-precondition.md",
+      "verificationPaths": [
+        "governance.test.js",
+        "io/io.test.js",
+        "test/package-boundary.test.mjs"
+      ]
+    },
+    {
+      "id": "PARITY-ERROR-HIERARCHY",
+      "phase": 21,
+      "javaAuthorities": [
+        {
+          "type": "org.semanticweb.owlapi.model.OWLOntologyStorageException",
+          "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyStorageException.java",
+          "members": [
+            "OWLOntologyStorageException(String)",
+            "OWLOntologyStorageException(String, Throwable)",
+            "OWLOntologyStorageException(Throwable)"
+          ]
+        },
+        {
+          "type": "org.semanticweb.owlapi.model.OWLStorerNotFoundException",
+          "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLStorerNotFoundException.java",
+          "members": ["OWLStorerNotFoundException(OWLDocumentFormat)"]
+        }
+      ],
+      "jsBindings": ["io.OWLOntologyStorageError", "io.OWLStorerNotFoundError"],
+      "category": "HIERARCHY_ADAPTATION",
+      "rationale": "The package already uses OWLAPIError and has no separate checked-exception root.",
+      "rule": "OWLOntologyStorageError extends OWLAPIError; OWLStorerNotFoundError extends OWLOntologyStorageError.",
+      "approvalSource": "docs/plans/java-api-parity-precondition.md",
+      "verificationPaths": [
+        "governance.test.js",
+        "io/io.test.js",
+        "test/package-boundary.test.mjs"
+      ]
+    },
+    {
+      "id": "PARITY-ERROR-NAMESPACE",
+      "phase": 21,
+      "javaAuthorities": [
+        {
+          "type": "org.semanticweb.owlapi.model.OWLOntologyStorageException",
+          "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyStorageException.java",
+          "members": [
+            "OWLOntologyStorageException(String)",
+            "OWLOntologyStorageException(String, Throwable)",
+            "OWLOntologyStorageException(Throwable)"
+          ]
+        },
+        {
+          "type": "org.semanticweb.owlapi.model.OWLStorerNotFoundException",
+          "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLStorerNotFoundException.java",
+          "members": ["OWLStorerNotFoundException(OWLDocumentFormat)"]
+        }
+      ],
+      "jsBindings": ["io.OWLOntologyStorageError", "io.OWLStorerNotFoundError"],
+      "category": "NAMESPACE_ADAPTATION",
+      "rationale": "The existing package owns throwable bindings in io; duplicating model exports adds no semantic capability.",
+      "rule": "Export only through io and the existing bare aggregate with one binding identity; do not export these errors through model.",
+      "approvalSource": "docs/plans/java-api-parity-precondition.md",
+      "verificationPaths": [
+        "governance.test.js",
+        "io/io.test.js",
+        "test/package-boundary.test.mjs"
+      ]
+    },
+    {
+      "id": "PARITY-STORAGE-REASON",
+      "phase": 21,
+      "javaAuthorities": [
+        {
+          "type": "org.semanticweb.owlapi.model.OWLOntologyStorageException",
+          "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyStorageException.java",
+          "members": [
+            "OWLOntologyStorageException(String)",
+            "OWLOntologyStorageException(String, Throwable)",
+            "OWLOntologyStorageException(Throwable)"
+          ]
+        }
+      ],
+      "jsBindings": ["io.OWLOntologyStorageError"],
+      "category": "DIAGNOSTIC_ADAPTATION",
+      "rationale": "A stable reason can classify lossless-representation failure without inventing a public subtype.",
+      "rule": "Retain reason ONTOLOGY_NOT_REPRESENTABLE through safe own details without overriding canonical name, code, message, cause, or prototype.",
+      "approvalSource": "docs/plans/java-api-parity-precondition.md",
+      "verificationPaths": [
+        "governance.test.js",
+        "io/io.test.js",
+        "test/package-boundary.test.mjs"
+      ]
+    }
+  ],
+  "forbiddenMembers": [
+    "io.StringDocumentTarget.prototype.getText",
+    "io.StringDocumentTarget.prototype.getWriter",
+    "io.StringDocumentTarget.prototype.write",
+    "io.StringDocumentTarget.prototype.append"
+  ],
+  "forbiddenBindings": [
+    "io.UnrepresentableOntologyError",
+    "model.OWLOntologyStorageError",
+    "model.OWLStorerNotFoundError"
+  ],
+  "consumerMigrations": {
+    "webvowl": null
+  },
+  "phase21": {
+    "status": "IN_PROGRESS",
+    "registrySha256": null,
+    "publicBindings": [
+      "io.StringDocumentTarget",
+      "io.OWLOntologyStorageError",
+      "io.OWLStorerNotFoundError"
+    ],
+    "newNamespaces": []
+  }
+}

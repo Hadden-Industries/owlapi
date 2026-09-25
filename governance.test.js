@@ -152,6 +152,210 @@ const currentProductionModules = () =>
   ].sort();
 
 describe("owlapi governance artifacts", () => {
+  it("records canonical parity decisions without claiming an accepted release", () => {
+    const ledgerPath = "./docs/compatibility/java-api-parity-decisions.json";
+    expect(existsSync(new URL(ledgerPath, import.meta.url))).toBe(true);
+    const { document: ledger, errors } = validateAgainstSchema(
+      ledgerPath,
+      "./docs/compatibility/java-api-parity-decisions.schema.json",
+    );
+    expect(errors).toEqual([]);
+    expect(ledger.qualification).toBe("PRE_INTEGRATION");
+    expect(ledger.acceptedReleaseBaseline).toBeNull();
+    expect(ledger.consumerMigrations.webvowl).toBeNull();
+    expect(ledger.phase21.status).toBe("IN_PROGRESS");
+    expect(ledger.javaAuthority).toEqual({
+      version: "5.5.1",
+      revision: "d7e997a53b470e32700de89cc610d9daf01ea769",
+    });
+    expect(ledger.decisions.map(({ id }) => id).sort()).toEqual([
+      "PARITY-ERROR-HIERARCHY",
+      "PARITY-ERROR-NAMESPACE",
+      "PARITY-ERROR-SUFFIX",
+      "PARITY-STORAGE-REASON",
+      "PARITY-TARGET-ATOMIC-COMMIT",
+      "PARITY-TARGET-WRITER-OMISSION",
+    ]);
+    expect(ledger.phase21.publicBindings).toEqual([
+      "io.StringDocumentTarget",
+      "io.OWLOntologyStorageError",
+      "io.OWLStorerNotFoundError",
+    ]);
+    expect(ledger.phase21.newNamespaces).toEqual([]);
+    expect(ledger.forbiddenMembers).toContain(
+      "io.StringDocumentTarget.prototype.getText",
+    );
+    expect(ledger.forbiddenBindings).toEqual([
+      "io.UnrepresentableOntologyError",
+      "model.OWLOntologyStorageError",
+      "model.OWLStorerNotFoundError",
+    ]);
+    for (const decision of ledger.decisions) {
+      expect(decision.phase).toBe(21);
+      expect(decision.verificationPaths.length).toBeGreaterThan(0);
+      for (const path of [
+        ...decision.verificationPaths,
+        decision.approvalSource,
+      ]) {
+        expect(existsSync(new URL(path, import.meta.url))).toBe(true);
+      }
+      for (const authority of decision.javaAuthorities) {
+        expect(authority.sourcePath).toBe(
+          `api/src/main/java/${authority.type.replaceAll(".", "/")}.java`,
+        );
+      }
+    }
+    const matrix = readJson("./docs/compatibility/capabilities.json");
+    for (const id of [
+      "compatibility.java-parity-precondition",
+      "io.string-document-target",
+      "io.storage-error-contract",
+    ]) {
+      expect(matrix.capabilities.filter((row) => row.id === id)).toEqual([
+        expect.objectContaining({
+          id,
+          status: "REQUIRED_V1",
+          progress: "IN_PROGRESS",
+          phase: 21,
+        }),
+      ]);
+    }
+    // Git owns revision lookup; the invariant here binds the declared digest
+    // to actual baseline bytes. Source archives cannot answer Git questions.
+    if (!completeHistoryUnavailableReason()) {
+      const baseline = execFileSync(
+        "git",
+        [
+          "show",
+          `${ledger.developmentBaseline.commit}:docs/compatibility/java-api-surface.json`,
+        ],
+        { cwd: REPOSITORY_ROOT, stdio: ["ignore", "pipe", "pipe"] },
+      );
+      expect(sha256(baseline)).toBe(ledger.developmentBaseline.registrySha256);
+      expect(isAncestorOfHead(ledger.developmentBaseline.commit)).toBe(true);
+    }
+  });
+
+  it("rejects fabricated parity acceptance and unapproved ledger fields", () => {
+    const ledger = readJson(
+      "./docs/compatibility/java-api-parity-decisions.json",
+    );
+    const schemaPath =
+      "./docs/compatibility/java-api-parity-decisions.schema.json";
+    const invalidRecords = [
+      { ...ledger, invented: true },
+      { ...ledger, phase21: { ...ledger.phase21, status: "COMPLETE" } },
+      { ...ledger, qualification: "RECONCILED" },
+      { ...ledger, acceptedReleaseBaseline: { tag: "v0.1.0" } },
+      {
+        ...ledger,
+        javaAuthority: { ...ledger.javaAuthority, revision: "0".repeat(40) },
+      },
+      {
+        ...ledger,
+        decisions: [
+          { ...ledger.decisions[0], category: "PUBLIC_JS_EXTENSION" },
+        ],
+      },
+      { ...ledger, decisions: [...ledger.decisions, ledger.decisions[0]] },
+      { ...ledger, phase21: { ...ledger.phase21, newNamespaces: ["storage"] } },
+    ];
+    for (const invalid of invalidRecords) {
+      expect(
+        validateDocumentAgainstSchema(invalid, schemaPath).length,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("requires complete consumer evidence only for reconciled parity completion", () => {
+    const ledger = readJson(
+      "./docs/compatibility/java-api-parity-decisions.json",
+    );
+    const schemaPath =
+      "./docs/compatibility/java-api-parity-decisions.schema.json";
+    // Synthetic schema fixtures are not release evidence and never enter the
+    // retained ledger. Positive controls prevent an always-rejecting schema.
+    const reconciled = {
+      ...ledger,
+      qualification: "RECONCILED",
+      acceptedReleaseBaseline: {
+        tag: "v0.1.0",
+        commit: "a".repeat(40),
+        packageIntegrity: `sha512-${Buffer.alloc(64, 1).toString("base64")}`,
+        registrySha256: "b".repeat(64),
+      },
+    };
+    expect(validateDocumentAgainstSchema(reconciled, schemaPath)).toEqual([]);
+    const complete = {
+      ...reconciled,
+      phase21: {
+        ...ledger.phase21,
+        status: "COMPLETE",
+        registrySha256: "c".repeat(64),
+      },
+    };
+    expect(
+      validateDocumentAgainstSchema(complete, schemaPath).length,
+    ).toBeGreaterThan(0);
+    const consumer = {
+      repository: "https://github.com/Hadden-Industries/webvowl",
+      baselineCommit: "d".repeat(40),
+      auditedPathClasses: ["src", "test", "docs"],
+      excludedPathClasses: ["docs/owlapi-js"],
+      sourceReaderAllowlist: [],
+      obsoleteUseCount: 0,
+      scanSha256: "e".repeat(64),
+      disposition: "NO_OBSOLETE_USAGE",
+      changedPaths: [],
+      migrationCommit: null,
+      reviewedPatchSha256: null,
+      installedCandidate: {
+        sha256: "f".repeat(64),
+        evidenceSha256: "1".repeat(64),
+        result: "PASS",
+      },
+    };
+    const candidate = {
+      ...complete,
+      consumerMigrations: { webvowl: consumer },
+    };
+    expect(validateDocumentAgainstSchema(candidate, schemaPath)).toEqual([]);
+    for (const mutation of [
+      { obsoleteUseCount: 1 },
+      { changedPaths: ["src/obsolete.js"] },
+      { disposition: "MIGRATED" },
+      {
+        installedCandidate: { ...consumer.installedCandidate, result: "FAIL" },
+      },
+      { invented: true },
+    ]) {
+      expect(
+        validateDocumentAgainstSchema(
+          {
+            ...candidate,
+            consumerMigrations: { webvowl: { ...consumer, ...mutation } },
+          },
+          schemaPath,
+        ).length,
+      ).toBeGreaterThan(0);
+    }
+    const migration = {
+      ...consumer,
+      disposition: "MIGRATED",
+      changedPaths: ["src/targetReader.js"],
+      reviewedPatchSha256: "2".repeat(64),
+    };
+    expect(
+      validateDocumentAgainstSchema(
+        {
+          ...candidate,
+          consumerMigrations: { webvowl: migration },
+        },
+        schemaPath,
+      ),
+    ).toEqual([]);
+  });
+
   it("classifies every capability exactly once with a normative status", () => {
     const matrix = readJson("./docs/compatibility/capabilities.json");
     const ids = matrix.capabilities.map(({ id }) => id);

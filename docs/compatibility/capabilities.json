@@ -10,6 +10,27 @@
   "progressStates": ["NOT_STARTED", "IN_PROGRESS", "COMPLETE"],
   "capabilities": [
     {
+      "id": "compatibility.java-parity-precondition",
+      "category": "compatibility",
+      "status": "REQUIRED_V1",
+      "progress": "IN_PROGRESS",
+      "phase": 21
+    },
+    {
+      "id": "io.string-document-target",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "IN_PROGRESS",
+      "phase": 21
+    },
+    {
+      "id": "io.storage-error-contract",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "IN_PROGRESS",
+      "phase": 21
+    },
+    {
       "id": "parser.functional",
       "category": "parser",
       "status": "REQUIRED_V1",
