@@ -413,6 +413,18 @@
       "focusedEvidence": ["model/owlOntologyManager.test.js"],
       "laterPhaseChanges": [
         {
+          "phase": 22,
+          "scope": "save one committed ontology snapshot through exact private storer selection and atomic complete-text replacement without public storer injection",
+          "normativePublicSources": [
+            "docs/ontology-lifecycle-capability-implementation-plan.md sections 3.1 and Task 7"
+          ],
+          "focusedEvidence": [
+            "model/owlOntologyManager.storage.test.js",
+            "internal/storage/storerRegistry.test.js"
+          ],
+          "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
+        },
+        {
           "phase": 2,
           "scope": "register the Functional Syntax descriptor in the default manager while preserving injected registries",
           "normativePublicSources": [
@@ -622,6 +634,30 @@
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
       "reviewDate": "2026-09-01"
+    },
+    {
+      "id": "PHASE22-STORAGE-REGISTRY",
+      "path": "internal/storage/storerRegistry.js",
+      "phase": 22,
+      "scope": "private immutable exact-format storer registry and asynchronous render-before-commit protocol with typed failure preservation",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://tc39.es/ecma262/#sec-promise-objects",
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 3.1 and Task 7"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 OWLOntologyManager.saveOntology(OWLOntology, OWLDocumentFormat, OWLOntologyDocumentTarget), OWLStorer, and OWLStorerNotFoundException responsibilities"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/storage/storerRegistry.test.js",
+        "model/owlOntologyManager.storage.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-25"
     },
     {
       "id": "PHASE22-MODEL-AXIOM-SEMANTICS",

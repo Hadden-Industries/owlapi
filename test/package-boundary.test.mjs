@@ -111,6 +111,7 @@ test("the export map rejects legacy, metadata, extension, and deep paths", async
     "owlapi/model/setOntologyID.js",
     "owlapi/model/structural.js",
     "owlapi/internal/parsing/parserRegistry.js",
+    "owlapi/internal/storage/storerRegistry.js",
     "owlapi/io/stringDocumentTarget.js",
     "owlapi/io/errors.js",
     "owlapi/util/index.js",

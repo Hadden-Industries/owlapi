@@ -964,20 +964,24 @@
         "prototype.getOntology",
         "prototype.importsClosure",
         "prototype.loadOntologyFromOntologyDocument",
-        "prototype.loadOntologyGraphFromOntologyDocument"
+        "prototype.loadOntologyGraphFromOntologyDocument",
+        "prototype.saveOntology"
       ],
       "omittedMembers": [
         "Change and progress listeners",
         "AddAxiom/RemoveAxiom change records and axiom removal operations",
         "AddImport/RemoveImport changes",
         "RemoveOntologyAnnotation changes",
-        "Storer and ontology-factory registration"
+        "Storer and ontology-factory registration",
+        "IRI, stream, implicit-format, and default-document saveOntology overloads"
       ],
       "publicErrors": [
         "DocumentLoadError",
         "MissingImportError",
         "OWLOntologyCreationError",
         "OWLOntologyStateError",
+        "OWLOntologyStorageError",
+        "OWLStorerNotFoundError",
         "UnparsableOntologyException"
       ],
       "semanticQualifications": [
@@ -985,7 +989,9 @@
         "importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership.",
         "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
         "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically.",
-        "applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails."
+        "applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails.",
+        "LIFECYCLE-ASYNC-SAVE-OVERLOAD: saveOntology(ontology, format, target) returns Promise<void>, validates ownership and genuine format/target identities, and selects only the exact format key.",
+        "LIFECYCLE-LOSSLESS-STORAGE: saveOntology renders one committed snapshot and atomically replaces target text only after success; unexpected renderer failures are wrapped with cause and typed storage errors retain identity."
       ],
       "verification": [
         "internal/loading/managedOntologyIndex.test.js",
@@ -995,7 +1001,9 @@
         "model/ontologyChanges.test.js",
         "model/owlOntologyManager.integration.test.js",
         "model/owlOntologyManager.test.js",
-        "test/package-boundary.test.mjs"
+        "test/package-boundary.test.mjs",
+        "internal/storage/storerRegistry.test.js",
+        "model/owlOntologyManager.storage.test.js"
       ],
       "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
@@ -13132,14 +13140,16 @@
         "prototype.getOntology",
         "prototype.importsClosure",
         "prototype.loadOntologyFromOntologyDocument",
-        "prototype.loadOntologyGraphFromOntologyDocument"
+        "prototype.loadOntologyGraphFromOntologyDocument",
+        "prototype.saveOntology"
       ],
       "omittedMembers": [
         "Change and progress listeners",
         "AddAxiom/RemoveAxiom change records and axiom removal operations",
         "AddImport/RemoveImport changes",
         "RemoveOntologyAnnotation changes",
-        "Storer and ontology-factory registration"
+        "Storer and ontology-factory registration",
+        "IRI, stream, implicit-format, and default-document saveOntology overloads"
       ],
       "verification": [
         "internal/loading/managedOntologyIndex.test.js",
@@ -13149,7 +13159,9 @@
         "model/ontologyChanges.test.js",
         "model/owlOntologyManager.integration.test.js",
         "model/owlOntologyManager.test.js",
-        "test/package-boundary.test.mjs"
+        "test/package-boundary.test.mjs",
+        "internal/storage/storerRegistry.test.js",
+        "model/owlOntologyManager.storage.test.js"
       ],
       "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },

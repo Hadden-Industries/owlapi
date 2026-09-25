@@ -395,6 +395,64 @@ describe("owlapi governance artifacts", () => {
     }
   });
 
+  it("records only the eight approved lifecycle adaptations without acceptance", () => {
+    const { document: ledger, errors } = validateAgainstSchema(
+      "./docs/compatibility/java-api-parity-decisions.json",
+      "./docs/compatibility/java-api-parity-decisions.schema.json",
+    );
+    expect(errors).toEqual([]);
+    expect(ledger.phase22).toEqual({
+      status: "IN_PROGRESS",
+      decisions: expect.any(Array),
+    });
+    expect(ledger.phase22.decisions.map(({ id }) => id).sort()).toEqual([
+      "LIFECYCLE-ASYNC-SAVE-OVERLOAD",
+      "LIFECYCLE-CHANGE-OVERLOAD-SUBSET",
+      "LIFECYCLE-CLOSURE-COLLECTION-MAPPING",
+      "LIFECYCLE-FOREIGN-ONTOLOGY-STATE",
+      "LIFECYCLE-LOSSLESS-STORAGE",
+      "LIFECYCLE-MERGER-OPTIONAL-FILTER",
+      "LIFECYCLE-MUTATION-RESULT-ATOMICITY",
+      "LIFECYCLE-PROVIDER-SNAPSHOT",
+    ]);
+    for (const [index, decision] of ledger.phase22.decisions.entries()) {
+      expect(decision.rejectedAlternative.length).toBeGreaterThan(0);
+      for (const field of ["javaAuthorities", "jsBindings", "category"]) {
+        const invalid = JSON.parse(JSON.stringify(ledger));
+        const other = ledger.phase22.decisions[(index + 1) % 8];
+        invalid.phase22.decisions[index][field] =
+          field === "category" ? "PUBLIC_JS_EXTENSION" : other[field];
+        // Some decisions deliberately cite the same manager overloads; alter
+        // the signature as well so this is always an unapproved contract.
+        if (field === "javaAuthorities") {
+          invalid.phase22.decisions[index][field] = [
+            {
+              ...decision.javaAuthorities[0],
+              members: ["inventedJavaMethod()"],
+            },
+          ];
+        }
+        if (field === "jsBindings") {
+          invalid.phase22.decisions[index][field] = ["io.StringDocumentTarget"];
+        }
+        expect(
+          validateDocumentAgainstSchema(
+            invalid,
+            "./docs/compatibility/java-api-parity-decisions.schema.json",
+          ).length,
+        ).toBeGreaterThan(0);
+      }
+    }
+    const accepted = JSON.parse(JSON.stringify(ledger));
+    accepted.phase22.status = "COMPLETE";
+    expect(
+      validateDocumentAgainstSchema(
+        accepted,
+        "./docs/compatibility/java-api-parity-decisions.schema.json",
+      ).length,
+    ).toBeGreaterThan(0);
+  });
+
   it("classifies every capability exactly once with a normative status", () => {
     const matrix = readJson("./docs/compatibility/capabilities.json");
     const ids = matrix.capabilities.map(({ id }) => id);
@@ -501,9 +559,23 @@ describe("owlapi governance artifacts", () => {
         ),
       );
       const existingIds = new Set(baseline.bindings.map(({ id }) => id));
-      expect(registry.bindings.filter(({ id }) => existingIds.has(id))).toEqual(
-        baseline.bindings,
-      );
+      for (const prior of baseline.bindings) {
+        const current = registry.bindings.find(({ id }) => id === prior.id);
+        // Task 7 changes only these manager projections. Their exact contents
+        // are checked below; all other baseline fields and bindings stay fixed.
+        expect(
+          prior.id === "model.OWLOntologyManager"
+            ? {
+                ...current,
+                supportedMembers: prior.supportedMembers,
+                omittedMembers: prior.omittedMembers,
+                semanticQualifications: prior.semanticQualifications,
+                verification: prior.verification,
+                publicErrors: prior.publicErrors,
+              }
+            : current,
+        ).toEqual(prior);
+      }
       expect(
         registry.bindings
           .filter(({ id }) => !existingIds.has(id))
@@ -653,7 +725,7 @@ describe("owlapi governance artifacts", () => {
     ).toBe(true);
   });
 
-  it("records the exact provisional Task 5 ontology-change surface", () => {
+  it("records the exact provisional Task 5 and Task 7 manager surface", () => {
     const registry = readJson("./docs/compatibility/java-api-surface.json");
     const managerBinding = registry.bindings.find(
       ({ id }) => id === "model.OWLOntologyManager",
@@ -668,6 +740,8 @@ describe("owlapi governance artifacts", () => {
         "MissingImportError",
         "OWLOntologyCreationError",
         "OWLOntologyStateError",
+        "OWLOntologyStorageError",
+        "OWLStorerNotFoundError",
         "UnparsableOntologyException",
       ],
       relationship: "JAVA_ANALOGUE",
@@ -684,6 +758,7 @@ describe("owlapi governance artifacts", () => {
       "prototype.importsClosure",
       "prototype.loadOntologyFromOntologyDocument",
       "prototype.loadOntologyGraphFromOntologyDocument",
+      "prototype.saveOntology",
     ]);
     expect(managerBinding.omittedMembers).toEqual([
       "Change and progress listeners",
@@ -691,6 +766,7 @@ describe("owlapi governance artifacts", () => {
       "AddImport/RemoveImport changes",
       "RemoveOntologyAnnotation changes",
       "Storer and ontology-factory registration",
+      "IRI, stream, implicit-format, and default-document saveOntology overloads",
     ]);
     expect(managerBinding.semanticQualifications).toEqual([
       "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
@@ -698,6 +774,8 @@ describe("owlapi governance artifacts", () => {
       "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
       "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically.",
       "applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails.",
+      "LIFECYCLE-ASYNC-SAVE-OVERLOAD: saveOntology(ontology, format, target) returns Promise<void>, validates ownership and genuine format/target identities, and selects only the exact format key.",
+      "LIFECYCLE-LOSSLESS-STORAGE: saveOntology renders one committed snapshot and atomically replaces target text only after success; unexpected renderer failures are wrapped with cause and typed storage errors retain identity.",
     ]);
     expect(managerBinding.verification).toEqual([
       "internal/loading/managedOntologyIndex.test.js",
@@ -708,6 +786,8 @@ describe("owlapi governance artifacts", () => {
       "model/owlOntologyManager.integration.test.js",
       "model/owlOntologyManager.test.js",
       "test/package-boundary.test.mjs",
+      "internal/storage/storerRegistry.test.js",
+      "model/owlOntologyManager.storage.test.js",
     ]);
 
     expect(

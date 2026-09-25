@@ -202,5 +202,273 @@
       "io.OWLStorerNotFoundError"
     ],
     "newNamespaces": []
+  },
+  "phase22": {
+    "status": "IN_PROGRESS",
+    "decisions": [
+      {
+        "id": "LIFECYCLE-CLOSURE-COLLECTION-MAPPING",
+        "phase": 22,
+        "javaAuthorities": [
+          {
+            "type": "org.semanticweb.owlapi.model.OWLOntologyManager",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyManager.java",
+            "members": [
+              "Stream<OWLOntology> importsClosure(OWLOntology)",
+              "default Set<OWLOntology> getImportsClosure(OWLOntology)"
+            ]
+          }
+        ],
+        "jsBindings": ["model.OWLOntologyManager"],
+        "category": "BEHAVIOR_ADAPTATION",
+        "rationale": "JavaScript consumers need deterministic snapshots without a Java Stream runtime.",
+        "rule": "Return a frozen root-first array from importsClosure and a fresh defensive Set from getImportsClosure; retain reflexive transitive membership.",
+        "rejectedAlternative": "A Java stream wrapper would introduce an unnecessary foreign collection protocol.",
+        "approvalSource": "docs/ontology-lifecycle-capability-implementation-plan.md",
+        "verificationPaths": [
+          "model/owlOntologyManager.integration.test.js",
+          "model/owlOntologyManager.test.js"
+        ]
+      },
+      {
+        "id": "LIFECYCLE-FOREIGN-ONTOLOGY-STATE",
+        "phase": 22,
+        "javaAuthorities": [
+          {
+            "type": "org.semanticweb.owlapi.model.OWLOntologyManager",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyManager.java",
+            "members": [
+              "Stream<OWLOntology> importsClosure(OWLOntology)",
+              "default Set<OWLOntology> getImportsClosure(OWLOntology)"
+            ]
+          }
+        ],
+        "jsBindings": ["model.OWLOntologyManager"],
+        "category": "BEHAVIOR_ADAPTATION",
+        "rationale": "Manager ownership errors must not silently masquerade as empty closures.",
+        "rule": "Reject a foreign ontology with OWLOntologyStateError before traversal.",
+        "rejectedAlternative": "Java's empty closure would conceal an invalid manager/ontology pairing.",
+        "approvalSource": "docs/ontology-lifecycle-capability-implementation-plan.md",
+        "verificationPaths": ["model/owlOntologyManager.test.js"]
+      },
+      {
+        "id": "LIFECYCLE-MUTATION-RESULT-ATOMICITY",
+        "phase": 22,
+        "javaAuthorities": [
+          {
+            "type": "org.semanticweb.owlapi.model.HasAddAxiom",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasAddAxiom.java",
+            "members": ["ChangeApplied addAxiom(OWLOntology, OWLAxiom)"]
+          },
+          {
+            "type": "org.semanticweb.owlapi.model.HasAddAxioms",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasAddAxioms.java",
+            "members": [
+              "default ChangeApplied addAxioms(OWLOntology, Collection<? extends OWLAxiom>)",
+              "ChangeApplied addAxioms(OWLOntology, Stream<? extends OWLAxiom>)"
+            ]
+          },
+          {
+            "type": "org.semanticweb.owlapi.model.HasApplyChange",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasApplyChange.java",
+            "members": ["ChangeApplied applyChange(OWLOntologyChange)"]
+          },
+          {
+            "type": "org.semanticweb.owlapi.model.HasApplyChanges",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasApplyChanges.java",
+            "members": [
+              "default ChangeApplied applyChanges(List<? extends OWLOntologyChange>)",
+              "default ChangeApplied applyChanges(OWLOntologyChange...)"
+            ]
+          }
+        ],
+        "jsBindings": ["model.OWLOntologyManager"],
+        "category": "BEHAVIOR_ADAPTATION",
+        "rationale": "The accepted composition requires boolean change results and all-or-nothing iterable mutation.",
+        "rule": "Validate complete addAxiom/addAxioms and applyChange/applyChanges operations before publication; return true exactly when state changes.",
+        "rejectedAlternative": "Java ChangeApplied/detail objects and partial list effects add a new result family and violate the accepted transaction boundary.",
+        "approvalSource": "docs/ontology-lifecycle-capability-implementation-plan.md",
+        "verificationPaths": [
+          "model/owlOntologyManager.test.js",
+          "model/ontologyChanges.test.js"
+        ]
+      },
+      {
+        "id": "LIFECYCLE-CHANGE-OVERLOAD-SUBSET",
+        "phase": 22,
+        "javaAuthorities": [
+          {
+            "type": "org.semanticweb.owlapi.model.HasAddAxiom",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasAddAxiom.java",
+            "members": ["ChangeApplied addAxiom(OWLOntology, OWLAxiom)"]
+          },
+          {
+            "type": "org.semanticweb.owlapi.model.HasAddAxioms",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasAddAxioms.java",
+            "members": [
+              "default ChangeApplied addAxioms(OWLOntology, Collection<? extends OWLAxiom>)",
+              "ChangeApplied addAxioms(OWLOntology, Stream<? extends OWLAxiom>)"
+            ]
+          },
+          {
+            "type": "org.semanticweb.owlapi.model.HasApplyChange",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasApplyChange.java",
+            "members": ["ChangeApplied applyChange(OWLOntologyChange)"]
+          },
+          {
+            "type": "org.semanticweb.owlapi.model.HasApplyChanges",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasApplyChanges.java",
+            "members": [
+              "default ChangeApplied applyChanges(List<? extends OWLOntologyChange>)",
+              "default ChangeApplied applyChanges(OWLOntologyChange...)"
+            ]
+          },
+          {
+            "type": "org.semanticweb.owlapi.model.SetOntologyID",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/SetOntologyID.java",
+            "members": [
+              "SetOntologyID(OWLOntology, OWLOntologyID)",
+              "SetOntologyID(OWLOntology, IRI)",
+              "OWLOntologyID getOriginalOntologyID()",
+              "OWLOntologyID getNewOntologyID()"
+            ]
+          },
+          {
+            "type": "org.semanticweb.owlapi.model.AddOntologyAnnotation",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/AddOntologyAnnotation.java",
+            "members": ["AddOntologyAnnotation(OWLOntology, OWLAnnotation)"]
+          },
+          {
+            "type": "org.semanticweb.owlapi.model.OWLOntologyChange",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyChange.java",
+            "members": ["OWLOntology getOntology()"]
+          },
+          {
+            "type": "org.semanticweb.owlapi.model.AnnotationChange",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/AnnotationChange.java",
+            "members": ["OWLAnnotation getAnnotation()"]
+          }
+        ],
+        "jsBindings": [
+          "model.OWLOntologyManager",
+          "model.SetOntologyID",
+          "model.AddOntologyAnnotation"
+        ],
+        "category": "OMISSION",
+        "rationale": "JavaScript iterables and the existing structural ontology ID cover the accepted callers without ambiguous overload dispatch.",
+        "rule": "Expose the exact two immutable change records and one iterable mutation form; omit Java IRI, collection, stream, varargs, visitor, reverse-change, and change-data overload families.",
+        "rejectedAlternative": "Mirroring each Java overload would broaden the public surface without an accepted consumer requirement.",
+        "approvalSource": "docs/ontology-lifecycle-capability-implementation-plan.md",
+        "verificationPaths": [
+          "model/ontologyChanges.test.js",
+          "model/owlOntologyManager.test.js"
+        ]
+      },
+      {
+        "id": "LIFECYCLE-PROVIDER-SNAPSHOT",
+        "phase": 22,
+        "javaAuthorities": [
+          {
+            "type": "org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/util/OWLOntologyImportsClosureSetProvider.java",
+            "members": [
+              "OWLOntologyImportsClosureSetProvider(OWLOntologyManager, OWLOntology)",
+              "Stream<OWLOntology> ontologies()"
+            ]
+          }
+        ],
+        "jsBindings": ["util.OWLOntologyImportsClosureSetProvider"],
+        "category": "BEHAVIOR_ADAPTATION",
+        "rationale": "Materialization needs stable closure membership throughout its operation.",
+        "rule": "Capture membership at construction and return fresh defensive Sets; ontology objects retain their existing manager-owned identity.",
+        "rejectedAlternative": "Java's live provider could change materialization membership between reads.",
+        "approvalSource": "docs/ontology-lifecycle-capability-implementation-plan.md",
+        "verificationPaths": [
+          "util/owlOntologyImportsClosureSetProvider.test.js"
+        ]
+      },
+      {
+        "id": "LIFECYCLE-MERGER-OPTIONAL-FILTER",
+        "phase": 22,
+        "javaAuthorities": [
+          {
+            "type": "org.semanticweb.owlapi.util.OWLOntologyMerger",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/util/OWLOntologyMerger.java",
+            "members": [
+              "OWLOntologyMerger(OWLOntologySetProvider)",
+              "OWLOntologyMerger(OWLOntologySetProvider, boolean)",
+              "OWLOntologyMerger(OWLOntologySetProvider, OWLAxiomFilter)",
+              "OWLOntology createMergedOntology(OWLOntologyManager, @Nullable IRI)"
+            ]
+          }
+        ],
+        "jsBindings": ["util.OWLOntologyMerger"],
+        "category": "OMISSION",
+        "rationale": "The accepted caller needs the direct-axiom union and optional logical-axiom filter, not arbitrary Java filter implementations.",
+        "rule": "Use omitted/undefined ontologyIRI for anonymous output, retain the boolean constructor form, and omit OWLAxiomFilter.",
+        "rejectedAlternative": "A nullable Java overload family or exposed arbitrary filter adds unnecessary public protocols.",
+        "approvalSource": "docs/ontology-lifecycle-capability-implementation-plan.md",
+        "verificationPaths": ["util/owlOntologyMerger.test.js"]
+      },
+      {
+        "id": "LIFECYCLE-ASYNC-SAVE-OVERLOAD",
+        "phase": 22,
+        "javaAuthorities": [
+          {
+            "type": "org.semanticweb.owlapi.model.OWLOntologyManager",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyManager.java",
+            "members": [
+              "void saveOntology(OWLOntology, OWLDocumentFormat, OWLOntologyDocumentTarget)"
+            ]
+          }
+        ],
+        "jsBindings": ["model.OWLOntologyManager"],
+        "category": "BEHAVIOR_ADAPTATION",
+        "rationale": "Browser-compatible storage may require asynchronous rendering and validation.",
+        "rule": "Return Promise<void> only from the explicit ontology/format/target overload; select exactly by format key with no syntax fallback.",
+        "rejectedAlternative": "Synchronous Java I/O and stream, IRI, implicit-format, or default-document overloads do not match the accepted JavaScript runtime boundary.",
+        "approvalSource": "docs/ontology-lifecycle-capability-implementation-plan.md",
+        "verificationPaths": [
+          "model/owlOntologyManager.storage.test.js",
+          "internal/storage/storerRegistry.test.js"
+        ]
+      },
+      {
+        "id": "LIFECYCLE-LOSSLESS-STORAGE",
+        "phase": 22,
+        "javaAuthorities": [
+          {
+            "type": "org.semanticweb.owlapi.model.OWLOntologyManager",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyManager.java",
+            "members": [
+              "void saveOntology(OWLOntology, OWLDocumentFormat, OWLOntologyDocumentTarget)"
+            ]
+          },
+          {
+            "type": "org.semanticweb.owlapi.model.OWLOntologyStorageException",
+            "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyStorageException.java",
+            "members": [
+              "OWLOntologyStorageException(String)",
+              "OWLOntologyStorageException(String, Throwable)",
+              "OWLOntologyStorageException(Throwable)"
+            ]
+          }
+        ],
+        "jsBindings": [
+          "model.OWLOntologyManager",
+          "io.OWLOntologyStorageError"
+        ],
+        "category": "BEHAVIOR_ADAPTATION",
+        "rationale": "The normative consumer requires structural preservation and atomic targets, including non-injective OWL-to-RDF cases.",
+        "rule": "Render one committed snapshot and replace complete target text only after losslessness validation; reject unrepresentable content through the existing storage error with reason ONTOLOGY_NOT_REPRESENTABLE.",
+        "rejectedAlternative": "Best-effort lossy serialization or an extra representability error class would violate the accepted semantic or public boundary.",
+        "approvalSource": "docs/ontology-lifecycle-capability-implementation-plan.md",
+        "verificationPaths": [
+          "model/owlOntologyManager.storage.test.js",
+          "internal/storage/storerRegistry.test.js",
+          "internal/model/ontologyStructuralIsomorphism.test.js"
+        ]
+      }
+    ]
   }
 }

@@ -290,6 +290,8 @@ const VERIFICATION_BY_EXPORT = Object.freeze({
     "model/owlOntologyManager.integration.test.js",
     "model/owlOntologyManager.test.js",
     "test/package-boundary.test.mjs",
+    "internal/storage/storerRegistry.test.js",
+    "model/owlOntologyManager.storage.test.js",
   ],
   OWLOntologyImportsClosureSetProvider: [
     "util/owlOntologyImportsClosureSetProvider.test.js",
@@ -317,6 +319,8 @@ const SEMANTIC_QUALIFICATIONS_BY_EXPORT = Object.freeze({
     "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
     "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically.",
     "applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails.",
+    "LIFECYCLE-ASYNC-SAVE-OVERLOAD: saveOntology(ontology, format, target) returns Promise<void>, validates ownership and genuine format/target identities, and selects only the exact format key.",
+    "LIFECYCLE-LOSSLESS-STORAGE: saveOntology renders one committed snapshot and atomically replaces target text only after success; unexpected renderer failures are wrapped with cause and typed storage errors retain identity.",
   ],
   OWLOntologyImportsClosureSetProvider: [
     "ontologies returns a fresh defensive JavaScript Set instead of Java's Stream<OWLOntology>.",
@@ -367,6 +371,7 @@ const OMITTED_MEMBERS = Object.freeze({
     "AddImport/RemoveImport changes",
     "RemoveOntologyAnnotation changes",
     "Storer and ontology-factory registration",
+    "IRI, stream, implicit-format, and default-document saveOntology overloads",
   ],
   OWLOntologyImportsClosureSetProvider: [],
   OWLOntologyMerger: [
@@ -402,6 +407,8 @@ const PUBLIC_ERRORS_BY_EXPORT = Object.freeze({
     "MissingImportError",
     "OWLOntologyCreationError",
     "OWLOntologyStateError",
+    "OWLOntologyStorageError",
+    "OWLStorerNotFoundError",
     "UnparsableOntologyException",
   ],
   OWLOntologyImportsClosureSetProvider: ["OWLOntologyStateError", "TypeError"],

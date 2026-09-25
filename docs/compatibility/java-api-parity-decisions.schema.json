@@ -14,7 +14,8 @@
     "forbiddenMembers",
     "forbiddenBindings",
     "consumerMigrations",
-    "phase21"
+    "phase21",
+    "phase22"
   ],
   "properties": {
     "schemaVersion": {
@@ -220,6 +221,115 @@
         },
         "newNamespaces": {
           "const": []
+        }
+      }
+    },
+    "phase22": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "decisions"],
+      "properties": {
+        "status": {
+          "const": "IN_PROGRESS"
+        },
+        "decisions": {
+          "type": "array",
+          "minItems": 8,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/lifecycleDecision"
+          },
+          "allOf": [
+            {
+              "contains": {
+                "type": "object",
+                "required": ["id"],
+                "properties": {
+                  "id": {
+                    "const": "LIFECYCLE-CLOSURE-COLLECTION-MAPPING"
+                  }
+                }
+              }
+            },
+            {
+              "contains": {
+                "type": "object",
+                "required": ["id"],
+                "properties": {
+                  "id": {
+                    "const": "LIFECYCLE-FOREIGN-ONTOLOGY-STATE"
+                  }
+                }
+              }
+            },
+            {
+              "contains": {
+                "type": "object",
+                "required": ["id"],
+                "properties": {
+                  "id": {
+                    "const": "LIFECYCLE-MUTATION-RESULT-ATOMICITY"
+                  }
+                }
+              }
+            },
+            {
+              "contains": {
+                "type": "object",
+                "required": ["id"],
+                "properties": {
+                  "id": {
+                    "const": "LIFECYCLE-CHANGE-OVERLOAD-SUBSET"
+                  }
+                }
+              }
+            },
+            {
+              "contains": {
+                "type": "object",
+                "required": ["id"],
+                "properties": {
+                  "id": {
+                    "const": "LIFECYCLE-PROVIDER-SNAPSHOT"
+                  }
+                }
+              }
+            },
+            {
+              "contains": {
+                "type": "object",
+                "required": ["id"],
+                "properties": {
+                  "id": {
+                    "const": "LIFECYCLE-MERGER-OPTIONAL-FILTER"
+                  }
+                }
+              }
+            },
+            {
+              "contains": {
+                "type": "object",
+                "required": ["id"],
+                "properties": {
+                  "id": {
+                    "const": "LIFECYCLE-ASYNC-SAVE-OVERLOAD"
+                  }
+                }
+              }
+            },
+            {
+              "contains": {
+                "type": "object",
+                "required": ["id"],
+                "properties": {
+                  "id": {
+                    "const": "LIFECYCLE-LOSSLESS-STORAGE"
+                  }
+                }
+              }
+            }
+          ]
         }
       }
     }
@@ -693,6 +803,344 @@
               }
             },
             "type": "object"
+          }
+        }
+      ]
+    },
+    "lifecycleDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "phase",
+        "javaAuthorities",
+        "jsBindings",
+        "category",
+        "rationale",
+        "rule",
+        "rejectedAlternative",
+        "approvalSource",
+        "verificationPaths"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "phase": {
+          "const": 22
+        },
+        "javaAuthorities": {
+          "type": "array"
+        },
+        "jsBindings": {
+          "type": "array"
+        },
+        "category": {
+          "type": "string"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rejectedAlternative": {
+          "type": "string",
+          "minLength": 1
+        },
+        "approvalSource": {
+          "const": "docs/ontology-lifecycle-capability-implementation-plan.md"
+        },
+        "verificationPaths": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[A-Za-z0-9._/-]+$"
+          }
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "id": {
+              "const": "LIFECYCLE-CLOSURE-COLLECTION-MAPPING"
+            },
+            "javaAuthorities": {
+              "const": [
+                {
+                  "type": "org.semanticweb.owlapi.model.OWLOntologyManager",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyManager.java",
+                  "members": [
+                    "Stream<OWLOntology> importsClosure(OWLOntology)",
+                    "default Set<OWLOntology> getImportsClosure(OWLOntology)"
+                  ]
+                }
+              ]
+            },
+            "jsBindings": {
+              "const": ["model.OWLOntologyManager"]
+            },
+            "category": {
+              "const": "BEHAVIOR_ADAPTATION"
+            }
+          }
+        },
+        {
+          "properties": {
+            "id": {
+              "const": "LIFECYCLE-FOREIGN-ONTOLOGY-STATE"
+            },
+            "javaAuthorities": {
+              "const": [
+                {
+                  "type": "org.semanticweb.owlapi.model.OWLOntologyManager",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyManager.java",
+                  "members": [
+                    "Stream<OWLOntology> importsClosure(OWLOntology)",
+                    "default Set<OWLOntology> getImportsClosure(OWLOntology)"
+                  ]
+                }
+              ]
+            },
+            "jsBindings": {
+              "const": ["model.OWLOntologyManager"]
+            },
+            "category": {
+              "const": "BEHAVIOR_ADAPTATION"
+            }
+          }
+        },
+        {
+          "properties": {
+            "id": {
+              "const": "LIFECYCLE-MUTATION-RESULT-ATOMICITY"
+            },
+            "javaAuthorities": {
+              "const": [
+                {
+                  "type": "org.semanticweb.owlapi.model.HasAddAxiom",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasAddAxiom.java",
+                  "members": ["ChangeApplied addAxiom(OWLOntology, OWLAxiom)"]
+                },
+                {
+                  "type": "org.semanticweb.owlapi.model.HasAddAxioms",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasAddAxioms.java",
+                  "members": [
+                    "default ChangeApplied addAxioms(OWLOntology, Collection<? extends OWLAxiom>)",
+                    "ChangeApplied addAxioms(OWLOntology, Stream<? extends OWLAxiom>)"
+                  ]
+                },
+                {
+                  "type": "org.semanticweb.owlapi.model.HasApplyChange",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasApplyChange.java",
+                  "members": ["ChangeApplied applyChange(OWLOntologyChange)"]
+                },
+                {
+                  "type": "org.semanticweb.owlapi.model.HasApplyChanges",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasApplyChanges.java",
+                  "members": [
+                    "default ChangeApplied applyChanges(List<? extends OWLOntologyChange>)",
+                    "default ChangeApplied applyChanges(OWLOntologyChange...)"
+                  ]
+                }
+              ]
+            },
+            "jsBindings": {
+              "const": ["model.OWLOntologyManager"]
+            },
+            "category": {
+              "const": "BEHAVIOR_ADAPTATION"
+            }
+          }
+        },
+        {
+          "properties": {
+            "id": {
+              "const": "LIFECYCLE-CHANGE-OVERLOAD-SUBSET"
+            },
+            "javaAuthorities": {
+              "const": [
+                {
+                  "type": "org.semanticweb.owlapi.model.HasAddAxiom",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasAddAxiom.java",
+                  "members": ["ChangeApplied addAxiom(OWLOntology, OWLAxiom)"]
+                },
+                {
+                  "type": "org.semanticweb.owlapi.model.HasAddAxioms",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasAddAxioms.java",
+                  "members": [
+                    "default ChangeApplied addAxioms(OWLOntology, Collection<? extends OWLAxiom>)",
+                    "ChangeApplied addAxioms(OWLOntology, Stream<? extends OWLAxiom>)"
+                  ]
+                },
+                {
+                  "type": "org.semanticweb.owlapi.model.HasApplyChange",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasApplyChange.java",
+                  "members": ["ChangeApplied applyChange(OWLOntologyChange)"]
+                },
+                {
+                  "type": "org.semanticweb.owlapi.model.HasApplyChanges",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/HasApplyChanges.java",
+                  "members": [
+                    "default ChangeApplied applyChanges(List<? extends OWLOntologyChange>)",
+                    "default ChangeApplied applyChanges(OWLOntologyChange...)"
+                  ]
+                },
+                {
+                  "type": "org.semanticweb.owlapi.model.SetOntologyID",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/SetOntologyID.java",
+                  "members": [
+                    "SetOntologyID(OWLOntology, OWLOntologyID)",
+                    "SetOntologyID(OWLOntology, IRI)",
+                    "OWLOntologyID getOriginalOntologyID()",
+                    "OWLOntologyID getNewOntologyID()"
+                  ]
+                },
+                {
+                  "type": "org.semanticweb.owlapi.model.AddOntologyAnnotation",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/AddOntologyAnnotation.java",
+                  "members": [
+                    "AddOntologyAnnotation(OWLOntology, OWLAnnotation)"
+                  ]
+                },
+                {
+                  "type": "org.semanticweb.owlapi.model.OWLOntologyChange",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyChange.java",
+                  "members": ["OWLOntology getOntology()"]
+                },
+                {
+                  "type": "org.semanticweb.owlapi.model.AnnotationChange",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/AnnotationChange.java",
+                  "members": ["OWLAnnotation getAnnotation()"]
+                }
+              ]
+            },
+            "jsBindings": {
+              "const": [
+                "model.OWLOntologyManager",
+                "model.SetOntologyID",
+                "model.AddOntologyAnnotation"
+              ]
+            },
+            "category": {
+              "const": "OMISSION"
+            }
+          }
+        },
+        {
+          "properties": {
+            "id": {
+              "const": "LIFECYCLE-PROVIDER-SNAPSHOT"
+            },
+            "javaAuthorities": {
+              "const": [
+                {
+                  "type": "org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/util/OWLOntologyImportsClosureSetProvider.java",
+                  "members": [
+                    "OWLOntologyImportsClosureSetProvider(OWLOntologyManager, OWLOntology)",
+                    "Stream<OWLOntology> ontologies()"
+                  ]
+                }
+              ]
+            },
+            "jsBindings": {
+              "const": ["util.OWLOntologyImportsClosureSetProvider"]
+            },
+            "category": {
+              "const": "BEHAVIOR_ADAPTATION"
+            }
+          }
+        },
+        {
+          "properties": {
+            "id": {
+              "const": "LIFECYCLE-MERGER-OPTIONAL-FILTER"
+            },
+            "javaAuthorities": {
+              "const": [
+                {
+                  "type": "org.semanticweb.owlapi.util.OWLOntologyMerger",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/util/OWLOntologyMerger.java",
+                  "members": [
+                    "OWLOntologyMerger(OWLOntologySetProvider)",
+                    "OWLOntologyMerger(OWLOntologySetProvider, boolean)",
+                    "OWLOntologyMerger(OWLOntologySetProvider, OWLAxiomFilter)",
+                    "OWLOntology createMergedOntology(OWLOntologyManager, @Nullable IRI)"
+                  ]
+                }
+              ]
+            },
+            "jsBindings": {
+              "const": ["util.OWLOntologyMerger"]
+            },
+            "category": {
+              "const": "OMISSION"
+            }
+          }
+        },
+        {
+          "properties": {
+            "id": {
+              "const": "LIFECYCLE-ASYNC-SAVE-OVERLOAD"
+            },
+            "javaAuthorities": {
+              "const": [
+                {
+                  "type": "org.semanticweb.owlapi.model.OWLOntologyManager",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyManager.java",
+                  "members": [
+                    "void saveOntology(OWLOntology, OWLDocumentFormat, OWLOntologyDocumentTarget)"
+                  ]
+                }
+              ]
+            },
+            "jsBindings": {
+              "const": ["model.OWLOntologyManager"]
+            },
+            "category": {
+              "const": "BEHAVIOR_ADAPTATION"
+            }
+          }
+        },
+        {
+          "properties": {
+            "id": {
+              "const": "LIFECYCLE-LOSSLESS-STORAGE"
+            },
+            "javaAuthorities": {
+              "const": [
+                {
+                  "type": "org.semanticweb.owlapi.model.OWLOntologyManager",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyManager.java",
+                  "members": [
+                    "void saveOntology(OWLOntology, OWLDocumentFormat, OWLOntologyDocumentTarget)"
+                  ]
+                },
+                {
+                  "type": "org.semanticweb.owlapi.model.OWLOntologyStorageException",
+                  "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyStorageException.java",
+                  "members": [
+                    "OWLOntologyStorageException(String)",
+                    "OWLOntologyStorageException(String, Throwable)",
+                    "OWLOntologyStorageException(Throwable)"
+                  ]
+                }
+              ]
+            },
+            "jsBindings": {
+              "const": [
+                "model.OWLOntologyManager",
+                "io.OWLOntologyStorageError"
+              ]
+            },
+            "category": {
+              "const": "BEHAVIOR_ADAPTATION"
+            }
           }
         }
       ]

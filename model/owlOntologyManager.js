@@ -24,6 +24,7 @@ import { OWLParserRegistry } from "../internal/parsing/parserRegistry.js";
 import { rdfXmlParserDescriptor } from "../internal/parsing/rdfxml/descriptor.js";
 import { triGParserDescriptor } from "../internal/parsing/trig/descriptor.js";
 import { turtleParserDescriptor } from "../internal/parsing/turtle/descriptor.js";
+import { createDefaultStorerRegistry } from "../internal/storage/storerRegistry.js";
 import { OWLDataFactory } from "./owlDataFactory.js";
 import { readAddOntologyAnnotationChange } from "./addOntologyAnnotation.js";
 import { createManagerOwnedOWLOntology } from "./owlOntology.js";
@@ -324,6 +325,7 @@ export class OWLOntologyManager {
   #managedOntologyIndex = new ManagedOntologyIndex();
   #managedOntologyStates = new WeakMap();
   #registry;
+  #storerRegistry = createDefaultStorerRegistry();
 
   constructor({ dataFactory, documentLoader, iriMappers = [], registry } = {}) {
     if (!iriMappers || typeof iriMappers[Symbol.iterator] !== "function") {
@@ -403,6 +405,17 @@ export class OWLOntologyManager {
 
   applyChanges(changes) {
     return this.#applyChangeIterable(changes, "applyChanges");
+  }
+
+  /**
+   * Save this manager's ontology through the explicit format/target overload.
+   * Capture one committed revision before asynchronous work; rendering cannot
+   * observe a mixture of revisions or modify the target before completion.
+   * @returns {Promise<void>}
+   */
+  async saveOntology(ontology, format, target) {
+    const state = this.#requireManagedOntologyState(ontology, "saveOntology");
+    await this.#storerRegistry.store(state.createSnapshot(), format, target);
   }
 
   importsClosure(ontology) {
