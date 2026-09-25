@@ -5,7 +5,7 @@
 > **Java parity invariant — non-negotiable:** Exact Java OWLAPI names,
 > responsibilities, inheritance, and observable behaviour are the default for
 > every public Java-shaped addition. Only the bounded, machine-recorded
-> adaptations approved by the completed
+> adaptations approved by the canonical
 > [Java API parity precondition](plans/java-api-parity-precondition.md) and the
 > explicit pinned-authority ledger in §3.1 may differ. Classification as an
 > adaptation is not permission by itself. This plan authorizes no new public
@@ -23,10 +23,10 @@
 
 **Release-integration predecessor:**
 [`docs/plans/java-api-parity-precondition.md`](plans/java-api-parity-precondition.md),
-completed as Phase 21 from the accepted `owlapi@0.1.0` release. Phase 21 is
-not a predecessor for Phase 21-independent pre-integration development on the
-dedicated lifecycle feature branch; it remains mandatory before consuming its
-target/error boundary, qualifying a release, or claiming Phase 22 completion.
+completed as Phase 21 after reconciliation with accepted `owlapi@0.1.0`.
+Its canonical target/error implementation and decision ledger may be built now
+on this branch and consumed by dependent lifecycle tasks. Accepted Phase 21
+completion remains mandatory for release qualification, not for development.
 
 **Status:** Pre-integration implementation is authorized on the dedicated
 `feature/ontology-import-closure-lifecycle` branch before production `0.1.0`
@@ -38,7 +38,7 @@ those baselines land; if they change the required surface materially, stop for
 a reviewed plan and cross-repository contract amendment instead of adding a
 shim or silently changing the exact `owlapi@0.2.0` consumer coordinate.
 
-**Revised:** 2026-09-01.
+**Revised:** 2026-09-25.
 
 ---
 
@@ -92,20 +92,20 @@ The design-time implementation already loads an ontology graph transactionally a
 
 The delivery model has three explicit stages:
 
-| Stage                                   | Entry condition                                                                                                  | Permitted work                                                                                                                                                                                                                                | Evidence and exit condition                                                                                                                                       |
-| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Pre-integration development             | This plan is committed on the dedicated lifecycle feature branch, with the package still on its pre-`0.1.0` line | Complete Phase 21-independent portions of Tasks 1–6, 8, 10, and the Task 14 harness through red → green → refactor. Configuration changes named by those tasks remain branch-local.                                                           | Focused tests, generated documents, and review findings are provisional development evidence. Capability rows stay deferred; no package or release claim changes. |
-| Baseline reconciliation                 | Accepted `v0.1.0` and the approved Phase 21 completion commit are available                                      | Integrate or replay the reviewed task commits onto a branch containing both predecessors; resolve conflicts in canonical modules; regenerate the API registry from the accepted baseline; rerun every affected red/green/regression boundary. | The accepted commits are ancestors, the Phase 21 surface and evidence match exactly, and the reconciled Phase 22 delta contains only §3.2-authorized changes.     |
-| Integrated completion and qualification | Baseline reconciliation passes                                                                                   | Complete the Phase 21-dependent portions of Tasks 7, 9, and 11–14, then execute Task 15.                                                                                                                                                      | Source, installed-package, browser, WebVOWL, Universal Ontology, Java-oracle, release, and immutable-registry gates all pass.                                     |
+| Stage                                   | Entry condition                                                             | Permitted work                                                                                                                                                                                                                                         | Evidence and exit condition                                                                                                                                   |
+| --------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Pre-integration development             | Both approved plans are committed on the dedicated lifecycle feature branch | Build Phase 21's canonical foundations and all dependency-ready lifecycle Tasks 1–14 through red → green → refactor, including source, installed-package, browser, and available real-consumer experiments. Configuration changes remain branch-local. | Results identify their actual input revisions and remain provisional. Missing accepted-release facts stay explicitly unavailable; no release claim changes.   |
+| Baseline reconciliation                 | Accepted `v0.1.0` and the approved Phase 21 completion commit are available | Integrate or replay the reviewed task commits onto a branch containing both predecessors; resolve conflicts in canonical modules; regenerate the API registry from the accepted baseline; rerun every affected red/green/regression boundary.          | The accepted commits are ancestors, the Phase 21 surface and evidence match exactly, and the reconciled Phase 22 delta contains only §3.2-authorized changes. |
+| Integrated completion and qualification | Baseline reconciliation passes                                              | Rerun affected Tasks 1–14 against the reconciled candidate, fill any remaining real-consumer evidence gaps, then execute Task 15.                                                                                                                      | Source, installed-package, browser, WebVOWL, Universal Ontology, Java-oracle, release, and immutable-registry gates all pass.                                 |
 
 Task numbering remains the durable review and commit structure. During
-pre-integration development, dependency-ready tasks may be executed in the
-order `1 → 2 → 3 → 4 → 5 → 6 → 8 → 10 → 14 (harness only)`. A task portion that
-requires Phase 21's real `StringDocumentTarget`, storage-error hierarchy,
-parity-decision record, migration evidence, or installed-candidate result must
-wait for baseline reconciliation. Do not fabricate those artifacts, copy their
-planned implementation into this phase, or use a test double as a public or
-integration substitute.
+pre-integration development, the completed independent tasks remain valid
+development history. Next implement Phase 21 Tasks 1–5 in their canonical
+modules, then lifecycle Tasks 7, 9, 11, and 12, then Tasks 13–14 and the Phase 21
+consumer audit. The same target/error classes and ledger serve both phases;
+there is no interim implementation to replace. A missing real consumer input
+blocks only its evidence, not independent development. Never fabricate an
+accepted release, migration result, candidate receipt, or public test double.
 
 Reconciliation may require a small amount of rework because the accepted
 `0.1.0` and Phase 21 commits do not yet exist. Resolve that rework in the one
@@ -124,16 +124,63 @@ different closure members to be standardized apart in the axiom closure. The
 pinned Java surface in §3.1 remains the authority for public API names and
 responsibilities.
 
+### 1.2 Accepted execution and assurance boundaries
+
+The owner approved this sequencing amendment in the originating lifecycle task
+on 2026-09-25. Reuse the accepted R2 route: the material risks are public API
+compatibility, lossless serialization, and cross-repository consumer integration.
+The objective remains a self-contained, offline import closure, not earlier
+publication or a change to the consumer's exact `0.2.0` contract.
+
+The following IDs name existing requirements and their proof; they add no public
+API or new consumer policy. The implementing task owns integration and evidence;
+the repository owner retains publication, downstream mutation, and acceptance
+decisions. Task-sized commits are authorized. Run ordinary Review Agent reviews
+at the end of the three substantial work packages below, not before every
+commit. Focused TDD runs continue within each task. Run full relevant verification
+and cross-vendor independent assurance on the frozen integrated candidate; add
+specialist review only for a concrete applicable risk and within scan authority.
+
+| Slice / work package                          | Requirement and acceptance criterion                                                                                                                                                                   | Quality scenario and decision                                                                                                                                                                                                           | Falsifiable proof and release consequence                                                                                                                                                                |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SLICE-001` Canonical parity foundations      | `REQ-001`: one Java-shaped target/error surface; `AC-001`: canonical and aggregate imports have identical bindings, only `toString()` reads target text, and no forbidden exports exist                | `QA-001`: hostile diagnostic fields or failed private replacement cannot change canonical error identity or prior text; `DEC-001`: the six approved Phase 21 adaptations, no shims                                                      | Phase 21 focused tests, native AJV validation, generated-surface checks, packed-installed boundary, and package-end review. Development ledger cannot claim accepted Phase 21 completion.                |
+| `SLICE-002` Manager-selected lossless storage | `REQ-002`: exact format selection and complete-text atomic commit; `AC-002`: Functional Syntax preserves every supported structural kind, RDF/XML preserves it or rejects without changing target text | `QA-002`: unsupported format, invalid XML/QName, non-injective RDF, and reconstruction failure leave a populated target unchanged; `DEC-002`: canonical private storers and authoritative format tools                                  | Lifecycle Tasks 7, 9, 11–12; external Java fixtures plus strict round trips and package-end review. No production network or fallback format.                                                            |
+| `SLICE-003` Public consumer composition       | `REQ-003`: public-only, offline closure composition; `AC-003`: installed/browser/worker paths and available real-family Java comparisons preserve closure semantics                                    | `QA-003`: cycles, collisions, anonymous-node sharing, ignored triples, obsolete consumer calls, and missing baseline facts fail at their actual boundary; `DEC-003`: provisional evidence now, fresh qualification after reconciliation | Tasks 13–14 and Phase 21 consumer audit with exact candidate/input identities, package-end review, final full relevant checks and independent assurance. Task 15 alone governs final release acceptance. |
+
+Reuse existing native capabilities: ECMAScript `WeakMap` for private target
+identity, the package's safe error-detail mechanism, AJV's Draft 2020-12 engine
+for schema validation, and the pinned Java source/runtime for parity and semantic
+oracles. The [ECMAScript WeakMap contract](https://tc39.es/ecma262/multipage/keyed-collections.html#sec-weakmap-objects)
+and [AJV draft-specific API](https://ajv.js.org/json-schema.html#draft-2020-12)
+were refreshed for this amendment; installed/pinned AJV `8.20.0` matches the
+registry's current stable release and carries MIT terms. No dependency is added
+for this work package. Java 5.5.1 remains the deliberately pinned compatibility
+authority, not a claim to track whichever Java release is newest. Before a new
+serializer dependency or custom format engine is selected, retain its current
+native/reuse options, applicable licence evidence, and residual package-specific
+gap. Do not build a schema validator, JavaScript parser, XML parser, or substitute
+package manager inside the repository.
+
+Retain raw runs/reviews in their native external evidence stores. Track progress
+in the task, not repeated committed diaries. Observe actual consumer outcomes,
+typed failure reasons, candidate digests, and oracle results; no new telemetry
+service is required. There is no persistent-data migration. A failed development
+slice remains unreleased and can be corrected in its canonical module; do not
+rewrite unrelated history or claim a published rollback. Reassess on changed
+accepted API/consumer contracts, a newly required dependency, disproven oracle,
+or unavailable required assurance. Release absence alone is not a development
+blocker. Reconciliation explicitly replaces provisional evidence with new runs.
+
 ## 2. Global constraints
 
 Every task must preserve these rules:
 
-- In pre-integration mode, Task 1 may add only the deferred lifecycle
-  governance baseline described in its steps. It must confirm that Phase 21 is
-  not being claimed or recreated. Before any Phase 21-dependent work or
-  lifecycle state beyond `DEFERRED` / `NOT_STARTED`, validate the completed
-  Phase 21 capability rows, parity-decision record, generated registry,
-  forbidden-export assertions, WebVOWL evidence, and Git ancestry.
+- In pre-integration mode, retain the deferred lifecycle governance baseline.
+  Implement Phase 21 foundations under their own canonical plan and extend the
+  same decision ledger with §3.1 decisions. Development-state schema, public
+  surface, and forbidden-export checks apply immediately. Completed capability
+  rows, accepted WebVOWL evidence, and release ancestry remain reconciliation
+  and final-acceptance requirements, not development prerequisites.
 - The only release coordinate authorized by the consumer contract is exact `0.2.0`. A conflicting release history is a blocker requiring a coordinated contract change.
 - Do not add a materialize, collapse, catalog, network, retry, or atomic-publication convenience API. Universal Ontology owns those policies and composes the standard APIs.
 - Use authoritative tools to execute and validate their own formats. Write repository code only for lifecycle, atomicity, identity, comparison, and integration invariants those tools cannot know; do not duplicate an available authoritative parser, generator, schema validator, package manager, Java runtime, or Java OWLAPI execution path.
@@ -228,7 +275,7 @@ Detailed call semantics:
 - `OWLOntologyImportsClosureSetProvider.ontologies()` returns a fresh defensive `Set` from the constructor-time closure snapshot.
 - `OWLOntologyMerger.createMergedOntology(manager, ontologyIRI)` creates a new ontology and copies the structural set union of each provider ontology's direct axioms. It does not copy imports, ontology annotations, or an input ontology ID. Omitting `ontologyIRI` creates an anonymous ontology.
 - `saveOntology` returns `Promise<void>`, selects exactly one compatible internal storer from the requested format object, validates before target commit, and throws rather than falling back to a different syntax.
-- `StringDocumentTarget` is supplied by completed Phase 21. It begins with empty text, exposes only Java's `toString()` as its public text reader, and accepts replacement only through the package-private storage seam after a successful storer operation.
+- `StringDocumentTarget` is supplied by the canonical Phase 21 implementation, including during pre-integration development. It begins with empty text, exposes only Java's `toString()` as its public text reader, and accepts replacement only through the package-private storage seam after a successful storer operation.
 
 Consume these Phase 21 public storage errors from `owlapi/io`:
 
@@ -377,7 +424,7 @@ surface.
 
 - Verify unchanged: `docs/plans/java-api-parity-precondition.md`
 - Verify unchanged: `docs/migration/0.2.0-java-api-parity.md`
-- Modify only during baseline reconciliation:
+- Modify when canonical Phase 21 foundations exist, and reconcile later:
   `docs/compatibility/java-api-parity-decisions.json`
 - Regenerate: `docs/compatibility/java-api-surface.json`
 - Regenerate: `docs/compatibility/java-api-surface.md`
@@ -396,7 +443,8 @@ surface.
 1. Determine the execution stage before writing a RED test. In
    pre-integration mode, record the current package version and exact branch
    base in the review checkpoint, confirm the accepted `v0.1.0` and Phase 21
-   artifacts are not being claimed, and leave their files absent or unchanged.
+   acceptance artifacts are not being claimed. Canonical Phase 21 development
+   files are now permitted under that plan; unavailable release facts stay null.
    During baseline reconciliation, require the accepted `v0.1.0` commit and
    approved Phase 21 completion commit to be ancestors of HEAD; validate the
    closed parity-decision record and require `phase21.status: "COMPLETE"`, the
@@ -432,9 +480,9 @@ surface.
    stop-for-amendment rule. Correct only superseded forward-looking sentences;
    do not reopen accepted `0.1.0` scope decisions or place lifecycle code in a
    `0.1.0` candidate.
-7. In pre-integration mode, use the exact approved ledger in §3.1 as the
-   provisional authority and do not create, backfill, or partially reproduce
-   Phase 21's machine record. During baseline reconciliation, first add failing
+7. In pre-integration mode, use the exact approved decisions in §3.1 and extend
+   the canonical Phase 21 development ledger when it exists. Do not populate
+   acceptance facts from provisional results. During baseline reconciliation, add
    governance assertions requiring the three Phase 21 capability rows to
    remain `REQUIRED_V1` / `COMPLETE` / phase `21`; `StringDocumentTarget` to
    expose only `toString()`; both storage-error adaptations to retain their
@@ -443,7 +491,7 @@ surface.
    `StringDocumentSource.prototype.getText` member, migration note, WebVOWL
    audit digest/disposition, complete source-reader allowlist, and passing
    installed-candidate result.
-8. During baseline reconciliation, extend the validated parity-decision record
+8. Once canonical Phase 21 foundations exist, extend the validated decision record
    with the exact eight Phase 22 decision IDs below §3.1, each tied to its
    precise Java signature, bounded rationale, rejected exact-parity alternative,
    and focused future verification. Set the Phase 22 portion to `IN_PROGRESS`;
@@ -457,7 +505,8 @@ surface.
    npx --no-install prettier --check API.md docs/compatibility/capabilities.json docs/compatibility/java-api-surface.json docs/compatibility/java-api-surface.md docs/compatibility/standalone-import-closure-prerequisites.md docs/implementation-plan.md docs/ontology-lifecycle-capability-implementation-plan.md governance.test.js index.js util/generate-java-api-surface.mjs
    ```
 
-10. Request a review checkpoint before any commit. For a pre-integration
+10. Retain a task checkpoint; ordinary reviews follow §1.2's work-package cadence,
+    not every commit. For a pre-integration
     checkpoint, include the branch base, package version, capability diff,
     third-party-material and rights facts digests, and an explicit statement
     that Phase 21 and release evidence are not claimed.
@@ -700,10 +749,11 @@ The provider captures the closure at construction. The merger calls `provider.on
 
 ### Task 7: Consume the parity-locked target and add exact manager storer selection
 
-**Activation condition:** Baseline reconciliation is complete and the real
-Phase 21 target, storage errors, decision rows, generated registry, and
-WebVOWL evidence are present. Do not implement this task against recreated
-classes, provisional aliases, or public test doubles.
+**Development dependency:** The canonical Phase 21 target, storage errors,
+decision rows, and generated registry pass their focused and installed-boundary
+tests. This may happen before release reconciliation. Use those exact classes;
+no provisional alias or public test double is permitted. Accepted WebVOWL and
+release ancestry evidence remains mandatory at final qualification.
 
 **Files**
 
@@ -796,9 +846,9 @@ All named structural values compare exactly. Two ontology IDs compare equal when
 
 ### Task 9: Implement complete Functional Syntax rendering and storage
 
-**Activation condition:** Task 7 has passed against the reconciled Phase 21
-boundary. Its renderer design may be inspected earlier, but no storer or target
-integration is complete before that condition holds.
+**Development dependency:** Task 7 has passed against the canonical Phase 21
+boundary. Pre-integration implementation and tests are permitted; final storage
+acceptance still requires baseline reconciliation and fresh qualification.
 
 **Files**
 
@@ -882,10 +932,9 @@ Emit complete IRIs for this release; correctness and reproducibility never depen
 
 ### Task 11: Implement a standards-conforming RDF/XML graph writer
 
-**Activation condition:** Baseline reconciliation is complete so the writer's
-publicly observable representability failures use the one canonical Phase 21
-storage-error binding. Do not introduce a temporary error class or translate
-between duplicate error identities later.
+**Development dependency:** The canonical Phase 21 storage-error binding exists
+and passes its contract tests. Use it now; do not introduce a temporary error
+class or translate between duplicate error identities later.
 
 **Files**
 
@@ -919,7 +968,8 @@ Use the conservative RDF/XML form: one `rdf:Description` per subject; full `rdf:
 
 ### Task 12: Add lossless RDF/XML ontology storage with pre-commit verification
 
-**Activation condition:** Reconciled Tasks 7–11 are complete.
+**Development dependency:** Tasks 7–11 pass their development checks. Rerun
+affected checks after baseline reconciliation before final acceptance.
 
 **Files**
 
@@ -968,9 +1018,11 @@ committed OWLOntology snapshot
 
 ### Task 13: Exercise the exact Universal Ontology composition through public boundaries
 
-**Activation condition:** Reconciled Tasks 1–12 are complete and the retained
-Phase 21 WebVOWL evidence is available. Pre-integration package smoke tests are
-not a substitute for this task's installed-consumer evidence.
+**Development dependency:** Tasks 1–12 pass their development checks. Implement
+and exercise the complete public/installed/browser composition now, and run
+available consumer fixtures against exact identified inputs. Pre-integration
+WebVOWL evidence must identify its actual checkout and must not stand in for the
+accepted production-cutover audit or final installed-consumer evidence.
 
 **Files**
 
@@ -1043,10 +1095,10 @@ outputManager.applyChanges(
 ### Task 14: Add the pinned Java import-closure acceptance oracle
 
 **Pre-integration allowance:** The Java launcher, synthetic fixture, structural
-comparison protocol, and focused launcher tests may be developed before
-baseline reconciliation. The four real-family comparisons and any acceptance
-claim wait for reconciled Task 13 artifacts and must be rerun from the
-integrated candidate.
+comparison protocol, focused tests, and four real-family comparisons may run
+before reconciliation when their exact inputs are available. Record actual
+candidate and source identities as provisional evidence. Final acceptance
+requires fresh comparisons from reconciled Task 13 artifacts.
 
 **Files**
 
@@ -1234,7 +1286,9 @@ Begin now in pre-integration mode on the dedicated lifecycle feature branch.
 Task 1 records the deferred governance baseline; Tasks 2–5 establish state
 semantics; Task 6 adds the closure utilities; Tasks 8 and 10 add independent
 comparison and strict-reconstruction foundations; and Task 14 may establish
-only its synthetic harness. Keep all lifecycle capabilities deferred and keep
+its harness and available real-family experiments. Build the canonical Phase 21
+foundations next, then dependency-ready Tasks 7, 9, and 11–14. Keep all lifecycle
+capabilities deferred and keep
 every result out of `0.1.0` release evidence.
 
 When exact production `0.1.0` and the Phase 21 completion checkpoint become
@@ -1245,10 +1299,11 @@ the complete semantic diff, and resolve conflicts in the canonical code. If a
 required contract has changed rather than merely moved, stop for plan and
 ledger review; do not add a shim.
 
-After reconciliation, Task 7 consumes the parity-locked target/error boundary
-and establishes manager storer selection; Tasks 9 and 11–12 complete lossless
-serializers; Task 13 supplies public and downstream semantic acceptance; Task
-14 reruns and completes independent Java evidence; and Task 15 alone qualifies
+Before reconciliation, Task 7 consumes the canonical target/error boundary and
+establishes manager storer selection; Tasks 9 and 11–12 implement lossless
+serializers; Tasks 13–14 supply provisional public/consumer and Java evidence.
+After reconciliation, rerun affected tasks and complete missing accepted-baseline
+evidence. Task 15 alone qualifies
 the exact release and coordinates a separately authorized WebVOWL `0.2.0`
 cutover only when the maintained consumer actually requires migration.
 

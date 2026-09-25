@@ -19,11 +19,11 @@ scope: no lifecycle commit, export, test result, or package candidate belongs
 to or broadens `0.1.0`, and every lifecycle capability remains
 `DEFERRED` / `NOT_STARTED` while development is based on a pre-release branch.
 
-Only work that does not consume the completed Phase 21 target/error boundary
-may proceed before that boundary exists. The feature branch must not recreate
-`StringDocumentTarget`, the storage-error hierarchy, their parity decisions,
-or WebVOWL acceptance evidence. Those are integrated from their canonical
-Phase 21 commit.
+Build `StringDocumentTarget`, the storage-error hierarchy, and their decision
+ledger once under the canonical Phase 21 plan on this feature branch. Then
+proceed with all dependency-ready lifecycle work, including provisional consumer
+experiments. Use those same canonical bindings throughout; no temporary target,
+error class, alias, or fabricated accepted WebVOWL/release evidence is permitted.
 
 After accepted `v0.1.0` and Phase 21 are available, the reviewed lifecycle task
 commits are integrated or replayed onto a branch containing both predecessors.
@@ -63,7 +63,7 @@ No shim, forwarding module, deprecated alias, copied source tree, or nominal uni
 | `OWLOntologyManager.addAxiom(s)` and change application | `HasAddAxioms`, `OWLOntologyManager#applyChange(s)` | Apply supported changes to managed ontologies while maintaining manager indexes.                                  |
 | `SetOntologyID`                                         | Same Java change class                              | Replace the full ontology ID and reject identity collisions.                                                      |
 | `AddOntologyAnnotation`                                 | Same Java change class                              | Add one structurally unique ontology annotation.                                                                  |
-| `StringDocumentTarget`                                  | Same Java target class                              | Capture stored UTF-8 text.                                                                                        |
+| `StringDocumentTarget`                                  | Same Java target class                              | Retain complete Unicode text, read through `toString()` after atomic replacement.                                 |
 | `OWLOntologyManager.saveOntology`                       | Same Java manager method                            | Select an exact registered storer and surface typed storage errors.                                               |
 | Functional Syntax storage behavior                      | `FunctionalSyntaxStorer`                            | Serialize the supported OWL structural model losslessly through exact format selection.                           |
 | RDF/XML storage behavior                                | `RDFXMLStorer`                                      | Apply OWL-to-RDF mapping and serialize standards-conforming RDF/XML, failing when representation is not lossless. |

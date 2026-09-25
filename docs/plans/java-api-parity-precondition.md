@@ -1,7 +1,8 @@
-# Post-`0.1.0` Java API Parity Precondition Implementation Plan
+# Java API Parity Precondition Implementation and Reconciliation Plan
 
 > **For agentic workers:** Execute this plan inline, test-first, and one task at
-> a time. Do not start from a pre-release or pre-`0.1.0` implementation branch.
+> a time. Canonical pre-integration development is authorized on the dedicated
+> lifecycle branch before `0.1.0`; release acceptance is not.
 > Do not change package configuration, create a release, publish, or commit
 > without the approval normally required by this repository.
 
@@ -27,16 +28,18 @@ the generated Public API Surface Registry; installed-package boundary tests;
 pinned Java OWLAPI 5.5.1 source at revision
 `d7e997a53b470e32700de89cc610d9daf01ea769`.
 
-**Status:** Design-complete prerequisite. Execute only after the exact accepted
-public `owlapi@0.1.0` release exists. Complete this plan as Phase 21 before
-starting any Phase 21-dependent task or claiming completion in
+**Status:** Canonical pre-integration development is authorized before the exact
+accepted public `owlapi@0.1.0` release exists. Build the target, errors, decision
+ledger, and provisional consumer checks now; dependent lifecycle tasks consume
+that same implementation. Reconcile against the accepted release before claiming
+Phase 21 or Phase 22 completion in
 [`docs/ontology-lifecycle-capability-implementation-plan.md`](../ontology-lifecycle-capability-implementation-plan.md),
-which becomes Phase 22. Phase 21-independent lifecycle work may be pre-built
+which remains Phase 22. All dependency-ready lifecycle work may be pre-built
 under the isolation and reconciliation rules in §8. This checkpoint does not
 publish an intermediate npm release; its public additions first ship as part
 of the separately qualified `owlapi@0.2.0` release.
 
-**Revised:** 2026-09-01.
+**Revised:** 2026-09-25.
 
 ---
 
@@ -67,24 +70,30 @@ during the subsequent 2026-08-29 review of the lifecycle plan. Neither task
 history replaces the pinned Java source, generated registry, or normative
 consumer contracts.
 
-At execution time, all of these conditions are mandatory:
+For development, use the dedicated `feature/ontology-import-closure-lifecycle`
+branch and record its exact development base. Implement only the contract below,
+with no intermediate aliases, duplicate classes, or fabricated release facts.
+Use the lifecycle plan's accepted R2 work-package assurance and review cadence.
+
+Before final Phase 21 acceptance, all of these reconciliation conditions are
+mandatory:
 
 1. The accepted production tag is exactly `v0.1.0`, resolves to one verified
    commit, and its published npm tarball has already passed the repository's
    release and immutable-registry gates.
 2. The implementation HEAD contains both the accepted `v0.1.0` commit and the
-   approved commit containing this plan. If the planning branch predates the
-   release, transplant or integrate the plan-only commit onto a branch based on
-   the accepted release; do not implement against stale pre-release ancestry.
+   approved commit containing this plan. Integrate or replay the pre-built task
+   commits onto the accepted release and resolve conflicts in canonical modules.
 3. Record the exact `v0.1.0` commit, package integrity, and
-   `docs/compatibility/java-api-surface.json` byte SHA-256 before editing source.
+   `docs/compatibility/java-api-surface.json` byte SHA-256 before accepting the
+   reconciled candidate.
 4. Compare the accepted `v0.1.0` registry with the design-time
    `v0.1.0-alpha.0` registry. If the target or storage-error baseline differs
    from the assumptions below, stop and amend both plans rather than forcing
    this delta onto a changed surface.
-5. Use a dedicated implementation branch, recommended as
-   `feature/java-api-parity-precondition`. The eventual Phase 22 implementation
-   branch must contain the accepted Phase 21 completion commit in its ancestry.
+5. Preserve task-sized signed history on a dedicated implementation branch.
+   The branch qualifying Phase 22 must contain the accepted Phase 21 completion
+   commit in its ancestry; it may already contain provisional lifecycle work.
 6. Resolve the exact WebVOWL production-cutover commit from the accepted
    `owlapi@0.1.0` release evidence, verify that commit is reachable from the
    intended WebVOWL branch, and audit that immutable tree rather than assuming
@@ -271,9 +280,19 @@ Phase 21 creates:
 - `docs/compatibility/java-api-parity-decisions.schema.json`; and
 - `docs/compatibility/java-api-parity-decisions.json`.
 
-The record is a closed Draft 2020-12 document. It contains:
+The record is a closed Draft 2020-12 document, validated by AJV rather than a
+repository-written schema engine. It distinguishes `PRE_INTEGRATION` from
+`RECONCILED` qualification. During pre-integration it records a real development
+base (commit and registry digest), requires `acceptedReleaseBaseline: null`,
+keeps `phase21.status: "IN_PROGRESS"`, and records the accepted WebVOWL audit as
+unavailable until it actually exists. No placeholder commit, synthetic integrity,
+empty success receipt, or inferred production baseline is permitted. Provisional
+experiments belong to native task evidence and do not populate acceptance fields.
 
-- the exact accepted `v0.1.0` tag, commit, package integrity, and baseline Java
+After reconciliation, the same record requires these accepted facts:
+
+- a non-null `acceptedReleaseBaseline` containing the exact accepted `v0.1.0`
+  tag, commit, package integrity, and baseline Java
   API registry SHA-256;
 - the pinned Java version, revision, and source paths;
 - one row for each approved decision ID in §2.1;
@@ -293,6 +312,13 @@ The record is a closed Draft 2020-12 document. It contains:
   when such a commit exists;
 - a `phase21` checkpoint containing the current generated registry SHA-256 and
   `status: "COMPLETE"` only after all Phase 21 package and consumer gates pass.
+
+The Java authorities, approved decision rows, exact public allowlist, forbidden
+surface, and focused evidence paths apply in both states. Schema conditionals
+must reject a pre-integration record claiming `COMPLETE` or carrying accepted
+release facts; completion additionally requires reconciled consumer evidence.
+Repository tests enforce relationships AJV cannot know, such as actual file
+existence, public binding identity, exact approved decisions, and registry hashes.
 
 The ledger governs post-baseline deltas; it does not silently grandfather a new
 change merely because an older public binding was already adapted. Phase 22 must
@@ -316,7 +342,7 @@ release change is outside this plan unless separately approved.
 
 ## 6. Task-by-task implementation plan
 
-### Task 1: Activate Phase 21 from the accepted `v0.1.0` baseline
+### Task 1: Record canonical Phase 21 development and acceptance boundaries
 
 **Files**
 
@@ -327,11 +353,11 @@ release change is outside this plan unless separately approved.
 
 **Steps**
 
-1. Perform every activation check in §1 and retain the exact command outputs in
-   the normal checkpoint evidence. Confirm the implementation branch contains
-   the accepted release and this plan before editing source.
+1. Confirm the authorized feature branch and record its exact development base.
+   Apply §1's accepted-release checks at reconciliation, not as a barrier to
+   pre-integration development. Retain actual outputs in native task evidence.
 2. Add failing schema/governance tests for a closed decision record, exact Java
-   revision, exact baseline identifiers, unique decision IDs, valid repository
+   revision, truthful development versus accepted baseline states, unique decision IDs, valid repository
    evidence paths, and an allowlist containing only the Phase 21 surface.
 3. Add these capability rows with `status: "REQUIRED_V1"`,
    `progress: "IN_PROGRESS"`, and `phase: 21`:
@@ -340,9 +366,10 @@ release change is outside this plan unless separately approved.
    - `io.string-document-target`; and
    - `io.storage-error-contract`.
 
-4. Populate the decision record from the accepted release facts and the six
-   decisions in §2.1. Keep `phase21.status` as `IN_PROGRESS`. Do not copy the
-   entire baseline registry; record its immutable tag, commit, and byte digest.
+4. Populate the six decisions in §2.1 and the actual development base. Require
+   null accepted-release and accepted-consumer records in `PRE_INTEGRATION`;
+   keep `phase21.status` as `IN_PROGRESS`. At reconciliation, populate accepted
+   release facts from their authoritative outputs. Do not copy the whole registry.
 5. Add a regression assertion that a Phase 21 decision cannot use
    `PUBLIC_JS_EXTENSION` as its category. Future plans may add that vocabulary
    only through an explicit schema and governance amendment.
@@ -353,9 +380,9 @@ release change is outside this plan unless separately approved.
    npm run lint:files -- governance.test.js
    ```
 
-7. Request a checkpoint containing the active branch, HEAD, `v0.1.0` commit,
-   baseline registry digest, and decision-record digest. Stop if any identifier
-   was inferred from a similarly named branch rather than the accepted tag.
+7. Retain active branch, HEAD, development-base and decision-record digests.
+   Include `v0.1.0` identifiers only after reconciliation. Stop if an accepted
+   identifier was inferred from a similarly named branch rather than the tag.
 
 ### Task 2: Make the Phase 21 surface fail closed before implementation
 
@@ -481,10 +508,12 @@ release change is outside this plan unless separately approved.
 4. Generalize release metadata only as required by the accepted post-`0.1.0`
    schema so the new bindings declare `firstPublicRelease: "0.2.0"`. Preserve
    every accepted `0.1.0` binding's release identity and contract.
-5. Regenerate the authoritative JSON and both views. Compare them with the
-   accepted `v0.1.0` registry and require exactly three new public bindings, no
-   new namespace, no unrelated existing-binding mutation, and zero Phase 21
-   `JS_EXTENSION` bindings.
+5. Regenerate the authoritative JSON and both views. In development, isolate the
+   Phase 21 delta from the recorded development base: exactly three new public
+   bindings, no new namespace, no unrelated existing-binding mutation, and zero
+   Phase 21 `JS_EXTENSION` bindings. At reconciliation, compare against accepted
+   `v0.1.0`; account separately for any already-built Phase 22 delta under its
+   exact allowlist. Never describe a combined feature-branch delta as Phase 21 only.
 6. Update the standalone import-closure prerequisite note to require
    `StringDocumentTarget.toString()` and the base storage-error representability
    reason. Remove any implication that a convenience text getter or dedicated
@@ -554,7 +583,7 @@ release change is outside this plan unless separately approved.
    digest over the normalized inventory. Keep the source-reader allowlist
    fail-closed: a moved, removed, duplicated, or newly added `getText()` use
    requires review rather than silently inheriting a path-wide exception.
-5. Make the qualifier consume the accepted post-`0.1.0` WebVOWL cutover tree,
+5. Make final qualification consume the accepted post-`0.1.0` WebVOWL cutover tree,
    not replay Phase 19's original embedded-source migration. Require canonical
    `owlapi` package specifiers, the accepted exact production dependency, and
    absence of the former maintained `src/owlapi-js/` tree before candidate
@@ -565,6 +594,10 @@ release change is outside this plan unless separately approved.
    the exact assertions from Step 2. Do not introduce a workspace, resolver
    alias, copied owlapi tree, deep import, or production WebVOWL local-file
    dependency.
+   Before that accepted tree exists, test the audit and installed harness against
+   exact, explicitly identified development inputs. Label the results provisional;
+   do not relax accepted-baseline validation or substitute Phase 19 replay as
+   production-cutover evidence. Unavailable real inputs block their result only.
 6. Resolve the accepted WebVOWL production-cutover commit from release evidence,
    verify a clean immutable checkout, and run the audit. If it reports obsolete
    occurrences, replace target reads with `toString()` and dedicated-subtype
@@ -636,8 +669,9 @@ release change is outside this plan unless separately approved.
 6. Request authorization for the exact Phase 21 commit. After an approved signed
    commit exists, record its OID in the execution handoff; do not try to write a
    self-referential commit OID into a file contained by that commit.
-7. Do not tag or publish. Phase 22 may begin only from a branch on which both the
-   accepted `v0.1.0` commit and this Phase 21 completion commit are ancestors.
+7. Do not tag or publish. Final Phase 22 qualification requires both the accepted
+   `v0.1.0` commit and this Phase 21 completion commit as ancestors; development
+   may already have proceeded against the canonical foundations.
 
 Recommended final verification commands, adjusted only for commands that the
 accepted post-`0.1.0` repository actually provides:
@@ -658,7 +692,7 @@ npm pack --dry-run --json
 
 Phase 21 is complete only when all of the following are true:
 
-- execution was based on the accepted `v0.1.0` release and the exact baseline
+- the candidate was reconciled with accepted `v0.1.0` and the exact baseline
   identifiers are recorded;
 - the three Phase 21 capability rows are complete;
 - the closed parity decision ledger validates and contains exactly the approved
@@ -690,20 +724,19 @@ Phase 21 is complete only when all of the following are true:
 - all focused, governance, generated-document, installed-package, and applicable
   browser/package gates pass; and
 - the approved signed Phase 21 commit is an ancestor of the branch from which
-  Phase 22 begins.
+  Phase 22 is finally qualified.
 
 ## 8. Phase 22 handoff
 
-The import-closure lifecycle plan consumes, rather than recreates, the Phase 21
-target and storage-error boundary. Phase 21-independent lifecycle work may be
-pre-built on its dedicated feature branch before this prerequisite is complete,
-provided that work remains outside every `0.1.0` candidate and release claim.
-Pre-integration work must keep lifecycle capability rows deferred, label its
-evidence provisional, and must not create, copy, simulate, or partially
-backfill this plan's target, errors, decision record, WebVOWL evidence, or
-installed-candidate result.
+The import-closure lifecycle plan consumes, rather than recreates, the canonical
+Phase 21 target and storage-error boundary. Build that boundary once under this
+plan on the dedicated lifecycle branch, then proceed with all dependency-ready
+lifecycle development before release. Keep this work outside every `0.1.0`
+candidate and release claim. Keep lifecycle capability rows deferred and label
+development evidence provisional. Do not fabricate accepted release, WebVOWL,
+or installed-candidate evidence to make a checkpoint appear complete.
 
-Before any Phase 21-dependent lifecycle task or Phase 22 completion claim, the
+Before a Phase 22 completion claim, the
 integration branch must contain the accepted `v0.1.0` and approved Phase 21
 completion commits in its ancestry. The lifecycle plan must then validate the
 decision record, capability rows, generated registry, forbidden-export
@@ -717,10 +750,9 @@ reason. Its installed WebVOWL gate must add the first real save and
 non-representability exercise; surface-only Phase 21 evidence is not a substitute
 for that semantic consumer test.
 
-Any Phase 22 worker who reaches a Phase 21-dependent task while the accepted
-surface is missing or not in branch ancestry must stop that task. If the
-accepted surface differs materially from the lifecycle contract, stop for a
-reviewed plan and parity-ledger amendment. Re-running or partially duplicating
-Phase 21 inside the lifecycle task, or retaining the pre-integration shape with
-a shim, is not an acceptable substitute for satisfying and reconciling this
-dependency.
+If a dependent lifecycle task lacks the canonical foundation, complete the
+relevant task in this plan first. Missing release ancestry alone does not block
+development. If reconciliation reveals a materially changed contract, stop the
+affected work for a reviewed plan and parity-ledger amendment. Resolve bounded
+rework in the canonical implementation and tests; never retain an interim shape
+with a shim, duplicate class, forwarding export, or fallback API.
