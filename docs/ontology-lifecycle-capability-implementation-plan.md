@@ -1004,6 +1004,26 @@ The writer serializes one ordinary RDF/JS default graph. It is not an OWL storer
 
 Use the conservative RDF/XML form: one `rdf:Description` per subject; full `rdf:about`, deterministic synthetic `rdf:nodeID`, or literal content; and property elements for predicates. Avoid typed-node and property-attribute abbreviations so equivalent inputs have one auditable path.
 
+**Software selection (2026-09-25):** The already governed
+[`@xmldom/xmldom`](https://github.com/xmldom/xmldom) owns XML DOM construction,
+QName validation, XML character validation, and text/attribute serialization.
+Use its `XMLSerializer` with `requireWellFormed: true`; validate attribute
+characters through its text-node serializer because the pinned implementation
+does not validate attribute values. A text-node filter preserves carriage
+returns with character references while native serialization validates and
+escapes the surrounding segments. Reuse the Task 9 IRI and language parsers.
+No new XML grammar or dependency is needed. The
+[rdflib serializer](https://github.com/linkeddata/rdflib.js/blob/master/src/serializer.js)
+owns its store-oriented traversal and abbreviation choices, not this contract's
+RDF/JS default-graph and conservative output policy.
+
+Repository code owns only RDF term-position/metadata invariants, deterministic
+ordering and identity allocation, and the
+[RDF/XML-specific restrictions](https://www.w3.org/TR/rdf-syntax-grammar/)
+in sections 5.1, 7.2, 7.4, and 8. In particular, the longest-namespace rule
+cannot extend the reserved RDF namespace; syntax predicates and `rdf:li` must
+fail without rewriting. The selected RDF 1.1 syntax also excludes `rdf:HTML`.
+
 **Steps**
 
 1. Add failing graph tests for named and blank subjects, named and blank objects, plain/datatype/language literals, repeated predicates, RDF collections as ordinary triples, Unicode IRIs/literals, XML metacharacters, and different insertion orders.
@@ -1020,6 +1040,14 @@ Use the conservative RDF/XML form: one `rdf:Description` per subject; full `rdf:
    ```
 
 8. Request a checkpoint. Attach the negative QName and forbidden-character evidence because these failures become public representability errors in Task 12.
+
+**Pre-integration checkpoint (2026-09-25):** The private writer passes 43
+graph tests, including all negative QName, reserved-predicate, metadata, and
+forbidden-character cases, plus the existing parser and dataset-isomorphism
+suites (53 tests together). Every positive fixture is re-parsed and compared
+by dataset isomorphism; reversed insertion order produces identical bytes.
+This is graph-writer evidence, not yet public RDF/XML ontology-storage or
+release acceptance.
 
 ### Task 12: Add lossless RDF/XML ontology storage with pre-commit verification
 

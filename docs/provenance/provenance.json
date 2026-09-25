@@ -687,6 +687,34 @@
       "reviewDate": "2026-09-25"
     },
     {
+      "id": "PHASE22-RDFXML-GRAPH-WRITER",
+      "path": "internal/storage/rdfxml/rdfXmlGraphWriter.js",
+      "phase": 22,
+      "scope": "private deterministic RDF/JS default-graph serialization using native XML DOM and well-formed serialization, library IRI and language validation, and repository-owned RDF term, namespace, and lexical-preservation invariants",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/rdf-syntax-grammar/ sections 5.1, 7.2, 7.4 and 8",
+        "https://www.w3.org/TR/xml/ sections 2.2, 2.11 and 3.3.3",
+        "https://www.w3.org/TR/xml-names/",
+        "https://www.rfc-editor.org/rfc/rfc3987",
+        "https://www.rfc-editor.org/rfc/rfc5646"
+      ],
+      "compatibilityReferences": [
+        "Approved Java OWLAPI-shaped storage boundary in ontology-lifecycle-capability-implementation-plan.md Task 11; this graph writer remains private and claims no independent Java class binding"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/storage/rdfxml/rdfXmlGraphWriter.test.js",
+        "internal/parsing/rdfxml/rdfXmlSyntaxAdapter.test.js",
+        "internal/rdfjs/datasetIsomorphism.test.js"
+      ],
+      "thirdPartyDependencies": ["@hyperjump/uri", "@xmldom/xmldom", "bcp-47"],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-25"
+    },
+    {
       "id": "PHASE22-STORAGE-REGISTRY",
       "path": "internal/storage/storerRegistry.js",
       "phase": 22,
