@@ -42,6 +42,76 @@ const LIFECYCLE_STORER_CAPABILITY_BY_JAVA_TYPE = Object.freeze({
   "org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLStorer": "storer.rdfxml",
 });
 
+// These approved adaptations must not inherit the OWL-name heuristic: a native
+// Error suffix, private atomic target state, and io ownership differ from Java.
+const PARITY_BINDING_METADATA = Object.freeze({
+  StringDocumentTarget: {
+    javaType: "org.semanticweb.owlapi.io.StringDocumentTarget",
+    sourceModule: "io/stringDocumentTarget.js",
+    capabilityIds: ["io.string-document-target"],
+    relationship: "JS_ADAPTATION",
+    callShapes: ["new StringDocumentTarget()"],
+    summary:
+      "An in-memory ontology document target with Java's toString() text reader and private atomic replacement.",
+    omittedMembers: [
+      "getWriter() and the Java Writer protocol (PARITY-TARGET-WRITER-OMISSION)",
+    ],
+    semanticQualifications: [
+      "PARITY-TARGET-WRITER-OMISSION: toString() is the only public text reader; no getText(), getWriter(), write(), append(), or constructor-text overload is exposed.",
+      "PARITY-TARGET-ATOMIC-COMMIT: package-private complete-text replacement validates before changing private state; failed storage retains prior text.",
+    ],
+    verification: [
+      "io/stringDocumentTarget.test.js",
+      "test/package-boundary.test.mjs",
+      "test/installed-package-boundary.mjs",
+      "test/installed-package-smoke.mjs",
+    ],
+  },
+  OWLOntologyStorageError: {
+    javaType: "org.semanticweb.owlapi.model.OWLOntologyStorageException",
+    sourceModule: "io/errors.js",
+    capabilityIds: ["io.storage-error-contract"],
+    relationship: "JS_ADAPTATION",
+    callShapes: ["new OWLOntologyStorageError(message?, details?)"],
+    summary:
+      "The canonical storage error, including lossless-representation failures identified by a safe reason field.",
+    omittedMembers: ["Java Throwable-only and serialization constructor forms"],
+    semanticQualifications: [
+      "PARITY-ERROR-SUFFIX: Java OWLOntologyStorageException uses the established JavaScript Error suffix.",
+      "PARITY-ERROR-HIERARCHY: extends the existing OWLAPIError root rather than introducing Java's checked OWLException hierarchy.",
+      "PARITY-ERROR-NAMESPACE: the canonical binding is owned by owlapi/io and re-exported only through the existing bare aggregate, not owlapi/model.",
+      "PARITY-STORAGE-REASON: code ONTOLOGY_STORAGE_FAILED and safe own reason ONTOLOGY_NOT_REPRESENTABLE classify lossless-storage failures without a new public subclass; native cause and protected identity follow OWLAPIError.",
+    ],
+    verification: [
+      "io/io.test.js",
+      "test/package-boundary.test.mjs",
+      "test/installed-package-boundary.mjs",
+      "test/installed-package-smoke.mjs",
+    ],
+  },
+  OWLStorerNotFoundError: {
+    javaType: "org.semanticweb.owlapi.model.OWLStorerNotFoundException",
+    sourceModule: "io/errors.js",
+    capabilityIds: ["io.storage-error-contract"],
+    relationship: "JS_ADAPTATION",
+    callShapes: ["new OWLStorerNotFoundError(format)"],
+    summary:
+      "A storage-error subtype for an OWLDocumentFormat with no matching storer.",
+    omittedMembers: ["Java exception serialization"],
+    semanticQualifications: [
+      "PARITY-ERROR-SUFFIX: Java OWLStorerNotFoundException uses the established JavaScript Error suffix and stable STORER_NOT_FOUND code.",
+      "PARITY-ERROR-HIERARCHY: extends OWLOntologyStorageError, retaining Java's storage-exception subtype relation; the constructor takes the requested OWLDocumentFormat and exposes no getFormat() member.",
+      "PARITY-ERROR-NAMESPACE: the canonical binding is owned by owlapi/io and re-exported only through the existing bare aggregate, not owlapi/model.",
+    ],
+    verification: [
+      "io/io.test.js",
+      "test/package-boundary.test.mjs",
+      "test/installed-package-boundary.mjs",
+      "test/installed-package-smoke.mjs",
+    ],
+  },
+});
+
 const MODULES = Object.freeze([
   {
     id: "root",
@@ -73,7 +143,7 @@ const MODULES = Object.freeze([
     npmSpecifier: "owlapi/io",
     module: io,
     rationale:
-      "Mirrors the Java OWLAPI io namespace for document sources and loading or parsing errors.",
+      "Mirrors the Java OWLAPI io namespace for document sources, targets, and the package's canonical ontology errors.",
   },
   {
     id: "formats",
@@ -352,7 +422,12 @@ const FORMAT_CAPABILITY_BY_JAVA_TYPE = Object.freeze({
 });
 
 const ERROR_EXPORTS = new Set(
-  Object.keys(io).filter((name) => name !== "StringDocumentSource"),
+  Object.entries(io)
+    .filter(
+      ([, binding]) =>
+        typeof binding === "function" && binding.prototype instanceof Error,
+    )
+    .map(([name]) => name),
 );
 const DISPATCH_EXPORTS = new Set(
   Object.keys(model).filter((name) => name.startsWith("dispatch")),
@@ -630,37 +705,47 @@ const semanticQualificationsFor = (exportName, javaType) => [
   ...(SEMANTIC_QUALIFICATIONS_BY_EXPORT[exportName] ?? []),
 ];
 
-const buildBindings = () => {
+const buildBindings = (capabilityById) => {
   const bindings = [];
   for (const namespace of MODULES.filter(({ id }) => id !== "root")) {
     for (const exportName of Object.keys(namespace.module).sort()) {
       const binding = namespace.module[exportName];
-      const javaType = JAVA_TYPES_BY_EXPORT[exportName] ?? null;
-      const relationship = javaType
-        ? exportName === "OWLOntologyImportsClosureSetProvider"
-          ? "JS_ADAPTATION"
-          : exportName === "IRI" ||
-              exportName === "AddOntologyAnnotation" ||
-              exportName === "SetOntologyID" ||
-              exportName.startsWith("OWL")
-            ? "JAVA_ANALOGUE"
-            : "JS_ADAPTATION"
-        : "JS_EXTENSION";
+      const parityMetadata = PARITY_BINDING_METADATA[exportName];
+      const javaType =
+        parityMetadata?.javaType ?? JAVA_TYPES_BY_EXPORT[exportName] ?? null;
+      const relationship =
+        parityMetadata?.relationship ??
+        (javaType
+          ? exportName === "OWLOntologyImportsClosureSetProvider"
+            ? "JS_ADAPTATION"
+            : exportName === "IRI" ||
+                exportName === "AddOntologyAnnotation" ||
+                exportName === "SetOntologyID" ||
+                exportName.startsWith("OWL")
+              ? "JAVA_ANALOGUE"
+              : "JS_ADAPTATION"
+          : "JS_EXTENSION");
       const kind = kindOfBinding(binding, exportName);
       bindings.push({
         id: `${namespace.id}.${exportName}`,
         jsExport: exportName,
         kind,
-        summary: summaryFor(exportName, kind, relationship),
-        capabilityIds: capabilitiesFor(exportName),
+        summary:
+          parityMetadata?.summary ?? summaryFor(exportName, kind, relationship),
+        capabilityIds:
+          parityMetadata?.capabilityIds ?? capabilitiesFor(exportName),
         capabilityStatus: "REQUIRED_V1",
-        progress: "COMPLETE",
+        progress: parityMetadata
+          ? capabilityById.get(parityMetadata.capabilityIds[0]).progress
+          : "COMPLETE",
         exposure: "PUBLIC",
         stability: "PRERELEASE",
-        firstPublicRelease:
-          FIRST_PUBLIC_RELEASE_BY_EXPORT[exportName] ?? "0.1.0-alpha.0",
+        firstPublicRelease: parityMetadata
+          ? "0.2.0"
+          : (FIRST_PUBLIC_RELEASE_BY_EXPORT[exportName] ?? "0.1.0-alpha.0"),
         publicSpecifier: namespace.npmSpecifier,
-        sourceModule: sourceModuleFor(exportName),
+        sourceModule:
+          parityMetadata?.sourceModule ?? sourceModuleFor(exportName),
         javaPackage: namespace.javaPackage,
         javaType,
         closestJavaAuthority: closestJavaAuthorityFor(
@@ -670,12 +755,18 @@ const buildBindings = () => {
         ),
         relationship,
         compatibility: javaType ? "ADAPTED" : "NOT_APPLICABLE",
-        callShapes: callShapesFor(binding, exportName, namespace.npmSpecifier),
+        callShapes:
+          parityMetadata?.callShapes ??
+          callShapesFor(binding, exportName, namespace.npmSpecifier),
         supportedMembers: ownMembers(binding),
-        omittedMembers: OMITTED_MEMBERS[exportName] ?? [],
+        omittedMembers:
+          parityMetadata?.omittedMembers ?? OMITTED_MEMBERS[exportName] ?? [],
         publicErrors: PUBLIC_ERRORS_BY_EXPORT[exportName] ?? [],
-        semanticQualifications: semanticQualificationsFor(exportName, javaType),
+        semanticQualifications:
+          parityMetadata?.semanticQualifications ??
+          semanticQualificationsFor(exportName, javaType),
         verification:
+          parityMetadata?.verification ??
           VERIFICATION_BY_EXPORT[exportName] ??
           VERIFICATION_BY_GROUP[namespace.id],
         guidance: javaType
@@ -718,7 +809,7 @@ const classifyJavaType = (type, bindingByJavaType) => {
     return {
       ...type,
       capabilityIds: publicBinding.capabilityIds,
-      progress: "COMPLETE",
+      progress: publicBinding.progress,
       exposure: "PUBLIC",
       stability: "PRERELEASE",
       jsExport: publicBinding.jsExport,
@@ -846,7 +937,12 @@ const classifyJavaType = (type, bindingByJavaType) => {
 
 const buildRegistry = async (javaRoot) => {
   const packageJson = await readJson(join(PACKAGE_ROOT, "package.json"));
-  const bindings = buildBindings();
+  const capabilities = await readJson(
+    join(PACKAGE_ROOT, "docs/compatibility/capabilities.json"),
+  );
+  const bindings = buildBindings(
+    new Map(capabilities.capabilities.map((row) => [row.id, row])),
+  );
   const bindingByJavaType = new Map(
     bindings
       .filter(({ javaType }) => javaType !== null)

@@ -3,7 +3,12 @@ import assert from "node:assert/strict";
 import * as root from "owlapi";
 import { OWLManager } from "owlapi/apibinding";
 import { OWLDocumentFormats } from "owlapi/formats";
-import { StringDocumentSource } from "owlapi/io";
+import {
+  StringDocumentSource,
+  StringDocumentTarget,
+  OWLOntologyStorageError,
+  OWLStorerNotFoundError,
+} from "owlapi/io";
 import { OWLOntologyManager } from "owlapi/model";
 import {
   OWLOntologyImportsClosureSetProvider,
@@ -16,6 +21,21 @@ import {
 assert.strictEqual(root.OWLManager, OWLManager);
 assert.strictEqual(root.OWLDocumentFormats, OWLDocumentFormats);
 assert.strictEqual(root.StringDocumentSource, StringDocumentSource);
+assert.strictEqual(root.StringDocumentTarget, StringDocumentTarget);
+assert.strictEqual(root.OWLOntologyStorageError, OWLOntologyStorageError);
+assert.strictEqual(root.OWLStorerNotFoundError, OWLStorerNotFoundError);
+const target = new StringDocumentTarget();
+assert.equal(target.toString(), "");
+assert.equal(target.getText, undefined);
+const storageFailure = new OWLOntologyStorageError("Cannot preserve ontology", {
+  reason: "ONTOLOGY_NOT_REPRESENTABLE",
+});
+assert.equal(storageFailure.reason, "ONTOLOGY_NOT_REPRESENTABLE");
+assert.equal(storageFailure.code, "ONTOLOGY_STORAGE_FAILED");
+assert.ok(
+  new OWLStorerNotFoundError(OWLDocumentFormats.FUNCTIONAL) instanceof
+    OWLOntologyStorageError,
+);
 assert.strictEqual(root.OWLOntologyManager, OWLOntologyManager);
 assert.strictEqual(
   root.OWLOntologyImportsClosureSetProvider,

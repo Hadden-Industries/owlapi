@@ -1,4 +1,4 @@
-<!-- registry-sha256: 5fcaf1e0ae5bf8d4193bbbd0ae9b38d8132223524a41aa15e99e846b5f52f428 -->
+<!-- registry-sha256: b203754d1d6546dcef6bac02ba5c72c124a360042c84c39d575623426f3fd77d -->
 
 # Java OWLAPI compatibility surface
 
@@ -11,73 +11,76 @@ A mapped name does not promise every Java overload or method. The relationship, 
 ## Inventory summary
 
 - Public package namespaces: 6
-- Public JavaScript bindings: 49
+- Public JavaScript bindings: 52
 - Public Java types inspected: 1013
 - Unclassified Java types: 0
 
 | Java disposition                           | Count |
 | ------------------------------------------ | ----: |
-| PUBLIC_MAPPED                              |    18 |
+| PUBLIC_MAPPED                              |    21 |
 | STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT    |    73 |
 | FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT |     8 |
 | INTERNAL_IMPLEMENTATION_ONLY               |     2 |
-| DEFERRED_NOT_EXPOSED                       |   868 |
+| DEFERRED_NOT_EXPOSED                       |   865 |
 | UNSUPPORTED_BY_DESIGN                      |    44 |
 | UNCLASSIFIED                               |     0 |
 
 ## Public bindings
 
-| JavaScript export                      | Package specifier | Java authority                                                   | Relationship  | Compatibility  | Status                |
-| -------------------------------------- | ----------------- | ---------------------------------------------------------------- | ------------- | -------------- | --------------------- |
-| `OWLManager`                           | owlapi/apibinding | org.semanticweb.owlapi.apibinding.OWLManager                     | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
-| `ANNOTATION_VALUE_KINDS`               | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `AXIOM_KINDS`                          | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `AddOntologyAnnotation`                | owlapi/model      | org.semanticweb.owlapi.model.AddOntologyAnnotation               | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
-| `CLASS_EXPRESSION_KINDS`               | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `DATA_PROPERTY_EXPRESSION_KINDS`       | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `DATA_RANGE_KINDS`                     | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `ENTITY_KINDS`                         | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `INDIVIDUAL_KINDS`                     | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `IRI`                                  | owlapi/model      | org.semanticweb.owlapi.model.IRI                                 | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
-| `OBJECT_PROPERTY_EXPRESSION_KINDS`     | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `OWLDataFactory`                       | owlapi/model      | org.semanticweb.owlapi.model.OWLDataFactory                      | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
-| `OWLDocumentFormat`                    | owlapi/model      | org.semanticweb.owlapi.model.OWLDocumentFormat                   | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
-| `OWLObjectKind`                        | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `OWLOntology`                          | owlapi/model      | org.semanticweb.owlapi.model.OWLOntology                         | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
-| `OWLOntologyLoaderConfiguration`       | owlapi/model      | org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration      | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
-| `OWLOntologyManager`                   | owlapi/model      | org.semanticweb.owlapi.model.OWLOntologyManager                  | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
-| `OWLStructuralObject`                  | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
-| `OWL_OBJECT_KINDS`                     | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `SetOntologyID`                        | owlapi/model      | org.semanticweb.owlapi.model.SetOntologyID                       | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
-| `StructuralSet`                        | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `dispatchAnnotationValue`              | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx                  | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `dispatchAxiom`                        | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx                  | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `dispatchClassExpression`              | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx                  | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `dispatchDataPropertyExpression`       | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx                  | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `dispatchDataRange`                    | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx                  | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `dispatchIndividual`                   | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx                  | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `dispatchObjectPropertyExpression`     | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx                  | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `dispatchOwlObject`                    | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx                  | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `AmbiguousRdfDatasetError`             | owlapi/io         | org.semanticweb.owlapi.model.OWLOntologyCreationException        | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `DocumentLoadError`                    | owlapi/io         | org.semanticweb.owlapi.model.OWLOntologyCreationException        | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `GraphSelectionError`                  | owlapi/io         | org.semanticweb.owlapi.model.OWLOntologyCreationException        | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `MissingImportError`                   | owlapi/io         | org.semanticweb.owlapi.model.UnloadableImportException           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `OWLAPIError`                          | owlapi/io         | org.semanticweb.owlapi.model.OWLRuntimeException                 | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
-| `OWLOntologyCreationError`             | owlapi/io         | org.semanticweb.owlapi.model.OWLOntologyCreationException        | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
-| `OWLOntologyStateError`                | owlapi/io         | org.semanticweb.owlapi.model.OWLRuntimeException                 | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `OWLParserError`                       | owlapi/io         | org.semanticweb.owlapi.io.OWLParserException                     | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
-| `OWLSyntaxError`                       | owlapi/io         | org.semanticweb.owlapi.io.OWLParserException                     | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `ParserMismatchError`                  | owlapi/io         | org.semanticweb.owlapi.io.OWLParserException                     | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `ResourceLimitError`                   | owlapi/io         | org.semanticweb.owlapi.model.OWLRuntimeException                 | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `SecurityPolicyError`                  | owlapi/io         | org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration      | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `StringDocumentSource`                 | owlapi/io         | org.semanticweb.owlapi.io.StringDocumentSource                   | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE |
-| `UnloadableImportError`                | owlapi/io         | org.semanticweb.owlapi.model.UnloadableImportException           | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE |
-| `UnparsableOntologyException`          | owlapi/io         | org.semanticweb.owlapi.io.UnparsableOntologyException            | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE |
-| `UnsupportedConstructError`            | owlapi/io         | org.semanticweb.owlapi.io.OWLParserException                     | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `XmlParseError`                        | owlapi/io         | org.semanticweb.owlapi.io.OWLParserException                     | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `OWLDocumentFormats`                   | owlapi/formats    | org.semanticweb.owlapi.formats                                   | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE |
-| `OWLOntologyImportsClosureSetProvider` | owlapi/util       | org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE |
-| `OWLOntologyMerger`                    | owlapi/util       | org.semanticweb.owlapi.util.OWLOntologyMerger                    | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE |
+| JavaScript export                      | Package specifier | Java authority                                                   | Relationship  | Compatibility  | Status                   |
+| -------------------------------------- | ----------------- | ---------------------------------------------------------------- | ------------- | -------------- | ------------------------ |
+| `OWLManager`                           | owlapi/apibinding | org.semanticweb.owlapi.apibinding.OWLManager                     | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
+| `ANNOTATION_VALUE_KINDS`               | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `AXIOM_KINDS`                          | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `AddOntologyAnnotation`                | owlapi/model      | org.semanticweb.owlapi.model.AddOntologyAnnotation               | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
+| `CLASS_EXPRESSION_KINDS`               | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `DATA_PROPERTY_EXPRESSION_KINDS`       | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `DATA_RANGE_KINDS`                     | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `ENTITY_KINDS`                         | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `INDIVIDUAL_KINDS`                     | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `IRI`                                  | owlapi/model      | org.semanticweb.owlapi.model.IRI                                 | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
+| `OBJECT_PROPERTY_EXPRESSION_KINDS`     | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `OWLDataFactory`                       | owlapi/model      | org.semanticweb.owlapi.model.OWLDataFactory                      | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
+| `OWLDocumentFormat`                    | owlapi/model      | org.semanticweb.owlapi.model.OWLDocumentFormat                   | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
+| `OWLObjectKind`                        | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `OWLOntology`                          | owlapi/model      | org.semanticweb.owlapi.model.OWLOntology                         | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
+| `OWLOntologyLoaderConfiguration`       | owlapi/model      | org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration      | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
+| `OWLOntologyManager`                   | owlapi/model      | org.semanticweb.owlapi.model.OWLOntologyManager                  | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
+| `OWLStructuralObject`                  | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
+| `OWL_OBJECT_KINDS`                     | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `SetOntologyID`                        | owlapi/model      | org.semanticweb.owlapi.model.SetOntologyID                       | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
+| `StructuralSet`                        | owlapi/model      | org.semanticweb.owlapi.model.OWLObject                           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `dispatchAnnotationValue`              | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx                  | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `dispatchAxiom`                        | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx                  | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `dispatchClassExpression`              | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx                  | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `dispatchDataPropertyExpression`       | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx                  | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `dispatchDataRange`                    | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx                  | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `dispatchIndividual`                   | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx                  | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `dispatchObjectPropertyExpression`     | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx                  | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `dispatchOwlObject`                    | owlapi/model      | org.semanticweb.owlapi.model.OWLObjectVisitorEx                  | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `AmbiguousRdfDatasetError`             | owlapi/io         | org.semanticweb.owlapi.model.OWLOntologyCreationException        | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `DocumentLoadError`                    | owlapi/io         | org.semanticweb.owlapi.model.OWLOntologyCreationException        | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `GraphSelectionError`                  | owlapi/io         | org.semanticweb.owlapi.model.OWLOntologyCreationException        | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `MissingImportError`                   | owlapi/io         | org.semanticweb.owlapi.model.UnloadableImportException           | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `OWLAPIError`                          | owlapi/io         | org.semanticweb.owlapi.model.OWLRuntimeException                 | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
+| `OWLOntologyCreationError`             | owlapi/io         | org.semanticweb.owlapi.model.OWLOntologyCreationException        | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
+| `OWLOntologyStateError`                | owlapi/io         | org.semanticweb.owlapi.model.OWLRuntimeException                 | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `OWLOntologyStorageError`              | owlapi/io         | org.semanticweb.owlapi.model.OWLOntologyStorageException         | JS_ADAPTATION | ADAPTED        | IN_PROGRESS / PRERELEASE |
+| `OWLParserError`                       | owlapi/io         | org.semanticweb.owlapi.io.OWLParserException                     | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
+| `OWLStorerNotFoundError`               | owlapi/io         | org.semanticweb.owlapi.model.OWLStorerNotFoundException          | JS_ADAPTATION | ADAPTED        | IN_PROGRESS / PRERELEASE |
+| `OWLSyntaxError`                       | owlapi/io         | org.semanticweb.owlapi.io.OWLParserException                     | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `ParserMismatchError`                  | owlapi/io         | org.semanticweb.owlapi.io.OWLParserException                     | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `ResourceLimitError`                   | owlapi/io         | org.semanticweb.owlapi.model.OWLRuntimeException                 | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `SecurityPolicyError`                  | owlapi/io         | org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration      | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `StringDocumentSource`                 | owlapi/io         | org.semanticweb.owlapi.io.StringDocumentSource                   | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
+| `StringDocumentTarget`                 | owlapi/io         | org.semanticweb.owlapi.io.StringDocumentTarget                   | JS_ADAPTATION | ADAPTED        | IN_PROGRESS / PRERELEASE |
+| `UnloadableImportError`                | owlapi/io         | org.semanticweb.owlapi.model.UnloadableImportException           | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
+| `UnparsableOntologyException`          | owlapi/io         | org.semanticweb.owlapi.io.UnparsableOntologyException            | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
+| `UnsupportedConstructError`            | owlapi/io         | org.semanticweb.owlapi.io.OWLParserException                     | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `XmlParseError`                        | owlapi/io         | org.semanticweb.owlapi.io.OWLParserException                     | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `OWLDocumentFormats`                   | owlapi/formats    | org.semanticweb.owlapi.formats                                   | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
+| `OWLOntologyImportsClosureSetProvider` | owlapi/util       | org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
+| `OWLOntologyMerger`                    | owlapi/util       | org.semanticweb.owlapi.util.OWLOntologyMerger                    | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
 
 ## Java package gap summary
 
@@ -97,7 +100,7 @@ Every public Java type is classified in the machine-readable registry. This comp
 | org.semanticweb.owlapi.formats                       | DEFERRED_NOT_EXPOSED: 53; FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT: 8                   |
 | org.semanticweb.owlapi.functional.parser             | DEFERRED_NOT_EXPOSED: 4                                                                   |
 | org.semanticweb.owlapi.functional.renderer           | DEFERRED_NOT_EXPOSED: 4                                                                   |
-| org.semanticweb.owlapi.io                            | DEFERRED_NOT_EXPOSED: 49; INTERNAL_IMPLEMENTATION_ONLY: 2; PUBLIC_MAPPED: 3               |
+| org.semanticweb.owlapi.io                            | DEFERRED_NOT_EXPOSED: 48; INTERNAL_IMPLEMENTATION_ONLY: 2; PUBLIC_MAPPED: 4               |
 | org.semanticweb.owlapi.krss1.parser                  | DEFERRED_NOT_EXPOSED: 4                                                                   |
 | org.semanticweb.owlapi.krss2.parser                  | DEFERRED_NOT_EXPOSED: 3                                                                   |
 | org.semanticweb.owlapi.krss2.renderer                | DEFERRED_NOT_EXPOSED: 13                                                                  |
@@ -105,7 +108,7 @@ Every public Java type is classified in the machine-readable registry. This comp
 | org.semanticweb.owlapi.manchestersyntax.parser       | DEFERRED_NOT_EXPOSED: 11                                                                  |
 | org.semanticweb.owlapi.manchestersyntax.renderer     | DEFERRED_NOT_EXPOSED: 13                                                                  |
 | org.semanticweb.owlapi.metrics                       | DEFERRED_NOT_EXPOSED: 23                                                                  |
-| org.semanticweb.owlapi.model                         | DEFERRED_NOT_EXPOSED: 260; PUBLIC_MAPPED: 12; STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT: 73 |
+| org.semanticweb.owlapi.model                         | DEFERRED_NOT_EXPOSED: 258; PUBLIC_MAPPED: 14; STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT: 73 |
 | org.semanticweb.owlapi.model.axiomproviders          | DEFERRED_NOT_EXPOSED: 11                                                                  |
 | org.semanticweb.owlapi.model.parameters              | DEFERRED_NOT_EXPOSED: 6                                                                   |
 | org.semanticweb.owlapi.model.providers               | DEFERRED_NOT_EXPOSED: 30                                                                  |

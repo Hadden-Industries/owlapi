@@ -12,12 +12,15 @@ const EXPECTED_EXPORTS = Object.freeze({
     "OWLAPIError",
     "OWLOntologyCreationError",
     "OWLOntologyStateError",
+    "OWLOntologyStorageError",
     "OWLParserError",
+    "OWLStorerNotFoundError",
     "OWLSyntaxError",
     "ParserMismatchError",
     "ResourceLimitError",
     "SecurityPolicyError",
     "StringDocumentSource",
+    "StringDocumentTarget",
     "UnloadableImportError",
     "UnparsableOntologyException",
     "UnsupportedConstructError",
@@ -108,6 +111,8 @@ test("the export map rejects legacy, metadata, extension, and deep paths", async
     "owlapi/model/setOntologyID.js",
     "owlapi/model/structural.js",
     "owlapi/internal/parsing/parserRegistry.js",
+    "owlapi/io/stringDocumentTarget.js",
+    "owlapi/io/errors.js",
     "owlapi/util/index.js",
     "owlapi/util/owlOntologyImportsClosureSetProvider.js",
     "owlapi/util/owlOntologyMerger.js",
@@ -116,5 +121,17 @@ test("the export map rejects legacy, metadata, extension, and deep paths", async
     await assert.rejects(import(specifier), {
       code: "ERR_PACKAGE_PATH_NOT_EXPORTED",
     });
+  }
+});
+
+test("the parity target has no public writer or replacement helper", async () => {
+  const [io, root] = await Promise.all([import("owlapi/io"), import("owlapi")]);
+  assert.deepEqual(
+    Object.getOwnPropertyNames(io.StringDocumentTarget.prototype),
+    ["constructor", "toString"],
+  );
+  for (const namespace of [io, root]) {
+    assert.equal(namespace.UnrepresentableOntologyError, undefined);
+    assert.equal(namespace.replaceStringDocumentTargetText, undefined);
   }
 });

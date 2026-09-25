@@ -31,6 +31,8 @@ for (const specifier of [
   "owlapi/model/index.js",
   "owlapi/model/structural.js",
   "owlapi/internal/parsing/parserRegistry.js",
+  "owlapi/io/stringDocumentTarget.js",
+  "owlapi/io/errors.js",
   "owlapi/util/index.js",
   "owlapi/util/owlOntologyImportsClosureSetProvider.js",
   "owlapi/util/owlOntologyMerger.js",
@@ -40,5 +42,16 @@ for (const specifier of [
     code: "ERR_PACKAGE_PATH_NOT_EXPORTED",
   });
 }
+
+assert.deepEqual(
+  Object.getOwnPropertyNames(io.StringDocumentTarget.prototype),
+  ["constructor", "toString"],
+);
+for (const namespace of [root, io, model]) {
+  assert.equal(namespace.UnrepresentableOntologyError, undefined);
+  assert.equal(namespace.replaceStringDocumentTargetText, undefined);
+}
+assert.equal(model.OWLOntologyStorageError, undefined);
+assert.equal(model.OWLStorerNotFoundError, undefined);
 
 process.stdout.write("Installed owlapi export boundary passed\n");

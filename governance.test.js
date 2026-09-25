@@ -356,6 +356,45 @@ describe("owlapi governance artifacts", () => {
     ).toEqual([]);
   });
 
+  it("rejects changes to each approved parity authority and adaptation", () => {
+    const ledger = readJson(
+      "./docs/compatibility/java-api-parity-decisions.json",
+    );
+    const schemaPath =
+      "./docs/compatibility/java-api-parity-decisions.schema.json";
+    expect(validateDocumentAgainstSchema(ledger, schemaPath)).toEqual([]);
+    for (const [index, decision] of ledger.decisions.entries()) {
+      const wrongAuthority = JSON.parse(
+        JSON.stringify(decision.javaAuthorities),
+      );
+      wrongAuthority[0].type = "org.semanticweb.owlapi.io.StringDocumentSource";
+      wrongAuthority[0].sourcePath =
+        "api/src/main/java/org/semanticweb/owlapi/io/StringDocumentSource.java";
+      const wrongMembers = JSON.parse(JSON.stringify(decision.javaAuthorities));
+      wrongMembers[0].members = ["inventedJavaMethod()"];
+      for (const alteredFields of [
+        { javaAuthorities: wrongAuthority },
+        { javaAuthorities: wrongMembers },
+        {
+          jsBindings: decision.jsBindings.includes("io.StringDocumentTarget")
+            ? ["io.OWLOntologyStorageError"]
+            : ["io.StringDocumentTarget"],
+        },
+        {
+          category:
+            decision.category === "OMISSION" ? "NAME_ADAPTATION" : "OMISSION",
+        },
+      ]) {
+        const invalid = JSON.parse(JSON.stringify(ledger));
+        expect(validateDocumentAgainstSchema(invalid, schemaPath)).toEqual([]);
+        invalid.decisions[index] = { ...decision, ...alteredFields };
+        expect(
+          validateDocumentAgainstSchema(invalid, schemaPath).length,
+        ).toBeGreaterThan(0);
+      }
+    }
+  });
+
   it("classifies every capability exactly once with a normative status", () => {
     const matrix = readJson("./docs/compatibility/capabilities.json");
     const ids = matrix.capabilities.map(({ id }) => id);
@@ -370,6 +409,111 @@ describe("owlapi governance artifacts", () => {
         .filter(({ phase }) => phase !== null && phase <= 9)
         .every(({ progress }) => progress === "COMPLETE"),
     ).toBe(true);
+  });
+
+  it("maps exactly the three approved Phase 21 bindings without public drift", async () => {
+    const ledger = readJson(
+      "./docs/compatibility/java-api-parity-decisions.json",
+    );
+    const registry = readJson("./docs/compatibility/java-api-surface.json");
+    const io = await import("./io/index.js");
+    const expected = [
+      [
+        "StringDocumentTarget",
+        "org.semanticweb.owlapi.io.StringDocumentTarget",
+        "io/stringDocumentTarget.js",
+        "new StringDocumentTarget()",
+        ["prototype.toString"],
+      ],
+      [
+        "OWLOntologyStorageError",
+        "org.semanticweb.owlapi.model.OWLOntologyStorageException",
+        "io/errors.js",
+        "new OWLOntologyStorageError(message?, details?)",
+        ["constructor"],
+      ],
+      [
+        "OWLStorerNotFoundError",
+        "org.semanticweb.owlapi.model.OWLStorerNotFoundException",
+        "io/errors.js",
+        "new OWLStorerNotFoundError(format)",
+        ["constructor"],
+      ],
+    ];
+    for (const [
+      jsExport,
+      javaType,
+      sourceModule,
+      callShape,
+      supportedMembers,
+    ] of expected) {
+      const binding = registry.bindings.find(
+        ({ id }) => id === `io.${jsExport}`,
+      );
+      expect(binding).toMatchObject({
+        jsExport,
+        javaType,
+        sourceModule,
+        callShapes: [callShape],
+        supportedMembers,
+        relationship: "JS_ADAPTATION",
+        compatibility: "ADAPTED",
+        firstPublicRelease: "0.2.0",
+        progress: "IN_PROGRESS",
+      });
+      expect(typeof io[jsExport]).toBe("function");
+      expect(
+        registry.javaTypes.find(({ javaName }) => javaName === javaType),
+      ).toMatchObject({
+        disposition: "PUBLIC_MAPPED",
+        jsExport,
+        sourceModule,
+        progress: binding.progress,
+        capabilityIds: binding.capabilityIds,
+      });
+      const matrix = readJson("./docs/compatibility/capabilities.json");
+      for (const id of binding.capabilityIds) {
+        expect(matrix.capabilities.find((row) => row.id === id).progress).toBe(
+          binding.progress,
+        );
+      }
+      for (const decision of ledger.decisions.filter(({ jsBindings }) =>
+        jsBindings.includes(binding.id),
+      )) {
+        expect(binding.semanticQualifications.join(" ")).toContain(decision.id);
+      }
+    }
+    for (const id of ledger.forbiddenBindings) {
+      expect(registry.bindings.some((binding) => binding.id === id)).toBe(
+        false,
+      );
+    }
+    expect(
+      registry.bindings.some(
+        ({ jsExport }) => jsExport === "replaceStringDocumentTargetText",
+      ),
+    ).toBe(false);
+    if (!completeHistoryUnavailableReason()) {
+      const baseline = JSON.parse(
+        git(
+          "show",
+          `${ledger.developmentBaseline.commit}:docs/compatibility/java-api-surface.json`,
+        ),
+      );
+      const existingIds = new Set(baseline.bindings.map(({ id }) => id));
+      expect(registry.bindings.filter(({ id }) => existingIds.has(id))).toEqual(
+        baseline.bindings,
+      );
+      expect(
+        registry.bindings
+          .filter(({ id }) => !existingIds.has(id))
+          .map(({ id }) => id)
+          .sort(),
+      ).toEqual([...ledger.phase21.publicBindings].sort());
+      expect(
+        registry.namespaces.map(({ npmSpecifier }) => npmSpecifier),
+      ).toEqual(baseline.namespaces.map(({ npmSpecifier }) => npmSpecifier));
+    }
   });
 
   it("keeps pre-integration lifecycle governance split by deliverable", () => {
@@ -1011,7 +1155,7 @@ describe("owlapi governance artifacts", () => {
     expect(paths).toEqual(productionModules);
     for (const record of records) {
       expect([
-        1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 22,
+        1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 21, 22,
       ]).toContain(record.phase);
       expect(manifest.provenanceCategories).toHaveProperty(
         record.provenanceCategory,

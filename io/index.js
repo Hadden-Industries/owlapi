@@ -1,4 +1,5 @@
 export { StringDocumentSource } from "./stringDocumentSource.js";
+export { StringDocumentTarget } from "./stringDocumentTarget.js";
 export {
   AmbiguousRdfDatasetError,
   DocumentLoadError,
@@ -7,8 +8,10 @@ export {
   OWLAPIError,
   OWLOntologyCreationError,
   OWLOntologyStateError,
+  OWLOntologyStorageError,
   OWLParserError,
   OWLSyntaxError,
+  OWLStorerNotFoundError,
   ParserMismatchError,
   ResourceLimitError,
   SecurityPolicyError,

@@ -1,4 +1,4 @@
-<!-- registry-sha256: 5fcaf1e0ae5bf8d4193bbbd0ae9b38d8132223524a41aa15e99e846b5f52f428 -->
+<!-- registry-sha256: b203754d1d6546dcef6bac02ba5c72c124a360042c84c39d575623426f3fd77d -->
 
 # owlapi API reference
 
@@ -656,6 +656,24 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
 
+## `OWLOntologyStorageError`
+
+The canonical storage error, including lossless-representation failures identified by a safe reason field.
+
+- Import: `owlapi/io`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.model.OWLOntologyStorageException
+- Relationship: JS_ADAPTATION; compatibility: ADAPTED
+- Release status: PRERELEASE from 0.2.0
+- Call shape: new OWLOntologyStorageError(message?, details?)
+- Supported members: constructor
+- Omitted Java members: Java Throwable-only and serialization constructor forms
+- Public errors: none specific
+- Qualification: PARITY-ERROR-SUFFIX: Java OWLOntologyStorageException uses the established JavaScript Error suffix. PARITY-ERROR-HIERARCHY: extends the existing OWLAPIError root rather than introducing Java's checked OWLException hierarchy. PARITY-ERROR-NAMESPACE: the canonical binding is owned by owlapi/io and re-exported only through the existing bare aggregate, not owlapi/model. PARITY-STORAGE-REASON: code ONTOLOGY_STORAGE_FAILED and safe own reason ONTOLOGY_NOT_REPRESENTABLE classify lossless-storage failures without a new public subclass; native cause and protected identity follow OWLAPIError.
+- Evidence: io/io.test.js, test/package-boundary.test.mjs, test/installed-package-boundary.mjs, test/installed-package-smoke.mjs
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
+
 ## `OWLParserError`
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
@@ -671,6 +689,24 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Public errors: none specific
 - Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.
 - Evidence: io/io.test.js, test/package-boundary.test.mjs
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
+
+## `OWLStorerNotFoundError`
+
+A storage-error subtype for an OWLDocumentFormat with no matching storer.
+
+- Import: `owlapi/io`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.model.OWLStorerNotFoundException
+- Relationship: JS_ADAPTATION; compatibility: ADAPTED
+- Release status: PRERELEASE from 0.2.0
+- Call shape: new OWLStorerNotFoundError(format)
+- Supported members: constructor
+- Omitted Java members: Java exception serialization
+- Public errors: none specific
+- Qualification: PARITY-ERROR-SUFFIX: Java OWLStorerNotFoundException uses the established JavaScript Error suffix and stable STORER_NOT_FOUND code. PARITY-ERROR-HIERARCHY: extends OWLOntologyStorageError, retaining Java's storage-exception subtype relation; the constructor takes the requested OWLDocumentFormat and exposes no getFormat() member. PARITY-ERROR-NAMESPACE: the canonical binding is owned by owlapi/io and re-exported only through the existing bare aggregate, not owlapi/model.
+- Evidence: io/io.test.js, test/package-boundary.test.mjs, test/installed-package-boundary.mjs, test/installed-package-smoke.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
@@ -761,6 +797,24 @@ A JavaScript adaptation supporting the initial public OWLAPI workflow.
 - Public errors: TypeError
 - Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.
 - Evidence: io/io.test.js, test/package-boundary.test.mjs
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
+
+## `StringDocumentTarget`
+
+An in-memory ontology document target with Java's toString() text reader and private atomic replacement.
+
+- Import: `owlapi/io`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.io.StringDocumentTarget
+- Relationship: JS_ADAPTATION; compatibility: ADAPTED
+- Release status: PRERELEASE from 0.2.0
+- Call shape: new StringDocumentTarget()
+- Supported members: prototype.toString
+- Omitted Java members: getWriter() and the Java Writer protocol (PARITY-TARGET-WRITER-OMISSION)
+- Public errors: none specific
+- Qualification: PARITY-TARGET-WRITER-OMISSION: toString() is the only public text reader; no getText(), getWriter(), write(), append(), or constructor-text overload is exposed. PARITY-TARGET-ATOMIC-COMMIT: package-private complete-text replacement validates before changing private state; failed storage retains prior text.
+- Evidence: io/stringDocumentTarget.test.js, test/package-boundary.test.mjs, test/installed-package-boundary.mjs, test/installed-package-smoke.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 

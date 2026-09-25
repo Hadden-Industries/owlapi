@@ -34,6 +34,7 @@
     "PHASE18-2026-08-22": "Repository-owner approval to implement Phase 18 physical legacy deletion, preserve retired-artifact provenance, remove the obsolete legacy test command and ignore rule, and close the migration gate before Phase 19 packaging on 22 August 2026",
     "PHASE19B-2026-08-26": "Repository-owner approval of the Phase 19B standalone package manifest, public package boundary, canonical Java-compatible namespaces, private implementation ownership, and associated configuration changes on 26 August 2026",
     "ONTOLOGY-LIFECYCLE-2026-09-01": "Repository-owner approval to pre-build the ontology lifecycle capability programme on its dedicated branch before owlapi 0.1.0 lands, subject to reconciliation with that release before integration, on 1 September 2026",
+    "PHASE21-PREBUILD-2026-09-25": "Repository-owner approval to pre-build canonical Phase 21 target, storage-error, and parity-ledger foundations before the accepted 0.1.0 baseline, retaining final release and consumer reconciliation, on 25 September 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026"
   },
   "provenanceCategories": {
@@ -282,6 +283,31 @@
       "reviewDate": "2026-08-10"
     },
     {
+      "id": "PHASE21-IO-STRING-DOCUMENT-TARGET",
+      "path": "io/stringDocumentTarget.js",
+      "phase": 21,
+      "scope": "canonical no-argument text target with privately branded complete-text replacement and no public writer or mutator",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://tc39.es/ecma262/multipage/keyed-collections.html#sec-weakmap-objects",
+        "docs/plans/java-api-parity-precondition.md sections 2 and 4"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 StringDocumentTarget constructor, toString, and explicitly omitted getWriter contract"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "io/stringDocumentTarget.test.js",
+        "test/package-boundary.test.mjs",
+        "test/installed-package-boundary.mjs"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "PHASE21-PREBUILD-2026-09-25",
+      "reviewDate": "2026-09-25"
+    },
+    {
       "id": "PHASE1-IO-LOADER-CONFIGURATION",
       "path": "model/owlOntologyLoaderConfiguration.js",
       "phase": 1,
@@ -318,6 +344,24 @@
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": ["io/io.test.js"],
+      "laterPhaseChanges": [
+        {
+          "phase": 21,
+          "scope": "canonical storage error hierarchy and safe representability diagnostics without aliases or model-namespace duplicates",
+          "normativePublicSources": [
+            "https://tc39.es/ecma262/#sec-error-objects",
+            "docs/plans/java-api-parity-precondition.md sections 2 and 4"
+          ],
+          "compatibilityReferences": [
+            "OWLAPI 5.5.1 OWLOntologyStorageException and OWLStorerNotFoundException"
+          ],
+          "focusedEvidence": [
+            "io/io.test.js",
+            "test/installed-package-smoke.mjs"
+          ],
+          "decisionRef": "PHASE21-PREBUILD-2026-09-25"
+        }
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE0-2026-08-10",

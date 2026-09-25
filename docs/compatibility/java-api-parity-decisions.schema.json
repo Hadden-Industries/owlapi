@@ -60,66 +60,90 @@
       "allOf": [
         {
           "contains": {
+            "$ref": "#/$defs/targetDecisionContract",
             "type": "object",
             "required": ["id"],
             "properties": {
               "id": {
                 "const": "PARITY-TARGET-WRITER-OMISSION"
+              },
+              "category": {
+                "const": "OMISSION"
               }
             }
           }
         },
         {
           "contains": {
+            "$ref": "#/$defs/targetDecisionContract",
             "type": "object",
             "required": ["id"],
             "properties": {
               "id": {
                 "const": "PARITY-TARGET-ATOMIC-COMMIT"
+              },
+              "category": {
+                "const": "BEHAVIOR_ADAPTATION"
               }
             }
           }
         },
         {
           "contains": {
+            "$ref": "#/$defs/storageErrorDecisionContract",
             "type": "object",
             "required": ["id"],
             "properties": {
               "id": {
                 "const": "PARITY-ERROR-SUFFIX"
+              },
+              "category": {
+                "const": "NAME_ADAPTATION"
               }
             }
           }
         },
         {
           "contains": {
+            "$ref": "#/$defs/storageErrorDecisionContract",
             "type": "object",
             "required": ["id"],
             "properties": {
               "id": {
                 "const": "PARITY-ERROR-HIERARCHY"
+              },
+              "category": {
+                "const": "HIERARCHY_ADAPTATION"
               }
             }
           }
         },
         {
           "contains": {
+            "$ref": "#/$defs/storageErrorDecisionContract",
             "type": "object",
             "required": ["id"],
             "properties": {
               "id": {
                 "const": "PARITY-ERROR-NAMESPACE"
+              },
+              "category": {
+                "const": "NAMESPACE_ADAPTATION"
               }
             }
           }
         },
         {
           "contains": {
+            "$ref": "#/$defs/storageReasonDecisionContract",
             "type": "object",
             "required": ["id"],
             "properties": {
               "id": {
                 "const": "PARITY-STORAGE-REASON"
+              },
+              "category": {
+                "const": "DIAGNOSTIC_ADAPTATION"
               }
             }
           }
@@ -322,6 +346,74 @@
         "registrySha256": {
           "type": "string",
           "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "targetDecisionContract": {
+      "type": "object",
+      "properties": {
+        "javaAuthorities": {
+          "const": [
+            {
+              "type": "org.semanticweb.owlapi.io.StringDocumentTarget",
+              "sourcePath": "api/src/main/java/org/semanticweb/owlapi/io/StringDocumentTarget.java",
+              "members": [
+                "StringDocumentTarget()",
+                "String toString()",
+                "Optional<Writer> getWriter()"
+              ]
+            }
+          ]
+        },
+        "jsBindings": {
+          "const": ["io.StringDocumentTarget"]
+        }
+      }
+    },
+    "storageErrorDecisionContract": {
+      "type": "object",
+      "properties": {
+        "javaAuthorities": {
+          "const": [
+            {
+              "type": "org.semanticweb.owlapi.model.OWLOntologyStorageException",
+              "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyStorageException.java",
+              "members": [
+                "OWLOntologyStorageException(String)",
+                "OWLOntologyStorageException(String, Throwable)",
+                "OWLOntologyStorageException(Throwable)"
+              ]
+            },
+            {
+              "type": "org.semanticweb.owlapi.model.OWLStorerNotFoundException",
+              "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLStorerNotFoundException.java",
+              "members": ["OWLStorerNotFoundException(OWLDocumentFormat)"]
+            }
+          ]
+        },
+        "jsBindings": {
+          "const": ["io.OWLOntologyStorageError", "io.OWLStorerNotFoundError"]
+        }
+      }
+    },
+    "storageReasonDecisionContract": {
+      "type": "object",
+      "properties": {
+        "javaAuthorities": {
+          "const": [
+            {
+              "type": "org.semanticweb.owlapi.model.OWLOntologyStorageException",
+              "sourcePath": "api/src/main/java/org/semanticweb/owlapi/model/OWLOntologyStorageException.java",
+              "members": [
+                "OWLOntologyStorageException(String)",
+                "OWLOntologyStorageException(String, Throwable)",
+                "OWLOntologyStorageException(Throwable)"
+              ]
+            }
+          ]
+        },
+        "jsBindings": {
+          "const": ["io.OWLOntologyStorageError"]
         }
       }
     },

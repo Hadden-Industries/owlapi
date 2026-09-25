@@ -31,6 +31,7 @@
       "rule": "Expose only constructor and toString; omit getWriter, getText, write, append, and constructor text.",
       "approvalSource": "docs/plans/java-api-parity-precondition.md",
       "verificationPaths": [
+        "io/stringDocumentTarget.test.js",
         "governance.test.js",
         "io/io.test.js",
         "test/package-boundary.test.mjs"
@@ -56,6 +57,7 @@
       "rule": "Replace complete text through one package-private helper only after target identity and string validation; expose no mutator.",
       "approvalSource": "docs/plans/java-api-parity-precondition.md",
       "verificationPaths": [
+        "io/stringDocumentTarget.test.js",
         "governance.test.js",
         "io/io.test.js",
         "test/package-boundary.test.mjs"
