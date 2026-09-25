@@ -48,6 +48,17 @@ The Phase 2 reference pair is
 pinned source revision and review any structural change through the governed
 zero-tolerance expected-difference process.
 
+The lifecycle storage pair is `fixtures/storage/functional-all-kinds.ofn` and
+`fixtures/storage/functional-all-kinds.java.json`. It covers every current
+structural kind except import declarations, which have separate counting-loader
+tests. Its Java snapshot is produced by the same pinned harness; set Java's
+`-Dstdout.encoding=UTF-8` and `-Dstderr.encoding=UTF-8` explicitly when capturing
+Unicode output on Windows. For the independent full-structure storage check,
+run `run-import-closure-contract.mjs` with this root, an empty OASIS catalog, and
+the Functional text emitted by `manager.saveOntology`. No import is dereferenced,
+and the existing native oracle compares all structure modulo one anonymous-node
+bijection rather than comparing prefixes or serialized bytes.
+
 The Phase 3 Java reference pair is
 `fixtures/manchester/phase3-structural.omn` and
 `fixtures/manchester/phase3-structural.java.json`. The sibling

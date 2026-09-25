@@ -1,0 +1,115 @@
+{
+  "artifactId": "1379a68e681803d9eeb998737a54154687fc11c6add97de0219025a05cdba309",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5935,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "80f961d29cacb1e05ba38c6b442f632359924c544871f229a076d4a3ffa53f2c",
+        "size": 1080,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ae4f177375c316c65366c4648248cff6880bd7b457afdf7ffae89869e51c04cb",
+        "size": 4363,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "4f40a88c7ee14b72db77aaa4b184053ddffe26ad9e13f2410f7806f8de8ba1f0",
+        "size": 1831,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "66d467bc4cea375a04ea0d08a39f2e2585ba21b48e7a185e1037d865e8d7f2d7",
+        "size": 14339,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b11c45e344579237f45761569a6d437c35db0d01303ff40b1a455d7850ea941d",
+        "size": 925,
+        "type": "FILE"
+      },
+      {
+        "path": "package/scratch/worksheet.js",
+        "sha256": "22e156a4a626271a21ccbe114b2f8f7924634c4f0bea4a62d6a89786d6ed201a",
+        "size": 141,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1080,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/80/80f961d29cacb1e05ba38c6b442f632359924c544871f229a076d4a3ffa53f2c",
+          "sha256": "80f961d29cacb1e05ba38c6b442f632359924c544871f229a076d4a3ffa53f2c"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "80f961d29cacb1e05ba38c6b442f632359924c544871f229a076d4a3ffa53f2c",
+        "size": 1080
+      }
+    ],
+    "expandedBytes": 22679,
+    "packageIdentity": {
+      "author": "Jason Desrosiers <jdesrosi@gmail.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@hyperjump/uri",
+      "repository": "github:hyperjump-io/uri",
+      "version": "1.3.6"
+    },
+    "packageMetadata": {
+      "author": "Jason Desrosiers <jdesrosi@gmail.com>",
+      "description": "A small and fast library for validating parsing and resolving URIs and IRIs",
+      "devDependencies": {
+        "@stylistic/eslint-plugin": "*",
+        "@types/node": "^22.13.0",
+        "eslint-import-resolver-typescript": "*",
+        "eslint-plugin-import": "*",
+        "typescript-eslint": "*",
+        "vitest": "*"
+      },
+      "exports": "./lib/index.js",
+      "funding": {
+        "type": "github",
+        "url": "https://github.com/sponsors/jdesrosiers"
+      },
+      "keywords": [
+        "URI",
+        "IRI",
+        "resolve",
+        "relative",
+        "parse",
+        "RFC3986",
+        "RFC-3986",
+        "RFC3987",
+        "RFC-3987"
+      ],
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@hyperjump/uri",
+      "repository": "github:hyperjump-io/uri",
+      "scripts": {
+        "lint": "eslint lib",
+        "test": "vitest --watch=false",
+        "type-check": "tsc --noEmit"
+      },
+      "type": "module",
+      "version": "1.3.6"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 5935,
+      "sha256": "2467025dc0acb17dfbf56576cb1f2ef68658eb380087d72def7bedca2ac5a414"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

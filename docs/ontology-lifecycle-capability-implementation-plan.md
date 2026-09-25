@@ -865,6 +865,36 @@ acceptance still requires baseline reconciliation and fresh qualification.
 
 Emit complete IRIs for this release; correctness and reproducibility never depend on prefix compaction or source prefix retention. Sort imports, ontology annotations, and axioms by structural keys for reproducible output. Allocate document-local anonymous-individual labels from encounter order after sorting. Escape IRIs, strings, language tags, and datatypes according to Functional Syntax grammar, not JavaScript or JSON escaping.
 
+**Software selection (reassessed 2026-09-25):** Reuse the pinned Java OWLAPI
+for independent syntax/structural execution and the existing Functional parser
+for local round trips. [N3.js](https://github.com/rdfjs/N3.js) and
+[rdf-serialize](https://github.com/rubensworks/rdf-serialize.js) serialize RDF,
+not the package's complete structural OWL model; converting through RDF would
+lose distinctions this task must preserve. The
+[horned-functional](https://github.com/fastobo/horned-functional) Rust serializer
+requires a different ontology model and runtime rather than supplying a
+browser-native JavaScript boundary. The residual implementation is therefore
+the explicit structural-model-to-Functional-Syntax mapping, not another parser.
+
+Use the current exact ESM dependencies `@hyperjump/uri@1.3.6` and `bcp-47@2.1.1`
+for RFC 3987 IRI and BCP 47 language-tag validation. Their published
+[IRI API](https://github.com/hyperjump-io/uri#iri) and
+[language parser](https://github.com/wooorm/bcp-47#parsetag-options) avoid new
+repository grammar validators. Validate without normalization or forgiving
+recovery: an OWL IRI may contain a fragment, and literal language spelling must
+not be rewritten during saving. Native ECMAScript string well-formedness checks
+reject unpaired surrogates. The W3C quoted-string production requires only quote
+and backslash escaping; tab and line-break characters retain their actual
+values. Neither `JSON.stringify` nor URI percent-encoding is a substitute.
+
+Both selected versions declare MIT terms, and the exact upstream licence texts
+were inspected ([Hyperjump](https://github.com/hyperjump-io/uri/blob/v1.3.6/LICENSE),
+[bcp-47](https://github.com/wooorm/bcp-47/blob/2.1.1/license)). Preserve their
+notices and regenerate the native npm lockfile, dependency inventory, audit,
+pack evidence, and browser qualification. Changed dependency facts require a
+new review; never carry the accepted baseline's human approval onto that graph.
+This dependency reassessment does not broaden public exports or release scope.
+
 **Steps**
 
 1. Add a failing exhaustiveness test generated from `OWL_OBJECT_KINDS`. It must require an explicit renderer branch for every currently constructible entity, expression, data range, annotation, axiom, literal, IRI, and anonymous individual. Adding a future kind without a renderer branch must fail this test.
@@ -892,6 +922,31 @@ Emit complete IRIs for this release; correctness and reproducibility never depen
    ```
 
 9. Request a checkpoint only after the all-kinds fixture passes the fresh-manager, zero-loader round trip.
+
+**Pre-integration checkpoint (2026-09-25):** The manager-selected Functional
+storer passes the exhaustive strict reload and direct-import preservation
+contracts. The pinned Java oracle independently reports a complete structural
+match for the 51-axiom fixture, including its ontology annotation and one shared
+anonymous individual, with zero network attempts. A separate Java public-API
+probe confirms that OWL quoted strings retain control characters; the existing
+lexer now follows that production instead of XML character restrictions.
+No new public export, inferred declaration, or fallback syntax is introduced.
+
+Dependency qualification uncovered two repository invariants to close: the
+governance list must cover every direct package dependency, and unchanged
+authenticated artifacts should be reusable without claiming a new scan.
+`util/acquire-npm-package-evidence.mjs --reuse-evidence=<prior-repository>` now
+validates the prior schema, original lockfile binding, complete blob closure,
+signatures, and exact scanner policy before reuse. It rebuilds current occurrence
+identity, acquires and scans only new artifacts, and verifies the final complete
+manifest before atomic publication. Corrupt prior evidence fails closed; ordinary
+and hosted shard acquisition remain fresh by default. Repository-owned corpus
+documentation and Git policy survive the swap. The new 719-occurrence,
+644-artifact corpus is machine-verified; changed human attestations remain pending.
+
+Reviews remain at the end of the combined storage work package, per §1.2.
+This checkpoint is not final release, browser, installed-consumer, or accepted
+`0.1.0` baseline qualification.
 
 ### Task 10: Make strict RDF reconstruction account for every input statement
 

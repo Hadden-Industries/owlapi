@@ -1515,7 +1515,9 @@ describe("owlapi governance artifacts", () => {
     const packageJson = readJson("./package.json");
     const lock = readJson("./package-lock.json");
 
-    expect(governance.dependencies).toHaveLength(6);
+    expect(governance.dependencies.map(({ name }) => name).sort()).toEqual(
+      Object.keys(packageJson.dependencies).sort(),
+    );
     for (const dependency of governance.dependencies) {
       expect(packageJson.dependencies[dependency.name]).toBe(
         dependency.version,
@@ -1524,7 +1526,7 @@ describe("owlapi governance artifacts", () => {
         dependency.version,
       );
       expect(dependency.adapterBoundary).toMatch(
-        /^(?:internal\/(?:mapping|parsing|rdfjs)|model)\//,
+        /^(?:internal\/(?:mapping|parsing|rdfjs|storage)|model)\//,
       );
       expect(dependency.declaredLicenseExpression).toBeTruthy();
       expect(dependency.networkBehavior).toBeTruthy();
@@ -2304,19 +2306,20 @@ bundle licence and notice review.
     );
   });
 
-  it("binds the approved dependency-governance review to its unchanged facts", () => {
+  it("requires a new human review for the changed lifecycle dependency facts", () => {
     const governance = readJson("./docs/dependency-governance.json");
 
     expect(governance.review).toEqual({
-      status: "REVIEWED",
-      factsSha256:
-        "60ccbac9295657fcdd69120ba77e2fc1838c022ceeab9bb60256d772d75708eb",
-      reviewer: "Maksym Shostak",
-      reviewedOn: "2026-08-26",
-      capacity: "Original author, project maintainer, and release reviewer",
-      conclusion:
-        "Reviewed and approved the exact dependency graph, production audit, strict dependency lifecycle-script policy, upgrade gates, and supporting evidence bound to this facts digest.",
+      status: "PENDING_HUMAN_REVIEW",
+      factsSha256: expect.stringMatching(/^[0-9a-f]{64}$/),
+      reviewer: null,
+      reviewedOn: null,
+      capacity: null,
+      conclusion: null,
     });
+    expect(governance.review.factsSha256).not.toBe(
+      "60ccbac9295657fcdd69120ba77e2fc1838c022ceeab9bb60256d772d75708eb",
+    );
   });
 
   it("schema-validates structured dependency governance against the package and inventory", () => {
@@ -2338,8 +2341,8 @@ bundle licence and notice review.
     });
     expect(governance.productionAudit).toMatchObject({
       command: "npm audit --omit=dev --json",
-      performedOn: "2026-08-26",
-      productionPackageCount: 34,
+      performedOn: "2026-09-25",
+      productionPackageCount: 39,
       vulnerabilityCounts: {
         info: 0,
         low: 0,
@@ -2372,7 +2375,7 @@ bundle licence and notice review.
       );
       expect(dependency.securityDisposition).toEqual(
         expect.objectContaining({
-          assessedOn: "2026-08-26",
+          assessedOn: expect.any(String),
           riskClass: expect.any(String),
           controls: expect.any(Array),
           rationale: expect.any(String),

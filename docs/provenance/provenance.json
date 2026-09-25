@@ -636,6 +636,57 @@
       "reviewDate": "2026-09-01"
     },
     {
+      "id": "PHASE22-FUNCTIONAL-RENDERER",
+      "path": "internal/storage/functional/functionalSyntaxRenderer.js",
+      "phase": 22,
+      "scope": "pure exhaustive structural OWL-to-Functional mapping, deterministic direct-state ordering, document-local anonymous labels, exact Unicode lexical values, and native library validation of full IRIs and BCP 47 langtag",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ sections 2.3, 2.4, 5.7 and 13",
+        "https://www.rfc-editor.org/rfc/rfc3987",
+        "https://www.rfc-editor.org/rfc/rfc5646"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 Functional Syntax public parser and storer behavior, observed only through black-box fixture and literal probes"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/storage/functional/functionalSyntaxRenderer.test.js",
+        "internal/storage/functional/functionalSyntaxStorer.test.js",
+        "util/owlapi-reference/fixtures/storage/functional-all-kinds.ofn",
+        "util/owlapi-reference/fixtures/storage/functional-all-kinds.java.json"
+      ],
+      "thirdPartyDependencies": ["@hyperjump/uri", "bcp-47"],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-25"
+    },
+    {
+      "id": "PHASE22-FUNCTIONAL-STORER",
+      "path": "internal/storage/functional/functionalSyntaxStorer.js",
+      "phase": 22,
+      "scope": "private Functional format descriptor that rejects unsupported parameters and renders complete text without target mutation or external loading",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/",
+        "docs/ontology-lifecycle-capability-implementation-plan.md Task 9"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 FunctionalSyntaxStorer responsibilities with the approved manager-owned JavaScript atomic target contract"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/storage/functional/functionalSyntaxStorer.test.js",
+        "model/owlOntologyManager.storage.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-25"
+    },
+    {
       "id": "PHASE22-STORAGE-REGISTRY",
       "path": "internal/storage/storerRegistry.js",
       "phase": 22,
@@ -959,6 +1010,20 @@
         "internal/parsing/functional/functionalSyntax.test.js",
         "internal/parsing/functional/functionalSyntax.resource.test.js",
         "internal/parsing/functional/functionalSyntax.conformance.test.js"
+      ],
+      "laterPhaseChanges": [
+        {
+          "phase": 22,
+          "scope": "retain Unicode control characters allowed by OWL quotedString rather than imposing unrelated XML character restrictions",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/owl2-syntax/#Integers.2C_Strings.2C_Language_Tags.2C_and_Node_IDs"
+          ],
+          "focusedEvidence": [
+            "internal/storage/functional/functionalSyntaxRenderer.test.js",
+            "internal/parsing/functional/functionalSyntax.conformance.test.js"
+          ],
+          "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
+        }
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -2209,6 +2274,21 @@
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": ["io/io.test.js", "test/package-boundary.test.mjs"],
+      "laterPhaseChanges": [
+        {
+          "phase": 22,
+          "scope": "package-private native private-field friend for immutable parameter inspection without adding any public format method",
+          "normativePublicSources": [
+            "https://tc39.es/ecma262/#sec-private-names",
+            "docs/ontology-lifecycle-capability-implementation-plan.md Task 9"
+          ],
+          "focusedEvidence": [
+            "model/owlDocumentFormat.test.js",
+            "internal/storage/functional/functionalSyntaxStorer.test.js"
+          ],
+          "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
+        }
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE19B-2026-08-26",

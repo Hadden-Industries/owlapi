@@ -6,17 +6,19 @@ import {
   replaceStringDocumentTargetText,
   StringDocumentTarget,
 } from "../../io/stringDocumentTarget.js";
-import { OWLDocumentFormat } from "../../model/owlDocumentFormat.js";
-
-const FORMAT_BRAND_PROBE_KEY = "__owlapi_storage_document_format_brand_probe__";
+import {
+  OWLDocumentFormat,
+  readDocumentFormatParameters,
+} from "../../model/owlDocumentFormat.js";
+import { functionalSyntaxStorer } from "./functional/functionalSyntaxStorer.js";
 
 const requireDocumentFormat = (format) => {
   if (!(format instanceof OWLDocumentFormat) || !Object.isFrozen(format)) {
     throw new TypeError("format must be an OWLDocumentFormat");
   }
-  // Invoke the native private-field-bearing method, not a caller override:
+  // Invoke the native private-field-bearing friend, not a caller override:
   // prototype lookalikes and proxies must not impersonate an immutable format.
-  OWLDocumentFormat.prototype.getParameter.call(format, FORMAT_BRAND_PROBE_KEY);
+  readDocumentFormatParameters(format);
 };
 
 /** Package-private exact-format storer selection and complete-text storage. */
@@ -79,4 +81,5 @@ export class StorerRegistry {
 }
 
 /** Each manager owns its registry; public construction accepts no storer hook. */
-export const createDefaultStorerRegistry = () => new StorerRegistry([]);
+export const createDefaultStorerRegistry = () =>
+  new StorerRegistry([functionalSyntaxStorer]);
