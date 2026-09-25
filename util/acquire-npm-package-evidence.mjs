@@ -13,6 +13,8 @@ import {
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify, TextDecoder } from "node:util";
+import Ajv2020 from "ajv/dist/2020.js";
+import addFormats from "ajv-formats";
 
 import {
   ARCHIVE_LIMITS,
@@ -1014,16 +1016,17 @@ export const publishEvidence = async ({
     errorOnExist: true,
     force: false,
   });
-  const repositoryPolicyPath = join(destinationCorpus, ".gitattributes");
-  if (await exists(repositoryPolicyPath)) {
-    // The nested Git policy is repository configuration, not acquired evidence.
-    // Carry it across the atomic corpus swap without admitting it to the CAS or
-    // requiring every temporary aggregate to manufacture a policy-file copy.
-    await writeFile(
-      join(pendingCorpus, ".gitattributes"),
-      await readFile(repositoryPolicyPath),
-      { flag: "wx" },
-    );
+  for (const filename of [".gitattributes", "README.md"]) {
+    const repositoryOwnedPath = join(destinationCorpus, filename);
+    if (await exists(repositoryOwnedPath)) {
+      // Repository policy and documentation are not acquired evidence. Preserve
+      // them across the atomic corpus swap without admitting them to the CAS.
+      await writeFile(
+        join(pendingCorpus, filename),
+        await readFile(repositoryOwnedPath),
+        { flag: "wx" },
+      );
+    }
   }
   await writeFile(pendingManifest, stableJson(manifest), { flag: "wx" });
   const hadCorpus = await exists(destinationCorpus);
@@ -1108,6 +1111,96 @@ const evidencePolicy = () => ({
   },
 });
 
+// Reuse is explicit and offline-verified against its own original lockfile.
+// Current graph identity, policy, and final closure are still checked afresh.
+const readReusableEvidence = async (repositoryRoot) => {
+  const provenanceRoot = join(repositoryRoot, "docs", "provenance");
+  const [manifest, lockfileBytes, schema] = await Promise.all([
+    readFile(join(provenanceRoot, "npm-package-evidence.json"), "utf8").then(
+      JSON.parse,
+    ),
+    readFile(join(repositoryRoot, "package-lock.json")),
+    readFile(
+      join(
+        DEFAULT_REPOSITORY_ROOT,
+        "docs/provenance/npm-package-evidence.schema.json",
+      ),
+      "utf8",
+    ).then(JSON.parse),
+  ]);
+  const ajv = new Ajv2020({ allErrors: true, strict: true });
+  addFormats(ajv);
+  const validate = ajv.compile(schema);
+  if (!validate(manifest)) {
+    controlFailure(
+      "REUSE_MANIFEST_INVALID",
+      `Reusable evidence violates its schema: ${stableJson(validate.errors)}`,
+    );
+  }
+  const blobRoot = join(provenanceRoot, "evidence", "npm");
+  await verifyEvidenceManifest({ manifest, lockfileBytes, blobRoot });
+  if (stableJson(manifest.policy) !== stableJson(evidencePolicy())) {
+    controlFailure(
+      "REUSE_POLICY_MISMATCH",
+      "Reusable evidence was acquired under a different policy",
+    );
+  }
+  return {
+    manifest,
+    blobRoot,
+    byArtifact: new Map(
+      manifest.artifacts.map((artifact) => [artifact.artifactId, artifact]),
+    ),
+  };
+};
+
+const retainReusableArtifact = async (
+  artifact,
+  sourceRoot,
+  destinationRoot,
+) => {
+  const evidence = Object.fromEntries(
+    [
+      "artifactId",
+      "tarball",
+      "archive",
+      "registrySignature",
+      "provenance",
+      "scan",
+    ].map((key) => [key, artifact[key]]),
+  );
+  const references = [
+    artifact.archive.evidence,
+    artifact.registrySignature.evidence,
+    artifact.provenance.evidence,
+    artifact.scan.evidence,
+  ];
+  const archive = JSON.parse(
+    await readFile(join(sourceRoot, artifact.archive.evidence.path), "utf8"),
+  );
+  references.push(...archive.evidence.evidenceFiles.map(({ blob }) => blob));
+  for (const reference of references) {
+    const retained = await retainBlob(
+      destinationRoot,
+      await readFile(join(sourceRoot, reference.path)),
+    );
+    if (
+      retained.sha256 !== reference.sha256 ||
+      retained.bytes !== reference.bytes
+    ) {
+      controlFailure(
+        "REUSE_BLOB_CHANGED",
+        "Reusable evidence changed after verification",
+      );
+    }
+  }
+  return {
+    evidence,
+    blobs: references,
+    keyids: artifact.registrySignature.signatures.map(({ keyid }) => keyid),
+  };
+};
+
 export const compareCommittedEvidence = async ({
   repositoryRoot,
   manifest,
@@ -1152,7 +1245,17 @@ export const acquireEvidence = async ({
   registryKeysPath = null,
   write = false,
   shard = null,
+  reuseEvidenceFrom = null,
 } = {}) => {
+  if (reuseEvidenceFrom !== null && shard !== null) {
+    throw new TypeError(
+      "Evidence reuse cannot be combined with fresh shard acquisition",
+    );
+  }
+  const reusable =
+    reuseEvidenceFrom === null
+      ? null
+      : await readReusableEvidence(resolve(repositoryRoot, reuseEvidenceFrom));
   const lockfileBytes = await readFile(
     join(repositoryRoot, "package-lock.json"),
   );
@@ -1193,6 +1296,16 @@ export const acquireEvidence = async ({
     for (const key of registryKeys) {
       keyById.set(key.keyid, key);
     }
+    for (const key of reusable?.manifest.registryKeys ?? []) {
+      const current = keyById.get(key.keyid);
+      if (current && stableJson(current) !== stableJson(key)) {
+        controlFailure(
+          "REUSE_REGISTRY_KEY_CONFLICT",
+          `Conflicting registry key evidence for ${key.keyid}`,
+        );
+      }
+      keyById.set(key.keyid, key);
+    }
 
     const artifacts = [];
     const blobs = [];
@@ -1201,21 +1314,24 @@ export const acquireEvidence = async ({
       ? selectShardArtifacts(graph.artifacts, shard)
       : graph.artifacts;
     for (const identity of selectedArtifacts) {
-      const acquired = await acquireArtifact({
-        identity,
-        stagingRoot,
-        corpusRoot,
-        cache,
-        fetchImpl,
-        sleep,
-        registryKeys,
-        keyById,
-        downloadTarball,
-        verifyPackageMetadata,
-        scanArtifact,
-        pacoteClient,
-        scancode,
-      });
+      const previous = reusable?.byArtifact.get(identity.artifactId);
+      const acquired = previous
+        ? await retainReusableArtifact(previous, reusable.blobRoot, corpusRoot)
+        : await acquireArtifact({
+            identity,
+            stagingRoot,
+            corpusRoot,
+            cache,
+            fetchImpl,
+            sleep,
+            registryKeys,
+            keyById,
+            downloadTarball,
+            verifyPackageMetadata,
+            scanArtifact,
+            pacoteClient,
+            scancode,
+          });
       artifacts.push(acquired.evidence);
       blobs.push(...acquired.blobs);
       acquired.keyids.forEach((keyid) => usedKeyids.add(keyid));
@@ -1290,6 +1406,7 @@ export const parseAcquisitionArguments = (
   let shardIndex = null;
   let outputRoot = null;
   let registryKeysPath = null;
+  let reuseEvidenceFrom = null;
   const seen = new Set();
   for (const argument of arguments_) {
     const key = argument === "--write" ? "--write" : argument.split("=", 1)[0];
@@ -1298,7 +1415,9 @@ export const parseAcquisitionArguments = (
       throw new TypeError(`Duplicate acquisition argument: ${semanticKey}`);
     }
     seen.add(semanticKey);
-    if (argument === "--write") {
+    if (argument.startsWith("--reuse-evidence=") && argument.length > 17) {
+      reuseEvidenceFrom = argument.slice(17);
+    } else if (argument === "--write") {
       write = true;
     } else if (argument.startsWith("--scancode=") && argument.length > 11) {
       scancode = argument.slice(11);
@@ -1370,7 +1489,18 @@ export const parseAcquisitionArguments = (
       throw new TypeError("--write cannot be combined with shard acquisition");
     }
   }
-  return { write, scancode, shard, registryKeysPath };
+  if (reuseEvidenceFrom !== null && shard !== null) {
+    throw new TypeError(
+      "Evidence reuse cannot be combined with fresh shard acquisition",
+    );
+  }
+  return {
+    write,
+    scancode,
+    shard,
+    registryKeysPath,
+    ...(reuseEvidenceFrom === null ? {} : { reuseEvidenceFrom }),
+  };
 };
 
 const isMain =
