@@ -1,0 +1,12 @@
+Prefix(:=<urn:owlapi-js:import-closure#>)
+Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+Ontology(<urn:owlapi-js:import-closure:root> <urn:owlapi-js:import-closure:root:v1>
+  Import(<urn:owlapi-js:import-closure:member-a>)
+  Annotation(rdfs:label "root annotation only"@en)
+  Declaration(Class(:Root))
+  Declaration(Class(:Shared))
+  Declaration(ObjectProperty(:links))
+  Declaration(NamedIndividual(:named))
+  ClassAssertion(:Root _:same-source-individual)
+  ObjectPropertyAssertion(:links _:same-source-individual :named)
+)
