@@ -378,6 +378,23 @@ class ManagedOntologyLoadSession {
     );
   }
 
+  /** Reachability over staged and committed edges for canonical parsing's AllDecl. */
+  getImportsClosure(ontology) {
+    this.#requireOpen();
+    const states = [this.#stagedState, this.#getCommittedState()];
+    requireManagedOntologyInStates(states, ontology);
+    const closure = new Set([ontology]);
+    for (const member of closure) {
+      for (const state of states) {
+        for (const imported of state.directImportsByOntology.get(member) ??
+          []) {
+          closure.add(imported);
+        }
+      }
+    }
+    return closure;
+  }
+
   commit() {
     this.#requireOpen();
     this.#closed = true;

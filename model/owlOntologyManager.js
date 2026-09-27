@@ -21,11 +21,13 @@ import { nQuadsParserDescriptor } from "../internal/parsing/nquads/descriptor.js
 import { nTriplesParserDescriptor } from "../internal/parsing/ntriples/descriptor.js";
 import { owlXmlParserDescriptor } from "../internal/parsing/owlxml/descriptor.js";
 import { OWLParserRegistry } from "../internal/parsing/parserRegistry.js";
+import { prepareRdfDocument } from "../internal/parsing/rdf/rdfDocumentPreparation.js";
 import { rdfXmlParserDescriptor } from "../internal/parsing/rdfxml/descriptor.js";
 import { triGParserDescriptor } from "../internal/parsing/trig/descriptor.js";
 import { turtleParserDescriptor } from "../internal/parsing/turtle/descriptor.js";
 import { createDefaultStorerRegistry } from "../internal/storage/storerRegistry.js";
 import { OWLDataFactory } from "./owlDataFactory.js";
+import { OWLObjectKind } from "./kinds.js";
 import { readAddOntologyAnnotationChange } from "./addOntologyAnnotation.js";
 import { createManagerOwnedOWLOntology } from "./owlOntology.js";
 import { OWLOntologyLoaderConfiguration } from "./owlOntologyLoaderConfiguration.js";
@@ -449,6 +451,7 @@ export class OWLOntologyManager {
       this.#managedOntologyIndex.beginLoadSession();
     const session = {
       entries: [],
+      entriesByOntology: new Map(),
       importCount: 0,
       managedOntologyIndexSession: managedOntologyLoadSession,
     };
@@ -461,6 +464,64 @@ export class OWLOntologyManager {
         session,
         0,
       );
+      // OWL 2 canonical parsing CP 3 runs only after CP 2 has discovered the
+      // complete import graph. Keep all provisional objects session-private.
+      for (const entry of session.entries) {
+        if (!entry.prepared) continue;
+        const declarations = new StructuralSet();
+        for (const member of managedOntologyLoadSession.getImportsClosure(
+          entry.ontology,
+        )) {
+          // The translator reads this document's own declarations itself.
+          // Seeding those first would suppress local legacy normalization.
+          if (member === entry.ontology) continue;
+          const prepared = session.entriesByOntology.get(member)?.prepared;
+          const entities = prepared
+            ? prepared.declarations
+            : [...member.getAxioms()]
+                .filter(
+                  (axiom) => axiom.kind === OWLObjectKind.DECLARATION_AXIOM,
+                )
+                .map((axiom) => axiom.entity);
+          for (const entity of entities) declarations.add(entity);
+        }
+        const transaction = new ParseTransaction(
+          this.#dataFactory,
+          normalizedConfiguration,
+        );
+        await entry.prepared.reconstruct(declarations, transaction);
+        const completed = transaction.commit(
+          entry.context.format,
+          entry.context.documentIRI,
+        );
+        const imports = new StructuralSet(
+          entry.ontology.getImportsDeclarations(),
+        );
+        const completedImports = completed.ontology.getImportsDeclarations();
+        if (
+          !completed.ontology
+            .getOntologyID()
+            .equals(entry.ontology.getOntologyID()) ||
+          completedImports.size !== imports.size ||
+          [...completedImports].some((declaration) => !imports.has(declaration))
+        ) {
+          throw new OWLOntologyStateError(
+            "RDF reconstruction changed its discovered ontology identity or imports",
+            {
+              ontology: entry.ontology,
+              operation: "loadOntologyGraph",
+            },
+          );
+        }
+        entry.completedOntology = completed.ontology;
+        entry.context = {
+          ...completed.context,
+          diagnostics: [
+            ...completed.context.diagnostics,
+            ...entry.context.diagnostics,
+          ],
+        };
+      }
       this.#throwIfAborted(normalizedConfiguration);
       documentPublications = session.entries.map((entry) => {
         const context = createImmutableDocumentMetadataSnapshot(entry.context);
@@ -472,6 +533,12 @@ export class OWLOntologyManager {
           );
         }
         const mutationDraft = ontologyState.createMutationDraft();
+        if (entry.completedOntology) {
+          for (const axiom of entry.completedOntology.getAxioms())
+            mutationDraft.stageAxiomAddition(axiom);
+          for (const annotation of entry.completedOntology.getAnnotations())
+            mutationDraft.stageOntologyAnnotationAddition(annotation);
+        }
         mutationDraft.stageDocumentMetadataReplacement(context);
         ontologyState.preflightMutation(mutationDraft);
         return { context, entry, mutationDraft, ontologyState };
@@ -525,8 +592,10 @@ export class OWLOntologyManager {
     const entry = {
       context: committed.context,
       ontology: committed.ontology,
+      prepared: committed.prepared,
     };
     session.entries.push(entry);
+    session.entriesByOntology.set(entry.ontology, entry);
 
     for (const declaration of committed.ontology.getImportsDeclarations()) {
       await this.#loadImport(
@@ -842,19 +911,26 @@ export class OWLOntologyManager {
       );
 
       try {
-        const returnedFormat = await parser.parse(
+        const prepared = await prepareRdfDocument(
+          parser,
           source,
           transaction,
           configuration,
         );
+        const returnedFormat = prepared
+          ? undefined
+          : await parser.parse(source, transaction, configuration);
         this.#throwIfAborted(configuration);
         if (returnedFormat && !transaction.getDocumentFormat()) {
           transaction.setDocumentFormat(returnedFormat);
         }
-        return transaction.commit(
-          candidate.descriptor.format,
-          source.getDocumentIRI?.(),
-        );
+        return {
+          ...transaction.commit(
+            candidate.descriptor.format,
+            source.getDocumentIRI?.(),
+          ),
+          prepared,
+        };
       } catch (error) {
         if (error instanceof ParserMismatchError) {
           if (explicitFormat) {
