@@ -1,0 +1,24 @@
+{
+  "qualification": "PRE_INTEGRATION",
+  "baselineCommit": "4f1970e5b6c95655af823c495bd58f9e9993f8b8",
+  "packageSpecifier": "git+https://github.com/Hadden-Industries/owlapi.git#caabb1197ffdab91c1e10d596d177b5142aea5c1",
+  "sourceReaderAllowlist": [
+    {
+      "path": "src/app/js/controller/ontologySourceLoader.js",
+      "line": 637,
+      "expression": "remoteDocument.getText()",
+      "receiverType": "StringDocumentSource",
+      "evidence": "remoteDocument is returned by createImportResolver().load; WebVowlImportResolver.load constructs StringDocumentSource at src/owl2vowl/js/importResolver.js:196. The existing loader and resolver tests verify this ingestion path."
+    },
+    {
+      "path": "src/owl2vowl/js/importResolver.test.js",
+      "line": 87,
+      "expression": "source.getText()",
+      "receiverType": "StringDocumentSource",
+      "evidence": "source is returned by WebVowlImportResolver.load in the HTTP import test; that method constructs StringDocumentSource at src/owl2vowl/js/importResolver.js:196. This assertion checks the exact supplied RDF/XML text."
+    }
+  ],
+  "negativeMentionAllowlist": [],
+  "scanSha256": "c4db1cfb068d6882ab7acca4277a4e45d80b584002724b649998e9620d16f359",
+  "disposition": "NO_OBSOLETE_USAGE"
+}

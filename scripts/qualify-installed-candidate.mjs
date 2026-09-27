@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process";
 import {
   copyFileSync,
+  cpSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
@@ -19,6 +20,7 @@ const TEST_SCRIPTS = Object.freeze([
   "installed-package-boundary.mjs",
   "installed-package-import-purity.mjs",
   "installed-package-no-network.mjs",
+  "installed-package-import-closure.mjs",
 ]);
 const valueAfter = (name) => {
   const index = process.argv.indexOf(name);
@@ -96,6 +98,16 @@ try {
     cwd: consumerDirectory,
     label: "portable retained-tarball install",
   });
+  mkdirSync(join(consumerDirectory, "import-closure"));
+  copyFileSync(
+    join(REPOSITORY_ROOT, "test", "import-closure", "public-contract.js"),
+    join(consumerDirectory, "import-closure", "public-contract.js"),
+  );
+  cpSync(
+    join(REPOSITORY_ROOT, "test", "import-closure", "fixtures"),
+    join(consumerDirectory, "import-closure", "fixtures"),
+    { recursive: true },
+  );
   for (const testScript of TEST_SCRIPTS) {
     copyFileSync(
       join(REPOSITORY_ROOT, "test", testScript),

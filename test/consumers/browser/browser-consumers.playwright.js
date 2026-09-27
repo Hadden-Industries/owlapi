@@ -65,6 +65,21 @@ const runConsumer = async (page, mode) => {
     expect(document.mergedAxiomCount).toBe(document.axiomCount);
     expect(document.mergedImportCount).toBe(0);
   }
+  expect(result.importClosure).toEqual({
+    closureCount: 4,
+    importLoadCount: 3,
+    directAxiomCount: 26,
+    rootAnnotationCount: 1,
+    anonymousIndividualCount: 4,
+    formats: ["functional", "rdfxml"],
+    reloadLoaderCalls: 0,
+    diagnosticCount: 0,
+    retainedTargetAfterFailure: true,
+    sourceReaderPreserved: true,
+  });
+  expect(
+    requests.every((url) => new URL(url).origin === new URL(BASE_URL).origin),
+  ).toBe(true);
 
   return requests;
 };
@@ -73,8 +88,7 @@ for (const mode of ["bundler", "import-map"]) {
   test(`${mode} consumes the retained package through public specifiers`, async ({
     page,
   }) => {
-    const requests = await runConsumer(page, mode);
-    expect(requests.some((url) => /xmldom/iu.test(url))).toBe(false);
+    await runConsumer(page, mode);
   });
 }
 

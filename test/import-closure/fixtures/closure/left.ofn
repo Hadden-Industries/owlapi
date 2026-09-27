@@ -1,0 +1,12 @@
+Prefix(:=<urn:lifecycle:>)
+Ontology(<urn:lifecycle:left> <urn:lifecycle:left:v1>
+  Import(<urn:lifecycle:leaf:v1>)
+  Import(<urn:lifecycle:root>)
+  Annotation(:note "left metadata must not be copied")
+  Declaration(Class(:Entity))
+  Declaration(Class(:Left))
+  SubClassOf(:Left :Entity)
+  DataPropertyAssertion(:origin _:shared "left")
+  ObjectPropertyAssertion(:next _:shared _:shared)
+  AnnotationAssertion(:note <urn:lifecycle:right> "left contribution"@fr)
+)
