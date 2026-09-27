@@ -157,7 +157,34 @@ jobs:
       - name: Verify static quality
         run: npm run lint
         timeout-minutes: 45
+      - name: Check out the immutable original July ontology sources
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Hadden-Industries/universal-ontology
+          ref: e2c667f3584b8fb705671cada0fe205b1000b617
+          path: .release/universal-ontology
+          persist-credentials: false
+      - name: Check out the pinned Java OWLAPI reference
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: owlcs/owlapi
+          ref: d7e997a53b470e32700de89cc610d9daf01ea769
+          path: .release/java-owlapi
+          persist-credentials: false
+      - name: Select the reference JDK
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: "25"
+          check-latest: false
+          overwrite-settings: false
+      - name: Build the native reference and its reactor classpath
+        working-directory: .release/java-owlapi
+        run: mvn -B -ntp -pl distribution -am -Dmaven.test.skip=true -Dno-javadoc=true -DincludeScope=runtime -Dmdep.outputFile=target/owlapi-runtime-classpath.txt package dependency:build-classpath
+        timeout-minutes: 20
       - name: Run the full package suite
+        env:
+          OWLAPI_REFERENCE_CHECKOUT: ${{ github.workspace }}/.release/java-owlapi
         run: npm test -- --runInBand
         timeout-minutes: 45
       - name: Verify the public package boundary
@@ -169,6 +196,22 @@ jobs:
       - name: Verify repository workflow governance
         run: npm run verify:workflow-governance
         timeout-minutes: 45
+      - name: Reconcile all four July variants in parsing and both closure formats
+        env:
+          OWLAPI_REFERENCE_CHECKOUT: ${{ github.workspace }}/.release/java-owlapi
+        run: npm run test:universal-ontology -- --ontology-repository .release/universal-ontology --output .release/july-qualification
+        timeout-minutes: 15
+      - name: Retain July reconciliation evidence, including failed comparisons
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: july-ontology-reconciliation
+          path: .release/july-qualification
+          if-no-files-found: error
+          retention-days: 90
+          overwrite: false
+          include-hidden-files: false
+          archive: true
 
   dependency_review:
     name: CI / dependency review

@@ -29,17 +29,17 @@ const REQUIRED_ARGUMENTS = new Map([
 const compareUtf16CodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
 
-export class ImportClosureOracleLauncherError extends Error {
+export class OntologyReferenceOracleLauncherError extends Error {
   constructor(message, code, details = {}) {
     super(message);
     Object.assign(this, details);
-    this.name = "ImportClosureOracleLauncherError";
+    this.name = "OntologyReferenceOracleLauncherError";
     this.code = code;
   }
 }
 
 const launcherError = (message, code, details = {}) =>
-  new ImportClosureOracleLauncherError(message, code, details);
+  new OntologyReferenceOracleLauncherError(message, code, details);
 
 export const parseImportClosureContractArguments = (arguments_) => {
   const parsed = {};
@@ -50,14 +50,14 @@ export const parseImportClosureContractArguments = (arguments_) => {
     if (!property) {
       throw launcherError(
         `Unknown import-closure oracle argument: ${option ?? "<missing>"}`,
-        "IMPORT_CLOSURE_ORACLE_ARGUMENT_UNKNOWN",
+        "ONTOLOGY_REFERENCE_ORACLE_ARGUMENT_UNKNOWN",
         { argument: option ?? null },
       );
     }
     if (Object.hasOwn(parsed, property)) {
       throw launcherError(
         `Import-closure oracle argument was supplied more than once: ${option}`,
-        "IMPORT_CLOSURE_ORACLE_ARGUMENT_DUPLICATE",
+        "ONTOLOGY_REFERENCE_ORACLE_ARGUMENT_DUPLICATE",
         { argument: option },
       );
     }
@@ -66,7 +66,7 @@ export const parseImportClosureContractArguments = (arguments_) => {
     if (!value || REQUIRED_ARGUMENTS.has(value)) {
       throw launcherError(
         `Import-closure oracle argument requires a value: ${option}`,
-        "IMPORT_CLOSURE_ORACLE_ARGUMENT_MISSING",
+        "ONTOLOGY_REFERENCE_ORACLE_ARGUMENT_MISSING",
         { argument: option },
       );
     }
@@ -79,7 +79,7 @@ export const parseImportClosureContractArguments = (arguments_) => {
   if (missing) {
     throw launcherError(
       `Missing required import-closure oracle argument: ${missing[0]}`,
-      "IMPORT_CLOSURE_ORACLE_ARGUMENT_MISSING",
+      "ONTOLOGY_REFERENCE_ORACLE_ARGUMENT_MISSING",
       { argument: missing[0] },
     );
   }
@@ -236,7 +236,7 @@ export const parseOasisXmlCatalog = async (catalogPath) => {
   const absoluteCatalogPath = resolve(catalogPath);
   await requireRegularFile(
     absoluteCatalogPath,
-    "IMPORT_CLOSURE_ORACLE_CATALOG_NOT_FOUND",
+    "ONTOLOGY_REFERENCE_ORACLE_CATALOG_NOT_FOUND",
   );
   const xml = await readFile(absoluteCatalogPath, "utf8");
 
@@ -402,7 +402,7 @@ const defaultExecuteProcess = (
         reject(
           launcherError(
             `Process output exceeded ${maximumOutputBytes} bytes: ${command}`,
-            "IMPORT_CLOSURE_ORACLE_PROCESS_OUTPUT_LIMIT",
+            "ONTOLOGY_REFERENCE_ORACLE_PROCESS_OUTPUT_LIMIT",
             { command, maximumOutputBytes },
           ),
         );
@@ -423,7 +423,7 @@ export const resolvePinnedReferenceEnvironment = async ({
   } catch (cause) {
     throw launcherError(
       `Cannot read the pinned OWLAPI reference identity: ${pinnedVersionPath}`,
-      "IMPORT_CLOSURE_ORACLE_PIN_INVALID",
+      "ONTOLOGY_REFERENCE_ORACLE_PIN_INVALID",
       { cause, pinnedVersionPath },
     );
   }
@@ -437,7 +437,7 @@ export const resolvePinnedReferenceEnvironment = async ({
   ) {
     throw launcherError(
       "Pinned OWLAPI reference identity is incomplete",
-      "IMPORT_CLOSURE_ORACLE_PIN_INVALID",
+      "ONTOLOGY_REFERENCE_ORACLE_PIN_INVALID",
       { pinnedVersionPath },
     );
   }
@@ -445,7 +445,7 @@ export const resolvePinnedReferenceEnvironment = async ({
   if (typeof sourceCheckoutPath !== "string" || !sourceCheckoutPath.trim()) {
     throw launcherError(
       "Set OWLAPI_REFERENCE_CHECKOUT to a built checkout of the pinned Java OWLAPI revision",
-      "IMPORT_CLOSURE_ORACLE_REFERENCE_ENVIRONMENT_UNAVAILABLE",
+      "ONTOLOGY_REFERENCE_ORACLE_REFERENCE_ENVIRONMENT_UNAVAILABLE",
     );
   }
   const sourceCheckout = resolve(sourceCheckoutPath);
@@ -458,7 +458,12 @@ export const resolvePinnedReferenceEnvironment = async ({
       "owlapi-runtime-classpath.txt",
     ),
     launcherSource: join(REFERENCE_DIRECTORY, "RunWithClasspath.java"),
-    oracleSource: join(REFERENCE_DIRECTORY, "RunImportClosureContract.java"),
+    oracleSources: [
+      "RunImportClosureContract.java",
+      "RunOntologyParsingContract.java",
+      "OntologyReferenceContract.java",
+      "OntologyStructuralComparison.java",
+    ].map((name) => join(REFERENCE_DIRECTORY, name)),
     owlapiVersion,
     pinnedRevision,
     sourceCheckout,
@@ -466,11 +471,11 @@ export const resolvePinnedReferenceEnvironment = async ({
   for (const path of [
     environment.classpathFile,
     environment.launcherSource,
-    environment.oracleSource,
+    ...environment.oracleSources,
   ]) {
     await requireRegularFile(
       path,
-      "IMPORT_CLOSURE_ORACLE_REFERENCE_ENVIRONMENT_UNAVAILABLE",
+      "ONTOLOGY_REFERENCE_ORACLE_REFERENCE_ENVIRONMENT_UNAVAILABLE",
     );
   }
 
@@ -487,7 +492,7 @@ export const resolvePinnedReferenceEnvironment = async ({
   } catch (cause) {
     throw launcherError(
       `Cannot inspect the pinned OWLAPI checkout: ${sourceCheckout}`,
-      "IMPORT_CLOSURE_ORACLE_REVISION_UNAVAILABLE",
+      "ONTOLOGY_REFERENCE_ORACLE_REVISION_UNAVAILABLE",
       { cause, sourceCheckout },
     );
   }
@@ -495,7 +500,7 @@ export const resolvePinnedReferenceEnvironment = async ({
   if (revisionExecution.exitCode !== 0 || actualRevision !== pinnedRevision) {
     throw launcherError(
       `OWLAPI checkout revision ${actualRevision || "<unavailable>"} does not match ${pinnedRevision}`,
-      "IMPORT_CLOSURE_ORACLE_REVISION_MISMATCH",
+      "ONTOLOGY_REFERENCE_ORACLE_REVISION_MISMATCH",
       {
         actualRevision: actualRevision || null,
         pinnedRevision,
@@ -513,8 +518,8 @@ const requireSuccessfulCompilation = (execution, stage) => {
   );
   if (execution.exitCode !== 0 || compilerDiagnosticPresent) {
     throw launcherError(
-      `Pinned Java import-closure oracle compilation failed at ${stage}`,
-      "IMPORT_CLOSURE_ORACLE_COMPILE_FAILED",
+      `Pinned Java ontology reference oracle compilation failed at ${stage}`,
+      "ONTOLOGY_REFERENCE_ORACLE_COMPILE_FAILED",
       {
         compilerDiagnosticPresent,
         exitCode: execution.exitCode,
@@ -526,7 +531,7 @@ const requireSuccessfulCompilation = (execution, stage) => {
   }
 };
 
-export const compileImportClosureOracle = async (
+export const compileOntologyReferenceOracles = async (
   referenceEnvironment,
   outputDirectory,
   { executeProcess = defaultExecuteProcess } = {},
@@ -546,7 +551,7 @@ export const compileImportClosureOracle = async (
   } catch (cause) {
     throw launcherError(
       "Could not start javac for the classpath launcher",
-      "IMPORT_CLOSURE_ORACLE_COMPILE_FAILED",
+      "ONTOLOGY_REFERENCE_ORACLE_COMPILE_FAILED",
       { cause, stage: "classpath-launcher" },
     );
   }
@@ -565,12 +570,12 @@ export const compileImportClosureOracle = async (
       "UTF-8",
       "-d",
       absoluteOutputDirectory,
-      referenceEnvironment.oracleSource,
+      ...referenceEnvironment.oracleSources,
     ]);
   } catch (cause) {
     throw launcherError(
       "Could not start the pinned OWLAPI oracle compilation",
-      "IMPORT_CLOSURE_ORACLE_COMPILE_FAILED",
+      "ONTOLOGY_REFERENCE_ORACLE_COMPILE_FAILED",
       { cause, stage: "oracle-source" },
     );
   }
@@ -595,10 +600,10 @@ const parseJavaResult = (execution) => {
     result = JSON.parse(execution.stdout.trim());
   } catch (cause) {
     throw launcherError(
-      "Pinned Java import-closure oracle did not emit exactly one JSON result",
+      "Pinned Java ontology reference oracle did not emit exactly one JSON result",
       execution.exitCode === 0
-        ? "IMPORT_CLOSURE_ORACLE_RESULT_INVALID"
-        : "IMPORT_CLOSURE_ORACLE_JAVA_FAILED",
+        ? "ONTOLOGY_REFERENCE_ORACLE_RESULT_INVALID"
+        : "ONTOLOGY_REFERENCE_ORACLE_JAVA_FAILED",
       {
         cause,
         exitCode: execution.exitCode,
@@ -615,28 +620,49 @@ const parseJavaResult = (execution) => {
     !new Set(["MATCH", "MISMATCH", "ERROR"]).has(result.comparisonOutcome)
   ) {
     throw launcherError(
-      "Pinned Java import-closure oracle emitted an invalid result contract",
-      "IMPORT_CLOSURE_ORACLE_RESULT_INVALID",
+      "Pinned Java ontology reference oracle emitted an invalid result contract",
+      "ONTOLOGY_REFERENCE_ORACLE_RESULT_INVALID",
       { exitCode: execution.exitCode, result },
     );
   }
   if ((execution.exitCode === 0) !== (result.comparisonOutcome === "MATCH")) {
     throw launcherError(
-      "Pinned Java import-closure oracle exit status contradicts its result",
-      "IMPORT_CLOSURE_ORACLE_RESULT_INVALID",
+      "Pinned Java ontology reference oracle exit status contradicts its result",
+      "ONTOLOGY_REFERENCE_ORACLE_RESULT_INVALID",
       { exitCode: execution.exitCode, result },
     );
   }
   return result;
 };
 
-export const executeImportClosureOracle = async (
-  { catalogMappings, compiledOracleDirectory, rootPath, verifyOutputPath },
+export const executeOntologyReferenceOracle = async (
+  {
+    catalogMappings,
+    compiledOracleDirectory,
+    rootPath,
+    sourceDocumentPath,
+    verifyOutputPath,
+    comparisonKind,
+    parsedSourceModels,
+  },
   referenceEnvironment,
   { executeProcess = defaultExecuteProcess } = {},
 ) => {
+  const entryPoint = {
+    IMPORT_CLOSURE: "RunImportClosureContract",
+    ONTOLOGY_PARSING: "RunOntologyParsingContract",
+  }[comparisonKind];
+  if (
+    !entryPoint ||
+    (comparisonKind === "ONTOLOGY_PARSING" && !sourceDocumentPath)
+  ) {
+    throw launcherError(
+      "An explicit comparison kind and source document are required",
+      "ONTOLOGY_REFERENCE_ORACLE_ARGUMENT_INVALID",
+    );
+  }
   const manifestDirectory = await mkdtemp(
-    join(tmpdir(), "owlapi-import-closure-manifest-"),
+    join(tmpdir(), "owlapi-ontology-reference-manifest-"),
   );
   try {
     const manifestPath = join(manifestDirectory, "catalog-mappings.json");
@@ -650,7 +676,20 @@ export const executeImportClosureOracle = async (
       );
     await writeFile(
       manifestPath,
-      `${JSON.stringify({ mappings: deterministicMappings, schemaVersion: 1 })}\n`,
+      `${JSON.stringify({
+        mappings: deterministicMappings,
+        schemaVersion: 1,
+        ...(parsedSourceModels
+          ? {
+              parsedSourceModels: parsedSourceModels.map(
+                ({ sourceDocumentPath, modelPath }) => ({
+                  sourceDocumentPath: resolve(sourceDocumentPath),
+                  modelPath: resolve(modelPath),
+                }),
+              ),
+            }
+          : {}),
+      })}\n`,
       "utf8",
     );
 
@@ -662,7 +701,7 @@ export const executeImportClosureOracle = async (
         "RunWithClasspath",
         referenceEnvironment.classpathFile,
         resolve(compiledOracleDirectory),
-        "RunImportClosureContract",
+        entryPoint,
         "--catalog-mappings",
         manifestPath,
         "--root",
@@ -673,11 +712,14 @@ export const executeImportClosureOracle = async (
         referenceEnvironment.pinnedRevision,
         "--owlapi-version",
         referenceEnvironment.owlapiVersion,
+        ...(sourceDocumentPath
+          ? ["--source-document", resolve(sourceDocumentPath)]
+          : []),
       ]);
     } catch (cause) {
       throw launcherError(
-        "Could not start the pinned Java import-closure oracle",
-        "IMPORT_CLOSURE_ORACLE_JAVA_FAILED",
+        "Could not start the pinned Java ontology reference oracle",
+        "ONTOLOGY_REFERENCE_ORACLE_JAVA_FAILED",
         { cause },
       );
     }
@@ -692,6 +734,17 @@ export const executeImportClosureOracle = async (
   }
 };
 
+export const executeImportClosureOracle = (
+  options,
+  referenceEnvironment,
+  dependencies,
+) =>
+  executeOntologyReferenceOracle(
+    { ...options, comparisonKind: "IMPORT_CLOSURE" },
+    referenceEnvironment,
+    dependencies,
+  );
+
 export const runImportClosureContract = async (
   { catalogPath, rootPath, verifyOutputPath },
   { executeProcess = defaultExecuteProcess } = {},
@@ -703,15 +756,15 @@ export const runImportClosureContract = async (
   };
   await requireRegularFile(
     resolvedPaths.catalogPath,
-    "IMPORT_CLOSURE_ORACLE_CATALOG_NOT_FOUND",
+    "ONTOLOGY_REFERENCE_ORACLE_CATALOG_NOT_FOUND",
   );
   await requireRegularFile(
     resolvedPaths.rootPath,
-    "IMPORT_CLOSURE_ORACLE_ROOT_NOT_FOUND",
+    "ONTOLOGY_REFERENCE_ORACLE_ROOT_NOT_FOUND",
   );
   await requireRegularFile(
     resolvedPaths.verifyOutputPath,
-    "IMPORT_CLOSURE_ORACLE_VERIFY_OUTPUT_NOT_FOUND",
+    "ONTOLOGY_REFERENCE_ORACLE_VERIFY_OUTPUT_NOT_FOUND",
   );
 
   const catalogMappings = await parseOasisXmlCatalog(resolvedPaths.catalogPath);
@@ -722,7 +775,7 @@ export const runImportClosureContract = async (
     join(tmpdir(), "owlapi-import-closure-oracle-"),
   );
   try {
-    const compilation = await compileImportClosureOracle(
+    const compilation = await compileOntologyReferenceOracles(
       referenceEnvironment,
       compiledOracleDirectory,
       { executeProcess },
@@ -758,9 +811,9 @@ const runCommandLine = async () => {
     process.exitCode = execution.exitCode;
   } catch (error) {
     const code =
-      error instanceof ImportClosureOracleLauncherError
+      error instanceof OntologyReferenceOracleLauncherError
         ? error.code
-        : "IMPORT_CLOSURE_ORACLE_LAUNCHER_UNEXPECTED";
+        : "ONTOLOGY_REFERENCE_ORACLE_LAUNCHER_UNEXPECTED";
     process.stderr.write(`${code}: ${error.message}\n`);
     const diagnostics = [error.stderr, error.stdout]
       .filter((value) => typeof value === "string" && value)

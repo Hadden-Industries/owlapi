@@ -542,6 +542,7 @@ class RdfGraphInterpreter {
     await this.#readDeclarations();
     await this.#readOntologyHeader();
     await this.#readExpressionDefinitions();
+    await this.#readNamedDatatypeRestrictions();
     await this.#readClassAxioms();
     await this.#readPropertyAxioms();
     await this.#readNaryAxioms();
@@ -582,6 +583,54 @@ class RdfGraphInterpreter {
       if (visited % CHECK_INTERVAL === 0) {
         await this.#execution.cooperate();
       }
+    }
+  }
+
+  async #readNamedDatatypeRestrictions() {
+    if (this.#configuration.parsingMode === "strict") return;
+    // OWL 2 RDF-Based Semantics tables 5.7 and 5.9 give a named restriction
+    // the same datatype extension as a DatatypeDefinition with that restriction.
+    // The OWL 2 DL RDF mapping instead requires an anonymous expression; this
+    // is an explicit compatible-mode recovery, never a strict mapping rule.
+    for (const currentQuad of this.#dataset) {
+      if (
+        currentQuad.subject.termType !== "NamedNode" ||
+        currentQuad.predicate.value !== OWL_VOCABULARY.onDatatype ||
+        !this.#datatypeIris.has(currentQuad.subject.value)
+      )
+        continue;
+      const datatype = this.#dataFactory.getOWLDatatype(
+        IRI.create(currentQuad.subject.value),
+      );
+      const restriction = await this.#datatypeRestriction(currentQuad.subject);
+      // Both consumed links jointly encode the recovered definition. Preserve
+      // reified annotations on either link, including their nested annotations.
+      const annotations = [
+        ...(await this.#axiomAnnotations(currentQuad)),
+        ...(await this.#axiomAnnotations(
+          this.#exactlyOne(
+            currentQuad.subject,
+            OWL_VOCABULARY.withRestrictions,
+          ),
+        )),
+      ];
+      this.#transaction.addAxiom(
+        this.#dataFactory.getOWLDatatypeDefinitionAxiom(
+          datatype,
+          restriction,
+          annotations,
+        ),
+      );
+      if (this.#configuration.collectWarnings) {
+        this.#diagnostics.push({
+          code: "RDF_NAMED_DATATYPE_RESTRICTION",
+          iri: currentQuad.subject.value,
+          message:
+            "A named RDF datatype restriction was preserved as a datatype definition",
+          severity: "warning",
+        });
+      }
+      await this.#execution.cooperate();
     }
   }
 
@@ -713,13 +762,11 @@ class RdfGraphInterpreter {
   // and so change the ontology's structure; on an individual subject the
   // assertion is a real reading and the triple is left alone.
   #isRecoverableAnnotation(quad, subjectIris, annotationCarriers) {
-    // A triple hanging off an `owl:Axiom` or `owl:Annotation` node is an
+    // A triple hanging off an ontology, `owl:Axiom` or `owl:Annotation` node is an
     // annotation by construction: the mapping makes every triple on such a node
     // beyond the three `owl:annotated*` ones part of the annotation set. The
     // object may be anything, so no further test applies.
-    if (quad.subject.termType === "BlankNode") {
-      return annotationCarriers.has(termKey(quad.subject));
-    }
+    if (annotationCarriers.has(termKey(quad.subject))) return true;
     if (quad.subject.termType !== "NamedNode") {
       return false;
     }
@@ -765,9 +812,10 @@ class RdfGraphInterpreter {
     for (const quad of this.#dataset.match(null, null, null, null)) {
       if (
         quad.predicate.value === RDF_VOCABULARY.type &&
-        quad.subject.termType === "BlankNode" &&
-        (quad.object.value === OWL_VOCABULARY.Axiom ||
-          quad.object.value === OWL_VOCABULARY.Annotation)
+        (quad.object.value === OWL_VOCABULARY.Ontology ||
+          (quad.subject.termType === "BlankNode" &&
+            (quad.object.value === OWL_VOCABULARY.Axiom ||
+              quad.object.value === OWL_VOCABULARY.Annotation)))
       ) {
         annotationCarriers.add(termKey(quad.subject));
       }
@@ -2181,18 +2229,18 @@ class RdfGraphInterpreter {
           this.#unconsumedStatementDetails(currentQuad),
         );
       }
-      if (!this.#isOwlSignificant(currentQuad)) {
-        continue;
-      }
-      if (this.#recoverUndeclaredAnnotation(currentQuad)) {
+      const owlSignificant = this.#isOwlSignificant(currentQuad);
+      if (owlSignificant && this.#recoverUndeclaredAnnotation(currentQuad)) {
         continue;
       }
       if (this.#configuration.collectWarnings) {
         const details = this.#unconsumedStatementDetails(currentQuad);
         this.#diagnostics.push({
-          code: "RDF_UNCONSUMED_OWL_TRIPLE",
+          code: owlSignificant
+            ? "RDF_UNCONSUMED_OWL_TRIPLE"
+            : "RDF_UNCONSUMED_TRIPLE",
           message:
-            "An OWL-significant RDF triple could not be reconstructed and was ignored",
+            "An RDF statement could not be reconstructed and was ignored",
           severity: "warning",
           ...details,
         });
@@ -2776,34 +2824,7 @@ class RdfGraphInterpreter {
           dataRange = this.#dataFactory.getOWLDataOneOf(values);
         }
       } else {
-        this.#consume(onDatatype);
-        const datatype = this.#dataFactory.getOWLDatatype(
-          IRI.create(
-            requireNamedNode(
-              onDatatype.object,
-              "owl:onDatatype requires an IRI datatype",
-            ).value,
-          ),
-        );
-        const withRestrictions = this.#exactlyOne(
-          term,
-          OWL_VOCABULARY.withRestrictions,
-        );
-        this.#consume(withRestrictions);
-        const restrictions = await this.#rdfList(
-          withRestrictions.object,
-          (item) => this.#facetRestriction(item),
-          quadKey(withRestrictions),
-        );
-        this.#requireListArity(
-          restrictions,
-          1,
-          OWL_VOCABULARY.withRestrictions,
-        );
-        dataRange = this.#dataFactory.getOWLDatatypeRestriction(
-          datatype,
-          restrictions,
-        );
+        dataRange = await this.#datatypeRestriction(term);
       }
       for (const typeQuad of this.#outgoing(term, RDF_VOCABULARY.type)) {
         if (
@@ -2820,6 +2841,31 @@ class RdfGraphInterpreter {
     } finally {
       this.#dataRangeStack.delete(key);
     }
+  }
+
+  async #datatypeRestriction(term) {
+    const onDatatype = this.#exactlyOne(term, OWL_VOCABULARY.onDatatype);
+    this.#consume(onDatatype);
+    const datatype = this.#dataFactory.getOWLDatatype(
+      IRI.create(
+        requireNamedNode(
+          onDatatype.object,
+          "owl:onDatatype requires an IRI datatype",
+        ).value,
+      ),
+    );
+    const withRestrictions = this.#exactlyOne(
+      term,
+      OWL_VOCABULARY.withRestrictions,
+    );
+    this.#consume(withRestrictions);
+    const restrictions = await this.#rdfList(
+      withRestrictions.object,
+      (item) => this.#facetRestriction(item),
+      quadKey(withRestrictions),
+    );
+    this.#requireListArity(restrictions, 1, OWL_VOCABULARY.withRestrictions);
+    return this.#dataFactory.getOWLDatatypeRestriction(datatype, restrictions);
   }
 
   #facetRestriction(term) {

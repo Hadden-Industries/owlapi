@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
+import { paths as selectJsonPaths } from "jsonpath-rfc9535";
 
 import { OWLOntologyLoaderConfiguration } from "./model/index.js";
 import {
@@ -2861,6 +2862,19 @@ bundle licence and notice review.
 
   it("defines a zero-tolerance expected-difference gate", () => {
     const manifest = readJson("./docs/compatibility/expected-differences.json");
+    const july = readJson(
+      "./util/owlapi-reference/universal-ontology-july-2026.json",
+    );
+    const java = readJson("./docs/provenance/provenance.json").referenceOwlapi;
+    const julyFixtures = new Set(
+      [...july.roots, ...july.mappings].map(
+        ({ path }) => `universal-ontology@${july.revision}:${path}`,
+      ),
+    );
+    const nativeSelectors = new Set([
+      "$['axioms']['jsOnly'][*]",
+      "$['anonymousIndividualGraphs']['javaOnly'][*]",
+    ]);
 
     expect(manifest.selectorLanguage).toBe("RFC 9535 JSONPath");
     expect(new Set(manifest.atomicDifferenceTypes)).toEqual(
@@ -2872,16 +2886,29 @@ bundle licence and notice review.
     );
     for (const rule of manifest.rules) {
       expect(rule.id).toBeTruthy();
-      expect(rule.selector).toMatch(/^\$/);
-      expect(rule.selector).not.toMatch(/\.\.|\[\*\]/u);
+      // The maintained RFC 9535 evaluator owns syntax validation. Repository
+      // policy binds the approved artifact collections, exact values and pins.
+      expect(() => selectJsonPaths({}, rule.selector)).not.toThrow();
       expect(manifest.atomicDifferenceTypes).toContain(rule.differenceType);
       expect(manifest.sides).toContain(rule.side);
       expect(manifest.cardinalityForms).toContain(rule.cardinality.form);
       expect(rule.cardinality).toMatchObject({ form: "exact" });
       expect(Number.isSafeInteger(rule.cardinality.value)).toBe(true);
       expect(rule.cardinality.value).toBeGreaterThanOrEqual(0);
-      expect(rule.artifactType).toBe("OWL structural snapshot");
-      expect(rule.fixture).toMatch(/^util\/owlapi-reference\/fixtures\//u);
+      if (rule.artifactType === "OWL structural snapshot") {
+        expect(rule.selector).not.toMatch(/\.\.|\[\*\]/u);
+        expect(rule.fixture).toMatch(/^util\/owlapi-reference\/fixtures\//u);
+      } else {
+        expect(julyFixtures.has(rule.fixture)).toBe(true);
+        expect(rule.referenceRevision).toBe(java.revision);
+        expect(rule.cardinality).toEqual({ form: "exact", value: 1 });
+        if (rule.artifactType === "OWL native structural differences")
+          expect(nativeSelectors.has(rule.selector)).toBe(true);
+        else {
+          expect(rule.artifactType).toBe("RDF parsing diagnostics");
+          expect(rule.selector).toBe("$['unparsedNQuads']");
+        }
+      }
       expect(rule.parser).toBeTruthy();
       expect(rule.capability).toBeTruthy();
       expect(rule.differenceCategory).toBeTruthy();

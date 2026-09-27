@@ -16,34 +16,34 @@
     "version": "0.1.0-alpha.0",
     "lockfile": "package-lock.json",
     "lockfileVersion": 3,
-    "lockfileSha256": "053dbfed97b7ce34c799354497cab096d5989016938080f654bd4cbad2cff012",
+    "lockfileSha256": "71050c62b21858e5afbfbdc2e207e938802ddd2381bc50cb07ccdb63bd9e0047",
     "evidenceManifest": "docs/provenance/npm-package-evidence.json",
-    "evidenceManifestSha256": "12658b8229054f96491efce38ec14443ce1c9f6b6feb6b97da1942e4044cafbb",
-    "evidenceCorpusRoot": "db3b4fc52fd81c337fa070ae6fca0e08d534531df03a9940ad74f513867334a4",
+    "evidenceManifestSha256": "cc307facb49e7f2334798826050a513f86a55df14ac1f5b9c5ce6d68df4bac32",
+    "evidenceCorpusRoot": "2b1eb94e863927786f7cd14e2a5497485ea620272c628e87225b2d2958641dfa",
     "tarballDependenciesBundled": false
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "350e939ac1b12a4980394cabaf3b5365247fcfed3351b2f87bda71aa4639b68b",
+    "factsSha256": "6b41047ffaa994b015ebf13b86d613b4ca557c22c8f2368a1ad65933772993e8",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
     "conclusion": null
   },
   "summary": {
-    "componentCount": 719,
-    "artifactCount": 644,
+    "componentCount": 721,
+    "artifactCount": 646,
     "productionComponentCount": 38,
-    "developmentComponentCount": 681,
-    "authenticatedTarballArtifactCount": 644,
-    "registrySignatureVerifiedArtifactCount": 644,
+    "developmentComponentCount": 683,
+    "authenticatedTarballArtifactCount": 646,
+    "registrySignatureVerifiedArtifactCount": 646,
     "provenanceVerifiedArtifactCount": 192,
-    "provenanceNotPublishedArtifactCount": 452,
-    "scanVerifiedArtifactCount": 644,
-    "evidenceBlobCount": 3139,
-    "evidenceRetainedBytes": 64827509,
-    "inspectedLicenceFileCount": 607,
-    "inspectedNoticeFileCount": 288,
+    "provenanceNotPublishedArtifactCount": 454,
+    "scanVerifiedArtifactCount": 646,
+    "evidenceBlobCount": 3152,
+    "evidenceRetainedBytes": 65843686,
+    "inspectedLicenceFileCount": 610,
+    "inspectedNoticeFileCount": 290,
     "productionInspectedLicenceFileCount": 38,
     "productionInspectedNoticeFileCount": 17,
     "productionComponentsWithoutInspectedLicence": [
@@ -58,14 +58,14 @@
       "(MIT OR CC0-1.0)": 1,
       "(MIT OR WTFPL)": 1,
       "0BSD": 1,
-      "Apache-2.0": 44,
+      "Apache-2.0": 45,
       "BSD-2-Clause": 10,
       "BSD-3-Clause": 20,
       "BlueOak-1.0.0": 31,
       "CC-BY-3.0": 1,
       "CC-BY-4.0": 1,
       "CC0-1.0": 4,
-      "ISC": 114,
+      "ISC": 115,
       "MIT": 476,
       "MPL-2.0": 12,
       "Python-2.0": 1
@@ -82,14 +82,14 @@
       "(MIT OR CC0-1.0)": 1,
       "(MIT OR WTFPL)": 1,
       "0BSD": 1,
-      "Apache-2.0": 43,
+      "Apache-2.0": 44,
       "BSD-2-Clause": 10,
       "BSD-3-Clause": 16,
       "BlueOak-1.0.0": 31,
       "CC-BY-3.0": 1,
       "CC-BY-4.0": 1,
       "CC0-1.0": 4,
-      "ISC": 111,
+      "ISC": 112,
       "MIT": 446,
       "MPL-2.0": 12,
       "Python-2.0": 1
@@ -24317,6 +24317,76 @@
       }
     },
     {
+      "dependencyPath": "node_modules/jsonpath-rfc9535",
+      "artifactId": "f2159f7979c0a35e539a0beebc0d8ecd41a6dae1a05eda3e2ea07b8165d73a29",
+      "name": "jsonpath-rfc9535",
+      "version": "1.3.0",
+      "relationship": "DEVELOPMENT_ONLY",
+      "lockfileDeclaredLicenseExpressions": ["Apache-2.0"],
+      "tarballDeclaredLicenseExpression": "Apache-2.0",
+      "scanObservedLicenseExpressions": [
+        "Apache-2.0",
+        "BSD-2-Clause",
+        "BSD-2-Clause AND CDDL-1.1 AND LicenseRef-scancode-unknown"
+      ],
+      "declaredLicenseExpression": "Apache-2.0",
+      "concludedLicenseExpression": "Apache-2.0",
+      "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
+      "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
+      "distributionDisposition": "DEVELOPMENT_ONLY_NOT_DISTRIBUTED",
+      "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
+      "licenseFilePresence": "PRESENT",
+      "inspectedFiles": [
+        {
+          "path": "package/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "9ca9049f749e74a545d31ad82a1bd49a470d4d910697517a97ac89cb0a0372d4",
+          "blobSha256": "9ca9049f749e74a545d31ad82a1bd49a470d4d910697517a97ac89cb0a0372d4",
+          "blobPath": "blobs/sha256/9c/9ca9049f749e74a545d31ad82a1bd49a470d4d910697517a97ac89cb0a0372d4"
+        },
+        {
+          "path": "package/src/__tests__/jsonpath-compliance-test-suite/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "0a76d5e15eeff92346a8783de64d5164c4d527a163f8599733e4e0ab941b59c0",
+          "blobSha256": "0a76d5e15eeff92346a8783de64d5164c4d527a163f8599733e4e0ab941b59c0",
+          "blobPath": "blobs/sha256/0a/0a76d5e15eeff92346a8783de64d5164c4d527a163f8599733e4e0ab941b59c0"
+        },
+        {
+          "path": "package/src/__tests__/jsonpath-compliance-test-suite/NOTICE",
+          "kind": "NOTICE",
+          "sha256": "e34cdb81d4ace9bfc808641845e63aa63fbc17ec4433256e6b887cb1eeb5fb70",
+          "blobSha256": "e34cdb81d4ace9bfc808641845e63aa63fbc17ec4433256e6b887cb1eeb5fb70",
+          "blobPath": "blobs/sha256/e3/e34cdb81d4ace9bfc808641845e63aa63fbc17ec4433256e6b887cb1eeb5fb70"
+        }
+      ],
+      "externalLicenseEvidence": [],
+      "authentication": {
+        "registrySignature": "VERIFIED",
+        "provenance": "NOT_PUBLISHED",
+        "archive": "VERIFIED",
+        "scan": "VERIFIED"
+      },
+      "artifactEvidence": {
+        "archiveSha256": "0e8b8457934acc6c630476c086cf430b20f6ad9afbf735c81e423cd7ed1ffb2d",
+        "provenanceSha256": "5335cfa3fe29c91f2e5940fcf486be9e5f48ab83221aa17deadf55ebf354cf7c",
+        "registrySignatureSha256": "94150b432cae6b1c2eaab65e9f223cfdaba4ca334ceed32125ce88cce0638029",
+        "scanSha256": "6ad4916f8ab0021a8103760bf91e2987f6292ee727c20fe9067802d7f8194e1e"
+      },
+      "registryUrl": "https://registry.npmjs.org/jsonpath-rfc9535/-/jsonpath-rfc9535-1.3.0.tgz",
+      "sourceReference": "https://github.com/P0lip/jsonpath-rfc9535",
+      "sourceUrl": "https://github.com/P0lip/jsonpath-rfc9535",
+      "packageAuthor": "P0lip",
+      "packageTarballScope": false,
+      "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
+      "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
+      "optional": false,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
+      }
+    },
+    {
       "dependencyPath": "node_modules/keyv",
       "artifactId": "557954e35b39e7d029e790097ea46eba8407ba34a35b5d961223b29fafa03205",
       "name": "keyv",
@@ -39350,6 +39420,65 @@
       "sourceReference": "git+https://github.com/isaacs/yallist.git",
       "sourceUrl": "https://github.com/isaacs/yallist",
       "packageAuthor": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+      "packageTarballScope": false,
+      "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
+      "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",
+      "optional": false,
+      "platformSelectors": {
+        "cpu": [],
+        "libc": [],
+        "os": []
+      }
+    },
+    {
+      "dependencyPath": "node_modules/yaml",
+      "artifactId": "3ad7da39a5afa1e5cca159f6577151df6d3e6ecd3bf612db823ffdc1eb076071",
+      "name": "yaml",
+      "version": "2.9.1",
+      "relationship": "DEVELOPMENT_ONLY",
+      "lockfileDeclaredLicenseExpressions": ["ISC"],
+      "tarballDeclaredLicenseExpression": "ISC",
+      "scanObservedLicenseExpressions": ["ISC"],
+      "declaredLicenseExpression": "ISC",
+      "concludedLicenseExpression": "ISC",
+      "licenseQualification": "LOCKFILE_TARBALL_DECLARATIONS_CONSISTENT",
+      "licenseConclusionRationale": "The concluded SPDX expression preserves an equivalent prior recorded conclusion when present; otherwise it selects the first SPDX-valid lockfile declaration, then authenticated package.json declaration, and only then ScanCode evidence. The distribution disposition likewise preserves an equivalent prior decision when present; otherwise it follows development/runtime scope and the concluded-licence policy. The lockfile and authenticated package.json declarations are consistent where present. ScanCode's additional file-level observations remain separately recorded and do not silently redefine the package declaration.",
+      "distributionDisposition": "DEVELOPMENT_ONLY_NOT_DISTRIBUTED",
+      "inspectionBasis": "LOCKED_REGISTRY_TARBALL",
+      "licenseFilePresence": "PRESENT",
+      "inspectedFiles": [
+        {
+          "path": "package/LICENSE",
+          "kind": "LICENCE",
+          "sha256": "5bba27375d93e9119f76c1015f7672cf9ad5f70952296e0842fb2243d6376869",
+          "blobSha256": "5bba27375d93e9119f76c1015f7672cf9ad5f70952296e0842fb2243d6376869",
+          "blobPath": "blobs/sha256/5b/5bba27375d93e9119f76c1015f7672cf9ad5f70952296e0842fb2243d6376869"
+        },
+        {
+          "path": "package/README.md",
+          "kind": "README_ATTRIBUTION",
+          "sha256": "c8aa393826fb1c55ae195399864e7f454a2c66c4d9491459545b26cac4b958e6",
+          "blobSha256": "c8aa393826fb1c55ae195399864e7f454a2c66c4d9491459545b26cac4b958e6",
+          "blobPath": "blobs/sha256/c8/c8aa393826fb1c55ae195399864e7f454a2c66c4d9491459545b26cac4b958e6"
+        }
+      ],
+      "externalLicenseEvidence": [],
+      "authentication": {
+        "registrySignature": "VERIFIED",
+        "provenance": "NOT_PUBLISHED",
+        "archive": "VERIFIED",
+        "scan": "VERIFIED"
+      },
+      "artifactEvidence": {
+        "archiveSha256": "bce3317355c622a4db862e079639765bb39940f805c3aed455b6add4b671ba0e",
+        "provenanceSha256": "bc9b2fc2568670477929102fc24869cd9ef7c2af95304c3ec665347de2272589",
+        "registrySignatureSha256": "2b3621f6f88052c00ea8386d43e962b550476d9ace3e156c9d6f8132087f9ab5",
+        "scanSha256": "5f75b27e4f7baa0238642cdb50fe930d8855aa82598283c097d04c8c44551ade"
+      },
+      "registryUrl": "https://registry.npmjs.org/yaml/-/yaml-2.9.1.tgz",
+      "sourceReference": "github:eemeli/yaml",
+      "sourceUrl": "https://github.com/eemeli/yaml",
+      "packageAuthor": "Eemeli Aro <eemeli@gmail.com>",
       "packageTarballScope": false,
       "noticeDisposition": "DEVELOPMENT_ONLY_RECORDED_NOT_PACKED",
       "rationale": "This authenticated component belongs to the repository test, evidence, documentation, or release toolchain and is excluded from the owlapi tarball.",

@@ -7,9 +7,9 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
-  compileImportClosureOracle,
+  compileOntologyReferenceOracles,
   executeImportClosureOracle,
-  ImportClosureOracleLauncherError,
+  OntologyReferenceOracleLauncherError,
   parseImportClosureContractArguments,
   parseOasisXmlCatalog,
   resolvePinnedReferenceEnvironment,
@@ -71,8 +71,8 @@ describe("import-closure oracle launcher arguments", () => {
   });
 
   it.each([
-    [[], "IMPORT_CLOSURE_ORACLE_ARGUMENT_MISSING"],
-    [["--root", "root.ofn"], "IMPORT_CLOSURE_ORACLE_ARGUMENT_MISSING"],
+    [[], "ONTOLOGY_REFERENCE_ORACLE_ARGUMENT_MISSING"],
+    [["--root", "root.ofn"], "ONTOLOGY_REFERENCE_ORACLE_ARGUMENT_MISSING"],
     [
       [
         "--root",
@@ -84,7 +84,7 @@ describe("import-closure oracle launcher arguments", () => {
         "--root",
         "other.ofn",
       ],
-      "IMPORT_CLOSURE_ORACLE_ARGUMENT_DUPLICATE",
+      "ONTOLOGY_REFERENCE_ORACLE_ARGUMENT_DUPLICATE",
     ],
     [
       [
@@ -96,7 +96,7 @@ describe("import-closure oracle launcher arguments", () => {
         "collapsed.ofn",
         "--network",
       ],
-      "IMPORT_CLOSURE_ORACLE_ARGUMENT_UNKNOWN",
+      "ONTOLOGY_REFERENCE_ORACLE_ARGUMENT_UNKNOWN",
     ],
   ])("rejects an invalid argument vector", (arguments_, code) => {
     expect(() => parseImportClosureContractArguments(arguments_)).toThrow(
@@ -116,7 +116,9 @@ describe("import-closure oracle launcher arguments", () => {
         },
         { executeProcess },
       ),
-    ).rejects.toMatchObject({ code: "IMPORT_CLOSURE_ORACLE_ROOT_NOT_FOUND" });
+    ).rejects.toMatchObject({
+      code: "ONTOLOGY_REFERENCE_ORACLE_ROOT_NOT_FOUND",
+    });
     expect(executeProcess).not.toHaveBeenCalled();
   });
 });
@@ -256,7 +258,12 @@ describe("Java process boundary", () => {
     classpathFile: "classpath.txt",
     launcherSource: "RunWithClasspath.java",
     owlapiVersion: "5.5.1",
-    oracleSource: "RunImportClosureContract.java",
+    oracleSources: [
+      "RunImportClosureContract.java",
+      "RunOntologyParsingContract.java",
+      "OntologyReferenceContract.java",
+      "OntologyStructuralComparison.java",
+    ],
     pinnedRevision: "0123456789abcdef0123456789abcdef01234567",
   });
 
@@ -269,11 +276,11 @@ describe("Java process boundary", () => {
     });
 
     await expect(
-      compileImportClosureOracle(referenceEnvironment, outputDirectory, {
+      compileOntologyReferenceOracles(referenceEnvironment, outputDirectory, {
         executeProcess,
       }),
     ).rejects.toMatchObject({
-      code: "IMPORT_CLOSURE_ORACLE_COMPILE_FAILED",
+      code: "ONTOLOGY_REFERENCE_ORACLE_COMPILE_FAILED",
       stage: "classpath-launcher",
     });
   });
@@ -291,11 +298,11 @@ describe("Java process boundary", () => {
       });
 
       await expect(
-        compileImportClosureOracle(referenceEnvironment, outputDirectory, {
+        compileOntologyReferenceOracles(referenceEnvironment, outputDirectory, {
           executeProcess,
         }),
       ).rejects.toMatchObject({
-        code: "IMPORT_CLOSURE_ORACLE_COMPILE_FAILED",
+        code: "ONTOLOGY_REFERENCE_ORACLE_COMPILE_FAILED",
         stage: "classpath-launcher",
       });
     },
@@ -320,7 +327,7 @@ describe("Java process boundary", () => {
         { executeProcess },
       ),
     ).rejects.toMatchObject({
-      code: "IMPORT_CLOSURE_ORACLE_JAVA_FAILED",
+      code: "ONTOLOGY_REFERENCE_ORACLE_JAVA_FAILED",
       exitCode: 17,
     });
   });
@@ -406,7 +413,7 @@ describe("pinned reference checkout configuration", () => {
         executeProcess,
       }),
     ).rejects.toMatchObject({
-      code: "IMPORT_CLOSURE_ORACLE_REVISION_MISMATCH",
+      code: "ONTOLOGY_REFERENCE_ORACLE_REVISION_MISMATCH",
     });
   });
 
@@ -421,7 +428,7 @@ describe("pinned reference checkout configuration", () => {
         executeProcess,
       }),
     ).rejects.toMatchObject({
-      code: "IMPORT_CLOSURE_ORACLE_REFERENCE_ENVIRONMENT_UNAVAILABLE",
+      code: "ONTOLOGY_REFERENCE_ORACLE_REFERENCE_ENVIRONMENT_UNAVAILABLE",
     });
     expect(executeProcess).not.toHaveBeenCalled();
   });
@@ -443,7 +450,7 @@ describePinnedOracle("pinned Java cyclic import-closure oracle", () => {
     compiledOracleDirectory = await temporaryDirectory(
       "owlapi-import-closure-java-",
     );
-    await compileImportClosureOracle(
+    await compileOntologyReferenceOracles(
       pinnedReferenceEnvironment,
       compiledOracleDirectory,
     );
@@ -467,6 +474,75 @@ describePinnedOracle("pinned Java cyclic import-closure oracle", () => {
     await writeFile(outputPath, transform(source), "utf8");
     return outputPath;
   };
+
+  it("records explicit Java parser settings and source diagnostics", async () => {
+    const execution = await executeFixture({
+      catalogPath: fixturePath("catalog.xml"),
+      verifyOutputPath: fixturePath("collapsed.ofn"),
+    });
+    expect(execution.result.parserConfiguration).toEqual({
+      strict: false,
+      loadAnnotationAxioms: true,
+    });
+    expect(execution.result.sourceDiagnostics).toHaveLength(3);
+    expect(
+      execution.result.sourceDiagnostics.every(
+        ({ unparsedTriples }) => unparsedTriples.length === 0,
+      ),
+    ).toBe(true);
+  });
+
+  it("refuses an apparent match when native Java reports unparsed RDF", async () => {
+    const directory = await temporaryDirectory("owlapi-unparsed-java-");
+    const rootPath = join(directory, "root.rdf");
+    const verifyOutputPath = join(directory, "output.ofn");
+    await writeFile(
+      rootPath,
+      `<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:owl="http://www.w3.org/2002/07/owl#"><owl:Ontology rdf:about="urn:root"/><rdf:Description rdf:about="urn:subject"><owl:unknownPredicate rdf:resource="urn:object"/></rdf:Description></rdf:RDF>`,
+    );
+    await writeFile(verifyOutputPath, "Ontology(<urn:root>)");
+    const execution = await executeImportClosureOracle(
+      {
+        rootPath,
+        verifyOutputPath,
+        catalogMappings: [],
+        compiledOracleDirectory,
+      },
+      pinnedReferenceEnvironment,
+    );
+    expect(execution.result).toMatchObject({
+      comparisonOutcome: "ERROR",
+      mismatchCategory: "SOURCE_UNPARSED_RDF",
+    });
+    expect(
+      execution.result.sourceDiagnostics[0].unparsedTriples,
+    ).not.toHaveLength(0);
+  });
+
+  it("refuses unparsed candidate RDF even when reconstructed axioms match", async () => {
+    const directory = await temporaryDirectory("owlapi-unparsed-output-java-");
+    const rootPath = join(directory, "root.ofn");
+    const verifyOutputPath = join(directory, "output.rdf");
+    await writeFile(rootPath, "Ontology(<urn:root>)");
+    await writeFile(
+      verifyOutputPath,
+      `<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:owl="http://www.w3.org/2002/07/owl#"><owl:Ontology rdf:about="urn:root"/><rdf:Description rdf:about="urn:subject"><owl:unknownPredicate rdf:resource="urn:object"/></rdf:Description></rdf:RDF>`,
+    );
+    const execution = await executeImportClosureOracle(
+      {
+        rootPath,
+        verifyOutputPath,
+        catalogMappings: [],
+        compiledOracleDirectory,
+      },
+      pinnedReferenceEnvironment,
+    );
+    expect(execution.result).toMatchObject({
+      comparisonOutcome: "ERROR",
+      mismatchCategory: "OUTPUT_UNPARSED_RDF",
+    });
+    expect(execution.stderr).toContain("unknownPredicate");
+  });
 
   it("matches a cyclic closure under one anonymous-individual bijection", async () => {
     const execution = await executeFixture({
@@ -604,6 +680,193 @@ describePinnedOracle("pinned Java cyclic import-closure oracle", () => {
     });
   });
 
+  it("reports all named structural differences after counts and earlier fields differ", async () => {
+    const directory = await temporaryDirectory("owlapi-complete-differences-");
+    const rootPath = join(directory, "root.ofn");
+    const verifyOutputPath = join(directory, "output.ofn");
+    await writeFile(
+      rootPath,
+      `Ontology(<urn:expected> <urn:expected:v1>
+        Annotation(<urn:label> "expected")
+        Declaration(Class(<urn:Common>))
+        Declaration(Class(<urn:Missing>))
+        Declaration(Class(<urn:Changed>)))`,
+    );
+    await writeFile(
+      verifyOutputPath,
+      `Ontology(<urn:actual> <urn:actual:v2>
+        Import(<urn:unexpected:import>)
+        Annotation(<urn:label> "actual")
+        Declaration(Class(<urn:Common>))
+        Declaration(Class(<urn:Replacement>)))`,
+    );
+    const { result } = await executeImportClosureOracle(
+      {
+        rootPath,
+        verifyOutputPath,
+        catalogMappings: [],
+        compiledOracleDirectory,
+      },
+      pinnedReferenceEnvironment,
+    );
+    expect(result.comparisonOutcome).toBe("MISMATCH");
+    expect(result.structuralDifferences).toEqual({
+      ontologyId: {
+        java: { ontologyIRI: "urn:expected", versionIRI: "urn:expected:v1" },
+        js: { ontologyIRI: "urn:actual", versionIRI: "urn:actual:v2" },
+      },
+      imports: { javaOnly: [], jsOnly: ["urn:unexpected:import"] },
+      annotations: {
+        javaOnly: ['Annotation(<urn:label> "expected"^^xsd:string)'],
+        jsOnly: ['Annotation(<urn:label> "actual"^^xsd:string)'],
+      },
+      axioms: {
+        javaOnly: [
+          "Declaration(Class(<urn:Changed>))",
+          "Declaration(Class(<urn:Missing>))",
+        ],
+        jsOnly: ["Declaration(Class(<urn:Replacement>))"],
+      },
+      anonymousIndividualGraphs: { javaOnly: [], jsOnly: [] },
+      anonymousIndividualComparison: "NOT_REQUIRED",
+    });
+  });
+
+  it("does not treat reordered inverse-property operands as an axiom difference", async () => {
+    const directory = await temporaryDirectory("owlapi-unordered-inverse-");
+    const rootPath = join(directory, "root.ofn");
+    const verifyOutputPath = join(directory, "output.ofn");
+    await writeFile(
+      rootPath,
+      "Ontology(<urn:root> InverseObjectProperties(<urn:p> <urn:q>))",
+    );
+    await writeFile(
+      verifyOutputPath,
+      "Ontology(<urn:root> InverseObjectProperties(<urn:q> <urn:p>))",
+    );
+    const { result } = await executeImportClosureOracle(
+      {
+        rootPath,
+        verifyOutputPath,
+        catalogMappings: [],
+        compiledOracleDirectory,
+      },
+      pinnedReferenceEnvironment,
+    );
+    expect(result.comparisonOutcome).toBe("MATCH");
+    expect(result.structuralDifferences.axioms).toEqual({
+      javaOnly: [],
+      jsOnly: [],
+    });
+  });
+
+  it("keeps renamed anonymous graphs matched while reporting an extra named axiom", async () => {
+    const mismatchedOutput = await writeModifiedCollapsedOntology(
+      "owlapi-anonymous-residual-differences-",
+      (source) =>
+        source.replace(
+          "Declaration(Class(:MemberB))",
+          "Declaration(Class(:MemberB))\nDeclaration(Class(:Unexpected))",
+        ),
+    );
+    const { result } = await executeFixture({
+      catalogPath: fixturePath("catalog.xml"),
+      verifyOutputPath: mismatchedOutput,
+    });
+    expect(result.comparisonOutcome).toBe("MISMATCH");
+    expect(result.structuralDifferences.axioms).toEqual({
+      javaOnly: [],
+      jsOnly: ["Declaration(Class(<urn:owlapi-js:import-closure#Unexpected>))"],
+    });
+    expect(result.structuralDifferences.anonymousIndividualGraphs).toEqual({
+      javaOnly: [],
+      jsOnly: [],
+    });
+    expect(result.structuralDifferences.anonymousIndividualComparison).toBe(
+      "MATCH",
+    );
+  });
+
+  it("retains structural differences when Java source RDF is unparsed", async () => {
+    const directory = await temporaryDirectory(
+      "owlapi-unparsed-full-differences-",
+    );
+    const rootPath = join(directory, "root.rdf");
+    const verifyOutputPath = join(directory, "output.ofn");
+    await writeFile(
+      rootPath,
+      `<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:owl="http://www.w3.org/2002/07/owl#"><owl:Ontology rdf:about="urn:root"/><owl:Class rdf:about="urn:Expected"/><rdf:Description rdf:about="urn:s"><owl:unknownPredicate rdf:resource="urn:o"/></rdf:Description></rdf:RDF>`,
+    );
+    await writeFile(
+      verifyOutputPath,
+      "Ontology(<urn:root> Declaration(Class(<urn:Unexpected>)))",
+    );
+    const { result } = await executeImportClosureOracle(
+      {
+        rootPath,
+        verifyOutputPath,
+        catalogMappings: [],
+        compiledOracleDirectory,
+      },
+      pinnedReferenceEnvironment,
+    );
+    expect(result).toMatchObject({
+      comparisonOutcome: "ERROR",
+      structuralComparisonOutcome: "MISMATCH",
+      mismatchCategory: "SOURCE_UNPARSED_RDF",
+      expectedCounts: { axioms: 1 },
+      actualCounts: { axioms: 1 },
+    });
+    expect(result.sourceDiagnostics[0].unparsedNQuads).toContain(
+      "<http://www.w3.org/2002/07/owl#unknownPredicate>",
+    );
+    expect(result.structuralDifferences.axioms).toEqual({
+      javaOnly: ["Declaration(Class(<urn:Expected>))"],
+      jsOnly: ["Declaration(Class(<urn:Unexpected>))"],
+    });
+    expect(result.sourceDiagnostics[0].unparsedTriples).not.toHaveLength(0);
+  });
+
+  it("reports an unmatched anonymous graph without parser-generated node labels", async () => {
+    const directory = await temporaryDirectory(
+      "owlapi-anonymous-graph-diagnostic-",
+    );
+    const rootPath = join(directory, "root.ofn");
+    const verifyOutputPath = join(directory, "output.ofn");
+    await writeFile(
+      rootPath,
+      'Ontology(<urn:root> AnnotationAssertion(<urn:facet> _:source-label "x"))',
+    );
+    await writeFile(verifyOutputPath, "Ontology(<urn:root>)");
+    const { result } = await executeImportClosureOracle(
+      {
+        rootPath,
+        verifyOutputPath,
+        catalogMappings: [],
+        compiledOracleDirectory,
+      },
+      pinnedReferenceEnvironment,
+    );
+    expect(result.structuralDifferences.anonymousIndividualGraphs).toEqual({
+      javaOnly: [
+        {
+          anonymousIndividuals: 1,
+          statements: [
+            {
+              category: "AXIOM",
+              value:
+                'AnnotationAssertion(<urn:facet> _:comparison-0 "x"^^xsd:string)',
+            },
+          ],
+        },
+      ],
+      jsOnly: [],
+    });
+    expect(result.structuralDifferences.anonymousIndividualComparison).toBe(
+      "MISMATCH",
+    );
+  });
+
   it("rejects a many-to-one anonymous-individual mapping across source documents", async () => {
     const nonBijectiveOutput = await writeModifiedCollapsedOntology(
       "owlapi-output-non-bijective-",
@@ -627,6 +890,82 @@ describePinnedOracle("pinned Java cyclic import-closure oracle", () => {
       mismatchCategory: "AXIOMS",
       mismatchPath: "ontology.axioms",
       networkEvidence: { networkAccessAttemptCount: 0 },
+    });
+  });
+
+  it("serializes unparsed RDF blank nodes through an RDF writer, not as fake IRIs", async () => {
+    const directory = await temporaryDirectory("owlapi-unparsed-blank-node-");
+    const rootPath = join(directory, "root.ttl");
+    const verifyOutputPath = join(directory, "output.ofn");
+    await writeFile(
+      rootPath,
+      "@prefix owl: <http://www.w3.org/2002/07/owl#> . <urn:root> a owl:Ontology . <urn:d> owl:withRestrictions _:list .",
+    );
+    await writeFile(verifyOutputPath, "Ontology(<urn:root>)");
+    const { result } = await executeImportClosureOracle(
+      {
+        catalogMappings: [],
+        compiledOracleDirectory,
+        rootPath,
+        verifyOutputPath,
+      },
+      pinnedReferenceEnvironment,
+    );
+    expect(result.sourceDiagnostics[0].unparsedNQuads).toMatch(
+      /<urn:d> <http:\/\/www\.w3\.org\/2002\/07\/owl#withRestrictions> _:/u,
+    );
+    expect(result.sourceDiagnostics[0].unparsedNQuads).not.toContain("<_:");
+  });
+
+  it("proves propagation using a native merge of the compared direct JavaScript models", async () => {
+    const directory = await temporaryDirectory("owlapi-propagation-");
+    const rootModel = join(directory, "root.ofn");
+    const output = join(directory, "closure.ofn");
+    const addClass = (text) =>
+      text.replace(/\)\s*$/u, "Declaration(Class(<urn:baseline-extra>))\n)");
+    await writeFile(
+      rootModel,
+      addClass(await readFile(fixturePath("root.ofn"), "utf8")),
+    );
+    await writeFile(
+      output,
+      addClass(await readFile(fixturePath("collapsed.ofn"), "utf8")),
+    );
+    const parsedSourceModels = ["root.ofn", "member-a.ofn", "member-b.ofn"].map(
+      (name) => ({
+        sourceDocumentPath: fixturePath(name),
+        modelPath: name === "root.ofn" ? rootModel : fixturePath(name),
+      }),
+    );
+    const options = {
+      catalogMappings: await parseOasisXmlCatalog(fixturePath("catalog.xml")),
+      compiledOracleDirectory,
+      rootPath: fixturePath("root.ofn"),
+      verifyOutputPath: output,
+      parsedSourceModels,
+    };
+    const { result } = await executeImportClosureOracle(
+      options,
+      pinnedReferenceEnvironment,
+    );
+    expect(result).toMatchObject({
+      comparisonOutcome: "MISMATCH",
+      propagationEvidence: { comparisonOutcome: "MATCH" },
+    });
+    const unmatchedOutput = await executeImportClosureOracle(
+      { ...options, verifyOutputPath: fixturePath("collapsed.ofn") },
+      pinnedReferenceEnvironment,
+    );
+    expect(unmatchedOutput.result.propagationEvidence.comparisonOutcome).toBe(
+      "MISMATCH",
+    );
+    const missingModel = await executeImportClosureOracle(
+      { ...options, parsedSourceModels: parsedSourceModels.slice(1) },
+      pinnedReferenceEnvironment,
+    );
+    expect(missingModel.result).toMatchObject({
+      comparisonOutcome: "ERROR",
+      mismatchCategory: "SOURCE_MODEL_SET_MISMATCH",
     });
   });
 
@@ -800,7 +1139,7 @@ describePinnedOracle("pinned Java cyclic import-closure oracle", () => {
 
 describe("launcher error identity", () => {
   it("uses one precise typed error for launcher failures", () => {
-    const error = new ImportClosureOracleLauncherError("message", "CODE", {
+    const error = new OntologyReferenceOracleLauncherError("message", "CODE", {
       detail: "value",
     });
 
@@ -808,7 +1147,7 @@ describe("launcher error identity", () => {
       code: "CODE",
       detail: "value",
       message: "message",
-      name: "ImportClosureOracleLauncherError",
+      name: "OntologyReferenceOracleLauncherError",
     });
   });
 });

@@ -261,7 +261,7 @@ Reuse the installed RDF/XML, RDF/JS and other syntax parsers, native Git and Jav
 tools, existing exact-catalog parser, public merger/storage recipe and pinned
 Java OWLAPI 5.5.1 comparator. The residual custom work is load-session ordering
 and same-input/same-run qualification, not a new grammar or equality engine. No
-dependency, public API, compatibility shim, ontology content migration or Java
+production dependency, public API, compatibility shim, ontology content migration or Java
 production runtime is introduced. Preserve explicit Java parser settings and
 diagnostics; similarly named strict modes are not assumed to have identical
 recovery policies.

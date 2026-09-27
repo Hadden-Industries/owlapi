@@ -143,7 +143,7 @@ const traversalCountingDataset = (quads) => {
 
 const unconsumedCases = [
   {
-    compatibleDisposition: "silent-non-owl-rdf",
+    compatibleDisposition: "warning-non-owl-rdf",
     name: "an arbitrary predicate",
     statement: () =>
       quad(
@@ -176,7 +176,7 @@ const unconsumedCases = [
       ),
   },
   {
-    compatibleDisposition: "silent-non-owl-rdf",
+    compatibleDisposition: "warning-non-owl-rdf",
     name: "an RDF reification fragment",
     statement: () =>
       quad(
@@ -187,7 +187,7 @@ const unconsumedCases = [
       ),
   },
   {
-    compatibleDisposition: "silent-non-owl-rdf",
+    compatibleDisposition: "warning-non-owl-rdf",
     name: "an unrelated named subject",
     statement: () =>
       quad(
@@ -252,10 +252,13 @@ describe("RdfToOwlTranslator strict selected-graph completeness", () => {
         { configuration: configurationFor("compatible") },
       );
 
-      if (compatibleDisposition === "warning") {
+      if (["warning", "warning-non-owl-rdf"].includes(compatibleDisposition)) {
         expect(result.context.diagnostics).toEqual([
           expect.objectContaining({
-            code: "RDF_UNCONSUMED_OWL_TRIPLE",
+            code:
+              compatibleDisposition === "warning"
+                ? "RDF_UNCONSUMED_OWL_TRIPLE"
+                : "RDF_UNCONSUMED_TRIPLE",
             severity: "warning",
             ...expectedStatementDetails(unconsumedStatement),
           }),

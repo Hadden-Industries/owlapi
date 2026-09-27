@@ -278,28 +278,40 @@ reconciliation. Neither constitutes final release acceptance: fresh evidence
 from the reconciled candidate remains required after accepted `owlapi@0.1.0`
 and Phase 21 are ancestors.
 
-### July source-driven JavaScript parity qualification
+### July source-driven parsing and import-closure reconciliation
 
-The accepted follow-up in lifecycle plan §1.3 adds
-`npm run test:universal-ontology-closures -- --ontology-repository <checkout> --output <new-result-directory>`.
-It uses the four original `src/**/20260714` family documents at Universal
-Ontology revision `e2c667f3584b8fb705671cada0fe205b1000b617`, the same corpus
-revision already pinned by owlapi CI. Exact July source mappings are shared by
-both engines; maintained September catalogs are not silently reused or rewritten.
-Source bytes and hashes come from the pinned Git revision, not a build of the
-historical naive merger. Existing `-full` artifacts are excluded entirely.
+Run `npm run test:universal-ontology -- --ontology-repository <checkout> --output <new-result-directory>`.
+This fail-closed command covers all four original July variants at Universal
+Ontology revision `e2c667f3584b8fb705671cada0fe205b1000b617`: ISO11179-3 edition 4,
+reference-data, core and extended. It consumes only original source blobs;
+historical `-full` documents and VOWL projections are not reference outputs.
 
-The driver composes the current JavaScript public manager, imports-closure
-provider, merger and storers. It generates fresh Functional Syntax and RDF/XML
-candidates, preserves only root identity/ontology annotations, and passes each
-candidate to the existing fresh Java structural oracle. The dedicated command
-and CI gate fail for missing sources, Java, mappings or any family/format result;
-the portable unit suite may still run without Java. The arbitrary-file
-`--verify-output` utility remains useful for diagnostics, but cannot alone prove
-that a supplied candidate came from the current JavaScript implementation.
+The report separates four parsing results (18 direct-document comparisons in
+their original import contexts) from eight fresh closure results (Functional
+Syntax and RDF/XML). Parsing includes each document's own annotations and
+imports. Closures retain only root ontology identity and ontology annotations,
+plus the structural union of direct axioms. All resolution remains offline.
 
-Existing WebVOWL July tests prove loading and selected VOWL projections, not
-this contract. In particular, the old VOWL differential excludes July core and
-extended because its recorded reference closures differ. The new structural
-gate includes both and records exact input/candidate identity, parser settings,
-diagnostics and offline-resolution evidence.
+Native Java OWLAPI owns structural equality and the independent merge of the
+compared JavaScript document models. Exact specification-grounded differences
+use the one expected-difference ledger; unknown, ambiguous or stale rules fail.
+Raw Java outcomes remain visible alongside reconciliation outcomes. The
+[named OWL-Time restriction decision](../../docs/compatibility/july-ontology-reconciliation.md)
+explains why a reconciled pass for core/extended is not raw Java equality.
+July ledger rules apply to direct document differences, not to the closure root.
+Closure reconciliation instead requires `propagationEvidence` to match with no
+allowed differences after Java merges those reconciled document models.
+The standalone Java oracle exits with code 1 for unparsed source RDF and retains
+`SOURCE_UNPARSED_RDF`; only the qualification command adjudicates that evidence
+against the exact ledger. Do not treat a raw oracle exit as the reconciled result.
+
+Source mode records actual source bytes, including dirty changes. Optional
+`--candidate <directory>` installs the retained tarball with scripts disabled
+and verifies its digest before testing the public package. Generated documents
+and source blobs are rechecked for changes at the end. Reports, individual
+oracle JSON, parser diagnostics and native logs remain in the new output directory.
+
+The required Node 24 CI job builds the exact Java revision with Maven, runs
+native oracle regressions, executes both July checks and retains their artifacts,
+including failures. This adds development evidence only; it does not change the
+release workflow or replace final post-0.1.0/Phase-21 baseline qualification.
