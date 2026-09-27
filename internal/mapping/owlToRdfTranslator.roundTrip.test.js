@@ -12,6 +12,7 @@ import {
 } from "../rdfjs/vocabulary.js";
 import { OwlToRdfTranslator } from "./owlToRdfTranslator.js";
 import { RdfToOwlTranslator } from "./rdfToOwlTranslator.js";
+import { compareOntologies } from "../model/ontologyStructuralIsomorphism.js";
 
 const FIXTURE_URL = new URL(
   "../../util/owlapi-reference/fixtures/functional/phase2-structural.ofn",
@@ -68,6 +69,33 @@ const withoutInferredDeclarations = (dataset) => {
 };
 
 describe("OwlToRdfTranslator round trips", () => {
+  it("preserves the representable storage fixture without dropping declaration comparisons", async () => {
+    const manager = OWLManager.createOWLOntologyManager();
+    const source = new StringDocumentSource(
+      readFileSync(
+        new URL(
+          "../../util/owlapi-reference/fixtures/storage/rdfxml-all-kinds.rdf",
+          import.meta.url,
+        ),
+        "utf8",
+      ),
+    );
+    const original = await manager.loadOntologyFromOntologyDocument(source, {
+      parsingMode: "strict",
+    });
+    const { ontology, context } = await new RdfToOwlTranslator().translate(
+      new OwlToRdfTranslator().translate(original),
+      {
+        configuration: { parsingMode: "strict" },
+      },
+    );
+    expect(context.diagnostics).toEqual([]);
+    expect(compareOntologies(original, ontology)).toEqual({
+      equal: true,
+      mismatch: null,
+    });
+  });
+
   it("preserves the complete Phase 2 structural ontology through RDF", async () => {
     // A mapper can produce valid RDF while omitting one structural family; the
     // inverse translator makes that semantic loss observable at the OWL model.

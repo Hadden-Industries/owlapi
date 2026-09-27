@@ -715,6 +715,34 @@
       "reviewDate": "2026-09-25"
     },
     {
+      "id": "PHASE22-RDFXML-STORER",
+      "path": "internal/storage/rdfxml/rdfXmlStorer.js",
+      "phase": 22,
+      "scope": "private exact-format RDF/XML storage that reconstructs one diagnostic-free default graph in strict mode and compares direct OWL structure before target publication; sorted snapshot inputs and a fresh native RDF allocator isolate deterministic output from unrelated calls",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-mapping-to-rdf/ sections 2 and 3",
+        "https://www.w3.org/TR/rdf-syntax-grammar/",
+        "docs/ontology-lifecycle-capability-implementation-plan.md Task 12"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 RDF/XML public parser and ontology structure, exercised through the pinned public-API structural oracle; the JavaScript losslessness gate follows approved LIFECYCLE-LOSSLESS-STORAGE"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/storage/rdfxml/rdfXmlStorer.test.js",
+        "model/owlOntologyManager.storage.test.js",
+        "internal/mapping/owlToRdfTranslator.roundTrip.test.js",
+        "util/owlapi-reference/fixtures/storage/rdfxml-all-kinds.rdf",
+        "util/owlapi-reference/fixtures/storage/rdfxml-all-kinds.java.json"
+      ],
+      "thirdPartyDependencies": ["@rdfjs/data-model"],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-25"
+    },
+    {
       "id": "PHASE22-STORAGE-REGISTRY",
       "path": "internal/storage/storerRegistry.js",
       "phase": 22,

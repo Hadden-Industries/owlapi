@@ -11,6 +11,7 @@ import {
   readDocumentFormatParameters,
 } from "../../model/owlDocumentFormat.js";
 import { functionalSyntaxStorer } from "./functional/functionalSyntaxStorer.js";
+import { rdfXmlStorer } from "./rdfxml/rdfXmlStorer.js";
 
 const requireDocumentFormat = (format) => {
   if (!(format instanceof OWLDocumentFormat) || !Object.isFrozen(format)) {
@@ -82,4 +83,4 @@ export class StorerRegistry {
 
 /** Each manager owns its registry; public construction accepts no storer hook. */
 export const createDefaultStorerRegistry = () =>
-  new StorerRegistry([functionalSyntaxStorer]);
+  new StorerRegistry([functionalSyntaxStorer, rdfXmlStorer]);

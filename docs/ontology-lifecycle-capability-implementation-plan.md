@@ -834,7 +834,7 @@ All named structural values compare exactly. Two ontology IDs compare equal when
 2. Build label-independent skeleton fingerprints for each axiom and annotation. Bucket candidates by kind, arity, named terms, literal values, and anonymous occurrence pattern before backtracking.
 3. Backtrack only within matching buckets, choosing the smallest candidate bucket first. Carry forward and reverse anonymous maps in each branch. Memoize failed states by bucket position plus current bijection.
 4. Return the first stable mismatch category and structural path when no bijection succeeds. Do not expose the comparator publicly and do not use blank-node labels as a deterministic tie-breaker for semantic equality.
-5. Add adversarial symmetric fixtures and enforce a test-time search-state ceiling so an accidental factorial regression fails predictably. If the ceiling is exceeded, throw a package-private structural-comparison limit error; storage callers translate it to `OWLOntologyStorageError` with `reason: "ONTOLOGY_NOT_REPRESENTABLE"` and comparison-limit details rather than accepting an unverified save.
+5. Add adversarial symmetric fixtures and enforce a test-time search-state ceiling so an accidental factorial regression fails predictably. If the ceiling is exceeded, throw a package-private structural-comparison limit error; storage callers translate it to a base `OWLOntologyStorageError`, retaining the cause and its comparison-limit details, without `reason: "ONTOLOGY_NOT_REPRESENTABLE"`. Exhaustion does not prove unrepresentability and must not publish an unverified save.
 6. Run:
 
    ```powershell
@@ -1098,6 +1098,61 @@ committed OWLOntology snapshot
    ```
 
 8. Request a checkpoint only after both the exhaustive success fixture and the mandated non-injective failure fixture pass through `manager.saveOntology` with target atomicity.
+
+**Pre-integration checkpoint (2026-09-25):** The exact RDF/XML storer now
+validates complete generated text through the existing parser, strict reverse
+mapping, and structural isomorphism before publication. It owns no loader or
+IRI mapper. Both ontology/annotation-assertion role collisions and collapsed
+annotated/unannotated declarations fail with mismatch category/path and retain
+the target. Verification resource exhaustion remains a base storage error,
+not a claim of proven unrepresentability. Unsupported output parameters fail
+without choosing another format.
+
+The exhaustive positive fixture explicitly authors its entity declarations
+without adding a second unannotated variant of an annotated declaration.
+All current structural kinds are covered (imports separately), with 62 axioms,
+one ontology annotation, and one shared anonymous individual. Sorting the
+snapshot's direct collections and using a fresh native RDF data factory per
+mapping keeps repeated saves independent of insertion order and other factory
+calls. No mapping implementation or comparison tolerance was weakened.
+
+The pinned Java OWLAPI 5.5.1 oracle reports `MATCH` against the Functional
+representation of that same authored input: 62 axioms, one annotation, an
+anonymous-individual bijection of size one, and zero network attempts with an
+empty fail-closed catalog. The focused writer/storer/manager/round-trip set
+passes 87 tests, and both mapping differential suites pass. Browser,
+installed-consumer, real-family, final baseline reconciliation, and release
+acceptance remain separate gates.
+
+**Storage review corrections (2026-09-27):** The native Review Agent identified
+three issues at the Tasks 7/9/11/12 work-package boundary. Comparison-budget
+exhaustion now retains its exact private cause without misclassifying it as
+unrepresentability; the fixture inventory is regenerated from the actual
+45-file Java-reference fixture tree; and both writers retain syntax-only IRI
+validation by pinning the compatible `@hyperjump/uri` 1.3.5 release.
+
+The [1.3.6 implementation](https://github.com/hyperjump-io/uri/blob/v1.3.6/lib/index.js)
+adds unsupported-IP-version exceptions to its validators. That dereferencing
+restriction does not apply to ontology storage: [RFC 3987 section 2.2](https://www.rfc-editor.org/rfc/rfc3987#section-2.2)
+includes IPvFuture, and [RFC 3986 section 3.2.2](https://www.rfc-editor.org/rfc/rfc3986#section-3.2.2)
+places the unsupported-version error on dereferencing. The
+[1.3.5 public validator](https://github.com/hyperjump-io/uri/blob/v1.3.5/lib/index.js)
+checks that grammar without resolution or normalization. This is an exact
+compatible dependency selection, not a host rewrite, permissive fallback,
+exception-message catch, private dependency import, or copied grammar. The
+already-transitive `validate-iri` 1.0.1 was rejected because its IPvFuture
+production omits unreserved characters; parser/normalizer libraries are not
+substitutes for lexical validation.
+
+Public manager tests now save and strictly reload IPvFuture ontology, version,
+and entity IRIs in both formats with exact lexical identity and zero loader
+calls. They also reject malformed IPvFuture/IPv6 hosts, invalid percent escapes,
+relative IRIs, whitespace, unpaired surrogates, noncharacters, and private-use
+characters outside queries while retaining prior successful target text.
+The four storage suites pass 94 tests. The current production audit reports
+zero known vulnerabilities; the regenerated authenticated npm corpus verifies
+all 644 artifacts, with 643 unchanged artifacts reused from the exact prior
+lock graph. Human provenance review and final release acceptance remain pending.
 
 ### Task 13: Exercise the exact Universal Ontology composition through public boundaries
 

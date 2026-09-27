@@ -2341,7 +2341,7 @@ bundle licence and notice review.
     });
     expect(governance.productionAudit).toMatchObject({
       command: "npm audit --omit=dev --json",
-      performedOn: "2026-09-25",
+      performedOn: governance.recordedOn,
       productionPackageCount: 39,
       vulnerabilityCounts: {
         info: 0,
