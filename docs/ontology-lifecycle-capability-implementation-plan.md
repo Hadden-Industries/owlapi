@@ -38,7 +38,7 @@ those baselines land; if they change the required surface materially, stop for
 a reviewed plan and cross-repository contract amendment instead of adding a
 shim or silently changing the exact `owlapi@0.2.0` consumer coordinate.
 
-**Revised:** 2026-09-25.
+**Revised:** 2026-09-27.
 
 ---
 
@@ -170,6 +170,59 @@ rewrite unrelated history or claim a published rollback. Reassess on changed
 accepted API/consumer contracts, a newly required dependency, disproven oracle,
 or unavailable required assurance. Release absence alone is not a development
 blocker. Reconciliation explicitly replaces provisional evidence with new runs.
+
+### 1.3 July source-driven parity correction
+
+The owner approved this correction on 2026-09-27, including use of the July
+Universal Ontology sources instead of the September versions. The existing
+WebVOWL `productionCorpus.test.js`, run by owlapi's consumer qualifier, covers
+the four `20260714` families through both production loading entries. This is
+load acceptance, not lossless structural parity: the historical VOWL differential
+excludes core and extended because its reference closures differ.
+
+Use Universal Ontology revision `e2c667f3584b8fb705671cada0fe205b1000b617`, already
+pinned by owlapi CI, and the original `src/` documents. Never read a pre-existing
+`-full` artifact as either expected or candidate output. The maintained catalogs
+now identify September imports; the qualification fixture must instead declare
+exact July import-to-source mappings shared by both engines. Preserve the
+maintained Universal Ontology checkout, catalogs, generated files and dirty work.
+Native Git supplies the pinned source bytes; record their hashes, parser settings,
+catalog mappings, Java revision and candidate identity in the result.
+
+This extends `SLICE-003` / `REQ-003` / `AC-003` / `QA-003` / `DEC-003` without
+changing the public surface or final-release prerequisites:
+
+| Increment                          | Predicted seams and proof                                                                                                                                                                       | Completion / recovery boundary                                                                                                                                                               |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Source-driven oracle               | Development driver and tests under `util/owlapi-reference/`; compose only public APIs; generate fresh Functional Syntax and RDF/XML candidates and compare with the existing pinned Java oracle | Missing source, Java or mapping fails the dedicated command. Never accept an arbitrary existing candidate or replace Java's structural comparator.                                           |
+| Import declaration context         | Manager load session, private RDF parsers and translator; red/green tests for transitive declarations, cycles, sibling isolation, prior loaded imports and atomic failure                       | Discover declarations/imports before strict reconstruction. Preserve source ownership, document-scoped blank nodes, existing security/resource limits and public parser contracts.           |
+| Enforced real-family qualification | Dedicated npm command, `.github/workflows/ci.yml`, affected workflow governance and documentation; all four July families in both formats                                                       | Source, packed-candidate, browser and relevant consumer regressions plus one package-end review. Keep evidence provisional until baseline reconciliation; no release or downstream mutation. |
+
+The loader repair follows [OWL 2 canonical parsing §3.6](https://www.w3.org/TR/owl2-syntax/#Canonical_Parsing_of_OWL_2_Ontologies)
+and [RDF mapping declaration analysis §3.2.1](https://www.w3.org/TR/owl2-mapping-to-rdf/#Analyzing_Declarations):
+each document's reconstruction uses its own declarations, those of its transitive
+imports and built-ins, not unrelated manager ontologies or sibling documents.
+The root's `dcterms:contributor` is a concrete regression: its declaration can
+reside in a transitive import. Do not whitelist that namespace, suppress strict
+errors, copy imported declarations into local axioms or concatenate RDF graphs.
+Imported ontology annotations are valid metadata; their presence is not a warning
+condition. They are parsed on their source ontologies but not copied by the merger.
+
+Reuse the installed RDF/XML, RDF/JS and other syntax parsers, native Git and Java
+tools, existing exact-catalog parser, public merger/storage recipe and pinned
+Java OWLAPI 5.5.1 comparator. The residual custom work is load-session ordering
+and same-input/same-run qualification, not a new grammar or equality engine. No
+dependency, public API, compatibility shim, ontology content migration or Java
+production runtime is introduced. Preserve explicit Java parser settings and
+diagnostics; similarly named strict modes are not assumed to have identical
+recovery policies.
+
+Implement documentation first, then failing regressions, canonical repairs and
+the required qualification gate. The implementing task owns integration and
+temporary result artifacts; retain native failures and successful evidence for
+review. A failed slice stays unreleased and can be corrected in its owning
+module. Stop for a material contract change or required authority, not for a
+fixable mismatch; never weaken expected output to make the corpus pass.
 
 ## 2. Global constraints
 
@@ -1269,7 +1322,10 @@ requires fresh comparisons from reconciled Task 13 artifacts.
 - Create: `util/owlapi-reference/RunImportClosureContract.java`
 - Create: `util/owlapi-reference/run-import-closure-contract.mjs`
 - Create: `util/owlapi-reference/run-import-closure-contract.test.js`
+- Create: `util/owlapi-reference/qualify-universal-ontology-closures.mjs` and its tests
+- Create: `util/owlapi-reference/universal-ontology-july-2026.json`
 - Modify: `util/owlapi-reference/README.md`
+- Modify: `package.json`, `.github/workflows/ci.yml`, and affected workflow-governance tests
 - Reuse: `util/owlapi-reference/RunWithClasspath.java`
 - Reuse: `util/owlapi-reference/pinned-version.json`
 
@@ -1293,16 +1349,19 @@ node util/owlapi-reference/run-import-closure-contract.mjs \
 3. Compile/run through the existing pinned-classpath mechanism. Deny network access and verify the resolved Java revision before executing the oracle.
 4. In Java, compare full ontology ID, direct root annotations, empty direct imports, and the direct-axiom structural union. Canonicalize named values exactly and search for one consistent anonymous-individual bijection; never compare Java-generated blank-node labels directly.
 5. Emit one machine-readable JSON result on stdout with pinned revision, closure member IDs, expected/actual counts, comparison outcome, mismatch category/path, and zero-network evidence. Send compiler/log diagnostics to stderr so callers can parse stdout deterministically.
-6. Test the four real Universal Ontology families with the commands already specified by its canonical plan:
+6. Qualify the four original July Universal Ontology families with a source-driven
+   command. The driver must generate both output formats afresh through this
+   candidate's public APIs before invoking the Java comparator:
 
    ```powershell
-   node util/owlapi-reference/run-import-closure-contract.mjs --root ..\universal-ontology\dist\iso-iec\11179\-3\ed-4\20260714 --catalog ..\universal-ontology\iso-iec11179-3\catalog-v001.xml --verify-output ..\universal-ontology\dist\iso-iec\11179\-3\ed-4\20260714-full
-   node util/owlapi-reference/run-import-closure-contract.mjs --root ..\universal-ontology\dist\universal\reference-data\20260714 --catalog ..\universal-ontology\reference-data\catalog-v001.xml --verify-output ..\universal-ontology\dist\universal\reference-data\20260714-full
-   node util/owlapi-reference/run-import-closure-contract.mjs --root ..\universal-ontology\dist\universal\core\20260714 --catalog ..\universal-ontology\core\catalog-v001.xml --verify-output ..\universal-ontology\dist\universal\core\20260714-full
-   node util/owlapi-reference/run-import-closure-contract.mjs --root ..\universal-ontology\dist\universal\extended\20260714 --catalog ..\universal-ontology\extended\catalog-v001.xml --verify-output ..\universal-ontology\dist\universal\extended\20260714-full
+   npm run test:universal-ontology-closures -- --ontology-repository <universal-ontology-checkout> --output <new-result-directory>
    ```
 
-   If a named build artefact does not yet exist, record the prerequisite as unmet; do not substitute a different file and call the oracle complete.
+   Use the exact revision and inputs from §1.3, not `dist/`, `latest`, or existing
+   `-full` files. The low-level `--verify-output` command remains a diagnostic
+   comparator, not evidence of current JavaScript parity by itself. Missing
+   prerequisites fail the qualification command; no corpus case is skipped.
+   Require all eight family/format results and zero network attempts in CI.
 
 7. Run:
 

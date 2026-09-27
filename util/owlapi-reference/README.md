@@ -272,9 +272,34 @@ and anonymous-individual substitution remain delegated to Java OWLAPI.
 The synthetic fixture under `fixtures/import-closure/` deliberately combines a
 cycle, root version IRI, a duplicate declaration, an imported annotation that
 must not be copied, within-document anonymous sharing, and the same authored
-anonymous label in two different source documents. Its focused test is the
-only Task 14 evidence permitted before baseline reconciliation. The four real
-Universal Ontology family comparisons remain gated until the accepted
-`owlapi@0.1.0` and Phase 21 checkpoint are ancestors and Task 13 has produced
-the reconciled consumer artefacts; a passing synthetic fixture is not final
-release acceptance.
+anonymous label in two different source documents. Synthetic and real-family
+runs are permitted as provisional Task 14 development evidence before baseline
+reconciliation. Neither constitutes final release acceptance: fresh evidence
+from the reconciled candidate remains required after accepted `owlapi@0.1.0`
+and Phase 21 are ancestors.
+
+### July source-driven JavaScript parity qualification
+
+The accepted follow-up in lifecycle plan §1.3 adds
+`npm run test:universal-ontology-closures -- --ontology-repository <checkout> --output <new-result-directory>`.
+It uses the four original `src/**/20260714` family documents at Universal
+Ontology revision `e2c667f3584b8fb705671cada0fe205b1000b617`, the same corpus
+revision already pinned by owlapi CI. Exact July source mappings are shared by
+both engines; maintained September catalogs are not silently reused or rewritten.
+Source bytes and hashes come from the pinned Git revision, not a build of the
+historical naive merger. Existing `-full` artifacts are excluded entirely.
+
+The driver composes the current JavaScript public manager, imports-closure
+provider, merger and storers. It generates fresh Functional Syntax and RDF/XML
+candidates, preserves only root identity/ontology annotations, and passes each
+candidate to the existing fresh Java structural oracle. The dedicated command
+and CI gate fail for missing sources, Java, mappings or any family/format result;
+the portable unit suite may still run without Java. The arbitrary-file
+`--verify-output` utility remains useful for diagnostics, but cannot alone prove
+that a supplied candidate came from the current JavaScript implementation.
+
+Existing WebVOWL July tests prove loading and selected VOWL projections, not
+this contract. In particular, the old VOWL differential excludes July core and
+extended because its recorded reference closures differ. The new structural
+gate includes both and records exact input/candidate identity, parser settings,
+diagnostics and offline-resolution evidence.
