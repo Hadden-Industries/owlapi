@@ -487,6 +487,11 @@ class RdfGraphInterpreter {
     OWL_VOCABULARY.topObjectProperty,
   ]);
   #owl1DataRangeNodes = new Set();
+  #ontologyHeaderReferencePropertyIris = new Set([
+    OWL_VOCABULARY.backwardCompatibleWith,
+    OWL_VOCABULARY.incompatibleWith,
+    OWL_VOCABULARY.priorVersion,
+  ]);
   #ontologyID;
   #selectedGraph;
   #sourceLocationsByTriple;
@@ -701,6 +706,9 @@ class RdfGraphInterpreter {
         ].includes(currentQuad.object.value)
       ) {
         this.#annotationPropertyIris.add(subject.value);
+        if (currentQuad.object.value === OWL_VOCABULARY.OntologyProperty) {
+          this.#ontologyHeaderReferencePropertyIris.add(subject.value);
+        }
       } else if (currentQuad.object.value === OWL_VOCABULARY.Class) {
         this.#classIris.add(subject.value);
       } else if (currentQuad.object.value === OWL_VOCABULARY.DatatypeProperty) {
@@ -1030,11 +1038,16 @@ class RdfGraphInterpreter {
       allOntologyTypeQuads.map(({ subject }) => termKey(subject)),
     );
     const referencedOntologyNodeKeys = new Set();
+    // OWL 2 RDF mapping Table 4 excludes references through owl:OntologyProperty,
+    // not arbitrary annotation properties. Keep the legacy OWL 1 versioning
+    // properties and explicit ontology-property declarations in this category.
     for (const currentQuad of this.#dataset) {
       if (
         !ontologyNodeKeys.has(termKey(currentQuad.subject)) ||
         !ontologyNodeKeys.has(termKey(currentQuad.object)) ||
-        !this.#annotationPropertyIris.has(currentQuad.predicate.value)
+        !this.#ontologyHeaderReferencePropertyIris.has(
+          currentQuad.predicate.value,
+        )
       ) {
         continue;
       }

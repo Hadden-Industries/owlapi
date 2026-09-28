@@ -59,18 +59,34 @@ describe("canonical parsing with imported declarations", () => {
       ).toHaveLength(1);
     }
   });
-  test("header discovery uses the same implicit annotation categories as reconstruction", async () => {
+  test("header discovery and reconstruction share explicit ontology-property references", async () => {
     const manager = OWLManager.createOWLOntologyManager();
     const root = await manager.loadOntologyFromOntologyDocument(
       turtle(
         `<urn:long-current> a owl:Ontology; <urn:previous> <urn:old>.
-       <urn:old> a owl:Ontology. <urn:previous> rdfs:subPropertyOf owl:priorVersion.`,
+       <urn:old> a owl:Ontology.
+       <urn:previous> a owl:OntologyProperty; rdfs:subPropertyOf owl:priorVersion.`,
         "urn:long-current",
       ),
       strict,
     );
     expect(root.getOntologyID().ontologyIRI.value).toBe("urn:long-current");
     expect(root.getAnnotations().size).toBe(1);
+  });
+
+  test("an annotation subproperty alone does not disqualify another ontology header", async () => {
+    const manager = OWLManager.createOWLOntologyManager();
+    await expect(
+      manager.loadOntologyFromOntologyDocument(
+        turtle(
+          `<urn:long-current> a owl:Ontology; <urn:previous> <urn:old>.
+           <urn:old> a owl:Ontology.
+           <urn:previous> rdfs:subPropertyOf owl:priorVersion.`,
+          "urn:long-current",
+        ),
+        strict,
+      ),
+    ).rejects.toMatchObject({ code: "OWL_SYNTAX_ERROR" });
   });
 
   test.each([

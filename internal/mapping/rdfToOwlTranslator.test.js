@@ -15,6 +15,116 @@ const quad = (...values) => rdfDataFactory.quad(...values);
 const datasetOf = (...quads) => rdfDatasetFactory.dataset(quads);
 
 describe("RdfToOwlTranslator ontology boundary", () => {
+  it.each(["strict", "compatible"])(
+    "retains an ontology's self-referential ordinary annotation in %s mode",
+    async (parsingMode) => {
+      const ontology = namedNode("https://example.com/current");
+      const property = namedNode(`${EX}isVersionOf`);
+      const input = datasetOf(
+        quad(ontology, namedNode(`${RDF}type`), namedNode(`${OWL}Ontology`)),
+        quad(
+          property,
+          namedNode(`${RDF}type`),
+          namedNode(`${OWL}AnnotationProperty`),
+        ),
+        quad(ontology, property, ontology),
+      );
+
+      const result = await new RdfToOwlTranslator().translate(input, {
+        configuration: new OWLOntologyLoaderConfiguration({ parsingMode }),
+      });
+
+      expect(result.ontology.getOntologyID().ontologyIRI?.value).toBe(
+        ontology.value,
+      );
+      expect([...result.ontology.getAnnotations()]).toEqual([
+        expect.objectContaining({
+          property: expect.objectContaining({
+            iri: expect.objectContaining({ value: property.value }),
+          }),
+          value: expect.objectContaining({ value: ontology.value }),
+        }),
+      ]);
+      expect(result.context.diagnostics).toEqual([]);
+    },
+  );
+
+  it.each([`${RDFS}seeAlso`, `${EX}relatedOntology`])(
+    "does not disqualify a second ontology header referenced by ordinary annotation %s",
+    async (propertyIRI) => {
+      const ontology = namedNode("https://example.com/current");
+      const other = namedNode("https://example.com/other");
+      const property = namedNode(propertyIRI);
+      const input = datasetOf(
+        quad(ontology, namedNode(`${RDF}type`), namedNode(`${OWL}Ontology`)),
+        quad(other, namedNode(`${RDF}type`), namedNode(`${OWL}Ontology`)),
+        quad(
+          property,
+          namedNode(`${RDF}type`),
+          namedNode(`${OWL}AnnotationProperty`),
+        ),
+        quad(ontology, property, other),
+      );
+
+      await expect(
+        new RdfToOwlTranslator().translate(input),
+      ).rejects.toMatchObject({
+        code: "OWL_SYNTAX_ERROR",
+      });
+    },
+  );
+
+  it("uses an explicit owl:OntologyProperty declaration to exclude a referenced header", async () => {
+    const ontology = namedNode("https://example.com/current");
+    const other = namedNode("https://example.com/other");
+    const property = namedNode(`${EX}priorEdition`);
+    const input = datasetOf(
+      quad(ontology, namedNode(`${RDF}type`), namedNode(`${OWL}Ontology`)),
+      quad(other, namedNode(`${RDF}type`), namedNode(`${OWL}Ontology`)),
+      quad(
+        property,
+        namedNode(`${RDF}type`),
+        namedNode(`${OWL}OntologyProperty`),
+      ),
+      quad(ontology, property, other),
+    );
+
+    const result = await new RdfToOwlTranslator().translate(input);
+
+    expect(result.ontology.getOntologyID().ontologyIRI?.value).toBe(
+      ontology.value,
+    );
+    expect([...result.ontology.getAnnotations()]).toEqual([
+      expect.objectContaining({
+        property: expect.objectContaining({
+          iri: expect.objectContaining({ value: property.value }),
+        }),
+        value: expect.objectContaining({ value: other.value }),
+      }),
+    ]);
+    expect(result.context.diagnostics).toEqual([]);
+  });
+
+  it("retains ontology identity and the structural declaration for a self-import", async () => {
+    const ontology = namedNode("https://example.com/current");
+    const input = datasetOf(
+      quad(ontology, namedNode(`${RDF}type`), namedNode(`${OWL}Ontology`)),
+      quad(ontology, namedNode(`${OWL}imports`), ontology),
+    );
+
+    const result = await new RdfToOwlTranslator().translate(input);
+
+    expect(result.ontology.getOntologyID().ontologyIRI?.value).toBe(
+      ontology.value,
+    );
+    expect([...result.ontology.getImportsDeclarations()]).toEqual([
+      expect.objectContaining({
+        iri: expect.objectContaining({ value: ontology.value }),
+      }),
+    ]);
+    expect(result.context.diagnostics).toEqual([]);
+  });
+
   it("selects the ontology header while retaining a typed prior-version annotation value", async () => {
     const ontology = namedNode("https://example.com/current");
     const priorVersion = namedNode("https://example.com/prior");

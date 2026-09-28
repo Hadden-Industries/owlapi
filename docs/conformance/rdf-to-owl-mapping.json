@@ -46,11 +46,13 @@
         {
           "id": "T04-REFERENCED-ONTOLOGY",
           "constructs": [
-            "ontology-property reference excludes the referenced ontology node from root-header selection"
+            "owl:OntologyProperty references and legacy OWL 1 versioning annotations exclude referenced ontology nodes from root-header selection",
+            "ordinary annotation properties, including self-referential annotations, do not exclude ontology headers"
           ],
           "status": "COMPLETE",
           "evidence": [
             "internal/mapping/rdfToOwlTranslator.test.js",
+            "internal/mapping/ontologyAnnotationIdentity.test.js",
             "internal/mapping/rdfToOwlTranslator.conformance.test.js"
           ]
         }
