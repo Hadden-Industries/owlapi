@@ -1,5 +1,6 @@
 import {
   copyFileSync,
+  cpSync,
   existsSync,
   mkdirSync,
   mkdtempSync,
@@ -37,6 +38,7 @@ const TEST_SCRIPTS = Object.freeze([
   "installed-package-boundary.mjs",
   "installed-package-import-purity.mjs",
   "installed-package-no-network.mjs",
+  "installed-package-import-closure.mjs",
 ]);
 
 const stableJson = (value) => `${JSON.stringify(value, null, 2)}\n`;
@@ -141,6 +143,16 @@ const writeConsumerManifest = (directory, tarballPath) =>
   );
 
 const runInstalledConsumerScripts = (directory) => {
+  mkdirSync(join(directory, "import-closure"));
+  copyFileSync(
+    join(REPOSITORY_ROOT, "test", "import-closure", "public-contract.js"),
+    join(directory, "import-closure", "public-contract.js"),
+  );
+  cpSync(
+    join(REPOSITORY_ROOT, "test", "import-closure", "fixtures"),
+    join(directory, "import-closure", "fixtures"),
+    { recursive: true },
+  );
   for (const scriptName of TEST_SCRIPTS) {
     copyFileSync(
       join(REPOSITORY_ROOT, "test", scriptName),

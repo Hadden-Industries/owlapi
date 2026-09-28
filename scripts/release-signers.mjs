@@ -45,14 +45,13 @@ export const buildAllowedSigners = (registry) =>
     .map(({ githubIdentity, publicKey }) => `${githubIdentity} ${publicKey}`)
     .join("\n")}\n`;
 
-export const assertReleaseTag = ({
+export const assertLocalReleaseTag = ({
   actualTag,
   expectedTag,
   objectType,
   targetCommit,
   expectedCommit,
   fingerprint,
-  githubVerification,
   registry,
   releaseDate,
 }) => {
@@ -67,14 +66,6 @@ export const assertReleaseTag = ({
       `${actualTag} targets ${targetCommit}, not captured commit ${expectedCommit}.`,
     );
   }
-  if (
-    githubVerification?.verified !== true ||
-    githubVerification.reason !== "valid"
-  ) {
-    throw new Error(
-      `GitHub did not verify ${actualTag}: ${githubVerification?.reason ?? "missing verification"}.`,
-    );
-  }
   const signer = selectAuthorizedSigner(registry, {
     fingerprint,
     releaseDate,
@@ -83,6 +74,40 @@ export const assertReleaseTag = ({
     result: "PASS",
     signerId: signer.id,
     fingerprint: signer.fingerprint,
+  };
+};
+
+export const assertReleaseTag = ({
+  actualTag,
+  expectedTag,
+  objectType,
+  targetCommit,
+  expectedCommit,
+  fingerprint,
+  githubVerification,
+  registry,
+  releaseDate,
+}) => {
+  const local = assertLocalReleaseTag({
+    actualTag,
+    expectedTag,
+    objectType,
+    targetCommit,
+    expectedCommit,
+    fingerprint,
+    registry,
+    releaseDate,
+  });
+  if (
+    githubVerification?.verified !== true ||
+    githubVerification.reason !== "valid"
+  ) {
+    throw new Error(
+      `GitHub did not verify ${actualTag}: ${githubVerification?.reason ?? "missing verification"}.`,
+    );
+  }
+  return {
+    ...local,
     verifiedAt: githubVerification.verified_at ?? null,
   };
 };

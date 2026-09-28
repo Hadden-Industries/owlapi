@@ -1,5 +1,6 @@
 import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import { RdfToOwlTranslator } from "../../mapping/rdfToOwlTranslator.js";
+import { registerRdfDocumentPreparation } from "../rdf/rdfDocumentPreparation.js";
 
 import { documentBaseIRI, RdfXmlSyntaxAdapter } from "./rdfXmlSyntaxAdapter.js";
 
@@ -22,9 +23,12 @@ export class RDFXMLParser {
     }
     this.#createTranslator = createTranslator;
     this.#syntaxAdapter = syntaxAdapter;
+    registerRdfDocumentPreparation(this, (source, transaction, configuration) =>
+      this.#prepare(source, transaction, configuration),
+    );
   }
 
-  async parse(source, transaction, configuration) {
+  async #readSyntax(source, transaction, configuration) {
     if (!transaction || typeof transaction.getOWLDataFactory !== "function") {
       throw new TypeError(
         "transaction must implement the parser transaction contract",
@@ -36,17 +40,53 @@ export class RDFXMLParser {
       throw new TypeError("createTranslator must return a translator");
     }
     const retrievalIRI = source.getDocumentIRI()?.value;
-    const translated = await translator.translate(dataset, {
-      // Per RFC 3986 section 5.1 an embedded base outranks the retrieval URI, so
-      // this is what the document calls itself. It decides which of several
-      // ontology headers is the one the document *is*.
-      baseIRI:
-        typeof source.getText === "function"
-          ? documentBaseIRI(source.getText(), retrievalIRI)
-          : retrievalIRI,
-      configuration,
-      documentIRI: retrievalIRI,
-    });
+    return {
+      dataset,
+      translator,
+      options: {
+        // Per RFC 3986 section 5.1 an embedded base outranks the retrieval URI, so
+        // this is what the document calls itself. It decides which of several
+        // ontology headers is the one the document *is*.
+        baseIRI:
+          typeof source.getText === "function"
+            ? documentBaseIRI(source.getText(), retrievalIRI)
+            : retrievalIRI,
+        configuration,
+        documentIRI: retrievalIRI,
+      },
+    };
+  }
+
+  async #prepare(source, transaction, configuration) {
+    const syntax = await this.#readSyntax(source, transaction, configuration);
+    const prepared = await syntax.translator.prepare(
+      syntax.dataset,
+      syntax.options,
+    );
+    transaction.setOntologyID(prepared.ontology.getOntologyID());
+    transaction.addImportsDeclarations(
+      prepared.ontology.getImportsDeclarations(),
+    );
+    transaction.setDocumentFormat(OWLDocumentFormats.RDF_XML);
+    return {
+      declarations: prepared.declarations,
+      reconstruct: async (declarations, completedTransaction) =>
+        this.#populateTransaction(
+          await prepared.reconstruct(declarations),
+          completedTransaction,
+        ),
+    };
+  }
+
+  async parse(source, transaction, configuration) {
+    const syntax = await this.#readSyntax(source, transaction, configuration);
+    return this.#populateTransaction(
+      await syntax.translator.translate(syntax.dataset, syntax.options),
+      transaction,
+    );
+  }
+
+  #populateTransaction(translated, transaction) {
     const { context, ontology } = translated;
 
     transaction.setOntologyID(ontology.getOntologyID());

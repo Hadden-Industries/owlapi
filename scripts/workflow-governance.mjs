@@ -1,365 +1,59 @@
+/** Repository-owned workflow policy; YAML and GitHub grammar belong to yaml and actionlint. */
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-
+import { isDeepStrictEqual } from "node:util";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
-
+import { parseDocument } from "yaml";
 import { REQUIRED_JOB_IDS } from "./require-job-success.mjs";
-
-/* eslint-disable no-regex-spaces -- These expressions intentionally describe
- * exact YAML indentation; replacing visible spaces with counters would obscure
- * the policy boundary the validator is meant to make reviewable. */
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const WORKFLOW_DIRECTORY = join(REPOSITORY_ROOT, ".github", "workflows");
 const ISSUE_FORM_DIRECTORY = join(REPOSITORY_ROOT, ".github", "ISSUE_TEMPLATE");
-const EXPECTED_WORKFLOWS = Object.freeze([
+const EXPECTED_WORKFLOWS = [
   "ci.yml",
   "extended-tests.yml",
   "maintenance.yml",
   "release-reconciliation.yml",
   "release.yml",
-]);
-const EXPECTED_ISSUE_FORMS = Object.freeze([
+];
+const EXPECTED_ISSUE_FORMS = [
   "bug.yml",
   "conformance.yml",
   "documentation.yml",
   "feature.yml",
   "java-compatibility.yml",
   "other.yml",
-]);
+];
 const ACTIONS = Object.freeze({
   "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1": "v7.0.1",
   "actions/setup-node@820762786026740c76f36085b0efc47a31fe5020": "v7.0.0",
   "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97": "v7.0.0",
+  "actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6": "v6.0.1",
   "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a": "v7.0.1",
   "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c":
     "v8.0.1",
   "actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294":
     "v5.0.0",
 });
-
-const sortedYamlFiles = (directory, { exclude = [] } = {}) =>
-  existsSync(directory)
-    ? readdirSync(directory)
-        .filter((name) => /\.ya?ml$/u.test(name) && !exclude.includes(name))
-        .sort()
-    : [];
-
-const add = (violations, condition, message) => {
-  if (!condition) {
-    violations.push(message);
-  }
+const DOWNLOAD_INPUTS = {
+  "merge-multiple": false,
+  "skip-decompress": false,
+  "digest-mismatch": "error",
 };
-
-const jobIds = (source) => {
-  const jobsIndex = source.indexOf("\njobs:\n");
-  if (jobsIndex === -1) {
-    return [];
-  }
-  return [
-    ...source.slice(jobsIndex).matchAll(/^  ([a-z][a-z0-9_]*):\r?$/gmu),
-  ].map(([, id]) => id);
+const UPLOAD_INPUTS = {
+  "if-no-files-found": "error",
+  "compression-level": 0,
+  "include-hidden-files": false,
+  archive: true,
 };
-
-const jobBlock = (source, id) => {
-  const startMatch = new RegExp(`^  ${id}:\\r?$`, "mu").exec(source);
-  if (!startMatch) {
-    return "";
-  }
-  const remainder = source.slice(startMatch.index + startMatch[0].length);
-  const nextMatch = /^  [a-z][a-z0-9_]*:\r?$/mu.exec(remainder);
-  const end = nextMatch
-    ? startMatch.index + startMatch[0].length + nextMatch.index
-    : source.length;
-  return source.slice(startMatch.index, end);
+const SOURCE_DOWNLOAD_INPUTS = {
+  "github-token": "${{ github.token }}",
+  repository: "Hadden-Industries/owlapi",
+  "run-id": "${{ steps.metadata.outputs.source_run_id }}",
 };
-
-const hasBootstrapCredentialGuard = (block) => {
-  const guardIndex = block.indexOf('if [[ -z "$NODE_AUTH_TOKEN" ]]; then');
-  const publishIndex = block.indexOf("npm publish ");
-  if (guardIndex === -1 || publishIndex === -1 || guardIndex >= publishIndex) {
-    return false;
-  }
-
-  // The guard must terminate the credential-bearing step before its only npm
-  // mutation. A mere warning would still spend the authorized publish attempt.
-  return block.slice(guardIndex, publishIndex).includes("exit 1");
-};
-
-const listNeeds = (block) => {
-  const list = block.match(/^    needs:\r?\n((?:      - [a-z0-9_]+\r?\n?)+)/mu);
-  if (list) {
-    return [...list[1].matchAll(/^      - ([a-z0-9_]+)$/gmu)].map(
-      ([, id]) => id,
-    );
-  }
-  const scalar = block.match(/^    needs: ([a-z0-9_]+)$/mu);
-  return scalar ? [scalar[1]] : [];
-};
-
-const stepBlockAt = (lines, index) => {
-  let end = index + 1;
-  while (end < lines.length && !/^      - name:/u.test(lines[end])) {
-    end += 1;
-  }
-  return lines.slice(index, end).join("\n");
-};
-
-const validateActionUses = (fileName, source, violations) => {
-  const lines = source.split(/\r?\n/u);
-  for (let index = 0; index < lines.length; index += 1) {
-    const match = lines[index].match(/^\s+uses: ([^\s#]+)(?: # (v[^\s]+))?$/u);
-    if (!match) {
-      continue;
-    }
-    const [, identity, comment] = match;
-    const expectedTag = ACTIONS[identity];
-    add(
-      violations,
-      Boolean(expectedTag),
-      `${fileName}: unapproved Action ${identity}`,
-    );
-    if (!expectedTag) {
-      continue;
-    }
-    add(
-      violations,
-      comment === expectedTag,
-      `${fileName}: ${identity} must retain adjacent ${expectedTag}`,
-    );
-    const block = stepBlockAt(lines, index);
-    if (identity.startsWith("actions/checkout@")) {
-      add(
-        violations,
-        /persist-credentials: false/u.test(block),
-        `${fileName}: checkout must disable persisted credentials`,
-      );
-    }
-    if (identity.startsWith("actions/setup-node@")) {
-      const isBootstrapSetupNode =
-        ["release-reconciliation.yml", "release.yml"].includes(fileName) &&
-        block.includes("registry-url: https://registry.npmjs.org/");
-      add(
-        violations,
-        /node-version: "(?:22\.23\.2|24\.19\.0)"/u.test(block),
-        `${fileName}: setup-node must select an approved exact Node patch`,
-      );
-      for (const setting of [
-        "check-latest: false",
-        'cache: ""',
-        "package-manager-cache: false",
-      ]) {
-        add(
-          violations,
-          block.includes(setting),
-          `${fileName}: setup-node is missing ${setting}`,
-        );
-      }
-      if (isBootstrapSetupNode) {
-        add(
-          violations,
-          block.includes("registry-url: https://registry.npmjs.org/") &&
-            !/(?:always-auth|mirror|token):/u.test(block),
-          `${fileName}: bootstrap setup-node must configure only the public npm registry`,
-        );
-      } else {
-        add(
-          violations,
-          !/(?:registry-url|always-auth|mirror|token):/u.test(block),
-          `${fileName}: ordinary setup-node block broadens registry authority`,
-        );
-      }
-    }
-    if (identity.startsWith("actions/setup-python@")) {
-      const inputKeys = [
-        ...block.matchAll(/^          ([a-z][a-z0-9-]*):/gmu),
-      ].map(([, key]) => key);
-      add(
-        violations,
-        JSON.stringify(inputKeys) ===
-          JSON.stringify([
-            "python-version",
-            "architecture",
-            "check-latest",
-            "update-environment",
-            "cache",
-          ]),
-        `${fileName}: setup-python inputs must match the exact approved surface`,
-      );
-      for (const setting of [
-        'python-version: "3.14.7"',
-        'architecture: "x64"',
-        "check-latest: false",
-        "update-environment: false",
-        'cache: ""',
-      ]) {
-        add(
-          violations,
-          block.includes(setting),
-          `${fileName}: setup-python is missing ${setting}`,
-        );
-      }
-      add(
-        violations,
-        !/(?:token|registry-url|mirror):/u.test(block),
-        `${fileName}: setup-python broadens download authority`,
-      );
-    }
-  }
-};
-
-const validateReleaseMutationBoundary = (source, violations) => {
-  const tagAccepted = jobBlock(source, "tag_accepted");
-  for (const setting of [
-    "name: Release / tag accepted",
-    "name: release-manual",
-    "deployment: false",
-    "contents: read",
-    "npm run release:verify-tag",
-  ]) {
-    add(
-      violations,
-      tagAccepted.includes(setting),
-      `release.yml:tag_accepted is missing ${setting}`,
-    );
-  }
-  for (const forbidden of [
-    "id-token: write",
-    "contents: write",
-    "NPM_BOOTSTRAP_TOKEN",
-    "npm publish",
-  ]) {
-    add(
-      violations,
-      !tagAccepted.includes(forbidden),
-      `release.yml:tag_accepted contains forbidden authority ${forbidden}`,
-    );
-  }
-
-  const draft = jobBlock(source, "draft_release");
-  add(
-    violations,
-    /^    permissions:\r?\n      contents: write\r?\n    defaults:/mu.test(
-      draft,
-    ),
-    "release.yml:draft_release must have contents-write as its sole authority",
-  );
-  for (const setting of [
-    "needs:",
-    "- tag_accepted",
-    "- candidate",
-    "npm run release:draft-github",
-  ]) {
-    add(
-      violations,
-      draft.includes(setting),
-      `release.yml:draft_release is missing ${setting}`,
-    );
-  }
-
-  const publication = jobBlock(source, "npm_release");
-  for (const setting of [
-    "name: Release / npm direct bootstrap",
-    "name: npm-release",
-    "contents: read",
-    "id-token: write",
-    "artifact-ids: ${{ needs.candidate.outputs.artifact_id }}",
-    "registry-url: https://registry.npmjs.org/",
-    "NODE_AUTH_TOKEN: ${{ secrets.NPM_BOOTSTRAP_TOKEN }}",
-    "npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/",
-  ]) {
-    add(
-      violations,
-      publication.includes(setting),
-      `release.yml:npm_release is missing ${setting}`,
-    );
-  }
-  add(
-    violations,
-    !publication.includes("actions/checkout@") &&
-      !publication.includes("contents: write") &&
-      (publication.match(/NPM_BOOTSTRAP_TOKEN/gu) ?? []).length === 1 &&
-      (publication.match(/npm publish /gu) ?? []).length === 1,
-    "release.yml:npm_release must have no checkout/write expansion or duplicate token/publish authority",
-  );
-  add(
-    violations,
-    hasBootstrapCredentialGuard(publication),
-    "release.yml:npm_release is missing bootstrap credential fail-closed behavior",
-  );
-
-  const finalize = jobBlock(source, "finalize_release");
-  add(
-    violations,
-    /^    permissions:\r?\n      contents: write\r?\n    defaults:/mu.test(
-      finalize,
-    ) &&
-      finalize.includes("npm run release:finalize-github") &&
-      !finalize.includes("id-token: write") &&
-      !finalize.includes("NPM_BOOTSTRAP_TOKEN") &&
-      !finalize.includes("npm publish"),
-    "release.yml:finalize_release must isolate the final GitHub release write",
-  );
-
-  for (const id of [
-    "publication_preflight",
-    "registry_verification",
-    "release_evidence",
-    "immutable_verification",
-  ]) {
-    const block = jobBlock(source, id);
-    add(
-      violations,
-      block.length > 0 &&
-        !block.includes("contents: write") &&
-        !block.includes("id-token: write") &&
-        !block.includes("NPM_BOOTSTRAP_TOKEN") &&
-        !block.includes("npm publish"),
-      `release.yml:${id} must exist and remain read-only`,
-    );
-  }
-
-  // These global cardinalities prevent a locally valid-looking job from
-  // coexisting with a second, less visible release authority elsewhere.
-  add(
-    violations,
-    (source.match(/^      contents: write\r?$/gmu) ?? []).length === 2,
-    "release.yml must contain exactly two isolated contents writers",
-  );
-  add(
-    violations,
-    (source.match(/^      id-token: write\r?$/gmu) ?? []).length === 1,
-    "release.yml must contain exactly one id-token writer",
-  );
-  add(
-    violations,
-    (source.match(/NPM_BOOTSTRAP_TOKEN/gu) ?? []).length === 1,
-    "release.yml must contain exactly one bootstrap-token reference",
-  );
-  add(
-    violations,
-    (source.match(/npm publish /gu) ?? []).length === 1 &&
-      !source.includes("npm stage publish"),
-    "release.yml must contain exactly one direct publish and no staged publish",
-  );
-  add(
-    violations,
-    (source.match(/^      name: release-manual\r?$/gmu) ?? []).length === 1 &&
-      (source.match(/^      deployment: false\r?$/gmu) ?? []).length === 1 &&
-      (source.match(/^      name: npm-release\r?$/gmu) ?? []).length === 1,
-    "release.yml must use each reviewed environment exactly once and suppress only the manual gate deployment",
-  );
-};
-
-export const auditReleaseMutationBoundary = (source) => {
-  const violations = [];
-  validateReleaseMutationBoundary(source, violations);
-  return violations;
-};
-
-const RECONCILIATION_JOB_IDS = Object.freeze([
+const RECONCILIATION_JOB_IDS = [
   "source_verification",
   "accepted",
   "draft_release",
@@ -368,1020 +62,1172 @@ const RECONCILIATION_JOB_IDS = Object.freeze([
   "release_evidence",
   "finalize_release",
   "immutable_verification",
-]);
+];
+const PUBLISH_COMMAND =
+  "npm publish owlapi-0.1.0-rc.1.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/";
+const ALPHA_RECONCILIATION_PUBLISH_COMMAND =
+  "npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/";
+const REGISTRY_KEYS_COMMAND =
+  "node util/snapshot-npm-registry-keys.mjs --output=.release/registry-keys/npm-registry-keys.json";
+const PREPARE_SCANCODE_COMMAND =
+  "node util/prepare-scancode.mjs --platform-env=SCANCODE_PLATFORM --output=.release/tools/scancode --python-env=SCANCODE_PYTHON";
+const ACQUIRE_EVIDENCE_COMMAND =
+  "node util/acquire-npm-package-evidence.mjs --shard-count=32 --shard-index-env=EVIDENCE_SHARD_INDEX --output=.release/evidence-shard --scancode-env=SCANCODE_COMMAND --registry-keys=.release/registry-keys/npm-registry-keys.json";
+const MERGE_EVIDENCE_COMMAND =
+  "node util/merge-npm-package-evidence.mjs --input=.release/evidence-shards --output=.release/evidence-aggregate";
+const SHARD_COORDINATES = Array.from({ length: 32 }, (_, index) => index);
+const SCANCODE_LINUX_COMMAND =
+  ".release/tools/scancode/scancode-toolkit-v32.5.0/venv/bin/scancode";
+const EVIDENCE_OS_MATRIX = [
+  {
+    id: "ubuntu",
+    runner: "ubuntu-24.04",
+    shell: "bash",
+    platform: "linux",
+    scancode_command: SCANCODE_LINUX_COMMAND,
+  },
+  {
+    id: "windows",
+    runner: "windows-2025",
+    shell: "pwsh",
+    platform: "windows",
+    scancode_command:
+      ".release/tools/scancode/scancode-toolkit-v32.5.0/venv/Scripts/scancode.exe",
+  },
+];
 
-const validateReleaseReconciliationTransport = (source, violations) => {
-  const sourceVerification = jobBlock(source, "source_verification");
-  for (const setting of [
-    "artifact-ids: ${{ steps.metadata.outputs.candidate_artifact_id }}",
-    "github-token: ${{ github.token }}",
-    "repository: Hadden-Industries/owlapi",
-    "run-id: ${{ steps.metadata.outputs.source_run_id }}",
-    "path: .release/source-candidate",
-  ]) {
-    add(
-      violations,
-      sourceVerification.includes(setting),
-      `release-reconciliation.yml: retained candidate selector is missing ${setting}`,
-    );
-  }
-  for (const setting of [
-    "artifact-ids: ${{ steps.metadata.outputs.publication_preflight_artifact_id }}",
-    "path: .release/source-preflight",
-  ]) {
-    add(
-      violations,
-      sourceVerification.includes(setting),
-      `release-reconciliation.yml: retained preflight selector is missing ${setting}`,
-    );
-  }
-  add(
-    violations,
-    (
-      sourceVerification.match(/github-token: \$\{\{ github\.token \}\}/gu) ??
-      []
-    ).length === 2 &&
-      (
-        sourceVerification.match(/repository: Hadden-Industries\/owlapi/gu) ??
-        []
-      ).length === 2 &&
-      (
-        sourceVerification.match(
-          /run-id: \$\{\{ steps\.metadata\.outputs\.source_run_id \}\}/gu,
-        ) ?? []
-      ).length === 2,
-    "release-reconciliation.yml: both retained artifacts must use the same closed source-run selector",
+const add = (violations, condition, message) => {
+  if (!condition) violations.push(message);
+};
+const sortedYamlFiles = (directory, { exclude = [] } = {}) =>
+  existsSync(directory)
+    ? readdirSync(directory)
+        .filter((name) => /\.ya?ml$/u.test(name) && !exclude.includes(name))
+        .sort()
+    : [];
+const entries = (value) => Object.entries(value ?? {});
+const steps = (job) => (Array.isArray(job?.steps) ? job.steps : []);
+const jobs = (workflow) => Object.values(workflow?.jobs ?? {});
+const allSteps = (workflow) => jobs(workflow).flatMap(steps);
+const actionSteps = (job, action) =>
+  steps(job).filter((step) => step?.uses?.startsWith(`${action}@`));
+const needs = (job) =>
+  typeof job?.needs === "string" ? [job.needs] : (job?.needs ?? []);
+const sameInventory = (actual, expected) =>
+  Array.isArray(actual) &&
+  isDeepStrictEqual([...actual].sort(), [...expected].sort());
+const fieldsMatch = (actual, expected) =>
+  entries(expected).every(([key, value]) =>
+    isDeepStrictEqual(actual?.[key], value),
   );
-  for (const setting of [
-    "if-no-files-found: error",
-    "retention-days: 90",
-    "compression-level: 0",
-    "overwrite: false",
-    "include-hidden-files: false",
-    "archive: true",
-  ]) {
+const lacksKeys = (value, keys) =>
+  keys.every((key) => !Object.hasOwn(value ?? {}, key));
+const requireFields = (actual, expected, context, violations) => {
+  for (const [key, value] of entries(expected))
     add(
       violations,
-      sourceVerification.includes(setting),
-      `release-reconciliation.yml: reconciled candidate upload is missing ${setting}`,
+      isDeepStrictEqual(actual?.[key], value),
+      `${context} is missing ${key}: ${JSON.stringify(value)}`,
     );
-  }
-  add(
-    violations,
-    (
-      sourceVerification.match(
-        /^            \.release\/source-candidate\/.+$/gmu,
-      ) ?? []
-    ).length === 3,
-    "release-reconciliation.yml: reconciled candidate upload must name exactly three explicit paths",
+};
+const hasRun = (job, command) =>
+  steps(job).some(
+    (step) => typeof step?.run === "string" && step.run.includes(command),
+  );
+const requireRun = (job, command, context, violations) =>
+  add(violations, hasRun(job, command), `${context} is missing ${command}`);
+
+/** Inspect resolved values, excluding YAML comments and presentation. */
+const stringValues = (value) =>
+  typeof value === "string"
+    ? [value]
+    : value && typeof value === "object"
+      ? Object.values(value).flatMap(stringValues)
+      : [];
+const occurrences = (value, token) =>
+  stringValues(value).reduce(
+    (count, text) => count + text.split(token).length - 1,
+    0,
   );
 
-  const approvedSameRunSelectors = new Set([
-    "${{ needs.source_verification.outputs.candidate_artifact_id }}",
-    "${{ needs.source_verification.outputs.reconciliation_artifact_id }}",
-    "${{ needs.accepted.outputs.artifact_id }}",
-    "${{ needs.draft_release.outputs.artifact_id }}",
-    "${{ needs.registry_verification.outputs.artifact_id }}",
-    "${{ needs.release_evidence.outputs.artifact_id }}",
-  ]);
-  const lines = source.split(/\r?\n/u);
-  let downloadCount = 0;
-  for (let index = 0; index < lines.length; index += 1) {
-    if (!lines[index].includes("actions/download-artifact@")) {
-      continue;
-    }
-    downloadCount += 1;
-    const block = stepBlockAt(lines, index);
-    const selector = block.match(/^          artifact-ids: (.+)$/mu)?.[1];
-    const isPinnedSourceDownload =
-      selector === "${{ steps.metadata.outputs.candidate_artifact_id }}" ||
-      selector ===
-        "${{ steps.metadata.outputs.publication_preflight_artifact_id }}";
-    const isApprovedSameRunDownload = approvedSameRunSelectors.has(selector);
-    add(
-      violations,
-      isPinnedSourceDownload || isApprovedSameRunDownload,
-      "release-reconciliation.yml: download-artifact must use a closed artifact-ID selector",
-    );
-    for (const setting of [
-      "merge-multiple: false",
-      "skip-decompress: false",
-      "digest-mismatch: error",
-    ]) {
+/** Parse once, retain nodes for adjacent version comments, and report native diagnostics. */
+const parseControlYaml = (fileName, source, violations) => {
+  const document = parseDocument(source, { version: "1.2", uniqueKeys: true });
+  try {
+    if (document.errors.length) throw document.errors[0];
+    const value = document.toJS({ maxAliasCount: 100 });
+    // A workflow/control file is a mapping. Full GitHub syntax is actionlint's job.
+    if (!value || typeof value !== "object" || Array.isArray(value))
+      throw new TypeError("Expected a mapping");
+    return { value, document };
+  } catch (error) {
+    violations.push(`${fileName}: invalid YAML: ${error.message}`);
+    return { value: {}, document };
+  }
+};
+
+const validateActionUses = (fileName, workflow, document, violations) => {
+  for (const [jobId, job] of entries(workflow.jobs)) {
+    for (const [index, step] of steps(job).entries()) {
+      if (!step.uses) continue;
+      const expectedTag = ACTIONS[step.uses];
       add(
         violations,
-        block.includes(setting),
-        `release-reconciliation.yml: artifact download is missing ${setting}`,
+        Boolean(expectedTag),
+        `${fileName}: unapproved Action ${step.uses}`,
       );
-    }
-    if (isPinnedSourceDownload) {
-      for (const setting of [
-        "github-token: ${{ github.token }}",
-        "repository: Hadden-Industries/owlapi",
-        "run-id: ${{ steps.metadata.outputs.source_run_id }}",
-      ]) {
+      if (!expectedTag) continue;
+      const comment = document.getIn(
+        ["jobs", jobId, "steps", index, "uses"],
+        true,
+      )?.comment;
+      add(
+        violations,
+        comment?.trim() === expectedTag,
+        `${fileName}: ${step.uses} must retain adjacent ${expectedTag}`,
+      );
+      const inputs = step.with;
+      if (step.uses.startsWith("actions/checkout@"))
         add(
           violations,
-          block.includes(setting),
-          `release-reconciliation.yml: cross-run artifact download is missing ${setting}`,
+          inputs?.["persist-credentials"] === false,
+          `${fileName}: checkout must disable persisted credentials`,
+        );
+      if (step.uses.startsWith("actions/setup-node@")) {
+        add(
+          violations,
+          ["22.23.2", "24.19.0"].includes(inputs?.["node-version"]),
+          `${fileName}: setup-node must select an approved exact Node patch`,
+        );
+        requireFields(
+          inputs,
+          { "check-latest": false, cache: "", "package-manager-cache": false },
+          `${fileName}: setup-node`,
+          violations,
+        );
+        const isBootstrap =
+          ["release.yml", "release-reconciliation.yml"].includes(fileName) &&
+          jobId === "npm_release";
+        if (isBootstrap)
+          requireFields(
+            inputs,
+            { "registry-url": "https://registry.npmjs.org/" },
+            `${fileName}: bootstrap setup-node`,
+            violations,
+          );
+        add(
+          violations,
+          lacksKeys(
+            inputs,
+            isBootstrap
+              ? ["always-auth", "mirror", "token"]
+              : ["registry-url", "always-auth", "mirror", "token"],
+          ),
+          `${fileName}: setup-node broadens registry authority`,
+        );
+      }
+      if (step.uses.startsWith("actions/setup-python@")) {
+        add(
+          violations,
+          isDeepStrictEqual(inputs, {
+            "python-version": "3.14.7",
+            architecture: "x64",
+            "check-latest": false,
+            "update-environment": false,
+            cache: "",
+          }),
+          `${fileName}: setup-python inputs must match the exact approved surface`,
         );
       }
     }
-    if (isApprovedSameRunDownload) {
-      add(
-        violations,
-        !/^          (?:name|pattern|github-token|repository|run-id):/mu.test(
-          block,
-        ),
-        "release-reconciliation.yml: same-run artifact download broadens selection",
-      );
-    }
   }
-  add(
-    violations,
-    downloadCount === 11,
-    "release-reconciliation.yml: expected exactly eleven closed artifact downloads",
-  );
 };
 
-const validateReleaseReconciliationMutationBoundary = (source, violations) => {
-  add(
-    violations,
-    JSON.stringify(jobIds(source)) === JSON.stringify(RECONCILIATION_JOB_IDS),
-    "release-reconciliation.yml: job inventory differs from the closed recovery design",
-  );
-  add(
-    violations,
-    /^on:\r?\n  workflow_dispatch:\s*$/mu.test(source),
-    "release-reconciliation.yml: workflow_dispatch must be the sole trigger",
-  );
-  for (const setting of [
-    "group: owlapi-release",
-    "cancel-in-progress: false",
-    "queue: max",
-  ]) {
+const validateJobs = (fileName, workflow, violations) => {
+  // Commands can reach a script indirectly through env, matrix or action inputs.
+  // Preserve the workflow-wide policy over resolved values, never YAML comments.
+  for (const forbidden of ["npm exec --package", "npx ", "|| true"])
     add(
       violations,
-      source.includes(setting),
-      `release-reconciliation.yml: missing concurrency setting ${setting}`,
+      occurrences(workflow, forbidden) === 0,
+      `${fileName}: forbidden workflow construct ${forbidden}`,
     );
-  }
-
-  const sourceVerification = jobBlock(source, "source_verification");
-  for (const setting of [
-    "name: Release reconciliation / source verified",
-    "candidate_artifact_name: owlapi-${{ steps.metadata.outputs.version }}-reconciled-candidate-${{ github.run_id }}-${{ github.run_attempt }}",
-    "actions: read",
-    "contents: read",
-    "node scripts/release-reconciliation.mjs --emit-metadata",
-    "node scripts/verify-release-tag.mjs",
-    "node scripts/release-reconciliation.mjs --candidate",
-  ]) {
-    add(
-      violations,
-      sourceVerification.includes(setting),
-      `release-reconciliation.yml:source_verification is missing ${setting}`,
-    );
-  }
-  for (const forbidden of [
-    "id-token: write",
-    "contents: write",
-    "NPM_BOOTSTRAP_TOKEN",
-    "npm publish",
-  ]) {
-    add(
-      violations,
-      !sourceVerification.includes(forbidden),
-      `release-reconciliation.yml:source_verification contains forbidden authority ${forbidden}`,
-    );
-  }
-
-  const accepted = jobBlock(source, "accepted");
-  for (const setting of [
-    "name: Release reconciliation / accepted",
-    "name: release-manual",
-    "deployment: false",
-    "contents: read",
-    "node scripts/verify-release-tag.mjs",
-  ]) {
-    add(
-      violations,
-      accepted.includes(setting),
-      `release-reconciliation.yml:accepted is missing ${setting}`,
-    );
-  }
-  for (const forbidden of [
-    "id-token: write",
-    "contents: write",
-    "NPM_BOOTSTRAP_TOKEN",
-    "npm publish",
-  ]) {
-    add(
-      violations,
-      !accepted.includes(forbidden),
-      `release-reconciliation.yml:accepted contains forbidden authority ${forbidden}`,
-    );
-  }
-
-  const draft = jobBlock(source, "draft_release");
-  add(
-    violations,
-    /^    permissions:\r?\n      contents: write\r?\n    defaults:/mu.test(
-      draft,
-    ) &&
-      draft.includes("npm run release:draft-github") &&
-      draft.includes(
-        "SOURCE_COMMIT: ${{ needs.source_verification.outputs.source_commit }}",
-      ),
-    "release-reconciliation.yml:draft_release must isolate the GitHub draft write and bind it to the source commit",
-  );
-
-  const publication = jobBlock(source, "npm_release");
-  for (const setting of [
-    "name: Release reconciliation / npm direct bootstrap",
-    "name: npm-release",
-    "contents: read",
-    "id-token: write",
-    "artifact-ids: ${{ needs.source_verification.outputs.candidate_artifact_id }}",
-    "registry-url: https://registry.npmjs.org/",
-    "NODE_AUTH_TOKEN: ${{ secrets.NPM_BOOTSTRAP_TOKEN }}",
-    "npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/",
-  ]) {
-    add(
-      violations,
-      publication.includes(setting),
-      `release-reconciliation.yml:npm_release is missing ${setting}`,
-    );
-  }
-  add(
-    violations,
-    !publication.includes("actions/checkout@") &&
-      !publication.includes("contents: write") &&
-      (publication.match(/NPM_BOOTSTRAP_TOKEN/gu) ?? []).length === 1 &&
-      (publication.match(/npm publish /gu) ?? []).length === 1,
-    "release-reconciliation.yml:npm_release must have no checkout/write expansion or duplicate token/publish authority",
-  );
-  add(
-    violations,
-    hasBootstrapCredentialGuard(publication),
-    "release-reconciliation.yml:npm_release is missing bootstrap credential fail-closed behavior",
-  );
-
-  const finalize = jobBlock(source, "finalize_release");
-  add(
-    violations,
-    /^    permissions:\r?\n      contents: write\r?\n    defaults:/mu.test(
-      finalize,
-    ) &&
-      finalize.includes("npm run release:finalize-github") &&
-      finalize.includes('--source-commit "$SOURCE_COMMIT"') &&
-      !finalize.includes("id-token: write") &&
-      !finalize.includes("NPM_BOOTSTRAP_TOKEN") &&
-      !finalize.includes("npm publish"),
-    "release-reconciliation.yml:finalize_release must isolate the final GitHub release write and retain source identity",
-  );
-
-  const readOnlyPermissions = Object.freeze({
-    registry_verification:
-      /^    permissions:\r?\n      contents: read\r?\n    defaults:/mu,
-    release_evidence:
-      /^    permissions:\r?\n      actions: read\r?\n      contents: read\r?\n    defaults:/mu,
-    immutable_verification:
-      /^    permissions:\r?\n      contents: read\r?\n    defaults:/mu,
-  });
-  add(
-    violations,
-    jobBlock(source, "release_evidence").includes(
-      "CANDIDATE_ARTIFACT_NAME: ${{ needs.source_verification.outputs.candidate_artifact_name }}",
-    ),
-    "release-reconciliation.yml:release_evidence must inherit the source job's immutable transport name",
-  );
-  for (const [id, permissionPattern] of Object.entries(readOnlyPermissions)) {
-    const block = jobBlock(source, id);
-    add(
-      violations,
-      permissionPattern.test(block) &&
-        !block.includes("contents: write") &&
-        !block.includes("id-token: write") &&
-        !block.includes("NPM_BOOTSTRAP_TOKEN") &&
-        !block.includes("npm publish"),
-      `release-reconciliation.yml:${id} must exist and remain read-only`,
-    );
-  }
-
-  add(
-    violations,
-    (source.match(/^      contents: write\r?$/gmu) ?? []).length === 2,
-    "release-reconciliation.yml must contain exactly two isolated contents writers",
-  );
-  add(
-    violations,
-    (source.match(/^      id-token: write\r?$/gmu) ?? []).length === 1,
-    "release-reconciliation.yml must contain exactly one id-token writer",
-  );
-  add(
-    violations,
-    (source.match(/NPM_BOOTSTRAP_TOKEN/gu) ?? []).length === 1,
-    "release-reconciliation.yml must contain exactly one bootstrap-token reference",
-  );
-  add(
-    violations,
-    (source.match(/npm publish /gu) ?? []).length === 1 &&
-      !source.includes("npm stage publish"),
-    "release-reconciliation.yml must contain exactly one direct publish and no staged publish",
-  );
-  add(
-    violations,
-    (source.match(/^      name: release-manual\r?$/gmu) ?? []).length === 1 &&
-      (source.match(/^      deployment: false\r?$/gmu) ?? []).length === 1 &&
-      (source.match(/^      name: npm-release\r?$/gmu) ?? []).length === 1,
-    "release-reconciliation.yml must use each reviewed environment exactly once and suppress only the manual gate deployment",
-  );
-  add(
-    violations,
-    !/(?:scancode|playwright|universal-ontology|webvowl|benchmark|npm test|npm run (?:test|lint|build))/iu.test(
-      source,
-    ),
-    "release-reconciliation.yml must not repeat completed qualification workloads",
-  );
-  validateReleaseReconciliationTransport(source, violations);
-};
-
-export const auditReleaseReconciliationMutationBoundary = (source) => {
-  const violations = [];
-  validateReleaseReconciliationMutationBoundary(source, violations);
-  return violations;
-};
-
-const validateJobs = (fileName, source, violations) => {
-  const allowedRunners = new Set(["ubuntu-24.04", "windows-2025", "macos-15"]);
-  for (const id of jobIds(source)) {
-    const block = jobBlock(source, id);
-    const runner = block.match(/^    runs-on: (.+)$/mu)?.[1];
-    const isEvidencePlatformMatrix =
+  for (const [id, job] of entries(workflow.jobs)) {
+    const runner = job?.["runs-on"];
+    const isEvidenceMatrix =
       fileName === "extended-tests.yml" && id === "third_party_evidence_shard";
-    if (isEvidencePlatformMatrix) {
-      add(
-        violations,
-        runner === "${{ matrix.os.runner }}",
-        `${fileName}:${id} must select only its closed runner matrix`,
-      );
-    } else {
-      add(
-        violations,
-        allowedRunners.has(runner),
-        `${fileName}:${id} must use an approved explicit runner`,
-      );
-    }
     add(
       violations,
-      /^    timeout-minutes: \d+$/mu.test(block),
+      isEvidenceMatrix
+        ? runner === "${{ matrix.os.runner }}"
+        : ["ubuntu-24.04", "windows-2025", "macos-15"].includes(runner),
+      `${fileName}:${id} must use an approved explicit runner or closed runner matrix`,
+    );
+    add(
+      violations,
+      Number.isInteger(job?.["timeout-minutes"]) && job["timeout-minutes"] > 0,
       `${fileName}:${id} must have an explicit job timeout`,
     );
     add(
       violations,
-      /^    permissions:\r?$/mu.test(block),
+      job?.permissions &&
+        typeof job.permissions === "object" &&
+        !Array.isArray(job.permissions),
       `${fileName}:${id} must declare job-minimal permissions`,
     );
-    const expectedShell = isEvidencePlatformMatrix
+    const shell = isEvidenceMatrix
       ? "${{ matrix.os.shell }}"
       : runner === "windows-2025"
         ? "pwsh"
         : "bash";
-    const shell = block.match(/^        shell: (.+)$/mu)?.[1];
     add(
       violations,
-      shell === expectedShell,
-      `${fileName}:${id} must select ${expectedShell}`,
+      job?.defaults?.run?.shell === shell,
+      `${fileName}:${id} must select ${shell}`,
     );
+    for (const key of ["continue-on-error", "container"])
+      add(
+        violations,
+        !Object.hasOwn(job ?? {}, key),
+        `${fileName}: forbidden workflow construct ${key}`,
+      );
+    // The documented actionlint queue diagnostic is suppressed only in release
+    // files; this repository permits queuing only at their shared root boundary.
+    add(
+      violations,
+      !Object.hasOwn(job?.concurrency ?? {}, "queue"),
+      `${fileName}:${id} queue is allowed only at the workflow release boundary`,
+    );
+    for (const step of steps(job)) {
+      add(
+        violations,
+        !Object.hasOwn(step, "continue-on-error"),
+        `${fileName}: forbidden workflow construct continue-on-error`,
+      );
+      add(
+        violations,
+        typeof step.run !== "string" || !step.run.includes("${{"),
+        `${fileName}: workflow expressions must cross into scripts through env/with data, not run text`,
+      );
+    }
   }
 };
 
-const validateAggregate = (fileName, source, workflow, violations) => {
-  const id = "required";
-  const block = jobBlock(source, id);
-  const expectedName =
-    workflow === "ci" ? "CI / required" : "Release / qualified";
-  const expectedCondition =
-    workflow === "ci" ? "if: ${{ always() }}" : "if: ${{ !cancelled() }}";
+const validateAggregate = (fileName, workflow, registry, violations) => {
+  const job = workflow.jobs?.required;
+  const name = registry === "ci" ? "CI / required" : "Release / qualified";
   add(
     violations,
-    block.includes(`name: ${expectedName}`),
-    `${fileName}: missing stable aggregate name ${expectedName}`,
+    job?.name === name,
+    `${fileName}: missing stable aggregate name ${name}`,
+  );
+  requireFields(
+    job,
+    { if: registry === "ci" ? "${{ always() }}" : "${{ !cancelled() }}" },
+    `${fileName}: aggregate`,
+    violations,
   );
   add(
     violations,
-    block.includes(expectedCondition),
-    `${fileName}: aggregate must use ${expectedCondition}`,
-  );
-  const observed = listNeeds(block);
-  add(
-    violations,
-    JSON.stringify(observed) === JSON.stringify(REQUIRED_JOB_IDS[workflow]),
+    sameInventory(needs(job), REQUIRED_JOB_IDS[registry]),
     `${fileName}: aggregate needs inventory differs from the executable registry`,
   );
 };
 
-const validateCandidateTransport = (fileName, source, violations) => {
-  const hasCandidateTransport = /^(?:ci|release)\.yml$/u.test(fileName);
-  const hasEvidenceTransport = /^(?:extended-tests|release)\.yml$/u.test(
-    fileName,
+/** Require all candidate-upload settings on one actual upload step, not scattered in a job. */
+const validateCandidateUpload = (fileName, job, directory, violations) => {
+  const uploads = actionSteps(job, "actions/upload-artifact");
+  const candidate = uploads.find(
+    (step) =>
+      typeof step.with?.path === "string" &&
+      step.with.path.startsWith(`${directory}/`),
   );
-  if (!hasCandidateTransport && !hasEvidenceTransport) {
+  requireFields(
+    candidate?.with,
+    { ...UPLOAD_INPUTS, "retention-days": 90, overwrite: false },
+    `${fileName}: candidate upload`,
+    violations,
+  );
+  const paths = candidate?.with?.path?.trim().split(/\r?\n/u) ?? [];
+  add(
+    violations,
+    paths.length === 3 &&
+      new Set(paths).size === 3 &&
+      paths.every(
+        (path) => path.startsWith(`${directory}/`) && !/[*!?]/u.test(path),
+      ),
+    `${fileName}: candidate upload must name exactly three explicit paths`,
+  );
+};
+
+const validateCandidateTransport = (fileName, workflow, violations) => {
+  if (!["ci.yml", "release.yml", "extended-tests.yml"].includes(fileName))
     return;
-  }
-  if (hasCandidateTransport) {
-    const candidate = jobBlock(source, "candidate");
-    for (const setting of [
-      "if-no-files-found: error",
-      "retention-days: 90",
-      "compression-level: 0",
-      "overwrite: false",
-      "include-hidden-files: false",
-      "archive: true",
-    ]) {
-      add(
-        violations,
-        candidate.includes(setting),
-        `${fileName}: candidate upload is missing ${setting}`,
-      );
-    }
-    add(
+  if (fileName !== "extended-tests.yml")
+    validateCandidateUpload(
+      fileName,
+      workflow.jobs?.candidate,
+      ".release/candidate",
       violations,
-      (candidate.match(/^            \.release\/candidate\/.+$/gmu) ?? [])
-        .length === 3,
-      `${fileName}: candidate upload must name exactly three explicit paths`,
     );
-  }
-  const lines = source.split(/\r?\n/u);
-  for (let index = 0; index < lines.length; index += 1) {
-    if (!lines[index].includes("actions/download-artifact@")) {
-      continue;
-    }
-    const block = stepBlockAt(lines, index);
-    const isCandidateDownload = block.includes(
-      "artifact-ids: ${{ needs.candidate.outputs.artifact_id }}",
-    );
-    const isReleaseReportDownload =
+  const reportSelectors = [
+    "publication_preflight",
+    "tag_accepted",
+    "draft_release",
+    "registry_verification",
+    "release_evidence",
+  ].map((id) => `\u0024{{ needs.${id}.outputs.artifact_id }}`);
+  for (const step of allSteps(workflow).filter((item) =>
+    item.uses?.startsWith("actions/download-artifact@"),
+  )) {
+    const inputs = step.with ?? {};
+    const isCandidate =
+      inputs["artifact-ids"] === "${{ needs.candidate.outputs.artifact_id }}";
+    const isReport =
       fileName === "release.yml" &&
-      /artifact-ids: \$\{\{ needs\.(?:publication_preflight|tag_accepted|draft_release|registry_verification|release_evidence)\.outputs\.artifact_id \}\}/u.test(
-        block,
-      );
-    const isEvidencePatternDownload = /^\s+pattern: npm-evidence-/mu.test(
-      block,
-    );
-    const isEvidenceKeyDownload =
-      /^\s+name: npm-evidence-registry-keys$/mu.test(block);
-    const isEvidenceDownload =
-      isEvidencePatternDownload || isEvidenceKeyDownload;
+      reportSelectors.includes(inputs["artifact-ids"]);
+    const isKeys = inputs.name === "npm-evidence-registry-keys";
+    const isPattern = [
+      "npm-evidence-release-*",
+      "npm-evidence-aggregate-*",
+      "npm-evidence-${{ matrix.os }}-*",
+    ].includes(inputs.pattern);
     add(
       violations,
-      isCandidateDownload || isReleaseReportDownload || isEvidenceDownload,
+      isCandidate || isReport || isKeys || isPattern,
       `${fileName}: download-artifact must use an approved closed selector`,
     );
+    requireFields(
+      inputs,
+      DOWNLOAD_INPUTS,
+      `${fileName}: artifact download`,
+      violations,
+    );
+    const excluded =
+      isCandidate || isReport
+        ? ["name", "pattern"]
+        : isKeys
+          ? ["artifact-ids", "pattern"]
+          : ["artifact-ids", "name"];
+    add(
+      violations,
+      lacksKeys(inputs, [...excluded, "github-token", "repository", "run-id"]),
+      `${fileName}: artifact download broadens same-run artifact selection`,
+    );
+  }
+};
+
+/** This policy pins the reviewed guard; actionlint/ShellCheck own shell syntax, not its business intent. */
+const hasBootstrapCredentialGuard = (job, publishCommand) =>
+  steps(job).some((step) => {
     if (
-      !isCandidateDownload &&
-      !isReleaseReportDownload &&
-      !isEvidenceDownload
-    ) {
-      continue;
-    }
-    for (const setting of [
-      "merge-multiple: false",
-      "skip-decompress: false",
-      "digest-mismatch: error",
-    ]) {
-      add(
-        violations,
-        block.includes(setting),
-        `${fileName}: artifact download is missing ${setting}`,
-      );
-    }
-    if (isCandidateDownload || isReleaseReportDownload) {
-      add(
-        violations,
-        !/^\s+(?:name|pattern|github-token|repository|run-id):/mu.test(block),
-        `${fileName}: candidate download broadens same-run artifact selection`,
-      );
-    } else {
-      const usesApprovedPattern =
-        /pattern: npm-evidence-(?:release-\*|aggregate-\*|\$\{\{ matrix\.os \}\}-\*)/u.test(
-          block,
-        );
-      add(
-        violations,
-        usesApprovedPattern || isEvidenceKeyDownload,
-        `${fileName}: evidence download uses an unapproved artifact selector`,
-      );
-      const forbiddenSelectorKeys = isEvidenceKeyDownload
-        ? /^(?:\s+)(?:artifact-ids|pattern|github-token|repository|run-id):/mu
-        : /^(?:\s+)(?:artifact-ids|name|github-token|repository|run-id):/mu;
-      add(
-        violations,
-        !forbiddenSelectorKeys.test(block),
-        `${fileName}: evidence download broadens same-run artifact selection`,
-      );
-    }
-  }
-};
-
-const EXPECTED_SHARD_COORDINATES = Object.freeze(
-  Array.from({ length: 32 }, (_, index) => index),
-);
-
-const shardCoordinates = (block) => {
-  const match =
-    /^        shard:\r?\n          \[\r?\n([\s\S]*?)^          \]\r?$/mu.exec(
-      block,
+      typeof step.run !== "string" ||
+      step.env?.NODE_AUTH_TOKEN !== "${{ secrets.NPM_BOOTSTRAP_TOKEN }}"
+    )
+      return false;
+    const guardIndex = step.run.indexOf('if [[ -z "$NODE_AUTH_TOKEN" ]]; then');
+    const publishIndex = step.run.indexOf(publishCommand);
+    return (
+      guardIndex !== -1 &&
+      publishIndex > guardIndex &&
+      step.run.slice(guardIndex, publishIndex).includes("exit 1")
     );
-  return match
-    ? [...match[1].matchAll(/^            (\d+),$/gmu)].map(([, value]) =>
-        Number(value),
-      )
-    : [];
+  });
+
+const validateReadOnlyJob = (fileName, id, job, violations, permissions) => {
+  add(
+    violations,
+    Boolean(job) &&
+      (!permissions || isDeepStrictEqual(job.permissions, permissions)),
+    `${fileName}:${id} must exist and remain read-only`,
+  );
+  for (const permission of ["contents", "id-token"])
+    add(
+      violations,
+      job?.permissions?.[permission] !== "write",
+      `${fileName}:${id} contains forbidden authority ${permission}: write`,
+    );
+  for (const token of ["NPM_BOOTSTRAP_TOKEN", "npm publish"])
+    add(
+      violations,
+      occurrences(job, token) === 0,
+      `${fileName}:${id} contains forbidden authority ${token}`,
+    );
 };
 
-const matrixKeys = (block) => {
-  const matrix = /^      matrix:\r?\n([\s\S]*?)^    steps:/mu.exec(block)?.[1];
-  return matrix
-    ? [...matrix.matchAll(/^        ([a-z][a-z0-9_]*):/gmu)].map(
-        ([, key]) => key,
-      )
-    : [];
+const validateManualRelease = (fileName, workflow, violations) => {
+  add(
+    violations,
+    isDeepStrictEqual(workflow.on, { workflow_dispatch: null }),
+    `${fileName}: workflow_dispatch must be the sole trigger`,
+  );
+  requireFields(
+    workflow.concurrency,
+    { group: "owlapi-release", "cancel-in-progress": false, queue: "max" },
+    `${fileName}: concurrency`,
+    violations,
+  );
 };
 
-const validateEvidenceUpload = (
+/** Shared authority boundary for initial publication and its closed recovery workflow. */
+const validateReleaseMutationBoundary = (
   fileName,
-  jobId,
-  block,
-  { name, path, retentionDays = 1 },
+  workflow,
   violations,
+  reconciliation = false,
 ) => {
-  for (const setting of [
-    `name: ${name}`,
-    `path: ${path}`,
-    "if-no-files-found: error",
-    `retention-days: ${retentionDays}`,
-    "compression-level: 0",
-    "overwrite: true",
-    "include-hidden-files: false",
-    "archive: true",
-  ]) {
+  const workflowJobs = workflow.jobs ?? {};
+  const acceptedId = reconciliation ? "accepted" : "tag_accepted";
+  const prefix = reconciliation ? "Release reconciliation" : "Release";
+  const accepted = workflowJobs[acceptedId];
+  requireFields(
+    accepted,
+    {
+      name: `${prefix} / ${reconciliation ? "accepted" : "tag accepted"}`,
+      environment: { name: "release-manual", deployment: false },
+    },
+    `${fileName}:${acceptedId}`,
+    violations,
+  );
+  requireFields(
+    accepted?.permissions,
+    { contents: "read" },
+    `${fileName}:${acceptedId} permissions`,
+    violations,
+  );
+  requireRun(
+    accepted,
+    reconciliation
+      ? "node scripts/verify-release-tag.mjs"
+      : "npm run release:verify-tag",
+    `${fileName}:${acceptedId}`,
+    violations,
+  );
+  validateReadOnlyJob(fileName, acceptedId, accepted, violations);
+  const draft = workflowJobs.draft_release;
+  add(
+    violations,
+    isDeepStrictEqual(draft?.permissions, { contents: "write" }),
+    `${fileName}:draft_release must have contents-write as its sole authority`,
+  );
+  requireRun(
+    draft,
+    "npm run release:draft-github",
+    `${fileName}:draft_release`,
+    violations,
+  );
+  if (reconciliation)
     add(
       violations,
-      block.includes(setting),
-      `${fileName}:${jobId} evidence upload is missing ${setting}`,
+      steps(draft).some(
+        (step) =>
+          step.env?.SOURCE_COMMIT ===
+            "${{ needs.source_verification.outputs.source_commit }}" &&
+          step.run?.includes("npm run release:draft-github"),
+      ),
+      `${fileName}:draft_release must bind the GitHub draft write to the source commit`,
     );
-  }
-  add(
-    violations,
-    (block.match(/uses: actions\/upload-artifact@/gu) ?? []).length === 1,
-    `${fileName}:${jobId} must contain exactly one evidence upload`,
-  );
-};
+  else
+    add(
+      violations,
+      ["tag_accepted", "candidate"].every((id) => needs(draft).includes(id)),
+      `${fileName}:draft_release must need tag_accepted and candidate`,
+    );
 
-const validateReadOnlyEvidenceJob = (fileName, jobId, block, violations) => {
+  const publication = workflowJobs.npm_release;
+  requireFields(
+    publication,
+    {
+      name: `${prefix} / npm direct bootstrap`,
+      environment: { name: "npm-release" },
+      permissions: { contents: "read", "id-token": "write" },
+    },
+    `${fileName}:npm_release`,
+    violations,
+  );
+  const candidateSelector = reconciliation
+    ? "${{ needs.source_verification.outputs.candidate_artifact_id }}"
+    : "${{ needs.candidate.outputs.artifact_id }}";
   add(
     violations,
-    /^    permissions:\r?\n      contents: read\r?\n    defaults:/mu.test(
-      block,
+    actionSteps(publication, "actions/download-artifact").some(
+      (step) => step.with?.["artifact-ids"] === candidateSelector,
     ),
-    `${fileName}:${jobId} must have contents-read as its sole authority`,
+    `${fileName}:npm_release must download the retained candidate by artifact ID`,
   );
-  for (const forbidden of [
-    "id-token: write",
-    "contents: write",
-    "actions: write",
-    "issues: write",
-  ]) {
-    add(
+  add(
+    violations,
+    actionSteps(publication, "actions/setup-node").some(
+      (step) => step.with?.["registry-url"] === "https://registry.npmjs.org/",
+    ),
+    `${fileName}:npm_release must use the public npm registry`,
+  );
+  const publishCommand = reconciliation
+    ? ALPHA_RECONCILIATION_PUBLISH_COMMAND
+    : PUBLISH_COMMAND;
+  requireRun(
+    publication,
+    publishCommand,
+    `${fileName}:npm_release`,
+    violations,
+  );
+  add(
+    violations,
+    actionSteps(publication, "actions/checkout").length === 0 &&
+      publication?.permissions?.contents !== "write" &&
+      occurrences(publication, "NPM_BOOTSTRAP_TOKEN") === 1 &&
+      occurrences(publication, "npm publish ") === 1,
+    `${fileName}:npm_release must have no checkout/write expansion or duplicate token/publish authority`,
+  );
+  add(
+    violations,
+    hasBootstrapCredentialGuard(publication, publishCommand),
+    `${fileName}:npm_release is missing bootstrap credential fail-closed behavior`,
+  );
+
+  const finalize = workflowJobs.finalize_release;
+  add(
+    violations,
+    isDeepStrictEqual(finalize?.permissions, { contents: "write" }) &&
+      hasRun(finalize, "npm run release:finalize-github") &&
+      occurrences(finalize, "NPM_BOOTSTRAP_TOKEN") === 0 &&
+      occurrences(finalize, "npm publish") === 0 &&
+      (!reconciliation || hasRun(finalize, '--source-commit "$SOURCE_COMMIT"')),
+    `${fileName}:finalize_release must isolate the final GitHub release write and retain source identity`,
+  );
+  const readOnlyIds = reconciliation
+    ? ["registry_verification", "release_evidence", "immutable_verification"]
+    : [
+        "publication_preflight",
+        "registry_verification",
+        "release_evidence",
+        "immutable_verification",
+      ];
+  for (const id of readOnlyIds)
+    validateReadOnlyJob(
+      fileName,
+      id,
+      workflowJobs[id],
       violations,
-      !block.includes(forbidden),
-      `${fileName}:${jobId} contains forbidden authority ${forbidden}`,
+      reconciliation
+        ? id === "release_evidence"
+          ? { actions: "read", contents: "read" }
+          : { contents: "read" }
+        : undefined,
     );
-  }
+  // Global cardinalities prevent a second authority elsewhere in an otherwise valid workflow.
+  add(
+    violations,
+    jobs(workflow).filter((job) => job?.permissions?.contents === "write")
+      .length === 2,
+    `${fileName} must contain exactly two isolated contents writers`,
+  );
+  add(
+    violations,
+    jobs(workflow).filter((job) => job?.permissions?.["id-token"] === "write")
+      .length === 1,
+    `${fileName} must contain exactly one id-token writer`,
+  );
+  add(
+    violations,
+    occurrences(workflow, "NPM_BOOTSTRAP_TOKEN") === 1,
+    `${fileName} must contain exactly one bootstrap-token reference`,
+  );
+  add(
+    violations,
+    occurrences(workflow, "npm publish ") === 1 &&
+      occurrences(workflow, "npm stage publish") === 0,
+    `${fileName} must contain exactly one direct publish and no staged publish`,
+  );
+  add(
+    violations,
+    jobs(workflow).filter((job) => job?.environment?.name === "release-manual")
+      .length === 1 &&
+      jobs(workflow).filter((job) => job?.environment?.name === "npm-release")
+        .length === 1 &&
+      jobs(workflow).filter((job) => job?.environment?.deployment === false)
+        .length === 1,
+    `${fileName} must use each reviewed environment exactly once and suppress only the manual gate deployment`,
+  );
 };
 
-const validateEvidenceWorkflows = (sources, violations) => {
-  const release = sources["release.yml"] ?? "";
-  const releaseRegistryKeys = jobBlock(
-    release,
-    "third_party_evidence_registry_keys",
-  );
-  const releaseShard = jobBlock(release, "third_party_evidence_shard");
-  const releaseAggregate = jobBlock(release, "third_party_evidence");
-  for (const setting of [
-    "name: Release / third-party evidence / npm registry signing keys",
-    "needs: release_preflight",
-    "run: node util/snapshot-npm-registry-keys.mjs --output=.release/registry-keys/npm-registry-keys.json",
-  ]) {
+const validateReleaseReconciliationTransport = (workflow, violations) => {
+  const fileName = "release-reconciliation.yml";
+  const source = workflow.jobs?.source_verification;
+  const sourceSelectors = [
+    "${{ steps.metadata.outputs.candidate_artifact_id }}",
+    "${{ steps.metadata.outputs.publication_preflight_artifact_id }}",
+  ];
+  for (const [index, selector] of sourceSelectors.entries())
     add(
       violations,
-      releaseRegistryKeys.includes(setting),
-      `release.yml:third_party_evidence_registry_keys is missing ${setting}`,
+      actionSteps(source, "actions/download-artifact").some((step) =>
+        fieldsMatch(step.with, {
+          ...SOURCE_DOWNLOAD_INPUTS,
+          "artifact-ids": selector,
+          path:
+            index === 0
+              ? ".release/source-candidate"
+              : ".release/source-preflight",
+        }),
+      ),
+      `${fileName}: both retained artifacts must use the same closed source-run selector`,
     );
-  }
-  validateReadOnlyEvidenceJob(
-    "release.yml",
-    "third_party_evidence_registry_keys",
-    releaseRegistryKeys,
+  validateCandidateUpload(
+    fileName,
+    source,
+    ".release/source-candidate",
     violations,
   );
-  validateEvidenceUpload(
-    "release.yml",
-    "third_party_evidence_registry_keys",
-    releaseRegistryKeys,
-    {
-      name: "npm-evidence-registry-keys",
-      path: ".release/registry-keys/npm-registry-keys.json",
-    },
-    violations,
+  const sameRunSelectors = [
+    "${{ needs.source_verification.outputs.candidate_artifact_id }}",
+    "${{ needs.source_verification.outputs.reconciliation_artifact_id }}",
+    ...[
+      "accepted",
+      "draft_release",
+      "registry_verification",
+      "release_evidence",
+    ].map((id) => `\u0024{{ needs.${id}.outputs.artifact_id }}`),
+  ];
+  const downloads = allSteps(workflow).filter((step) =>
+    step.uses?.startsWith("actions/download-artifact@"),
   );
-  for (const setting of [
-    "name: Release / third-party evidence / shard ${{ matrix.shard }}",
-    "timeout-minutes: 120",
-    "fail-fast: false",
-    "max-parallel: 8",
-    "uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0",
-    "SCANCODE_PLATFORM: linux",
-    "SCANCODE_PYTHON: ${{ steps.scancode_python.outputs.python-path }}",
-    "EVIDENCE_SHARD_INDEX: ${{ matrix.shard }}",
-    "SCANCODE_COMMAND: .release/tools/scancode/scancode-toolkit-v32.5.0/venv/bin/scancode",
-    "run: node util/prepare-scancode.mjs --platform-env=SCANCODE_PLATFORM --output=.release/tools/scancode --python-env=SCANCODE_PYTHON",
-    "name: npm-evidence-registry-keys",
-    "path: .release/registry-keys",
-    "run: node util/acquire-npm-package-evidence.mjs --shard-count=32 --shard-index-env=EVIDENCE_SHARD_INDEX --output=.release/evidence-shard --scancode-env=SCANCODE_COMMAND --registry-keys=.release/registry-keys/npm-registry-keys.json",
-  ]) {
+  for (const step of downloads) {
+    const inputs = step.with ?? {};
+    const fromSource = sourceSelectors.includes(inputs["artifact-ids"]);
     add(
       violations,
-      releaseShard.includes(setting),
-      `release.yml:third_party_evidence_shard is missing ${setting}`,
+      fromSource || sameRunSelectors.includes(inputs["artifact-ids"]),
+      `${fileName}: download-artifact must use a closed artifact-ID selector`,
     );
+    requireFields(
+      inputs,
+      DOWNLOAD_INPUTS,
+      `${fileName}: artifact download`,
+      violations,
+    );
+    add(
+      violations,
+      lacksKeys(inputs, ["name", "pattern"]),
+      `${fileName}: artifact download broadens selection`,
+    );
+    if (fromSource)
+      requireFields(
+        inputs,
+        SOURCE_DOWNLOAD_INPUTS,
+        `${fileName}: cross-run artifact download`,
+        violations,
+      );
+    else
+      add(
+        violations,
+        lacksKeys(inputs, ["github-token", "repository", "run-id"]),
+        `${fileName}: same-run artifact download broadens selection`,
+      );
   }
   add(
     violations,
-    JSON.stringify(listNeeds(releaseShard)) ===
-      JSON.stringify([
-        "release_preflight",
-        "third_party_evidence_registry_keys",
-      ]),
-    "release.yml:third_party_evidence_shard must wait for preflight and the same-run signing-key snapshot",
+    downloads.length === 11,
+    `${fileName}: expected exactly eleven closed artifact downloads`,
   );
+};
+
+const validateReleaseReconciliation = (workflow, violations) => {
+  const fileName = "release-reconciliation.yml";
   add(
     violations,
-    JSON.stringify(shardCoordinates(releaseShard)) ===
-      JSON.stringify(EXPECTED_SHARD_COORDINATES),
-    "release.yml:third_party_evidence_shard must contain exactly indices 0..31",
+    sameInventory(Object.keys(workflow.jobs ?? {}), RECONCILIATION_JOB_IDS),
+    `${fileName}: job inventory differs from the closed recovery design`,
   );
-  add(
-    violations,
-    JSON.stringify(matrixKeys(releaseShard)) === JSON.stringify(["shard"]),
-    "release.yml:third_party_evidence_shard must have only the shard matrix axis",
-  );
-  validateReadOnlyEvidenceJob(
-    "release.yml",
-    "third_party_evidence_shard",
-    releaseShard,
+  validateManualRelease(fileName, workflow, violations);
+  const source = workflow.jobs?.source_verification;
+  requireFields(
+    source,
+    { name: "Release reconciliation / source verified" },
+    `${fileName}:source_verification`,
     violations,
   );
-  validateEvidenceUpload(
-    "release.yml",
-    "third_party_evidence_shard",
-    releaseShard,
+  requireFields(
+    source?.outputs,
     {
-      name: "npm-evidence-release-${{ matrix.shard }}",
-      path: ".release/evidence-shard",
+      candidate_artifact_name:
+        "owlapi-${{ steps.metadata.outputs.version }}-reconciled-candidate-${{ github.run_id }}-${{ github.run_attempt }}",
     },
+    `${fileName}:source_verification outputs`,
     violations,
+  );
+  requireFields(
+    source?.permissions,
+    { actions: "read", contents: "read" },
+    `${fileName}:source_verification permissions`,
+    violations,
+  );
+  for (const command of [
+    "node scripts/release-reconciliation.mjs --emit-metadata",
+    "node scripts/verify-release-tag.mjs",
+    "node scripts/release-reconciliation.mjs --candidate",
+  ])
+    requireRun(source, command, `${fileName}:source_verification`, violations);
+  validateReadOnlyJob(fileName, "source_verification", source, violations);
+  add(
+    violations,
+    steps(workflow.jobs?.release_evidence).some(
+      (step) =>
+        step.env?.CANDIDATE_ARTIFACT_NAME ===
+        "${{ needs.source_verification.outputs.candidate_artifact_name }}",
+    ),
+    `${fileName}:release_evidence must inherit the source job's immutable transport name`,
+  );
+  add(
+    violations,
+    !allSteps(workflow).some((step) =>
+      /(?:scancode|playwright|universal-ontology|webvowl|benchmark|npm test|npm run (?:test|lint|build))/iu.test(
+        step.run ?? "",
+      ),
+    ),
+    `${fileName} must not repeat completed qualification workloads`,
+  );
+  validateReleaseMutationBoundary(fileName, workflow, violations, true);
+  validateReleaseReconciliationTransport(workflow, violations);
+};
+
+/** Audit the initial publication boundary, reporting YAML errors as violations. */
+export const auditReleaseMutationBoundary = (source) => {
+  const violations = [];
+  const { value } = parseControlYaml("release.yml", source, violations);
+  if (!violations.length)
+    validateReleaseMutationBoundary("release.yml", value, violations);
+  return violations;
+};
+/** Audit the recovery publication boundary without running or publishing it. */
+export const auditReleaseReconciliationMutationBoundary = (source) => {
+  const violations = [];
+  const { value } = parseControlYaml(
+    "release-reconciliation.yml",
+    source,
+    violations,
+  );
+  if (!violations.length) validateReleaseReconciliation(value, violations);
+  return violations;
+};
+
+const validateEvidenceUpload = (fileName, id, job, inputs, violations) => {
+  const uploads = actionSteps(job, "actions/upload-artifact");
+  add(
+    violations,
+    uploads.length === 1,
+    `${fileName}:${id} must contain exactly one evidence upload`,
+  );
+  requireFields(
+    uploads[0]?.with,
+    { ...UPLOAD_INPUTS, overwrite: true, "retention-days": 1, ...inputs },
+    `${fileName}:${id} evidence upload`,
+    violations,
+  );
+};
+const validateEvidenceJob = (fileName, id, job, violations) =>
+  add(
+    violations,
+    isDeepStrictEqual(job?.permissions, { contents: "read" }),
+    `${fileName}:${id} must have contents-read as its sole authority`,
   );
 
-  for (const setting of [
-    "name: Release / third-party evidence",
-    "if: ${{ !cancelled() }}",
-    "needs: third_party_evidence_shard",
-    "pattern: npm-evidence-release-*",
-    "run: node util/merge-npm-package-evidence.mjs --input=.release/evidence-shards --output=.release/evidence-aggregate --verify-committed",
+const validateEvidenceWorkflows = (workflows, violations) => {
+  for (const [fileName, isExtended] of [
+    ["release.yml", false],
+    ["extended-tests.yml", true],
   ]) {
+    const workflow = workflows[fileName] ?? {};
+    const prefix = isExtended ? "Extended tests" : "Release";
+    const workflowJobs = workflow.jobs ?? {};
+    const keysId = "third_party_evidence_registry_keys";
+    const shardId = "third_party_evidence_shard";
+    const aggregateId = isExtended
+      ? "third_party_evidence_aggregate"
+      : "third_party_evidence";
+    const keys = workflowJobs[keysId];
+    const shard = workflowJobs[shardId];
+    const aggregate = workflowJobs[aggregateId];
+    for (const [id, job] of [
+      [keysId, keys],
+      [shardId, shard],
+      [aggregateId, aggregate],
+    ])
+      validateEvidenceJob(fileName, id, job, violations);
+    requireFields(
+      keys,
+      { name: `${prefix} / third-party evidence / npm registry signing keys` },
+      `${fileName}:${keysId}`,
+      violations,
+    );
+    requireRun(
+      keys,
+      REGISTRY_KEYS_COMMAND,
+      `${fileName}:${keysId}`,
+      violations,
+    );
+    validateEvidenceUpload(
+      fileName,
+      keysId,
+      keys,
+      {
+        name: "npm-evidence-registry-keys",
+        path: ".release/registry-keys/npm-registry-keys.json",
+      },
+      violations,
+    );
+    if (isExtended) {
+      requireFields(
+        workflowJobs.extended_evidence,
+        { if: "${{ github.event_name == 'schedule' }}" },
+        `${fileName}:extended_evidence`,
+        violations,
+      );
+      for (const [id, job] of [
+        [keysId, keys],
+        [shardId, shard],
+      ])
+        requireFields(
+          job,
+          { if: "${{ github.event_name == 'workflow_dispatch' }}" },
+          `${fileName}:${id}`,
+          violations,
+        );
+    } else
+      add(
+        violations,
+        sameInventory(needs(keys), ["release_preflight"]),
+        `${fileName}:${keysId} must wait for preflight`,
+      );
+    requireFields(
+      shard,
+      {
+        name: `${prefix} / third-party evidence / ${isExtended ? "${{ matrix.os.id }} / " : ""}shard \u0024{{ matrix.shard }}`,
+        ...(isExtended ? {} : { "timeout-minutes": 120 }),
+      },
+      `${fileName}:${shardId}`,
+      violations,
+    );
+    requireFields(
+      shard?.strategy,
+      { "fail-fast": false, "max-parallel": 8 },
+      `${fileName}:${shardId} strategy`,
+      violations,
+    );
     add(
       violations,
-      releaseAggregate.includes(setting),
-      `release.yml:third_party_evidence is missing ${setting}`,
+      sameInventory(
+        needs(shard),
+        isExtended ? [keysId] : ["release_preflight", keysId],
+      ),
+      `${fileName}:${shardId} must wait for preflight and the same-run signing-key snapshot`,
     );
+    add(
+      violations,
+      isDeepStrictEqual(
+        shard?.strategy?.matrix,
+        isExtended
+          ? { os: EVIDENCE_OS_MATRIX, shard: SHARD_COORDINATES }
+          : { shard: SHARD_COORDINATES },
+      ),
+      `${fileName}:${shardId} matrix differs from the closed platform/shard contract`,
+    );
+    add(
+      violations,
+      actionSteps(shard, "actions/setup-python").length === 1,
+      `${fileName}:${shardId} must select the approved Python action`,
+    );
+    add(
+      violations,
+      steps(shard).some(
+        (step) =>
+          step.run === PREPARE_SCANCODE_COMMAND &&
+          fieldsMatch(step.env, {
+            SCANCODE_PLATFORM: isExtended
+              ? "${{ matrix.os.platform }}"
+              : "linux",
+            SCANCODE_PYTHON: "${{ steps.scancode_python.outputs.python-path }}",
+          }),
+      ),
+      `${fileName}:${shardId} must prepare ScanCode with the reviewed runtime`,
+    );
+    add(
+      violations,
+      steps(shard).some(
+        (step) =>
+          step.run === ACQUIRE_EVIDENCE_COMMAND &&
+          fieldsMatch(step.env, {
+            EVIDENCE_SHARD_INDEX: "${{ matrix.shard }}",
+            SCANCODE_COMMAND: isExtended
+              ? "${{ matrix.os.scancode_command }}"
+              : SCANCODE_LINUX_COMMAND,
+          }),
+      ),
+      `${fileName}:${shardId} must acquire its exact evidence shard`,
+    );
+    add(
+      violations,
+      actionSteps(shard, "actions/download-artifact").some((step) =>
+        fieldsMatch(step.with, {
+          name: "npm-evidence-registry-keys",
+          path: ".release/registry-keys",
+        }),
+      ),
+      `${fileName}:${shardId} must download the same-run signing keys`,
+    );
+    validateEvidenceUpload(
+      fileName,
+      shardId,
+      shard,
+      {
+        name: isExtended
+          ? "npm-evidence-${{ matrix.os.id }}-${{ matrix.shard }}"
+          : "npm-evidence-release-${{ matrix.shard }}",
+        path: ".release/evidence-shard",
+      },
+      violations,
+    );
+    requireFields(
+      aggregate,
+      {
+        name: isExtended
+          ? "Extended tests / third-party evidence / ${{ matrix.os }} aggregate"
+          : "Release / third-party evidence",
+        if: isExtended
+          ? "${{ !cancelled() && github.event_name == 'workflow_dispatch' }}"
+          : "${{ !cancelled() }}",
+      },
+      `${fileName}:${aggregateId}`,
+      violations,
+    );
+    add(
+      violations,
+      sameInventory(needs(aggregate), [shardId]),
+      `${fileName}:${aggregateId} must wait for all shards`,
+    );
+    const downloads = actionSteps(aggregate, "actions/download-artifact");
+    add(
+      violations,
+      downloads.length === 1 &&
+        downloads[0].with?.pattern ===
+          (isExtended
+            ? "npm-evidence-${{ matrix.os }}-*"
+            : "npm-evidence-release-*"),
+      `${fileName}:${aggregateId} must contain exactly one shard download`,
+    );
+    requireRun(
+      aggregate,
+      `${MERGE_EVIDENCE_COMMAND}${isExtended ? "" : " --verify-committed"}`,
+      `${fileName}:${aggregateId}`,
+      violations,
+    );
+    if (!isExtended)
+      add(
+        violations,
+        needs(workflowJobs.candidate).includes(aggregateId),
+        `${fileName}:candidate must wait for the closed third-party evidence aggregate`,
+      );
+    else {
+      requireFields(
+        aggregate,
+        {
+          strategy: {
+            "fail-fast": false,
+            matrix: { os: ["ubuntu", "windows"] },
+          },
+        },
+        `${fileName}:${aggregateId}`,
+        violations,
+      );
+      validateEvidenceUpload(
+        fileName,
+        aggregateId,
+        aggregate,
+        {
+          name: "npm-evidence-aggregate-${{ matrix.os }}",
+          path: ".release/evidence-aggregate",
+          "retention-days": 7,
+        },
+        violations,
+      );
+      const parityId = "third_party_evidence_parity";
+      const parity = workflowJobs[parityId];
+      validateEvidenceJob(fileName, parityId, parity, violations);
+      requireFields(
+        parity,
+        {
+          name: "Extended tests / third-party evidence / cross-platform parity",
+          if: "${{ !cancelled() && github.event_name == 'workflow_dispatch' }}",
+        },
+        `${fileName}:${parityId}`,
+        violations,
+      );
+      add(
+        violations,
+        sameInventory(needs(parity), [aggregateId]),
+        `${fileName}:${parityId} must wait for both aggregates`,
+      );
+      const parityDownloads = actionSteps(parity, "actions/download-artifact");
+      add(
+        violations,
+        parityDownloads.length === 1 &&
+          parityDownloads[0].with?.pattern === "npm-evidence-aggregate-*",
+        `${fileName}:${parityId} must contain exactly one aggregate download`,
+      );
+      requireRun(
+        parity,
+        "node util/verify-npm-package-evidence-parity.mjs --left=.release/evidence-aggregates/npm-evidence-aggregate-ubuntu --right=.release/evidence-aggregates/npm-evidence-aggregate-windows",
+        `${fileName}:${parityId}`,
+        violations,
+      );
+    }
   }
   add(
     violations,
-    (releaseAggregate.match(/uses: actions\/download-artifact@/gu) ?? [])
-      .length === 1,
-    "release.yml:third_party_evidence must contain exactly one shard download",
-  );
-  validateReadOnlyEvidenceJob(
-    "release.yml",
-    "third_party_evidence",
-    releaseAggregate,
-    violations,
-  );
-  add(
-    violations,
-    listNeeds(jobBlock(release, "candidate")).includes("third_party_evidence"),
-    "release.yml:candidate must wait for the closed third-party evidence aggregate",
-  );
-
-  const extended = sources["extended-tests.yml"] ?? "";
-  const extendedEvidence = jobBlock(extended, "extended_evidence");
-  add(
-    violations,
-    extendedEvidence.includes("if: ${{ github.event_name == 'schedule' }}"),
-    "extended-tests.yml:extended_evidence must run only for scheduled observations",
-  );
-  const extendedRegistryKeys = jobBlock(
-    extended,
-    "third_party_evidence_registry_keys",
-  );
-  const extendedShard = jobBlock(extended, "third_party_evidence_shard");
-  const extendedAggregate = jobBlock(
-    extended,
-    "third_party_evidence_aggregate",
-  );
-  const parity = jobBlock(extended, "third_party_evidence_parity");
-  for (const setting of [
-    "name: Extended tests / third-party evidence / npm registry signing keys",
-    "if: ${{ github.event_name == 'workflow_dispatch' }}",
-    "run: node util/snapshot-npm-registry-keys.mjs --output=.release/registry-keys/npm-registry-keys.json",
-  ]) {
-    add(
-      violations,
-      extendedRegistryKeys.includes(setting),
-      `extended-tests.yml:third_party_evidence_registry_keys is missing ${setting}`,
-    );
-  }
-  validateReadOnlyEvidenceJob(
-    "extended-tests.yml",
-    "third_party_evidence_registry_keys",
-    extendedRegistryKeys,
-    violations,
-  );
-  validateEvidenceUpload(
-    "extended-tests.yml",
-    "third_party_evidence_registry_keys",
-    extendedRegistryKeys,
-    {
-      name: "npm-evidence-registry-keys",
-      path: ".release/registry-keys/npm-registry-keys.json",
-    },
-    violations,
-  );
-  for (const setting of [
-    "name: Extended tests / third-party evidence / ${{ matrix.os.id }} / shard ${{ matrix.shard }}",
-    "if: ${{ github.event_name == 'workflow_dispatch' }}",
-    "runs-on: ${{ matrix.os.runner }}",
-    "shell: ${{ matrix.os.shell }}",
-    "fail-fast: false",
-    "max-parallel: 8",
-    "uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0",
-    "SCANCODE_PLATFORM: ${{ matrix.os.platform }}",
-    "SCANCODE_PYTHON: ${{ steps.scancode_python.outputs.python-path }}",
-    "EVIDENCE_SHARD_INDEX: ${{ matrix.shard }}",
-    "SCANCODE_COMMAND: ${{ matrix.os.scancode_command }}",
-    "run: node util/prepare-scancode.mjs --platform-env=SCANCODE_PLATFORM --output=.release/tools/scancode --python-env=SCANCODE_PYTHON",
-    "name: npm-evidence-registry-keys",
-    "path: .release/registry-keys",
-    "run: node util/acquire-npm-package-evidence.mjs --shard-count=32 --shard-index-env=EVIDENCE_SHARD_INDEX --output=.release/evidence-shard --scancode-env=SCANCODE_COMMAND --registry-keys=.release/registry-keys/npm-registry-keys.json",
-  ]) {
-    add(
-      violations,
-      extendedShard.includes(setting),
-      `extended-tests.yml:third_party_evidence_shard is missing ${setting}`,
-    );
-  }
-  add(
-    violations,
-    JSON.stringify(listNeeds(extendedShard)) ===
-      JSON.stringify(["third_party_evidence_registry_keys"]),
-    "extended-tests.yml:third_party_evidence_shard must wait for the same-run signing-key snapshot",
-  );
-  add(
-    violations,
-    JSON.stringify(shardCoordinates(extendedShard)) ===
-      JSON.stringify(EXPECTED_SHARD_COORDINATES),
-    "extended-tests.yml:third_party_evidence_shard must contain exactly indices 0..31",
-  );
-  add(
-    violations,
-    JSON.stringify(matrixKeys(extendedShard)) ===
-      JSON.stringify(["os", "shard"]),
-    "extended-tests.yml:third_party_evidence_shard must have only OS and shard matrix axes",
-  );
-  const expectedOperatingSystemMatrix = [
-    "        os:",
-    "          - id: ubuntu",
-    "            runner: ubuntu-24.04",
-    "            shell: bash",
-    "            platform: linux",
-    "            scancode_command: .release/tools/scancode/scancode-toolkit-v32.5.0/venv/bin/scancode",
-    "          - id: windows",
-    "            runner: windows-2025",
-    "            shell: pwsh",
-    "            platform: windows",
-    "            scancode_command: .release/tools/scancode/scancode-toolkit-v32.5.0/venv/Scripts/scancode.exe",
-    "        shard:",
-  ].join("\n");
-  add(
-    violations,
-    extendedShard
-      .replaceAll("\r\n", "\n")
-      .includes(expectedOperatingSystemMatrix),
-    "extended-tests.yml:third_party_evidence_shard OS matrix differs from the closed platform contract",
-  );
-  validateReadOnlyEvidenceJob(
-    "extended-tests.yml",
-    "third_party_evidence_shard",
-    extendedShard,
-    violations,
-  );
-  validateEvidenceUpload(
-    "extended-tests.yml",
-    "third_party_evidence_shard",
-    extendedShard,
-    {
-      name: "npm-evidence-${{ matrix.os.id }}-${{ matrix.shard }}",
-      path: ".release/evidence-shard",
-    },
-    violations,
-  );
-
-  for (const setting of [
-    "name: Extended tests / third-party evidence / ${{ matrix.os }} aggregate",
-    "if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' }}",
-    "needs: third_party_evidence_shard",
-    "fail-fast: false",
-    "os: [ubuntu, windows]",
-    "pattern: npm-evidence-${{ matrix.os }}-*",
-    "run: node util/merge-npm-package-evidence.mjs --input=.release/evidence-shards --output=.release/evidence-aggregate",
-  ]) {
-    add(
-      violations,
-      extendedAggregate.includes(setting),
-      `extended-tests.yml:third_party_evidence_aggregate is missing ${setting}`,
-    );
-  }
-  add(
-    violations,
-    (extendedAggregate.match(/uses: actions\/download-artifact@/gu) ?? [])
-      .length === 1,
-    "extended-tests.yml:third_party_evidence_aggregate must contain exactly one shard download",
-  );
-  validateReadOnlyEvidenceJob(
-    "extended-tests.yml",
-    "third_party_evidence_aggregate",
-    extendedAggregate,
-    violations,
-  );
-  validateEvidenceUpload(
-    "extended-tests.yml",
-    "third_party_evidence_aggregate",
-    extendedAggregate,
-    {
-      name: "npm-evidence-aggregate-${{ matrix.os }}",
-      path: ".release/evidence-aggregate",
-      retentionDays: 7,
-    },
-    violations,
-  );
-
-  for (const setting of [
-    "name: Extended tests / third-party evidence / cross-platform parity",
-    "if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' }}",
-    "needs: third_party_evidence_aggregate",
-    "pattern: npm-evidence-aggregate-*",
-    "run: node util/verify-npm-package-evidence-parity.mjs --left=.release/evidence-aggregates/npm-evidence-aggregate-ubuntu --right=.release/evidence-aggregates/npm-evidence-aggregate-windows",
-  ]) {
-    add(
-      violations,
-      parity.includes(setting),
-      `extended-tests.yml:third_party_evidence_parity is missing ${setting}`,
-    );
-  }
-  add(
-    violations,
-    (parity.match(/uses: actions\/download-artifact@/gu) ?? []).length === 1,
-    "extended-tests.yml:third_party_evidence_parity must contain exactly one aggregate download",
-  );
-  validateReadOnlyEvidenceJob(
-    "extended-tests.yml",
-    "third_party_evidence_parity",
-    parity,
-    violations,
-  );
-
-  const setupPythonUses = Object.values(sources).reduce(
-    (count, source) =>
-      count + (source.match(/uses: actions\/setup-python@/gu) ?? []).length,
-    0,
-  );
-  add(
-    violations,
-    setupPythonUses === 2,
+    Object.values(workflows)
+      .flatMap(allSteps)
+      .filter((step) => step.uses?.startsWith("actions/setup-python@"))
+      .length === 2,
     "setup-python is allowed exactly once in each evidence-shard job",
   );
 };
 
-const validateMaintenanceReporter = (source, violations) => {
+const validateMaintenanceReporter = (workflow, violations) => {
   add(
     violations,
-    JSON.stringify(jobIds(source)) === JSON.stringify(["health", "reporter"]),
+    sameInventory(Object.keys(workflow.jobs ?? {}), ["health", "reporter"]),
     "maintenance.yml: expected exactly the read-only health and write-only reporter jobs",
   );
-  const health = jobBlock(source, "health");
-  for (const setting of [
-    "reporter_artifact_id: ${{ steps.reporter_bundle.outputs.artifact-id }}",
-    "if-no-files-found: error",
-    "retention-days: 1",
-    "compression-level: 0",
-    "overwrite: false",
-    "include-hidden-files: false",
-    "path: scripts/report-maintenance-failure.mjs",
-  ]) {
-    add(
-      violations,
-      health.includes(setting),
-      `maintenance.yml: reporter source transport is missing ${setting}`,
-    );
-  }
-
-  const reporter = jobBlock(source, "reporter");
-  for (const setting of [
-    "needs: health",
-    "if: ${{ !cancelled() && needs.health.outputs.reporter_artifact_id != '' }}",
-    "issues: write",
-    "artifact-ids: ${{ needs.health.outputs.reporter_artifact_id }}",
-    "merge-multiple: false",
-    "skip-decompress: false",
-    "digest-mismatch: error",
-    "MAINTENANCE_HEALTH_RESULT: ${{ needs.health.result }}",
-    "run: node .maintenance-reporter/report-maintenance-failure.mjs",
-  ]) {
-    add(
-      violations,
-      reporter.includes(setting),
-      `maintenance.yml: isolated reporter is missing ${setting}`,
-    );
-  }
-  for (const forbidden of [
-    "contents: read",
-    "actions: read",
-    "id-token: write",
-    "actions/checkout@",
-  ]) {
-    add(
-      violations,
-      !reporter.includes(forbidden),
-      `maintenance.yml: write-only reporter contains forbidden authority ${forbidden}`,
-    );
-  }
-};
-
-const validateWebVowlCorpusMaterialization = (fileName, source, violations) => {
-  const webVowl = jobBlock(source, "webvowl");
-  const webVowlLines = webVowl.split(/\r?\n/u);
-  const webVowlCheckoutIndex = webVowlLines.indexOf(
-    "      - name: Check out the fixed WebVOWL consumer",
+  const health = workflow.jobs?.health;
+  requireFields(
+    health?.outputs,
+    {
+      reporter_artifact_id: "${{ steps.reporter_bundle.outputs.artifact-id }}",
+    },
+    "maintenance.yml: reporter source transport",
+    violations,
   );
-  const webVowlCheckout =
-    webVowlCheckoutIndex === -1
-      ? ""
-      : stepBlockAt(webVowlLines, webVowlCheckoutIndex);
-  const webVowlCheckoutLines = webVowlCheckout.split(/\r?\n/u);
-  const installStep = [
-    "      - name: Install the fixed ontology corpus dependencies",
-    "        working-directory: consumer-workspace/universal-ontology",
-    "        run: npm ci",
-  ].join("\n");
-  const materializeStep = [
-    "      - name: Materialize the fixed representative ontology corpus",
-    "        working-directory: consumer-workspace/universal-ontology",
-    "        run: npm run build",
-  ].join("\n");
-  const qualificationStep =
-    "      - name: Qualify the retained package through isolated WebVOWL";
-  const installIndex = webVowl.indexOf(installStep);
-  const materializeIndex = webVowl.indexOf(materializeStep);
-  const qualificationIndex = webVowl.indexOf(qualificationStep);
-
   add(
     violations,
-    [
-      "        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1",
-      "          repository: Hadden-Industries/webvowl",
-      "          ref: f7444ce3971621e6af6d38ebd4b5ce9b03f3e235",
-      "          fetch-depth: 0",
-    ].every((setting) => webVowlCheckoutLines.includes(setting)),
+    actionSteps(health, "actions/upload-artifact").some((step) =>
+      fieldsMatch(step.with, {
+        "if-no-files-found": "error",
+        "retention-days": 1,
+        "compression-level": 0,
+        overwrite: false,
+        "include-hidden-files": false,
+        path: "scripts/report-maintenance-failure.mjs",
+      }),
+    ),
+    "maintenance.yml: reporter source transport must retain the exact read-only reporter script",
+  );
+  const reporter = workflow.jobs?.reporter;
+  requireFields(
+    reporter,
+    {
+      if: "${{ !cancelled() && needs.health.outputs.reporter_artifact_id != '' }}",
+      permissions: { issues: "write" },
+    },
+    "maintenance.yml: isolated reporter",
+    violations,
+  );
+  add(
+    violations,
+    sameInventory(needs(reporter), ["health"]) &&
+      actionSteps(reporter, "actions/checkout").length === 0,
+    "maintenance.yml: write-only reporter must need health and have no checkout authority",
+  );
+  add(
+    violations,
+    actionSteps(reporter, "actions/download-artifact").some((step) =>
+      fieldsMatch(step.with, {
+        ...DOWNLOAD_INPUTS,
+        "artifact-ids": "${{ needs.health.outputs.reporter_artifact_id }}",
+      }),
+    ),
+    "maintenance.yml: isolated reporter must download its exact artifact",
+  );
+  add(
+    violations,
+    steps(reporter).some(
+      (step) =>
+        step.run ===
+          "node .maintenance-reporter/report-maintenance-failure.mjs" &&
+        step.env?.MAINTENANCE_HEALTH_RESULT === "${{ needs.health.result }}",
+    ),
+    "maintenance.yml: isolated reporter must bind the health result to the retained script",
+  );
+};
+
+const validateSourceGovernanceHistory = (workflows, violations) => {
+  for (const [fileName, id, name] of [
+    ["ci.yml", "source_node_22", "Check out the proposed source"],
+    ["ci.yml", "source_node_24", "Check out the proposed source"],
+    ["release.yml", "source_node_22", "Check out the proposed source"],
+    ["release.yml", "source_node_24", "Check out the proposed source"],
+    ["maintenance.yml", "health", "Check out the default branch"],
+    ["extended-tests.yml", "extended_evidence", "Check out the default branch"],
+  ])
+    add(
+      violations,
+      actionSteps(workflows[fileName]?.jobs?.[id], "actions/checkout").some(
+        (step) => step.name === name && step.with?.["fetch-depth"] === 0,
+      ),
+      `${fileName}:${id} must retain complete owlapi history for governance tests`,
+    );
+};
+
+const validateWebVowlCorpusMaterialization = (
+  fileName,
+  workflow,
+  control,
+  violations,
+) => {
+  const job = workflow.jobs?.webvowl;
+  const checkout = actionSteps(job, "actions/checkout").find(
+    (step) => step.name === "Check out the fixed WebVOWL consumer",
+  );
+  add(
+    violations,
+    fieldsMatch(checkout?.with, {
+      repository: control.webvowl.repository,
+      ref: control.webvowl.commit,
+      "fetch-depth": 0,
+    }),
     `${fileName}:webvowl must retain complete WebVOWL history for governance tests`,
   );
   add(
     violations,
-    installIndex !== -1 &&
-      materializeIndex > installIndex &&
-      qualificationIndex > materializeIndex,
+    actionSteps(job, "actions/checkout").some((step) =>
+      fieldsMatch(step.with, {
+        repository: control.ontologyCorpus.repository,
+        ref: control.ontologyCorpus.commit,
+      }),
+    ),
+    `${fileName}:webvowl must bind the fixed ontology corpus identity`,
+  );
+  const jobSteps = steps(job);
+  const install = jobSteps.findIndex((step) =>
+    fieldsMatch(step, {
+      name: "Install the fixed ontology corpus dependencies",
+      "working-directory": "consumer-workspace/universal-ontology",
+      run: "npm ci",
+    }),
+  );
+  const materialize = jobSteps.findIndex((step) =>
+    fieldsMatch(step, {
+      name: "Materialize the fixed representative ontology corpus",
+      "working-directory": "consumer-workspace/universal-ontology",
+      run: "npm run build",
+    }),
+  );
+  const qualify = jobSteps.findIndex(
+    (step) =>
+      step.name === "Qualify the retained package through isolated WebVOWL",
+  );
+  add(
+    violations,
+    install !== -1 && materialize > install && qualify > materialize,
     `${fileName}:webvowl must install and materialize the fixed ontology corpus before qualification`,
   );
 };
@@ -1400,7 +1246,10 @@ const validateJsonRecord = (schemaName, recordName, violations) => {
   );
 };
 
-export const auditRepositoryControls = () => {
+/** Report repository policy violations; overrides are source strings for mutation tests. */
+export const auditRepositoryControls = ({
+  workflowSourceOverrides = {},
+} = {}) => {
   const violations = [];
   const workflowFiles = sortedYamlFiles(WORKFLOW_DIRECTORY);
   const issueFormFiles = sortedYamlFiles(ISSUE_FORM_DIRECTORY, {
@@ -1408,133 +1257,105 @@ export const auditRepositoryControls = () => {
   });
   add(
     violations,
-    JSON.stringify(workflowFiles) === JSON.stringify(EXPECTED_WORKFLOWS),
+    sameInventory(workflowFiles, EXPECTED_WORKFLOWS),
     "The repository must contain exactly the five approved workflow files.",
   );
   add(
     violations,
-    JSON.stringify(issueFormFiles) === JSON.stringify(EXPECTED_ISSUE_FORMS),
+    sameInventory(issueFormFiles, EXPECTED_ISSUE_FORMS),
     "The repository must contain exactly the six approved issue forms.",
   );
-
-  const sources = Object.fromEntries(
+  const parsed = Object.fromEntries(
     workflowFiles.map((fileName) => [
       fileName,
-      readFileSync(join(WORKFLOW_DIRECTORY, fileName), "utf8"),
+      parseControlYaml(
+        fileName,
+        workflowSourceOverrides[fileName] ??
+          readFileSync(join(WORKFLOW_DIRECTORY, fileName), "utf8"),
+        violations,
+      ),
     ]),
   );
-  for (const [fileName, source] of Object.entries(sources)) {
+  // Invalid syntax is a complete failure, not a partial policy pass or an exception in a later accessor.
+  if (violations.some((message) => message.includes(": invalid YAML:")))
+    return { workflowFiles, issueFormFiles, violations };
+  const workflows = Object.fromEntries(
+    entries(parsed).map(([fileName, { value }]) => [fileName, value]),
+  );
+  for (const [fileName, { value: workflow, document }] of entries(parsed)) {
     add(
       violations,
-      /^permissions: \{\}$/mu.test(source),
+      isDeepStrictEqual(workflow.permissions, {}),
       `${fileName}: root permissions must be empty`,
     );
-    for (const forbidden of [
-      "pull_request_target",
-      "workflow_run",
-      "continue-on-error",
-      "actions/cache@",
-      "npm exec --package",
-      "npx ",
-      "ubuntu-latest",
-      "windows-latest",
-      "macos-latest",
-      "container:",
-      "|| true",
-    ]) {
+    for (const event of ["pull_request_target", "workflow_run"])
       add(
         violations,
-        !source.includes(forbidden),
-        `${fileName}: forbidden workflow construct ${forbidden}`,
+        !Object.hasOwn(workflow.on ?? {}, event),
+        `${fileName}: forbidden workflow construct ${event}`,
       );
-    }
-    add(
-      violations,
-      !/^\s+run:.*\$\{\{/mu.test(source),
-      `${fileName}: workflow expressions must cross into scripts through env/with data, not run text`,
-    );
-    validateActionUses(fileName, source, violations);
-    validateJobs(fileName, source, violations);
-    validateCandidateTransport(fileName, source, violations);
+    validateActionUses(fileName, workflow, document, violations);
+    validateJobs(fileName, workflow, violations);
+    validateCandidateTransport(fileName, workflow, violations);
   }
-  validateEvidenceWorkflows(sources, violations);
-
-  const ci = sources["ci.yml"] ?? "";
-  add(violations, ci.startsWith("name: CI\n"), "ci.yml: wrong workflow name");
+  validateEvidenceWorkflows(workflows, violations);
+  const ci = workflows["ci.yml"] ?? {};
+  add(violations, ci.name === "CI", "ci.yml: wrong workflow name");
   add(
     violations,
-    /on:\r?\n  pull_request:\r?\n    branches: \[main\]\r?\n  push:\r?\n    branches: \[main\]/u.test(
-      ci,
-    ),
+    isDeepStrictEqual(ci.on, {
+      pull_request: { branches: ["main"] },
+      push: { branches: ["main"] },
+    }),
     "ci.yml: trigger must be pull_request and main push without path filters",
   );
   add(
     violations,
-    ci.includes("cancel-in-progress: true"),
+    ci.concurrency?.["cancel-in-progress"] === true,
     "ci.yml: superseded work must cancel",
   );
   validateAggregate("ci.yml", ci, "ci", violations);
-
-  const release = sources["release.yml"] ?? "";
-  add(
-    violations,
-    /^on:\r?\n  workflow_dispatch:\s*$/mu.test(release),
-    "release.yml: workflow_dispatch must be the sole trigger",
-  );
-  for (const setting of [
-    "group: owlapi-release",
-    "cancel-in-progress: false",
-    "queue: max",
-  ]) {
-    add(
-      violations,
-      release.includes(setting),
-      `release.yml: missing concurrency setting ${setting}`,
-    );
-  }
+  const release = workflows["release.yml"] ?? {};
+  validateManualRelease("release.yml", release, violations);
   validateAggregate("release.yml", release, "release", violations);
-  validateReleaseMutationBoundary(release, violations);
-
-  const releaseReconciliation = sources["release-reconciliation.yml"] ?? "";
-  validateReleaseReconciliationMutationBoundary(
-    releaseReconciliation,
+  validateReleaseMutationBoundary("release.yml", release, violations);
+  validateReleaseReconciliation(
+    workflows["release-reconciliation.yml"] ?? {},
     violations,
   );
-
   for (const [fileName, group] of [
     ["maintenance.yml", "owlapi-maintenance"],
     ["extended-tests.yml", "owlapi-extended-tests"],
   ]) {
-    const source = sources[fileName] ?? "";
+    const workflow = workflows[fileName] ?? {};
     add(
       violations,
-      source.includes("schedule:") && source.includes("workflow_dispatch:"),
+      Object.hasOwn(workflow.on ?? {}, "schedule") &&
+        Object.hasOwn(workflow.on ?? {}, "workflow_dispatch"),
       `${fileName}: scheduled and manual triggers are required`,
     );
     add(
       violations,
-      source.includes(`group: ${group}`) &&
-        source.includes("cancel-in-progress: false") &&
-        !source.includes("queue: max"),
+      fieldsMatch(workflow.concurrency, {
+        group,
+        "cancel-in-progress": false,
+      }) && !Object.hasOwn(workflow.concurrency ?? {}, "queue"),
       `${fileName}: observational single-pending concurrency is incorrect`,
     );
   }
-  validateMaintenanceReporter(sources["maintenance.yml"] ?? "", violations);
-  validateWebVowlCorpusMaterialization("ci.yml", ci, violations);
-  validateWebVowlCorpusMaterialization("release.yml", release, violations);
-
-  const alwaysJobs = [["ci.yml", "required"]];
-  for (const [fileName, jobId] of alwaysJobs) {
-    add(
-      violations,
-      jobBlock(sources[fileName] ?? "", jobId).includes("always()"),
-      `${fileName}:${jobId} must retain the branch-protection always() evaluation`,
-    );
-  }
-  const allSources = Object.values(sources).join("\n");
+  validateMaintenanceReporter(workflows["maintenance.yml"] ?? {}, violations);
+  validateSourceGovernanceHistory(workflows, violations);
   add(
     violations,
-    (allSources.match(/always\(\)/gu) ?? []).length === alwaysJobs.length,
+    ci.jobs?.required?.if === "${{ always() }}",
+    "ci.yml:required must retain the branch-protection always() evaluation",
+  );
+  add(
+    violations,
+    Object.values(workflows).reduce(
+      (count, workflow) => count + occurrences(workflow, "always()"),
+      0,
+    ) === 1,
     "always() is allowed only on CI / required",
   );
   const webVowlControl = JSON.parse(
@@ -1543,57 +1364,65 @@ export const auditRepositoryControls = () => {
       "utf8",
     ),
   );
-  for (const identity of [
-    webVowlControl.webvowl.repository,
-    webVowlControl.webvowl.commit,
-    webVowlControl.ontologyCorpus.repository,
-    webVowlControl.ontologyCorpus.commit,
-  ]) {
-    add(
+  for (const fileName of ["ci.yml", "release.yml"])
+    validateWebVowlCorpusMaterialization(
+      fileName,
+      workflows[fileName] ?? {},
+      webVowlControl,
       violations,
-      ci.includes(identity) && release.includes(identity),
-      `WebVOWL qualification identity ${identity} is not bound in both workflows`,
     );
-  }
 
-  const issueConfig = readFileSync(
-    join(ISSUE_FORM_DIRECTORY, "config.yml"),
-    "utf8",
-  );
+  const issueConfig = parseControlYaml(
+    "ISSUE_TEMPLATE/config.yml",
+    readFileSync(join(ISSUE_FORM_DIRECTORY, "config.yml"), "utf8"),
+    violations,
+  ).value;
   add(
     violations,
-    issueConfig.includes("blank_issues_enabled: false") &&
-      issueConfig.includes("security/advisories/new") &&
-      issueConfig.includes("CODE_OF_CONDUCT.md"),
+    issueConfig.blank_issues_enabled === false &&
+      issueConfig.contact_links?.some((link) =>
+        link.url?.includes("security/advisories/new"),
+      ) &&
+      issueConfig.contact_links?.some((link) =>
+        link.url?.includes("CODE_OF_CONDUCT.md"),
+      ),
     "Issue routing must disable blanks and retain private security/conduct paths.",
   );
-  const pullRequestTemplatePath = join(
+  const templatePath = join(
     REPOSITORY_ROOT,
     ".github",
     "pull_request_template.md",
   );
   add(
     violations,
-    existsSync(pullRequestTemplatePath) &&
-      readFileSync(pullRequestTemplatePath, "utf8").includes(
+    existsSync(templatePath) &&
+      readFileSync(templatePath, "utf8").includes(
         "not a contributor licence agreement",
       ),
     "The engineering pull-request template is absent or misstates its legal role.",
   );
-  const dependabot = readFileSync(
-    join(REPOSITORY_ROOT, ".github", "dependabot.yml"),
-    "utf8",
-  );
+  const dependabot = parseControlYaml(
+    "dependabot.yml",
+    readFileSync(join(REPOSITORY_ROOT, ".github", "dependabot.yml"), "utf8"),
+    violations,
+  ).value;
+  const updates = Array.isArray(dependabot.updates) ? dependabot.updates : [];
   add(
     violations,
-    dependabot.includes("package-ecosystem: npm") &&
-      dependabot.includes("package-ecosystem: github-actions") &&
-      dependabot.includes("compatible-development-tools") &&
-      dependabot.includes("compatible-action-updates") &&
-      !/(?:auto-merge|renovate)/iu.test(dependabot),
+    updates.some(
+      (update) =>
+        update["package-ecosystem"] === "npm" &&
+        Object.hasOwn(update.groups ?? {}, "compatible-development-tools"),
+    ) &&
+      updates.some(
+        (update) =>
+          update["package-ecosystem"] === "github-actions" &&
+          Object.hasOwn(update.groups ?? {}, "compatible-action-updates"),
+      ) &&
+      !Object.hasOwn(dependabot, "auto-merge") &&
+      updates.every((update) => !Object.hasOwn(update, "auto-merge")),
     "Dependabot must propose isolated runtime and grouped compatible tooling/Action updates without auto-merge.",
   );
-
   validateJsonRecord(
     "publication-control.schema.json",
     "publication-control.json",
@@ -1607,17 +1436,11 @@ export const auditRepositoryControls = () => {
   return { workflowFiles, issueFormFiles, violations };
 };
 
-const main = () => {
-  const report = auditRepositoryControls();
-  process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
-  if (report.violations.length > 0) {
-    process.exitCode = 1;
-  }
-};
-
 if (
   process.argv[1] &&
   pathToFileURL(process.argv[1]).href === import.meta.url
 ) {
-  main();
+  const report = auditRepositoryControls();
+  process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
+  if (report.violations.length) process.exitCode = 1;
 }

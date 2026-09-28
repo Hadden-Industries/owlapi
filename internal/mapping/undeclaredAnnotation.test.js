@@ -56,6 +56,35 @@ const annotationValues = (ontology) => {
 };
 
 describe("assertions using an undeclared annotation property", () => {
+  it.each(["<urn:test:ontology>", "_:ontology"])(
+    "keeps undeclared IRI-valued metadata on ontology header %s in compatible mode",
+    async (header) => {
+      const { ontology, documents } =
+        await OWLManager.createOWLOntologyManager().loadOntologyGraphFromOntologyDocument(
+          new StringDocumentSource(
+            `@prefix owl: <${OWL}> . ${header} a owl:Ontology; <urn:creator> <urn:person>.`,
+            { contentType: "text/turtle" },
+          ),
+          new OWLOntologyLoaderConfiguration({
+            parsingMode: "compatible",
+            collectWarnings: true,
+          }),
+        );
+      expect(
+        [...ontology.getAnnotations()].map(
+          (annotation) => annotation.value.value,
+        ),
+      ).toEqual(["urn:person"]);
+      expect(ontology.getAxioms().size).toBe(0);
+      expect(documents[0].context.diagnostics).toEqual([
+        expect.objectContaining({
+          code: "RDF_UNDECLARED_ANNOTATION_PROPERTY",
+          iri: "urn:creator",
+        }),
+      ]);
+    },
+  );
+
   it("keeps a literal-valued assertion as an annotation", async () => {
     const { ontology } = await load("<vs:term_status>testing</vs:term_status>");
 

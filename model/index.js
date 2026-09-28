@@ -21,8 +21,10 @@ export {
   dispatchOwlObject,
 } from "./dispatch.js";
 export { IRI, OWLStructuralObject, StructuralSet } from "./structural.js";
+export { AddOntologyAnnotation } from "./addOntologyAnnotation.js";
 export { OWLDataFactory } from "./owlDataFactory.js";
 export { OWLDocumentFormat } from "./owlDocumentFormat.js";
 export { OWLOntology } from "./owlOntology.js";
 export { OWLOntologyLoaderConfiguration } from "./owlOntologyLoaderConfiguration.js";
 export { OWLOntologyManager } from "./owlOntologyManager.js";
+export { SetOntologyID } from "./setOntologyID.js";

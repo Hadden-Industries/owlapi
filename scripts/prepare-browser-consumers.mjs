@@ -113,6 +113,31 @@ const installFixture = (mode) => {
     SHARED_EXERCISE_PATH,
     join(fixtureDirectory, "exercise-package.js"),
   );
+  copyFileSync(
+    join(REPOSITORY_ROOT, "test", "import-closure", "public-contract.js"),
+    join(fixtureDirectory, "public-contract.js"),
+  );
+  const closureDocuments = Object.fromEntries(
+    ["root", "left", "right", "leaf"].map((name) => [
+      name,
+      readFileSync(
+        join(
+          REPOSITORY_ROOT,
+          "test",
+          "import-closure",
+          "fixtures",
+          "closure",
+          `${name}.ofn`,
+        ),
+        "utf8",
+      ),
+    ]),
+  );
+  writeFileSync(
+    join(fixtureDirectory, "import-closure-documents.js"),
+    `export default ${JSON.stringify(closureDocuments)};\n`,
+    "utf8",
+  );
   writeFileSync(
     join(fixtureDirectory, "package.json"),
     stableJson({
@@ -197,6 +222,15 @@ try {
     join(importMapDirectory, "exercise-package.js"),
     join(runtimeDirectory, "exercise-package.js"),
   );
+  for (const fileName of [
+    "public-contract.js",
+    "import-closure-documents.js",
+  ]) {
+    copyFileSync(
+      join(importMapDirectory, fileName),
+      join(runtimeDirectory, fileName),
+    );
+  }
   cpSync(
     join(importMapDirectory, "node_modules", "owlapi"),
     join(runtimeDirectory, "package", "owlapi"),

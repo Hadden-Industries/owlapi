@@ -1,0 +1,155 @@
+{
+  "artifactId": "81a67d658a57a047bdf6b7cac3cbeb2f54295ee72b3d5ece952ca6029a36c06e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3020,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "e45658bebb1df05ca2167877017db53a230b153dacd16dcb0edf3d75ebd6d98f",
+        "size": 264,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "81abe32b4b7d4566ddae08dc0eed2526c50d76b792fd4a755013909df04f7d5f",
+        "size": 374,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+        "size": 1099,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "aa18d6561f45c1aa9fa982727a9b315719296572287268314e866a2bbb50e684",
+        "size": 1848,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "b564e2d71fcbdb04bf03dd022ce878305c8f4dc69d7184c38d65cf55c9e536fd",
+        "size": 3307,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1099,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ca/ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+          "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+        "size": 1099
+      },
+      {
+        "blob": {
+          "bytes": 3307,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b5/b564e2d71fcbdb04bf03dd022ce878305c8f4dc69d7184c38d65cf55c9e536fd",
+          "sha256": "b564e2d71fcbdb04bf03dd022ce878305c8f4dc69d7184c38d65cf55c9e536fd"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "b564e2d71fcbdb04bf03dd022ce878305c8f4dc69d7184c38d65cf55c9e536fd",
+        "size": 3307
+      }
+    ],
+    "expandedBytes": 6892,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "is-decimal",
+      "repository": "wooorm/is-decimal",
+      "version": "2.0.1"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/wooorm/is-decimal/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "description": "Check if a character is decimal",
+      "devDependencies": {
+        "@types/tape": "^4.0.0",
+        "c8": "^7.0.0",
+        "prettier": "^2.0.0",
+        "remark-cli": "^10.0.0",
+        "remark-preset-wooorm": "^9.0.0",
+        "rimraf": "^3.0.0",
+        "tape": "^5.0.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^4.0.0",
+        "xo": "^0.46.0"
+      },
+      "files": [
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": {
+        "type": "github",
+        "url": "https://github.com/sponsors/wooorm"
+      },
+      "keywords": [
+        "string",
+        "character",
+        "char",
+        "code",
+        "decimal"
+      ],
+      "license": "MIT",
+      "main": "index.js",
+      "name": "is-decimal",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "preset-wooorm"
+        ]
+      },
+      "repository": "wooorm/is-decimal",
+      "scripts": {
+        "build": "rimraf \"*.d.ts\" && tsc && type-coverage",
+        "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
+        "prepublishOnly": "npm run build && npm run format",
+        "test": "npm run build && npm run format && npm run test-coverage",
+        "test-api": "node --conditions development test.js",
+        "test-coverage": "c8 --check-coverage --branches 100 --functions 100 --lines 100 --statements 100 --reporter lcov npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "atLeast": 100,
+        "detail": true,
+        "ignoreCatch": true,
+        "strict": true
+      },
+      "types": "index.d.ts",
+      "version": "2.0.1",
+      "xo": {
+        "prettier": true
+      }
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 3020,
+      "sha256": "62b6375ccb0869ca7c26ccb1e5049de4c4f272157894360b50cf8466fc4c1beb"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -15,11 +15,17 @@ const createManager = (options = {}) =>
     ...options,
     registry: new OWLParserRegistry([krss2ParserDescriptor]),
   });
-const load = (manager, text, values = {}) =>
+let resourceDocumentSequence = 0;
+const nextResourceDocumentIRI = () =>
+  `urn:test:krss2-resource:load:${++resourceDocumentSequence}`;
+const load = (
+  manager,
+  text,
+  values = {},
+  documentIRI = nextResourceDocumentIRI(),
+) =>
   manager.loadOntologyFromOntologyDocument(
-    new StringDocumentSource(text, {
-      documentIRI: "urn:test:krss2-resource",
-    }),
+    new StringDocumentSource(text, { documentIRI }),
     configuration(values),
   );
 const expectResource = async (promise, resource, limit, observed) => {
@@ -121,11 +127,17 @@ describe("KRSS2 resource safety and diagnostics", () => {
     await expect(
       load(manager, "(implies A B)(implies C)"),
     ).rejects.toMatchObject({ code: "OWL_SYNTAX_ERROR" });
-    const ontology = await load(manager, "(implies D E)");
+    const recoveredDocumentIRI = "urn:test:krss2-resource:recovered";
+    const ontology = await load(
+      manager,
+      "(implies D E)",
+      {},
+      recoveredDocumentIRI,
+    );
 
     expect(ontology.getAxioms()).toHaveProperty("size", 1);
     const [axiom] = ontology.getAxioms();
-    expect(axiom.subClass.iri.value).toBe("urn:test:krss2-resource#D");
+    expect(axiom.subClass.iri.value).toBe(`${recoveredDocumentIRI}#D`);
   });
 
   it("cooperatively yields so an in-flight parse can be aborted", async () => {

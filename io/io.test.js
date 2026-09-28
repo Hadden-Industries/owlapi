@@ -16,6 +16,68 @@ import {
   UnsupportedConstructError,
   OWLSyntaxError,
 } from "../index.js";
+import * as io from "./index.js";
+import * as aggregate from "../index.js";
+import * as model from "../model/index.js";
+
+describe("ontology storage error contract", () => {
+  it("exposes only the canonical Java-grounded storage error hierarchy", () => {
+    expect(typeof io.OWLOntologyStorageError).toBe("function");
+    expect(typeof io.OWLStorerNotFoundError).toBe("function");
+    const storage = new io.OWLOntologyStorageError();
+    expect(storage).toBeInstanceOf(io.OWLAPIError);
+    expect(storage.name).toBe("OWLOntologyStorageError");
+    expect(storage.code).toBe("ONTOLOGY_STORAGE_FAILED");
+    const format = new OWLDocumentFormat({ key: "unsupported-storer" });
+    const missing = new io.OWLStorerNotFoundError(format);
+    expect(missing).toBeInstanceOf(io.OWLOntologyStorageError);
+    expect(missing.name).toBe("OWLStorerNotFoundError");
+    expect(missing.code).toBe("STORER_NOT_FOUND");
+    expect(missing.message).toContain("unsupported-storer");
+    expect(
+      Object.getOwnPropertyNames(io.OWLStorerNotFoundError.prototype),
+    ).toEqual(["constructor"]);
+    for (const name of ["OWLOntologyStorageError", "OWLStorerNotFoundError"]) {
+      expect(aggregate[name]).toBe(io[name]);
+      expect(model[name]).toBeUndefined();
+    }
+    expect(io.UnrepresentableOntologyError).toBeUndefined();
+    expect(aggregate.UnrepresentableOntologyError).toBeUndefined();
+  });
+
+  it("retains representability details and cause without corrupting error identity", () => {
+    expect(typeof io.OWLOntologyStorageError).toBe("function");
+    const cause = new Error("underlying rendering failure");
+    const details = JSON.parse(
+      '{"__proto__":{"polluted":true},"name":"Other","code":"OTHER","message":"Other","constructor":"Other","prototype":{},"stack":"Other","errors":[]}',
+    );
+    Object.assign(details, {
+      cause,
+      reason: "ONTOLOGY_NOT_REPRESENTABLE",
+      category: "ontologyAnnotations",
+      path: "annotations[0]",
+    });
+    const error = new io.OWLOntologyStorageError(
+      "Cannot preserve ontology",
+      details,
+    );
+    expect(error.name).toBe("OWLOntologyStorageError");
+    expect(error.code).toBe("ONTOLOGY_STORAGE_FAILED");
+    expect(error.message).toBe("Cannot preserve ontology");
+    expect(error.cause).toBe(cause);
+    expect(error.stack).not.toBe("Other");
+    expect(error.constructor).toBe(io.OWLOntologyStorageError);
+    expect(Object.getPrototypeOf(error)).toBe(
+      io.OWLOntologyStorageError.prototype,
+    );
+    expect(error.reason).toBe("ONTOLOGY_NOT_REPRESENTABLE");
+    expect(Object.hasOwn(error, "reason")).toBe(true);
+    expect(error.category).toBe("ontologyAnnotations");
+    expect(error.path).toBe("annotations[0]");
+    expect(error.polluted).toBeUndefined();
+    expect(error.errors).toBeUndefined();
+  });
+});
 
 describe("document loading interface", () => {
   it("keeps document metadata and loader configuration immutable", () => {

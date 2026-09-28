@@ -1,4 +1,5 @@
 import { RdfToOwlTranslator } from "../../mapping/rdfToOwlTranslator.js";
+import { registerRdfDocumentPreparation } from "./rdfDocumentPreparation.js";
 
 const defaultTranslatorFactory = (dataFactory) =>
   new RdfToOwlTranslator({ dataFactory });
@@ -31,9 +32,12 @@ export class RdfSyntaxParser {
     this.#createTranslator = createTranslator;
     this.#documentFormat = documentFormat;
     this.#syntaxAdapter = syntaxAdapter;
+    registerRdfDocumentPreparation(this, (source, transaction, configuration) =>
+      this.#prepare(source, transaction, configuration),
+    );
   }
 
-  async parse(source, transaction, configuration) {
+  async #readSyntax(source, transaction, configuration) {
     if (!transaction || typeof transaction.getOWLDataFactory !== "function") {
       throw new TypeError(
         "transaction must implement the parser transaction contract",
@@ -47,11 +51,54 @@ export class RdfSyntaxParser {
       throw new TypeError("createTranslator must return a translator");
     }
     const documentIRI = source.getDocumentIRI()?.value;
-    const translated = await translator.translate(dataset, {
-      baseIRI: documentIRI,
+    return {
+      dataset,
+      jsonLdContexts,
+      prefixes,
+      translator,
+      options: { baseIRI: documentIRI, configuration, documentIRI },
+    };
+  }
+
+  async #prepare(source, transaction, configuration) {
+    const syntax = await this.#readSyntax(source, transaction, configuration);
+    const prepared = await syntax.translator.prepare(
+      syntax.dataset,
+      syntax.options,
+    );
+    transaction.setOntologyID(prepared.ontology.getOntologyID());
+    transaction.addImportsDeclarations(
+      prepared.ontology.getImportsDeclarations(),
+    );
+    transaction.setDocumentFormat(this.#documentFormat);
+    return {
+      declarations: prepared.declarations,
+      reconstruct: async (declarations, completedTransaction) =>
+        this.#populateTransaction(
+          await prepared.reconstruct(declarations),
+          completedTransaction,
+          configuration,
+          syntax,
+        ),
+    };
+  }
+
+  async parse(source, transaction, configuration) {
+    const syntax = await this.#readSyntax(source, transaction, configuration);
+    return this.#populateTransaction(
+      await syntax.translator.translate(syntax.dataset, syntax.options),
+      transaction,
       configuration,
-      documentIRI,
-    });
+      syntax,
+    );
+  }
+
+  #populateTransaction(
+    translated,
+    transaction,
+    configuration,
+    { prefixes, jsonLdContexts },
+  ) {
     const { context, ontology } = translated;
 
     transaction.setOntologyID(ontology.getOntologyID());

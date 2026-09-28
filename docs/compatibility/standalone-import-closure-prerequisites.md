@@ -10,6 +10,37 @@ The canonical consumer artifacts are:
 - [task-by-task implementation plan](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/plans/2026-08-22-self-contained-owl-import-closure.md)
 - [machine-readable policy](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/import-closure/contract.v1.json)
 
+## Delivery sequencing
+
+The capability slice is being pre-built on the dedicated
+`feature/ontology-import-closure-lifecycle` branch before public
+`owlapi@0.1.0` lands and is included in that first planned public production
+release. The owner approved this sequencing correction on 2026-09-28; it
+supersedes the former separate `0.2.0` destination. `0.1.0-rc.1` is a candidate
+for `0.1.0`, not evidence of publication or acceptance. Lifecycle capabilities
+remain `DEFERRED` / `NOT_STARTED` until their formal qualification gates pass.
+
+Build `StringDocumentTarget`, the storage-error hierarchy, and their decision
+ledger once under the canonical Phase 21 plan on this feature branch. Then
+proceed with all dependency-ready lifecycle work, including provisional consumer
+experiments. Use those same canonical bindings throughout; no temporary target,
+error class, alias, or fabricated accepted WebVOWL/release evidence is permitted.
+
+The reviewed lifecycle task commits are merged into a branch containing the
+pinned `main` integration baseline, preserving their original commit identities.
+Phase 21 must complete before Phase 22 release acceptance; neither requires an
+earlier public `0.1.0` release. Record the baseline commit and API-registry digest.
+All affected tests, generated API views, installed-package checks, and consumer
+checks are rerun against that accepted baseline. Conflicts are resolved in the
+canonical implementation; no shim, forwarding module, compatibility alias,
+duplicate binding, or fallback export is permitted. A bounded amount of
+alignment rework is expected. A material public-contract difference instead
+requires a reviewed plan and compatibility-ledger amendment.
+
+Only the reconciled branch may complete the lifecycle rows or qualify exact
+`owlapi@0.1.0`. Pre-integration evidence is development evidence and is never
+copied forward as release evidence.
+
 ## Compatibility boundary
 
 `owlapi` must not export `materializeImportClosure`, `collapseImports`, `collapseImportsClosure`, or an equivalent project-invented operation. Materializing a distribution artifact is private `universal-ontology` process logic.
@@ -35,7 +66,7 @@ No shim, forwarding module, deprecated alias, copied source tree, or nominal uni
 | `OWLOntologyManager.addAxiom(s)` and change application | `HasAddAxioms`, `OWLOntologyManager#applyChange(s)` | Apply supported changes to managed ontologies while maintaining manager indexes.                                  |
 | `SetOntologyID`                                         | Same Java change class                              | Replace the full ontology ID and reject identity collisions.                                                      |
 | `AddOntologyAnnotation`                                 | Same Java change class                              | Add one structurally unique ontology annotation.                                                                  |
-| `StringDocumentTarget`                                  | Same Java target class                              | Capture stored UTF-8 text.                                                                                        |
+| `StringDocumentTarget`                                  | Same Java target class                              | Retain complete Unicode text, read through `toString()` after atomic replacement.                                 |
 | `OWLOntologyManager.saveOntology`                       | Same Java manager method                            | Select an exact registered storer and surface typed storage errors.                                               |
 | Functional Syntax storage behavior                      | `FunctionalSyntaxStorer`                            | Serialize the supported OWL structural model losslessly through exact format selection.                           |
 | RDF/XML storage behavior                                | `RDFXMLStorer`                                      | Apply OWL-to-RDF mapping and serialize standards-conforming RDF/XML, failing when representation is not lossless. |

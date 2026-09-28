@@ -129,6 +129,28 @@ export class OWLOntologyStateError extends OWLAPIError {
   }
 }
 
+/**
+ * Java OWLOntologyStorageException adapted to the package's Error hierarchy.
+ * Safe details may carry reason ONTOLOGY_NOT_REPRESENTABLE; they cannot replace
+ * canonical identity fields. An optional cause uses the native Error protocol.
+ */
+export class OWLOntologyStorageError extends OWLAPIError {
+  constructor(message = "The ontology could not be stored", details) {
+    super(message, "ONTOLOGY_STORAGE_FAILED", details);
+  }
+}
+
+/** Storage failure for a requested OWLDocumentFormat with no exact storer. */
+export class OWLStorerNotFoundError extends OWLOntologyStorageError {
+  /** @param {import("../model/owlDocumentFormat.js").OWLDocumentFormat} format */
+  constructor(format) {
+    super(
+      `Could not find an ontology storer which can handle the format: ${format.key}`,
+    );
+    this.code = "STORER_NOT_FOUND";
+  }
+}
+
 export class UnparsableOntologyException extends AggregateError {
   constructor(
     errors,

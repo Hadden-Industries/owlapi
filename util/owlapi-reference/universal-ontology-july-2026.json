@@ -1,0 +1,42 @@
+{
+  "revision": "e2c667f3584b8fb705671cada0fe205b1000b617",
+  "roots": [
+    { "name": "iso11179-3", "path": "src/iso-iec/11179/-3/ed-4/20260714" },
+    {
+      "name": "reference-data",
+      "path": "src/universal/reference-data/20260714"
+    },
+    { "name": "core", "path": "src/universal/core/20260714" },
+    { "name": "extended", "path": "src/universal/extended/20260714" }
+  ],
+  "mappings": [
+    {
+      "ontologyIRI": "https://haddenindustries.com/ontology/iso-iec/11179/-3/ed-4/20260714",
+      "path": "src/iso-iec/11179/-3/ed-4/20260714"
+    },
+    {
+      "ontologyIRI": "https://haddenindustries.com/ontology/universal/reference-data/20260714",
+      "path": "src/universal/reference-data/20260714"
+    },
+    {
+      "ontologyIRI": "https://haddenindustries.com/ontology/universal/core/20260714",
+      "path": "src/universal/core/20260714"
+    },
+    {
+      "ontologyIRI": "https://haddenindustries.com/ontology/universal/extended/20260714",
+      "path": "src/universal/extended/20260714"
+    },
+    {
+      "ontologyIRI": "http://www.w3.org/2004/02/skos/core",
+      "path": "src/external/skos.rdf"
+    },
+    {
+      "ontologyIRI": "http://www.w3.org/ns/time/gregorian",
+      "path": "src/external/time-gregorian.ttl"
+    },
+    {
+      "ontologyIRI": "http://www.w3.org/2006/time",
+      "path": "src/external/time.rdf"
+    }
+  ]
+}

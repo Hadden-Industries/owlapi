@@ -1,0 +1,355 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://haddenindustries.com/schemas/owlapi/pre-registry-git-equivalence.v1.schema.json",
+  "title": "owlapi pre-registry Git-package equivalence evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "result",
+    "observedAt",
+    "source",
+    "package",
+    "runtime",
+    "npmConfiguration",
+    "installedPackageTree",
+    "productionGraph",
+    "installedTests",
+    "limitations",
+    "qualificationSummarySha256",
+    "review"
+  ],
+  "properties": {
+    "$schema": { "const": "./pre-registry-git-equivalence.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "result": { "const": "PASS" },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "workflowRun",
+        "candidateArtifact",
+        "candidateTarball",
+        "git"
+      ],
+      "properties": {
+        "repository": { "const": "Hadden-Industries/owlapi" },
+        "workflowRun": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "attempt"],
+          "properties": {
+            "id": { "type": "integer", "minimum": 1 },
+            "attempt": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "candidateArtifact": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "name", "bytes", "digest"],
+          "properties": {
+            "id": { "type": "integer", "minimum": 1 },
+            "name": { "type": "string", "minLength": 1 },
+            "bytes": { "type": "integer", "minimum": 1 },
+            "digest": { "$ref": "#/$defs/sha256Identifier" }
+          }
+        },
+        "candidateTarball": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["fileName", "bytes", "digest"],
+          "properties": {
+            "fileName": {
+              "type": "string",
+              "pattern": "^owlapi-(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?\\.tgz$"
+            },
+            "bytes": { "type": "integer", "minimum": 1 },
+            "digest": { "$ref": "#/$defs/sha256Identifier" }
+          }
+        },
+        "git": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["repositoryUrl", "packageSpecifier", "commit", "tag"],
+          "properties": {
+            "repositoryUrl": {
+              "const": "git+https://github.com/Hadden-Industries/owlapi.git"
+            },
+            "packageSpecifier": {
+              "type": "string",
+              "pattern": "^git\\+https://github\\.com/Hadden-Industries/owlapi\\.git#[0-9a-f]{40}$"
+            },
+            "commit": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            "tag": {
+              "type": "string",
+              "pattern": "^v(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+            }
+          }
+        }
+      }
+    },
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "exports"],
+      "properties": {
+        "name": { "const": "owlapi" },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+        },
+        "exports": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [".", "./apibinding", "./model", "./io", "./formats"],
+          "properties": {
+            ".": { "const": "./index.js" },
+            "./apibinding": { "const": "./apibinding/index.js" },
+            "./model": { "const": "./model/index.js" },
+            "./io": { "const": "./io/index.js" },
+            "./formats": { "const": "./formats/index.js" }
+          }
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node", "npm", "platform", "architecture", "osRelease"],
+      "properties": {
+        "node": { "type": "string", "pattern": "^v\\d+\\.\\d+\\.\\d+" },
+        "npm": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+" },
+        "platform": { "type": "string", "minLength": 1 },
+        "architecture": { "type": "string", "minLength": 1 },
+        "osRelease": { "type": "string", "minLength": 1 }
+      }
+    },
+    "npmConfiguration": { "$ref": "#/$defs/npmConfiguration" },
+    "installedPackageTree": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "retainedCandidate",
+        "gitInstallation",
+        "equal",
+        "differences"
+      ],
+      "properties": {
+        "retainedCandidate": { "$ref": "#/$defs/treeFacts" },
+        "gitInstallation": { "$ref": "#/$defs/treeFacts" },
+        "equal": { "const": true },
+        "differences": { "type": "array", "maxItems": 0 }
+      }
+    },
+    "productionGraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["retainedCandidate", "gitInstallation", "equal"],
+      "properties": {
+        "retainedCandidate": { "$ref": "#/$defs/graphFacts" },
+        "gitInstallation": { "$ref": "#/$defs/graphFacts" },
+        "equal": { "const": true }
+      }
+    },
+    "installedTests": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "prefixItems": [
+        { "$ref": "#/$defs/smokeTest" },
+        { "$ref": "#/$defs/boundaryTest" },
+        { "$ref": "#/$defs/importPurityTest" },
+        { "$ref": "#/$defs/noNetworkTest" }
+      ],
+      "items": false
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "prefixItems": [
+        { "const": "NO_REGISTRY_INTEGRITY" },
+        { "const": "NO_REGISTRY_SIGNATURE" },
+        { "const": "NO_NPM_PROVENANCE" },
+        { "const": "NO_PUBLICATION_ATTESTATION" },
+        { "const": "NO_DISTRIBUTION_TAG" },
+        { "const": "NO_IMMUTABLE_PUBLIC_COORDINATE" }
+      ],
+      "items": false
+    },
+    "qualificationSummarySha256": { "$ref": "#/$defs/sha256Identifier" },
+    "review": { "$ref": "#/$defs/review" }
+  },
+  "$defs": {
+    "sha256Identifier": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "treeFacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fileCount", "rootSha256"],
+      "properties": {
+        "fileCount": { "type": "integer", "minimum": 1 },
+        "rootSha256": { "$ref": "#/$defs/sha256Identifier" }
+      }
+    },
+    "graphFacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["packageCount", "edgeCount", "rootSha256"],
+      "properties": {
+        "packageCount": { "type": "integer", "minimum": 1 },
+        "edgeCount": { "type": "integer", "minimum": 1 },
+        "rootSha256": { "$ref": "#/$defs/sha256Identifier" }
+      }
+    },
+    "npmConfiguration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "userConfig",
+        "globalConfig",
+        "registry",
+        "nodeEnvironment",
+        "ignoreScripts",
+        "strictAllowScripts",
+        "packageLock",
+        "installStrategy",
+        "include",
+        "omit"
+      ],
+      "properties": {
+        "userConfig": { "const": "GENERATED_EMPTY" },
+        "globalConfig": { "const": "GENERATED_EMPTY" },
+        "registry": { "const": "https://registry.npmjs.org/" },
+        "nodeEnvironment": { "const": "development" },
+        "ignoreScripts": { "const": false },
+        "strictAllowScripts": { "const": false },
+        "packageLock": { "const": true },
+        "installStrategy": { "const": "hoisted" },
+        "include": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "prefixItems": [
+            { "const": "prod" },
+            { "const": "dev" },
+            { "const": "optional" },
+            { "const": "peer" }
+          ],
+          "items": false
+        },
+        "omit": { "type": "array", "maxItems": 0 }
+      }
+    },
+    "installedTestBase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["script", "retainedCandidate", "gitInstallation"],
+      "properties": {
+        "script": { "type": "string", "minLength": 1 },
+        "retainedCandidate": { "const": "PASS" },
+        "gitInstallation": { "const": "PASS" }
+      }
+    },
+    "smokeTest": {
+      "allOf": [
+        { "$ref": "#/$defs/installedTestBase" },
+        {
+          "type": "object",
+          "properties": { "script": { "const": "installed-package-smoke.mjs" } }
+        }
+      ]
+    },
+    "boundaryTest": {
+      "allOf": [
+        { "$ref": "#/$defs/installedTestBase" },
+        {
+          "type": "object",
+          "properties": {
+            "script": { "const": "installed-package-boundary.mjs" }
+          }
+        }
+      ]
+    },
+    "importPurityTest": {
+      "allOf": [
+        { "$ref": "#/$defs/installedTestBase" },
+        {
+          "type": "object",
+          "properties": {
+            "script": { "const": "installed-package-import-purity.mjs" }
+          }
+        }
+      ]
+    },
+    "noNetworkTest": {
+      "allOf": [
+        { "$ref": "#/$defs/installedTestBase" },
+        {
+          "type": "object",
+          "properties": {
+            "script": { "const": "installed-package-no-network.mjs" }
+          }
+        }
+      ]
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reviewer",
+        "reviewedOn",
+        "capacity",
+        "conclusion"
+      ],
+      "properties": {
+        "status": { "enum": ["PENDING_HUMAN_REVIEW", "REVIEWED"] },
+        "reviewer": {
+          "oneOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }]
+        },
+        "reviewedOn": {
+          "oneOf": [{ "type": "string", "format": "date" }, { "type": "null" }]
+        },
+        "capacity": {
+          "oneOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }]
+        },
+        "conclusion": {
+          "oneOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }]
+        }
+      },
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "status": { "const": "PENDING_HUMAN_REVIEW" },
+            "reviewer": { "type": "null" },
+            "reviewedOn": { "type": "null" },
+            "capacity": { "type": "null" },
+            "conclusion": { "type": "null" }
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "status": { "const": "REVIEWED" },
+            "reviewer": { "type": "string", "minLength": 1 },
+            "reviewedOn": { "type": "string", "format": "date" },
+            "capacity": { "type": "string", "minLength": 1 },
+            "conclusion": { "type": "string", "minLength": 1 }
+          }
+        }
+      ]
+    }
+  }
+}

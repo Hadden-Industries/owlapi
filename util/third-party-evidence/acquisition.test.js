@@ -323,6 +323,135 @@ const fixtureScanWithoutDigest =
   };
 
 describe("acquireEvidence", () => {
+  it("reuses only fully verified immutable evidence without downloading or rescanning unchanged artifacts", async () => {
+    const fixture = makeRegistryFixture();
+    const registry = await startRegistryServer(fixture);
+    const baselineRoot = await mkdtemp(
+      join(tmpdir(), "owlapi-evidence-baseline-"),
+    );
+    const repositoryRoot = await mkdtemp(
+      join(tmpdir(), "owlapi-evidence-update-"),
+    );
+    temporaryRoots.push(baselineRoot, repositoryRoot);
+    await writeFile(
+      join(baselineRoot, "package-lock.json"),
+      fixture.lockfileBytes,
+    );
+    const options = {
+      fetchImpl: mappedFetch(registry.origin),
+      downloadTarball: fixtureDownload,
+      verifyPackageMetadata: fixtureMetadataVerification,
+      scanArtifact: fixtureScan,
+      write: true,
+      sleep: async () => {},
+    };
+    const baseline = await acquireEvidence({
+      ...options,
+      repositoryRoot: baselineRoot,
+    });
+    const changedLock = JSON.parse(fixture.lockfileBytes);
+    changedLock.packages[""].version = "1.1.0";
+    changedLock.packages["node_modules/nested/node_modules/alpha"] = {
+      ...changedLock.packages["node_modules/alpha"],
+      dev: true,
+    };
+    await writeFile(
+      join(repositoryRoot, "package-lock.json"),
+      stableJson(changedLock),
+    );
+    await mkdir(join(repositoryRoot, "docs/provenance/evidence/npm"), {
+      recursive: true,
+    });
+    await writeFile(
+      join(repositoryRoot, "docs/provenance/evidence/npm/README.md"),
+      "Repository-owned corpus documentation\n",
+    );
+    let downloads = 0;
+    let scans = 0;
+    const updated = await acquireEvidence({
+      ...options,
+      repositoryRoot,
+      reuseEvidenceFrom: baselineRoot,
+      downloadTarball: async (...args) => {
+        downloads += 1;
+        return fixtureDownload(...args);
+      },
+      scanArtifact: async (...args) => {
+        scans += 1;
+        return fixtureScan(...args);
+      },
+    });
+    expect(downloads).toBe(0);
+    expect(scans).toBe(0);
+    expect(
+      await readFile(
+        join(repositoryRoot, "docs/provenance/evidence/npm/README.md"),
+        "utf8",
+      ),
+    ).toBe("Repository-owned corpus documentation\n");
+    for (const field of [
+      "archive",
+      "scan",
+      "registrySignature",
+      "provenance",
+      "tarball",
+    ]) {
+      expect(updated.manifest.artifacts[0][field]).toEqual(
+        baseline.manifest.artifacts[0][field],
+      );
+    }
+    expect(updated.manifest.artifacts[0].occurrencePaths).toHaveLength(2);
+    expect(updated.manifest.occurrences).toHaveLength(2);
+    expect(updated.manifest.lockfile.sha256).not.toBe(
+      baseline.manifest.lockfile.sha256,
+    );
+    await expect(
+      verifyEvidenceManifest({
+        manifest: updated.manifest,
+        lockfileBytes: Buffer.from(stableJson(changedLock)),
+        blobRoot: join(repositoryRoot, "docs/provenance/evidence/npm"),
+      }),
+    ).resolves.toBeDefined();
+
+    const damaged = baseline.manifest.blobs[0];
+    await writeFile(
+      join(baselineRoot, "docs/provenance/evidence/npm", damaged.path),
+      "corrupt evidence",
+    );
+    await expect(
+      acquireEvidence({
+        ...options,
+        repositoryRoot,
+        reuseEvidenceFrom: baselineRoot,
+      }),
+    ).rejects.toThrow(/evidence|blob/i);
+    expect(
+      JSON.parse(
+        await readFile(
+          join(repositoryRoot, "docs/provenance/npm-package-evidence.json"),
+          "utf8",
+        ),
+      ),
+    ).toEqual(updated.manifest);
+  });
+
+  it("parses explicit baseline reuse without changing the default fresh-acquisition route", () => {
+    expect(
+      parseAcquisitionArguments(["--reuse-evidence=C:/prior-evidence"]),
+    ).toMatchObject({ reuseEvidenceFrom: "C:/prior-evidence" });
+    expect(() =>
+      parseAcquisitionArguments(["--reuse-evidence=a", "--reuse-evidence=b"]),
+    ).toThrow(/Duplicate/);
+    expect(() =>
+      parseAcquisitionArguments([
+        "--reuse-evidence=old",
+        "--shard-count=2",
+        "--shard-index=0",
+        "--output=out",
+      ]),
+    ).toThrow(/reuse.*shard|shard.*reuse/i);
+  });
+
   it("acquires, authenticates, scans and writes a platform-neutral fixture corpus", async () => {
     const fixture = makeRegistryFixture({ archiveRoot: "alpha" });
     const registry = await startRegistryServer(fixture);

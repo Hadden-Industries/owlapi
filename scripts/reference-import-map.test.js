@@ -1,6 +1,8 @@
 import { createHash } from "node:crypto";
 
 import {
+  DECLARED_PUBLIC_SPECIFIERS,
+  excludeNodeXmlParserFallback,
   hydrateReferenceImportMap,
   resolveReferenceBrowserDependency,
   toLocalProviderPath,
@@ -8,6 +10,41 @@ import {
 } from "./reference-import-map.mjs";
 
 describe("reference import-map evidence", () => {
+  it("traces the required XML serializer while excluding only the native parser fallback", () => {
+    expect(
+      excludeNodeXmlParserFallback(
+        "@xmldom/xmldom",
+        "file:///package/internal/storage/rdfxml/rdfXmlGraphWriter.js",
+      ),
+    ).toBe(false);
+    expect(
+      excludeNodeXmlParserFallback(
+        "@xmldom/xmldom",
+        "file:///package/internal/parsing/xml/xmlParserAdapter.js",
+      ),
+    ).toBe(true);
+    expect(excludeNodeXmlParserFallback("n3", "file:///package/index.js")).toBe(
+      false,
+    );
+    expect(() =>
+      excludeNodeXmlParserFallback(
+        "@xmldom/xmldom",
+        "file:///package/unapproved.js",
+      ),
+    ).toThrow(/approved/u);
+  });
+
+  it("requires every declared public package entry point", () => {
+    expect(DECLARED_PUBLIC_SPECIFIERS).toEqual([
+      "owlapi",
+      "owlapi/apibinding",
+      "owlapi/formats",
+      "owlapi/io",
+      "owlapi/model",
+      "owlapi/util",
+    ]);
+  });
+
   it("maps provider URLs into a traversal-safe host-preserving mirror", () => {
     expect(
       toLocalProviderPath("https://ga.jspm.io/npm:n3@2.3.0/browser/index.js"),

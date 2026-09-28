@@ -33,6 +33,8 @@
     "PHASE17-2026-08-22": "Repository-owner approval to implement Phase 17 and its distinct original KRSS/KRSS1 parser, shared KRSS core, deterministic dialect selection, finite grammar and controlled-correction inventory, zero-corpus register, Java oracle, cross-format, resource, import, WebVOWL, performance, provenance, migration-status, and learning-gate updates on 22 August 2026",
     "PHASE18-2026-08-22": "Repository-owner approval to implement Phase 18 physical legacy deletion, preserve retired-artifact provenance, remove the obsolete legacy test command and ignore rule, and close the migration gate before Phase 19 packaging on 22 August 2026",
     "PHASE19B-2026-08-26": "Repository-owner approval of the Phase 19B standalone package manifest, public package boundary, canonical Java-compatible namespaces, private implementation ownership, and associated configuration changes on 26 August 2026",
+    "ONTOLOGY-LIFECYCLE-2026-09-01": "Repository-owner approval to pre-build the ontology lifecycle capability programme on its dedicated branch before owlapi 0.1.0 lands, subject to reconciliation with that release before integration, on 1 September 2026",
+    "PHASE21-PREBUILD-2026-09-25": "Repository-owner approval to pre-build canonical Phase 21 target, storage-error, and parity-ledger foundations before the accepted 0.1.0 baseline, retaining final release and consumer reconciliation, on 25 September 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026"
   },
   "provenanceCategories": {
@@ -215,6 +217,22 @@
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": ["model/model.test.js"],
+      "laterPhaseChanges": [
+        {
+          "phase": 22,
+          "scope": "replace fixed ontology content fields with a read-only facade over package-private revisioned state while preserving every direct query and defensive collection contract",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/owl2-syntax/#Ontologies",
+            "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, and Task 4"
+          ],
+          "focusedEvidence": [
+            "internal/model/ontologyState.test.js",
+            "model/model.test.js",
+            "model/owlOntologyManager.test.js"
+          ],
+          "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
+        }
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE0-2026-08-10",
@@ -265,6 +283,31 @@
       "reviewDate": "2026-08-10"
     },
     {
+      "id": "PHASE21-IO-STRING-DOCUMENT-TARGET",
+      "path": "io/stringDocumentTarget.js",
+      "phase": 21,
+      "scope": "canonical no-argument text target with privately branded complete-text replacement and no public writer or mutator",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://tc39.es/ecma262/multipage/keyed-collections.html#sec-weakmap-objects",
+        "docs/plans/java-api-parity-precondition.md sections 2 and 4"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 StringDocumentTarget constructor, toString, and explicitly omitted getWriter contract"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "io/stringDocumentTarget.test.js",
+        "test/package-boundary.test.mjs",
+        "test/installed-package-boundary.mjs"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "PHASE21-PREBUILD-2026-09-25",
+      "reviewDate": "2026-09-25"
+    },
+    {
       "id": "PHASE1-IO-LOADER-CONFIGURATION",
       "path": "model/owlOntologyLoaderConfiguration.js",
       "phase": 1,
@@ -301,6 +344,24 @@
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": ["io/io.test.js"],
+      "laterPhaseChanges": [
+        {
+          "phase": 21,
+          "scope": "canonical storage error hierarchy and safe representability diagnostics without aliases or model-namespace duplicates",
+          "normativePublicSources": [
+            "https://tc39.es/ecma262/#sec-error-objects",
+            "docs/plans/java-api-parity-precondition.md sections 2 and 4"
+          ],
+          "compatibilityReferences": [
+            "OWLAPI 5.5.1 OWLOntologyStorageException and OWLStorerNotFoundException"
+          ],
+          "focusedEvidence": [
+            "io/io.test.js",
+            "test/installed-package-smoke.mjs"
+          ],
+          "decisionRef": "PHASE21-PREBUILD-2026-09-25"
+        }
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE0-2026-08-10",
@@ -334,7 +395,7 @@
       "id": "PHASE1-MANAGER-ONTOLOGY-MANAGER",
       "path": "model/owlOntologyManager.js",
       "phase": 1,
-      "scope": "narrow manager API, transactional parser attempts, import closure, cancellation, diagnostics, and registration",
+      "scope": "narrow manager API, transactional parser attempts, retained import-closure queries, cancellation, diagnostics, and registration",
       "legacyWebVowlSources": [
         "src/owl2vowl/js/importLoader.js",
         "src/owl2vowl/js/iriResolver.js",
@@ -346,11 +407,23 @@
         "docs/implementation-plan.md sections 9.4, 10.4-10.9, and 11.3-11.5"
       ],
       "compatibilityReferences": [
-        "OWLAPI 5.5.1 public OWLOntologyManager loading API plus pinned black-box reference harness"
+        "OWLAPI 5.5.1 public OWLOntologyManager loading and importsClosure/getImportsClosure APIs plus pinned black-box reference harness"
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": ["model/owlOntologyManager.test.js"],
       "laterPhaseChanges": [
+        {
+          "phase": 22,
+          "scope": "save one committed ontology snapshot through exact private storer selection and atomic complete-text replacement without public storer injection",
+          "normativePublicSources": [
+            "docs/ontology-lifecycle-capability-implementation-plan.md sections 3.1 and Task 7"
+          ],
+          "focusedEvidence": [
+            "model/owlOntologyManager.storage.test.js",
+            "internal/storage/storerRegistry.test.js"
+          ],
+          "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
+        },
         {
           "phase": 2,
           "scope": "register the Functional Syntax descriptor in the default manager while preserving injected registries",
@@ -447,6 +520,52 @@
           ],
           "focusedEvidence": ["internal/parsing/nquads/nQuads.test.js"],
           "decisionRef": "PHASE13-2026-08-22"
+        },
+        {
+          "phase": 22,
+          "scope": "pre-build Java-aligned importsClosure and getImportsClosure manager queries as deterministic retained-graph snapshots, with frozen-array and defensive-Set adaptations and explicit foreign-manager rejection",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/owl2-syntax/#Imports",
+            "docs/ontology-lifecycle-capability-implementation-plan.md sections 3, 3.1, 3.2, and Task 3"
+          ],
+          "focusedEvidence": [
+            "model/owlOntologyManager.test.js",
+            "model/owlOntologyManager.integration.test.js",
+            "governance.test.js"
+          ],
+          "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
+        },
+        {
+          "phase": 22,
+          "scope": "pre-build manager-owned addAxiom and addAxioms operations with complete iterable validation, structural set semantics, one-snapshot commit, boolean adaptation, and explicit foreign-manager rejection",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/owl2-syntax/#Axioms",
+            "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, 3.2, and Task 4"
+          ],
+          "focusedEvidence": [
+            "internal/model/axiomSemantics.test.js",
+            "internal/model/ontologyState.test.js",
+            "model/owlOntologyManager.test.js",
+            "governance.test.js"
+          ],
+          "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
+        },
+        {
+          "phase": 22,
+          "scope": "pre-build manager-owned applyChange and applyChanges operations for immutable SetOntologyID and AddOntologyAnnotation records, with complete iterable validation, per-ontology prepared snapshots, cloned identity aliases, all-or-nothing publication, and boolean adaptation",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/owl2-syntax/#Ontology_IRI_and_Version_IRI",
+            "https://www.w3.org/TR/owl2-syntax/#Ontology_Annotations",
+            "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, 3.2, and Task 5"
+          ],
+          "focusedEvidence": [
+            "model/ontologyChanges.test.js",
+            "model/owlOntologyManager.test.js",
+            "internal/loading/managedOntologyIndex.test.js",
+            "internal/model/ontologyState.test.js",
+            "governance.test.js"
+          ],
+          "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
         }
       ],
       "thirdPartyDependencies": [],
@@ -473,6 +592,360 @@
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE0-2026-08-10",
       "reviewDate": "2026-08-10"
+    },
+    {
+      "id": "PHASE1-MANAGER-MANAGED-ONTOLOGY-INDEX",
+      "path": "internal/loading/managedOntologyIndex.js",
+      "phase": 1,
+      "scope": "transactional managed-ontology membership, full structural identity, ontology-IRI and version-IRI lookup, unique document aliases, resolved direct-import object edges, and deterministic cycle-safe closure snapshots",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/#Ontology_IRI_and_Version_IRI",
+        "https://www.w3.org/TR/owl2-syntax/#Imports",
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 1.1, 2, 3.1, and Tasks 2-3"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 OWLOntologyManager and OWLOntologyManagerImpl identity, version, document-IRI, imported-ontology, direct-import, importsClosure, and getImportsClosure responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/loading/managedOntologyIndex.test.js",
+        "model/owlOntologyManager.test.js",
+        "model/owlOntologyManager.integration.test.js"
+      ],
+      "laterPhaseChanges": [
+        {
+          "phase": 22,
+          "scope": "add revision-checked cloned ontology-identity transactions that replace full-ID, ontology-IRI, and version-IRI aliases atomically while retaining document aliases and resolved direct-import object edges",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/owl2-syntax/#Ontology_IRI_and_Version_IRI",
+            "https://www.w3.org/TR/owl2-syntax/#Imports",
+            "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, and Task 5"
+          ],
+          "focusedEvidence": [
+            "internal/loading/managedOntologyIndex.test.js",
+            "model/owlOntologyManager.test.js"
+          ],
+          "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
+        }
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-01"
+    },
+    {
+      "id": "PHASE22-FUNCTIONAL-RENDERER",
+      "path": "internal/storage/functional/functionalSyntaxRenderer.js",
+      "phase": 22,
+      "scope": "pure exhaustive structural OWL-to-Functional mapping, deterministic direct-state ordering, document-local anonymous labels, exact Unicode lexical values, and native library validation of full IRIs and BCP 47 langtag",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/ sections 2.3, 2.4, 5.7 and 13",
+        "https://www.rfc-editor.org/rfc/rfc3987",
+        "https://www.rfc-editor.org/rfc/rfc5646"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 Functional Syntax public parser and storer behavior, observed only through black-box fixture and literal probes"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/storage/functional/functionalSyntaxRenderer.test.js",
+        "internal/storage/functional/functionalSyntaxStorer.test.js",
+        "util/owlapi-reference/fixtures/storage/functional-all-kinds.ofn",
+        "util/owlapi-reference/fixtures/storage/functional-all-kinds.java.json"
+      ],
+      "thirdPartyDependencies": ["@hyperjump/uri", "bcp-47"],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-25"
+    },
+    {
+      "id": "PHASE22-FUNCTIONAL-STORER",
+      "path": "internal/storage/functional/functionalSyntaxStorer.js",
+      "phase": 22,
+      "scope": "private Functional format descriptor that rejects unsupported parameters and renders complete text without target mutation or external loading",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/",
+        "docs/ontology-lifecycle-capability-implementation-plan.md Task 9"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 FunctionalSyntaxStorer responsibilities with the approved manager-owned JavaScript atomic target contract"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/storage/functional/functionalSyntaxStorer.test.js",
+        "model/owlOntologyManager.storage.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-25"
+    },
+    {
+      "id": "PHASE22-RDFXML-GRAPH-WRITER",
+      "path": "internal/storage/rdfxml/rdfXmlGraphWriter.js",
+      "phase": 22,
+      "scope": "private deterministic RDF/JS default-graph serialization using native XML DOM and well-formed serialization, library IRI and language validation, and repository-owned RDF term, namespace, and lexical-preservation invariants",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/rdf-syntax-grammar/ sections 5.1, 7.2, 7.4 and 8",
+        "https://www.w3.org/TR/xml/ sections 2.2, 2.11 and 3.3.3",
+        "https://www.w3.org/TR/xml-names/",
+        "https://www.rfc-editor.org/rfc/rfc3987",
+        "https://www.rfc-editor.org/rfc/rfc5646"
+      ],
+      "compatibilityReferences": [
+        "Approved Java OWLAPI-shaped storage boundary in ontology-lifecycle-capability-implementation-plan.md Task 11; this graph writer remains private and claims no independent Java class binding"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/storage/rdfxml/rdfXmlGraphWriter.test.js",
+        "internal/parsing/rdfxml/rdfXmlSyntaxAdapter.test.js",
+        "internal/rdfjs/datasetIsomorphism.test.js"
+      ],
+      "thirdPartyDependencies": ["@hyperjump/uri", "@xmldom/xmldom", "bcp-47"],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-25"
+    },
+    {
+      "id": "PHASE22-RDFXML-STORER",
+      "path": "internal/storage/rdfxml/rdfXmlStorer.js",
+      "phase": 22,
+      "scope": "private exact-format RDF/XML storage that reconstructs one diagnostic-free default graph in strict mode and compares direct OWL structure before target publication; sorted snapshot inputs and a fresh native RDF allocator isolate deterministic output from unrelated calls",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "B_STANDARDS_ADAPTER",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-mapping-to-rdf/ sections 2 and 3",
+        "https://www.w3.org/TR/rdf-syntax-grammar/",
+        "docs/ontology-lifecycle-capability-implementation-plan.md Task 12"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 RDF/XML public parser and ontology structure, exercised through the pinned public-API structural oracle; the JavaScript losslessness gate follows approved LIFECYCLE-LOSSLESS-STORAGE"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/storage/rdfxml/rdfXmlStorer.test.js",
+        "model/owlOntologyManager.storage.test.js",
+        "internal/mapping/owlToRdfTranslator.roundTrip.test.js",
+        "util/owlapi-reference/fixtures/storage/rdfxml-all-kinds.rdf",
+        "util/owlapi-reference/fixtures/storage/rdfxml-all-kinds.java.json"
+      ],
+      "thirdPartyDependencies": ["@rdfjs/data-model"],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-25"
+    },
+    {
+      "id": "PHASE22-STORAGE-REGISTRY",
+      "path": "internal/storage/storerRegistry.js",
+      "phase": 22,
+      "scope": "private immutable exact-format storer registry and asynchronous render-before-commit protocol with typed failure preservation",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://tc39.es/ecma262/#sec-promise-objects",
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 3.1 and Task 7"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 OWLOntologyManager.saveOntology(OWLOntology, OWLDocumentFormat, OWLOntologyDocumentTarget), OWLStorer, and OWLStorerNotFoundException responsibilities"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/storage/storerRegistry.test.js",
+        "model/owlOntologyManager.storage.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-25"
+    },
+    {
+      "id": "PHASE22-MODEL-AXIOM-SEMANTICS",
+      "path": "internal/model/axiomSemantics.js",
+      "phase": 22,
+      "scope": "axiom-only structural-keyed set semantics, complete iterable materialization and validation, and exhaustive logical-axiom classification for every supported axiom kind",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/#Axioms",
+        "https://www.w3.org/TR/owl2-syntax/",
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, and Task 4"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 AxiomType.isLogical classification and OWLAxiom structural equality responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["internal/model/axiomSemantics.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-01"
+    },
+    {
+      "id": "PHASE22-MODEL-ONTOLOGY-STATE",
+      "path": "internal/model/ontologyState.js",
+      "phase": 22,
+      "scope": "package-private revisioned ontology state, immutable direct-state snapshots, isolated axiom, identity, annotation, and metadata mutation drafts, prepared side-effect-free preflight snapshots, atomic snapshot replacement, and explicit draft discard",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/#Ontologies",
+        "https://www.w3.org/TR/owl2-syntax/#Imports",
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, and Tasks 4-5"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 OWLOntology, OWLOntologyManager, HasAddAxiom, HasAddAxioms, HasApplyChange, HasApplyChanges, SetOntologyID, and AddOntologyAnnotation state and mutation responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/model/ontologyState.test.js",
+        "model/model.test.js",
+        "model/owlOntologyManager.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-01"
+    },
+    {
+      "id": "PHASE22-MODEL-ONTOLOGY-STRUCTURAL-ISOMORPHISM",
+      "path": "internal/model/ontologyStructuralIsomorphism.js",
+      "phase": 22,
+      "scope": "package-private structural ontology comparison across selected identity, import, annotation, and axiom components using one injective forward-and-reverse anonymous-individual mapping, label-independent structural candidate fingerprints with anonymous position-sharing profiles, bounded backtracking, failed-state memoization, and stable mismatch diagnostics",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/#Ontologies",
+        "https://www.w3.org/TR/owl2-syntax/#Anonymous_Individuals",
+        "https://www.w3.org/TR/owl2-syntax/#Axioms",
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, and Task 8"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 OWLOntology component-access and OWLObject structural-equality responsibilities, with package-private anonymous-individual renaming accommodation for storage round-trip verification, at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/model/ontologyStructuralIsomorphism.test.js",
+        "internal/rdfjs/datasetIsomorphism.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-01"
+    },
+    {
+      "id": "PHASE22-MODEL-ADD-ONTOLOGY-ANNOTATION",
+      "path": "model/addOntologyAnnotation.js",
+      "phase": 22,
+      "scope": "frozen Java-shaped AddOntologyAnnotation record with a manager target and structurally validated direct ontology annotation",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/#Ontology_Annotations",
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, 3.2, and Task 5"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 AddOntologyAnnotation(OWLOntology, OWLAnnotation), OWLOntologyChange.getOntology(), and AnnotationChange.getAnnotation() responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "model/ontologyChanges.test.js",
+        "model/owlOntologyManager.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-01"
+    },
+    {
+      "id": "PHASE22-MODEL-SET-ONTOLOGY-ID",
+      "path": "model/setOntologyID.js",
+      "phase": 22,
+      "scope": "frozen Java-shaped SetOntologyID record that captures the target's original full identity and requires an explicit replacement OWLOntologyID",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/#Ontology_IRI_and_Version_IRI",
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, 3.2, and Task 5"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 SetOntologyID(OWLOntology, OWLOntologyID), getOntology(), getOriginalOntologyID(), and getNewOntologyID() responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "model/ontologyChanges.test.js",
+        "internal/loading/managedOntologyIndex.test.js",
+        "model/owlOntologyManager.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-01"
+    },
+    {
+      "id": "PHASE22-UTIL-IMPORTS-CLOSURE-SET-PROVIDER",
+      "path": "util/owlOntologyImportsClosureSetProvider.js",
+      "phase": 22,
+      "scope": "constructor-time capture of a manager-resolved, cycle-safe imports-closure membership with validated ontology elements and a fresh defensive Set for every public read",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/#Imports",
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, and Task 6"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 OWLOntologyImportsClosureSetProvider(OWLOntologyManager, OWLOntology) and ontologies() responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "util/owlOntologyImportsClosureSetProvider.test.js",
+        "model/owlOntologyManager.test.js",
+        "test/package-boundary.test.mjs",
+        "test/installed-package-smoke.mjs",
+        "test/consumers/browser/browser-consumers.playwright.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-01"
+    },
+    {
+      "id": "PHASE22-UTIL-ONTOLOGY-MERGER",
+      "path": "util/owlOntologyMerger.js",
+      "phase": 22,
+      "scope": "complete prevalidation and structural set union of provider-supplied ontologies' direct axioms, optional exhaustive logical-axiom filtering, and anonymous or IRI-identified target creation and mutation exclusively through the public ontology-manager surface",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-syntax/#Ontologies",
+        "https://www.w3.org/TR/owl2-syntax/#Axioms",
+        "https://www.w3.org/TR/owl2-syntax/#Imports",
+        "docs/ontology-lifecycle-capability-implementation-plan.md sections 2, 3.1, and Task 6"
+      ],
+      "compatibilityReferences": [
+        "OWLAPI 5.5.1 OWLOntologyMerger constructor, logical-axiom selection, and createMergedOntology(OWLOntologyManager, IRI) responsibilities at pinned revision d7e997a53b470e32700de89cc610d9daf01ea769"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "util/owlOntologyMerger.test.js",
+        "internal/model/axiomSemantics.test.js",
+        "test/package-boundary.test.mjs",
+        "test/installed-package-smoke.mjs",
+        "test/consumers/browser/browser-consumers.playwright.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-01"
     },
     {
       "id": "PHASE1-RDF-ENVIRONMENT",
@@ -593,6 +1066,20 @@
         "internal/parsing/functional/functionalSyntax.test.js",
         "internal/parsing/functional/functionalSyntax.resource.test.js",
         "internal/parsing/functional/functionalSyntax.conformance.test.js"
+      ],
+      "laterPhaseChanges": [
+        {
+          "phase": 22,
+          "scope": "retain Unicode control characters allowed by OWL quotedString rather than imposing unrelated XML character restrictions",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/owl2-syntax/#Integers.2C_Strings.2C_Language_Tags.2C_and_Node_IDs"
+          ],
+          "focusedEvidence": [
+            "internal/storage/functional/functionalSyntaxRenderer.test.js",
+            "internal/parsing/functional/functionalSyntax.conformance.test.js"
+          ],
+          "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
+        }
       ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
@@ -940,6 +1427,37 @@
             "internal/mapping/owlToRdfTranslator.roundTrip.test.js"
           ],
           "decisionRef": "PHASE16-2026-08-22"
+        },
+        {
+          "phase": 22,
+          "scope": "require strict RDF-to-OWL reconstruction to reject every unconsumed statement and compatible parsing to diagnose every discarded statement; retain immutable quad identity and source-location evidence; reconstruct with transitive import declarations; preserve undeclared ontology annotations and named datatype restrictions as explicit specification-grounded compatible interpretations without changing strict mapping rules",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification",
+            "https://www.w3.org/TR/owl2-conformance/#Document_Conformance",
+            "https://www.w3.org/TR/rdf12-concepts/#section-dataset",
+            "https://rdf.js.org/data-model-spec/",
+            "https://www.w3.org/TR/owl2-rdf-based-semantics/#Semantic_Conditions_for_Datatypes",
+            "docs/ontology-lifecycle-capability-implementation-plan.md section 1.3 and Task 10"
+          ],
+          "focusedEvidence": [
+            "docs/conformance/classification-manifests.json",
+            "docs/conformance/generated/w3c-owl2-rdf-to-owl.json",
+            "docs/conformance/rdf-to-owl-mapping.json",
+            "docs/migration/lessons/004-rdf-to-owl.md",
+            "docs/migration/migration-status.md",
+            "docs/provenance/third-party-material.json",
+            "docs/provenance/rights-inventory.json",
+            "governance.test.js",
+            "internal/mapping/rdfToOwlTranslator.strictComplete.test.js",
+            "internal/mapping/rdfToOwlTranslator.test.js",
+            "internal/mapping/rdfToOwlTranslator.conformance.test.js",
+            "internal/mapping/namedDatatypeRestriction.test.js",
+            "internal/mapping/undeclaredAnnotation.test.js",
+            "util/owlapi-reference/qualify-universal-ontology.test.js",
+            "internal/parsing/trig/trig.test.js",
+            "util/generate-w3c-rdf-to-owl-fixtures.mjs"
+          ],
+          "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
         }
       ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
@@ -1440,6 +1958,32 @@
       "reviewDate": "2026-08-22"
     },
     {
+      "id": "ONTOLOGY-LIFECYCLE-RDF-DOCUMENT-PREPARATION",
+      "path": "internal/parsing/rdf/rdfDocumentPreparation.js",
+      "phase": 22,
+      "scope": "private manager/parser registration seam for RDF declaration and import discovery before closure-context reconstruction, preserving the public custom parser contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/owl2-mapping-to-rdf/#Mapping_from_RDF_Graphs_to_the_Structural_Specification",
+        "https://www.w3.org/TR/owl2-syntax/#Imports",
+        "docs/ontology-lifecycle-capability-implementation-plan.md section 1.3"
+      ],
+      "compatibilityReferences": [
+        "Pinned Java OWLAPI 5.5.1 source loading in the original import context"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "model/owlOntologyManager.test.js",
+        "util/owlapi-reference/run-ontology-parsing-contract.test.js",
+        "util/owlapi-reference/qualify-universal-ontology.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
+      "reviewDate": "2026-09-27"
+    },
+    {
       "id": "PHASE12-RDF-SYNTAX-PARSER",
       "path": "internal/parsing/rdf/rdfSyntaxParser.js",
       "phase": 12,
@@ -1816,6 +2360,21 @@
       ],
       "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "focusedEvidence": ["io/io.test.js", "test/package-boundary.test.mjs"],
+      "laterPhaseChanges": [
+        {
+          "phase": 22,
+          "scope": "package-private native private-field friend for immutable parameter inspection without adding any public format method",
+          "normativePublicSources": [
+            "https://tc39.es/ecma262/#sec-private-names",
+            "docs/ontology-lifecycle-capability-implementation-plan.md Task 9"
+          ],
+          "focusedEvidence": [
+            "model/owlDocumentFormat.test.js",
+            "internal/storage/functional/functionalSyntaxStorer.test.js"
+          ],
+          "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
+        }
+      ],
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "PHASE19B-2026-08-26",

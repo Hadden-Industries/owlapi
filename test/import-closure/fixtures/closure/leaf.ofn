@@ -1,0 +1,10 @@
+Prefix(:=<urn:lifecycle:>)
+Ontology(<urn:lifecycle:leaf> <urn:lifecycle:leaf:v1>
+  Import(<urn:lifecycle:left>)
+  Annotation(:note "leaf metadata must not be copied")
+  Declaration(Class(:Entity))
+  Declaration(Class(:Leaf))
+  SubClassOf(:Leaf :Entity)
+  DataPropertyAssertion(:origin _:shared "leaf")
+  ObjectPropertyAssertion(:next _:shared _:shared)
+)

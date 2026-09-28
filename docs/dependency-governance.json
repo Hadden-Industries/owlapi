@@ -3,22 +3,22 @@
   "schemaVersion": 1,
   "package": {
     "name": "owlapi",
-    "version": "0.1.0-alpha.0"
+    "version": "0.1.0-rc.1"
   },
-  "recordedOn": "2026-08-26",
+  "recordedOn": "2026-09-27",
   "review": {
-    "status": "REVIEWED",
-    "factsSha256": "60ccbac9295657fcdd69120ba77e2fc1838c022ceeab9bb60256d772d75708eb",
-    "reviewer": "Maksym Shostak",
-    "reviewedOn": "2026-08-26",
-    "capacity": "Original author, project maintainer, and release reviewer",
-    "conclusion": "Reviewed and approved the exact dependency graph, production audit, strict dependency lifecycle-script policy, upgrade gates, and supporting evidence bound to this facts digest."
+    "status": "PENDING_HUMAN_REVIEW",
+    "factsSha256": "fca4f12f95e5ffcc397e328e082b57b03faef24b63def28818dc188424b05ae4",
+    "reviewer": null,
+    "reviewedOn": null,
+    "capacity": null,
+    "conclusion": null
   },
   "productionAudit": {
-    "performedOn": "2026-08-26",
+    "performedOn": "2026-09-27",
     "command": "npm audit --omit=dev --json",
     "npmVersion": "12.0.2",
-    "productionPackageCount": 34,
+    "productionPackageCount": 39,
     "vulnerabilityCounts": {
       "info": 0,
       "low": 0,
@@ -102,6 +102,98 @@
     "production static-import-closure verification"
   ],
   "dependencies": [
+    {
+      "name": "@hyperjump/uri",
+      "version": "1.3.5",
+      "role": "RFC 3987 full-IRI lexical validation without normalization for ontology storage",
+      "standardsGrounding": [
+        "https://www.rfc-editor.org/rfc/rfc3987",
+        "https://www.rfc-editor.org/rfc/rfc3986#section-3.2.2",
+        "https://www.w3.org/TR/owl2-syntax/#IRIs"
+      ],
+      "conformanceEvidence": [
+        "internal/storage/functional/functionalSyntaxRenderer.test.js",
+        "internal/storage/functional/functionalSyntaxStorer.test.js",
+        "model/owlOntologyManager.storage.test.js"
+      ],
+      "releaseAuthority": "Hyperjump Software; hyperjump-io/uri maintainers",
+      "maintenanceStatus": "Exact compatible 1.3.5 pin: 1.3.6 adds an unsupported-IP-version exception to syntax validation, rejecting RFC 3987 IPvFuture IRIs even when no dereferencing occurs. Reassess upgrades against the public storage round-trip and rejection tests; do not normalize hosts, catch exception messages, or substitute a permissive validator.",
+      "runtimeDependencies": [],
+      "networkBehavior": "Pure in-memory identifier operations; no ambient network access",
+      "browserCost": {
+        "disposition": "MEASURED_BROWSER_GRAPH",
+        "initialStaticClosureIncluded": true,
+        "measurementReference": "2026-09-27 Vite 8.2.2/Oxc ES build with write=false and preserveEntrySignatures=strict; isolated isIri export from 1.3.5",
+        "minifiedBytes": 3868,
+        "gzipBytes": 1425,
+        "fileCount": 1,
+        "comparisonContext": "Isolated selected API including its reachable dependency code, not incremental whole-package size; installed browser qualification remains required."
+      },
+      "securityDisposition": {
+        "assessedOn": "2026-09-27",
+        "riskClass": "LEXICAL_GRAMMAR_VALIDATOR",
+        "controls": [
+          "Only isIri validation is used",
+          "No resolution, percent-encoding, normalization, or document loading",
+          "Invalid values fail before atomic target replacement"
+        ],
+        "rationale": "A dedicated RFC grammar implementation validates values without changing OWL lexical identity; the production audit has zero known vulnerabilities.",
+        "evidence": [
+          "internal/storage/functional/functionalSyntaxRenderer.test.js",
+          "docs/provenance/npm-package-evidence.json"
+        ]
+      },
+      "declaredLicenseExpression": "MIT",
+      "noticeAction": "Retain exact authenticated npm legal evidence in the third-party inventory; npm installs this separately, so do not copy its licence into the owlapi tarball NOTICE",
+      "adapterBoundary": "internal/storage/functional/functionalSyntaxRenderer.js"
+    },
+    {
+      "name": "bcp-47",
+      "version": "2.1.1",
+      "role": "BCP 47 language-tag parsing for lossless Functional Syntax literal storage",
+      "standardsGrounding": [
+        "https://www.rfc-editor.org/rfc/rfc5646",
+        "https://www.w3.org/TR/owl2-syntax/#Literals"
+      ],
+      "conformanceEvidence": [
+        "internal/storage/functional/functionalSyntaxRenderer.test.js",
+        "internal/storage/functional/functionalSyntaxStorer.test.js"
+      ],
+      "releaseAuthority": "Titus Wormer; wooorm/bcp-47 maintainers",
+      "maintenanceStatus": "Pinned production release; reassess at every material upgrade",
+      "runtimeDependencies": [
+        "is-alphabetical",
+        "is-alphanumerical",
+        "is-decimal"
+      ],
+      "networkBehavior": "Pure in-memory lexical parsing; no ambient network access",
+      "browserCost": {
+        "disposition": "MEASURED_BROWSER_GRAPH",
+        "initialStaticClosureIncluded": true,
+        "measurementReference": "2026-09-25 Vite 8.2.2/Oxc ES build with write=false and preserveEntrySignatures=strict; isolated parse export",
+        "minifiedBytes": 3188,
+        "gzipBytes": 1277,
+        "fileCount": 1,
+        "comparisonContext": "Includes the three character-class dependencies; installed whole-package browser qualification remains required."
+      },
+      "securityDisposition": {
+        "assessedOn": "2026-09-25",
+        "riskClass": "LEXICAL_GRAMMAR_VALIDATOR",
+        "controls": [
+          "Normalization and forgiving recovery are disabled",
+          "Parse warnings are representability failures",
+          "No target access or external loading"
+        ],
+        "rationale": "Reuse the maintained grammar implementation instead of adding another language-tag validator; the production audit has zero known vulnerabilities.",
+        "evidence": [
+          "internal/storage/functional/functionalSyntaxRenderer.test.js",
+          "docs/provenance/npm-package-evidence.json"
+        ]
+      },
+      "declaredLicenseExpression": "MIT",
+      "noticeAction": "Retain exact authenticated npm legal evidence in the third-party inventory; npm installs this separately, so do not copy its licence into the owlapi tarball NOTICE",
+      "adapterBoundary": "internal/storage/functional/functionalSyntaxRenderer.js"
+    },
     {
       "name": "@rdfjs/data-model",
       "version": "2.1.2",
