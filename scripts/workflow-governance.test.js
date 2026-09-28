@@ -1,5 +1,6 @@
 import { describe, expect, test } from "@jest/globals";
 import { readFileSync } from "node:fs";
+import { isMap, isScalar, isSeq, parseDocument, visit } from "yaml";
 
 import {
   auditReleaseReconciliationMutationBoundary,
@@ -14,20 +15,23 @@ const withInvertedBootstrapCredentialGuard = (source) =>
   );
 
 const withShallowSourceCheckout = (source, jobId) => {
-  const startMatch = new RegExp(`^  ${jobId}:\\r?$`, "mu").exec(source);
-  expect(startMatch).not.toBeNull();
-  const remainder = source.slice(startMatch.index + startMatch[0].length);
-  const nextMatch = /^ {2}[a-z][a-z0-9_]*:\r?$/mu.exec(remainder);
-  const end = nextMatch
-    ? startMatch.index + startMatch[0].length + nextMatch.index
-    : source.length;
-  const block = source.slice(startMatch.index, end);
-  const shallowBlock = block.replace(
-    /^ {10}fetch-depth: [01]\r?$/mu,
-    "          fetch-depth: 1",
-  );
+  const document = parseDocument(source);
+  const checkout = document
+    .getIn(["jobs", jobId, "steps"])
+    .items.find((step) => step.get("uses")?.startsWith("actions/checkout@"));
+  checkout.setIn(["with", "fetch-depth"], 1);
+  return document.toString();
+};
 
-  return `${source.slice(0, startMatch.index)}${shallowBlock}${source.slice(end)}`;
+const workflowSource = (fileName) =>
+  readFileSync(`.github/workflows/${fileName}`, "utf8");
+
+const mutateWorkflow = (fileName, mutate) => {
+  const document = parseDocument(workflowSource(fileName));
+  mutate(document);
+  return auditRepositoryControls({
+    workflowSourceOverrides: { [fileName]: document.toString() },
+  }).violations;
 };
 
 describe("repository workflow governance", () => {
@@ -50,6 +54,259 @@ describe("repository workflow governance", () => {
       "other.yml",
     ]);
     expect(report.violations).toEqual([]);
+  });
+
+  test.each([
+    "ci.yml",
+    "release.yml",
+    "release-reconciliation.yml",
+    "maintenance.yml",
+    "extended-tests.yml",
+  ])("accepts equivalent YAML presentation in %s", (fileName) => {
+    const source = workflowSource(fileName);
+    const document = parseDocument(source);
+    visit(document, (_key, node) => {
+      if (isMap(node)) node.items.reverse();
+      if (isSeq(node) && node.items.every(isScalar)) node.flow = true;
+      if (
+        isScalar(node) &&
+        typeof node.value === "string" &&
+        !node.value.includes("\n")
+      ) {
+        node.type = "QUOTE_SINGLE";
+      }
+    });
+    const reformatted = document.toString({ indent: 4 });
+    expect(parseDocument(reformatted).toJS()).toEqual(
+      parseDocument(source).toJS(),
+    );
+    expect(
+      auditRepositoryControls({
+        workflowSourceOverrides: { [fileName]: reformatted },
+      }).violations,
+    ).toEqual([]);
+  });
+
+  test.each([
+    ["invalid YAML", "jobs: [unterminated"],
+    [
+      "duplicate mapping keys",
+      `${workflowSource("ci.yml")}\npermissions: {}\n`,
+    ],
+  ])("reports %s as a parse failure", (_name, source) => {
+    expect(
+      auditRepositoryControls({
+        workflowSourceOverrides: { "ci.yml": source },
+      }).violations,
+    ).toEqual(
+      expect.arrayContaining([expect.stringMatching(/ci.yml: invalid YAML/u)]),
+    );
+  });
+
+  test.each([
+    [
+      "root authority",
+      ["permissions"],
+      { contents: "write" },
+      /root permissions/u,
+    ],
+    [
+      "untrusted event",
+      ["on", "pull_request_target"],
+      {},
+      /pull_request_target/u,
+    ],
+    [
+      "path filter",
+      ["on", "push", "paths"],
+      ["docs/**"],
+      /without path filters/u,
+    ],
+    [
+      "missing aggregate dependency",
+      ["jobs", "required", "needs"],
+      ["metadata"],
+      /needs inventory/u,
+    ],
+    [
+      "job continue-on-error",
+      ["jobs", "source_node_24", "continue-on-error"],
+      true,
+      /continue-on-error/u,
+    ],
+    [
+      "job container",
+      ["jobs", "source_node_24", "container"],
+      "node:24",
+      /container/u,
+    ],
+    [
+      "multiline script interpolation",
+      ["jobs", "source_node_24", "steps", 2, "run"],
+      "echo safe\necho '${{ github.event.pull_request.title }}'\n",
+      /not run text/u,
+    ],
+    [
+      "unapproved action",
+      ["jobs", "source_node_24", "steps", 0, "uses"],
+      "actions/checkout@main",
+      /unapproved Action/u,
+    ],
+    [
+      "persisted credentials",
+      ["jobs", "source_node_24", "steps", 0, "with", "persist-credentials"],
+      true,
+      /disable persisted credentials/u,
+    ],
+  ])("rejects %s regardless of presentation", (_name, path, value, message) => {
+    const violations = mutateWorkflow("ci.yml", (document) =>
+      document.setIn(path, value),
+    );
+    expect(violations).toEqual(
+      expect.arrayContaining([expect.stringMatching(message)]),
+    );
+  });
+
+  test("an action step cannot borrow checkout policy from the following step", () => {
+    const violations = mutateWorkflow("ci.yml", (document) => {
+      const steps = document.getIn(["jobs", "source_node_24", "steps"]);
+      steps.items[0].deleteIn(["with", "persist-credentials"]);
+      steps.items[1].setIn(["with", "persist-credentials"], false);
+      steps.items[1].delete("name");
+    });
+    expect(violations).toEqual(
+      expect.arrayContaining([
+        expect.stringMatching(/disable persisted credentials/u),
+      ]),
+    );
+  });
+
+  describe.each([
+    ["workflow", ["env"]],
+    ["job", ["jobs", "source_node_24", "env"]],
+    ["step", ["jobs", "source_node_24", "steps", 2, "env"]],
+  ])("command policy in %s environment values", (_scope, path) => {
+    test.each([
+      ["npx --yes unreviewed-tool", "npx "],
+      ["npm exec --package unreviewed-tool", "npm exec --package"],
+      ["npm test || true", "|| true"],
+    ])("rejects indirect %s", (command, forbidden) => {
+      const violations = mutateWorkflow("ci.yml", (document) => {
+        document.setIn([...path, "INSTALL_COMMAND"], command);
+        document.setIn(
+          ["jobs", "source_node_24", "steps", 2, "run"],
+          "$INSTALL_COMMAND",
+        );
+      });
+      expect(violations).toContain(
+        `ci.yml: forbidden workflow construct ${forbidden}`,
+      );
+    });
+  });
+
+  test("command policy does not inspect YAML comments", () => {
+    const violations = mutateWorkflow("ci.yml", (document) => {
+      document.commentBefore =
+        " Do not use npx or npm exec --package or suppress failure with || true.";
+    });
+    expect(violations).toEqual([]);
+  });
+
+  test("native workflow validation is a non-optional required CI step", () => {
+    const workflow = parseDocument(workflowSource("ci.yml")).toJS();
+    const validation = workflow.jobs.source_node_24.steps.find(
+      (step) => step.run === "npm run verify:workflow-syntax",
+    );
+    expect(workflow.jobs.required.needs).toContain("source_node_24");
+    expect(validation).toBeDefined();
+    expect(validation).not.toHaveProperty("if");
+    expect(validation).not.toHaveProperty("continue-on-error");
+    const manifest = JSON.parse(readFileSync("package.json", "utf8"));
+    expect(manifest.scripts["verify:workflow-syntax"]).toBe(
+      "actionlint -shellcheck= -pyflakes=",
+    );
+  });
+
+  test.each(["release.yml", "release-reconciliation.yml"])(
+    "the native queue false-positive suppression cannot hide job-level queue policy in %s",
+    (fileName) => {
+      const violations = mutateWorkflow(fileName, (document) => {
+        const jobId =
+          fileName === "release.yml"
+            ? "release_preflight"
+            : "source_verification";
+        document.setIn(["jobs", jobId, "concurrency"], {
+          group: "unexpected-queue",
+          queue: "invalid",
+        });
+      });
+      expect(violations).toEqual(
+        expect.arrayContaining([
+          expect.stringMatching(
+            /queue is allowed only at the workflow release boundary/u,
+          ),
+        ]),
+      );
+    },
+  );
+
+  test.each([
+    ["release.yml", ["concurrency", "queue"], "invalid", /concurrency.*queue/u],
+    [
+      "release.yml",
+      ["concurrency", "cancel-in-progress"],
+      true,
+      /concurrency.*cancel-in-progress/u,
+    ],
+    [
+      "release.yml",
+      ["jobs", "third_party_evidence_shard", "strategy", "matrix", "shard"],
+      [0, 1],
+      /closed platform\/shard contract/u,
+    ],
+    [
+      "release.yml",
+      ["jobs", "candidate", "needs"],
+      ["metadata"],
+      /candidate must wait/u,
+    ],
+    [
+      "release-reconciliation.yml",
+      ["jobs", "finalize_release", "permissions", "id-token"],
+      "write",
+      /finalize_release must isolate/u,
+    ],
+    [
+      "maintenance.yml",
+      ["jobs", "reporter", "permissions", "contents"],
+      "read",
+      /isolated reporter/u,
+    ],
+  ])(
+    "retains the policy boundary in %s at %j",
+    (fileName, path, value, message) => {
+      expect(
+        mutateWorkflow(fileName, (document) => document.setIn(path, value)),
+      ).toEqual(expect.arrayContaining([expect.stringMatching(message)]));
+    },
+  );
+
+  test("candidate selectors cannot add cross-run authority", () => {
+    expect(
+      mutateWorkflow("ci.yml", (document) => {
+        const jobs = document.get("jobs");
+        const download = jobs.items
+          .flatMap(({ value }) => value.get("steps").items)
+          .find((step) =>
+            step.get("uses")?.startsWith("actions/download-artifact@"),
+          );
+        download.setIn(["with", "run-id"], "${{ github.run_id }}");
+      }),
+    ).toEqual(
+      expect.arrayContaining([
+        expect.stringMatching(/broadens same-run artifact selection/u),
+      ]),
+    );
   });
 
   test.each([
@@ -76,10 +333,15 @@ describe("repository workflow governance", () => {
 
   test("rejects publication authority duplicated outside the release job", () => {
     const release = readFileSync(".github/workflows/release.yml", "utf8");
-    const broadened = release.replace(
-      "      actions: read\n      contents: read",
-      "      actions: read\n      contents: read\n      id-token: write\n      NPM_BOOTSTRAP_TOKEN: duplicated",
+    const document = parseDocument(release);
+    document.setIn(
+      ["jobs", "release_preflight", "permissions", "id-token"],
+      "write",
     );
+    document.setIn(["jobs", "release_preflight", "env"], {
+      NODE_AUTH_TOKEN: "${{ secrets.NPM_BOOTSTRAP_TOKEN }}",
+    });
+    const broadened = document.toString();
 
     expect(auditReleaseMutationBoundary(broadened)).toEqual(
       expect.arrayContaining([
@@ -94,10 +356,15 @@ describe("repository workflow governance", () => {
       ".github/workflows/release-reconciliation.yml",
       "utf8",
     );
-    const broadened = reconciliation.replace(
-      "      actions: read\n      contents: read",
-      "      actions: read\n      contents: read\n      id-token: write\n      NPM_BOOTSTRAP_TOKEN: duplicated",
+    const document = parseDocument(reconciliation);
+    document.setIn(
+      ["jobs", "source_verification", "permissions", "id-token"],
+      "write",
     );
+    document.setIn(["jobs", "source_verification", "env"], {
+      NODE_AUTH_TOKEN: "${{ secrets.NPM_BOOTSTRAP_TOKEN }}",
+    });
+    const broadened = document.toString();
 
     expect(auditReleaseReconciliationMutationBoundary(broadened)).toEqual(
       expect.arrayContaining([

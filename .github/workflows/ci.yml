@@ -157,6 +157,21 @@ jobs:
       - name: Verify static quality
         run: npm run lint
         timeout-minutes: 45
+      - name: Install checksum-pinned native workflow validation
+        run: |
+          tool_directory="$RUNNER_TEMP/actionlint-1.7.12"
+          mkdir -p "$tool_directory"
+          archive="$tool_directory/actionlint_1.7.12_linux_amd64.tar.gz"
+          curl --fail --silent --show-error --location --retry 3 \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz \
+            --output "$archive"
+          printf '%s  %s\n' '8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8' "$archive" | sha256sum --check --strict
+          tar -xzf "$archive" -C "$tool_directory"
+          printf '%s\n' "$tool_directory" >> "$GITHUB_PATH"
+        timeout-minutes: 5
+      - name: Validate native GitHub Actions syntax and expressions
+        run: npm run verify:workflow-syntax
+        timeout-minutes: 5
       - name: Check out the immutable original July ontology sources
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

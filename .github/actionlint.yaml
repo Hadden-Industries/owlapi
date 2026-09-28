@@ -1,0 +1,12 @@
+# GitHub supports queue: max; actionlint 1.7.12 does not yet recognize it.
+# https://github.com/rhysd/actionlint/issues/680
+# https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency
+# Remove these exact, file-scoped false-positive filters when upstream supports
+# queue. workflow-governance enforces the two root queues and forbids job queues.
+paths:
+  .github/workflows/release.yml:
+    ignore:
+      - '^unexpected key "queue" for "concurrency" section\. expected one of "cancel-in-progress", "group"$'
+  .github/workflows/release-reconciliation.yml:
+    ignore:
+      - '^unexpected key "queue" for "concurrency" section\. expected one of "cancel-in-progress", "group"$'

@@ -95,6 +95,7 @@
     "test:webvowl-consumer": "node scripts/qualify-webvowl-consumer.mjs",
     "verify:release-gates": "node scripts/verify-release-gates.mjs --json",
     "verify:workflow-governance": "node scripts/workflow-governance.mjs",
+    "verify:workflow-syntax": "actionlint -shellcheck= -pyflakes=",
     "qualify:release": "node scripts/qualify-release.mjs",
     "release:lint-package": "publint --strict",
     "release:pack": "node scripts/build-release-candidate.mjs",

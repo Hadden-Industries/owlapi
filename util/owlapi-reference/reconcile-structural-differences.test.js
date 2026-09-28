@@ -1,5 +1,6 @@
 import {
   reconcileStructuralDifferences,
+  reconcileStructuralSnapshots,
   reconcileUnparsedRdf,
 } from "./reconcile-structural-differences.mjs";
 
@@ -37,6 +38,143 @@ const context = (rules = [rule()]) => ({
 const changed = () => ({
   ...empty(),
   axioms: { javaOnly: [], jsOnly: [rule().jsValue] },
+});
+
+const snapshotRule = (changes = {}) =>
+  rule({
+    artifactType: "OWL structural snapshot",
+    parser: "OWL/XML",
+    capability: "parser.owlxml",
+    differenceType: "VALUE_CHANGED",
+    side: "Java",
+    selector: "$['disjointUnion']['objectOneOf']['anonymousIndividualCount']",
+    javaValue: 0,
+    jsValue: 1,
+    ...changes,
+  });
+const snapshotContext = (rules = [snapshotRule()]) => ({
+  ...context(rules),
+  parser: "OWL/XML",
+  capability: "parser.owlxml",
+});
+const oneOfSnapshot = (count) => ({
+  disjointUnion: { objectOneOf: { anonymousIndividualCount: count } },
+});
+
+test.each([
+  "$.disjointUnion.objectOneOf.anonymousIndividualCount",
+  '$["disjointUnion"]["objectOneOf"]["anonymousIndividualCount"]',
+  snapshotRule().selector,
+])("reconciles snapshots by evaluated node identity: %s", (selector) => {
+  expect(
+    reconcileStructuralSnapshots(
+      oneOfSnapshot(0),
+      oneOfSnapshot(1),
+      snapshotContext([snapshotRule({ selector })]),
+    ),
+  ).toMatchObject({
+    status: "PASS",
+    matches: [{ ruleId: "EXACT", javaValue: 0, jsValue: 1 }],
+  });
+});
+
+test("delegates escaped member names and array indexes to JSONPath", () => {
+  const key = "quote'\\\n\u0001";
+  const java = { [key]: [{ value: 0 }] };
+  const js = { [key]: [{ value: 1 }] };
+  const selector = `$[${JSON.stringify(key)}][0].value`;
+  expect(
+    reconcileStructuralSnapshots(
+      java,
+      js,
+      snapshotContext([snapshotRule({ selector })]),
+    ).status,
+  ).toBe("PASS");
+});
+
+test.each([
+  ["unmatched", [snapshotRule({ selector: "$.missing" })]],
+  ["unmatched", [snapshotRule({ jsValue: 2 })]],
+  [
+    "ambiguous",
+    [
+      snapshotRule(),
+      snapshotRule({
+        id: "OVERLAP",
+        selector: "$.disjointUnion.objectOneOf.anonymousIndividualCount",
+      }),
+    ],
+  ],
+  ["unsatisfied", [snapshotRule({ cardinality: { form: "exact", value: 2 } })]],
+])("snapshot rules fail closed for %s", (field, rules) => {
+  const report = reconcileStructuralSnapshots(
+    oneOfSnapshot(0),
+    oneOfSnapshot(1),
+    snapshotContext(rules),
+  );
+  expect(report.status).toBe("FAIL");
+  expect(report[field].length).toBeGreaterThan(0);
+});
+
+test.each([
+  { referenceRevision: "stale" },
+  { parser: "Manchester Syntax" },
+  { capability: "parser.manchester" },
+  { selector: "$[" },
+  { cardinality: { form: "zero-or-more" } },
+])("rejects unbound or non-exact snapshot approval %j", (changes) => {
+  expect(() =>
+    reconcileStructuralSnapshots(
+      oneOfSnapshot(0),
+      oneOfSnapshot(1),
+      snapshotContext([snapshotRule(changes)]),
+    ),
+  ).toThrow();
+});
+
+test("unapproved additional snapshot content cannot disappear from the comparison", () => {
+  expect(
+    reconcileStructuralSnapshots(
+      oneOfSnapshot(0),
+      { ...oneOfSnapshot(1), extra: null },
+      snapshotContext(),
+    ),
+  ).toMatchObject({
+    status: "FAIL",
+    unmatched: [
+      {
+        selector: "$['extra']",
+        differenceType: "EXTRA",
+        side: "JS",
+        jsValue: null,
+      },
+    ],
+  });
+});
+
+test("container type changes and removed subtrees each remain one atomic difference", () => {
+  const report = reconcileStructuralSnapshots(
+    { a: { nested: 1 }, b: [1] },
+    { a: null, b: { 0: 1 } },
+    snapshotContext([]),
+  );
+  expect(report.unmatched).toHaveLength(2);
+  expect(report.unmatched.map(({ differenceType }) => differenceType)).toEqual([
+    "TYPE_CHANGED",
+    "TYPE_CHANGED",
+  ]);
+  expect(
+    reconcileStructuralSnapshots({ a: { nested: 1 } }, {}, snapshotContext([]))
+      .unmatched,
+  ).toEqual([
+    {
+      selector: "$['a']",
+      differenceType: "MISSING",
+      side: "Java",
+      javaValue: { nested: 1 },
+      jsValue: undefined,
+    },
+  ]);
 });
 
 test("accepts only the exact value selected by the RFC 9535 engine, retaining the original differences", () => {

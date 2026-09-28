@@ -2,7 +2,7 @@
 import Ajv from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 import jsonld from "jsonld";
-import { paths as selectJsonPaths } from "jsonpath-rfc9535";
+import { paths as selectJsonPaths, query } from "jsonpath-rfc9535";
 import { isDeepStrictEqual } from "node:util";
 
 const ajv = new Ajv({ allErrors: true });
@@ -116,9 +116,9 @@ const cardinalityBounds = ({ form, value, min, max }) => {
 };
 
 const reconcileAtoms = (
-  value,
+  documents,
   atoms,
-  { artifactType, fixture, referenceRevision, rules },
+  { artifactType, fixture, referenceRevision, parser, capability, rules },
 ) => {
   const applicable = rules.filter(
     (rule) => rule.artifactType === artifactType && rule.fixture === fixture,
@@ -126,13 +126,20 @@ const reconcileAtoms = (
   const ruleIds = new Set();
   const selected = applicable.map((rule) => {
     requireValid(validateRule, rule);
-    if (rule.referenceRevision !== referenceRevision || ruleIds.has(rule.id)) {
+    if (
+      rule.referenceRevision !== referenceRevision ||
+      ruleIds.has(rule.id) ||
+      (parser !== undefined && rule.parser !== parser) ||
+      (capability !== undefined && rule.capability !== capability)
+    ) {
       throw new Error(
         `Unbound or duplicate expected-difference rule: ${rule.id}`,
       );
     }
     ruleIds.add(rule.id);
-    const paths = new Set(selectJsonPaths(value, rule.selector));
+    const paths = new Set(
+      documents.flatMap((document) => selectJsonPaths(document, rule.selector)),
+    );
     return {
       rule,
       paths,
@@ -212,7 +219,7 @@ export const reconcileStructuralDifferences = (differences, context) => {
       );
     }
   }
-  return reconcileAtoms(differences, atoms, {
+  return reconcileAtoms([differences], atoms, {
     ...context,
     artifactType: "OWL native structural differences",
   });
@@ -239,9 +246,85 @@ export const reconcileUnparsedRdf = async (nquads, context) => {
     : [];
   return {
     unparsedNQuads,
-    reconciliation: reconcileAtoms({ unparsedNQuads }, atoms, {
+    reconciliation: reconcileAtoms([{ unparsedNQuads }], atoms, {
       ...context,
       artifactType: "RDF parsing diagnostics",
     }),
   };
+};
+
+const jsonType = (value) =>
+  value === null ? "null" : Array.isArray(value) ? "array" : typeof value;
+
+/** Native normalized paths identify nodes; repository code defines atomic changes, not path grammar. */
+const snapshotNodes = (snapshot) =>
+  new Map([
+    ["$", snapshot],
+    ...selectJsonPaths(snapshot, "$..*").map((path) => [
+      path,
+      query(snapshot, path)[0],
+    ]),
+  ]);
+
+/**
+ * Reconcile already-canonicalized legacy snapshot fragments against exact,
+ * fixture/parser/capability/revision-bound approvals. Both documents supply
+ * selectable nodes so additions and removals remain visible. No OWL semantics
+ * or snapshot canonicalization is performed here.
+ */
+export const reconcileStructuralSnapshots = (
+  javaSnapshot,
+  jsSnapshot,
+  context,
+) => {
+  const artifactType = "OWL structural snapshot";
+  for (const rule of context.rules.filter(
+    (rule) =>
+      rule.artifactType === artifactType && rule.fixture === context.fixture,
+  )) {
+    if (rule.cardinality?.form !== "exact")
+      throw new Error(
+        `Snapshot approval must have exact cardinality: ${rule.id}`,
+      );
+  }
+  const javaNodes = snapshotNodes(javaSnapshot);
+  const jsNodes = snapshotNodes(jsSnapshot);
+  const atoms = [];
+  const descendantsOfAtomicChanges = new Set();
+  // Every normalized parent path is a strict prefix of its descendants. Sorting
+  // therefore visits parents first, independent of either object's member order.
+  for (const selector of [
+    ...new Set([...javaNodes.keys(), ...jsNodes.keys()]),
+  ].sort()) {
+    if (descendantsOfAtomicChanges.has(selector)) continue;
+    const javaValue = javaNodes.get(selector);
+    const jsValue = jsNodes.get(selector);
+    if (Object.is(javaValue, jsValue)) continue;
+    const javaType = jsonType(javaValue);
+    const jsType = jsonType(jsValue);
+    if (javaType === jsType && ["array", "object"].includes(javaType)) continue;
+    const differenceType = !javaNodes.has(selector)
+      ? "EXTRA"
+      : !jsNodes.has(selector)
+        ? "MISSING"
+        : javaType === jsType
+          ? "VALUE_CHANGED"
+          : "TYPE_CHANGED";
+    atoms.push({
+      selector,
+      differenceType,
+      side: differenceType === "EXTRA" ? "JS" : "Java",
+      javaValue,
+      jsValue,
+    });
+    // A replaced/removed subtree is one atom, not an atom for each nested value.
+    for (const snapshot of [javaSnapshot, jsSnapshot]) {
+      for (const path of selectJsonPaths(snapshot, `${selector}..*`))
+        descendantsOfAtomicChanges.add(path);
+    }
+  }
+  return reconcileAtoms([javaSnapshot, jsSnapshot], atoms, {
+    ...context,
+    artifactType,
+  });
 };
