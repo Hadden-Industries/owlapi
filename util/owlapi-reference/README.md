@@ -311,6 +311,14 @@ and verifies its digest before testing the public package. Generated documents
 and source blobs are rechecked for changes at the end. Reports, individual
 oracle JSON, parser diagnostics and native logs remain in the new output directory.
 
+The qualification unit suite delegates public-package composition to a fixed
+test driver running in the current Node executable. Node resolves and executes
+the real public modules; Jest asserts the returned evidence and generated files.
+This preserves concurrent imports and the exact production qualification path
+without depending on Jest's experimental VM module linker, which can reject
+shared concurrent imports on Node 22. Both supported Node lines run these same
+assertions; native failures and missing import mappings remain test failures.
+
 The required Node 24 CI job builds the exact Java revision with Maven, runs
 native oracle regressions, executes both July checks and retains their artifacts,
 including failures. This adds development evidence only; it does not change the

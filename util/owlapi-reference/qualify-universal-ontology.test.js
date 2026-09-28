@@ -7,7 +7,6 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   assertSourceQualificationOutputDirectory,
   captureSourceIdentity,
-  generateOntologyEvidence,
   materializePinnedOntologySources,
   parseQualificationArguments,
   reconcileFamilyEvidence,
@@ -20,6 +19,35 @@ const temporaryDirectory = async () => {
   directories.push(path);
   return path;
 };
+
+// Package composition belongs to Node's loader, not Jest's experimental VM linker.
+const generateOntologyEvidenceWithNativeNode = async (options) => {
+  const execution = spawnSync(
+    process.execPath,
+    [
+      fileURLToPath(
+        new URL(
+          "./generate-ontology-evidence.test-process.mjs",
+          import.meta.url,
+        ),
+      ),
+    ],
+    {
+      input: JSON.stringify(options),
+      encoding: "utf8",
+      windowsHide: true,
+      timeout: 10_000,
+    },
+  );
+  if (execution.error) throw execution.error;
+  if (execution.status !== 0)
+    throw new Error(
+      execution.stderr ||
+        `Native qualification exited with ${execution.status}`,
+    );
+  return JSON.parse(execution.stdout);
+};
+
 afterEach(async () => {
   for (const directory of directories.splice(0))
     await rm(directory, { recursive: true, force: true });
@@ -287,7 +315,7 @@ test("public composition creates both formats, excludes imported ontology metada
     `Ontology(<urn:leaf>
     Annotation(<http://www.w3.org/2000/01/rdf-schema#label> "imported") Declaration(Class(<urn:B>)))`,
   );
-  const generated = await generateOntologyEvidence({
+  const generated = await generateOntologyEvidenceWithNativeNode({
     rootPath,
     catalogMappings: [{ ontologyIRI: "urn:leaf", documentPath: leafPath }],
     outputDirectory: join(directory, "candidates"),
@@ -321,7 +349,7 @@ test("public composition creates both formats, excludes imported ontology metada
     expect(candidate.sha256).toMatch(/^[a-f0-9]{64}$/u);
   }
   await expect(
-    generateOntologyEvidence({
+    generateOntologyEvidenceWithNativeNode({
       rootPath,
       catalogMappings: [],
       outputDirectory: join(directory, "missing-mapping"),
@@ -342,7 +370,7 @@ test.each([
       `@prefix owl: <http://www.w3.org/2002/07/owl#> .
     <urn:root> a owl:Ontology. <urn:subject> <${predicate}> <urn:object>.`,
     );
-    const generated = await generateOntologyEvidence({
+    const generated = await generateOntologyEvidenceWithNativeNode({
       rootPath,
       catalogMappings: [],
       outputDirectory: join(directory, "candidates"),
@@ -373,7 +401,7 @@ test("a lossless named datatype restriction recovery survives both strict closur
     <urn:root> a owl:Ontology.
     <urn:code> a rdfs:Datatype; owl:onDatatype xsd:string; owl:withRestrictions ([xsd:pattern "[A-Z]+"]).`,
   );
-  const evidence = await generateOntologyEvidence({
+  const evidence = await generateOntologyEvidenceWithNativeNode({
     rootPath,
     catalogMappings: [],
     outputDirectory: join(directory, "evidence"),
