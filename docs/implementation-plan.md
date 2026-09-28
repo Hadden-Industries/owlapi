@@ -3978,25 +3978,36 @@ timeout class; only bounded idempotent reads may retry, while every external
 write receives one automatic attempt followed by read-only reconciliation of an
 ambiguous result.
 
-### 2.56 Decision: freeze a six-Action allowlist and every security-relevant input
+### 2.56 Decision: freeze a seven-Action allowlist and every security-relevant input
 
 The initial repository **MUST** permit exactly these GitHub-maintained Actions.
 Every `uses:` reference names the complete 40-character commit SHA shown below
 and has the reviewed release tag in an adjacent comment:
 
-| Action                             | Reviewed release | Required full commit SHA                   | Sole approved role                                                                |
-| ---------------------------------- | ---------------- | ------------------------------------------ | --------------------------------------------------------------------------------- |
-| `actions/checkout`                 | `v7.0.1`         | `3d3c42e5aac5ba805825da76410c181273ba90b1` | read the captured accepted source and later verify its signed tag                 |
-| `actions/setup-node`               | `v7.0.0`         | `820762786026740c76f36085b0efc47a31fe5020` | install an exact approved Node patch                                              |
-| `actions/setup-python`             | `v7.0.0`         | `5fda3b95a4ea91299a34e894583c3862153e4b97` | select exact isolated Python solely for the §2.50.1 ScanCode evidence-shard jobs  |
-| `actions/upload-artifact`          | `v7.0.1`         | `043fb46d1a93c77aae656e7c1c64a875d1fc6a0a` | retain the same-run candidate or bounded independently verifiable evidence shards |
-| `actions/download-artifact`        | `v8.0.1`         | `3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c` | retrieve a candidate by ID or evidence shards by a closed same-run pattern        |
-| `actions/dependency-review-action` | `v5.0.0`         | `a1d282b36b6f3519aa1f3fc636f609c47dddb294` | block introduced high/critical runtime vulnerabilities                            |
+| Action                             | Reviewed release | Required full commit SHA                   | Sole approved role                                                                    |
+| ---------------------------------- | ---------------- | ------------------------------------------ | ------------------------------------------------------------------------------------- |
+| `actions/checkout`                 | `v7.0.1`         | `3d3c42e5aac5ba805825da76410c181273ba90b1` | read the captured accepted source and later verify its signed tag                     |
+| `actions/setup-node`               | `v7.0.0`         | `820762786026740c76f36085b0efc47a31fe5020` | install an exact approved Node patch                                                  |
+| `actions/setup-python`             | `v7.0.0`         | `5fda3b95a4ea91299a34e894583c3862153e4b97` | select exact isolated Python solely for the §2.50.1 ScanCode evidence-shard jobs      |
+| `actions/setup-java`               | `v6.0.1`         | `de7274f081f381c8f8158605e0321c36c376e2e6` | select Temurin JDK 25 solely for the read-only CI Java OWLAPI reference qualification |
+| `actions/upload-artifact`          | `v7.0.1`         | `043fb46d1a93c77aae656e7c1c64a875d1fc6a0a` | retain the same-run candidate or bounded independently verifiable evidence shards     |
+| `actions/download-artifact`        | `v8.0.1`         | `3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c` | retrieve a candidate by ID or evidence shards by a closed same-run pattern            |
+| `actions/dependency-review-action` | `v5.0.0`         | `a1d282b36b6f3519aa1f3fc636f609c47dddb294` | block introduced high/critical runtime vulnerabilities                                |
 
 The original five tag-to-commit mappings were resolved directly from their
 official Git repositories on 24 August 2026; `actions/setup-python@v7.0.0` was
-resolved the same way on 27 August 2026. The selected-Action allowlist names
-only those six repositories and the repository requires full-SHA references.
+resolved the same way on 27 August 2026. On 28 September 2026, the owner approved
+adding the existing `actions/setup-java@v6.0.1` workflow dependency after its
+official tag was rechecked against the full SHA above. This supersedes the
+six-Action limit; the selected-Action allowlist names only these seven
+repositories and the repository continues to require full-SHA references.
+The existing six repository patterns remain unchanged. The Java addition is
+restricted in repository settings to the exact
+`actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6` selector, not a
+wildcard. Broad GitHub-owned and verified-publisher allowances remain disabled.
+Use GitHub's native [selected-actions API](https://docs.github.com/en/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-a-repository)
+to apply and read back this policy; a local workflow validation pass does not
+prove that hosted execution is permitted.
 GitHub authorship does not exempt an Action from the immutable-pin rule. There is
 no separate Action lockfile: each workflow reference is the authority and the
 adjacent tag is a review aid.
@@ -4037,6 +4048,15 @@ Action's built-in GitHub.com token default remains bounded by the job's sole
 other job may use that Action, no ambient Python may satisfy the scanner gate,
 and the selected runtime is neither a user-level installation nor package
 content.
+
+Only `ci.yml`'s read-only Ubuntu Node 24 source job may use `actions/setup-java`.
+Its existing inputs select `distribution: temurin`, `java-version: "25"`,
+`check-latest: false` and `overwrite-settings: false`; no dependency cache,
+registry credentials or additional token permissions are introduced. The JDK
+builds and executes the immutable Java OWLAPI reference used to reconcile all
+four July Universal Ontology variants in parsing and import-closure checks.
+This approval changes neither the reference revision nor the approved semantic
+differences, and does not authorize Java setup in a publication job.
 
 The steady OIDC path also omits `registry-url`, `scope` and `NODE_AUTH_TOKEN`:
 trusted publishing neither requires nor receives token-authentication
@@ -8584,7 +8604,7 @@ approval the exact proposed contents/setting changes for:
 - the exact §§2.55–2.61 `.github/workflows/ci.yml`, `release.yml`,
   `maintenance.yml` and `extended-tests.yml` files, including their literal
   triggers, root `permissions: {}`, job-level permissions, read-only repository
-  token default, the exact six-repository selected-Action allowlist and six
+  token default, the exact seven-repository selected-Action allowlist and seven
   reviewed full-SHA/release-tag references, `checkout` credential/ref/depth/tag
   inputs, literal `setup-node` patches with `check-latest: false` and
   `package-manager-cache: false`, the temporary bootstrap-only npm registry/auth
@@ -13508,7 +13528,7 @@ precise subset; this summary is not the machine mapping.
       forward the qualified 24 August 2026 WebVOWL staging baseline; isolate every
       later foundational runtime update in its own fully gated pull request.
 - [ ] <!-- Gate: P19-CHECK-061; Covers: P19-DEPENDENCIES-001, P19-SECURITY-GOVERNANCE-001, P19-CI-CONTROLS-001 --> Enable Dependabot alerts, security updates and weekly proposal-only version
-      updates with the §2.32 grouping; allow exactly the six §2.56 Action
+      updates with the §2.32 grouping; allow exactly the seven §2.56 Action
       repositories, pin each recorded release to its exact full SHA with an adjacent
       tag comment, require full-SHA pins in repository settings, prohibit
       auto-merge, and do not run Renovate for the same responsibility.
@@ -15861,7 +15881,7 @@ The final architectural rules are:
 
 > **GitHub Actions uses exactly five trust-separated workflow files: read-only `ci.yml`, protected-`main` manually dispatched late-tag `release.yml`, the schema-pinned `release-reconciliation.yml` exception, `maintenance.yml` and non-blocking `extended-tests.yml`. Each denies token authority at its root and grants only job-minimal permissions. Ordinarily one serialized, non-cancelling, cache-free `release.yml` run owns the complete retained candidate; solely after §2.60's proved post-qualification evidence-persistence failure may the reconciliation route import the exact reviewed prior-run candidate/preflight and prove full byte equality before its own same-run publication chain. npm OIDC, no-authority `release-manual` review jobs, GitHub-release writes and maintenance issue writes remain separate. Privileged `pull_request_target`/`workflow_run`, any other cross-workflow candidate promotion, runner-based human-wait polling, external reusable workflows, floating Actions and unselected Action repositories are forbidden.**
 
-> **Exactly six GitHub-maintained Action releases are executable, each by the §2.56 full SHA with its reviewed tag beside it: checkout v7.0.1, setup-node v7.0.0, setup-python v7.0.0, upload-artifact v7.0.1, download-artifact v8.0.1 and dependency-review-action v5.0.0. Checkout never persists credentials; setup-node uses literal Node patches with both implicit and explicit dependency caching disabled; setup-python selects exact isolated Python 3.14.7 only for deterministic ScanCode shards and changes neither PATH nor caches; steady OIDC publication performs no checkout and receives no registry/token setup; the three-file candidate is normally uploaded once, recorded and downloaded by immutable same-run artefact ID with closed inventory and independent hashes; solely under §2.60, a reviewed reconciliation may import the pinned prior-run candidate/preflight by exact repository/run/artefact IDs, revalidate their server identities and complete tarball-byte equality, and then re-upload those same candidate bytes into its own same-run chain; a validated same-run npm signing-key snapshot and one-day evidence shards move only by exact closed selectors with deterministic coordinate replacement, seven-day aggregate retention and independent source/key/closure/digest verification; dependency review is read-only and blocks only introduced high/critical runtime vulnerabilities. Cache, script, publish, release, SBOM, provenance and attestation wrapper Actions are absent. An update proposal must revalidate the tag-to-SHA mapping and every relevant runtime/default/input/output/permission behavior, never merely replace a hash.**
+> **Exactly seven GitHub-maintained Action releases are executable, each by the §2.56 full SHA with its reviewed tag beside it: checkout v7.0.1, setup-node v7.0.0, setup-python v7.0.0, setup-java v6.0.1, upload-artifact v7.0.1, download-artifact v8.0.1 and dependency-review-action v5.0.0. Checkout never persists credentials; setup-node uses literal Node patches with both implicit and explicit dependency caching disabled; setup-python selects exact isolated Python 3.14.7 only for deterministic ScanCode shards and changes neither PATH nor caches; setup-java is restricted to its exact selected commit and the read-only CI Java reference job; steady OIDC publication performs no checkout and receives no registry/token setup; the three-file candidate is normally uploaded once, recorded and downloaded by immutable same-run artefact ID with closed inventory and independent hashes; solely under §2.60, a reviewed reconciliation may import the pinned prior-run candidate/preflight by exact repository/run/artefact IDs, revalidate their server identities and complete tarball-byte equality, and then re-upload those same candidate bytes into its own same-run chain; a validated same-run npm signing-key snapshot and one-day evidence shards move only by exact closed selectors with deterministic coordinate replacement, seven-day aggregate retention and independent source/key/closure/digest verification; dependency review is read-only and blocks only introduced high/critical runtime vulnerabilities. Cache, script, publish, release, SBOM, provenance and attestation wrapper Actions are absent. An update proposal must revalidate the tag-to-SHA mapping and every relevant runtime/default/input/output/permission behavior, never merely replace a hash.**
 
 > **Required automation uses only explicit GA `ubuntu-24.04` x64, `windows-2025` x64 and `macos-15` arm64 hosted labels. Ubuntu alone builds and publishes; its complete Node 22/24 suite is joined by four blocking Windows/macOS installed-tarball lanes and three separate one-worker, cache-free Ubuntu Playwright-engine jobs. Linux/macOS use explicit Bash, Windows uses PowerShell Core, and substantive policy stays in cross-platform `.mjs` scripts. Each job validates and records the requested label, OS/architecture, mutable GitHub image version, OS/kernel and actual runtime/browser identities. Moving/latest, preview, slim, larger, self-hosted and container runners are absent, as is every runner-preinstalled release tool.**
 
@@ -15954,7 +15974,7 @@ physical legacy deletion
    ↓ frozen-history inventory / partition / canonical repository gate
 independent Hadden-Industries/owlapi extraction
    ↓ protected main/v* rulesets + Issues + CodeQL/secret protection + exact ordinary dependencies/tooling/Dependabot/audit
-four-workflow trust split + root-denied/job-minimal permissions + exact six-Action SHA/input allowlist + explicit hosted-OS/shell/image-evidence matrix
+four-workflow trust split + root-denied/job-minimal permissions + exact seven-Action SHA/input allowlist + explicit hosted-OS/shell/image-evidence matrix
    ↓ stable CI/release aggregates + complete required conclusions + exact timeouts/concurrency queues + read-only retry/single-write reconciliation policy
    ↓ all-external fork-run approval + no-secret/read-only PR execution + same-run artefact quarantine + validated workflow data/log hygiene
 dedicated release PR → accepted protected-main integration commit
