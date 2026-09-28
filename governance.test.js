@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
+import { paths as selectJsonPaths } from "jsonpath-rfc9535";
 
 import { OWLOntologyLoaderConfiguration } from "./model/index.js";
 import {
@@ -124,9 +125,9 @@ const listProductionModules = (directory, prefix) =>
     .sort();
 
 // Index modules are public facades rather than independent implementations.
-// Enumerating only the five public namespaces and the private implementation
-// root also prevents installed dependencies and repository tooling from being
-// mistaken for governed package source.
+// Enumerating the five directory-wide production roots plus the exact
+// provisional util implementations prevents repository-only util tooling from
+// being mistaken for governed package source.
 const PRODUCTION_MODULE_ROOTS = [
   ["apibinding", "apibinding"],
   ["formats", "formats"],
@@ -135,12 +136,347 @@ const PRODUCTION_MODULE_ROOTS = [
   ["model", "model"],
 ];
 
+const PROVISIONAL_PRODUCTION_MODULES = [
+  "util/owlOntologyImportsClosureSetProvider.js",
+  "util/owlOntologyMerger.js",
+];
+
 const currentProductionModules = () =>
-  PRODUCTION_MODULE_ROOTS.flatMap(([directory, prefix]) =>
-    listProductionModules(new URL(`./${directory}/`, import.meta.url), prefix),
-  ).sort();
+  [
+    ...PRODUCTION_MODULE_ROOTS.flatMap(([directory, prefix]) =>
+      listProductionModules(
+        new URL(`./${directory}/`, import.meta.url),
+        prefix,
+      ),
+    ),
+    ...PROVISIONAL_PRODUCTION_MODULES,
+  ].sort();
 
 describe("owlapi governance artifacts", () => {
+  it("records canonical parity decisions without claiming an accepted release", () => {
+    const ledgerPath = "./docs/compatibility/java-api-parity-decisions.json";
+    expect(existsSync(new URL(ledgerPath, import.meta.url))).toBe(true);
+    const { document: ledger, errors } = validateAgainstSchema(
+      ledgerPath,
+      "./docs/compatibility/java-api-parity-decisions.schema.json",
+    );
+    expect(errors).toEqual([]);
+    expect(ledger.qualification).toBe("PRE_INTEGRATION");
+    expect(ledger.integrationBaseline).toBeNull();
+    expect(ledger.consumerMigrations.webvowl).toBeNull();
+    expect(ledger.phase21.status).toBe("IN_PROGRESS");
+    expect(ledger.javaAuthority).toEqual({
+      version: "5.5.1",
+      revision: "d7e997a53b470e32700de89cc610d9daf01ea769",
+    });
+    expect(ledger.decisions.map(({ id }) => id).sort()).toEqual([
+      "PARITY-ERROR-HIERARCHY",
+      "PARITY-ERROR-NAMESPACE",
+      "PARITY-ERROR-SUFFIX",
+      "PARITY-STORAGE-REASON",
+      "PARITY-TARGET-ATOMIC-COMMIT",
+      "PARITY-TARGET-WRITER-OMISSION",
+    ]);
+    expect(ledger.phase21.publicBindings).toEqual([
+      "io.StringDocumentTarget",
+      "io.OWLOntologyStorageError",
+      "io.OWLStorerNotFoundError",
+    ]);
+    expect(ledger.phase21.newNamespaces).toEqual([]);
+    expect(ledger.forbiddenMembers).toContain(
+      "io.StringDocumentTarget.prototype.getText",
+    );
+    expect(ledger.forbiddenBindings).toEqual([
+      "io.UnrepresentableOntologyError",
+      "model.OWLOntologyStorageError",
+      "model.OWLStorerNotFoundError",
+    ]);
+    for (const decision of ledger.decisions) {
+      expect(decision.phase).toBe(21);
+      expect(decision.verificationPaths.length).toBeGreaterThan(0);
+      for (const path of [
+        ...decision.verificationPaths,
+        decision.approvalSource,
+      ]) {
+        expect(existsSync(new URL(path, import.meta.url))).toBe(true);
+      }
+      for (const authority of decision.javaAuthorities) {
+        expect(authority.sourcePath).toBe(
+          `api/src/main/java/${authority.type.replaceAll(".", "/")}.java`,
+        );
+      }
+    }
+    const matrix = readJson("./docs/compatibility/capabilities.json");
+    for (const id of [
+      "compatibility.java-parity-precondition",
+      "io.string-document-target",
+      "io.storage-error-contract",
+    ]) {
+      expect(matrix.capabilities.filter((row) => row.id === id)).toEqual([
+        expect.objectContaining({
+          id,
+          status: "REQUIRED_V1",
+          progress: "IN_PROGRESS",
+          phase: 21,
+        }),
+      ]);
+    }
+    // Git owns revision lookup; the invariant here binds the declared digest
+    // to actual baseline bytes. Source archives cannot answer Git questions.
+    if (!completeHistoryUnavailableReason()) {
+      const baseline = execFileSync(
+        "git",
+        [
+          "show",
+          `${ledger.developmentBaseline.commit}:docs/compatibility/java-api-surface.json`,
+        ],
+        { cwd: REPOSITORY_ROOT, stdio: ["ignore", "pipe", "pipe"] },
+      );
+      expect(sha256(baseline)).toBe(ledger.developmentBaseline.registrySha256);
+      expect(isAncestorOfHead(ledger.developmentBaseline.commit)).toBe(true);
+    }
+  });
+
+  it("rejects fabricated parity acceptance and unapproved ledger fields", () => {
+    const ledger = readJson(
+      "./docs/compatibility/java-api-parity-decisions.json",
+    );
+    const schemaPath =
+      "./docs/compatibility/java-api-parity-decisions.schema.json";
+    const invalidRecords = [
+      { ...ledger, invented: true },
+      { ...ledger, phase21: { ...ledger.phase21, status: "COMPLETE" } },
+      { ...ledger, qualification: "RECONCILED" },
+      { ...ledger, integrationBaseline: { tag: "v0.1.0" } },
+      {
+        ...ledger,
+        javaAuthority: { ...ledger.javaAuthority, revision: "0".repeat(40) },
+      },
+      {
+        ...ledger,
+        decisions: [
+          { ...ledger.decisions[0], category: "PUBLIC_JS_EXTENSION" },
+        ],
+      },
+      { ...ledger, decisions: [...ledger.decisions, ledger.decisions[0]] },
+      { ...ledger, phase21: { ...ledger.phase21, newNamespaces: ["storage"] } },
+    ];
+    for (const invalid of invalidRecords) {
+      expect(
+        validateDocumentAgainstSchema(invalid, schemaPath).length,
+      ).toBeGreaterThan(0);
+    }
+  });
+
+  it("requires complete consumer evidence only for reconciled parity completion", () => {
+    const ledger = readJson(
+      "./docs/compatibility/java-api-parity-decisions.json",
+    );
+    const schemaPath =
+      "./docs/compatibility/java-api-parity-decisions.schema.json";
+    // Synthetic schema fixtures are not release evidence and never enter the
+    // retained ledger. Positive controls prevent an always-rejecting schema.
+    const reconciled = {
+      ...ledger,
+      qualification: "RECONCILED",
+      integrationBaseline: {
+        commit: "a".repeat(40),
+        registrySha256: "b".repeat(64),
+      },
+    };
+    expect(validateDocumentAgainstSchema(reconciled, schemaPath)).toEqual([]);
+    const complete = {
+      ...reconciled,
+      phase21: {
+        ...ledger.phase21,
+        status: "COMPLETE",
+        registrySha256: "c".repeat(64),
+      },
+    };
+    expect(
+      validateDocumentAgainstSchema(complete, schemaPath).length,
+    ).toBeGreaterThan(0);
+    const consumer = {
+      repository: "https://github.com/Hadden-Industries/webvowl",
+      baselineCommit: "d".repeat(40),
+      packageSpecifier: "0.1.0",
+      auditedPathClasses: ["src", "test", "docs"],
+      excludedPathClasses: ["docs/owlapi-js"],
+      sourceReaderAllowlist: [],
+      obsoleteUseCount: 0,
+      scanSha256: "e".repeat(64),
+      disposition: "NO_OBSOLETE_USAGE",
+      changedPaths: [],
+      migrationCommit: null,
+      reviewedPatchSha256: null,
+      installedCandidate: {
+        sha256: "f".repeat(64),
+        evidenceSha256: "1".repeat(64),
+        result: "PASS",
+      },
+    };
+    const candidate = {
+      ...complete,
+      consumerMigrations: { webvowl: consumer },
+    };
+    expect(validateDocumentAgainstSchema(candidate, schemaPath)).toEqual([]);
+    const retainedGitPackageSpecifier = readJson(
+      "./docs/release/pre-registry-git-equivalence.json",
+    ).source.git.packageSpecifier;
+    expect(
+      validateDocumentAgainstSchema(
+        {
+          ...candidate,
+          consumerMigrations: {
+            webvowl: {
+              ...consumer,
+              packageSpecifier: retainedGitPackageSpecifier,
+            },
+          },
+        },
+        schemaPath,
+      ),
+    ).toEqual([]);
+    for (const mutation of [
+      { packageSpecifier: undefined },
+      { packageSpecifier: "^0.1.0" },
+      { packageSpecifier: "file:../owlapi" },
+      {
+        packageSpecifier:
+          "git+https://github.com/Hadden-Industries/owlapi.git#main",
+      },
+      { obsoleteUseCount: 1 },
+      { changedPaths: ["src/obsolete.js"] },
+      { disposition: "MIGRATED" },
+      {
+        installedCandidate: { ...consumer.installedCandidate, result: "FAIL" },
+      },
+      { invented: true },
+    ]) {
+      expect(
+        validateDocumentAgainstSchema(
+          {
+            ...candidate,
+            consumerMigrations: { webvowl: { ...consumer, ...mutation } },
+          },
+          schemaPath,
+        ).length,
+      ).toBeGreaterThan(0);
+    }
+    const migration = {
+      ...consumer,
+      disposition: "MIGRATED",
+      changedPaths: ["src/targetReader.js"],
+      reviewedPatchSha256: "2".repeat(64),
+    };
+    expect(
+      validateDocumentAgainstSchema(
+        {
+          ...candidate,
+          consumerMigrations: { webvowl: migration },
+        },
+        schemaPath,
+      ),
+    ).toEqual([]);
+  });
+
+  it("rejects changes to each approved parity authority and adaptation", () => {
+    const ledger = readJson(
+      "./docs/compatibility/java-api-parity-decisions.json",
+    );
+    const schemaPath =
+      "./docs/compatibility/java-api-parity-decisions.schema.json";
+    expect(validateDocumentAgainstSchema(ledger, schemaPath)).toEqual([]);
+    for (const [index, decision] of ledger.decisions.entries()) {
+      const wrongAuthority = JSON.parse(
+        JSON.stringify(decision.javaAuthorities),
+      );
+      wrongAuthority[0].type = "org.semanticweb.owlapi.io.StringDocumentSource";
+      wrongAuthority[0].sourcePath =
+        "api/src/main/java/org/semanticweb/owlapi/io/StringDocumentSource.java";
+      const wrongMembers = JSON.parse(JSON.stringify(decision.javaAuthorities));
+      wrongMembers[0].members = ["inventedJavaMethod()"];
+      for (const alteredFields of [
+        { javaAuthorities: wrongAuthority },
+        { javaAuthorities: wrongMembers },
+        {
+          jsBindings: decision.jsBindings.includes("io.StringDocumentTarget")
+            ? ["io.OWLOntologyStorageError"]
+            : ["io.StringDocumentTarget"],
+        },
+        {
+          category:
+            decision.category === "OMISSION" ? "NAME_ADAPTATION" : "OMISSION",
+        },
+      ]) {
+        const invalid = JSON.parse(JSON.stringify(ledger));
+        expect(validateDocumentAgainstSchema(invalid, schemaPath)).toEqual([]);
+        invalid.decisions[index] = { ...decision, ...alteredFields };
+        expect(
+          validateDocumentAgainstSchema(invalid, schemaPath).length,
+        ).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("records only the eight approved lifecycle adaptations without acceptance", () => {
+    const { document: ledger, errors } = validateAgainstSchema(
+      "./docs/compatibility/java-api-parity-decisions.json",
+      "./docs/compatibility/java-api-parity-decisions.schema.json",
+    );
+    expect(errors).toEqual([]);
+    expect(ledger.phase22).toEqual({
+      status: "IN_PROGRESS",
+      decisions: expect.any(Array),
+    });
+    expect(ledger.phase22.decisions.map(({ id }) => id).sort()).toEqual([
+      "LIFECYCLE-ASYNC-SAVE-OVERLOAD",
+      "LIFECYCLE-CHANGE-OVERLOAD-SUBSET",
+      "LIFECYCLE-CLOSURE-COLLECTION-MAPPING",
+      "LIFECYCLE-FOREIGN-ONTOLOGY-STATE",
+      "LIFECYCLE-LOSSLESS-STORAGE",
+      "LIFECYCLE-MERGER-OPTIONAL-FILTER",
+      "LIFECYCLE-MUTATION-RESULT-ATOMICITY",
+      "LIFECYCLE-PROVIDER-SNAPSHOT",
+    ]);
+    for (const [index, decision] of ledger.phase22.decisions.entries()) {
+      expect(decision.rejectedAlternative.length).toBeGreaterThan(0);
+      for (const field of ["javaAuthorities", "jsBindings", "category"]) {
+        const invalid = JSON.parse(JSON.stringify(ledger));
+        const other = ledger.phase22.decisions[(index + 1) % 8];
+        invalid.phase22.decisions[index][field] =
+          field === "category" ? "PUBLIC_JS_EXTENSION" : other[field];
+        // Some decisions deliberately cite the same manager overloads; alter
+        // the signature as well so this is always an unapproved contract.
+        if (field === "javaAuthorities") {
+          invalid.phase22.decisions[index][field] = [
+            {
+              ...decision.javaAuthorities[0],
+              members: ["inventedJavaMethod()"],
+            },
+          ];
+        }
+        if (field === "jsBindings") {
+          invalid.phase22.decisions[index][field] = ["io.StringDocumentTarget"];
+        }
+        expect(
+          validateDocumentAgainstSchema(
+            invalid,
+            "./docs/compatibility/java-api-parity-decisions.schema.json",
+          ).length,
+        ).toBeGreaterThan(0);
+      }
+    }
+    const accepted = JSON.parse(JSON.stringify(ledger));
+    accepted.phase22.status = "COMPLETE";
+    expect(
+      validateDocumentAgainstSchema(
+        accepted,
+        "./docs/compatibility/java-api-parity-decisions.schema.json",
+      ).length,
+    ).toBeGreaterThan(0);
+  });
+
   it("classifies every capability exactly once with a normative status", () => {
     const matrix = readJson("./docs/compatibility/capabilities.json");
     const ids = matrix.capabilities.map(({ id }) => id);
@@ -155,6 +491,505 @@ describe("owlapi governance artifacts", () => {
         .filter(({ phase }) => phase !== null && phase <= 9)
         .every(({ progress }) => progress === "COMPLETE"),
     ).toBe(true);
+  });
+
+  it("maps exactly the three approved Phase 21 bindings without public drift", async () => {
+    const ledger = readJson(
+      "./docs/compatibility/java-api-parity-decisions.json",
+    );
+    const registry = readJson("./docs/compatibility/java-api-surface.json");
+    const io = await import("./io/index.js");
+    const expected = [
+      [
+        "StringDocumentTarget",
+        "org.semanticweb.owlapi.io.StringDocumentTarget",
+        "io/stringDocumentTarget.js",
+        "new StringDocumentTarget()",
+        ["prototype.toString"],
+      ],
+      [
+        "OWLOntologyStorageError",
+        "org.semanticweb.owlapi.model.OWLOntologyStorageException",
+        "io/errors.js",
+        "new OWLOntologyStorageError(message?, details?)",
+        ["constructor"],
+      ],
+      [
+        "OWLStorerNotFoundError",
+        "org.semanticweb.owlapi.model.OWLStorerNotFoundException",
+        "io/errors.js",
+        "new OWLStorerNotFoundError(format)",
+        ["constructor"],
+      ],
+    ];
+    for (const [
+      jsExport,
+      javaType,
+      sourceModule,
+      callShape,
+      supportedMembers,
+    ] of expected) {
+      const binding = registry.bindings.find(
+        ({ id }) => id === `io.${jsExport}`,
+      );
+      expect(binding).toMatchObject({
+        jsExport,
+        javaType,
+        sourceModule,
+        callShapes: [callShape],
+        supportedMembers,
+        relationship: "JS_ADAPTATION",
+        compatibility: "ADAPTED",
+        firstPublicRelease: "0.1.0",
+        progress: "IN_PROGRESS",
+      });
+      expect(typeof io[jsExport]).toBe("function");
+      expect(
+        registry.javaTypes.find(({ javaName }) => javaName === javaType),
+      ).toMatchObject({
+        disposition: "PUBLIC_MAPPED",
+        jsExport,
+        sourceModule,
+        progress: binding.progress,
+        capabilityIds: binding.capabilityIds,
+      });
+      const matrix = readJson("./docs/compatibility/capabilities.json");
+      for (const id of binding.capabilityIds) {
+        expect(matrix.capabilities.find((row) => row.id === id).progress).toBe(
+          binding.progress,
+        );
+      }
+      for (const decision of ledger.decisions.filter(({ jsBindings }) =>
+        jsBindings.includes(binding.id),
+      )) {
+        expect(binding.semanticQualifications.join(" ")).toContain(decision.id);
+      }
+    }
+    for (const id of ledger.forbiddenBindings) {
+      expect(registry.bindings.some((binding) => binding.id === id)).toBe(
+        false,
+      );
+    }
+    expect(
+      registry.bindings.some(
+        ({ jsExport }) => jsExport === "replaceStringDocumentTargetText",
+      ),
+    ).toBe(false);
+    if (!completeHistoryUnavailableReason()) {
+      const baseline = JSON.parse(
+        git(
+          "show",
+          `${ledger.developmentBaseline.commit}:docs/compatibility/java-api-surface.json`,
+        ),
+      );
+      const existingIds = new Set(baseline.bindings.map(({ id }) => id));
+      const firstReleaseRetargetedBindings = new Set([
+        "model.AddOntologyAnnotation",
+        "model.SetOntologyID",
+        "util.OWLOntologyImportsClosureSetProvider",
+        "util.OWLOntologyMerger",
+      ]);
+      for (const prior of baseline.bindings) {
+        const current = registry.bindings.find(({ id }) => id === prior.id);
+        const expected = firstReleaseRetargetedBindings.has(prior.id)
+          ? { ...prior, firstPublicRelease: "0.1.0" }
+          : prior;
+        if (firstReleaseRetargetedBindings.has(prior.id)) {
+          expect(prior.firstPublicRelease).toBe("0.2.0");
+        }
+        // Task 7 changes only these manager projections. Their exact contents
+        // are checked below. The owner-approved first-release retarget changes
+        // only the four provisional release identities named above.
+        expect(
+          prior.id === "model.OWLOntologyManager"
+            ? {
+                ...current,
+                supportedMembers: prior.supportedMembers,
+                omittedMembers: prior.omittedMembers,
+                semanticQualifications: prior.semanticQualifications,
+                verification: prior.verification,
+                publicErrors: prior.publicErrors,
+              }
+            : current,
+        ).toEqual(expected);
+      }
+      expect(
+        registry.bindings
+          .filter(({ id }) => !existingIds.has(id))
+          .map(({ id }) => id)
+          .sort(),
+      ).toEqual([...ledger.phase21.publicBindings].sort());
+      expect(
+        registry.namespaces.map(({ npmSpecifier }) => npmSpecifier),
+      ).toEqual(baseline.namespaces.map(({ npmSpecifier }) => npmSpecifier));
+    }
+  });
+
+  it("keeps pre-integration lifecycle governance split by deliverable", () => {
+    const matrix = readJson("./docs/compatibility/capabilities.json");
+    const registry = readJson("./docs/compatibility/java-api-surface.json");
+    const lifecycleCapabilityIds = [
+      "manager.imports-closure-query",
+      "ontology.change-required-surface",
+      "util.imports-closure-set-provider",
+      "util.ontology-merger",
+      "manager.save-ontology",
+      "storer.functional",
+      "storer.rdfxml",
+      "rdf.strict-complete-reconstruction",
+    ];
+    const lifecycleCapabilities = matrix.capabilities
+      .filter(({ id }) => lifecycleCapabilityIds.includes(id))
+      .sort(({ id: left }, { id: right }) => compareCodeUnits(left, right));
+
+    expect(lifecycleCapabilities).toEqual([
+      {
+        id: "manager.imports-closure-query",
+        category: "public-api",
+        status: "DEFERRED",
+        progress: "NOT_STARTED",
+        phase: null,
+      },
+      {
+        id: "manager.save-ontology",
+        category: "public-api",
+        status: "DEFERRED",
+        progress: "NOT_STARTED",
+        phase: null,
+      },
+      {
+        id: "ontology.change-required-surface",
+        category: "public-api",
+        status: "DEFERRED",
+        progress: "NOT_STARTED",
+        phase: null,
+      },
+      {
+        id: "rdf.strict-complete-reconstruction",
+        category: "mapping",
+        status: "DEFERRED",
+        progress: "NOT_STARTED",
+        phase: null,
+      },
+      {
+        id: "storer.functional",
+        category: "storage",
+        status: "DEFERRED",
+        progress: "NOT_STARTED",
+        phase: null,
+      },
+      {
+        id: "storer.rdfxml",
+        category: "storage",
+        status: "DEFERRED",
+        progress: "NOT_STARTED",
+        phase: null,
+      },
+      {
+        id: "util.imports-closure-set-provider",
+        category: "public-api",
+        status: "DEFERRED",
+        progress: "NOT_STARTED",
+        phase: null,
+      },
+      {
+        id: "util.ontology-merger",
+        category: "public-api",
+        status: "DEFERRED",
+        progress: "NOT_STARTED",
+        phase: null,
+      },
+    ]);
+    expect(matrix.capabilities).not.toContainEqual(
+      expect.objectContaining({ id: "storer.concrete-serializers" }),
+    );
+    expect(
+      lifecycleCapabilities.every(
+        ({ phase, progress }) =>
+          progress !== "COMPLETE" ||
+          (phase === 22 && matrix.release === "0.1.0"),
+      ),
+    ).toBe(true);
+
+    const javaTypesByName = new Map(
+      registry.javaTypes.map((javaType) => [javaType.javaName, javaType]),
+    );
+    expect(
+      javaTypesByName.get(
+        "org.semanticweb.owlapi.functional.renderer.FunctionalSyntaxStorer",
+      ),
+    ).toMatchObject({
+      capabilityIds: ["storer.functional"],
+      disposition: "DEFERRED_NOT_EXPOSED",
+      exposure: "NOT_EXPOSED",
+      progress: "NOT_STARTED",
+    });
+    expect(
+      javaTypesByName.get(
+        "org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLStorer",
+      ),
+    ).toMatchObject({
+      capabilityIds: ["storer.rdfxml"],
+      disposition: "DEFERRED_NOT_EXPOSED",
+      exposure: "NOT_EXPOSED",
+      progress: "NOT_STARTED",
+    });
+    expect(
+      registry.javaTypes.filter(({ capabilityIds }) =>
+        capabilityIds.includes("storer.concrete-serializers"),
+      ),
+    ).toEqual([]);
+
+    const plannedLifecycleStorerJavaNames = new Set([
+      "org.semanticweb.owlapi.functional.renderer.FunctionalSyntaxStorer",
+      "org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLStorer",
+    ]);
+    const otherFormerUmbrellaUnexposedJavaTypes = registry.javaTypes.filter(
+      ({ exposure, javaName, javaPackage, simpleName }) =>
+        exposure === "NOT_EXPOSED" &&
+        !javaPackage.includes(".reasoner") &&
+        !simpleName.startsWith("SWRL") &&
+        /(Storer|DocumentTarget|Renderer)/u.test(simpleName) &&
+        !plannedLifecycleStorerJavaNames.has(javaName),
+    );
+    expect(otherFormerUmbrellaUnexposedJavaTypes.length).toBeGreaterThan(0);
+    expect(
+      otherFormerUmbrellaUnexposedJavaTypes.every(
+        ({ capabilityIds }) =>
+          capabilityIds.length === 1 &&
+          capabilityIds[0] === "compatibility.java-api-gaps",
+      ),
+    ).toBe(true);
+  });
+
+  it("records the exact provisional Task 5 and Task 7 manager surface", () => {
+    const registry = readJson("./docs/compatibility/java-api-surface.json");
+    const managerBinding = registry.bindings.find(
+      ({ id }) => id === "model.OWLOntologyManager",
+    );
+
+    expect(managerBinding).toMatchObject({
+      capabilityIds: ["manager.narrow-v1-surface", "loading.import-closure"],
+      compatibility: "ADAPTED",
+      javaType: "org.semanticweb.owlapi.model.OWLOntologyManager",
+      publicErrors: [
+        "DocumentLoadError",
+        "MissingImportError",
+        "OWLOntologyCreationError",
+        "OWLOntologyStateError",
+        "OWLOntologyStorageError",
+        "OWLStorerNotFoundError",
+        "UnparsableOntologyException",
+      ],
+      relationship: "JAVA_ANALOGUE",
+    });
+    expect(managerBinding.supportedMembers).toEqual([
+      "prototype.addAxiom",
+      "prototype.addAxioms",
+      "prototype.applyChange",
+      "prototype.applyChanges",
+      "prototype.createOntology",
+      "prototype.getImportsClosure",
+      "prototype.getOWLDataFactory",
+      "prototype.getOntology",
+      "prototype.importsClosure",
+      "prototype.loadOntologyFromOntologyDocument",
+      "prototype.loadOntologyGraphFromOntologyDocument",
+      "prototype.saveOntology",
+    ]);
+    expect(managerBinding.omittedMembers).toEqual([
+      "Change and progress listeners",
+      "AddAxiom/RemoveAxiom change records and axiom removal operations",
+      "AddImport/RemoveImport changes",
+      "RemoveOntologyAnnotation changes",
+      "Storer and ontology-factory registration",
+      "IRI, stream, implicit-format, and default-document saveOntology overloads",
+    ]);
+    expect(managerBinding.semanticQualifications).toEqual([
+      "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
+      "importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership.",
+      "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
+      "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically.",
+      "applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails.",
+      "LIFECYCLE-ASYNC-SAVE-OVERLOAD: saveOntology(ontology, format, target) returns Promise<void>, validates ownership and genuine format/target identities, and selects only the exact format key.",
+      "LIFECYCLE-LOSSLESS-STORAGE: saveOntology renders one committed snapshot and atomically replaces target text only after success; unexpected renderer failures are wrapped with cause and typed storage errors retain identity.",
+    ]);
+    expect(managerBinding.verification).toEqual([
+      "internal/loading/managedOntologyIndex.test.js",
+      "internal/model/axiomSemantics.test.js",
+      "internal/model/ontologyState.test.js",
+      "model/model.test.js",
+      "model/ontologyChanges.test.js",
+      "model/owlOntologyManager.integration.test.js",
+      "model/owlOntologyManager.test.js",
+      "test/package-boundary.test.mjs",
+      "internal/storage/storerRegistry.test.js",
+      "model/owlOntologyManager.storage.test.js",
+    ]);
+
+    expect(
+      registry.javaTypes.find(
+        ({ javaName }) =>
+          javaName === "org.semanticweb.owlapi.model.OWLOntologyManager",
+      ),
+    ).toMatchObject({
+      disposition: "PUBLIC_MAPPED",
+      omittedMembers: managerBinding.omittedMembers,
+      supportedMembers: managerBinding.supportedMembers,
+      verification: managerBinding.verification,
+    });
+
+    const bindingById = new Map(
+      registry.bindings.map((binding) => [binding.id, binding]),
+    );
+    expect(bindingById.get("model.AddOntologyAnnotation")).toMatchObject({
+      callShapes: ["new AddOntologyAnnotation(ontology, annotation)"],
+      capabilityIds: ["compatibility.owlapi-5.5.1"],
+      compatibility: "ADAPTED",
+      firstPublicRelease: "0.1.0",
+      javaType: "org.semanticweb.owlapi.model.AddOntologyAnnotation",
+      omittedMembers: ["Change-data, reverse-change, and visitor APIs"],
+      relationship: "JAVA_ANALOGUE",
+      supportedMembers: ["prototype.getAnnotation", "prototype.getOntology"],
+    });
+    expect(bindingById.get("model.SetOntologyID")).toMatchObject({
+      callShapes: ["new SetOntologyID(ontology, ontologyID)"],
+      capabilityIds: ["compatibility.owlapi-5.5.1"],
+      compatibility: "ADAPTED",
+      firstPublicRelease: "0.1.0",
+      javaType: "org.semanticweb.owlapi.model.SetOntologyID",
+      omittedMembers: [
+        "Java IRI constructor overload",
+        "Change-data, reverse-change, and visitor APIs",
+      ],
+      relationship: "JAVA_ANALOGUE",
+      supportedMembers: [
+        "prototype.getNewOntologyID",
+        "prototype.getOntology",
+        "prototype.getOriginalOntologyID",
+      ],
+    });
+    for (const javaName of [
+      "org.semanticweb.owlapi.model.AddOntologyAnnotation",
+      "org.semanticweb.owlapi.model.SetOntologyID",
+    ]) {
+      expect(
+        registry.javaTypes.find((javaType) => javaType.javaName === javaName),
+      ).toMatchObject({
+        disposition: "PUBLIC_MAPPED",
+        exposure: "PUBLIC",
+        progress: "COMPLETE",
+      });
+    }
+  });
+
+  it("records the exact provisional Task 6 util surface and packlist allowlist", () => {
+    const packageManifest = readJson("./package.json");
+    const registry = readJson("./docs/compatibility/java-api-surface.json");
+    const utilNamespace = registry.namespaces.find(({ id }) => id === "util");
+    const utilBindings = registry.bindings.filter(
+      ({ publicSpecifier }) => publicSpecifier === "owlapi/util",
+    );
+
+    expect(packageManifest.exports["./util"]).toBe("./util/index.js");
+    expect(
+      packageManifest.files
+        .filter((path) => path.startsWith("util/"))
+        .sort(compareCodeUnits),
+    ).toEqual([
+      "util/index.js",
+      "util/owlOntologyImportsClosureSetProvider.js",
+      "util/owlOntologyMerger.js",
+    ]);
+    expect(packageManifest.files).not.toContain("util/");
+    expect(utilNamespace).toEqual({
+      id: "util",
+      javaPackage: "org.semanticweb.owlapi.util",
+      npmSpecifier: "owlapi/util",
+      exposure: "PUBLIC",
+      firstPublicRelease: "0.1.0",
+      rationale:
+        "Mirrors the Java OWLAPI util namespace for the exact approved closure provider and ontology merger entry points.",
+      ownedBindingIds: [
+        "util.OWLOntologyImportsClosureSetProvider",
+        "util.OWLOntologyMerger",
+      ],
+    });
+    expect(utilBindings.map(({ id }) => id)).toEqual(
+      utilNamespace.ownedBindingIds,
+    );
+
+    const bindingById = new Map(
+      utilBindings.map((binding) => [binding.id, binding]),
+    );
+    expect(
+      bindingById.get("util.OWLOntologyImportsClosureSetProvider"),
+    ).toMatchObject({
+      callShapes: [
+        "new OWLOntologyImportsClosureSetProvider(manager, rootOntology)",
+      ],
+      capabilityIds: ["compatibility.owlapi-5.5.1"],
+      compatibility: "ADAPTED",
+      firstPublicRelease: "0.1.0",
+      javaType:
+        "org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider",
+      omittedMembers: [],
+      publicErrors: ["OWLOntologyStateError", "TypeError"],
+      relationship: "JS_ADAPTATION",
+      supportedMembers: ["prototype.ontologies"],
+      semanticQualifications: [
+        "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
+        "ontologies returns a fresh defensive JavaScript Set instead of Java's Stream<OWLOntology>.",
+        "The imports-closure membership is captured at construction instead of remaining a live Java view.",
+      ],
+      verification: [
+        "util/owlOntologyImportsClosureSetProvider.test.js",
+        "test/package-boundary.test.mjs",
+        "test/installed-package-smoke.mjs",
+        "test/consumers/browser/browser-consumers.playwright.js",
+      ],
+    });
+    expect(bindingById.get("util.OWLOntologyMerger")).toMatchObject({
+      callShapes: [
+        "new OWLOntologyMerger(provider)",
+        "new OWLOntologyMerger(provider, mergeOnlyLogicalAxioms)",
+      ],
+      capabilityIds: ["compatibility.owlapi-5.5.1"],
+      compatibility: "ADAPTED",
+      firstPublicRelease: "0.1.0",
+      javaType: "org.semanticweb.owlapi.util.OWLOntologyMerger",
+      omittedMembers: [
+        "OWLAxiomFilter constructor overload and passes(axiom) surface",
+      ],
+      publicErrors: ["OWLOntologyStateError", "TypeError"],
+      relationship: "JAVA_ANALOGUE",
+      supportedMembers: ["prototype.createMergedOntology"],
+      semanticQualifications: [
+        "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
+        "createMergedOntology builds a structural set union from each supplied ontology's direct axioms before creating the target, then mutates the target only through public manager methods.",
+        "The optional boolean constructor form selects Java-compatible logical-axiom filtering; the OWLAxiomFilter constructor remains unavailable.",
+        "An omitted ontologyIRI creates an anonymous target; a supplied value must be an IRI.",
+      ],
+      verification: [
+        "util/owlOntologyMerger.test.js",
+        "test/package-boundary.test.mjs",
+        "test/installed-package-smoke.mjs",
+        "test/consumers/browser/browser-consumers.playwright.js",
+      ],
+    });
+    for (const javaName of [
+      "org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider",
+      "org.semanticweb.owlapi.util.OWLOntologyMerger",
+    ]) {
+      expect(
+        registry.javaTypes.find((javaType) => javaType.javaName === javaName),
+      ).toMatchObject({
+        disposition: "PUBLIC_MAPPED",
+        exposure: "PUBLIC",
+        progress: "COMPLETE",
+        publicSpecifier: "owlapi/util",
+      });
+    }
   });
 
   it("pins the approved post-Phase-4 delivery order", () => {
@@ -437,7 +1272,7 @@ describe("owlapi governance artifacts", () => {
     expect(paths).toEqual(productionModules);
     for (const record of records) {
       expect([
-        1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19,
+        1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 21, 22,
       ]).toContain(record.phase);
       expect(manifest.provenanceCategories).toHaveProperty(
         record.provenanceCategory,
@@ -717,7 +1552,9 @@ describe("owlapi governance artifacts", () => {
     const packageJson = readJson("./package.json");
     const lock = readJson("./package-lock.json");
 
-    expect(governance.dependencies).toHaveLength(6);
+    expect(governance.dependencies.map(({ name }) => name).sort()).toEqual(
+      Object.keys(packageJson.dependencies).sort(),
+    );
     for (const dependency of governance.dependencies) {
       expect(packageJson.dependencies[dependency.name]).toBe(
         dependency.version,
@@ -726,7 +1563,7 @@ describe("owlapi governance artifacts", () => {
         dependency.version,
       );
       expect(dependency.adapterBoundary).toMatch(
-        /^(?:internal\/(?:mapping|parsing|rdfjs)|model)\//,
+        /^(?:internal\/(?:mapping|parsing|rdfjs|storage)|model)\//,
       );
       expect(dependency.declaredLicenseExpression).toBeTruthy();
       expect(dependency.networkBehavior).toBeTruthy();
@@ -980,7 +1817,7 @@ See LICENSE for the complete, unmodified licence text.
 Ordinary npm dependencies are installed separately and remain under their own
 licences. Neither LICENSE nor this NOTICE relicenses them. The version-matched
 material inventory for this package version is maintained at:
-https://github.com/Hadden-Industries/owlapi/blob/v0.1.0-alpha.0/docs/provenance/third-party-material.json
+https://github.com/Hadden-Industries/owlapi/blob/v0.1.0-rc.1/docs/provenance/third-party-material.json
 
 Java OWLAPI names and package identities appear in compatibility documentation
 generated from the pinned Java OWLAPI reference. owlapi is independently
@@ -996,7 +1833,7 @@ bundle licence and notice review.
 
     for (const requiredText of [
       "## Why `owlapi` exists",
-      "0.1.0-alpha.0",
+      packageJson.version,
       "npm install owlapi@next",
       "independently maintained JavaScript implementation",
       "not affiliated with, sponsored by, or endorsed by the Java OWLAPI project",
@@ -1017,10 +1854,13 @@ bundle licence and notice review.
       "owlapi/model",
       "owlapi/io",
       "owlapi/formats",
+      "owlapi/util",
     ]) {
       expect(readme).toContain(`\`${specifier}\``);
     }
-    expect(changelog).toContain("## 0.1.0-alpha.0 — pending publication");
+    expect(changelog).toContain(
+      "## 0.1.0-alpha.0 — historical unpublished candidate",
+    );
     expect(changelog).toContain(
       "This alpha is a documented subset, not complete Java OWLAPI parity.",
     );
@@ -1032,7 +1872,7 @@ bundle licence and notice review.
       matrix.capabilities.map((capability) => [capability.id, capability]),
     );
 
-    expect(matrix.release).toBe("0.1.0-alpha.0");
+    expect(matrix.release).toBe(readJson("./package.json").version);
     expect(
       [...capabilities.keys()].filter((id) => id.startsWith("webvowl.")),
     ).toEqual([]);
@@ -1099,8 +1939,12 @@ bundle licence and notice review.
       schemaPath,
     );
     const schema = readJson(schemaPath);
-    const publication = readJson("./docs/release/publication-control.json");
+    const publication = readJson(
+      "./docs/release/alpha-reconciliation-control.json",
+    );
     const manifest = readJson("./package.json");
+    const { "./util": provisionalUtilExport, ...retainedCandidateExports } =
+      manifest.exports;
 
     expect(errors).toEqual([]);
     expect(schema.$id).toBe(
@@ -1108,9 +1952,11 @@ bundle licence and notice review.
     );
     expect(document.package).toEqual({
       name: manifest.name,
-      version: manifest.version,
-      exports: manifest.exports,
+      version: "0.1.0-alpha.0",
+      exports: retainedCandidateExports,
     });
+    expect(provisionalUtilExport).toBe("./util/index.js");
+    expect(document.package.exports).not.toHaveProperty("./util");
     expect(document.source).toMatchObject({
       repository: publication.reconciliation.source.repository,
       workflowRun: {
@@ -1502,19 +2348,20 @@ bundle licence and notice review.
     );
   });
 
-  it("binds the approved dependency-governance review to its unchanged facts", () => {
+  it("requires a new human review for the changed lifecycle dependency facts", () => {
     const governance = readJson("./docs/dependency-governance.json");
 
     expect(governance.review).toEqual({
-      status: "REVIEWED",
-      factsSha256:
-        "60ccbac9295657fcdd69120ba77e2fc1838c022ceeab9bb60256d772d75708eb",
-      reviewer: "Maksym Shostak",
-      reviewedOn: "2026-08-26",
-      capacity: "Original author, project maintainer, and release reviewer",
-      conclusion:
-        "Reviewed and approved the exact dependency graph, production audit, strict dependency lifecycle-script policy, upgrade gates, and supporting evidence bound to this facts digest.",
+      status: "PENDING_HUMAN_REVIEW",
+      factsSha256: expect.stringMatching(/^[0-9a-f]{64}$/),
+      reviewer: null,
+      reviewedOn: null,
+      capacity: null,
+      conclusion: null,
     });
+    expect(governance.review.factsSha256).not.toBe(
+      "60ccbac9295657fcdd69120ba77e2fc1838c022ceeab9bb60256d772d75708eb",
+    );
   });
 
   it("schema-validates structured dependency governance against the package and inventory", () => {
@@ -1536,8 +2383,8 @@ bundle licence and notice review.
     });
     expect(governance.productionAudit).toMatchObject({
       command: "npm audit --omit=dev --json",
-      performedOn: "2026-08-26",
-      productionPackageCount: 34,
+      performedOn: governance.recordedOn,
+      productionPackageCount: 39,
       vulnerabilityCounts: {
         info: 0,
         low: 0,
@@ -1570,7 +2417,7 @@ bundle licence and notice review.
       );
       expect(dependency.securityDisposition).toEqual(
         expect.objectContaining({
-          assessedOn: "2026-08-26",
+          assessedOn: expect.any(String),
           riskClass: expect.any(String),
           controls: expect.any(Array),
           rationale: expect.any(String),
@@ -2056,6 +2903,19 @@ bundle licence and notice review.
 
   it("defines a zero-tolerance expected-difference gate", () => {
     const manifest = readJson("./docs/compatibility/expected-differences.json");
+    const july = readJson(
+      "./util/owlapi-reference/universal-ontology-july-2026.json",
+    );
+    const java = readJson("./docs/provenance/provenance.json").referenceOwlapi;
+    const julyFixtures = new Set(
+      [...july.roots, ...july.mappings].map(
+        ({ path }) => `universal-ontology@${july.revision}:${path}`,
+      ),
+    );
+    const nativeSelectors = new Set([
+      "$['axioms']['jsOnly'][*]",
+      "$['anonymousIndividualGraphs']['javaOnly'][*]",
+    ]);
 
     expect(manifest.selectorLanguage).toBe("RFC 9535 JSONPath");
     expect(new Set(manifest.atomicDifferenceTypes)).toEqual(
@@ -2067,16 +2927,29 @@ bundle licence and notice review.
     );
     for (const rule of manifest.rules) {
       expect(rule.id).toBeTruthy();
-      expect(rule.selector).toMatch(/^\$/);
-      expect(rule.selector).not.toMatch(/\.\.|\[\*\]/u);
+      // The maintained RFC 9535 evaluator owns syntax validation. Repository
+      // policy binds the approved artifact collections, exact values and pins.
+      expect(() => selectJsonPaths({}, rule.selector)).not.toThrow();
       expect(manifest.atomicDifferenceTypes).toContain(rule.differenceType);
       expect(manifest.sides).toContain(rule.side);
       expect(manifest.cardinalityForms).toContain(rule.cardinality.form);
       expect(rule.cardinality).toMatchObject({ form: "exact" });
       expect(Number.isSafeInteger(rule.cardinality.value)).toBe(true);
       expect(rule.cardinality.value).toBeGreaterThanOrEqual(0);
-      expect(rule.artifactType).toBe("OWL structural snapshot");
-      expect(rule.fixture).toMatch(/^util\/owlapi-reference\/fixtures\//u);
+      if (rule.artifactType === "OWL structural snapshot") {
+        expect(rule.selector).not.toMatch(/\.\.|\[\*\]/u);
+        expect(rule.fixture).toMatch(/^util\/owlapi-reference\/fixtures\//u);
+      } else {
+        expect(julyFixtures.has(rule.fixture)).toBe(true);
+        expect(rule.referenceRevision).toBe(java.revision);
+        expect(rule.cardinality).toEqual({ form: "exact", value: 1 });
+        if (rule.artifactType === "OWL native structural differences")
+          expect(nativeSelectors.has(rule.selector)).toBe(true);
+        else {
+          expect(rule.artifactType).toBe("RDF parsing diagnostics");
+          expect(rule.selector).toBe("$['unparsedNQuads']");
+        }
+      }
       expect(rule.parser).toBeTruthy();
       expect(rule.capability).toBeTruthy();
       expect(rule.differenceCategory).toBeTruthy();
@@ -2140,10 +3013,14 @@ bundle licence and notice review.
       ({ classification }) => classification === "NOT_APPLICABLE",
     );
     expect(rdfToOwlManifest).toMatchObject({
+      compatibleReconstructionSuccessDocumentCount: 2,
+      expectedStrictCompletenessRejectionDocumentCount: 2,
       requiredDocumentCount: 312,
       requiredTestCount: 233,
       runner: "internal/mapping/rdfToOwlTranslator.conformance.test.js",
       sourceTestCount: 338,
+      strictReconstructionSuccessDocumentCount: 308,
+      successfulReconstructionDocumentCount: 310,
     });
     expect(rdfToOwlManifest.entries).toHaveLength(338);
     expect(rdfToOwlRequired).toHaveLength(233);
@@ -2165,6 +3042,54 @@ bundle licence and notice review.
         ({ reasonCategory }) => reasonCategory === "DIFFERENT_SYNTAX",
       ),
     ).toHaveLength(16);
+    expect(rdfToOwlManifest.expectedStrictCompletenessRejections).toEqual([
+      {
+        errorCode: "UNSUPPORTED_CONSTRUCT",
+        governingRules: ["Table 9", "Table 16", "final graph emptiness"],
+        governingSpecification:
+          "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        predicate: "http://example.org/hasAunt",
+        rdfDocument: "rdfXmlConclusionOntology",
+        reasonCategory: "UNDECLARED_ASSERTION_PREDICATE",
+        testId: "New-Feature-ObjectPropertyChain-001",
+      },
+      {
+        errorCode: "UNSUPPORTED_CONSTRUCT",
+        governingRules: ["Table 9", "Table 16", "final graph emptiness"],
+        governingSpecification:
+          "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        predicate: "http://example.org/p",
+        rdfDocument: "rdfXmlConclusionOntology",
+        reasonCategory: "UNDECLARED_ASSERTION_PREDICATE",
+        testId: "New-Feature-ObjectPropertyChain-BJP-003",
+      },
+    ]);
+    expect(
+      rdfToOwlManifest.strictReconstructionSuccessDocumentCount +
+        rdfToOwlManifest.compatibleReconstructionSuccessDocumentCount +
+        rdfToOwlManifest.expectedStrictCompletenessRejectionDocumentCount,
+    ).toBe(rdfToOwlManifest.requiredDocumentCount);
+    const migrationStatus = readFileSync(
+      new URL("./docs/migration/migration-status.md", import.meta.url),
+      "utf8",
+    );
+    const rdfToOwlLesson = readFileSync(
+      new URL("./docs/migration/lessons/004-rdf-to-owl.md", import.meta.url),
+      "utf8",
+    );
+    expect(migrationStatus).toContain(
+      "310/312 reconstructed; 2/2 governed strict rejections",
+    );
+    const normalizedRdfToOwlLesson = rdfToOwlLesson.replace(/\s+/gu, " ");
+    expect(normalizedRdfToOwlLesson).toContain(
+      "A total of 310 reconstruct successfully: strict mode reconstructs 308",
+    );
+    expect(normalizedRdfToOwlLesson).toContain(
+      "OWL 2 reverse-mapping Tables 9 and 16 and the final graph-emptiness condition",
+    );
+    expect(normalizedRdfToOwlLesson).not.toContain(
+      "All 312 documents reconstruct successfully",
+    );
 
     const rdfXmlManifest = byId.get("w3c-rdf-tests.rdfxml");
     const rdfXmlRequired = rdfXmlManifest.entries.filter(
@@ -2371,6 +3296,14 @@ bundle licence and notice review.
       status: "COMPLETE",
     });
     expect(inventory.tables.map(({ table }) => table)).toEqual(expectedTables);
+    expect(inventory.extensionsAndPolicies).toContainEqual({
+      id: "STRICT-COMPLETE-RECONSTRUCTION",
+      policy:
+        "Strict mode rejects every unconsumed statement in the graph presented for OWL reconstruction; compatible mode retains its existing recovery, diagnostic, and ignore policy.",
+    });
+    expect(inventory.extensionsAndPolicies).not.toContainEqual(
+      expect.objectContaining({ id: "OWL-SIGNIFICANT-UNCONSUMED" }),
+    );
     expect(new Set(ruleIds).size).toBe(ruleIds.length);
     for (const table of inventory.tables) {
       expect(table.status).toBe("COMPLETE");

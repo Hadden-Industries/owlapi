@@ -4,6 +4,7 @@ import {
   UnsupportedConstructError,
 } from "../../io/errors.js";
 import { OWLDataFactory } from "../../model/owlDataFactory.js";
+import { OWLObjectKind } from "../../model/kinds.js";
 import { OWLOntology } from "../../model/owlOntology.js";
 import { OWLOntologyLoaderConfiguration } from "../../model/owlOntologyLoaderConfiguration.js";
 import { IRI, StructuralSet } from "../../model/structural.js";
@@ -21,6 +22,16 @@ import {
 
 const COOPERATIVE_YIELD_INTERVAL_MS = 50;
 const CHECK_INTERVAL = 512;
+const DECLARATION_CONSTRUCTORS = new Map([
+  [OWL_VOCABULARY.AnnotationProperty, "getOWLAnnotationProperty"],
+  [OWL_VOCABULARY.Class, "getOWLClass"],
+  [OWL_VOCABULARY.DataRange, "getOWLDatatype"],
+  [OWL_VOCABULARY.DatatypeProperty, "getOWLDataProperty"],
+  [OWL_VOCABULARY.NamedIndividual, "getOWLNamedIndividual"],
+  [OWL_VOCABULARY.ObjectProperty, "getOWLObjectProperty"],
+  [OWL_VOCABULARY.OntologyProperty, "getOWLAnnotationProperty"],
+  [RDFS_VOCABULARY.Datatype, "getOWLDatatype"],
+]);
 const SUBJECT_TERM_TYPES = new Set(["BlankNode", "NamedNode"]);
 // Characteristics OWL 2 defines only for object properties, so asserting one is
 // evidence that a punned IRI was meant as an object property. `owl:inverseOf` is
@@ -36,6 +47,11 @@ const OBJECT_ONLY_CHARACTERISTICS = new Set([
 
 const OBJECT_TERM_TYPES = new Set(["BlankNode", "Literal", "NamedNode"]);
 const GRAPH_TERM_TYPES = new Set(["BlankNode", "DefaultGraph", "NamedNode"]);
+const SOURCE_LOCATION_FIELDS = Object.freeze([
+  ["column", 1],
+  ["line", 1],
+  ["offset", 0],
+]);
 const XSD_INTEGER_DATATYPE_BOUNDS = new Map([
   [`${XSD_NAMESPACE}integer`, {}],
   [`${XSD_NAMESPACE}nonPositiveInteger`, { maximum: 0n }],
@@ -136,6 +152,7 @@ const termKey = (term) => {
       term.termType,
       term.value,
       term.language,
+      term.direction ?? "",
       term.datatype?.termType,
       term.datatype?.value,
     ]);
@@ -153,6 +170,120 @@ const quadKey = (quad) =>
 
 const tripleKey = (subject, predicate, object) =>
   JSON.stringify([termKey(subject), termKey(predicate), termKey(object)]);
+
+const rdfTermDescriptor = (term) => {
+  const descriptor = {
+    termType: term.termType,
+    value: term.value,
+  };
+  if (term.termType === "Literal") {
+    descriptor.datatype = Object.freeze({
+      termType: term.datatype.termType,
+      value: term.datatype.value,
+    });
+    if (term.direction) {
+      descriptor.direction = term.direction;
+    }
+    descriptor.language = term.language;
+  }
+  return Object.freeze(descriptor);
+};
+
+const statementCanEnterConfiguredReconstructionGraph = (
+  quad,
+  configuration,
+) => {
+  if (configuration.rdfDatasetGraphPolicy === "defaultGraphOnly") {
+    return quad.graph.termType === "DefaultGraph";
+  }
+  if (configuration.rdfDatasetGraphPolicy === "selectGraph") {
+    return quad.graph.equals(configuration.selectedGraph);
+  }
+  return true;
+};
+
+const shouldCaptureUnconsumedStatementSourceLocations = (quad, configuration) =>
+  configuration.sourceLocations &&
+  (configuration.parsingMode === "strict" || configuration.collectWarnings) &&
+  statementCanEnterConfiguredReconstructionGraph(quad, configuration);
+
+const snapshotQuadSourceLocation = (quad, configuration) => {
+  if (!shouldCaptureUnconsumedStatementSourceLocations(quad, configuration)) {
+    return undefined;
+  }
+  const sourceLocation = quad.sourceLocation;
+  if (!sourceLocation || typeof sourceLocation !== "object") {
+    return undefined;
+  }
+  const snapshot = {};
+  for (const [field, minimum] of SOURCE_LOCATION_FIELDS) {
+    const value = sourceLocation[field];
+    if (Number.isSafeInteger(value) && value >= minimum) {
+      snapshot[field] = value;
+    }
+  }
+  return Object.keys(snapshot).length === 0
+    ? undefined
+    : Object.freeze(snapshot);
+};
+
+const reconstructionInputSourceLocations = async (
+  sourceDataset,
+  sourceLocatedStatements,
+  graphSelection,
+  execution,
+) => {
+  const locationsByTriple = new Map();
+  if (sourceLocatedStatements.length === 0) {
+    return locationsByTriple;
+  }
+
+  const selectedGraphKey = termKey(graphSelection.selectedGraph);
+  const occurrenceCountByTriple = graphSelection.merged ? new Map() : undefined;
+  let observed = 0;
+  for (const statement of sourceLocatedStatements) {
+    if (graphSelection.merged || statement.graphKey === selectedGraphKey) {
+      locationsByTriple.set(statement.tripleKey, statement.sourceLocation);
+      occurrenceCountByTriple?.set(statement.tripleKey, 0);
+    }
+    observed += 1;
+    if (observed % CHECK_INTERVAL === 0) {
+      await execution.cooperate();
+    }
+  }
+  if (!graphSelection.merged || locationsByTriple.size === 0) {
+    execution.check();
+    return locationsByTriple;
+  }
+
+  observed = 0;
+  for (const currentQuad of sourceDataset) {
+    const key = tripleKey(
+      currentQuad.subject,
+      currentQuad.predicate,
+      currentQuad.object,
+    );
+    if (occurrenceCountByTriple.has(key)) {
+      occurrenceCountByTriple.set(key, occurrenceCountByTriple.get(key) + 1);
+    }
+    observed += 1;
+    if (observed % CHECK_INTERVAL === 0) {
+      await execution.cooperate();
+    }
+  }
+  observed = 0;
+  for (const [key, occurrenceCount] of occurrenceCountByTriple) {
+    if (occurrenceCount !== 1) {
+      locationsByTriple.delete(key);
+    }
+    observed += 1;
+    if (observed % CHECK_INTERVAL === 0) {
+      await execution.cooperate();
+    }
+  }
+  execution.check();
+  return locationsByTriple;
+};
 
 const requireTerm = (term, allowedTypes, name) => {
   if (
@@ -203,6 +334,7 @@ const freezeDiagnostic = (diagnostic) => Object.freeze({ ...diagnostic });
 class ExecutionController {
   #configuration;
   #lastYieldAt;
+  #pausedAt;
   #startedAt;
 
   constructor(configuration) {
@@ -221,7 +353,7 @@ class ExecutionController {
       error.name = "AbortError";
       throw error;
     }
-    const elapsed = monotonicNow() - this.#startedAt;
+    const elapsed = (this.#pausedAt ?? monotonicNow()) - this.#startedAt;
     if (elapsed > timeoutMs) {
       throw new ResourceLimitError(
         "The RDF-to-OWL translation timeout was exceeded",
@@ -232,6 +364,20 @@ class ExecutionController {
         },
       );
     }
+  }
+
+  pause() {
+    this.check();
+    this.#pausedAt ??= monotonicNow();
+  }
+
+  resume() {
+    if (this.#pausedAt === undefined) return;
+    const now = monotonicNow();
+    this.#startedAt += now - this.#pausedAt;
+    this.#lastYieldAt = now;
+    this.#pausedAt = undefined;
+    this.check();
   }
 
   async cooperate() {
@@ -341,15 +487,27 @@ class RdfGraphInterpreter {
     OWL_VOCABULARY.topObjectProperty,
   ]);
   #owl1DataRangeNodes = new Set();
+  #ontologyHeaderReferencePropertyIris = new Set([
+    OWL_VOCABULARY.backwardCompatibleWith,
+    OWL_VOCABULARY.incompatibleWith,
+    OWL_VOCABULARY.priorVersion,
+  ]);
+  #ontologyID;
+  #selectedGraph;
+  #sourceLocationsByTriple;
   #transaction;
 
   constructor({
     configuration,
     dataFactory,
     dataset,
+    declarationEntities = [],
     diagnostics,
     documentScope,
     execution,
+    ontologyID,
+    selectedGraph,
+    sourceLocationsByTriple,
     transaction,
   }) {
     this.#configuration = configuration;
@@ -358,13 +516,38 @@ class RdfGraphInterpreter {
     this.#diagnostics = diagnostics;
     this.#documentScope = documentScope;
     this.#execution = execution;
+    this.#selectedGraph = selectedGraph;
+    this.#sourceLocationsByTriple = sourceLocationsByTriple;
     this.#transaction = transaction;
+    this.#ontologyID = ontologyID;
+    for (const entity of declarationEntities) {
+      this.#recordDeclarationEntity(entity);
+    }
+  }
+
+  #recordDeclarationEntity(entity) {
+    const declarationsByKind = new Map([
+      [OWLObjectKind.ANNOTATION_PROPERTY, this.#annotationPropertyIris],
+      [OWLObjectKind.CLASS, this.#classIris],
+      [OWLObjectKind.DATA_PROPERTY, this.#dataPropertyIris],
+      [OWLObjectKind.DATATYPE, this.#datatypeIris],
+      [OWLObjectKind.NAMED_INDIVIDUAL, this.#individualIris],
+      [OWLObjectKind.OBJECT_PROPERTY, this.#objectPropertyIris],
+    ]);
+    declarationsByKind.get(entity.kind)?.add(entity.iri.value);
+  }
+
+  /** CP 2: use the same declaration normalization, without reading annotations. */
+  async discoverDeclarationsAndImports() {
+    await this.#readDeclarations(false);
+    await this.#readOntologyHeader(false);
   }
 
   async interpret() {
     await this.#readDeclarations();
     await this.#readOntologyHeader();
     await this.#readExpressionDefinitions();
+    await this.#readNamedDatatypeRestrictions();
     await this.#readClassAxioms();
     await this.#readPropertyAxioms();
     await this.#readNaryAxioms();
@@ -408,7 +591,55 @@ class RdfGraphInterpreter {
     }
   }
 
-  async #readDeclarations() {
+  async #readNamedDatatypeRestrictions() {
+    if (this.#configuration.parsingMode === "strict") return;
+    // OWL 2 RDF-Based Semantics tables 5.7 and 5.9 give a named restriction
+    // the same datatype extension as a DatatypeDefinition with that restriction.
+    // The OWL 2 DL RDF mapping instead requires an anonymous expression; this
+    // is an explicit compatible-mode recovery, never a strict mapping rule.
+    for (const currentQuad of this.#dataset) {
+      if (
+        currentQuad.subject.termType !== "NamedNode" ||
+        currentQuad.predicate.value !== OWL_VOCABULARY.onDatatype ||
+        !this.#datatypeIris.has(currentQuad.subject.value)
+      )
+        continue;
+      const datatype = this.#dataFactory.getOWLDatatype(
+        IRI.create(currentQuad.subject.value),
+      );
+      const restriction = await this.#datatypeRestriction(currentQuad.subject);
+      // Both consumed links jointly encode the recovered definition. Preserve
+      // reified annotations on either link, including their nested annotations.
+      const annotations = [
+        ...(await this.#axiomAnnotations(currentQuad)),
+        ...(await this.#axiomAnnotations(
+          this.#exactlyOne(
+            currentQuad.subject,
+            OWL_VOCABULARY.withRestrictions,
+          ),
+        )),
+      ];
+      this.#transaction.addAxiom(
+        this.#dataFactory.getOWLDatatypeDefinitionAxiom(
+          datatype,
+          restriction,
+          annotations,
+        ),
+      );
+      if (this.#configuration.collectWarnings) {
+        this.#diagnostics.push({
+          code: "RDF_NAMED_DATATYPE_RESTRICTION",
+          iri: currentQuad.subject.value,
+          message:
+            "A named RDF datatype restriction was preserved as a datatype definition",
+          severity: "warning",
+        });
+      }
+      await this.#execution.cooperate();
+    }
+  }
+
+  async #readDeclarations(includeAxiomAnnotations = true) {
     const owl1ObjectPropertyTypes = new Set([
       OWL_VOCABULARY.InverseFunctionalProperty,
       OWL_VOCABULARY.SymmetricProperty,
@@ -426,16 +657,6 @@ class RdfGraphInterpreter {
         this.#objectPropertyIris.add(currentQuad.subject.value);
       }
     }
-    const declarationTypes = new Map([
-      [OWL_VOCABULARY.AnnotationProperty, "getOWLAnnotationProperty"],
-      [OWL_VOCABULARY.Class, "getOWLClass"],
-      [OWL_VOCABULARY.DataRange, "getOWLDatatype"],
-      [OWL_VOCABULARY.DatatypeProperty, "getOWLDataProperty"],
-      [OWL_VOCABULARY.NamedIndividual, "getOWLNamedIndividual"],
-      [OWL_VOCABULARY.ObjectProperty, "getOWLObjectProperty"],
-      [OWL_VOCABULARY.OntologyProperty, "getOWLAnnotationProperty"],
-      [RDFS_VOCABULARY.Datatype, "getOWLDatatype"],
-    ]);
     const declarations = [];
     const explicitObjectPropertyIris = new Set();
     let visited = 0;
@@ -446,7 +667,9 @@ class RdfGraphInterpreter {
       ) {
         continue;
       }
-      const constructorName = declarationTypes.get(currentQuad.object.value);
+      const constructorName = DECLARATION_CONSTRUCTORS.get(
+        currentQuad.object.value,
+      );
       if (!constructorName) {
         continue;
       }
@@ -483,6 +706,9 @@ class RdfGraphInterpreter {
         ].includes(currentQuad.object.value)
       ) {
         this.#annotationPropertyIris.add(subject.value);
+        if (currentQuad.object.value === OWL_VOCABULARY.OntologyProperty) {
+          this.#ontologyHeaderReferencePropertyIris.add(subject.value);
+        }
       } else if (currentQuad.object.value === OWL_VOCABULARY.Class) {
         this.#classIris.add(subject.value);
       } else if (currentQuad.object.value === OWL_VOCABULARY.DatatypeProperty) {
@@ -503,7 +729,7 @@ class RdfGraphInterpreter {
 
     this.#resolvePropertyCategoryPunning();
     this.#inferImplicitPropertyCategories();
-    this.#indexReifications();
+    if (includeAxiomAnnotations) this.#indexReifications();
     for (const { constructorName, currentQuad, subject } of declarations) {
       const entity = this.#dataFactory[constructorName](
         IRI.create(subject.value),
@@ -511,7 +737,9 @@ class RdfGraphInterpreter {
       this.#transaction.addAxiom(
         this.#dataFactory.getOWLDeclarationAxiom(
           entity,
-          await this.#axiomAnnotations(currentQuad),
+          includeAxiomAnnotations
+            ? await this.#axiomAnnotations(currentQuad)
+            : [],
         ),
       );
       this.#consume(currentQuad);
@@ -542,13 +770,11 @@ class RdfGraphInterpreter {
   // and so change the ontology's structure; on an individual subject the
   // assertion is a real reading and the triple is left alone.
   #isRecoverableAnnotation(quad, subjectIris, annotationCarriers) {
-    // A triple hanging off an `owl:Axiom` or `owl:Annotation` node is an
+    // A triple hanging off an ontology, `owl:Axiom` or `owl:Annotation` node is an
     // annotation by construction: the mapping makes every triple on such a node
     // beyond the three `owl:annotated*` ones part of the annotation set. The
     // object may be anything, so no further test applies.
-    if (quad.subject.termType === "BlankNode") {
-      return annotationCarriers.has(termKey(quad.subject));
-    }
+    if (annotationCarriers.has(termKey(quad.subject))) return true;
     if (quad.subject.termType !== "NamedNode") {
       return false;
     }
@@ -594,9 +820,10 @@ class RdfGraphInterpreter {
     for (const quad of this.#dataset.match(null, null, null, null)) {
       if (
         quad.predicate.value === RDF_VOCABULARY.type &&
-        quad.subject.termType === "BlankNode" &&
-        (quad.object.value === OWL_VOCABULARY.Axiom ||
-          quad.object.value === OWL_VOCABULARY.Annotation)
+        (quad.object.value === OWL_VOCABULARY.Ontology ||
+          (quad.subject.termType === "BlankNode" &&
+            (quad.object.value === OWL_VOCABULARY.Axiom ||
+              quad.object.value === OWL_VOCABULARY.Annotation)))
       ) {
         annotationCarriers.add(termKey(quad.subject));
       }
@@ -798,7 +1025,7 @@ class RdfGraphInterpreter {
     }
   }
 
-  async #readOntologyHeader() {
+  async #readOntologyHeader(includeAnnotations = true) {
     const allOntologyTypeQuads = [
       ...this.#dataset.match(null, undefined, undefined, undefined),
     ].filter(
@@ -811,11 +1038,16 @@ class RdfGraphInterpreter {
       allOntologyTypeQuads.map(({ subject }) => termKey(subject)),
     );
     const referencedOntologyNodeKeys = new Set();
+    // OWL 2 RDF mapping Table 4 excludes references through owl:OntologyProperty,
+    // not arbitrary annotation properties. Keep the legacy OWL 1 versioning
+    // properties and explicit ontology-property declarations in this category.
     for (const currentQuad of this.#dataset) {
       if (
         !ontologyNodeKeys.has(termKey(currentQuad.subject)) ||
         !ontologyNodeKeys.has(termKey(currentQuad.object)) ||
-        !this.#annotationPropertyIris.has(currentQuad.predicate.value)
+        !this.#ontologyHeaderReferencePropertyIris.has(
+          currentQuad.predicate.value,
+        )
       ) {
         continue;
       }
@@ -931,7 +1163,9 @@ class RdfGraphInterpreter {
       this.#consume(versionQuads[0]);
     }
     this.#transaction.setOntologyID(
-      this.#dataFactory.getOWLOntologyID(ontologyIRI, versionIRI),
+      !ontologyIRI && this.#ontologyID
+        ? this.#ontologyID
+        : this.#dataFactory.getOWLOntologyID(ontologyIRI, versionIRI),
     );
 
     const importQuads = this.#outgoing(ontologyNode, OWL_VOCABULARY.imports);
@@ -947,6 +1181,7 @@ class RdfGraphInterpreter {
       this.#consume(currentQuad);
     }
 
+    if (!includeAnnotations) return;
     for (const currentQuad of this.#outgoing(ontologyNode)) {
       if (!this.#annotationPropertyIris.has(currentQuad.predicate.value)) {
         continue;
@@ -1998,31 +2233,27 @@ class RdfGraphInterpreter {
   async #accountForUnconsumedTriples() {
     let visited = 0;
     for (const currentQuad of this.#dataset) {
-      if (
-        this.#isConsumed(currentQuad) ||
-        !this.#isOwlSignificant(currentQuad)
-      ) {
+      if (this.#isConsumed(currentQuad)) {
         continue;
       }
-      if (this.#recoverUndeclaredAnnotation(currentQuad)) {
-        continue;
-      }
-      const details = {
-        object: currentQuad.object.value,
-        predicate: currentQuad.predicate.value,
-        subject: currentQuad.subject.value,
-      };
       if (this.#configuration.parsingMode === "strict") {
         throw new UnsupportedConstructError(
-          "The RDF graph contains an unconsumed OWL-significant triple",
-          details,
+          "The RDF graph presented for OWL reconstruction contains an unconsumed statement",
+          this.#unconsumedStatementDetails(currentQuad),
         );
       }
+      const owlSignificant = this.#isOwlSignificant(currentQuad);
+      if (owlSignificant && this.#recoverUndeclaredAnnotation(currentQuad)) {
+        continue;
+      }
       if (this.#configuration.collectWarnings) {
+        const details = this.#unconsumedStatementDetails(currentQuad);
         this.#diagnostics.push({
-          code: "RDF_UNCONSUMED_OWL_TRIPLE",
+          code: owlSignificant
+            ? "RDF_UNCONSUMED_OWL_TRIPLE"
+            : "RDF_UNCONSUMED_TRIPLE",
           message:
-            "An OWL-significant RDF triple could not be reconstructed and was ignored",
+            "An RDF statement could not be reconstructed and was ignored",
           severity: "warning",
           ...details,
         });
@@ -2032,6 +2263,25 @@ class RdfGraphInterpreter {
         await this.#execution.cooperate();
       }
     }
+  }
+
+  #unconsumedStatementDetails(currentQuad) {
+    const sourceLocation = this.#sourceLocationsByTriple.get(
+      tripleKey(currentQuad.subject, currentQuad.predicate, currentQuad.object),
+    );
+    return {
+      graph: this.#selectedGraph.value,
+      object: currentQuad.object.value,
+      predicate: currentQuad.predicate.value,
+      quad: Object.freeze({
+        graph: rdfTermDescriptor(this.#selectedGraph),
+        object: rdfTermDescriptor(currentQuad.object),
+        predicate: rdfTermDescriptor(currentQuad.predicate),
+        subject: rdfTermDescriptor(currentQuad.subject),
+      }),
+      ...(sourceLocation ?? {}),
+      subject: currentQuad.subject.value,
+    };
   }
 
   #isOwlSignificant(currentQuad) {
@@ -2587,34 +2837,7 @@ class RdfGraphInterpreter {
           dataRange = this.#dataFactory.getOWLDataOneOf(values);
         }
       } else {
-        this.#consume(onDatatype);
-        const datatype = this.#dataFactory.getOWLDatatype(
-          IRI.create(
-            requireNamedNode(
-              onDatatype.object,
-              "owl:onDatatype requires an IRI datatype",
-            ).value,
-          ),
-        );
-        const withRestrictions = this.#exactlyOne(
-          term,
-          OWL_VOCABULARY.withRestrictions,
-        );
-        this.#consume(withRestrictions);
-        const restrictions = await this.#rdfList(
-          withRestrictions.object,
-          (item) => this.#facetRestriction(item),
-          quadKey(withRestrictions),
-        );
-        this.#requireListArity(
-          restrictions,
-          1,
-          OWL_VOCABULARY.withRestrictions,
-        );
-        dataRange = this.#dataFactory.getOWLDatatypeRestriction(
-          datatype,
-          restrictions,
-        );
+        dataRange = await this.#datatypeRestriction(term);
       }
       for (const typeQuad of this.#outgoing(term, RDF_VOCABULARY.type)) {
         if (
@@ -2631,6 +2854,31 @@ class RdfGraphInterpreter {
     } finally {
       this.#dataRangeStack.delete(key);
     }
+  }
+
+  async #datatypeRestriction(term) {
+    const onDatatype = this.#exactlyOne(term, OWL_VOCABULARY.onDatatype);
+    this.#consume(onDatatype);
+    const datatype = this.#dataFactory.getOWLDatatype(
+      IRI.create(
+        requireNamedNode(
+          onDatatype.object,
+          "owl:onDatatype requires an IRI datatype",
+        ).value,
+      ),
+    );
+    const withRestrictions = this.#exactlyOne(
+      term,
+      OWL_VOCABULARY.withRestrictions,
+    );
+    this.#consume(withRestrictions);
+    const restrictions = await this.#rdfList(
+      withRestrictions.object,
+      (item) => this.#facetRestriction(item),
+      quadKey(withRestrictions),
+    );
+    this.#requireListArity(restrictions, 1, OWL_VOCABULARY.withRestrictions);
+    return this.#dataFactory.getOWLDatatypeRestriction(datatype, restrictions);
   }
 
   #facetRestriction(term) {
@@ -3277,9 +3525,27 @@ const validateDataset = async (dataset, configuration, execution) => {
   }
 
   const blankNodes = new Set();
+  const sourceLocatedStatements = [];
   let observed = 0;
   for (const currentQuad of dataset) {
     requireQuad(currentQuad);
+    const sourceLocation = snapshotQuadSourceLocation(
+      currentQuad,
+      configuration,
+    );
+    if (sourceLocation) {
+      sourceLocatedStatements.push(
+        Object.freeze({
+          graphKey: termKey(currentQuad.graph),
+          sourceLocation,
+          tripleKey: tripleKey(
+            currentQuad.subject,
+            currentQuad.predicate,
+            currentQuad.object,
+          ),
+        }),
+      );
+    }
     observed += 1;
     for (const term of [
       currentQuad.subject,
@@ -3305,6 +3571,7 @@ const validateDataset = async (dataset, configuration, execution) => {
     throw new TypeError("dataset.size must equal its iterable quad count");
   }
   execution.check();
+  return Object.freeze(sourceLocatedStatements);
 };
 
 const documentScopeFor = (documentIRI) => {
@@ -3329,7 +3596,10 @@ export class RdfToOwlTranslator {
     this.#dataFactory = dataFactory;
   }
 
-  async translate(dataset, { baseIRI, configuration, documentIRI } = {}) {
+  async #prepareReconstructionInput(
+    dataset,
+    { baseIRI, configuration, documentIRI } = {},
+  ) {
     const normalizedConfiguration = normalizeConfiguration(configuration);
     // RFC 3986 section 5.1: a base embedded in the content outranks the URI the
     // document was retrieved from. `baseIRI` is therefore what the document
@@ -3338,35 +3608,102 @@ export class RdfToOwlTranslator {
     const normalizedDocumentIRI =
       effectiveIRI === undefined ? undefined : IRI.create(effectiveIRI);
     const execution = new ExecutionController(normalizedConfiguration);
-    await validateDataset(dataset, normalizedConfiguration, execution);
+    const sourceLocatedStatements = await validateDataset(
+      dataset,
+      normalizedConfiguration,
+      execution,
+    );
     const graphSelection = selectOntologyGraph(
       dataset,
       normalizedConfiguration,
     );
     execution.check();
     const diagnostics = [...graphSelection.diagnostics];
-
-    const transaction = new OntologyTransaction(
-      this.#dataFactory,
-      normalizedConfiguration,
+    const sourceLocationsByTriple = await reconstructionInputSourceLocations(
+      dataset,
+      sourceLocatedStatements,
+      graphSelection,
+      execution,
     );
-    const interpreter = new RdfGraphInterpreter({
+
+    return {
       configuration: normalizedConfiguration,
       dataFactory: this.#dataFactory,
       dataset: graphSelection.dataset,
       diagnostics,
+      documentIRI: normalizedDocumentIRI,
       documentScope: documentScopeFor(normalizedDocumentIRI),
       execution,
+      merged: graphSelection.merged,
+      selectedGraph: graphSelection.selectedGraph,
+      sourceLocationsByTriple,
+    };
+  }
+
+  /** Prepare a document once; the manager supplies AllDecl after resolving imports. */
+  async prepare(dataset, options = {}) {
+    const input = await this.#prepareReconstructionInput(dataset, options);
+    const transaction = new OntologyTransaction(
+      this.#dataFactory,
+      input.configuration,
+    );
+    const interpreter = new RdfGraphInterpreter({
+      ...input,
+      diagnostics: [],
+      transaction,
+    });
+    await interpreter.discoverDeclarationsAndImports();
+    const { ontology } = transaction.commit({ diagnostics: [] });
+    const declarations = Object.freeze(
+      [...ontology.getAxioms()]
+        .filter(({ kind }) => kind === OWLObjectKind.DECLARATION_AXIOM)
+        .map(({ entity }) => entity),
+    );
+    // Network/file retrieval and parsing other documents are not work on this
+    // RDF document. Preserve its spent budget across the import-discovery gap.
+    input.execution.pause();
+    return {
+      declarations,
+      ontology,
+      reconstruct: (declarationEntities) => {
+        input.execution.resume();
+        return this.#reconstruct(
+          input,
+          declarationEntities,
+          ontology.getOntologyID(),
+        );
+      },
+    };
+  }
+
+  async translate(dataset, options = {}) {
+    return this.#reconstruct(
+      await this.#prepareReconstructionInput(dataset, options),
+    );
+  }
+
+  async #reconstruct(input, declarationEntities = [], ontologyID) {
+    const transaction = new OntologyTransaction(
+      this.#dataFactory,
+      input.configuration,
+    );
+    if (ontologyID) transaction.setOntologyID(ontologyID);
+    const diagnostics = [...input.diagnostics];
+    const interpreter = new RdfGraphInterpreter({
+      ...input,
+      declarationEntities,
+      diagnostics,
+      ontologyID,
       transaction,
     });
     await interpreter.interpret();
-    execution.check();
+    input.execution.check();
 
     return transaction.commit({
       diagnostics,
-      documentIRI: normalizedDocumentIRI,
-      merged: graphSelection.merged,
-      selectedGraph: graphSelection.selectedGraph,
+      documentIRI: input.documentIRI,
+      merged: input.merged,
+      selectedGraph: input.selectedGraph,
     });
   }
 }

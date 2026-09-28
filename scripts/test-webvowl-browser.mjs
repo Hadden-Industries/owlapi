@@ -1,4 +1,5 @@
 import { createServer } from "node:http";
+import assert from "node:assert/strict";
 import { readFileSync, statSync, writeFileSync } from "node:fs";
 import { extname, relative, resolve, sep } from "node:path";
 
@@ -76,6 +77,7 @@ const result = {
   assertions: [],
   consoleErrors: [],
   pageErrors: [],
+  externalRequests: [],
 };
 
 let browser;
@@ -83,6 +85,14 @@ try {
   browser = await chromium.launch();
   result.browserVersion = browser.version();
   const page = await browser.newPage();
+  const origin = `http://127.0.0.1:${address.port}`;
+  await page.route("**/*", (route) => {
+    if (new URL(route.request().url()).origin !== origin) {
+      result.externalRequests.push(route.request().url());
+      return route.abort();
+    }
+    return route.continue();
+  });
   page.on("console", (message) => {
     if (message.type() === "error") {
       result.consoleErrors.push(message.text());
@@ -113,6 +123,24 @@ try {
   }
   result.assertions.push(
     "the VOWL conversion contains the expected class label",
+  );
+  const { importClosure } = JSON.parse(rendered);
+  assert.deepEqual(importClosure, {
+    closureCount: 4,
+    importLoadCount: 3,
+    directAxiomCount: 26,
+    rootAnnotationCount: 1,
+    anonymousIndividualCount: 4,
+    formats: ["functional", "rdfxml"],
+    reloadLoaderCalls: 0,
+    diagnosticCount: 0,
+    retainedTargetAfterFailure: true,
+    sourceReaderPreserved: true,
+  });
+  assert.deepEqual(result.externalRequests, []);
+  result.importClosure = importClosure;
+  result.assertions.push(
+    "both storage round trips and atomic RDF/XML failure satisfy the public closure contract without external requests",
   );
   if (result.pageErrors.length > 0) {
     throw new Error(

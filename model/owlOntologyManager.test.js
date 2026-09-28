@@ -1,9 +1,14 @@
 import {
+  AddOntologyAnnotation,
   IRI,
   MissingImportError,
   OWLDataFactory,
   OWLDocumentFormats,
+  OWLOntology,
+  OWLOntologyStateError,
   ParserMismatchError,
+  SetOntologyID,
+  StructuralSet,
   StringDocumentSource,
   UnloadableImportError,
 } from "../index.js";
@@ -18,6 +23,17 @@ const match = () => ({
   reasonCode: "TEST_MATCH",
   result: "MATCH",
 });
+
+const captureOntologyMutationSnapshot = (manager, ontology, ontologyIDs) =>
+  Object.freeze({
+    aliases: Object.freeze(
+      ontologyIDs.map((ontologyID) => manager.getOntology(ontologyID)),
+    ),
+    annotations: Object.freeze([...ontology.getAnnotations()]),
+    axioms: Object.freeze([...ontology.getAxioms()]),
+    importsClosure: manager.importsClosure(ontology),
+    ontologyID: ontology.getOntologyID(),
+  });
 
 describe("OWLOntologyManager", () => {
   it("rejects malformed collaborator seams at construction", () => {
@@ -373,6 +389,37 @@ describe("OWLOntologyManager", () => {
     ).rejects.toThrow(/documentFormat metadata must be immutable/);
   });
 
+  it("rejects frozen mutable diagnostic collections before publication", async () => {
+    const retainedDiagnosticDetails = Object.freeze(
+      new Map([["before", "retained"]]),
+    );
+    const registry = new OWLParserRegistry([
+      new ParserDescriptor({
+        createParser: () => ({
+          parse(_source, transaction) {
+            transaction.addDiagnostic({
+              code: "MUTABLE_INTERNAL_SLOTS",
+              details: retainedDiagnosticDetails,
+              message: "The diagnostic carries a frozen Map",
+              severity: "info",
+            });
+          },
+        }),
+        detect: match,
+        format: OWLDocumentFormats.FUNCTIONAL,
+        id: "functional",
+        priority: 2,
+      }),
+    ]);
+    const manager = new OWLOntologyManager({ registry });
+
+    await expect(
+      manager.loadOntologyGraphFromOntologyDocument("Ontology()"),
+    ).rejects.toThrow(
+      /documentMetadata\.diagnostics\[0\]\.details must be immutable data/,
+    );
+  });
+
   it("rejects sentinel line and column locations in diagnostics", async () => {
     const registry = new OWLParserRegistry([
       new ParserDescriptor({
@@ -525,12 +572,18 @@ describe("OWLOntologyManager", () => {
 
     expect(root.getImportsDeclarations().size).toBe(1);
     expect(loadCalls).toBe(2);
-    expect(
-      manager.getOntology(dataFactory.getOWLOntologyID(ontologyIris.middle)),
-    ).toBeDefined();
-    expect(
-      manager.getOntology(dataFactory.getOWLOntologyID(ontologyIris.leaf)),
-    ).toBeDefined();
+    const middle = manager.getOntology(
+      dataFactory.getOWLOntologyID(ontologyIris.middle),
+    );
+    const leaf = manager.getOntology(
+      dataFactory.getOWLOntologyID(ontologyIris.leaf),
+    );
+    expect(middle).toBeDefined();
+    expect(leaf).toBeDefined();
+    expect(manager.importsClosure(root)).toEqual([root, middle, leaf]);
+    expect(manager.getImportsClosure(root)).toEqual(
+      new Set([root, middle, leaf]),
+    );
   });
 
   it("reuses one mapped document for distinct import IRIs", async () => {
@@ -764,4 +817,624 @@ describe("OWLOntologyManager", () => {
       manager.getOntology(dataFactory.getOWLOntologyID(ontologyIri)),
     ).toBeUndefined();
   });
+
+  it("returns immutable and defensive isolated closure snapshots without loading", () => {
+    const dataFactory = new OWLDataFactory();
+    let documentLoaderCalls = 0;
+    let iriMapperCalls = 0;
+    const manager = new OWLOntologyManager({
+      dataFactory,
+      documentLoader: {
+        load() {
+          documentLoaderCalls += 1;
+          throw new Error("closure queries must not load documents");
+        },
+      },
+      iriMappers: [
+        {
+          getDocumentIRI() {
+            iriMapperCalls += 1;
+            throw new Error("closure queries must not map document IRIs");
+          },
+        },
+      ],
+    });
+    const root = manager.createOntology(
+      dataFactory.getOWLOntologyID(IRI.create("urn:closure:isolated")),
+    );
+
+    const frozenArraySnapshot = manager.importsClosure(root);
+    const stableSetSnapshot = manager.getImportsClosure(root);
+    const mutableSetSnapshot = manager.getImportsClosure(root);
+
+    expect(frozenArraySnapshot).toEqual([root]);
+    expect(Object.isFrozen(frozenArraySnapshot)).toBe(true);
+    expect(() => frozenArraySnapshot.push(root)).toThrow(TypeError);
+    expect(stableSetSnapshot).toEqual(new Set([root]));
+
+    mutableSetSnapshot.clear();
+    manager.createOntology(
+      dataFactory.getOWLOntologyID(IRI.create("urn:closure:later-ontology")),
+    );
+
+    expect(frozenArraySnapshot).toEqual([root]);
+    expect([...stableSetSnapshot]).toEqual([root]);
+    expect(manager.getImportsClosure(root)).toEqual(new Set([root]));
+    expect(documentLoaderCalls).toBe(0);
+    expect(iriMapperCalls).toBe(0);
+  });
+
+  it("rejects foreign and unmanaged closure roots with operation details", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const foreignManager = new OWLOntologyManager({ dataFactory });
+    const sharedOntologyID = dataFactory.getOWLOntologyID(
+      IRI.create("urn:closure:structurally-equal"),
+    );
+    const managed = manager.createOntology(sharedOntologyID);
+    const foreign = foreignManager.createOntology(sharedOntologyID);
+    const unmanaged = new OWLOntology({
+      ontologyID: dataFactory.getOWLOntologyID(
+        IRI.create("urn:closure:unmanaged"),
+      ),
+    });
+
+    expect(manager.importsClosure(managed)).toEqual([managed]);
+    for (const operation of ["importsClosure", "getImportsClosure"]) {
+      for (const ontology of [foreign, unmanaged]) {
+        let thrown;
+        try {
+          manager[operation](ontology);
+        } catch (error) {
+          thrown = error;
+        }
+        expect(thrown).toBeInstanceOf(OWLOntologyStateError);
+        expect(thrown).toMatchObject({
+          code: "ONTOLOGY_STATE_INVALID",
+          ontology,
+          operation,
+        });
+      }
+    }
+  });
+
+  it("adds direct axioms atomically and updates existing closure façade objects", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const ontology = manager.createOntology(
+      dataFactory.getOWLOntologyID(IRI.create("urn:mutation:ontology")),
+    );
+    const closureSnapshot = manager.importsClosure(ontology);
+    const classA = dataFactory.getOWLClass(IRI.create("urn:mutation:A"));
+    const classB = dataFactory.getOWLClass(IRI.create("urn:mutation:B"));
+    const axiom = dataFactory.getOWLSubClassOfAxiom(classA, classB);
+
+    expect(manager.addAxiom(ontology, axiom)).toBe(true);
+    expect(
+      manager.addAxiom(
+        ontology,
+        dataFactory.getOWLSubClassOfAxiom(classA, classB),
+      ),
+    ).toBe(false);
+
+    expect(closureSnapshot).toEqual([ontology]);
+    expect(closureSnapshot[0].getAxioms()).toEqual(new Set([axiom]));
+    expect(ontology.getClassesInSignature()).toEqual(new Set([classA, classB]));
+    expect(ontology.getReferencingAxioms(classA)).toEqual(new Set([axiom]));
+  });
+
+  it("materializes an axiom iterable once and commits its structural union once", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const ontology = manager.createOntology();
+    const classA = dataFactory.getOWLClass(
+      IRI.create("urn:mutation:iterable:A"),
+    );
+    const classB = dataFactory.getOWLClass(
+      IRI.create("urn:mutation:iterable:B"),
+    );
+    const first = dataFactory.getOWLDeclarationAxiom(classA);
+    const firstDuplicate = dataFactory.getOWLDeclarationAxiom(classA);
+    const second = dataFactory.getOWLSubClassOfAxiom(classA, classB);
+    let iteratorCreations = 0;
+    const axioms = {
+      [Symbol.iterator]() {
+        iteratorCreations += 1;
+        if (iteratorCreations > 1) {
+          throw new Error("axiom iterable was consumed more than once");
+        }
+        return [first, firstDuplicate, second][Symbol.iterator]();
+      },
+    };
+
+    expect(manager.addAxioms(ontology, axioms)).toBe(true);
+    expect(iteratorCreations).toBe(1);
+    expect(ontology.getAxioms()).toEqual(new Set([first, second]));
+    expect(manager.addAxioms(ontology, [])).toBe(false);
+  });
+
+  it("validates every axiom before mutation and reports the offending index", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const ontology = manager.createOntology();
+    const validAxiom = dataFactory.getOWLDeclarationAxiom(
+      dataFactory.getOWLClass(IRI.create("urn:mutation:valid")),
+    );
+    const invalidAxiom = dataFactory.getOWLClass(
+      IRI.create("urn:mutation:not-an-axiom"),
+    );
+
+    let thrown;
+    try {
+      manager.addAxioms(ontology, [validAxiom, invalidAxiom]);
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(thrown).toBeInstanceOf(TypeError);
+    expect(thrown).toMatchObject({
+      axiom: invalidAxiom,
+      index: 1,
+      operation: "addAxioms",
+    });
+    expect(ontology.getAxioms()).toEqual(new Set());
+
+    expect(() => manager.addAxiom(ontology, invalidAxiom)).toThrow(TypeError);
+    try {
+      manager.addAxiom(ontology, invalidAxiom);
+    } catch (error) {
+      expect(error).toMatchObject({
+        axiom: invalidAxiom,
+        index: 0,
+        operation: "addAxiom",
+      });
+    }
+  });
+
+  it("rejects non-iterables and foreign ontology mutations with operation details", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const foreignManager = new OWLOntologyManager({ dataFactory });
+    const ontology = manager.createOntology();
+    const foreignOntology = foreignManager.createOntology();
+    const axiom = dataFactory.getOWLDeclarationAxiom(
+      dataFactory.getOWLClass(IRI.create("urn:mutation:foreign")),
+    );
+
+    let invalidIterableError;
+    try {
+      manager.addAxioms(ontology, 42);
+    } catch (error) {
+      invalidIterableError = error;
+    }
+    expect(invalidIterableError).toBeInstanceOf(TypeError);
+    expect(invalidIterableError).toMatchObject({ operation: "addAxioms" });
+
+    for (const [operation, argument] of [
+      ["addAxiom", axiom],
+      ["addAxioms", [axiom]],
+    ]) {
+      let thrown;
+      try {
+        manager[operation](foreignOntology, argument);
+      } catch (error) {
+        thrown = error;
+      }
+      expect(thrown).toBeInstanceOf(OWLOntologyStateError);
+      expect(thrown).toMatchObject({
+        code: "ONTOLOGY_STATE_INVALID",
+        ontology: foreignOntology,
+        operation,
+      });
+    }
+    expect(foreignOntology.getAxioms()).toEqual(new Set());
+  });
+
+  it("applies one change and a one-shot mixed change iterable atomically", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const originalID = dataFactory.getOWLOntologyID(
+      IRI.create("urn:change:atomic:original"),
+      IRI.create("urn:change:atomic:original:version"),
+    );
+    const replacementID = dataFactory.getOWLOntologyID(
+      IRI.create("urn:change:atomic:replacement"),
+      IRI.create("urn:change:atomic:replacement:version"),
+    );
+    const first = manager.createOntology(originalID);
+    const second = manager.createOntology(
+      dataFactory.getOWLOntologyID(IRI.create("urn:change:atomic:second")),
+    );
+    const firstAnnotation = dataFactory.getOWLAnnotation(
+      dataFactory.getRDFSLabel(),
+      dataFactory.getOWLLiteral("first annotation", "en"),
+    );
+    const secondAnnotation = dataFactory.getOWLAnnotation(
+      dataFactory.getRDFSLabel(),
+      dataFactory.getOWLLiteral("second annotation", "en"),
+    );
+
+    expect(
+      manager.applyChange(new AddOntologyAnnotation(first, firstAnnotation)),
+    ).toBe(true);
+
+    let iteratorCreations = 0;
+    const changes = {
+      [Symbol.iterator]() {
+        iteratorCreations += 1;
+        if (iteratorCreations > 1) {
+          throw new Error("change iterable was consumed more than once");
+        }
+        return [
+          new SetOntologyID(first, replacementID),
+          new AddOntologyAnnotation(second, secondAnnotation),
+        ][Symbol.iterator]();
+      },
+    };
+
+    expect(manager.applyChanges(changes)).toBe(true);
+    expect(iteratorCreations).toBe(1);
+    expect(first.getOntologyID()).toBe(replacementID);
+    expect(first.getAnnotations()).toEqual(new Set([firstAnnotation]));
+    expect(second.getAnnotations()).toEqual(new Set([secondAnnotation]));
+    expect(manager.getOntology(originalID)).toBeUndefined();
+    expect(manager.getOntology(replacementID)).toBe(first);
+    expect(manager.applyChanges([])).toBe(false);
+  });
+
+  it("revalidates every prepared change before publishing any ontology or identity state", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const originalID = dataFactory.getOWLOntologyID(
+      IRI.create("urn:change:reentrant:original"),
+    );
+    const replacementID = dataFactory.getOWLOntologyID(
+      IRI.create("urn:change:reentrant:replacement"),
+    );
+    const first = manager.createOntology(originalID);
+    const second = manager.createOntology();
+    const secondAnnotation = dataFactory.getOWLAnnotation(
+      dataFactory.getRDFSLabel(),
+      dataFactory.getOWLLiteral("outer second annotation"),
+    );
+    const nestedFirstAnnotation = dataFactory.getOWLAnnotation(
+      dataFactory.getRDFSLabel(),
+      dataFactory.getOWLLiteral("nested first annotation"),
+    );
+    const originalIterator = StructuralSet.prototype[Symbol.iterator];
+    let nestedChangeApplied = false;
+    StructuralSet.prototype[Symbol.iterator] = function reentrantIterator() {
+      if (!nestedChangeApplied && this.has(secondAnnotation)) {
+        nestedChangeApplied = true;
+        manager.applyChange(
+          new AddOntologyAnnotation(first, nestedFirstAnnotation),
+        );
+      }
+      return originalIterator.call(this);
+    };
+
+    try {
+      expect(() =>
+        manager.applyChanges([
+          new SetOntologyID(first, replacementID),
+          new AddOntologyAnnotation(second, secondAnnotation),
+        ]),
+      ).toThrow(/revision/i);
+    } finally {
+      StructuralSet.prototype[Symbol.iterator] = originalIterator;
+    }
+
+    expect(nestedChangeApplied).toBe(true);
+    expect(first.getOntologyID()).toBe(originalID);
+    expect(manager.getOntology(originalID)).toBe(first);
+    expect(manager.getOntology(replacementID)).toBeUndefined();
+    expect(first.getAnnotations()).toEqual(new Set([nestedFirstAnnotation]));
+    expect(second.getAnnotations()).toEqual(new Set());
+  });
+
+  it("treats a structurally duplicate ontology annotation as a no-op without manufacturing an axiom", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const ontology = manager.createOntology();
+    const annotation = dataFactory.getOWLAnnotation(
+      dataFactory.getRDFSLabel(),
+      dataFactory.getOWLLiteral("direct ontology annotation", "en"),
+    );
+    const structuralDuplicate = dataFactory.getOWLAnnotation(
+      dataFactory.getRDFSLabel(),
+      dataFactory.getOWLLiteral("direct ontology annotation", "en"),
+    );
+
+    expect(
+      manager.applyChange(new AddOntologyAnnotation(ontology, annotation)),
+    ).toBe(true);
+    expect(
+      manager.applyChange(
+        new AddOntologyAnnotation(ontology, structuralDuplicate),
+      ),
+    ).toBe(false);
+    expect(ontology.getAnnotations()).toEqual(new Set([annotation]));
+    expect(ontology.getAxioms()).toEqual(new Set());
+  });
+
+  it("returns false and publishes nothing when ordered identity changes cancel out", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const originalID = dataFactory.getOWLOntologyID(
+      IRI.create("urn:change:cancelled:original"),
+      IRI.create("urn:change:cancelled:original:version"),
+    );
+    const intermediateID = dataFactory.getOWLOntologyID(
+      IRI.create("urn:change:cancelled:intermediate"),
+      IRI.create("urn:change:cancelled:intermediate:version"),
+    );
+    const ontology = manager.createOntology(originalID);
+    const before = captureOntologyMutationSnapshot(manager, ontology, [
+      originalID,
+      intermediateID,
+    ]);
+
+    expect(
+      manager.applyChanges([
+        new SetOntologyID(ontology, intermediateID),
+        new SetOntologyID(ontology, originalID),
+      ]),
+    ).toBe(false);
+
+    expect(
+      captureOntologyMutationSnapshot(manager, ontology, [
+        originalID,
+        intermediateID,
+      ]),
+    ).toEqual(before);
+    expect(ontology.getOntologyID()).toBe(originalID);
+  });
+
+  it("restores closure order when one identity chain cancels inside a mixed batch", async () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const firstImportedID = dataFactory.getOWLOntologyID(
+      IRI.create("urn:change:cancelled-order:first"),
+    );
+    const secondImportedID = dataFactory.getOWLOntologyID(
+      IRI.create("urn:change:cancelled-order:second"),
+    );
+    const temporaryFirstImportedID = dataFactory.getOWLOntologyID(
+      IRI.create("urn:change:cancelled-order:temporary"),
+    );
+    const replacementSecondImportedID = dataFactory.getOWLOntologyID(
+      IRI.create("urn:change:cancelled-order:renamed-second"),
+    );
+    const anonymousFirstImportedID = dataFactory.getOWLOntologyID();
+    const firstImported = manager.createOntology(firstImportedID);
+    const secondImported = manager.createOntology(secondImportedID);
+    const root = await manager.loadOntologyFromOntologyDocument(
+      new StringDocumentSource(
+        `Ontology(<urn:change:cancelled-order:root>
+          Import(<urn:change:cancelled-order:first>)
+          Import(<urn:change:cancelled-order:second>)
+        )`,
+        { fileName: "cancelled-order.ofn" },
+      ),
+    );
+    const importedOntologyOrder = () =>
+      manager
+        .importsClosure(root)
+        .map((ontology) =>
+          ontology === root
+            ? "root"
+            : ontology === firstImported
+              ? "first"
+              : "second",
+        );
+
+    expect(importedOntologyOrder()).toEqual(["root", "first", "second"]);
+    expect(
+      manager.applyChange(
+        new SetOntologyID(firstImported, anonymousFirstImportedID),
+      ),
+    ).toBe(true);
+    expect(importedOntologyOrder()).toEqual(["root", "first", "second"]);
+
+    expect(
+      manager.applyChanges([
+        new SetOntologyID(firstImported, temporaryFirstImportedID),
+        new SetOntologyID(firstImported, anonymousFirstImportedID),
+        new SetOntologyID(secondImported, replacementSecondImportedID),
+      ]),
+    ).toBe(true);
+
+    expect(firstImported.getOntologyID()).toBe(anonymousFirstImportedID);
+    expect(secondImported.getOntologyID()).toBe(replacementSecondImportedID);
+    expect(importedOntologyOrder()).toEqual(["root", "first", "second"]);
+  });
+
+  it("rolls back a valid staged change when a later identity conflicts", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const firstID = dataFactory.getOWLOntologyID(
+      IRI.create("urn:change:conflict:first"),
+    );
+    const secondID = dataFactory.getOWLOntologyID(
+      IRI.create("urn:change:conflict:second"),
+    );
+    const first = manager.createOntology(firstID);
+    const second = manager.createOntology(secondID);
+    const annotation = dataFactory.getOWLAnnotation(
+      dataFactory.getRDFSLabel(),
+      dataFactory.getOWLLiteral("must be rolled back"),
+    );
+    const before = Object.freeze({
+      first: captureOntologyMutationSnapshot(manager, first, [
+        firstID,
+        secondID,
+      ]),
+      second: captureOntologyMutationSnapshot(manager, second, [
+        firstID,
+        secondID,
+      ]),
+    });
+    const conflictingChange = new SetOntologyID(first, secondID);
+
+    let thrown;
+    try {
+      manager.applyChanges([
+        new AddOntologyAnnotation(first, annotation),
+        conflictingChange,
+      ]);
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(thrown).toBeInstanceOf(OWLOntologyStateError);
+    expect(thrown).toMatchObject({
+      change: conflictingChange,
+      conflictingOntology: second,
+      index: 1,
+      ontology: first,
+      ontologyID: secondID,
+      operation: "applyChanges",
+    });
+    const after = Object.freeze({
+      first: captureOntologyMutationSnapshot(manager, first, [
+        firstID,
+        secondID,
+      ]),
+      second: captureOntologyMutationSnapshot(manager, second, [
+        firstID,
+        secondID,
+      ]),
+    });
+    expect(after).toEqual(before);
+    expect(first.getAnnotations()).toEqual(new Set());
+  });
+
+  it("validates the complete change list before staging an earlier valid change", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const ontologyID = dataFactory.getOWLOntologyID(
+      IRI.create("urn:change:invalid-later"),
+    );
+    const ontology = manager.createOntology(ontologyID);
+    const annotation = dataFactory.getOWLAnnotation(
+      dataFactory.getRDFSLabel(),
+      dataFactory.getOWLLiteral("must never be staged"),
+    );
+    const unsupportedChange = Object.freeze({});
+    const before = captureOntologyMutationSnapshot(manager, ontology, [
+      ontologyID,
+    ]);
+
+    let thrown;
+    try {
+      manager.applyChanges([
+        new AddOntologyAnnotation(ontology, annotation),
+        unsupportedChange,
+      ]);
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(thrown).toBeInstanceOf(TypeError);
+    expect(thrown).toMatchObject({
+      change: unsupportedChange,
+      index: 1,
+      operation: "applyChanges",
+    });
+    expect(
+      captureOntologyMutationSnapshot(manager, ontology, [ontologyID]),
+    ).toEqual(before);
+  });
+
+  it("rejects unsupported and foreign changes with precise operation details", () => {
+    const dataFactory = new OWLDataFactory();
+    const manager = new OWLOntologyManager({ dataFactory });
+    const foreignManager = new OWLOntologyManager({ dataFactory });
+    const managed = manager.createOntology();
+    const foreign = foreignManager.createOntology();
+    const annotation = dataFactory.getOWLAnnotation(
+      dataFactory.getRDFSLabel(),
+      dataFactory.getOWLLiteral("foreign annotation"),
+    );
+    const unsupportedChange = Object.freeze({});
+
+    let unsupportedError;
+    try {
+      manager.applyChange(unsupportedChange);
+    } catch (error) {
+      unsupportedError = error;
+    }
+    expect(unsupportedError).toBeInstanceOf(TypeError);
+    expect(unsupportedError).toMatchObject({
+      change: unsupportedChange,
+      index: 0,
+      operation: "applyChange",
+    });
+
+    const foreignChange = new AddOntologyAnnotation(foreign, annotation);
+    let foreignError;
+    try {
+      manager.applyChange(foreignChange);
+    } catch (error) {
+      foreignError = error;
+    }
+    expect(foreignError).toBeInstanceOf(OWLOntologyStateError);
+    expect(foreignError).toMatchObject({
+      change: foreignChange,
+      index: 0,
+      ontology: foreign,
+      operation: "applyChange",
+    });
+    expect(managed.getAnnotations()).toEqual(new Set());
+    expect(foreign.getAnnotations()).toEqual(new Set());
+  });
+
+  it("traverses a closure deeper than the JavaScript call stack without recursion", async () => {
+    const ontologyCount = 12000;
+    const dataFactory = new OWLDataFactory();
+    const ontologyIRIAt = (index) =>
+      IRI.create(`urn:closure:deep:${String(index).padStart(5, "0")}`);
+    const registry = new OWLParserRegistry([
+      new ParserDescriptor({
+        createParser: () => ({
+          parse(source, transaction) {
+            const index = Number(source.getText());
+            transaction.setOntologyID(
+              dataFactory.getOWLOntologyID(ontologyIRIAt(index)),
+            );
+            if (index + 1 < ontologyCount) {
+              transaction.addImportsDeclaration(
+                dataFactory.getOWLImportsDeclaration(ontologyIRIAt(index + 1)),
+              );
+            }
+          },
+        }),
+        detect: match,
+        format: OWLDocumentFormats.FUNCTIONAL,
+        id: "deep-closure-fixture",
+        priority: 0,
+      }),
+    ]);
+    const manager = new OWLOntologyManager({
+      dataFactory,
+      documentLoader: {
+        load(documentIRI) {
+          return documentIRI.value.slice("urn:closure:deep:".length);
+        },
+      },
+      registry,
+    });
+    const root = await manager.loadOntologyFromOntologyDocument("0", {
+      maxImportCount: ontologyCount,
+      maxImportDepth: ontologyCount,
+    });
+
+    const closure = manager.importsClosure(root);
+
+    expect(closure).toHaveLength(ontologyCount);
+    expect(closure[0]).toBe(root);
+    expect(closure.at(-1).getOntologyID().ontologyIRI).toEqual(
+      ontologyIRIAt(ontologyCount - 1),
+    );
+  }, 60000);
 });

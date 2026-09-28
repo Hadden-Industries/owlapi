@@ -157,7 +157,49 @@ jobs:
       - name: Verify static quality
         run: npm run lint
         timeout-minutes: 45
+      - name: Install checksum-pinned native workflow validation
+        run: |
+          tool_directory="$RUNNER_TEMP/actionlint-1.7.12"
+          mkdir -p "$tool_directory"
+          archive="$tool_directory/actionlint_1.7.12_linux_amd64.tar.gz"
+          curl --fail --silent --show-error --location --retry 3 \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz \
+            --output "$archive"
+          printf '%s  %s\n' '8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8' "$archive" | sha256sum --check --strict
+          tar -xzf "$archive" -C "$tool_directory"
+          printf '%s\n' "$tool_directory" >> "$GITHUB_PATH"
+        timeout-minutes: 5
+      - name: Validate native GitHub Actions syntax and expressions
+        run: npm run verify:workflow-syntax
+        timeout-minutes: 5
+      - name: Check out the immutable original July ontology sources
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Hadden-Industries/universal-ontology
+          ref: e2c667f3584b8fb705671cada0fe205b1000b617
+          path: .release/universal-ontology
+          persist-credentials: false
+      - name: Check out the pinned Java OWLAPI reference
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: owlcs/owlapi
+          ref: d7e997a53b470e32700de89cc610d9daf01ea769
+          path: .release/java-owlapi
+          persist-credentials: false
+      - name: Select the reference JDK
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: "25"
+          check-latest: false
+          overwrite-settings: false
+      - name: Build the native reference and its reactor classpath
+        working-directory: .release/java-owlapi
+        run: mvn -B -ntp -pl distribution -am -Dmaven.test.skip=true -Dno-javadoc=true -DincludeScope=runtime -Dmdep.outputFile=target/owlapi-runtime-classpath.txt package dependency:build-classpath
+        timeout-minutes: 20
       - name: Run the full package suite
+        env:
+          OWLAPI_REFERENCE_CHECKOUT: ${{ github.workspace }}/.release/java-owlapi
         run: npm test -- --runInBand
         timeout-minutes: 45
       - name: Verify the public package boundary
@@ -169,6 +211,22 @@ jobs:
       - name: Verify repository workflow governance
         run: npm run verify:workflow-governance
         timeout-minutes: 45
+      - name: Reconcile all four July variants in parsing and both closure formats
+        env:
+          OWLAPI_REFERENCE_CHECKOUT: ${{ github.workspace }}/.release/java-owlapi
+        run: npm run test:universal-ontology -- --ontology-repository .release/universal-ontology --output .release/july-qualification
+        timeout-minutes: 15
+      - name: Retain July reconciliation evidence, including failed comparisons
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: july-ontology-reconciliation
+          path: .release/july-qualification
+          if-no-files-found: error
+          retention-days: 90
+          overwrite: false
+          include-hidden-files: false
+          archive: true
 
   dependency_review:
     name: CI / dependency review
@@ -674,7 +732,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: Hadden-Industries/webvowl
-          ref: f7444ce3971621e6af6d38ebd4b5ce9b03f3e235
+          ref: 4f1970e5b6c95655af823c495bd58f9e9993f8b8
           # WebVOWL's governance suite proves retained reconstruction ancestry.
           # A shallow checkout would make valid recorded commits unreachable.
           fetch-depth: 0
@@ -684,7 +742,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: Hadden-Industries/universal-ontology
-          ref: e2c667f3584b8fb705671cada0fe205b1000b617
+          ref: c2220675b0f3345628fc9cc8112a41440afcb2f0
           fetch-depth: 1
           path: consumer-workspace/universal-ontology
           persist-credentials: false
@@ -732,7 +790,9 @@ jobs:
         run: npm run candidate:prepare -- --candidate .release/download
         timeout-minutes: 5
       - name: Qualify the retained package through isolated WebVOWL
-        run: npm run test:webvowl-consumer -- --candidate-dir .release/download --webvowl-repository ../consumer-workspace/webvowl --expected-webvowl-commit f7444ce3971621e6af6d38ebd4b5ce9b03f3e235 --expected-ontology-commit e2c667f3584b8fb705671cada0fe205b1000b617 --output .release/webvowl-result
+        # CI exercises the reviewed candidate without claiming release acceptance.
+        # The release workflow retains the strict reconciled qualification route.
+        run: npm run test:webvowl-consumer -- --candidate-dir .release/download --webvowl-repository ../consumer-workspace/webvowl --expected-webvowl-commit 4f1970e5b6c95655af823c495bd58f9e9993f8b8 --expected-ontology-commit c2220675b0f3345628fc9cc8112a41440afcb2f0 --development-audit test/consumers/webvowl/development-audit.json --output .release/webvowl-result
         timeout-minutes: 45
 
   required:

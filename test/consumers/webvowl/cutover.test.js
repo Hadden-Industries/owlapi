@@ -1,150 +1,289 @@
 import { describe, expect, test } from "@jest/globals";
+import * as cutoverModule from "./cutover.mjs";
 
-import {
-  PACKAGE_OWNED_RUNTIME_DEPENDENCIES,
-  applyWebVowlSourceCutover,
-  createCandidateArchitectureTest,
-  createDependencyOwnershipInventory,
-} from "./cutover.mjs";
+describe("package-based WebVOWL qualification", () => {
+  const retainedGitPackageSpecifier =
+    "git+https://github.com/Hadden-Industries/owlapi.git#" + "a".repeat(40);
 
-const files = new Map([
-  [
-    "src/owl2vowl/js/index.js",
-    [
-      "import {",
-      "  OWLOntologyLoaderConfiguration,",
-      "  StringDocumentSource,",
-      '} from "../../owlapi-js/io/index.js";',
-      'import { OWLManager } from "../../owlapi-js/manager/index.js";',
-      'import { IRI } from "../../owlapi-js/model/index.js";',
-    ].join("\n"),
-  ],
-  [
-    "src/owl2vowl/js/importResolver.test.js",
-    [
-      'import { jest } from "@jest/globals";',
-      "",
-      'import { IRI, ResourceLimitError, SecurityPolicyError } from "../../owlapi-js/index.js";',
-    ].join("\n"),
-  ],
-  [
-    "src/owl2vowl/js/vowlBuilder.header.test.js",
-    [
-      'import { IRI, OWLDataFactory } from "../../owlapi-js/model/index.js";',
-      'import { createOntologyID } from "../../owlapi-js/model/structural.js";',
-      "const factory = new OWLDataFactory();",
-      'const ontologyID = createOntologyID(IRI.create("urn:test"));',
-    ].join("\n"),
-  ],
-  [
-    "src/testRunnerScope.architecture.test.js",
-    [
-      '"src/owl2vowl/test/vowlBuilder.differential.test.js",',
-      '"src/owlapi-js/parser/turtle/turtle.differential.test.js",',
-    ].join("\n"),
-  ],
-]);
+  test.each([retainedGitPackageSpecifier, "0.1.0"])(
+    "qualifies the reviewed immutable consumer dependency %s before candidate injection",
+    (packageSpecifier) => {
+      expect(typeof cutoverModule.assertReviewedWebVowlPackageDependency).toBe(
+        "function",
+      );
+      expect(() =>
+        cutoverModule.assertReviewedWebVowlPackageDependency({
+          manifest: { dependencies: { owlapi: packageSpecifier } },
+          reviewedPackageSpecifier: packageSpecifier,
+          retainedGitPackageSpecifier,
+        }),
+      ).not.toThrow();
+    },
+  );
 
-describe("disposable WebVOWL consumer cutover", () => {
-  test("rewrites every source reach-in to the narrowest public package export", () => {
-    const result = applyWebVowlSourceCutover(files);
-
-    expect(result.changedFiles).toEqual([
-      "src/owl2vowl/js/importResolver.test.js",
-      "src/owl2vowl/js/index.js",
-      "src/owl2vowl/js/vowlBuilder.header.test.js",
-      "src/testRunnerScope.architecture.test.js",
-    ]);
-    expect(result.files.get("src/owl2vowl/js/index.js")).toContain(
-      'from "owlapi/io"',
-    );
-    expect(result.files.get("src/owl2vowl/js/index.js")).toContain(
-      'from "owlapi/apibinding"',
-    );
-    expect(result.files.get("src/owl2vowl/js/index.js")).toContain(
-      'from "owlapi/model"',
-    );
-    expect(result.files.get("src/owl2vowl/js/index.js")).toContain(
-      "IRI, OWLOntologyLoaderConfiguration",
-    );
-    expect(result.files.get("src/owl2vowl/js/index.js")).not.toMatch(
-      /OWLOntologyLoaderConfiguration,[\s\S]*from "owlapi\/io"/u,
-    );
-    expect(result.files.get("src/owl2vowl/js/importResolver.test.js")).toBe(
-      [
-        'import { jest } from "@jest/globals";',
-        "",
-        'import { ResourceLimitError, SecurityPolicyError } from "owlapi/io";',
-        'import { IRI } from "owlapi/model";',
-      ].join("\n"),
-    );
-    expect(
-      result.files.get("src/owl2vowl/js/vowlBuilder.header.test.js"),
-    ).not.toContain("createOntologyID");
-    expect(
-      result.files.get("src/owl2vowl/js/vowlBuilder.header.test.js"),
-    ).toContain('factory.getOWLOntologyID(IRI.create("urn:test"))');
-    expect(
-      result.files.get("src/testRunnerScope.architecture.test.js"),
-    ).not.toContain("src/owlapi-js/");
+  test.each([
+    "^0.1.0",
+    "next",
+    "latest",
+    "0.1.0-rc.1",
+    "file:../owlapi",
+    "git+https://github.com/Hadden-Industries/owlapi.git#main",
+    "git+https://github.com/Hadden-Industries/owlapi.git#" + "b".repeat(40),
+    undefined,
+  ])("rejects an unaccepted consumer dependency %s", (packageSpecifier) => {
+    expect(() =>
+      cutoverModule.assertReviewedWebVowlPackageDependency({
+        manifest: { dependencies: { owlapi: packageSpecifier } },
+        reviewedPackageSpecifier: packageSpecifier,
+        retainedGitPackageSpecifier,
+      }),
+    ).toThrow(/reviewed exact package coordinate/u);
   });
 
-  test("refuses source drift instead of silently producing a partial patch", () => {
-    const drifted = new Map(files);
-    drifted.set(
-      "src/owl2vowl/js/index.js",
-      'import { IRI } from "../unexpected/model.js";',
-    );
+  test.each([
+    { dependencies: { owlapi: "0.1.0" } },
+    { devDependencies: { owlapi: retainedGitPackageSpecifier } },
+    {
+      dependencies: { owlapi: retainedGitPackageSpecifier },
+      devDependencies: { owlapi: retainedGitPackageSpecifier },
+    },
+  ])(
+    "rejects a mismatched dependency or development-only consumer %j",
+    (manifest) => {
+      expect(() =>
+        cutoverModule.assertReviewedWebVowlPackageDependency({
+          manifest,
+          reviewedPackageSpecifier: retainedGitPackageSpecifier,
+          retainedGitPackageSpecifier,
+        }),
+      ).toThrow(/reviewed exact package coordinate/u);
+    },
+  );
 
-    expect(() => applyWebVowlSourceCutover(drifted)).toThrow(
-      /expected WebVOWL source seam/u,
-    );
-  });
-
-  test("classifies package-owned dependencies without hiding retained uses", () => {
-    const inventory = createDependencyOwnershipInventory(
-      new Map([
-        ["package.json", JSON.stringify({ dependencies: { n3: "2.3.0" } })],
-        ["src/owlapi-js/parser.js", 'import "n3";'],
-        ["util/benchmark-owlapi.mjs", 'import "n3";'],
-        ["src/app/js/app.js", 'import "d3";'],
-      ]),
-      { sourceCommit: "a".repeat(40) },
-    );
-
-    expect(inventory.sourceCommit).toBe("a".repeat(40));
-    expect(inventory.dependencies.n3.applicationOwnedOccurrences).toEqual([]);
-    expect(inventory.dependencies.n3.packageOwnedOccurrences).toHaveLength(2);
-    expect(inventory.dependencies.n3.removalDisposition).toBe(
-      "REMOVE_FROM_WEBVOWL_ROOT",
-    );
-    expect(inventory.dependencies.d3.removalDisposition).toBe(
-      "RETAIN_IN_WEBVOWL_ROOT",
-    );
-  });
-
-  test("candidate architecture test binds the one permitted local specifier", () => {
-    const source = createCandidateArchitectureTest({
-      packageSpecifier: "file:C:/candidate/owlapi-0.1.0-alpha.0.tgz",
+  test("generates an installed contract bound to immutable candidate and audit inputs", () => {
+    const source = cutoverModule.createCandidateArchitectureTest({
+      packageSpecifier: "file:C:/candidate/owlapi.tgz",
       packageVersion: "0.1.0-alpha.0",
       tarballSha256: "b".repeat(64),
+      publicExports: { "./util": "./util/index.js" },
+      audit: {
+        baselineCommit: "a".repeat(40),
+        scanSha256: "c".repeat(64),
+        disposition: "NO_OBSOLETE_USAGE",
+      },
     });
-
-    expect(source).toContain("CANDIDATE_ONLY_LOCAL_TARBALL");
+    expect(source).toContain("exerciseImportClosureStorage");
+    expect(source).toContain("OWLStorerNotFoundError");
+    expect(source).toContain("UnrepresentableOntologyError");
+    expect(source).toContain("ONTOLOGY_NOT_REPRESENTABLE");
     expect(source).toContain("b".repeat(64));
-    expect(source).toContain("owlapi/formats");
-    expect(source).toContain("owlapi-js");
+    expect(source).toContain("c".repeat(64));
     expect(source).not.toContain("process.env");
+    expect(() =>
+      cutoverModule.inspectWebVowlJavaScript(source, "src/candidate.test.js"),
+    ).not.toThrow();
   });
 
-  test("keeps the package-owned dependency list exact and reviewable", () => {
-    expect(PACKAGE_OWNED_RUNTIME_DEPENDENCIES).toEqual([
-      "@rdfjs/data-model",
-      "@rdfjs/dataset",
-      "@xmldom/xmldom",
-      "jsonld",
-      "n3",
-      "rdfxml-streaming-parser",
-    ]);
+  test("uses ESLint for static, dynamic and CommonJS specifiers, not comments or string examples", () => {
+    const source = [
+      'import { IRI } from "owlapi/model";',
+      'export * from "owlapi/util";',
+      'void import("owlapi/io");',
+      'require("owlapi/formats");',
+      '// import x from "owlapi/private";',
+      "const example = 'import \"owlapi/private\";';",
+    ].join("\n");
+    expect(
+      cutoverModule
+        .inspectWebVowlJavaScript(source, "src/test.js")
+        .moduleSpecifiers.map(({ specifier }) => specifier),
+    ).toEqual(["owlapi/model", "owlapi/util", "owlapi/io", "owlapi/formats"]);
+  });
+});
+
+describe("Phase 21 consumer audit", () => {
+  const path = "src/reader.js";
+  const source =
+    'const source = new StringDocumentSource("text");\nsource.getText();';
+  const reader = {
+    path,
+    line: 2,
+    expression: "source.getText()",
+    receiverType: "StringDocumentSource",
+    evidence:
+      "The receiver is the immediately preceding StringDocumentSource construction.",
+  };
+  const options = {
+    baselineCommit: "a".repeat(40),
+    sourceReaderAllowlist: [reader],
+  };
+  const audit = (text = source, settings = options) =>
+    cutoverModule.auditWebVowlJavaParityConsumers(
+      new Map([[path, text]]),
+      settings,
+    );
+
+  test("retains exact source reads and a digest-bound zero-use disposition", () => {
+    const result = audit();
+    expect(result.sourceReaderAllowlist).toEqual([reader]);
+    expect(result.obsoleteOccurrences).toEqual([]);
+    expect(result.disposition).toBe("NO_OBSOLETE_USAGE");
+    expect(result.scanSha256).toMatch(/^[a-f0-9]{64}$/u);
+  });
+
+  test.each([
+    `${source}\ntarget.getText();`,
+    `${source}\ntarget["getText"]();`,
+    `${source}\nconst { getText: read } = target;`,
+    `${source}\nimport { UnrepresentableOntologyError as OldError } from "owlapi/io";`,
+    `${source}\nconst alias = io["UnrepresentableOntologyError"];`,
+    `${source}\nsource.getText();`,
+    `\n${source}`,
+    source.replace("source.getText();", "source.toString();"),
+    `${source}\nimport broken from`,
+  ])(
+    "fails closed on unknown, moved, removed, duplicated, or invalid use",
+    (text) => {
+      expect(() => audit(text)).toThrow();
+    },
+  );
+
+  test("does not widen exceptions or hide audited application paths", () => {
+    expect(() =>
+      audit(source, {
+        ...options,
+        sourceReaderAllowlist: [reader, { ...reader, path: "src/new.js" }],
+      }),
+    ).toThrow();
+    expect(() =>
+      audit(source, { ...options, excludedPathClasses: ["src/"] }),
+    ).toThrow();
+    expect(audit(`${source}\ntarget.toString();`).obsoleteOccurrences).toEqual(
+      [],
+    );
+  });
+
+  test("binds the exact baseline, normalized inventory, disposition and reviewed source-reader evidence", () => {
+    const result = audit();
+    expect(() =>
+      cutoverModule.assertReviewedWebVowlAudit(result, result),
+    ).not.toThrow();
+    for (const key of ["baselineCommit", "scanSha256", "disposition"]) {
+      expect(() =>
+        cutoverModule.assertReviewedWebVowlAudit(result, {
+          ...result,
+          [key]: "changed",
+        }),
+      ).toThrow(/reviewed/u);
+    }
+    expect(audit(source.replaceAll("\n", "\r\n")).scanSha256).toBe(
+      result.scanSha256,
+    );
+    expect(audit(`${source}\n// reviewed bytes changed`).scanSha256).not.toBe(
+      result.scanSha256,
+    );
+  });
+
+  test.each([
+    [
+      "vite.config.mjs",
+      'export default { resolve: { alias: { owlapi: "./copy" } } };',
+    ],
+    [
+      "package.json",
+      '{"dependencies":{"owlapi":"0.1.0"},"overrides":{"owlapi":"file:copy"}}',
+    ],
+    ["src/private.js", 'import "owlapi/internal/model.js";'],
+    ["src/owlapi-js/index.js", "export {};"],
+    ["README.md", "Do target.getText() here."],
+    ["src/index.html", '<script>target["getText"]()</script>'],
+  ])("rejects obsolete usage and runtime escapes in %s", (file, text) => {
+    expect(() =>
+      cutoverModule.auditWebVowlJavaParityConsumers(
+        new Map([
+          [path, source],
+          [file, text],
+        ]),
+        options,
+      ),
+    ).toThrow();
+  });
+
+  test("keeps historical material visible as excluded inventory without trusting arbitrary exclusions", () => {
+    const result = cutoverModule.auditWebVowlJavaParityConsumers(
+      new Map([
+        [path, source],
+        ["docs/owlapi-js/old.md", "target.getText()"],
+      ]),
+      options,
+    );
+    expect(
+      result.inventory.find((entry) => entry.path.endsWith("old.md")).exclusion,
+    ).toBe("docs/owlapi-js/");
+    expect(() =>
+      cutoverModule.auditWebVowlJavaParityConsumers(
+        new Map([["src/hidden.js", Buffer.from("target.getText()")]]),
+        { baselineCommit: options.baselineCommit },
+      ),
+    ).toThrow(/text/u);
+  });
+
+  test("requires exact reviewed negative mentions and never excepts executable identifiers", () => {
+    const file = "docs/migration.md";
+    const text = "Do not use UnrepresentableOntologyError.";
+    const negative = {
+      path: file,
+      line: 1,
+      expression: "UnrepresentableOntologyError",
+      evidence: "Negative migration guidance.",
+    };
+    expect(() =>
+      cutoverModule.auditWebVowlJavaParityConsumers(new Map([[file, text]]), {
+        baselineCommit: options.baselineCommit,
+      }),
+    ).toThrow();
+    expect(
+      cutoverModule.auditWebVowlJavaParityConsumers(new Map([[file, text]]), {
+        baselineCommit: options.baselineCommit,
+        negativeMentionAllowlist: [negative],
+      }).obsoleteUseCount,
+    ).toBe(0);
+    expect(() =>
+      cutoverModule.auditWebVowlJavaParityConsumers(
+        new Map([
+          ["src/negative.test.js", "void UnrepresentableOntologyError;"],
+        ]),
+        {
+          baselineCommit: options.baselineCommit,
+          negativeMentionAllowlist: [
+            { ...negative, path: "src/negative.test.js" },
+          ],
+        },
+      ),
+    ).toThrow();
+  });
+
+  test("preserves a verified migration disposition and binds its actual changed paths and patch", () => {
+    const migration = {
+      changedPaths: [path],
+      reviewedPatchSha256: "b".repeat(64),
+      migrationCommit: null,
+    };
+    const migrated = audit(source, { ...options, migration });
+    expect(migrated.disposition).toBe("MIGRATED");
+    expect(migrated.changedPaths).toEqual([path]);
+    expect(migrated.scanSha256).not.toBe(audit().scanSha256);
+    expect(() =>
+      cutoverModule.assertReviewedWebVowlAudit(migrated, migrated),
+    ).not.toThrow();
+    expect(() =>
+      audit(source, {
+        ...options,
+        migration: { ...migration, changedPaths: [] },
+      }),
+    ).toThrow();
+    expect(() =>
+      audit(`${source}\ntarget.getText()`, { ...options, migration }),
+    ).toThrow();
   });
 });

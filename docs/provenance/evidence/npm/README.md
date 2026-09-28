@@ -29,7 +29,7 @@ input.
 
 ## Reviewed bootstrap identity
 
-The committed candidate has these exact identities:
+The reviewed bootstrap baseline has these exact identities:
 
 - manifest SHA-256:
   `4f980ce7a5ba7cfd4baeb317b201f954c6bf26b80d2ecc6f2486a2adbd246136`;
@@ -108,6 +108,32 @@ of retained legal-evidence files. These totals are descriptive; the security
 limits are intentionally enforced per artifact.
 
 ## Verification and regeneration
+
+The 2026-09-25 lifecycle candidate adds `@hyperjump/uri@1.3.6`, `bcp-47@2.1.1`,
+`is-alphabetical@2.0.1`, `is-alphanumerical@2.0.1`, and `is-decimal@2.0.1`.
+Its complete machine-verified manifest has 719 occurrences, 644 artifacts,
+3,139 blobs, and 64,827,509 retained bytes. All 644 artifacts have verified
+signature, archive, and ScanCode evidence; 192 have published provenance and
+452 explicitly do not. These are candidate facts, not a new human approval.
+
+The 2026-09-27 July reconciliation candidate adds development-only
+`jsonpath-rfc9535@1.3.0` and `yaml@2.9.1`. Acquisition reuses the fully verified
+prior corpus and authenticates and scans the two new locked artifacts with the
+same pinned ScanCode policy. The updated manifest has 721 occurrences, 646
+artifacts, 3,152 blobs and 65,843,686 retained bytes; all 646 have verified
+signature, archive and ScanCode evidence. Published provenance remains 192,
+with 454 explicit non-publication observations. The regenerated third-party
+and rights inventories remain pending human review for promotion.
+
+For a dependency-only update, pass `--reuse-evidence=<prior-repository>` to the
+acquisition tool. The prior repository supplies its own lockfile, manifest, and
+content-addressed corpus. Its complete schema, graph binding, signatures, blob
+closure, and scanner policy are verified before any artifact is reused. Current
+occurrence identities are rebuilt, only missing artifact identities are acquired
+and scanned, and the whole output is verified before publication. Reuse cannot
+be combined with shard acquisition; the hosted fresh-acquisition route and
+`--write` requirement are unchanged. Corrupt evidence is an error, not a reason
+to silently trust or skip an artifact.
 
 Run the ordinary offline check from the repository root:
 

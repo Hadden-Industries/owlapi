@@ -534,8 +534,8 @@ do not append chronology here.
   Public bindings have one canonical definition in that Java-shaped namespace;
   private parsing, mapping, RDF/JS, loading, storage, and platform engines use
   cohesive non-mirrored `internal/` ownership.
-- Phase 20 qualifies that same capability family, normally publishes
-  production-recommended initial-development `0.1.0`, and proves WebVOWL
-  consumes the exact public registry package. The separate ontology-lifecycle
-  feature programme normally targets `0.2.0` and does not enter either release
-  phase.
+- Under the owner-approved 2026-09-28 amendment, Phase 20 qualifies the combined
+  initial surface and Phase 21/22 lifecycle capabilities for the first planned
+  public production `0.1.0` release. `0.1.0-rc.1` is the integration candidate,
+  not an accepted release. Fresh package, WebVOWL, Java parity and import-closure
+  qualification remain required; an earlier published `0.1.0` is not.

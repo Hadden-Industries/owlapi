@@ -1,386 +1,468 @@
 import { createHash } from "node:crypto";
 
-export const PACKAGE_OWNED_RUNTIME_DEPENDENCIES = Object.freeze([
-  "@rdfjs/data-model",
-  "@rdfjs/dataset",
-  "@xmldom/xmldom",
-  "jsonld",
-  "n3",
-  "rdfxml-streaming-parser",
+import { Linter } from "eslint";
+
+const compare = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
+const sha256 = (value) => createHash("sha256").update(value).digest("hex");
+const stableJson = (value) => JSON.stringify(value, null, 2) + "\n";
+const normalizedPath = (value) => value.replaceAll("\\", "/");
+const excludedPrefixes = Object.freeze([
+  "docs/owlapi-js/",
+  "docs/provenance/",
+  "node_modules/",
+  "coverage/",
+  "dist/",
+  ".release/",
 ]);
-
-const PUBLIC_SPECIFIER_REWRITES = Object.freeze([
-  ["../../owlapi-js/io/index.js", "owlapi/io"],
-  ["../../owlapi-js/manager/index.js", "owlapi/apibinding"],
-  ["../../owlapi-js/model/index.js", "owlapi/model"],
-]);
-
-const compareCodeUnits = (left, right) =>
-  left < right ? -1 : left > right ? 1 : 0;
-
-const stableJson = (value) => `${JSON.stringify(value, null, 2)}\n`;
-
-const sha256 = (value) =>
-  createHash("sha256").update(value, "utf8").digest("hex");
-
-const normalizedPath = (filePath) => filePath.replaceAll("\\", "/");
-
-const lineNumberAt = (source, offset) =>
-  source.slice(0, offset).split(/\r?\n/u).length;
-
-const moduleSpecifiers = (source) => {
-  const matches = [];
-  const patterns = [
-    /(?:import|export)\s+(?:[\s\S]*?\sfrom\s*)?["']([^"']+)["']/gu,
-    /\bimport\s*\(\s*["']([^"']+)["']\s*\)/gu,
-    /\brequire\s*\(\s*["']([^"']+)["']\s*\)/gu,
-  ];
-  for (const pattern of patterns) {
-    for (const match of source.matchAll(pattern)) {
-      matches.push({
-        line: lineNumberAt(source, match.index),
-        specifier: match[1],
-      });
-    }
-  }
-  return matches;
-};
-
-const packageNameOf = (specifier) => {
-  if (
-    specifier.startsWith(".") ||
-    specifier.startsWith("/") ||
-    specifier.includes(":")
-  ) {
-    return undefined;
-  }
-  const segments = specifier.split("/");
-  return specifier.startsWith("@")
-    ? segments.slice(0, 2).join("/")
-    : segments[0];
-};
-
-const packageOwnedPath = (filePath) => {
-  const normalized = normalizedPath(filePath);
-  return (
-    normalized.startsWith("src/owlapi-js/") ||
-    normalized.startsWith("docs/owlapi-js/") ||
-    normalized.startsWith("util/owlapi-reference/") ||
-    (/^util\//u.test(normalized) &&
-      /(?:owlapi|generate-w3c-(?:jsonld|nquads|ntriples|rdf-to-owl|rdfxml|trig|turtle))/u.test(
-        normalized,
-      ))
-  );
-};
-
-const replaceRootTestImport = (source) =>
-  source.replace(
-    /import\s*\{([^;]*?)\}\s*from\s*["']\.\.\/\.\.\/owlapi-js\/index\.js["'];/gu,
-    (_whole, bindings) => {
-      const names = bindings
-        .split(",")
-        .map((binding) => binding.trim())
-        .filter(Boolean)
-        .sort(compareCodeUnits);
-      const expected = [
-        "IRI",
-        "ResourceLimitError",
-        "SecurityPolicyError",
-      ].sort(compareCodeUnits);
-      if (stableJson(names) !== stableJson(expected)) {
-        throw new Error(
-          `Unexpected WebVOWL root-facade test bindings: ${JSON.stringify(names)}`,
-        );
-      }
-      return [
-        'import { ResourceLimitError, SecurityPolicyError } from "owlapi/io";',
-        'import { IRI } from "owlapi/model";',
-      ].join("\n");
-    },
-  );
-
-const assertExpectedSourceSeam = (files) => {
-  const expected = new Map([
-    [
-      "src/owl2vowl/js/index.js",
-      PUBLIC_SPECIFIER_REWRITES.map(([from]) => from),
-    ],
-    [
-      "src/owl2vowl/js/importResolver.js",
-      ["../../owlapi-js/io/index.js", "../../owlapi-js/model/index.js"],
-    ],
-    ["src/owl2vowl/js/vowlBuilder.js", ["../../owlapi-js/model/index.js"]],
-  ]);
-  for (const [filePath, specifiers] of expected) {
-    if (!files.has(filePath)) {
-      continue;
-    }
-    const source = files.get(filePath);
-    for (const specifier of specifiers) {
-      if (!source.includes(specifier)) {
-        throw new Error(
-          `The expected WebVOWL source seam ${specifier} is absent from ${filePath}; review source drift before qualifying a candidate.`,
-        );
-      }
-    }
-  }
-};
-
-/**
- * Produces the exact source-level half of the Phase 19C disposable cutover.
- * The function intentionally validates old spellings before replacing them so
- * an upstream WebVOWL edit cannot silently turn this into a partial migration.
- */
-export const applyWebVowlSourceCutover = (inputFiles) => {
-  const files = new Map(
-    [...inputFiles].map(([filePath, source]) => [
-      normalizedPath(filePath),
-      source,
-    ]),
-  );
-  assertExpectedSourceSeam(files);
-  const changedFiles = [];
-
-  for (const [filePath, original] of files) {
-    let source = original;
-    for (const [from, to] of PUBLIC_SPECIFIER_REWRITES) {
-      source = source.replaceAll(from, to);
-    }
-    if (filePath === "src/owl2vowl/js/index.js") {
-      // The staging tree grouped loader configuration with document sources by
-      // physical path. The public package follows OWLAPI concepts instead:
-      // configuration is model state, while StringDocumentSource is I/O.
-      source = source
-        .replace(
-          /import\s*\{\s*OWLOntologyLoaderConfiguration,\s*StringDocumentSource,?\s*\}\s*from\s*["']owlapi\/io["'];/u,
-          'import { StringDocumentSource } from "owlapi/io";',
-        )
-        .replace(
-          /import \{ IRI \} from ["']owlapi\/model["'];/u,
-          'import { IRI, OWLOntologyLoaderConfiguration } from "owlapi/model";',
-        );
-    }
-    if (filePath === "src/owl2vowl/js/importResolver.test.js") {
-      source = replaceRootTestImport(source);
-    }
-    if (
-      filePath === "src/owl2vowl/js/vowlBuilder.builtins.test.js" ||
-      filePath === "src/owl2vowl/js/vowlBuilder.header.test.js" ||
-      filePath === "src/owl2vowl/js/vowlBuilder.punning.test.js"
-    ) {
-      source = source
-        .replace(
-          /\r?\nimport \{ createOntologyID \} from ["']\.\.\/\.\.\/owlapi-js\/model\/structural\.js["'];\r?\n/u,
-          "\n",
-        )
-        .replaceAll("createOntologyID(", "factory.getOWLOntologyID(");
-    }
-    if (filePath === "src/testRunnerScope.architecture.test.js") {
-      source = source
-        .split(/(?<=\n)/u)
-        .filter((line) => !line.includes('"src/owlapi-js/'))
-        .join("");
-    }
-    if (source !== original) {
-      files.set(filePath, source);
-      changedFiles.push(filePath);
-    }
-  }
-
-  const remainingReachIns = [];
-  for (const [filePath, source] of files) {
-    if (
-      (filePath.startsWith("src/owl2vowl/") ||
-        filePath === "src/testRunnerScope.architecture.test.js") &&
-      moduleSpecifiers(source).some(({ specifier }) =>
-        specifier.includes("owlapi-js"),
-      )
-    ) {
-      remainingReachIns.push(filePath);
-    }
-  }
-  if (remainingReachIns.length > 0) {
-    throw new Error(
-      `The WebVOWL cutover left source-tree imports in ${remainingReachIns.sort(compareCodeUnits).join(", ")}.`,
-    );
-  }
-
-  return {
-    changedFiles: changedFiles.sort(compareCodeUnits),
-    files,
-  };
-};
-
-/**
- * Records module ownership before dependency removal. Textual references are
- * retained separately so comments and bundle-inspection markers remain visible
- * without being mistaken for executable application dependencies.
- */
-export const createDependencyOwnershipInventory = (files, { sourceCommit }) => {
-  const normalizedFiles = new Map(
-    [...files].map(([filePath, source]) => [normalizedPath(filePath), source]),
-  );
-  const manifest = JSON.parse(normalizedFiles.get("package.json") ?? "{}");
-  const declared = {
-    ...(manifest.dependencies ?? {}),
-    ...(manifest.devDependencies ?? {}),
-  };
-  const names = new Set(Object.keys(declared));
-  const occurrences = new Map();
-
-  for (const [filePath, source] of normalizedFiles) {
-    if (filePath === "package-lock.json") {
-      continue;
-    }
-    for (const { line, specifier } of moduleSpecifiers(source)) {
-      const packageName = packageNameOf(specifier);
-      if (!packageName) {
-        continue;
-      }
-      names.add(packageName);
-      const list = occurrences.get(packageName) ?? [];
-      list.push({ file: filePath, line, specifier });
-      occurrences.set(packageName, list);
-    }
-  }
-
-  const dependencies = {};
-  for (const name of [...names].sort(compareCodeUnits)) {
-    const allOccurrences = (occurrences.get(name) ?? []).sort(
-      (left, right) =>
-        compareCodeUnits(left.file, right.file) || left.line - right.line,
-    );
-    const packageOccurrences = allOccurrences.filter(({ file }) =>
-      packageOwnedPath(file),
-    );
-    const applicationOccurrences = allOccurrences.filter(
-      ({ file }) => !packageOwnedPath(file),
-    );
-    const intendedRemoval = PACKAGE_OWNED_RUNTIME_DEPENDENCIES.includes(name);
-    dependencies[name] = {
-      declaredVersion: declared[name] ?? null,
-      packageOwnedOccurrences: packageOccurrences,
-      applicationOwnedOccurrences: applicationOccurrences,
-      removalDisposition: intendedRemoval
-        ? applicationOccurrences.length === 0
-          ? "REMOVE_FROM_WEBVOWL_ROOT"
-          : "BLOCKED_BY_APPLICATION_USE"
-        : "RETAIN_IN_WEBVOWL_ROOT",
-    };
-  }
-
-  return {
-    schemaVersion: 1,
-    sourceCommit,
-    scannedFileCount: normalizedFiles.size,
-    scannedPathClasses: [
-      "source",
-      "tests",
-      "scripts",
-      "configuration",
-      "HTML",
-      "copied-assets",
-    ],
-    dependencies,
-  };
-};
-
-const jsString = (value) => JSON.stringify(value);
-
-/**
- * Generates a candidate-only boundary test with immutable inputs baked into
- * the file. The maintained WebVOWL cutover replaces the local specifier with
- * the exact registry coordinate; there is deliberately no environment-driven
- * switch that could survive as a production escape hatch.
- */
-export const createCandidateArchitectureTest = ({
-  packageSpecifier,
-  packageVersion,
-  tarballSha256,
-}) => `import { createHash } from "node:crypto";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const ROOT = fileURLToPath(new URL("..", import.meta.url));
-const EXPECTED_PACKAGE_SPECIFIER = ${jsString(packageSpecifier)};
-const EXPECTED_PACKAGE_VERSION = ${jsString(packageVersion)};
-const EXPECTED_TARBALL_SHA256 = ${jsString(tarballSha256)};
-const CANDIDATE_ONLY_LOCAL_TARBALL = true;
-const PACKAGE_ONLY_DEPENDENCIES = ${JSON.stringify(PACKAGE_OWNED_RUNTIME_DEPENDENCIES)};
-const ALLOWED_OWLAPI_SPECIFIERS = new Set([
+const publicSpecifiers = new Set([
   "owlapi",
   "owlapi/apibinding",
   "owlapi/model",
   "owlapi/io",
   "owlapi/formats",
+  "owlapi/util",
 ]);
-const SPECIFIER_PATTERNS = [
-  /(?:import|export)\\s+(?:[\\s\\S]*?\\sfrom\\s*)?["']([^"']+)["']/gu,
-  /\\bimport\\s*\\(\\s*["']([^"']+)["']\\s*\\)/gu,
-  /\\brequire\\s*\\(\\s*["']([^"']+)["']\\s*\\)/gu,
-];
+const literalValue = (node) => {
+  if (node?.type === "Literal" && typeof node.value === "string")
+    return node.value;
+  if (node?.type === "TemplateLiteral" && node.expressions.length === 0)
+    return node.quasis[0].value.cooked;
+  return undefined;
+};
 
-const walk = (directory) => readdirSync(directory, { withFileTypes: true })
-  .flatMap((entry) => {
-    const resolved = path.join(directory, entry.name);
-    return entry.isDirectory() ? walk(resolved) : [resolved];
-  });
+/** ESLint owns JavaScript grammar, traversal and decoded identifier spelling. */
+export const inspectWebVowlJavaScript = (source, path) => {
+  const moduleSpecifiers = [];
+  const sourceReaders = [];
+  const forbiddenIdentifiers = [];
+  const storageUses = [];
+  const configurationMentions = [];
+  const isConfiguration = /(?:^|[/.])(?:[^/]*\.)?config\.(?:c|m)?js$/u.test(
+    path,
+  );
+  const messages = new Linter().verify(
+    source,
+    [
+      {
+        languageOptions: {
+          ecmaVersion: "latest",
+          sourceType: path.endsWith(".cjs") ? "commonjs" : "module",
+        },
+        plugins: {
+          parity: {
+            rules: {
+              inspect: {
+                meta: { schema: [] },
+                create(context) {
+                  const record = (node) => ({
+                    path,
+                    line: node.loc.start.line,
+                    expression: context.sourceCode.getText(node),
+                  });
+                  const collectModule = (node) => {
+                    const specifier = literalValue(node);
+                    if (specifier !== undefined)
+                      moduleSpecifiers.push({ ...record(node), specifier });
+                  };
+                  return {
+                    ImportDeclaration: (node) => collectModule(node.source),
+                    ExportAllDeclaration: (node) => collectModule(node.source),
+                    ExportNamedDeclaration: (node) =>
+                      collectModule(node.source),
+                    ImportExpression: (node) => collectModule(node.source),
+                    CallExpression(node) {
+                      if (
+                        node.callee.type === "Identifier" &&
+                        node.callee.name === "require"
+                      )
+                        collectModule(node.arguments[0]);
+                    },
+                    MemberExpression(node) {
+                      const property = node.computed
+                        ? literalValue(node.property)
+                        : node.property.name;
+                      if (property === "getText") {
+                        const call =
+                          node.parent.type === "CallExpression" &&
+                          node.parent.callee === node;
+                        sourceReaders.push({
+                          ...record(call ? node.parent : node),
+                          call,
+                        });
+                      }
+                    },
+                    Property(node) {
+                      if (
+                        node.parent.type === "ObjectPattern" &&
+                        (node.key.name ?? literalValue(node.key)) === "getText"
+                      ) {
+                        sourceReaders.push({ ...record(node), call: false });
+                      }
+                    },
+                    Identifier(node) {
+                      if (isConfiguration && node.name === "owlapi")
+                        configurationMentions.push(record(node));
+                      if (node.name === "UnrepresentableOntologyError")
+                        forbiddenIdentifiers.push(record(node));
+                      if (
+                        [
+                          "StringDocumentTarget",
+                          "OWLOntologyStorageError",
+                          "OWLStorerNotFoundError",
+                          "saveOntology",
+                        ].includes(node.name)
+                      )
+                        storageUses.push(record(node));
+                    },
+                    Literal(node) {
+                      if (
+                        isConfiguration &&
+                        typeof node.value === "string" &&
+                        /\bowlapi(?:-js)?\b/u.test(node.value)
+                      )
+                        configurationMentions.push(record(node));
+                      if (node.value === "UnrepresentableOntologyError")
+                        forbiddenIdentifiers.push(record(node));
+                    },
+                    TemplateLiteral(node) {
+                      if (literalValue(node) === "UnrepresentableOntologyError")
+                        forbiddenIdentifiers.push(record(node));
+                    },
+                  };
+                },
+              },
+            },
+          },
+        },
+        rules: { "parity/inspect": "error" },
+      },
+    ],
+    { allowInlineConfig: false },
+  );
+  if (messages.length)
+    throw new SyntaxError(
+      "Cannot audit " +
+        path +
+        ": " +
+        messages.map(({ line, message }) => line + ": " + message).join("; "),
+    );
+  return {
+    moduleSpecifiers,
+    sourceReaders,
+    forbiddenIdentifiers,
+    storageUses,
+    configurationMentions,
+  };
+};
 
-const sha256File = (filePath) => createHash("sha256")
-  .update(readFileSync(filePath))
-  .digest("hex");
+const occurrenceKey = ({ path, line, expression }) =>
+  JSON.stringify([path, line, expression]);
 
-describe("installed owlapi consumer boundary", () => {
-  test("binds this disposable trial to the retained tarball", () => {
-    expect(CANDIDATE_ONLY_LOCAL_TARBALL).toBe(true);
-    const manifest = JSON.parse(readFileSync(path.join(ROOT, "package.json"), "utf8"));
-    expect(manifest.dependencies?.owlapi).toBe(EXPECTED_PACKAGE_SPECIFIER);
-    expect(manifest.devDependencies?.owlapi).toBeUndefined();
-    for (const dependency of PACKAGE_ONLY_DEPENDENCIES) {
-      expect(manifest.dependencies?.[dependency]).toBeUndefined();
-      expect(manifest.devDependencies?.[dependency]).toBeUndefined();
+/**
+ * This is a reviewed-use inventory, not JavaScript type inference. Each source
+ * reader is an exact evidence-bearing exception bound to the resulting digest.
+ * Historical exclusions are fixed; callers cannot hide application paths.
+ */
+export const auditWebVowlJavaParityConsumers = (
+  files,
+  {
+    baselineCommit,
+    sourceReaderAllowlist = [],
+    negativeMentionAllowlist = [],
+    migration = null,
+    ...unsupportedOptions
+  },
+) => {
+  if (
+    Object.keys(unsupportedOptions).length ||
+    !/^[a-f0-9]{40}$/u.test(baselineCommit ?? "")
+  ) {
+    throw new Error(
+      "Consumer audit requires an exact baseline and the fixed audited scope.",
+    );
+  }
+  if (
+    migration &&
+    (!Array.isArray(migration.changedPaths) ||
+      migration.changedPaths.length === 0 ||
+      new Set(migration.changedPaths).size !== migration.changedPaths.length ||
+      migration.changedPaths.some(
+        (path) =>
+          !/^(?!\/)(?!.*(?:^|\/)\.\.(?:\/|$))[A-Za-z0-9._/-]+$/u.test(path),
+      ) ||
+      !/^[a-f0-9]{64}$/u.test(migration.reviewedPatchSha256 ?? "") ||
+      (migration.migrationCommit !== null &&
+        !/^[a-f0-9]{40}$/u.test(migration.migrationCommit ?? "")))
+  )
+    throw new Error(
+      "Migration requires verified changed paths, patch digest and optional authorized commit.",
+    );
+  const inventory = [];
+  const readers = [];
+  const forbidden = [];
+  const storageUses = [];
+  const violations = [];
+  const paths = new Set();
+  for (const [rawPath, content] of [...files].sort(([a], [b]) =>
+    compare(a, b),
+  )) {
+    const path = normalizedPath(rawPath);
+    if (/^(?:\/|[a-z]:)|(?:^|\/)\.\.(?:\/|$)/iu.test(path) || paths.has(path))
+      throw new Error("Invalid or duplicate inventory path " + path);
+    paths.add(path);
+    if (path.startsWith("src/owlapi-js/"))
+      throw new Error(
+        "The consumer still contains the removed package staging tree.",
+      );
+    const source =
+      typeof content === "string" ? content.replaceAll("\r\n", "\n") : null;
+    if (
+      source === null &&
+      /\.(?:(?:c|m)?js|json|md|html|[yt]oml|ya?ml|py|css|svg)$/u.test(path)
+    ) {
+      throw new Error(
+        "An audited text path cannot be classified as a binary asset: " + path,
+      );
     }
-    const tarballPath = EXPECTED_PACKAGE_SPECIFIER.slice("file:".length);
-    expect(existsSync(tarballPath)).toBe(true);
-    expect(sha256File(tarballPath)).toBe(EXPECTED_TARBALL_SHA256);
-    const installed = JSON.parse(readFileSync(path.join(ROOT, "node_modules", "owlapi", "package.json"), "utf8"));
-    expect(installed.name).toBe("owlapi");
-    expect(installed.version).toBe(EXPECTED_PACKAGE_VERSION);
-  });
-
-  test("uses only declared public package specifiers", () => {
-    expect(existsSync(path.join(ROOT, "src", "owlapi-js"))).toBe(false);
-    const violations = [];
-    for (const filePath of walk(path.join(ROOT, "src")).filter((candidate) => /\\.(?:c|m)?js$/u.test(candidate))) {
-      const source = readFileSync(filePath, "utf8");
-      for (const pattern of SPECIFIER_PATTERNS) {
-        for (const match of source.matchAll(pattern)) {
-          const specifier = match[1];
-          if (specifier.includes("owlapi-js") ||
-              (specifier.startsWith("owlapi/") && !ALLOWED_OWLAPI_SPECIFIERS.has(specifier))) {
-            violations.push({ file: path.relative(ROOT, filePath).replaceAll("\\\\", "/"), specifier });
-          }
+    const exclusion =
+      excludedPrefixes.find((prefix) => path.startsWith(prefix)) ??
+      (source === null ? "binary-asset" : null);
+    inventory.push({ path, sha256: sha256(source ?? content), exclusion });
+    if (exclusion) continue;
+    if (path === "package.json") {
+      const manifest = JSON.parse(source);
+      for (const key of ["imports", "overrides", "resolutions", "workspaces"]) {
+        if (Object.hasOwn(manifest, key))
+          violations.push({
+            path,
+            problem: "unapproved package resolution setting",
+            key,
+          });
+      }
+    }
+    if (/\.(?:c|m)?js$/u.test(path)) {
+      const inspected = inspectWebVowlJavaScript(source, path);
+      readers.push(...inspected.sourceReaders);
+      forbidden.push(...inspected.forbiddenIdentifiers);
+      storageUses.push(...inspected.storageUses);
+      violations.push(...inspected.configurationMentions);
+      for (const entry of inspected.moduleSpecifiers) {
+        if (
+          entry.specifier.includes("owlapi-js") ||
+          entry.specifier.includes("node_modules/owlapi") ||
+          (entry.specifier.startsWith("owlapi/") &&
+            !publicSpecifiers.has(entry.specifier))
+        )
+          violations.push(entry);
+      }
+    } else {
+      // Textual policy search for prose/HTML/configuration, not a format parser.
+      for (const [index, line] of source.split("\n").entries()) {
+        for (const match of line.matchAll(
+          /\bUnrepresentableOntologyError\b|\b[A-Za-z_$][\w$]*\.getText\s*\([^)]*\)|\bgetText\b/gu,
+        )) {
+          const entry = { path, line: index + 1, expression: match[0] };
+          if (match[0] === "UnrepresentableOntologyError")
+            forbidden.push(entry);
+          else readers.push({ ...entry, call: true });
         }
       }
     }
-    expect(violations).toEqual([]);
-  });
+  }
+  const seenReaders = new Set();
+  const approvedReaders = new Map();
+  for (const reader of sourceReaderAllowlist) {
+    const key = occurrenceKey(reader);
+    if (
+      reader.receiverType !== "StringDocumentSource" ||
+      !reader.evidence?.trim() ||
+      approvedReaders.has(key)
+    )
+      throw new Error("Invalid or duplicate source-reader review record.");
+    approvedReaders.set(key, reader);
+  }
+  for (const reader of readers) {
+    const key = occurrenceKey(reader);
+    if (!reader.call || !approvedReaders.has(key) || seenReaders.has(key))
+      violations.push(reader);
+    seenReaders.add(key);
+  }
+  for (const [key, reader] of approvedReaders) {
+    if (!seenReaders.has(key))
+      violations.push({
+        ...reader,
+        problem: "reviewed source reader moved or disappeared",
+      });
+  }
+  const seenNegativeMentions = new Set();
+  for (const occurrence of forbidden) {
+    const key = occurrenceKey(occurrence);
+    const permission = negativeMentionAllowlist.find(
+      (entry) => occurrenceKey(entry) === key,
+    );
+    // Only exact negative documentation or literal-name assertions are eligible.
+    // Imports, aliases and executable identifiers are never exceptions.
+    const nonExecutable =
+      /\.md$/u.test(occurrence.path) ||
+      (/\.test\.(?:c|m)?js$/u.test(occurrence.path) &&
+        /^["']/u.test(occurrence.expression));
+    if (
+      !permission?.evidence?.trim() ||
+      !nonExecutable ||
+      seenNegativeMentions.has(key)
+    )
+      violations.push(occurrence);
+    seenNegativeMentions.add(key);
+  }
+  for (const entry of negativeMentionAllowlist) {
+    if (!seenNegativeMentions.has(occurrenceKey(entry)))
+      violations.push({
+        ...entry,
+        problem: "negative mention moved or disappeared",
+      });
+  }
+  const record = {
+    schemaVersion: 1,
+    baselineCommit,
+    auditedPathClasses: [
+      "source",
+      "tests",
+      "scripts",
+      "configuration",
+      "HTML",
+      "maintained-documentation",
+    ],
+    excludedPathClasses: [...excludedPrefixes, "binary-asset"],
+    inventory,
+    sourceReaderAllowlist,
+    negativeMentionAllowlist,
+    storageUses,
+    obsoleteOccurrences: violations,
+    obsoleteUseCount: violations.length,
+    changedPaths: migration?.changedPaths ?? [],
+    ...(migration
+      ? {
+          migrationCommit: migration.migrationCommit,
+          reviewedPatchSha256: migration.reviewedPatchSha256,
+        }
+      : {}),
+    disposition: violations.length
+      ? "UNRESOLVED"
+      : migration
+        ? "MIGRATED"
+        : "NO_OBSOLETE_USAGE",
+  };
+  const audit = { ...record, scanSha256: sha256(stableJson(record)) };
+  if (violations.length) {
+    const error = new Error(
+      "WebVOWL parity audit requires review: " + JSON.stringify(violations),
+    );
+    error.audit = audit;
+    throw error;
+  }
+  return audit;
+};
 
-  test("has no resolver alias around the package exports map", () => {
-    const configPaths = ["package.json", "vite.config.mjs", "eslint.config.js"];
-    const aliasViolations = configPaths
-      .filter((filePath) => existsSync(path.join(ROOT, filePath)))
-      .filter((filePath) => /alias[\\s\\S]{0,300}owlapi/u.test(readFileSync(path.join(ROOT, filePath), "utf8")));
-    expect(aliasViolations).toEqual([]);
-  });
-});
-`;
+export const assertReviewedWebVowlAudit = (actual, reviewed) => {
+  if (
+    !reviewed ||
+    actual.baselineCommit !== reviewed.baselineCommit ||
+    actual.scanSha256 !== reviewed.scanSha256 ||
+    actual.disposition !== reviewed.disposition
+  ) {
+    throw new Error(
+      "WebVOWL baseline, audit digest or disposition changed without a reviewed migration record.",
+    );
+  }
+};
+
+/** Bind the consumer's existing dependency before the disposable tarball trial. */
+export const assertReviewedWebVowlPackageDependency = ({
+  manifest,
+  reviewedPackageSpecifier,
+  retainedGitPackageSpecifier,
+}) => {
+  if (
+    typeof reviewedPackageSpecifier !== "string" ||
+    !reviewedPackageSpecifier ||
+    (reviewedPackageSpecifier !== "0.1.0" &&
+      reviewedPackageSpecifier !== retainedGitPackageSpecifier) ||
+    manifest.dependencies?.owlapi !== reviewedPackageSpecifier ||
+    Object.hasOwn(manifest.devDependencies ?? {}, "owlapi")
+  ) {
+    throw new Error(
+      "The WebVOWL baseline does not declare the reviewed exact package coordinate.",
+    );
+  }
+};
 
 export const webVowlCutoverDigest = (files) =>
   sha256(
     [...files]
-      .sort(([left], [right]) => compareCodeUnits(left, right))
-      .map(([filePath, source]) => `${normalizedPath(filePath)}\0${source}`)
+      .sort(([a], [b]) => compare(a, b))
+      .map(([path, source]) => normalizedPath(path) + "\0" + source)
       .join("\0"),
   );
+
+/** Immutable inputs are baked into a disposable installed-candidate test. */
+export const createCandidateArchitectureTest = ({
+  packageSpecifier,
+  packageVersion,
+  tarballSha256,
+  publicExports,
+  audit,
+}) =>
+  [
+    'import { createHash } from "node:crypto";',
+    'import { existsSync, readFileSync } from "node:fs";',
+    'import path from "node:path";',
+    'import { fileURLToPath } from "node:url";',
+    'import * as io from "owlapi/io";',
+    'import { OWLDocumentFormats } from "owlapi/formats";',
+    'import { StringDocumentSource, StringDocumentTarget, OWLOntologyStorageError, OWLStorerNotFoundError } from "owlapi/io";',
+    'import { exerciseImportClosureStorage } from "./owlapiQualification/public-contract.js";',
+    'import documents from "./owlapiQualification/documents.js";',
+    'const ROOT = fileURLToPath(new URL("..", import.meta.url));',
+    "const EXPECTED_PACKAGE_SPECIFIER = " +
+      JSON.stringify(packageSpecifier) +
+      ";",
+    "const EXPECTED_PACKAGE_VERSION = " + JSON.stringify(packageVersion) + ";",
+    "const EXPECTED_TARBALL_SHA256 = " + JSON.stringify(tarballSha256) + ";",
+    "const EXPECTED_EXPORTS = " + JSON.stringify(publicExports) + ";",
+    "const EXPECTED_AUDIT = " + JSON.stringify(audit) + ";",
+    "const CANDIDATE_ONLY_LOCAL_TARBALL = true;",
+    'const readJson = (name) => JSON.parse(readFileSync(path.join(ROOT, name), "utf8"));',
+    'describe("installed owlapi consumer boundary", () => {',
+    '  test("binds this disposable trial to the retained tarball and reviewed baseline", () => {',
+    "    expect(CANDIDATE_ONLY_LOCAL_TARBALL).toBe(true);",
+    '    const manifest = readJson("package.json");',
+    "    expect(manifest.dependencies.owlapi).toBe(EXPECTED_PACKAGE_SPECIFIER);",
+    "    expect(manifest.devDependencies?.owlapi).toBeUndefined();",
+    '    const lock = readJson("package-lock.json");',
+    '    expect(lock.packages[""].dependencies.owlapi).toBe(EXPECTED_PACKAGE_SPECIFIER);',
+    '    expect(createHash("sha256").update(readFileSync(EXPECTED_PACKAGE_SPECIFIER.slice(5))).digest("hex")).toBe(EXPECTED_TARBALL_SHA256);',
+    '    const installed = readJson("node_modules/owlapi/package.json");',
+    '    expect(installed.name).toBe("owlapi");',
+    "    expect(installed.version).toBe(EXPECTED_PACKAGE_VERSION);",
+    "    expect(installed.exports).toEqual(EXPECTED_EXPORTS);",
+    '    expect(existsSync(path.join(ROOT, "src/owlapi-js"))).toBe(false);',
+    '    const audit = readJson("src/owlapiQualification/audit.json");',
+    "    expect({ baselineCommit: audit.baselineCommit, scanSha256: audit.scanSha256, disposition: audit.disposition }).toEqual(EXPECTED_AUDIT);",
+    "  });",
+    '  test("preserves the precise Phase 21 target, source and error surface", () => {',
+    "    const target = new StringDocumentTarget();",
+    '    expect(target.toString()).toBe("");',
+    '    expect("getText" in target).toBe(false);',
+    '    expect(new StringDocumentSource("source text").getText()).toBe("source text");',
+    "    expect(new OWLStorerNotFoundError(OWLDocumentFormats.FUNCTIONAL)).toBeInstanceOf(OWLOntologyStorageError);",
+    '    expect(new OWLOntologyStorageError("not representable", { reason: "ONTOLOGY_NOT_REPRESENTABLE" }).reason).toBe("ONTOLOGY_NOT_REPRESENTABLE");',
+    '    expect(Object.hasOwn(io, "UnrepresentableOntologyError")).toBe(false);',
+    "  });",
+    '  test("preserves the exact closure in both formats and retains a successful target after failure", async () => {',
+    "    const result = await exerciseImportClosureStorage(documents);",
+    "    expect(result.summary).toEqual({ closureCount: 4, importLoadCount: 3, directAxiomCount: 26,",
+    '      rootAnnotationCount: 1, anonymousIndividualCount: 4, formats: ["functional", "rdfxml"],',
+    "      reloadLoaderCalls: 0, diagnosticCount: 0, retainedTargetAfterFailure: true, sourceReaderPreserved: true });",
+    "  });",
+    "});",
+  ].join("\n") + "\n";

@@ -24,6 +24,7 @@
   "rules": [
     {
       "id": "PHASE3-MANCHESTER-GTE-FACET-MAPPING",
+      "referenceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "artifactType": "OWL structural snapshot",
       "fixture": "util/owlapi-reference/fixtures/manchester/phase3-structural.omn",
       "parser": "Manchester Syntax",
@@ -43,6 +44,7 @@
     },
     {
       "id": "PHASE3-MANCHESTER-LTE-FACET-MAPPING",
+      "referenceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "artifactType": "OWL structural snapshot",
       "fixture": "util/owlapi-reference/fixtures/manchester/phase3-structural.omn",
       "parser": "Manchester Syntax",
@@ -62,6 +64,7 @@
     },
     {
       "id": "PHASE4-OWLXML-OBJECT-ONE-OF-ANONYMOUS-INDIVIDUAL",
+      "referenceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
       "artifactType": "OWL structural snapshot",
       "fixture": "util/owlapi-reference/fixtures/owlxml/phase4-structural.owx",
       "parser": "OWL/XML",
@@ -78,6 +81,170 @@
       },
       "rationale": "OWLAPI 5.5.1 omits an AnonymousIndividual child from an OWL/XML ObjectOneOf expression, while the W3C OWL/XML schema requires one or more Individual operands and includes anonymous individuals in that group.",
       "authority": "https://www.w3.org/TR/owl2-xml-serialization/#sec-xml-schema"
+    },
+    {
+      "artifactType": "OWL native structural differences",
+      "fixture": "universal-ontology@e2c667f3584b8fb705671cada0fe205b1000b617:src/external/time.rdf",
+      "parser": "RDF/XML",
+      "capability": "mapping.rdf-to-owl",
+      "referenceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "differenceCategory": "SPECIFICATION_GROUNDED_RECOVERY",
+      "differenceType": "EXTRA",
+      "cardinality": {
+        "form": "exact",
+        "value": 1
+      },
+      "authority": "https://www.w3.org/TR/owl2-rdf-based-semantics/#Semantic_Conditions_for_Datatypes",
+      "id": "JULY-TIME-GENERAL-DAY-DATATYPE-DEFINITION",
+      "side": "JS",
+      "selector": "$['axioms']['jsOnly'][*]",
+      "javaValue": null,
+      "jsValue": "DatatypeDefinition(<http://www.w3.org/2006/time#generalDay> DatatypeRestriction(xsd:string facetRestriction(pattern \"---(0[1-9]|[1-9][0-9])(Z|(\\\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?\"^^xsd:string)))",
+      "rationale": "Compatible JS parsing preserves generalDay's named restriction as a datatype definition with the exact original pattern. RDF-Based Semantics table 5.7 defines its datatype extension; table 5.9 permits equivalent datatype extensions. This is an explicit compatibility recovery outside the blank-node OWL 2 DL RDF mapping, not a claim that Java violates that mapping. Strict parsing still rejects the source form."
+    },
+    {
+      "artifactType": "OWL native structural differences",
+      "fixture": "universal-ontology@e2c667f3584b8fb705671cada0fe205b1000b617:src/external/time.rdf",
+      "parser": "RDF/XML",
+      "capability": "mapping.rdf-to-owl",
+      "referenceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "differenceCategory": "SPECIFICATION_GROUNDED_RECOVERY",
+      "differenceType": "EXTRA",
+      "cardinality": {
+        "form": "exact",
+        "value": 1
+      },
+      "authority": "https://www.w3.org/TR/owl2-rdf-based-semantics/#Semantic_Conditions_for_Datatypes",
+      "id": "JULY-TIME-GENERAL-MONTH-DATATYPE-DEFINITION",
+      "side": "JS",
+      "selector": "$['axioms']['jsOnly'][*]",
+      "javaValue": null,
+      "jsValue": "DatatypeDefinition(<http://www.w3.org/2006/time#generalMonth> DatatypeRestriction(xsd:string facetRestriction(pattern \"--(0[1-9]|1[0-9]|20)(Z|(\\\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?\"^^xsd:string)))",
+      "rationale": "Compatible JS parsing preserves generalMonth's named restriction as a datatype definition with the exact original pattern. RDF-Based Semantics table 5.7 defines its datatype extension; table 5.9 permits equivalent datatype extensions. This is an explicit compatibility recovery outside the blank-node OWL 2 DL RDF mapping, not a claim that Java violates that mapping. Strict parsing still rejects the source form."
+    },
+    {
+      "artifactType": "OWL native structural differences",
+      "fixture": "universal-ontology@e2c667f3584b8fb705671cada0fe205b1000b617:src/external/time.rdf",
+      "parser": "RDF/XML",
+      "capability": "mapping.rdf-to-owl",
+      "referenceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "differenceCategory": "SPECIFICATION_GROUNDED_RECOVERY",
+      "differenceType": "EXTRA",
+      "cardinality": {
+        "form": "exact",
+        "value": 1
+      },
+      "authority": "https://www.w3.org/TR/owl2-rdf-based-semantics/#Semantic_Conditions_for_Datatypes",
+      "id": "JULY-TIME-GENERAL-YEAR-DATATYPE-DEFINITION",
+      "side": "JS",
+      "selector": "$['axioms']['jsOnly'][*]",
+      "javaValue": null,
+      "jsValue": "DatatypeDefinition(<http://www.w3.org/2006/time#generalYear> DatatypeRestriction(xsd:string facetRestriction(pattern \"-?([1-9][0-9]{3,}|0[0-9]{3})(Z|(\\\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?\"^^xsd:string)))",
+      "rationale": "Compatible JS parsing preserves generalYear's named restriction as a datatype definition with the exact original pattern. RDF-Based Semantics table 5.7 defines its datatype extension; table 5.9 permits equivalent datatype extensions. This is an explicit compatibility recovery outside the blank-node OWL 2 DL RDF mapping, not a claim that Java violates that mapping. Strict parsing still rejects the source form."
+    },
+    {
+      "artifactType": "OWL native structural differences",
+      "fixture": "universal-ontology@e2c667f3584b8fb705671cada0fe205b1000b617:src/external/time.rdf",
+      "parser": "RDF/XML",
+      "capability": "mapping.rdf-to-owl",
+      "referenceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "differenceCategory": "SPECIFICATION_GROUNDED_RECOVERY",
+      "differenceType": "EXTRA",
+      "cardinality": {
+        "form": "exact",
+        "value": 1
+      },
+      "authority": "https://www.w3.org/TR/owl2-rdf-based-semantics/#Semantic_Conditions_for_Datatypes",
+      "id": "JULY-TIME-GENERAL-MONTH-JAVA-ORPHAN-FACET",
+      "side": "Java",
+      "selector": "$['anonymousIndividualGraphs']['javaOnly'][*]",
+      "javaValue": {
+        "anonymousIndividuals": 1,
+        "statements": [
+          {
+            "category": "AXIOM",
+            "value": "AnnotationAssertion(xsd:pattern _:comparison-0 \"--(0[1-9]|1[0-9]|20)(Z|(\\\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?\"^^xsd:string)"
+          }
+        ]
+      },
+      "jsValue": null,
+      "rationale": "The pinned Java parser retains the generalMonth facet as one disconnected xsd:pattern annotation on an anonymous individual. JS instead retains that exact pattern in the reconciled datatype definition. Only this exact one-node graph in the immutable time.rdf source is covered."
+    },
+    {
+      "artifactType": "OWL native structural differences",
+      "fixture": "universal-ontology@e2c667f3584b8fb705671cada0fe205b1000b617:src/external/time.rdf",
+      "parser": "RDF/XML",
+      "capability": "mapping.rdf-to-owl",
+      "referenceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "differenceCategory": "SPECIFICATION_GROUNDED_RECOVERY",
+      "differenceType": "EXTRA",
+      "cardinality": {
+        "form": "exact",
+        "value": 1
+      },
+      "authority": "https://www.w3.org/TR/owl2-rdf-based-semantics/#Semantic_Conditions_for_Datatypes",
+      "id": "JULY-TIME-GENERAL-DAY-JAVA-ORPHAN-FACET",
+      "side": "Java",
+      "selector": "$['anonymousIndividualGraphs']['javaOnly'][*]",
+      "javaValue": {
+        "anonymousIndividuals": 1,
+        "statements": [
+          {
+            "category": "AXIOM",
+            "value": "AnnotationAssertion(xsd:pattern _:comparison-0 \"---(0[1-9]|[1-9][0-9])(Z|(\\\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?\"^^xsd:string)"
+          }
+        ]
+      },
+      "jsValue": null,
+      "rationale": "The pinned Java parser retains the generalDay facet as one disconnected xsd:pattern annotation on an anonymous individual. JS instead retains that exact pattern in the reconciled datatype definition. Only this exact one-node graph in the immutable time.rdf source is covered."
+    },
+    {
+      "artifactType": "OWL native structural differences",
+      "fixture": "universal-ontology@e2c667f3584b8fb705671cada0fe205b1000b617:src/external/time.rdf",
+      "parser": "RDF/XML",
+      "capability": "mapping.rdf-to-owl",
+      "referenceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "differenceCategory": "SPECIFICATION_GROUNDED_RECOVERY",
+      "differenceType": "EXTRA",
+      "cardinality": {
+        "form": "exact",
+        "value": 1
+      },
+      "authority": "https://www.w3.org/TR/owl2-rdf-based-semantics/#Semantic_Conditions_for_Datatypes",
+      "id": "JULY-TIME-GENERAL-YEAR-JAVA-ORPHAN-FACET",
+      "side": "Java",
+      "selector": "$['anonymousIndividualGraphs']['javaOnly'][*]",
+      "javaValue": {
+        "anonymousIndividuals": 1,
+        "statements": [
+          {
+            "category": "AXIOM",
+            "value": "AnnotationAssertion(xsd:pattern _:comparison-0 \"-?([1-9][0-9]{3,}|0[0-9]{3})(Z|(\\\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?\"^^xsd:string)"
+          }
+        ]
+      },
+      "jsValue": null,
+      "rationale": "The pinned Java parser retains the generalYear facet as one disconnected xsd:pattern annotation on an anonymous individual. JS instead retains that exact pattern in the reconciled datatype definition. Only this exact one-node graph in the immutable time.rdf source is covered."
+    },
+    {
+      "artifactType": "RDF parsing diagnostics",
+      "fixture": "universal-ontology@e2c667f3584b8fb705671cada0fe205b1000b617:src/external/time.rdf",
+      "parser": "RDF/XML",
+      "capability": "mapping.rdf-to-owl",
+      "referenceRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "differenceCategory": "SPECIFICATION_GROUNDED_RECOVERY",
+      "differenceType": "EXTRA",
+      "cardinality": {
+        "form": "exact",
+        "value": 1
+      },
+      "authority": "https://www.w3.org/TR/owl2-rdf-based-semantics/#Semantic_Conditions_for_Datatypes",
+      "id": "JULY-TIME-JAVA-UNPARSED-NAMED-RESTRICTIONS",
+      "side": "Java",
+      "selector": "$['unparsedNQuads']",
+      "javaValue": "<http://www.w3.org/2006/time#generalDay> <http://www.w3.org/2002/07/owl#onDatatype> <http://www.w3.org/2001/XMLSchema#string> .\n<http://www.w3.org/2006/time#generalDay> <http://www.w3.org/2002/07/owl#withRestrictions> _:c14n1 .\n<http://www.w3.org/2006/time#generalMonth> <http://www.w3.org/2002/07/owl#onDatatype> <http://www.w3.org/2001/XMLSchema#string> .\n<http://www.w3.org/2006/time#generalMonth> <http://www.w3.org/2002/07/owl#withRestrictions> _:c14n2 .\n<http://www.w3.org/2006/time#generalYear> <http://www.w3.org/2002/07/owl#onDatatype> <http://www.w3.org/2001/XMLSchema#string> .\n<http://www.w3.org/2006/time#generalYear> <http://www.w3.org/2002/07/owl#withRestrictions> _:c14n0 .\n",
+      "jsValue": null,
+      "rationale": "The pinned Java parser leaves exactly these six onDatatype/withRestrictions triples unparsed. RDFC-1.0 removes only incidental blank-node labels. Qualification additionally requires the three exact JS datatype definitions, the three exact Java orphan facets, no discarded JS source content, no unparsed candidate output and a matching native merge of the reconciled JS document models. This diagnostic rule cannot waive a JS conformance failure."
     }
   ]
 }

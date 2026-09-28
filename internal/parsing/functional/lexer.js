@@ -424,14 +424,9 @@ export class FunctionalSyntaxLexer {
         byteLength += 2;
       } else {
         const codePoint = this.#text.codePointAt(this.#offset);
-        if (
-          codePoint === 0 ||
-          inRange(codePoint, 0xd800, 0xdfff) ||
-          (codePoint < 0x20 &&
-            codePoint !== 0x9 &&
-            codePoint !== 0xa &&
-            codePoint !== 0xd)
-        ) {
+        // OWL quotedString permits Unicode characters, including controls;
+        // XML's character restrictions do not apply to Functional Syntax.
+        if (inRange(codePoint, 0xd800, 0xdfff)) {
           this.#syntax(
             "The quoted string contains an invalid character",
             location,

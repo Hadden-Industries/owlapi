@@ -27,10 +27,10 @@ Authoritative machine-readable records:
   and controlled KRSS1 compatibility decisions.
 - `compatibility/expected-differences.json`: exact Java/JavaScript differential exceptions.
 - `dependency-governance.json`: selected dependency authority, risk, licence, and replacement records.
-- `ontology-lifecycle-capability-implementation-plan.md`: the separate
-  imports-closure, mutation, merger, and storage feature programme that begins
-  only after the verified public production cutover—normally `owlapi@0.1.0`—and
-  normally targets the next zero-minor feature line, `owlapi@0.2.0`.
+- `ontology-lifecycle-capability-implementation-plan.md`: imports-closure,
+  mutation, merger, and storage included in the first planned public production
+  `owlapi@0.1.0` release. The `0.1.0-rc.1` integration candidate requires fresh
+  qualification; no earlier public `0.1.0` release is a prerequisite.
 - `plans/w3c-test-conformance-reporting.md`: the independent
   post-release programme for complete versioned W3C result ledgers, EARL
   generation, and appropriately disclosed upstream implementation-report

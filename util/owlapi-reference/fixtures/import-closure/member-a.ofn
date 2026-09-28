@@ -1,0 +1,9 @@
+Prefix(:=<urn:owlapi-js:import-closure#>)
+Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+Ontology(<urn:owlapi-js:import-closure:member-a>
+  Import(<urn:owlapi-js:import-closure:member-b>)
+  Annotation(rdfs:comment "imported ontology annotation must not be copied")
+  Declaration(Class(:MemberA))
+  Declaration(Class(:Shared))
+  ClassAssertion(:MemberA _:same-source-individual)
+)

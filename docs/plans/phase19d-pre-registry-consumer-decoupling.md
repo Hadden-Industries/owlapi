@@ -18,6 +18,22 @@
 - Historical gate-result records remain bound to their former registry/catalogue/checklist hashes. Do not rewrite them as if they evaluated the amended wording.
 - No release workflow, publication authority, package source, exports, runtime dependency, or package version changes in this checkpoint.
 
+## Observed Phase 19D1 WebVOWL checkpoint
+
+> **Evidence status:** This records a successfully pushed and qualified pre-registry consumer checkpoint. It does not change a release-gate result or establish completion of Phase 19D2, `P19-WEBVOWL-001`, `P19-CHECKPOINT-001`, or Phase 19.
+
+The immutable Git/GitHub and committed package-boundary facts below were reverified on 2026-09-01. The qualification results are separate witnessed executions from the 2026-08-31 WebVOWL cutover and were not rerun on 2026-09-01.
+
+- **Immutable consumer revision:** signed commit [`21003ad50d04bf3b714ed94a5cb6b7470c5a65d6`](https://github.com/Hadden-Industries/webvowl/commit/21003ad50d04bf3b714ed94a5cb6b7470c5a65d6), subject `refactor(owl2vowl): Consume standalone owlapi package`, parent `1da5a5646779eb414ee58f79ffc9cad38ff32244`, tree `83e9cc76a90d2b920d0ddf81b1db8fd4cf37e387`, and Git-normalized commit-message SHA-256 `fd18fba5e6799071ba41c8f9a426dabd1b81e7f64d1b2d260af28ebb387af52d`. The guarded push to `refs/heads/main` was witnessed, and the commit remains an ancestor of the observed remote `main`.
+- **Signature authentication:** `git verify-commit --raw` succeeded against the operator's configured allowed-signers file for `maksym@shostak.info`, ED25519 key fingerprint `SHA256:0lELaqBbgGHdSctv4GOpPmROX56wNCaii2PLZI5pXCU`; GitHub independently reported `verified: true`, reason `valid`, at `2026-08-31T20:19:53Z`. This establishes authentication under that local policy and GitHub account-key association; it does not claim authorization under owlapi's release-tag signer registry or a WebVOWL repository policy.
+- **Exact package boundary:** `package.json` and `package-lock.json` at that revision select only `git+https://github.com/Hadden-Industries/owlapi.git#caabb1197ffdab91c1e10d596d177b5142aea5c1`, installed as `owlapi@0.1.0-alpha.0`. The maintained AST boundary gate permits only `owlapi`, `owlapi/apibinding`, `owlapi/model`, `owlapi/io`, and `owlapi/formats`; the former `src/owlapi-js/**` package source copy and package-development utilities are absent.
+- **Maintained-checkout qualification:** 64 Jest suites and 585 tests passed, together with formatting, JavaScript lint, development and production builds, lazy N3/JSON-LD chunk verification, and `git diff --check`. `npm ls owlapi` and the complete dependency tree were valid, and relocated WebVOWL-owned fixture blobs matched their source bytes.
+- **Isolated qualification:** an earlier clean clone passed `npm ci`, the then-current 64 suites and 582 tests, both builds, and Chromium, Firefox, and WebKit fixture checks without a sibling `owlapi` checkout or ancestor dependency tree. The remaining three tests were added by the later AST boundary-scanner repair. No GitHub-hosted check runs were returned for the checkpoint commit; these are witnessed maintained-checkout and isolated-clone results, not a GitHub Actions attestation.
+- **Package equivalence source of truth:** the reviewed [`pre-registry-git-equivalence.json`](../release/pre-registry-git-equivalence.json) remains the non-duplicated authority for retained-candidate versus exact-Git installed-tree equivalence. Its result is `PASS` and its qualification summary digest is `sha256:2a05663b2970dcf30c2b6af9bf51e01ff7c464475b9df01a753a4dd46e66fabf`.
+- **Review fidelity:** an earlier built-in review found one P2 in the consumer boundary scanner. That finding was fixed test-first with ESLint AST traversal and the checks above were rerun; the final full built-in `/review` rerun was explicitly waived, so this checkpoint does not claim one occurred.
+
+This checkpoint permits independent WebVOWL development against the qualified Git-installed alpha, but it preserves all six limitations already recorded by the equivalence evidence: `NO_REGISTRY_INTEGRITY`, `NO_REGISTRY_SIGNATURE`, `NO_NPM_PROVENANCE`, `NO_PUBLICATION_ATTESTATION`, `NO_DISTRIBUTION_TAG`, and `NO_IMMUTABLE_PUBLIC_COORDINATE`. Phase 19D2 must replace, rather than supplement, the Git coordinate with the verified public-registry coordinate before the enclosing requirements can pass.
+
 ## Exact configuration approval gate
 
 Before implementing configuration changes, request one exact batch:

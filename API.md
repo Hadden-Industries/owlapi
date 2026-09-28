@@ -1,12 +1,12 @@
-<!-- registry-sha256: b0a23731b2c59b49d6671c07d51d9fb1a1b173077ecd81fd81eb59c55cc2d267 -->
+<!-- registry-sha256: fcc9e20de24dd299b667d3396e691a81e1ffa1bf2925e5dac6e165b3377c8dd9 -->
 
 # owlapi API reference
 
-This reference is generated from the authoritative compatibility registry for `owlapi` 0.1.0-alpha.0. Edit the generator or registry inputs, not this file.
+This reference is generated from the authoritative compatibility registry for `owlapi` 0.1.0-rc.1. Edit the generator or registry inputs, not this file.
 
 This is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project; Java names identify compatibility authorities, not organizational continuity or complete parity.
 
-The package exposes one convenience aggregate and four Java-recognizable namespace entry points. Import from declared package specifiers only; paths below `internal/` are intentionally outside the public contract.
+The package exposes one convenience aggregate and 5 Java-recognizable namespace entry points. Import from declared package specifiers only; paths below `internal/` are intentionally outside the public contract.
 
 ## `OWLManager`
 
@@ -61,6 +61,24 @@ An immutable vocabulary used to classify supported OWL structural values.
 - Evidence: model/model.test.js, test/package-boundary.test.mjs
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
+
+## `AddOntologyAnnotation`
+
+A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to the documented initial surface.
+
+- Import: `owlapi/model`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.model.AddOntologyAnnotation
+- Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
+- Release status: PRERELEASE from 0.1.0
+- Call shape: new AddOntologyAnnotation(ontology, annotation)
+- Supported members: prototype.getAnnotation; prototype.getOntology
+- Omitted Java members: Change-data, reverse-change, and visitor APIs
+- Public errors: TypeError
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. AddOntologyAnnotation is a frozen immutable record; Java change-data, reverse-change, and visitor APIs remain deliberately unavailable.
+- Evidence: model/ontologyChanges.test.js, model/owlOntologyManager.test.js, test/package-boundary.test.mjs
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
 ## `CLASS_EXPRESSION_KINDS`
 
@@ -288,11 +306,11 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
 - Release status: PRERELEASE from 0.1.0-alpha.0
 - Call shape: new OWLOntologyManager(...arguments)
-- Supported members: prototype.createOntology; prototype.getOWLDataFactory; prototype.getOntology; prototype.loadOntologyFromOntologyDocument; prototype.loadOntologyGraphFromOntologyDocument
-- Omitted Java members: Change and progress listeners; Ontology mutation and transactional change application; Storer and ontology-factory registration
-- Public errors: DocumentLoadError; MissingImportError; OWLOntologyCreationError; OWLOntologyStateError; UnparsableOntologyException
-- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.
-- Evidence: model/model.test.js, test/package-boundary.test.mjs
+- Supported members: prototype.addAxiom; prototype.addAxioms; prototype.applyChange; prototype.applyChanges; prototype.createOntology; prototype.getImportsClosure; prototype.getOWLDataFactory; prototype.getOntology; prototype.importsClosure; prototype.loadOntologyFromOntologyDocument; prototype.loadOntologyGraphFromOntologyDocument; prototype.saveOntology
+- Omitted Java members: Change and progress listeners; AddAxiom/RemoveAxiom change records and axiom removal operations; AddImport/RemoveImport changes; RemoveOntologyAnnotation changes; Storer and ontology-factory registration; IRI, stream, implicit-format, and default-document saveOntology overloads
+- Public errors: DocumentLoadError; MissingImportError; OWLOntologyCreationError; OWLOntologyStateError; OWLOntologyStorageError; OWLStorerNotFoundError; UnparsableOntologyException
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership. Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure. addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically. applyChange/applyChanges accept only SetOntologyID and AddOntologyAnnotation records, materialize one JavaScript iterable form, atomically publish the complete list, and return boolean instead of Java's ChangeApplied or ChangeDetails. LIFECYCLE-ASYNC-SAVE-OVERLOAD: saveOntology(ontology, format, target) returns Promise<void>, validates ownership and genuine format/target identities, and selects only the exact format key. LIFECYCLE-LOSSLESS-STORAGE: saveOntology renders one committed snapshot and atomically replaces target text only after success; unexpected renderer failures are wrapped with cause and typed storage errors retain identity.
+- Evidence: internal/loading/managedOntologyIndex.test.js, internal/model/axiomSemantics.test.js, internal/model/ontologyState.test.js, model/model.test.js, model/ontologyChanges.test.js, model/owlOntologyManager.integration.test.js, model/owlOntologyManager.test.js, test/package-boundary.test.mjs, internal/storage/storerRegistry.test.js, model/owlOntologyManager.storage.test.js
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
@@ -331,6 +349,24 @@ An immutable vocabulary used to classify supported OWL structural values.
 - Evidence: model/model.test.js, test/package-boundary.test.mjs
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
+
+## `SetOntologyID`
+
+A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to the documented initial surface.
+
+- Import: `owlapi/model`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.model.SetOntologyID
+- Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
+- Release status: PRERELEASE from 0.1.0
+- Call shape: new SetOntologyID(ontology, ontologyID)
+- Supported members: prototype.getNewOntologyID; prototype.getOntology; prototype.getOriginalOntologyID
+- Omitted Java members: Java IRI constructor overload; Change-data, reverse-change, and visitor APIs
+- Public errors: TypeError
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. SetOntologyID is a frozen immutable record and accepts only OWLOntologyID; Java's IRI constructor overload and change-operation helpers remain deliberately unavailable.
+- Evidence: internal/loading/managedOntologyIndex.test.js, model/ontologyChanges.test.js, model/owlOntologyManager.test.js, test/package-boundary.test.mjs
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
 ## `StructuralSet`
 
@@ -620,6 +656,24 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
 
+## `OWLOntologyStorageError`
+
+The canonical storage error, including lossless-representation failures identified by a safe reason field.
+
+- Import: `owlapi/io`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.model.OWLOntologyStorageException
+- Relationship: JS_ADAPTATION; compatibility: ADAPTED
+- Release status: PRERELEASE from 0.1.0
+- Call shape: new OWLOntologyStorageError(message?, details?)
+- Supported members: constructor
+- Omitted Java members: Java Throwable-only and serialization constructor forms
+- Public errors: none specific
+- Qualification: PARITY-ERROR-SUFFIX: Java OWLOntologyStorageException uses the established JavaScript Error suffix. PARITY-ERROR-HIERARCHY: extends the existing OWLAPIError root rather than introducing Java's checked OWLException hierarchy. PARITY-ERROR-NAMESPACE: the canonical binding is owned by owlapi/io and re-exported only through the existing bare aggregate, not owlapi/model. PARITY-STORAGE-REASON: code ONTOLOGY_STORAGE_FAILED and safe own reason ONTOLOGY_NOT_REPRESENTABLE classify lossless-storage failures without a new public subclass; native cause and protected identity follow OWLAPIError.
+- Evidence: io/io.test.js, test/package-boundary.test.mjs, test/installed-package-boundary.mjs, test/installed-package-smoke.mjs
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
+
 ## `OWLParserError`
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
@@ -635,6 +689,24 @@ A stable public error category used by ontology loading, parsing, or policy enfo
 - Public errors: none specific
 - Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.
 - Evidence: io/io.test.js, test/package-boundary.test.mjs
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
+
+## `OWLStorerNotFoundError`
+
+A storage-error subtype for an OWLDocumentFormat with no matching storer.
+
+- Import: `owlapi/io`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.model.OWLStorerNotFoundException
+- Relationship: JS_ADAPTATION; compatibility: ADAPTED
+- Release status: PRERELEASE from 0.1.0
+- Call shape: new OWLStorerNotFoundError(format)
+- Supported members: constructor
+- Omitted Java members: Java exception serialization
+- Public errors: none specific
+- Qualification: PARITY-ERROR-SUFFIX: Java OWLStorerNotFoundException uses the established JavaScript Error suffix and stable STORER_NOT_FOUND code. PARITY-ERROR-HIERARCHY: extends OWLOntologyStorageError, retaining Java's storage-exception subtype relation; the constructor takes the requested OWLDocumentFormat and exposes no getFormat() member. PARITY-ERROR-NAMESPACE: the canonical binding is owned by owlapi/io and re-exported only through the existing bare aggregate, not owlapi/model.
+- Evidence: io/io.test.js, test/package-boundary.test.mjs, test/installed-package-boundary.mjs, test/installed-package-smoke.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
@@ -728,6 +800,24 @@ A JavaScript adaptation supporting the initial public OWLAPI workflow.
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
 
+## `StringDocumentTarget`
+
+An in-memory ontology document target with Java's toString() text reader and private atomic replacement.
+
+- Import: `owlapi/io`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.io.StringDocumentTarget
+- Relationship: JS_ADAPTATION; compatibility: ADAPTED
+- Release status: PRERELEASE from 0.1.0
+- Call shape: new StringDocumentTarget()
+- Supported members: prototype.toString
+- Omitted Java members: getWriter() and the Java Writer protocol (PARITY-TARGET-WRITER-OMISSION)
+- Public errors: none specific
+- Qualification: PARITY-TARGET-WRITER-OMISSION: toString() is the only public text reader; no getText(), getWriter(), write(), append(), or constructor-text overload is exposed. PARITY-TARGET-ATOMIC-COMMIT: package-private complete-text replacement validates before changing private state; failed storage retains prior text.
+- Evidence: io/stringDocumentTarget.test.js, test/package-boundary.test.mjs, test/installed-package-boundary.mjs, test/installed-package-smoke.mjs
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
+
 ## `UnloadableImportError`
 
 A stable public error category used by ontology loading, parsing, or policy enforcement.
@@ -817,3 +907,39 @@ Immutable identities for every ontology document format supported by the initial
 - Evidence: model/model.test.js, test/package-boundary.test.mjs
 
 Use this export only through its documented package specifier; do not infer additional Java API compatibility from its namespace.
+
+## `OWLOntologyImportsClosureSetProvider`
+
+A constructor-time imports-closure snapshot provider with defensive JavaScript Set results.
+
+- Import: `owlapi/util`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider
+- Relationship: JS_ADAPTATION; compatibility: ADAPTED
+- Release status: PRERELEASE from 0.1.0
+- Call shape: new OWLOntologyImportsClosureSetProvider(manager, rootOntology)
+- Supported members: prototype.ontologies
+- Omitted Java members: none recorded
+- Public errors: OWLOntologyStateError; TypeError
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. ontologies returns a fresh defensive JavaScript Set instead of Java's Stream<OWLOntology>. The imports-closure membership is captured at construction instead of remaining a live Java view.
+- Evidence: util/owlOntologyImportsClosureSetProvider.test.js, test/package-boundary.test.mjs, test/installed-package-smoke.mjs, test/consumers/browser/browser-consumers.playwright.js
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
+
+## `OWLOntologyMerger`
+
+A Java-shaped ontology merger that materializes the structural union of supplied direct axioms.
+
+- Import: `owlapi/util`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.util.OWLOntologyMerger
+- Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
+- Release status: PRERELEASE from 0.1.0
+- Call shape: new OWLOntologyMerger(provider); new OWLOntologyMerger(provider, mergeOnlyLogicalAxioms)
+- Supported members: prototype.createMergedOntology
+- Omitted Java members: OWLAxiomFilter constructor overload and passes(axiom) surface
+- Public errors: OWLOntologyStateError; TypeError
+- Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. createMergedOntology builds a structural set union from each supplied ontology's direct axioms before creating the target, then mutates the target only through public manager methods. The optional boolean constructor form selects Java-compatible logical-axiom filtering; the OWLAxiomFilter constructor remains unavailable. An omitted ontologyIRI creates an anonymous target; a supplied value must be an IRI.
+- Evidence: util/owlOntologyMerger.test.js, test/package-boundary.test.mjs, test/installed-package-smoke.mjs, test/consumers/browser/browser-consumers.playwright.js
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.

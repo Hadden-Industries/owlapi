@@ -72,8 +72,16 @@ const snapshotParameters = (parameters) => {
   return Object.freeze(snapshot);
 };
 
+// Package-private friend: storers must reject unrecognized output parameters
+// without adding an enumeration method to the agreed public format surface.
+export let readDocumentFormatParameters;
+
 export class OWLDocumentFormat {
   #parameters;
+
+  static {
+    readDocumentFormatParameters = (format) => format.#parameters;
+  }
 
   constructor({
     extensions = [],

@@ -1,4 +1,5 @@
-import { mkdtempSync, mkdirSync, rmSync } from "node:fs";
+import { copyFileSync, mkdtempSync, mkdirSync, rmSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { crc32, deflateRawSync, gzipSync } from "node:zlib";
@@ -12,6 +13,23 @@ import {
   qualifyGitPackageEquivalence,
 } from "./qualify-git-package-equivalence.mjs";
 import { formatSha256Sums, sha256Buffer } from "./release-artifacts.mjs";
+
+test("the historical no-network entry point needs no lifecycle companion files", () => {
+  // Resolve the existing source package through its own package scope. This is
+  // a staging-contract regression, not a claim of installed-package evidence.
+  const directory = mkdtempSync(
+    join(process.cwd(), ".historical-network-probe-"),
+  );
+  try {
+    const script = join(directory, "installed-package-no-network.mjs");
+    copyFileSync("test/installed-package-no-network.mjs", script);
+    expect(
+      execFileSync(process.execPath, [script], { encoding: "utf8" }),
+    ).toContain("no network I/O");
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
 
 const COMMIT = "caabb1197ffdab91c1e10d596d177b5142aea5c1";
 const GIT_SPEC = `git+https://github.com/Hadden-Industries/owlapi.git#${COMMIT}`;

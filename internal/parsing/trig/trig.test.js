@@ -69,13 +69,17 @@ describe("TriG manager integration", () => {
         <urn:test:graph> { <urn:test:Detected> rdf:type owl:Class . }`),
     );
     const turtle = await manager.loadOntologyGraphFromOntologyDocument(
-      source("@prefix ex: <urn:test:> . ex:s ex:p ex:o ."),
+      source(`@prefix owl: <http://www.w3.org/2002/07/owl#> .
+        @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+        <urn:test:Turtle> rdf:type owl:Class .`),
       new OWLOntologyLoaderConfiguration({
         rdfDatasetGraphPolicy: "defaultGraphOnly",
       }),
     );
     const nquads = await manager.loadOntologyGraphFromOntologyDocument(
-      source("<urn:s> <urn:p> <urn:o> <urn:graph> ."),
+      source(
+        "<urn:test:NQuads> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> <urn:graph> .",
+      ),
     );
 
     expect(trig.documents[0].context.format).toBe(OWLDocumentFormats.TRIG);

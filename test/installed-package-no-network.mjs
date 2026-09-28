@@ -63,7 +63,11 @@ for (const document of documents) {
   assert.ok(ontology);
 }
 
-assert.deepEqual(observations, []);
+// Lifecycle consumers can retain these same guards for additional operations;
+// the historical parser-only qualifier still stages this file on its own.
+export const assertNoNetworkOperations = () =>
+  assert.deepEqual(observations, []);
+assertNoNetworkOperations();
 process.stdout.write(
   "Installed owlapi local parsing performed no network I/O\n",
 );

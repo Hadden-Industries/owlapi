@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { reconcileStructuralSnapshots } from "../../../util/owlapi-reference/reconcile-structural-differences.mjs";
 
 import { OWLOntologyLoaderConfiguration } from "../../../index.js";
 import { OWLManager } from "../../../index.js";
@@ -160,64 +161,6 @@ const jsRangeSnapshot = (ontology) => {
   };
 };
 
-const selectorName = (name) =>
-  `['${name.replaceAll("\\", "\\\\").replaceAll("'", "\\'")}']`;
-
-const atomicDifferences = (javaValue, jsValue, selector = "$") => {
-  if (Object.is(javaValue, jsValue)) {
-    return [];
-  }
-  if (javaValue === undefined) {
-    return [{ differenceType: "EXTRA", side: "JS", selector, jsValue }];
-  }
-  if (jsValue === undefined) {
-    return [{ differenceType: "MISSING", side: "Java", selector, javaValue }];
-  }
-  if (
-    javaValue === null ||
-    jsValue === null ||
-    typeof javaValue !== "object" ||
-    typeof jsValue !== "object"
-  ) {
-    return [
-      {
-        differenceType:
-          typeof javaValue === typeof jsValue
-            ? "VALUE_CHANGED"
-            : "TYPE_CHANGED",
-        side: "Java",
-        selector,
-        javaValue,
-        jsValue,
-      },
-    ];
-  }
-  const keys = [
-    ...new Set([...Object.keys(javaValue), ...Object.keys(jsValue)]),
-  ].sort();
-  return keys.flatMap((key) =>
-    atomicDifferences(
-      javaValue[key],
-      jsValue[key],
-      `${selector}${selectorName(key)}`,
-    ),
-  );
-};
-
-const ruleMatches = (rule, difference, fixture) =>
-  rule.artifactType === "OWL structural snapshot" &&
-  rule.fixture === fixture &&
-  rule.parser === "Manchester Syntax" &&
-  rule.capability === "parser.manchester" &&
-  rule.differenceType === difference.differenceType &&
-  rule.side === difference.side &&
-  rule.selector === difference.selector &&
-  Object.is(rule.javaValue, difference.javaValue) &&
-  Object.is(rule.jsValue, difference.jsValue);
-
-const exactCardinality = (rule) =>
-  rule.cardinality?.form === "exact" ? rule.cardinality.value : undefined;
-
 describe("Manchester Syntax OWLAPI 5.5.1 structural differential", () => {
   it("matches the pinned Java snapshot with only exact governed differences", async () => {
     const fixture = readFileSync(FIXTURE_URL, "utf8");
@@ -282,29 +225,23 @@ describe("Manchester Syntax OWLAPI 5.5.1 structural differential", () => {
       expected.axioms.filter((axiom) => /_:[A-Za-z0-9]+/u.test(axiom)).length,
     );
 
-    const differences = atomicDifferences(
+    const reconciliation = reconcileStructuralSnapshots(
       javaRangeSnapshot(expected.axioms),
       jsRangeSnapshot(ontology),
+      {
+        fixture: expectedDocument.fixture,
+        referenceRevision: expectedDocument.oracle.revision,
+        parser: "Manchester Syntax",
+        capability: "parser.manchester",
+        rules: differenceManifest.rules,
+      },
     );
-    const scopedRules = differenceManifest.rules.filter(
-      (rule) => rule.fixture === expectedDocument.fixture,
-    );
-    const matches = new Map(scopedRules.map((rule) => [rule.id, 0]));
-
-    for (const difference of differences) {
-      const matchingRules = scopedRules.filter((rule) =>
-        ruleMatches(rule, difference, expectedDocument.fixture),
-      );
-      if (matchingRules.length !== 1) {
-        throw new Error(
-          `Expected one governed rule for ${JSON.stringify(difference)}, found ${matchingRules.length}`,
-        );
-      }
-      matches.set(matchingRules[0].id, matches.get(matchingRules[0].id) + 1);
-    }
-    expect(differences).toHaveLength(2);
-    for (const rule of scopedRules) {
-      expect(matches.get(rule.id)).toBe(exactCardinality(rule));
-    }
+    expect(reconciliation).toMatchObject({
+      status: "PASS",
+      unmatched: [],
+      ambiguous: [],
+      unsatisfied: [],
+    });
+    expect(reconciliation.matches).toHaveLength(2);
   });
 });

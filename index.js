@@ -8,18 +8,22 @@ export {
   OWLAPIError,
   OWLOntologyCreationError,
   OWLOntologyStateError,
+  OWLOntologyStorageError,
   OWLParserError,
   OWLSyntaxError,
+  OWLStorerNotFoundError,
   ParserMismatchError,
   ResourceLimitError,
   SecurityPolicyError,
   StringDocumentSource,
+  StringDocumentTarget,
   UnloadableImportError,
   UnparsableOntologyException,
   UnsupportedConstructError,
   XmlParseError,
 } from "./io/index.js";
 export {
+  AddOntologyAnnotation,
   ANNOTATION_VALUE_KINDS,
   AXIOM_KINDS,
   CLASS_EXPRESSION_KINDS,
@@ -38,6 +42,7 @@ export {
   OWLOntologyManager,
   OWLStructuralObject,
   StructuralSet,
+  SetOntologyID,
   dispatchAnnotationValue,
   dispatchAxiom,
   dispatchClassExpression,
@@ -47,6 +52,10 @@ export {
   dispatchObjectPropertyExpression,
   dispatchOwlObject,
 } from "./model/index.js";
+export {
+  OWLOntologyImportsClosureSetProvider,
+  OWLOntologyMerger,
+} from "./util/index.js";
 
 // UNSUPPORTED(OWLAPI parity): Java OWLAPI exposes reasoner interfaces, but
 // The initial 0.1 package provides no reasoner types, factories, or inferred-query
@@ -54,10 +63,10 @@ export {
 // nominal API without selecting semantics/providers and conformance tests.
 // Verification: capability `reasoner` (UNSUPPORTED_BY_DESIGN).
 
-// TODO(OWLAPI parity): Java OWLAPI exposes OWLOntologyStorer and concrete
+// TODO(OWLAPI parity): Java OWLAPI exposes OWLOntologyStorer and multiple
 // serializer families. The initial 0.1 package deliberately has no
-// `storeOntology` API; the private Phase 16 OwlToRdfTranslator provides semantic
+// `saveOntology` API; the private Phase 16 OwlToRdfTranslator provides semantic
 // RDF/JS mapping without claiming a public RDF namespace or serialization format.
-// Future storers require explicit format contracts, dependency/provenance
-// review, and syntax-specific round-trip tests.
-// Verification: capability `storer.concrete-serializers` (DEFERRED).
+// The planned Functional Syntax and RDF/XML storers require explicit format
+// contracts, dependency/provenance review, and syntax-specific round-trip tests.
+// Verification: capabilities `storer.functional` and `storer.rdfxml` (DEFERRED).

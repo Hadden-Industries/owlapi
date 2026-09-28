@@ -9,21 +9,21 @@ import {
   readFileSync,
   readdirSync,
   rmSync,
-  statSync,
   symlinkSync,
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { basename, dirname, extname, join, relative, resolve } from "node:path";
+import { basename, dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
-  PACKAGE_OWNED_RUNTIME_DEPENDENCIES,
-  applyWebVowlSourceCutover,
+  auditWebVowlJavaParityConsumers,
+  assertReviewedWebVowlAudit,
+  assertReviewedWebVowlPackageDependency,
   createCandidateArchitectureTest,
-  createDependencyOwnershipInventory,
   webVowlCutoverDigest,
 } from "../test/consumers/webvowl/cutover.mjs";
+import { applyReviewedWebVowlMigration } from "../test/consumers/webvowl/migration.mjs";
 import { isStrictDescendantPath, sha256File } from "./release-artifacts.mjs";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
@@ -52,6 +52,8 @@ const sourceRepository = resolve(argument("--webvowl-repository"));
 const outputDirectory = resolve(argument("--output"));
 const expectedWebVowlCommit = optionalArgument("--expected-webvowl-commit");
 const expectedOntologyCommit = optionalArgument("--expected-ontology-commit");
+const developmentAuditPath = optionalArgument("--development-audit");
+const reviewedMigrationPatch = optionalArgument("--reviewed-migration-patch");
 if (existsSync(outputDirectory) && readdirSync(outputDirectory).length > 0) {
   throw new Error(
     `WebVOWL qualification output already exists at ${outputDirectory}; preserve or remove it explicitly before rerunning.`,
@@ -124,6 +126,32 @@ const runWebVowlNpm = (arguments_, options = {}) =>
   });
 
 const readJson = (filePath) => JSON.parse(readFileSync(filePath, "utf8"));
+const parityDecisions = readJson(
+  join(REPOSITORY_ROOT, "docs/compatibility/java-api-parity-decisions.json"),
+);
+const provisional = developmentAuditPath !== undefined;
+const reviewedAudit = provisional
+  ? readJson(resolve(developmentAuditPath))
+  : parityDecisions.consumerMigrations.webvowl;
+if (provisional) {
+  if (
+    reviewedAudit.qualification !== "PRE_INTEGRATION" ||
+    !expectedWebVowlCommit ||
+    !expectedOntologyCommit
+  ) {
+    throw new Error(
+      "Development qualification requires a provisional reviewed audit and both exact repository commits.",
+    );
+  }
+} else if (
+  parityDecisions.qualification !== "RECONCILED" ||
+  parityDecisions.phase21.status !== "COMPLETE" ||
+  !reviewedAudit
+) {
+  throw new Error(
+    "Accepted qualification requires completed Phase 21 release and consumer evidence; use explicit development inputs for a provisional experiment.",
+  );
+}
 
 const candidateManifest = readJson(
   join(candidateDirectory, "candidate-manifest.json"),
@@ -146,7 +174,7 @@ const sourceStatus = runGit(["status", "--porcelain=v1"], {
   cwd: sourceRepository,
   label: "WebVOWL source cleanliness check",
 });
-if (sourceStatus !== "") {
+if (sourceStatus !== "" && !provisional) {
   throw new Error(
     `The maintained WebVOWL source checkout is not clean:\n${sourceStatus}`,
   );
@@ -207,21 +235,6 @@ const candidateMutationCache = join(
 const candidateCleanCache = join(temporaryRoot, "candidate-clean-npm-cache");
 const repositoryMirror = join(temporaryRoot, "webvowl.git");
 
-const TEXT_EXTENSIONS = new Set([
-  ".cjs",
-  ".css",
-  ".html",
-  ".js",
-  ".json",
-  ".md",
-  ".mjs",
-  ".py",
-  ".toml",
-  ".txt",
-  ".yaml",
-  ".yml",
-]);
-
 const trackedFiles = (directory) =>
   runGit(["ls-files", "-z"], { cwd: directory })
     .split("\0")
@@ -233,11 +246,14 @@ const trackedFileMap = (directory) =>
   new Map(
     trackedFiles(directory).map((filePath) => {
       const absolute = join(directory, filePath);
-      const source =
-        TEXT_EXTENSIONS.has(extname(filePath).toLowerCase()) &&
-        statSync(absolute).size <= 16 * 1024 * 1024
-          ? readFileSync(absolute, "utf8")
-          : "";
+      const bytes = readFileSync(absolute);
+      let source;
+      try {
+        source = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+        if (source.includes("\0")) source = bytes;
+      } catch {
+        source = bytes;
+      }
       return [filePath, source];
     }),
   );
@@ -309,7 +325,7 @@ try {
       "add",
       "--detach",
       checkout,
-      sourceCommit,
+      reviewedAudit.baselineCommit,
     ],
     {
       label: "WebVOWL source-commit worktree",
@@ -318,9 +334,23 @@ try {
   const clonedCommit = runGit(["rev-parse", "HEAD"], {
     cwd: checkout,
   }).trim();
-  if (clonedCommit !== sourceCommit) {
+  if (clonedCommit !== reviewedAudit.baselineCommit) {
     throw new Error(
-      `WebVOWL clone resolved ${clonedCommit}, expected ${sourceCommit}.`,
+      `WebVOWL clone resolved ${clonedCommit}, expected ${reviewedAudit.baselineCommit}.`,
+    );
+  }
+  const verifiedMigration = applyReviewedWebVowlMigration({
+    reviewedAudit,
+    sourceCommit,
+    patchPath: reviewedMigrationPatch
+      ? resolve(reviewedMigrationPatch)
+      : undefined,
+    runGit: (args) => runGit(args, { cwd: checkout }),
+  });
+  if (verifiedMigration) {
+    copyFileSync(
+      resolve(reviewedMigrationPatch),
+      join(outputDirectory, "reviewed-consumer-migration.patch"),
     );
   }
 
@@ -350,6 +380,12 @@ try {
     repository: normalizePath(sourceRepository),
     branch: sourceBranch,
     commit: sourceCommit,
+    auditedBaselineCommit: reviewedAudit.baselineCommit,
+    verifiedMigration,
+    qualification: provisional ? "PRE_INTEGRATION" : "RECONCILED",
+    ignoredMaintainedWorktreeChanges: sourceStatus
+      .split(/\r?\n/u)
+      .filter(Boolean),
     isolatedCheckoutOutsideRepository: !isStrictDescendantPath(
       sourceRepository,
       checkout,
@@ -363,6 +399,26 @@ try {
       workspaceSiblingLink: "universal-ontology",
     },
   });
+
+  const beforeFiles = trackedFileMap(checkout);
+  const baselineManifest = readJson(join(checkout, "package.json"));
+  const retainedGitEquivalence = readJson(
+    join(REPOSITORY_ROOT, "docs/release/pre-registry-git-equivalence.json"),
+  );
+  assertReviewedWebVowlPackageDependency({
+    manifest: baselineManifest,
+    reviewedPackageSpecifier: reviewedAudit.packageSpecifier,
+    retainedGitPackageSpecifier:
+      retainedGitEquivalence.source.git.packageSpecifier,
+  });
+  const consumerAudit = auditWebVowlJavaParityConsumers(beforeFiles, {
+    baselineCommit: reviewedAudit.baselineCommit,
+    sourceReaderAllowlist: reviewedAudit.sourceReaderAllowlist,
+    negativeMentionAllowlist: reviewedAudit.negativeMentionAllowlist ?? [],
+    migration: verifiedMigration,
+  });
+  writeJson("consumer-audit.json", consumerAudit);
+  assertReviewedWebVowlAudit(consumerAudit, reviewedAudit);
 
   runWebVowlNpm(["ci", "--cache", baselineCache], {
     cwd: checkout,
@@ -385,42 +441,6 @@ try {
     logFile: "baseline-build-production.log",
   });
 
-  const beforeFiles = trackedFileMap(checkout);
-  const ownershipInventory = createDependencyOwnershipInventory(beforeFiles, {
-    sourceCommit,
-  });
-  const blockedRemovals = PACKAGE_OWNED_RUNTIME_DEPENDENCIES.filter(
-    (name) =>
-      ownershipInventory.dependencies[name]?.removalDisposition !==
-      "REMOVE_FROM_WEBVOWL_ROOT",
-  );
-  if (blockedRemovals.length > 0) {
-    throw new Error(
-      `WebVOWL now has application-owned uses of package dependencies: ${blockedRemovals.join(", ")}.`,
-    );
-  }
-  writeJson("dependency-ownership.json", ownershipInventory);
-
-  const cutover = applyWebVowlSourceCutover(beforeFiles);
-  for (const filePath of cutover.changedFiles) {
-    writeFileSync(
-      join(checkout, filePath),
-      cutover.files.get(filePath),
-      "utf8",
-    );
-  }
-
-  const stagingTree = join(checkout, "src", "owlapi-js");
-  const removedFiles = directoryFileManifest(stagingTree, checkout);
-  writeJson("removed-staging-tree.json", {
-    root: "src/owlapi-js",
-    fileCount: removedFiles.length,
-    files: removedFiles,
-  });
-  // This recursive removal is confined to the validated unique temporary clone;
-  // the maintained WebVOWL checkout is never a deletion target in Phase 19C.
-  rmSync(stagingTree, { recursive: true, force: true });
-
   runWebVowlNpm(
     [
       "install",
@@ -435,20 +455,6 @@ try {
       logFile: "candidate-install.log",
     },
   );
-  runWebVowlNpm(
-    [
-      "uninstall",
-      ...PACKAGE_OWNED_RUNTIME_DEPENDENCIES,
-      "--cache",
-      candidateMutationCache,
-    ],
-    {
-      cwd: checkout,
-      label: "WebVOWL package-only dependency removal",
-      logFile: "candidate-uninstall-package-dependencies.log",
-    },
-  );
-
   const mutatedManifest = readJson(join(checkout, "package.json"));
   const installedSpecifier = mutatedManifest.dependencies?.owlapi;
   if (
@@ -459,16 +465,49 @@ try {
       `Disposable WebVOWL did not record an exact retained-tarball specifier: ${installedSpecifier}`,
     );
   }
-  for (const dependency of PACKAGE_OWNED_RUNTIME_DEPENDENCIES) {
-    if (
-      mutatedManifest.dependencies?.[dependency] ||
-      mutatedManifest.devDependencies?.[dependency]
-    ) {
-      throw new Error(
-        `WebVOWL retained package-owned dependency ${dependency}.`,
-      );
-    }
+  const expectedManifest = structuredClone(baselineManifest);
+  expectedManifest.dependencies.owlapi = installedSpecifier;
+  if (stableJson(mutatedManifest) !== stableJson(expectedManifest)) {
+    throw new Error(
+      "Candidate injection changed the WebVOWL manifest beyond its owlapi dependency.",
+    );
   }
+  const qualificationSourceRoot = join(checkout, "src", "owlapiQualification");
+  mkdirSync(qualificationSourceRoot);
+  copyFileSync(
+    join(REPOSITORY_ROOT, "test/import-closure/public-contract.js"),
+    join(qualificationSourceRoot, "public-contract.js"),
+  );
+  const closureDocuments = Object.fromEntries(
+    ["root", "left", "right", "leaf"].map((name) => [
+      name,
+      readFileSync(
+        join(
+          REPOSITORY_ROOT,
+          "test/import-closure/fixtures/closure",
+          name + ".ofn",
+        ),
+        "utf8",
+      ),
+    ]),
+  );
+  const closureDocumentsModule =
+    "export default " + JSON.stringify(closureDocuments) + ";\n";
+  writeFileSync(
+    join(qualificationSourceRoot, "documents.js"),
+    closureDocumentsModule,
+    "utf8",
+  );
+  writeFileSync(
+    join(qualificationSourceRoot, "audit.json"),
+    stableJson(consumerAudit),
+    "utf8",
+  );
+  const auditBinding = {
+    baselineCommit: consumerAudit.baselineCommit,
+    scanSha256: consumerAudit.scanSha256,
+    disposition: consumerAudit.disposition,
+  };
 
   writeFileSync(
     join(checkout, "src", "owlapiConsumerBoundary.architecture.test.js"),
@@ -476,23 +515,40 @@ try {
       packageSpecifier: installedSpecifier,
       packageVersion: candidateManifest.package.version,
       tarballSha256: candidateTarballSha256,
+      publicExports: readJson(join(REPOSITORY_ROOT, "package.json")).exports,
+      audit: auditBinding,
     }),
     "utf8",
   );
 
-  runWebVowlNpm(["run", "format"], {
-    cwd: checkout,
-    label: "format reviewed WebVOWL cutover",
-    logFile: "candidate-format-cutover.log",
-  });
+  runWebVowlNpm(
+    [
+      "exec",
+      "--",
+      "prettier",
+      "--write",
+      "src/owlapiConsumerBoundary.architecture.test.js",
+      "src/owlapiQualification",
+    ],
+    {
+      cwd: checkout,
+      label: "format reviewed WebVOWL cutover",
+      logFile: "candidate-format-cutover.log",
+    },
+  );
   const architectureTestPath =
     "src/owlapiConsumerBoundary.architecture.test.js";
-  runGit(["add", "--intent-to-add", architectureTestPath], {
-    cwd: checkout,
-    label: "include generated boundary test in source-change inventory",
-  });
+  runGit(
+    ["add", "--intent-to-add", architectureTestPath, "src/owlapiQualification"],
+    {
+      cwd: checkout,
+      label: "include generated boundary test in source-change inventory",
+    },
+  );
   const expectedSourceChanges = [
-    ...cutover.changedFiles,
+    "src/owlapiQualification/public-contract.js",
+    "src/owlapiQualification/documents.js",
+    "src/owlapiQualification/audit.json",
     architectureTestPath,
   ].sort(compareCodeUnits);
   const actualSourceChanges = runGit(["diff", "--name-only", "--", "src"], {
@@ -515,9 +571,18 @@ try {
   ]);
   writeJson("source-cutover.json", {
     changedFiles: expectedSourceChanges,
-    formatter: "WebVOWL's exact locked Prettier through npm run format",
+    formatter:
+      "WebVOWL's locked Prettier, scoped to injected qualification files",
     contentDigest: webVowlCutoverDigest(formattedCutoverFiles),
   });
+  runWebVowlNpm(
+    ["exec", "--", "eslint", architectureTestPath, "src/owlapiQualification"],
+    {
+      cwd: checkout,
+      label: "WebVOWL native lint of injected qualification sources",
+      logFile: "candidate-source-lint.log",
+    },
+  );
 
   const checkoutNodeModules = join(checkout, "node_modules");
   if (!isStrictDescendantPath(checkout, checkoutNodeModules)) {
@@ -548,13 +613,6 @@ try {
     throw new Error(
       "The installed WebVOWL candidate has the wrong package identity.",
     );
-  }
-  for (const dependency of PACKAGE_OWNED_RUNTIME_DEPENDENCIES) {
-    if (!installedPackageManifest.dependencies?.[dependency]) {
-      throw new Error(
-        `The installed owlapi candidate does not declare ${dependency}.`,
-      );
-    }
   }
   writeJson("installed-owlapi-package.json", installedPackageManifest);
   copyFileSync(
@@ -595,7 +653,7 @@ try {
     label: "isolated WebVOWL candidate production build",
     logFile: "candidate-build-production.log",
   });
-  const browserFixtureRoot = join(checkout, ".phase19c-browser");
+  const browserFixtureRoot = join(checkout, ".owlapi-lifecycle-browser");
   mkdirSync(browserFixtureRoot);
   const browserFixtureFiles = new Map([
     [
@@ -610,6 +668,8 @@ try {
     [
       "main.js",
       `import owl2vowl from "../src/owl2vowl/js/index.js";
+import { exerciseImportClosureStorage } from "../src/owlapiQualification/public-contract.js";
+import documents from "../src/owlapiQualification/documents.js";
 
 const output = globalThis.document.querySelector("#result");
 try {
@@ -622,7 +682,8 @@ try {
     <rdfs:label xml:lang="en">Candidate class</rdfs:label>
   </owl:Class>
 </rdf:RDF>\`, { fileName: "candidate.rdf" });
-  output.textContent = JSON.stringify(result);
+  const { summary: importClosure } = await exerciseImportClosureStorage(documents);
+  output.textContent = JSON.stringify({ vowl: result, importClosure });
   output.dataset.state = "pass";
 } catch (error) {
   output.textContent = error?.stack ?? String(error);
@@ -636,15 +697,13 @@ try {
       `import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
-import commonjs from "vite-plugin-commonjs";
 
 const root = dirname(fileURLToPath(import.meta.url));
 
-// This fixture uses WebVOWL's independently locked Vite and CommonJS bridge;
-// it does not borrow the owlapi package fixture's newer bundler configuration.
+// This fixture uses WebVOWL's independently locked Vite and its native
+// CommonJS support, without borrowing the producer bundler configuration.
 export default defineConfig({
   root,
-  plugins: [commonjs()],
   build: {
     emptyOutDir: true,
     outDir: resolve(root, "dist"),
@@ -667,9 +726,10 @@ export default defineConfig({
   });
   runWebVowlNpm(
     [
-      "run",
-      "build",
+      "exec",
       "--",
+      "vite",
+      "build",
       "--config",
       join(browserFixtureRoot, "vite.config.mjs"),
     ],
@@ -700,12 +760,14 @@ export default defineConfig({
     [
       "diff",
       "--no-ext-diff",
+      "HEAD",
       "--",
       "package.json",
       "package-lock.json",
       "src/owl2vowl",
-      "src/testRunnerScope.architecture.test.js",
+      "src/owlapiQualification",
       "src/owlapiConsumerBoundary.architecture.test.js",
+      ...(verifiedMigration?.changedPaths ?? []),
     ],
     { cwd: checkout, label: "reviewed WebVOWL candidate patch" },
   );
@@ -737,9 +799,12 @@ export default defineConfig({
       tarballSha256: candidateTarballSha256,
       sourceState: candidateManifest.sourceState,
     },
+    qualification: provisional ? "PRE_INTEGRATION" : "RECONCILED",
+    consumerAudit: auditBinding,
+    verifiedMigration,
     dependencyHandoff: {
-      removedFromWebVowlRoot: PACKAGE_OWNED_RUNTIME_DEPENDENCIES,
-      suppliedByInstalledOwlapi: true,
+      onlyOwlapiCoordinateChanged: true,
+      applicationDependenciesPreserved: true,
     },
     cleanInstall: {
       ancestorNodeModules: [],
@@ -753,6 +818,8 @@ export default defineConfig({
       baselineProductionBuild: "PASS",
       consumerBoundary: "PASS",
       candidateJest: "PASS",
+      installedImportClosure: "PASS",
+      phase21TargetErrorSemantics: "PASS",
       representativeCorpus: "PASS",
       candidateDevelopmentBuild: "PASS",
       candidateProductionBuild: "PASS",

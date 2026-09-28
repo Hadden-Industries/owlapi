@@ -85,6 +85,30 @@ npm run format:check
 npm run lint
 ```
 
+For workflow changes, also run:
+
+```shell
+npm run verify:workflow-syntax
+npm run verify:workflow-governance
+```
+
+Install the native [actionlint 1.7.12 release](https://github.com/rhysd/actionlint/releases/tag/v1.7.12)
+for your platform on `PATH`; follow its [installation and attestation verification](https://github.com/rhysd/actionlint/blob/v1.7.12/docs/install.md)
+instructions. CI installs the checksum-pinned Linux release in the required
+Node 24 source job. The binary is a development tool under its MIT licence, not
+an npm dependency or part of the distributed package. Reassess the release,
+checksum and known diagnostic filter together when updating it.
+
+`actionlint` owns GitHub workflow syntax and expression checks. This command
+disables its optional ShellCheck/Pyflakes integrations so its coverage does not
+depend on locally installed shell/Python tools; it is not shell or Python program
+verification. The existing `yaml` parser supplies values and source comments to
+repository governance, which owns release authority, exact pins and other local
+policy. Prettier owns presentation. The two release files retain GitHub's
+documented `queue: max` setting: `.github/actionlint.yaml` suppresses only the
+known unsupported-key diagnostic ([upstream issue 680](https://github.com/rhysd/actionlint/issues/680)),
+while governance tests enforce the exact root queue policy and reject job queues.
+
 To apply the canonical formatter locally, run:
 
 ```shell

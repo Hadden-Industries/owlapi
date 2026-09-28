@@ -45,6 +45,9 @@ const REQUIRED_PACKED_PATHS = Object.freeze([
   "io/index.js",
   "model/index.js",
   "package.json",
+  "util/index.js",
+  "util/owlOntologyImportsClosureSetProvider.js",
+  "util/owlOntologyMerger.js",
 ]);
 const ALLOWED_PACKED_PREFIXES = Object.freeze([
   "apibinding/",

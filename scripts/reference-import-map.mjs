@@ -5,25 +5,37 @@ import { pathToFileURL } from "node:url";
 
 import { Generator } from "@jspm/generator";
 
-const PUBLIC_SPECIFIERS = Object.freeze([
-  "owlapi",
-  "owlapi/apibinding",
-  "owlapi/formats",
-  "owlapi/io",
-  "owlapi/model",
-]);
+const repositoryManifest = JSON.parse(
+  readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+);
+const compareCodeUnits = (left, right) =>
+  left < right ? -1 : left > right ? 1 : 0;
+const toPublicSpecifier = (packageName, exportKey) => {
+  if (exportKey === ".") {
+    return packageName;
+  }
+  if (!exportKey.startsWith("./") || exportKey.includes("*")) {
+    throw new Error(`Unsupported public package export key ${exportKey}`);
+  }
+  return `${packageName}/${exportKey.slice(2)}`;
+};
+
+export const DECLARED_PUBLIC_SPECIFIERS = Object.freeze(
+  Object.keys(repositoryManifest.exports)
+    .map((exportKey) => toPublicSpecifier(repositoryManifest.name, exportKey))
+    .sort(compareCodeUnits),
+);
 const ENVIRONMENT_CONDITIONS = Object.freeze([
   "production",
   "browser",
   "module",
 ]);
-const NODE_XML_FALLBACK = "@xmldom/xmldom";
+const XML_DOM_PACKAGE = "@xmldom/xmldom";
 const XML_ADAPTER_URL_SUFFIX = "/internal/parsing/xml/xmlParserAdapter.js";
+const RDF_XML_WRITER_URL_SUFFIX =
+  "/internal/storage/rdfxml/rdfXmlGraphWriter.js";
 const JSON_LD_SPECIFIER = "jsonld";
 const JSPM_PROVIDER_BASE_URL = "https://ga.jspm.io/";
-const repositoryManifest = JSON.parse(
-  readFileSync(new URL("../package.json", import.meta.url), "utf8"),
-);
 const jsonLdVersion = repositoryManifest.dependencies?.[JSON_LD_SPECIFIER];
 if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/u.test(jsonLdVersion ?? "")) {
   throw new Error(
@@ -35,8 +47,16 @@ const JSON_LD_BROWSER_BUNDLE_URL = new URL(
   JSPM_PROVIDER_BASE_URL,
 ).href;
 
-const compareCodeUnits = (left, right) =>
-  left < right ? -1 : left > right ? 1 : 0;
+export const excludeNodeXmlParserFallback = (specifier, parentUrl) => {
+  if (specifier !== XML_DOM_PACKAGE) return false;
+  // Parsing in document environments uses their native DOMParser. Storage uses
+  // the library's well-formed serializer in every host, including workers.
+  if (parentUrl.endsWith(XML_ADAPTER_URL_SUFFIX)) return true;
+  if (parentUrl.endsWith(RDF_XML_WRITER_URL_SUFFIX)) return false;
+  throw new Error(
+    `${XML_DOM_PACKAGE} appeared outside an approved XML parser or serializer seam: ${parentUrl}`,
+  );
+};
 
 const stableObject = (value) => {
   if (Array.isArray(value)) {
@@ -209,19 +229,7 @@ export const generateReferenceImportMap = async ({
     env: [...ENVIRONMENT_CONDITIONS],
     fetchRetries: 2,
     integrity: true,
-    ignore(specifier, parentUrl) {
-      if (specifier !== NODE_XML_FALLBACK) {
-        return false;
-      }
-      if (!parentUrl.endsWith(XML_ADAPTER_URL_SUFFIX)) {
-        throw new Error(
-          `${NODE_XML_FALLBACK} appeared outside the approved XML adapter seam: ${parentUrl}`,
-        );
-      }
-      // Native document environments must use their DOMParser and never fetch
-      // the declared Node fallback. The bundled worker is qualified separately.
-      return true;
-    },
+    ignore: excludeNodeXmlParserFallback,
     mapUrl: pathToFileURL(resolve(applicationPath)),
     resolutions: { owlapi: packageUrl },
   });
@@ -229,7 +237,7 @@ export const generateReferenceImportMap = async ({
   await generator.link(pathToFileURL(resolve(applicationPath)).href);
   const map = normalizeGeneratedMap(generator.getMap(), packageUrl);
 
-  for (const specifier of PUBLIC_SPECIFIERS) {
+  for (const specifier of DECLARED_PUBLIC_SPECIFIERS) {
     if (!map.imports?.[specifier]) {
       throw new Error(`Generated reference map omits ${specifier}`);
     }

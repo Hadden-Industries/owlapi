@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "release": "0.1.0-alpha.0",
+  "release": "0.1.0-rc.1",
   "normativeStatuses": [
     "REQUIRED_V1",
     "DEFERRED",
@@ -9,6 +9,27 @@
   ],
   "progressStates": ["NOT_STARTED", "IN_PROGRESS", "COMPLETE"],
   "capabilities": [
+    {
+      "id": "compatibility.java-parity-precondition",
+      "category": "compatibility",
+      "status": "REQUIRED_V1",
+      "progress": "IN_PROGRESS",
+      "phase": 21
+    },
+    {
+      "id": "io.string-document-target",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "IN_PROGRESS",
+      "phase": 21
+    },
+    {
+      "id": "io.storage-error-contract",
+      "category": "public-api",
+      "status": "REQUIRED_V1",
+      "progress": "IN_PROGRESS",
+      "phase": 21
+    },
     {
       "id": "parser.functional",
       "category": "parser",
@@ -363,8 +384,57 @@
       "phase": null
     },
     {
-      "id": "storer.concrete-serializers",
+      "id": "manager.imports-closure-query",
       "category": "public-api",
+      "status": "DEFERRED",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "ontology.change-required-surface",
+      "category": "public-api",
+      "status": "DEFERRED",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "util.imports-closure-set-provider",
+      "category": "public-api",
+      "status": "DEFERRED",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "util.ontology-merger",
+      "category": "public-api",
+      "status": "DEFERRED",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "manager.save-ontology",
+      "category": "public-api",
+      "status": "DEFERRED",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "storer.functional",
+      "category": "storage",
+      "status": "DEFERRED",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "storer.rdfxml",
+      "category": "storage",
+      "status": "DEFERRED",
+      "progress": "NOT_STARTED",
+      "phase": null
+    },
+    {
+      "id": "rdf.strict-complete-reconstruction",
+      "category": "mapping",
       "status": "DEFERRED",
       "progress": "NOT_STARTED",
       "phase": null

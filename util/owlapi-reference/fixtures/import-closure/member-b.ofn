@@ -1,0 +1,6 @@
+Prefix(:=<urn:owlapi-js:import-closure#>)
+Ontology(<urn:owlapi-js:import-closure:member-b>
+  Import(<urn:owlapi-js:import-closure:root>)
+  Declaration(Class(:MemberB))
+  ClassAssertion(:MemberB _:member-b-individual)
+)

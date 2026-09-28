@@ -177,16 +177,25 @@ describe("exact-artifact release reconciliation", () => {
     });
   });
 
-  test("the checked-in publication control selects the reviewed source artefacts", () => {
+  test("preserves alpha reconciliation provenance without selecting it for the new candidate", () => {
     const checkedInControl = JSON.parse(
       readFileSync("docs/release/publication-control.json", "utf8"),
     );
     const checkedInManifest = JSON.parse(readFileSync("package.json", "utf8"));
 
-    expect(
+    expect(() =>
       reconciliation.deriveReconciliationMetadata({
         control: checkedInControl,
         manifest: checkedInManifest,
+      }),
+    ).toThrow(/not the exact reviewed direct-bootstrap continuation/u);
+    const retainedAlphaControl = JSON.parse(
+      readFileSync("docs/release/alpha-reconciliation-control.json", "utf8"),
+    );
+    expect(
+      reconciliation.deriveReconciliationMetadata({
+        control: retainedAlphaControl,
+        manifest,
       }),
     ).toEqual(
       reconciliation.deriveReconciliationMetadata({

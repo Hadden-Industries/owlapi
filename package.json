@@ -1,6 +1,6 @@
 {
   "name": "owlapi",
-  "version": "0.1.0-alpha.0",
+  "version": "0.1.0-rc.1",
   "description": "OWL 2 ontology parsing and structural APIs for Node.js and browsers, designed for practical compatibility with Java OWLAPI concepts.",
   "keywords": [
     "owl",
@@ -22,7 +22,8 @@
     "./apibinding": "./apibinding/index.js",
     "./model": "./model/index.js",
     "./io": "./io/index.js",
-    "./formats": "./formats/index.js"
+    "./formats": "./formats/index.js",
+    "./util": "./util/index.js"
   },
   "files": [
     "index.js",
@@ -30,6 +31,9 @@
     "model/",
     "io/",
     "formats/",
+    "util/index.js",
+    "util/owlOntologyImportsClosureSetProvider.js",
+    "util/owlOntologyMerger.js",
     "internal/",
     "README.md",
     "API.md",
@@ -85,11 +89,13 @@
     "workflow:dependency-review-applicability": "node scripts/report-dependency-review-applicability.mjs",
     "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules --disable-warning=ExperimentalWarning\" jest",
     "test:boundary": "node --test test/package-boundary.test.mjs",
+    "test:universal-ontology": "node util/owlapi-reference/qualify-universal-ontology.mjs",
     "test:browser": "node scripts/run-browser-tests.mjs",
     "test:webvowl-browser": "node scripts/test-webvowl-browser.mjs",
     "test:webvowl-consumer": "node scripts/qualify-webvowl-consumer.mjs",
     "verify:release-gates": "node scripts/verify-release-gates.mjs --json",
     "verify:workflow-governance": "node scripts/workflow-governance.mjs",
+    "verify:workflow-syntax": "actionlint -shellcheck= -pyflakes=",
     "qualify:release": "node scripts/qualify-release.mjs",
     "release:lint-package": "publint --strict",
     "release:pack": "node scripts/build-release-candidate.mjs",
@@ -111,9 +117,11 @@
     "format:check": "prettier --check --ignore-unknown ."
   },
   "dependencies": {
+    "@hyperjump/uri": "1.3.5",
     "@rdfjs/data-model": "2.1.2",
     "@rdfjs/dataset": "2.0.3",
     "@xmldom/xmldom": "0.9.12",
+    "bcp-47": "2.1.1",
     "jsonld": "9.0.0",
     "n3": "2.3.0",
     "rdfxml-streaming-parser": "3.3.0"
@@ -131,13 +139,15 @@
     "eslint-plugin-compat": "7.0.2",
     "globals": "17.11.0",
     "jest": "30.4.2",
+    "jsonpath-rfc9535": "1.3.0",
     "pacote": "22.0.0",
     "prettier": "3.9.6",
     "publint": "0.3.24",
     "semver": "7.8.5",
     "spdx-expression-parse": "4.0.0",
     "tar": "7.5.22",
-    "vite": "8.2.2"
+    "vite": "8.2.2",
+    "yaml": "2.9.1"
   },
   "repository": {
     "type": "git",
