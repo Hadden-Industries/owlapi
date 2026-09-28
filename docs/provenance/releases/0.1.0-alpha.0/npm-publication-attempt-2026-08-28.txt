@@ -1,0 +1,139 @@
+owlapi npm direct-bootstrap publication attempt
+================================================
+
+Record type: sanitized command-output and chain-of-custody snapshot
+Terminal classification: EXTERNAL_BLOCKED
+Assembled at: 2026-08-31T01:28:03.415Z
+
+This record preserves the non-secret facts of the first authenticated write
+attempt for owlapi@0.1.0-alpha.0. It is not evidence of a successful npm
+publication. No credential value, authorization header, environment-secret
+value, npm configuration containing credentials, or unredacted debug log is
+included. The one-use npm access token used by the job was subsequently revoked.
+
+Reconstruction boundary
+-----------------------
+
+On 2026-08-31, GitHub's job-log download endpoint returned HTTP 403 to the
+current authenticated client. This record therefore does not claim to be a
+freshly downloaded copy of the complete raw job log. Run and job identities,
+timestamps, step conclusions, and skip outcomes were re-read from the live
+GitHub Actions metadata API. All still-retained source, preflight,
+reconciliation, tag, draft, candidate, SBOM, and checksum artifacts used below
+were downloaded again where applicable and independently inspected or hashed.
+The two decisive npm diagnostic lines are the exact sanitized output captured
+when the failed step ran and subsequently used for the npm Support escalation.
+
+Qualified package source
+------------------------
+
+Repository: Hadden-Industries/owlapi
+Canonical signed tag: v0.1.0-alpha.0
+Package-source commit: caabb1197ffdab91c1e10d596d177b5142aea5c1
+Source release run: https://github.com/Hadden-Industries/owlapi/actions/runs/33160042447
+Source release run attempt: 1
+Source candidate artifact ID: 9682090118
+Source candidate artifact digest: sha256:f5967321e1c18a9c5aa14ad44a1d45fe3606605453866ce7746afe9c394f52d7
+Publication-preflight artifact ID: 9682247101
+Publication-preflight artifact digest: sha256:324472ff607ce6bbaebf30fe1e1a1db40a78da54f0877a712001a3c9ee84157e
+Publication preflight result: PASS
+Publication preflight checked at: 2026-08-28T10:14:47.638Z
+Publication preflight registry state: DIRECT_BOOTSTRAP_READY
+
+The preflight used the canonical public registry, observed the intended
+coordinate as absent, and matched npm's dry-run packlist to the retained
+candidate: 72 files, 179949 tarball bytes, SHA-256
+80d56eb103c1a94dcdc006b4549e91cce16f7ed0eb076e0e26053e3d670704a3.
+
+Exact-artifact reconciliation
+-----------------------------
+
+Publication-tooling commit: deb20d338766afa4fcba0bf76a505a475d1d3df7
+Reconciliation run: https://github.com/Hadden-Industries/owlapi/actions/runs/33180218814
+Reconciliation run attempt: 1
+Reconciliation source-verification job: https://github.com/Hadden-Industries/owlapi/actions/runs/33180218814/job/98879274993
+Reconciliation result: PASS
+Reconciliation verified at: 2026-08-28T14:27:57.038Z
+Package reproduction result: BYTE_IDENTICAL
+Reconciled candidate artifact ID: 9689381462
+Reconciled candidate artifact name: owlapi-0.1.0-alpha.0-reconciled-candidate-33180218814-1
+Reconciled candidate artifact digest: sha256:83585fdd8a7fa5710631a8d38567e186dd2e0b3a15f8dee9ab5e2ff5ed3e7394
+Reconciled candidate artifact size: 248448 bytes
+Reconciled candidate artifact expiry: 2026-11-26T14:27:21Z
+
+The reconciled artifact was downloaded again on 2026-08-31. Its retained
+SHA256SUMS contained, and independent SHA-256 reads reproduced:
+
+e14124cdf7911968587dc788068c41d4bfed58f4901933ea20a938437a0c7c3b  owlapi-0.1.0-alpha.0.cdx.json
+80d56eb103c1a94dcdc006b4549e91cce16f7ed0eb076e0e26053e3d670704a3  owlapi-0.1.0-alpha.0.tgz
+
+The reconciliation also reverified the signed tag at the package-source
+commit. It created or exactly reconciled draft GitHub release ID 378544798 with
+the 187-byte SHA256SUMS, 67888-byte SBOM, and 179949-byte tarball. The draft was
+not published.
+
+Authenticated npm write
+-----------------------
+
+Job: Release reconciliation / npm direct bootstrap
+Job URL: https://github.com/Hadden-Industries/owlapi/actions/runs/33180218814/job/98881292478
+Job started: 2026-08-28T14:46:45Z
+Failed step: Perform the single authorized direct-bootstrap write
+Failed step started: 2026-08-28T14:46:53Z
+Failed step completed: 2026-08-28T14:46:56Z
+Job completed: 2026-08-28T14:46:57Z
+Runner class: GitHub-hosted ubuntu-24.04 x64
+Node.js: 24.19.0
+npm: 12.0.2
+Registry: https://registry.npmjs.org/
+Requested channel: next
+
+Command:
+
+npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/
+
+Sanitized decisive diagnostic:
+
+npm error code E403
+npm error 403 Forbidden - PUT https://registry.npmjs.org/owlapi - Package name too similar to existing package nwsapi; try renaming your package to '@maksymshostak/owlapi' and publishing with 'npm publish --access=public' instead
+
+The step exited with status 1. The registry-verification, release-evidence,
+immutable-release finalization, and immutable-verification jobs were skipped.
+No public npm version or distribution tag was created.
+
+Post-attempt public-registry observation
+----------------------------------------
+
+Observed at: 2026-08-31T01:23:13.939Z
+Node.js: 24.19.0
+npm: 12.0.2
+Command:
+
+npm view owlapi@0.1.0-alpha.0 version --json --registry=https://registry.npmjs.org/
+
+Result:
+
+npm error code E404
+npm error 404 Unpublished on 2021-12-21T07:06:27.732Z
+
+This confirms only that owlapi@0.1.0-alpha.0 was still not publicly resolvable
+after the failed write. As with every read-only registry probe, it does not by
+itself establish authority to publish the name.
+
+Disposition
+-----------
+
+The authenticated E403 is the decisive namespace-authority observation. Under
+the accepted implementation plan, P19-NAMESPACE-001 and P19-PUBLICATION-001 are
+EXTERNAL_BLOCKED pending npm Support. The failure is not a package defect, does
+not make the version public, does not justify burning the coordinate, and does
+not authorize selecting a different package name. An npm Support request was
+submitted on 2026-08-28; no final support decision is recorded here.
+
+The definition digests in the adjacent gates.json bind the gate inputs from the
+qualified package-source commit. Raw definition-file digests are SHA-256 over
+the exact Git blob contents. catalogueSha256 and checklistCoverageSha256 are
+SHA-256 over UTF-8 JSON.stringify(value, null, 2) plus one LF, where value is
+respectively parseCatalogueRequirements(implementationPlan) and
+parseChecklistRows(implementationPlan) from the unchanged
+scripts/release-gate-catalogue.mjs normalization implementation.
