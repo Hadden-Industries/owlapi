@@ -2,6 +2,64 @@ import { describe, expect, test } from "@jest/globals";
 import * as cutoverModule from "./cutover.mjs";
 
 describe("package-based WebVOWL qualification", () => {
+  const retainedGitPackageSpecifier =
+    "git+https://github.com/Hadden-Industries/owlapi.git#" + "a".repeat(40);
+
+  test.each([retainedGitPackageSpecifier, "0.1.0"])(
+    "qualifies the reviewed immutable consumer dependency %s before candidate injection",
+    (packageSpecifier) => {
+      expect(typeof cutoverModule.assertReviewedWebVowlPackageDependency).toBe(
+        "function",
+      );
+      expect(() =>
+        cutoverModule.assertReviewedWebVowlPackageDependency({
+          manifest: { dependencies: { owlapi: packageSpecifier } },
+          reviewedPackageSpecifier: packageSpecifier,
+          retainedGitPackageSpecifier,
+        }),
+      ).not.toThrow();
+    },
+  );
+
+  test.each([
+    "^0.1.0",
+    "next",
+    "latest",
+    "0.1.0-rc.1",
+    "file:../owlapi",
+    "git+https://github.com/Hadden-Industries/owlapi.git#main",
+    "git+https://github.com/Hadden-Industries/owlapi.git#" + "b".repeat(40),
+    undefined,
+  ])("rejects an unaccepted consumer dependency %s", (packageSpecifier) => {
+    expect(() =>
+      cutoverModule.assertReviewedWebVowlPackageDependency({
+        manifest: { dependencies: { owlapi: packageSpecifier } },
+        reviewedPackageSpecifier: packageSpecifier,
+        retainedGitPackageSpecifier,
+      }),
+    ).toThrow(/reviewed exact package coordinate/u);
+  });
+
+  test.each([
+    { dependencies: { owlapi: "0.1.0" } },
+    { devDependencies: { owlapi: retainedGitPackageSpecifier } },
+    {
+      dependencies: { owlapi: retainedGitPackageSpecifier },
+      devDependencies: { owlapi: retainedGitPackageSpecifier },
+    },
+  ])(
+    "rejects a mismatched dependency or development-only consumer %j",
+    (manifest) => {
+      expect(() =>
+        cutoverModule.assertReviewedWebVowlPackageDependency({
+          manifest,
+          reviewedPackageSpecifier: retainedGitPackageSpecifier,
+          retainedGitPackageSpecifier,
+        }),
+      ).toThrow(/reviewed exact package coordinate/u);
+    },
+  );
+
   test("generates an installed contract bound to immutable candidate and audit inputs", () => {
     const source = cutoverModule.createCandidateArchitectureTest({
       packageSpecifier: "file:C:/candidate/owlapi.tgz",

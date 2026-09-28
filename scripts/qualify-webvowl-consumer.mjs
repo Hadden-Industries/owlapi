@@ -19,6 +19,7 @@ import { fileURLToPath } from "node:url";
 import {
   auditWebVowlJavaParityConsumers,
   assertReviewedWebVowlAudit,
+  assertReviewedWebVowlPackageDependency,
   createCandidateArchitectureTest,
   webVowlCutoverDigest,
 } from "../test/consumers/webvowl/cutover.mjs";
@@ -401,17 +402,15 @@ try {
 
   const beforeFiles = trackedFileMap(checkout);
   const baselineManifest = readJson(join(checkout, "package.json"));
-  const expectedSpecifier = provisional
-    ? reviewedAudit.packageSpecifier
-    : "0.1.0";
-  if (
-    baselineManifest.dependencies?.owlapi !== expectedSpecifier ||
-    baselineManifest.devDependencies?.owlapi
-  ) {
-    throw new Error(
-      "The WebVOWL baseline does not declare the reviewed exact package coordinate.",
-    );
-  }
+  const retainedGitEquivalence = readJson(
+    join(REPOSITORY_ROOT, "docs/release/pre-registry-git-equivalence.json"),
+  );
+  assertReviewedWebVowlPackageDependency({
+    manifest: baselineManifest,
+    reviewedPackageSpecifier: reviewedAudit.packageSpecifier,
+    retainedGitPackageSpecifier:
+      retainedGitEquivalence.source.git.packageSpecifier,
+  });
   const consumerAudit = auditWebVowlJavaParityConsumers(beforeFiles, {
     baselineCommit: reviewedAudit.baselineCommit,
     sourceReaderAllowlist: reviewedAudit.sourceReaderAllowlist,

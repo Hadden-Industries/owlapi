@@ -158,7 +158,7 @@ const MODULES = Object.freeze([
     javaPackage: "org.semanticweb.owlapi.util",
     npmSpecifier: "owlapi/util",
     module: util,
-    firstPublicRelease: "0.2.0",
+    firstPublicRelease: "0.1.0",
     rationale:
       "Mirrors the Java OWLAPI util namespace for the exact approved closure provider and ontology merger entry points.",
   },
@@ -210,10 +210,10 @@ const JAVA_TYPES_BY_EXPORT = Object.freeze({
 });
 
 const FIRST_PUBLIC_RELEASE_BY_EXPORT = Object.freeze({
-  AddOntologyAnnotation: "0.2.0",
-  OWLOntologyImportsClosureSetProvider: "0.2.0",
-  OWLOntologyMerger: "0.2.0",
-  SetOntologyID: "0.2.0",
+  AddOntologyAnnotation: "0.1.0",
+  OWLOntologyImportsClosureSetProvider: "0.1.0",
+  OWLOntologyMerger: "0.1.0",
+  SetOntologyID: "0.1.0",
 });
 
 const CLOSEST_JAVA_AUTHORITY = Object.freeze({
@@ -748,7 +748,7 @@ const buildBindings = (capabilityById) => {
         exposure: "PUBLIC",
         stability: "PRERELEASE",
         firstPublicRelease: parityMetadata
-          ? "0.2.0"
+          ? "0.1.0"
           : (FIRST_PUBLIC_RELEASE_BY_EXPORT[exportName] ?? "0.1.0-alpha.0"),
         publicSpecifier: namespace.npmSpecifier,
         sourceModule:

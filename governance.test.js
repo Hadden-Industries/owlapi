@@ -162,7 +162,7 @@ describe("owlapi governance artifacts", () => {
     );
     expect(errors).toEqual([]);
     expect(ledger.qualification).toBe("PRE_INTEGRATION");
-    expect(ledger.acceptedReleaseBaseline).toBeNull();
+    expect(ledger.integrationBaseline).toBeNull();
     expect(ledger.consumerMigrations.webvowl).toBeNull();
     expect(ledger.phase21.status).toBe("IN_PROGRESS");
     expect(ledger.javaAuthority).toEqual({
@@ -247,7 +247,7 @@ describe("owlapi governance artifacts", () => {
       { ...ledger, invented: true },
       { ...ledger, phase21: { ...ledger.phase21, status: "COMPLETE" } },
       { ...ledger, qualification: "RECONCILED" },
-      { ...ledger, acceptedReleaseBaseline: { tag: "v0.1.0" } },
+      { ...ledger, integrationBaseline: { tag: "v0.1.0" } },
       {
         ...ledger,
         javaAuthority: { ...ledger.javaAuthority, revision: "0".repeat(40) },
@@ -279,10 +279,8 @@ describe("owlapi governance artifacts", () => {
     const reconciled = {
       ...ledger,
       qualification: "RECONCILED",
-      acceptedReleaseBaseline: {
-        tag: "v0.1.0",
+      integrationBaseline: {
         commit: "a".repeat(40),
-        packageIntegrity: `sha512-${Buffer.alloc(64, 1).toString("base64")}`,
         registrySha256: "b".repeat(64),
       },
     };
@@ -301,6 +299,7 @@ describe("owlapi governance artifacts", () => {
     const consumer = {
       repository: "https://github.com/Hadden-Industries/webvowl",
       baselineCommit: "d".repeat(40),
+      packageSpecifier: "0.1.0",
       auditedPathClasses: ["src", "test", "docs"],
       excludedPathClasses: ["docs/owlapi-js"],
       sourceReaderAllowlist: [],
@@ -321,7 +320,31 @@ describe("owlapi governance artifacts", () => {
       consumerMigrations: { webvowl: consumer },
     };
     expect(validateDocumentAgainstSchema(candidate, schemaPath)).toEqual([]);
+    const retainedGitPackageSpecifier = readJson(
+      "./docs/release/pre-registry-git-equivalence.json",
+    ).source.git.packageSpecifier;
+    expect(
+      validateDocumentAgainstSchema(
+        {
+          ...candidate,
+          consumerMigrations: {
+            webvowl: {
+              ...consumer,
+              packageSpecifier: retainedGitPackageSpecifier,
+            },
+          },
+        },
+        schemaPath,
+      ),
+    ).toEqual([]);
     for (const mutation of [
+      { packageSpecifier: undefined },
+      { packageSpecifier: "^0.1.0" },
+      { packageSpecifier: "file:../owlapi" },
+      {
+        packageSpecifier:
+          "git+https://github.com/Hadden-Industries/owlapi.git#main",
+      },
       { obsoleteUseCount: 1 },
       { changedPaths: ["src/obsolete.js"] },
       { disposition: "MIGRATED" },
@@ -517,7 +540,7 @@ describe("owlapi governance artifacts", () => {
         supportedMembers,
         relationship: "JS_ADAPTATION",
         compatibility: "ADAPTED",
-        firstPublicRelease: "0.2.0",
+        firstPublicRelease: "0.1.0",
         progress: "IN_PROGRESS",
       });
       expect(typeof io[jsExport]).toBe("function");
@@ -560,10 +583,23 @@ describe("owlapi governance artifacts", () => {
         ),
       );
       const existingIds = new Set(baseline.bindings.map(({ id }) => id));
+      const firstReleaseRetargetedBindings = new Set([
+        "model.AddOntologyAnnotation",
+        "model.SetOntologyID",
+        "util.OWLOntologyImportsClosureSetProvider",
+        "util.OWLOntologyMerger",
+      ]);
       for (const prior of baseline.bindings) {
         const current = registry.bindings.find(({ id }) => id === prior.id);
+        const expected = firstReleaseRetargetedBindings.has(prior.id)
+          ? { ...prior, firstPublicRelease: "0.1.0" }
+          : prior;
+        if (firstReleaseRetargetedBindings.has(prior.id)) {
+          expect(prior.firstPublicRelease).toBe("0.2.0");
+        }
         // Task 7 changes only these manager projections. Their exact contents
-        // are checked below; all other baseline fields and bindings stay fixed.
+        // are checked below. The owner-approved first-release retarget changes
+        // only the four provisional release identities named above.
         expect(
           prior.id === "model.OWLOntologyManager"
             ? {
@@ -575,7 +611,7 @@ describe("owlapi governance artifacts", () => {
                 publicErrors: prior.publicErrors,
               }
             : current,
-        ).toEqual(prior);
+        ).toEqual(expected);
       }
       expect(
         registry.bindings
@@ -671,7 +707,7 @@ describe("owlapi governance artifacts", () => {
       lifecycleCapabilities.every(
         ({ phase, progress }) =>
           progress !== "COMPLETE" ||
-          (phase === 22 && matrix.release === "0.2.0"),
+          (phase === 22 && matrix.release === "0.1.0"),
       ),
     ).toBe(true);
 
@@ -810,7 +846,7 @@ describe("owlapi governance artifacts", () => {
       callShapes: ["new AddOntologyAnnotation(ontology, annotation)"],
       capabilityIds: ["compatibility.owlapi-5.5.1"],
       compatibility: "ADAPTED",
-      firstPublicRelease: "0.2.0",
+      firstPublicRelease: "0.1.0",
       javaType: "org.semanticweb.owlapi.model.AddOntologyAnnotation",
       omittedMembers: ["Change-data, reverse-change, and visitor APIs"],
       relationship: "JAVA_ANALOGUE",
@@ -820,7 +856,7 @@ describe("owlapi governance artifacts", () => {
       callShapes: ["new SetOntologyID(ontology, ontologyID)"],
       capabilityIds: ["compatibility.owlapi-5.5.1"],
       compatibility: "ADAPTED",
-      firstPublicRelease: "0.2.0",
+      firstPublicRelease: "0.1.0",
       javaType: "org.semanticweb.owlapi.model.SetOntologyID",
       omittedMembers: [
         "Java IRI constructor overload",
@@ -871,7 +907,7 @@ describe("owlapi governance artifacts", () => {
       javaPackage: "org.semanticweb.owlapi.util",
       npmSpecifier: "owlapi/util",
       exposure: "PUBLIC",
-      firstPublicRelease: "0.2.0",
+      firstPublicRelease: "0.1.0",
       rationale:
         "Mirrors the Java OWLAPI util namespace for the exact approved closure provider and ontology merger entry points.",
       ownedBindingIds: [
@@ -894,7 +930,7 @@ describe("owlapi governance artifacts", () => {
       ],
       capabilityIds: ["compatibility.owlapi-5.5.1"],
       compatibility: "ADAPTED",
-      firstPublicRelease: "0.2.0",
+      firstPublicRelease: "0.1.0",
       javaType:
         "org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider",
       omittedMembers: [],
@@ -920,7 +956,7 @@ describe("owlapi governance artifacts", () => {
       ],
       capabilityIds: ["compatibility.owlapi-5.5.1"],
       compatibility: "ADAPTED",
-      firstPublicRelease: "0.2.0",
+      firstPublicRelease: "0.1.0",
       javaType: "org.semanticweb.owlapi.util.OWLOntologyMerger",
       omittedMembers: [
         "OWLAxiomFilter constructor overload and passes(axiom) surface",
@@ -1781,7 +1817,7 @@ See LICENSE for the complete, unmodified licence text.
 Ordinary npm dependencies are installed separately and remain under their own
 licences. Neither LICENSE nor this NOTICE relicenses them. The version-matched
 material inventory for this package version is maintained at:
-https://github.com/Hadden-Industries/owlapi/blob/v0.1.0-alpha.0/docs/provenance/third-party-material.json
+https://github.com/Hadden-Industries/owlapi/blob/v0.1.0-rc.1/docs/provenance/third-party-material.json
 
 Java OWLAPI names and package identities appear in compatibility documentation
 generated from the pinned Java OWLAPI reference. owlapi is independently
@@ -1797,7 +1833,7 @@ bundle licence and notice review.
 
     for (const requiredText of [
       "## Why `owlapi` exists",
-      "0.1.0-alpha.0",
+      packageJson.version,
       "npm install owlapi@next",
       "independently maintained JavaScript implementation",
       "not affiliated with, sponsored by, or endorsed by the Java OWLAPI project",
@@ -1818,10 +1854,13 @@ bundle licence and notice review.
       "owlapi/model",
       "owlapi/io",
       "owlapi/formats",
+      "owlapi/util",
     ]) {
       expect(readme).toContain(`\`${specifier}\``);
     }
-    expect(changelog).toContain("## 0.1.0-alpha.0 — pending publication");
+    expect(changelog).toContain(
+      "## 0.1.0-alpha.0 — historical unpublished candidate",
+    );
     expect(changelog).toContain(
       "This alpha is a documented subset, not complete Java OWLAPI parity.",
     );
@@ -1833,7 +1872,7 @@ bundle licence and notice review.
       matrix.capabilities.map((capability) => [capability.id, capability]),
     );
 
-    expect(matrix.release).toBe("0.1.0-alpha.0");
+    expect(matrix.release).toBe(readJson("./package.json").version);
     expect(
       [...capabilities.keys()].filter((id) => id.startsWith("webvowl.")),
     ).toEqual([]);
@@ -1900,7 +1939,9 @@ bundle licence and notice review.
       schemaPath,
     );
     const schema = readJson(schemaPath);
-    const publication = readJson("./docs/release/publication-control.json");
+    const publication = readJson(
+      "./docs/release/alpha-reconciliation-control.json",
+    );
     const manifest = readJson("./package.json");
     const { "./util": provisionalUtilExport, ...retainedCandidateExports } =
       manifest.exports;
@@ -1911,7 +1952,7 @@ bundle licence and notice review.
     );
     expect(document.package).toEqual({
       name: manifest.name,
-      version: manifest.version,
+      version: "0.1.0-alpha.0",
       exports: retainedCandidateExports,
     });
     expect(provisionalUtilExport).toBe("./util/index.js");

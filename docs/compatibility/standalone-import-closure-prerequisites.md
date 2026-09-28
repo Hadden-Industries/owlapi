@@ -14,10 +14,11 @@ The canonical consumer artifacts are:
 
 The capability slice is being pre-built on the dedicated
 `feature/ontology-import-closure-lifecycle` branch before public
-`owlapi@0.1.0` lands. This separates implementation lead time from release
-scope: no lifecycle commit, export, test result, or package candidate belongs
-to or broadens `0.1.0`, and every lifecycle capability remains
-`DEFERRED` / `NOT_STARTED` while development is based on a pre-release branch.
+`owlapi@0.1.0` lands and is included in that first planned public production
+release. The owner approved this sequencing correction on 2026-09-28; it
+supersedes the former separate `0.2.0` destination. `0.1.0-rc.1` is a candidate
+for `0.1.0`, not evidence of publication or acceptance. Lifecycle capabilities
+remain `DEFERRED` / `NOT_STARTED` until their formal qualification gates pass.
 
 Build `StringDocumentTarget`, the storage-error hierarchy, and their decision
 ledger once under the canonical Phase 21 plan on this feature branch. Then
@@ -25,8 +26,10 @@ proceed with all dependency-ready lifecycle work, including provisional consumer
 experiments. Use those same canonical bindings throughout; no temporary target,
 error class, alias, or fabricated accepted WebVOWL/release evidence is permitted.
 
-After accepted `v0.1.0` and Phase 21 are available, the reviewed lifecycle task
-commits are integrated or replayed onto a branch containing both predecessors.
+The reviewed lifecycle task commits are merged into a branch containing the
+pinned `main` integration baseline, preserving their original commit identities.
+Phase 21 must complete before Phase 22 release acceptance; neither requires an
+earlier public `0.1.0` release. Record the baseline commit and API-registry digest.
 All affected tests, generated API views, installed-package checks, and consumer
 checks are rerun against that accepted baseline. Conflicts are resolved in the
 canonical implementation; no shim, forwarding module, compatibility alias,
@@ -35,7 +38,7 @@ alignment rework is expected. A material public-contract difference instead
 requires a reviewed plan and compatibility-ledger amendment.
 
 Only the reconciled branch may complete the lifecycle rows or qualify exact
-`owlapi@0.2.0`. Pre-integration evidence is development evidence and is never
+`owlapi@0.1.0`. Pre-integration evidence is development evidence and is never
 copied forward as release evidence.
 
 ## Compatibility boundary

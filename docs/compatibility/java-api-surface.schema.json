@@ -97,7 +97,7 @@
       "oneOf": [{ "$ref": "#/$defs/nonEmptyString" }, { "type": "null" }]
     },
     "publicReleaseVersion": {
-      "enum": ["0.1.0-alpha.0", "0.1.0", "0.2.0"]
+      "enum": ["0.1.0-alpha.0", "0.1.0"]
     },
     "stringArray": {
       "type": "array",

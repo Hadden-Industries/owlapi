@@ -13,7 +13,7 @@ or `UnrepresentableOntologyError` type, and make the corresponding WebVOWL
 consumer migration an explicit, verified prerequisite.
 
 **Architecture:** A closed compatibility decision ledger records every public
-post-`0.1.0` deviation from pinned Java OWLAPI 5.5.1. `StringDocumentTarget`
+first-release deviation from pinned Java OWLAPI 5.5.1. `StringDocumentTarget`
 retains text in private state, exposes Java's `toString()` member, and accepts
 complete replacement only through a package-private storage seam. Java storage
 exceptions map into the repository's established JavaScript error hierarchy;
@@ -28,18 +28,17 @@ the generated Public API Surface Registry; installed-package boundary tests;
 pinned Java OWLAPI 5.5.1 source at revision
 `d7e997a53b470e32700de89cc610d9daf01ea769`.
 
-**Status:** Canonical pre-integration development is authorized before the exact
-accepted public `owlapi@0.1.0` release exists. Build the target, errors, decision
-ledger, and provisional consumer checks now; dependent lifecycle tasks consume
-that same implementation. Reconcile against the accepted release before claiming
-Phase 21 or Phase 22 completion in
-[`docs/ontology-lifecycle-capability-implementation-plan.md`](../ontology-lifecycle-capability-implementation-plan.md),
-which remains Phase 22. All dependency-ready lifecycle work may be pre-built
-under the isolation and reconciliation rules in §8. This checkpoint does not
-publish an intermediate npm release; its public additions first ship as part
-of the separately qualified `owlapi@0.2.0` release.
+**Status:** The owner approved inclusion of Phase 21 and Phase 22 in the first
+planned public `owlapi@0.1.0` release on 2026-09-28. The canonical target, errors,
+and decision ledger are developed once and integrated into `main` without
+rewriting the lifecycle branch's original commits. `0.1.0-rc.1` is a candidate
+for this first release, not evidence of publication or acceptance. Reconcile
+against an exact pinned `main` commit and registry digest before accepting either
+phase; do not require an earlier published `0.1.0`. Preserve the existing Java
+parity, WebVOWL audit and installed-candidate evidence gates. This checkpoint does
+not publish an intermediate package or authorize a production-consumer cutover.
 
-**Revised:** 2026-09-25.
+**Revised:** 2026-09-28.
 
 ---
 
@@ -78,29 +77,28 @@ Use the lifecycle plan's accepted R2 work-package assurance and review cadence.
 Before final Phase 21 acceptance, all of these reconciliation conditions are
 mandatory:
 
-1. The accepted production tag is exactly `v0.1.0`, resolves to one verified
-   commit, and its published npm tarball has already passed the repository's
-   release and immutable-registry gates.
-2. The implementation HEAD contains both the accepted `v0.1.0` commit and the
-   approved commit containing this plan. Integrate or replay the pre-built task
-   commits onto the accepted release and resolve conflicts in canonical modules.
-3. Record the exact `v0.1.0` commit, package integrity, and
-   `docs/compatibility/java-api-surface.json` byte SHA-256 before accepting the
-   reconciled candidate.
-4. Compare the accepted `v0.1.0` registry with the design-time
-   `v0.1.0-alpha.0` registry. If the target or storage-error baseline differs
-   from the assumptions below, stop and amend both plans rather than forcing
-   this delta onto a changed surface.
-5. Preserve task-sized signed history on a dedicated implementation branch.
-   The branch qualifying Phase 22 must contain the accepted Phase 21 completion
-   commit in its ancestry; it may already contain provisional lifecycle work.
-6. Resolve the exact WebVOWL production-cutover commit from the accepted
-   `owlapi@0.1.0` release evidence, verify that commit is reachable from the
-   intended WebVOWL branch, and audit that immutable tree rather than assuming
-   the design-time WebVOWL checkout is still the consumer baseline. The
-   2026-08-29 design inspection found clean WebVOWL `main` at
-   `f7444ce3971621e6af6d38ebd4b5ce9b03f3e235`, with no use of either rejected
-   extension; that observation is provenance, not authority for execution.
+1. Resolve the exact `main` integration baseline from the canonical owlapi
+   repository and bind its generated API registry bytes by SHA-256. It is an
+   integration commit, not a claim that an npm release exists.
+2. Require that baseline and the approved plan commit to be ancestors of the
+   candidate. Merge reviewed task commits without squash or rebase; resolve
+   conflicts in canonical modules while preserving every original commit SHA.
+3. Populate `integrationBaseline` only after the candidate has actually been
+   reconciled, using the exact baseline commit and registry digest. Do not add
+   a release tag or package integrity to this source-baseline record.
+4. Compare the pinned baseline registry with the historical `v0.1.0-alpha.0`
+   design registry. A materially changed public contract requires a reviewed
+   plan and ledger amendment; historical alpha facts are never RC evidence.
+5. Preserve the exact accepted Phase 21 checkpoint and its registry digest.
+   It must precede final Phase 22 acceptance even when lifecycle code is already
+   present. Account separately for that lifecycle delta in the complete registry
+   comparison; no earlier production publication is required.
+6. Resolve and audit an immutable commit reachable from the intended maintained
+   WebVOWL branch, recording its actual dependency and consumer usage. Exercise
+   the exact retained owlapi candidate in the disposable package-only consumer
+   checkout. Do not infer an accepted registry cutover from the source baseline
+   or from the historical 2026-08-29 inspection of WebVOWL
+   `f7444ce3971621e6af6d38ebd4b5ce9b03f3e235`.
 
 ## 2. Overarching parity invariant
 
@@ -110,7 +108,7 @@ inheritance, errors, and observable semantics must be checked before designing
 the JavaScript surface. Convenience is not permission to invent an alias, a
 subclass, or a second way to perform the same operation.
 
-Use this decision order for every post-`0.1.0` public change:
+Use this decision order for every first-release public change:
 
 1. Implement the exact Java name and responsibility when JavaScript can express
    it coherently.
@@ -224,8 +222,8 @@ partial mutation before validation succeeds.
 
 ### 3.1 Downstream consumer migration contract
 
-WebVOWL is the only current first-party downstream consumer. Its accepted
-production-cutover tree must use these replacements whenever it reads a
+WebVOWL is the only current first-party downstream consumer. Its reviewed
+immutable consumer baseline must use these replacements whenever it reads a
 `StringDocumentTarget` or classifies a representability failure:
 
 ```js
@@ -262,7 +260,7 @@ may preserve it.
 
 If the immutable execution baseline contains an obsolete use, prepare its
 migration on a dedicated WebVOWL branch based on that exact commit, recommended
-as `feature/owlapi-0.2-java-parity-migration`. The reviewed patch and installed
+as `feature/owlapi-first-release-java-parity-migration`. The reviewed patch and installed
 candidate tests are Phase 21 evidence; any WebVOWL commit, dependency or
 lockfile change still requires separate authorization. If the audit finds no
 obsolete use, record `NO_OBSOLETE_USAGE`, retain the complete allowlist and scan
@@ -280,10 +278,10 @@ Phase 21 creates:
 - `docs/compatibility/java-api-parity-decisions.schema.json`; and
 - `docs/compatibility/java-api-parity-decisions.json`.
 
-The record is a closed Draft 2020-12 document, validated by AJV rather than a
+The version-2 record is a closed Draft 2020-12 document, validated by AJV rather than a
 repository-written schema engine. It distinguishes `PRE_INTEGRATION` from
 `RECONCILED` qualification. During pre-integration it records a real development
-base (commit and registry digest), requires `acceptedReleaseBaseline: null`,
+base (commit and registry digest), requires `integrationBaseline: null`,
 keeps `phase21.status: "IN_PROGRESS"`, and records the accepted WebVOWL audit as
 unavailable until it actually exists. No placeholder commit, synthetic integrity,
 empty success receipt, or inferred production baseline is permitted. Provisional
@@ -291,9 +289,8 @@ experiments belong to native task evidence and do not populate acceptance fields
 
 After reconciliation, the same record requires these accepted facts:
 
-- a non-null `acceptedReleaseBaseline` containing the exact accepted `v0.1.0`
-  tag, commit, package integrity, and baseline Java
-  API registry SHA-256;
+- a non-null `integrationBaseline` containing the exact pinned source commit
+  and baseline Java API registry SHA-256; this is not a release record;
 - the pinned Java version, revision, and source paths;
 - one row for each approved decision ID in §2.1;
 - for each row, the Java authority, affected JavaScript binding/member,
@@ -305,7 +302,7 @@ After reconciliation, the same record requires these accepted facts:
   `StringDocumentSource.prototype.getText` contract is unrelated and remains
   unchanged;
 - one `consumerMigrations.webvowl` record containing the exact repository and
-  accepted production-cutover commit, audited path classes and exclusions,
+  accepted consumer-baseline commit, audited path classes and exclusions,
   complete allowed source-reader inventory, obsolete-use count, scan digest,
   disposition `NO_OBSOLETE_USAGE` or `MIGRATED`, changed paths when applicable,
   installed-candidate result/digest, and an authorized migration commit OID only
@@ -334,7 +331,7 @@ generated surface contains an unrecorded difference.
 | Storage errors                  | None                                                                                                            | `io/errors.js`, `io/io.test.js`, `io/index.js`, `index.js`, `test/package-boundary.test.mjs`                                                                                                                 |
 | Public Java surface             | None                                                                                                            | `util/generate-java-api-surface.mjs`, `docs/compatibility/java-api-surface.schema.json`, `docs/compatibility/java-api-surface.json`, `docs/compatibility/java-api-surface.md`, `API.md`                      |
 | Import-closure handoff          | None                                                                                                            | `docs/compatibility/standalone-import-closure-prerequisites.md`                                                                                                                                              |
-| Downstream migration            | `docs/migration/0.2.0-java-api-parity.md`                                                                       | `test/consumers/webvowl/cutover.mjs`, `test/consumers/webvowl/cutover.test.js`, `scripts/qualify-webvowl-consumer.mjs`, parity-decision schema/record, and only audit-identified WebVOWL paths when required |
+| Downstream migration            | `docs/migration/0.1.0-java-api-parity.md`                                                                       | `test/consumers/webvowl/cutover.mjs`, `test/consumers/webvowl/cutover.test.js`, `scripts/qualify-webvowl-consumer.mjs`, parity-decision schema/record, and only audit-identified WebVOWL paths when required |
 
 No `package.json` export is required because `owlapi/io` and the bare aggregate
 already exist. A package-script, workflow, dependency, version, lockfile, or
@@ -381,7 +378,7 @@ release change is outside this plan unless separately approved.
    ```
 
 7. Retain active branch, HEAD, development-base and decision-record digests.
-   Include `v0.1.0` identifiers only after reconciliation. Stop if an accepted
+   Include integration-baseline identifiers only after reconciliation. Stop if an accepted
    identifier was inferred from a similarly named branch rather than the tag.
 
 ### Task 2: Make the Phase 21 surface fail closed before implementation
@@ -505,14 +502,16 @@ release change is outside this plan unless separately approved.
    exception class, including the superclass relation, suffix and namespace
    decisions, supported constructor shape, omitted Java constructors, and safe
    diagnostic convention.
-4. Generalize release metadata only as required by the accepted post-`0.1.0`
-   schema so the new bindings declare `firstPublicRelease: "0.2.0"`. Preserve
-   every accepted `0.1.0` binding's release identity and contract.
+4. Generalize release metadata only as required by the accepted first-release
+   schema so the new bindings declare `firstPublicRelease: "0.1.0"`. Preserve
+   every baseline binding's contract. The owner-approved first-release amendment
+   changes only provisional Phase 21/22 release identities from `0.2.0` to `0.1.0`;
+   it does not relabel historical alpha identities or evidence.
 5. Regenerate the authoritative JSON and both views. In development, isolate the
    Phase 21 delta from the recorded development base: exactly three new public
    bindings, no new namespace, no unrelated existing-binding mutation, and zero
    Phase 21 `JS_EXTENSION` bindings. At reconciliation, compare against accepted
-   `v0.1.0`; account separately for any already-built Phase 22 delta under its
+   the pinned integration baseline; account separately for any already-built Phase 22 delta under its
    exact allowlist. Never describe a combined feature-branch delta as Phase 21 only.
 6. Update the standalone import-closure prerequisite note to require
    `StringDocumentTarget.toString()` and the base storage-error representability
@@ -535,7 +534,7 @@ release change is outside this plan unless separately approved.
 
 **Files**
 
-- Create: `docs/migration/0.2.0-java-api-parity.md`
+- Create: `docs/migration/0.1.0-java-api-parity.md`
 - Modify: `test/consumers/webvowl/cutover.mjs`
 - Modify: `test/consumers/webvowl/cutover.test.js`
 - Modify: `scripts/qualify-webvowl-consumer.mjs`
@@ -583,22 +582,27 @@ release change is outside this plan unless separately approved.
    digest over the normalized inventory. Keep the source-reader allowlist
    fail-closed: a moved, removed, duplicated, or newly added `getText()` use
    requires review rather than silently inheriting a path-wide exception.
-5. Make final qualification consume the accepted post-`0.1.0` WebVOWL cutover tree,
+5. Make final qualification consume a reviewed immutable WebVOWL source baseline,
    not replay Phase 19's original embedded-source migration. Require canonical
-   `owlapi` package specifiers, the accepted exact production dependency, and
-   absence of the former maintained `src/owlapi-js/` tree before candidate
-   injection. In the disposable checkout only, replace that registry coordinate
+   `owlapi` package specifiers, the exact baseline dependency recorded as
+   `consumerMigrations.webvowl.packageSpecifier`, and absence of the former
+   maintained `src/owlapi-js/` tree before candidate injection. The baseline may
+   use exact production `0.1.0` after its separate registry cutover, or the sole
+   pre-registry Git coordinate bound to the retained alpha equivalence evidence.
+   It must not require a previously published `0.1.0` or accept a mutable Git
+   reference, range, alias or local dependency. In the disposable checkout only,
+   replace that reviewed dependency
    with the retained Phase 21 tarball and regenerate the temporary lock; leave
    the source WebVOWL manifest and lockfile unchanged. Extend
    `createCandidateArchitectureTest` and the qualifier's retained output with
    the exact assertions from Step 2. Do not introduce a workspace, resolver
    alias, copied owlapi tree, deep import, or production WebVOWL local-file
    dependency.
-   Before that accepted tree exists, test the audit and installed harness against
-   exact, explicitly identified development inputs. Label the results provisional;
-   do not relax accepted-baseline validation or substitute Phase 19 replay as
-   production-cutover evidence. Unavailable real inputs block their result only.
-6. Resolve the accepted WebVOWL production-cutover commit from release evidence,
+   Before a source baseline is reviewed, test against exact, explicitly identified
+   development inputs and label those results provisional. Source-baseline and
+   installed-candidate acceptance never imply a registry cutover or publication.
+   Unavailable real inputs block their result only.
+6. Resolve the reviewed WebVOWL baseline commit from the consumer audit,
    verify a clean immutable checkout, and run the audit. If it reports obsolete
    occurrences, replace target reads with `toString()` and dedicated-subtype
    catches with the base-error/reason predicate on the dedicated branch, add a
@@ -610,10 +614,10 @@ release change is outside this plan unless separately approved.
    baseline plus reviewed patch digest, or to the separately authorized commit
    containing the byte-identical patch; it must never qualify an unrelated dirty
    WebVOWL checkout.
-7. Write `docs/migration/0.2.0-java-api-parity.md` with both before/after examples,
+7. Write `docs/migration/0.1.0-java-api-parity.md` with both before/after examples,
    canonical imports, the valid `StringDocumentSource.getText()` exception, the
    no-shim rule, and the fact that these names were rejected before their first
-   production exposure rather than removed from accepted `0.1.0`.
+   production exposure rather than removed from a previously published release.
 8. Validate and populate `consumerMigrations.webvowl` from the retained audit
    and candidate outputs. Do not hand-author a passing result, omit an obsolete
    match, or record a migration commit that has not been separately authorized
@@ -647,7 +651,7 @@ release change is outside this plan unless separately approved.
 
 1. Run the complete source test suite, lint, formatting, generated-surface,
    package-boundary, browser, WebVOWL consumer, and package-lint gates applicable
-   to the accepted post-`0.1.0` repository. Do not suppress a pre-existing
+   to the accepted first-release repository. Do not suppress a pre-existing
    failure without its ordinary disposition process.
 2. Recompute the current registry SHA-256, set `phase21.status` to `COMPLETE`,
    retain that checkpoint's exact registry digest, and change the three Phase 21
@@ -659,7 +663,7 @@ release change is outside this plan unless separately approved.
    Require `consumerMigrations.webvowl` to validate, name the accepted consumer
    commit, contain a complete source-reader allowlist, and carry a passing
    installed-candidate result.
-4. Inspect the complete `v0.1.0`-to-checkpoint registry diff. Require exactly the
+4. Inspect the complete integration-baseline-to-checkpoint registry diff. Require exactly the
    authorized Phase 21 surface, with no `StringDocumentTarget.prototype.getText`,
    no `UnrepresentableOntologyError`, and no unrecorded adaptation or extension.
 5. Re-run the WebVOWL audit against the same immutable baseline used by the
@@ -670,11 +674,11 @@ release change is outside this plan unless separately approved.
    commit exists, record its OID in the execution handoff; do not try to write a
    self-referential commit OID into a file contained by that commit.
 7. Do not tag or publish. Final Phase 22 qualification requires both the accepted
-   `v0.1.0` commit and this Phase 21 completion commit as ancestors; development
+   integration-baseline commit and this Phase 21 completion commit as ancestors; development
    may already have proceeded against the canonical foundations.
 
 Recommended final verification commands, adjusted only for commands that the
-accepted post-`0.1.0` repository actually provides:
+accepted first-release repository actually provides:
 
 ```powershell
 npm test -- --runInBand
@@ -692,7 +696,7 @@ npm pack --dry-run --json
 
 Phase 21 is complete only when all of the following are true:
 
-- the candidate was reconciled with accepted `v0.1.0` and the exact baseline
+- the candidate was reconciled with pinned integration baseline and the exact baseline
   identifiers are recorded;
 - the three Phase 21 capability rows are complete;
 - the closed parity decision ledger validates and contains exactly the approved
@@ -710,7 +714,7 @@ Phase 21 is complete only when all of the following are true:
   public binding/member, installed-package import, or advertised API; negative
   parity-policy references remain permitted, and the accepted
   `StringDocumentSource.prototype.getText` surface is unchanged;
-- `docs/migration/0.2.0-java-api-parity.md` gives downstream consumers the exact
+- `docs/migration/0.1.0-java-api-parity.md` gives downstream consumers the exact
   target-reader and representability substitutions without presenting either
   rejected name as a supported or deprecated API;
 - the immutable accepted WebVOWL consumer tree has a validated, digest-bound
@@ -731,13 +735,13 @@ Phase 21 is complete only when all of the following are true:
 The import-closure lifecycle plan consumes, rather than recreates, the canonical
 Phase 21 target and storage-error boundary. Build that boundary once under this
 plan on the dedicated lifecycle branch, then proceed with all dependency-ready
-lifecycle development before release. Keep this work outside every `0.1.0`
-candidate and release claim. Keep lifecycle capability rows deferred and label
+lifecycle development before release. Include this work in the first `0.1.0` candidate, but keep implementation
+and merge status separate from release acceptance. Keep lifecycle capability rows deferred and label
 development evidence provisional. Do not fabricate accepted release, WebVOWL,
 or installed-candidate evidence to make a checkpoint appear complete.
 
 Before a Phase 22 completion claim, the
-integration branch must contain the accepted `v0.1.0` and approved Phase 21
+integration branch must contain the pinned integration baseline and approved Phase 21
 completion commits in its ancestry. The lifecycle plan must then validate the
 decision record, capability rows, generated registry, forbidden-export
 assertions, WebVOWL audit/candidate evidence, and Git ancestry, reconcile every

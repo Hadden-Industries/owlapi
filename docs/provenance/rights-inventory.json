@@ -3,17 +3,17 @@
   "schemaVersion": 1,
   "package": {
     "name": "owlapi",
-    "version": "0.1.0-alpha.0",
+    "version": "0.1.0-rc.1",
     "repository": "https://github.com/Hadden-Industries/owlapi",
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
       "fileCount": 88,
-      "sourceManifestSha256": "052b65814fb2a5e33aa4120b41799e7c488882f04a5abbd7ab831b57040bfdfb"
+      "sourceManifestSha256": "4fbc545fc3a4c03f1e231b443250c2d8f16d283f65a2b4d70a39e1f20a376669"
     }
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "d40b80d19a5d6cb4a3f66aaca9bc7fc179511359e240aea366e72faa4e9ef79c",
+    "factsSha256": "96fbce711681fcea952c14937f2e41095302183b62b0fc95703a5fd43451bc44",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -101,9 +101,9 @@
   "externalDependencies": {
     "bundled": false,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "6b41047ffaa994b015ebf13b86d613b4ca557c22c8f2368a1ad65933772993e8",
+    "inventoryFactsSha256": "d6348cb2f4ad27b38acb192eef2dd2eb15664dce5816a3979eb1397e4554ac9a",
     "noticeRule": "Ordinary npm dependencies are installed separately and remain under their own licences. Their licence texts are not copied into the owlapi tarball merely because they appear in the installed dependency graph."
   },
   "unresolvedExternalContributions": [],
-  "conclusion": "Every material class in the machine-defined 0.1.0-alpha.0 tarball scope has an identified distribution basis, the bound third-party-material inventory records no unresolved production licence conclusion, and no unresolved external copyrightable contribution is recorded."
+  "conclusion": "Every material class in the machine-defined 0.1.0-rc.1 tarball scope has an identified distribution basis, the bound third-party-material inventory records no unresolved production licence conclusion, and no unresolved external copyrightable contribution is recorded."
 }

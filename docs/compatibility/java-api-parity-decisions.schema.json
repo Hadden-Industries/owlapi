@@ -8,7 +8,7 @@
     "schemaVersion",
     "qualification",
     "developmentBaseline",
-    "acceptedReleaseBaseline",
+    "integrationBaseline",
     "javaAuthority",
     "decisions",
     "forbiddenMembers",
@@ -19,7 +19,7 @@
   ],
   "properties": {
     "schemaVersion": {
-      "const": 1
+      "const": 2
     },
     "qualification": {
       "enum": ["PRE_INTEGRATION", "RECONCILED"]
@@ -27,13 +27,13 @@
     "developmentBaseline": {
       "$ref": "#/$defs/baseline"
     },
-    "acceptedReleaseBaseline": {
+    "integrationBaseline": {
       "anyOf": [
         {
           "type": "null"
         },
         {
-          "$ref": "#/$defs/releaseBaseline"
+          "$ref": "#/$defs/baseline"
         }
       ]
     },
@@ -346,7 +346,7 @@
       },
       "then": {
         "properties": {
-          "acceptedReleaseBaseline": {
+          "integrationBaseline": {
             "type": "null"
           },
           "consumerMigrations": {
@@ -373,8 +373,8 @@
       },
       "else": {
         "properties": {
-          "acceptedReleaseBaseline": {
-            "$ref": "#/$defs/releaseBaseline"
+          "integrationBaseline": {
+            "$ref": "#/$defs/baseline"
           }
         },
         "type": "object"
@@ -430,28 +430,6 @@
         "commit": {
           "type": "string",
           "pattern": "^[a-f0-9]{40}$"
-        },
-        "registrySha256": {
-          "type": "string",
-          "pattern": "^[a-f0-9]{64}$"
-        }
-      }
-    },
-    "releaseBaseline": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["tag", "commit", "packageIntegrity", "registrySha256"],
-      "properties": {
-        "tag": {
-          "const": "v0.1.0"
-        },
-        "commit": {
-          "type": "string",
-          "pattern": "^[a-f0-9]{40}$"
-        },
-        "packageIntegrity": {
-          "type": "string",
-          "pattern": "^sha512-[A-Za-z0-9+/]{86}==$"
         },
         "registrySha256": {
           "type": "string",
@@ -634,6 +612,7 @@
       "required": [
         "repository",
         "baselineCommit",
+        "packageSpecifier",
         "auditedPathClasses",
         "excludedPathClasses",
         "sourceReaderAllowlist",
@@ -652,6 +631,12 @@
         "baselineCommit": {
           "type": "string",
           "pattern": "^[a-f0-9]{40}$"
+        },
+        "packageSpecifier": {
+          "enum": [
+            "0.1.0",
+            "git+https://github.com/Hadden-Industries/owlapi.git#caabb1197ffdab91c1e10d596d177b5142aea5c1"
+          ]
         },
         "auditedPathClasses": {
           "type": "array",

@@ -2,7 +2,7 @@
 
 `owlapi` is a native-ESM JavaScript library for loading OWL 2 ontologies into a structural object model in Node.js and modern browsers. Its public concepts deliberately resemble the Java OWLAPI where that makes the API familiar, while its I/O, asynchronous loading, module packaging, and RDF/JS integration follow JavaScript conventions.
 
-> **Initial-development release:** `0.1.0-alpha.0` is useful but deliberately bounded. It does not provide the complete Java OWLAPI surface, and its public API may still change before production `0.1.0`. The exact implemented surface and every known Java API gap are recorded in [the compatibility registry](./docs/compatibility/java-api-surface.md).
+> **Unpublished release candidate:** `0.1.0-rc.1` prepares the first planned public production `0.1.0` release, including import-closure lifecycle capabilities. A version in `main` is not a published or accepted package. Full Java OWLAPI parity is not claimed; the exact implemented surface and every known gap are recorded in [the compatibility registry](./docs/compatibility/java-api-surface.md).
 
 This project is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project.
 
@@ -10,16 +10,17 @@ The package name was formerly used for an unrelated, now-unpublished Overwatch p
 
 ## Install
 
-While only the prerelease channel exists, install it explicitly:
+No public release is claimed by this checkout. After an approved candidate is
+actually published under `next`, install that prerelease channel explicitly:
 
 ```shell
 npm install owlapi@next
 ```
 
-You can pin the immutable version instead:
+After that exact candidate has been published, pin its immutable version instead:
 
 ```shell
-npm install owlapi@0.1.0-alpha.0
+npm install owlapi@0.1.0-rc.1
 ```
 
 Until a production version is published under `latest`, an unqualified `npm install owlapi` is intentionally not a supported installation path.
@@ -118,6 +119,7 @@ Import public bindings only through these package specifiers:
 - `owlapi/model`
 - `owlapi/io`
 - `owlapi/formats`
+- `owlapi/util`
 
 Anything below `internal/` is a private implementation detail and is blocked by the package export map. See [the generated API reference](./API.md) for every public binding, its call shape, supported members, limitations, errors, and Java authority.
 
@@ -169,7 +171,7 @@ const ontology = await manager.loadOntologyFromOntologyDocument(
 
 The application—not `owlapi`—owns import-map URLs, content security policy,
 integrity verification, caching, and availability. A complete map must cover all
-five public roots and their external static and literal-dynamic dependency
+six public roots and their external static and literal-dynamic dependency
 closure. This abbreviated shape illustrates application-local URLs; it is not a
 complete hand-maintained dependency map:
 
@@ -177,11 +179,12 @@ complete hand-maintained dependency map:
 <script type="importmap">
   {
     "imports": {
-      "owlapi": "/vendor/owlapi/0.1.0-alpha.0/index.js",
-      "owlapi/apibinding": "/vendor/owlapi/0.1.0-alpha.0/apibinding/index.js",
-      "owlapi/model": "/vendor/owlapi/0.1.0-alpha.0/model/index.js",
-      "owlapi/io": "/vendor/owlapi/0.1.0-alpha.0/io/index.js",
-      "owlapi/formats": "/vendor/owlapi/0.1.0-alpha.0/formats/index.js"
+      "owlapi": "/vendor/owlapi/0.1.0-rc.1/index.js",
+      "owlapi/apibinding": "/vendor/owlapi/0.1.0-rc.1/apibinding/index.js",
+      "owlapi/model": "/vendor/owlapi/0.1.0-rc.1/model/index.js",
+      "owlapi/io": "/vendor/owlapi/0.1.0-rc.1/io/index.js",
+      "owlapi/formats": "/vendor/owlapi/0.1.0-rc.1/formats/index.js",
+      "owlapi/util": "/vendor/owlapi/0.1.0-rc.1/util/index.js"
     }
   }
 </script>

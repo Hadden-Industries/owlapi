@@ -376,6 +376,26 @@ export const assertReviewedWebVowlAudit = (actual, reviewed) => {
   }
 };
 
+/** Bind the consumer's existing dependency before the disposable tarball trial. */
+export const assertReviewedWebVowlPackageDependency = ({
+  manifest,
+  reviewedPackageSpecifier,
+  retainedGitPackageSpecifier,
+}) => {
+  if (
+    typeof reviewedPackageSpecifier !== "string" ||
+    !reviewedPackageSpecifier ||
+    (reviewedPackageSpecifier !== "0.1.0" &&
+      reviewedPackageSpecifier !== retainedGitPackageSpecifier) ||
+    manifest.dependencies?.owlapi !== reviewedPackageSpecifier ||
+    Object.hasOwn(manifest.devDependencies ?? {}, "owlapi")
+  ) {
+    throw new Error(
+      "The WebVOWL baseline does not declare the reviewed exact package coordinate.",
+    );
+  }
+};
+
 export const webVowlCutoverDigest = (files) =>
   sha256(
     [...files]

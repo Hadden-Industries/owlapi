@@ -1,8 +1,8 @@
-<!-- registry-sha256: 870fd7a00e033977f60102f35265e23f3110f6179dbb7cb5aca1ea3f4dbf925a -->
+<!-- registry-sha256: fcc9e20de24dd299b667d3396e691a81e1ffa1bf2925e5dac6e165b3377c8dd9 -->
 
 # owlapi API reference
 
-This reference is generated from the authoritative compatibility registry for `owlapi` 0.1.0-alpha.0. Edit the generator or registry inputs, not this file.
+This reference is generated from the authoritative compatibility registry for `owlapi` 0.1.0-rc.1. Edit the generator or registry inputs, not this file.
 
 This is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project; Java names identify compatibility authorities, not organizational continuity or complete parity.
 
@@ -70,7 +70,7 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.AddOntologyAnnotation
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE from 0.2.0
+- Release status: PRERELEASE from 0.1.0
 - Call shape: new AddOntologyAnnotation(ontology, annotation)
 - Supported members: prototype.getAnnotation; prototype.getOntology
 - Omitted Java members: Change-data, reverse-change, and visitor APIs
@@ -358,7 +358,7 @@ A JavaScript implementation of the corresponding Java OWLAPI concept, scoped to 
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.SetOntologyID
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE from 0.2.0
+- Release status: PRERELEASE from 0.1.0
 - Call shape: new SetOntologyID(ontology, ontologyID)
 - Supported members: prototype.getNewOntologyID; prototype.getOntology; prototype.getOriginalOntologyID
 - Omitted Java members: Java IRI constructor overload; Change-data, reverse-change, and visitor APIs
@@ -664,7 +664,7 @@ The canonical storage error, including lossless-representation failures identifi
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLOntologyStorageException
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE from 0.2.0
+- Release status: PRERELEASE from 0.1.0
 - Call shape: new OWLOntologyStorageError(message?, details?)
 - Supported members: constructor
 - Omitted Java members: Java Throwable-only and serialization constructor forms
@@ -700,7 +700,7 @@ A storage-error subtype for an OWLDocumentFormat with no matching storer.
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.model.OWLStorerNotFoundException
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE from 0.2.0
+- Release status: PRERELEASE from 0.1.0
 - Call shape: new OWLStorerNotFoundError(format)
 - Supported members: constructor
 - Omitted Java members: Java exception serialization
@@ -808,7 +808,7 @@ An in-memory ontology document target with Java's toString() text reader and pri
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.io.StringDocumentTarget
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE from 0.2.0
+- Release status: PRERELEASE from 0.1.0
 - Call shape: new StringDocumentTarget()
 - Supported members: prototype.toString
 - Omitted Java members: getWriter() and the Java Writer protocol (PARITY-TARGET-WRITER-OMISSION)
@@ -916,7 +916,7 @@ A constructor-time imports-closure snapshot provider with defensive JavaScript S
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
-- Release status: PRERELEASE from 0.2.0
+- Release status: PRERELEASE from 0.1.0
 - Call shape: new OWLOntologyImportsClosureSetProvider(manager, rootOntology)
 - Supported members: prototype.ontologies
 - Omitted Java members: none recorded
@@ -934,7 +934,7 @@ A Java-shaped ontology merger that materializes the structural union of supplied
 - Kind: CLASS
 - Java authority: org.semanticweb.owlapi.util.OWLOntologyMerger
 - Relationship: JAVA_ANALOGUE; compatibility: ADAPTED
-- Release status: PRERELEASE from 0.2.0
+- Release status: PRERELEASE from 0.1.0
 - Call shape: new OWLOntologyMerger(provider); new OWLOntologyMerger(provider, mergeOnlyLogicalAxioms)
 - Supported members: prototype.createMergedOntology
 - Omitted Java members: OWLAxiomFilter constructor overload and passes(axiom) surface

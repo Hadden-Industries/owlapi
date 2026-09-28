@@ -1273,7 +1273,7 @@ jobs:
             echo "::error::The npm-release environment is missing its bootstrap credential."
             exit 1
           fi
-          npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/
+          npm publish owlapi-0.1.0-rc.1.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/
         timeout-minutes: 5
 
   registry_verification:
@@ -1421,14 +1421,14 @@ jobs:
           CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
           CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
           GITHUB_TOKEN: ${{ github.token }}
-        run: npm run release:evidence -- --candidate .release/download --publication-preflight .release/evidence-input/publication/publication-preflight.json --tag-verification .release/evidence-input/tag/tag-verification.json --draft-release .release/evidence-input/draft/draft-release.json --registry-verification .release/evidence-input/registry/registry-verification.json --output .release/owlapi-0.1.0-alpha.0.release-evidence.json
+        run: npm run release:evidence -- --candidate .release/download --publication-preflight .release/evidence-input/publication/publication-preflight.json --tag-verification .release/evidence-input/tag/tag-verification.json --draft-release .release/evidence-input/draft/draft-release.json --registry-verification .release/evidence-input/registry/registry-verification.json --output .release/owlapi-0.1.0-rc.1.release-evidence.json
         timeout-minutes: 5
       - name: Retain the strict release-evidence asset
         id: upload
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: release-evidence-${{ github.run_id }}-${{ github.run_attempt }}
-          path: .release/owlapi-0.1.0-alpha.0.release-evidence.json
+          path: .release/owlapi-0.1.0-rc.1.release-evidence.json
           if-no-files-found: error
           retention-days: 90
           compression-level: 0
@@ -1479,7 +1479,7 @@ jobs:
       - name: Attach the fourth asset and publish the immutable prerelease
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: npm run release:finalize-github -- --evidence .release/evidence/owlapi-0.1.0-alpha.0.release-evidence.json --output .release/finalization.json
+        run: npm run release:finalize-github -- --evidence .release/evidence/owlapi-0.1.0-rc.1.release-evidence.json --output .release/finalization.json
         timeout-minutes: 5
 
   immutable_verification:

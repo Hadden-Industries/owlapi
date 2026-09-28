@@ -64,6 +64,8 @@ const RECONCILIATION_JOB_IDS = [
   "immutable_verification",
 ];
 const PUBLISH_COMMAND =
+  "npm publish owlapi-0.1.0-rc.1.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/";
+const ALPHA_RECONCILIATION_PUBLISH_COMMAND =
   "npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/";
 const REGISTRY_KEYS_COMMAND =
   "node util/snapshot-npm-registry-keys.mjs --output=.release/registry-keys/npm-registry-keys.json";
@@ -416,7 +418,7 @@ const validateCandidateTransport = (fileName, workflow, violations) => {
 };
 
 /** This policy pins the reviewed guard; actionlint/ShellCheck own shell syntax, not its business intent. */
-const hasBootstrapCredentialGuard = (job) =>
+const hasBootstrapCredentialGuard = (job, publishCommand) =>
   steps(job).some((step) => {
     if (
       typeof step.run !== "string" ||
@@ -424,7 +426,7 @@ const hasBootstrapCredentialGuard = (job) =>
     )
       return false;
     const guardIndex = step.run.indexOf('if [[ -z "$NODE_AUTH_TOKEN" ]]; then');
-    const publishIndex = step.run.indexOf(PUBLISH_COMMAND);
+    const publishIndex = step.run.indexOf(publishCommand);
     return (
       guardIndex !== -1 &&
       publishIndex > guardIndex &&
@@ -560,9 +562,12 @@ const validateReleaseMutationBoundary = (
     ),
     `${fileName}:npm_release must use the public npm registry`,
   );
+  const publishCommand = reconciliation
+    ? ALPHA_RECONCILIATION_PUBLISH_COMMAND
+    : PUBLISH_COMMAND;
   requireRun(
     publication,
-    PUBLISH_COMMAND,
+    publishCommand,
     `${fileName}:npm_release`,
     violations,
   );
@@ -576,7 +581,7 @@ const validateReleaseMutationBoundary = (
   );
   add(
     violations,
-    hasBootstrapCredentialGuard(publication),
+    hasBootstrapCredentialGuard(publication, publishCommand),
     `${fileName}:npm_release is missing bootstrap credential fail-closed behavior`,
   );
 
