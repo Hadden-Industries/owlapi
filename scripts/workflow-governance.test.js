@@ -227,6 +227,49 @@ describe("repository workflow governance", () => {
     );
   });
 
+  test.each(["ci.yml", "release.yml"])(
+    "%s binds consumer qualification to the reviewed input commits",
+    (fileName) => {
+      const workflow = parseDocument(workflowSource(fileName)).toJS();
+      const control = JSON.parse(
+        readFileSync("docs/release/webvowl-consumer.json", "utf8"),
+      );
+      const audit = JSON.parse(
+        readFileSync("test/consumers/webvowl/development-audit.json", "utf8"),
+      );
+      const qualification = workflow.jobs.webvowl.steps.find(
+        (step) =>
+          step.name === "Qualify the retained package through isolated WebVOWL",
+      );
+      expect(control.webvowl.commit).toBe(audit.baselineCommit);
+      expect(qualification.run).toContain(
+        `--expected-webvowl-commit ${control.webvowl.commit}`,
+      );
+      expect(qualification.run).toContain(
+        `--expected-ontology-commit ${control.ontologyCorpus.commit}`,
+      );
+      expect(qualification).not.toHaveProperty("if");
+      expect(qualification).not.toHaveProperty("continue-on-error");
+    },
+  );
+
+  test("CI uses provisional evidence without weakening final release qualification", () => {
+    const qualificationCommand = (fileName) =>
+      parseDocument(workflowSource(fileName))
+        .toJS()
+        .jobs.webvowl.steps.find(
+          (step) =>
+            step.name ===
+            "Qualify the retained package through isolated WebVOWL",
+        ).run;
+    expect(qualificationCommand("ci.yml")).toContain(
+      "--development-audit test/consumers/webvowl/development-audit.json",
+    );
+    expect(qualificationCommand("release.yml")).not.toContain(
+      "--development-audit",
+    );
+  });
+
   test.each(["release.yml", "release-reconciliation.yml"])(
     "the native queue false-positive suppression cannot hide job-level queue policy in %s",
     (fileName) => {

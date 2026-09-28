@@ -732,7 +732,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: Hadden-Industries/webvowl
-          ref: f7444ce3971621e6af6d38ebd4b5ce9b03f3e235
+          ref: 4f1970e5b6c95655af823c495bd58f9e9993f8b8
           # WebVOWL's governance suite proves retained reconstruction ancestry.
           # A shallow checkout would make valid recorded commits unreachable.
           fetch-depth: 0
@@ -742,7 +742,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: Hadden-Industries/universal-ontology
-          ref: e2c667f3584b8fb705671cada0fe205b1000b617
+          ref: c2220675b0f3345628fc9cc8112a41440afcb2f0
           fetch-depth: 1
           path: consumer-workspace/universal-ontology
           persist-credentials: false
@@ -790,7 +790,9 @@ jobs:
         run: npm run candidate:prepare -- --candidate .release/download
         timeout-minutes: 5
       - name: Qualify the retained package through isolated WebVOWL
-        run: npm run test:webvowl-consumer -- --candidate-dir .release/download --webvowl-repository ../consumer-workspace/webvowl --expected-webvowl-commit f7444ce3971621e6af6d38ebd4b5ce9b03f3e235 --expected-ontology-commit e2c667f3584b8fb705671cada0fe205b1000b617 --output .release/webvowl-result
+        # CI exercises the reviewed candidate without claiming release acceptance.
+        # The release workflow retains the strict reconciled qualification route.
+        run: npm run test:webvowl-consumer -- --candidate-dir .release/download --webvowl-repository ../consumer-workspace/webvowl --expected-webvowl-commit 4f1970e5b6c95655af823c495bd58f9e9993f8b8 --expected-ontology-commit c2220675b0f3345628fc9cc8112a41440afcb2f0 --development-audit test/consumers/webvowl/development-audit.json --output .release/webvowl-result
         timeout-minutes: 45
 
   required:
