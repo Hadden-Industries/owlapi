@@ -1,0 +1,274 @@
+{
+  "artifactId": "b18dbbb711b6bc00f4ef5b10a94515eac1c16ecbcf821e9855c334732095ef95",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 16037,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/dev/index.d.ts",
+        "sha256": "eff73acfacda1d3e62bb3cb5bc7200bb0257ea0c8857ce45b3fee5bfec38ad12",
+        "size": 5441,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/index.js",
+        "sha256": "8d79d4403430ac699174cd9ee4a37225e068abdf589c78837a6785b93e3ae360",
+        "size": 159,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/lib/html.d.ts",
+        "sha256": "e87873f06fa094e76ac439c7756b264f3c76a41deb8bc7d39c1d30e0f03ef547",
+        "size": 991,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/lib/html.js",
+        "sha256": "c66e830059007029ad974a783b950912293260708e53d24acea5fdb92b2259f7",
+        "size": 7065,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/lib/syntax.d.ts",
+        "sha256": "488861dc4f870c77c2f2f72c1f27a63fa2e81106f308e3fc345581938928f925",
+        "size": 304,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/lib/syntax.js",
+        "sha256": "95e0e2b9d66992eae88e65bf18b6ca57f55fb4d120611adb03888d045a6c5c25",
+        "size": 13484,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "eff73acfacda1d3e62bb3cb5bc7200bb0257ea0c8857ce45b3fee5bfec38ad12",
+        "size": 5441,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "9f2dd0393871a1d2db494fd4e5502ede219eda13ac05fea9ea6dd9c8ccf8dff6",
+        "size": 164,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/html.d.ts",
+        "sha256": "e87873f06fa094e76ac439c7756b264f3c76a41deb8bc7d39c1d30e0f03ef547",
+        "size": 991,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/html.js",
+        "sha256": "eb300069225e67d6a71c96d16c7e69c64d14ba54c42c2ea7a3bfb5a8012d83b3",
+        "size": 6371,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/syntax.d.ts",
+        "sha256": "488861dc4f870c77c2f2f72c1f27a63fa2e81106f308e3fc345581938928f925",
+        "size": 304,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/syntax.js",
+        "sha256": "5fd8d63fcbb9918a0f7b92f2ba6adea3845e9cbf7f1e74ee239f4d018943ef6b",
+        "size": 12479,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "807a88522a850092aece49486207c17c313c4d5708ac276524840fe1caa0b0fa",
+        "size": 1099,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6d01f1d739fa38fbe2784fcb9143554b2f19e4c1193f7d62efae46fb7d3b36d6",
+        "size": 3422,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "9db4c2785d5f646a27f033636ec55c2e5bc543bbad2add5cef430e346e35bca9",
+        "size": 21751,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1099,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/80/807a88522a850092aece49486207c17c313c4d5708ac276524840fe1caa0b0fa",
+          "sha256": "807a88522a850092aece49486207c17c313c4d5708ac276524840fe1caa0b0fa"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "807a88522a850092aece49486207c17c313c4d5708ac276524840fe1caa0b0fa",
+        "size": 1099
+      },
+      {
+        "blob": {
+          "bytes": 21751,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9db4c2785d5f646a27f033636ec55c2e5bc543bbad2add5cef430e346e35bca9",
+          "sha256": "9db4c2785d5f646a27f033636ec55c2e5bc543bbad2add5cef430e346e35bca9"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "9db4c2785d5f646a27f033636ec55c2e5bc543bbad2add5cef430e346e35bca9",
+        "size": 21751
+      }
+    ],
+    "expandedBytes": 79466,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "micromark-extension-gfm-footnote",
+      "repository": "micromark/micromark-extension-gfm-footnote",
+      "version": "2.1.0"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/micromark/micromark-extension-gfm-footnote/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "devlop": "^1.0.0",
+        "micromark-core-commonmark": "^2.0.0",
+        "micromark-factory-space": "^2.0.0",
+        "micromark-util-character": "^2.0.0",
+        "micromark-util-normalize-identifier": "^2.0.0",
+        "micromark-util-sanitize-uri": "^2.0.0",
+        "micromark-util-symbol": "^2.0.0",
+        "micromark-util-types": "^2.0.0"
+      },
+      "description": "micromark extension to support GFM footnotes",
+      "devDependencies": {
+        "@types/node": "^20.0.0",
+        "c8": "^10.0.0",
+        "create-gfm-fixtures": "^1.0.0",
+        "micromark": "^4.0.0",
+        "micromark-build": "^2.0.0",
+        "prettier": "^3.0.0",
+        "remark-cli": "^12.0.0",
+        "remark-preset-wooorm": "^10.0.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^5.0.0",
+        "xo": "^0.58.0"
+      },
+      "exports": {
+        "default": "./index.js",
+        "development": "./dev/index.js"
+      },
+      "files": [
+        "dev/",
+        "lib/",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/unified"
+      },
+      "keywords": [
+        "micromark",
+        "micromark-extension",
+        "gfm",
+        "footnote",
+        "note",
+        "definition",
+        "markdown",
+        "unified"
+      ],
+      "license": "MIT",
+      "name": "micromark-extension-gfm-footnote",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "remark-preset-wooorm"
+        ]
+      },
+      "repository": "micromark/micromark-extension-gfm-footnote",
+      "scripts": {
+        "build": "tsc --build --clean && tsc --build && type-coverage && micromark-build",
+        "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
+        "prepack": "npm run build && npm run format",
+        "test": "npm run build && npm run format && npm run test-coverage",
+        "test-api": "npm run test-api-dev && npm run test-api-prod",
+        "test-api-dev": "node --conditions development test/index.js",
+        "test-api-prod": "node --conditions production test/index.js",
+        "test-coverage": "c8 --100 --reporter lcov npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "atLeast": 100,
+        "detail": true,
+        "ignoreCatch": true,
+        "strict": true
+      },
+      "version": "2.1.0",
+      "xo": {
+        "overrides": [
+          {
+            "files": [
+              "**/*.d.ts"
+            ],
+            "rules": {
+              "@typescript-eslint/array-type": [
+                "error",
+                {
+                  "default": "generic"
+                }
+              ],
+              "@typescript-eslint/ban-types": [
+                "error",
+                {
+                  "extendDefaults": true
+                }
+              ],
+              "@typescript-eslint/consistent-type-definitions": [
+                "error",
+                "interface"
+              ]
+            }
+          },
+          {
+            "files": [
+              "test/**/*.js"
+            ],
+            "rules": {
+              "no-await-in-loop": 0
+            }
+          }
+        ],
+        "prettier": true,
+        "rules": {
+          "logical-assignment-operators": "off",
+          "unicorn/no-this-assignment": "off",
+          "unicorn/prefer-at": "off",
+          "unicorn/prefer-string-replace-all": "off"
+        }
+      }
+    },
+    "physicalEntryCount": 15,
+    "tarball": {
+      "bytes": 16037,
+      "sha256": "a1b9858641efe4ddabf48062397663f9de3fdea1fb43b4c34faa9987eb6f2f8a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

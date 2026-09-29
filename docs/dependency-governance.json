@@ -5,17 +5,17 @@
     "name": "owlapi",
     "version": "0.1.0-rc.1"
   },
-  "recordedOn": "2026-09-29",
+  "recordedOn": "2026-09-30",
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "2d258c5700a38265d45c3848eecf76f93ccd40204db6b9fd0dc3e32fb030be8d",
+    "factsSha256": "6fad9eff820e901092905e7d8a90dfec4c6fc5c717f8d7e72c4279e95399c35b",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
     "conclusion": null
   },
   "productionAudit": {
-    "performedOn": "2026-09-29",
+    "performedOn": "2026-09-30",
     "command": "npm audit --omit=dev --json",
     "npmVersion": "12.1.0",
     "productionPackageCount": 39,
@@ -99,7 +99,8 @@
     "security and finite-resource tests",
     "browser and Node tests",
     "bundle-size and parser-performance benchmarks",
-    "production static-import-closure verification"
+    "production static-import-closure verification",
+    "Development-only Python tools use pyproject.toml and uv.lock with native locked validation; their selected distributions, retained terms, and copied-tool source records are inventoried in docs/provenance/third-party-material.json. Requalify the Snapper workaround and the Windows/Linux quality gates on tool updates."
   ],
   "dependencies": [
     {

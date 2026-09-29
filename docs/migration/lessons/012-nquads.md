@@ -4,31 +4,23 @@
 
 - Migration: Phase 13 - N-Quads.
 - Baseline revision: `f83a02f7`, the signed Phase 12 checkpoint commit.
-- Completion revision: the Phase 13 checkpoint commit containing this record;
-  the repository owner requested an uncommitted review pause before assigning
-  its commit ID.
+- Completion revision: the Phase 13 checkpoint commit containing this record; the repository owner requested an uncommitted review pause before assigning its commit ID.
 - Implementation date: 22 August 2026.
 - Next migration: Phase 14 - TriG.
 
 ## Implemented scope
 
-Phase 13 registers N-Quads as an independent strict RDF dataset format. It
-reuses N3.js only behind an exact private `N-Quads` policy and publishes
-project-owned RDF/JS terms, quads, diagnostics, and immutable ontology state.
-Unlike N-Triples, the adapter preserves each quad's graph term. The existing
-graph-policy seam then applies `requireSingleGraph`, `defaultGraphOnly`,
-`selectGraph`, or `mergeGraphs` before RDF-to-OWL reconstruction.
+Phase 13 registers N-Quads as an independent strict RDF dataset format.
+It reuses N3.js only behind an exact private `N-Quads` policy and publishes project-owned RDF/JS terms, quads, diagnostics, and immutable ontology state.
+Unlike N-Triples, the adapter preserves each quad's graph term.
+The existing graph-policy seam then applies `requireSingleGraph`, `defaultGraphOnly`, `selectGraph`, or `mergeGraphs` before RDF-to-OWL reconstruction.
 
-The selected graph and merge decision are recorded in immutable document
-context, not on OWL axioms. Blank-node identity remains scoped to the complete
-dataset until graph policy has selected or merged the graph, ensuring that
-equal labels in different graph statements continue to denote the same blank
-node.
+The selected graph and merge decision are recorded in immutable document context, not on OWL axioms.
+Blank-node identity remains scoped to the complete dataset until graph policy has selected or merged the graph, ensuring that equal labels in different graph statements continue to denote the same blank node.
 
 The bounded descriptor recognizes only decisive fourth-position graph terms.
-It gives N-Quads priority over N-Triples and Turtle without duplicating the
-grammar or weakening either existing syntax. Full validation remains the exact
-N3.js adapter's responsibility.
+It gives N-Quads priority over N-Triples and Turtle without duplicating the grammar or weakening either existing syntax.
+Full validation remains the exact N3.js adapter's responsibility.
 
 ## Acceptance evidence
 
@@ -60,66 +52,43 @@ N3.js adapter's responsibility.
 
 ## Normative and test-corpus grounding
 
-The conformance register embeds the complete selected N-Quads syntax entries
-from W3C `rdf-tests` revision
-`12774b0ebb385d17651b396654b19254d0fefbfa`. The RDF 1.1 and RDF 1.2 source
-manifests are archived separately with their SHA-256 identities. The register
-contains 114 required cases: 60 accepted documents and 54 required syntax
-failures. Positive expectations record quad counts and graph-term kinds before
-the adapter executes, so replacing named graphs with the default graph fails
-the gate.
+The conformance register embeds the complete selected N-Quads syntax entries from W3C `rdf-tests` revision `12774b0ebb385d17651b396654b19254d0fefbfa`.
+The RDF 1.1 and RDF 1.2 source manifests are archived separately with their SHA-256 identities.
+The register contains 114 required cases: 60 accepted documents and 54 required syntax failures.
+Positive expectations record quad counts and graph-term kinds before the adapter executes, so replacing named graphs with the default graph fails the gate.
 
-RDF 1.2 triple terms reach the existing explicit RDF-to-OWL unsupported
-boundary when they cannot be represented as OWL structures. They are neither
-rewritten nor silently accepted as ordinary RDF terms.
+RDF 1.2 triple terms reach the existing explicit RDF-to-OWL unsupported boundary when they cannot be represented as OWL structures.
+They are neither rewritten nor silently accepted as ordinary RDF terms.
 
 ## Performance and dependency impact
 
 The accepted 50,000-quad fixture contains 8,438,889 bytes in one named graph.
-At the retained 65,536-byte default, syntax-to-RDF completes in 1,532.72 ms
-with an 18.42 ms maximum sampled event-loop delay. The end-to-end path,
-including single-graph selection and RDF-to-OWL publication, completes in
-2,595.56 ms.
-Same-revision Functional and mismatch registry controls stay below the
-unchanged 20% threshold.
+At the retained 65,536-byte default, syntax-to-RDF completes in 1,532.72 ms with an 18.42 ms maximum sampled event-loop delay.
+The end-to-end path, including single-graph selection and RDF-to-OWL publication, completes in 2,595.56 ms.
+Same-revision Functional and mismatch registry controls stay below the unchanged 20% threshold.
 
-Phase 13 adds no dependency, package, lockfile, build configuration,
-resource-ceiling, regression-threshold, or legacy-production-reachability
-change. The conformance and provenance registers are extended for the new
-format. N3.js remains a lazy private implementation shared by three exact
-format policies.
+Phase 13 adds no dependency, package, lockfile, build configuration, resource-ceiling, regression-threshold, or legacy-production-reachability change.
+The conformance and provenance registers are extended for the new format.
+N3.js remains a lazy private implementation shared by three exact format policies.
 
 ## Impact on Phase 14
 
-TriG may reuse the private N3.js implementation and the graph-policy seam, but
-it cannot be implemented as permissive N-Quads. It combines Turtle's directives
-and prefix/base state with named graphs and therefore needs a distinct exact
-policy, descriptor, conformance classification, and ambiguity tests. Phase 14
-must retain the N-Triples and N-Quads line-syntax guarantees while adding the
-graph-block grammar.
+TriG may reuse the private N3.js implementation and the graph-policy seam, but it cannot be implemented as permissive N-Quads.
+It combines Turtle's directives and prefix/base state with named graphs and therefore needs a distinct exact policy, descriptor, conformance classification, and ambiguity tests.
+Phase 14 must retain the N-Triples and N-Quads line-syntax guarantees while adding the graph-block grammar.
 
 ## Unresolved questions
 
-There are no unresolved Phase 13 syntax, conformance, graph-policy,
-differential, resource, dependency, production-integration, provenance, or
-performance blockers and no unfinished `LOCAL_PHASE_FOLLOW_UP`.
+There are no unresolved Phase 13 syntax, conformance, graph-policy, differential, resource, dependency, production-integration, provenance, or performance blockers and no unfinished `LOCAL_PHASE_FOLLOW_UP`.
 
 ## Mechanically reviewable completion summary
 
 - Migration: Phase 13 N-Quads.
 - Lesson record: `docs/owlapi-js/migration/lessons/012-nquads.md`.
-- Finding IDs: `M13-001` through `M13-008`; every finding has exactly one
-  primary disposition.
-- Playbook changed: yes; Phase 13 evidence is institutionalized and the next
-  migration section advances to Phase 14.
-- Executable protections added: exact-format/lexer policy, bounded decisive
-  detection, Turtle and N-Triples strictness, graph-term preservation, all four
-  graph policies over parsed input, dataset-scoped blank-node identity, W3C
-  positives and negatives, resources, cancellation/yield, structural
-  differential, direct/import/WebVOWL integration, browser globals, and
-  same-revision performance measurement.
+- Finding IDs: `M13-001` through `M13-008`; every finding has exactly one primary disposition.
+- Playbook changed: yes; Phase 13 evidence is institutionalized and the next migration section advances to Phase 14.
+- Executable protections added: exact-format/lexer policy, bounded decisive detection, Turtle and N-Triples strictness, graph-term preservation, all four graph policies over parsed input, dataset-scoped blank-node identity, W3C positives and negatives, resources, cancellation/yield, structural differential, direct/import/WebVOWL integration, browser globals, and same-revision performance measurement.
 - Normative-change proposals: none.
 - Resource-budget or regression-threshold changes: none.
 - Unresolved blockers: none.
-- Next migration: Phase 14, blocked until the repository owner creates the
-  requested Phase 13 checkpoint commit and explicitly says to proceed.
+- Next migration: Phase 14, blocked until the repository owner creates the requested Phase 13 checkpoint commit and explicitly says to proceed.

@@ -1,0 +1,242 @@
+{
+  "artifactId": "ab580a43a7b259fe29abe304784a5075f85fd86d7b7a1e25847458991f46503d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 10905,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "6b243d0f6cf1786f6e3b10a99db080a977cc27e6f49bcff2b6264cf0339063d5",
+        "size": 349,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "6e3e10026230a33197e56422a2d95fc1815528c0bde7c1c790fd1a733b04bd39",
+        "size": 108,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/color.d.ts",
+        "sha256": "ff695cb3c0b62b149a79f775ebd5487bdc969243b9bedd992336098597340bfc",
+        "size": 127,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/color.d.ts.map",
+        "sha256": "72a1967814ebd84bd52dcf729c2e502efceeda88c9000de3dfc92d917d9fbe7e",
+        "size": 140,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/color.js",
+        "sha256": "84d02ef62d60a8e4fc8529fa6725abb85729274a873afbb8d4d9fb317ae01135",
+        "size": 90,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/color.node.d.ts",
+        "sha256": "94b5111698fafa310ad33fca1c3600dfe46926871f3e649b943bbfbdc543bb88",
+        "size": 132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/color.node.d.ts.map",
+        "sha256": "85d23947b53f9d79780aceecfc3a3650f80fa686fa159c1b32e405fecf031ee8",
+        "size": 150,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/color.node.js",
+        "sha256": "34b9001e424a12a5a436293affcd0cf92533e120b77144c2b1f1ea39fb8d6d3a",
+        "size": 120,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "2ab28547d4eb361bdc492bca3029f06519ab48dc3884bc300456690310f0ff40",
+        "size": 8956,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts.map",
+        "sha256": "b372541a328dbb7fef95c0c67df619123e5a8a7de8a449232c8109971ee2f6e4",
+        "size": 3154,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "8789a4f20d3e3c82bcaeec9628697752d662461bf6237ecfba61cfcc00f30bf7",
+        "size": 11752,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+        "size": 1099,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6b00f27056337866d9206719b72a62c299a11903cdf622f307c92059723845e1",
+        "size": 2627,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "018886a3389f28b0c2d30bf30c795bc5e5feda0b497ae05748aa227f78f46c1b",
+        "size": 10283,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1099,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ca/ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+          "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+        "size": 1099
+      },
+      {
+        "blob": {
+          "bytes": 10283,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/01/018886a3389f28b0c2d30bf30c795bc5e5feda0b497ae05748aa227f78f46c1b",
+          "sha256": "018886a3389f28b0c2d30bf30c795bc5e5feda0b497ae05748aa227f78f46c1b"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "018886a3389f28b0c2d30bf30c795bc5e5feda0b497ae05748aa227f78f46c1b",
+        "size": 10283
+      }
+    ],
+    "expandedBytes": 39087,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "unist-util-visit-parents",
+      "repository": "syntax-tree/unist-util-visit-parents",
+      "version": "6.0.2"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/syntax-tree/unist-util-visit-parents/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "@types/unist": "^3.0.0",
+        "unist-util-is": "^6.0.0"
+      },
+      "description": "unist utility to recursively walk over nodes, with ancestral information",
+      "devDependencies": {
+        "@types/hast": "^3.0.0",
+        "@types/mdast": "^4.0.0",
+        "@types/node": "^24.0.0",
+        "@types/xast": "^2.0.0",
+        "c8": "^10.0.0",
+        "mdast-util-from-markdown": "^2.0.0",
+        "mdast-util-gfm": "^3.0.0",
+        "micromark-extension-gfm": "^3.0.0",
+        "prettier": "^3.0.0",
+        "remark-cli": "^12.0.0",
+        "remark-preset-wooorm": "^10.0.0",
+        "strip-ansi": "^7.0.0",
+        "tsd": "^0.33.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^5.0.0",
+        "xo": "^0.58.0"
+      },
+      "exports": {
+        ".": "./index.js",
+        "./do-not-use-color": {
+          "default": "./lib/color.js",
+          "node": "./lib/color.node.js"
+        }
+      },
+      "files": [
+        "lib/",
+        "index.d.ts.map",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/unified"
+      },
+      "keywords": [
+        "unist",
+        "unist-util",
+        "util",
+        "utility",
+        "tree",
+        "ast",
+        "visit",
+        "traverse",
+        "walk",
+        "check",
+        "parent",
+        "parents"
+      ],
+      "license": "MIT",
+      "name": "unist-util-visit-parents",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "remark-preset-wooorm"
+        ]
+      },
+      "repository": "syntax-tree/unist-util-visit-parents",
+      "scripts": {
+        "build": "tsc --build --clean && tsc --build && tsd && type-coverage",
+        "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
+        "prepack": "npm run build && npm run format",
+        "test": "npm run build && npm run format && npm run test-coverage",
+        "test-api": "node --conditions development test.js",
+        "test-coverage": "c8 --100 --reporter lcov npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "#": "needed `any`s",
+        "atLeast": 100,
+        "detail": true,
+        "ignoreCatch": true,
+        "ignoreFiles": [
+          "lib/index.d.ts"
+        ],
+        "strict": true
+      },
+      "types": "index.d.ts",
+      "version": "6.0.2",
+      "xo": {
+        "prettier": true,
+        "rules": {
+          "unicorn/prefer-at": "off",
+          "unicorn/prefer-string-replace-all": "off"
+        }
+      }
+    },
+    "physicalEntryCount": 14,
+    "tarball": {
+      "bytes": 10905,
+      "sha256": "5250902af03c4b335c68cd60ed5eb4f1d9fbd6338e129d7df476690b8a245da5"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

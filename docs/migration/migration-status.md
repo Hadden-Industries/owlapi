@@ -26,292 +26,151 @@ Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 |    19 | Canonical repository extraction and alpha publication                  | Not started | PENDING DESIGN: Phase 18 fixed at `b5902e98`                     |
 |    20 | Production `owlapi@0.1.0` publication and WebVOWL package verification | Not started | blocked by accepted Phase 19 alpha and public-package evidence   |
 
-Active implementation phase: none. Phase 18 physically deleted the retired
-pipeline after the Phase 17 checkpoint and passed its absence, production,
-corpus, provenance, runner-scope, full-suite, lint, build, and lazy-closure
-gates. Its signed checkpoint is
-`b5902e98da94a1ed99da174acea906aa42f9a46b`. Phase 19 is the next implementation
-phase once its package-boundary design review is complete and the repository
-owner explicitly says to proceed; Phase 20 follows only after the accepted
-alpha and public-package gates.
+Active implementation phase: none.
+Phase 18 physically deleted the retired pipeline after the Phase 17 checkpoint and passed its absence, production, corpus, provenance, runner-scope, full-suite, lint, build, and lazy-closure gates.
+Its signed checkpoint is `b5902e98da94a1ed99da174acea906aa42f9a46b`.
+Phase 19 is the next implementation phase once its package-boundary design review is complete and the repository owner explicitly says to proceed; Phase 20 follows only after the accepted alpha and public-package gates.
 
-The structural cutover itself is in place. WebVOWL ingests ontologies only
-through `owlapi-js`; the pre-cutover parser, converter, exporter, RDF/XML bridge,
-and syntax-coupled VOWL state have been physically removed. Turtle, N-Triples,
-N-Quads, and TriG succeed both
-directly and when discovered inside an import closure. Functional Syntax,
-Manchester Syntax, OWL/XML, RDF/XML, Turtle, DL Syntax, KRSS1, KRSS2, N-Triples,
-N-Quads, TriG, and JSON-LD are the advertised production formats; every other
-legacy-only syntax still fails with canonical unsupported-format diagnostics.
-KRSS1 is executable through its own descriptor and remains distinct from
-KRSS2.
+The structural cutover itself is in place.
+WebVOWL ingests ontologies only through `owlapi-js`; the pre-cutover parser, converter, exporter, RDF/XML bridge, and syntax-coupled VOWL state have been physically removed. Turtle, N-Triples, N-Quads, and TriG succeed both directly and when discovered inside an import closure. Functional Syntax, Manchester Syntax, OWL/XML, RDF/XML, Turtle, DL Syntax, KRSS1, KRSS2, N-Triples, N-Quads, TriG, and JSON-LD are the advertised production formats; every other legacy-only syntax still fails with canonical unsupported-format diagnostics.
+KRSS1 is executable through its own descriptor and remains distinct from KRSS2.
 
-N-Quads uses a third exact-format policy over the private N3.js boundary and
-preserves graph terms in the canonical RDF/JS dataset. All four graph policies
-operate on actual parsed input before RDF-to-OWL reconstruction; the selected
-graph and merge decision are retained as immutable document context rather
-than OWL semantics. Dataset-scoped blank-node identity is preserved until that
-policy boundary. Its independent pinned W3C RDF 1.1/RDF 1.2 register is green
-for all 114 entries: 60 positive and 54 negative. Bounded detection recognizes
-only a decisive fourth-position graph term and does not weaken N-Triples or
-Turtle. The same-revision Phase 12/Phase 13 registry benchmark remains within
-the unchanged 20% threshold. Phase 13 adds no dependency, package, lockfile,
-build-configuration, resource-ceiling, or legacy-production-reachability
-change; it extends only the governed conformance and provenance registers.
+N-Quads uses a third exact-format policy over the private N3.js boundary and preserves graph terms in the canonical RDF/JS dataset. All four graph policies operate on actual parsed input before RDF-to-OWL reconstruction; the selected graph and merge decision are retained as immutable document context rather than OWL semantics. Dataset-scoped blank-node identity is preserved until that policy boundary. Its independent pinned W3C RDF 1.1/RDF 1.2 register is green for all 114 entries: 60 positive and 54 negative.
+Bounded detection recognizes only a decisive fourth-position graph term and does not weaken N-Triples or Turtle.
+The same-revision Phase 12/Phase 13 registry benchmark remains within the unchanged 20% threshold.
+Phase 13 adds no dependency, package, lockfile, build-configuration, resource-ceiling, or legacy-production-reachability change; it extends only the governed conformance and provenance registers.
 
-TriG uses its own exact format policy over the private N3.js boundary and
-preserves prefix/base state and every RDF/JS graph term before applying the
-same explicit dataset graph policies as N-Quads. Bounded detection recognizes
-graph-block braces outside comments, strings, and IRI references without
-claiming Turtle, N-Quads, XML, or the broader N3 language. The current W3C RDF
-1.1/RDF 1.2 inventory contains 418 entries: all 413
-`REQUIRED` cases pass, while five RDF 1.2 reifier/annotation evaluation cases
-are individually `EXCLUDED_WITH_REASON` for the recorded N3.js 2.3.0
-capability gap. Twelve cases formerly excluded under N3.js 2.2.0 are now
-required and passing; no failing case is silently omitted. Same-source upgrade
-controls remain within the unchanged 20% threshold. Phase 14 itself added no
-dependency, package, lockfile, build-configuration, resource-ceiling, or
-legacy-production-reachability change; the later N3.js 2.3.0 qualification
-changes only the lazy implementation graph and remains within the same gate.
+TriG uses its own exact format policy over the private N3.js boundary and preserves prefix/base state and every RDF/JS graph term before applying the same explicit dataset graph policies as N-Quads.
+Bounded detection recognizes graph-block braces outside comments, strings, and IRI references without claiming Turtle, N-Quads, XML, or the broader N3 language.
+The current W3C RDF 1.1/RDF 1.2 inventory contains 418 entries: all 413 `REQUIRED` cases pass, while five RDF 1.2 reifier/annotation evaluation cases are individually `EXCLUDED_WITH_REASON` for the recorded N3.js 2.3.0 capability gap.
+Twelve cases formerly excluded under N3.js 2.2.0 are now required and passing; no failing case is silently omitted.
+Same-source upgrade controls remain within the unchanged 20% threshold.
+Phase 14 itself added no dependency, package, lockfile, build-configuration, resource-ceiling, or legacy-production-reachability change; the later N3.js 2.3.0 qualification changes only the lazy implementation graph and remains within the same gate.
 
-JSON-LD uses Digital Bazaar jsonld.js through a direct RDF/JS adapter without
-an N-Quads string round-trip. Remote contexts are default-deny and, when
-enabled, can use only the injected project loader with URL/credential/SSRF,
-redirect, byte, timeout, and cancellation enforcement; ambient Node/browser
-loading is never used. Immutable document-format parameters expose JSON-LD 1.0
-and 1.1 processing, inline or restricted external expansion contexts, and both
-standard RDF-direction representations; canonical `rdf:JSON` is an invariant
-rather than a caller-selected profile. The complete pinned W3C JSON-LD
-inventory contains 521 entries: all 462 `REQUIRED` to-RDF cases pass, only two
-generalized-RDF cases and three exact jsonld.js 9.0.0 gaps remain
-`EXCLUDED_WITH_REASON`, and all 54 from-RDF cases are explicitly
-`NOT_APPLICABLE` to ingestion. The browser-safe processor remains in its own
-lazy closure and is absent from the initial static closure. The approved
-bounded-detection gate retains the 20% wall limit and requires relative heap
-compliance or a 64 KiB ceiling across 1/4/16 MiB inputs; all three scaling
-medians pass. Phase 15 adds no package, lockfile, build-configuration, production
-resource-ceiling, or legacy-production-reachability change.
+JSON-LD uses Digital Bazaar jsonld.js through a direct RDF/JS adapter without an N-Quads string round-trip. Remote contexts are default-deny and, when enabled, can use only the injected project loader with URL/credential/SSRF, redirect, byte, timeout, and cancellation enforcement; ambient Node/browser loading is never used.
+Immutable document-format parameters expose JSON-LD 1.0 and 1.1 processing, inline or restricted external expansion contexts, and both standard RDF-direction representations; canonical `rdf:JSON` is an invariant rather than a caller-selected profile.
+The complete pinned W3C JSON-LD inventory contains 521 entries: all 462 `REQUIRED` to-RDF cases pass, only two generalized-RDF cases and three exact jsonld.js 9.0.0 gaps remain `EXCLUDED_WITH_REASON`, and all 54 from-RDF cases are explicitly `NOT_APPLICABLE` to ingestion.
+The browser-safe processor remains in its own lazy closure and is absent from the initial static closure.
+The approved bounded-detection gate retains the 20% wall limit and requires relative heap compliance or a 64 KiB ceiling across 1/4/16 MiB inputs; all three scaling medians pass.
+Phase 15 adds no package, lockfile, build-configuration, production resource-ceiling, or legacy-production-reachability change.
 
-The shared OWL-to-RDF translator now maps the complete finite structural model
-through one exhaustive dispatch layer into a fresh RDF/JS dataset, including
-ontology metadata, every axiom family, recursive annotations, source anonymous
-individual identity, and qualified and unqualified cardinalities. Its governed
-inventory is aligned mechanically with all model kind arrays. The broad
-structural round trip covers all 38 axiom kinds and compares blank-node-agnostic
-graphs after excluding only nonlogical declaration triples inferred by the
-reverse translator. A pinned OWLAPI 5.5.1 N-Triples oracle agrees after one
-exact controlled standards correction: Java emits three convenience
-`rdf:type rdf:List` triples that the normative sequence mapping does not
-require. The phase also hardened reverse reconstruction so named properties
-connected by subproperty or equivalence axioms acquire the category needed to
-decode restrictions without manufacturing declaration axioms. Phase 16 adds
-no dependency, package, lockfile, build configuration, storer, production
-reachability, or resource-ceiling change.
+The shared OWL-to-RDF translator now maps the complete finite structural model through one exhaustive dispatch layer into a fresh RDF/JS dataset, including ontology metadata, every axiom family, recursive annotations, source anonymous individual identity, and qualified and unqualified cardinalities.
+Its governed inventory is aligned mechanically with all model kind arrays.
+The broad structural round trip covers all 38 axiom kinds and compares blank-node-agnostic graphs after excluding only nonlogical declaration triples inferred by the reverse translator.
+A pinned OWLAPI 5.5.1 N-Triples oracle agrees after one exact controlled standards correction: Java emits three convenience `rdf:type rdf:List` triples that the normative sequence mapping does not require.
+The phase also hardened reverse reconstruction so named properties connected by subproperty or equivalence axioms acquire the category needed to decode restrictions without manufacturing declaration axioms.
+Phase 16 adds no dependency, package, lockfile, build configuration, storer, production reachability, or resource-ceiling change.
 
-N-Triples uses a distinct exact-format policy over the private N3.js boundary
-introduced for Turtle. Its independent pinned W3C RDF 1.1/RDF 1.2 register is
-green for all 99 entries, every accepted statement is normalized to the RDF/JS
-default graph, and bounded detection rejects Turtle directives, XML markup, and
-N-Quads graph labels. The shared RDF dataset publication seam removes duplicate
-translation logic without sharing syntax identity or graph policy. The
-same-revision Phase 11/Phase 12 registry benchmark remains within the unchanged
-20% threshold. Phase 12 adds no dependency, package, lockfile, configuration,
-resource-ceiling, or legacy-production-reachability change.
+N-Triples uses a distinct exact-format policy over the private N3.js boundary introduced for Turtle.
+Its independent pinned W3C RDF 1.1/RDF 1.2 register is green for all 99 entries, every accepted statement is normalized to the RDF/JS default graph, and bounded detection rejects Turtle directives, XML markup, and N-Quads graph labels.
+The shared RDF dataset publication seam removes duplicate translation logic without sharing syntax identity or graph policy.
+The same-revision Phase 11/Phase 12 registry benchmark remains within the unchanged 20% threshold.
+Phase 12 adds no dependency, package, lockfile, configuration, resource-ceiling, or legacy-production-reachability change.
 
-Phase 11 established KRSS2 through a dialect-neutral bounded pull lexer and a
-strict adapter while KRSS1 remained explicitly unregistered at that checkpoint.
-KRSS1 and KRSS2 remain separate compatibility identities. The project-owned
-12-axiom subset agrees exactly across KRSS2, DL, Functional, Manchester,
-OWL/XML, RDF/XML, and Turtle, and its pinned OWLAPI 5.5.1 oracle agrees on every
-axiom count and signature category. The same-revision Phase 10/Phase 11 registry
-benchmark remains within the unchanged 20% threshold. Phase 11 adds no
-dependency, package, lockfile, configuration, resource-ceiling, or
-legacy-production-reachability change.
+Phase 11 established KRSS2 through a dialect-neutral bounded pull lexer and a strict adapter while KRSS1 remained explicitly unregistered at that checkpoint.
+KRSS1 and KRSS2 remain separate compatibility identities.
+The project-owned 12-axiom subset agrees exactly across KRSS2, DL, Functional, Manchester, OWL/XML, RDF/XML, and Turtle, and its pinned OWLAPI 5.5.1 oracle agrees on every axiom count and signature category.
+The same-revision Phase 10/Phase 11 registry benchmark remains within the unchanged 20% threshold.
+Phase 11 adds no dependency, package, lockfile, configuration, resource-ceiling, or legacy-production-reachability change.
 
-Phase 17 deepens that separation rather than relabeling KRSS2. Separate public
-adapters now supply exact dialect legality, format, detection and diagnostics to
-the shared bounded core. Generic `.krss` ambiguity selects KRSS1 first; exact
-`.krss2` and exclusive vocabulary select KRSS2, and recognized failures do not
-cross-fallback. The pinned Java fixture and behavioral inventory record the
-right-identity no-effect plus controlled corrections for discarded Java ABox
-axioms, unreachable cardinalities, malformed names and singleton Boolean
-objects. The strict provenance review verified no qualifying public,
-first-party-maintained historical ontology artifact for either OWLAPI-style
-KRSS1 or KRSS2. Project-owned grammar fixtures, historical adjacent-dialect
-fixtures, extended-KRSS negatives, converted-real-ontology fixtures, and any
-future first-party strict corpus therefore remain separate evidence classes;
-only the last class may be called a historical KRSS corpus, and it is empty.
-The same-revision Phase 16/Phase 17 registry benchmark stays within the
-unchanged 20% threshold and designated 64 KiB mismatch-selection ceiling.
+Phase 17 deepens that separation rather than relabeling KRSS2.
+Separate public adapters now supply exact dialect legality, format, detection and diagnostics to the shared bounded core.
+Generic `.krss` ambiguity selects KRSS1 first; exact `.krss2` and exclusive vocabulary select KRSS2, and recognized failures do not cross-fallback.
+The pinned Java fixture and behavioral inventory record the right-identity no-effect plus controlled corrections for discarded Java ABox axioms, unreachable cardinalities, malformed names and singleton Boolean objects.
+The strict provenance review verified no qualifying public, first-party-maintained historical ontology artifact for either OWLAPI-style KRSS1 or KRSS2.
+Project-owned grammar fixtures, historical adjacent-dialect fixtures, extended-KRSS negatives, converted-real-ontology fixtures, and any future first-party strict corpus therefore remain separate evidence classes; only the last class may be called a historical KRSS corpus, and it is empty.
+The same-revision Phase 16/Phase 17 registry benchmark stays within the unchanged 20% threshold and designated 64 KiB mismatch-selection ceiling.
 
-Phase 18 deletes 16 pre-cutover implementation modules and their paired tests,
-plus `legacyPipeline.js` and its legacy-only corpus differential. The retained
-production entry, `VOWLBuilder`, resolver, constants, semantic differential
-utilities, 46 pinned Java output fixtures, and current corpus gates remain.
-`src/productionGraph.architecture.test.js` now makes the 34-file absence
-contract executable as well as proving the structural production path.
-Provenance schema v4 records deleted lifecycle state without erasing historical
-or commit-bounded dispositions. The default runner no longer needs a special
-ignore or `test:legacy` command and discovers all active differential suites.
-No dependency, package lock, runtime API, resource ceiling, or regression
-threshold changes in this phase; the production bundle graph was unchanged in
-kind because every deleted module was already unreachable.
+Phase 18 deletes 16 pre-cutover implementation modules and their paired tests, plus `legacyPipeline.js` and its legacy-only corpus differential.
+The retained production entry, `VOWLBuilder`, resolver, constants, semantic differential utilities, 46 pinned Java output fixtures, and current corpus gates remain.
+`src/productionGraph.architecture.test.js` now makes the 34-file absence contract executable as well as proving the structural production path.
+Provenance schema v4 records deleted lifecycle state without erasing historical or commit-bounded dispositions.
+The default runner no longer needs a special ignore or `test:legacy` command and discovers all active differential suites.
+No dependency, package lock, runtime API, resource ceiling, or regression threshold changes in this phase; the production bundle graph was unchanged in kind because every deleted module was already unreachable.
 
-DL Syntax constructs structural objects directly through a bounded pull lexer
-and parser. The shared project fixture agrees across DL, Functional, RDF/XML,
-and Turtle on every non-declaration axiom and the complete signature; its pinned
-OWLAPI 5.5.1 oracle snapshot contains the same 15 reachable axioms. Java parser
-defects outside that shared subset are recorded as controlled corrections, not
-expected-difference rules. The same-revision Phase 9/Phase 10 registry benchmark
-keeps all existing Functional and mismatch signals within the unchanged 20%
-threshold, and Phase 10 adds no dependency, package, configuration, resource
-ceiling, or legacy-production reachability.
+DL Syntax constructs structural objects directly through a bounded pull lexer and parser.
+The shared project fixture agrees across DL, Functional, RDF/XML, and Turtle on every non-declaration axiom and the complete signature; its pinned OWLAPI 5.5.1 oracle snapshot contains the same 15 reachable axioms. Java parser defects outside that shared subset are recorded as controlled corrections, not expected-difference rules. The same-revision Phase 9/Phase 10 registry benchmark keeps all existing Functional and mismatch signals within the unchanged 20% threshold, and Phase 10 adds no dependency, package, configuration, resource ceiling, or legacy-production reachability.
 
-Real-corpus loading is now green. Finding `M8-006` records that the cutover
-first shipped with only 8 of 29 real RDF/XML-family ontologies loading, and that
-a full suite stayed green throughout because no gate measured real documents.
-`src/owl2vowl/test/productionCorpus.test.js` is that gate, and all 44 advertised
-documents now load through the production entry. Its acceptance set is the
-pinned OWL2VOWL reference outputs under
-`src/owl2vowl/test/fixtures/java-reference-outputs/`: every source the oracle
-converted successfully must load through the production entry.
+Real-corpus loading is now green.
+Finding `M8-006` records that the cutover first shipped with only 8 of 29 real RDF/XML-family ontologies loading, and that a full suite stayed green throughout because no gate measured real documents.
+`src/owl2vowl/test/productionCorpus.test.js` is that gate, and all 44 advertised documents now load through the production entry.
+Its acceptance set is the pinned OWL2VOWL reference outputs under `src/owl2vowl/test/fixtures/java-reference-outputs/`: every source the oracle converted successfully must load through the production entry.
 
 The differential gate that blocked Phase 8 remains met.
-`src/owl2vowl/test/productionDifferential.test.js` runs the production path -
-`loadWithImports`, the entry `src/app/js/loadingModule.js` calls - over 33
-comparable corpus documents, now including Turtle, and compares each against
-the pinned OWL2VOWL 0.3.7 reference output on ten dimensions. Phase 18 removes
-the second executable differential that ran the pre-cutover JavaScript engine;
-it no longer represented a supported architecture. Its pinned Java outputs
-remain as historical oracle evidence, while the production differential is the
-single executable corpus acceptance gate.
+`src/owl2vowl/test/productionDifferential.test.js` runs the production path - `loadWithImports`, the entry `src/app/js/loadingModule.js` calls - over 33 comparable corpus documents, now including Turtle, and compares each against the pinned OWL2VOWL 0.3.7 reference output on ten dimensions.
+Phase 18 removes the second executable differential that ran the pre-cutover JavaScript engine; it no longer represented a supported architecture.
+Its pinned Java outputs remain as historical oracle evidence, while the production differential is the single executable corpus acceptance gate.
 
-Every remaining difference is justified per dimension in
-`docs/owlapi-js/compatibility/production-corpus-differences.json`, and a
-justification for a dimension that no longer differs fails the suite rather than
-lingering as a false record. The largest recorded class is the oracle
-substituting `owl:Thing` for a domain or range the document states, which VOWL 2
-permits only where no such axiom exists or where the author named `owl:Thing`
-themselves.
+Every remaining difference is justified per dimension in `docs/owlapi-js/compatibility/production-corpus-differences.json`, and a justification for a dimension that no longer differs fails the suite rather than lingering as a false record.
+The largest recorded class is the oracle substituting `owl:Thing` for a domain or range the document states, which VOWL 2 permits only where no such axiom exists or where the author named `owl:Thing` themselves.
 
-Loading acceptance and differential acceptance are distinct claims. The corpus
-gate proves every advertised document is accepted; only the differential proves
-the output resembles what users saw under WebVOWL v1.1.7.
+Loading acceptance and differential acceptance are distinct claims.
+The corpus gate proves every advertised document is accepted; only the differential proves the output resembles what users saw under WebVOWL v1.1.7.
 
 ## Deferred to after Phase 8
 
-**Regenerating the reference fixtures against this corpus.** The 46 pinned
-OWL2VOWL outputs were produced by running the jar against local files with
-whatever network access that run had, so each document's import closure then and
-now can differ in either direction. Where they do, every difference in that
-document is uninterpretable: the two sides converted different ontologies.
-`prov.owl` shows how far this goes — its fixture contains entity IRIs beginning
-`file:/C:/Users/...`, the generating machine's own path.
+**Regenerating the reference fixtures against this corpus.**
+The 46 pinned OWL2VOWL outputs were produced by running the jar against local files with whatever network access that run had, so each document's import closure then and now can differ in either direction.
+Where they do, every difference in that document is uninterpretable: the two sides converted different ontologies.
+`prov.owl` shows how far this goes — its fixture contains entity IRIs beginning `file:/C:/Users/...`, the generating machine's own path.
 
-Twelve documents are excluded from the corpus differential for this reason,
-listed in `src/owl2vowl/test/productionDifferential.test.js`. Seven were
-identified during Phase 8; Phase 9 added five Turtle/import-closure cases
-covering missing version mappings, absent modular imports, and a historical
-reference run that fetched a different version of the same namespace.
-Exclusion is the
-honest treatment, because a governed difference records a difference in
-_conversion_ and this is a difference in _input_ — but it costs real coverage.
+Twelve documents are excluded from the corpus differential for this reason, listed in `src/owl2vowl/test/productionDifferential.test.js`.
+Seven were identified during Phase 8; Phase 9 added five Turtle/import-closure cases covering missing version mappings, absent modular imports, and a historical reference run that fetched a different version of the same namespace.
+Exclusion is the honest treatment, because a governed difference records a difference in _conversion_ and this is a difference in _input_ — but it costs real coverage.
 
-The fix is to regenerate the fixtures with the same pinned 0.3.7 jar over the
-same local documents this harness serves, so both sides see identical inputs by
-construction. The oracle version does not change; only its inputs align. That
-requires pointing OWLAPI at local copies through a catalog file or OWL2VOWL's
-`necessaryExternals` parameter, and it moves the baseline underneath the legacy
-differential history and the current production register, which would need
-re-validating. Phase 18 removed the obsolete legacy executable rather than
-preserving an extra validation burden. The regeneration itself was
-deferred because doing it while the corpus register is being built would make it
-impossible to attribute a change to a fix rather than to the regeneration.
+The fix is to regenerate the fixtures with the same pinned 0.3.7 jar over the same local documents this harness serves, so both sides see identical inputs by construction.
+The oracle version does not change; only its inputs align.
+That requires pointing OWLAPI at local copies through a catalog file or OWL2VOWL's `necessaryExternals` parameter, and it moves the baseline underneath the legacy differential history and the current production register, which would need re-validating.
+Phase 18 removed the obsolete legacy executable rather than preserving an extra validation burden.
+The regeneration itself was deferred because doing it while the corpus register is being built would make it impossible to attribute a change to a fix rather than to the regeneration.
 
-The detection criterion currently in use — comparing the namespace sets each
-side emitted entities from — catches a namespace missing altogether but not
-partial coverage of one, so some closure divergence probably survives it.
+The detection criterion currently in use — comparing the namespace sets each side emitted entities from — catches a namespace missing altogether but not partial coverage of one, so some closure divergence probably survives it.
 Regeneration removes the whole class and would let all seven documents back in.
 
-That suspicion was borne out. `imarinetlo.owl` emits 27 entities in the
-`MarineTLO` namespace against the oracle's 18 — partial coverage of a namespace
-both sides have, which is exactly what the criterion cannot see. It was
-diagnosed by reading the document rather than by the criterion, and its
-differences proved attributable to conversion after all, so it is registered
-rather than excluded.
+That suspicion was borne out.
+`imarinetlo.owl` emits 27 entities in the `MarineTLO` namespace against the oracle's 18 — partial coverage of a namespace both sides have, which is exactly what the criterion cannot see.
+It was diagnosed by reading the document rather than by the criterion, and its differences proved attributable to conversion after all, so it is registered rather than excluded.
 
 **One fixture was regenerated, and it is not an exception to this deferral.**
-`skos.rdf.java.json` was regenerated against the same pinned 0.3.7 jar after the
-repository owner replaced the corpus's `skos.rdf` with the canonical document it
-advertises. The deferral above concerns aligning _import closures_ across all 46
-fixtures, which changes what the oracle converted; this concerns one document
-whose own bytes changed, where leaving the fixture alone would have described a
-file the corpus no longer contains. `skos.rdf` declares no imports, so its
-conversion is a pure function of a local file and a pinned jar and needed no
-catalog. `ontology_v3.3.rdf` was deliberately left alone for the opposite
-reason, and a scratch regeneration confirmed it differs from its committed
-fixture in nothing. Finding `M8-010` records the episode.
+`skos.rdf.java.json` was regenerated against the same pinned 0.3.7 jar after the repository owner replaced the corpus's `skos.rdf` with the canonical document it advertises.
+The deferral above concerns aligning _import closures_ across all 46 fixtures, which changes what the oracle converted; this concerns one document whose own bytes changed, where leaving the fixture alone would have described a file the corpus no longer contains.
+`skos.rdf` declares no imports, so its conversion is a pure function of a local file and a pinned jar and needed no catalog.
+`ontology_v3.3.rdf` was deliberately left alone for the opposite reason, and a scratch regeneration confirmed it differs from its committed fixture in nothing.
+Finding `M8-010` records the episode.
 
-**Decomposing the VOWL conversion.** The repository owner raised whether
-`VOWLBuilder` should become a structured `owl2vowl-js`, mirroring the treatment
-given to `owlapi-js`. Two separable questions came out of it, and the decision
-was to revisit both once this phase closes.
+**Decomposing the VOWL conversion.**
+The repository owner raised whether `VOWLBuilder` should become a structured `owl2vowl-js`, mirroring the treatment given to `owlapi-js`.
+Two separable questions came out of it, and the decision was to revisit both once this phase closes.
 
-The **decomposition** is well motivated. OWL2VOWL splits the conversion across
-named components, and nearly every difference resolved during this phase maps
-onto one of them: `ImportedChecker` for the external marker, `BaseIriCollector`
-for base-IRI ordering, `AnnotationParser` for annotation identifiers,
-`TypeSetter` for node types, `DomainRangeFiller` for domain and range
-defaulting. That structure exists in our single module whether or not it is
-named, and leaving it unnamed cost real diagnosis time.
+The **decomposition** is well motivated.
+OWL2VOWL splits the conversion across named components, and nearly every difference resolved during this phase maps onto one of them: `ImportedChecker` for the external marker, `BaseIriCollector` for base-IRI ordering, `AnnotationParser` for annotation identifiers, `TypeSetter` for node types, `DomainRangeFiller` for domain and range defaulting.
+That structure exists in our single module whether or not it is named, and leaving it unnamed cost real diagnosis time.
 
-**API compatibility with OWL2VOWL** is the weaker half, and does not carry over
-from the `owlapi-js` case. OWLAPI is a library with an ecosystem that programs
-against its API; OWL2VOWL is a tool whose entire consumable surface is a source
-in and VOWL-JSON out, reached over HTTP by WebVOWL. The project already matches
-that surface, so mirroring the Java class layout would mostly reproduce another
-project's internal structure — which is also the part that would move
-`VOWLBuilder` away from `A_PROJECT_ORIGINAL` under section 22.2.1.
+**API compatibility with OWL2VOWL** is the weaker half, and does not carry over from the `owlapi-js` case.
+OWLAPI is a library with an ecosystem that programs against its API; OWL2VOWL is a tool whose entire consumable surface is a source in and VOWL-JSON out, reached over HTTP by WebVOWL.
+The project already matches that surface, so mirroring the Java class layout would mostly reproduce another project's internal structure — which is also the part that would move `VOWLBuilder` away from `A_PROJECT_ORIGINAL` under section 22.2.1.
 
-The **timing** decided it. The corpus differential is the only instrument
-measuring VOWL correctness, and restructuring the component it measures while
-that gate is red would make it impossible to attribute a change to a fix rather
-than to the refactor. Refactor against a green gate, not a red one.
+The **timing** decided it.
+The corpus differential is the only instrument measuring VOWL correctness, and restructuring the component it measures while that gate is red would make it impossible to attribute a change to a fix rather than to the refactor.
+Refactor against a green gate, not a red one.
 
-Until then, each difference closed should record which component it would belong
-to, so the eventual decomposition follows evidence rather than a guess.
+Until then, each difference closed should record which component it would belong to, so the eventual decomposition follows evidence rather than a guess.
 
-**Displaying nested annotations in the sidebar.** ADR 0007 nests an axiom's
-annotations on the annotation they describe, so `dcterms:source` on a definition
-now sits inside that definition's item rather than on the entity. Across the
-three corpus documents that use `owl:Axiom` reification, 358 annotations carry
-nested ones.
+**Displaying nested annotations in the sidebar.**
+ADR 0007 nests an axiom's annotations on the annotation they describe, so `dcterms:source` on a definition now sits inside that definition's item rather than on the entity.
+Across the three corpus documents that use `owl:Axiom` reification, 358 annotations carry nested ones.
 
-`src/app/js/sidebar.js` renders the entity's `annotations` map and knows nothing
-of the nested key, so this information is carried in the VOWL-JSON but not yet
-shown. That is deliberate and is not a regression: before the change these
-annotations did not survive parsing at all, so nothing that was previously
-visible has been lost.
+`src/app/js/sidebar.js` renders the entity's `annotations` map and knows nothing of the nested key, so this information is carried in the VOWL-JSON but not yet shown.
+That is deliberate and is not a regression: before the change these annotations did not survive parsing at all, so nothing that was previously visible has been lost.
 
-The rendering belongs to the UI and UX workstream rather than to this migration,
-which is why it is recorded here rather than done. What it needs is a way to
-show an annotation's own annotations without crowding the entity's list -
-plausibly a disclosure beneath the annotation value, since a definition with a
-source is the common case and a reader wants the source only when asking where
-the wording came from.
+The rendering belongs to the UI and UX workstream rather than to this migration, which is why it is recorded here rather than done.
+What it needs is a way to show an annotation's own annotations without crowding the entity's list - plausibly a disclosure beneath the annotation value, since a definition with a source is the common case and a reader wants the source only when asking where the wording came from.
 
-Phase 7 closes with no deferred items. Finding `M7-008` initially recorded
-`generated-rdfxml-large.end-to-end` as 85.75% above its accepted Phase 6
-baseline; that measurement was taken while other work ran concurrently.
-Remeasured on an idle machine, the same signal is 1.86% below the accepted
-baseline, so no regression exists and no baseline was re-anchored. The finding
-was rewritten as a benchmark-isolation lesson and its disposition changed from
-`LOCAL_PHASE_FOLLOW_UP` to `PLAYBOOK_UPDATE`.
+Phase 7 closes with no deferred items.
+Finding `M7-008` initially recorded `generated-rdfxml-large.end-to-end` as 85.75% above its accepted Phase 6 baseline; that measurement was taken while other work ran concurrently.
+Remeasured on an idle machine, the same signal is 1.86% below the accepted baseline, so no regression exists and no baseline was re-anchored.
+The finding was rewritten as a benchmark-isolation lesson and its disposition changed from `LOCAL_PHASE_FOLLOW_UP` to `PLAYBOOK_UPDATE`.
 
-Recorded commit identifiers predating Phase 7 are not resolvable on the current
-branch, which was rewritten after they were recorded; the Phase 1 through
-Phase 5 identifiers in earlier records are historical. Phase 6 is committed as
-`7590c17` and Phase 7 as `27dba50`. The two commit-bounded reuse boundaries in
-`provenance/provenance.json` were re-anchored during Phase 7 to the rewritten
-commits carrying byte-identical content, and `governance.test.js` now fails if
-any recorded reuse-boundary revision stops being an ancestor of `HEAD`.
+Recorded commit identifiers predating Phase 7 are not resolvable on the current branch, which was rewritten after they were recorded; the Phase 1 through Phase 5 identifiers in earlier records are historical.
+Phase 6 is committed as `7590c17` and Phase 7 as `27dba50`.
+The two commit-bounded reuse boundaries in `provenance/provenance.json` were re-anchored during Phase 7 to the rewritten commits carrying byte-identical content, and `governance.test.js` now fails if any recorded reuse-boundary revision stops being an ancestor of `HEAD`.

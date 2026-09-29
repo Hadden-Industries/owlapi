@@ -1,0 +1,165 @@
+{
+  "artifactId": "faa12d3dc5505770a71e32892a32921a130ca46c0d107105494d269e56d984d5",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4866,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/dev/index.d.ts",
+        "sha256": "b3cdddb68276fd972b286e1d6183edc7f9856e97a15b52c8e4a7601b0d46ca09",
+        "size": 1243,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/index.d.ts.map",
+        "sha256": "627d160f03ea40113765497642103b93ad239a3f633c43ad6720d26414433247",
+        "size": 264,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/index.js",
+        "sha256": "533addbe7ef0437d26e4d9af5779e098f8ba6871246002a150241a6805925f6a",
+        "size": 3275,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "b3cdddb68276fd972b286e1d6183edc7f9856e97a15b52c8e4a7601b0d46ca09",
+        "size": 1243,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts.map",
+        "sha256": "627d160f03ea40113765497642103b93ad239a3f633c43ad6720d26414433247",
+        "size": 264,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "c8c100c6e730dd6b19ecaa70ef9f1da99c10c415dc9b6539820d41756c0fc197",
+        "size": 3159,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "a694d9800a68d5d52916675f9231c16bf7e764658a9045d86b74c29736b59dd6",
+        "size": 1341,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "9c2d3472299f8dd0c2e5437686c215e5e0ca0f627f257eeacb0e41eb09022c3c",
+        "size": 6034,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1094,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dd/dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+          "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094
+      },
+      {
+        "blob": {
+          "bytes": 6034,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9c/9c2d3472299f8dd0c2e5437686c215e5e0ca0f627f257eeacb0e41eb09022c3c",
+          "sha256": "9c2d3472299f8dd0c2e5437686c215e5e0ca0f627f257eeacb0e41eb09022c3c"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "9c2d3472299f8dd0c2e5437686c215e5e0ca0f627f257eeacb0e41eb09022c3c",
+        "size": 6034
+      }
+    ],
+    "expandedBytes": 17917,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "micromark-util-sanitize-uri",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-sanitize-uri",
+      "version": "2.0.1"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/micromark/micromark/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "micromark-util-character": "^2.0.0",
+        "micromark-util-encode": "^2.0.0",
+        "micromark-util-symbol": "^2.0.0"
+      },
+      "description": "micromark utility to sanitize urls",
+      "exports": {
+        "default": "./index.js",
+        "development": "./dev/index.js"
+      },
+      "files": [
+        "dev/",
+        "index.d.ts.map",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": [
+        {
+          "type": "GitHub Sponsors",
+          "url": "https://github.com/sponsors/unifiedjs"
+        },
+        {
+          "type": "OpenCollective",
+          "url": "https://opencollective.com/unified"
+        }
+      ],
+      "keywords": [
+        "micromark",
+        "util",
+        "utility",
+        "sanitize",
+        "clear",
+        "url"
+      ],
+      "license": "MIT",
+      "name": "micromark-util-sanitize-uri",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-sanitize-uri",
+      "scripts": {
+        "build": "micromark-build"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "version": "2.0.1",
+      "xo": {
+        "envs": [
+          "shared-node-browser"
+        ],
+        "prettier": true,
+        "rules": {
+          "unicorn/prefer-code-point": "off"
+        }
+      }
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 4866,
+      "sha256": "8fcf4cf2900f807194fc89fb3e4dd5e5b28143cb44e55955a9f31d764264547e"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

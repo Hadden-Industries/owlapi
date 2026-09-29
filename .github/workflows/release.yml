@@ -141,6 +141,20 @@ jobs:
       - name: Record the hosted runner identity
         run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
         timeout-minutes: 5
+      - name: Select the pinned development Python
+        id: quality_python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.14.7"
+          architecture: x64
+          check-latest: false
+          update-environment: false
+          cache: ""
+      - name: Synchronize locked development tools
+        run: npm run tools:sync -- --python-env QUALITY_PYTHON
+        timeout-minutes: 5
+        env:
+          QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
       - name: Verify formatting
         run: npm run format:check
         timeout-minutes: 45
@@ -195,6 +209,20 @@ jobs:
       - name: Record the hosted runner identity
         run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
         timeout-minutes: 5
+      - name: Select the pinned development Python
+        id: quality_python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.14.7"
+          architecture: x64
+          check-latest: false
+          update-environment: false
+          cache: ""
+      - name: Synchronize locked development tools
+        run: npm run tools:sync -- --python-env QUALITY_PYTHON
+        timeout-minutes: 5
+        env:
+          QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
       - name: Verify formatting
         run: npm run format:check
         timeout-minutes: 45
@@ -476,6 +504,7 @@ jobs:
       - source_node_24
       - dependency_review
       - third_party_evidence
+      - quality_windows
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     permissions:
@@ -1000,6 +1029,7 @@ jobs:
       - browser_firefox
       - browser_webkit
       - webvowl
+      - quality_windows
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
@@ -1542,3 +1572,64 @@ jobs:
           include-hidden-files: false
           archive: true
         timeout-minutes: 5
+  quality_windows:
+    name: Release / Windows / quality tools
+    runs-on: windows-2025
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Check out the proposed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Governance verifies the recorded annotated tag and peeled commit.
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Select Node 24.21.0 without package caching
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.21.0"
+          check-latest: false
+          cache: ""
+          package-manager-cache: false
+      - name: Establish the exact repository npm
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
+        timeout-minutes: 20
+      - name: Verify the exact runtime pair
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
+        timeout-minutes: 5
+      - name: Install the reviewed dependency graph
+        run: npm ci
+        timeout-minutes: 20
+      - name: Record the hosted runner identity
+        run: npm run workflow:runner-record -- --expected-os Windows --expected-arch X64 --label windows-2025 --shell pwsh
+        timeout-minutes: 5
+      - name: Select the pinned development Python
+        id: quality_python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.14.7"
+          architecture: x64
+          check-latest: false
+          update-environment: false
+          cache: ""
+      - name: Synchronize locked development tools
+        run: npm run tools:sync -- --python-env QUALITY_PYTHON
+        timeout-minutes: 5
+        env:
+          QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
+      - name: Verify the locked environment
+        run: npm run tools:check
+        timeout-minutes: 10
+      - name: Verify formatting
+        run: npm run format:check
+        timeout-minutes: 10
+      - name: Verify static quality
+        run: npm run lint
+        timeout-minutes: 10
+      - name: Run native quality regressions
+        run: npm run test:quality
+        timeout-minutes: 10

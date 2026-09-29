@@ -6,7 +6,7 @@ import parseSpdxExpression from "spdx-expression-parse";
 import { format as formatWithPrettier } from "prettier";
 import { verifyEvidenceManifest } from "./third-party-evidence/evidence-manifest.mjs";
 
-export const GENERATOR_VERSION = "3.0.0";
+export const GENERATOR_VERSION = "3.1.0";
 
 // Legal evidence must be byte-for-byte reproducible on every platform. JavaScript
 // code-unit ordering avoids host locale and ICU-version differences.
@@ -399,7 +399,133 @@ const licenseAssessment = ({
   distributionDisposition,
 });
 
+// Development tools are separate from npm runtime components and package bytes.
+// Hash their native lock/config inputs and retained terms, never an installed
+// environment's host-specific directory tree or a fabricated human approval.
+const createQualityToolingFacts = () =>
+  [
+    {
+      id: "universal-ontology-documentation-tooling",
+      name: "Universal Ontology formatter and Ruff configuration adaptations",
+      versionOrRevision: "58a306013d3701f59dfe34341e96fac5a011e3ed",
+      license: "MIT",
+      source: "Hadden-Industries/universal-ontology",
+      files: [
+        "LICENSES/MIT-universal-ontology.txt",
+        "scripts/documentation-files.mjs",
+        "scripts/documentation-quality.mjs",
+        "ruff.toml",
+      ],
+      attribution:
+        "Copyright (c) 2026 Hadden Industries Ltd. Adapted from scripts/formatDocumentation.js and ruff.toml; the complete MIT notice is retained.",
+    },
+    {
+      id: "webvowl-prose-regressions",
+      name: "WebVOWL prose-formatting regression examples",
+      versionOrRevision: "4f1970e5b6c95655af823c495bd58f9e9993f8b8",
+      license: "AGPL-3.0-only",
+      source: "Hadden-Industries/WebVOWL",
+      files: ["LICENSE", "scripts/documentation-quality.test.js"],
+      attribution:
+        "Adapted from WebVOWL tooling/prose/test_format_docs.py under the retained AGPL-3.0-only terms; the examples remain development-only tests.",
+    },
+    {
+      id: "hisew-checkout-environment-isolation",
+      name: "HISEW checkout-local environment isolation adaptation",
+      versionOrRevision: "446ffa14c29fbcb18270ff32799fbe377c916426",
+      license: "AGPL-3.0-only",
+      source: "Hadden-Industries/software-engineering-workflow",
+      files: ["LICENSE", "scripts/repository-python-tools.mjs"],
+      attribution:
+        "Adapted from scripts/runRepositoryUv.js in Hadden Industries Software Engineering Workflow under AGPL-3.0-only; no runtime package code is derived from it.",
+    },
+    {
+      id: "ruff-development-tool",
+      name: "Ruff development formatter and linter",
+      versionOrRevision: "0.16.9",
+      license: "MIT",
+      source: "astral-sh/ruff",
+      files: [
+        "pyproject.toml",
+        "uv.lock",
+        "ruff.toml",
+        "LICENSES/development/ruff-0.16.9.txt",
+      ],
+      attribution:
+        "Copyright (c) 2022 Charles Marsh. The complete wheel licence, including its embedded third-party notices, is retained. The tool and its distributions are not packed.",
+    },
+    {
+      id: "snapper-development-tool",
+      name: "Snapper native Markdown formatter",
+      versionOrRevision: "0.11.7",
+      license: "MIT",
+      source: "TurtleTech-ehf/snapper",
+      files: [
+        "pyproject.toml",
+        "uv.lock",
+        ".snapperrc.toml",
+        "LICENSES/development/snapper-fmt-0.11.7.txt",
+      ],
+      attribution:
+        "Copyright (c) 2026 Rohit Goswami. Native, non-neural Markdown formatting only; the complete wheel MIT terms are retained and the tool is not packed.",
+    },
+    {
+      id: "uv-development-bootstrap",
+      name: "uv development-environment bootstrap",
+      versionOrRevision: "0.12.20",
+      license: "MIT OR Apache-2.0",
+      concluded: "MIT",
+      source: "astral-sh/uv",
+      files: [
+        "pyproject.toml",
+        "uv.lock",
+        ".python-version",
+        "scripts/repository-python-tools.mjs",
+        "LICENSES/development/uv-0.12.20-MIT.txt",
+      ],
+      attribution:
+        "Copyright (c) 2025 Astral Software Inc. The MIT alternative is elected for development use; its complete release terms are retained. Windows/Linux x64 archive digests are pinned in the bootstrap and no binary is packed.",
+    },
+  ].map(
+    ({
+      id,
+      name,
+      versionOrRevision,
+      license,
+      concluded,
+      source,
+      files,
+      attribution,
+    }) => ({
+      id,
+      relationship: "DEVELOPMENT_ONLY",
+      name,
+      versionOrRevision,
+      licenseAssessments: [
+        licenseAssessment({
+          scope: "Development tooling or adapted test/configuration source",
+          declaredLicenseExpression: license,
+          concludedLicenseExpression: concluded ?? license,
+          licenseConclusionRationale:
+            "The retained source/distribution terms support repository development use under the recorded licence; no human review or release acceptance is inferred.",
+          distributionDisposition: "REPOSITORY_ONLY_NOT_IN_PACKAGE",
+        }),
+      ],
+      sourceUrl: `https://github.com/${source}`,
+      evidenceFiles: files.map(evidenceFile),
+      treeEvidence: null,
+      attributionText: [attribution],
+      packageTarballScope: false,
+      deployedApplicationScope: "NOT_APPLICABLE",
+      noticeDisposition:
+        "DEVELOPMENT_ONLY_RETAINED_LICENSE_SOURCE_AND_REVISION",
+      rationale:
+        "Quality tooling is isolated from the published JavaScript runtime; native locked setup/checks qualify the Python graph, while this record binds the exact retained inputs and terms.",
+    }),
+  );
+
 const createMaterialFacts = () => [
+  ...createQualityToolingFacts(),
   {
     id: "gnu-agpl-3.0-only-license-text",
     relationship: "EMBEDDED_OR_COPIED",

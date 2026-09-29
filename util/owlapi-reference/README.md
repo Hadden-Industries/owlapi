@@ -1,109 +1,62 @@
 # Java OWLAPI reference harness
 
-This directory is development/test tooling only. It is never imported by the
-package production graph, bundled into WebVOWL, or shipped as an `owlapi`
-runtime dependency.
+This directory is development/test tooling only.
+It is never imported by the package production graph, bundled into WebVOWL, or shipped as an `owlapi` runtime dependency.
 
-`GenerateStructuralSnapshot.java` loads one ontology through the pinned Java
-OWLAPI revision and emits a project-owned JSON snapshot containing ontology ID,
-imports, ontology annotations, axiom counts/canonical strings, and direct
-signature categories. Java output is behavioral evidence; production
-JavaScript is implemented from normative/public specifications and must not be
-translated from Java implementation control flow.
+`GenerateStructuralSnapshot.java` loads one ontology through the pinned Java OWLAPI revision and emits a project-owned JSON snapshot containing ontology ID, imports, ontology annotations, axiom counts/canonical strings, and direct signature categories. Java output is behavioral evidence; production JavaScript is implemented from normative/public specifications and must not be translated from Java implementation control flow.
 
 ## Pinned oracle
 
-The source revision and version evidence are recorded in
-`pinned-version.json`. Build the local OWLAPI checkout at that exact revision
-with a JDK, then compile this harness against the resulting distribution and
-runtime dependency classpath. Do not substitute the OWL2VOWL shaded JAR: its
-embedded OWLAPI is 5.1.1 and it is pinned separately only as the end-to-end VOWL
-oracle.
+The source revision and version evidence are recorded in `pinned-version.json`.
+Build the local OWLAPI checkout at that exact revision with a JDK, then compile this harness against the resulting distribution and runtime dependency classpath.
+Do not substitute the OWL2VOWL shaded JAR: its embedded OWLAPI is 5.1.1 and it is pinned separately only as the end-to-end VOWL oracle.
 
 One reproducible setup is:
 
-1. Check out `d7e997a53b470e32700de89cc610d9daf01ea769` in the recorded OWLAPI
-   source checkout.
-2. Run the OWLAPI Maven build with tests skipped, preserving its resolved Maven
-   dependency versions.
-3. Build a runtime classpath for the OWLAPI distribution with Maven's
-   dependency tooling.
+1. Check out `d7e997a53b470e32700de89cc610d9daf01ea769` in the recorded OWLAPI source checkout.
+2. Run the OWLAPI Maven build with tests skipped, preserving its resolved Maven dependency versions.
+3. Build a runtime classpath for the OWLAPI distribution with Maven's dependency tooling.
 4. Compile `GenerateStructuralSnapshot.java` with that classpath.
-5. Run `GenerateStructuralSnapshot <input-ontology> [ignored-import-iri ...]`,
-   capture standard output, and store the JSON beside the owning project
-   fixture with the source revision recorded. Ignored import IRIs retain their
-   declarations in the direct ontology snapshot but are not dereferenced.
+5. Run `GenerateStructuralSnapshot <input-ontology> [ignored-import-iri ...]`, capture standard output, and store the JSON beside the owning project fixture with the source revision recorded.
+   Ignored import IRIs retain their declarations in the direct ontology snapshot but are not dereferenced.
 
-On Windows, a fully resolved Maven runtime classpath can exceed reliable shell
-or Java argument-file handling. `RunWithClasspath.java` is a test-tooling-only
-launcher for that case. Compile it once, then invoke
-`RunWithClasspath <classpath-file> <harness-class-directory> <main-class>
-[args...]`; it starts the same JDK with the harness directory prepended to the
-classpath read from the file. It neither resolves dependencies nor changes the
-pinned oracle identity.
+On Windows, a fully resolved Maven runtime classpath can exceed reliable shell or Java argument-file handling.
+`RunWithClasspath.java` is a test-tooling-only launcher for that case.
+Compile it once, then invoke `RunWithClasspath <classpath-file> <harness-class-directory> <main-class> [args...]`; it starts the same JDK with the harness directory prepended to the classpath read from the file.
+It neither resolves dependencies nor changes the pinned oracle identity.
 
-The Phase 2 reference pair is
-`fixtures/functional/phase2-structural.ofn` and
-`fixtures/functional/phase2-structural.java.json`. Regenerate it only from the
-pinned source revision and review any structural change through the governed
-zero-tolerance expected-difference process.
+The Phase 2 reference pair is `fixtures/functional/phase2-structural.ofn` and `fixtures/functional/phase2-structural.java.json`.
+Regenerate it only from the pinned source revision and review any structural change through the governed zero-tolerance expected-difference process.
 
-The lifecycle storage pair is `fixtures/storage/functional-all-kinds.ofn` and
-`fixtures/storage/functional-all-kinds.java.json`. It covers every current
-structural kind except import declarations, which have separate counting-loader
-tests. Its Java snapshot is produced by the same pinned harness; set Java's
-`-Dstdout.encoding=UTF-8` and `-Dstderr.encoding=UTF-8` explicitly when capturing
-Unicode output on Windows. For the independent full-structure storage check,
-run `run-import-closure-contract.mjs` with this root, an empty OASIS catalog, and
-the Functional text emitted by `manager.saveOntology`. No import is dereferenced,
-and the existing native oracle compares all structure modulo one anonymous-node
-bijection rather than comparing prefixes or serialized bytes.
+The lifecycle storage pair is `fixtures/storage/functional-all-kinds.ofn` and `fixtures/storage/functional-all-kinds.java.json`.
+It covers every current structural kind except import declarations, which have separate counting-loader tests.
+Its Java snapshot is produced by the same pinned harness; set Java's `-Dstdout.encoding=UTF-8` and `-Dstderr.encoding=UTF-8` explicitly when capturing Unicode output on Windows.
+For the independent full-structure storage check, run `run-import-closure-contract.mjs` with this root, an empty OASIS catalog, and the Functional text emitted by `manager.saveOntology`.
+No import is dereferenced, and the existing native oracle compares all structure modulo one anonymous-node bijection rather than comparing prefixes or serialized bytes.
 
-The Phase 3 Java reference pair is
-`fixtures/manchester/phase3-structural.omn` and
-`fixtures/manchester/phase3-structural.java.json`. The sibling
-`phase3-structural.ofn` is the project-owned Functional counterpart used for
-cross-syntax structural conformance. The Java snapshot deliberately preserves
-OWLAPI 5.5.1's comparison-facet result; the two standards-correct JavaScript
-differences are matched only by the exact fixture-scoped rules in
-`docs/compatibility/expected-differences.json`.
+The Phase 3 Java reference pair is `fixtures/manchester/phase3-structural.omn` and `fixtures/manchester/phase3-structural.java.json`.
+The sibling `phase3-structural.ofn` is the project-owned Functional counterpart used for cross-syntax structural conformance.
+The Java snapshot deliberately preserves OWLAPI 5.5.1's comparison-facet result; the two standards-correct JavaScript differences are matched only by the exact fixture-scoped rules in `docs/compatibility/expected-differences.json`.
 
-The Phase 4 OWL/XML reference pair is
-`fixtures/owlxml/phase4-structural.owx` and
-`fixtures/owlxml/phase4-structural.java.json`. The sibling
-`phase4-structural.ofn` is the project-owned Functional counterpart used for
-cross-syntax structural conformance. The Java snapshot omits the anonymous
-individual inside one `ObjectOneOf`; JavaScript retains it as required by the
-W3C OWL/XML schema. That single semantic divergence is calculated as an atomic
-field and accepted only by its exact fixture-scoped expected-difference rule.
+The Phase 4 OWL/XML reference pair is `fixtures/owlxml/phase4-structural.owx` and `fixtures/owlxml/phase4-structural.java.json`. The sibling `phase4-structural.ofn` is the project-owned Functional counterpart used for cross-syntax structural conformance. The Java snapshot omits the anonymous individual inside one `ObjectOneOf`; JavaScript retains it as required by the W3C OWL/XML schema.
+That single semantic divergence is calculated as an atomic field and accepted only by its exact fixture-scoped expected-difference rule.
 
 The Phase 5 RDF reference set is under `fixtures/rdf/`:
 
-- `phase5-structural.rdf` is the RDF/XML document loaded only by the Java
-  oracle;
-- `phase5-structural.dataset.json` is the independently constructed canonical
-  RDF/JS quad fixture consumed directly by the JavaScript translator test;
-- `phase5-structural.ofn` is the project-owned Functional counterpart used for
-  full cross-syntax structural comparison; and
+- `phase5-structural.rdf` is the RDF/XML document loaded only by the Java oracle;
+- `phase5-structural.dataset.json` is the independently constructed canonical RDF/JS quad fixture consumed directly by the JavaScript translator test;
+- `phase5-structural.ofn` is the project-owned Functional counterpart used for full cross-syntax structural comparison; and
 - `phase5-structural.java.json` is the pinned OWLAPI 5.5.1 structural snapshot.
 
-The Phase 5 differential deliberately does not parse the `.rdf` file in
-JavaScript: syntax parsing belongs to Phase 6. It compares the constructed
-dataset translation with the Functional ontology in full, then compares
-ontology identity, imports, counts and signature categories with the Java
-snapshot. `phase5-malformed-list.rdf` is a separate black-box probe recording
-that OWLAPI 5.5.1 accepts the two pinned W3C Rational fixtures' malformed
-non-`rdf:nil` collection terminal. It is not a general compatibility fixture
-and does not authorize silent list repair.
+The Phase 5 differential deliberately does not parse the `.rdf` file in JavaScript: syntax parsing belongs to Phase 6.
+It compares the constructed dataset translation with the Functional ontology in full, then compares ontology identity, imports, counts and signature categories with the Java snapshot.
+`phase5-malformed-list.rdf` is a separate black-box probe recording that OWLAPI 5.5.1 accepts the two pinned W3C Rational fixtures' malformed non-`rdf:nil` collection terminal.
+It is not a general compatibility fixture and does not authorize silent list repair.
 
-The Phase 10 DL reference set is under `fixtures/dl/`. The `.dl`, `.ofn`,
-`.rdf`, and `.ttl` documents are project-owned encodings of the same structural
-ontology; `phase10-structural.java.json` is the pinned Java result for the DL
-document. `GenerateDLSyntaxSnapshot.java` calls the pinned DL parser directly,
-because generic manager selection can choose an unrelated parser for this
-headerless syntax, and supplies the explicit default namespace required by a
-format with no ontology header. It reuses only the structural JSON serializer
-from `GenerateStructuralSnapshot.java`.
+The Phase 10 DL reference set is under `fixtures/dl/`.
+The `.dl`, `.ofn`, `.rdf`, and `.ttl` documents are project-owned encodings of the same structural ontology; `phase10-structural.java.json` is the pinned Java result for the DL document.
+`GenerateDLSyntaxSnapshot.java` calls the pinned DL parser directly, because generic manager selection can choose an unrelated parser for this headerless syntax, and supplies the explicit default namespace required by a format with no ontology header.
+It reuses only the structural JSON serializer from `GenerateStructuralSnapshot.java`.
 
 Compile both harnesses together, then run the specialized entry point:
 
@@ -112,28 +65,18 @@ javac -cp "<owlapi-runtime-classpath>" -d util/owlapi-reference/target util/owla
 java -cp "util/owlapi-reference/target;<owlapi-runtime-classpath>" GenerateDLSyntaxSnapshot util/owlapi-reference/fixtures/dl/phase10-structural.dl urn:test:phase10
 ```
 
-The specialized harness removes only terminal CR/LF characters before the
-oracle call. OWLAPI 5.5.1 otherwise rejects an ordinary final line ending; the
-normalization is recorded in the snapshot provenance and does not remove an
-axiom. The shared differential fixture is deliberately restricted to the
-subset accepted through the pinned parser's whole-document entry point. Focused
-JavaScript tests separately cover assertion, inverse-property, numeric
-data-one-of, attached-colon, trailing-whitespace, and unmatched-subclass cases
-where that entry point is internally inconsistent. Those are controlled
-compatibility corrections, not undocumented expected differences.
+The specialized harness removes only terminal CR/LF characters before the oracle call.
+OWLAPI 5.5.1 otherwise rejects an ordinary final line ending; the normalization is recorded in the snapshot provenance and does not remove an axiom.
+The shared differential fixture is deliberately restricted to the subset accepted through the pinned parser's whole-document entry point.
+Focused JavaScript tests separately cover assertion, inverse-property, numeric data-one-of, attached-colon, trailing-whitespace, and unmatched-subclass cases where that entry point is internally inconsistent.
+Those are controlled compatibility corrections, not undocumented expected differences.
 
-The Phase 11 KRSS2 reference set is under `fixtures/krss2/`. Its `.krss2`,
-`.omn`, and `.owx` files plus the Phase 10 `.dl`, `.ofn`, `.rdf`, and `.ttl`
-siblings encode one 12-axiom subset across every implemented syntax that can
-express it; `phase11-structural.java.json` is the pinned KRSS2 result. The specialized
-`GenerateKRSS2SyntaxSnapshot` harness invokes `KRSS2OWLParser` directly so
-generic manager detection cannot select another headerless syntax. Its fixture
-uses absolute names because OWLAPI 5.5.1 constructs malformed `Optional[...]`
-bases for bare names in this oracle setup; JavaScript's document-relative name
-policy is governed separately by focused tests.
+The Phase 11 KRSS2 reference set is under `fixtures/krss2/`.
+Its `.krss2`, `.omn`, and `.owx` files plus the Phase 10 `.dl`, `.ofn`, `.rdf`, and `.ttl` siblings encode one 12-axiom subset across every implemented syntax that can express it; `phase11-structural.java.json` is the pinned KRSS2 result.
+The specialized `GenerateKRSS2SyntaxSnapshot` harness invokes `KRSS2OWLParser` directly so generic manager detection cannot select another headerless syntax.
+Its fixture uses absolute names because OWLAPI 5.5.1 constructs malformed `Optional[...]` bases for bare names in this oracle setup; JavaScript's document-relative name policy is governed separately by focused tests.
 
-On Windows systems where `java` resolves to a JRE but `javac` resolves to a
-separate JDK, compile and run through the classpath launcher:
+On Windows systems where `java` resolves to a JRE but `javac` resolves to a separate JDK, compile and run through the classpath launcher:
 
 ```text
 javac -d util/owlapi-reference/target util/owlapi-reference/RunWithClasspath.java
@@ -142,14 +85,10 @@ java -cp util/owlapi-reference/target RunWithClasspath <classpath-file> util/owl
 ```
 
 The Phase 17 original-KRSS reference set is under `fixtures/krss1/`.
-`GenerateKRSS1SyntaxSnapshot` invokes `KRSSOWLParser` directly against a named
-ontology so its bare-name behavior is deterministic and observable. The main
-fixture pins the Java-reachable TBox subset; its accepted ABox statements are
-absent from the Java snapshot because OWLAPI 5.5.1 discards their returned
-axioms. Separate project-owned probes preserve evidence for cardinality token
-shadowing, singleton Boolean objects, and the unreachable full-IRI token. Every
-preserved behavior and controlled correction is enumerated in
-`docs/compatibility/krss1-behavioral-oracle.json`.
+`GenerateKRSS1SyntaxSnapshot` invokes `KRSSOWLParser` directly against a named ontology so its bare-name behavior is deterministic and observable.
+The main fixture pins the Java-reachable TBox subset; its accepted ABox statements are absent from the Java snapshot because OWLAPI 5.5.1 discards their returned axioms.
+Separate project-owned probes preserve evidence for cardinality token shadowing, singleton Boolean objects, and the unreachable full-IRI token.
+Every preserved behavior and controlled correction is enumerated in `docs/compatibility/krss1-behavioral-oracle.json`.
 
 Compile and run it through the same long-classpath launcher:
 
@@ -160,76 +99,48 @@ java -cp util/owlapi-reference/target RunWithClasspath <classpath-file> util/owl
 
 ## Phase 16 OWL-to-RDF graph oracle
 
-`GenerateRdfGraph.java` loads a structural ontology with the pinned public
-OWLAPI API and saves it through `NTriplesDocumentFormat`. It sets
-`addMissingTypes` to false so OWLAPI does not manufacture declaration triples
-for every entity in the signature. The resulting N-Triples text is reparsed in
-JavaScript and compared as an RDF graph; neither statement order nor blank-node
-labels are evidence.
+`GenerateRdfGraph.java` loads a structural ontology with the pinned public OWLAPI API and saves it through `NTriplesDocumentFormat`.
+It sets `addMissingTypes` to false so OWLAPI does not manufacture declaration triples for every entity in the signature.
+The resulting N-Triples text is reparsed in JavaScript and compared as an RDF graph; neither statement order nor blank-node labels are evidence.
 
-The focused reference pair is `fixtures/rdf/phase16-graph.ofn` and
-`fixtures/rdf/phase16-graph.java.nt`. Java OWLAPI adds `rdf:type rdf:List` to
-each list cell although W3C Mapping Table 1 defines only `rdf:first` and
-`rdf:rest`. The differential test removes exactly the three such Java quads in
-this fixture, asserts that exact count, and then requires graph isomorphism. No
-other graph difference is normalized.
+The focused reference pair is `fixtures/rdf/phase16-graph.ofn` and `fixtures/rdf/phase16-graph.java.nt`.
+Java OWLAPI adds `rdf:type rdf:List` to each list cell although W3C Mapping Table 1 defines only `rdf:first` and `rdf:rest`.
+The differential test removes exactly the three such Java quads in this fixture, asserts that exact count, and then requires graph isomorphism.
+No other graph difference is normalized.
 
-Compile and run the harness with the same pinned runtime classpath used by the
-structural snapshot tools:
+Compile and run the harness with the same pinned runtime classpath used by the structural snapshot tools:
 
 ```text
 java -cp util/owlapi-reference/target RunWithClasspath <classpath-file> util/owlapi-reference/target com.sun.tools.javac.Main -d util/owlapi-reference/target util/owlapi-reference/GenerateRdfGraph.java
 java -cp util/owlapi-reference/target RunWithClasspath <classpath-file> util/owlapi-reference/target GenerateRdfGraph util/owlapi-reference/fixtures/rdf/phase16-graph.ofn
 ```
 
-The harness deliberately has no WebVOWL, npm, or browser dependency. Generated
-snapshots are test evidence and require their own fixture provenance record.
+The harness deliberately has no WebVOWL, npm, or browser dependency.
+Generated snapshots are test evidence and require their own fixture provenance record.
 
 ## Import-closure acceptance oracle
 
-`run-import-closure-contract.mjs` and `RunImportClosureContract.java` form a
-development-only, offline acceptance oracle for a consumer-produced collapsed
-import closure. They are not package exports and are excluded from the npm
-runtime surface.
+`run-import-closure-contract.mjs` and `RunImportClosureContract.java` form a development-only, offline acceptance oracle for a consumer-produced collapsed import closure.
+They are not package exports and are excluded from the npm runtime surface.
 
 The launcher delegates each format to its owning implementation:
 
-- `@xmldom/xmldom` establishes XML well-formedness, and the WHATWG URL/file
-  APIs resolve catalog-relative URI references;
-- native JSON serialization and Jackson exchange the catalog mapping manifest
-  and the single machine-readable result;
-- Git verifies that the local OWLAPI checkout is exactly the revision recorded
-  in `pinned-version.json`, while `javac`, the JVM, and the existing
-  `RunWithClasspath` launcher compile and execute against its resolved runtime
-  classpath; and
-- Java OWLAPI loads the root and imports, computes the complete closure, merges
-  direct axioms through `OWLOntologyMerger` with
-  `mergeOnlyLogicalAxioms = false`, and supplies structural OWL-object equality.
+- `@xmldom/xmldom` establishes XML well-formedness, and the WHATWG URL/file APIs resolve catalog-relative URI references;
+- native JSON serialization and Jackson exchange the catalog mapping manifest and the single machine-readable result;
+- Git verifies that the local OWLAPI checkout is exactly the revision recorded in `pinned-version.json`, while `javac`, the JVM, and the existing `RunWithClasspath` launcher compile and execute against its resolved runtime classpath; and
+- Java OWLAPI loads the root and imports, computes the complete closure, merges direct axioms through `OWLOntologyMerger` with `mergeOnlyLogicalAxioms = false`, and supplies structural OWL-object equality.
 
-Repository code enforces only the acceptance invariants those authorities do
-not know: the supported catalog subset is exactly OASIS XML Catalog
-`catalog`/`group` containers with exact `uri` entries; mappings are unique and
-local; unsupported rewrite, delegate, chained-catalog, and extension constructs
-fail closed; the root full ontology ID and only its direct ontology annotations
-are restored; output imports are empty; and all axioms plus ontology annotations
-must agree under one injective anonymous-individual mapping and its reverse.
-HTTP, HTTPS, and FTP URL handlers are denied in the oracle JVM, and a missing
-authored-import mapping fails before fallback resolution. JSON-LD HTTP clients
-can bypass those handlers, so the oracle also enables RDF4J's secure mode with
-an empty context-resource allowlist and jsonld-java's remote-context prohibition
-before constructing parsers. These are the libraries' supported controls
-([RDF4J settings](https://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/rio/jsonld/JSONLDSettings.html),
-[jsonld-java network policy](https://github.com/jsonld-java/jsonld-java#controlling-network-traffic)).
-Inline contexts remain supported; external contexts fail closed. Regression
-tests route an otherwise default-allowed context URL through a loopback HTTP
-proxy and require that the proxy receives no request.
+Repository code enforces only the acceptance invariants those authorities do not know: the supported catalog subset is exactly OASIS XML Catalog `catalog`/`group` containers with exact `uri` entries; mappings are unique and local; unsupported rewrite, delegate, chained-catalog, and extension constructs fail closed; the root full ontology ID and only its direct ontology annotations are restored; output imports are empty; and all axioms plus ontology annotations must agree under one injective anonymous-individual mapping and its reverse.
+HTTP, HTTPS, and FTP URL handlers are denied in the oracle JVM, and a missing authored-import mapping fails before fallback resolution.
+JSON-LD HTTP clients can bypass those handlers, so the oracle also enables RDF4J's secure mode with an empty context-resource allowlist and jsonld-java's remote-context prohibition before constructing parsers.
+These are the libraries' supported controls ([RDF4J settings](https://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/rio/jsonld/JSONLDSettings.html), [jsonld-java network policy](https://github.com/jsonld-java/jsonld-java#controlling-network-traffic)).
+Inline contexts remain supported; external contexts fail closed.
+Regression tests route an otherwise default-allowed context URL through a loopback HTTP proxy and require that the proxy receives no request.
 
-Set `OWLAPI_REFERENCE_CHECKOUT` to an isolated checkout of the exact revision
-recorded in `pinned-version.json`. Its `sourcePathForPhase0Evidence` remains
-historical provenance and is not runtime configuration. The launcher verifies
-the configured checkout with Git before compiling the oracle. An explicitly
-configured missing build or mismatched revision fails; it is never treated as a
-skipped Java test.
+Set `OWLAPI_REFERENCE_CHECKOUT` to an isolated checkout of the exact revision recorded in `pinned-version.json`.
+Its `sourcePathForPhase0Evidence` remains historical provenance and is not runtime configuration.
+The launcher verifies the configured checkout with Git before compiling the oracle.
+An explicitly configured missing build or mismatched revision fails; it is never treated as a skipped Java test.
 
 Build the reference and its runtime classpath with Maven from that checkout:
 
@@ -237,9 +148,9 @@ Build the reference and its runtime classpath with Maven from that checkout:
 mvn -B -ntp -pl distribution -am -Dmaven.test.skip=true -Dno-javadoc=true -DincludeScope=runtime -Dmdep.outputFile=target/owlapi-runtime-classpath.txt package dependency:build-classpath
 ```
 
-Running both goals in the same reactor uses the freshly built OWLAPI module
-jars. No installation into the shared Maven repository is required. From this
-repository, configure the reference location and run the contract:
+Running both goals in the same reactor uses the freshly built OWLAPI module jars.
+No installation into the shared Maven repository is required.
+From this repository, configure the reference location and run the contract:
 
 ```powershell
 $env:OWLAPI_REFERENCE_CHECKOUT = "<pinned-owlapi-checkout>"
@@ -249,77 +160,51 @@ $env:OWLAPI_REFERENCE_CHECKOUT = "<pinned-owlapi-checkout>"
 node util/owlapi-reference/run-import-closure-contract.mjs --root <root-document> --catalog <catalog.xml> --verify-output <collapsed-document>
 ```
 
-The focused Jest suite uses that same environment variable to enable its Java
-integration tests. Without it, the portable launcher tests still run and Java
-integration tests are explicitly skipped; such a run is not oracle evidence.
+The focused Jest suite uses that same environment variable to enable its Java integration tests.
+Without it, the portable launcher tests still run and Java integration tests are explicitly skipped; such a run is not oracle evidence.
 
-Standard output contains exactly one JSON object. It identifies the pinned
-revision and loaded OWLAPI version; lists closure member ontology/version IDs;
-reports expected and actual direct counts; records the anonymous-individual
-bijection size; classifies the comparison outcome and mismatch path; and
-includes catalog-resolution and zero-network evidence. Compiler, JVM, parser,
-and diagnostic text is confined to standard error. Compilation is accepted
-only when `javac` returns zero and emits no diagnostic on either stream, so an
-internal compiler failure cannot be mistaken for usable evidence solely because
-a partial class file was written.
+Standard output contains exactly one JSON object.
+It identifies the pinned revision and loaded OWLAPI version; lists closure member ontology/version IDs; reports expected and actual direct counts; records the anonymous-individual bijection size; classifies the comparison outcome and mismatch path; and includes catalog-resolution and zero-network evidence.
+Compiler, JVM, parser, and diagnostic text is confined to standard error.
+Compilation is accepted only when `javac` returns zero and emits no diagnostic on either stream, so an internal compiler failure cannot be mistaken for usable evidence solely because a partial class file was written.
 
-Ontology identity comparison uses the ontology and version IRI optionals;
-Java's per-load anonymous ontology identifier is not serialized identity.
-Anonymous-individual matching uses a bounded explicit work stack, so the JVM
-call-stack depth does not grow with the number of axioms. Structural equality
-and anonymous-individual substitution remain delegated to Java OWLAPI.
+Ontology identity comparison uses the ontology and version IRI optionals; Java's per-load anonymous ontology identifier is not serialized identity.
+Anonymous-individual matching uses a bounded explicit work stack, so the JVM call-stack depth does not grow with the number of axioms.
+Structural equality and anonymous-individual substitution remain delegated to Java OWLAPI.
 
-The synthetic fixture under `fixtures/import-closure/` deliberately combines a
-cycle, root version IRI, a duplicate declaration, an imported annotation that
-must not be copied, within-document anonymous sharing, and the same authored
-anonymous label in two different source documents. Synthetic and real-family
-runs are permitted as provisional Task 14 development evidence before baseline
-reconciliation. Neither constitutes final release acceptance: fresh evidence
-from the reconciled candidate remains required after accepted `owlapi@0.1.0`
-and Phase 21 are ancestors.
+The synthetic fixture under `fixtures/import-closure/` deliberately combines a cycle, root version IRI, a duplicate declaration, an imported annotation that must not be copied, within-document anonymous sharing, and the same authored anonymous label in two different source documents.
+Synthetic and real-family runs are permitted as provisional Task 14 development evidence before baseline reconciliation.
+Neither constitutes final release acceptance: fresh evidence from the reconciled candidate remains required after accepted `owlapi@0.1.0` and Phase 21 are ancestors.
 
 ### July source-driven parsing and import-closure reconciliation
 
 Run `npm run test:universal-ontology -- --ontology-repository <checkout> --output <new-result-directory>`.
-This fail-closed command covers all four original July variants at Universal
-Ontology revision `e2c667f3584b8fb705671cada0fe205b1000b617`: ISO11179-3 edition 4,
-reference-data, core and extended. It consumes only original source blobs;
-historical `-full` documents and VOWL projections are not reference outputs.
+This fail-closed command covers all four original July variants at Universal Ontology revision `e2c667f3584b8fb705671cada0fe205b1000b617`: ISO11179-3 edition 4, reference-data, core and extended.
+It consumes only original source blobs; historical `-full` documents and VOWL projections are not reference outputs.
 
-The report separates four parsing results (18 direct-document comparisons in
-their original import contexts) from eight fresh closure results (Functional
-Syntax and RDF/XML). Parsing includes each document's own annotations and
-imports. Closures retain only root ontology identity and ontology annotations,
-plus the structural union of direct axioms. All resolution remains offline.
+The report separates four parsing results (18 direct-document comparisons in their original import contexts) from eight fresh closure results (Functional Syntax and RDF/XML).
+Parsing includes each document's own annotations and imports.
+Closures retain only root ontology identity and ontology annotations, plus the structural union of direct axioms.
+All resolution remains offline.
 
-Native Java OWLAPI owns structural equality and the independent merge of the
-compared JavaScript document models. Exact specification-grounded differences
-use the one expected-difference ledger; unknown, ambiguous or stale rules fail.
-Raw Java outcomes remain visible alongside reconciliation outcomes. The
-[named OWL-Time restriction decision](../../docs/compatibility/july-ontology-reconciliation.md)
-explains why a reconciled pass for core/extended is not raw Java equality.
+Native Java OWLAPI owns structural equality and the independent merge of the compared JavaScript document models.
+Exact specification-grounded differences use the one expected-difference ledger; unknown, ambiguous or stale rules fail.
+Raw Java outcomes remain visible alongside reconciliation outcomes.
+The [named OWL-Time restriction decision](../../docs/compatibility/july-ontology-reconciliation.md) explains why a reconciled pass for core/extended is not raw Java equality.
 July ledger rules apply to direct document differences, not to the closure root.
-Closure reconciliation instead requires `propagationEvidence` to match with no
-allowed differences after Java merges those reconciled document models.
-The standalone Java oracle exits with code 1 for unparsed source RDF and retains
-`SOURCE_UNPARSED_RDF`; only the qualification command adjudicates that evidence
-against the exact ledger. Do not treat a raw oracle exit as the reconciled result.
+Closure reconciliation instead requires `propagationEvidence` to match with no allowed differences after Java merges those reconciled document models.
+The standalone Java oracle exits with code 1 for unparsed source RDF and retains `SOURCE_UNPARSED_RDF`; only the qualification command adjudicates that evidence against the exact ledger.
+Do not treat a raw oracle exit as the reconciled result.
 
-Source mode records actual source bytes, including dirty changes. Optional
-`--candidate <directory>` installs the retained tarball with scripts disabled
-and verifies its digest before testing the public package. Generated documents
-and source blobs are rechecked for changes at the end. Reports, individual
-oracle JSON, parser diagnostics and native logs remain in the new output directory.
+Source mode records actual source bytes, including dirty changes.
+Optional `--candidate <directory>` installs the retained tarball with scripts disabled and verifies its digest before testing the public package.
+Generated documents and source blobs are rechecked for changes at the end.
+Reports, individual oracle JSON, parser diagnostics and native logs remain in the new output directory.
 
-The qualification unit suite delegates public-package composition to a fixed
-test driver running in the current Node executable. Node resolves and executes
-the real public modules; Jest asserts the returned evidence and generated files.
-This preserves concurrent imports and the exact production qualification path
-without depending on Jest's experimental VM module linker, which can reject
-shared concurrent imports on Node 22. Both supported Node lines run these same
-assertions; native failures and missing import mappings remain test failures.
+The qualification unit suite delegates public-package composition to a fixed test driver running in the current Node executable.
+Node resolves and executes the real public modules; Jest asserts the returned evidence and generated files.
+This preserves concurrent imports and the exact production qualification path without depending on Jest's experimental VM module linker, which can reject shared concurrent imports on Node 22.
+Both supported Node lines run these same assertions; native failures and missing import mappings remain test failures.
 
-The required Node 24 CI job builds the exact Java revision with Maven, runs
-native oracle regressions, executes both July checks and retains their artifacts,
-including failures. This adds development evidence only; it does not change the
-release workflow or replace final post-0.1.0/Phase-21 baseline qualification.
+The required Node 24 CI job builds the exact Java revision with Maven, runs native oracle regressions, executes both July checks and retains their artifacts, including failures.
+This adds development evidence only; it does not change the release workflow or replace final post-0.1.0/Phase-21 baseline qualification.

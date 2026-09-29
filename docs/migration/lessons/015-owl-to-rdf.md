@@ -4,35 +4,23 @@
 
 - Migration: Phase 16 - shared OWL-to-RDF translator.
 - Baseline revision: `0896f082`, the signed Phase 15 checkpoint commit.
-- Completion revision: the Phase 16 checkpoint commit containing this record;
-  the repository owner requested an uncommitted review pause before assigning
-  its commit ID.
+- Completion revision: the Phase 16 checkpoint commit containing this record; the repository owner requested an uncommitted review pause before assigning its commit ID.
 - Implementation date: 22 August 2026.
 - Next migration: Phase 17 - original KRSS / KRSS1.
 
 ## Implemented scope
 
-Phase 16 adds `OwlToRdfTranslator` through the then-public
-`src/owlapi-js/rdf/index.js` **WebVOWL staging barrel**. “Public” at that
-checkpoint described an in-repository migration seam, not an approved npm
-subpath. Its single synchronous `translate(ontology, { graph })` operation maps
-the canonical structural ontology to a fresh RDF/JS `DatasetCore`. A private
-per-call session owns generated blank nodes, stable source
-anonymous-individual terms, recursive main-node mapping, RDF lists, axiom
-annotations, and placement of every quad in the selected dataset graph.
+Phase 16 adds `OwlToRdfTranslator` through the then-public `src/owlapi-js/rdf/index.js` **WebVOWL staging barrel**.
+“Public” at that checkpoint described an in-repository migration seam, not an approved npm subpath.
+Its single synchronous `translate(ontology, { graph })` operation maps the canonical structural ontology to a fresh RDF/JS `DatasetCore`.
+A private per-call session owns generated blank nodes, stable source anonymous-individual terms, recursive main-node mapping, RDF lists, axiom annotations, and placement of every quad in the selected dataset graph.
 
-The mapping covers every canonical entity, object- and data-property
-expression, individual, annotation value, data range, class expression, and all
-38 current axiom kinds. Constructor-time taxonomy guards and mechanically
-exhaustive tests make model growth fail until the new kind has an explicit RDF
-disposition. The translator remains a semantic mapping layer: it does not
-expose a concrete RDF storer, JSON-LD from-RDF mode, or serialization-specific
-option.
+The mapping covers every canonical entity, object- and data-property expression, individual, annotation value, data range, class expression, and all 38 current axiom kinds.
+Constructor-time taxonomy guards and mechanically exhaustive tests make model growth fail until the new kind has an explicit RDF disposition.
+The translator remains a semantic mapping layer: it does not expose a concrete RDF storer, JSON-LD from-RDF mode, or serialization-specific option.
 
-The later package-surface decision classifies the translator as
-`INTERNAL_ONLY`: Phase 19 relocates it to `internal/mapping/`, and the staging
-barrel does not survive as `owlapi/rdf`. This changes publication placement,
-not the accepted Phase 16 semantics or evidence.
+The later package-surface decision classifies the translator as `INTERNAL_ONLY`: Phase 19 relocates it to `internal/mapping/`, and the staging barrel does not survive as `owlapi/rdf`.
+This changes publication placement, not the accepted Phase 16 semantics or evidence.
 
 ## Acceptance evidence
 
@@ -64,63 +52,44 @@ not the accepted Phase 16 semantics or evidence.
 
 ## Java differential disposition
 
-The oracle is OWLAPI 5.5.1 at
-`d7e997a53b470e32700de89cc610d9daf01ea769`. `GenerateRdfGraph` invokes the
-public N-Triples storer with `addMissingTypes` disabled, so the comparison does
-not include serializer-convenience declarations for every signature entity.
-The retained Java graph contains three `rdf:type rdf:List` quads, one for each
-list cell. W3C Table 1 does not generate them. The differential removes only
-that exact predicate/object shape, asserts that the count is exactly three,
-and then requires full dataset isomorphism. A fourth occurrence, any other
-Java-only quad, or any missing Java quad fails.
+The oracle is OWLAPI 5.5.1 at `d7e997a53b470e32700de89cc610d9daf01ea769`.
+`GenerateRdfGraph` invokes the public N-Triples storer with `addMissingTypes` disabled, so the comparison does not include serializer-convenience declarations for every signature entity.
+The retained Java graph contains three `rdf:type rdf:List` quads, one for each list cell.
+W3C Table 1 does not generate them.
+The differential removes only that exact predicate/object shape, asserts that the count is exactly three, and then requires full dataset isomorphism.
+A fourth occurrence, any other Java-only quad, or any missing Java quad fails.
 
 ## Performance and dependency impact
 
-The accepted idle-machine run used Node.js `v24.19.0`, one warm-up, five
-measured runs, median aggregation, and explicit garbage collection. Ontology
-construction was outside the timed region. A benchmark-only dataset wrapper
-sampled synchronous heap use every 256 emitted quads without changing the
-production translator's execution model. Median results were 85.38 ms and
-98,392,856 bytes peak-heap delta for 50,000 declaration axioms; 101.34 ms and
-114,785,832 bytes for a 25,000-member RDF list; and 1.35 ms and 5,249,384 bytes
-for expression depth 256.
+The accepted idle-machine run used Node.js `v24.19.0`, one warm-up, five measured runs, median aggregation, and explicit garbage collection.
+Ontology construction was outside the timed region.
+A benchmark-only dataset wrapper sampled synchronous heap use every 256 emitted quads without changing the production translator's execution model.
+Median results were 85.38 ms and 98,392,856 bytes peak-heap delta for 50,000 declaration axioms; 101.34 ms and 114,785,832 bytes for a 25,000-member RDF list; and 1.35 ms and 5,249,384 bytes for expression depth 256.
 
-Phase 16 adds no package, lockfile, build configuration, concrete serializer,
-production resource ceiling, or third-party dependency. It uses the existing
-project RDF/JS factories. The Java harness and generated N-Triples graph are
-development-only oracle evidence and never enter a runtime bundle.
+Phase 16 adds no package, lockfile, build configuration, concrete serializer, production resource ceiling, or third-party dependency.
+It uses the existing project RDF/JS factories.
+The Java harness and generated N-Triples graph are development-only oracle evidence and never enter a runtime bundle.
 
 ## Impact on subsequent phases
 
-Phase 16 was the last RDF-mapping reason to retain the old RDF/XML bridge and
-syntax-coupled converter/exporter as implementation references. ADR 0008 later
-inserted original KRSS/KRSS1 as Phase 17 and renumbered physical deletion and
-package release to Phases 18 and 19. Phase 18 may therefore perform the
-retained-reference audit and physically delete the already
-production-unreachable legacy pipeline. It should not move or rewire those
-files first, and it must keep deletion separate from Phase 19 package-surface
-work.
+Phase 16 was the last RDF-mapping reason to retain the old RDF/XML bridge and syntax-coupled converter/exporter as implementation references.
+ADR 0008 later inserted original KRSS/KRSS1 as Phase 17 and renumbered physical deletion and package release to Phases 18 and 19.
+Phase 18 may therefore perform the retained-reference audit and physically delete the already production-unreachable legacy pipeline.
+It should not move or rewire those files first, and it must keep deletion separate from Phase 19 package-surface work.
 
 ## Unresolved questions
 
-There are no unresolved Phase 16 blockers. Concrete RDF serializers remain
-deferred by design and require their own syntax contracts, provenance,
-round-trip tests, and release decision. They are not Phase 17 deletion work.
+There are no unresolved Phase 16 blockers.
+Concrete RDF serializers remain deferred by design and require their own syntax contracts, provenance, round-trip tests, and release decision.
+They are not Phase 17 deletion work.
 
 ## Mechanically reviewable completion summary
 
 - Migration: Phase 16 shared OWL-to-RDF translator.
 - Lesson record: `docs/owlapi-js/migration/lessons/015-owl-to-rdf.md`.
-- Finding IDs: `M16-001` through `M16-008`; every finding has exactly one
-  primary disposition.
-- Playbook changed: yes; Phase 16 evidence is institutionalized and the next
-  migration section advances to Phase 17.
-- Executable protections added: exhaustive taxonomy and expression/axiom
-  inventories, exact W3C rule assertions, annotation-pattern assertions,
-  graph placement, blank-node identity, round trip, pinned Java graph
-  differential, browser contract, linear resource shapes, and performance
-  evidence.
+- Finding IDs: `M16-001` through `M16-008`; every finding has exactly one primary disposition.
+- Playbook changed: yes; Phase 16 evidence is institutionalized and the next migration section advances to Phase 17.
+- Executable protections added: exhaustive taxonomy and expression/axiom inventories, exact W3C rule assertions, annotation-pattern assertions, graph placement, blank-node identity, round trip, pinned Java graph differential, browser contract, linear resource shapes, and performance evidence.
 - Resource-budget or regression-threshold changes: none.
 - Unresolved blockers: none.
-- Next migration: Phase 17 original KRSS / KRSS1, blocked until the repository owner creates the
-  requested Phase 16 checkpoint commit and explicitly says to proceed.
+- Next migration: Phase 17 original KRSS / KRSS1, blocked until the repository owner creates the requested Phase 16 checkpoint commit and explicitly says to proceed.

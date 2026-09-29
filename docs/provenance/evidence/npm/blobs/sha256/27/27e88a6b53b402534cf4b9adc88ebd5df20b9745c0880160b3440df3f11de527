@@ -1,0 +1,163 @@
+{
+  "artifactId": "97024ce71db40a1c5d617ee35abbb7122285fb89c8183e06e7b1d44f9b1b3eed",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4441,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/dev/index.d.ts",
+        "sha256": "298c0304a0bdbceec4e2d3f6a8731c05eae69e05b0b919060ff66a95ade26e80",
+        "size": 1369,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/index.d.ts.map",
+        "sha256": "5214f7d75e7582489bdc5402603f3f9e6244abc6dd62b2c8361bc36f71778949",
+        "size": 373,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/index.js",
+        "sha256": "2baf517789cff329ef4503228bf6cd2a6db05c8ab5e303990811b25a02c0efd4",
+        "size": 2485,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "298c0304a0bdbceec4e2d3f6a8731c05eae69e05b0b919060ff66a95ade26e80",
+        "size": 1369,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts.map",
+        "sha256": "5214f7d75e7582489bdc5402603f3f9e6244abc6dd62b2c8361bc36f71778949",
+        "size": 373,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "0776986647dd83ca16594bc02984a288f11e4c8a2d6f81b2487b3c9ef3a34f94",
+        "size": 2334,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "20e4e68a94fb62188c9139721be97740ec32f77464b23c40677a89aee72584f6",
+        "size": 1269,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "ce737dd1901bf3be247226eab138eeb2ba051fe1e3c6a6b1ce528ecbaa8ab7c8",
+        "size": 5589,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1094,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dd/dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+          "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094
+      },
+      {
+        "blob": {
+          "bytes": 5589,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ce/ce737dd1901bf3be247226eab138eeb2ba051fe1e3c6a6b1ce528ecbaa8ab7c8",
+          "sha256": "ce737dd1901bf3be247226eab138eeb2ba051fe1e3c6a6b1ce528ecbaa8ab7c8"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "ce737dd1901bf3be247226eab138eeb2ba051fe1e3c6a6b1ce528ecbaa8ab7c8",
+        "size": 5589
+      }
+    ],
+    "expandedBytes": 16255,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "micromark-util-chunked",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-chunked",
+      "version": "2.0.1"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/micromark/micromark/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "micromark-util-symbol": "^2.0.0"
+      },
+      "description": "micromark utility to splice and push with giant arrays",
+      "exports": {
+        "default": "./index.js",
+        "development": "./dev/index.js"
+      },
+      "files": [
+        "dev/",
+        "index.d.ts.map",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": [
+        {
+          "type": "GitHub Sponsors",
+          "url": "https://github.com/sponsors/unifiedjs"
+        },
+        {
+          "type": "OpenCollective",
+          "url": "https://opencollective.com/unified"
+        }
+      ],
+      "keywords": [
+        "micromark",
+        "util",
+        "utility",
+        "chunk",
+        "splice",
+        "push"
+      ],
+      "license": "MIT",
+      "name": "micromark-util-chunked",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-chunked",
+      "scripts": {
+        "build": "micromark-build"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "version": "2.0.1",
+      "xo": {
+        "envs": [
+          "shared-node-browser"
+        ],
+        "prettier": true,
+        "rules": {
+          "unicorn/prefer-code-point": "off"
+        }
+      }
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 4441,
+      "sha256": "a7b753059876eda10e9e14c024d1cf6eb3a2eb2021c79ef59fb483d72cda754a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

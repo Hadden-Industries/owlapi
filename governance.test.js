@@ -2234,11 +2234,17 @@ bundle licence and notice review.
       "contributor-covenant-3.0",
       "generated-w3c-conformance-manifests",
       "gnu-agpl-3.0-only-license-text",
+      "hisew-checkout-environment-isolation",
       "java-owlapi-api-identity-metadata",
       "java-owlapi-reference-fixtures",
+      "ruff-development-tool",
+      "snapper-development-tool",
+      "universal-ontology-documentation-tooling",
+      "uv-development-bootstrap",
       "w3c-json-ld-api-tests",
       "w3c-owl2-test-artifact",
       "w3c-rdf-tests",
+      "webvowl-prose-regressions",
     ]);
     for (const material of materialsById.values()) {
       expect(material).not.toHaveProperty("reviewStatus");
@@ -2537,6 +2543,13 @@ bundle licence and notice review.
     const packedPaths = pack.files
       .map(({ path }) => path)
       .sort(compareCodeUnits);
+    expect(
+      packedPaths.some((path) =>
+        /^(?:\.venv\/|\.development-tools\/|scripts\/|LICENSES\/development\/|pyproject\.toml$|uv\.lock$|ruff\.toml$|\.python-version$|\.snapperrc\.toml$)/u.test(
+          path,
+        ),
+      ),
+    ).toBe(false);
     const rights = readJson("./docs/provenance/rights-inventory.json");
     const inventory = readJson("./docs/provenance/third-party-material.json");
 

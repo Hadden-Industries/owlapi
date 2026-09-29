@@ -4,35 +4,23 @@
 
 - Migration: Phase 15 - JSON-LD.
 - Baseline revision: `0ad02561`, the signed Phase 14 checkpoint commit.
-- Completion revision: the Phase 15 checkpoint commit containing this record;
-  the repository owner requested an uncommitted review pause before assigning
-  its commit ID.
+- Completion revision: the Phase 15 checkpoint commit containing this record; the repository owner requested an uncommitted review pause before assigning its commit ID.
 - Implementation date: 22 August 2026.
 - Next migration: Phase 16 - shared OWL-to-RDF translator.
 
 ## Implemented scope
 
-Phase 15 registers JSON-LD as the final ontology-ingestion format. The adapter
-lazy-loads Digital Bazaar jsonld.js's browser-safe ESM distribution, invokes
-`toRDF()` without an N-Quads format, normalizes the resulting terms into the
-project RDF/JS factories, and hands the complete dataset to the established
-graph-policy and RDF-to-OWL seams. Immutable top-level `@context` values remain
-document metadata rather than OWL semantics.
+Phase 15 registers JSON-LD as the final ontology-ingestion format.
+The adapter lazy-loads Digital Bazaar jsonld.js's browser-safe ESM distribution, invokes `toRDF()` without an N-Quads format, normalizes the resulting terms into the project RDF/JS factories, and hands the complete dataset to the established graph-policy and RDF-to-OWL seams.
+Immutable top-level `@context` values remain document metadata rather than OWL semantics.
 
-JSON-LD processor options are exposed through the immutable
-`OWLDocumentFormat` parameter seam rather than through WebVOWL-specific parser
-arguments. Phase 15 supports JSON-LD 1.0 and 1.1 processing modes, inline and
-externally loaded expansion contexts, both standardized RDF-direction
-representations, and canonical `rdf:JSON` lexical forms required by the JCS
-cases. A small, isolated JSON-LD 1.0 compatibility module covers only the
-version-specific context and list rules removed from jsonld.js 9; general
-expansion and context processing remain delegated to jsonld.js.
+JSON-LD processor options are exposed through the immutable `OWLDocumentFormat` parameter seam rather than through WebVOWL-specific parser arguments.
+Phase 15 supports JSON-LD 1.0 and 1.1 processing modes, inline and externally loaded expansion contexts, both standardized RDF-direction representations, and canonical `rdf:JSON` lexical forms required by the JCS cases.
+A small, isolated JSON-LD 1.0 compatibility module covers only the version-specific context and list rules removed from jsonld.js 9; general expansion and context processing remain delegated to jsonld.js.
 
-Remote contexts remain default-deny. When explicitly enabled, jsonld.js can
-reach only the manager's injected loader facade. The facade validates schemes,
-credentials, loopback/private/link-local/metadata targets, final redirects,
-byte and redirect ceilings, timeout, and cancellation. It never falls back to
-global `fetch` or jsonld.js's Node/XHR loaders.
+Remote contexts remain default-deny.
+When explicitly enabled, jsonld.js can reach only the manager's injected loader facade.
+The facade validates schemes, credentials, loopback/private/link-local/metadata targets, final redirects, byte and redirect ceilings, timeout, and cancellation. It never falls back to global `fetch` or jsonld.js's Node/XHR loaders.
 
 ## Acceptance evidence
 
@@ -68,77 +56,50 @@ global `fetch` or jsonld.js's Node/XHR loaders.
 
 ## Conformance disposition
 
-The pinned W3C JSON-LD API revision is
-`ffdb326121ea89b7b8280e76a5caea923834bcef`. Its 467 to-RDF entries contain 462
-`REQUIRED` cases, all passing. This includes the JSON-LD 1.0 processing-mode,
-external expansion-context, both RDF-direction, and JCS cases formerly excluded
-as alternate processor profiles. Two cases remain `EXCLUDED_WITH_REASON`
-because generalized RDF predicates cannot be represented by the OWL ingestion
-model. Three additional entries (`c037`, `c038`, and `er56`) record exact
-jsonld.js 9.0.0 behavior gaps. The 54 from-RDF entries are all
-`NOT_APPLICABLE`: Phase 15 is ingestion, not JSON-LD serialization.
+The pinned W3C JSON-LD API revision is `ffdb326121ea89b7b8280e76a5caea923834bcef`.
+Its 467 to-RDF entries contain 462 `REQUIRED` cases, all passing.
+This includes the JSON-LD 1.0 processing-mode, external expansion-context, both RDF-direction, and JCS cases formerly excluded as alternate processor profiles.
+Two cases remain `EXCLUDED_WITH_REASON` because generalized RDF predicates cannot be represented by the OWL ingestion model.
+Three additional entries (`c037`, `c038`, and `er56`) record exact jsonld.js 9.0.0 behavior gaps.
+The 54 from-RDF entries are all `NOT_APPLICABLE`: Phase 15 is ingestion, not JSON-LD serialization.
 
 ## Performance and dependency impact
 
-The initial accepted run converted the 4,888,891-byte, 50,000-declaration
-fixture to RDF/JS in 195.15 ms median and completed end-to-end in 2,780.03 ms.
-After the processor-profile correction and executable gate update, those
-medians were 189.33 ms and 1,389.59 ms respectively, with no resource-limit
-breach; the same-revision Functional control remained within the ordinary
-relative limits.
+The initial accepted run converted the 4,888,891-byte, 50,000-declaration fixture to RDF/JS in 195.15 ms median and completed end-to-end in 2,780.03 ms.
+After the processor-profile correction and executable gate update, those medians were 189.33 ms and 1,389.59 ms respectively, with no resource-limit breach; the same-revision Functional control remained within the ordinary relative limits.
 
-Two earlier correction runs measured 51,616 and 53,016 bytes for the 16 MiB
-mismatch heap delta. They remain recorded as the evidence for the approved
-general low-denominator policy rather than being discarded. The final gated
-1 MiB, 4 MiB, and 16 MiB scaling medians were 41,760, 37,016, and 38,728 bytes,
-all below the fixed 65,536-byte ceiling. The 16 MiB result also passes the
-accepted Phase 14 relative wall and heap limits, so the automated pair-and-scale
-decision is green; the preceding implementation-validation run passed as well.
+Two earlier correction runs measured 51,616 and 53,016 bytes for the 16 MiB mismatch heap delta.
+They remain recorded as the evidence for the approved general low-denominator policy rather than being discarded.
+The final gated 1 MiB, 4 MiB, and 16 MiB scaling medians were 41,760, 37,016, and 38,728 bytes, all below the fixed 65,536-byte ceiling.
+The 16 MiB result also passes the accepted Phase 14 relative wall and heap limits, so the automated pair-and-scale decision is green; the preceding implementation-validation run passed as well.
 
-The production verifier measures a 204,727-byte minified / 50,201-byte gzip
-lazy JSON-LD closure and proves it is absent from the initial static closure.
+The production verifier measures a 204,727-byte minified / 50,201-byte gzip lazy JSON-LD closure and proves it is absent from the initial static closure.
 
-Phase 15 adds no package, lockfile, build-configuration, production resource
-ceiling, or legacy-production-reachability change. It adds the approved general
-bounded-detection materiality rule to the performance policy and executable
-benchmark helper; valid parsing and reconstruction retain their ordinary
-relative budgets. The already governed `jsonld` dependency is now exercised
-through its restricted adapter.
+Phase 15 adds no package, lockfile, build-configuration, production resource ceiling, or legacy-production-reachability change.
+It adds the approved general bounded-detection materiality rule to the performance policy and executable benchmark helper; valid parsing and reconstruction retain their ordinary relative budgets.
+The already governed `jsonld` dependency is now exercised through its restricted adapter.
 
 ## Impact on Phase 16
 
-The ingestion programme is complete. Phase 16 should implement structural OWL
-to RDF/JS independently with exhaustive model dispatch and graph-equivalence
-tests. It must not turn the Phase 15 from-RDF non-applicability classification
-into an implicit JSON-LD serializer promise.
+The ingestion programme is complete.
+Phase 16 should implement structural OWL to RDF/JS independently with exhaustive model dispatch and graph-equivalence tests.
+It must not turn the Phase 15 from-RDF non-applicability classification into an implicit JSON-LD serializer promise.
 
 ## Unresolved questions
 
-There are no unresolved Phase 15 blockers. The three jsonld.js 9.0.0 exclusions
-should be reevaluated on dependency upgrade. The two generalized-RDF exclusions
-are a deliberate OWL-ingestion boundary, not missing processor controls. Neither
-category weakens the 462 passing required cases.
+There are no unresolved Phase 15 blockers.
+The three jsonld.js 9.0.0 exclusions should be reevaluated on dependency upgrade.
+The two generalized-RDF exclusions are a deliberate OWL-ingestion boundary, not missing processor controls.
+Neither category weakens the 462 passing required cases.
 
 ## Mechanically reviewable completion summary
 
 - Migration: Phase 15 JSON-LD.
 - Lesson record: `docs/owlapi-js/migration/lessons/014-jsonld.md`.
-- Finding IDs: `M15-001` through `M15-011`; every finding has exactly one
-  primary disposition.
-- Playbook changed: yes; Phase 15 evidence is institutionalized and the next
-  migration section advances to Phase 16.
-- Executable protections added: direct RDF/JS conversion, injected restricted
-  contexts, redirect/resource/cancellation enforcement, authoritative media
-  type, immutable JSON-LD processor parameters, JSON-LD 1.0 and 1.1 behavior,
-  expansion contexts, RDF direction, canonical `rdf:JSON`, JSON/TriG ambiguity
-  protection, graph policies, import integration, complete W3C classification,
-  browser-safe lazy loading, structural differential, bundle verification, and
-  same-revision performance evidence.
-- Normative change applied: finding `M15-011` adds the repository-owner-approved
-  bounded parser-selection materiality rule to implementation-plan §20.6.
-- Resource-budget or regression-threshold changes: valid workloads retain the
-  20% relative threshold; designated bounded mismatch signals add a 64 KiB
-  absolute heap alternative with mandatory 1/4/16 MiB scaling evidence.
+- Finding IDs: `M15-001` through `M15-011`; every finding has exactly one primary disposition.
+- Playbook changed: yes; Phase 15 evidence is institutionalized and the next migration section advances to Phase 16.
+- Executable protections added: direct RDF/JS conversion, injected restricted contexts, redirect/resource/cancellation enforcement, authoritative media type, immutable JSON-LD processor parameters, JSON-LD 1.0 and 1.1 behavior, expansion contexts, RDF direction, canonical `rdf:JSON`, JSON/TriG ambiguity protection, graph policies, import integration, complete W3C classification, browser-safe lazy loading, structural differential, bundle verification, and same-revision performance evidence.
+- Normative change applied: finding `M15-011` adds the repository-owner-approved bounded parser-selection materiality rule to implementation-plan §20.6.
+- Resource-budget or regression-threshold changes: valid workloads retain the 20% relative threshold; designated bounded mismatch signals add a 64 KiB absolute heap alternative with mandatory 1/4/16 MiB scaling evidence.
 - Unresolved blockers: none.
-- Next migration: Phase 16, blocked until the repository owner creates the
-  requested Phase 15 checkpoint commit and explicitly says to proceed.
+- Next migration: Phase 16, blocked until the repository owner creates the requested Phase 15 checkpoint commit and explicitly says to proceed.

@@ -1,4 +1,5 @@
 import js from "@eslint/js";
+import markdown from "@eslint/markdown";
 import prettier from "eslint-config-prettier";
 import compat from "eslint-plugin-compat";
 import globals from "globals";
@@ -46,15 +47,36 @@ export default [
       "coverage/**",
       ".release/**",
       "node_modules/**",
+      ".venv/**",
+      ".development-tools/**",
       "playwright-report/**",
       "test-results/**",
       "docs/conformance/generated/**",
       "docs/conformance/upstream/**",
       "docs/provenance/history-reconstruction/**",
       "util/owlapi-reference/fixtures/**",
+      "API.md",
+      "docs/compatibility/java-api-surface.md",
+      "docs/Deep Review of Phase 19 and Phase 20 of the owlapi Implementation Plan \\[2026-08-24T1130\\].md",
+      "docs/Deep Review of Phase 19 and Phase 20 of the owlapi Implementation Plan \\[2026-08-25T0020\\].md",
     ],
   },
-  js.configs.recommended,
+  { ...js.configs.recommended, files: ["**/*.{js,mjs,cjs}"] },
+  ...markdown.configs.recommended,
+  {
+    files: ["**/*.md"],
+    language: "markdown/gfm",
+    rules: {
+      "markdown/table-column-count": "error",
+      // GitHub's five alert markers are syntax, not missing link definitions.
+      "markdown/no-missing-label-refs": [
+        "error",
+        {
+          allowLabels: ["!NOTE", "!TIP", "!IMPORTANT", "!WARNING", "!CAUTION"],
+        },
+      ],
+    },
+  },
   {
     files: ["**/*.{js,mjs}"],
     languageOptions: {

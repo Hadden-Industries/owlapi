@@ -1,0 +1,135 @@
+{
+  "artifactId": "9ad3729632c2c68107f46a2ddd06f684815ac5f77a5ede0cafefc03b9dc9024f",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3310,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "e9678fe125935e3ebb654a6cf7adc59a0c789df6ff47ba78e0e8790f728fe009",
+        "size": 401,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts.map",
+        "sha256": "742e1495968195e87d529f0020e8181566910225067476f056ab4257105c3294",
+        "size": 149,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "323cc4fbd190cdcb56be068ff98e104aa2f431ea1039d7e967f3f7891cb859f0",
+        "size": 757,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "1758618d3101cb94280c1ddb827bb329790f7d95058cdc616d50352811c7d5ba",
+        "size": 1119,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "53bfb28b9597a85463cf5b44a918cfb3d4d7f2da726698d96f05196063ba2ed0",
+        "size": 4451,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1094,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dd/dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+          "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094
+      },
+      {
+        "blob": {
+          "bytes": 4451,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/53/53bfb28b9597a85463cf5b44a918cfb3d4d7f2da726698d96f05196063ba2ed0",
+          "sha256": "53bfb28b9597a85463cf5b44a918cfb3d4d7f2da726698d96f05196063ba2ed0"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "53bfb28b9597a85463cf5b44a918cfb3d4d7f2da726698d96f05196063ba2ed0",
+        "size": 4451
+      }
+    ],
+    "expandedBytes": 7971,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "micromark-util-encode",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-encode",
+      "version": "2.0.1"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/micromark/micromark/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "description": "micromark utility to encode dangerous html characters",
+      "exports": "./index.js",
+      "files": [
+        "index.d.ts.map",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": [
+        {
+          "type": "GitHub Sponsors",
+          "url": "https://github.com/sponsors/unifiedjs"
+        },
+        {
+          "type": "OpenCollective",
+          "url": "https://opencollective.com/unified"
+        }
+      ],
+      "keywords": [
+        "micromark",
+        "util",
+        "utility",
+        "html",
+        "encode"
+      ],
+      "license": "MIT",
+      "name": "micromark-util-encode",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-encode",
+      "sideEffects": false,
+      "type": "module",
+      "version": "2.0.1",
+      "xo": {
+        "envs": [
+          "shared-node-browser"
+        ],
+        "prettier": true,
+        "rules": {
+          "unicorn/prefer-code-point": "off",
+          "unicorn/prefer-string-replace-all": "off"
+        }
+      }
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 3310,
+      "sha256": "c553824f256f5f99f8f8b172d25caa7b2270ece5a00774cd1dbbc8bf9cd9090a"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

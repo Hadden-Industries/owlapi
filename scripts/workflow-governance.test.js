@@ -36,6 +36,46 @@ const mutateWorkflow = (fileName, mutate) => {
 
 describe("repository workflow governance", () => {
   test.each([
+    ["ci.yml", "quality_windows"],
+    ["ci.yml", "source_node_22"],
+    ["release.yml", "source_node_24"],
+    ["release.yml", "quality_windows"],
+    ["extended-tests.yml", "extended_evidence"],
+    ["maintenance.yml", "health"],
+  ])("requires locked quality setup before consumers in %s/%s", (file, job) => {
+    for (const mutation of ["remove", "skip", "path", "late"]) {
+      const violations = mutateWorkflow(file, (doc) => {
+        const steps = doc.getIn(["jobs", job, "steps"]);
+        const index = steps.items.findIndex((step) =>
+          (step.get("run") ?? "").startsWith("npm run tools:sync"),
+        );
+        expect(index).toBeGreaterThan(-1);
+        if (mutation === "remove") steps.items.splice(index, 1);
+        if (mutation === "skip") steps.items[index].set("if", "false");
+        if (mutation === "path")
+          steps.items[index].set(
+            "run",
+            "npm run tools:sync -- --python python",
+          );
+        if (mutation === "late")
+          steps.items.push(...steps.items.splice(index, 1));
+      });
+      expect(violations.join("\n")).toMatch(/quality tooling/u);
+    }
+  });
+
+  test("the Windows source gate cannot omit its regression command", () => {
+    expect(
+      mutateWorkflow("ci.yml", (doc) => {
+        const steps = doc.getIn(["jobs", "quality_windows", "steps"]);
+        steps.items = steps.items.filter(
+          (step) => step.get("run") !== "npm run test:quality",
+        );
+      }).join("\n"),
+    ).toMatch(/quality tooling/u);
+  });
+
+  test.each([
     [
       "a bypassed PR gate",
       (doc) => doc.setIn(["jobs", "source_node_24", "if"], "false"),
