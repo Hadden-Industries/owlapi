@@ -7,6 +7,7 @@ import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 import { parseDocument } from "yaml";
 import { REQUIRED_JOB_IDS } from "./require-job-success.mjs";
+import { CI_JOB_NAMES } from "./ci-verification.mjs";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const WORKFLOW_DIRECTORY = join(REPOSITORY_ROOT, ".github", "workflows");
@@ -243,6 +244,17 @@ const validateActionUses = (fileName, workflow, document, violations) => {
   }
 };
 
+const isCiReceiptTransport = (fileName, jobId, step) =>
+  fileName === "ci.yml" &&
+  ((jobId === "verification" &&
+    step.id === "proof" &&
+    step.uses ===
+      "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c") ||
+    (jobId === "required" &&
+      step.id === "receipt_upload" &&
+      step.uses ===
+        "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"));
+
 const validateJobs = (fileName, workflow, violations) => {
   // Commands can reach a script indirectly through env, matrix or action inputs.
   // Preserve the workflow-wide policy over resolved values, never YAML comments.
@@ -301,7 +313,8 @@ const validateJobs = (fileName, workflow, violations) => {
     for (const step of steps(job)) {
       add(
         violations,
-        !Object.hasOwn(step, "continue-on-error"),
+        !Object.hasOwn(step, "continue-on-error") ||
+          isCiReceiptTransport(fileName, id, step),
         `${fileName}: forbidden workflow construct continue-on-error`,
       );
       add(
@@ -380,6 +393,14 @@ const validateCandidateTransport = (fileName, workflow, violations) => {
   for (const step of allSteps(workflow).filter((item) =>
     item.uses?.startsWith("actions/download-artifact@"),
   )) {
+    if (
+      fileName === "ci.yml" &&
+      steps(workflow.jobs?.verification).includes(step) &&
+      step.id === "proof"
+    ) {
+      // This single cross-run receipt selector has its own exact policy below.
+      continue;
+    }
     const inputs = step.with ?? {};
     const isCandidate =
       inputs["artifact-ids"] === "${{ needs.candidate.outputs.artifact_id }}";
@@ -415,6 +436,184 @@ const validateCandidateTransport = (fileName, workflow, violations) => {
       `${fileName}: artifact download broadens same-run artifact selection`,
     );
   }
+};
+
+const validateCiVerification = (workflow, violations) => {
+  const label = "ci.yml: CI verification";
+  const jobs = workflow.jobs ?? {};
+  add(
+    violations,
+    sameInventory(Object.keys(jobs), Object.keys(CI_JOB_NAMES)) &&
+      Object.entries(CI_JOB_NAMES).every(
+        ([id, name]) => jobs[id]?.name === name,
+      ),
+    `${label} job identities changed`,
+  );
+  const strategy = jobs.verification;
+  add(
+    violations,
+    !Object.hasOwn(strategy ?? {}, "if") &&
+      !Object.hasOwn(strategy ?? {}, "needs"),
+    `${label} strategy must always run`,
+  );
+  requireFields(
+    strategy,
+    {
+      "timeout-minutes": 8,
+      permissions: {
+        contents: "read",
+        actions: "read",
+        "pull-requests": "read",
+      },
+    },
+    label,
+    violations,
+  );
+  const outputKeys = [
+    "reuse",
+    "source_run_id",
+    "source_run_attempt",
+    "source_commit",
+    "candidate_artifact_id",
+    "candidate_artifact_digest",
+  ];
+  requireFields(
+    strategy,
+    {
+      outputs: Object.fromEntries(
+        outputKeys.map((key) => [
+          key,
+          `\u0024{{ steps.verify.outputs.${key} }}`,
+        ]),
+      ),
+    },
+    label,
+    violations,
+  );
+  const roots = [
+    "metadata",
+    "source_node_22",
+    "source_node_24",
+    "dependency_review",
+  ];
+  for (const id of roots) {
+    add(
+      violations,
+      sameInventory(needs(jobs[id]), ["verification"]) &&
+        jobs[id]?.if === "needs.verification.outputs.reuse != 'true'",
+      `${label} full root gate changed: ${id}`,
+    );
+  }
+  add(
+    violations,
+    sameInventory(needs(jobs.candidate), roots) &&
+      !Object.hasOwn(jobs.candidate ?? {}, "if"),
+    `${label} candidate dependency gate changed`,
+  );
+  for (const id of Object.keys(CI_JOB_NAMES).filter(
+    (id) => ![...roots, "verification", "candidate", "required"].includes(id),
+  )) {
+    add(
+      violations,
+      sameInventory(needs(jobs[id]), ["candidate"]) &&
+        !Object.hasOwn(jobs[id] ?? {}, "if"),
+      `${label} consumer gate changed: ${id}`,
+    );
+  }
+  const select = steps(strategy).find((step) => step.id === "select");
+  const proof = steps(strategy).find((step) => step.id === "proof");
+  const verify = steps(strategy).find((step) => step.id === "verify");
+  requireFields(
+    select,
+    {
+      run: "node scripts/ci-verification-command.mjs select",
+      env: { GH_TOKEN: "${{ github.token }}" },
+    },
+    label,
+    violations,
+  );
+  requireFields(
+    verify,
+    {
+      run: "node scripts/ci-verification-command.mjs verify",
+      env: {
+        GH_TOKEN: "${{ github.token }}",
+        PROOF_DOWNLOAD_OUTCOME: "${{ steps.proof.outcome }}",
+      },
+    },
+    label,
+    violations,
+  );
+  add(
+    violations,
+    !Object.hasOwn(select ?? {}, "if") && !Object.hasOwn(verify ?? {}, "if"),
+    `${label} selection and verification cannot be skipped`,
+  );
+  requireFields(
+    proof,
+    {
+      uses: "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+      if: "steps.select.outputs.available == 'true'",
+      "continue-on-error": true,
+      "timeout-minutes": 1,
+      with: {
+        ...DOWNLOAD_INPUTS,
+        "artifact-ids": "${{ steps.select.outputs.artifact_id }}",
+        "run-id": "${{ steps.select.outputs.run_id }}",
+        repository: "Hadden-Industries/owlapi",
+        "github-token": "${{ github.token }}",
+        path: ".release/ci-reuse/download",
+      },
+    },
+    label,
+    violations,
+  );
+  const aggregate = steps(jobs.required).find(
+    (step) => step.run === "node scripts/require-job-success.mjs --workflow ci",
+  );
+  requireFields(
+    aggregate,
+    { env: { REQUIRED_JOB_RESULTS_JSON: "${{ toJSON(needs) }}" } },
+    label,
+    violations,
+  );
+  add(
+    violations,
+    !!aggregate && !Object.hasOwn(aggregate, "if"),
+    `${label} aggregate evaluator cannot be skipped`,
+  );
+  const receipt = steps(jobs.required).find((step) => step.id === "receipt");
+  requireFields(
+    receipt,
+    {
+      run: "node scripts/ci-verification-command.mjs record",
+      if: "github.event_name == 'pull_request'",
+      env: { REQUIRED_JOB_RESULTS_JSON: "${{ toJSON(needs) }}" },
+    },
+    label,
+    violations,
+  );
+  const upload = steps(jobs.required).find(
+    (step) => step.id === "receipt_upload",
+  );
+  requireFields(
+    upload,
+    {
+      uses: "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+      if: "steps.receipt.outputs.recorded == 'true'",
+      "continue-on-error": true,
+      "timeout-minutes": 1,
+      with: {
+        ...UPLOAD_INPUTS,
+        name: "ci-verification-${{ github.run_id }}-${{ github.run_attempt }}",
+        path: ".release/ci-verification/verification.json",
+        "retention-days": 90,
+        overwrite: false,
+      },
+    },
+    label,
+    violations,
+  );
 };
 
 /** This policy pins the reviewed guard; actionlint/ShellCheck own shell syntax, not its business intent. */
@@ -1315,6 +1514,7 @@ export const auditRepositoryControls = ({
     "ci.yml: superseded work must cancel",
   );
   validateAggregate("ci.yml", ci, "ci", violations);
+  validateCiVerification(ci, violations);
   const release = workflows["release.yml"] ?? {};
   validateManualRelease("release.yml", release, violations);
   validateAggregate("release.yml", release, "release", violations);
