@@ -115,6 +115,32 @@ To apply the canonical formatter locally, run:
 npm run format
 ```
 
+## CI verification after merging
+
+Every pull request runs the full required application checks. A successful run
+retains a versioned verification receipt and its original candidate artifact
+identity. After a normal merge into `main`, `CI / verification strategy` checks
+the receipt against GitHub's workflow, job, commit and artifact records. Reuse
+requires identical merge parents, file tree and workflow, the same Ubuntu image
+and Node version, and retained unexpired evidence artifacts. Evidence has no
+blanket age limit; timestamps must be valid and no later than verification, and
+the receipt must not predate its workflow attempt. `CI / required` reports
+whether qualification ran in this workflow or was reused, with the original run
+and candidate identity available in the strategy job summary.
+
+Missing or expired receipts, API/download errors, incomplete checks, mismatched
+inputs, squash/rebase merges and exceptional pushes select the complete original
+job graph. Only the receipt transport actions tolerate errors; test failures do
+not. An unavailable receipt upload therefore affects efficiency, not acceptance
+of a fully tested PR. Unrecognized receipt formats also use full qualification.
+
+CodeQL's default-branch and PR scans and the separate release workflows retain
+their existing behavior. A reused CI candidate is not a release approval, and
+its artifact must not be substituted for the release workflow's required
+qualification or provenance. No branch permissions or protected checks are
+relaxed by CI reuse. The detailed contract and proof are in the
+[CI reuse plan](docs/plans/2026-09-29-ci-verification-reuse.md).
+
 ## Optional source-development checkout
 
 The ordinary clone is the authoritative repository checkout and includes the

@@ -35,6 +35,76 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test.each([
+    [
+      "a bypassed PR gate",
+      (doc) => doc.setIn(["jobs", "source_node_24", "if"], "false"),
+    ],
+    [
+      "receipt permissions",
+      (doc) =>
+        doc.setIn(["jobs", "verification", "permissions", "actions"], "write"),
+    ],
+    [
+      "a skipped strategy",
+      (doc) => doc.setIn(["jobs", "verification", "if"], "false"),
+    ],
+    [
+      "insufficient strategy completion budget",
+      (doc) => doc.setIn(["jobs", "verification", "timeout-minutes"], 1),
+    ],
+    [
+      "a changed job identity",
+      (doc) => doc.setIn(["jobs", "webvowl", "name"], "A different consumer"),
+    ],
+  ])("rejects %s in CI reuse policy", (_label, mutate) => {
+    expect(mutateWorkflow("ci.yml", mutate).join("\n")).toMatch(
+      /CI verification/u,
+    );
+  });
+
+  test.each([
+    ["verification", "proof"],
+    ["required", "receipt_upload"],
+  ])("bounds optional transport %s/%s before its job deadline", (job, id) => {
+    const violations = mutateWorkflow("ci.yml", (doc) => {
+      const transfer = doc
+        .getIn(["jobs", job, "steps"])
+        .items.find((step) => step.get("id") === id);
+      transfer.delete("timeout-minutes");
+    });
+    expect(violations.join("\n")).toMatch(/CI verification/u);
+  });
+
+  test("checks the receipt download outcome rather than its tolerated conclusion", () => {
+    const violations = mutateWorkflow("ci.yml", (doc) => {
+      const verify = doc
+        .getIn(["jobs", "verification", "steps"])
+        .items.find((step) => step.get("id") === "verify");
+      verify.setIn(
+        ["env", "PROOF_DOWNLOAD_OUTCOME"],
+        "${{ steps.proof.conclusion }}",
+      );
+    });
+    expect(violations.join("\n")).toMatch(/CI verification/u);
+  });
+
+  test("forbids broad receipt selectors and skipping the aggregate evaluator", () => {
+    const violations = mutateWorkflow("ci.yml", (doc) => {
+      const proof = doc
+        .getIn(["jobs", "verification", "steps"])
+        .items.find((step) => step.get("id") === "proof");
+      proof.setIn(["with", "pattern"], "ci-verification-*");
+      const aggregate = doc
+        .getIn(["jobs", "required", "steps"])
+        .items.find((step) =>
+          step.get("run")?.includes("require-job-success.mjs"),
+        );
+      aggregate.set("if", "false");
+    });
+    expect(violations.join("\n")).toMatch(/CI verification/u);
+  });
+
   test("the checked-in controls match the closed Phase 19 workflow policy", () => {
     const report = auditRepositoryControls();
 
@@ -340,8 +410,11 @@ describe("repository workflow governance", () => {
         const jobs = document.get("jobs");
         const download = jobs.items
           .flatMap(({ value }) => value.get("steps").items)
-          .find((step) =>
-            step.get("uses")?.startsWith("actions/download-artifact@"),
+          .find(
+            (step) =>
+              step.get("uses")?.startsWith("actions/download-artifact@") &&
+              step.getIn(["with", "artifact-ids"]) ===
+                "${{ needs.candidate.outputs.artifact_id }}",
           );
         download.setIn(["with", "run-id"], "${{ github.run_id }}");
       }),
