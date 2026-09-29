@@ -166,12 +166,14 @@ export const selectVerificationProof = async ({
     Array.isArray(prs) && prs.length < 100,
     "PR lookup is incomplete.",
   );
+  // API 2026-03-10 omits merge_commit_sha. The endpoint associates PRs with
+  // this exact landed commit; bind the selected merged PR to both Git parents.
   const matching = prs.filter(
     (pr) =>
       pr.merged_at &&
-      pr.merge_commit_sha === context.sha &&
       pr.state === "closed" &&
       pr.base?.ref === "main" &&
+      pr.base.sha === context.snapshot.parents[0] &&
       sameRepository(pr.base.repo, context) &&
       sameRepository(pr.head?.repo, context) &&
       pr.head.sha === context.snapshot.parents[1],

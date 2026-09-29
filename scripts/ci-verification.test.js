@@ -49,7 +49,7 @@ const fixture = () => {
     number: 31,
     state: "closed",
     merged_at: "2026-09-29T17:40:00Z",
-    merge_commit_sha: hash("d"),
+    // Native PR payloads in API 2026-03-10 omit merge_commit_sha.
     base: { sha: hash("a"), ref: "main", repo: repository },
     head: { sha: hash("b"), repo: repository },
   };
@@ -201,7 +201,7 @@ const verify = async (f) => {
 };
 
 describe("reuse of complete PR integration", () => {
-  test("reuses a different commit with identical parents and files, retaining the original candidate after a partial rerun", async () => {
+  test("reuses a current-API PR with identical parents and files, retaining the original candidate after a partial rerun", async () => {
     expect(await verify(fixture())).toEqual({
       reuse: "true",
       source_run_id: "100",
@@ -288,6 +288,21 @@ describe("reuse of complete PR integration", () => {
       "a different tested base",
       (f) => {
         f.receipt.snapshot.parents[0] = hash("e");
+      },
+    ],
+    [
+      "an associated PR with a different base commit",
+      (f) => {
+        f.pr.base.sha = hash("e");
+      },
+    ],
+    [
+      "an ambiguous merged PR association",
+      (f) => {
+        f.responses[`/commits/${f.context.sha}/pulls?per_page=100`].push({
+          ...f.pr,
+          number: 32,
+        });
       },
     ],
     [
