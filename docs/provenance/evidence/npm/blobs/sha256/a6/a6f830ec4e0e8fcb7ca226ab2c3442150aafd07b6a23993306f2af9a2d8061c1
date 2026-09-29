@@ -1,0 +1,100 @@
+{
+  "artifactId": "bd1a7814ba1b6bd421a10e3d2ea2d7c834879dbebbb091576a0c57d6c4e3cff4",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 202239,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "5cfba9d5711264d45a2431a53c79f597cef12720cc7c764db2602daa92d0bd2a",
+        "size": 1077,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a5dffb1b38f62260e455b90dfdf6a82bc98f6718222db174f65d5cf5138132fa",
+        "size": 112,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "264a1fa4774f0b23c4b96751e41b37847c414f3b78bda00cb50558cc76b3c424",
+        "size": 640,
+        "type": "FILE"
+      },
+      {
+        "path": "package/watcher.node",
+        "sha256": "f5a86a5231fb33c6c1830649eafd2c9e72647edb45aad753148d08cee6a42dea",
+        "size": 523152,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1077,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5cfba9d5711264d45a2431a53c79f597cef12720cc7c764db2602daa92d0bd2a",
+          "sha256": "5cfba9d5711264d45a2431a53c79f597cef12720cc7c764db2602daa92d0bd2a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5cfba9d5711264d45a2431a53c79f597cef12720cc7c764db2602daa92d0bd2a",
+        "size": 1077
+      }
+    ],
+    "expandedBytes": 524981,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@parcel/watcher-linux-x64-glibc",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/parcel-bundler/watcher.git"
+      },
+      "version": "2.6.0"
+    },
+    "packageMetadata": {
+      "cpu": [
+        "x64"
+      ],
+      "description": "A native C++ Node module for querying and subscribing to filesystem events. Used by Parcel 2.",
+      "engines": {
+        "node": ">= 10.0.0"
+      },
+      "files": [
+        "watcher.node"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/parcel"
+      },
+      "libc": [
+        "glibc"
+      ],
+      "license": "MIT",
+      "main": "watcher.node",
+      "name": "@parcel/watcher-linux-x64-glibc",
+      "os": [
+        "linux"
+      ],
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/parcel-bundler/watcher.git"
+      },
+      "version": "2.6.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 202239,
+      "sha256": "71577edb66f1f63e7b8b9c47cb69347bb9724b2a2ce9c9a1bd47ea985a9777c9"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

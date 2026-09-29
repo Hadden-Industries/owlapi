@@ -1,0 +1,113 @@
+{
+  "artifactId": "1586efa9f8f92cb817a8e76c0722b6933028c0df90b65dd30906add5a887f1d2",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6087,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "3706296ed611888111ceccc1dff4712844dea4bde0b185c82d718c3b69895abe",
+        "size": 1107,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "a7735acae019434571928372a3a002803189999bb3b72b446e1d8092f623b585",
+        "size": 1428,
+        "type": "FILE"
+      },
+      {
+        "path": "package/data/processed/envs.json",
+        "sha256": "5d5d9c3b78400988c9ea86b705f4187faff336bee5e999171fa80c8be8787e55",
+        "size": 55729,
+        "type": "FILE"
+      },
+      {
+        "path": "package/data/release-schedule/release-schedule.json",
+        "sha256": "1cf0432ceb9dfde7f1fd4cce43206519942cfdfad5a26039c2f4bb20fde8549c",
+        "size": 3255,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "fa1bfcef76025cbf9614b3da58b33fa415c17ebbcbf03bf00b48645527417ae8",
+        "size": 513,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1107,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/37/3706296ed611888111ceccc1dff4712844dea4bde0b185c82d718c3b69895abe",
+          "sha256": "3706296ed611888111ceccc1dff4712844dea4bde0b185c82d718c3b69895abe"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "3706296ed611888111ceccc1dff4712844dea4bde0b185c82d718c3b69895abe",
+        "size": 1107
+      },
+      {
+        "blob": {
+          "bytes": 1428,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/a7/a7735acae019434571928372a3a002803189999bb3b72b446e1d8092f623b585",
+          "sha256": "a7735acae019434571928372a3a002803189999bb3b72b446e1d8092f623b585"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "a7735acae019434571928372a3a002803189999bb3b72b446e1d8092f623b585",
+        "size": 1428
+      }
+    ],
+    "expandedBytes": 62032,
+    "packageIdentity": {
+      "author": "Sergey Rubanov <chi187@gmail.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "node-releases",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/chicoxyzzy/node-releases.git"
+      },
+      "version": "2.0.57"
+    },
+    "packageMetadata": {
+      "author": "Sergey Rubanov <chi187@gmail.com>",
+      "description": "Node.js releases data",
+      "devDependencies": {
+        "semver": "^7.3.5"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "files": [
+        "data"
+      ],
+      "keywords": [
+        "nodejs",
+        "releases"
+      ],
+      "license": "MIT",
+      "name": "node-releases",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/chicoxyzzy/node-releases.git"
+      },
+      "scripts": {
+        "build": "node scripts/build.js"
+      },
+      "type": "module",
+      "version": "2.0.57"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 6087,
+      "sha256": "3e9f5e0ee1b0a00ce6272e0a7f2d7937fd71ef886080812250aafdf02dcf6d18"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

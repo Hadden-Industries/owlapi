@@ -1,0 +1,97 @@
+{
+  "artifactId": "ab6494aebcdf16b86f8c5da235db53060723a3a6f500276f89943fade159ab96",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 176045,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "5cfba9d5711264d45a2431a53c79f597cef12720cc7c764db2602daa92d0bd2a",
+        "size": 1077,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "0282127fff0926be3610b387677cc68ba207249b055f6b003cd4458f3aafce18",
+        "size": 108,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "de2b7eb363148bbf386c6daacb1e2309b3cb5d923c8cbdc27818b8c76544dabf",
+        "size": 609,
+        "type": "FILE"
+      },
+      {
+        "path": "package/watcher.node",
+        "sha256": "4c15edc6f66656c7a8b7d6708da7a74c0b35ed884df9a340798a9a42682e35be",
+        "size": 523800,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1077,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5cfba9d5711264d45a2431a53c79f597cef12720cc7c764db2602daa92d0bd2a",
+          "sha256": "5cfba9d5711264d45a2431a53c79f597cef12720cc7c764db2602daa92d0bd2a"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "5cfba9d5711264d45a2431a53c79f597cef12720cc7c764db2602daa92d0bd2a",
+        "size": 1077
+      }
+    ],
+    "expandedBytes": 525594,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@parcel/watcher-freebsd-x64",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/parcel-bundler/watcher.git"
+      },
+      "version": "2.6.0"
+    },
+    "packageMetadata": {
+      "cpu": [
+        "x64"
+      ],
+      "description": "A native C++ Node module for querying and subscribing to filesystem events. Used by Parcel 2.",
+      "engines": {
+        "node": ">= 10.0.0"
+      },
+      "files": [
+        "watcher.node"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/parcel"
+      },
+      "license": "MIT",
+      "main": "watcher.node",
+      "name": "@parcel/watcher-freebsd-x64",
+      "os": [
+        "freebsd"
+      ],
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/parcel-bundler/watcher.git"
+      },
+      "version": "2.6.0"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 176045,
+      "sha256": "06a254509eada6e2a58ed707b4e19859190bd1781501d63b6a1b3f5f5ff27956"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

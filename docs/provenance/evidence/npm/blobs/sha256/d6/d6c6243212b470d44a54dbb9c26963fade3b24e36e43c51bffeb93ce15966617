@@ -1,0 +1,137 @@
+{
+  "artifactId": "23fc77c69a11350f1decf6085b53e014f372647f24487f152a242955e6e861a1",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8807,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "4cbba81c370a90689b28e2350a3ddfc11352f548a93460f868cb3f535696f9d2",
+        "size": 3379,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "89520e866c7fbb6574d6082dbc011ea0a5f11b2a046497fbe495ab42825cac31",
+        "size": 20769,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "4cdec0cc3489b04441cce3e3b5a8c4fc1ce2dffafeed810d1500a70b895fe8dd",
+        "size": 199,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/testWorker.js",
+        "sha256": "245e131e7f087b7d45c3a7803c19cfea261cc01ccd9927ac83567666998b48cd",
+        "size": 17023,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "f4b5c71533559f343d4d523c0391cc6133e4f59be95fbe27b4b2117dfef0a228",
+        "size": 1493,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 43995,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "jest-runner",
+      "repository": {
+        "directory": "packages/jest-runner",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.5.2"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@jest/console": "30.5.2",
+        "@jest/environment": "30.5.2",
+        "@jest/source-map": "30.5.2",
+        "@jest/test-result": "30.5.2",
+        "@jest/transform": "30.5.2",
+        "@jest/types": "30.5.1",
+        "@types/node": "*",
+        "chalk": "^4.1.2",
+        "emittery": "^0.13.1",
+        "exit-x": "^0.2.2",
+        "graceful-fs": "^4.2.11",
+        "jest-docblock": "30.5.0",
+        "jest-environment-node": "30.5.2",
+        "jest-haste-map": "30.5.1",
+        "jest-leak-detector": "30.5.1",
+        "jest-message-util": "30.5.1",
+        "jest-resolve": "30.5.1",
+        "jest-runtime": "30.5.2",
+        "jest-util": "30.5.1",
+        "jest-watcher": "30.5.2",
+        "jest-worker": "30.5.1",
+        "p-limit": "^3.1.0"
+      },
+      "devDependencies": {
+        "@jest/test-utils": "30.5.2",
+        "@types/graceful-fs": "^4.1.9",
+        "jest-jasmine2": "30.5.2"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "202dd8a14777c270607c2416bd5034c3c0abc984",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "jest-runner",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-runner",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.5.2"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 8807,
+      "sha256": "dea2fc1aba7ac6c42f67c577800fa12501bbc8bf2e85067bf5dd033d85738f43"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

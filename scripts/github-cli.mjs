@@ -1,10 +1,10 @@
 const identity = Object.freeze({
-  version: "2.98.0",
-  name: "gh_2.98.0_linux_amd64.tar.gz",
-  sha256: "3b8ac6b30336802fc1a858d7c084e11cdf24ac1a761ca90b68022d7d729208de",
-  checksumsName: "gh_2.98.0_checksums.txt",
+  version: "2.101.0",
+  name: "gh_2.101.0_linux_amd64.tar.gz",
+  sha256: "9bca2d1c16825f109907a23307628a2f0698fbf99662b73a5cf0b020293072b8",
+  checksumsName: "gh_2.101.0_checksums.txt",
   checksumsSha256:
-    "275b90ae8a642fb8bdf4f21d7673e34643a445f7993f1821ac917ff8a2cc4db9",
+    "f8bbc37fc5568a6a162d1a67b1e9c1afa9139f7b5a46dcde4a57bdaa0db33b60",
 });
 
 export const GITHUB_CLI_IDENTITY = identity;

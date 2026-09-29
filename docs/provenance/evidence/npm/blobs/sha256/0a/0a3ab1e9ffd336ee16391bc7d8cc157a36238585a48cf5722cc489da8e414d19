@@ -1,0 +1,179 @@
+{
+  "artifactId": "a5dfa075e93c65b44f7a51818642683b3e620218eb208e0ac1365bcc1371c723",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 50255,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad",
+        "size": 1053,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "ed7c29e6753498a2f270a392500e0b57055ce8ace6b2cbbf935a0b685ac09d7f",
+        "size": 58292,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.cjs",
+        "sha256": "6184bdf8627b991c487fdbaa5fc7007eba7bf9399f0bbf7491511b5fcf2108d3",
+        "size": 48941,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.cts",
+        "sha256": "2399292b3acd52389c2a577b7d7ee19ddd43e0a445ea66fe092d84bdcd4f109d",
+        "size": 36440,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.mts",
+        "sha256": "f99289d3c5e217d9d1dbca93c162ca09eec7d0861a7d5c0e9170678529a1848f",
+        "size": 36440,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.mjs",
+        "sha256": "149dd42596153a3f15d67ef258bc42c5a5106a4f4b64f33d310fab7608d64985",
+        "size": 46648,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "ada61e6e54d690ba951d33744278d619d2d925fae0779896c82a19d4c1ddbce0",
+        "size": 2017,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1053,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/46/465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad",
+          "sha256": "465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad",
+        "size": 1053
+      },
+      {
+        "blob": {
+          "bytes": 58292,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ed/ed7c29e6753498a2f270a392500e0b57055ce8ace6b2cbbf935a0b685ac09d7f",
+          "sha256": "ed7c29e6753498a2f270a392500e0b57055ce8ace6b2cbbf935a0b685ac09d7f"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "ed7c29e6753498a2f270a392500e0b57055ce8ace6b2cbbf935a0b685ac09d7f",
+        "size": 58292
+      }
+    ],
+    "expandedBytes": 229831,
+    "packageIdentity": {
+      "author": "Jared Wray <me@jaredwray.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "cacheable",
+      "repository": {
+        "directory": "packages/cacheable",
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/cacheable.git"
+      },
+      "version": "2.5.0"
+    },
+    "packageMetadata": {
+      "author": "Jared Wray <me@jaredwray.com>",
+      "dependencies": {
+        "@cacheable/memory": "^2.2.0",
+        "@cacheable/utils": "^2.5.0",
+        "hookified": "^1.15.0",
+        "keyv": "^5.6.0",
+        "qified": "^0.10.1"
+      },
+      "description": "High Performance Layer 1 / Layer 2 Caching with Keyv Storage",
+      "devDependencies": {
+        "@keyv/redis": "^5.1.6",
+        "@keyv/valkey": "^1.0.11",
+        "@qified/redis": "^0.10.1",
+        "lru-cache": "^11.3.6",
+        "tsdown": "^0.22.0",
+        "typescript": "^5.9.3"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./dist/index.mjs",
+            "types": "./dist/index.d.mts"
+          },
+          "require": {
+            "default": "./dist/index.cjs",
+            "types": "./dist/index.d.cts"
+          }
+        }
+      },
+      "files": [
+        "dist",
+        "LICENSE"
+      ],
+      "keywords": [
+        "cacheable",
+        "high performance",
+        "layer 1 caching",
+        "layer 2 caching",
+        "distributed caching",
+        "Keyv storage engine",
+        "memory caching",
+        "LRU cache",
+        "expiration",
+        "CacheableMemory",
+        "offline support",
+        "distributed sync",
+        "secondary store",
+        "primary store",
+        "non-blocking operations",
+        "cache statistics",
+        "layered caching",
+        "fault tolerant",
+        "scalable cache",
+        "in-memory cache",
+        "distributed cache",
+        "lruSize",
+        "lru",
+        "multi-tier cache"
+      ],
+      "license": "MIT",
+      "main": "./dist/index.cjs",
+      "module": "./dist/index.mjs",
+      "name": "cacheable",
+      "private": false,
+      "repository": {
+        "directory": "packages/cacheable",
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/cacheable.git"
+      },
+      "scripts": {
+        "build": "rimraf ./dist && tsdown src/index.ts --format cjs,esm --dts --clean",
+        "clean": "rimraf ./dist ./coverage ./node_modules",
+        "lint": "biome check --write --error-on-warnings",
+        "test": "pnpm lint && vitest run --coverage",
+        "test:ci": "biome check --error-on-warnings && vitest run --coverage"
+      },
+      "type": "module",
+      "types": "./dist/index.d.mts",
+      "version": "2.5.0"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 50255,
+      "sha256": "69a2c0e6d81c1a38c601bf34bf0935998823043a219a01401455d23e29377bab"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

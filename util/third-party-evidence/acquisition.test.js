@@ -104,6 +104,7 @@ const integrity = (bytes) =>
   `sha512-${createHash("sha512").update(bytes).digest("base64")}`;
 
 const makeRegistryFixture = ({
+  name = "alpha",
   archiveRoot = "package",
   additionalEntries = [],
 } = {}) => {
@@ -111,7 +112,7 @@ const makeRegistryFixture = ({
     {
       path: `${archiveRoot}/package.json`,
       body: `${JSON.stringify({
-        name: "alpha",
+        name,
         version: "1.0.0",
         license: "MIT",
       })}\n`,
@@ -132,7 +133,7 @@ const makeRegistryFixture = ({
     keyid,
     sig: sign(
       "sha256",
-      Buffer.from(registrySignaturePayload("alpha", "1.0.0", lockedIntegrity)),
+      Buffer.from(registrySignaturePayload(name, "1.0.0", lockedIntegrity)),
       privateKey,
     ).toString("base64"),
   };
@@ -144,7 +145,7 @@ const makeRegistryFixture = ({
     key: publicDer.toString("base64"),
   };
   const versionManifest = {
-    name: "alpha",
+    name,
     version: "1.0.0",
     license: "MIT",
     dist: {
@@ -154,7 +155,7 @@ const makeRegistryFixture = ({
     },
   };
   const packument = {
-    name: "alpha",
+    name,
     versions: { "1.0.0": versionManifest },
     time: { "1.0.0": publishedAt },
   };
@@ -164,6 +165,7 @@ const makeRegistryFixture = ({
       packages: {
         "": { name: "fixture", version: "1.0.0" },
         "node_modules/alpha": {
+          name,
           version: "1.0.0",
           resolved,
           integrity: lockedIntegrity,
@@ -198,7 +200,7 @@ const startRegistryServer = async (fixture, overrides = {}) => {
       response.end(JSON.stringify({ keys: [fixture.key] }));
       return;
     }
-    if (request.url === "/alpha") {
+    if (request.url === `/${encodeURIComponent(fixture.packument.name)}`) {
       response.setHeader("content-type", "application/json");
       response.end(JSON.stringify(fixture.packument));
       return;
@@ -323,6 +325,80 @@ const fixtureScanWithoutDigest =
   };
 
 describe("acquireEvidence", () => {
+  it.each([
+    "alpha",
+    "@scope/alpha",
+    "@scope/alpha/../../other?x=1#fragment",
+    "alpha%2fother",
+    "alpha\\other",
+  ])(
+    "requests exactly one encoded registry component for alias identity %s",
+    async (name) => {
+      const fixture = makeRegistryFixture({ name });
+      const registry = await startRegistryServer(fixture);
+      const repositoryRoot = await mkdtemp(
+        join(tmpdir(), "owlapi-registry-name-test-"),
+      );
+      temporaryRoots.push(repositoryRoot);
+      await writeFile(
+        join(repositoryRoot, "package-lock.json"),
+        fixture.lockfileBytes,
+      );
+      const requested = [];
+      const result = await acquireEvidence({
+        repositoryRoot,
+        fetchImpl: async (input, init) => {
+          requested.push(new URL(input));
+          return mappedFetch(registry.origin)(input, init);
+        },
+        downloadTarball: fixtureDownload,
+        verifyPackageMetadata: fixtureMetadataVerification,
+        scanArtifact: fixtureScan,
+        sleep: async () => {},
+        write: true,
+      });
+      expect(result.manifest.artifacts[0].name).toBe(name);
+      const metadata = requested.find(
+        (url) => url.pathname === `/${encodeURIComponent(name)}`,
+      );
+      expect(metadata).toBeDefined();
+      expect(metadata.origin).toBe("https://registry.npmjs.org");
+      expect(metadata.search).toBe("");
+      expect(metadata.hash).toBe("");
+      expect(decodeURIComponent(metadata.pathname.slice(1))).toBe(name);
+    },
+  );
+
+  it.each([".", "..", "bad\uD800name"])(
+    "rejects a package identity that cannot round-trip as a URL component: %s",
+    async (name) => {
+      const fixture = makeRegistryFixture({ name });
+      const repositoryRoot = await mkdtemp(
+        join(tmpdir(), "owlapi-registry-invalid-name-test-"),
+      );
+      temporaryRoots.push(repositoryRoot);
+      await writeFile(
+        join(repositoryRoot, "package-lock.json"),
+        fixture.lockfileBytes,
+      );
+      await expect(
+        acquireEvidence({
+          repositoryRoot,
+          registryKeySnapshot: {
+            schemaVersion: 1,
+            registryOrigin: "https://registry.npmjs.org",
+            keys: [fixture.key],
+          },
+          fetchImpl: async () => {
+            throw new Error("Invalid identity must not be requested");
+          },
+          sleep: async () => {},
+          write: true,
+        }),
+      ).rejects.toMatchObject({ code: "REGISTRY_PACKAGE_NAME_INVALID" });
+    },
+  );
+
   it("reuses only fully verified immutable evidence without downloading or rescanning unchanged artifacts", async () => {
     const fixture = makeRegistryFixture();
     const registry = await startRegistryServer(fixture);

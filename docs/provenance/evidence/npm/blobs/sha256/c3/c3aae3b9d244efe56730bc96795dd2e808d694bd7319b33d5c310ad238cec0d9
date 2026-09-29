@@ -1,0 +1,210 @@
+{
+  "artifactId": "ff832c8eaee49408869bbd2096777113e53ec9b57a536aa17e35e7615768be75",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 67625,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "2eef776efe4bae7fcd2d8162ecadf2b0873aae20afac343a936ddb0de3d79253",
+        "size": 1067,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "59717bfc70319dd6f79d1955d536c7af24dd95f37cdbcef93ab72b3225a089e7",
+        "size": 47499,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/browser/index.global.js",
+        "sha256": "8f482578392ec89254617a164f68d72eb9f9aafd89b508decfc4f9e6a677d683",
+        "size": 15254,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/browser/index.global.js.map",
+        "sha256": "83e4b573674fa3aadcdf67f2595f2693cc1fb8d00d1b1fafa608d775ba18fcb5",
+        "size": 82731,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/browser/index.js",
+        "sha256": "192fc99da22d012d8e814c8676385be23b9a35fcbc4b8d7d319c4a1c0a343409",
+        "size": 8579,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/browser/index.js.map",
+        "sha256": "be5fce4faf786a9bf82c9165911cdbeb8baf0944c826279bff3755fa80018031",
+        "size": 53344,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/node/index.cjs",
+        "sha256": "60c878bd09867f51085e8dd91129bf0be6e82056e08919d8eef489b3342ebf67",
+        "size": 30875,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/node/index.d.cts",
+        "sha256": "3a43c4eee204b87f3a683b65d41f2b3061ed4e71819a01bc6e00f48e4cfef242",
+        "size": 32280,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/node/index.d.ts",
+        "sha256": "3a43c4eee204b87f3a683b65d41f2b3061ed4e71819a01bc6e00f48e4cfef242",
+        "size": 32280,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/node/index.js",
+        "sha256": "9e5a87a24cc82b9cc42b20d26580cdd150b2d5409d0e18375a3baea10812366d",
+        "size": 29676,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "7c0b614c3ed55ecd5606b84b65d09b0e673ae036e25bb4279ee94ec6666d358b",
+        "size": 2400,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1067,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2e/2eef776efe4bae7fcd2d8162ecadf2b0873aae20afac343a936ddb0de3d79253",
+          "sha256": "2eef776efe4bae7fcd2d8162ecadf2b0873aae20afac343a936ddb0de3d79253"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2eef776efe4bae7fcd2d8162ecadf2b0873aae20afac343a936ddb0de3d79253",
+        "size": 1067
+      },
+      {
+        "blob": {
+          "bytes": 47499,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/59/59717bfc70319dd6f79d1955d536c7af24dd95f37cdbcef93ab72b3225a089e7",
+          "sha256": "59717bfc70319dd6f79d1955d536c7af24dd95f37cdbcef93ab72b3225a089e7"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "59717bfc70319dd6f79d1955d536c7af24dd95f37cdbcef93ab72b3225a089e7",
+        "size": 47499
+      }
+    ],
+    "expandedBytes": 335985,
+    "packageIdentity": {
+      "author": "Jared Wray <me@jaredwray.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "hashery",
+      "repository": "https://github.com/jaredwray/hashery.git",
+      "version": "1.5.1"
+    },
+    "packageMetadata": {
+      "author": "Jared Wray <me@jaredwray.com>",
+      "dependencies": {
+        "hookified": "^1.15.0"
+      },
+      "description": "Browser Compatible Object Hashing",
+      "devDependencies": {
+        "@biomejs/biome": "^2.3.10",
+        "@faker-js/faker": "^10.3.0",
+        "@monstermann/tinybench-pretty-printer": "^0.3.0",
+        "@types/node": "^25.0.3",
+        "@types/object-hash": "^3.0.6",
+        "@vitest/coverage-v8": "^4.0.16",
+        "docula": "^0.40.0",
+        "object-hash": "^3.0.0",
+        "rimraf": "^6.1.2",
+        "tinybench": "^6.0.0",
+        "tsup": "^8.5.1",
+        "tsx": "^4.21.0",
+        "typescript": "^5.9.3",
+        "vitest": "^4.0.16"
+      },
+      "engines": {
+        "node": ">=20"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./dist/node/index.js",
+            "types": "./dist/node/index.d.ts"
+          },
+          "require": {
+            "default": "./dist/node/index.cjs",
+            "types": "./dist/node/index.d.cts"
+          }
+        },
+        "./browser": {
+          "default": "./dist/browser/index.global.js",
+          "import": "./dist/browser/index.js"
+        }
+      },
+      "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+      ],
+      "keywords": [
+        "webcrypto",
+        "object-hash",
+        "hash",
+        "hashing",
+        "sha256",
+        "sha384",
+        "sha512",
+        "djb2",
+        "murmur",
+        "fnv1",
+        "crc32",
+        "digest",
+        "deterministic",
+        "stable-hash",
+        "json-hash",
+        "browser-compatible",
+        "native-crypto",
+        "secure",
+        "standards-based",
+        "esmodule",
+        "lightweight",
+        "fast",
+        "modern"
+      ],
+      "license": "MIT",
+      "main": "dist/node/index.js",
+      "name": "hashery",
+      "repository": "https://github.com/jaredwray/hashery.git",
+      "scripts": {
+        "benchmark": "pnpm benchmark:main && pnpm benchmark:vs-others",
+        "benchmark:main": "tsx benchmark/hashing.ts",
+        "benchmark:vs-others": "tsx benchmark/hashery-vs-others.ts",
+        "build": "rimraf ./dist && tsup",
+        "clean": "rimraf ./dist ./coverage ./node_modules ./pnpm-lock.yaml ./site/README.md ./site/dist",
+        "lint": "biome check --write --error-on-warnings",
+        "prepare": "pnpm build",
+        "test": "pnpm lint && vitest run --coverage",
+        "test:ci": "biome check --error-on-warnings && vitest run --coverage",
+        "website:build": "rimraf ./site/README.md ./site/dist && pnpm docula",
+        "website:serve": "rimraf ./site/README.md ./site/dist && pnpm docula serve"
+      },
+      "type": "module",
+      "types": "dist/node/index.d.ts",
+      "version": "1.5.1"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 67625,
+      "sha256": "9a174c770b98d20b26e16a6563b37f79d53d3bcef6dadcf08507dd4993158d0f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,11 +1,10 @@
 import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import { ParserDescriptor } from "../parserRegistry.js";
+import { hasXmlOntologySignature } from "../xmlOntologySignature.js";
 
 import { OWLDLSyntaxOWLParser } from "./parser.js";
 
 const STRONG_NEGATIVES = [
-  /^\s*(?:<!--[\s\S]*?-->\s*)*<\?(?:xml)\b/iu,
-  /^\s*(?:<!--[\s\S]*?-->\s*)*<(?:[A-Za-z_][\w.-]*:RDF|Ontology)\b/iu,
   /^\s*@(?:base|prefix)\b/iu,
   /^\s*(?:BASE|PREFIX)\s/iu,
   /^\s*(?:Prefix|Ontology)\s*\(/u,
@@ -19,7 +18,10 @@ const ASSERTION_SHAPE =
 
 export const detectDLSyntax = (source) => {
   const text = source.getText();
-  if (STRONG_NEGATIVES.some((pattern) => pattern.test(text))) {
+  if (
+    hasXmlOntologySignature(text) ||
+    STRONG_NEGATIVES.some((pattern) => pattern.test(text))
+  ) {
     return {
       reason: "A non-DL ontology syntax signature was found",
       reasonCode: "DL_STRONG_NEGATIVE",

@@ -1586,9 +1586,9 @@ describe("owlapi governance artifacts", () => {
     );
     expect(rdfXml.browserCost).toMatchObject({
       disposition: "MEASURED_LAZY_CLOSURE",
-      gzipBytes: 46775,
+      gzipBytes: 46566,
       initialStaticClosureIncluded: false,
-      minifiedBytes: 163134,
+      minifiedBytes: 163155,
     });
     expect(rdfXml.securityDisposition).toMatchObject({
       assessedOn: "2026-08-26",
@@ -2201,8 +2201,14 @@ bundle licence and notice review.
 
   it("uses SPDX-valid scoped licence conclusions and an explicit distribution policy", () => {
     const packageJson = readJson("./package.json");
-    expect(packageJson.devDependencies["spdx-expression-parse"]).toBe("4.0.0");
+    expect(packageJson.devDependencies["spdx-expression-parse"]).toBe("5.0.0");
     const parseSpdxExpression = require("spdx-expression-parse");
+    expect(() =>
+      parseSpdxExpression("LicenseRef-project WITH Classpath-exception-2.0"),
+    ).not.toThrow();
+    expect(() =>
+      parseSpdxExpression("MIT WITH Not-An-SPDX-Exception"),
+    ).toThrow();
     const inventory = readJson("./docs/provenance/third-party-material.json");
 
     for (const component of inventory.components) {
@@ -2436,10 +2442,10 @@ bundle licence and notice review.
       governance.dependencies.find(({ name }) => name === "jsonld").browserCost,
     ).toMatchObject({
       disposition: "MEASURED_LAZY_CLOSURE",
-      fileCount: 3,
-      gzipBytes: 50201,
+      fileCount: 1,
+      gzipBytes: 31683,
       initialStaticClosureIncluded: false,
-      minifiedBytes: 204727,
+      minifiedBytes: 115877,
     });
   });
 
@@ -2485,7 +2491,7 @@ bundle licence and notice review.
     ].sort(compareCodeUnits);
 
     expect(packageJson.allowScripts).toEqual({
-      "fsevents@2.3.2": false,
+      "@parcel/watcher@2.6.0": false,
       "fsevents@2.3.3": false,
       "libxmljs2@0.37.0": false,
       "unrs-resolver@1.12.2": false,
@@ -2498,7 +2504,7 @@ bundle licence and notice review.
     expect(dependencyGovernance.installScriptPolicy).toEqual(
       expect.objectContaining({
         mode: "STRICT_EXPLICIT_DECISIONS",
-        npmVersion: "12.0.2",
+        npmVersion: "12.1.0",
         projectConfig: ".npmrc",
       }),
     );

@@ -1,0 +1,1544 @@
+{
+  "artifactId": "ff832c8eaee49408869bbd2096777113e53ec9b57a536aa17e35e7615768be75",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 11,
+      "digestVerifiedFileCount": 11,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 11
+    },
+    "artifactId": "ff832c8eaee49408869bbd2096777113e53ec9b57a536aa17e35e7615768be75",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.3.0",
+        "for_package_purl": "pkg:npm/hashery@1.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40monstermann/tinybench-pretty-printer",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.40.0",
+        "for_package_purl": "pkg:npm/hashery@1.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/docula",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.15.0",
+        "for_package_purl": "pkg:npm/hashery@1.5.1",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/hookified",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^10.3.0",
+        "for_package_purl": "pkg:npm/hashery@1.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40faker-js/faker",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.3.10",
+        "for_package_purl": "pkg:npm/hashery@1.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40biomejs/biome",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^25.0.3",
+        "for_package_purl": "pkg:npm/hashery@1.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40types/node",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.0.0",
+        "for_package_purl": "pkg:npm/hashery@1.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/object-hash",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^3.0.6",
+        "for_package_purl": "pkg:npm/hashery@1.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40types/object-hash",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.0.16",
+        "for_package_purl": "pkg:npm/hashery@1.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40vitest/coverage-v8",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.0.16",
+        "for_package_purl": "pkg:npm/hashery@1.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/vitest",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^4.21.0",
+        "for_package_purl": "pkg:npm/hashery@1.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/tsx",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.9.3",
+        "for_package_purl": "pkg:npm/hashery@1.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/typescript",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.0.0",
+        "for_package_purl": "pkg:npm/hashery@1.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/tinybench",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^6.1.2",
+        "for_package_purl": "pkg:npm/hashery@1.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/rimraf",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^8.5.1",
+        "for_package_purl": "pkg:npm/hashery@1.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/tsup",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Daniel J. Bernstein",
+            "end_line": 553,
+            "start_line": 553
+          },
+          {
+            "author": "Glenn Fowler, Landon Curt Noll, and Kiem-Phong Vo",
+            "end_line": 613,
+            "start_line": 612
+          }
+        ],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".cts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/hashery@1.5.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "8b8c85e8f92a8f8afd978bb256cb55bc",
+        "name": "index.d.cts",
+        "package_data": [],
+        "path": "package/dist/node/index.d.cts",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "9fcff9e4797cee7730dd03910b4238cc6054112b",
+        "sha1_git": "3f465bc0865149c519cd4aa6ed3dd151173f4be3",
+        "sha256": "3a43c4eee204b87f3a683b65d41f2b3061ed4e71819a01bc6e00f48e4cfef242",
+        "size": 32280,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Daniel J. Bernstein",
+            "end_line": 553,
+            "start_line": 553
+          },
+          {
+            "author": "Glenn Fowler, Landon Curt Noll, and Kiem-Phong Vo",
+            "end_line": 613,
+            "start_line": 612
+          }
+        ],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/hashery@1.5.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "8b8c85e8f92a8f8afd978bb256cb55bc",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/dist/node/index.d.ts",
+        "percentage_of_license_text": 0,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "9fcff9e4797cee7730dd03910b4238cc6054112b",
+        "sha1_git": "3f465bc0865149c519cd4aa6ed3dd151173f4be3",
+        "sha256": "3a43c4eee204b87f3a683b65d41f2b3061ed4e71819a01bc6e00f48e4cfef242",
+        "size": 32280,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Daniel J. Bernstein",
+            "end_line": 795,
+            "start_line": 795
+          },
+          {
+            "author": "Glenn Fowler, Landon Curt Noll, and Kiem-Phong Vo",
+            "end_line": 893,
+            "start_line": 892
+          }
+        ],
+        "base_name": "index.js",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/hashery@1.5.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "ec1099cb765f302d0443ee0b54eeeb49",
+        "name": "index.js.map",
+        "package_data": [],
+        "path": "package/dist/browser/index.js.map",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "3dd197b73097249f9d9855281c43ca6c519b61f7",
+        "sha1_git": "3fd8948181e5621f703d3c772ee4e233545381e4",
+        "sha256": "be5fce4faf786a9bf82c9165911cdbeb8baf0944c826279bff3755fa80018031",
+        "size": 53344,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Daniel J. Bernstein",
+            "end_line": 920,
+            "start_line": 920
+          },
+          {
+            "author": "Glenn Fowler, Landon Curt Noll, and Kiem-Phong Vo",
+            "end_line": 1018,
+            "start_line": 1017
+          }
+        ],
+        "base_name": "index.global.js",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".map",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/hashery@1.5.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "e7ff700b97e79a702ca8beef1f4b9415",
+        "name": "index.global.js.map",
+        "package_data": [],
+        "path": "package/dist/browser/index.global.js.map",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "4d7856c6934a9c421dff48f50781eedfa16365bc",
+        "sha1_git": "535be2576699cab8e1ad8dcae8e36bcd7a09d79c",
+        "sha256": "83e4b573674fa3aadcdf67f2595f2693cc1fb8d00d1b1fafa608d775ba18fcb5",
+        "size": 82731,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Daniel J. Bernstein. It's",
+            "end_line": 757,
+            "start_line": 757
+          },
+          {
+            "author": "Glenn Fowler, Landon Curt Noll, and Kiem-Phong Vo",
+            "end_line": 825,
+            "start_line": 825
+          }
+        ],
+        "base_name": "README",
+        "copyrights": [
+          {
+            "copyright": "(c) Jared Wray (https://jaredwray.com)",
+            "end_line": 1373,
+            "start_line": 1373
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/hashery@1.5.1"
+        ],
+        "holders": [
+          {
+            "end_line": 1373,
+            "holder": "Jared Wray",
+            "start_line": 1373
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [
+          {
+            "end_line": 832,
+            "from_file": "ff832c8eaee49408869bbd2096777113e53ec9b57a536aa17e35e7615768be75/package/README.md",
+            "license_expression": "public-domain",
+            "license_expression_spdx": "LicenseRef-scancode-public-domain",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "Public Domain** -",
+            "matcher": "2-aho",
+            "rule_identifier": "public-domain_bare_words.RULE",
+            "rule_relevance": 70,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/public-domain_bare_words.RULE",
+            "score": 70,
+            "start_line": 832
+          }
+        ],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1373,
+                "from_file": "ff832c8eaee49408869bbd2096777113e53ec9b57a536aa17e35e7615768be75/package/README.md",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT](LICENSE) & © [",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1373
+              }
+            ]
+          }
+        ],
+        "md5": "05e0db6071958825421e31937dbdd124",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0.07,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "999546e709d44e86a00da53167ca753ff39bc345",
+        "sha1_git": "232a2a10c915bcb9bb91ad7d5b26c88a38a59abf",
+        "sha256": "59717bfc70319dd6f79d1955d536c7af24dd95f37cdbcef93ab72b3225a089e7",
+        "size": 47499,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [
+          {
+            "author": "Jared Wray <me@jaredwray.com>",
+            "end_line": 25,
+            "start_line": 25
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/hashery@1.5.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 29,
+                "from_file": "ff832c8eaee49408869bbd2096777113e53ec9b57a536aa17e35e7615768be75/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"MIT\",",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 29
+              }
+            ]
+          }
+        ],
+        "md5": "6d8e8ee6ff341966b0d8712a009176c3",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/hashery/1.5.1",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "mit",
+            "declared_license_expression_spdx": "MIT",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.3.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40monstermann/tinybench-pretty-printer",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.40.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/docula",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.15.0",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/hookified",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^10.3.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40faker-js/faker",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.3.10",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40biomejs/biome",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^25.0.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40types/node",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/object-hash",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^3.0.6",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40types/object-hash",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.0.16",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40vitest/coverage-v8",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.0.16",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/vitest",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^4.21.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/tsx",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.9.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/typescript",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/tinybench",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^6.1.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/rimraf",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^8.5.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/tsup",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "Browser Compatible Object Hashing",
+            "download_url": "https://registry.npmjs.org/hashery/-/hashery-1.5.1.tgz",
+            "extra_data": {
+              "engines": {
+                "node": ">=20"
+              }
+            },
+            "extracted_license_statement": "- MIT\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "browser-compatible",
+              "crc32",
+              "deterministic",
+              "digest",
+              "djb2",
+              "esmodule",
+              "fast",
+              "fnv1",
+              "hash",
+              "hashing",
+              "json-hash",
+              "lightweight",
+              "modern",
+              "murmur",
+              "native-crypto",
+              "object-hash",
+              "secure",
+              "sha256",
+              "sha384",
+              "sha512",
+              "stable-hash",
+              "standards-based",
+              "webcrypto"
+            ],
+            "license_detections": [
+              {
+                "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "ff832c8eaee49408869bbd2096777113e53ec9b57a536aa17e35e7615768be75/package/package.json",
+                    "license_expression": "mit",
+                    "license_expression_spdx": "MIT",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "MIT",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "hashery",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "me@jaredwray.com",
+                "name": "Jared Wray",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/hashery@1.5.1",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/hashery/-/hashery-1.5.1.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/hashery",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "https://github.com/jaredwray/hashery.git",
+            "version": "1.5.1"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 0.72,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "3e3284c7afc21a5d40ee451f5bbb42a8d1a3f6da",
+        "sha1_git": "c3480b696601554ef11e694a3dbd603a04b71ad1",
+        "sha256": "7c0b614c3ed55ecd5606b84b65d09b0e673ae036e25bb4279ee94ec6666d358b",
+        "size": 2400,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2025 Jared Wray",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/hashery@1.5.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Jared Wray",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-ac40beba-5702-f54d-755f-333441314bb0",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "ff832c8eaee49408869bbd2096777113e53ec9b57a536aa17e35e7615768be75/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 21,
+                "from_file": "ff832c8eaee49408869bbd2096777113e53ec9b57a536aa17e35e7615768be75/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "5bf05566175468da6e0dc9728664b9e5",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 97.02,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "e5fe4cdd9b6e2536d674819836c3305a75d7dbcf",
+        "sha1_git": "b73c8f401f12e0a314bdaa67ae945867c53d5f5d",
+        "sha256": "2eef776efe4bae7fcd2d8162ecadf2b0873aae20afac343a936ddb0de3d79253",
+        "size": 1067,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".cjs",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/hashery@1.5.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "98536541fd288b74545787c287c805cc",
+        "name": "index.cjs",
+        "package_data": [],
+        "path": "package/dist/node/index.cjs",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "5e7480529867e3199c0e31d3b704994660a95aff",
+        "sha1_git": "8c502838ec6a64dee243e2b613a9b819ea5f3ab8",
+        "sha256": "60c878bd09867f51085e8dd91129bf0be6e82056e08919d8eef489b3342ebf67",
+        "size": 30875,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/hashery@1.5.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "326dabf1cb519c9fd36e5bb48d787720",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/browser/index.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "5b03b346fab84b07d7779cc067567a111cd1992a",
+        "sha1_git": "c9e46f5f6de87d2043ad5139229b612f50006477",
+        "sha256": "192fc99da22d012d8e814c8676385be23b9a35fcbc4b8d7d319c4a1c0a343409",
+        "size": 8579,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/hashery@1.5.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "b11a17ac71d9249f85acee98ac276b31",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/dist/node/index.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "7bf180f4037219d46b00c0ca3969da89a826d916",
+        "sha1_git": "7aeba562577c36c02a443662fb2ecf4f10f94e12",
+        "sha256": "9e5a87a24cc82b9cc42b20d26580cdd150b2d5409d0e18375a3baea10812366d",
+        "size": 29676,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.global",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/hashery@1.5.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "d73b65dddcfffe8b9c02c5adb4902ca4",
+        "name": "index.global.js",
+        "package_data": [],
+        "path": "package/dist/browser/index.global.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "2b33d95210403326d6f0d1a2e98937b1e80849f2",
+        "sha1_git": "0a2b0916c7d1540e8f9556453398d6214b05cc06",
+        "sha256": "8f482578392ec89254617a164f68d72eb9f9aafd89b508decfc4f9e6a677d683",
+        "size": 15254,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 29,
+            "from_file": "ff832c8eaee49408869bbd2096777113e53ec9b57a536aa17e35e7615768be75/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "  \"license\": \"MIT\",",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_30.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+            "score": 100,
+            "start_line": 29
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1373,
+            "from_file": "ff832c8eaee49408869bbd2096777113e53ec9b57a536aa17e35e7615768be75/package/README.md",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "MIT](LICENSE) & © [",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_14.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+            "score": 100,
+            "start_line": 1373
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "ff832c8eaee49408869bbd2096777113e53ec9b57a536aa17e35e7615768be75/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "MIT",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-ac40beba-5702-f54d-755f-333441314bb0",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "ff832c8eaee49408869bbd2096777113e53ec9b57a536aa17e35e7615768be75/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "MIT License",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_14.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+            "score": 100,
+            "start_line": 1
+          },
+          {
+            "end_line": 21,
+            "from_file": "ff832c8eaee49408869bbd2096777113e53ec9b57a536aa17e35e7615768be75/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 161,
+            "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+            "score": 100,
+            "start_line": 5
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      },
+      {
+        "category": "Public Domain",
+        "faq_url": "http://www.linfo.org/publicdomain.html",
+        "homepage_url": "http://www.linfo.org/publicdomain.html",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": true,
+        "is_unknown": false,
+        "key": "public-domain",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/public-domain",
+        "minimum_coverage": 0,
+        "name": "Public Domain",
+        "notes": null,
+        "osi_license_key": null,
+        "osi_url": null,
+        "other_spdx_license_keys": [
+          "LicenseRef-Fedora-Public-Domain",
+          "LicenseRef-PublicDomain"
+        ],
+        "other_urls": [
+          "http://creativecommons.org/licenses/publicdomain/",
+          "http://en.wikipedia.org/wiki/Public_domain",
+          "http://www.linfo.org/publicdomain.html"
+        ],
+        "owner": "Unspecified",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/public-domain.LICENSE",
+        "short_name": "Public Domain",
+        "spdx_license_key": "LicenseRef-scancode-public-domain",
+        "spdx_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/public-domain.LICENSE",
+        "standard_notice": null,
+        "text": "",
+        "text_urls": []
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "mit.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 161,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+      },
+      {
+        "identifier": "mit_14.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT License"
+      },
+      {
+        "identifier": "mit_30.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: MIT"
+      },
+      {
+        "identifier": "public-domain_bare_words.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": true,
+        "is_from_license": false,
+        "is_license_clue": true,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "public-domain",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 70,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/public-domain_bare_words.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "{{Public Domain}}"
+      },
+      {
+        "identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/hashery/1.5.1",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "mit",
+        "declared_license_expression_spdx": "MIT",
+        "description": "Browser Compatible Object Hashing",
+        "download_url": "https://registry.npmjs.org/hashery/-/hashery-1.5.1.tgz",
+        "extra_data": {
+          "engines": {
+            "node": ">=20"
+          }
+        },
+        "extracted_license_statement": "- MIT\n",
+        "holder": null,
+        "homepage_url": null,
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "browser-compatible",
+          "crc32",
+          "deterministic",
+          "digest",
+          "djb2",
+          "esmodule",
+          "fast",
+          "fnv1",
+          "hash",
+          "hashing",
+          "json-hash",
+          "lightweight",
+          "modern",
+          "murmur",
+          "native-crypto",
+          "object-hash",
+          "secure",
+          "sha256",
+          "sha384",
+          "sha512",
+          "stable-hash",
+          "standards-based",
+          "webcrypto"
+        ],
+        "license_detections": [
+          {
+            "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "ff832c8eaee49408869bbd2096777113e53ec9b57a536aa17e35e7615768be75/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "MIT",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "hashery",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "me@jaredwray.com",
+            "name": "Jared Wray",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/hashery@1.5.1",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/hashery/-/hashery-1.5.1.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/hashery",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "https://github.com/jaredwray/hashery.git",
+        "version": "1.5.1"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

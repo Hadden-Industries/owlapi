@@ -321,8 +321,34 @@ const assertPublicRegistryUrl = (value, label) => {
   return url.href;
 };
 
-const packumentUrl = (name) =>
-  `${PUBLIC_REGISTRY_ORIGIN}/${name.replace("/", "%2f")}`;
+const packumentUrl = (name) => {
+  let url;
+  try {
+    // The complete package identity, including an npm alias's underlying name,
+    // is one path component. Delimiters must never become URL structure.
+    url = new URL(`${PUBLIC_REGISTRY_ORIGIN}/${encodeURIComponent(name)}`);
+  } catch (error) {
+    productFailure(
+      "REGISTRY_PACKAGE_NAME_INVALID",
+      "Package name cannot be encoded as a registry URL component",
+      error,
+    );
+  }
+  // WHATWG URL parsing normalizes dot segments even after percent encoding.
+  // Reject an identity that cannot survive the actual consumer unchanged.
+  if (
+    url.origin !== PUBLIC_REGISTRY_ORIGIN ||
+    url.search ||
+    url.hash ||
+    decodeURIComponent(url.pathname.slice(1)) !== name
+  ) {
+    productFailure(
+      "REGISTRY_PACKAGE_NAME_INVALID",
+      "Registry URL would change the package identity",
+    );
+  }
+  return url.href;
+};
 
 const validateRegistryKey = (key) => {
   if (

@@ -1,0 +1,178 @@
+{
+  "artifactId": "c6ed92b0ba15f81383f9b89141ddf97fffde881c010559cd4fc61a0e5af7bf1c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 12500,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad",
+        "size": 1053,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "fc2221c63880f6c3ad5b17f4825c4551938f88b7767988a1af0f76eb705158e6",
+        "size": 11723,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.cjs",
+        "sha256": "65387e2ac7b9984cd9eedbba2e5e04a4a968fb59037b749188b573702d509b58",
+        "size": 13939,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.cts",
+        "sha256": "9003e7fc8f6d5cac906cff5a83ec41aebb3849511b3a7a35aef26d71ddc4d421",
+        "size": 7781,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.mts",
+        "sha256": "9003e7fc8f6d5cac906cff5a83ec41aebb3849511b3a7a35aef26d71ddc4d421",
+        "size": 7781,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.mjs",
+        "sha256": "81bb86aa09f3d5aa20c2d732b894eb4fb4c5db7734ef277fc7e04daa5cfacd9d",
+        "size": 12400,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "ddc0cc447f9431584228b07d4d44649b7ce668e63f0b9474e7deea56e81dc243",
+        "size": 1891,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1053,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/46/465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad",
+          "sha256": "465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad",
+        "size": 1053
+      },
+      {
+        "blob": {
+          "bytes": 11723,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/fc/fc2221c63880f6c3ad5b17f4825c4551938f88b7767988a1af0f76eb705158e6",
+          "sha256": "fc2221c63880f6c3ad5b17f4825c4551938f88b7767988a1af0f76eb705158e6"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "fc2221c63880f6c3ad5b17f4825c4551938f88b7767988a1af0f76eb705158e6",
+        "size": 11723
+      }
+    ],
+    "expandedBytes": 56568,
+    "packageIdentity": {
+      "author": "Jared Wray <me@jaredwray.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "flat-cache",
+      "repository": {
+        "directory": "packages/flat-cache",
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/cacheable.git"
+      },
+      "version": "6.1.23"
+    },
+    "packageMetadata": {
+      "author": "Jared Wray <me@jaredwray.com>",
+      "dependencies": {
+        "cacheable": "^2.5.0",
+        "flatted": "^3.4.2",
+        "hookified": "^1.15.0"
+      },
+      "description": "A simple key/value storage using files to persist the data",
+      "devDependencies": {
+        "tsdown": "^0.22.0",
+        "typescript": "^5.9.3"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./dist/index.mjs",
+            "types": "./dist/index.d.mts"
+          },
+          "require": {
+            "default": "./dist/index.cjs",
+            "types": "./dist/index.d.cts"
+          }
+        }
+      },
+      "files": [
+        "dist",
+        "license"
+      ],
+      "keywords": [
+        "cache",
+        "caching",
+        "cacheable",
+        "flat-cache",
+        "flat",
+        "file",
+        "file-cache",
+        "file-caching",
+        "file-based-cache",
+        "file-persist",
+        "file-persistence",
+        "file-storage",
+        "file-system",
+        "file-management",
+        "filesystem-cache",
+        "disk-cache",
+        "cache-persistence",
+        "cache-persist",
+        "persistent-cache",
+        "persistent-storage",
+        "cache-to-file",
+        "cache-on-disk",
+        "cache-file",
+        "cache-expiration",
+        "cache-lifetime",
+        "data-persistence",
+        "data-storage",
+        "local-storage",
+        "file-system-cache"
+      ],
+      "license": "MIT",
+      "main": "./dist/index.cjs",
+      "module": "./dist/index.mjs",
+      "name": "flat-cache",
+      "private": false,
+      "repository": {
+        "directory": "packages/flat-cache",
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/cacheable.git"
+      },
+      "scripts": {
+        "build": "rimraf ./dist && tsdown src/index.ts --format cjs,esm --dts --clean",
+        "clean": "rimraf ./dist ./coverage ./node_modules",
+        "lint": "biome check --write --error-on-warnings",
+        "test": "pnpm lint && vitest run --coverage",
+        "test:ci": "biome check --error-on-warnings && vitest run --coverage"
+      },
+      "type": "module",
+      "types": "./dist/index.d.mts",
+      "version": "6.1.23"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 12500,
+      "sha256": "e1abb7dc35422099057cc42348a136336f4ca5ab88b118404d16d39122f77105"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

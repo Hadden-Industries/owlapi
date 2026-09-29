@@ -1,0 +1,122 @@
+{
+  "artifactId": "cc844af8aa5c50638f30f6801f2ab6fd2b296cb60a557afbda87accf3c254b41",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5129,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "99339bc66180f9c84f400470a65d1bb1f30b4aec0d81e67d404e50f8eaca2fda",
+        "size": 1231,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "e228fd8bba5c754dfc7239bfb997bd63027ae78be9e69827830e815b048e8e57",
+        "size": 11847,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "7f17353b08211a54110fc45c27b259a2dfb12db8064722828351663f7f63efbb",
+        "size": 129,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0983e218a5da44c3bfa8e867dc2bc8cf5f88c3dc21ffe641e44463760b79e99b",
+        "size": 1488,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 15827,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "jest-environment-node",
+      "repository": {
+        "directory": "packages/jest-environment-node",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.5.2"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@jest/environment": "30.5.2",
+        "@jest/fake-timers": "30.5.2",
+        "@jest/types": "30.5.1",
+        "@types/node": "*",
+        "jest-mock": "30.5.2",
+        "jest-util": "30.5.1",
+        "jest-validate": "30.5.1"
+      },
+      "devDependencies": {
+        "@jest/test-utils": "30.5.2",
+        "clsx": "^2.1.1"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "202dd8a14777c270607c2416bd5034c3c0abc984",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "jest-environment-node",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-environment-node",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "scripts": {
+        "test": "yarn test:globals-cleanup-off && yarn test:globals-cleanup-soft && yarn test:globals-cleanup-on",
+        "test:base": "echo GLOBALS_CLEANUP=$GLOBALS_CLEANUP && yarn --cwd='../.' jest --runInBand packages/jest-environment-node/src/__tests__",
+        "test:globals-cleanup-off": "GLOBALS_CLEANUP=off yarn test:base",
+        "test:globals-cleanup-on": "GLOBALS_CLEANUP=on yarn test:base",
+        "test:globals-cleanup-soft": "GLOBALS_CLEANUP=soft yarn test:base"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.5.2"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 5129,
+      "sha256": "3274d3c1d1296d14c82d929c5feac3122a1413cb65618ab47491949c5a7176fc"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

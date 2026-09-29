@@ -1,0 +1,185 @@
+{
+  "artifactId": "a2e1ae75450093eaebdd56c184efaabe9fa99870fb2278ce5313a0f97c178b3d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 25027,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "1f7dca26d2d328c3dbb9b6fe3b15ec3cda08ffe2288e47b73d617454b256f959",
+        "size": 1108,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "20c62454e200eef6eab2f30c7fd80acae679dba6bc93ad5e50300ef330e81d85",
+        "size": 26683,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.cjs",
+        "sha256": "46efe90afe2a85784a9f698dcf3c2424c8a557750a1ecfdccd0781b45370cd39",
+        "size": 30133,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.cts",
+        "sha256": "03464dcca517bcfb982cefdc316afe821aae8bbe02dcd4765dfa25bc2aecd097",
+        "size": 14104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "03464dcca517bcfb982cefdc316afe821aae8bbe02dcd4765dfa25bc2aecd097",
+        "size": 14104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "570859456d3c51df1d5385fdfada63d06b3b065b06797a2702fa4b82a84c0bc7",
+        "size": 29054,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "c010aefc9bdae5618edf0c4e206544d6fb83ff65fe120e3a57a79f57d272a9b6",
+        "size": 2154,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1108,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/1f/1f7dca26d2d328c3dbb9b6fe3b15ec3cda08ffe2288e47b73d617454b256f959",
+          "sha256": "1f7dca26d2d328c3dbb9b6fe3b15ec3cda08ffe2288e47b73d617454b256f959"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "1f7dca26d2d328c3dbb9b6fe3b15ec3cda08ffe2288e47b73d617454b256f959",
+        "size": 1108
+      },
+      {
+        "blob": {
+          "bytes": 26683,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/20/20c62454e200eef6eab2f30c7fd80acae679dba6bc93ad5e50300ef330e81d85",
+          "sha256": "20c62454e200eef6eab2f30c7fd80acae679dba6bc93ad5e50300ef330e81d85"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "20c62454e200eef6eab2f30c7fd80acae679dba6bc93ad5e50300ef330e81d85",
+        "size": 26683
+      }
+    ],
+    "expandedBytes": 117340,
+    "packageIdentity": {
+      "author": "Jared Wray <me@jaredwray.com> (http://jaredwray.com)",
+      "homepage": "https://github.com/jaredwray/keyv",
+      "license": "MIT",
+      "name": "keyv",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/keyv.git"
+      },
+      "version": "5.6.0"
+    },
+    "packageMetadata": {
+      "author": "Jared Wray <me@jaredwray.com> (http://jaredwray.com)",
+      "bugs": {
+        "url": "https://github.com/jaredwray/keyv/issues"
+      },
+      "dependencies": {
+        "@keyv/serialize": "^1.1.1"
+      },
+      "description": "Simple key-value storage with support for multiple backends",
+      "devDependencies": {
+        "@biomejs/biome": "^2.3.8",
+        "@faker-js/faker": "^10.1.0",
+        "@keyv/compress-brotli": "^2.0.5",
+        "@keyv/compress-gzip": "^2.0.3",
+        "@keyv/compress-lz4": "^1.0.1",
+        "@keyv/memcache": "^2.0.2",
+        "@keyv/mongo": "^3.1.0",
+        "@keyv/sqlite": "^4.0.6",
+        "@keyv/test-suite": "^2.1.2",
+        "@vitest/coverage-v8": "^4.0.14",
+        "lru.min": "^1.1.1",
+        "quick-lru": "^7.0.0",
+        "rimraf": "^6.1.2",
+        "timekeeper": "^2.3.1",
+        "tsd": "^0.33.0",
+        "vitest": "^4.0.14"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+          },
+          "require": {
+            "default": "./dist/index.cjs",
+            "types": "./dist/index.d.cts"
+          }
+        }
+      },
+      "files": [
+        "dist",
+        "LISCENCE"
+      ],
+      "homepage": "https://github.com/jaredwray/keyv",
+      "keywords": [
+        "key",
+        "value",
+        "store",
+        "cache",
+        "ttl",
+        "key-value",
+        "storage",
+        "backend",
+        "adapter",
+        "redis",
+        "mongodb",
+        "sqlite",
+        "mysql",
+        "postgresql",
+        "memory",
+        "node-cache",
+        "lru-cache",
+        "lru",
+        "cache-manager"
+      ],
+      "license": "MIT",
+      "main": "dist/index.js",
+      "module": "dist/index.js",
+      "name": "keyv",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/keyv.git"
+      },
+      "scripts": {
+        "build": "rimraf ./dist && tsup src/index.ts --format cjs,esm --dts --clean",
+        "clean": "rimraf ./node_modules ./coverage ./test/testdb.sqlite ./dist",
+        "lint": "biome check --write --error-on-warnings",
+        "lint:ci": "biome check --error-on-warnings",
+        "test": "pnpm lint && vitest run --coverage",
+        "test:ci": "pnpm lint:ci && vitest --run --sequence.setupFiles=list --coverage"
+      },
+      "tsd": {
+        "directory": "test"
+      },
+      "type": "module",
+      "types": "dist/index.d.ts",
+      "version": "5.6.0"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 25027,
+      "sha256": "db982b7c83daadc135266141d1cb542443f26d42c72f25ee2d45644fc631e7e0"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

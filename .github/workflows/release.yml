@@ -36,18 +36,18 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
           persist-credentials: false
-      - name: Select authoritative Node 24.19.0 without package caching
+      - name: Select authoritative Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
         timeout-minutes: 5
       - name: Install the reviewed preflight tools
         run: npm ci
@@ -82,18 +82,18 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 5
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
         timeout-minutes: 5
       - name: Install the reviewed tool graph
         run: npm ci
@@ -107,7 +107,7 @@ jobs:
         timeout-minutes: 5
 
   source_node_22:
-    name: Release / Ubuntu / Node 22.23.2
+    name: Release / Ubuntu / Node 22.23.3
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     permissions:
@@ -122,18 +122,18 @@ jobs:
           # Governance verifies the recorded annotated tag and peeled commit.
           fetch-depth: 0
           persist-credentials: false
-      - name: Select Node 22.23.2 without package caching
+      - name: Select Node 22.23.3 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "22.23.2"
+          node-version: "22.23.3"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 20
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 22.23.2 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 22.23.3 --npm 12.1.0
         timeout-minutes: 5
       - name: Install the reviewed dependency graph
         run: npm ci
@@ -161,7 +161,7 @@ jobs:
         timeout-minutes: 45
 
   source_node_24:
-    name: Release / Ubuntu / Node 24.19.0
+    name: Release / Ubuntu / Node 24.21.0
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     permissions:
@@ -176,18 +176,18 @@ jobs:
           # Governance verifies the recorded annotated tag and peeled commit.
           fetch-depth: 0
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 20
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
         timeout-minutes: 5
       - name: Install the reviewed dependency graph
         run: npm ci
@@ -229,18 +229,18 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
         timeout-minutes: 5
       - name: Install the reviewed dependency graph
         run: npm ci
@@ -268,18 +268,18 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
         timeout-minutes: 5
       - name: Install the reviewed evidence tools
         run: npm ci
@@ -359,10 +359,10 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
@@ -376,10 +376,10 @@ jobs:
           update-environment: false
           cache: ""
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 20
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
         timeout-minutes: 5
       - name: Install the reviewed evidence tools
         run: npm ci
@@ -436,18 +436,18 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
         timeout-minutes: 5
       - name: Install the reviewed aggregation tools
         run: npm ci
@@ -492,18 +492,18 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Select authoritative Node 24.19.0 without package caching
+      - name: Select authoritative Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 20
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
         timeout-minutes: 5
       - name: Install the reviewed dependency graph
         run: npm ci
@@ -531,7 +531,7 @@ jobs:
           archive: true
 
   portability_windows_node_22:
-    name: Release / Windows / Node 22.23.2
+    name: Release / Windows / Node 22.23.3
     needs: candidate
     runs-on: windows-2025
     timeout-minutes: 30
@@ -546,18 +546,18 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 22.23.2 without package caching
+      - name: Select Node 22.23.3 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "22.23.2"
+          node-version: "22.23.3"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 20
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 22.23.2 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 22.23.3 --npm 12.1.0
         timeout-minutes: 5
       - name: Install the reviewed qualification tools
         run: npm ci
@@ -581,7 +581,7 @@ jobs:
         timeout-minutes: 20
 
   portability_windows_node_24:
-    name: Release / Windows / Node 24.19.0
+    name: Release / Windows / Node 24.21.0
     needs: candidate
     runs-on: windows-2025
     timeout-minutes: 30
@@ -596,18 +596,18 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 20
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
         timeout-minutes: 5
       - name: Install the reviewed qualification tools
         run: npm ci
@@ -631,7 +631,7 @@ jobs:
         timeout-minutes: 20
 
   portability_macos_node_22:
-    name: Release / macOS / Node 22.23.2
+    name: Release / macOS / Node 22.23.3
     needs: candidate
     runs-on: macos-15
     timeout-minutes: 30
@@ -646,18 +646,18 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 22.23.2 without package caching
+      - name: Select Node 22.23.3 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "22.23.2"
+          node-version: "22.23.3"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 20
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 22.23.2 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 22.23.3 --npm 12.1.0
         timeout-minutes: 5
       - name: Install the reviewed qualification tools
         run: npm ci
@@ -681,7 +681,7 @@ jobs:
         timeout-minutes: 20
 
   portability_macos_node_24:
-    name: Release / macOS / Node 24.19.0
+    name: Release / macOS / Node 24.21.0
     needs: candidate
     runs-on: macos-15
     timeout-minutes: 30
@@ -696,18 +696,18 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 20
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
         timeout-minutes: 5
       - name: Install the reviewed qualification tools
         run: npm ci
@@ -746,18 +746,18 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 20
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
         timeout-minutes: 5
       - name: Install the reviewed browser qualification tools
         run: npm ci
@@ -802,18 +802,18 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 20
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
         timeout-minutes: 5
       - name: Install the reviewed browser qualification tools
         run: npm ci
@@ -858,18 +858,18 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 20
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
         timeout-minutes: 5
       - name: Install the reviewed browser qualification tools
         run: npm ci
@@ -934,18 +934,18 @@ jobs:
           fetch-depth: 1
           path: consumer-workspace/universal-ontology
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 20
       - name: Verify the exact runtime pair
-        run: node scripts/assert-workflow-runtime.mjs --node 24.19.0 --npm 12.0.2
+        run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
         timeout-minutes: 5
       # universal-ontology intentionally ignores dist/, so the pinned source
       # checkout must materialize the exact corpus before WebVOWL can consume it.
@@ -1013,15 +1013,15 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 5
       - name: Install the aggregate evaluator
         run: npm ci
@@ -1055,15 +1055,15 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Install the reviewed release tools
         run: npm ci
@@ -1121,15 +1121,15 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Install the reviewed tag-verification tools
         run: npm ci
@@ -1176,15 +1176,15 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Install the reviewed GitHub-release tools
         run: npm ci
@@ -1238,16 +1238,16 @@ jobs:
       run:
         shell: bash
     steps:
-      - name: Select Node 24.19.0 and the exact public npm registry
+      - name: Select Node 24.21.0 and the exact public npm registry
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
           registry-url: https://registry.npmjs.org/
       - name: Establish the exact publication npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Download the exact same-run candidate by artifact ID
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
@@ -1298,15 +1298,15 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Install the reviewed public-verification tools
         run: npm ci
@@ -1363,15 +1363,15 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Install the reviewed evidence tools
         run: npm ci
@@ -1455,15 +1455,15 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 1
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Install the reviewed finalization tools
         run: npm ci
@@ -1502,20 +1502,20 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
           persist-credentials: false
-      - name: Select Node 24.19.0 without package caching
+      - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24.19.0"
+          node-version: "24.21.0"
           check-latest: false
           cache: ""
           package-manager-cache: false
       - name: Establish the exact repository npm
-        run: npm install --global npm@12.0.2 --ignore-scripts --no-audit --no-fund
+        run: npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund
         timeout-minutes: 10
       - name: Install the reviewed immutable-verification tools
         run: npm ci
         timeout-minutes: 15
-      - name: Download and checksum-verify GitHub CLI 2.98.0
+      - name: Download and checksum-verify GitHub CLI 2.101.0
         run: npm run release:prepare-github-cli -- --output .release/tools/github-cli
         timeout-minutes: 5
       - name: Reverify the independent signed tag
@@ -1528,7 +1528,7 @@ jobs:
       - name: Verify release immutability and all four release attestations
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: npm run release:verify-immutable -- --gh .release/tools/github-cli/gh_2.98.0_linux_amd64/bin/gh --output-directory .release/immutable-assets --report .release/immutable-verification.json
+        run: npm run release:verify-immutable -- --gh .release/tools/github-cli/gh_2.101.0_linux_amd64/bin/gh --output-directory .release/immutable-assets --report .release/immutable-verification.json
         timeout-minutes: 10
       - name: Retain the final immutable-verification report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

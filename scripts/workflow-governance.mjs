@@ -196,7 +196,7 @@ const validateActionUses = (fileName, workflow, document, violations) => {
       if (step.uses.startsWith("actions/setup-node@")) {
         add(
           violations,
-          ["22.23.2", "24.19.0"].includes(inputs?.["node-version"]),
+          ["22.23.3", "24.21.0"].includes(inputs?.["node-version"]),
           `${fileName}: setup-node must select an approved exact Node patch`,
         );
         requireFields(

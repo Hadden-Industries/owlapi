@@ -5,19 +5,19 @@
     "name": "owlapi",
     "version": "0.1.0-rc.1"
   },
-  "recordedOn": "2026-09-27",
+  "recordedOn": "2026-09-29",
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "fca4f12f95e5ffcc397e328e082b57b03faef24b63def28818dc188424b05ae4",
+    "factsSha256": "2d258c5700a38265d45c3848eecf76f93ccd40204db6b9fd0dc3e32fb030be8d",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
     "conclusion": null
   },
   "productionAudit": {
-    "performedOn": "2026-09-27",
+    "performedOn": "2026-09-29",
     "command": "npm audit --omit=dev --json",
-    "npmVersion": "12.0.2",
+    "npmVersion": "12.1.0",
     "productionPackageCount": 39,
     "vulnerabilityCounts": {
       "info": 0,
@@ -29,22 +29,22 @@
     }
   },
   "installScriptPolicy": {
-    "npmVersion": "12.0.2",
+    "npmVersion": "12.1.0",
     "mode": "STRICT_EXPLICIT_DECISIONS",
     "projectConfig": ".npmrc",
     "decisions": [
       {
-        "name": "fsevents",
-        "version": "2.3.2",
+        "name": "@parcel/watcher",
+        "version": "2.6.0",
         "allowed": false,
-        "dependencyScope": "DEVELOPMENT_OPTIONAL_DARWIN",
-        "lifecycleScript": "install: node-gyp rebuild",
+        "dependencyScope": "DEVELOPMENT_FILE_WATCHER",
+        "lifecycleScript": "install: node scripts/build-from-source.js",
         "requiredForBlockingWorkflows": false,
-        "rationale": "This Darwin-only optional Playwright dependency accelerates file watching, while the blocking Playwright jobs execute fixed non-watch browser suites. Denial avoids unnecessary install-time native compilation; the required macOS installed-package qualification must continue to pass with this policy.",
+        "rationale": "The install script builds native code only when npm_config_build_from_source is true. The lockfile supplies platform prebuilds, and the Windows prebuild loads after a clean strict-policy npm ci with this script denied. Fixed non-watch qualification needs no source build; Linux and macOS prebuild qualification remains a CI obligation.",
         "evidence": [
-          "package-lock.json#node_modules/playwright/node_modules/fsevents",
-          "https://registry.npmjs.org/fsevents/2.3.2",
-          "docs/implementation-plan.md §2.54"
+          "package-lock.json#node_modules/@parcel/watcher",
+          "https://registry.npmjs.org/@parcel/watcher/2.6.0",
+          "docs/plans/2026-09-29-security-and-dependency-consolidation.md"
         ]
       },
       {
@@ -104,7 +104,7 @@
   "dependencies": [
     {
       "name": "@hyperjump/uri",
-      "version": "1.3.5",
+      "version": "1.3.6",
       "role": "RFC 3987 full-IRI lexical validation without normalization for ontology storage",
       "standardsGrounding": [
         "https://www.rfc-editor.org/rfc/rfc3987",
@@ -114,26 +114,27 @@
       "conformanceEvidence": [
         "internal/storage/functional/functionalSyntaxRenderer.test.js",
         "internal/storage/functional/functionalSyntaxStorer.test.js",
-        "model/owlOntologyManager.storage.test.js"
+        "model/owlOntologyManager.storage.test.js",
+        "internal/storage/rdfxml/rdfXmlGraphWriter.test.js"
       ],
       "releaseAuthority": "Hyperjump Software; hyperjump-io/uri maintainers",
-      "maintenanceStatus": "Exact compatible 1.3.5 pin: 1.3.6 adds an unsupported-IP-version exception to syntax validation, rejecting RFC 3987 IPvFuture IRIs even when no dereferencing occurs. Reassess upgrades against the public storage round-trip and rejection tests; do not normalize hosts, catch exception messages, or substitute a permissive validator.",
+      "maintenanceStatus": "Version 1.3.6 uses the native parseIri grammar at both Functional Syntax and RDF/XML storage boundaries. This preserves syntactically valid IPvFuture IRIs without asking the isIri convenience API to enforce supported IP versions. Invalid or ill-formed input fails before replacement; lexical values are never normalized and exception messages are not inspected.",
       "runtimeDependencies": [],
       "networkBehavior": "Pure in-memory identifier operations; no ambient network access",
       "browserCost": {
         "disposition": "MEASURED_BROWSER_GRAPH",
         "initialStaticClosureIncluded": true,
-        "measurementReference": "2026-09-27 Vite 8.2.2/Oxc ES build with write=false and preserveEntrySignatures=strict; isolated isIri export from 1.3.5",
-        "minifiedBytes": 3868,
-        "gzipBytes": 1425,
+        "measurementReference": "2026-09-29 Node 24.21.0, Vite 8.3.1/Oxc ES2022 build with write=false and preserveEntrySignatures=strict; isolated parseIri export",
+        "minifiedBytes": 3728,
+        "gzipBytes": 1423,
         "fileCount": 1,
-        "comparisonContext": "Isolated selected API including its reachable dependency code, not incremental whole-package size; installed browser qualification remains required."
+        "comparisonContext": "Isolated selected API including reachable dependency code; not an incremental whole-package size. Initial inclusion is checked against the complete public-entry browser build."
       },
       "securityDisposition": {
-        "assessedOn": "2026-09-27",
+        "assessedOn": "2026-09-29",
         "riskClass": "LEXICAL_GRAMMAR_VALIDATOR",
         "controls": [
-          "Only isIri validation is used",
+          "Native parseIri lexical validation; successful parse output is not substituted for the caller's value",
           "No resolution, percent-encoding, normalization, or document loading",
           "Invalid values fail before atomic target replacement"
         ],
@@ -145,7 +146,7 @@
       },
       "declaredLicenseExpression": "MIT",
       "noticeAction": "Retain exact authenticated npm legal evidence in the third-party inventory; npm installs this separately, so do not copy its licence into the owlapi tarball NOTICE",
-      "adapterBoundary": "internal/storage/functional/functionalSyntaxRenderer.js"
+      "adapterBoundary": "internal/storage/functional/functionalSyntaxRenderer.js and internal/storage/rdfxml/rdfXmlGraphWriter.js"
     },
     {
       "name": "bcp-47",
@@ -170,11 +171,11 @@
       "browserCost": {
         "disposition": "MEASURED_BROWSER_GRAPH",
         "initialStaticClosureIncluded": true,
-        "measurementReference": "2026-09-25 Vite 8.2.2/Oxc ES build with write=false and preserveEntrySignatures=strict; isolated parse export",
-        "minifiedBytes": 3188,
-        "gzipBytes": 1277,
+        "measurementReference": "2026-09-29 Node 24.21.0, Vite 8.3.1/Oxc ES2022 build with write=false and preserveEntrySignatures=strict; isolated parse export",
+        "minifiedBytes": 3173,
+        "gzipBytes": 1268,
         "fileCount": 1,
-        "comparisonContext": "Includes the three character-class dependencies; installed whole-package browser qualification remains required."
+        "comparisonContext": "Isolated selected API including reachable dependency code; not an incremental whole-package size. Initial inclusion is checked against the complete public-entry browser build."
       },
       "securityDisposition": {
         "assessedOn": "2026-09-25",
@@ -211,11 +212,11 @@
       "browserCost": {
         "disposition": "MEASURED_BROWSER_GRAPH",
         "initialStaticClosureIncluded": true,
-        "measurementReference": "Phase 5 Vite 8/Oxc standalone browser production measurement",
-        "minifiedBytes": 2581,
-        "gzipBytes": 828,
+        "measurementReference": "2026-09-29 Node 24.21.0, Vite 8.3.1/Oxc ES2022 build with write=false and preserveEntrySignatures=strict; isolated default export",
+        "minifiedBytes": 2608,
+        "gzipBytes": 840,
         "fileCount": 1,
-        "comparisonContext": "@rdfjs/data-model plus @rdfjs/dataset measured 6,885 minified bytes and 2,208 gzip bytes."
+        "comparisonContext": "Isolated selected API including reachable dependency code; not an incremental whole-package size. Initial inclusion is checked against the complete public-entry browser build."
       },
       "securityDisposition": {
         "assessedOn": "2026-08-26",
@@ -253,11 +254,11 @@
       "browserCost": {
         "disposition": "MEASURED_BROWSER_GRAPH",
         "initialStaticClosureIncluded": true,
-        "measurementReference": "Phase 5 Vite 8/Oxc standalone browser production measurement",
-        "minifiedBytes": 4296,
-        "gzipBytes": 1611,
+        "measurementReference": "2026-09-29 Node 24.21.0, Vite 8.3.1/Oxc ES2022 build with write=false and preserveEntrySignatures=strict; isolated default export",
+        "minifiedBytes": 4323,
+        "gzipBytes": 1626,
         "fileCount": 1,
-        "comparisonContext": "@rdfjs/data-model plus @rdfjs/dataset measured 6,885 minified bytes and 2,208 gzip bytes."
+        "comparisonContext": "Isolated selected API including reachable dependency code; not an incremental whole-package size. Initial inclusion is checked against the complete public-entry browser build."
       },
       "securityDisposition": {
         "assessedOn": "2026-08-26",
@@ -279,7 +280,7 @@
     },
     {
       "name": "n3",
-      "version": "2.3.0",
+      "version": "2.7.12",
       "role": "Private strict-format RDF syntax implementation; Phase 9 enables Turtle, Phase 12 enables N-Triples, Phase 13 enables N-Quads, and Phase 14 enables TriG; broader Notation3 language ingestion remains deferred",
       "standardsGrounding": [
         "W3C Turtle",
@@ -312,17 +313,17 @@
         "internal/parsing/trig/trig.differential.test.js"
       ],
       "releaseAuthority": "RDF/JS community; rdfjs/N3.js maintainers",
-      "maintenanceStatus": "Pinned production release; the 24 August 2026 upgrade qualification independently passed all 387 classified Turtle entries, all 99 N-Triples entries, all 114 N-Quads entries, and all 413 REQUIRED TriG entries. The complete 418-entry TriG inventory retains five enumerated RDF 1.2 reifier/annotation evaluation entries as EXCLUDED_WITH_REASON because N3.js 2.3.0 does not yet reproduce their pinned results; the other 12 former N3.js 2.2.0 exclusions are now REQUIRED and passing.",
+      "maintenanceStatus": "Version 2.7.12 passes the pinned Turtle, N-Triples, N-Quads and REQUIRED TriG classifications plus adapter and resource tests in the 29 September 2026 qualification. The five enumerated RDF 1.2 TriG reifier/annotation exclusions remain explicit in the accepted classification manifest; this dependency refresh does not expand the supported language contract.",
       "runtimeDependencies": ["buffer", "readable-stream"],
       "networkBehavior": "Parser APIs consume caller-provided input and do not resolve documents",
       "browserCost": {
         "disposition": "MEASURED_LAZY_CLOSURE",
         "initialStaticClosureIncluded": false,
-        "measurementReference": "24 August 2026 Vite 8/Oxc isolated-manager measurement",
-        "minifiedBytes": 190412,
-        "gzipBytes": 52938,
-        "fileCount": 1,
-        "comparisonContext": "N3.js 2.2.0 measured 185,859 minified and 51,859 gzip bytes; 2.3.0 changed only the lazy graph by +2.45% minified and +2.08% gzip, within the 20% gate."
+        "measurementReference": "2026-09-29 Node 24.21.0, Vite 8.3.1/Oxc ES2022 build with write=false and preserveEntrySignatures=strict; public-entry dependency chunk and static chunk imports",
+        "minifiedBytes": 187455,
+        "gzipBytes": 53083,
+        "fileCount": 2,
+        "comparisonContext": "Lazy dependency closure in the complete public-entry browser build, including shared static chunk imports. Chunk partitioning can differ from historical isolated-manager measurements; initial graph exclusion is retained."
       },
       "securityDisposition": {
         "assessedOn": "2026-08-26",
@@ -373,11 +374,11 @@
       "browserCost": {
         "disposition": "MEASURED_LAZY_CLOSURE",
         "initialStaticClosureIncluded": false,
-        "measurementReference": "24 August 2026 Vite 8/Oxc isolated-manager measurement",
-        "minifiedBytes": 163134,
-        "gzipBytes": 46775,
-        "fileCount": 1,
-        "comparisonContext": "The Node first-use manager, conditional dependency load, and RDF-to-OWL reconstruction measured 38.26 ms with an 8,573,712-byte peak-heap delta; the 50,000-quad medians remained within the 20% gate."
+        "measurementReference": "2026-09-29 Node 24.21.0, Vite 8.3.1/Oxc ES2022 build with write=false and preserveEntrySignatures=strict; public-entry dependency chunk and static chunk imports",
+        "minifiedBytes": 163155,
+        "gzipBytes": 46566,
+        "fileCount": 2,
+        "comparisonContext": "Lazy dependency closure in the complete public-entry browser build, including shared static chunk imports. Chunk partitioning can differ from historical isolated-manager measurements; initial graph exclusion is retained."
       },
       "securityDisposition": {
         "assessedOn": "2026-08-26",
@@ -428,11 +429,11 @@
       "browserCost": {
         "disposition": "MEASURED_LAZY_CLOSURE",
         "initialStaticClosureIncluded": false,
-        "measurementReference": "Phase 15 Vite 8/Oxc JSON-LD lazy-closure baseline",
-        "minifiedBytes": 204727,
-        "gzipBytes": 50201,
-        "fileCount": 3,
-        "comparisonContext": "The measured JSON-LD implementation remains excluded from the initial static closure and is admitted only through the exact JSON-LD syntax boundary."
+        "measurementReference": "2026-09-29 Node 24.21.0, Vite 8.3.1/Oxc ES2022 build with write=false and preserveEntrySignatures=strict; public-entry dependency chunk and static chunk imports",
+        "minifiedBytes": 115877,
+        "gzipBytes": 31683,
+        "fileCount": 1,
+        "comparisonContext": "Lazy dependency closure in the complete public-entry browser build, including shared static chunk imports. Chunk partitioning can differ from historical isolated-manager measurements; initial graph exclusion is retained."
       },
       "securityDisposition": {
         "assessedOn": "2026-08-26",
@@ -459,7 +460,7 @@
     {
       "name": "@xmldom/xmldom",
       "version": "0.9.12",
-      "role": "Node-only DOM implementation behind the OWL/XML parser adapter; browsers use the native DOMParser",
+      "role": "DOM fallback behind the XML parser adapter and well-formed RDF/XML DOM construction and serialization in every supported host; document browsers parse with native DOMParser",
       "standardsGrounding": [
         "W3C XML",
         "W3C DOM",
@@ -468,41 +469,48 @@
       "conformanceEvidence": [
         "internal/parsing/xml/xmlParserAdapter.test.js",
         "internal/parsing/owlxml/owlXml.conformance.test.js",
-        "internal/parsing/owlxml/owlXml.resource.test.js"
+        "internal/parsing/owlxml/owlXml.resource.test.js",
+        "internal/storage/rdfxml/rdfXmlGraphWriter.test.js",
+        "model/owlOntologyManager.storage.test.js",
+        "scripts/reference-import-map.test.js"
       ],
       "releaseAuthority": "xmldom maintainers",
-      "maintenanceStatus": "Pinned production release; the 24 August 2026 upgrade qualification passed all 12 focused XML, OWL/XML, and RDF/XML suites (248 tests), retained the XML error/security contracts, and confirmed the Node-only fallback remains excluded from browser bundles",
+      "maintenanceStatus": "Pinned production release. XML parser fallback exclusion applies at the parser seam; RDF/XML storage deliberately imports DOMImplementation and XMLSerializer in Node and browser consumers. The September 2026 browser-cost refresh records the existing serializer inclusion explicitly.",
       "runtimeDependencies": [],
       "networkBehavior": "Parses caller-provided XML in memory and performs no document loading or ambient network access",
       "browserCost": {
-        "disposition": "NODE_ONLY_EXCLUDED",
-        "initialStaticClosureIncluded": false,
-        "measurementReference": "24 August 2026 browser-build exclusion verification",
-        "minifiedBytes": null,
-        "gzipBytes": null,
-        "fileCount": null,
-        "comparisonContext": "Browsers use native DOMParser; the Node-only fallback must remain absent from every browser closure."
+        "disposition": "MEASURED_BROWSER_GRAPH",
+        "initialStaticClosureIncluded": true,
+        "measurementReference": "2026-09-29 Node 24.21.0, Vite 8.3.1/Oxc ES2022 build with write=false and preserveEntrySignatures=strict; isolated DOMImplementation, XMLSerializer export",
+        "minifiedBytes": 84935,
+        "gzipBytes": 30216,
+        "fileCount": 1,
+        "comparisonContext": "Isolated selected API including reachable dependency code; not an incremental whole-package size. Initial inclusion is checked against the complete public-entry browser build."
       },
       "securityDisposition": {
-        "assessedOn": "2026-08-26",
-        "riskClass": "NODE_ONLY_XML_PARSER",
+        "assessedOn": "2026-09-29",
+        "riskClass": "COMPLEX_SYNTAX_PARSER",
         "controls": [
-          "Loaded only when native DOMParser is unavailable",
+          "Parser fallback is loaded only when native DOMParser is unavailable",
+          "Well-formed RDF/XML serialization is shared across supported hosts",
           "No document loading or ambient network access",
-          "XML parser error and security contracts",
-          "Browser-build exclusion verification",
+          "XML parser security contracts and RDF/XML storage representability tests",
+          "Browser import-map seam checks distinguish parser fallback from serializer",
           "Production audit for the direct dependency"
         ],
-        "rationale": "The fallback parses hostile XML-shaped input in Node, but it is isolated behind XmlParserAdapter, performs no retrieval, and is forbidden from browser bundles.",
+        "rationale": "The XML parser handles untrusted text without retrieval behind XmlParserAdapter. RDF/XML storage uses the same dependency's DOM and serializer after representability checks, so serializer code is intentionally part of the initial browser graph.",
         "evidence": [
           "internal/parsing/xml/xmlParserAdapter.test.js",
           "internal/parsing/owlxml/owlXml.conformance.test.js",
-          "internal/parsing/owlxml/owlXml.resource.test.js"
+          "internal/parsing/owlxml/owlXml.resource.test.js",
+          "internal/storage/rdfxml/rdfXmlGraphWriter.test.js",
+          "model/owlOntologyManager.storage.test.js",
+          "scripts/reference-import-map.test.js"
         ]
       },
       "declaredLicenseExpression": "MIT",
       "noticeAction": "Record the separately licensed external dependency and its inspected licence evidence in the repository third-party-material inventory; do not copy its licence into the owlapi tarball NOTICE because npm installs it separately",
-      "adapterBoundary": "internal/parsing/xml/xmlParserAdapter.js"
+      "adapterBoundary": "internal/parsing/xml/xmlParserAdapter.js and internal/storage/rdfxml/rdfXmlGraphWriter.js"
     }
   ]
 }

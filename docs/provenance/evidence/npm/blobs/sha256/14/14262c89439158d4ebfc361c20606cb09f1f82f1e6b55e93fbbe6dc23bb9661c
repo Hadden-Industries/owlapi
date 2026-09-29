@@ -1,0 +1,153 @@
+{
+  "artifactId": "b8630654a78ff43a16dcb8f584aaf98c511d9305030d0a5cf33a348e3eb45ecd",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 28581,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "563099758287cb3426ab3a1e884df390fa70f34f79551b3c909e223db7f67c24",
+        "size": 5367,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "52b8c1f3b79c8be6d9e2b535ce5b0e57debbf6b9134d8e612849be296b11fbc3",
+        "size": 114617,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "bb4d55b6e07f43598fed6e2a844c96885925c0b7f8e78da95c4f2a642959ac31",
+        "size": 673,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0edb6d776b52ea5aeabe2af945c9010457a7180cae27de41ba28c639ed871a9c",
+        "size": 1949,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 123738,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "jest-config",
+      "repository": {
+        "directory": "packages/jest-config",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.5.2"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@babel/core": "^7.27.4",
+        "@jest/get-type": "30.5.0",
+        "@jest/pattern": "30.5.0",
+        "@jest/test-sequencer": "30.5.2",
+        "@jest/types": "30.5.1",
+        "babel-jest": "30.5.2",
+        "chalk": "^4.1.2",
+        "ci-info": "^4.2.0",
+        "deepmerge": "^4.3.1",
+        "glob": "^13.0.6",
+        "graceful-fs": "^4.2.11",
+        "jest-circus": "30.5.2",
+        "jest-docblock": "30.5.0",
+        "jest-environment-node": "30.5.2",
+        "jest-regex-util": "30.5.0",
+        "jest-resolve": "30.5.1",
+        "jest-runner": "30.5.2",
+        "jest-util": "30.5.1",
+        "jest-validate": "30.5.1",
+        "parse-json": "^5.2.0",
+        "pretty-format": "30.5.1",
+        "slash": "^3.0.0",
+        "strip-json-comments": "^3.1.1"
+      },
+      "devDependencies": {
+        "@jest/test-utils": "30.5.2",
+        "@types/graceful-fs": "^4.1.9",
+        "@types/parse-json": "^4.0.2",
+        "esbuild": "^0.28.0",
+        "esbuild-register": "^3.6.0",
+        "semver": "^7.7.2",
+        "ts-node": "^10.5.0",
+        "typescript": "^5.8.3"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "202dd8a14777c270607c2416bd5034c3c0abc984",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "jest-config",
+      "peerDependencies": {
+        "@types/node": "*",
+        "esbuild-register": ">=3.4.0",
+        "ts-node": ">=9.0.0"
+      },
+      "peerDependenciesMeta": {
+        "@types/node": {
+          "optional": true
+        },
+        "esbuild-register": {
+          "optional": true
+        },
+        "ts-node": {
+          "optional": true
+        }
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-config",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.5.2"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 28581,
+      "sha256": "0bf4965e24b7a1fb84035480035642719189fcb0c29bfe66b5ca266c962706e4"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

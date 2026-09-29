@@ -1,0 +1,131 @@
+{
+  "artifactId": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 14484,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "13b17b5a1f80ae8183844238882851da40c419ef1526dafb047ce4e0b4c55616",
+        "size": 14304,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "68f7865785fea7b6822ee8b9975b7934f6f6c3a908393ffca96ce3d0f0bc8122",
+        "size": 3384,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "fc4712280efd27d9181477190c44132ed2dc52dfc62faf7d22dd39f919221bdd",
+        "size": 40739,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "0b1256fcfdf3c1154a0c5f2d1dcbcf909413e84fb6fca5d9084104cafe688d22",
+        "size": 211,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "81bb82c19c34af09c4e3b05b2b604ab51ea637f678e8a6e0af51156791380974",
+        "size": 1518,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 61288,
+    "packageIdentity": {
+      "author": "James Kyle <me@thejameskyle.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "pretty-format",
+      "repository": {
+        "directory": "packages/pretty-format",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.5.1"
+    },
+    "packageMetadata": {
+      "author": "James Kyle <me@thejameskyle.com>",
+      "dependencies": {
+        "@jest/react-is-18": "npm:react-is@^18.3.1",
+        "@jest/react-is-19": "npm:react-is@^19.2.5",
+        "@jest/schemas": "30.5.0",
+        "ansi-styles": "^5.2.0"
+      },
+      "description": "Stringify any JavaScript value.",
+      "devDependencies": {
+        "@types/react": "^19.2.18",
+        "@types/react-is": "^19.0.0",
+        "@types/react-test-renderer": "^19.1.0",
+        "immutable": "^5.1.2",
+        "jest-util": "30.5.1",
+        "react": "^19.2.3",
+        "react-17": "npm:react@^17.0.2",
+        "react-18": "npm:react@^18.3.1",
+        "react-19": "npm:react@^19.2.3",
+        "react-test-renderer": "^19.2.3",
+        "react-test-renderer-17": "npm:react-test-renderer@^17.0.2",
+        "react-test-renderer-18": "npm:react-test-renderer@^18.3.1",
+        "react-test-renderer-19": "npm:react-test-renderer@^19.2.3"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "9ab14feccd6c15fec1334dbcb03a53a079d153d3",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "pretty-format",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/pretty-format",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.5.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 14484,
+      "sha256": "3c905be3df1024123c4ca10c7e31af3b5311a56df46f8bdd22a6469571014d23"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

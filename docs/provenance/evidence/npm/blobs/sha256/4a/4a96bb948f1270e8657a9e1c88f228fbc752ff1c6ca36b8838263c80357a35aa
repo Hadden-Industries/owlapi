@@ -1,0 +1,119 @@
+{
+  "artifactId": "93e3bce1a2051dd9280b8c67fde8ce48589f0460ed3b4ac0b485768af53170ca",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7743,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "210cc3aada338485a1593141bed7d774ba0325f66f1f48ee074a9a35c3859cf8",
+        "size": 5745,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "1f95c5511ed07626d276cc54474651ba5d18099f94997fca96d0b5addbe7f08c",
+        "size": 2215,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "f79fa714d6fb63dd7294f30da80e0829d3395b59a7a5fe1ff38e0428566f6255",
+        "size": 19495,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "f13235214138cec889fb742fdfcdd1b8fb9f5547b3724ea931e68892c4550a0c",
+        "size": 453,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "5bdf72d2aba740f226168fdcec68af24f6c0729c40906a65a425a448b7cb7ef3",
+        "size": 924,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 29964,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "jest-validate",
+      "repository": {
+        "directory": "packages/jest-validate",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.5.1"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@jest/get-type": "30.5.0",
+        "@jest/types": "30.5.1",
+        "camelcase": "^6.3.0",
+        "chalk": "^4.1.2",
+        "leven": "^3.1.0",
+        "pretty-format": "30.5.1"
+      },
+      "devDependencies": {
+        "@types/yargs": "^17.0.33"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "9ab14feccd6c15fec1334dbcb03a53a079d153d3",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "jest-validate",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-validate",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.5.1"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 7743,
+      "sha256": "cdfb2eacddddcacd43cd6be183ee720bbadab91f6e9f7086e22c22a5dc179622"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

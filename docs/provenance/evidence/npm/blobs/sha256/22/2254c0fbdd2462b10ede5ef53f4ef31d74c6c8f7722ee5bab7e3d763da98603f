@@ -1,0 +1,3044 @@
+{
+  "artifactId": "313c14bab6616849ae58060d7390725f67492b5fa5cfe5c166321142f9b49a5d",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 19,
+      "digestVerifiedFileCount": 18,
+      "incompleteIdentityFiles": [
+        {
+          "path": "package/nothing.c",
+          "reason": "EMPTY_FILE_DIGEST_NOT_REPORTED",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        }
+      ],
+      "omittedFiles": [],
+      "reportedFileCount": 19
+    },
+    "artifactId": "313c14bab6616849ae58060d7390725f67492b5fa5cfe5c166321142f9b49a5d",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.12.7",
+        "for_package_purl": "pkg:npm/node-addon-api@7.1.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/path",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.2.2",
+        "for_package_purl": "pkg:npm/node-addon-api@7.1.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/pre-commit",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.4.0",
+        "for_package_purl": "pkg:npm/node-addon-api@7.1.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/clang-format",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^1.5.0",
+        "for_package_purl": "pkg:npm/node-addon-api@7.1.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/bindings",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^11.1.0",
+        "for_package_purl": "pkg:npm/node-addon-api@7.1.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint-plugin-node",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^11.1.1",
+        "for_package_purl": "pkg:npm/node-addon-api@7.1.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/fs-extra",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^16.0.0",
+        "for_package_purl": "pkg:npm/node-addon-api@7.1.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint-config-semistandard",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^16.0.3",
+        "for_package_purl": "pkg:npm/node-addon-api@7.1.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint-config-standard",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.1.4",
+        "for_package_purl": "pkg:npm/node-addon-api@7.1.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/benchmark",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.24.2",
+        "for_package_purl": "pkg:npm/node-addon-api@7.1.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint-plugin-import",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.1.0",
+        "for_package_purl": "pkg:npm/node-addon-api@7.1.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint-plugin-promise",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.1.1",
+        "for_package_purl": "pkg:npm/node-addon-api@7.1.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/safe-buffer",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^7.32.0",
+        "for_package_purl": "pkg:npm/node-addon-api@7.1.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/eslint",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2017 Node.js",
+            "end_line": 3,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Node.js",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-86fcf017-3572-9813-b7e8-0a10ec4a120f",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "313c14bab6616849ae58060d7390725f67492b5fa5cfe5c166321142f9b49a5d/package/LICENSE.md",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 4,
+                "matched_text": "The MIT License (MIT)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_26.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 9,
+                "from_file": "313c14bab6616849ae58060d7390725f67492b5fa5cfe5c166321142f9b49a5d/package/LICENSE.md",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,\n subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 5
+              }
+            ]
+          }
+        ],
+        "md5": "fc3ff1120869be6b3cce17f9a06bfe2e",
+        "name": "LICENSE.md",
+        "package_data": [],
+        "path": "package/LICENSE.md",
+        "percentage_of_license_text": 91.67,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "59cbd579b31f0c6932deaf31d0181203c501c9b1",
+        "sha1_git": "819d91a5bd799be3e9444acc9dd1ebe6ee5de529",
+        "sha256": "89024017b88a9f2b763f79b941a4f2db3b4428edfcacdc0b23866b2da633ad0c",
+        "size": 1150,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3cd29b42-4c31-f847-99c7-d1cb35d64a01",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 316,
+                "from_file": "313c14bab6616849ae58060d7390725f67492b5fa5cfe5c166321142f9b49a5d/package/README.md",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 5,
+                "matched_text": "<a name=\"license\"></a>\n\nLicensed under [MIT](./LICENSE.md)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_497.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_497.RULE",
+                "score": 100,
+                "start_line": 314
+              }
+            ]
+          }
+        ],
+        "md5": "8099ad4f76c9ed80ff0a005fe0978902",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0.25,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "0649e76a73d6e2a082384ee06a6f0a27afb9d667",
+        "sha1_git": "e90eb7c9927c962a2bf8b73ac2697c0de5868921",
+        "sha256": "61e2635acb30be02d28512a65075c96bd91eb0007069047c20f0e7a41afab13e",
+        "size": 14050,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "34143c24d232ac62205ec0b7601cb109",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/tools/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "3decbdeed6f0c742925a5be9b78f5251a4c0b569",
+        "sha1_git": "6b80e94f52d5eaf51333018d6f5694164aa53376",
+        "sha256": "65e9ea918538f453166b10a1d609cf44cec3d2d01f23fecb5265fb3a4bf303d5",
+        "size": 3217,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "check-napi",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "30dfff807dd17db0a258056b727bcc78",
+        "name": "check-napi.js",
+        "package_data": [],
+        "path": "package/tools/check-napi.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "faa0140ef82603f8bcfa99923f88d7787c3f51c0",
+        "sha1_git": "9199af334ecad323c039b148d4037700d1a29fa5",
+        "sha256": "9e1207808023cd998fe9e377aefbe77d6c59fa129f94e6acbf24907149d8c11e",
+        "size": 3176,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "clang-format",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "e549f9e10d94d3d9c2ef12ec461b2f79",
+        "name": "clang-format.js",
+        "package_data": [],
+        "path": "package/tools/clang-format.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "599bf11eb9272e54371b35255c68f7999fe52985",
+        "sha1_git": "e4bb4f52e07f371cce8f42c280178398b3965415",
+        "sha256": "3e0b5e6d6f1a0c5ed106115871d0fd48f37bac5554effdacaf8d2439f4ed0c65",
+        "size": 2002,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "common",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".gypi",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "3b40c0a5cb6a8389c9a2cb3f25282d7a",
+        "name": "common.gypi",
+        "package_data": [],
+        "path": "package/common.gypi",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "7a3c3551ec4d896d96e5adb31606367bf4d4011c",
+        "sha1_git": "06c0176b29c2fbaa0296f7cea7c9eef4ba6a3756",
+        "sha256": "60083ca8544cfee3b47ce2ae1faf394da40bf24722ad4fb7828eb9598e8101d6",
+        "size": 724,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "conversion",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "d021b061d75659901614e8c6f87aa6c0",
+        "name": "conversion.js",
+        "package_data": [],
+        "path": "package/tools/conversion.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "9b916186796d7e77c067da569fdb4f58deafbfd5",
+        "sha1_git": "f89245ac69b6f92e399330678da4430261bd614a",
+        "sha256": "e089cbad94331ad07dfb103b5d5aafaaf99fba89e9674d64f4f35e9dfc432357",
+        "size": 15013,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "eslint-format",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "25b89785c5acdbb07279914a4e320f96",
+        "name": "eslint-format.js",
+        "package_data": [],
+        "path": "package/tools/eslint-format.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "c98e334ce1333889e348bbe75864c1713026f3cf",
+        "sha1_git": "6923ab7b656cf75bdf664731cea809e868b95e29",
+        "sha256": "befbda4868248093b1f5e4307d28f412d12fa16929cd0c07f5e2575e2635646d",
+        "size": 2071,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "except",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".gypi",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "1fe1ff8ca630ac3f8a8b9c4ac7e08aad",
+        "name": "except.gypi",
+        "package_data": [],
+        "path": "package/except.gypi",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "5d5716c9cac44eeb2d911cce7dc68f32bf49d47c",
+        "sha1_git": "e2fb2c5a4092c442c6b6acb5d96f7da8d1ff427e",
+        "sha256": "ddbc09f5b66fe24dd898fbe659085a6ff72e9575025004fc3762271dba781e8b",
+        "size": 560,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "76046a66f40449026e5b595ad0424518",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/index.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "11a716c723f52e55494c0f1fc48dfcfae23a848f",
+        "sha1_git": "4877abc976cd96b6598b8a477bca02dcc9c19808",
+        "sha256": "be71328f325cf541f37704a644e53cd04af1b69bc119b39733d64589e64dffdb",
+        "size": 377,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "napi",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "7e2699efb1e4adfc553c568faf7e8684",
+        "name": "napi.h",
+        "package_data": [],
+        "path": "package/napi.h",
+        "percentage_of_license_text": 0,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "a7e78cafb8e4360ac8dd95d7f1d8aa79029c6511",
+        "sha1_git": "9f20cb884ab2a163cc727f814445fc4c2859ab45",
+        "sha256": "2f2f5d1e4ca96f315c51ad96c292c18294dbb999b98f8b2f33b80816a3189fb0",
+        "size": 115423,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "napi-inl",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "eeabf0f97bc38ef266ca00c3ae93c65a",
+        "name": "napi-inl.h",
+        "package_data": [],
+        "path": "package/napi-inl.h",
+        "percentage_of_license_text": 0,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "b5e210f136e169374fa1a421896ef3d9ae57865c",
+        "sha1_git": "a5ae7af72408c6f19de4b43c6b521e17d45cd52b",
+        "sha256": "4b053c184dfed740fbd802fdcf97e85fb8c7b0eb1d83322000d932d31662eda7",
+        "size": 219411,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "napi-inl.deprecated",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".h",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "afa451c950b59bf34189cf627881fc38",
+        "name": "napi-inl.deprecated.h",
+        "package_data": [],
+        "path": "package/napi-inl.deprecated.h",
+        "percentage_of_license_text": 0,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": "f420000cb09f5546bd8f04d69c9736f6511ac46e",
+        "sha1_git": "3ddbb2efa41ba40993bf7271b8b2361256eb986f",
+        "sha256": "b66ed1e565e735bbfabcc2f72d466ab7c5414d3ef8851d1af440b81be7f2375c",
+        "size": 6323,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "node_addon_api",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".gyp",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "11a027235c92c4253b61b1b7595ff761",
+        "name": "node_addon_api.gyp",
+        "package_data": [],
+        "path": "package/node_addon_api.gyp",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "f44cc4179b8b5aebf5c8160f3c317abca62f658b",
+        "sha1_git": "29905ed473b0c8ca54d7e039249e8bce46e2f0ba",
+        "sha256": "a1f080ca22f191902d118bc2a169984a9e761af091ca6d0ea456197bf7b6543c",
+        "size": 793,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "node_api",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".gyp",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "fcec1557ac47891385ae1f67e6da343a",
+        "name": "node_api.gyp",
+        "package_data": [],
+        "path": "package/node_api.gyp",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "e361d3a3be19e802820f2fe59bfdf7c9ef72fc74",
+        "sha1_git": "4ff0ae7df3abb2a17e47db0075c5119ef1028e89",
+        "sha256": "3cd2c44fb0974f016376b676d46bbebbca7c89d4383b09ece30e4cb4122a1499",
+        "size": 132,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "noexcept",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".gypi",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "d75852a9f1e16b44a8e8d568cd2cef04",
+        "name": "noexcept.gypi",
+        "package_data": [],
+        "path": "package/noexcept.gypi",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "4bf93f1ef3e5875cc40632cf229dea170c8f03b3",
+        "sha1_git": "404a05f3004bfff6ba4549b01ef7e1e4acdbd1a3",
+        "sha256": "494060b87197c489497a038504147c435b1d09306152048add42ba0d7d16e747",
+        "size": 639,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "nothing",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".c",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": null,
+        "name": "nothing.c",
+        "package_data": [],
+        "path": "package/nothing.c",
+        "percentage_of_license_text": 0,
+        "programming_language": "C",
+        "scan_errors": [],
+        "sha1": null,
+        "sha1_git": null,
+        "sha256": null,
+        "size": 0,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 450,
+                "from_file": "313c14bab6616849ae58060d7390725f67492b5fa5cfe5c166321142f9b49a5d/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"MIT\",",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 450
+              }
+            ]
+          }
+        ],
+        "md5": "b3e7719d7cc658650e50959cbda1c919",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/node-addon-api/7.1.1",
+            "bug_tracking_url": "https://github.com/nodejs/node-addon-api/issues",
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "mit",
+            "declared_license_expression_spdx": "MIT",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.12.7",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/path",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.2.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/pre-commit",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.4.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/clang-format",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^1.5.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/bindings",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^11.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint-plugin-node",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^11.1.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/fs-extra",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^16.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint-config-semistandard",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^16.0.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint-config-standard",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.1.4",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/benchmark",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.24.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint-plugin-import",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint-plugin-promise",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.1.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/safe-buffer",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^7.32.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/eslint",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "Node.js API (Node-API)",
+            "download_url": "https://registry.npmjs.org/node-addon-api/-/node-addon-api-7.1.1.tgz",
+            "extra_data": {},
+            "extracted_license_statement": "- MIT\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://github.com/nodejs/node-addon-api",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "addon",
+              "bindings",
+              "c",
+              "c++",
+              "n-api",
+              "nan",
+              "napi",
+              "native",
+              "node-addon-api"
+            ],
+            "license_detections": [
+              {
+                "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "313c14bab6616849ae58060d7390725f67492b5fa5cfe5c166321142f9b49a5d/package/package.json",
+                    "license_expression": "mit",
+                    "license_expression_spdx": "MIT",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "MIT",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "node-addon-api",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": null,
+                "name": "Abhishek Kumar Singh",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/abhi11210646"
+              },
+              {
+                "email": null,
+                "name": "Alba Mendez",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/jmendeth"
+              },
+              {
+                "email": null,
+                "name": "Alexander Floh",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/alexanderfloh"
+              },
+              {
+                "email": null,
+                "name": "Ammar Faizi",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/ammarfaizi2"
+              },
+              {
+                "email": null,
+                "name": "Andrew Petersen",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/kirbysayshi"
+              },
+              {
+                "email": null,
+                "name": "András Timár, Dr",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/timarandras"
+              },
+              {
+                "email": null,
+                "name": "Anisha Rohra",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/anisha-rohra"
+              },
+              {
+                "email": null,
+                "name": "Anna Henningsen",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/addaleax"
+              },
+              {
+                "email": null,
+                "name": "Arnaud Botella",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/BotellaA"
+              },
+              {
+                "email": null,
+                "name": "Arunesh Chandra",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/aruneshchandra"
+              },
+              {
+                "email": null,
+                "name": "Azlan Mukhtar",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/azlan"
+              },
+              {
+                "email": null,
+                "name": "Ben Berman",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/rivertam"
+              },
+              {
+                "email": null,
+                "name": "Benjamin Byholm",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/kkoopa"
+              },
+              {
+                "email": null,
+                "name": "Bill Gallafent",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/gallafent"
+              },
+              {
+                "email": null,
+                "name": "Bruce A. MacNaughton",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/bmacnaughton"
+              },
+              {
+                "email": null,
+                "name": "Caleb Hearon",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/chearon"
+              },
+              {
+                "email": null,
+                "name": "Cory Mickelson",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/corymickelson"
+              },
+              {
+                "email": null,
+                "name": "Daniel Bevenius",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/danbev"
+              },
+              {
+                "email": null,
+                "name": "Dante Calderón",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/dantehemerson"
+              },
+              {
+                "email": null,
+                "name": "Darshan Sen",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/RaisinTen"
+              },
+              {
+                "email": null,
+                "name": "David Halls",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/davedoesdev"
+              },
+              {
+                "email": null,
+                "name": "Deepak Rajamohan",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/deepakrkris"
+              },
+              {
+                "email": null,
+                "name": "Dmitry Ashkadov",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/dmitryash"
+              },
+              {
+                "email": null,
+                "name": "Dongjin Na",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/nadongguri"
+              },
+              {
+                "email": null,
+                "name": "Doni Rubiagatra",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/rubiagatra"
+              },
+              {
+                "email": null,
+                "name": "Eric Bickle",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/ebickle"
+              },
+              {
+                "email": null,
+                "name": "Feng Yu",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/F3n67u"
+              },
+              {
+                "email": null,
+                "name": "Feng Yu",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/F3n67u"
+              },
+              {
+                "email": null,
+                "name": "Ferdinand Holzer",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/fholzer"
+              },
+              {
+                "email": null,
+                "name": "Gabriel Schulhof",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/gabrielschulhof"
+              },
+              {
+                "email": null,
+                "name": "Guenter Sandner",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/gms1"
+              },
+              {
+                "email": null,
+                "name": "Gus Caplan",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/devsnek"
+              },
+              {
+                "email": null,
+                "name": "Helio Frota",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/helio-frota"
+              },
+              {
+                "email": null,
+                "name": "Hitesh Kanwathirtha",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/digitalinfinity"
+              },
+              {
+                "email": null,
+                "name": "Jack Xia",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/JckXia"
+              },
+              {
+                "email": null,
+                "name": "Jake Barnes",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/DuBistKomisch"
+              },
+              {
+                "email": null,
+                "name": "Jake Yoon",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/yjaeseok"
+              },
+              {
+                "email": null,
+                "name": "Jason Ginchereau",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/jasongin"
+              },
+              {
+                "email": null,
+                "name": "Jenny",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/egg-bread"
+              },
+              {
+                "email": null,
+                "name": "Jeroen Janssen",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/japj"
+              },
+              {
+                "email": null,
+                "name": "Jim Schlight",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/jschlight"
+              },
+              {
+                "email": null,
+                "name": "Jinho Bang",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/romandev"
+              },
+              {
+                "email": null,
+                "name": "José Expósito",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/JoseExposito"
+              },
+              {
+                "email": null,
+                "name": "Julian Mesa",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/julianmesa-gitkraken"
+              },
+              {
+                "email": null,
+                "name": "Kasumi Hanazuki",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/hanazuki"
+              },
+              {
+                "email": null,
+                "name": "Kelvin",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/kelvinhammond"
+              },
+              {
+                "email": null,
+                "name": "Kevin Eady",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/KevinEady"
+              },
+              {
+                "email": null,
+                "name": "Koki Nishihara",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/Nishikoh"
+              },
+              {
+                "email": null,
+                "name": "Konstantin Tarkus",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/koistya"
+              },
+              {
+                "email": null,
+                "name": "Kyle Farnung",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/kfarnung"
+              },
+              {
+                "email": null,
+                "name": "Kyle Kovacs",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/nullromo"
+              },
+              {
+                "email": null,
+                "name": "Kévin VOYER",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/kecsou"
+              },
+              {
+                "email": null,
+                "name": "LongYinan",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/Brooooooklyn"
+              },
+              {
+                "email": null,
+                "name": "Lovell Fuller",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/lovell"
+              },
+              {
+                "email": null,
+                "name": "Luciano Martorella",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/lmartorella"
+              },
+              {
+                "email": null,
+                "name": "Marx",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/MarxJiao"
+              },
+              {
+                "email": null,
+                "name": "Mathias Küsel",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/mathiask88"
+              },
+              {
+                "email": null,
+                "name": "Mathias Stearn",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/RedBeard0531"
+              },
+              {
+                "email": null,
+                "name": "Matteo Collina",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/mcollina"
+              },
+              {
+                "email": null,
+                "name": "Michael Dawson",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/mhdawson"
+              },
+              {
+                "email": null,
+                "name": "Michael Price",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/mikepricedev"
+              },
+              {
+                "email": null,
+                "name": "Michele Campus",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/kYroL01"
+              },
+              {
+                "email": null,
+                "name": "Mikhail Cheshkov",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/mcheshkov"
+              },
+              {
+                "email": null,
+                "name": "Nick Soggin",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/iSkore"
+              },
+              {
+                "email": null,
+                "name": "Nicola Del Gobbo",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/NickNaso"
+              },
+              {
+                "email": null,
+                "name": "Nikolai Vavilov",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/seishun"
+              },
+              {
+                "email": null,
+                "name": "Nurbol Alpysbayev",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/anurbol"
+              },
+              {
+                "email": null,
+                "name": "Peter Šándor",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/petersandor"
+              },
+              {
+                "email": null,
+                "name": "Philipp Renoth",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/DaAitch"
+              },
+              {
+                "email": null,
+                "name": "Richard Lau",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/richardlau"
+              },
+              {
+                "email": null,
+                "name": "Rolf Timmermans",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/rolftimmermans"
+              },
+              {
+                "email": null,
+                "name": "Ross Weir",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/ross-weir"
+              },
+              {
+                "email": null,
+                "name": "Ryuichi Okumura",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/okuryu"
+              },
+              {
+                "email": null,
+                "name": "Saint Gabriel",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/chineduG"
+              },
+              {
+                "email": null,
+                "name": "Sam Roberts",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/sam-github"
+              },
+              {
+                "email": null,
+                "name": "Sampson Gao",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/sampsongao"
+              },
+              {
+                "email": null,
+                "name": "Taylor Woll",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/boingoing"
+              },
+              {
+                "email": null,
+                "name": "Thomas Gentilhomme",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/fraxken"
+              },
+              {
+                "email": null,
+                "name": "Tim Rach",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/timrach"
+              },
+              {
+                "email": null,
+                "name": "Tobias Nießen",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/tniessen"
+              },
+              {
+                "email": null,
+                "name": "Toyo Li",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/toyobayashi"
+              },
+              {
+                "email": null,
+                "name": "Tux3",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/tux3"
+              },
+              {
+                "email": null,
+                "name": "Vlad Velmisov",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/Velmisov"
+              },
+              {
+                "email": null,
+                "name": "Vladimir Morozov",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/vmoroz"
+              },
+              {
+                "email": null,
+                "name": "WenheLI",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/WenheLI"
+              },
+              {
+                "email": null,
+                "name": "Xuguang Mei",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/meixg"
+              },
+              {
+                "email": null,
+                "name": "Yohei Kishimoto",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/morokosi"
+              },
+              {
+                "email": null,
+                "name": "Yulong Wang",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/fs-eire"
+              },
+              {
+                "email": null,
+                "name": "Ziqiu Zhao",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/ZzqiZQute"
+              },
+              {
+                "email": null,
+                "name": "blagoev",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/blagoev"
+              },
+              {
+                "email": null,
+                "name": "extremeheat",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/extremeheat"
+              },
+              {
+                "email": null,
+                "name": "ikokostya",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/ikokostya"
+              },
+              {
+                "email": null,
+                "name": "joshgarde",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/joshgarde"
+              },
+              {
+                "email": null,
+                "name": "kidneysolo",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/kidneysolo"
+              },
+              {
+                "email": null,
+                "name": "legendecas",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/legendecas"
+              },
+              {
+                "email": null,
+                "name": "mastergberry",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/mastergberry"
+              },
+              {
+                "email": null,
+                "name": "nempoBu4",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/nempoBu4"
+              },
+              {
+                "email": null,
+                "name": "pacop",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/pacop"
+              },
+              {
+                "email": null,
+                "name": "rgerd",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/rgerd"
+              },
+              {
+                "email": null,
+                "name": "strager",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/strager"
+              },
+              {
+                "email": null,
+                "name": "todoroff",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/todoroff"
+              },
+              {
+                "email": null,
+                "name": "wanlu wang",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/wanlu"
+              },
+              {
+                "email": null,
+                "name": "Ömer AKGÜL",
+                "role": "contributor",
+                "type": "person",
+                "url": "https://github.com/tuhalf"
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/node-addon-api@7.1.1",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/node-addon-api/-/node-addon-api-7.1.1.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/node-addon-api",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git://github.com/nodejs/node-addon-api.git",
+            "version": "7.1.1"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 0.19,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "7823e132377d718289188b35c5c8c362e8d89953",
+        "sha1_git": "d772ddc955609ebf5bfd0206ea5b3bde5e264b75",
+        "sha256": "e4947cf10e432c42459e60a00947ccd1ad2501e16cf1a530b3d39f0c2de5c83f",
+        "size": 10784,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "package-support",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/node-addon-api@7.1.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "33e3fb94807bcd5102535f476c6a46a8",
+        "name": "package-support.json",
+        "package_data": [],
+        "path": "package/package-support.json",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "dedc07e9973f104e29d2eee9ad3468b0f40dd620",
+        "sha1_git": "10d3607ac46569c9e5e1c890996cc5ab6bbb07d1",
+        "sha256": "b1cb7da23cca1681c7392a3c889eb0cc4916c53d2d7692d4b654ae751f3442f3",
+        "size": 467,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "mit-3cd29b42-4c31-f847-99c7-d1cb35d64a01",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 316,
+            "from_file": "313c14bab6616849ae58060d7390725f67492b5fa5cfe5c166321142f9b49a5d/package/README.md",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 5,
+            "matched_text": "<a name=\"license\"></a>\n\nLicensed under [MIT](./LICENSE.md)",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_497.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_497.RULE",
+            "score": 100,
+            "start_line": 314
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 450,
+            "from_file": "313c14bab6616849ae58060d7390725f67492b5fa5cfe5c166321142f9b49a5d/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "  \"license\": \"MIT\",",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_30.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+            "score": 100,
+            "start_line": 450
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-86fcf017-3572-9813-b7e8-0a10ec4a120f",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "313c14bab6616849ae58060d7390725f67492b5fa5cfe5c166321142f9b49a5d/package/LICENSE.md",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 4,
+            "matched_text": "The MIT License (MIT)",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_26.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+            "score": 100,
+            "start_line": 1
+          },
+          {
+            "end_line": 9,
+            "from_file": "313c14bab6616849ae58060d7390725f67492b5fa5cfe5c166321142f9b49a5d/package/LICENSE.md",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 161,
+            "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,\n subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+            "score": 100,
+            "start_line": 5
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "313c14bab6616849ae58060d7390725f67492b5fa5cfe5c166321142f9b49a5d/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "MIT",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "mit.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 161,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+      },
+      {
+        "identifier": "mit_26.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 4,
+        "license_expression": "mit",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_26.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "{{The MIT License}} (MIT)"
+      },
+      {
+        "identifier": "mit_30.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: MIT"
+      },
+      {
+        "identifier": "mit_497.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 5,
+        "license_expression": "mit",
+        "minimum_coverage": 80,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_497.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "license   {{Licensed under MIT}} license"
+      },
+      {
+        "identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/node-addon-api/7.1.1",
+        "bug_tracking_url": "https://github.com/nodejs/node-addon-api/issues",
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "mit",
+        "declared_license_expression_spdx": "MIT",
+        "description": "Node.js API (Node-API)",
+        "download_url": "https://registry.npmjs.org/node-addon-api/-/node-addon-api-7.1.1.tgz",
+        "extra_data": {},
+        "extracted_license_statement": "- MIT\n",
+        "holder": null,
+        "homepage_url": "https://github.com/nodejs/node-addon-api",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "addon",
+          "bindings",
+          "c",
+          "c++",
+          "n-api",
+          "nan",
+          "napi",
+          "native",
+          "node-addon-api"
+        ],
+        "license_detections": [
+          {
+            "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "313c14bab6616849ae58060d7390725f67492b5fa5cfe5c166321142f9b49a5d/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "MIT",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "node-addon-api",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": null,
+            "name": "Abhishek Kumar Singh",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/abhi11210646"
+          },
+          {
+            "email": null,
+            "name": "Alba Mendez",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/jmendeth"
+          },
+          {
+            "email": null,
+            "name": "Alexander Floh",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/alexanderfloh"
+          },
+          {
+            "email": null,
+            "name": "Ammar Faizi",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/ammarfaizi2"
+          },
+          {
+            "email": null,
+            "name": "Andrew Petersen",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/kirbysayshi"
+          },
+          {
+            "email": null,
+            "name": "András Timár, Dr",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/timarandras"
+          },
+          {
+            "email": null,
+            "name": "Anisha Rohra",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/anisha-rohra"
+          },
+          {
+            "email": null,
+            "name": "Anna Henningsen",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/addaleax"
+          },
+          {
+            "email": null,
+            "name": "Arnaud Botella",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/BotellaA"
+          },
+          {
+            "email": null,
+            "name": "Arunesh Chandra",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/aruneshchandra"
+          },
+          {
+            "email": null,
+            "name": "Azlan Mukhtar",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/azlan"
+          },
+          {
+            "email": null,
+            "name": "Ben Berman",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/rivertam"
+          },
+          {
+            "email": null,
+            "name": "Benjamin Byholm",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/kkoopa"
+          },
+          {
+            "email": null,
+            "name": "Bill Gallafent",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/gallafent"
+          },
+          {
+            "email": null,
+            "name": "Bruce A. MacNaughton",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/bmacnaughton"
+          },
+          {
+            "email": null,
+            "name": "Caleb Hearon",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/chearon"
+          },
+          {
+            "email": null,
+            "name": "Cory Mickelson",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/corymickelson"
+          },
+          {
+            "email": null,
+            "name": "Daniel Bevenius",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/danbev"
+          },
+          {
+            "email": null,
+            "name": "Dante Calderón",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/dantehemerson"
+          },
+          {
+            "email": null,
+            "name": "Darshan Sen",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/RaisinTen"
+          },
+          {
+            "email": null,
+            "name": "David Halls",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/davedoesdev"
+          },
+          {
+            "email": null,
+            "name": "Deepak Rajamohan",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/deepakrkris"
+          },
+          {
+            "email": null,
+            "name": "Dmitry Ashkadov",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/dmitryash"
+          },
+          {
+            "email": null,
+            "name": "Dongjin Na",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/nadongguri"
+          },
+          {
+            "email": null,
+            "name": "Doni Rubiagatra",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/rubiagatra"
+          },
+          {
+            "email": null,
+            "name": "Eric Bickle",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/ebickle"
+          },
+          {
+            "email": null,
+            "name": "Feng Yu",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/F3n67u"
+          },
+          {
+            "email": null,
+            "name": "Feng Yu",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/F3n67u"
+          },
+          {
+            "email": null,
+            "name": "Ferdinand Holzer",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/fholzer"
+          },
+          {
+            "email": null,
+            "name": "Gabriel Schulhof",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/gabrielschulhof"
+          },
+          {
+            "email": null,
+            "name": "Guenter Sandner",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/gms1"
+          },
+          {
+            "email": null,
+            "name": "Gus Caplan",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/devsnek"
+          },
+          {
+            "email": null,
+            "name": "Helio Frota",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/helio-frota"
+          },
+          {
+            "email": null,
+            "name": "Hitesh Kanwathirtha",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/digitalinfinity"
+          },
+          {
+            "email": null,
+            "name": "Jack Xia",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/JckXia"
+          },
+          {
+            "email": null,
+            "name": "Jake Barnes",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/DuBistKomisch"
+          },
+          {
+            "email": null,
+            "name": "Jake Yoon",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/yjaeseok"
+          },
+          {
+            "email": null,
+            "name": "Jason Ginchereau",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/jasongin"
+          },
+          {
+            "email": null,
+            "name": "Jenny",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/egg-bread"
+          },
+          {
+            "email": null,
+            "name": "Jeroen Janssen",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/japj"
+          },
+          {
+            "email": null,
+            "name": "Jim Schlight",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/jschlight"
+          },
+          {
+            "email": null,
+            "name": "Jinho Bang",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/romandev"
+          },
+          {
+            "email": null,
+            "name": "José Expósito",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/JoseExposito"
+          },
+          {
+            "email": null,
+            "name": "Julian Mesa",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/julianmesa-gitkraken"
+          },
+          {
+            "email": null,
+            "name": "Kasumi Hanazuki",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/hanazuki"
+          },
+          {
+            "email": null,
+            "name": "Kelvin",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/kelvinhammond"
+          },
+          {
+            "email": null,
+            "name": "Kevin Eady",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/KevinEady"
+          },
+          {
+            "email": null,
+            "name": "Koki Nishihara",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/Nishikoh"
+          },
+          {
+            "email": null,
+            "name": "Konstantin Tarkus",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/koistya"
+          },
+          {
+            "email": null,
+            "name": "Kyle Farnung",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/kfarnung"
+          },
+          {
+            "email": null,
+            "name": "Kyle Kovacs",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/nullromo"
+          },
+          {
+            "email": null,
+            "name": "Kévin VOYER",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/kecsou"
+          },
+          {
+            "email": null,
+            "name": "LongYinan",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/Brooooooklyn"
+          },
+          {
+            "email": null,
+            "name": "Lovell Fuller",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/lovell"
+          },
+          {
+            "email": null,
+            "name": "Luciano Martorella",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/lmartorella"
+          },
+          {
+            "email": null,
+            "name": "Marx",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/MarxJiao"
+          },
+          {
+            "email": null,
+            "name": "Mathias Küsel",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/mathiask88"
+          },
+          {
+            "email": null,
+            "name": "Mathias Stearn",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/RedBeard0531"
+          },
+          {
+            "email": null,
+            "name": "Matteo Collina",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/mcollina"
+          },
+          {
+            "email": null,
+            "name": "Michael Dawson",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/mhdawson"
+          },
+          {
+            "email": null,
+            "name": "Michael Price",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/mikepricedev"
+          },
+          {
+            "email": null,
+            "name": "Michele Campus",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/kYroL01"
+          },
+          {
+            "email": null,
+            "name": "Mikhail Cheshkov",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/mcheshkov"
+          },
+          {
+            "email": null,
+            "name": "Nick Soggin",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/iSkore"
+          },
+          {
+            "email": null,
+            "name": "Nicola Del Gobbo",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/NickNaso"
+          },
+          {
+            "email": null,
+            "name": "Nikolai Vavilov",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/seishun"
+          },
+          {
+            "email": null,
+            "name": "Nurbol Alpysbayev",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/anurbol"
+          },
+          {
+            "email": null,
+            "name": "Peter Šándor",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/petersandor"
+          },
+          {
+            "email": null,
+            "name": "Philipp Renoth",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/DaAitch"
+          },
+          {
+            "email": null,
+            "name": "Richard Lau",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/richardlau"
+          },
+          {
+            "email": null,
+            "name": "Rolf Timmermans",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/rolftimmermans"
+          },
+          {
+            "email": null,
+            "name": "Ross Weir",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/ross-weir"
+          },
+          {
+            "email": null,
+            "name": "Ryuichi Okumura",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/okuryu"
+          },
+          {
+            "email": null,
+            "name": "Saint Gabriel",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/chineduG"
+          },
+          {
+            "email": null,
+            "name": "Sam Roberts",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/sam-github"
+          },
+          {
+            "email": null,
+            "name": "Sampson Gao",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/sampsongao"
+          },
+          {
+            "email": null,
+            "name": "Taylor Woll",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/boingoing"
+          },
+          {
+            "email": null,
+            "name": "Thomas Gentilhomme",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/fraxken"
+          },
+          {
+            "email": null,
+            "name": "Tim Rach",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/timrach"
+          },
+          {
+            "email": null,
+            "name": "Tobias Nießen",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/tniessen"
+          },
+          {
+            "email": null,
+            "name": "Toyo Li",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/toyobayashi"
+          },
+          {
+            "email": null,
+            "name": "Tux3",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/tux3"
+          },
+          {
+            "email": null,
+            "name": "Vlad Velmisov",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/Velmisov"
+          },
+          {
+            "email": null,
+            "name": "Vladimir Morozov",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/vmoroz"
+          },
+          {
+            "email": null,
+            "name": "WenheLI",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/WenheLI"
+          },
+          {
+            "email": null,
+            "name": "Xuguang Mei",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/meixg"
+          },
+          {
+            "email": null,
+            "name": "Yohei Kishimoto",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/morokosi"
+          },
+          {
+            "email": null,
+            "name": "Yulong Wang",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/fs-eire"
+          },
+          {
+            "email": null,
+            "name": "Ziqiu Zhao",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/ZzqiZQute"
+          },
+          {
+            "email": null,
+            "name": "blagoev",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/blagoev"
+          },
+          {
+            "email": null,
+            "name": "extremeheat",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/extremeheat"
+          },
+          {
+            "email": null,
+            "name": "ikokostya",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/ikokostya"
+          },
+          {
+            "email": null,
+            "name": "joshgarde",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/joshgarde"
+          },
+          {
+            "email": null,
+            "name": "kidneysolo",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/kidneysolo"
+          },
+          {
+            "email": null,
+            "name": "legendecas",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/legendecas"
+          },
+          {
+            "email": null,
+            "name": "mastergberry",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/mastergberry"
+          },
+          {
+            "email": null,
+            "name": "nempoBu4",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/nempoBu4"
+          },
+          {
+            "email": null,
+            "name": "pacop",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/pacop"
+          },
+          {
+            "email": null,
+            "name": "rgerd",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/rgerd"
+          },
+          {
+            "email": null,
+            "name": "strager",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/strager"
+          },
+          {
+            "email": null,
+            "name": "todoroff",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/todoroff"
+          },
+          {
+            "email": null,
+            "name": "wanlu wang",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/wanlu"
+          },
+          {
+            "email": null,
+            "name": "Ömer AKGÜL",
+            "role": "contributor",
+            "type": "person",
+            "url": "https://github.com/tuhalf"
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/node-addon-api@7.1.1",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/node-addon-api/-/node-addon-api-7.1.1.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/node-addon-api",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git://github.com/nodejs/node-addon-api.git",
+        "version": "7.1.1"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

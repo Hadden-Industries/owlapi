@@ -1,0 +1,93 @@
+{
+  "artifactId": "a5f5b267deae3aafd8a8c3844f2a050fb8984ace009b96a1d803aac7769a7f47",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 5018,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/README.md",
+        "sha256": "b4807793db6058c819f76c023362b7d522b3d19c9b41563fcc01c2b2c5b1ccd3",
+        "size": 1394,
+        "type": "FILE"
+      },
+      {
+        "path": "package/deprecated.json",
+        "sha256": "29c9e630daa0adc09dec96ddeb6f81d1046210e81824bebda6486250450fb130",
+        "size": 512,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.json",
+        "sha256": "2e45ab65c2a1e4fbda9862ac01cfda5fac25a4ce5d37536052638c483db965ba",
+        "size": 11576,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6897dee2944aee17aff9226a9fc84ed07ab5f79d8606a20b76fdec93be73ff63",
+        "size": 547,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1394,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/b4/b4807793db6058c819f76c023362b7d522b3d19c9b41563fcc01c2b2c5b1ccd3",
+          "sha256": "b4807793db6058c819f76c023362b7d522b3d19c9b41563fcc01c2b2c5b1ccd3"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "b4807793db6058c819f76c023362b7d522b3d19c9b41563fcc01c2b2c5b1ccd3",
+        "size": 1394
+      }
+    ],
+    "expandedBytes": 14029,
+    "packageIdentity": {
+      "author": "Shinnosuke Watanabe (https://github.com/shinnn)",
+      "homepage": null,
+      "license": "CC0-1.0",
+      "name": "spdx-license-ids",
+      "repository": "jslicense/spdx-license-ids",
+      "version": "3.0.24"
+    },
+    "packageMetadata": {
+      "author": "Shinnosuke Watanabe (https://github.com/shinnn)",
+      "description": "A list of SPDX license identifiers",
+      "files": [
+        "deprecated.json",
+        "index.json"
+      ],
+      "keywords": [
+        "spdx",
+        "license",
+        "licenses",
+        "id",
+        "identifier",
+        "identifiers",
+        "json",
+        "array",
+        "oss"
+      ],
+      "license": "CC0-1.0",
+      "name": "spdx-license-ids",
+      "repository": "jslicense/spdx-license-ids",
+      "scripts": {
+        "build": "node build.js",
+        "latest": "node latest.js",
+        "pretest": "npm run build",
+        "test": "node test.js"
+      },
+      "version": "3.0.24"
+    },
+    "physicalEntryCount": 4,
+    "tarball": {
+      "bytes": 5018,
+      "sha256": "2ccb1debbc8a6f5c588d8bac9a0a9b2420c635ebe9a0eaccd11b6ebc4b91bd9c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

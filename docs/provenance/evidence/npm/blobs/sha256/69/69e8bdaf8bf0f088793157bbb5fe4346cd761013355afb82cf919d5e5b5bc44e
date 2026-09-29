@@ -1,0 +1,142 @@
+{
+  "artifactId": "cd4c39b257a12217ed82c6198ea3cc62df8a8e2fc4963d369abb8a06486d6137",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 439123,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/CHANGELOG.md",
+        "sha256": "e7c7856ef0f982e21ae0b650e257ad2907db4ad3d0b3966cbd138289962d492d",
+        "size": 38238,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "2e97627cb278aa7556fb9e8817368302301a595b6c7582512b8d74c57b773652",
+        "size": 1086,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "73c03df678cff2141c7f1949cf171a6b44257f4159ff0783dd61ecee9b1f6e54",
+        "size": 412,
+        "type": "FILE"
+      },
+      {
+        "path": "package/bin/babel-parser.js",
+        "sha256": "c7c62937ddbdad55475054a193073fca01092879a86b278182b28a850b8d4ebd",
+        "size": 363,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "82d72e197e27bf909ae10ffc8d1a969aeb94fe96ec96c4e9cb685a0a8229e40c",
+        "size": 513377,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js.map",
+        "sha256": "a826377a88d8d56daeeebcddce89bbf42f28b30d54e509d0996c9ba06b021441",
+        "size": 1436592,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "fa70cca00587bdb335e8249fa40e9356ed7b7c9a4fc92b1e74245ab1b852cda1",
+        "size": 1382,
+        "type": "FILE"
+      },
+      {
+        "path": "package/typings/babel-parser.d.ts",
+        "sha256": "e6ca59368dce5a594dcde9bbb6ae640d668fa6c28c31639dd2a75b731bb036a2",
+        "size": 9334,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1086,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2e/2e97627cb278aa7556fb9e8817368302301a595b6c7582512b8d74c57b773652",
+          "sha256": "2e97627cb278aa7556fb9e8817368302301a595b6c7582512b8d74c57b773652"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "2e97627cb278aa7556fb9e8817368302301a595b6c7582512b8d74c57b773652",
+        "size": 1086
+      }
+    ],
+    "expandedBytes": 2000784,
+    "packageIdentity": {
+      "author": "The Babel Team (https://babel.dev/team)",
+      "homepage": "https://babel.dev/docs/en/next/babel-parser",
+      "license": "MIT",
+      "name": "@babel/parser",
+      "repository": {
+        "directory": "packages/babel-parser",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "version": "7.29.9"
+    },
+    "packageMetadata": {
+      "# dependencies": "This package doesn't actually have runtime dependencies. @babel/types is only needed for type definitions.",
+      "author": "The Babel Team (https://babel.dev/team)",
+      "bin": "./bin/babel-parser.js",
+      "bugs": "https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22pkg%3A+parser+%28babylon%29%22+is%3Aopen",
+      "dependencies": {
+        "@babel/types": "^7.29.8"
+      },
+      "description": "A JavaScript parser",
+      "devDependencies": {
+        "@babel/code-frame": "^7.29.7",
+        "@babel/helper-check-duplicate-nodes": "^7.29.7",
+        "@babel/helper-fixtures": "^7.29.7",
+        "@babel/helper-string-parser": "^7.29.7",
+        "@babel/helper-validator-identifier": "^7.29.7",
+        "charcodes": "^0.2.0"
+      },
+      "engines": {
+        "node": ">=6.0.0"
+      },
+      "files": [
+        "bin",
+        "lib",
+        "typings/babel-parser.d.ts",
+        "index.cjs"
+      ],
+      "homepage": "https://babel.dev/docs/en/next/babel-parser",
+      "keywords": [
+        "babel",
+        "javascript",
+        "parser",
+        "tc39",
+        "ecmascript",
+        "@babel/parser"
+      ],
+      "license": "MIT",
+      "main": "./lib/index.js",
+      "name": "@babel/parser",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/babel-parser",
+        "type": "git",
+        "url": "https://github.com/babel/babel.git"
+      },
+      "type": "commonjs",
+      "types": "./typings/babel-parser.d.ts",
+      "version": "7.29.9"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 439123,
+      "sha256": "8f3b9fbc531e0c08e2c329cf1ff57bbe121e2d10061b65a05614a25b2255cc43"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

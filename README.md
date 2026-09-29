@@ -25,7 +25,7 @@ npm install owlapi@0.1.0-rc.1
 
 Until a production version is published under `latest`, an unqualified `npm install owlapi` is intentionally not a supported installation path.
 
-The package requires Node.js `>=22.23.2 <23 || >=24.19.0 <25`. Browser applications can consume the same native ESM through a package-aware bundler or an application-owned import map. No official TypeScript declarations are included in the initial release.
+The package requires Node.js `>=22.23.3 <23 || >=24.21.0 <25`. Browser applications can consume the same native ESM through a package-aware bundler or an application-owned import map. No official TypeScript declarations are included in the initial release.
 
 ## Load an ontology
 
