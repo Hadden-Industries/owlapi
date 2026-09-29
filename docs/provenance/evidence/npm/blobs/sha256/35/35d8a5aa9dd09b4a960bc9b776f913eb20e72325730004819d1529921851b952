@@ -1,0 +1,165 @@
+{
+  "artifactId": "d17513d287febb51262ee7e8a64951e5206b61151b4da49dbe30177fd64b6b55",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3833,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/dev/index.d.ts",
+        "sha256": "b68d980f1f1971a8a1c03c3c7aeb92a37f7452b14eb71f360554d27574eeb4f7",
+        "size": 521,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/index.d.ts.map",
+        "sha256": "2d5c9c623a62a06e0ed0dc1f3adb6bb9b47ddcb3e4af58ec78dd6e1dfcf85586",
+        "size": 161,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dev/index.js",
+        "sha256": "fe7b041bee3148ec7ef3e397ceeebc29b8aa2601860b22c29c83da054abbe0db",
+        "size": 1222,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts",
+        "sha256": "b68d980f1f1971a8a1c03c3c7aeb92a37f7452b14eb71f360554d27574eeb4f7",
+        "size": 521,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.d.ts.map",
+        "sha256": "2d5c9c623a62a06e0ed0dc1f3adb6bb9b47ddcb3e4af58ec78dd6e1dfcf85586",
+        "size": 161,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "74d2139b3651d79a7f4c1d3b21159d9c89459256e12b263ed2eb6b4fce599f87",
+        "size": 1061,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "b4eda7dc69734392cf0c79313423b21dacfe03ae43002e5fc18151613f37f532",
+        "size": 1363,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "2cc84955b72124ec1936f4ff39922793e2c3f789dd547c8770c70571a5513515",
+        "size": 5310,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1094,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dd/dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+          "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094
+      },
+      {
+        "blob": {
+          "bytes": 5310,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/2c/2cc84955b72124ec1936f4ff39922793e2c3f789dd547c8770c70571a5513515",
+          "sha256": "2cc84955b72124ec1936f4ff39922793e2c3f789dd547c8770c70571a5513515"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "2cc84955b72124ec1936f4ff39922793e2c3f789dd547c8770c70571a5513515",
+        "size": 5310
+      }
+    ],
+    "expandedBytes": 11414,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "micromark-util-decode-numeric-character-reference",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-decode-numeric-character-reference",
+      "version": "2.0.2"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/micromark/micromark/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "micromark-util-symbol": "^2.0.0"
+      },
+      "description": "micromark utility to decode numeric character references",
+      "exports": {
+        "default": "./index.js",
+        "development": "./dev/index.js"
+      },
+      "files": [
+        "dev/",
+        "index.d.ts.map",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": [
+        {
+          "type": "GitHub Sponsors",
+          "url": "https://github.com/sponsors/unifiedjs"
+        },
+        {
+          "type": "OpenCollective",
+          "url": "https://opencollective.com/unified"
+        }
+      ],
+      "keywords": [
+        "micromark",
+        "util",
+        "utility",
+        "decode",
+        "numeric",
+        "number",
+        "character",
+        "reference"
+      ],
+      "license": "MIT",
+      "name": "micromark-util-decode-numeric-character-reference",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-decode-numeric-character-reference",
+      "scripts": {
+        "build": "micromark-build"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "version": "2.0.2",
+      "xo": {
+        "envs": [
+          "shared-node-browser"
+        ],
+        "prettier": true,
+        "rules": {
+          "unicorn/prefer-code-point": "off"
+        }
+      }
+    },
+    "physicalEntryCount": 9,
+    "tarball": {
+      "bytes": 3833,
+      "sha256": "cd26a08f068727f3cc892e8f2549b85065362bd920506649386c791fe349db98"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

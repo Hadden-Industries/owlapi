@@ -1,10 +1,7 @@
 # Phase 19D Pre-Registry Consumer Decoupling Implementation Plan
 
-> **Status:** Ready for implementation after approval of this plan.<br>
-> **Execution:** Implement inline and test-first, without subagents. Treat configuration approval, formal review, commit, and push as distinct gates.<br>
-> **Cross-repository design:** [`Hadden-Industries/webvowl` design commit `1da5a564`](https://github.com/Hadden-Industries/webvowl/blob/1da5a5646779eb414ee58f79ffc9cad38ff32244/docs/specs/2026-08-31-pre-registry-owlapi-webvowl-decoupling-design.md).<br>
-> **Consumer plan:** [`Hadden-Industries/webvowl/docs/plans/owlapi-pre-registry-consumer-cutover.md`](https://github.com/Hadden-Industries/webvowl/blob/main/docs/plans/owlapi-pre-registry-consumer-cutover.md).<br>
-> **Goal:** Amend the canonical release contract so npm namespace delay no longer blocks independent WebVOWL development, prove that installing the exact package-source Git commit produces the same package tree as the retained qualified alpha tarball, and preserve public registry publication as the final Phase 19D completion gate.
+> **Status:** Ready for implementation after approval of this plan.<br> **Execution:** Implement inline and test-first, without subagents.
+> Treat configuration approval, formal review, commit, and push as distinct gates.<br> **Cross-repository design:** [`Hadden-Industries/webvowl` design commit `1da5a564`](https://github.com/Hadden-Industries/webvowl/blob/1da5a5646779eb414ee58f79ffc9cad38ff32244/docs/specs/2026-08-31-pre-registry-owlapi-webvowl-decoupling-design.md).<br> **Consumer plan:** [`Hadden-Industries/webvowl/docs/plans/owlapi-pre-registry-consumer-cutover.md`](https://github.com/Hadden-Industries/webvowl/blob/main/docs/plans/owlapi-pre-registry-consumer-cutover.md).<br> **Goal:** Amend the canonical release contract so npm namespace delay no longer blocks independent WebVOWL development, prove that installing the exact package-source Git commit produces the same package tree as the retained qualified alpha tarball, and preserve public registry publication as the final Phase 19D completion gate.
 
 ## Fixed decisions
 
@@ -13,35 +10,55 @@
   - **19D2:** after public-alpha verification, WebVOWL replaces that transport with exact registry `owlapi@0.1.0-alpha.0` plus registry URL/SRI and removes every Git allowance.
 - The only provisional Git coordinate is `git+https://github.com/Hadden-Industries/owlapi.git#caabb1197ffdab91c1e10d596d177b5142aea5c1`.
 - The retained candidate is the exact candidate artifact selected by `docs/release/publication-control.json`, not a newly packed approximation or an arbitrary local `.release` directory.
-- A Git install supplies provisional source-commit evidence only. It does not supply registry SRI, registry signature, npm provenance, publication attestation, distribution-tag, or immutable public-coordinate evidence.
-- Existing Phase 19 requirement IDs, checkpoint enum, ownership, applicability, failure semantics, and child-gate topology remain unchanged. Only approved normalized requirement/checklist wording and derived digests move.
-- Historical gate-result records remain bound to their former registry/catalogue/checklist hashes. Do not rewrite them as if they evaluated the amended wording.
+- A Git install supplies provisional source-commit evidence only.
+  It does not supply registry SRI, registry signature, npm provenance, publication attestation, distribution-tag, or immutable public-coordinate evidence.
+- Existing Phase 19 requirement IDs, checkpoint enum, ownership, applicability, failure semantics, and child-gate topology remain unchanged.
+  Only approved normalized requirement/checklist wording and derived digests move.
+- Historical gate-result records remain bound to their former registry/catalogue/checklist hashes.
+  Do not rewrite them as if they evaluated the amended wording.
 - No release workflow, publication authority, package source, exports, runtime dependency, or package version changes in this checkpoint.
 
 ## Observed Phase 19D1 WebVOWL checkpoint
 
-> **Evidence status:** This records a successfully pushed and qualified pre-registry consumer checkpoint. It does not change a release-gate result or establish completion of Phase 19D2, `P19-WEBVOWL-001`, `P19-CHECKPOINT-001`, or Phase 19.
+> **Evidence status:** This records a successfully pushed and qualified pre-registry consumer checkpoint.
+> It does not change a release-gate result or establish completion of Phase 19D2, `P19-WEBVOWL-001`, `P19-CHECKPOINT-001`, or Phase 19.
 
-The immutable Git/GitHub and committed package-boundary facts below were reverified on 2026-09-01. The qualification results are separate witnessed executions from the 2026-08-31 WebVOWL cutover and were not rerun on 2026-09-01.
+The immutable Git/GitHub and committed package-boundary facts below were reverified on 2026-09-01.
+The qualification results are separate witnessed executions from the 2026-08-31 WebVOWL cutover and were not rerun on 2026-09-01.
 
-- **Immutable consumer revision:** signed commit [`21003ad50d04bf3b714ed94a5cb6b7470c5a65d6`](https://github.com/Hadden-Industries/webvowl/commit/21003ad50d04bf3b714ed94a5cb6b7470c5a65d6), subject `refactor(owl2vowl): Consume standalone owlapi package`, parent `1da5a5646779eb414ee58f79ffc9cad38ff32244`, tree `83e9cc76a90d2b920d0ddf81b1db8fd4cf37e387`, and Git-normalized commit-message SHA-256 `fd18fba5e6799071ba41c8f9a426dabd1b81e7f64d1b2d260af28ebb387af52d`. The guarded push to `refs/heads/main` was witnessed, and the commit remains an ancestor of the observed remote `main`.
-- **Signature authentication:** `git verify-commit --raw` succeeded against the operator's configured allowed-signers file for `maksym@shostak.info`, ED25519 key fingerprint `SHA256:0lELaqBbgGHdSctv4GOpPmROX56wNCaii2PLZI5pXCU`; GitHub independently reported `verified: true`, reason `valid`, at `2026-08-31T20:19:53Z`. This establishes authentication under that local policy and GitHub account-key association; it does not claim authorization under owlapi's release-tag signer registry or a WebVOWL repository policy.
-- **Exact package boundary:** `package.json` and `package-lock.json` at that revision select only `git+https://github.com/Hadden-Industries/owlapi.git#caabb1197ffdab91c1e10d596d177b5142aea5c1`, installed as `owlapi@0.1.0-alpha.0`. The maintained AST boundary gate permits only `owlapi`, `owlapi/apibinding`, `owlapi/model`, `owlapi/io`, and `owlapi/formats`; the former `src/owlapi-js/**` package source copy and package-development utilities are absent.
-- **Maintained-checkout qualification:** 64 Jest suites and 585 tests passed, together with formatting, JavaScript lint, development and production builds, lazy N3/JSON-LD chunk verification, and `git diff --check`. `npm ls owlapi` and the complete dependency tree were valid, and relocated WebVOWL-owned fixture blobs matched their source bytes.
-- **Isolated qualification:** an earlier clean clone passed `npm ci`, the then-current 64 suites and 582 tests, both builds, and Chromium, Firefox, and WebKit fixture checks without a sibling `owlapi` checkout or ancestor dependency tree. The remaining three tests were added by the later AST boundary-scanner repair. No GitHub-hosted check runs were returned for the checkpoint commit; these are witnessed maintained-checkout and isolated-clone results, not a GitHub Actions attestation.
-- **Package equivalence source of truth:** the reviewed [`pre-registry-git-equivalence.json`](../release/pre-registry-git-equivalence.json) remains the non-duplicated authority for retained-candidate versus exact-Git installed-tree equivalence. Its result is `PASS` and its qualification summary digest is `sha256:2a05663b2970dcf30c2b6af9bf51e01ff7c464475b9df01a753a4dd46e66fabf`.
-- **Review fidelity:** an earlier built-in review found one P2 in the consumer boundary scanner. That finding was fixed test-first with ESLint AST traversal and the checks above were rerun; the final full built-in `/review` rerun was explicitly waived, so this checkpoint does not claim one occurred.
+- **Immutable consumer revision:** signed commit [`21003ad50d04bf3b714ed94a5cb6b7470c5a65d6`](https://github.com/Hadden-Industries/webvowl/commit/21003ad50d04bf3b714ed94a5cb6b7470c5a65d6), subject `refactor(owl2vowl): Consume standalone owlapi package`, parent `1da5a5646779eb414ee58f79ffc9cad38ff32244`, tree `83e9cc76a90d2b920d0ddf81b1db8fd4cf37e387`, and Git-normalized commit-message SHA-256 `fd18fba5e6799071ba41c8f9a426dabd1b81e7f64d1b2d260af28ebb387af52d`.
+  The guarded push to `refs/heads/main` was witnessed, and the commit remains an ancestor of the observed remote `main`.
+- **Signature authentication:** `git verify-commit --raw` succeeded against the operator's configured allowed-signers file for `maksym@shostak.info`, ED25519 key fingerprint `SHA256:0lELaqBbgGHdSctv4GOpPmROX56wNCaii2PLZI5pXCU`; GitHub independently reported `verified: true`, reason `valid`, at `2026-08-31T20:19:53Z`.
+  This establishes authentication under that local policy and GitHub account-key association; it does not claim authorization under owlapi's release-tag signer registry or a WebVOWL repository policy.
+- **Exact package boundary:** `package.json` and `package-lock.json` at that revision select only `git+https://github.com/Hadden-Industries/owlapi.git#caabb1197ffdab91c1e10d596d177b5142aea5c1`, installed as `owlapi@0.1.0-alpha.0`.
+  The maintained AST boundary gate permits only `owlapi`, `owlapi/apibinding`, `owlapi/model`, `owlapi/io`, and `owlapi/formats`; the former `src/owlapi-js/**` package source copy and package-development utilities are absent.
+- **Maintained-checkout qualification:** 64 Jest suites and 585 tests passed, together with formatting, JavaScript lint, development and production builds, lazy N3/JSON-LD chunk verification, and `git diff --check`.
+  `npm ls owlapi` and the complete dependency tree were valid, and relocated WebVOWL-owned fixture blobs matched their source bytes.
+- **Isolated qualification:** an earlier clean clone passed `npm ci`, the then-current 64 suites and 582 tests, both builds, and Chromium, Firefox, and WebKit fixture checks without a sibling `owlapi` checkout or ancestor dependency tree.
+  The remaining three tests were added by the later AST boundary-scanner repair.
+  No GitHub-hosted check runs were returned for the checkpoint commit; these are witnessed maintained-checkout and isolated-clone results, not a GitHub Actions attestation.
+- **Package equivalence source of truth:** the reviewed [`pre-registry-git-equivalence.json`](../release/pre-registry-git-equivalence.json) remains the non-duplicated authority for retained-candidate versus exact-Git installed-tree equivalence.
+  Its result is `PASS` and its qualification summary digest is `sha256:2a05663b2970dcf30c2b6af9bf51e01ff7c464475b9df01a753a4dd46e66fabf`.
+- **Review fidelity:** an earlier built-in review found one P2 in the consumer boundary scanner.
+  That finding was fixed test-first with ESLint AST traversal and the checks above were rerun; the final full built-in `/review` rerun was explicitly waived, so this checkpoint does not claim one occurred.
 
-This checkpoint permits independent WebVOWL development against the qualified Git-installed alpha, but it preserves all six limitations already recorded by the equivalence evidence: `NO_REGISTRY_INTEGRITY`, `NO_REGISTRY_SIGNATURE`, `NO_NPM_PROVENANCE`, `NO_PUBLICATION_ATTESTATION`, `NO_DISTRIBUTION_TAG`, and `NO_IMMUTABLE_PUBLIC_COORDINATE`. Phase 19D2 must replace, rather than supplement, the Git coordinate with the verified public-registry coordinate before the enclosing requirements can pass.
+This checkpoint permits independent WebVOWL development against the qualified Git-installed alpha, but it preserves all six limitations already recorded by the equivalence evidence: `NO_REGISTRY_INTEGRITY`, `NO_REGISTRY_SIGNATURE`, `NO_NPM_PROVENANCE`, `NO_PUBLICATION_ATTESTATION`, `NO_DISTRIBUTION_TAG`, and `NO_IMMUTABLE_PUBLIC_COORDINATE`.
+Phase 19D2 must replace, rather than supplement, the Git coordinate with the verified public-registry coordinate before the enclosing requirements can pass.
 
 ## Exact configuration approval gate
 
 Before implementing configuration changes, request one exact batch:
 
-1. `package.json`: add only `"qualify:git-package-equivalence": "node scripts/qualify-git-package-equivalence.mjs"`. This gives the qualification command the repository-authoritative npm CLI through `npm_execpath`; it changes no runtime export, dependency, version, or executable package behavior. Because `package.json` is itself packed metadata, a hypothetical new pack from the later tooling commit would contain this script entry; the gate therefore compares only the immutable retained candidate with the immutable package-source Git commit and never represents a current-`main` repack as the retained alpha.
-2. `docs/release/gates.json`: regenerate only the `requirementDigest` values for amended catalogue requirements and `rowDigest` values for amended derived checklist rows. Add/remove no requirement, checkpoint, owner, kind, applicability rule, dependency, or failure state.
+1. `package.json`: add only `"qualify:git-package-equivalence": "node scripts/qualify-git-package-equivalence.mjs"`.
+   This gives the qualification command the repository-authoritative npm CLI through `npm_execpath`; it changes no runtime export, dependency, version, or executable package behavior.
+   Because `package.json` is itself packed metadata, a hypothetical new pack from the later tooling commit would contain this script entry; the gate therefore compares only the immutable retained candidate with the immutable package-source Git commit and never represents a current-`main` repack as the retained alpha.
+2. `docs/release/gates.json`: regenerate only the `requirementDigest` values for amended catalogue requirements and `rowDigest` values for amended derived checklist rows.
+   Add/remove no requirement, checkpoint, owner, kind, applicability rule, dependency, or failure state.
 
-The command is local/release-control configuration. The gate registry is generated release configuration. The approved review-remediation batch also extends the newly introduced equivalence evidence with measured artifact-archive and accepted npm-configuration facts, and reuses the release-artifact module for strict ZIP parsing; it does not alter an established release schema or gate topology. Stop if implementation requires any workflow, established-schema topology, lockfile, dependency, or other configuration change.
+The command is local/release-control configuration.
+The gate registry is generated release configuration.
+The approved review-remediation batch also extends the newly introduced equivalence evidence with measured artifact-archive and accepted npm-configuration facts, and reuses the release-artifact module for strict ZIP parsing; it does not alter an established release schema or gate topology.
+Stop if implementation requires any workflow, established-schema topology, lockfile, dependency, or other configuration change.
 
 ## File map
 
@@ -63,7 +80,8 @@ The command is local/release-control configuration. The gate registry is generat
 - `governance.test.js` — validate the new evidence schema/document and its binding to `publication-control.json` and the package manifest.
 - `scripts/release-artifacts.mjs`, `scripts/release-artifacts.test.js` — add and test strict in-memory ZIP reading so qualification consumes bytes from the original GitHub artifact archive.
 
-No package source, export, workflow, lockfile, runtime dependency, licence classification, or third-party-material fact is modified. The existing rights inventory changes only because its exact source-byte manifest includes the packed `package.json`; carrying the old reviewed digest across the approved script addition would misstate the current packable tree.
+No package source, export, workflow, lockfile, runtime dependency, licence classification, or third-party-material fact is modified.
+The existing rights inventory changes only because its exact source-byte manifest includes the packed `package.json`; carrying the old reviewed digest across the approved script addition would misstate the current packable tree.
 
 ## Required interfaces
 
@@ -93,7 +111,9 @@ export function parseNpmConfigGetOutput(output);
 export function validateEffectiveNpmConfiguration(effective, paths);
 ```
 
-`mode` is the portable npm payload mode class (`regular` or `executable`) derived from file type and execute bits; platform-specific ownership/ACL data is not package content. Reject symlinks, junctions, special files, duplicate normalized paths, path escape, case collisions, and unreadable entries. Compare every file below `node_modules/owlapi`; exclude nothing unless a failing real observation identifies npm-owned metadata and a separate reviewed plan amendment names it.
+`mode` is the portable npm payload mode class (`regular` or `executable`) derived from file type and execute bits; platform-specific ownership/ACL data is not package content.
+Reject symlinks, junctions, special files, duplicate normalized paths, path escape, case collisions, and unreadable entries.
+Compare every file below `node_modules/owlapi`; exclude nothing unless a failing real observation identifies npm-owned metadata and a separate reviewed plan amendment names it.
 
 ## Task 1: Amend the canonical Phase 19 contract
 
@@ -145,21 +165,26 @@ The named command accepts:
 ```
 
 - [ ] Require execution through the approved npm script and use `npm_execpath`; do not call a host-global npm shim.
-- [ ] Hash the original GitHub artifact ZIP and require its SHA-256 to equal the controlled artifact digest before reading any entry. Parse the ZIP fail-closed, require the exact closed three-file bundle, and derive the verified tarball bytes directly from those archive entries.
+- [ ] Hash the original GitHub artifact ZIP and require its SHA-256 to equal the controlled artifact digest before reading any entry.
+      Parse the ZIP fail-closed, require the exact closed three-file bundle, and derive the verified tarball bytes directly from those archive entries.
 - [ ] Read the selected commit's `package.json` through local Git object inspection before network installation and run the suitability assertion.
-- [ ] Create one unique OS-temporary root with separate tarball/Git consumers and separate npm caches. Verify every cleanup target is a strict temporary descendant.
+- [ ] Create one unique OS-temporary root with separate tarball/Git consumers and separate npm caches.
+      Verify every cleanup target is a strict temporary descendant.
 - [ ] Generate empty user/global npmrc files inside the validated temporary root, remove ambient `npm_config_*`, `npm_package_*`, npm-token, and `NODE_ENV` variables, then explicitly pin ordinary install semantics (`ignore-scripts=false`, `strict-allow-scripts=false`, lockfile enabled, hoisted strategy, and all dependency classes included).
-- [ ] Query npm's accepted effective safe configuration under those same files and arguments, reject any discrepancy before either install, and record the accepted policy in canonical evidence. Lifecycle scripts remain enabled because ordinary Git-install behavior is part of the proof.
+- [ ] Query npm's accepted effective safe configuration under those same files and arguments, reject any discrepancy before either install, and record the accepted policy in canonical evidence.
+      Lifecycle scripts remain enabled because ordinary Git-install behavior is part of the proof.
 - [ ] Run the four existing installed-package scripts against both consumers: smoke, boundary, import purity, and no network.
 - [ ] Compare complete installed package-tree manifests and normalized production graphs; require no differences.
 - [ ] Validate the Git lock, exact package identity/exports, and absence of package-development files such as `.git`, `.github`, tests, fixtures, and release tooling.
-- [ ] Write stable JSON manifests, command/runtime facts, stdout/stderr logs, and `qualification.json` under the requested output. Omit absolute temporary paths from canonical digests.
+- [ ] Write stable JSON manifests, command/runtime facts, stdout/stderr logs, and `qualification.json` under the requested output.
+      Omit absolute temporary paths from canonical digests.
 - [ ] Clean only the validated temporary root in `finally`; preserve output on success and diagnostic failure.
 - [ ] Unit-test malformed arguments, occupied output, wrong artifact-archive digest, unsafe/duplicate ZIP entries, ambient npm configuration, rejected effective npm settings, source-manifest mismatch, runner failure, partial install, tree/graph mismatch, unsafe cleanup target, and successful deterministic evidence assembly without network.
 
 ## Task 4: Acquire the canonical candidate and run the real equivalence gate
 
-- [ ] Download and retain the original ZIP for the exact candidate artifact identified by `docs/release/publication-control.json` from source run `33160042447`, attempt `1`, artifact ID `9682090118`. Do not extract or repackage it before qualification.
+- [ ] Download and retain the original ZIP for the exact candidate artifact identified by `docs/release/publication-control.json` from source run `33160042447`, attempt `1`, artifact ID `9682090118`.
+      Do not extract or repackage it before qualification.
 - [ ] Let the qualification command measure the ZIP byte count, require digest `sha256:f5967321e1c18a9c5aa14ad44a1d45fe3606605453866ce7746afe9c394f52d7`, validate the enclosed three-file bundle, and materialize only the verified enclosed tarball for the candidate consumer.
 - [ ] Run:
 
@@ -168,7 +193,8 @@ npm run qualify:git-package-equivalence -- --artifact-archive <original-actions-
 ```
 
 - [ ] Inspect both manifests, lockfiles, package identities, production graphs, public-contract results, and the zero-difference conclusion.
-- [ ] Stop on any difference. Do not weaken the comparator, repack from current `main`, or proceed to WebVOWL merely because individual smoke tests pass.
+- [ ] Stop on any difference.
+      Do not weaken the comparator, repack from current `main`, or proceed to WebVOWL merely because individual smoke tests pass.
 
 ## Task 5: Persist bounded reviewed equivalence evidence
 
@@ -190,9 +216,11 @@ npm run verify:release-gates
 npm test -- scripts/verify-release-gates.test.js --runInBand
 ```
 
-- [ ] Inspect every `docs/release/gates.json` change. Only requirement/checklist wording digests affected by the amendment may move.
+- [ ] Inspect every `docs/release/gates.json` change.
+      Only requirement/checklist wording digests affected by the amendment may move.
 - [ ] Require catalogue requirement count, checklist row count, stable IDs, coverage, checkpoint assignments, owners, kinds, dependencies, applicability, and failure semantics to remain identical.
-- [ ] Do not update an old gate-result record. A future result will bind the amended `gateRegistrySha256`, `catalogueSha256`, `checklistCoverageSha256`, and per-requirement digest.
+- [ ] Do not update an old gate-result record.
+      A future result will bind the amended `gateRegistrySha256`, `catalogueSha256`, `checklistCoverageSha256`, and per-requirement digest.
 
 ## Task 7: Verify, formally review, and checkpoint
 
@@ -210,5 +238,7 @@ npm run verify:release-gates
 - [ ] Confirm the diff contains only the canonical plan amendment, equivalence tooling/tests/evidence, governance binding, exact named npm command, and generated wording digests.
 - [ ] State `Implementation complete; /review pending` and request built-in `/review` for the complete standalone-repository diff, focusing on candidate identity, Git-install lifecycle behavior, cross-platform tree semantics, fail-closed comparison, evidence binding, and gate-topology stability.
 - [ ] Resolve or explicitly defer every confirmed P0–P2 finding.
-- [ ] After explicit authorization, use `committing-to-git` for one signed Phase 19D pre-registry/equivalence checkpoint. Push only after separate authorization.
-- [ ] Give the accepted evidence/commit to the WebVOWL implementation. Do not mark `P19-WEBVOWL-001`, Phase 19D, or Phase 19 complete until the later registry-backed state passes.
+- [ ] After explicit authorization, use `committing-to-git` for one signed Phase 19D pre-registry/equivalence checkpoint.
+      Push only after separate authorization.
+- [ ] Give the accepted evidence/commit to the WebVOWL implementation.
+      Do not mark `P19-WEBVOWL-001`, Phase 19D, or Phase 19 complete until the later registry-backed state passes.

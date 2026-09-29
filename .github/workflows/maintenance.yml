@@ -70,6 +70,20 @@ jobs:
       - name: Record the hosted runner identity
         run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
         timeout-minutes: 5
+      - name: Select the pinned development Python
+        id: quality_python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.14.7"
+          architecture: x64
+          check-latest: false
+          update-environment: false
+          cache: ""
+      - name: Synchronize locked development tools
+        run: npm run tools:sync -- --python-env QUALITY_PYTHON
+        timeout-minutes: 5
+        env:
+          QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
       - name: Run the complete package suite
         run: npm test -- --runInBand
         timeout-minutes: 45

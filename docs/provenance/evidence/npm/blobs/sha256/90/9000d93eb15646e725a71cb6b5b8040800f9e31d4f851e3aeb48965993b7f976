@@ -1,0 +1,118 @@
+{
+  "artifactId": "cb473a571826e45ef1b67616d1def575560ee0297367c87a49ac2e4487624aca",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 3259,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.npmignore",
+        "sha256": "eb3357a23be84692e3ae1919bab3deb9de006f1cc2fb90d19cccf26d1c2a33c0",
+        "size": 9,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Makefile",
+        "sha256": "3c1f4d704fdbb9dbc834f746eeb64b85b97d5804b62b68c9c267abf78ecb8235",
+        "size": 224,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Readme.md",
+        "sha256": "e078ab4217332db9ac446cdf23e932eabd21d6db7c239a6495df4d3802251f20",
+        "size": 1053,
+        "type": "FILE"
+      },
+      {
+        "path": "package/component.json",
+        "sha256": "5ab8431f57ad013b01616a0f699ebd361cf7f19f3575ac83e562501e81ca8c34",
+        "size": 259,
+        "type": "FILE"
+      },
+      {
+        "path": "package/format-min.js",
+        "sha256": "9d3d2e8f6d6066992eebe8aef621c05a426849fb7f8ccbdf0783e350752aced6",
+        "size": 1025,
+        "type": "FILE"
+      },
+      {
+        "path": "package/format.js",
+        "sha256": "666bd4da85e596b4e3e119f201ea5c69dae64e2e9f75a5758de777b9550a6155",
+        "size": 3335,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0754698e3180d26da07fa0ca1fbfce331c0e1652db512aee35b443204bdec553",
+        "size": 612,
+        "type": "FILE"
+      },
+      {
+        "path": "package/test_format.js",
+        "sha256": "aab46edd0c8ed75baf22d294066f79f8a3270b8966ad87cc03d29ae105478517",
+        "size": 1569,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1053,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/e0/e078ab4217332db9ac446cdf23e932eabd21d6db7c239a6495df4d3802251f20",
+          "sha256": "e078ab4217332db9ac446cdf23e932eabd21d6db7c239a6495df4d3802251f20"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/Readme.md",
+        "sha256": "e078ab4217332db9ac446cdf23e932eabd21d6db7c239a6495df4d3802251f20",
+        "size": 1053
+      }
+    ],
+    "expandedBytes": 8086,
+    "packageIdentity": {
+      "author": "Sami Samhuri <sami@samhuri.net>",
+      "homepage": "http://samhuri.net/proj/format",
+      "license": null,
+      "name": "format",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/samsonjs/format.git"
+      },
+      "version": "0.2.2"
+    },
+    "packageMetadata": {
+      "author": "Sami Samhuri <sami@samhuri.net>",
+      "bugs": {
+        "email": "sami@samhuri.net",
+        "url": "https://github.com/samsonjs/format/issues"
+      },
+      "dependencies": {},
+      "description": "printf, sprintf, and vsprintf for JavaScript",
+      "devDependencies": {},
+      "engines": {
+        "node": ">=0.4.x"
+      },
+      "homepage": "http://samhuri.net/proj/format",
+      "licenses": [
+        {
+          "type": "MIT",
+          "url": "http://sjs.mit-license.org"
+        }
+      ],
+      "main": "./format.js",
+      "name": "format",
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/samsonjs/format.git"
+      },
+      "version": "0.2.2"
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 3259,
+      "sha256": "e3ff125b0cd4f74c3b03b5399d55f1c94d92ffeb706d7483c5ec437c2dc16076"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -4,30 +4,24 @@
 
 - Migration: Phase 14 - TriG.
 - Baseline revision: `82b4770c`, the signed Phase 13 checkpoint commit.
-- Completion revision: the Phase 14 checkpoint commit containing this record;
-  the repository owner requested an uncommitted review pause before assigning
-  its commit ID.
+- Completion revision: the Phase 14 checkpoint commit containing this record; the repository owner requested an uncommitted review pause before assigning its commit ID.
 - Implementation date: 22 August 2026.
 - Next migration: Phase 15 - JSON-LD.
 
 ## Implemented scope
 
-Phase 14 registers TriG as an independent strict RDF dataset format. Its private
-N3.js policy selects exact `TriG` parsing while preserving prefix/base state and
-complete RDF/JS graph terms. Parsed datasets pass through the existing explicit
-`requireSingleGraph`, `defaultGraphOnly`, `selectGraph`, or `mergeGraphs` policy
-before shared RDF-to-OWL reconstruction.
+Phase 14 registers TriG as an independent strict RDF dataset format.
+Its private N3.js policy selects exact `TriG` parsing while preserving prefix/base state and complete RDF/JS graph terms.
+Parsed datasets pass through the existing explicit `requireSingleGraph`, `defaultGraphOnly`, `selectGraph`, or `mergeGraphs` policy before shared RDF-to-OWL reconstruction.
 
-The bounded descriptor recognizes graph-block opening braces only outside
-comments, strings, and IRI references. It does not duplicate the TriG grammar,
-claim ordinary Turtle or N-Quads, or expose the dependency's broader Notation3
-language. Exact media-type selection remains authoritative.
+The bounded descriptor recognizes graph-block opening braces only outside comments, strings, and IRI references.
+It does not duplicate the TriG grammar, claim ordinary Turtle or N-Quads, or expose the dependency's broader Notation3 language.
+Exact media-type selection remains authoritative.
 
-The complete selected W3C RDF 1.1 and RDF 1.2 inventory is retained. All 401
-`REQUIRED` cases pass. Seventeen RDF 1.2 reifier/annotation evaluation cases
-remain individually visible as `EXCLUDED_WITH_REASON` because pinned N3.js
-2.2.0 cannot reproduce their expected datasets. This is a governed dependency
-capability gap, not an assertion that those cases conform.
+The complete selected W3C RDF 1.1 and RDF 1.2 inventory is retained.
+All 401 `REQUIRED` cases pass.
+Seventeen RDF 1.2 reifier/annotation evaluation cases remain individually visible as `EXCLUDED_WITH_REASON` because pinned N3.js 2.2.0 cannot reproduce their expected datasets.
+This is a governed dependency capability gap, not an assertion that those cases conform.
 
 ## Acceptance evidence
 
@@ -58,65 +52,43 @@ capability gap, not an assertion that those cases conform.
 
 ## Normative and test-corpus grounding
 
-The conformance register embeds the complete selected TriG entries from W3C
-`rdf-tests` revision `12774b0ebb385d17651b396654b19254d0fefbfa`. It archives
-the RDF 1.1 manifest, RDF 1.2 syntax manifest, and RDF 1.2 evaluation manifest
-with independent SHA-256 identities. The resulting 418-entry register contains
-169 evaluation, 123 positive-syntax, and 126 negative-syntax cases.
+The conformance register embeds the complete selected TriG entries from W3C `rdf-tests` revision `12774b0ebb385d17651b396654b19254d0fefbfa`.
+It archives the RDF 1.1 manifest, RDF 1.2 syntax manifest, and RDF 1.2 evaluation manifest with independent SHA-256 identities.
+The resulting 418-entry register contains 169 evaluation, 123 positive-syntax, and 126 negative-syntax cases.
 
-All 401 `REQUIRED` entries pass. The 17 `EXCLUDED_WITH_REASON` entries are the
-enumerated RDF 1.2 evaluation cases whose reifier or annotation result cannot
-be reproduced by N3.js 2.2.0. Governance fixes their count, category, source
-suite, reason code, artifact references, and classification so a dependency
-upgrade cannot silently expand or shrink the gap.
+All 401 `REQUIRED` entries pass.
+The 17 `EXCLUDED_WITH_REASON` entries are the enumerated RDF 1.2 evaluation cases whose reifier or annotation result cannot be reproduced by N3.js 2.2.0.
+Governance fixes their count, category, source suite, reason code, artifact references, and classification so a dependency upgrade cannot silently expand or shrink the gap.
 
 ## Performance and dependency impact
 
 The 50,000-declaration TriG fixture contains 1,089,023 bytes in one named graph.
-At the retained 65,536-byte default, syntax-to-RDF completes in 839.42 ms with
-a 70.77 ms maximum sampled event-loop delay. The end-to-end path, including
-single-graph selection and RDF-to-OWL publication, completes in 3,659.37 ms.
-Same-revision Functional and mismatch registry controls stay below the
-unchanged 20% threshold.
+At the retained 65,536-byte default, syntax-to-RDF completes in 839.42 ms with a 70.77 ms maximum sampled event-loop delay.
+The end-to-end path, including single-graph selection and RDF-to-OWL publication, completes in 3,659.37 ms.
+Same-revision Functional and mismatch registry controls stay below the unchanged 20% threshold.
 
-Phase 14 adds no dependency, package, lockfile, build configuration,
-resource-ceiling, regression-threshold, or legacy-production-reachability
-change. The initial closure measures 673,648 minified and 169,955 gzip bytes;
-the lazy RDF-syntax closure remains exactly 187,021 minified and 52,560 gzip
-bytes, with N3.js absent from the initial static closure.
+Phase 14 adds no dependency, package, lockfile, build configuration, resource-ceiling, regression-threshold, or legacy-production-reachability change.
+The initial closure measures 673,648 minified and 169,955 gzip bytes; the lazy RDF-syntax closure remains exactly 187,021 minified and 52,560 gzip bytes, with N3.js absent from the initial static closure.
 
 ## Impact on Phase 15
 
-JSON-LD should publish into the same canonical RDF/JS dataset and explicit
-graph-policy boundary, but it must retain a format-specific restricted-loader
-contract. Phase 15 must independently govern remote-context behavior,
-conformance classification, lazy browser loading, resource limits, and import
-integration rather than inheriting TriG evidence.
+JSON-LD should publish into the same canonical RDF/JS dataset and explicit graph-policy boundary, but it must retain a format-specific restricted-loader contract.
+Phase 15 must independently govern remote-context behavior, conformance classification, lazy browser loading, resource limits, and import integration rather than inheriting TriG evidence.
 
 ## Unresolved questions
 
-There are no unresolved Phase 14 implementation blockers and no unfinished
-`LOCAL_PHASE_FOLLOW_UP`. The 17 RDF 1.2 evaluation exclusions remain a governed
-N3.js 2.2.0 capability limitation. They should be re-evaluated on a future
-dependency upgrade, but do not weaken the supported RDF 1.1 TriG capability or
-the 401 passing required cases.
+There are no unresolved Phase 14 implementation blockers and no unfinished `LOCAL_PHASE_FOLLOW_UP`.
+The 17 RDF 1.2 evaluation exclusions remain a governed N3.js 2.2.0 capability limitation.
+They should be re-evaluated on a future dependency upgrade, but do not weaken the supported RDF 1.1 TriG capability or the 401 passing required cases.
 
 ## Mechanically reviewable completion summary
 
 - Migration: Phase 14 TriG.
 - Lesson record: `docs/owlapi-js/migration/lessons/013-trig.md`.
-- Finding IDs: `M14-001` through `M14-007`; every finding has exactly one
-  primary disposition.
-- Playbook changed: yes; Phase 14 evidence is institutionalized and the next
-  migration section advances to Phase 15.
-- Executable protections added: exact-format policy, bounded graph-block
-  detection, ambiguity boundaries, broad-N3 rejection, graph-term and prefix
-  preservation, all four graph policies, dataset-scoped blank-node identity,
-  complete W3C inventory governance, resources, cancellation/yield,
-  structural differential, direct/import/VOWL integration, browser globals,
-  lazy-boundary verification, and same-revision performance measurement.
+- Finding IDs: `M14-001` through `M14-007`; every finding has exactly one primary disposition.
+- Playbook changed: yes; Phase 14 evidence is institutionalized and the next migration section advances to Phase 15.
+- Executable protections added: exact-format policy, bounded graph-block detection, ambiguity boundaries, broad-N3 rejection, graph-term and prefix preservation, all four graph policies, dataset-scoped blank-node identity, complete W3C inventory governance, resources, cancellation/yield, structural differential, direct/import/VOWL integration, browser globals, lazy-boundary verification, and same-revision performance measurement.
 - Normative-change proposals: none.
 - Resource-budget or regression-threshold changes: none.
 - Unresolved blockers: none.
-- Next migration: Phase 15, blocked until the repository owner creates the
-  requested Phase 14 checkpoint commit and explicitly says to proceed.
+- Next migration: Phase 15, blocked until the repository owner creates the requested Phase 14 checkpoint commit and explicitly says to proceed.

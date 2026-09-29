@@ -1,0 +1,23 @@
+# Stable baseline adapted from Hadden-Industries/universal-ontology at
+# 58a306013d3701f59dfe34341e96fac5a011e3ed; see LICENSES/MIT-universal-ontology.txt.
+target-version = "py314"
+line-length = 79
+preview = false
+unsafe-fixes = false
+force-exclude = true
+include = ["*.py", "*.pyi", "*.ipynb"]
+cache-dir = ".venv/.ruff_cache"
+extend-exclude = [
+    ".development-tools",
+    ".release",
+    "docs/conformance/generated",
+    "docs/conformance/upstream",
+    "docs/provenance/history-reconstruction",
+    "util/owlapi-reference/fixtures",
+]
+
+[lint]
+select = ["E4", "E7", "E9", "F", "I", "UP", "B"]
+
+[format]
+line-ending = "lf"

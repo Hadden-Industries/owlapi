@@ -1,0 +1,225 @@
+{
+  "artifactId": "9ad30f9d34f1851137feeb5d085f9f480ae3438cf0ad66a42ba02dedc5bb8861",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6594,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "1f46ee2b76d9ae1159deb43d14279d04bcebcb9b75de4012b14b1f7486e36f82",
+        "size": 440,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "f6d345b843a3b44d74a5e8ee123f90c7d16f0c670542810c8b06367c44a01b50",
+        "size": 104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "93b16cb9e9e40c4f7fbe1bee0c0083f96ca59f359528763d65c9309d7a7b317a",
+        "size": 1110,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts.map",
+        "sha256": "fbdc5e5cfc7e20ef66b7b99f01721b830f1a64e5555ada427136d9d6ef164a6b",
+        "size": 267,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "0ead64b5f705ade5818adf7059c62c34353f00aaf4528549aceccd342004297e",
+        "size": 1903,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "5d3d27f68e6aac77039850c2587d49b2d8047f1fb46914d1f67eaec0a52c8fe1",
+        "size": 3231,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "801dfebd85c74797c2a93540d4eee5335db822bef93551170e43da2fdb8b6b7c",
+        "size": 14004,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1094,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dd/dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+          "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094
+      },
+      {
+        "blob": {
+          "bytes": 14004,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/80/801dfebd85c74797c2a93540d4eee5335db822bef93551170e43da2fdb8b6b7c",
+          "sha256": "801dfebd85c74797c2a93540d4eee5335db822bef93551170e43da2fdb8b6b7c"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "801dfebd85c74797c2a93540d4eee5335db822bef93551170e43da2fdb8b6b7c",
+        "size": 14004
+      }
+    ],
+    "expandedBytes": 22153,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "mdast-util-gfm",
+      "repository": "syntax-tree/mdast-util-gfm",
+      "version": "3.1.0"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/syntax-tree/mdast-util-gfm/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "mdast-util-from-markdown": "^2.0.0",
+        "mdast-util-gfm-autolink-literal": "^2.0.0",
+        "mdast-util-gfm-footnote": "^2.0.0",
+        "mdast-util-gfm-strikethrough": "^2.0.0",
+        "mdast-util-gfm-table": "^2.0.0",
+        "mdast-util-gfm-task-list-item": "^2.0.0",
+        "mdast-util-to-markdown": "^2.0.0"
+      },
+      "description": "mdast extension to parse and serialize GFM (GitHub Flavored Markdown)",
+      "devDependencies": {
+        "@types/node": "^22.0.0",
+        "c8": "^10.0.0",
+        "github-slugger": "^2.0.0",
+        "hast-util-to-html": "^9.0.0",
+        "mdast-util-to-hast": "^13.0.0",
+        "micromark-extension-gfm": "^3.0.0",
+        "prettier": "^3.0.0",
+        "remark-cli": "^12.0.0",
+        "remark-preset-wooorm": "^11.0.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^5.0.0",
+        "undici": "^7.0.0",
+        "xo": "^0.60.0"
+      },
+      "exports": "./index.js",
+      "files": [
+        "index.d.ts",
+        "index.js",
+        "lib/"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/unified"
+      },
+      "keywords": [
+        "autolink",
+        "gfm",
+        "github",
+        "markdown",
+        "markup",
+        "mdast-util",
+        "mdast",
+        "strikethrough",
+        "table",
+        "tagfilter",
+        "tasklist",
+        "unist",
+        "utility",
+        "util"
+      ],
+      "license": "MIT",
+      "name": "mdast-util-gfm",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "remark-preset-wooorm"
+        ]
+      },
+      "repository": "syntax-tree/mdast-util-gfm",
+      "scripts": {
+        "build": "tsc --build --clean && tsc --build && type-coverage",
+        "crawl": "node --conditions development script/crawl-tests.js",
+        "format": "remark --frail --output --quiet -- . && prettier --log-level warn --write -- . && xo --fix",
+        "test": "npm run build && npm run format && npm run test-coverage",
+        "test-api": "npm run test-api-dev && npm run test-api-prod",
+        "test-api-dev": "node --conditions development test/index.js",
+        "test-api-prod": "node --conditions production test/index.js",
+        "test-coverage": "c8 --100 --reporter lcov -- npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "atLeast": 100,
+        "strict": true
+      },
+      "version": "3.1.0",
+      "xo": {
+        "overrides": [
+          {
+            "files": [
+              "**/*.d.ts"
+            ],
+            "rules": {
+              "@typescript-eslint/array-type": [
+                "error",
+                {
+                  "default": "generic"
+                }
+              ],
+              "@typescript-eslint/ban-types": [
+                "error",
+                {
+                  "extendDefaults": true
+                }
+              ],
+              "@typescript-eslint/consistent-type-definitions": [
+                "error",
+                "interface"
+              ]
+            }
+          },
+          {
+            "files": "test/**/*.js",
+            "rules": {
+              "no-await-in-loop": "off"
+            }
+          }
+        ],
+        "prettier": true
+      }
+    },
+    "physicalEntryCount": 8,
+    "tarball": {
+      "bytes": 6594,
+      "sha256": "96204c6cdf253e43ee1431b88c7e46015a26d2b6d1d688a0153ce96eaecbe642"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

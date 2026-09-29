@@ -1,0 +1,126 @@
+{
+  "artifactId": "4161dcdfbe83a060afdf56158b5936a7c6079bbc424f8555cf02ab1de57444e5",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 1964,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "6049d315e1aa3f39a48f06cbccd77dbe2d85dc28e79638dd91adc37280c6d97e",
+        "size": 437,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "af2065ad2f2d2b91946c2121e21618daa3f4b18787af9226f8c953ca54cca2f5",
+        "size": 469,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "6d7ae0240943e38cb8a8dd35242584b2c3415a2bca83aa86497d3b7b1bef08ef",
+        "size": 732,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "13a378a8248929bdf17721418c0eb08c5542b46d881f632c309af0d04ef90c9f",
+        "size": 904,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/5c/5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "size": 1117
+      },
+      {
+        "blob": {
+          "bytes": 904,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/13/13a378a8248929bdf17721418c0eb08c5542b46d881f632c309af0d04ef90c9f",
+          "sha256": "13a378a8248929bdf17721418c0eb08c5542b46d881f632c309af0d04ef90c9f"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "13a378a8248929bdf17721418c0eb08c5542b46d881f632c309af0d04ef90c9f",
+        "size": 904
+      }
+    ],
+    "expandedBytes": 3659,
+    "packageIdentity": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "homepage": null,
+      "license": "MIT",
+      "name": "escape-string-regexp",
+      "repository": "sindresorhus/escape-string-regexp",
+      "version": "5.0.0"
+    },
+    "packageMetadata": {
+      "author": {
+        "email": "sindresorhus@gmail.com",
+        "name": "Sindre Sorhus",
+        "url": "https://sindresorhus.com"
+      },
+      "description": "Escape RegExp special characters",
+      "devDependencies": {
+        "ava": "^3.15.0",
+        "tsd": "^0.14.0",
+        "xo": "^0.38.2"
+      },
+      "engines": {
+        "node": ">=12"
+      },
+      "exports": "./index.js",
+      "files": [
+        "index.js",
+        "index.d.ts"
+      ],
+      "funding": "https://github.com/sponsors/sindresorhus",
+      "keywords": [
+        "escape",
+        "regex",
+        "regexp",
+        "regular",
+        "expression",
+        "string",
+        "special",
+        "characters"
+      ],
+      "license": "MIT",
+      "name": "escape-string-regexp",
+      "repository": "sindresorhus/escape-string-regexp",
+      "scripts": {
+        "test": "xo && ava && tsd"
+      },
+      "type": "module",
+      "version": "5.0.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 1964,
+      "sha256": "c8b662afe8aa2b852ecc27d766e584a502f8351fbbd890611f2509bf083d28e6"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

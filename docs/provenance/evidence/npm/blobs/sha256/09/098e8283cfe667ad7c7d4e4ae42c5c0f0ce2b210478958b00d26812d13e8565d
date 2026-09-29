@@ -1,0 +1,132 @@
+{
+  "artifactId": "fd08b5203ce802a28826c2e3465932ae9a2c73c525e5420bf3b614efdc7ca700",
+  "evidence": {
+    "archiveRoot": "katex",
+    "compressedBytes": 3815,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "katex",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "katex/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "katex/README.md",
+        "sha256": "1dbe6be58114c32ea2f8e5141b07d16f1895cff9ad220e3494dd806b407a2815",
+        "size": 637,
+        "type": "FILE"
+      },
+      {
+        "path": "katex/contrib",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "katex/contrib/auto-render.d.ts",
+        "sha256": "3c3aaadfff55bde9ebcaff63c852aead660296ea880c42539a0573a3a70ee07e",
+        "size": 2291,
+        "type": "FILE"
+      },
+      {
+        "path": "katex/index.d.ts",
+        "sha256": "8cbbb12bfb321de8bd58ba74329f683d82e4e0abb56d998c7f1eef2e764a74c8",
+        "size": 4500,
+        "type": "FILE"
+      },
+      {
+        "path": "katex/package.json",
+        "sha256": "5f5923051683062dc38edc0f89fcc91ffe8d800306cbda67d9dabb798c9fe08e",
+        "size": 1408,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1141,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c2/c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        "kind": "LICENCE",
+        "path": "katex/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141
+      }
+    ],
+    "expandedBytes": 9977,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/katex",
+      "license": "MIT",
+      "name": "@types/katex",
+      "repository": {
+        "directory": "types/katex",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "version": "0.16.8"
+    },
+    "packageMetadata": {
+      "contributors": [
+        {
+          "githubUsername": "knguyen0125",
+          "name": "Kevin Nguyen",
+          "url": "https://github.com/knguyen0125"
+        },
+        {
+          "githubUsername": "dreamerblue",
+          "name": "bLue",
+          "url": "https://github.com/dreamerblue"
+        },
+        {
+          "githubUsername": "s-weigand",
+          "name": "Sebastian Weigand",
+          "url": "https://github.com/s-weigand"
+        },
+        {
+          "githubUsername": "sapphi-red",
+          "name": "sapphi-red",
+          "url": "https://github.com/sapphi-red"
+        },
+        {
+          "githubUsername": "Stefaans",
+          "name": "Stefaans",
+          "url": "https://github.com/Stefaans"
+        }
+      ],
+      "dependencies": {},
+      "description": "TypeScript definitions for katex",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/katex",
+      "license": "MIT",
+      "main": "",
+      "name": "@types/katex",
+      "peerDependencies": {},
+      "repository": {
+        "directory": "types/katex",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "scripts": {},
+      "typeScriptVersion": "5.2",
+      "types": "index.d.ts",
+      "typesPublisherContentHash": "843b74923cb5d38471fb372b663c3c3c10e8f5d383d24b56a11f1e3d2d122e5a",
+      "version": "0.16.8"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 3815,
+      "sha256": "f9f54494b75d6c89ed93baf96d0d73d659e52a4318d67cbc6b99671772c4be96"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,190 @@
+{
+  "artifactId": "3122470055bf578acb9921cb4a957165ad6a28aaeeb53010fa413babb7946a1e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 39361,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b",
+        "size": 1098,
+        "type": "FILE"
+      },
+      {
+        "path": "package/Readme.md",
+        "sha256": "9ee7c537cb5e335e2e9c383b3b08ee7361fd227fb83c86ffa35eedc9c7f92877",
+        "size": 36404,
+        "type": "FILE"
+      },
+      {
+        "path": "package/esm.mjs",
+        "sha256": "d590f9c55c9f8bfec81fdc4170b3e7653226a39956055aec657b52ae45495d88",
+        "size": 256,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "d4f8af488a7a08cd71df8503fcc3e5f2fd61e9b26eb368ecd5cc8159862cde3f",
+        "size": 798,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/argument.js",
+        "sha256": "7859398cfac1869df6cbba646e7e437875185866b79ac70a5a3cd802fd4df96b",
+        "size": 3164,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/command.js",
+        "sha256": "69047076c77593471bbf1aa2ba5f01f0565bffa187d415a600d8ec5998d2056b",
+        "size": 62360,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/error.js",
+        "sha256": "c69bbc276b3c7fec052f930b9de091db2206646761f765a2077d5731f763dc55",
+        "size": 1240,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/help.js",
+        "sha256": "f07a902508e463968826dd36b567640a563f0192989355c6559723415951bcf2",
+        "size": 11889,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/option.js",
+        "sha256": "9dfc7ae4b048435196cbdd888819bb84253d2693460adfa262cffcbb31d6cf98",
+        "size": 4869,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/suggestSimilar.js",
+        "sha256": "2f96448988ab89b4acd941d298e51bb103544bf65b60eb0a4260a26a8b39bb57",
+        "size": 2765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package-support.json",
+        "sha256": "b07a441d1dbc88588a2e7f219d43a5ea9b7c429a44f119caa49229da86bb0063",
+        "size": 231,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "5f5944b2fa479bf68003ca239940f8ad9cae893ddfc3662272a1855dfb9ce4db",
+        "size": 1804,
+        "type": "FILE"
+      },
+      {
+        "path": "package/typings/index.d.ts",
+        "sha256": "051ae0b0bda811703875e6f2e466b9344cfe320b39087676327dc0c109f26d32",
+        "size": 24389,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1098,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/04/04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b",
+          "sha256": "04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b",
+        "size": 1098
+      }
+    ],
+    "expandedBytes": 151267,
+    "packageIdentity": {
+      "author": "TJ Holowaychuk <tj@vision-media.ca>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "commander",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/tj/commander.js.git"
+      },
+      "version": "8.3.0"
+    },
+    "packageMetadata": {
+      "author": "TJ Holowaychuk <tj@vision-media.ca>",
+      "dependencies": {},
+      "description": "the complete solution for node.js command-line programs",
+      "devDependencies": {
+        "@types/jest": "^26.0.23",
+        "@types/node": "^14.17.3",
+        "@typescript-eslint/eslint-plugin": "^4.27.0",
+        "@typescript-eslint/parser": "^4.27.0",
+        "eslint": "^7.29.0",
+        "eslint-config-standard": "^16.0.3",
+        "eslint-plugin-jest": "^24.3.6",
+        "jest": "^27.0.4",
+        "standard": "^16.0.3",
+        "ts-jest": "^27.0.3",
+        "tsd": "^0.17.0",
+        "typescript": "^4.3.4"
+      },
+      "engines": {
+        "node": ">= 12"
+      },
+      "files": [
+        "index.js",
+        "lib/*.js",
+        "esm.mjs",
+        "typings/index.d.ts",
+        "package-support.json"
+      ],
+      "jest": {
+        "collectCoverage": true,
+        "testEnvironment": "node",
+        "testPathIgnorePatterns": [
+          "/node_modules/"
+        ],
+        "transform": {
+          "^.+\\.tsx?$": "ts-jest"
+        }
+      },
+      "keywords": [
+        "commander",
+        "command",
+        "option",
+        "parser",
+        "cli",
+        "argument",
+        "args",
+        "argv"
+      ],
+      "license": "MIT",
+      "main": "./index.js",
+      "name": "commander",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/tj/commander.js.git"
+      },
+      "scripts": {
+        "lint": "eslint index.js esm.mjs \"lib/*.js\" \"tests/**/*.js\"",
+        "test": "jest && npm run test-typings",
+        "test-all": "npm run test && npm run lint && npm run typescript-lint && npm run typescript-checkJS && npm run test-esm",
+        "test-esm": "node --experimental-modules ./tests/esm-imports-test.mjs",
+        "test-typings": "tsd",
+        "typescript-checkJS": "tsc --allowJS --checkJS index.js lib/*.js --noEmit",
+        "typescript-lint": "eslint typings/*.ts tests/*.ts"
+      },
+      "support": true,
+      "type": "commonjs",
+      "types": "typings/index.d.ts",
+      "version": "8.3.0"
+    },
+    "physicalEntryCount": 13,
+    "tarball": {
+      "bytes": 39361,
+      "sha256": "1b38e65f9229a84060ca5d041a58e3bc1ea374da6d933f9060ca86a67949c10b"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

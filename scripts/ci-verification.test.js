@@ -279,6 +279,13 @@ describe("reuse of complete PR integration", () => {
       },
     ],
     [
+      "a receipt predating Windows source quality",
+      (f) => {
+        f.receipt.jobs = { ...f.receipt.jobs };
+        delete f.receipt.jobs.quality_windows;
+      },
+    ],
+    [
       "a different tested tree",
       (f) => {
         f.receipt.snapshot.tree = hash("a");

@@ -111,10 +111,22 @@
     "release:verify-immutable": "node scripts/verify-immutable-release.mjs",
     "extended:record-status": "node scripts/record-extended-test-status.mjs",
     "release:sbom": "cyclonedx-npm --spec-version 1.6 --output-format JSON --output-reproducible --validate --mc-type library --omit dev",
-    "lint": "eslint .",
+    "tools:sync": "node scripts/repository-python-tools.mjs sync",
+    "tools:check": "node scripts/repository-python-tools.mjs check",
+    "lint": "npm run tools:check && npm run lint:js && npm run lint:md && npm run lint:py",
+    "lint:js": "eslint \"**/*.{js,mjs,cjs}\"",
+    "lint:md": "node scripts/documentation-quality.mjs --lint",
+    "lint:py": "node scripts/repository-python-tools.mjs ruff check",
     "lint:files": "eslint",
-    "format": "prettier --write --ignore-unknown .",
-    "format:check": "prettier --check --ignore-unknown ."
+    "format": "npm run tools:check && npm run format:source && npm run format:md && npm run format:py",
+    "format:check": "npm run tools:check && npm run format:source:check && npm run format:md:check && npm run format:py:check",
+    "format:source": "prettier --write --ignore-unknown . \"!**/*.md\" --ignore-path .gitignore --ignore-path .prettierignore",
+    "format:source:check": "prettier --check --ignore-unknown . \"!**/*.md\" --ignore-path .gitignore --ignore-path .prettierignore",
+    "format:md": "node scripts/documentation-quality.mjs --write",
+    "format:md:check": "node scripts/documentation-quality.mjs --check",
+    "format:py": "node scripts/repository-python-tools.mjs ruff format",
+    "format:py:check": "node scripts/repository-python-tools.mjs ruff format --check",
+    "test:quality": "npm test -- --runInBand --runTestsByPath scripts/documentation-files.test.js scripts/documentation-quality.test.js scripts/repository-python-tools.test.js scripts/source-policy.test.js"
   },
   "dependencies": {
     "@hyperjump/uri": "1.3.6",
@@ -129,6 +141,7 @@
   "devDependencies": {
     "@cyclonedx/cyclonedx-npm": "6.0.1",
     "@eslint/js": "10.0.1",
+    "@eslint/markdown": "8.0.3",
     "@jspm/generator": "2.16.3",
     "@playwright/test": "1.63.0",
     "ajv": "8.20.0",
@@ -169,11 +182,15 @@
   },
   "jest": {
     "modulePathIgnorePatterns": [
-      "<rootDir>/.release/"
+      "<rootDir>/.release/",
+      "<rootDir>/\\.venv/",
+      "<rootDir>/\\.development-tools/"
     ],
     "testEnvironment": "node",
     "testPathIgnorePatterns": [
       "/node_modules/",
+      "<rootDir>/\\.venv/",
+      "<rootDir>/\\.development-tools/",
       "/test/package-boundary.test.mjs"
     ]
   }

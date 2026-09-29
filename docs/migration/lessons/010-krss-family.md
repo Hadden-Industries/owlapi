@@ -4,25 +4,19 @@
 
 - Migration: Phase 11 - KRSS family.
 - Baseline revision: `5ec5ccf6`, the pre-Phase-11 repository head.
-- Completion revision: the Phase 11 checkpoint commit containing this record;
-  the repository owner requested an uncommitted review pause before assigning
-  its commit ID.
+- Completion revision: the Phase 11 checkpoint commit containing this record; the repository owner requested an uncommitted review pause before assigning its commit ID.
 - Implementation date: 21 August 2026.
 - Next migration: Phase 12 - N-Triples.
 
 ## Implemented scope
 
-Phase 11 registers strict KRSS2 as an OWL-native textual format. A shared lazy
-KRSS-family lexer and a distinct dialect policy provide a future KRSS1 insertion
-point, but only the KRSS2 descriptor is executable. KRSS1 remains `DEFERRED` and
-explicit selection of its already-existing format identity still fails because
-no parser is registered.
+Phase 11 registers strict KRSS2 as an OWL-native textual format.
+A shared lazy KRSS-family lexer and a distinct dialect policy provide a future KRSS1 insertion point, but only the KRSS2 descriptor is executable.
+KRSS1 remains `DEFERRED` and explicit selection of its already-existing format identity still fails because no parser is registered.
 
-The independently authored recursive-descent parser constructs immutable
-structural OWL objects directly. It covers the public KRSS2 class-expression,
-concept-axiom, role-expression, role-axiom, primitive-role attribute, and
-individual-assertion productions. It performs no RDF serialization, RDF-to-OWL
-translation, or retained legacy-parser call.
+The independently authored recursive-descent parser constructs immutable structural OWL objects directly.
+It covers the public KRSS2 class-expression, concept-axiom, role-expression, role-axiom, primitive-role attribute, and individual-assertion productions.
+It performs no RDF serialization, RDF-to-OWL translation, or retained legacy-parser call.
 
 ## Acceptance evidence
 
@@ -54,68 +48,44 @@ translation, or retained legacy-parser call.
 
 ## KRSS1/KRSS2 grammar gap
 
-The public OWLAPI identities share primitive/defined concepts, primitive roles,
-Boolean and quantified class expressions, cardinalities, transitivity, range,
-and basic individual assertions. KRSS2 adds general implication/equivalence and
-disjointness, richer role definitions and attributes, inverse roles, role
-equivalence/disjointness/inclusion and nested composition. The dialect policy
-records that gap without creating a KRSS1 parser. A future KRSS1 implementation
-requires an explicit capability promotion and a separate descriptor.
+The public OWLAPI identities share primitive/defined concepts, primitive roles, Boolean and quantified class expressions, cardinalities, transitivity, range, and basic individual assertions. KRSS2 adds general implication/equivalence and disjointness, richer role definitions and attributes, inverse roles, role equivalence/disjointness/inclusion and nested composition.
+The dialect policy records that gap without creating a KRSS1 parser.
+A future KRSS1 implementation requires an explicit capability promotion and a separate descriptor.
 
 ## Reference behavior and controlled boundaries
 
-Narrow source inspection followed public documentation and compiled black-box
-probing only for unresolved grammar boundaries. It established operand order,
-ordered and mutually exclusive primitive-role attributes, `t`/`nil` booleans,
-reserved tokens, and TBox-before-ABox ordering. No Java or retained legacy
-control flow was copied.
+Narrow source inspection followed public documentation and compiled black-box probing only for unresolved grammar boundaries.
+It established operand order, ordered and mutually exclusive primitive-role attributes, `t`/`nil` booleans, reserved tokens, and TBox-before-ABox ordering.
+No Java or retained legacy control flow was copied.
 
-The pinned Java parser constructs malformed `Optional[...]#name` bases for bare
-names in the oracle setup. The shared Java fixture therefore uses absolute IRIs.
-JavaScript deliberately resolves ordinary bare names against the document IRI,
-or an isolated per-load namespace when no document IRI exists; focused tests,
-not an expected-difference wildcard, define that controlled correction.
+The pinned Java parser constructs malformed `Optional[...]#name` bases for bare names in the oracle setup.
+The shared Java fixture therefore uses absolute IRIs.
+JavaScript deliberately resolves ordinary bare names against the document IRI, or an isolated per-load namespace when no document IRI exists; focused tests, not an expected-difference wildcard, define that controlled correction.
 
 ## Performance and dependency impact
 
-KRSS2 adds no production dependency, package or lockfile change, configuration
-change, resource-ceiling change, or regression-threshold change. The accepted
-run measured 50,000 implications at 820.87 ms median and 256 nested existential
-restrictions at 75.19 ms median. Same-revision Functional-depth and mismatch
-wall regressions were +0.28% and +0.85%; the largest paired heap regression was
-+3.05%, all below the unchanged 20% threshold.
+KRSS2 adds no production dependency, package or lockfile change, configuration change, resource-ceiling change, or regression-threshold change.
+The accepted run measured 50,000 implications at 820.87 ms median and 256 nested existential restrictions at 75.19 ms median.
+Same-revision Functional-depth and mismatch wall regressions were +0.28% and +0.85%; the largest paired heap regression was +3.05%, all below the unchanged 20% threshold.
 
 ## Impact on Phase 12
 
-N-Triples is the next syntax and reuses the private N3.js adapter established by
-Turtle rather than the OWL-native textual-parser stack. Phase 12 must preserve a
-distinct N-Triples format/descriptor, strict W3C RDF 1.1 and RDF 1.2 corpus
-classifications, default-graph normalization, bounded detection, direct RDF/JS
-quads, shared RDF-to-OWL reconstruction, import/WebVOWL reachability, and its own
-resource, differential, performance, provenance, and learning gates.
+N-Triples is the next syntax and reuses the private N3.js adapter established by Turtle rather than the OWL-native textual-parser stack.
+Phase 12 must preserve a distinct N-Triples format/descriptor, strict W3C RDF 1.1 and RDF 1.2 corpus classifications, default-graph normalization, bounded detection, direct RDF/JS quads, shared RDF-to-OWL reconstruction, import/WebVOWL reachability, and its own resource, differential, performance, provenance, and learning gates.
 
 ## Unresolved questions
 
-There are no unresolved Phase 11 grammar, dialect, conformance, differential,
-resource, dependency, production-integration, provenance, or performance
-blockers and no unfinished `LOCAL_PHASE_FOLLOW_UP`. KRSS1 parser implementation
-is an explicit future capability, not unfinished Phase 11 work.
+There are no unresolved Phase 11 grammar, dialect, conformance, differential, resource, dependency, production-integration, provenance, or performance blockers and no unfinished `LOCAL_PHASE_FOLLOW_UP`.
+KRSS1 parser implementation is an explicit future capability, not unfinished Phase 11 work.
 
 ## Mechanically reviewable completion summary
 
 - Migration: Phase 11 KRSS family.
 - Lesson record: `docs/owlapi-js/migration/lessons/010-krss-family.md`.
-- Finding IDs: `M11-001` through `M11-010`; every finding has exactly one
-  primary disposition.
-- Playbook changed: yes; Phase 11 evidence is institutionalized and the next
-  migration section advances to Phase 12.
-- Executable protections added: dialect classification, KRSS1 non-registration,
-  grammar positives/negatives, reserved names, document ordering, resources,
-  cancellation/yield, rollback, namespace isolation, pinned Java evidence,
-  seven-format structural equivalence, direct/import/WebVOWL integration, and
-  same-revision performance measurement.
+- Finding IDs: `M11-001` through `M11-010`; every finding has exactly one primary disposition.
+- Playbook changed: yes; Phase 11 evidence is institutionalized and the next migration section advances to Phase 12.
+- Executable protections added: dialect classification, KRSS1 non-registration, grammar positives/negatives, reserved names, document ordering, resources, cancellation/yield, rollback, namespace isolation, pinned Java evidence, seven-format structural equivalence, direct/import/WebVOWL integration, and same-revision performance measurement.
 - Normative-change proposals: none.
 - Resource-budget or regression-threshold changes: none.
 - Unresolved blockers: none.
-- Next migration: Phase 12, blocked until the repository owner creates the
-  requested Phase 11 checkpoint commit and explicitly says to proceed.
+- Next migration: Phase 12, blocked until the repository owner creates the requested Phase 11 checkpoint commit and explicitly says to proceed.

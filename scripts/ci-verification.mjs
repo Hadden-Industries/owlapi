@@ -8,6 +8,7 @@ export const CI_JOB_NAMES = Object.freeze({
   metadata: "CI / metadata",
   source_node_22: "CI / Ubuntu / Node 22.23.3",
   source_node_24: "CI / Ubuntu / Node 24.21.0",
+  quality_windows: "CI / Windows / quality tools",
   dependency_review: "CI / dependency review",
   candidate: "CI / retained candidate",
   portability_windows_node_22: "CI / Windows / Node 22.23.3",

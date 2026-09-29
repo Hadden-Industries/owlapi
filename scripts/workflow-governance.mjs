@@ -494,6 +494,7 @@ const validateCiVerification = (workflow, violations) => {
     "metadata",
     "source_node_22",
     "source_node_24",
+    "quality_windows",
     "dependency_review",
   ];
   for (const id of roots) {
@@ -1281,13 +1282,100 @@ const validateEvidenceWorkflows = (workflows, violations) => {
       );
     }
   }
+};
+
+// Setup is confined to the quality consumers and the existing evidence shards.
+// A new caller of npm test/lint/format must explicitly adopt the locked tools.
+const QUALITY_CONSUMERS = {
+  "ci.yml": ["source_node_22", "source_node_24", "quality_windows"],
+  "release.yml": ["source_node_22", "source_node_24", "quality_windows"],
+  "extended-tests.yml": ["extended_evidence"],
+  "maintenance.yml": ["health"],
+};
+const validateQualityTooling = (workflows, violations) => {
+  for (const [file, workflow] of entries(workflows)) {
+    for (const [id, job] of entries(workflow.jobs)) {
+      const context = `${file}:${id} quality tooling`;
+      const consumer = QUALITY_CONSUMERS[file]?.includes(id);
+      const evidence =
+        ["release.yml", "extended-tests.yml"].includes(file) &&
+        id === "third_party_evidence_shard";
+      const python = actionSteps(job, "actions/setup-python");
+      add(
+        violations,
+        python.length === (consumer || evidence ? 1 : 0),
+        `${context} has an unexpected Python setup inventory`,
+      );
+      if (!consumer) continue;
+      const list = steps(job);
+      const setupIndex = list.indexOf(python[0]);
+      const sync = list.filter((step) =>
+        step.run?.startsWith("npm run tools:sync"),
+      );
+      const syncIndex = list.indexOf(sync[0]);
+      const checkIndexes = list.flatMap((step, index) =>
+        /^npm (test|run (format:check|lint|test:quality|tools:check))(?: |$)/u.test(
+          step.run ?? "",
+        )
+          ? [index]
+          : [],
+      );
+      add(
+        violations,
+        python[0]?.id === "quality_python" &&
+          !python[0]?.if &&
+          !python[0]?.["continue-on-error"],
+        `${context} requires unconditional pinned Python selection`,
+      );
+      add(
+        violations,
+        sync.length === 1 &&
+          sync[0].run === "npm run tools:sync -- --python-env QUALITY_PYTHON" &&
+          isDeepStrictEqual(sync[0].env, {
+            QUALITY_PYTHON: "${{ steps.quality_python.outputs.python-path }}",
+          }) &&
+          !sync[0].if &&
+          !sync[0]["continue-on-error"] &&
+          setupIndex >= 0 &&
+          syncIndex > setupIndex &&
+          checkIndexes.length > 0 &&
+          checkIndexes.every((index) => index > syncIndex),
+        `${context} requires locked synchronization before every consumer`,
+      );
+      if (id === "quality_windows") {
+        requireFields(
+          job,
+          {
+            "runs-on": "windows-2025",
+            defaults: { run: { shell: "pwsh" } },
+            permissions: { contents: "read" },
+          },
+          context,
+          violations,
+        );
+        for (const command of [
+          "npm run tools:check",
+          "npm run format:check",
+          "npm run lint",
+          "npm run test:quality",
+        ]) {
+          const matches = list.filter((step) => step.run === command);
+          add(
+            violations,
+            matches.length === 1 &&
+              !matches[0].if &&
+              !matches[0]["continue-on-error"],
+            `${context} requires ${command}`,
+          );
+        }
+      }
+    }
+  }
+  const candidate = workflows["release.yml"]?.jobs?.candidate;
   add(
     violations,
-    Object.values(workflows)
-      .flatMap(allSteps)
-      .filter((step) => step.uses?.startsWith("actions/setup-python@"))
-      .length === 2,
-    "setup-python is allowed exactly once in each evidence-shard job",
+    needs(candidate).includes("quality_windows"),
+    "release.yml:candidate quality tooling must pass before packaging",
   );
 };
 
@@ -1498,6 +1586,7 @@ export const auditRepositoryControls = ({
     validateCandidateTransport(fileName, workflow, violations);
   }
   validateEvidenceWorkflows(workflows, violations);
+  validateQualityTooling(workflows, violations);
   const ci = workflows["ci.yml"] ?? {};
   add(violations, ci.name === "CI", "ci.yml: wrong workflow name");
   add(

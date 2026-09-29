@@ -1,0 +1,119 @@
+{
+  "artifactId": "bb586ee9cc628f8dfdcb72d15c1f3cfeb14d6d463e64cf5de4c737e9b3086475",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 11515,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "c1478970fa583a46e3a7641f23ef2bc005b72bb3f2ff1053ff6aa2a56b573dc7",
+        "size": 32324,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "957ecc25c3bef203a81f9f383ab055b3b9c1a8f56a86b60c7b722630fb3f61db",
+        "size": 53,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "17a96d60509da79300de050b8a29826101de1e5a9d8d01239e48d0377cf2a43d",
+        "size": 922,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "42b7dadd8e8a5cc368fccf04647a657b9f195d7928f68c4e5a00ef10c03f5673",
+        "size": 3915,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1094,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dd/dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+          "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+        "size": 1094
+      },
+      {
+        "blob": {
+          "bytes": 3915,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/42/42b7dadd8e8a5cc368fccf04647a657b9f195d7928f68c4e5a00ef10c03f5673",
+          "sha256": "42b7dadd8e8a5cc368fccf04647a657b9f195d7928f68c4e5a00ef10c03f5673"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "42b7dadd8e8a5cc368fccf04647a657b9f195d7928f68c4e5a00ef10c03f5673",
+        "size": 3915
+      }
+    ],
+    "expandedBytes": 38308,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "micromark-util-types",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-types",
+      "version": "2.0.3"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/micromark/micromark/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "description": "micromark utility with a couple of typescript types",
+      "exports": "./index.js",
+      "files": [
+        "index.d.ts.map",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": [
+        {
+          "type": "GitHub Sponsors",
+          "url": "https://github.com/sponsors/unifiedjs"
+        },
+        {
+          "type": "OpenCollective",
+          "url": "https://opencollective.com/unified"
+        }
+      ],
+      "keywords": [
+        "micromark",
+        "util",
+        "utility",
+        "typescript",
+        "types"
+      ],
+      "license": "MIT",
+      "name": "micromark-util-types",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-types",
+      "sideEffects": false,
+      "type": "module",
+      "version": "2.0.3"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 11515,
+      "sha256": "766abb7b986c167f5d00feb235344b491241bb6299a04fe83f027e13239862f9"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

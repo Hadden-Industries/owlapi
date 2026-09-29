@@ -1,0 +1,200 @@
+{
+  "artifactId": "ac5d096bcfcb5e0d9ac26df118957bdec085a1934350fb03525484c5c1d0c375",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 6696,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/index.d.ts",
+        "sha256": "f21324e9bd75b7efbd0739aa3842fcb4d76e63268977b7f12ad6020d1b2b811f",
+        "size": 95,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "c3c1073e83ac96d470b41a7ace9636321578659a83e1d14d4c8ac7f7f85db8a8",
+        "size": 98,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.d.ts",
+        "sha256": "f8d1300036821f2310add2338213e6201253f9f7d2d543e763777f823dc3bb1f",
+        "size": 752,
+        "type": "FILE"
+      },
+      {
+        "path": "package/lib/index.js",
+        "sha256": "4965bd92f22009a0fd0fa4f7af73903e4d793165634c26ab5827fe5386fbcff2",
+        "size": 6709,
+        "type": "FILE"
+      },
+      {
+        "path": "package/license",
+        "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+        "size": 1099,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "aaf24f25ff1d5dee2b19c2da3704f98fbc67ac2bdf9424858aeb19430649c50b",
+        "size": 2746,
+        "type": "FILE"
+      },
+      {
+        "path": "package/readme.md",
+        "sha256": "63a43a95b869436559c242aaa553bbb768cb382bda3d8dd5e0f370340d6fa9d6",
+        "size": 10204,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1099,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/53/536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+          "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61"
+        },
+        "kind": "LICENCE",
+        "path": "package/license",
+        "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+        "size": 1099
+      },
+      {
+        "blob": {
+          "bytes": 10204,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/63/63a43a95b869436559c242aaa553bbb768cb382bda3d8dd5e0f370340d6fa9d6",
+          "sha256": "63a43a95b869436559c242aaa553bbb768cb382bda3d8dd5e0f370340d6fa9d6"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/readme.md",
+        "sha256": "63a43a95b869436559c242aaa553bbb768cb382bda3d8dd5e0f370340d6fa9d6",
+        "size": 10204
+      }
+    ],
+    "expandedBytes": 21703,
+    "packageIdentity": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "homepage": null,
+      "license": "MIT",
+      "name": "mdast-util-gfm-autolink-literal",
+      "repository": "syntax-tree/mdast-util-gfm-autolink-literal",
+      "version": "2.0.1"
+    },
+    "packageMetadata": {
+      "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+      "bugs": "https://github.com/syntax-tree/mdast-util-gfm-autolink-literal/issues",
+      "contributors": [
+        "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+      ],
+      "dependencies": {
+        "@types/mdast": "^4.0.0",
+        "ccount": "^2.0.0",
+        "devlop": "^1.0.0",
+        "mdast-util-find-and-replace": "^3.0.0",
+        "micromark-util-character": "^2.0.0"
+      },
+      "description": "mdast extension to parse and serialize GFM autolink literals",
+      "devDependencies": {
+        "@types/node": "^22.0.0",
+        "c8": "^10.0.0",
+        "hast-util-to-html": "^9.0.0",
+        "mdast-util-from-markdown": "^2.0.0",
+        "mdast-util-to-hast": "^13.0.0",
+        "mdast-util-to-markdown": "^2.0.0",
+        "micromark-extension-gfm-autolink-literal": "^2.0.0",
+        "prettier": "^3.0.0",
+        "remark-cli": "^12.0.0",
+        "remark-preset-wooorm": "^10.0.0",
+        "type-coverage": "^2.0.0",
+        "typescript": "^5.0.0",
+        "xo": "^0.59.0"
+      },
+      "exports": "./index.js",
+      "files": [
+        "lib/",
+        "index.d.ts",
+        "index.js"
+      ],
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/unified"
+      },
+      "keywords": [
+        "unist",
+        "mdast",
+        "mdast-util",
+        "util",
+        "utility",
+        "markdown",
+        "markup",
+        "autolink",
+        "auto",
+        "link",
+        "literal",
+        "url",
+        "raw",
+        "gfm"
+      ],
+      "license": "MIT",
+      "name": "mdast-util-gfm-autolink-literal",
+      "prettier": {
+        "bracketSpacing": false,
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "none",
+        "useTabs": false
+      },
+      "remarkConfig": {
+        "plugins": [
+          "remark-preset-wooorm"
+        ]
+      },
+      "repository": "syntax-tree/mdast-util-gfm-autolink-literal",
+      "scripts": {
+        "build": "tsc --build --clean && tsc --build && type-coverage",
+        "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
+        "prepack": "npm run build && npm run format",
+        "test": "npm run build && npm run format && npm run test-coverage",
+        "test-api": "npm run test-api-dev && npm run test-api-prod",
+        "test-api-dev": "node --conditions development test/index.js",
+        "test-api-prod": "node --conditions production test/index.js",
+        "test-coverage": "c8 --100 --reporter lcov npm run test-api"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "typeCoverage": {
+        "atLeast": 100,
+        "detail": true,
+        "ignoreCatch": true,
+        "strict": true
+      },
+      "version": "2.0.1",
+      "xo": {
+        "overrides": [
+          {
+            "files": "test/**/*.js",
+            "rules": {
+              "no-await-in-loop": "off"
+            }
+          }
+        ],
+        "prettier": true,
+        "rules": {
+          "unicorn/prefer-at": "off",
+          "unicorn/prefer-code-point": "off"
+        }
+      }
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 6696,
+      "sha256": "5860bd6db7eb6f6336c5ddd4c713900fb973a05cee8dd531cbcb8548a122c77c"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

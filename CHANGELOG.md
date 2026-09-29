@@ -2,25 +2,20 @@
 
 All notable changes to `owlapi` are documented in this file.
 
-This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html). While the major version is zero, the public API remains in initial development: incompatible changes advance the minor version, compatible additions advance the minor version by policy, and compatible corrections advance the patch version. Prerelease identifiers do not create a stability promise.
+This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+While the major version is zero, the public API remains in initial development: incompatible changes advance the minor version, compatible additions advance the minor version by policy, and compatible corrections advance the patch version.
+Prerelease identifiers do not create a stability promise.
 
 ## Unreleased
 
-The integration candidate is `0.1.0-rc.1`, targeting the first public production
-`0.1.0` release. It is not published, tagged or accepted merely by merging it.
+The integration candidate is `0.1.0-rc.1`, targeting the first public production `0.1.0` release.
+It is not published, tagged or accepted merely by merging it.
 
-- Add manager-owned import-closure queries, atomic ontology changes,
-  `OWLOntologyImportsClosureSetProvider`, and `OWLOntologyMerger` through the
-  Java-shaped public surface.
-- Add atomic `StringDocumentTarget` storage and lossless Functional Syntax and
-  representability-checked RDF/XML serialization through `saveOntology`.
-- Reconcile parsing and fresh import closures for all four pinned July Universal
-  Ontology variants, with explicit W3C-grounded Java differences.
-- Validate workflow syntax, YAML and JSONPath with their native tools, retaining
-  repository code only for repository-owned invariants.
-- Replace the former later-release target with first-release `0.1.0` and a
-  pinned source-integration baseline; retain all release-acceptance gates and
-  preserve historical alpha evidence under its original identity.
+- Add manager-owned import-closure queries, atomic ontology changes, `OWLOntologyImportsClosureSetProvider`, and `OWLOntologyMerger` through the Java-shaped public surface.
+- Add atomic `StringDocumentTarget` storage and lossless Functional Syntax and representability-checked RDF/XML serialization through `saveOntology`.
+- Reconcile parsing and fresh import closures for all four pinned July Universal Ontology variants, with explicit W3C-grounded Java differences.
+- Validate workflow syntax, YAML and JSONPath with their native tools, retaining repository code only for repository-owned invariants.
+- Replace the former later-release target with first-release `0.1.0` and a pinned source-integration baseline; retain all release-acceptance gates and preserve historical alpha evidence under its original identity.
 
 ## 0.1.0-alpha.0 — historical unpublished candidate
 
