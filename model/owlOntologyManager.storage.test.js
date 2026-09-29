@@ -29,6 +29,8 @@ describe("manager-owned ontology storage", () => {
       const ontology = await manager.loadOntologyFromOntologyDocument(
         new StringDocumentSource(`Ontology(
           <http://[v1.a]/ontology> <http://[VF.opaque:address]:0080/version>
+          Annotation(<http://[v1.a]/predicate> "preserved namespace")
+          Declaration(AnnotationProperty(<http://[v1.a]/predicate>))
           Declaration(Class(<http://[v1.a]/C>))
           Declaration(Class(<http://[VF.opaque:address]:0080/\u00E9/%7e#\u{1F642}>))
           Declaration(Class(<http://[2001:db8::1]/C>))

@@ -1,0 +1,163 @@
+{
+  "artifactId": "6527409c074852d93fbc8db39d0d443c2700305f158f04ab36fa5aba115c5976",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 25442,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad",
+        "size": 1053,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "c9796173463c25bcddba95653ffc59e17e03942da9071b2c5b2c1cdc0bf855c9",
+        "size": 29264,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.cjs",
+        "sha256": "e54dfea5b22b3fbda56d3a9a250d0167272129875d085cd77fff529434225076",
+        "size": 26445,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.cts",
+        "sha256": "7be56f74dacd05e71a95d9f2465510c4c8fe622f530ef67db7bc2b9988686cf5",
+        "size": 17447,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.mts",
+        "sha256": "7be56f74dacd05e71a95d9f2465510c4c8fe622f530ef67db7bc2b9988686cf5",
+        "size": 17447,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.mjs",
+        "sha256": "728eea07532f272ea8f62edd088445747ab37d6e01aa75eed660ade1f3ea81e6",
+        "size": 25620,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "79a223bae2e9c1a264546020afcbaf6dc1e49a4b9032b4c40eec1cab1450aa7a",
+        "size": 1575,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1053,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/46/465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad",
+          "sha256": "465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad",
+        "size": 1053
+      },
+      {
+        "blob": {
+          "bytes": 29264,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c9/c9796173463c25bcddba95653ffc59e17e03942da9071b2c5b2c1cdc0bf855c9",
+          "sha256": "c9796173463c25bcddba95653ffc59e17e03942da9071b2c5b2c1cdc0bf855c9"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "c9796173463c25bcddba95653ffc59e17e03942da9071b2c5b2c1cdc0bf855c9",
+        "size": 29264
+      }
+    ],
+    "expandedBytes": 118851,
+    "packageIdentity": {
+      "author": "Jared Wray <me@jaredwray.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@cacheable/memory",
+      "repository": {
+        "directory": "packages/cacheable",
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/cacheable.git"
+      },
+      "version": "2.2.0"
+    },
+    "packageMetadata": {
+      "author": "Jared Wray <me@jaredwray.com>",
+      "dependencies": {
+        "@cacheable/utils": "^2.5.0",
+        "@keyv/bigmap": "^1.3.1",
+        "hookified": "^1.15.1",
+        "keyv": "^5.6.0"
+      },
+      "description": "High Performance In-Memory Cache for Node.js",
+      "devDependencies": {
+        "tsdown": "^0.22.0",
+        "typescript": "^5.9.3"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./dist/index.mjs",
+            "types": "./dist/index.d.mts"
+          },
+          "require": {
+            "default": "./dist/index.cjs",
+            "types": "./dist/index.d.cts"
+          }
+        }
+      },
+      "files": [
+        "dist",
+        "LICENSE"
+      ],
+      "keywords": [
+        "cacheable",
+        "high performance",
+        "distributed caching",
+        "Keyv storage engine",
+        "keyv",
+        "memory caching",
+        "LRU cache",
+        "memory",
+        "in-memory",
+        "scalable cache",
+        "in-memory cache",
+        "lruSize",
+        "lru"
+      ],
+      "license": "MIT",
+      "main": "./dist/index.cjs",
+      "module": "./dist/index.mjs",
+      "name": "@cacheable/memory",
+      "private": false,
+      "repository": {
+        "directory": "packages/cacheable",
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/cacheable.git"
+      },
+      "scripts": {
+        "build": "rimraf ./dist && tsdown src/index.ts --format cjs,esm --dts --clean",
+        "clean": "rimraf ./dist ./coverage ./node_modules",
+        "lint": "biome check --write --error-on-warnings",
+        "test": "pnpm lint && vitest run --coverage",
+        "test:ci": "biome check --error-on-warnings && vitest run --coverage"
+      },
+      "type": "module",
+      "types": "./dist/index.d.mts",
+      "version": "2.2.0"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 25442,
+      "sha256": "9dffad84622ba74be37dcec88ba7537cc9d168551e349588757add056f5289b9"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,0 +1,138 @@
+{
+  "artifactId": "e74d1f4968d52d0cd2e751d0df1595d1efba0c070e02f2bfaadabf2a6446b89c",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 55084,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/__benchmarks__/test.js",
+        "sha256": "e01bd2ab262bd8f5502fb0d32c8f019a0b65b9df2fc7b9a02042e044b159d607",
+        "size": 6408,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "73d67c6bc7dfe3447954a26c6a3fb29ef1e797bc7d640292e8673b715011b6c8",
+        "size": 4064,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "67bbedbf3a45bf7d6b06fa4e8a3911a0ac8c1abcd4f31d703ae36df77a084e0b",
+        "size": 214434,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "d3833fd4593b6a37438b86cf2eae4666a7043c9a7002700c272102d6a621129f",
+        "size": 71,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "17d1f8de88ff2bad767a2028706b9c71d7a0a2cfc4fdf96649996ab197c3a25c",
+        "size": 1535,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 227644,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "jest-runtime",
+      "repository": {
+        "directory": "packages/jest-runtime",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.5.2"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@jest/environment": "30.5.2",
+        "@jest/fake-timers": "30.5.2",
+        "@jest/globals": "30.5.2",
+        "@jest/source-map": "30.5.2",
+        "@jest/test-result": "30.5.2",
+        "@jest/transform": "30.5.2",
+        "@jest/types": "30.5.1",
+        "@types/node": "*",
+        "chalk": "^4.1.2",
+        "cjs-module-lexer": "^2.2.0",
+        "collect-v8-coverage": "^1.0.2",
+        "es-module-lexer": "^2.1.0",
+        "glob": "^13.0.6",
+        "graceful-fs": "^4.2.11",
+        "jest-haste-map": "30.5.1",
+        "jest-message-util": "30.5.1",
+        "jest-mock": "30.5.2",
+        "jest-regex-util": "30.5.0",
+        "jest-resolve": "30.5.1",
+        "jest-snapshot": "30.5.2",
+        "jest-util": "30.5.1",
+        "slash": "^3.0.0",
+        "strip-bom": "^4.0.0"
+      },
+      "devDependencies": {
+        "@jest/test-utils": "30.5.2",
+        "@types/graceful-fs": "^4.1.9",
+        "jest-environment-node": "30.5.2"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "202dd8a14777c270607c2416bd5034c3c0abc984",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "jest-runtime",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-runtime",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.5.2"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 55084,
+      "sha256": "c95b1065705ff193f14ae100ff194bcf81011477f0d6eb1ba5fa1390dd5b8c8f"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

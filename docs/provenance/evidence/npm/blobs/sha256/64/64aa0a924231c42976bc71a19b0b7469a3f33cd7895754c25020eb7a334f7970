@@ -1,0 +1,154 @@
+{
+  "artifactId": "c447b98ee2163e1340da7327486390bca4b1b52ac13a4b67eb5c043008cc30fd",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 53414,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad",
+        "size": 1053,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "61a6b16951ca3fc088369f9c54e92a391fb98a0f7a8cf616f6b67080ad11bae0",
+        "size": 34774,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.cjs",
+        "sha256": "c43474e978248c8233dcb5ce17831595d1df6c6711bf9cd8d77f4ea62ae4b9fd",
+        "size": 46567,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.cts",
+        "sha256": "aec39ee7be27f3b9e45552fd4ad7905428af86083384b110dd59a83a75c289d8",
+        "size": 39381,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.mts",
+        "sha256": "aec39ee7be27f3b9e45552fd4ad7905428af86083384b110dd59a83a75c289d8",
+        "size": 39381,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.mjs",
+        "sha256": "f1687b77614189383b3cdb10ef23b193eb170abcf6a97c5a711951ddb233502d",
+        "size": 45882,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "892e1eca19c9f74afad36bacc536a47bb473c50992c860c8ace91730fca42cff",
+        "size": 1347,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1053,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/46/465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad",
+          "sha256": "465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad",
+        "size": 1053
+      },
+      {
+        "blob": {
+          "bytes": 34774,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/61/61a6b16951ca3fc088369f9c54e92a391fb98a0f7a8cf616f6b67080ad11bae0",
+          "sha256": "61a6b16951ca3fc088369f9c54e92a391fb98a0f7a8cf616f6b67080ad11bae0"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "61a6b16951ca3fc088369f9c54e92a391fb98a0f7a8cf616f6b67080ad11bae0",
+        "size": 34774
+      }
+    ],
+    "expandedBytes": 208385,
+    "packageIdentity": {
+      "author": "Jared Wray <me@jaredwray.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "@cacheable/utils",
+      "repository": {
+        "directory": "packages/utils",
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/cacheable.git"
+      },
+      "version": "2.5.0"
+    },
+    "packageMetadata": {
+      "author": "Jared Wray <me@jaredwray.com>",
+      "dependencies": {
+        "hashery": "^1.5.1",
+        "keyv": "^5.6.0"
+      },
+      "description": "Cacheable Utilities for Caching Libraries",
+      "devDependencies": {
+        "tsdown": "^0.22.0",
+        "typescript": "^5.9.3"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./dist/index.mjs",
+            "types": "./dist/index.d.mts"
+          },
+          "require": {
+            "default": "./dist/index.cjs",
+            "types": "./dist/index.d.cts"
+          }
+        }
+      },
+      "files": [
+        "dist",
+        "LICENSE"
+      ],
+      "keywords": [
+        "cacheable",
+        "caching",
+        "utilities",
+        "hashing",
+        "keyv",
+        "cache utils"
+      ],
+      "license": "MIT",
+      "main": "./dist/index.cjs",
+      "module": "./dist/index.mjs",
+      "name": "@cacheable/utils",
+      "private": false,
+      "repository": {
+        "directory": "packages/utils",
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/cacheable.git"
+      },
+      "scripts": {
+        "build": "rimraf ./dist && tsdown src/index.ts --format cjs,esm --dts --clean",
+        "clean": "rimraf ./dist ./coverage ./node_modules",
+        "lint": "biome check --write --error-on-warnings",
+        "test": "pnpm lint && vitest run --coverage",
+        "test:ci": "biome check --error-on-warnings && vitest run --coverage"
+      },
+      "type": "module",
+      "types": "./dist/index.d.mts",
+      "version": "2.5.0"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 53414,
+      "sha256": "243841e7a895205b7984be00bfd162aab703423d878a4837367e617033689a02"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

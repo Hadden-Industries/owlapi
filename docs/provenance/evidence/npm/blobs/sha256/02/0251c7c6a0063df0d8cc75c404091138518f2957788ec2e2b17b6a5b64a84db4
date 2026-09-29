@@ -1,0 +1,118 @@
+{
+  "artifactId": "7ea093c5b18a046734e5b52b5c3c4e1d40c094e927d7664a73f7270b83d8d06d",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 11140,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "fd69ba43201f65a85c37141f2fb4efecc35c3414e8c2bca5c5730a651ae848da",
+        "size": 3613,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "c36322172e58dbdcf114480bc3299b1d645a183c726995aa230b12e8ca9a9def",
+        "size": 1928,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "3a4a34292fa882fe4fb44da0d207793148427e4289a2eff805e4947ffc6edd73",
+        "size": 28800,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "cfe45ed454e50fa6513c68d703c9e6ecf53badeb98d55f71d1edfe16b33e7afe",
+        "size": 147,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "38dcac49144bf3005f4478ef4038b8ccbcc5ef7775cd5dca2b12a746dd1e50cf",
+        "size": 948,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 36568,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@jest/source-map",
+      "repository": {
+        "directory": "packages/jest-source-map",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.5.2"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@jridgewell/trace-mapping": "^0.3.31",
+        "callsites": "^3.1.0",
+        "convert-source-map": "^2.0.0",
+        "graceful-fs": "^4.2.11"
+      },
+      "devDependencies": {
+        "@types/convert-source-map": "^2.0.3",
+        "@types/graceful-fs": "^4.1.9"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "202dd8a14777c270607c2416bd5034c3c0abc984",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "@jest/source-map",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-source-map",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.5.2"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 11140,
+      "sha256": "1349e89818579f63d7af5d28bc94a6f54acfb581c5ceb325715d45114c0ab119"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

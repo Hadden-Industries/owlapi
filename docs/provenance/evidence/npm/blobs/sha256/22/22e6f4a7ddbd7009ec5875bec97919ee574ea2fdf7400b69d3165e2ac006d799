@@ -1,0 +1,2058 @@
+{
+  "artifactId": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 6,
+      "digestVerifiedFileCount": 6,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 6
+    },
+    "artifactId": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "30.5.0",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/%40jest/schemas",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "30.5.1",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/jest-util",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^17.0.2",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/react",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^17.0.2",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/react-test-renderer",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^18.3.1",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/react-is",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^18.3.1",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/react",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^18.3.1",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/react-test-renderer",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^19.0.0",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40types/react-is",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^19.1.0",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40types/react-test-renderer",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^19.2.18",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/%40types/react",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^19.2.3",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/react",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^19.2.3",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/react",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^19.2.3",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/react-test-renderer",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^19.2.3",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/react-test-renderer",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^19.2.5",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/react-is",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.1.2",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/immutable",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^5.2.0",
+        "for_package_purl": "pkg:npm/pretty-format@30.5.1",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/ansi-styles",
+        "resolved_package": {},
+        "scope": "dependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "James Kyle <me@thejameskyle.com>",
+            "end_line": 22,
+            "start_line": 22
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/pretty-format@30.5.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 9,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"MIT\",",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 9
+              }
+            ]
+          }
+        ],
+        "md5": "105937272104adf3affbdaee6fabcc9e",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/pretty-format/30.5.1",
+            "bug_tracking_url": null,
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "mit",
+            "declared_license_expression_spdx": "MIT",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "30.5.0",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/%40jest/schemas",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "30.5.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/jest-util",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^17.0.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/react",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^17.0.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/react-test-renderer",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^18.3.1",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/react-is",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^18.3.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/react",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^18.3.1",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/react-test-renderer",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^19.0.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40types/react-is",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^19.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40types/react-test-renderer",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^19.2.18",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/%40types/react",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^19.2.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/react",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^19.2.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/react",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^19.2.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/react-test-renderer",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^19.2.3",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/react-test-renderer",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^19.2.5",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/react-is",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.1.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/immutable",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^5.2.0",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/ansi-styles",
+                "resolved_package": {},
+                "scope": "dependencies"
+              }
+            ],
+            "description": "Stringify any JavaScript value.",
+            "download_url": "https://registry.npmjs.org/pretty-format/-/pretty-format-30.5.1.tgz",
+            "extra_data": {
+              "engines": {
+                "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+              }
+            },
+            "extracted_license_statement": "- MIT\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": null,
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [],
+            "license_detections": [
+              {
+                "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/package.json",
+                    "license_expression": "mit",
+                    "license_expression_spdx": "MIT",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "MIT",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "pretty-format",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "me@thejameskyle.com",
+                "name": "James Kyle",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/pretty-format@30.5.1",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/pretty-format/-/pretty-format-30.5.1.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/pretty-format",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/jestjs/jest.git@9ab14feccd6c15fec1334dbcb03a53a079d153d3",
+            "version": "30.5.1"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 0.97,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "4715a56c1383574adad4bae6f6d416216f7986cf",
+        "sha1_git": "0fbf53ebfae0cd3e2fe8ed999bbf523653b297b0",
+        "sha256": "81bb82c19c34af09c4e3b05b2b604ab51ea637f678e8a6e0af51156791380974",
+        "size": 1518,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates",
+            "end_line": 4,
+            "start_line": 3
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/pretty-format@30.5.1"
+        ],
+        "holders": [
+          {
+            "end_line": 3,
+            "holder": "Meta Platforms, Inc. and affiliates",
+            "start_line": 3
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          },
+          {
+            "identifier": "mit-cacd5c0c-204a-85c2-affc-e4c125b2492a",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 22,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          }
+        ],
+        "md5": "91417b00b0d1e7e274c202ca4faac76f",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 92.61,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "d098797a91ccbb99db9bb21a6707ff4f128ee3ab",
+        "sha1_git": "b862434861bdae81fe584a1f644915eb60a2f61a",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/pretty-format@30.5.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "8674275a1609d77e06e1d859a3262eee",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "169515efb7449f91916835144a6242bc552c8e4e",
+        "sha1_git": "d0cf9dd9681a92172a2108126bab8bc0ecfef313",
+        "sha256": "13b17b5a1f80ae8183844238882851da40c419ef1526dafb047ce4e0b4c55616",
+        "size": 14304,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates",
+            "end_line": 188,
+            "start_line": 188
+          },
+          {
+            "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates",
+            "end_line": 248,
+            "start_line": 248
+          },
+          {
+            "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates",
+            "end_line": 26,
+            "start_line": 26
+          },
+          {
+            "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates",
+            "end_line": 293,
+            "start_line": 293
+          },
+          {
+            "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates",
+            "end_line": 3,
+            "start_line": 3
+          },
+          {
+            "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates",
+            "end_line": 369,
+            "start_line": 369
+          },
+          {
+            "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates",
+            "end_line": 486,
+            "start_line": 486
+          },
+          {
+            "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates",
+            "end_line": 577,
+            "start_line": 577
+          },
+          {
+            "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates",
+            "end_line": 613,
+            "start_line": 613
+          },
+          {
+            "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates",
+            "end_line": 637,
+            "start_line": 637
+          },
+          {
+            "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates",
+            "end_line": 741,
+            "start_line": 741
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/pretty-format@30.5.1"
+        ],
+        "holders": [
+          {
+            "end_line": 188,
+            "holder": "Meta Platforms, Inc. and affiliates",
+            "start_line": 188
+          },
+          {
+            "end_line": 248,
+            "holder": "Meta Platforms, Inc. and affiliates",
+            "start_line": 248
+          },
+          {
+            "end_line": 26,
+            "holder": "Meta Platforms, Inc. and affiliates",
+            "start_line": 26
+          },
+          {
+            "end_line": 293,
+            "holder": "Meta Platforms, Inc. and affiliates",
+            "start_line": 293
+          },
+          {
+            "end_line": 3,
+            "holder": "Meta Platforms, Inc. and affiliates",
+            "start_line": 3
+          },
+          {
+            "end_line": 369,
+            "holder": "Meta Platforms, Inc. and affiliates",
+            "start_line": 369
+          },
+          {
+            "end_line": 486,
+            "holder": "Meta Platforms, Inc. and affiliates",
+            "start_line": 486
+          },
+          {
+            "end_line": 577,
+            "holder": "Meta Platforms, Inc. and affiliates",
+            "start_line": 577
+          },
+          {
+            "end_line": 613,
+            "holder": "Meta Platforms, Inc. and affiliates",
+            "start_line": 613
+          },
+          {
+            "end_line": 637,
+            "holder": "Meta Platforms, Inc. and affiliates",
+            "start_line": 637
+          },
+          {
+            "end_line": 741,
+            "holder": "Meta Platforms, Inc. and affiliates",
+            "start_line": 741
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "mit-0f029597-2a35-9de3-4068-eba7277f6424",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 191,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/build/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 22,
+                "matched_text": "This source code is licensed under the MIT license found in the\n * LICENSE file in the root directory of this source tree.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_101.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+                "score": 100,
+                "start_line": 190
+              },
+              {
+                "end_line": 22,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 6
+              }
+            ]
+          },
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "mit-0f029597-2a35-9de3-4068-eba7277f6424",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 22,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 6
+              },
+              {
+                "end_line": 251,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/build/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 22,
+                "matched_text": "This source code is licensed under the MIT license found in the\n * LICENSE file in the root directory of this source tree.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_101.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+                "score": 100,
+                "start_line": 250
+              }
+            ]
+          },
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "mit-0f029597-2a35-9de3-4068-eba7277f6424",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 22,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 6
+              },
+              {
+                "end_line": 29,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/build/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 22,
+                "matched_text": "This source code is licensed under the MIT license found in the\n * LICENSE file in the root directory of this source tree.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_101.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+                "score": 100,
+                "start_line": 28
+              }
+            ]
+          },
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "mit-0f029597-2a35-9de3-4068-eba7277f6424",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 22,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 6
+              },
+              {
+                "end_line": 296,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/build/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 22,
+                "matched_text": "This source code is licensed under the MIT license found in the\n * LICENSE file in the root directory of this source tree.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_101.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+                "score": 100,
+                "start_line": 295
+              }
+            ]
+          },
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "mit-0f029597-2a35-9de3-4068-eba7277f6424",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 22,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 6
+              },
+              {
+                "end_line": 372,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/build/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 22,
+                "matched_text": "This source code is licensed under the MIT license found in the\n * LICENSE file in the root directory of this source tree.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_101.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+                "score": 100,
+                "start_line": 371
+              }
+            ]
+          },
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "mit-0f029597-2a35-9de3-4068-eba7277f6424",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 22,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 6
+              },
+              {
+                "end_line": 489,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/build/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 22,
+                "matched_text": "This source code is licensed under the MIT license found in the\n * LICENSE file in the root directory of this source tree.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_101.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+                "score": 100,
+                "start_line": 488
+              }
+            ]
+          },
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "mit-0f029597-2a35-9de3-4068-eba7277f6424",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 22,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 6
+              },
+              {
+                "end_line": 580,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/build/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 22,
+                "matched_text": "This source code is licensed under the MIT license found in the\n * LICENSE file in the root directory of this source tree.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_101.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+                "score": 100,
+                "start_line": 579
+              }
+            ]
+          },
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "mit-0f029597-2a35-9de3-4068-eba7277f6424",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 22,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 6
+              },
+              {
+                "end_line": 6,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/build/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 22,
+                "matched_text": "This source code is licensed under the MIT license found in the\n *  * LICENSE file in the root directory of this source tree.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_101.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+                "score": 100,
+                "start_line": 5
+              }
+            ]
+          },
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "mit-0f029597-2a35-9de3-4068-eba7277f6424",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 22,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 6
+              },
+              {
+                "end_line": 616,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/build/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 22,
+                "matched_text": "This source code is licensed under the MIT license found in the\n * LICENSE file in the root directory of this source tree.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_101.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+                "score": 100,
+                "start_line": 615
+              }
+            ]
+          },
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "mit-0f029597-2a35-9de3-4068-eba7277f6424",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 22,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 6
+              },
+              {
+                "end_line": 640,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/build/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 22,
+                "matched_text": "This source code is licensed under the MIT license found in the\n * LICENSE file in the root directory of this source tree.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_101.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+                "score": 100,
+                "start_line": 639
+              }
+            ]
+          },
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "mit-0f029597-2a35-9de3-4068-eba7277f6424",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 22,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 6
+              },
+              {
+                "end_line": 744,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/build/index.js",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 22,
+                "matched_text": "This source code is licensed under the MIT license found in the\n * LICENSE file in the root directory of this source tree.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_101.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+                "score": 100,
+                "start_line": 743
+              }
+            ]
+          }
+        ],
+        "md5": "d84b7fc848c8cdb1704043635e75cd37",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/build/index.js",
+        "percentage_of_license_text": 5.64,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "4aa4ed01a3dbb6256e38bce2d67cdbbe3435ba61",
+        "sha1_git": "f4fa8f1ca4717c8156786c757b16bafa5397b189",
+        "sha256": "fc4712280efd27d9181477190c44132ed2dc52dfc62faf7d22dd39f919221bdd",
+        "size": 40739,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".mjs",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/pretty-format@30.5.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "33001f2f8c5b3ecd6222429fea2d7c92",
+        "name": "index.mjs",
+        "package_data": [],
+        "path": "package/build/index.mjs",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "660387dd4d01ba3e050a44a4f97d5b0da2504347",
+        "sha1_git": "a451f50bf6396cefa046603067c8f29b3c34dc72",
+        "sha256": "0b1256fcfdf3c1154a0c5f2d1dcbcf909413e84fb6fca5d9084104cafe688d22",
+        "size": 211,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates",
+            "end_line": 2,
+            "start_line": 2
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".ts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/pretty-format@30.5.1"
+        ],
+        "holders": [
+          {
+            "end_line": 2,
+            "holder": "Meta Platforms, Inc. and affiliates",
+            "start_line": 2
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "detection_log": [
+              "unknown-reference-to-local-file"
+            ],
+            "identifier": "mit-0f029597-2a35-9de3-4068-eba7277f6424",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 22,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 6
+              },
+              {
+                "end_line": 5,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/build/index.d.ts",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 22,
+                "matched_text": " * This source code is licensed under the MIT license found in the\n * LICENSE file in the root directory of this source tree.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_101.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+                "score": 100,
+                "start_line": 4
+              }
+            ]
+          }
+        ],
+        "md5": "402f35515159293a77dc478d201bef32",
+        "name": "index.d.ts",
+        "package_data": [],
+        "path": "package/build/index.d.ts",
+        "percentage_of_license_text": 6.34,
+        "programming_language": "TypeScript",
+        "scan_errors": [],
+        "sha1": "2108dfcff59e6703a1bd25f3b34707bc8fcc3e7f",
+        "sha1_git": "d5714ec262d9c4717d071504e8aca8b2d06c093a",
+        "sha256": "68f7865785fea7b6822ee8b9975b7934f6f6c3a908393ffca96ce3d0f0bc8122",
+        "size": 3384,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 9,
+            "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "  \"license\": \"MIT\",",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_30.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+            "score": 100,
+            "start_line": 9
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-9967e727-165e-9bb5-f090-7de5e47a3929",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "MIT License",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_14.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "MIT",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-cacd5c0c-204a-85c2-affc-e4c125b2492a",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 22,
+            "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 161,
+            "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+            "score": 100,
+            "start_line": 6
+          }
+        ]
+      },
+      {
+        "detection_count": 12,
+        "identifier": "mit-0f029597-2a35-9de3-4068-eba7277f6424",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "MIT License",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_14.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+            "score": 100,
+            "start_line": 1
+          },
+          {
+            "end_line": 22,
+            "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 161,
+            "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+            "score": 100,
+            "start_line": 6
+          },
+          {
+            "end_line": 5,
+            "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/build/index.d.ts",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 22,
+            "matched_text": " * This source code is licensed under the MIT license found in the\n * LICENSE file in the root directory of this source tree.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_101.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+            "score": 100,
+            "start_line": 4
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "mit.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 161,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+      },
+      {
+        "identifier": "mit_101.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": true,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 22,
+        "license_expression": "mit",
+        "minimum_coverage": 50,
+        "notes": null,
+        "referenced_filenames": [
+          "LICENSE"
+        ],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_101.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "This source code is {{licensed under the MIT}} license found in the\nLICENSE file in the root directory of this source tree."
+      },
+      {
+        "identifier": "mit_14.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT License"
+      },
+      {
+        "identifier": "mit_30.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: MIT"
+      },
+      {
+        "identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/pretty-format/30.5.1",
+        "bug_tracking_url": null,
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "mit",
+        "declared_license_expression_spdx": "MIT",
+        "description": "Stringify any JavaScript value.",
+        "download_url": "https://registry.npmjs.org/pretty-format/-/pretty-format-30.5.1.tgz",
+        "extra_data": {
+          "engines": {
+            "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+          }
+        },
+        "extracted_license_statement": "- MIT\n",
+        "holder": null,
+        "homepage_url": null,
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [],
+        "license_detections": [
+          {
+            "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "deb9e263426d7f1ce854f828608ac2e2b5573b47003b83e6c01764d41124ff71/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "MIT",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "pretty-format",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "me@thejameskyle.com",
+            "name": "James Kyle",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/pretty-format@30.5.1",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/pretty-format/-/pretty-format-30.5.1.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/pretty-format",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/jestjs/jest.git@9ab14feccd6c15fec1334dbcb03a53a079d153d3",
+        "version": "30.5.1"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

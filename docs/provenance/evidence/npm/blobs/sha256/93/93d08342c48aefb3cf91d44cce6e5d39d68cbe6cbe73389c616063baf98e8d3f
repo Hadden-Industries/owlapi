@@ -1,0 +1,154 @@
+{
+  "artifactId": "103b96f99359387d06ac15121929fae706d62a27dc6dfb30a804d4609def59f3",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 20125,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad",
+        "size": 1053,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "14300b67364e3107d85ca0de39b7683c2a3aff1f8bcbb12833936c59339a0698",
+        "size": 28117,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.cjs",
+        "sha256": "03558014600a6672c20c6be58e65a05e7a14ed4c64ca1483038e8e1891e26b38",
+        "size": 18375,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.cts",
+        "sha256": "45d43ea3398776abc191b0e55e7f4658be8142821516ce97efc2d2384d5c2ec7",
+        "size": 11693,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.mts",
+        "sha256": "994ef7ebfa54e7d2ea459f44e1fab6ba243d2763e44e9a0ad8c088c4f29c1be6",
+        "size": 11693,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.mjs",
+        "sha256": "33125441aecc5246651f242293971b7ee2649594dc45e8a17fc63f42483ec58d",
+        "size": 16871,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "4ebf8b7daeca6408f7fc6e093c394e531ef76a2e860ff9fc71b7654edd6254fc",
+        "size": 1498,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1053,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/46/465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad",
+          "sha256": "465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "465e8da349d50d8512e4a0e9b26d2bee50392c394f17edaa3be6e0df7c2b27ad",
+        "size": 1053
+      },
+      {
+        "blob": {
+          "bytes": 28117,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/14/14300b67364e3107d85ca0de39b7683c2a3aff1f8bcbb12833936c59339a0698",
+          "sha256": "14300b67364e3107d85ca0de39b7683c2a3aff1f8bcbb12833936c59339a0698"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "14300b67364e3107d85ca0de39b7683c2a3aff1f8bcbb12833936c59339a0698",
+        "size": 28117
+      }
+    ],
+    "expandedBytes": 89300,
+    "packageIdentity": {
+      "author": "Jared Wray <me@jaredwray.com>",
+      "homepage": null,
+      "license": "MIT",
+      "name": "file-entry-cache",
+      "repository": {
+        "directory": "packages/file-entry-cache",
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/cacheable.git"
+      },
+      "version": "11.1.5"
+    },
+    "packageMetadata": {
+      "author": "Jared Wray <me@jaredwray.com>",
+      "dependencies": {
+        "flat-cache": "^6.1.23"
+      },
+      "description": "A lightweight cache for file metadata, ideal for processes that work on a specific set of files and only need to reprocess files that have changed since the last run",
+      "devDependencies": {
+        "pino": "^10.3.1",
+        "tsdown": "^0.22.0",
+        "typescript": "^5.9.3"
+      },
+      "exports": {
+        ".": {
+          "import": {
+            "default": "./dist/index.mjs",
+            "types": "./dist/index.d.mts"
+          },
+          "require": {
+            "default": "./dist/index.cjs",
+            "types": "./dist/index.d.cts"
+          }
+        }
+      },
+      "files": [
+        "dist",
+        "license"
+      ],
+      "keywords": [
+        "file cache",
+        "task cache files",
+        "file cache",
+        "key par",
+        "key value",
+        "cache"
+      ],
+      "license": "MIT",
+      "main": "./dist/index.cjs",
+      "module": "./dist/index.mjs",
+      "name": "file-entry-cache",
+      "private": false,
+      "repository": {
+        "directory": "packages/file-entry-cache",
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/cacheable.git"
+      },
+      "scripts": {
+        "build": "rimraf ./dist && tsdown src/index.ts --format cjs,esm --dts --clean",
+        "clean": "rimraf ./dist ./coverage ./node_modules",
+        "lint": "biome check --write --error-on-warnings",
+        "test": "pnpm lint && vitest run --coverage",
+        "test:ci": "biome check --error-on-warnings && vitest run --coverage"
+      },
+      "type": "module",
+      "types": "./dist/index.d.mts",
+      "version": "11.1.5"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 20125,
+      "sha256": "941235c20a7060285e2d85777a03864d194b2f4bbe54b9730c8b026a62e2ace9"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,3 +1,5 @@
+import { hasXmlOntologySignature } from "../xmlOntologySignature.js";
+
 const LEADING_TRIVIA = String.raw`(?:\s|;[^\r\n]*(?:\r\n?|\n))*`;
 const SHARED_TOP_LEVEL_KEYWORDS = [
   "define-primitive-concept",
@@ -29,8 +31,6 @@ const signature = (keywords) =>
 const SHARED_SIGNATURE = signature(SHARED_TOP_LEVEL_KEYWORDS);
 const KRSS2_ONLY_SIGNATURE = signature(KRSS2_ONLY_TOP_LEVEL_KEYWORDS);
 const FOREIGN_SIGNATURES = [
-  /^\s*(?:<!--[\s\S]*?-->\s*)*<\?(?:xml)\b/iu,
-  /^\s*(?:<!--[\s\S]*?-->\s*)*<(?:[A-Za-z_][\w.-]*:RDF|Ontology)\b/iu,
   /^\s*@(?:base|prefix)\b/iu,
   /^\s*(?:BASE|PREFIX)\s/iu,
   /^\s*(?:Prefix|Ontology)\s*\(/u,
@@ -58,7 +58,10 @@ const preference = (source, dialect) => {
 export const detectKRSSDialect = (source, dialect) => {
   const label = dialect.toUpperCase();
   const text = source.getText();
-  if (FOREIGN_SIGNATURES.some((pattern) => pattern.test(text))) {
+  if (
+    hasXmlOntologySignature(text) ||
+    FOREIGN_SIGNATURES.some((pattern) => pattern.test(text))
+  ) {
     return {
       reason: `A non-${label} ontology syntax signature was found`,
       reasonCode: `${label}_STRONG_NEGATIVE`,

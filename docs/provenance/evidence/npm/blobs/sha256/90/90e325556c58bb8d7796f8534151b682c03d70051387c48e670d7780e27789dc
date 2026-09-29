@@ -1,0 +1,119 @@
+{
+  "artifactId": "49ea413614574304121c0c1beff2195a085bad9d6187eb319df987a8bfc23dea",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 8929,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "33586f0d64588a3e862821e6252374456653962be8ecd6b22f5bebe4db9dadf9",
+        "size": 939,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "d4d6aab35ead2fbdafc31c9b0cb8a5b5939c7d24c63356c979757194eaa282cf",
+        "size": 3408,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "5ca7a40c852792d955ef625efdd570726c294313ee2da4260c9cf79a648eb557",
+        "size": 24765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "695c31f510282a1ece710dbb097002916c6ba6c0ae125a0547fcceb9bc3de342",
+        "size": 1509,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "eba6699bf32d0dea6f922282ca357605e76b38973fcbe51b740ba74a20ea7bf3",
+        "size": 987,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 32740,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "jest-matcher-utils",
+      "repository": {
+        "directory": "packages/jest-matcher-utils",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.5.2"
+    },
+    "packageMetadata": {
+      "dependencies": {
+        "@jest/get-type": "30.5.0",
+        "chalk": "^4.1.2",
+        "jest-diff": "30.5.2",
+        "pretty-format": "30.5.1"
+      },
+      "description": "A set of utility functions for expect and related packages",
+      "devDependencies": {
+        "@jest/test-utils": "30.5.2",
+        "@types/node": "*"
+      },
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "202dd8a14777c270607c2416bd5034c3c0abc984",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "jest-matcher-utils",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-matcher-utils",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.5.2"
+    },
+    "physicalEntryCount": 6,
+    "tarball": {
+      "bytes": 8929,
+      "sha256": "ec61ed30e2fc6b6ab0cc93210664fb0e1caad4c865bc3fa345e1168a50ec89dc"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

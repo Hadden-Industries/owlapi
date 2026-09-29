@@ -1,0 +1,112 @@
+{
+  "artifactId": "f097de7b3d692aea2fafb29c5bddc93e3f4dde038bf9b3fabc86ecbc424a037e",
+  "evidence": {
+    "archiveRoot": "readable-stream",
+    "compressedBytes": 5953,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "readable-stream",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0,
+        "type": "DIRECTORY"
+      },
+      {
+        "path": "readable-stream/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141,
+        "type": "FILE"
+      },
+      {
+        "path": "readable-stream/README.md",
+        "sha256": "35c518082c62be8cdd5e476f87573958dc57e78e5c55873ec4a5e5561b34c210",
+        "size": 644,
+        "type": "FILE"
+      },
+      {
+        "path": "readable-stream/index.d.ts",
+        "sha256": "3b1e2cba868b9f86ec48120513981337ddae7fb5e9c8313e6c4e8abfefdbb7cc",
+        "size": 29503,
+        "type": "FILE"
+      },
+      {
+        "path": "readable-stream/package.json",
+        "sha256": "779a8aee8ea7d338729c34a766bba1b96839846d105affe150dc9755c9f48d17",
+        "size": 1187,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1141,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c2/c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        },
+        "kind": "LICENCE",
+        "path": "readable-stream/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "size": 1141
+      }
+    ],
+    "expandedBytes": 32475,
+    "packageIdentity": {
+      "author": null,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/readable-stream",
+      "license": "MIT",
+      "name": "@types/readable-stream",
+      "repository": {
+        "directory": "types/readable-stream",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "version": "4.0.25"
+    },
+    "packageMetadata": {
+      "contributors": [
+        {
+          "githubUsername": "TeamworkGuy2",
+          "name": "TeamworkGuy2",
+          "url": "https://github.com/TeamworkGuy2"
+        },
+        {
+          "githubUsername": "markdreyer",
+          "name": "markdreyer",
+          "url": "https://github.com/markdreyer"
+        },
+        {
+          "githubUsername": "mcollina",
+          "name": "Matteo Collina",
+          "url": "https://github.com/mcollina"
+        }
+      ],
+      "dependencies": {
+        "@types/node": "*"
+      },
+      "description": "TypeScript definitions for readable-stream",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/readable-stream",
+      "license": "MIT",
+      "main": "",
+      "name": "@types/readable-stream",
+      "peerDependencies": {},
+      "repository": {
+        "directory": "types/readable-stream",
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+      },
+      "scripts": {},
+      "typeScriptVersion": "5.6",
+      "types": "index.d.ts",
+      "typesPublisherContentHash": "e715b7f2160f658d0f56b642bfe15455bf2939a92cfe9713a9cc1642b83d1c02",
+      "version": "4.0.25"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 5953,
+      "sha256": "e4099a09e8328b796b546b015d52e759e1715af768aac5fb514951633fbb60a0"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

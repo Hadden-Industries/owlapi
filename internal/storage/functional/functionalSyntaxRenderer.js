@@ -1,4 +1,4 @@
-import { isIri } from "@hyperjump/uri";
+import { parseIri } from "@hyperjump/uri";
 import { parse as parseLanguageTag } from "bcp-47";
 import { OWLOntologyStorageError } from "../../../io/errors.js";
 import { OWLObjectKind } from "../../../model/kinds.js";
@@ -12,11 +12,12 @@ const notRepresentable = (message) => {
 const fullIri = (iri) => {
   // RFC 3987 IRI includes fragments; absolute-IRI specifically excludes them.
   // Validate, never normalize: lexical IRI identity is part of OWL structure.
-  if (
-    typeof iri.value !== "string" ||
-    !iri.value.isWellFormed() ||
-    !isIri(iri.value)
-  ) {
+  if (typeof iri.value !== "string" || !iri.value.isWellFormed()) {
+    notRepresentable("Functional Syntax requires a well-formed full IRI");
+  }
+  try {
+    parseIri(iri.value);
+  } catch {
     notRepresentable("Functional Syntax requires a well-formed full IRI");
   }
   return `<${iri.value}>`;

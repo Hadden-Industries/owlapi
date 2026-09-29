@@ -1,0 +1,855 @@
+{
+  "artifactId": "3f1c1eaa06763ece6cd8571951bac93c680907efbf8ac4aa334fab20242c6e46",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 7,
+      "digestVerifiedFileCount": 7,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 7
+    },
+    "artifactId": "3f1c1eaa06763ece6cd8571951bac93c680907efbf8ac4aa334fab20242c6e46",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^2.1.1",
+        "for_package_purl": "pkg:npm/qified@0.10.1",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/hookified",
+        "resolved_package": {},
+        "scope": "dependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Jared Wray <me@jaredwray.com>",
+            "end_line": 29,
+            "start_line": 29
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/qified@0.10.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 30,
+                "from_file": "3f1c1eaa06763ece6cd8571951bac93c680907efbf8ac4aa334fab20242c6e46/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"MIT\",",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 30
+              }
+            ]
+          }
+        ],
+        "md5": "93420eb91a7095df3ad168c069249429",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/qified/0.10.1",
+            "bug_tracking_url": "https://github.com/jaredwray/qified/issues",
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "mit",
+            "declared_license_expression_spdx": "MIT",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^2.1.1",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/hookified",
+                "resolved_package": {},
+                "scope": "dependencies"
+              }
+            ],
+            "description": "Task and Message Queues with Multiple Providers",
+            "download_url": "https://registry.npmjs.org/qified/-/qified-0.10.1.tgz",
+            "extra_data": {
+              "engines": {
+                "node": ">=20"
+              }
+            },
+            "extracted_license_statement": "- MIT\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://github.com/jaredwray/qified#readme",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "message",
+              "provider",
+              "qified",
+              "queue",
+              "task"
+            ],
+            "license_detections": [
+              {
+                "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "3f1c1eaa06763ece6cd8571951bac93c680907efbf8ac4aa334fab20242c6e46/package/package.json",
+                    "license_expression": "mit",
+                    "license_expression_spdx": "MIT",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "MIT",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "qified",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "me@jaredwray.com",
+                "name": "Jared Wray",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/qified@0.10.1",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/qified/-/qified-0.10.1.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/qified",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/jaredwray/qified.git",
+            "version": "0.10.1"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 1.45,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "dfa24b833261db8a1f4bb32148023bff6a5181e0",
+        "sha1_git": "7565cd9ce1c1c1524c47b5982214e5bdd8288432",
+        "sha256": "cb9172b31a8f97740ecc440f8c36947e43f0bf732025df8b7e6f64df4d77dec7",
+        "size": 1261,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "(c) Jared Wray",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": "",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/qified@0.10.1"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Jared Wray",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-ac40beba-5702-f54d-755f-333441314bb0",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "3f1c1eaa06763ece6cd8571951bac93c680907efbf8ac4aa334fab20242c6e46/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "MIT License & © Jared Wray",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_14.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+                "score": 100,
+                "start_line": 1
+              },
+              {
+                "end_line": 19,
+                "from_file": "3f1c1eaa06763ece6cd8571951bac93c680907efbf8ac4aa334fab20242c6e46/package/LICENSE",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 161,
+                "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "mit.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "5578af22ce1eb12afc38af97cae707c5",
+        "name": "LICENSE",
+        "package_data": [],
+        "path": "package/LICENSE",
+        "percentage_of_license_text": 98.79,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "e4b2f7eee63f7c2d6a72262cd68de51d835d5c8e",
+        "sha1_git": "be87f1509d9856b3f106ca23b523e37e6a64624b",
+        "sha256": "3902e57e73412bd91ba81a47fa2cef45e1729c152c835114c1692cc5e685ddbe",
+        "size": 1052,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [
+          {
+            "copyright": "(c) Jared Wray (LICENSE)",
+            "end_line": 677,
+            "start_line": 677
+          }
+        ],
+        "detected_license_expression": "mit",
+        "detected_license_expression_spdx": "MIT",
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/qified@0.10.1"
+        ],
+        "holders": [
+          {
+            "end_line": 677,
+            "holder": "Jared Wray (LICENSE)",
+            "start_line": 677
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 677,
+                "from_file": "3f1c1eaa06763ece6cd8571951bac93c680907efbf8ac4aa334fab20242c6e46/package/README.md",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "# License\n\n[MIT & © Jared Wray](LICENSE)",
+                "matcher": "2-aho",
+                "rule_identifier": "mit_30.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+                "score": 100,
+                "start_line": 675
+              }
+            ]
+          }
+        ],
+        "md5": "27426e14de16ee9733f7446575eb912a",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0.08,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "f5111d96a0c8870d2c43ec2277c4bd8868d98a80",
+        "sha1_git": "5dc8bf3bb5fe468cc04aeac75377e29d00cfad33",
+        "sha256": "c4febdef587d1b665aef91bf15c9f348d656a627c317d94bafb2df6c7efd6596",
+        "size": 20251,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".cjs",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/qified@0.10.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "754454f2730f1e6053a8b192093e14ec",
+        "name": "index.cjs",
+        "package_data": [],
+        "path": "package/dist/index.cjs",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "b4741f1f1b7e97f6e046bdbf90cd08762389e93d",
+        "sha1_git": "3ef7d70fe82d5ad3a745757aedc204d2d68b989b",
+        "sha256": "d7e1482b4d5fbcc06622d54ed662ef58ad2e3f205f9523118a001f0763153b88",
+        "size": 21599,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".mjs",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/qified@0.10.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "20730dcf42c513d47e16a8e83c67c98b",
+        "name": "index.mjs",
+        "package_data": [],
+        "path": "package/dist/index.mjs",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "da83eb2211f9080df4507be925448d13dafd90a8",
+        "sha1_git": "8a8e41211dde9a9bdddf9dda82f45ba26b0ae549",
+        "sha256": "fac82ac2726d008867ad39fefa0beadcce0227b5c3ad7af6c9884e4805f6292a",
+        "size": 21405,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".cts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/qified@0.10.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": true,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "f1a9d902715aeb8502d35c5355b46bf7",
+        "name": "index.d.cts",
+        "package_data": [],
+        "path": "package/dist/index.d.cts",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "8df07aff9141b4383c6741e59af10b0e54144969",
+        "sha1_git": "a0776e61bee02971c4746c8e4032efb5ba7b6d83",
+        "sha256": "e8ccaec45b9083811b398bd939bdab163a37fff5513f7606ef70bba95e8bc18b",
+        "size": 21338,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index.d",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".mts",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/qified@0.10.1"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": true,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "f1a9d902715aeb8502d35c5355b46bf7",
+        "name": "index.d.mts",
+        "package_data": [],
+        "path": "package/dist/index.d.mts",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "8df07aff9141b4383c6741e59af10b0e54144969",
+        "sha1_git": "a0776e61bee02971c4746c8e4032efb5ba7b6d83",
+        "sha256": "e8ccaec45b9083811b398bd939bdab163a37fff5513f7606ef70bba95e8bc18b",
+        "size": 21338,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "3f1c1eaa06763ece6cd8571951bac93c680907efbf8ac4aa334fab20242c6e46/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "MIT",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "mit-ac40beba-5702-f54d-755f-333441314bb0",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "3f1c1eaa06763ece6cd8571951bac93c680907efbf8ac4aa334fab20242c6e46/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "MIT License & © Jared Wray",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_14.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+            "score": 100,
+            "start_line": 1
+          },
+          {
+            "end_line": 19,
+            "from_file": "3f1c1eaa06763ece6cd8571951bac93c680907efbf8ac4aa334fab20242c6e46/package/LICENSE",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 161,
+            "matched_text": "Permission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "mit.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+            "score": 100,
+            "start_line": 3
+          }
+        ]
+      },
+      {
+        "detection_count": 2,
+        "identifier": "mit-3fce6ea2-8abd-6c6b-3ede-a37af7c6efee",
+        "license_expression": "mit",
+        "license_expression_spdx": "MIT",
+        "reference_matches": [
+          {
+            "end_line": 30,
+            "from_file": "3f1c1eaa06763ece6cd8571951bac93c680907efbf8ac4aa334fab20242c6e46/package/package.json",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "  \"license\": \"MIT\",",
+            "matcher": "2-aho",
+            "rule_identifier": "mit_30.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+            "score": 100,
+            "start_line": 30
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": "https://ieeexplore.ieee.org/document/9263265",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "mit",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/mit",
+        "minimum_coverage": 0,
+        "name": "MIT License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://www.opensource.org/licenses/MIT",
+        "other_spdx_license_keys": [
+          "LicenseRef-MIT-Bootstrap",
+          "LicenseRef-MIT-Diehl",
+          "LicenseRef-MIT-Discord",
+          "LicenseRef-MIT-TC"
+        ],
+        "other_urls": [
+          "https://opensource.com/article/18/3/patent-grant-mit-license",
+          "https://opensource.com/article/19/4/history-mit-license",
+          "https://opensource.org/licenses/MIT"
+        ],
+        "owner": "MIT",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "short_name": "MIT License",
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "standard_notice": null,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+        "text_urls": [
+          "http://opensource.org/licenses/mit-license.php"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "mit.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 161,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+      },
+      {
+        "identifier": "mit_14.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": true,
+        "is_license_tag": false,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_14.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT License"
+      },
+      {
+        "identifier": "mit_30.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": true,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "mit",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_30.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "License: MIT"
+      },
+      {
+        "identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "mit",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "MIT"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/qified/0.10.1",
+        "bug_tracking_url": "https://github.com/jaredwray/qified/issues",
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "mit",
+        "declared_license_expression_spdx": "MIT",
+        "description": "Task and Message Queues with Multiple Providers",
+        "download_url": "https://registry.npmjs.org/qified/-/qified-0.10.1.tgz",
+        "extra_data": {
+          "engines": {
+            "node": ">=20"
+          }
+        },
+        "extracted_license_statement": "- MIT\n",
+        "holder": null,
+        "homepage_url": "https://github.com/jaredwray/qified#readme",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "message",
+          "provider",
+          "qified",
+          "queue",
+          "task"
+        ],
+        "license_detections": [
+          {
+            "identifier": "mit-a822f434-d61f-f2b1-c792-8b8cb9e7b9bf",
+            "license_expression": "mit",
+            "license_expression_spdx": "MIT",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "3f1c1eaa06763ece6cd8571951bac93c680907efbf8ac4aa334fab20242c6e46/package/package.json",
+                "license_expression": "mit",
+                "license_expression_spdx": "MIT",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "MIT",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-mit-5da48780aba670b0860c46d899ed42a0f243ff06",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "qified",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "me@jaredwray.com",
+            "name": "Jared Wray",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/qified@0.10.1",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/qified/-/qified-0.10.1.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/qified",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/jaredwray/qified.git",
+        "version": "0.10.1"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

@@ -1,0 +1,152 @@
+{
+  "artifactId": "0cbae2324f0d6a78dccef0817f11f53c947833a08d3324d926a055de4d498543",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2937,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "1f7dca26d2d328c3dbb9b6fe3b15ec3cda08ffe2288e47b73d617454b256f959",
+        "size": 1108,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "fe8688faa5a122b46d15ec2618b24665ce8a687adbedfdc5d5261fd2291626f5",
+        "size": 1104,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.cjs",
+        "sha256": "b122c1c0987140e79489d5188949176ecdbaa48fc9f71c60140248d4ce9467dd",
+        "size": 2669,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.cts",
+        "sha256": "dfe15ca22a91954016f7e63295abf34db5b51e286b85d4a7caec90d61f22210b",
+        "size": 168,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.ts",
+        "sha256": "dfe15ca22a91954016f7e63295abf34db5b51e286b85d4a7caec90d61f22210b",
+        "size": 168,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.js",
+        "sha256": "e146b74998261b1c341d6ea7f01135ec71b670e31bb306c5f99e48f52a20e824",
+        "size": 1550,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "191241178c9adee32a6fca2667499dac3333282b5fc660ed1179d8eada75ec96",
+        "size": 1340,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1108,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/1f/1f7dca26d2d328c3dbb9b6fe3b15ec3cda08ffe2288e47b73d617454b256f959",
+          "sha256": "1f7dca26d2d328c3dbb9b6fe3b15ec3cda08ffe2288e47b73d617454b256f959"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "1f7dca26d2d328c3dbb9b6fe3b15ec3cda08ffe2288e47b73d617454b256f959",
+        "size": 1108
+      },
+      {
+        "blob": {
+          "bytes": 1104,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/fe/fe8688faa5a122b46d15ec2618b24665ce8a687adbedfdc5d5261fd2291626f5",
+          "sha256": "fe8688faa5a122b46d15ec2618b24665ce8a687adbedfdc5d5261fd2291626f5"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "fe8688faa5a122b46d15ec2618b24665ce8a687adbedfdc5d5261fd2291626f5",
+        "size": 1104
+      }
+    ],
+    "expandedBytes": 8107,
+    "packageIdentity": {
+      "author": "Jared Wray <me@jaredwray.com> (https://jaredwray.com)",
+      "homepage": "https://github.com/jaredwray/keyv",
+      "license": "MIT",
+      "name": "@keyv/serialize",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/keyv.git"
+      },
+      "version": "1.1.1"
+    },
+    "packageMetadata": {
+      "author": "Jared Wray <me@jaredwray.com> (https://jaredwray.com)",
+      "bugs": {
+        "url": "https://github.com/jaredwray/keyv/issues"
+      },
+      "description": "Serialization for Keyv",
+      "devDependencies": {
+        "@biomejs/biome": "^2.2.3",
+        "@keyv/test-suite": "^2.1.1",
+        "@vitest/coverage-v8": "^3.2.4",
+        "keyv": "^5.5.0",
+        "rimraf": "^6.0.1",
+        "tsd": "^0.33.0",
+        "typescript": "^5.9.2",
+        "vitest": "^3.2.4"
+      },
+      "exports": {
+        ".": {
+          "import": "./dist/index.js",
+          "require": "./dist/index.cjs"
+        }
+      },
+      "files": [
+        "dist",
+        "LICENSE"
+      ],
+      "homepage": "https://github.com/jaredwray/keyv",
+      "keywords": [
+        "keyv",
+        "serialize",
+        "key",
+        "value",
+        "store"
+      ],
+      "license": "MIT",
+      "main": "dist/index.cjs",
+      "module": "dist/index.js",
+      "name": "@keyv/serialize",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/keyv.git"
+      },
+      "scripts": {
+        "build": "rimraf ./dist && tsup src/index.ts --format cjs,esm --dts --clean",
+        "clean": "rimraf ./node_modules ./coverage ./dist",
+        "test": "biome check --write && vitest run --coverage",
+        "test:ci": "biome check && vitest --run --sequence.setupFiles=list --coverage"
+      },
+      "tsd": {
+        "directory": "test"
+      },
+      "type": "module",
+      "types": "dist/index.d.ts",
+      "version": "1.1.1"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 2937,
+      "sha256": "5730adf7d1edef7c84a7ce658c3a2915386529b4d795523265c30a2e94f91366"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

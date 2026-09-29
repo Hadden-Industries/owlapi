@@ -1,0 +1,215 @@
+{
+  "artifactId": "9b9f7ef4b7ab735140efae553fae924dc94a4345327d9dd90eeaa54dee583fcf",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 59568,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "3902e57e73412bd91ba81a47fa2cef45e1729c152c835114c1692cc5e685ddbe",
+        "size": 1052,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "bacb0bef6fce1eacfe6c2ed818251f5ec2e39799607a3a80b1831eba2f329cef",
+        "size": 59348,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/browser/index.global.js",
+        "sha256": "5bb7de2191f0eae879050d1879ada341cd4caa341dfe00d8c9aa55eddb0ff203",
+        "size": 32012,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/browser/index.global.js.map",
+        "sha256": "e0b085ca21cd037a21d2d8606acdd2e0c213fff84f1e18f636fdc52754c5d4c2",
+        "size": 51015,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/browser/index.js",
+        "sha256": "92f317305850e7295f8f6fc409f2686da65dabf911f361fb3033b787448ef562",
+        "size": 30832,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/browser/index.js.map",
+        "sha256": "fc2c693f9c55d049e6d68fe2333a8ae56bb7367f02dd921648ac4ba1456dac3b",
+        "size": 51006,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/node/index.cjs",
+        "sha256": "e51e7d1c7df60fc03464893617985d0cf3f461fe1670048cd91cbe84ab7e197c",
+        "size": 28941,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/node/index.d.cts",
+        "sha256": "d2fb14e50a72f24279996f7f77ec22cd9d22569072dff6b6996f1c16afdcdc2b",
+        "size": 30165,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/node/index.d.ts",
+        "sha256": "d2fb14e50a72f24279996f7f77ec22cd9d22569072dff6b6996f1c16afdcdc2b",
+        "size": 30165,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/node/index.js",
+        "sha256": "d349bb33089acaf8dd47e88c2908815cb5e53fe1aefa3c225df9b36c988d9b3d",
+        "size": 28776,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "0ea014511967ddb296ad5ef179302adc902c2cf82e04bca78244c49118562300",
+        "size": 2549,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1052,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/39/3902e57e73412bd91ba81a47fa2cef45e1729c152c835114c1692cc5e685ddbe",
+          "sha256": "3902e57e73412bd91ba81a47fa2cef45e1729c152c835114c1692cc5e685ddbe"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "3902e57e73412bd91ba81a47fa2cef45e1729c152c835114c1692cc5e685ddbe",
+        "size": 1052
+      },
+      {
+        "blob": {
+          "bytes": 59348,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/ba/bacb0bef6fce1eacfe6c2ed818251f5ec2e39799607a3a80b1831eba2f329cef",
+          "sha256": "bacb0bef6fce1eacfe6c2ed818251f5ec2e39799607a3a80b1831eba2f329cef"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "bacb0bef6fce1eacfe6c2ed818251f5ec2e39799607a3a80b1831eba2f329cef",
+        "size": 59348
+      }
+    ],
+    "expandedBytes": 345861,
+    "packageIdentity": {
+      "author": "Jared Wray <me@jaredwray.com>",
+      "homepage": "https://github.com/jaredwray/hookified#readme",
+      "license": "MIT",
+      "name": "hookified",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/hookified.git"
+      },
+      "version": "2.2.0"
+    },
+    "packageMetadata": {
+      "author": "Jared Wray <me@jaredwray.com>",
+      "bugs": {
+        "url": "https://github.com/jaredwray/hookified/issues"
+      },
+      "description": "Event Emitting and Middleware Hooks",
+      "devDependencies": {
+        "@biomejs/biome": "^2.4.13",
+        "@monstermann/tinybench-pretty-printer": "^0.3.0",
+        "@types/node": "^24.12.2",
+        "@vitest/coverage-v8": "^4.1.5",
+        "docula": "^1.14.0",
+        "emittery": "^2.0.0",
+        "eventemitter3": "^5.0.4",
+        "hookable": "^6.1.1",
+        "pino": "^10.3.1",
+        "rimraf": "^6.1.3",
+        "tinybench": "^6.0.0",
+        "tsdown": "^0.21.10",
+        "tsx": "^4.21.0",
+        "typescript": "^6.0.3",
+        "vitest": "^4.1.5"
+      },
+      "exports": {
+        ".": {
+          "default": "./dist/node/index.js",
+          "import": {
+            "default": "./dist/node/index.js",
+            "types": "./dist/node/index.d.ts"
+          },
+          "require": {
+            "default": "./dist/node/index.cjs",
+            "types": "./dist/node/index.d.cts"
+          }
+        },
+        "./browser": {
+          "default": "./dist/browser/index.global.js",
+          "import": "./dist/browser/index.js",
+          "types": "./dist/node/index.d.ts"
+        }
+      },
+      "files": [
+        "dist",
+        "LICENSE"
+      ],
+      "homepage": "https://github.com/jaredwray/hookified#readme",
+      "keywords": [
+        "hooks",
+        "eventemitter",
+        "eventemitter3",
+        "middleware",
+        "events",
+        "hooks",
+        "event-hooks",
+        "hook-system",
+        "event-driven",
+        "event-emitter",
+        "hook-handlers",
+        "middleware",
+        "emit",
+        "event-management",
+        "before-after-hooks",
+        "event-listeners",
+        "custom-hooks",
+        "hook-utilities",
+        "typescript-hooks"
+      ],
+      "license": "MIT",
+      "main": "./dist/node/index.js",
+      "module": "./dist/node/index.js",
+      "name": "hookified",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/hookified.git"
+      },
+      "scripts": {
+        "benchmark": "pnpm benchmark:hooks && pnpm benchmark:emit",
+        "benchmark:emit": "pnpm tsx benchmark/emit.ts",
+        "benchmark:hooks": "pnpm tsx benchmark/hook.ts",
+        "benchmark:readme": "pnpm tsx scripts/benchmark-readme.ts",
+        "build": "tsdown",
+        "clean": "rimraf ./dist ./coverage ./site/dist",
+        "lint": "biome check --write --error-on-warnings",
+        "prepublishOnly": "pnpm build",
+        "test": "pnpm lint && vitest run --coverage",
+        "test:ci": "biome check --error-on-warnings && vitest run --coverage",
+        "website:build": "docula build",
+        "website:dev": "docula dev",
+        "website:serve": "docula serve"
+      },
+      "type": "module",
+      "types": "./dist/node/index.d.ts",
+      "version": "2.2.0"
+    },
+    "physicalEntryCount": 11,
+    "tarball": {
+      "bytes": 59568,
+      "sha256": "01aa4e32fec989b18ab2b7a6b593ec968efdd4db287d7fef94813678bc2b1564"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

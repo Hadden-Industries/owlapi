@@ -1,0 +1,863 @@
+{
+  "artifactId": "aa9cbd1788308dfbdd2c9bc3cffb92f4f6b79e97544e238ae75a74e209d076fd",
+  "evidence": {
+    "archiveCoverage": {
+      "authenticatedFileCount": 7,
+      "digestVerifiedFileCount": 7,
+      "incompleteIdentityFiles": [],
+      "omittedFiles": [],
+      "reportedFileCount": 7
+    },
+    "artifactId": "aa9cbd1788308dfbdd2c9bc3cffb92f4f6b79e97544e238ae75a74e209d076fd",
+    "dependencies": [
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^0.1.2",
+        "for_package_purl": "pkg:npm/test-exclude@7.0.2",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/%40istanbuljs/schema",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^10.2.2",
+        "for_package_purl": "pkg:npm/test-exclude@7.0.2",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/minimatch",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^10.4.1",
+        "for_package_purl": "pkg:npm/test-exclude@7.0.2",
+        "is_direct": true,
+        "is_optional": false,
+        "is_pinned": false,
+        "is_runtime": true,
+        "purl": "pkg:npm/glob",
+        "resolved_package": {},
+        "scope": "dependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^19.2.2",
+        "for_package_purl": "pkg:npm/test-exclude@7.0.2",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/tap",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      },
+      {
+        "datafile_path": "package/package.json",
+        "datasource_id": "npm_package_json",
+        "extra_data": {},
+        "extracted_requirement": "^9.1.0",
+        "for_package_purl": "pkg:npm/test-exclude@7.0.2",
+        "is_direct": true,
+        "is_optional": true,
+        "is_pinned": false,
+        "is_runtime": false,
+        "purl": "pkg:npm/c8",
+        "resolved_package": {},
+        "scope": "devDependencies"
+      }
+    ],
+    "files": [
+      {
+        "authors": [
+          {
+            "author": "Ben Coe <ben@npmjs.com> license' ISC bugs' url' https://github.com/istanbuljs/test-exclude/issues",
+            "end_line": 29,
+            "start_line": 26
+          }
+        ],
+        "base_name": "package",
+        "copyrights": [],
+        "detected_license_expression": "isc",
+        "detected_license_expression_spdx": "ISC",
+        "dirs_count": 0,
+        "extension": ".json",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/test-exclude@7.0.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "isc-8444467e-911b-70d7-8f49-a86dcf33ac8f",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "matches": [
+              {
+                "end_line": 27,
+                "from_file": "aa9cbd1788308dfbdd2c9bc3cffb92f4f6b79e97544e238ae75a74e209d076fd/package/package.json",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 2,
+                "matched_text": "  \"license\": \"ISC\",",
+                "matcher": "2-aho",
+                "rule_identifier": "isc_38.RULE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_38.RULE",
+                "score": 100,
+                "start_line": 27
+              }
+            ]
+          }
+        ],
+        "md5": "b01431b4b27186bb54a7fca9032dc2d7",
+        "name": "package.json",
+        "package_data": [
+          {
+            "api_data_url": "https://registry.npmjs.org/test-exclude/7.0.2",
+            "bug_tracking_url": "https://github.com/istanbuljs/test-exclude/issues",
+            "code_view_url": null,
+            "copyright": null,
+            "datasource_id": "npm_package_json",
+            "declared_license_expression": "isc",
+            "declared_license_expression_spdx": "ISC",
+            "dependencies": [
+              {
+                "extra_data": {},
+                "extracted_requirement": "^0.1.2",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/%40istanbuljs/schema",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^10.2.2",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/minimatch",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^10.4.1",
+                "is_direct": true,
+                "is_optional": false,
+                "is_pinned": false,
+                "is_runtime": true,
+                "purl": "pkg:npm/glob",
+                "resolved_package": {},
+                "scope": "dependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^19.2.2",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/tap",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              },
+              {
+                "extra_data": {},
+                "extracted_requirement": "^9.1.0",
+                "is_direct": true,
+                "is_optional": true,
+                "is_pinned": false,
+                "is_runtime": false,
+                "purl": "pkg:npm/c8",
+                "resolved_package": {},
+                "scope": "devDependencies"
+              }
+            ],
+            "description": "test for inclusion or exclusion of paths using globs",
+            "download_url": "https://registry.npmjs.org/test-exclude/-/test-exclude-7.0.2.tgz",
+            "extra_data": {
+              "engines": {
+                "node": ">=18"
+              }
+            },
+            "extracted_license_statement": "- ISC\n",
+            "file_references": [],
+            "holder": null,
+            "homepage_url": "https://istanbul.js.org/",
+            "is_private": false,
+            "is_virtual": false,
+            "keywords": [
+              "config",
+              "exclude",
+              "glob",
+              "include",
+              "package"
+            ],
+            "license_detections": [
+              {
+                "identifier": "isc-6c4320cc-eb5b-3792-8c56-b8565fff1119",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "matches": [
+                  {
+                    "end_line": 1,
+                    "from_file": "aa9cbd1788308dfbdd2c9bc3cffb92f4f6b79e97544e238ae75a74e209d076fd/package/package.json",
+                    "license_expression": "isc",
+                    "license_expression_spdx": "ISC",
+                    "match_coverage": 100,
+                    "matched_length": 1,
+                    "matched_text": "ISC",
+                    "matcher": "1-spdx-id",
+                    "rule_identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+                    "rule_relevance": 100,
+                    "rule_url": null,
+                    "score": 100,
+                    "start_line": 1
+                  }
+                ]
+              }
+            ],
+            "md5": null,
+            "name": "test-exclude",
+            "namespace": null,
+            "notice_text": null,
+            "other_license_detections": [],
+            "other_license_expression": null,
+            "other_license_expression_spdx": null,
+            "parties": [
+              {
+                "email": "ben@npmjs.com",
+                "name": "Ben Coe",
+                "role": "author",
+                "type": "person",
+                "url": null
+              }
+            ],
+            "primary_language": "JavaScript",
+            "purl": "pkg:npm/test-exclude@7.0.2",
+            "qualifiers": {},
+            "release_date": null,
+            "repository_download_url": "https://registry.npmjs.org/test-exclude/-/test-exclude-7.0.2.tgz",
+            "repository_homepage_url": "https://www.npmjs.com/package/test-exclude",
+            "sha1": null,
+            "sha256": null,
+            "sha512": null,
+            "size": null,
+            "source_packages": [],
+            "subpath": null,
+            "type": "npm",
+            "vcs_url": "git+https://github.com/istanbuljs/test-exclude.git",
+            "version": "7.0.2"
+          }
+        ],
+        "path": "package/package.json",
+        "percentage_of_license_text": 1.98,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "e2aec03f5acf088c5b43638fd24e4f7af3c24741",
+        "sha1_git": "e930874b5a95d322c2838d355b7b913a88e11e1d",
+        "sha256": "964a1cb3aa110c1bc871d62403c736bcc5cd897290b8c552deb552553b15c3dc",
+        "size": 908,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "LICENSE",
+        "copyrights": [
+          {
+            "copyright": "Copyright (c) 2016, Contributors",
+            "end_line": 1,
+            "start_line": 1
+          }
+        ],
+        "detected_license_expression": "isc",
+        "detected_license_expression_spdx": "ISC",
+        "dirs_count": 0,
+        "extension": ".txt",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/test-exclude@7.0.2"
+        ],
+        "holders": [
+          {
+            "end_line": 1,
+            "holder": "Contributors",
+            "start_line": 1
+          }
+        ],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [
+          {
+            "identifier": "isc-58175475-cc81-cb6a-8921-4daa3f26b3e8",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "matches": [
+              {
+                "end_line": 14,
+                "from_file": "aa9cbd1788308dfbdd2c9bc3cffb92f4f6b79e97544e238ae75a74e209d076fd/package/LICENSE.txt",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 112,
+                "matched_text": "Permission to use, copy, modify, and/or distribute this software\nfor any purpose with or without fee is hereby granted, provided\nthat the above copyright notice and this permission notice\nappear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES\nOF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE\nLIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES\nOR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,\nWHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,\nARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+                "matcher": "2-aho",
+                "rule_identifier": "isc.LICENSE",
+                "rule_relevance": 100,
+                "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+                "score": 100,
+                "start_line": 3
+              }
+            ]
+          }
+        ],
+        "md5": "8fd106383180f7bbb8f534414fdf7d35",
+        "name": "LICENSE.txt",
+        "package_data": [],
+        "path": "package/LICENSE.txt",
+        "percentage_of_license_text": 96.55,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "47edc4b4e929248ad6e423bf3a6736c320a3277c",
+        "sha1_git": "836440bef7cf14841c05b0f8635e580c91327fc4",
+        "sha256": "365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d",
+        "size": 731,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "README",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".md",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/test-exclude@7.0.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": false,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "48aa14990693975d891e672b1f573fdc",
+        "name": "README.md",
+        "package_data": [],
+        "path": "package/README.md",
+        "percentage_of_license_text": 0,
+        "programming_language": null,
+        "scan_errors": [],
+        "sha1": "4857e1c6a0d43105c56ec9b77c67c7dc01bb0100",
+        "sha1_git": "190783dc15c79c65c0d8886e2a7d4094b5fb2f8f",
+        "sha256": "eb9f56bebd9f58686ce98078db459fe0b0f3669a37d63989dacf8a05856bf7b8",
+        "size": 4035,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "index",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/test-exclude@7.0.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "54b41d58a2c83d7ff2fb729861f3d46e",
+        "name": "index.js",
+        "package_data": [],
+        "path": "package/index.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "de895fea7d4a105aa1b9dd7e778d9921d245a0e8",
+        "sha1_git": "1bb66669ca7c859285040ca62fa2495a6c10698b",
+        "sha256": "68df7c9a7a9ef715f8821e52eb1c8a525b905e80f6937f484546644c50058132",
+        "size": 5195,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "is-outside-dir",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/test-exclude@7.0.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "68ddadd0b3d3d4fc7f53687c6c5b8692",
+        "name": "is-outside-dir.js",
+        "package_data": [],
+        "path": "package/is-outside-dir.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "fd3e989ccb97ac427d93429cd3c2371d685ceb9b",
+        "sha1_git": "c86a915f9bb5ce933a91652ef86c6620c2c96f23",
+        "sha256": "00925f6b22e20be00e270c49e5ae14d62ee634942c338c5b993b7a042e8fdf2c",
+        "size": 174,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "is-outside-dir-posix",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/test-exclude@7.0.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "d4453adcde28684d9c7dd7befe0a650c",
+        "name": "is-outside-dir-posix.js",
+        "package_data": [],
+        "path": "package/is-outside-dir-posix.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "f1164e15dc28d34780ab48ae9881408a374ee56c",
+        "sha1_git": "d6a7275d5a273020e36cf6451435700153d7e8f9",
+        "sha256": "c629e1a0848a19c910dac7ec67046016a66d7ca9b916855833eeef463341205e",
+        "size": 147,
+        "size_count": 0,
+        "type": "file"
+      },
+      {
+        "authors": [],
+        "base_name": "is-outside-dir-win32",
+        "copyrights": [],
+        "detected_license_expression": null,
+        "detected_license_expression_spdx": null,
+        "dirs_count": 0,
+        "extension": ".js",
+        "files_count": 0,
+        "for_packages": [
+          "pkg:npm/test-exclude@7.0.2"
+        ],
+        "holders": [],
+        "is_archive": false,
+        "is_binary": false,
+        "is_generated": false,
+        "is_media": false,
+        "is_source": true,
+        "is_text": true,
+        "license_clues": [],
+        "license_detections": [],
+        "md5": "302622a1dbcdc97ec086dd9cf2f48ba5",
+        "name": "is-outside-dir-win32.js",
+        "package_data": [],
+        "path": "package/is-outside-dir-win32.js",
+        "percentage_of_license_text": 0,
+        "programming_language": "JavaScript",
+        "scan_errors": [],
+        "sha1": "e1b3f714c67ccf75aceb0797ecb7db3e623a9d9c",
+        "sha1_git": "04d3747bcc4b21fc718b76f624cccf0253707aac",
+        "sha256": "5d0c888f88ab6fbc3e818b99401eae322805e8ba9062e0907174ea4b4549df96",
+        "size": 271,
+        "size_count": 0,
+        "type": "file"
+      }
+    ],
+    "license_detections": [
+      {
+        "detection_count": 1,
+        "identifier": "isc-58175475-cc81-cb6a-8921-4daa3f26b3e8",
+        "license_expression": "isc",
+        "license_expression_spdx": "ISC",
+        "reference_matches": [
+          {
+            "end_line": 14,
+            "from_file": "aa9cbd1788308dfbdd2c9bc3cffb92f4f6b79e97544e238ae75a74e209d076fd/package/LICENSE.txt",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 112,
+            "matched_text": "Permission to use, copy, modify, and/or distribute this software\nfor any purpose with or without fee is hereby granted, provided\nthat the above copyright notice and this permission notice\nappear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES\nOF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE\nLIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES\nOR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,\nWHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,\nARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+            "matcher": "2-aho",
+            "rule_identifier": "isc.LICENSE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+            "score": 100,
+            "start_line": 3
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "isc-6c4320cc-eb5b-3792-8c56-b8565fff1119",
+        "license_expression": "isc",
+        "license_expression_spdx": "ISC",
+        "reference_matches": [
+          {
+            "end_line": 1,
+            "from_file": "aa9cbd1788308dfbdd2c9bc3cffb92f4f6b79e97544e238ae75a74e209d076fd/package/package.json",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 1,
+            "matched_text": "ISC",
+            "matcher": "1-spdx-id",
+            "rule_identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+            "rule_relevance": 100,
+            "rule_url": null,
+            "score": 100,
+            "start_line": 1
+          }
+        ]
+      },
+      {
+        "detection_count": 1,
+        "identifier": "isc-8444467e-911b-70d7-8f49-a86dcf33ac8f",
+        "license_expression": "isc",
+        "license_expression_spdx": "ISC",
+        "reference_matches": [
+          {
+            "end_line": 27,
+            "from_file": "aa9cbd1788308dfbdd2c9bc3cffb92f4f6b79e97544e238ae75a74e209d076fd/package/package.json",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "match_coverage": 100,
+            "matched_length": 2,
+            "matched_text": "  \"license\": \"ISC\",",
+            "matcher": "2-aho",
+            "rule_identifier": "isc_38.RULE",
+            "rule_relevance": 100,
+            "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_38.RULE",
+            "score": 100,
+            "start_line": 27
+          }
+        ]
+      }
+    ],
+    "license_references": [
+      {
+        "category": "Permissive",
+        "faq_url": null,
+        "homepage_url": "https://www.isc.org/licenses/",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_exception": false,
+        "is_generic": false,
+        "is_unknown": false,
+        "key": "isc",
+        "key_aliases": [],
+        "language": "en",
+        "licensedb_url": "https://scancode-licensedb.aboutcode.org/isc",
+        "minimum_coverage": 0,
+        "name": "ISC License",
+        "notes": "Per SPDX.org, this license is OSI certified.",
+        "osi_license_key": null,
+        "osi_url": "http://opensource.org/licenses/isc-license.txt",
+        "other_spdx_license_keys": [],
+        "other_urls": [
+          "http://openbsd.wikia.com/wiki/OpenBSD%27s_BSD_license",
+          "http://www.isc.org/software/license",
+          "http://www.opensource.org/licenses/ISC",
+          "https://opensource.org/licenses/ISC",
+          "https://www.isc.org/downloads/software-support-policy/isc-license/",
+          "https://www.isc.org/isc-license-1.0.html",
+          "https://www.isc.org/software/license"
+        ],
+        "owner": "ISC - Internet Systems Consortium",
+        "scancode_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+        "short_name": "ISC License",
+        "spdx_license_key": "ISC",
+        "spdx_url": "https://spdx.org/licenses/ISC",
+        "standard_notice": null,
+        "text": "Permission to use, copy, modify, and/or distribute this software for any purpose\nwith or without fee is hereby granted, provided that the above copyright notice\nand this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH\nREGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND\nFITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS\nOF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER\nTORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF\nTHIS SOFTWARE.",
+        "text_urls": [
+          "http://fedoraproject.org/wiki/Licensing:MIT#Old_Style_with_legal_disclaimer_2",
+          "http://openbsd.wikia.com/wiki/OpenBSD%27s_BSD_license",
+          "http://opensource.org/licenses/isc-license.txt",
+          "https://www.isc.org/software/license"
+        ]
+      }
+    ],
+    "license_rule_references": [
+      {
+        "identifier": "isc.LICENSE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": true,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": false,
+        "is_license_text": true,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 112,
+        "license_expression": "isc",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/isc.LICENSE",
+        "skip_for_required_phrase_generation": false,
+        "text": "Permission to use, copy, modify, and/or distribute this software for any purpose\nwith or without fee is hereby granted, provided that the above copyright notice\nand this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH\nREGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND\nFITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,\nINDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS\nOF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER\nTORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF\nTHIS SOFTWARE."
+      },
+      {
+        "identifier": "isc_38.RULE",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": false,
+        "language": "en",
+        "length": 2,
+        "license_expression": "isc",
+        "minimum_coverage": 100,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/isc_38.RULE",
+        "skip_for_required_phrase_generation": false,
+        "text": "\"license\": \"ISC\","
+      },
+      {
+        "identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+        "ignorable_authors": [],
+        "ignorable_copyrights": [],
+        "ignorable_emails": [],
+        "ignorable_holders": [],
+        "ignorable_urls": [],
+        "is_builtin": true,
+        "is_continuous": false,
+        "is_from_license": false,
+        "is_license_clue": false,
+        "is_license_intro": false,
+        "is_license_notice": false,
+        "is_license_reference": false,
+        "is_license_tag": true,
+        "is_license_text": false,
+        "is_required_phrase": false,
+        "is_synthetic": true,
+        "language": "en",
+        "length": 1,
+        "license_expression": "isc",
+        "minimum_coverage": 0,
+        "notes": null,
+        "referenced_filenames": [],
+        "relevance": 100,
+        "rule_url": null,
+        "skip_for_required_phrase_generation": false,
+        "text": "ISC"
+      }
+    ],
+    "packages": [
+      {
+        "api_data_url": "https://registry.npmjs.org/test-exclude/7.0.2",
+        "bug_tracking_url": "https://github.com/istanbuljs/test-exclude/issues",
+        "code_view_url": null,
+        "copyright": null,
+        "datafile_paths": [
+          "package/package.json"
+        ],
+        "datasource_ids": [
+          "npm_package_json"
+        ],
+        "declared_license_expression": "isc",
+        "declared_license_expression_spdx": "ISC",
+        "description": "test for inclusion or exclusion of paths using globs",
+        "download_url": "https://registry.npmjs.org/test-exclude/-/test-exclude-7.0.2.tgz",
+        "extra_data": {
+          "engines": {
+            "node": ">=18"
+          }
+        },
+        "extracted_license_statement": "- ISC\n",
+        "holder": null,
+        "homepage_url": "https://istanbul.js.org/",
+        "is_private": false,
+        "is_virtual": false,
+        "keywords": [
+          "config",
+          "exclude",
+          "glob",
+          "include",
+          "package"
+        ],
+        "license_detections": [
+          {
+            "identifier": "isc-6c4320cc-eb5b-3792-8c56-b8565fff1119",
+            "license_expression": "isc",
+            "license_expression_spdx": "ISC",
+            "matches": [
+              {
+                "end_line": 1,
+                "from_file": "aa9cbd1788308dfbdd2c9bc3cffb92f4f6b79e97544e238ae75a74e209d076fd/package/package.json",
+                "license_expression": "isc",
+                "license_expression_spdx": "ISC",
+                "match_coverage": 100,
+                "matched_length": 1,
+                "matched_text": "ISC",
+                "matcher": "1-spdx-id",
+                "rule_identifier": "spdx-license-identifier-isc-9931cb7ad33c2eb18f322c94660b670a84186baa",
+                "rule_relevance": 100,
+                "rule_url": null,
+                "score": 100,
+                "start_line": 1
+              }
+            ]
+          }
+        ],
+        "md5": null,
+        "name": "test-exclude",
+        "namespace": null,
+        "notice_text": null,
+        "other_license_detections": [],
+        "other_license_expression": null,
+        "other_license_expression_spdx": null,
+        "parties": [
+          {
+            "email": "ben@npmjs.com",
+            "name": "Ben Coe",
+            "role": "author",
+            "type": "person",
+            "url": null
+          }
+        ],
+        "primary_language": "JavaScript",
+        "purl": "pkg:npm/test-exclude@7.0.2",
+        "qualifiers": {},
+        "release_date": null,
+        "repository_download_url": "https://registry.npmjs.org/test-exclude/-/test-exclude-7.0.2.tgz",
+        "repository_homepage_url": "https://www.npmjs.com/package/test-exclude",
+        "sha1": null,
+        "sha256": null,
+        "sha512": null,
+        "size": null,
+        "source_packages": [],
+        "subpath": null,
+        "type": "npm",
+        "vcs_url": "git+https://github.com/istanbuljs/test-exclude.git",
+        "version": "7.0.2"
+      }
+    ],
+    "scanner": {
+      "executionOptions": [
+        "--processes",
+        "1"
+      ],
+      "message": null,
+      "name": "scancode-toolkit",
+      "normalizationVersion": 1,
+      "outputFormatVersion": "4.1.0",
+      "preScanExcludedFileSuffixes": [
+        ".node"
+      ],
+      "semanticOptions": [
+        "--copyright",
+        "--generated",
+        "--info",
+        "--license",
+        "--license-references",
+        "--license-text",
+        "--package",
+        "--unknown-licenses"
+      ],
+      "version": "32.5.0",
+      "warnings": []
+    }
+  },
+  "kind": "SCANCODE_FINDINGS",
+  "schemaVersion": 1
+}

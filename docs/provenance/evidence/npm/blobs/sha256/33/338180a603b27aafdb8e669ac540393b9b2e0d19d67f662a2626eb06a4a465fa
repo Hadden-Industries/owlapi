@@ -1,0 +1,103 @@
+{
+  "artifactId": "cffe87b931546235c17f3cded206e587141e874b14d74fde822b1807b34a6a8e",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 2074,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.d.ts",
+        "sha256": "dfaec51ff3cebc4ee36ede049ed2884d6d1a3f7e89d6a0501ce17f7dd3728ba7",
+        "size": 589,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.js",
+        "sha256": "a4cbabfd0db2b3275cf4ee9f9494dfc1636157f80e488f2bc83078cc77c4a9c4",
+        "size": 1979,
+        "type": "FILE"
+      },
+      {
+        "path": "package/build/index.mjs",
+        "sha256": "1e5dcf639a9851280690256f5a547b01587dce8a37d33caad0e29b302b3f8dd8",
+        "size": 129,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "d79faaac47ffe317103aa4614ab15a0cb6a79861de2ad57fd53e84e1bea76e38",
+        "size": 743,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1132,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/9d/9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+          "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+        "size": 1132
+      }
+    ],
+    "expandedBytes": 4572,
+    "packageIdentity": {
+      "author": null,
+      "homepage": null,
+      "license": "MIT",
+      "name": "@jest/get-type",
+      "repository": {
+        "directory": "packages/jest-get-type",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "version": "30.5.0"
+    },
+    "packageMetadata": {
+      "description": "A utility function to get the type of a value",
+      "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./build/index.js",
+          "import": "./build/index.mjs",
+          "require": "./build/index.js",
+          "types": "./build/index.d.ts"
+        },
+        "./package.json": "./package.json"
+      },
+      "gitHead": "912baa37afaa979e8179240c238cb493f960527a",
+      "license": "MIT",
+      "main": "./build/index.js",
+      "name": "@jest/get-type",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "directory": "packages/jest-get-type",
+        "type": "git",
+        "url": "https://github.com/jestjs/jest.git"
+      },
+      "types": "./build/index.d.ts",
+      "version": "30.5.0"
+    },
+    "physicalEntryCount": 5,
+    "tarball": {
+      "bytes": 2074,
+      "sha256": "c121a2d60e9d34c428ca68da10888f2fc3b3d71628b6dbb45bddbffa69ac3cea"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

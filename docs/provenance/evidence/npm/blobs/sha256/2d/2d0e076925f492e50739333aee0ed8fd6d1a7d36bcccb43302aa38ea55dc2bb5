@@ -1,0 +1,198 @@
+{
+  "artifactId": "91169870e2c29497e8a604aa94f41584e3bb395d2d2abe8c5f42be48e21e3b8b",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 7755,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/.github/workflows/node.js.yml",
+        "sha256": "fa25bbc46fa534b8dbc2ebd5c0723656bc8e55c9e12ede62cdc11f0efa087ba7",
+        "size": 872,
+        "type": "FILE"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "dc6d4961d8b6ee747231582ae9c53ce1d66bf76bc9f5a28f554c0e97210953bf",
+        "size": 765,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "2a1f5e6475222f0f99b8f68e0e4c6cac876ca9ba9c20f8e7bece2695011129d2",
+        "size": 4556,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cjs/deserialize.js",
+        "sha256": "6dc1dc9e511b0f9e7d5d1e3f519f1167bf35c5892a48b6a30349f842ad711bd5",
+        "size": 2893,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cjs/index.js",
+        "sha256": "e5a111d95e105b25a9eafe192bbf56c1d17048d69c8857d3c6bbdd64efb223ef",
+        "size": 941,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cjs/json.js",
+        "sha256": "9dd693a5a83f245d405c45cbd0f52cc40ba64ea2f8639a2fcb680d1eccff1df4",
+        "size": 754,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cjs/package.json",
+        "sha256": "fa6944a20ca5e6fbaf98fd202eb8c7004d5b4ab786e36b9ed02ee31dbe196c9f",
+        "size": 19,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cjs/serialize.js",
+        "sha256": "a63b3a3bcc3e2eef2505cdd8aeecc142f1f7d231d1233b555f1e947c759dd91b",
+        "size": 4623,
+        "type": "FILE"
+      },
+      {
+        "path": "package/cjs/types.js",
+        "sha256": "360841c14b04ae1910bb4b4f95c588d3c59f465e419ec4706acada2ee2e22fd9",
+        "size": 495,
+        "type": "FILE"
+      },
+      {
+        "path": "package/esm/deserialize.js",
+        "sha256": "6b114d6e4acfa158885fcb8d0e0dda1f8daa8a6ba54acd5ccae59806eca1089f",
+        "size": 2852,
+        "type": "FILE"
+      },
+      {
+        "path": "package/esm/index.js",
+        "sha256": "7ddb0560a1215343ca695210f659fb348ec5d93d0b0e76bbc5959f88cdc2036b",
+        "size": 829,
+        "type": "FILE"
+      },
+      {
+        "path": "package/esm/json.js",
+        "sha256": "61305524bbc9e9bd8647db151bd82374a1354d21c3a0eafeb0b5fd93c137816b",
+        "size": 690,
+        "type": "FILE"
+      },
+      {
+        "path": "package/esm/serialize.js",
+        "sha256": "913596ce0a90bade01473863f1f9895bd7e0d4e505f21b73bb206dc1d763a88f",
+        "size": 4586,
+        "type": "FILE"
+      },
+      {
+        "path": "package/esm/types.js",
+        "sha256": "c0978dfc8d304b12d62aadc583977355f714ee8c1e4d1290620226fb78247800",
+        "size": 319,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "8f931c21e4c0b37c35d5ffef35e0bc057f3cbd0224b026b21a5bdb82a98cbd8f",
+        "size": 1433,
+        "type": "FILE"
+      },
+      {
+        "path": "package/structured-json.js",
+        "sha256": "22524adf1d6043181a53906e83ab92c9d0e5b10d799edbb0373f008f5b9bd359",
+        "size": 3085,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 765,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/dc/dc6d4961d8b6ee747231582ae9c53ce1d66bf76bc9f5a28f554c0e97210953bf",
+          "sha256": "dc6d4961d8b6ee747231582ae9c53ce1d66bf76bc9f5a28f554c0e97210953bf"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "dc6d4961d8b6ee747231582ae9c53ce1d66bf76bc9f5a28f554c0e97210953bf",
+        "size": 765
+      }
+    ],
+    "expandedBytes": 29712,
+    "packageIdentity": {
+      "author": "Andrea Giammarchi",
+      "homepage": "https://github.com/ungap/structured-clone#readme",
+      "license": "ISC",
+      "name": "@ungap/structured-clone",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ungap/structured-clone.git"
+      },
+      "version": "1.4.0"
+    },
+    "packageMetadata": {
+      "author": "Andrea Giammarchi",
+      "bugs": {
+        "url": "https://github.com/ungap/structured-clone/issues"
+      },
+      "description": "A structuredClone polyfill",
+      "devDependencies": {
+        "@rollup/plugin-node-resolve": "^16.0.3",
+        "@rollup/plugin-terser": "^1.0.0",
+        "ascjs": "^6.0.3",
+        "c8": "^11.0.0",
+        "coveralls": "^3.1.1",
+        "rollup": "^4.62.2"
+      },
+      "directories": {
+        "test": "test"
+      },
+      "exports": {
+        ".": {
+          "default": "./cjs/index.js",
+          "import": "./esm/index.js"
+        },
+        "./json": {
+          "default": "./cjs/json.js",
+          "import": "./esm/json.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "homepage": "https://github.com/ungap/structured-clone#readme",
+      "keywords": [
+        "recursion",
+        "structured",
+        "clone",
+        "algorithm"
+      ],
+      "license": "ISC",
+      "main": "./cjs/index.js",
+      "module": "./esm/index.js",
+      "name": "@ungap/structured-clone",
+      "overrides": {
+        "c8": {
+          "yargs": "^18.0.0"
+        }
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ungap/structured-clone.git"
+      },
+      "scripts": {
+        "build": "npm run cjs && npm run rollup:json && npm run test",
+        "cjs": "ascjs esm cjs",
+        "coverage": "c8 report --reporter=text-lcov > ./coverage/lcov.info",
+        "rollup:json": "rollup --config rollup/json.config.js",
+        "test": "c8 node test/index.js"
+      },
+      "sideEffects": false,
+      "type": "module",
+      "version": "1.4.0"
+    },
+    "physicalEntryCount": 16,
+    "tarball": {
+      "bytes": 7755,
+      "sha256": "f481575dc2f23f404e3eec77eb6726bdf9c7d130f1b43f214291e601acf50996"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

@@ -1,25 +1,25 @@
 import { assertGitHubCliArchive } from "./github-cli.mjs";
 
 describe("pinned GitHub CLI", () => {
-  test("accepts only the reviewed Linux x64 2.98.0 archive", () => {
+  test("accepts only the reviewed Linux x64 2.101.0 archive", () => {
     expect(
       assertGitHubCliArchive({
-        name: "gh_2.98.0_linux_amd64.tar.gz",
+        name: "gh_2.101.0_linux_amd64.tar.gz",
         sha256:
-          "3b8ac6b30336802fc1a858d7c084e11cdf24ac1a761ca90b68022d7d729208de",
+          "9bca2d1c16825f109907a23307628a2f0698fbf99662b73a5cf0b020293072b8",
       }),
     ).toEqual({
-      version: "2.98.0",
-      url: "https://github.com/cli/cli/releases/download/v2.98.0/gh_2.98.0_linux_amd64.tar.gz",
+      version: "2.101.0",
+      url: "https://github.com/cli/cli/releases/download/v2.101.0/gh_2.101.0_linux_amd64.tar.gz",
       sha256:
-        "3b8ac6b30336802fc1a858d7c084e11cdf24ac1a761ca90b68022d7d729208de",
+        "9bca2d1c16825f109907a23307628a2f0698fbf99662b73a5cf0b020293072b8",
     });
   });
 
   test("rejects an unreviewed archive digest", () => {
     expect(() =>
       assertGitHubCliArchive({
-        name: "gh_2.98.0_linux_amd64.tar.gz",
+        name: "gh_2.101.0_linux_amd64.tar.gz",
         sha256: "a".repeat(64),
       }),
     ).toThrow(/digest/u);

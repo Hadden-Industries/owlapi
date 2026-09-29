@@ -1,0 +1,129 @@
+{
+  "artifactId": "aa9cbd1788308dfbdd2c9bc3cffb92f4f6b79e97544e238ae75a74e209d076fd",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 4189,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d",
+        "size": 731,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "eb9f56bebd9f58686ce98078db459fe0b0f3669a37d63989dacf8a05856bf7b8",
+        "size": 4035,
+        "type": "FILE"
+      },
+      {
+        "path": "package/index.js",
+        "sha256": "68df7c9a7a9ef715f8821e52eb1c8a525b905e80f6937f484546644c50058132",
+        "size": 5195,
+        "type": "FILE"
+      },
+      {
+        "path": "package/is-outside-dir-posix.js",
+        "sha256": "c629e1a0848a19c910dac7ec67046016a66d7ca9b916855833eeef463341205e",
+        "size": 147,
+        "type": "FILE"
+      },
+      {
+        "path": "package/is-outside-dir-win32.js",
+        "sha256": "5d0c888f88ab6fbc3e818b99401eae322805e8ba9062e0907174ea4b4549df96",
+        "size": 271,
+        "type": "FILE"
+      },
+      {
+        "path": "package/is-outside-dir.js",
+        "sha256": "00925f6b22e20be00e270c49e5ae14d62ee634942c338c5b993b7a042e8fdf2c",
+        "size": 174,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "964a1cb3aa110c1bc871d62403c736bcc5cd897290b8c552deb552553b15c3dc",
+        "size": 908,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 731,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/36/365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d",
+          "sha256": "365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE.txt",
+        "sha256": "365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d",
+        "size": 731
+      }
+    ],
+    "expandedBytes": 11461,
+    "packageIdentity": {
+      "author": "Ben Coe <ben@npmjs.com>",
+      "homepage": "https://istanbul.js.org/",
+      "license": "ISC",
+      "name": "test-exclude",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/istanbuljs/test-exclude.git"
+      },
+      "version": "7.0.2"
+    },
+    "packageMetadata": {
+      "author": "Ben Coe <ben@npmjs.com>",
+      "bugs": {
+        "url": "https://github.com/istanbuljs/test-exclude/issues"
+      },
+      "dependencies": {
+        "@istanbuljs/schema": "^0.1.2",
+        "glob": "^10.4.1",
+        "minimatch": "^10.2.2"
+      },
+      "description": "test for inclusion or exclusion of paths using globs",
+      "devDependencies": {
+        "c8": "^9.1.0",
+        "tap": "^19.2.2"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "files": [
+        "*.js",
+        "!nyc.config.js"
+      ],
+      "homepage": "https://istanbul.js.org/",
+      "keywords": [
+        "exclude",
+        "include",
+        "glob",
+        "package",
+        "config"
+      ],
+      "license": "ISC",
+      "main": "index.js",
+      "name": "test-exclude",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/istanbuljs/test-exclude.git"
+      },
+      "scripts": {
+        "release": "standard-version",
+        "snap": "npm test -- --snapshot",
+        "test": "c8 tap"
+      },
+      "version": "7.0.2"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 4189,
+      "sha256": "ec1b661a6d045069d8b0ef88e0f729510df91ec3d9de6d4addd234cf199fb5c7"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}

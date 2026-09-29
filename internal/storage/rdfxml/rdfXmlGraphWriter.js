@@ -1,4 +1,4 @@
-import { isIri } from "@hyperjump/uri";
+import { parseIri } from "@hyperjump/uri";
 import { DOMImplementation, XMLSerializer } from "@xmldom/xmldom";
 import { parse as parseLanguageTag } from "bcp-47";
 import { OWLOntologyStorageError } from "../../../io/errors.js";
@@ -85,7 +85,12 @@ const serializeGraph = (dataset) => {
       notRepresentable("This RDF position requires a named node");
     }
     if (!validatedIris.has(term.value)) {
-      if (!term.value.isWellFormed() || !isIri(term.value)) {
+      if (!term.value.isWellFormed()) {
+        notRepresentable("RDF/XML requires well-formed full IRIs");
+      }
+      try {
+        parseIri(term.value);
+      } catch {
         notRepresentable("RDF/XML requires well-formed full IRIs");
       }
       validatedIris.add(term.value);
@@ -137,10 +142,14 @@ const serializeGraph = (dataset) => {
       if (
         (namespace.startsWith(RDF_NAMESPACE) && namespace !== RDF_NAMESPACE) ||
         namespace === XMLNS_NAMESPACE ||
-        namespace === XML_NAMESPACE ||
-        !isIri(namespace)
+        namespace === XML_NAMESPACE
       )
         continue;
+      try {
+        parseIri(namespace);
+      } catch {
+        continue;
+      }
       const local = characters.slice(split).join("");
       try {
         // The native XML implementation owns NCName/QName grammar, including

@@ -1,0 +1,147 @@
+{
+  "artifactId": "3f1c1eaa06763ece6cd8571951bac93c680907efbf8ac4aa334fab20242c6e46",
+  "evidence": {
+    "archiveRoot": "package",
+    "compressedBytes": 21247,
+    "duplicateEntries": [],
+    "entries": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "3902e57e73412bd91ba81a47fa2cef45e1729c152c835114c1692cc5e685ddbe",
+        "size": 1052,
+        "type": "FILE"
+      },
+      {
+        "path": "package/README.md",
+        "sha256": "c4febdef587d1b665aef91bf15c9f348d656a627c317d94bafb2df6c7efd6596",
+        "size": 20251,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.cjs",
+        "sha256": "d7e1482b4d5fbcc06622d54ed662ef58ad2e3f205f9523118a001f0763153b88",
+        "size": 21599,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.cts",
+        "sha256": "e8ccaec45b9083811b398bd939bdab163a37fff5513f7606ef70bba95e8bc18b",
+        "size": 21338,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.d.mts",
+        "sha256": "e8ccaec45b9083811b398bd939bdab163a37fff5513f7606ef70bba95e8bc18b",
+        "size": 21338,
+        "type": "FILE"
+      },
+      {
+        "path": "package/dist/index.mjs",
+        "sha256": "fac82ac2726d008867ad39fefa0beadcce0227b5c3ad7af6c9884e4805f6292a",
+        "size": 21405,
+        "type": "FILE"
+      },
+      {
+        "path": "package/package.json",
+        "sha256": "cb9172b31a8f97740ecc440f8c36947e43f0bf732025df8b7e6f64df4d77dec7",
+        "size": 1261,
+        "type": "FILE"
+      }
+    ],
+    "evidenceFiles": [
+      {
+        "blob": {
+          "bytes": 1052,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/39/3902e57e73412bd91ba81a47fa2cef45e1729c152c835114c1692cc5e685ddbe",
+          "sha256": "3902e57e73412bd91ba81a47fa2cef45e1729c152c835114c1692cc5e685ddbe"
+        },
+        "kind": "LICENCE",
+        "path": "package/LICENSE",
+        "sha256": "3902e57e73412bd91ba81a47fa2cef45e1729c152c835114c1692cc5e685ddbe",
+        "size": 1052
+      },
+      {
+        "blob": {
+          "bytes": 20251,
+          "kind": "PACKAGE_EVIDENCE_FILE",
+          "path": "blobs/sha256/c4/c4febdef587d1b665aef91bf15c9f348d656a627c317d94bafb2df6c7efd6596",
+          "sha256": "c4febdef587d1b665aef91bf15c9f348d656a627c317d94bafb2df6c7efd6596"
+        },
+        "kind": "README_ATTRIBUTION",
+        "path": "package/README.md",
+        "sha256": "c4febdef587d1b665aef91bf15c9f348d656a627c317d94bafb2df6c7efd6596",
+        "size": 20251
+      }
+    ],
+    "expandedBytes": 108244,
+    "packageIdentity": {
+      "author": "Jared Wray <me@jaredwray.com>",
+      "homepage": "https://github.com/jaredwray/qified#readme",
+      "license": "MIT",
+      "name": "qified",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/qified.git"
+      },
+      "version": "0.10.1"
+    },
+    "packageMetadata": {
+      "author": "Jared Wray <me@jaredwray.com>",
+      "bugs": {
+        "url": "https://github.com/jaredwray/qified/issues"
+      },
+      "dependencies": {
+        "hookified": "^2.1.1"
+      },
+      "description": "Task and Message Queues with Multiple Providers",
+      "engines": {
+        "node": ">=20"
+      },
+      "exports": {
+        ".": {
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        }
+      },
+      "files": [
+        "dist",
+        "LICENSE"
+      ],
+      "homepage": "https://github.com/jaredwray/qified#readme",
+      "keywords": [
+        "queue",
+        "task",
+        "message",
+        "provider",
+        "qified"
+      ],
+      "license": "MIT",
+      "main": "./dist/index.cjs",
+      "module": "./dist/index.mjs",
+      "name": "qified",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jaredwray/qified.git"
+      },
+      "scripts": {
+        "build": "tsdown src/index.ts --format esm --format cjs --dts",
+        "build:publish": "pnpm build && pnpm publish --access public --no-git-checks",
+        "clean": "rimraf ./dist ./coverage ./site/dist",
+        "lint": "biome check --write --error-on-warnings",
+        "test": "pnpm lint && vitest run --coverage",
+        "test:ci": "biome check --error-on-warnings && vitest run --coverage"
+      },
+      "type": "module",
+      "types": "./dist/index.d.mts",
+      "version": "0.10.1"
+    },
+    "physicalEntryCount": 7,
+    "tarball": {
+      "bytes": 21247,
+      "sha256": "5acca41a42576ff888cf16cbcf505efbe3b0d4f55232edf3a931298a4b5ca662"
+    }
+  },
+  "kind": "ARCHIVE_INVENTORY",
+  "schemaVersion": 1
+}
