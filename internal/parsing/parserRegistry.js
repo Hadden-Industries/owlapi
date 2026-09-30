@@ -139,7 +139,7 @@ export class OWLParserRegistry {
   }
 
   resolveCandidates(source, configuration = {}) {
-    const explicitFormat = configuration.format;
+    const explicitFormat = source.getFormat?.() ?? configuration.format;
     if (explicitFormat !== undefined) {
       const key =
         typeof explicitFormat === "string"

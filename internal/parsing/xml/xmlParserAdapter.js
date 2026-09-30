@@ -34,7 +34,7 @@ const parserError = (document) => {
 const nodeParser = async () => {
   let implementation;
   try {
-    implementation = await import(/* @vite-ignore */ "@xmldom/xmldom");
+    implementation = await import("@xmldom/xmldom");
   } catch (cause) {
     throw new XmlParseError(
       "No XML parser implementation is available in this environment",

@@ -10,6 +10,7 @@ import * as apibinding from "../apibinding/index.js";
 import * as formats from "../formats/index.js";
 import * as io from "../io/index.js";
 import * as model from "../model/index.js";
+import * as profiles from "../profiles/index.js";
 import * as util from "./index.js";
 
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -45,6 +46,59 @@ const LIFECYCLE_STORER_CAPABILITY_BY_JAVA_TYPE = Object.freeze({
 // These approved adaptations must not inherit the OWL-name heuristic: a native
 // Error suffix, private atomic target state, and io ownership differ from Java.
 const PARITY_BINDING_METADATA = Object.freeze({
+  OWL2DLProfile: {
+    javaType: "org.semanticweb.owlapi.profiles.OWL2DLProfile",
+    sourceModule: "profiles/owl2DLProfile.js",
+    capabilityIds: ["profiles.owl2-dl-source-assessment"],
+    relationship: "JS_ADAPTATION",
+    callShapes: [
+      "new OWL2DLProfile()",
+      "await profile.checkOntology(ontology, options?)",
+    ],
+    summary:
+      "An asynchronous, bounded OWL 2 DL structural checker over the complete managed import closure, with a separate source-qualified assessment.",
+    omittedMembers: [
+      "Java visitor implementation classes",
+      "getDatatypeIRIs()",
+      "Stream and Collection overloads",
+    ],
+    semanticQualifications: [
+      "Returns a Promise and supports cooperative cancellation and resource limits; incomplete validation is unverified, never valid.",
+      "The formal verdict applies to the structural OWL closure. Optional sourceAssessment also validates retained RDF/RDFS structures and parsed expressions before consumer filtering.",
+      "Only trusted original source arity and unambiguous typed use qualify the two documented normalization/declaration differences; mutation invalidates that evidence.",
+      "Datatype checks follow the mandatory OWL 2 datatype map and raw lexical/value spaces, including nested annotations. See docs/compatibility/canonical-vowl-prerequisites.md for normative choices and Java deviations.",
+    ],
+    verification: [
+      "profiles/owl2DLProfile.test.js",
+      "model/rdfsSourcePreservation.test.js",
+      "model/sourcePropertyRoles.test.js",
+      "internal/profiles/datatypes.test.js",
+      "test/package-boundary.test.mjs",
+    ],
+  },
+  OWLProfileReport: {
+    javaType: "org.semanticweb.owlapi.profiles.OWLProfileReport",
+    sourceModule: "profiles/owlProfileReport.js",
+    capabilityIds: ["profiles.owl2-dl-source-assessment"],
+    relationship: "JS_ADAPTATION",
+    callShapes: ["await new OWL2DLProfile().checkOntology(ontology, options?)"],
+    summary:
+      "An immutable checker result separating valid, invalid and unverified outcomes, with stable violation records and optional source assessment.",
+    omittedMembers: [
+      "Java violation class hierarchy",
+      "Java stream/visitor overloads",
+      "Java constructor overloads",
+    ],
+    semanticQualifications: [
+      "isInProfile() returns true only for a completed valid formal check. getSourceAssessment() returns the independently stated source-qualified verdict when requested.",
+      "Violations are immutable data records rather than Java visitor objects. getOntology() and getProfile() retain their input identities.",
+      "Additional status, closure revisions, unverifiedChecks and sourceAssessment fields expose bounded JavaScript validation evidence; direct construction does not execute validation.",
+    ],
+    verification: [
+      "profiles/owl2DLProfile.test.js",
+      "test/package-boundary.test.mjs",
+    ],
+  },
   StringDocumentTarget: {
     javaType: "org.semanticweb.owlapi.io.StringDocumentTarget",
     sourceModule: "io/stringDocumentTarget.js",
@@ -117,7 +171,14 @@ const MODULES = Object.freeze([
     id: "root",
     javaPackage: null,
     npmSpecifier: "owlapi",
-    module: { ...apibinding, ...formats, ...io, ...model, ...util },
+    module: {
+      ...apibinding,
+      ...formats,
+      ...io,
+      ...model,
+      ...profiles,
+      ...util,
+    },
     rationale:
       "Convenience aggregate that re-exports every approved binding without creating a second implementation identity.",
   },
@@ -161,6 +222,15 @@ const MODULES = Object.freeze([
     firstPublicRelease: "0.1.0",
     rationale:
       "Mirrors the Java OWLAPI util namespace for the exact approved closure provider and ontology merger entry points.",
+  },
+  {
+    id: "profiles",
+    javaPackage: "org.semanticweb.owlapi.profiles",
+    npmSpecifier: "owlapi/profiles",
+    module: profiles,
+    firstPublicRelease: "0.1.0",
+    rationale:
+      "Owns the approved asynchronous OWL 2 DL checker and immutable report; source-qualified evidence is separate from the formal Java-shaped verdict.",
   },
 ]);
 

@@ -1,3 +1,9 @@
+import { normalizeCardinality } from "../internal/model/cardinality.js";
+import {
+  isSourcePreservingFactory,
+  markSourcePreservingFactory,
+  retainSourceArity,
+} from "../internal/model/sourceArity.js";
 import {
   ANNOTATION_VALUE_KINDS,
   CLASS_EXPRESSION_KINDS,
@@ -37,13 +43,6 @@ const requireKind = (value, kinds, name) => {
 const requireIri = (value, name) =>
   requireKind(value, [OWLObjectKind.IRI], name);
 
-const requireCardinality = (value) => {
-  if (!Number.isSafeInteger(value) || value < 0) {
-    throw new RangeError("cardinality must be a non-negative safe integer");
-  }
-  return value;
-};
-
 const requireStructuralSet = (values, name, minimum) => {
   const normalized = normalizeStructuralSet(values, name);
   if (normalized.length < minimum) {
@@ -76,7 +75,7 @@ const createRestriction = (kind, property, filler, fillerName = "filler") =>
   );
 
 const createCardinality = (kind, cardinality, property, filler) => {
-  const normalizedCardinality = requireCardinality(cardinality);
+  const normalizedCardinality = normalizeCardinality(cardinality);
   const normalizedProperty = requireStructural(property, "property");
   const normalizedFiller =
     filler === undefined ? undefined : requireStructural(filler, "filler");
@@ -172,21 +171,34 @@ const createBinaryAxiom = (
   );
 };
 
-const createNaryAxiom = (
+const createSetConstruct = (
+  factory,
   kind,
   field,
   values,
   kinds,
   annotations,
   minimum = 2,
+  leadingFields = {},
 ) => {
-  const normalized = requireKindSet(values, kinds, field, minimum);
-  return createAnnotatedAxiom(
-    kind,
-    { [field]: normalized },
-    [normalized],
-    annotations,
+  const original = isSourcePreservingFactory(factory)
+    ? normalizeOrdered(values, field, minimum)
+    : undefined;
+  const normalized = requireKindSet(
+    original ?? values,
+    kinds,
+    field,
+    original ? 1 : minimum,
   );
+  const fields = { ...leadingFields, [field]: normalized };
+  const components = [...Object.values(leadingFields), normalized];
+  const object =
+    annotations === undefined
+      ? new OWLStructuralObject(kind, fields, components)
+      : createAnnotatedAxiom(kind, fields, components, annotations);
+  return original
+    ? retainSourceArity(object, field, original.length, minimum)
+    : object;
 };
 
 export class OWLDataFactory {
@@ -423,16 +435,12 @@ export class OWLDataFactory {
   }
 
   getOWLObjectIntersectionOf(operands) {
-    const normalized = requireKindSet(
+    return createSetConstruct(
+      this,
+      OWLObjectKind.OBJECT_INTERSECTION_OF,
+      "operands",
       operands,
       CLASS_EXPRESSION_KINDS,
-      "operands",
-      2,
-    );
-    return new OWLStructuralObject(
-      OWLObjectKind.OBJECT_INTERSECTION_OF,
-      { operands: normalized },
-      [normalized],
     );
   }
 
@@ -445,16 +453,12 @@ export class OWLDataFactory {
   }
 
   getOWLObjectUnionOf(operands) {
-    const normalized = requireKindSet(
+    return createSetConstruct(
+      this,
+      OWLObjectKind.OBJECT_UNION_OF,
+      "operands",
       operands,
       CLASS_EXPRESSION_KINDS,
-      "operands",
-      2,
-    );
-    return new OWLStructuralObject(
-      OWLObjectKind.OBJECT_UNION_OF,
-      { operands: normalized },
-      [normalized],
     );
   }
 
@@ -643,30 +647,22 @@ export class OWLDataFactory {
   }
 
   getOWLDataIntersectionOf(operands) {
-    const normalized = requireKindSet(
+    return createSetConstruct(
+      this,
+      OWLObjectKind.DATA_INTERSECTION_OF,
+      "operands",
       operands,
       DATA_RANGE_KINDS,
-      "operands",
-      2,
-    );
-    return new OWLStructuralObject(
-      OWLObjectKind.DATA_INTERSECTION_OF,
-      { operands: normalized },
-      [normalized],
     );
   }
 
   getOWLDataUnionOf(operands) {
-    const normalized = requireKindSet(
+    return createSetConstruct(
+      this,
+      OWLObjectKind.DATA_UNION_OF,
+      "operands",
       operands,
       DATA_RANGE_KINDS,
-      "operands",
-      2,
-    );
-    return new OWLStructuralObject(
-      OWLObjectKind.DATA_UNION_OF,
-      { operands: normalized },
-      [normalized],
     );
   }
 
@@ -729,7 +725,8 @@ export class OWLDataFactory {
   }
 
   getOWLEquivalentClassesAxiom(classExpressions, annotations = []) {
-    return createNaryAxiom(
+    return createSetConstruct(
+      this,
       OWLObjectKind.EQUIVALENT_CLASSES_AXIOM,
       "classExpressions",
       classExpressions,
@@ -739,7 +736,8 @@ export class OWLDataFactory {
   }
 
   getOWLDisjointClassesAxiom(classExpressions, annotations = []) {
-    return createNaryAxiom(
+    return createSetConstruct(
+      this,
       OWLObjectKind.DISJOINT_CLASSES_AXIOM,
       "classExpressions",
       classExpressions,
@@ -754,20 +752,15 @@ export class OWLDataFactory {
       [OWLObjectKind.CLASS],
       "owlClass",
     );
-    const normalizedExpressions = requireKindSet(
+    return createSetConstruct(
+      this,
+      OWLObjectKind.DISJOINT_UNION_AXIOM,
+      "classExpressions",
       classExpressions,
       CLASS_EXPRESSION_KINDS,
-      "classExpressions",
-      2,
-    );
-    return createAnnotatedAxiom(
-      OWLObjectKind.DISJOINT_UNION_AXIOM,
-      {
-        classExpressions: normalizedExpressions,
-        owlClass: normalizedClass,
-      },
-      [normalizedClass, normalizedExpressions],
       annotations,
+      2,
+      { owlClass: normalizedClass },
     );
   }
 
@@ -805,7 +798,8 @@ export class OWLDataFactory {
   }
 
   getOWLEquivalentObjectPropertiesAxiom(properties, annotations = []) {
-    return createNaryAxiom(
+    return createSetConstruct(
+      this,
       OWLObjectKind.EQUIVALENT_OBJECT_PROPERTIES_AXIOM,
       "properties",
       properties,
@@ -815,7 +809,8 @@ export class OWLDataFactory {
   }
 
   getOWLDisjointObjectPropertiesAxiom(properties, annotations = []) {
-    return createNaryAxiom(
+    return createSetConstruct(
+      this,
       OWLObjectKind.DISJOINT_OBJECT_PROPERTIES_AXIOM,
       "properties",
       properties,
@@ -949,7 +944,8 @@ export class OWLDataFactory {
   }
 
   getOWLEquivalentDataPropertiesAxiom(properties, annotations = []) {
-    return createNaryAxiom(
+    return createSetConstruct(
+      this,
       OWLObjectKind.EQUIVALENT_DATA_PROPERTIES_AXIOM,
       "properties",
       properties,
@@ -959,7 +955,8 @@ export class OWLDataFactory {
   }
 
   getOWLDisjointDataPropertiesAxiom(properties, annotations = []) {
-    return createNaryAxiom(
+    return createSetConstruct(
+      this,
       OWLObjectKind.DISJOINT_DATA_PROPERTIES_AXIOM,
       "properties",
       properties,
@@ -1063,7 +1060,8 @@ export class OWLDataFactory {
   }
 
   getOWLSameIndividualAxiom(individuals, annotations = []) {
-    return createNaryAxiom(
+    return createSetConstruct(
+      this,
       OWLObjectKind.SAME_INDIVIDUAL_AXIOM,
       "individuals",
       individuals,
@@ -1073,7 +1071,8 @@ export class OWLDataFactory {
   }
 
   getOWLDifferentIndividualsAxiom(individuals, annotations = []) {
-    return createNaryAxiom(
+    return createSetConstruct(
+      this,
       OWLObjectKind.DIFFERENT_INDIVIDUALS_AXIOM,
       "individuals",
       individuals,
@@ -1243,3 +1242,14 @@ export class OWLDataFactory {
     );
   }
 }
+
+// Private parser seam. Preservation is selected by loader policy, never by
+// changing the caller's factory or the default constructor contract.
+export const createSourcePreservingDataFactory = (factory) => {
+  if (Object.getPrototypeOf(factory) !== OWLDataFactory.prototype) {
+    throw new TypeError(
+      "Source preservation requires the package OWLDataFactory",
+    );
+  }
+  return markSourcePreservingFactory(new OWLDataFactory());
+};

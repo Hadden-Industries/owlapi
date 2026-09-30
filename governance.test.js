@@ -134,6 +134,7 @@ const PRODUCTION_MODULE_ROOTS = [
   ["internal", "internal"],
   ["io", "io"],
   ["model", "model"],
+  ["profiles", "profiles"],
 ];
 
 const PROVISIONAL_PRODUCTION_MODULES = [
@@ -591,9 +592,19 @@ describe("owlapi governance artifacts", () => {
       ]);
       for (const prior of baseline.bindings) {
         const current = registry.bindings.find(({ id }) => id === prior.id);
-        const expected = firstReleaseRetargetedBindings.has(prior.id)
+        let expected = firstReleaseRetargetedBindings.has(prior.id)
           ? { ...prior, firstPublicRelease: "0.1.0" }
           : prior;
+        // The separate Canonical VOWL prerequisite authorization adds exactly
+        // this source reader; it does not amend the historical Phase 21 set.
+        if (prior.id === "io.StringDocumentSource")
+          expected = {
+            ...expected,
+            supportedMembers: [
+              ...prior.supportedMembers,
+              "prototype.getFormat",
+            ].sort(),
+          };
         if (firstReleaseRetargetedBindings.has(prior.id)) {
           expect(prior.firstPublicRelease).toBe("0.2.0");
         }
@@ -618,10 +629,19 @@ describe("owlapi governance artifacts", () => {
           .filter(({ id }) => !existingIds.has(id))
           .map(({ id }) => id)
           .sort(),
-      ).toEqual([...ledger.phase21.publicBindings].sort());
+      ).toEqual(
+        [
+          ...ledger.phase21.publicBindings,
+          "profiles.OWL2DLProfile",
+          "profiles.OWLProfileReport",
+        ].sort(),
+      );
       expect(
         registry.namespaces.map(({ npmSpecifier }) => npmSpecifier),
-      ).toEqual(baseline.namespaces.map(({ npmSpecifier }) => npmSpecifier));
+      ).toEqual([
+        ...baseline.namespaces.map(({ npmSpecifier }) => npmSpecifier),
+        "owlapi/profiles",
+      ]);
     }
   });
 
@@ -1272,7 +1292,7 @@ describe("owlapi governance artifacts", () => {
     expect(paths).toEqual(productionModules);
     for (const record of records) {
       expect([
-        1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 21, 22,
+        1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 21, 22, 23,
       ]).toContain(record.phase);
       expect(manifest.provenanceCategories).toHaveProperty(
         record.provenanceCategory,
@@ -1946,8 +1966,11 @@ bundle licence and notice review.
       "./docs/release/alpha-reconciliation-control.json",
     );
     const manifest = readJson("./package.json");
-    const { "./util": provisionalUtilExport, ...retainedCandidateExports } =
-      manifest.exports;
+    const {
+      "./util": provisionalUtilExport,
+      "./profiles": canonicalProfilesExport,
+      ...retainedCandidateExports
+    } = manifest.exports;
 
     expect(errors).toEqual([]);
     expect(schema.$id).toBe(
@@ -1959,6 +1982,8 @@ bundle licence and notice review.
       exports: retainedCandidateExports,
     });
     expect(provisionalUtilExport).toBe("./util/index.js");
+    expect(canonicalProfilesExport).toBe("./profiles/index.js");
+    expect(document.package.exports).not.toHaveProperty("./profiles");
     expect(document.package.exports).not.toHaveProperty("./util");
     expect(document.source).toMatchObject({
       repository: publication.reconciliation.source.repository,

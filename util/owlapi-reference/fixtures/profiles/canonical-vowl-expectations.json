@@ -1,0 +1,457 @@
+{
+  "schemaVersion": 1,
+  "scope": "Exactly these 20 authored source fixtures; not exhaustive OWL 2 DL conformance.",
+  "inputSha256": "36a78a24b8db265dc2d86f76a6f25ba5f212d657a0838000564183ee70ecfa67",
+  "derivation": {
+    "javascript": "Independently selected before executing the public JavaScript checker, from the source fixtures and cited published rules plus documented source-preservation policy; no checker internals or runtime tests read.",
+    "stableCodes": "Public condition/code vocabulary supplied by the implementing parent and published in the pinned source-preservation contract; only code names, not observed results, were used.",
+    "java": "Separate black-box observations of the existing pinned Java 5.5.1 JARs; never authority to rewrite JavaScript normative/source expectations.",
+    "sourceQualification": "Only privately witnessed original arity and unambiguous typed-use declaration differences qualify; other violations remain invalid."
+  },
+  "localAuthorities": [
+    {
+      "path": "docs/compatibility/canonical-vowl-prerequisites.md",
+      "sha256": "742ba46a79ef1c6f51c1aaad765c2292a30c07ca707955c5ff6191c9564b9d2b"
+    },
+    {
+      "path": "util/owlapi-reference/pinned-version.json",
+      "sha256": "85835fbe8e8e3214eeb5d72d4d0b9341ad350dfa9adf41c195542cd2dcc7c2c1"
+    }
+  ],
+  "sources": {
+    "owl-structural": "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/#Structural_Specification",
+    "owl-imports": "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/#Imports",
+    "owl-typing": "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/#Typing_Constraints_of_OWL_2_DL",
+    "owl-literals": "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/#Literals",
+    "owl-intersection": "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/#Intersection_of_Class_Expressions",
+    "owl-simple": "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/#Property_Hierarchy_and_Simple_Object_Property_Expressions",
+    "owl-global": "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/#The_Restrictions_on_the_Axiom_Closure",
+    "xsd-integer": "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer",
+    "xsd-byte": "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#byte",
+    "xsd-regex": "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#regexs",
+    "local-contract": "docs/compatibility/canonical-vowl-prerequisites.md"
+  },
+  "javascript": [
+    {
+      "id": "valid-empty",
+      "status": "valid",
+      "sourceStatus": "valid",
+      "closureSize": 1,
+      "violations": [],
+      "sourceViolations": []
+    },
+    {
+      "id": "valid-subclass",
+      "status": "valid",
+      "sourceStatus": "valid",
+      "closureSize": 1,
+      "violations": [],
+      "sourceViolations": []
+    },
+    {
+      "id": "invalid-nonsimple",
+      "status": "invalid",
+      "sourceStatus": "invalid",
+      "closureSize": 1,
+      "violations": ["NONSIMPLE_OBJECT_PROPERTY"],
+      "sourceViolations": ["NONSIMPLE_OBJECT_PROPERTY"]
+    },
+    {
+      "id": "invalid-punning",
+      "status": "invalid",
+      "sourceStatus": "invalid",
+      "closureSize": 1,
+      "violations": ["PROPERTY_CATEGORY_COLLISION"],
+      "sourceViolations": ["PROPERTY_CATEGORY_COLLISION"]
+    },
+    {
+      "id": "invalid-class-datatype",
+      "status": "invalid",
+      "sourceStatus": "invalid",
+      "closureSize": 1,
+      "violations": ["CLASS_DATATYPE_COLLISION"],
+      "sourceViolations": ["CLASS_DATATYPE_COLLISION"]
+    },
+    {
+      "id": "invalid-datatype-cycle",
+      "status": "invalid",
+      "sourceStatus": "invalid",
+      "closureSize": 1,
+      "violations": ["CYCLIC_DATATYPE_DEFINITION"],
+      "sourceViolations": ["CYCLIC_DATATYPE_DEFINITION"]
+    },
+    {
+      "id": "invalid-datatype-count",
+      "status": "invalid",
+      "sourceStatus": "invalid",
+      "closureSize": 1,
+      "violations": ["DATATYPE_DEFINITION_COUNT"],
+      "sourceViolations": ["DATATYPE_DEFINITION_COUNT"]
+    },
+    {
+      "id": "invalid-annotated-datatype-count",
+      "status": "invalid",
+      "sourceStatus": "invalid",
+      "closureSize": 1,
+      "violations": ["DATATYPE_DEFINITION_COUNT"],
+      "sourceViolations": ["DATATYPE_DEFINITION_COUNT"]
+    },
+    {
+      "id": "valid-integer",
+      "status": "valid",
+      "sourceStatus": "valid",
+      "closureSize": 1,
+      "violations": [],
+      "sourceViolations": []
+    },
+    {
+      "id": "invalid-integer",
+      "status": "invalid",
+      "sourceStatus": "invalid",
+      "closureSize": 1,
+      "violations": ["LITERAL_LEXICAL_SPACE"],
+      "sourceViolations": ["LITERAL_LEXICAL_SPACE"]
+    },
+    {
+      "id": "byte-overflow",
+      "status": "invalid",
+      "sourceStatus": "invalid",
+      "closureSize": 1,
+      "violations": ["LITERAL_LEXICAL_SPACE"],
+      "sourceViolations": ["LITERAL_LEXICAL_SPACE"]
+    },
+    {
+      "id": "bad-annotation-literal",
+      "status": "invalid",
+      "sourceStatus": "invalid",
+      "closureSize": 1,
+      "violations": ["LITERAL_LEXICAL_SPACE"],
+      "sourceViolations": ["LITERAL_LEXICAL_SPACE"]
+    },
+    {
+      "id": "singleton-original-pair",
+      "status": "invalid",
+      "sourceStatus": "valid",
+      "closureSize": 1,
+      "violations": ["SET_CONSTRUCTOR_ARITY"],
+      "sourceViolations": []
+    },
+    {
+      "id": "named-top-simple",
+      "status": "invalid",
+      "sourceStatus": "invalid",
+      "closureSize": 1,
+      "violations": ["NONSIMPLE_OBJECT_PROPERTY"],
+      "sourceViolations": ["NONSIMPLE_OBJECT_PROPERTY"]
+    },
+    {
+      "id": "inverse-top-simple",
+      "status": "valid",
+      "sourceStatus": "valid",
+      "closureSize": 1,
+      "violations": [],
+      "sourceViolations": []
+    },
+    {
+      "id": "reverse-pattern-range",
+      "status": "valid",
+      "sourceStatus": "valid",
+      "closureSize": 1,
+      "violations": [],
+      "sourceViolations": []
+    },
+    {
+      "id": "undeclared-typed-use",
+      "status": "invalid",
+      "sourceStatus": "valid",
+      "closureSize": 1,
+      "violations": ["UNDECLARED_ENTITY"],
+      "sourceViolations": []
+    },
+    {
+      "id": "import-nonsimple-forward",
+      "status": "invalid",
+      "sourceStatus": "invalid",
+      "closureSize": 2,
+      "violations": ["NONSIMPLE_OBJECT_PROPERTY"],
+      "sourceViolations": ["NONSIMPLE_OBJECT_PROPERTY"]
+    },
+    {
+      "id": "import-nonsimple-reverse",
+      "status": "invalid",
+      "sourceStatus": "invalid",
+      "closureSize": 2,
+      "violations": ["NONSIMPLE_OBJECT_PROPERTY"],
+      "sourceViolations": ["NONSIMPLE_OBJECT_PROPERTY"]
+    },
+    {
+      "id": "import-bad-annotation",
+      "status": "invalid",
+      "sourceStatus": "invalid",
+      "closureSize": 2,
+      "violations": ["LITERAL_LEXICAL_SPACE"],
+      "sourceViolations": ["LITERAL_LEXICAL_SPACE"]
+    }
+  ],
+  "rationales": [
+    {
+      "id": "valid-empty",
+      "rules": ["owl-typing"],
+      "reason": "Declarations alone impose no conflicting roles or global restrictions."
+    },
+    {
+      "id": "valid-subclass",
+      "rules": ["owl-typing"],
+      "reason": "A subclass axiom between declared classes satisfies the structural restrictions."
+    },
+    {
+      "id": "invalid-nonsimple",
+      "rules": ["owl-simple", "owl-global"],
+      "reason": "Transitivity makes p composite; functionality requires simplicity."
+    },
+    {
+      "id": "invalid-punning",
+      "rules": ["owl-typing"],
+      "reason": "p is declared in both object- and data-property categories."
+    },
+    {
+      "id": "invalid-class-datatype",
+      "rules": ["owl-typing"],
+      "reason": "A is declared as both class and datatype."
+    },
+    {
+      "id": "invalid-datatype-cycle",
+      "rules": ["owl-global"],
+      "reason": "Definitions x to y and y to x violate strict datatype ordering."
+    },
+    {
+      "id": "invalid-datatype-count",
+      "rules": ["owl-global"],
+      "reason": "x has two distinct definitions."
+    },
+    {
+      "id": "invalid-annotated-datatype-count",
+      "rules": ["owl-structural", "owl-global", "local-contract"],
+      "reason": "Different axiom annotations preserve two distinct definitions, despite equal ranges."
+    },
+    {
+      "id": "valid-integer",
+      "rules": ["owl-literals", "xsd-integer"],
+      "reason": "The lexical form 3 denotes an integer."
+    },
+    {
+      "id": "invalid-integer",
+      "rules": ["owl-literals", "xsd-integer"],
+      "reason": "The lexical form bad does not denote an integer."
+    },
+    {
+      "id": "byte-overflow",
+      "rules": ["owl-literals", "xsd-byte", "local-contract"],
+      "reason": "300 exceeds the xsd:byte maximum 127; a digit-only lexical pattern does not establish a value in this datatype."
+    },
+    {
+      "id": "bad-annotation-literal",
+      "rules": ["owl-literals", "local-contract"],
+      "reason": "The annotation contains an ill-typed integer literal."
+    },
+    {
+      "id": "singleton-original-pair",
+      "rules": ["owl-structural", "owl-intersection", "local-contract"],
+      "reason": "Set normalization leaves one operand, invalid for the formal intersection. The package-owned original two-operand syntax qualifies the source assessment only."
+    },
+    {
+      "id": "named-top-simple",
+      "rules": ["owl-simple", "owl-global"],
+      "reason": "Named top is composite, so cannot be functional."
+    },
+    {
+      "id": "inverse-top-simple",
+      "rules": ["owl-simple", "local-contract"],
+      "reason": "The published initial composite rule names top, not its inverse expression. This case supplies no hierarchy, chain or transitivity evidence making that inverse nonsimple; the documented literal-rule interpretation applies."
+    },
+    {
+      "id": "reverse-pattern-range",
+      "rules": ["xsd-regex", "local-contract"],
+      "reason": "The selected XSD 1.1 range grammar admits z-a, whose range contains no code points. Empty denotation is not malformed syntax or a logical-consistency verdict."
+    },
+    {
+      "id": "undeclared-typed-use",
+      "rules": ["owl-typing", "local-contract"],
+      "reason": "The formal structure lacks class declarations. Package-owned unambiguous class-position evidence qualifies the source assessment without synthesizing declarations."
+    },
+    {
+      "id": "import-nonsimple-forward",
+      "rules": ["owl-imports", "owl-simple", "owl-global"],
+      "reason": "Imported transitivity combines with root functionality across the closure."
+    },
+    {
+      "id": "import-nonsimple-reverse",
+      "rules": ["owl-imports", "owl-simple", "owl-global"],
+      "reason": "Root transitivity combines with imported functionality across the closure."
+    },
+    {
+      "id": "import-bad-annotation",
+      "rules": ["owl-imports", "owl-literals", "local-contract"],
+      "reason": "The imported ontology's ill-typed annotation remains in scope."
+    }
+  ],
+  "javaObservationStatus": "observed-by-project-probe-at-pinned-existing-jars",
+  "javaFormalVerdictDifferences": [
+    {
+      "ids": ["invalid-datatype-count", "invalid-annotated-datatype-count"],
+      "java": "valid",
+      "javascriptFormal": "invalid",
+      "explanation": "Java reported no violation for either multiple-definition source. The independent expectation retains the one-distinct-definition rule, including annotations."
+    },
+    {
+      "ids": ["byte-overflow"],
+      "java": "valid",
+      "javascriptFormal": "invalid",
+      "explanation": "Java reported no violation for the out-of-bounds byte; the independent expectation checks membership in the datatype value space."
+    },
+    {
+      "ids": ["bad-annotation-literal", "import-bad-annotation"],
+      "java": "valid",
+      "javascriptFormal": "invalid",
+      "explanation": "Java reported no violation for these ill-typed annotation literals, including the imported case; the independent expectation includes all such literals in the closure."
+    },
+    {
+      "ids": ["inverse-top-simple"],
+      "java": "invalid",
+      "javascriptFormal": "valid",
+      "explanation": "Java treats this inverse-top occurrence as nonsimple. The project documents the literal published rule, without an invented builtin hierarchy axiom."
+    },
+    {
+      "ids": ["import-nonsimple-reverse"],
+      "java": "valid",
+      "javascriptFormal": "invalid",
+      "explanation": "Java accepts root transitivity plus imported functionality, while rejecting the converse distribution. The independent expectation applies the same root-inclusive closure rule in both directions; this black-box observation does not diagnose Java internals."
+    }
+  ],
+  "sourceOnlyQualifications": [
+    "singleton-original-pair",
+    "undeclared-typed-use"
+  ],
+  "java": [
+    {
+      "id": "valid-empty",
+      "valid": true,
+      "closureSize": 1,
+      "violations": []
+    },
+    {
+      "id": "valid-subclass",
+      "valid": true,
+      "closureSize": 1,
+      "violations": []
+    },
+    {
+      "id": "invalid-nonsimple",
+      "valid": false,
+      "closureSize": 1,
+      "violations": ["UseOfNonSimplePropertyInFunctionalPropertyAxiom"]
+    },
+    {
+      "id": "invalid-punning",
+      "valid": false,
+      "closureSize": 1,
+      "violations": ["IllegalPunning"]
+    },
+    {
+      "id": "invalid-class-datatype",
+      "valid": false,
+      "closureSize": 1,
+      "violations": ["DatatypeIRIAlsoUsedAsClassIRI"]
+    },
+    {
+      "id": "invalid-datatype-cycle",
+      "valid": false,
+      "closureSize": 1,
+      "violations": ["CycleInDatatypeDefinition"]
+    },
+    {
+      "id": "invalid-datatype-count",
+      "valid": true,
+      "closureSize": 1,
+      "violations": []
+    },
+    {
+      "id": "invalid-annotated-datatype-count",
+      "valid": true,
+      "closureSize": 1,
+      "violations": []
+    },
+    {
+      "id": "valid-integer",
+      "valid": true,
+      "closureSize": 1,
+      "violations": []
+    },
+    {
+      "id": "invalid-integer",
+      "valid": false,
+      "closureSize": 1,
+      "violations": ["LexicalNotInLexicalSpace"]
+    },
+    {
+      "id": "byte-overflow",
+      "valid": true,
+      "closureSize": 1,
+      "violations": []
+    },
+    {
+      "id": "bad-annotation-literal",
+      "valid": true,
+      "closureSize": 1,
+      "violations": []
+    },
+    {
+      "id": "singleton-original-pair",
+      "valid": false,
+      "closureSize": 1,
+      "violations": ["InsufficientOperands"]
+    },
+    {
+      "id": "named-top-simple",
+      "valid": false,
+      "closureSize": 1,
+      "violations": ["UseOfNonSimplePropertyInFunctionalPropertyAxiom"]
+    },
+    {
+      "id": "inverse-top-simple",
+      "valid": false,
+      "closureSize": 1,
+      "violations": ["UseOfNonSimplePropertyInFunctionalPropertyAxiom"]
+    },
+    {
+      "id": "reverse-pattern-range",
+      "valid": true,
+      "closureSize": 1,
+      "violations": []
+    },
+    {
+      "id": "undeclared-typed-use",
+      "valid": false,
+      "closureSize": 1,
+      "violations": ["UseOfUndeclaredClass"]
+    },
+    {
+      "id": "import-nonsimple-forward",
+      "valid": false,
+      "closureSize": 2,
+      "violations": ["UseOfNonSimplePropertyInFunctionalPropertyAxiom"]
+    },
+    {
+      "id": "import-nonsimple-reverse",
+      "valid": true,
+      "closureSize": 2,
+      "violations": []
+    },
+    {
+      "id": "import-bad-annotation",
+      "valid": true,
+      "closureSize": 2,
+      "violations": []
+    }
+  ]
+}

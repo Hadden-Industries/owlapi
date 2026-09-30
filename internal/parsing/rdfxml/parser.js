@@ -70,9 +70,12 @@ export class RDFXMLParser {
     transaction.setDocumentFormat(OWLDocumentFormats.RDF_XML);
     return {
       declarations: prepared.declarations,
-      reconstruct: async (declarations, completedTransaction) =>
+      sourceComplete: prepared.sourceComplete,
+      sourceRoles: prepared.sourceRoles,
+      discoverSourceRoles: prepared.discoverSourceRoles,
+      reconstruct: async (declarations, completedTransaction, sourceRoles) =>
         this.#populateTransaction(
-          await prepared.reconstruct(declarations),
+          await prepared.reconstruct(declarations, sourceRoles),
           completedTransaction,
         ),
     };
@@ -93,6 +96,8 @@ export class RDFXMLParser {
     transaction.addAnnotations(ontology.getAnnotations());
     transaction.addImportsDeclarations(ontology.getImportsDeclarations());
     transaction.addAxioms(ontology.getAxioms());
+    if (context.sourceStructure)
+      transaction.setSourceStructure(context.sourceStructure);
     for (const diagnostic of context.diagnostics) {
       transaction.addDiagnostic(diagnostic);
     }

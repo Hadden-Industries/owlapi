@@ -125,17 +125,23 @@ const classes = ontology.getClassesInSignature();
 Only the JavaScript members listed in [`API.md`](./API.md) are promised.
 A shared name does not imply that every Java overload, listener, mutable operation, or return type exists.
 
-With the documented npm alias, import public bindings only through these six package specifiers:
+With the documented npm alias, import public bindings only through these seven package specifiers:
 
 - `owlapi`
 - `owlapi/apibinding`
 - `owlapi/model`
 - `owlapi/io`
 - `owlapi/formats`
+- `owlapi/profiles`
 - `owlapi/util`
 
 Anything below `internal/` is a private implementation detail and is blocked by the package export map.
 See [the generated API reference](./API.md) for every public binding, its call shape, supported members, limitations, errors, and Java authority.
+
+`owlapi/profiles` exposes the asynchronous `OWL2DLProfile` checker and immutable `OWLProfileReport`.
+Use `checkOntology(ontology, {sourceAssessment: true})` after loading with `parsingMode: "preserve"` to assess retained source structures as well as the formal OWL model across the managed import closure.
+The checker reports `valid`, `invalid` or `unverified`; resource exhaustion and stale source evidence cannot certify validity.
+The [Canonical VOWL prerequisite contract](docs/compatibility/canonical-vowl-prerequisites.md) specifies source preservation, exact per-document formats, import-parent context, lossless cardinalities, budgets and bounded compatibility differences.
 
 ## Environments and consumption modes
 

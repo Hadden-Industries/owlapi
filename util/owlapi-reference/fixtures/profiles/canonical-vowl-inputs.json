@@ -1,0 +1,125 @@
+[
+  {
+    "id": "valid-empty",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology( Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) )"
+    ]
+  },
+  {
+    "id": "valid-subclass",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology( Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) SubClassOf(:A :B))"
+    ]
+  },
+  {
+    "id": "invalid-nonsimple",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology( Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) TransitiveObjectProperty(:p) FunctionalObjectProperty(:p))"
+    ]
+  },
+  {
+    "id": "invalid-punning",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology( Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) Declaration(DataProperty(:p)))"
+    ]
+  },
+  {
+    "id": "invalid-class-datatype",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology( Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) Declaration(Datatype(:A)) DatatypeDefinition(:A xsd:string))"
+    ]
+  },
+  {
+    "id": "invalid-datatype-cycle",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology( Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) Declaration(Datatype(:x)) Declaration(Datatype(:y)) DatatypeDefinition(:x :y) DatatypeDefinition(:y :x))"
+    ]
+  },
+  {
+    "id": "invalid-datatype-count",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology( Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) Declaration(Datatype(:x)) DatatypeDefinition(:x xsd:string) DatatypeDefinition(:x xsd:integer))"
+    ]
+  },
+  {
+    "id": "invalid-annotated-datatype-count",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology( Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) Declaration(Datatype(:x)) DatatypeDefinition(Annotation(:note \"one\") :x xsd:string) DatatypeDefinition(Annotation(:note \"two\") :x xsd:string))"
+    ]
+  },
+  {
+    "id": "valid-integer",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology( Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) DataPropertyAssertion(:d :i \"3\"^^xsd:integer))"
+    ]
+  },
+  {
+    "id": "invalid-integer",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology( Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) DataPropertyAssertion(:d :i \"bad\"^^xsd:integer))"
+    ]
+  },
+  {
+    "id": "byte-overflow",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology( Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) DataPropertyAssertion(:d :i \"300\"^^xsd:byte))"
+    ]
+  },
+  {
+    "id": "bad-annotation-literal",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology( Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) AnnotationAssertion(:note :A \"bad\"^^xsd:integer))"
+    ]
+  },
+  {
+    "id": "singleton-original-pair",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology( Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) SubClassOf(:A ObjectIntersectionOf(:B :B)))"
+    ]
+  },
+  {
+    "id": "named-top-simple",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology( Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) FunctionalObjectProperty(owl:topObjectProperty))"
+    ]
+  },
+  {
+    "id": "inverse-top-simple",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology( Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) FunctionalObjectProperty(ObjectInverseOf(owl:topObjectProperty)))"
+    ]
+  },
+  {
+    "id": "reverse-pattern-range",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology( Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) DataPropertyRange(:d DatatypeRestriction(xsd:string xsd:pattern \"[z-a]\")))"
+    ]
+  },
+  {
+    "id": "undeclared-typed-use",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology(  SubClassOf(:A :B))"
+    ]
+  },
+  {
+    "id": "import-nonsimple-forward",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology(<urn:parity:import> Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) TransitiveObjectProperty(:p))",
+      "Prefix(:=<urn:parity:>) Ontology(<urn:parity:root> Import(<urn:parity:import>) Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) FunctionalObjectProperty(:p))"
+    ]
+  },
+  {
+    "id": "import-nonsimple-reverse",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology(<urn:parity:import> Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) FunctionalObjectProperty(:p))",
+      "Prefix(:=<urn:parity:>) Ontology(<urn:parity:root> Import(<urn:parity:import>) Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) TransitiveObjectProperty(:p))"
+    ]
+  },
+  {
+    "id": "import-bad-annotation",
+    "documents": [
+      "Prefix(:=<urn:parity:>) Ontology(<urn:parity:import> Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) AnnotationAssertion(:note :A \"bad\"^^xsd:integer))",
+      "Prefix(:=<urn:parity:>) Ontology(<urn:parity:root> Import(<urn:parity:import>) Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p)) Declaration(ObjectProperty(:q)) Declaration(DataProperty(:d)) Declaration(AnnotationProperty(:note)) Declaration(NamedIndividual(:i)) )"
+    ]
+  }
+]

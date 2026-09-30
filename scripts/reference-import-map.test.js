@@ -41,6 +41,7 @@ describe("reference import-map evidence", () => {
       "owlapi/formats",
       "owlapi/io",
       "owlapi/model",
+      "owlapi/profiles",
       "owlapi/util",
     ]);
   });

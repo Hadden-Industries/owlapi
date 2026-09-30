@@ -1,4 +1,4 @@
-<!-- registry-sha256: fcc9e20de24dd299b667d3396e691a81e1ffa1bf2925e5dac6e165b3377c8dd9 -->
+<!-- registry-sha256: edba30693d7be12a4c177a6f3557317d603f072bfbc52f55997ed0b9e5184324 -->
 
 # Java OWLAPI compatibility surface
 
@@ -10,18 +10,18 @@ A mapped name does not promise every Java overload or method. The relationship, 
 
 ## Inventory summary
 
-- Public package namespaces: 6
-- Public JavaScript bindings: 52
+- Public package namespaces: 7
+- Public JavaScript bindings: 54
 - Public Java types inspected: 1013
 - Unclassified Java types: 0
 
 | Java disposition                           | Count |
 | ------------------------------------------ | ----: |
-| PUBLIC_MAPPED                              |    21 |
+| PUBLIC_MAPPED                              |    23 |
 | STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT    |    73 |
 | FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT |     8 |
 | INTERNAL_IMPLEMENTATION_ONLY               |     2 |
-| DEFERRED_NOT_EXPOSED                       |   865 |
+| DEFERRED_NOT_EXPOSED                       |   863 |
 | UNSUPPORTED_BY_DESIGN                      |    44 |
 | UNCLASSIFIED                               |     0 |
 
@@ -81,6 +81,8 @@ A mapped name does not promise every Java overload or method. The relationship, 
 | `OWLDocumentFormats`                   | owlapi/formats    | org.semanticweb.owlapi.formats                                   | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
 | `OWLOntologyImportsClosureSetProvider` | owlapi/util       | org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
 | `OWLOntologyMerger`                    | owlapi/util       | org.semanticweb.owlapi.util.OWLOntologyMerger                    | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
+| `OWL2DLProfile`                        | owlapi/profiles   | org.semanticweb.owlapi.profiles.OWL2DLProfile                    | JS_ADAPTATION | ADAPTED        | IN_PROGRESS / PRERELEASE |
+| `OWLProfileReport`                     | owlapi/profiles   | org.semanticweb.owlapi.profiles.OWLProfileReport                 | JS_ADAPTATION | ADAPTED        | IN_PROGRESS / PRERELEASE |
 
 ## Java package gap summary
 
@@ -118,7 +120,7 @@ Every public Java type is classified in the machine-readable registry. This comp
 | org.semanticweb.owlapi.oboformat                     | DEFERRED_NOT_EXPOSED: 5                                                                   |
 | org.semanticweb.owlapi.owlxml.parser                 | DEFERRED_NOT_EXPOSED: 2                                                                   |
 | org.semanticweb.owlapi.owlxml.renderer               | DEFERRED_NOT_EXPOSED: 6                                                                   |
-| org.semanticweb.owlapi.profiles                      | DEFERRED_NOT_EXPOSED: 15                                                                  |
+| org.semanticweb.owlapi.profiles                      | DEFERRED_NOT_EXPOSED: 13; PUBLIC_MAPPED: 2                                                |
 | org.semanticweb.owlapi.profiles.violations           | DEFERRED_NOT_EXPOSED: 50                                                                  |
 | org.semanticweb.owlapi.rdf                           | DEFERRED_NOT_EXPOSED: 2                                                                   |
 | org.semanticweb.owlapi.rdf.model                     | DEFERRED_NOT_EXPOSED: 3                                                                   |

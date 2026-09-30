@@ -12,6 +12,7 @@ import {
 } from "../../model/owlDocumentFormat.js";
 import { functionalSyntaxStorer } from "./functional/functionalSyntaxStorer.js";
 import { rdfXmlStorer } from "./rdfxml/rdfXmlStorer.js";
+import { visitStructuralValues } from "../model/sourceEvidence.js";
 
 const requireDocumentFormat = (format) => {
   if (!(format instanceof OWLDocumentFormat) || !Object.isFrozen(format)) {
@@ -70,6 +71,44 @@ export class StorerRegistry {
     StringDocumentTarget.prototype.toString.call(target);
     const storer = this.select(format);
     try {
+      if (
+        ontologySnapshot.documentMetadata?.sourceStructure?.statements?.length
+      ) {
+        throw new OWLOntologyStorageError(
+          "The selected OWL storer cannot represent retained RDFS source statements",
+          {
+            reason: "ONTOLOGY_NOT_REPRESENTABLE",
+            sourceKind: "retained-rdfs",
+            format: format.key,
+          },
+        );
+      }
+      const expressions =
+        ontologySnapshot.documentMetadata?.sourceStructure?.expressions ?? [];
+      if (expressions.length) {
+        const represented = new Set();
+        visitStructuralValues(
+          [
+            ontologySnapshot.directAxioms,
+            ontologySnapshot.directOntologyAnnotations,
+          ],
+          (value) => {
+            if (typeof value.structuralKey === "function")
+              represented.add(value.structuralKey());
+          },
+        );
+        if (
+          expressions.some((value) => !represented.has(value.structuralKey()))
+        )
+          throw new OWLOntologyStorageError(
+            "The selected OWL storer cannot represent unattached source expressions",
+            {
+              reason: "ONTOLOGY_NOT_REPRESENTABLE",
+              sourceKind: "unattached-expression",
+              format: format.key,
+            },
+          );
+      }
       const completeText = await storer.render(ontologySnapshot, format);
       replaceStringDocumentTargetText(target, completeText);
     } catch (cause) {

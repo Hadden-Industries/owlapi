@@ -38,8 +38,17 @@ const runConsumer = async (page, mode) => {
 
   const state = await page.locator("body").getAttribute("data-state");
   const error = await page.evaluate(() => globalThis.__OWLAPI_ERROR);
+  // Firefox's native parser logs the deliberately malformed XML control.
+  const expectedConsoleErrors =
+    test.info().project.name === "firefox" && mode !== "worker"
+      ? [
+          expect.stringContaining(
+            "XML Parsing Error: mismatched tag. Expected: </a>.",
+          ),
+        ]
+      : [];
   expect({ consoleErrors, error, failedRequests, state }).toEqual({
-    consoleErrors: [],
+    consoleErrors: expectedConsoleErrors,
     error: undefined,
     failedRequests: [],
     state: "passed",
@@ -51,6 +60,7 @@ const runConsumer = async (page, mode) => {
     formats: true,
     io: true,
     model: true,
+    profiles: true,
     util: true,
   });
   expect(Object.keys(result.documents).sort()).toEqual([
@@ -77,6 +87,38 @@ const runConsumer = async (page, mode) => {
     retainedTargetAfterFailure: true,
     sourceReaderPreserved: true,
   });
+  const { xmlControls, ...profile } = result.profile;
+  expect(profile).toEqual({
+    formal: "invalid",
+    source: "invalid",
+    closureCount: 2,
+    sourceCodes: ["LITERAL_LEXICAL_SPACE"],
+    formats: ["functional", "turtle"],
+    importContext: true,
+    cardinality: "9007199254740993",
+    singletonOperands: 1,
+    invalidXml: true,
+    bounded: "unverified",
+    abortName: "AbortError",
+    stale: true,
+  });
+  expect(xmlControls).toHaveLength(2);
+  expect(xmlControls[0]).toEqual({
+    status: "valid",
+    codes: [],
+    unverified: [],
+  });
+  expect(xmlControls[1]).toMatchObject({
+    status: "invalid",
+    unverified: [],
+  });
+  expect(xmlControls[1].codes).toHaveLength(1);
+  // Native XML parsers can return an error document instead of throwing;
+  // canonical-form comparison must reject that document too.
+  expect([
+    "XML_LITERAL_NOT_WELL_FORMED",
+    "XML_LITERAL_NOT_CANONICAL",
+  ]).toContain(xmlControls[1].codes[0]);
   expect(
     requests.every((url) => new URL(url).origin === new URL(BASE_URL).origin),
   ).toBe(true);

@@ -5,6 +5,7 @@ import {
   ResourceLimitError,
 } from "../../../io/errors.js";
 import { IRI } from "../../../model/structural.js";
+import { normalizeCardinality } from "../../model/cardinality.js";
 import { xmlParserAdapter } from "../xml/xmlParserAdapter.js";
 
 import { OWLXML_GRAMMAR } from "./grammar.js";
@@ -1047,13 +1048,7 @@ export class OWLXMLParser {
         cardinality: lexical,
       });
     }
-    const cardinality = Number(lexical);
-    if (!Number.isSafeInteger(cardinality)) {
-      this.#syntax("Cardinality exceeds the safe integer range", element, {
-        cardinality: lexical,
-      });
-    }
-    return cardinality;
+    return normalizeCardinality(lexical.replace(/^\+/u, ""));
   }
 
   #parseObjectPropertyExpression(element) {

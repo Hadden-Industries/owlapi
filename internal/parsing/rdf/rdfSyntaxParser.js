@@ -73,9 +73,12 @@ export class RdfSyntaxParser {
     transaction.setDocumentFormat(this.#documentFormat);
     return {
       declarations: prepared.declarations,
-      reconstruct: async (declarations, completedTransaction) =>
+      sourceComplete: prepared.sourceComplete,
+      sourceRoles: prepared.sourceRoles,
+      discoverSourceRoles: prepared.discoverSourceRoles,
+      reconstruct: async (declarations, completedTransaction, sourceRoles) =>
         this.#populateTransaction(
-          await prepared.reconstruct(declarations),
+          await prepared.reconstruct(declarations, sourceRoles),
           completedTransaction,
           configuration,
           syntax,
@@ -105,6 +108,8 @@ export class RdfSyntaxParser {
     transaction.addAnnotations(ontology.getAnnotations());
     transaction.addImportsDeclarations(ontology.getImportsDeclarations());
     transaction.addAxioms(ontology.getAxioms());
+    if (context.sourceStructure)
+      transaction.setSourceStructure(context.sourceStructure);
     for (const diagnostic of context.diagnostics) {
       transaction.addDiagnostic(diagnostic);
     }

@@ -36,7 +36,8 @@
     "ONTOLOGY-LIFECYCLE-2026-09-01": "Repository-owner approval to pre-build the ontology lifecycle capability programme on its dedicated branch before owlapi 0.1.0 lands, subject to reconciliation with that release before integration, on 1 September 2026",
     "PHASE21-PREBUILD-2026-09-25": "Repository-owner approval to pre-build canonical Phase 21 target, storage-error, and parity-ledger foundations before the accepted 0.1.0 baseline, retaining final release and consumer reconciliation, on 25 September 2026",
     "PROVENANCE-2026-08-11": "Repository-owner approval of commit-bounded reuse for the named legacy RDF, Turtle, and ontology-converter modules and tests on 11 August 2026",
-    "SECURITY-DEPENDENCIES-2026-09-29": "Repository-owner acceptance of docs/plans/2026-09-29-security-and-dependency-consolidation.md and instruction to proceed with implementation on local main on 29 September 2026; independent review is deferred to the final commit stage."
+    "SECURITY-DEPENDENCIES-2026-09-29": "Repository-owner acceptance of docs/plans/2026-09-29-security-and-dependency-consolidation.md and instruction to proceed with implementation on local main on 29 September 2026; independent review is deferred to the final commit stage.",
+    "CANONICAL-VOWL-PREREQUISITES": "Owner authorization in the Canonical VOWL implementation session to implement, validate, commit and deliver the required owlapi prerequisites; owning contract and qualifications are recorded in docs/compatibility/canonical-vowl-prerequisites.md. This scope preserves the Phase 21 and 22 decisions."
   },
   "provenanceCategories": {
     "A_PROJECT_ORIGINAL": "Project-authored implementation with no identified upstream-derived semantic implementation",
@@ -200,7 +201,28 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE0-2026-08-10",
-      "reviewDate": "2026-08-10"
+      "reviewDate": "2026-08-10",
+      "laterPhaseChanges": [
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
+        }
+      ]
     },
     {
       "id": "PHASE1-MODEL-ONTOLOGY",
@@ -232,6 +254,25 @@
             "model/owlOntologyManager.test.js"
           ],
           "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
+        },
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
         }
       ],
       "thirdPartyDependencies": [],
@@ -276,6 +317,25 @@
           ],
           "focusedEvidence": ["io/io.test.js"],
           "decisionRef": "PHASE15-2026-08-22"
+        },
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
         }
       ],
       "thirdPartyDependencies": [],
@@ -327,7 +387,28 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE0-2026-08-10",
-      "reviewDate": "2026-08-10"
+      "reviewDate": "2026-08-10",
+      "laterPhaseChanges": [
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
+        }
+      ]
     },
     {
       "id": "PHASE1-IO-ERRORS",
@@ -390,7 +471,28 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE0-2026-08-10",
-      "reviewDate": "2026-08-10"
+      "reviewDate": "2026-08-10",
+      "laterPhaseChanges": [
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
+        }
+      ]
     },
     {
       "id": "PHASE1-MANAGER-ONTOLOGY-MANAGER",
@@ -567,6 +669,26 @@
             "governance.test.js"
           ],
           "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
+        },
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js",
+            "profiles/sourceGraphSelection.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
         }
       ],
       "thirdPartyDependencies": [],
@@ -661,7 +783,28 @@
       "thirdPartyDependencies": ["@hyperjump/uri", "bcp-47"],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
-      "reviewDate": "2026-09-25"
+      "reviewDate": "2026-09-25",
+      "laterPhaseChanges": [
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
+        }
+      ]
     },
     {
       "id": "PHASE22-FUNCTIONAL-STORER",
@@ -741,7 +884,28 @@
       "thirdPartyDependencies": ["@rdfjs/data-model"],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
-      "reviewDate": "2026-09-25"
+      "reviewDate": "2026-09-25",
+      "laterPhaseChanges": [
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
+        }
+      ]
     },
     {
       "id": "PHASE22-STORAGE-REGISTRY",
@@ -765,7 +929,28 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01",
-      "reviewDate": "2026-09-25"
+      "reviewDate": "2026-09-25",
+      "laterPhaseChanges": [
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
+        }
+      ]
     },
     {
       "id": "PHASE22-MODEL-AXIOM-SEMANTICS",
@@ -1114,7 +1299,28 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE2-2026-08-10",
-      "reviewDate": "2026-08-10"
+      "reviewDate": "2026-08-10",
+      "laterPhaseChanges": [
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
+        }
+      ]
     },
     {
       "id": "PHASE3-MANCHESTER-DESCRIPTOR",
@@ -1199,7 +1405,28 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE3-2026-08-11",
-      "reviewDate": "2026-08-11"
+      "reviewDate": "2026-08-11",
+      "laterPhaseChanges": [
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
+        }
+      ]
     },
     {
       "id": "PHASE4-OWLXML-DESCRIPTOR",
@@ -1279,7 +1506,28 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE4-2026-08-11",
-      "reviewDate": "2026-08-11"
+      "reviewDate": "2026-08-11",
+      "laterPhaseChanges": [
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
+        }
+      ]
     },
     {
       "id": "PHASE4-XML-ENTITY-POLICY",
@@ -1333,7 +1581,25 @@
       ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE4-2026-08-11",
-      "reviewDate": "2026-08-11"
+      "reviewDate": "2026-08-11",
+      "laterPhaseChanges": [
+        {
+          "phase": 23,
+          "scope": "Keep the existing XML parser fallback as a lazy analyzable import so bundled browser workers can validate RDF XML literals",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "internal/parsing/xml/xmlParserAdapter.test.js",
+            "test/consumers/browser/browser-consumers.playwright.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
+        }
+      ]
     },
     {
       "id": "PHASE5-RDF-VOCABULARY",
@@ -1459,6 +1725,26 @@
             "util/generate-w3c-rdf-to-owl-fixtures.mjs"
           ],
           "decisionRef": "ONTOLOGY-LIFECYCLE-2026-09-01"
+        },
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js",
+            "profiles/sourceGraphSelection.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
         }
       ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
@@ -1520,7 +1806,29 @@
       ],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE6-2026-08-13",
-      "reviewDate": "2026-08-13"
+      "reviewDate": "2026-08-13",
+      "laterPhaseChanges": [
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js",
+            "profiles/sourceGraphSelection.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
+        }
+      ]
     },
     {
       "id": "PHASE6-RDFXML-SYNTAX-ADAPTER",
@@ -1747,7 +2055,29 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE10-2026-08-21",
-      "reviewDate": "2026-08-21"
+      "reviewDate": "2026-08-21",
+      "laterPhaseChanges": [
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js",
+            "model/sourceBooleanArity.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
+        }
+      ]
     },
     {
       "id": "PHASE11-KRSS-DIALECT",
@@ -1903,7 +2233,29 @@
       "thirdPartyDependencies": [],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE17-2026-08-22",
-      "reviewDate": "2026-08-22"
+      "reviewDate": "2026-08-22",
+      "laterPhaseChanges": [
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js",
+            "model/sourceBooleanArity.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
+        }
+      ]
     },
     {
       "id": "PHASE17-KRSS1-DESCRIPTOR",
@@ -2019,6 +2371,26 @@
           ],
           "focusedEvidence": ["internal/parsing/jsonld/jsonLd.test.js"],
           "decisionRef": "PHASE15-2026-08-22"
+        },
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js",
+            "profiles/sourceGraphSelection.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
         }
       ],
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
@@ -2343,7 +2715,28 @@
       "thirdPartyDependencies": ["@rdfjs/data-model", "@rdfjs/dataset"],
       "legacyDerivedImplementationDisposition": "replaced",
       "decisionRef": "PHASE16-2026-08-22",
-      "reviewDate": "2026-08-22"
+      "reviewDate": "2026-08-22",
+      "laterPhaseChanges": [
+        {
+          "phase": 23,
+          "scope": "Required source-preserving parser/model/storage and exact import-format/context extension; legacy mode behavior remains separately tested",
+          "normativePublicSources": [
+            "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+            "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+            "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+            "docs/compatibility/canonical-vowl-prerequisites.md"
+          ],
+          "focusedEvidence": [
+            "model/sourcePreservation.test.js",
+            "model/sourcePropertyRoles.test.js",
+            "model/rdfsSourcePreservation.test.js",
+            "model/documentFormatContext.test.js",
+            "model/losslessCardinality.test.js"
+          ],
+          "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+          "recordedOn": "2026-09-30"
+        }
+      ]
     },
     {
       "id": "PHASE19B-DOCUMENT-FORMAT",
@@ -2427,6 +2820,414 @@
       "legacyDerivedImplementationDisposition": "not-applicable",
       "decisionRef": "SECURITY-DEPENDENCIES-2026-09-29",
       "recordedOn": "2026-09-29"
+    },
+    {
+      "id": "CANONICAL-VOWL-INTERNAL-MODEL-CARDINALITY-JS",
+      "path": "internal/model/cardinality.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["model/losslessCardinality.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "CANONICAL-VOWL-INTERNAL-MODEL-SETCONSTRUCTS-JS",
+      "path": "internal/model/setConstructs.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["model/sourcePreservation.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "CANONICAL-VOWL-INTERNAL-MODEL-SOURCEARITY-JS",
+      "path": "internal/model/sourceArity.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["model/sourcePreservation.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "CANONICAL-VOWL-INTERNAL-MODEL-SOURCEEVIDENCE-JS",
+      "path": "internal/model/sourceEvidence.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "profiles/owl2DLProfile.test.js",
+        "model/rdfsSourcePreservation.test.js",
+        "profiles/sourceGraphSelection.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "CANONICAL-VOWL-INTERNAL-PARSING-FORMATSELECTION-JS",
+      "path": "internal/parsing/formatSelection.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["model/documentFormatContext.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "CANONICAL-VOWL-INTERNAL-PROFILES-ANONYMOUSINDIVIDUALS-JS",
+      "path": "internal/profiles/anonymousIndividuals.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["profiles/owl2DLProfile.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "CANONICAL-VOWL-INTERNAL-PROFILES-BUDGET-JS",
+      "path": "internal/profiles/budget.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["profiles/owl2DLProfile.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "CANONICAL-VOWL-INTERNAL-PROFILES-DATATYPES-JS",
+      "path": "internal/profiles/datatypes.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["internal/profiles/datatypes.test.js"],
+      "thirdPartyDependencies": ["bcp-47", "@xmldom/xmldom"],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "CANONICAL-VOWL-INTERNAL-PROFILES-FACETS-JS",
+      "path": "internal/profiles/facets.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["internal/profiles/facets.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "CANONICAL-VOWL-INTERNAL-PROFILES-OWL2DL-JS",
+      "path": "internal/profiles/owl2dl.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "profiles/owl2DLProfile.test.js",
+        "model/rdfsSourcePreservation.test.js"
+      ],
+      "thirdPartyDependencies": ["@hyperjump/uri"],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "CANONICAL-VOWL-INTERNAL-PROFILES-PROPERTYHIERARCHY-JS",
+      "path": "internal/profiles/propertyHierarchy.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["profiles/owl2DLProfile.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "CANONICAL-VOWL-INTERNAL-PROFILES-SOURCESTRUCTURE-JS",
+      "path": "internal/profiles/sourceStructure.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["model/rdfsSourcePreservation.test.js"],
+      "thirdPartyDependencies": ["@hyperjump/uri"],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "CANONICAL-VOWL-INTERNAL-PROFILES-STRUCTURE-JS",
+      "path": "internal/profiles/structure.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["profiles/owl2DLProfile.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "CANONICAL-VOWL-INTERNAL-PROFILES-XMLLITERAL-JS",
+      "path": "internal/profiles/xmlLiteral.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "internal/profiles/datatypes.test.js",
+        "profiles/owl2DLProfile.test.js"
+      ],
+      "thirdPartyDependencies": ["@hyperjump/uri"],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "CANONICAL-VOWL-INTERNAL-PROFILES-XSDPATTERN-JS",
+      "path": "internal/profiles/xsdPattern.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": ["internal/profiles/xsdPattern.test.js"],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "CANONICAL-VOWL-PROFILES-OWL2DLPROFILE-JS",
+      "path": "profiles/owl2DLProfile.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "profiles/owl2DLProfile.test.js",
+        "test/package-boundary.test.mjs",
+        "profiles/sourceGraphSelection.test.js"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
+    },
+    {
+      "id": "CANONICAL-VOWL-PROFILES-OWLPROFILEREPORT-JS",
+      "path": "profiles/owlProfileReport.js",
+      "phase": 23,
+      "scope": "Owning-library source preservation, exact-value handling and complete-closure OWL 2 DL/source validation for the authorized Canonical VOWL prerequisite contract",
+      "legacyWebVowlSources": [],
+      "provenanceCategory": "A_PROJECT_ORIGINAL",
+      "normativePublicSources": [
+        "https://www.w3.org/TR/2012/REC-owl2-syntax-20121211/",
+        "https://www.w3.org/TR/2012/REC-owl2-mapping-to-rdf-20121211/",
+        "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/",
+        "docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "compatibilityReferences": [
+        "Java OWLAPI 5.5.1 bounded profile/model API reference; explicit JavaScript adaptations in docs/compatibility/canonical-vowl-prerequisites.md"
+      ],
+      "referenceOwlapiRevision": "d7e997a53b470e32700de89cc610d9daf01ea769",
+      "focusedEvidence": [
+        "profiles/owl2DLProfile.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "thirdPartyDependencies": [],
+      "legacyDerivedImplementationDisposition": "not-applicable",
+      "decisionRef": "CANONICAL-VOWL-PREREQUISITES",
+      "recordedOn": "2026-09-30"
     }
   ],
   "compatibilityResearch": [
