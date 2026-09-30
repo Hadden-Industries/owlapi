@@ -1,5 +1,18 @@
 # Migration status
 
+## Current publication transition
+
+The [scoped publication plan](../plans/scoped-npm-publication.md) selects `@hadden-industries/owlapi@0.1.0-rc.1` under `next`, including the Phase 21/22 lifecycle slice.
+The native npm alias preserves consumer imports as `owlapi/*`.
+UO and WebVOWL may each use that exact RC in production after immutable artifact verification and their own complete consumer acceptance, without waiting for stable `0.1.0`.
+Scoped implementation and publication remain pending; this documentation update does not mark any release gate complete.
+The [19D1 checkpoint record](../plans/phase19d-pre-registry-consumer-decoupling.md) preserves the later historical Git-consumer evidence.
+
+## Historical Phase 18 snapshot
+
+The table and narrative below preserve the ingestion programme's original checkpoint and then-planned alpha sequence.
+They are not current release status or authority for publishing an unscoped alpha.
+
 Baseline revision: `5301d6c0b9e69c048f6ab079ea1103790bc70b85`
 
 | Phase | Scope                                                                  | State       | Gate                                                             |

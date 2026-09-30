@@ -3,33 +3,42 @@
 `owlapi` is a native-ESM JavaScript library for loading OWL 2 ontologies into a structural object model in Node.js and modern browsers.
 Its public concepts deliberately resemble the Java OWLAPI where that makes the API familiar, while its I/O, asynchronous loading, module packaging, and RDF/JS integration follow JavaScript conventions.
 
-> **Unpublished release candidate:** `0.1.0-rc.1` prepares the first planned public production `0.1.0` release, including import-closure lifecycle capabilities.
+> **Planned public release candidate:** `@hadden-industries/owlapi@0.1.0-rc.1` is the selected first public npm target under `next`, including the approved import-closure lifecycle capabilities.
+> The scoped identity is an accepted documentation decision; the manifest and release tooling still require the [scoped-publication implementation](./docs/plans/scoped-npm-publication.md).
+> UO and WebVOWL may each use this exact RC in production after artifact verification and their own full consumer acceptance; `0.1.0` is not a prerequisite for either application.
 > A version in `main` is not a published or accepted package.
 > Full Java OWLAPI parity is not claimed; the exact implemented surface and every known gap are recorded in [the compatibility registry](./docs/compatibility/java-api-surface.md).
 
 This project is an independently maintained JavaScript implementation.
 It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project.
 
-The package name was formerly used for an unrelated, now-unpublished Overwatch package.
-This implementation has no code, API, ownership, or provenance relationship with that package, and it does not reuse any of its historical versions.
-The dated [package-name and non-affiliation review](https://github.com/Hadden-Industries/owlapi/blob/main/docs/provenance/package-name-review.json) records the evidence and mitigations behind that decision.
+The desired unscoped name `owlapi` was formerly used for an unrelated, now-unpublished Overwatch package and is blocked by npm's name-similarity protection.
+The selected scoped package is a separate registry identity with no code, API, ownership, or provenance relationship to that package.
+The retained [package-name review](https://github.com/Hadden-Industries/owlapi/blob/main/docs/provenance/package-name-review.json) describes the historical unscoped proposal; it must be supplemented by a scoped-identity review before publication.
 
 ## Install
 
 No public release is claimed by this checkout.
-After an approved candidate is actually published under `next`, install that prerelease channel explicitly:
+After the exact RC has been published and verified, use npm's native dependency alias to retain the imports shown below:
 
 ```shell
-npm install owlapi@next
+npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@0.1.0-rc.1"
 ```
 
-After that exact candidate has been published, pin its immutable version instead:
+This records `"owlapi": "npm:@hadden-industries/owlapi@0.1.0-rc.1"` in the consumer manifest.
+WebVOWL uses this `dependencies` entry and qualifies its application for production under the [scoped publication plan](./docs/plans/scoped-npm-publication.md).
+Universal Ontology uses the same command with `--save-dev` because the package is ontology-generation tooling.
+The installed package's real name remains `@hadden-industries/owlapi`; the alias names it `owlapi` only in the declaring consumer and does not rewrite other packages' transitive or peer dependencies.
+
+Consumers that prefer scoped imports may install it directly:
 
 ```shell
-npm install owlapi@0.1.0-rc.1
+npm install --save-exact @hadden-industries/owlapi@0.1.0-rc.1
 ```
 
-Until a production version is published under `latest`, an unqualified `npm install owlapi` is intentionally not a supported installation path.
+That form uses `@hadden-industries/owlapi` and `@hadden-industries/owlapi/<subpath>` in imports.
+Use exact versions for reproducible installations; `next` is a discovery channel, not an acceptance pin.
+Neither a bare `npm install owlapi` nor a future move to that registry name is part of this release.
 
 The package requires Node.js `>=22.23.3 <23 || >=24.21.0 <25`.
 Browser applications can consume the same native ESM through a package-aware bundler or an application-owned import map.
@@ -116,7 +125,7 @@ const classes = ontology.getClassesInSignature();
 Only the JavaScript members listed in [`API.md`](./API.md) are promised.
 A shared name does not imply that every Java overload, listener, mutable operation, or return type exists.
 
-Import public bindings only through these package specifiers:
+With the documented npm alias, import public bindings only through these six package specifiers:
 
 - `owlapi`
 - `owlapi/apibinding`
@@ -172,6 +181,8 @@ const ontology = await manager.loadOntologyFromOntologyDocument(
 
 The application—not `owlapi`—owns import-map URLs, content security policy, integrity verification, caching, and availability.
 A complete map must cover all six public roots and their external static and literal-dynamic dependency closure.
+The alias keys below must resolve to files from the verified `@hadden-industries/owlapi@0.1.0-rc.1` distribution.
+The application-local URL spelling does not claim an unscoped npm publication.
 This abbreviated shape illustrates application-local URLs; it is not a complete hand-maintained dependency map:
 
 ```html
@@ -263,11 +274,14 @@ The initial package provides:
 - RDF/XML, Turtle, TriG, N-Triples, N-Quads, and JSON-LD ingestion through qualified third-party syntax adapters and one shared RDF-to-OWL reconstruction layer; and
 - one shared OWL-to-RDF mapping implementation used internally by supported workflows.
 
-The initial package does **not** provide a reasoner, SWRL support, OBO parsing, Java listener APIs, ontology mutation, public storers/serializers, a public RDF/JS subpath, or full Java OWLAPI member parity.
+The initial package does **not** provide a reasoner, SWRL support, OBO parsing, Java listener APIs, directly constructible public storer classes, a public RDF/JS subpath, or full Java OWLAPI member parity.
 N3.js supports the four listed RDF syntaxes; support for the broader N3 language is not claimed.
 The [capability matrix](./docs/compatibility/capabilities.json), [Java API gap view](./docs/compatibility/java-api-surface.md), and [recorded expected differences](https://github.com/Hadden-Industries/owlapi/blob/main/docs/compatibility/expected-differences.json) are the authorities for the exact boundary.
 
-Import-closure query APIs, ontology mutation and merger operations, and public saving/storer APIs are deliberately assigned to the separate [ontology-lifecycle capability plan](https://github.com/Hadden-Industries/owlapi/blob/main/docs/ontology-lifecycle-capability-implementation-plan.md); they are not silently folded into this release-engineering phase.
+The selected RC includes the [ontology-lifecycle capability plan](https://github.com/Hadden-Industries/owlapi/blob/main/docs/ontology-lifecycle-capability-implementation-plan.md): closure queries, atomic changes, the merger, and manager-selected Functional Syntax and RDF/XML storage through `saveOntology` and `StringDocumentTarget.toString()`.
+These remain subject to the plan's fresh parity, losslessness, installed-package and consumer acceptance gates.
+UO owns catalog/network resolution, retries, redirects and materialization policy; downloading the npm dependency does not itself enable remote ontology loading.
+UO qualifies connected generation separately from the mandatory offline reload of its completed standalone outputs.
 
 Test results name the standards suites, upstream revisions, exclusions, and controlled deviations they actually cover.
 They are evidence for the registered capabilities, not a claim of W3C certification or exhaustive package-wide conformance.

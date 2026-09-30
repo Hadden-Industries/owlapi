@@ -1,10 +1,14 @@
 # Post-Publication W3C Test-Suite Conformance Reporting Implementation Plan
 
 > **For implementing agents:** Execute this plan task by task in the primary task.
-> Do not use subagents unless the repository owner later authorizes them explicitly.<br> **Status:** Deferred, independently actionable post-release programme.<br> **Activation gate:** Begin only after `docs/owlapi-js/implementation-plan.md` has completed with the accepted public production cutover version—normally `owlapi@0.1.0`, or only the recorded same-surface contingency/corrective patch—under `latest`, the canonical `Hadden-Industries/owlapi` repository established, and WebVOWL consuming the exact public-registry package.<br> **Goal:** Produce reproducible, version-specific W3C test-suite results for the RDF-reading components of `owlapi`, publish accurate EARL reports, and seek inclusion in the applicable W3C implementation reports without claiming certification or independent-parser status.<br> **Architecture:** A repository-only conformance harness installs and verifies one exact public `owlapi` artefact, exercises its private syntax-to-RDF/JS adapter boundary against pinned upstream manifests, records a complete neutral result ledger, and generates deterministic EARL Turtle from that ledger.
+> Do not use subagents unless the repository owner later authorizes them explicitly.<br> **Status:** Deferred, independently actionable post-release programme.<br> **Activation gate:** Begin only after `docs/implementation-plan.md` has completed with the accepted public production cutover version—normally `@hadden-industries/owlapi@0.1.0`, or only the recorded same-surface contingency/corrective patch—under `latest`, the canonical `Hadden-Industries/owlapi` repository established, and WebVOWL consuming the exact public-registry package.<br> **Goal:** Produce reproducible, version-specific W3C test-suite results for the RDF-reading components of `owlapi`, publish accurate EARL reports, and seek inclusion in the applicable W3C implementation reports without claiming certification or independent-parser status.<br> **Architecture:** A repository-only conformance harness installs and verifies one exact public `@hadden-industries/owlapi` artefact, exercises its private syntax-to-RDF/JS adapter boundary against pinned upstream manifests, records a complete neutral result ledger, and generates deterministic EARL Turtle from that ledger.
 > The harness does not create a new public package entry point.<br> **Tech stack:** Native ESM JavaScript, the package's existing Jest and RDF/JS test infrastructure, pinned W3C manifests and fixtures, EARL 1.0/DOAP/FOAF vocabularies, and the upstream repositories' own report-generation toolchains for final validation.<br> **Specifications:** [EARL 1.0 Schema](https://www.w3.org/TR/EARL10-Schema/), [W3C RDF test reports](https://github.com/w3c/rdf-tests/tree/main/rdf/rdf12/reports), and the [JSON-LD processor implementation report](https://w3c.github.io/json-ld-api/reports/).
 
 ---
+
+The scoped-publication amendment makes `@hadden-industries/owlapi@0.1.0-rc.1` the first public artifact and permits UO and WebVOWL production after artifact verification and each application's full consumer acceptance.
+This independent reporting programme retains its later activation gate and does not block the public RC or either application's production use.
+Every eventual report must name the real scoped artifact and exact tested version, even when its harness imports through the local `owlapi` npm alias.
 
 ## 1. Responsibility and non-blocking boundary
 
@@ -13,7 +17,7 @@ It is intentionally separate from the extraction and publication plan.
 
 The following boundary is normative:
 
-- Phase 20 and `docs/owlapi-js/implementation-plan.md` complete when their own accepted production cutover and WebVOWL-consumer gates pass.
+- Phase 20 and `docs/implementation-plan.md` complete when their own accepted production cutover and WebVOWL-consumer gates pass.
   They do not wait for this plan to start, for a W3C maintainer to reply, for an upstream pull request, or for an implementation-report merge.
 - A later test failure is evidence about the exact tested release.
   It may create a normal issue and package-release obligation under the zero-major policy, but it does not retroactively make the predecessor plan incomplete.
@@ -37,7 +41,7 @@ WebVOWL must not retain a second normative copy after the repository handoff.
 
 ### 2.1 Versioned test subject
 
-The default first subject is the exact accepted public production-cutover artefact, normally `owlapi@0.1.0`.
+The default first subject is the exact accepted public production-cutover artefact, normally `@hadden-industries/owlapi@0.1.0`.
 The report identifies all of the following:
 
 - the exact npm version URL;
@@ -49,7 +53,7 @@ The report identifies all of the following:
 - the exact installed versions of relevant parser dependencies; and
 - the UTC execution time.
 
-`0.1.0` may be named only if the tested production bytes are those published as `owlapi@0.1.0`; if the predecessor plan activated a recorded same-surface patch, the report names that exact patch instead.
+`0.1.0` may be named only if the tested production bytes are those published as `@hadden-industries/owlapi@0.1.0`; if the predecessor plan activated a recorded same-surface patch, the report names that exact patch instead.
 Test-harness-only changes may report on that unchanged artefact.
 If satisfying a test requires any production-source or runtime-dependency change, publish and verify the appropriate later `owlapi` release under the zero-major compatibility policy first, then report that exact version.
 A compatible correction normally uses the current zero-minor's next patch; an incompatible protected-contract correction requires the next available zero-minor.
@@ -294,7 +298,7 @@ For every recursively included upstream manifest root selected for a report:
 
 **Steps:**
 
-- [ ] Prove `latest` and the exact accepted production-cutover coordinate—normally `owlapi@0.1.0`, or only its recorded same-surface patch—resolve to the same accepted artefact.
+- [ ] Prove `latest` and the exact accepted production-cutover coordinate—normally `@hadden-industries/owlapi@0.1.0`, or only its recorded same-surface patch—resolve to the same accepted artefact.
 - [ ] Prove WebVOWL consumes that exact registry version and the predecessor implementation plan is recorded complete.
 - [ ] Work only in `Hadden-Industries/owlapi`; do not resume package development under WebVOWL's historical `src/owlapi-js/` tree.
 - [ ] Select the exact released subject.
@@ -570,4 +574,4 @@ This follow-on plan is complete when all of the following are true:
 - [ ] final package-repository evidence is committed and the repository owner is offered the normal push checkpoint.
 
 Upstream merge or inclusion may occur after this local definition of done.
-Its timing and outcome do not reopen `docs/owlapi-js/implementation-plan.md`, do not invalidate the published package, and do not hold up WebVOWL's use of it.
+Its timing and outcome do not reopen `docs/implementation-plan.md`, do not invalidate the published package, and do not hold up WebVOWL's use of it.
