@@ -15,7 +15,9 @@ The existing WebVOWL candidate harness audits application-owned consumer code an
 
 **Status:** The owner approved inclusion of Phase 21 and Phase 22 in the first planned public `owlapi@0.1.0` release on 2026-09-28.
 The canonical target, errors, and decision ledger are developed once and integrated into `main` without rewriting the lifecycle branch's original commits.
-`0.1.0-rc.1` is a candidate for this first release, not evidence of publication or acceptance.
+The scoped-publication amendment selects `@hadden-industries/owlapi@0.1.0-rc.1` under `next` as the first public artifact.
+UO and WebVOWL may each use the exact RC in production after artifact verification and their own full consumer acceptance, without waiting for `0.1.0`.
+The target remains a plan, not evidence of publication or acceptance; implement the [scoped publication plan](scoped-npm-publication.md).
 Reconcile against an exact pinned `main` commit and registry digest before accepting either phase; do not require an earlier published `0.1.0`.
 Preserve the existing Java parity, WebVOWL audit and installed-candidate evidence gates.
 This checkpoint does not publish an intermediate package or authorize a production-consumer cutover.
@@ -380,9 +382,11 @@ A package-script, workflow, dependency, version, lockfile, or release change is 
 2. Record `StringDocumentTarget` as `JS_ADAPTATION` / `ADAPTED` of the exact Java type.
    Its supported member is only `prototype.toString`; its omitted member is Java `getWriter()`, with the decision ID and atomicity qualification from §2.1.
 3. Record each storage error as `JS_ADAPTATION` / `ADAPTED` of its exact Java exception class, including the superclass relation, suffix and namespace decisions, supported constructor shape, omitted Java constructors, and safe diagnostic convention.
-4. Generalize release metadata only as required by the accepted first-release schema so the new bindings declare `firstPublicRelease: "0.1.0"`.
+4. Generalize release metadata only as required by the accepted first-release schema so the new bindings declare `firstPublicRelease: "0.1.0-rc.1"`.
    Preserve every baseline binding's contract.
-   The owner-approved first-release amendment changes only provisional Phase 21/22 release identities from `0.2.0` to `0.1.0`; it does not relabel historical alpha identities or evidence.
+   The current amendment changes provisional Phase 21/22 first-public-release metadata to the scoped RC and updates the generated package name and canonical specifier prefix.
+   Treat this exact metadata mapping as an approved delta, preserving Java package authorities, binding identity and every semantic parity requirement.
+   It does not relabel historical alpha identities, pinned baseline registries, digests or evidence.
 5. Regenerate the authoritative JSON and both views.
    In development, isolate the Phase 21 delta from the recorded development base: exactly three new public bindings, no new namespace, no unrelated existing-binding mutation, and zero Phase 21 `JS_EXTENSION` bindings.
    At reconciliation, compare against accepted the pinned integration baseline; account separately for any already-built Phase 22 delta under its exact allowlist.
@@ -439,8 +443,10 @@ A package-script, workflow, dependency, version, lockfile, or release change is 
    Keep the source-reader allowlist fail-closed: a moved, removed, duplicated, or newly added `getText()` use requires review rather than silently inheriting a path-wide exception.
 5. Make final qualification consume a reviewed immutable WebVOWL source baseline, not replay Phase 19's original embedded-source migration.
    Require canonical `owlapi` package specifiers, the exact baseline dependency recorded as `consumerMigrations.webvowl.packageSpecifier`, and absence of the former maintained `src/owlapi-js/` tree before candidate injection.
-   The baseline may use exact production `0.1.0` after its separate registry cutover, or the sole pre-registry Git coordinate bound to the retained alpha equivalence evidence.
-   It must not require a previously published `0.1.0` or accept a mutable Git reference, range, alias or local dependency.
+   The baseline may use the exact verified scoped RC through `"owlapi": "npm:@hadden-industries/owlapi@0.1.0-rc.1"`, a later separately accepted exact scoped stable version, or the sole historical pre-registry Git coordinate bound to the alpha equivalence evidence.
+   Record the actual installed identity and do not treat the historical Git artifact as scoped RC evidence.
+   It must not require a previously published `0.1.0` or accept a mutable Git reference, range, source resolver alias or local dependency.
+   The reviewed exact native npm dependency alias is permitted; it does not authorize API aliases, wrappers or duplicate public bindings.
    In the disposable checkout only, replace that reviewed dependency with the retained Phase 21 tarball and regenerate the temporary lock; leave the source WebVOWL manifest and lockfile unchanged.
    Extend `createCandidateArchitectureTest` and the qualifier's retained output with the exact assertions from Step 2.
    Do not introduce a workspace, resolver alias, copied owlapi tree, deep import, or production WebVOWL local-file dependency.
@@ -531,7 +537,7 @@ Phase 21 is complete only when all of the following are true:
 
 The import-closure lifecycle plan consumes, rather than recreates, the canonical Phase 21 target and storage-error boundary.
 Build that boundary once under this plan on the dedicated lifecycle branch, then proceed with all dependency-ready lifecycle development before release.
-Include this work in the first `0.1.0` candidate, but keep implementation and merge status separate from release acceptance.
+Include this work in the public scoped RC and later stable line, keeping implementation and merge status separate from release and consumer acceptance.
 Keep lifecycle capability rows deferred and label development evidence provisional.
 Do not fabricate accepted release, WebVOWL, or installed-candidate evidence to make a checkpoint appear complete.
 

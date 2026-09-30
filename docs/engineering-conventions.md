@@ -1,6 +1,6 @@
 # Engineering conventions
 
-Phase 0 records the existing WebVOWL JavaScript regime as the implementation regime for the `src/owlapi-js/` staging tree and the future `owlapi` package:
+Phase 0 records the existing WebVOWL JavaScript regime as the implementation regime for the `src/owlapi-js/` staging tree and the `owlapi` project, whose selected npm identity is `@hadden-industries/owlapi`:
 
 - native ECMAScript modules and named exports;
 - native JavaScript only—no TypeScript, `tsc`, `checkJs`, or generated declaration-file workflow;
@@ -18,6 +18,10 @@ The authoritative aggregate commands are the root package scripts: `format:check
 The accepted Python/Markdown quality plan adds locked development tooling: Prettier/Snapper for authored Markdown, native ESLint GFM content checks, and Ruff for Python, while preserving the JavaScript rules and existing Jest runner.
 See [contributor setup and commands](../CONTRIBUTING.md#source-text-syntax-and-formatting).
 A phase does not add a competing formatter, linter, test runner, module convention, or build system.
+
+Consumers may declare the exact native npm alias `"owlapi": "npm:@hadden-industries/owlapi@0.1.0-rc.1"` and retain `owlapi/*` imports.
+This dependency-name mapping is permitted; it creates no API wrapper, duplicate binding, forwarding module or source resolver alias.
+Canonical package metadata and generated API specifiers must identify the real scope when the scoped-publication implementation is applied.
 
 The publication-specific namespace and source-ownership rules in implementation plan §2.10.4 supersede the earlier staging barrels at extraction.
 In particular, `src/owlapi-js/rdf/index.js` does not authorize a public `owlapi/rdf` export.

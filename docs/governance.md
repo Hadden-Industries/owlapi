@@ -7,6 +7,11 @@ A request to implement a phase does not authorize changing architecture, public 
 
 Configuration files remain subject to `AGENTS.md`: an exact file-and-setting approval is required before a package, lock, build, lint, format, test, CI, container, deployment, environment, or repository-policy configuration changes.
 
+The owner-approved [scoped publication and consumer RC decision](adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md) selects `@hadden-industries/owlapi` in the controlled `hadden-industries` npm organization.
+Scope ownership, effective package publishing permission, release approval and personal copyright are separate facts.
+Retain the historical unscoped name review and alpha evidence; do not transfer their approvals to newly named package bytes.
+Publication controls remain disabled until the scoped implementation and exact candidate qualification are complete and publication is authorized.
+
 ## Normative-change procedure
 
 1. Record the decision and rationale in an ADR.

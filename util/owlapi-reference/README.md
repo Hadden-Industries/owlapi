@@ -174,7 +174,7 @@ Structural equality and anonymous-individual substitution remain delegated to Ja
 
 The synthetic fixture under `fixtures/import-closure/` deliberately combines a cycle, root version IRI, a duplicate declaration, an imported annotation that must not be copied, within-document anonymous sharing, and the same authored anonymous label in two different source documents.
 Synthetic and real-family runs are permitted as provisional Task 14 development evidence before baseline reconciliation.
-Neither constitutes final release acceptance: fresh evidence from the reconciled candidate remains required after accepted `owlapi@0.1.0` and Phase 21 are ancestors.
+Neither constitutes final release acceptance: fresh evidence from the reconciled candidate remains required after the pinned source-integration baseline and accepted Phase 21 commits are ancestors.
 
 ### July source-driven parsing and import-closure reconciliation
 
@@ -198,6 +198,12 @@ Do not treat a raw oracle exit as the reconciled result.
 
 Source mode records actual source bytes, including dirty changes.
 Optional `--candidate <directory>` installs the retained tarball with scripts disabled and verifies its digest before testing the public package.
+This existing source/local-candidate mode does not fetch or qualify a public npm release.
+The [scoped publication plan](../../docs/plans/scoped-npm-publication.md) requires a new explicit registry mode before claiming UO public-registry acceptance; no such CLI flag is claimed here.
+That mode must create an isolated consumer and empty cache, install the exact native alias `npm:@hadden-industries/owlapi@0.1.0-rc.1`, verify actual scoped identity/integrity and resolve only its installed public roots.
+The package has six entry points; UO uses the five Java-shaped subpaths.
+After artifact publication and verification, UO tests authorized remote import retrieval and its complete contract, then verifies the generated standalone ontology offline with zero loader calls.
+A fully accepted RC may serve UO production without stable `0.1.0`; the source/local-tarball modes alone cannot.
 Generated documents and source blobs are rechecked for changes at the end.
 Reports, individual oracle JSON, parser diagnostics and native logs remain in the new output directory.
 
@@ -207,4 +213,4 @@ This preserves concurrent imports and the exact production qualification path wi
 Both supported Node lines run these same assertions; native failures and missing import mappings remain test failures.
 
 The required Node 24 CI job builds the exact Java revision with Maven, runs native oracle regressions, executes both July checks and retains their artifacts, including failures.
-This adds development evidence only; it does not change the release workflow or replace final post-0.1.0/Phase-21 baseline qualification.
+This adds development evidence only; it does not change the release workflow or replace final qualification of the integrated scoped RC against the pinned baseline and Phase 21.

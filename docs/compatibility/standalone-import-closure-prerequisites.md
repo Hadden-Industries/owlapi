@@ -14,9 +14,10 @@ The canonical consumer artifacts are:
 
 ## Delivery sequencing
 
-The capability slice is being pre-built on the dedicated `feature/ontology-import-closure-lifecycle` branch before public `owlapi@0.1.0` lands and is included in that first planned public production release.
-The owner approved this sequencing correction on 2026-09-28; it supersedes the former separate `0.2.0` destination.
-`0.1.0-rc.1` is a candidate for `0.1.0`, not evidence of publication or acceptance.
+The capability slice originated on `feature/ontology-import-closure-lifecycle` and is included in the selected first public `@hadden-industries/owlapi@0.1.0-rc.1` under `next`.
+The owner approved first-release integration on 2026-09-28 and scoped publication with UO RC production eligibility in the [current amendment](../plans/scoped-npm-publication.md).
+The target coordinate is not evidence of publication or acceptance.
+UO may use this exact RC in production after artifact verification and complete consumer acceptance; it need not wait for `0.1.0`.
 Lifecycle capabilities remain `DEFERRED` / `NOT_STARTED` until their formal qualification gates pass.
 
 Build `StringDocumentTarget`, the storage-error hierarchy, and their decision ledger once under the canonical Phase 21 plan on this feature branch.
@@ -31,8 +32,21 @@ Conflicts are resolved in the canonical implementation; no shim, forwarding modu
 A bounded amount of alignment rework is expected.
 A material public-contract difference instead requires a reviewed plan and compatibility-ledger amendment.
 
-Only the reconciled branch may complete the lifecycle rows or qualify exact `owlapi@0.1.0`.
+Only the reconciled branch may complete the lifecycle rows or qualify exact `@hadden-industries/owlapi@0.1.0-rc.1`.
 Pre-integration evidence is development evidence and is never copied forward as release evidence.
+
+## Package identity and qualification handoff
+
+UO declares `"owlapi": "npm:@hadden-industries/owlapi@0.1.0-rc.1"` in `devDependencies` and retains its five `owlapi/*` namespace imports.
+The installed package and registry evidence must identify the real scoped name, exact version and verified integrity; the package also has a sixth entry point, its root aggregate.
+Native npm dependency aliasing is permitted and does not create an API shim or rewrite transitive/peer dependencies.
+Preserve the source repository and Java package mappings.
+
+Qualify the retained scoped artifact and complete the upstream lifecycle gates before publication, then verify the actual public registry artifact before UO's remote-fetch and full consumer acceptance run.
+The existing source/local-tarball harness is not public-registry proof; add the isolated registry mode described in the scoped-publication plan.
+Record source commit/tag, tarball digest, registry integrity, API evidence, UO revision/input hashes and actual results.
+A later RC or stable version requires a new exact pin and requalification.
+Do not implement migration to the bare package name in this work.
 
 ## Compatibility boundary
 
@@ -43,7 +57,7 @@ A public capability added for this workflow must correspond to a public Java OWL
 Java streams map to JavaScript iterables, and Java overloads map to the repository's approved JavaScript argument conventions.
 A helper with no upstream public counterpart remains private to the consumer.
 
-Except for the bare `owlapi` aggregate, every public npm subpath must be the exact slash-form of an approved `org.semanticweb.owlapi` package and must have a Public API Surface Registry entry.
+Except for the package-root aggregate (consumer alias `owlapi`), every public npm subpath must be the exact slash-form of an approved `org.semanticweb.owlapi` package and must have a Public API Surface Registry entry.
 Public Java-compatible bindings have one canonical definition in that Java-shaped namespace; private loading, mapping and storage engines use cohesive non-mirrored `internal/` ownership.
 
 No shim, forwarding module, deprecated alias, copied source tree, or nominal unimplemented class is permitted.

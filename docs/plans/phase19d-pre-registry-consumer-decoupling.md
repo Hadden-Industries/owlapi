@@ -1,13 +1,28 @@
 # Phase 19D Pre-Registry Consumer Decoupling Implementation Plan
 
-> **Status:** Ready for implementation after approval of this plan.<br> **Execution:** Implement inline and test-first, without subagents.
+> **Status:** Historical 19D1 implementation and observed checkpoint; the pending 19D2 destination is amended below.<br> **Execution:** Implement inline and test-first, without subagents.
 > Treat configuration approval, formal review, commit, and push as distinct gates.<br> **Cross-repository design:** [`Hadden-Industries/webvowl` design commit `1da5a564`](https://github.com/Hadden-Industries/webvowl/blob/1da5a5646779eb414ee58f79ffc9cad38ff32244/docs/specs/2026-08-31-pre-registry-owlapi-webvowl-decoupling-design.md).<br> **Consumer plan:** [`Hadden-Industries/webvowl/docs/plans/owlapi-pre-registry-consumer-cutover.md`](https://github.com/Hadden-Industries/webvowl/blob/main/docs/plans/owlapi-pre-registry-consumer-cutover.md).<br> **Goal:** Amend the canonical release contract so npm namespace delay no longer blocks independent WebVOWL development, prove that installing the exact package-source Git commit produces the same package tree as the retained qualified alpha tarball, and preserve public registry publication as the final Phase 19D completion gate.
+
+## Current 19D2 destination
+
+The [scoped publication plan](scoped-npm-publication.md) selects `@hadden-industries/owlapi@0.1.0-rc.1` under `next`.
+After exact public artifact verification and separate WebVOWL configuration authorization, replace the Git transport with `"owlapi": "npm:@hadden-industries/owlapi@0.1.0-rc.1"` in `dependencies`, committing registry URL/SRI and verifying the installed scoped identity.
+Preserve `owlapi/*` imports through this native npm alias; no Git, source resolver, workspace or local-file fallback remains.
+Requalify the actual integrated six-export package rather than asserting equality with the historical five-export alpha.
+WebVOWL may use the exact public RC in production once its complete artifact/application, security-support and rollback gates in the main plan's §2.69 pass, without waiting for stable `0.1.0` or Phase 20.
+No additional prerelease waiver is required; normal configuration, commit, push and deployment authorization still applies.
+The transitional 19D1 Git installation remains non-production.
+
+The following 19D1 design, implementation tasks and observations preserve the original unscoped alpha identities and evidence.
+They must not be rerun against current scoped bytes or treated as scoped publication authority.
+References below to the original publication control describe its historical state, retained in `docs/release/alpha-reconciliation-control.json`.
+Only the pending 19D2 target changes; existing gate IDs and historical result bindings stay intact.
 
 ## Fixed decisions
 
 - Phase 19D has two ordered states under the existing checkpoint and requirement topology:
   - **19D1:** maintained WebVOWL consumes exact full-SHA Git-installed `owlapi`, contains no package source copy, and passes clean consumer checks;
-  - **19D2:** after public-alpha verification, WebVOWL replaces that transport with exact registry `owlapi@0.1.0-alpha.0` plus registry URL/SRI and removes every Git allowance.
+  - **19D2:** after scoped RC verification, WebVOWL replaces that transport with the exact native alias `npm:@hadden-industries/owlapi@0.1.0-rc.1` plus registry URL/SRI and removes every Git allowance.
 - The only provisional Git coordinate is `git+https://github.com/Hadden-Industries/owlapi.git#caabb1197ffdab91c1e10d596d177b5142aea5c1`.
 - The retained candidate is the exact candidate artifact selected by `docs/release/publication-control.json`, not a newly packed approximation or an arbitrary local `.release` directory.
 - A Git install supplies provisional source-commit evidence only.

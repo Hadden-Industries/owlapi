@@ -8,14 +8,16 @@ Prerelease identifiers do not create a stability promise.
 
 ## Unreleased
 
-The integration candidate is `0.1.0-rc.1`, targeting the first public production `0.1.0` release.
+The selected first public candidate is `@hadden-industries/owlapi@0.1.0-rc.1` under `next`; the later stable target remains `0.1.0`.
 It is not published, tagged or accepted merely by merging it.
 
+- Record the scoped-publication implementation plan and exact native npm alias, preserving `owlapi/*` consumer imports.
+- Permit the exact RC in Universal Ontology and WebVOWL production after immutable artifact verification and each application's complete consumer acceptance, without waiting for `0.1.0`.
 - Add manager-owned import-closure queries, atomic ontology changes, `OWLOntologyImportsClosureSetProvider`, and `OWLOntologyMerger` through the Java-shaped public surface.
 - Add atomic `StringDocumentTarget` storage and lossless Functional Syntax and representability-checked RDF/XML serialization through `saveOntology`.
 - Reconcile parsing and fresh import closures for all four pinned July Universal Ontology variants, with explicit W3C-grounded Java differences.
 - Validate workflow syntax, YAML and JSONPath with their native tools, retaining repository code only for repository-owned invariants.
-- Replace the former later-release target with first-release `0.1.0` and a pinned source-integration baseline; retain all release-acceptance gates and preserve historical alpha evidence under its original identity.
+- Include the lifecycle slice in the public RC and later `0.1.0` line against a pinned source-integration baseline; retain all release-acceptance gates and preserve historical alpha evidence under its original identity.
 
 ## 0.1.0-alpha.0 — historical unpublished candidate
 
