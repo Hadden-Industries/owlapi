@@ -38,6 +38,7 @@ const REQUIRED_PACKED_PATHS = Object.freeze([
   "README.md",
   "apibinding/index.js",
   "docs/compatibility/capabilities.json",
+  "docs/compatibility/canonical-vowl-prerequisites.md",
   "docs/compatibility/java-api-surface.json",
   "docs/compatibility/java-api-surface.md",
   "formats/index.js",
@@ -45,6 +46,7 @@ const REQUIRED_PACKED_PATHS = Object.freeze([
   "io/index.js",
   "model/index.js",
   "package.json",
+  "profiles/index.js",
   "util/index.js",
   "util/owlOntologyImportsClosureSetProvider.js",
   "util/owlOntologyMerger.js",
@@ -55,6 +57,7 @@ const ALLOWED_PACKED_PREFIXES = Object.freeze([
   "internal/",
   "io/",
   "model/",
+  "profiles/",
 ]);
 const ALLOWED_PACKED_EXACT_PATHS = new Set(REQUIRED_PACKED_PATHS);
 

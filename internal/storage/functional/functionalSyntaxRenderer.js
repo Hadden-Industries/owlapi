@@ -2,6 +2,10 @@ import { parseIri } from "@hyperjump/uri";
 import { parse as parseLanguageTag } from "bcp-47";
 import { OWLOntologyStorageError } from "../../../io/errors.js";
 import { OWLObjectKind } from "../../../model/kinds.js";
+import {
+  minimumTwoSetFields,
+  repeatSingleton,
+} from "../../model/setConstructs.js";
 
 const notRepresentable = (message) => {
   throw new OWLOntologyStorageError(message, {
@@ -53,7 +57,10 @@ const renderLiteral = (literal, render) => {
 
 const renderFields = (object, fields, render) =>
   fields.flatMap((field) => {
-    const value = object[field];
+    const value =
+      minimumTwoSetFields.get(object.kind) === field
+        ? repeatSingleton(object[field])
+        : object[field];
     return Array.isArray(value) ? value.map(render) : [render(value)];
   });
 

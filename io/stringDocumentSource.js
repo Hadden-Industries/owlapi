@@ -1,4 +1,5 @@
 import { IRI } from "../model/structural.js";
+import { validateFormatSelection } from "../internal/parsing/formatSelection.js";
 
 const optionalString = (value, name) => {
   if (value !== undefined && typeof value !== "string") {
@@ -11,9 +12,10 @@ export class StringDocumentSource {
   #contentType;
   #documentIRI;
   #fileName;
+  #format;
   #text;
 
-  constructor(text, { contentType, documentIRI, fileName } = {}) {
+  constructor(text, { contentType, documentIRI, fileName, format } = {}) {
     if (typeof text !== "string") {
       throw new TypeError("text must be a string");
     }
@@ -22,6 +24,8 @@ export class StringDocumentSource {
       documentIRI === undefined ? undefined : IRI.create(documentIRI);
     this.#contentType = optionalString(contentType, "contentType");
     this.#fileName = optionalString(fileName, "fileName");
+    validateFormatSelection(format);
+    this.#format = format;
     Object.freeze(this);
   }
 
@@ -39,5 +43,9 @@ export class StringDocumentSource {
 
   getFileName() {
     return this.#fileName;
+  }
+
+  getFormat() {
+    return this.#format;
   }
 }

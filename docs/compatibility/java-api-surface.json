@@ -105,7 +105,9 @@
         "io.XmlParseError",
         "formats.OWLDocumentFormats",
         "util.OWLOntologyImportsClosureSetProvider",
-        "util.OWLOntologyMerger"
+        "util.OWLOntologyMerger",
+        "profiles.OWL2DLProfile",
+        "profiles.OWLProfileReport"
       ]
     },
     {
@@ -205,6 +207,15 @@
         "util.OWLOntologyImportsClosureSetProvider",
         "util.OWLOntologyMerger"
       ]
+    },
+    {
+      "id": "profiles",
+      "javaPackage": "org.semanticweb.owlapi.profiles",
+      "npmSpecifier": "owlapi/profiles",
+      "exposure": "PUBLIC",
+      "firstPublicRelease": "0.1.0",
+      "rationale": "Owns the approved asynchronous OWL 2 DL checker and immutable report; source-qualified evidence is separate from the formal Java-shaped verdict.",
+      "ownedBindingIds": ["profiles.OWL2DLProfile", "profiles.OWLProfileReport"]
     }
   ],
   "bindings": [
@@ -1884,6 +1895,7 @@
         "prototype.getContentType",
         "prototype.getDocumentIRI",
         "prototype.getFileName",
+        "prototype.getFormat",
         "prototype.getText"
       ],
       "omittedMembers": [
@@ -2165,6 +2177,99 @@
         "test/package-boundary.test.mjs",
         "test/installed-package-smoke.mjs",
         "test/consumers/browser/browser-consumers.playwright.js"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "profiles.OWL2DLProfile",
+      "jsExport": "OWL2DLProfile",
+      "kind": "CLASS",
+      "summary": "An asynchronous, bounded OWL 2 DL structural checker over the complete managed import closure, with a separate source-qualified assessment.",
+      "capabilityIds": ["profiles.owl2-dl-source-assessment"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "IN_PROGRESS",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0",
+      "publicSpecifier": "owlapi/profiles",
+      "sourceModule": "profiles/owl2DLProfile.js",
+      "javaPackage": "org.semanticweb.owlapi.profiles",
+      "javaType": "org.semanticweb.owlapi.profiles.OWL2DLProfile",
+      "closestJavaAuthority": "org.semanticweb.owlapi.profiles.OWL2DLProfile",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "new OWL2DLProfile()",
+        "await profile.checkOntology(ontology, options?)"
+      ],
+      "supportedMembers": [
+        "prototype.checkOntology",
+        "prototype.getIRI",
+        "prototype.getName"
+      ],
+      "omittedMembers": [
+        "Java visitor implementation classes",
+        "getDatatypeIRIs()",
+        "Stream and Collection overloads"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "Returns a Promise and supports cooperative cancellation and resource limits; incomplete validation is unverified, never valid.",
+        "The formal verdict applies to the structural OWL closure. Optional sourceAssessment also validates retained RDF/RDFS structures and parsed expressions before consumer filtering.",
+        "Only trusted original source arity and unambiguous typed use qualify the two documented normalization/declaration differences; mutation invalidates that evidence.",
+        "Datatype checks follow the mandatory OWL 2 datatype map and raw lexical/value spaces, including nested annotations. See docs/compatibility/canonical-vowl-prerequisites.md for normative choices and Java deviations."
+      ],
+      "verification": [
+        "profiles/owl2DLProfile.test.js",
+        "model/rdfsSourcePreservation.test.js",
+        "model/sourcePropertyRoles.test.js",
+        "internal/profiles/datatypes.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
+    },
+    {
+      "id": "profiles.OWLProfileReport",
+      "jsExport": "OWLProfileReport",
+      "kind": "CLASS",
+      "summary": "An immutable checker result separating valid, invalid and unverified outcomes, with stable violation records and optional source assessment.",
+      "capabilityIds": ["profiles.owl2-dl-source-assessment"],
+      "capabilityStatus": "REQUIRED_V1",
+      "progress": "IN_PROGRESS",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "firstPublicRelease": "0.1.0",
+      "publicSpecifier": "owlapi/profiles",
+      "sourceModule": "profiles/owlProfileReport.js",
+      "javaPackage": "org.semanticweb.owlapi.profiles",
+      "javaType": "org.semanticweb.owlapi.profiles.OWLProfileReport",
+      "closestJavaAuthority": "org.semanticweb.owlapi.profiles.OWLProfileReport",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "callShapes": [
+        "await new OWL2DLProfile().checkOntology(ontology, options?)"
+      ],
+      "supportedMembers": [
+        "prototype.getOntology",
+        "prototype.getProfile",
+        "prototype.getSourceAssessment",
+        "prototype.getViolations",
+        "prototype.isInProfile"
+      ],
+      "omittedMembers": [
+        "Java violation class hierarchy",
+        "Java stream/visitor overloads",
+        "Java constructor overloads"
+      ],
+      "publicErrors": [],
+      "semanticQualifications": [
+        "isInProfile() returns true only for a completed valid formal check. getSourceAssessment() returns the independently stated source-qualified verdict when requested.",
+        "Violations are immutable data records rather than Java visitor objects. getOntology() and getProfile() retain their input identities.",
+        "Additional status, closure revisions, unverifiedChecks and sourceAssessment fields expose bounded JavaScript validation evidence; direct construction does not execute validation."
+      ],
+      "verification": [
+        "profiles/owl2DLProfile.test.js",
+        "test/package-boundary.test.mjs"
       ],
       "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     }
@@ -5573,6 +5678,7 @@
         "prototype.getContentType",
         "prototype.getDocumentIRI",
         "prototype.getFileName",
+        "prototype.getFormat",
         "prototype.getText"
       ],
       "omittedMembers": [
@@ -16125,20 +16231,34 @@
       "javaPackage": "org.semanticweb.owlapi.profiles",
       "simpleName": "OWL2DLProfile",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["profiles.owl2-dl-source-assessment"],
+      "progress": "IN_PROGRESS",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "OWL2DLProfile",
+      "publicSpecifier": "owlapi/profiles",
+      "sourceModule": "profiles/owl2DLProfile.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": [
+        "prototype.checkOntology",
+        "prototype.getIRI",
+        "prototype.getName"
+      ],
+      "omittedMembers": [
+        "Java visitor implementation classes",
+        "getDatatypeIRIs()",
+        "Stream and Collection overloads"
+      ],
+      "verification": [
+        "profiles/owl2DLProfile.test.js",
+        "model/rdfsSourcePreservation.test.js",
+        "model/sourcePropertyRoles.test.js",
+        "internal/profiles/datatypes.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.profiles.OWL2ELProfile",
@@ -16285,20 +16405,33 @@
       "javaPackage": "org.semanticweb.owlapi.profiles",
       "simpleName": "OWLProfileReport",
       "kind": "CLASS",
-      "capabilityIds": ["compatibility.java-api-gaps"],
-      "progress": "NOT_STARTED",
-      "exposure": "NOT_EXPOSED",
-      "stability": null,
-      "jsExport": null,
-      "publicSpecifier": null,
-      "sourceModule": null,
-      "relationship": "INTERNAL",
-      "compatibility": "NOT_APPLICABLE",
-      "disposition": "DEFERRED_NOT_EXPOSED",
-      "supportedMembers": [],
-      "omittedMembers": [],
-      "verification": [],
-      "guidance": "This Java API type is not exposed in the initial package; request or contribute it against the recorded capability before relying on it."
+      "capabilityIds": ["profiles.owl2-dl-source-assessment"],
+      "progress": "IN_PROGRESS",
+      "exposure": "PUBLIC",
+      "stability": "PRERELEASE",
+      "jsExport": "OWLProfileReport",
+      "publicSpecifier": "owlapi/profiles",
+      "sourceModule": "profiles/owlProfileReport.js",
+      "relationship": "JS_ADAPTATION",
+      "compatibility": "ADAPTED",
+      "disposition": "PUBLIC_MAPPED",
+      "supportedMembers": [
+        "prototype.getOntology",
+        "prototype.getProfile",
+        "prototype.getSourceAssessment",
+        "prototype.getViolations",
+        "prototype.isInProfile"
+      ],
+      "omittedMembers": [
+        "Java violation class hierarchy",
+        "Java stream/visitor overloads",
+        "Java constructor overloads"
+      ],
+      "verification": [
+        "profiles/owl2DLProfile.test.js",
+        "test/package-boundary.test.mjs"
+      ],
+      "guidance": "Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable."
     },
     {
       "javaName": "org.semanticweb.owlapi.profiles.OWLProfileViolation",
@@ -22894,15 +23027,15 @@
     }
   ],
   "summary": {
-    "namespaceCount": 6,
-    "publicBindingCount": 52,
+    "namespaceCount": 7,
+    "publicBindingCount": 54,
     "javaTypeCount": 1013,
     "javaDispositionCounts": {
-      "PUBLIC_MAPPED": 21,
+      "PUBLIC_MAPPED": 23,
       "STRUCTURALLY_SUPPORTED_NOT_NAMED_EXPORT": 73,
       "FORMAT_IDENTITY_SUPPORTED_NOT_NAMED_EXPORT": 8,
       "INTERNAL_IMPLEMENTATION_ONLY": 2,
-      "DEFERRED_NOT_EXPOSED": 865,
+      "DEFERRED_NOT_EXPOSED": 863,
       "UNSUPPORTED_BY_DESIGN": 44,
       "UNCLASSIFIED": 0
     },

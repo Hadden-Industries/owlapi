@@ -2,6 +2,7 @@ import { OWLDocumentFormats } from "../../../formats/owlDocumentFormats.js";
 import { OWLSyntaxError, ResourceLimitError } from "../../../io/errors.js";
 import { OWLObjectKind } from "../../../model/kinds.js";
 import { IRI } from "../../../model/structural.js";
+import { normalizeCardinality } from "../../model/cardinality.js";
 
 import { DLSyntaxLexer } from "./lexer.js";
 
@@ -257,10 +258,13 @@ export class OWLDLSyntaxOWLParser {
     while (this.#accept("OR")) {
       operands.push(this.#parseAnd(depth + 1));
     }
-    const unique = uniqueStructuralValues(operands);
-    return unique.length === 1
-      ? unique[0]
-      : this.#dataFactory.getOWLObjectUnionOf(unique);
+    const values =
+      this.#configuration.parsingMode === "preserve"
+        ? operands
+        : uniqueStructuralValues(operands);
+    return values.length === 1
+      ? values[0]
+      : this.#dataFactory.getOWLObjectUnionOf(values);
   }
 
   #parseAnd(depth) {
@@ -268,10 +272,13 @@ export class OWLDLSyntaxOWLParser {
     while (this.#accept("AND")) {
       operands.push(this.#parseNonNaryExpression(depth + 1));
     }
-    const unique = uniqueStructuralValues(operands);
-    return unique.length === 1
-      ? unique[0]
-      : this.#dataFactory.getOWLObjectIntersectionOf(unique);
+    const values =
+      this.#configuration.parsingMode === "preserve"
+        ? operands
+        : uniqueStructuralValues(operands);
+    return values.length === 1
+      ? values[0]
+      : this.#dataFactory.getOWLObjectIntersectionOf(values);
   }
 
   #parseNonNaryExpression(depth) {
@@ -331,14 +338,7 @@ export class OWLDLSyntaxOWLParser {
   #parseCardinalityRestriction(depth) {
     const operator = this.#lexer.consume();
     const cardinalityToken = this.#expect("INTEGER");
-    const cardinality = Number.parseInt(cardinalityToken.value, 10);
-    if (!Number.isSafeInteger(cardinality)) {
-      this.#syntax(
-        "The cardinality is outside the safe integer range",
-        cardinalityToken,
-        { found: cardinalityToken.value },
-      );
-    }
+    const cardinality = normalizeCardinality(cardinalityToken.value);
     const reference = this.#parsePropertyReference();
     const property = this.#objectPropertyFromReference(reference);
     let filler = this.#owlThing();

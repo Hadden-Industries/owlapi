@@ -3,11 +3,15 @@ import {
   ResourceLimitError,
   UnsupportedConstructError,
 } from "../../io/errors.js";
-import { OWLDataFactory } from "../../model/owlDataFactory.js";
+import {
+  OWLDataFactory,
+  createSourcePreservingDataFactory,
+} from "../../model/owlDataFactory.js";
 import { OWLObjectKind } from "../../model/kinds.js";
 import { OWLOntology } from "../../model/owlOntology.js";
 import { OWLOntologyLoaderConfiguration } from "../../model/owlOntologyLoaderConfiguration.js";
 import { IRI, StructuralSet } from "../../model/structural.js";
+import { normalizeCardinality } from "../model/cardinality.js";
 import { selectOntologyGraph } from "../rdfjs/graphPolicy.js";
 import {
   BUILT_IN_ANNOTATION_PROPERTIES,
@@ -43,6 +47,32 @@ const OBJECT_ONLY_CHARACTERISTICS = new Set([
   OWL_VOCABULARY.ReflexiveProperty,
   OWL_VOCABULARY.SymmetricProperty,
   OWL_VOCABULARY.TransitiveProperty,
+]);
+const NON_ASSERTION_TYPES = new Set([
+  OWL_VOCABULARY.AllDifferent,
+  OWL_VOCABULARY.AllDisjointClasses,
+  OWL_VOCABULARY.AllDisjointProperties,
+  OWL_VOCABULARY.Annotation,
+  OWL_VOCABULARY.AnnotationProperty,
+  OWL_VOCABULARY.AsymmetricProperty,
+  OWL_VOCABULARY.Axiom,
+  OWL_VOCABULARY.Class,
+  OWL_VOCABULARY.DatatypeProperty,
+  OWL_VOCABULARY.FunctionalProperty,
+  OWL_VOCABULARY.InverseFunctionalProperty,
+  OWL_VOCABULARY.IrreflexiveProperty,
+  OWL_VOCABULARY.NamedIndividual,
+  OWL_VOCABULARY.NegativePropertyAssertion,
+  OWL_VOCABULARY.ObjectProperty,
+  OWL_VOCABULARY.Ontology,
+  OWL_VOCABULARY.ReflexiveProperty,
+  OWL_VOCABULARY.Restriction,
+  OWL_VOCABULARY.SymmetricProperty,
+  OWL_VOCABULARY.TransitiveProperty,
+  // These type entities rather than assert membership in a class.
+  RDF_VOCABULARY.Property,
+  RDFS_VOCABULARY.Class,
+  RDFS_VOCABULARY.Datatype,
 ]);
 
 const OBJECT_TERM_TYPES = new Set(["BlankNode", "Literal", "NamedNode"]);
@@ -83,18 +113,20 @@ const FLOATING_LEXICAL_PATTERN =
   /^[+-]?(?:(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?)$/u;
 
 let nextAnonymousDocumentScope = 0;
+let nextRoleProofScope = 0n;
 
 const monotonicNow = () =>
   typeof globalThis.performance?.now === "function"
     ? globalThis.performance.now()
     : Date.now();
 
-const integerValueOfLiteral = (term) => {
+const integerValueOfLiteral = (term, preserve = false) => {
   if (term.termType !== "Literal") {
     return undefined;
   }
   const datatype = term.datatype.value;
   const lexicalForm = term.value.trim();
+  if (preserve && lexicalForm !== term.value) return undefined;
   const bounds = XSD_INTEGER_DATATYPE_BOUNDS.get(datatype);
   if (bounds) {
     if (!INTEGER_LEXICAL_PATTERN.test(lexicalForm)) {
@@ -124,7 +156,14 @@ const integerValueOfLiteral = (term) => {
     const magnitude = BigInt(match[2] || "0");
     return match[1] === "-" ? -magnitude : magnitude;
   }
-  if (XSD_FLOATING_DATATYPES.has(datatype)) {
+  if (preserve && datatype === `${OWL_NAMESPACE}rational`) {
+    const match = /^([+-]?[0-9]+)\/([0-9]+)$/u.exec(lexicalForm);
+    if (!match || !/[1-9]/u.test(match[2])) return undefined;
+    const numerator = BigInt(match[1]),
+      denominator = BigInt(match[2]);
+    return numerator % denominator === 0n ? numerator / denominator : undefined;
+  }
+  if (!preserve && XSD_FLOATING_DATATYPES.has(datatype)) {
     if (!FLOATING_LEXICAL_PATTERN.test(lexicalForm)) {
       return undefined;
     }
@@ -204,7 +243,8 @@ const statementCanEnterConfiguredReconstructionGraph = (
 
 const shouldCaptureUnconsumedStatementSourceLocations = (quad, configuration) =>
   configuration.sourceLocations &&
-  (configuration.parsingMode === "strict" || configuration.collectWarnings) &&
+  (configuration.parsingMode !== "compatible" ||
+    configuration.collectWarnings) &&
   statementCanEnterConfiguredReconstructionGraph(quad, configuration);
 
 const snapshotQuadSourceLocation = (quad, configuration) => {
@@ -455,6 +495,9 @@ class RdfGraphInterpreter {
   #annotationReifications = new Map();
   #annotationPropertyIris = new Set(BUILT_IN_ANNOTATION_PROPERTIES);
   #axiomReifications = new Map();
+  #retainedAxiomAnnotationBases = new Set();
+  #retainedAnnotationBases = new Set();
+  #reificationNodes = new Set();
   #classExpressionCache = new Map();
   #classExpressionStack = new Set();
   #classIris = new Set([OWL_VOCABULARY.Nothing, OWL_VOCABULARY.Thing]);
@@ -495,6 +538,14 @@ class RdfGraphInterpreter {
   #ontologyID;
   #selectedGraph;
   #sourceLocationsByTriple;
+  #rdfsRoles = new Map();
+  #rdfsClassTerms = new Map();
+  #rdfsPropertyIris = new Set();
+  #discoveredRoleUses = new Map();
+  #discoveredDefaultRoles = new Map();
+  #roleProofs = new Map();
+  #roleProofScope;
+  #retainedStatements = [];
   #transaction;
 
   constructor({
@@ -502,10 +553,12 @@ class RdfGraphInterpreter {
     dataFactory,
     dataset,
     declarationEntities = [],
+    sourceRoles = [],
     diagnostics,
     documentScope,
     execution,
     ontologyID,
+    roleProofScope,
     selectedGraph,
     sourceLocationsByTriple,
     transaction,
@@ -520,8 +573,34 @@ class RdfGraphInterpreter {
     this.#sourceLocationsByTriple = sourceLocationsByTriple;
     this.#transaction = transaction;
     this.#ontologyID = ontologyID;
+    this.#roleProofScope = roleProofScope;
+    for (const [type, values] of this.#namedRoleSets())
+      for (const value of values)
+        this.#mergeRoleProofs(
+          this.#roleProofs,
+          { termType: "NamedNode", value },
+          type,
+          [[]],
+        );
     for (const entity of declarationEntities) {
       this.#recordDeclarationEntity(entity);
+    }
+    for (const role of sourceRoles) {
+      if (role.iri === undefined) continue; // Anonymous identity is document local.
+      this.#namedRoleSets().get(role.type)?.add(role.iri);
+      this.#mergeRoleProofs(
+        this.#roleProofs,
+        { termType: "NamedNode", value: role.iri },
+        role.type,
+        role.supports ?? [[]],
+      );
+      if (role.type === RDFS_VOCABULARY.Class)
+        this.#rdfsClassTerms.set(
+          termKey({ termType: "NamedNode", value: role.iri }),
+          { termType: "NamedNode", value: role.iri },
+        );
+      if (role.type === RDF_VOCABULARY.Property)
+        this.#rdfsPropertyIris.add(role.iri);
     }
   }
 
@@ -535,24 +614,701 @@ class RdfGraphInterpreter {
       [OWLObjectKind.OBJECT_PROPERTY, this.#objectPropertyIris],
     ]);
     declarationsByKind.get(entity.kind)?.add(entity.iri.value);
+    for (const [type, values] of this.#namedRoleSets())
+      if (values === declarationsByKind.get(entity.kind))
+        this.#mergeRoleProofs(
+          this.#roleProofs,
+          { termType: "NamedNode", value: entity.iri.value },
+          type,
+          [[]],
+        );
+  }
+
+  #namedRoleSets() {
+    return new Map([
+      [OWL_VOCABULARY.Class, this.#classIris],
+      [RDFS_VOCABULARY.Datatype, this.#datatypeIris],
+      [OWL_VOCABULARY.ObjectProperty, this.#objectPropertyIris],
+      [OWL_VOCABULARY.DatatypeProperty, this.#dataPropertyIris],
+      [OWL_VOCABULARY.AnnotationProperty, this.#annotationPropertyIris],
+      [OWL_VOCABULARY.NamedIndividual, this.#individualIris],
+    ]);
+  }
+
+  // This is a private parsing signature, not source evidence or a collection
+  // of Declaration axioms. Merely mentioning a name must not echo an imported
+  // provisional role back through an import cycle.
+  discoveredNamedRoles() {
+    return [...this.#rdfsRoles.values(), ...this.#discoveredRoleUses.values()];
+  }
+
+  discoveredDefaultRoles() {
+    return [...this.#discoveredDefaultRoles.values()];
+  }
+
+  // Minimal supporting rule sets retain alternative independent evidence.
+  // A rule cannot use a proof containing itself, even after that proof has
+  // travelled through several imported documents and other restrictions.
+  #mergeRoleProofs(target, term, type, supports) {
+    const key = `${type}\u0000${termKey(term)}`;
+    let proofs = target.get(key) ?? [];
+    let changed = false;
+    for (const support of supports) {
+      this.#execution.check();
+      const candidate = [...new Set(support)].sort();
+      if (
+        proofs.some((proof) => {
+          this.#execution.check();
+          return proof.every((step) => candidate.includes(step));
+        })
+      )
+        continue;
+      proofs = proofs.filter((proof) => {
+        this.#execution.check();
+        return !candidate.every((step) => proof.includes(step));
+      });
+      proofs.push(candidate);
+      changed = true;
+    }
+    if (changed) target.set(key, proofs);
+    return changed;
+  }
+
+  #proofsFor(term, type, excluded) {
+    if (
+      type === RDFS_VOCABULARY.Datatype &&
+      term.termType === "NamedNode" &&
+      term.value.startsWith(XSD_NAMESPACE)
+    )
+      return [[]];
+    return (this.#roleProofs.get(`${type}\u0000${termKey(term)}`) ?? []).filter(
+      (proof) => !proof.includes(excluded),
+    );
+  }
+
+  #retractRoleRule(rule) {
+    for (const [key, proofs] of this.#roleProofs) {
+      this.#execution.check();
+      const retained = proofs.filter((proof) => !proof.includes(rule));
+      if (retained.length === proofs.length) continue;
+      if (retained.length) this.#roleProofs.set(key, retained);
+      else {
+        this.#roleProofs.delete(key);
+        const separator = key.indexOf("\u0000"),
+          type = key.slice(0, separator);
+        const term = key.slice(separator + 1),
+          [termType, value] = JSON.parse(term);
+        if (termType === "NamedNode")
+          this.#namedRoleSets().get(type)?.delete(value);
+        else if (type === OWL_VOCABULARY.Class)
+          this.#anonymousClassNodes.delete(term);
+        else if (type === RDFS_VOCABULARY.Datatype)
+          this.#anonymousDataRangeNodes.delete(term);
+      }
+    }
+    for (const [key, role] of this.#discoveredRoleUses) {
+      const supports = role.supports.filter((proof) => !proof.includes(rule));
+      if (supports.length)
+        this.#discoveredRoleUses.set(key, { ...role, supports });
+      else this.#discoveredRoleUses.delete(key);
+    }
+  }
+
+  #roleProofState() {
+    return JSON.stringify(
+      [...this.#roleProofs]
+        .map(([key, proofs]) => [
+          key,
+          proofs.map((proof) => JSON.stringify(proof)).sort(),
+        ])
+        .sort(([left], [right]) => (left < right ? -1 : left > right ? 1 : 0)),
+    );
+  }
+
+  #recordDiscoveredRole(term, type, supports = [[]]) {
+    const changed = this.#mergeRoleProofs(
+      this.#roleProofs,
+      term,
+      type,
+      supports,
+    );
+    if (term.termType === "NamedNode") {
+      const key = `${type}\u0000${term.value}`;
+      const existing = this.#discoveredRoleUses.get(key);
+      const proofs = new Map();
+      this.#mergeRoleProofs(proofs, term, type, existing?.supports ?? []);
+      this.#mergeRoleProofs(proofs, term, type, supports);
+      this.#discoveredRoleUses.set(key, {
+        iri: term.value,
+        type,
+        origin: "use",
+        supports: proofs.get(`${type}\u0000${termKey(term)}`) ?? [],
+      });
+    }
+    return changed;
+  }
+
+  async discoverSourceRoles(stage) {
+    this.#discoverRdfsRoles();
+    await this.#readDeclarations(false);
+    await this.#discoverOwlUseRoles(stage !== "explicit");
+    if (["rdfs", "complete"].includes(stage)) await this.#propagateRdfsRoles();
+    if (stage === "complete") {
+      // Generic roles have reached closure before applying the ordinary OWL
+      // reading of otherwise untyped subclass endpoints and class assertions.
+      for (const quad of this.#dataset) {
+        if (
+          quad.predicate.value === RDFS_VOCABULARY.subClassOf &&
+          ![quad.subject, quad.object].some((term) =>
+            this.#isRdfsClassOnly(term),
+          )
+        ) {
+          for (const term of [quad.subject, quad.object])
+            if (term.termType === "NamedNode" && !this.#isDataRangeTerm(term)) {
+              this.#classIris.add(term.value);
+              this.#recordDiscoveredRole(term, OWL_VOCABULARY.Class);
+              this.#discoveredDefaultRoles.set(term.value, {
+                iri: term.value,
+                type: OWL_VOCABULARY.Class,
+                origin: "use",
+              });
+            }
+        }
+        if (
+          quad.predicate.value === RDF_VOCABULARY.type &&
+          quad.object.termType === "NamedNode" &&
+          !NON_ASSERTION_TYPES.has(quad.object.value) &&
+          ![
+            OWL_VOCABULARY.DeprecatedClass,
+            OWL_VOCABULARY.DeprecatedProperty,
+          ].includes(quad.object.value) &&
+          !this.#isRdfsClassOnly(quad.object) &&
+          !this.#isDataRangeTerm(quad.object)
+        ) {
+          this.#classIris.add(quad.object.value);
+          this.#recordDiscoveredRole(quad.object, OWL_VOCABULARY.Class);
+          this.#discoveredDefaultRoles.set(quad.object.value, {
+            iri: quad.object.value,
+            type: OWL_VOCABULARY.Class,
+            origin: "use",
+          });
+        }
+        await this.#execution.cooperate();
+      }
+      await this.#discoverOwlUseRoles();
+    }
+  }
+
+  // Discover roles forced by OWL syntax without reconstructing, consuming or
+  // repairing a triple. Ambiguous FunctionalProperty/hasKey/restriction uses
+  // stay unresolved for the final parser to reject. Lists are read without
+  // touching the reconstruction ownership/accounting tables.
+  async #discoverOwlUseRoles(resolveConditional = true) {
+    const C = OWL_VOCABULARY.Class,
+      D = RDFS_VOCABULARY.Datatype,
+      OP = OWL_VOCABULARY.ObjectProperty,
+      DP = OWL_VOCABULARY.DatatypeProperty,
+      NI = OWL_VOCABULARY.NamedIndividual;
+    const roleSets = this.#namedRoleSets();
+    let previousState;
+    const mark = (term, type, supports = [[]]) => {
+      const values =
+        term.termType === "NamedNode"
+          ? roleSets.get(type)
+          : term.termType === "BlankNode"
+            ? type === C
+              ? this.#anonymousClassNodes
+              : type === D
+                ? this.#anonymousDataRangeNodes
+                : undefined
+            : undefined;
+      if (!values) return;
+      if (!supports.length) return;
+      this.#recordDiscoveredRole(term, type, supports);
+      const key = term.termType === "NamedNode" ? term.value : termKey(term);
+      if (!values.has(key)) {
+        values.add(key);
+      }
+    };
+    const listCache = new Map();
+    const list = async (head) => {
+      const key = termKey(head);
+      if (listCache.has(key)) return listCache.get(key);
+      const terms = [],
+        seen = new Set();
+      let current = head;
+      while (!(
+        current.termType === "NamedNode" && current.value === RDF_VOCABULARY.nil
+      )) {
+        const id = termKey(current);
+        const first = this.#outgoing(current, RDF_VOCABULARY.first);
+        const rest = this.#outgoing(current, RDF_VOCABULARY.rest);
+        if (seen.has(id) || first.length !== 1 || rest.length !== 1) {
+          listCache.set(key, []);
+          return [];
+        }
+        seen.add(id);
+        terms.push(first[0].object);
+        current = rest[0].object;
+        await this.#execution.cooperate();
+      }
+      listCache.set(key, terms);
+      return terms;
+    };
+    do {
+      previousState = this.#roleProofState();
+      if (resolveConditional) this.#inferImplicitPropertyCategories();
+      for (const sourceQuad of this.#dataset) {
+        const { subject, predicate, object } = sourceQuad;
+        const p = predicate.value;
+        if (object.termType === "Literal") mark(object.datatype, D);
+        if (p === RDF_VOCABULARY.type) {
+          if (OBJECT_ONLY_CHARACTERISTICS.has(object.value)) mark(subject, OP);
+          if (object.value === OWL_VOCABULARY.Restriction) mark(subject, C);
+          if (object.value === OWL_VOCABULARY.Class) mark(subject, C);
+          if (
+            [RDFS_VOCABULARY.Datatype, OWL_VOCABULARY.DataRange].includes(
+              object.value,
+            )
+          )
+            mark(subject, D);
+          if (this.#isKnownClassExpressionTerm(object)) mark(subject, NI);
+        } else if (p === OWL_VOCABULARY.inverseOf) {
+          mark(subject, OP);
+          mark(object, OP);
+        } else if (p === OWL_VOCABULARY.propertyChainAxiom) {
+          mark(subject, OP);
+          for (const member of await list(object)) mark(member, OP);
+        } else if (
+          [OWL_VOCABULARY.disjointWith, OWL_VOCABULARY.complementOf].includes(p)
+        ) {
+          mark(subject, C);
+          mark(object, C);
+        } else if (
+          [
+            OWL_VOCABULARY.datatypeComplementOf,
+            OWL_VOCABULARY.onDatatype,
+          ].includes(p)
+        ) {
+          mark(subject, D);
+          mark(object, D);
+        } else if (p === OWL_VOCABULARY.disjointUnionOf) {
+          mark(subject, C);
+          for (const member of await list(object)) mark(member, C);
+        } else if (
+          [OWL_VOCABULARY.onClass, OWL_VOCABULARY.onDataRange].includes(p)
+        ) {
+          const data = p === OWL_VOCABULARY.onDataRange;
+          mark(subject, C);
+          mark(object, data ? D : C);
+          for (const { object: property } of this.#outgoing(
+            subject,
+            OWL_VOCABULARY.onProperty,
+          ))
+            mark(property, data ? DP : OP);
+        } else if (p === OWL_VOCABULARY.onProperties) {
+          mark(subject, C);
+          for (const member of await list(object)) mark(member, DP);
+          for (const filler of [
+            OWL_VOCABULARY.someValuesFrom,
+            OWL_VOCABULARY.allValuesFrom,
+          ])
+            for (const { object: term } of this.#outgoing(subject, filler))
+              mark(term, D);
+        } else if (p === OWL_VOCABULARY.onProperty) {
+          mark(subject, C);
+          for (const quad of this.#outgoing(subject)) {
+            if (quad.predicate.value === OWL_VOCABULARY.hasValue)
+              mark(object, quad.object.termType === "Literal" ? DP : OP);
+            if (quad.predicate.value === OWL_VOCABULARY.hasSelf)
+              mark(object, OP);
+            if (
+              resolveConditional &&
+              [
+                OWL_VOCABULARY.someValuesFrom,
+                OWL_VOCABULARY.allValuesFrom,
+              ].includes(quad.predicate.value)
+            ) {
+              const rule = `${this.#roleProofScope}|restriction|${quadKey(quad)}`;
+              this.#retractRoleRule(rule);
+              const propertyProofs = [DP, OP].map((type) =>
+                type === OP && object.termType === "BlankNode"
+                  ? [[]]
+                  : this.#proofsFor(object, type, rule),
+              );
+              const fillerProofs = [D, C].map((type) =>
+                this.#proofsFor(quad.object, type, rule),
+              );
+              const propertyKnown = propertyProofs.some(
+                (proofs) => proofs.length,
+              );
+              const fillerKnown = fillerProofs.some((proofs) => proofs.length);
+              const candidates = [0, 1].filter(
+                (index) =>
+                  (!propertyKnown || propertyProofs[index].length) &&
+                  (!fillerKnown || fillerProofs[index].length),
+              );
+              if (candidates.length === 1) {
+                const index = candidates[0],
+                  other = 1 - index;
+                const supports = [
+                  ...(!propertyProofs[other].length
+                    ? propertyProofs[index]
+                    : []),
+                  ...(!fillerProofs[other].length ? fillerProofs[index] : []),
+                ].map((proof) => [...proof, rule]);
+                mark(object, index === 0 ? DP : OP, supports);
+                mark(quad.object, index === 0 ? D : C, supports);
+              }
+            }
+          }
+        } else if (
+          [OWL_VOCABULARY.intersectionOf, OWL_VOCABULARY.unionOf].includes(p)
+        ) {
+          const rule = `${this.#roleProofScope}|boolean|${quadKey(sourceQuad)}`;
+          this.#retractRoleRule(rule);
+          const dataProofs = this.#proofsFor(subject, D, rule),
+            objectProofs = this.#proofsFor(subject, C, rule);
+          const data = dataProofs.length > 0,
+            objectRole = objectProofs.length > 0;
+          if (data !== objectRole)
+            for (const member of await list(object))
+              mark(
+                member,
+                data ? D : C,
+                (data ? dataProofs : objectProofs).map((proof) => [
+                  ...proof,
+                  rule,
+                ]),
+              );
+        } else if (p === OWL_VOCABULARY.equivalentClass) {
+          const rule = `${this.#roleProofScope}|equivalent|${quadKey(sourceQuad)}`;
+          this.#retractRoleRule(rule);
+          const dataProofs = this.#proofsFor(subject, D, rule),
+            objectProofs = this.#proofsFor(subject, C, rule);
+          const data = dataProofs.length > 0,
+            objectRole = objectProofs.length > 0;
+          if (data !== objectRole)
+            mark(
+              object,
+              data ? D : C,
+              (data ? dataProofs : objectProofs).map((proof) => [
+                ...proof,
+                rule,
+              ]),
+            );
+        } else if (
+          resolveConditional &&
+          [RDFS_VOCABULARY.domain, RDFS_VOCABULARY.range].includes(p)
+        ) {
+          const rule = `${this.#roleProofScope}|${p}|${termKey(subject)}|${termKey(object)}`;
+          this.#retractRoleRule(rule);
+          const roles = [OWL_VOCABULARY.AnnotationProperty, DP, OP]
+            .map((type) => ({
+              type,
+              proofs:
+                type === OP && subject.termType === "BlankNode"
+                  ? [[]]
+                  : this.#proofsFor(subject, type, rule),
+            }))
+            .filter(({ proofs }) => proofs.length);
+          if (
+            roles.length === 1 &&
+            roles[0].type !== OWL_VOCABULARY.AnnotationProperty
+          )
+            mark(
+              object,
+              p === RDFS_VOCABULARY.domain || roles[0].type === OP ? C : D,
+              roles[0].proofs.map((proof) => [...proof, rule]),
+            );
+        }
+        await this.#execution.cooperate();
+      }
+    } while (previousState !== this.#roleProofState());
   }
 
   /** CP 2: use the same declaration normalization, without reading annotations. */
   async discoverDeclarationsAndImports() {
+    this.#discoverRdfsRoles();
     await this.#readDeclarations(false);
+    await this.#propagateRdfsRoles();
     await this.#readOntologyHeader(false);
   }
 
   async interpret() {
+    this.#discoverRdfsRoles();
     await this.#readDeclarations();
+    if (this.#configuration.parsingMode === "preserve")
+      await this.#discoverOwlUseRoles();
+    await this.#propagateRdfsRoles();
     await this.#readOntologyHeader();
     await this.#readExpressionDefinitions();
     await this.#readNamedDatatypeRestrictions();
+    await this.#readRetainedRdfs();
     await this.#readClassAxioms();
     await this.#readPropertyAxioms();
     await this.#readNaryAxioms();
     await this.#readKeysAndAssertions();
     await this.#accountForUnconsumedTriples();
+  }
+
+  #recordRdfsRole(term, type, origin = "use") {
+    if (type === RDF_VOCABULARY.Property) {
+      requireNamedNode(term, "An RDF property role requires an IRI");
+      this.#rdfsPropertyIris.add(term.value);
+    } else this.#rdfsClassTerms.set(termKey(term), term);
+    const key = `${type}:${termKey(term)}`;
+    if (this.#rdfsRoles.get(key)?.origin === "declaration") return;
+    this.#rdfsRoles.set(
+      key,
+      Object.freeze({
+        ...(term.termType === "NamedNode"
+          ? { iri: term.value }
+          : { subject: this.#annotationSubject(term) }),
+        type,
+        origin,
+      }),
+    );
+  }
+
+  #discoverRdfsRoles() {
+    if (this.#configuration.parsingMode !== "preserve") return;
+    for (const quad of this.#dataset) {
+      if (
+        quad.predicate.value !== RDF_VOCABULARY.type ||
+        quad.object.termType !== "NamedNode"
+      )
+        continue;
+      if (
+        [RDF_VOCABULARY.Property, RDFS_VOCABULARY.Class].includes(
+          quad.object.value,
+        )
+      )
+        this.#recordRdfsRole(quad.subject, quad.object.value, "declaration");
+    }
+  }
+
+  #isRdfsClassOnly(term) {
+    return (
+      this.#rdfsClassTerms.has(termKey(term)) &&
+      !this.#isKnownClassExpressionTerm(term) &&
+      !this.#isDataRangeTerm(term)
+    );
+  }
+
+  #isRdfsPropertyOnly(term) {
+    return (
+      term.termType === "NamedNode" &&
+      this.#rdfsPropertyIris.has(term.value) &&
+      this.#propertyCategories(term.value).length === 0
+    );
+  }
+
+  async #retainedClassTerm(term) {
+    if (this.#isKnownClassExpressionTerm(term))
+      return this.#classExpression(term, 0);
+    if (term.termType === "Literal" || this.#isDataRangeTerm(term))
+      throw new OWLSyntaxError(
+        "An RDFS class relation requires a class endpoint",
+        { reason: "RDF_CLASS_ENDPOINT_INVALID" },
+      );
+    if (
+      term.termType === "BlankNode" &&
+      [
+        OWL_VOCABULARY.intersectionOf,
+        OWL_VOCABULARY.unionOf,
+        OWL_VOCABULARY.complementOf,
+        OWL_VOCABULARY.oneOf,
+        OWL_VOCABULARY.onProperty,
+        OWL_VOCABULARY.onProperties,
+      ].some((predicate) => this.#outgoing(term, predicate).length)
+    )
+      return this.#classExpression(term, 0);
+    this.#recordRdfsRole(term, RDFS_VOCABULARY.Class);
+    return this.#annotationSubject(term);
+  }
+
+  async #retainStatement(quad, subject, object) {
+    this.#retainedStatements.push(
+      Object.freeze({
+        subject,
+        predicate: IRI.create(quad.predicate.value),
+        object,
+        annotations: Object.freeze(await this.#axiomAnnotations(quad)),
+      }),
+    );
+    this.#consume(quad);
+  }
+
+  async #propagateRdfsRoles() {
+    if (this.#configuration.parsingMode !== "preserve") return;
+    // Linear traversal of explicit relations, seeded by identified generic
+    // categories. It infers no membership or logical consequences.
+    for (const [predicate, type] of [
+      [RDFS_VOCABULARY.subPropertyOf, RDF_VOCABULARY.Property],
+      [RDFS_VOCABULARY.subClassOf, RDFS_VOCABULARY.Class],
+    ]) {
+      // A generic property's domain is an unambiguous class position. Seed
+      // it only after property discovery, but before any class propagation or
+      // statement dispatch. Discovery does not reject endpoints: imports may
+      // supply a more specific role before reconstruction validates the use.
+      if (type === RDFS_VOCABULARY.Class) {
+        for (const quad of this.#dataset) {
+          if (
+            quad.predicate.value === RDFS_VOCABULARY.domain &&
+            this.#isRdfsPropertyOnly(quad.subject) &&
+            quad.object.termType !== "Literal" &&
+            !this.#isKnownClassExpressionTerm(quad.object) &&
+            !this.#isDataRangeTerm(quad.object)
+          )
+            this.#recordRdfsRole(quad.object, RDFS_VOCABULARY.Class);
+          await this.#execution.cooperate();
+        }
+      }
+      const adjacent = new Map();
+      const pending = [],
+        seen = new Set();
+      for (const quad of this.#dataset) {
+        if (quad.predicate.value !== predicate) continue;
+        for (const [left, right] of [
+          [quad.subject, quad.object],
+          [quad.object, quad.subject],
+        ]) {
+          const id = termKey(left);
+          if (!adjacent.has(id)) adjacent.set(id, []);
+          adjacent.get(id).push(right);
+          if (
+            (type === RDFS_VOCABULARY.Class
+              ? this.#isRdfsClassOnly(left)
+              : this.#isRdfsPropertyOnly(left)) &&
+            !seen.has(id)
+          ) {
+            this.#recordRdfsRole(left, type);
+            seen.add(id);
+            pending.push(id);
+          }
+        }
+        await this.#execution.cooperate();
+      }
+      while (pending.length) {
+        const id = pending.pop();
+        for (const term of adjacent.get(id) ?? []) {
+          if (type === RDFS_VOCABULARY.Class) {
+            if (term.termType === "Literal" || this.#isDataRangeTerm(term))
+              continue;
+            if (this.#isKnownClassExpressionTerm(term)) continue;
+          } else {
+            if (term.termType !== "NamedNode") continue;
+            if (this.#propertyCategories(term.value).length) continue;
+          }
+          const next = termKey(term);
+          if (seen.has(next)) continue;
+          this.#recordRdfsRole(term, type);
+          seen.add(next);
+          pending.push(next);
+        }
+        await this.#execution.cooperate();
+      }
+    }
+  }
+
+  async #readRetainedRdfs() {
+    if (this.#configuration.parsingMode !== "preserve") return;
+    for (const quad of this.#dataset) {
+      if (this.#isConsumed(quad)) continue;
+      const predicate = quad.predicate.value;
+      if (
+        predicate === RDF_VOCABULARY.type &&
+        quad.object.termType === "NamedNode" &&
+        [RDF_VOCABULARY.Property, RDFS_VOCABULARY.Class].includes(
+          quad.object.value,
+        )
+      ) {
+        await this.#retainStatement(
+          quad,
+          this.#annotationSubject(quad.subject),
+          IRI.create(quad.object.value),
+        );
+      } else if (
+        predicate === RDFS_VOCABULARY.subClassOf &&
+        [quad.subject, quad.object].some((term) => this.#isRdfsClassOnly(term))
+      ) {
+        await this.#retainStatement(
+          quad,
+          await this.#retainedClassTerm(quad.subject),
+          await this.#retainedClassTerm(quad.object),
+        );
+      } else if (
+        predicate === RDFS_VOCABULARY.subPropertyOf &&
+        [quad.subject, quad.object].some((term) =>
+          this.#isRdfsPropertyOnly(term),
+        )
+      ) {
+        if (
+          ![quad.subject, quad.object].every((term) =>
+            this.#isRdfsPropertyOnly(term),
+          )
+        )
+          throw new OWLSyntaxError(
+            "A generic subproperty relation cannot select a specific OWL role",
+            { reason: "RDF_AMBIGUOUS_PROPERTY_ROLE" },
+          );
+        for (const term of [quad.subject, quad.object])
+          this.#recordRdfsRole(term, RDF_VOCABULARY.Property);
+        await this.#retainStatement(
+          quad,
+          this.#annotationSubject(quad.subject),
+          this.#annotationSubject(quad.object),
+        );
+      } else if (
+        [RDFS_VOCABULARY.domain, RDFS_VOCABULARY.range].includes(predicate) &&
+        this.#isRdfsPropertyOnly(quad.subject)
+      ) {
+        this.#recordRdfsRole(quad.subject, RDF_VOCABULARY.Property);
+        if (
+          predicate === RDFS_VOCABULARY.range &&
+          this.#isDataRangeTerm(quad.object) ===
+            (this.#isKnownClassExpressionTerm(quad.object) ||
+              this.#isRdfsClassOnly(quad.object))
+        )
+          throw new OWLSyntaxError(
+            "A generic property range does not identify a class or datatype role",
+            { reason: "RDF_AMBIGUOUS_RANGE_ROLE" },
+          );
+        const object =
+          predicate === RDFS_VOCABULARY.range &&
+          this.#isDataRangeTerm(quad.object)
+            ? await this.#dataRange(quad.object, 0)
+            : await this.#retainedClassTerm(quad.object);
+        await this.#retainStatement(
+          quad,
+          this.#annotationSubject(quad.subject),
+          object,
+        );
+      } else if (
+        predicate === RDF_VOCABULARY.type &&
+        this.#isRdfsClassOnly(quad.object)
+      ) {
+        await this.#retainStatement(
+          quad,
+          this.#individual(quad.subject),
+          await this.#retainedClassTerm(quad.object),
+        );
+      }
+      await this.#execution.cooperate();
+    }
+  }
+
+  sourceStructure() {
+    return Object.freeze({
+      roles: Object.freeze([...this.#rdfsRoles.values()]),
+      statements: Object.freeze([...this.#retainedStatements]),
+      expressions: Object.freeze([
+        ...this.#classExpressionCache.values(),
+        ...this.#dataRangeCache.values(),
+        ...this.#objectPropertyExpressionCache.values(),
+      ]),
+    });
   }
 
   async #readExpressionDefinitions() {
@@ -592,7 +1348,7 @@ class RdfGraphInterpreter {
   }
 
   async #readNamedDatatypeRestrictions() {
-    if (this.#configuration.parsingMode === "strict") return;
+    if (this.#configuration.parsingMode !== "compatible") return;
     // OWL 2 RDF-Based Semantics tables 5.7 and 5.9 give a named restriction
     // the same datatype extension as a DatatypeDefinition with that restriction.
     // The OWL 2 DL RDF mapping instead requires an anonymous expression; this
@@ -728,9 +1484,18 @@ class RdfGraphInterpreter {
     }
 
     this.#resolvePropertyCategoryPunning();
-    this.#inferImplicitPropertyCategories();
+    if (this.#configuration.parsingMode !== "preserve")
+      this.#inferImplicitPropertyCategories();
     if (includeAxiomAnnotations) this.#indexReifications();
     for (const { constructorName, currentQuad, subject } of declarations) {
+      this.#recordDiscoveredRole(
+        subject,
+        currentQuad.object.value === OWL_VOCABULARY.DataRange
+          ? RDFS_VOCABULARY.Datatype
+          : currentQuad.object.value === OWL_VOCABULARY.OntologyProperty
+            ? OWL_VOCABULARY.AnnotationProperty
+            : currentQuad.object.value,
+      );
       const entity = this.#dataFactory[constructorName](
         IRI.create(subject.value),
       );
@@ -748,7 +1513,10 @@ class RdfGraphInterpreter {
     // retain that declaration recovery while avoiding a duplicate when the OWL
     // 2 declaration triple is also present.
     for (const iri of inferredObjectPropertyIris) {
-      if (explicitObjectPropertyIris.has(iri)) {
+      if (
+        explicitObjectPropertyIris.has(iri) ||
+        this.#configuration.parsingMode === "preserve"
+      ) {
         continue;
       }
       this.#transaction.addAxiom(
@@ -806,7 +1574,7 @@ class RdfGraphInterpreter {
   // before the scan, so declaring one property cannot change the verdict for a
   // later one and the outcome does not depend on the order triples arrive in.
   #declareUndeclaredAnnotationProperties() {
-    if (this.#configuration.parsingMode === "strict") {
+    if (this.#configuration.parsingMode !== "compatible") {
       return;
     }
 
@@ -870,7 +1638,7 @@ class RdfGraphInterpreter {
   // case below there is nothing to infer - a class is a class - so no evidence
   // is required and none is consulted.
   #declareRdfsClasses() {
-    if (this.#configuration.parsingMode === "strict") {
+    if (this.#configuration.parsingMode !== "compatible") {
       return;
     }
 
@@ -922,7 +1690,7 @@ class RdfGraphInterpreter {
   // evidence is left alone, because guessing its category would invent a
   // distinction the document does not make.
   #declareUntypedProperties() {
-    if (this.#configuration.parsingMode === "strict") {
+    if (this.#configuration.parsingMode !== "compatible") {
       return;
     }
     const index = this.#propertyEvidenceIndex();
@@ -1005,6 +1773,11 @@ class RdfGraphInterpreter {
         continue;
       }
       const object = currentQuad.object.value;
+      if (
+        this.#configuration.parsingMode === "preserve" &&
+        [RDFS_VOCABULARY.Class, RDF_VOCABULARY.Property].includes(object)
+      )
+        continue; // The authored statement still owns its annotations.
       const subjectTypes = new Set(
         this.#outgoing(currentQuad.subject, RDF_VOCABULARY.type)
           .filter(({ object: type }) => type.termType === "NamedNode")
@@ -1079,7 +1852,7 @@ class RdfGraphInterpreter {
       // weights `#` and `-` as punctuation and would reverse that very case.
       // The oracle's own pick for prov.owl is not derivable from any rule and is
       // recorded as a governed difference rather than reproduced.
-      if (this.#configuration.parsingMode === "strict") {
+      if (this.#configuration.parsingMode !== "compatible") {
         throw new OWLSyntaxError(
           "An RDF graph cannot identify more than one OWL ontology header",
           { observed: ontologyTypeQuads.length },
@@ -1222,6 +1995,7 @@ class RdfGraphInterpreter {
         "owl:annotatedProperty requires an IRI object",
       );
       const key = tripleKey(source.object, property.object, target.object);
+      this.#reificationNodes.add(termKey(currentQuad.subject));
       const index =
         currentQuad.object.value === OWL_VOCABULARY.Axiom
           ? this.#axiomReifications
@@ -1240,10 +2014,13 @@ class RdfGraphInterpreter {
     if (!this.#configuration.loadAnnotationAxioms) {
       return [];
     }
-    const nodes =
-      this.#axiomReifications.get(
-        tripleKey(baseQuad.subject, baseQuad.predicate, baseQuad.object),
-      ) || [];
+    const key = tripleKey(
+      baseQuad.subject,
+      baseQuad.predicate,
+      baseQuad.object,
+    );
+    this.#retainedAxiomAnnotationBases.add(key);
+    const nodes = this.#axiomReifications.get(key) || [];
     const annotations = [];
     for (const node of nodes) {
       annotations.push(...(await this.#nodeAnnotations(node, 0)));
@@ -1272,6 +2049,9 @@ class RdfGraphInterpreter {
     if (!this.#configuration.loadAnnotationAxioms) {
       return undefined;
     }
+    this.#retainedAnnotationBases.add(
+      tripleKey(currentQuad.subject, currentQuad.predicate, currentQuad.object),
+    );
     const nestedNodes =
       this.#annotationReifications.get(
         tripleKey(
@@ -1294,6 +2074,20 @@ class RdfGraphInterpreter {
   async #readClassAxioms() {
     let visited = 0;
     for (const currentQuad of this.#dataset) {
+      if (this.#isConsumed(currentQuad)) continue;
+      if (
+        ![
+          RDFS_VOCABULARY.subClassOf,
+          OWL_VOCABULARY.equivalentClass,
+          OWL_VOCABULARY.disjointWith,
+          OWL_VOCABULARY.disjointUnionOf,
+          OWL_VOCABULARY.complementOf,
+          OWL_VOCABULARY.intersectionOf,
+          OWL_VOCABULARY.oneOf,
+          OWL_VOCABULARY.unionOf,
+        ].includes(currentQuad.predicate.value)
+      )
+        continue;
       let axiom;
       const annotations = await this.#axiomAnnotations(currentQuad);
       if (currentQuad.predicate.value === RDFS_VOCABULARY.subClassOf) {
@@ -1305,7 +2099,22 @@ class RdfGraphInterpreter {
       } else if (
         currentQuad.predicate.value === OWL_VOCABULARY.equivalentClass
       ) {
-        if (this.#isDataRangeTerm(currentQuad.subject)) {
+        let dataDefinition = this.#isDataRangeTerm(currentQuad.subject);
+        if (
+          this.#configuration.parsingMode === "preserve" &&
+          dataDefinition &&
+          this.#isKnownClassExpressionTerm(currentQuad.subject)
+        ) {
+          const data = this.#isDataRangeTerm(currentQuad.object);
+          const object = this.#isKnownClassExpressionTerm(currentQuad.object);
+          if (data === object)
+            throw new OWLSyntaxError(
+              "The equivalence does not identify one class or datatype role",
+              { reason: "RDF_AMBIGUOUS_CLASS_ROLE" },
+            );
+          dataDefinition = data;
+        }
+        if (dataDefinition) {
           axiom = this.#dataFactory.getOWLDatatypeDefinitionAxiom(
             this.#dataFactory.getOWLDatatype(
               IRI.create(
@@ -1368,6 +2177,11 @@ class RdfGraphInterpreter {
           OWL_VOCABULARY.unionOf,
         ].includes(currentQuad.predicate.value)
       ) {
+        if (this.#configuration.parsingMode === "preserve")
+          throw new OWLSyntaxError(
+            "Named OWL 1 class-expression recovery is unavailable in preserve mode",
+            { reason: "RDF_LEGACY_CLASS_RECOVERY" },
+          );
         axiom = await this.#owl1CompatibleNamedClassAxiom(
           currentQuad,
           annotations,
@@ -1424,7 +2238,7 @@ class RdfGraphInterpreter {
   }
 
   #equivalentClassesAxiom(left, right, annotations) {
-    return left.equals(right)
+    return left.equals(right) && this.#configuration.parsingMode !== "preserve"
       ? undefined
       : this.#dataFactory.getOWLEquivalentClassesAxiom(
           [left, right],
@@ -1433,10 +2247,18 @@ class RdfGraphInterpreter {
   }
 
   #normalizedObjectBooleanExpression(predicate, operands) {
-    if (operands.length === 1) {
+    if (this.#configuration.parsingMode === "preserve")
+      this.#requireListArity(operands, 2, predicate);
+    if (
+      operands.length === 1 &&
+      this.#configuration.parsingMode !== "preserve"
+    ) {
       return operands[0];
     }
-    if (operands.length === 0) {
+    if (
+      operands.length === 0 &&
+      this.#configuration.parsingMode !== "preserve"
+    ) {
       return this.#dataFactory.getOWLClass(
         IRI.create(
           predicate === OWL_VOCABULARY.intersectionOf
@@ -1453,7 +2275,21 @@ class RdfGraphInterpreter {
   async #readPropertyAxioms() {
     let visited = 0;
     for (const currentQuad of this.#dataset) {
+      if (this.#isConsumed(currentQuad)) continue;
       const predicate = currentQuad.predicate.value;
+      if (
+        ![
+          RDFS_VOCABULARY.subPropertyOf,
+          RDFS_VOCABULARY.domain,
+          RDFS_VOCABULARY.range,
+          OWL_VOCABULARY.propertyChainAxiom,
+          OWL_VOCABULARY.equivalentProperty,
+          OWL_VOCABULARY.propertyDisjointWith,
+          OWL_VOCABULARY.inverseOf,
+        ].includes(predicate)
+      )
+        continue;
+      const selectedCategory = this.#preservedAxiomCategory(currentQuad);
       let axiom;
       const annotations = await this.#axiomAnnotations(currentQuad);
       if (predicate === RDFS_VOCABULARY.subPropertyOf) {
@@ -1461,7 +2297,7 @@ class RdfGraphInterpreter {
         // already reject the document and say more precisely why. Only the
         // compatible-mode recovery is at issue here.
         if (
-          this.#configuration.parsingMode !== "strict" &&
+          this.#configuration.parsingMode === "compatible" &&
           this.#isCrossCategorySubProperty(currentQuad)
         ) {
           this.#consume(currentQuad);
@@ -1477,19 +2313,25 @@ class RdfGraphInterpreter {
           }
           continue;
         }
-        if (this.#isAnnotationPropertyTerm(currentQuad.subject)) {
+        if (
+          this.#isAnnotationPropertyTerm(currentQuad.subject, selectedCategory)
+        ) {
           axiom = this.#dataFactory.getOWLSubAnnotationPropertyOfAxiom(
             this.#annotationProperty(currentQuad.subject),
             this.#annotationProperty(currentQuad.object),
             annotations,
           );
-        } else if (this.#isDataPropertyTerm(currentQuad.subject)) {
+        } else if (
+          this.#isDataPropertyTerm(currentQuad.subject, selectedCategory)
+        ) {
           axiom = this.#dataFactory.getOWLSubDataPropertyOfAxiom(
             this.#dataProperty(currentQuad.subject),
             this.#dataPropertyForAxiom(currentQuad.object),
             annotations,
           );
-        } else if (this.#isObjectPropertyTerm(currentQuad.subject)) {
+        } else if (
+          this.#isObjectPropertyTerm(currentQuad.subject, selectedCategory)
+        ) {
           axiom = this.#dataFactory.getOWLSubObjectPropertyOfAxiom(
             await this.#objectPropertyExpression(currentQuad.subject, 0),
             await this.#objectPropertyExpressionForAxiom(currentQuad.object, 0),
@@ -1511,7 +2353,7 @@ class RdfGraphInterpreter {
           annotations,
         );
       } else if (predicate === OWL_VOCABULARY.equivalentProperty) {
-        if (this.#isDataPropertyTerm(currentQuad.subject)) {
+        if (this.#isDataPropertyTerm(currentQuad.subject, selectedCategory)) {
           axiom = this.#dataFactory.getOWLEquivalentDataPropertiesAxiom(
             [
               this.#dataProperty(currentQuad.subject),
@@ -1519,7 +2361,9 @@ class RdfGraphInterpreter {
             ],
             annotations,
           );
-        } else if (this.#isObjectPropertyTerm(currentQuad.subject)) {
+        } else if (
+          this.#isObjectPropertyTerm(currentQuad.subject, selectedCategory)
+        ) {
           axiom = this.#dataFactory.getOWLEquivalentObjectPropertiesAxiom(
             [
               await this.#objectPropertyExpression(currentQuad.subject, 0),
@@ -1531,7 +2375,7 @@ class RdfGraphInterpreter {
           continue;
         }
       } else if (predicate === OWL_VOCABULARY.propertyDisjointWith) {
-        if (this.#isDataPropertyTerm(currentQuad.subject)) {
+        if (this.#isDataPropertyTerm(currentQuad.subject, selectedCategory)) {
           axiom = this.#dataFactory.getOWLDisjointDataPropertiesAxiom(
             [
               this.#dataProperty(currentQuad.subject),
@@ -1539,7 +2383,9 @@ class RdfGraphInterpreter {
             ],
             annotations,
           );
-        } else if (this.#isObjectPropertyTerm(currentQuad.subject)) {
+        } else if (
+          this.#isObjectPropertyTerm(currentQuad.subject, selectedCategory)
+        ) {
           axiom = this.#dataFactory.getOWLDisjointObjectPropertiesAxiom(
             [
               await this.#objectPropertyExpression(currentQuad.subject, 0),
@@ -1551,7 +2397,9 @@ class RdfGraphInterpreter {
           continue;
         }
       } else if (predicate === RDFS_VOCABULARY.domain) {
-        if (this.#isAnnotationPropertyTerm(currentQuad.subject)) {
+        if (
+          this.#isAnnotationPropertyTerm(currentQuad.subject, selectedCategory)
+        ) {
           axiom = this.#dataFactory.getOWLAnnotationPropertyDomainAxiom(
             this.#annotationProperty(currentQuad.subject),
             IRI.create(
@@ -1562,13 +2410,17 @@ class RdfGraphInterpreter {
             ),
             annotations,
           );
-        } else if (this.#isDataPropertyTerm(currentQuad.subject)) {
+        } else if (
+          this.#isDataPropertyTerm(currentQuad.subject, selectedCategory)
+        ) {
           axiom = this.#dataFactory.getOWLDataPropertyDomainAxiom(
             this.#dataProperty(currentQuad.subject),
             await this.#classExpression(currentQuad.object, 0),
             annotations,
           );
-        } else if (this.#isObjectPropertyTerm(currentQuad.subject)) {
+        } else if (
+          this.#isObjectPropertyTerm(currentQuad.subject, selectedCategory)
+        ) {
           axiom = this.#dataFactory.getOWLObjectPropertyDomainAxiom(
             await this.#objectPropertyExpression(currentQuad.subject, 0),
             await this.#classExpression(currentQuad.object, 0),
@@ -1578,7 +2430,9 @@ class RdfGraphInterpreter {
           continue;
         }
       } else if (predicate === RDFS_VOCABULARY.range) {
-        if (this.#isAnnotationPropertyTerm(currentQuad.subject)) {
+        if (
+          this.#isAnnotationPropertyTerm(currentQuad.subject, selectedCategory)
+        ) {
           axiom = this.#dataFactory.getOWLAnnotationPropertyRangeAxiom(
             this.#annotationProperty(currentQuad.subject),
             IRI.create(
@@ -1590,14 +2444,14 @@ class RdfGraphInterpreter {
             annotations,
           );
         } else if (
-          this.#isDataPropertyTerm(currentQuad.subject) &&
+          this.#isDataPropertyTerm(currentQuad.subject, selectedCategory) &&
           this.#isKnownClassExpressionTerm(currentQuad.object)
         ) {
           const details = {
             property: currentQuad.subject.value,
             range: currentQuad.object.value,
           };
-          if (this.#configuration.parsingMode === "strict") {
+          if (this.#configuration.parsingMode !== "compatible") {
             throw new OWLSyntaxError(
               "An OWL class expression cannot be used as a data property range",
               details,
@@ -1619,13 +2473,17 @@ class RdfGraphInterpreter {
               ...details,
             });
           }
-        } else if (this.#isDataPropertyTerm(currentQuad.subject)) {
+        } else if (
+          this.#isDataPropertyTerm(currentQuad.subject, selectedCategory)
+        ) {
           axiom = this.#dataFactory.getOWLDataPropertyRangeAxiom(
             this.#dataProperty(currentQuad.subject),
             await this.#dataRange(currentQuad.object, 0),
             annotations,
           );
-        } else if (this.#isObjectPropertyTerm(currentQuad.subject)) {
+        } else if (
+          this.#isObjectPropertyTerm(currentQuad.subject, selectedCategory)
+        ) {
           axiom = this.#dataFactory.getOWLObjectPropertyRangeAxiom(
             await this.#objectPropertyExpression(currentQuad.subject, 0),
             await this.#classExpression(currentQuad.object, 0),
@@ -1682,10 +2540,19 @@ class RdfGraphInterpreter {
       ) {
         continue;
       }
+      if (
+        currentQuad.object.value !== OWL_VOCABULARY.FunctionalProperty &&
+        !characteristicMethods.has(currentQuad.object.value)
+      )
+        continue;
       let axiom;
       const annotations = await this.#axiomAnnotations(currentQuad);
       if (currentQuad.object.value === OWL_VOCABULARY.FunctionalProperty) {
-        axiom = this.#isDataPropertyTerm(currentQuad.subject)
+        const selectedCategory = this.#preservedUniqueCategory(
+          [currentQuad.subject],
+          ["data", "object"],
+        );
+        axiom = this.#isDataPropertyTerm(currentQuad.subject, selectedCategory)
           ? this.#dataFactory.getOWLFunctionalDataPropertyAxiom(
               this.#dataProperty(currentQuad.subject),
               annotations,
@@ -1763,7 +2630,15 @@ class RdfGraphInterpreter {
           ...(await this.#axiomAnnotations(membersQuad)),
           ...(await this.#nodeAnnotations(currentQuad.subject, 0)),
         ];
-        if (memberTerms.every((term) => this.#isDataPropertyTerm(term))) {
+        const selectedCategory = this.#preservedUniqueCategory(memberTerms, [
+          "data",
+          "object",
+        ]);
+        if (
+          memberTerms.every((term) =>
+            this.#isDataPropertyTerm(term, selectedCategory),
+          )
+        ) {
           this.#transaction.addAxiom(
             this.#dataFactory.getOWLDisjointDataPropertiesAxiom(
               memberTerms.map((term) => this.#dataProperty(term)),
@@ -1793,41 +2668,40 @@ class RdfGraphInterpreter {
     await this.#readDifferentIndividuals();
     await this.#readNegativeAssertions();
 
-    const nonAssertionTypes = new Set([
-      OWL_VOCABULARY.AllDifferent,
-      OWL_VOCABULARY.AllDisjointClasses,
-      OWL_VOCABULARY.AllDisjointProperties,
-      OWL_VOCABULARY.Annotation,
-      OWL_VOCABULARY.AnnotationProperty,
-      OWL_VOCABULARY.AsymmetricProperty,
-      OWL_VOCABULARY.Axiom,
-      OWL_VOCABULARY.Class,
-      OWL_VOCABULARY.DatatypeProperty,
-      OWL_VOCABULARY.FunctionalProperty,
-      OWL_VOCABULARY.InverseFunctionalProperty,
-      OWL_VOCABULARY.IrreflexiveProperty,
-      OWL_VOCABULARY.NamedIndividual,
-      OWL_VOCABULARY.NegativePropertyAssertion,
-      OWL_VOCABULARY.ObjectProperty,
-      OWL_VOCABULARY.Ontology,
-      OWL_VOCABULARY.ReflexiveProperty,
-      OWL_VOCABULARY.Restriction,
-      OWL_VOCABULARY.SymmetricProperty,
-      OWL_VOCABULARY.TransitiveProperty,
-      // The RDF and RDFS spellings of terms already listed above. They type an
-      // entity rather than place an individual in a class, and reserved
-      // vocabulary cannot be a class name in any case, so reading them as class
-      // assertions invents a class the document never mentions.
-      RDF_VOCABULARY.Property,
-      RDFS_VOCABULARY.Class,
-      RDFS_VOCABULARY.Datatype,
-    ]);
     let visited = 0;
     for (const currentQuad of this.#dataset) {
       if (this.#isConsumed(currentQuad)) {
         continue;
       }
       const predicate = currentQuad.predicate.value;
+      // Reification payload belongs to its original owner even if that owner
+      // is encountered later. It must never become an assertion about the
+      // reification blank node merely because the dataset order changed.
+      if (this.#reificationNodes.has(termKey(currentQuad.subject))) continue;
+      const selectedCategory = this.#preservedUniqueCategory(
+        [currentQuad.predicate],
+        currentQuad.object.termType === "Literal"
+          ? ["annotation", "data"]
+          : ["annotation", "object"],
+        true,
+      );
+      if (
+        (predicate === RDF_VOCABULARY.type &&
+          currentQuad.object.termType === "NamedNode" &&
+          NON_ASSERTION_TYPES.has(currentQuad.object.value)) ||
+        (![
+          RDF_VOCABULARY.type,
+          OWL_VOCABULARY.sameAs,
+          OWL_VOCABULARY.differentFrom,
+        ].includes(predicate) &&
+          !this.#isAnnotationPropertyTerm(
+            currentQuad.predicate,
+            selectedCategory,
+          ) &&
+          !this.#isDataPropertyTerm(currentQuad.predicate, selectedCategory) &&
+          !this.#isObjectPropertyTerm(currentQuad.predicate, selectedCategory))
+      )
+        continue;
       const annotations = await this.#axiomAnnotations(currentQuad);
       let axiom;
       if (predicate === RDF_VOCABULARY.type) {
@@ -1856,7 +2730,7 @@ class RdfGraphInterpreter {
           );
         } else if (
           currentQuad.object.termType === "NamedNode" &&
-          nonAssertionTypes.has(currentQuad.object.value)
+          NON_ASSERTION_TYPES.has(currentQuad.object.value)
         ) {
           continue;
         } else {
@@ -1882,7 +2756,9 @@ class RdfGraphInterpreter {
           ],
           annotations,
         );
-      } else if (this.#isAnnotationPropertyTerm(currentQuad.predicate)) {
+      } else if (
+        this.#isAnnotationPropertyTerm(currentQuad.predicate, selectedCategory)
+      ) {
         this.#consume(currentQuad);
         if (!this.#configuration.loadAnnotationAxioms) {
           continue;
@@ -1893,7 +2769,9 @@ class RdfGraphInterpreter {
           this.#annotationValue(currentQuad.object),
           annotations,
         );
-      } else if (this.#isObjectPropertyTerm(currentQuad.predicate)) {
+      } else if (
+        this.#isObjectPropertyTerm(currentQuad.predicate, selectedCategory)
+      ) {
         if (currentQuad.object.termType === "Literal") {
           // An object property assertion cannot take a literal object, so this
           // graph is OWL Full. Unlike a category conflict there is no competing
@@ -1901,7 +2779,7 @@ class RdfGraphInterpreter {
           // impossible, so the choice is between preserving the statement as an
           // annotation and discarding it. Strict discards; compatible preserves
           // it and records the recovery.
-          if (this.#configuration.parsingMode === "strict") {
+          if (this.#configuration.parsingMode !== "compatible") {
             throw new OWLSyntaxError(
               "An object property assertion requires an individual object",
               {
@@ -1944,7 +2822,9 @@ class RdfGraphInterpreter {
           this.#individual(currentQuad.object),
           annotations,
         );
-      } else if (this.#isDataPropertyTerm(currentQuad.predicate)) {
+      } else if (
+        this.#isDataPropertyTerm(currentQuad.predicate, selectedCategory)
+      ) {
         axiom = this.#dataFactory.getOWLDataPropertyAssertionAxiom(
           this.#dataProperty(currentQuad.predicate),
           this.#individual(currentQuad.subject),
@@ -2005,6 +2885,9 @@ class RdfGraphInterpreter {
   // environment-dependence that document order was rejected for. Strict-mode
   // conformance is a separate question and keeps the specification's scope.
   #resolvePropertyCategoryPunning() {
+    // Preservation retains every authored category. Dispatch must prove the
+    // role of each use; the compatible-mode precedence policy is inapplicable.
+    if (this.#configuration.parsingMode === "preserve") return;
     const precedence = ["data", "object", "annotation"];
     const categorySets = new Map([
       ["annotation", this.#annotationPropertyIris],
@@ -2028,7 +2911,7 @@ class RdfGraphInterpreter {
       if (categories.length < 2) {
         continue;
       }
-      if (this.#configuration.parsingMode === "strict") {
+      if (this.#configuration.parsingMode !== "compatible") {
         throw new OWLSyntaxError(
           "An IRI cannot identify conflicting OWL property categories",
           { iri, propertyCategories: categories },
@@ -2080,6 +2963,7 @@ class RdfGraphInterpreter {
   // propagation changes only the interpreter's category index: it must not
   // manufacture a Declaration axiom that was absent from the RDF graph.
   #inferImplicitPropertyCategories() {
+    let changed = false;
     const categories = [
       this.#annotationPropertyIris,
       this.#dataPropertyIris,
@@ -2129,6 +3013,38 @@ class RdfGraphInterpreter {
         }
       }
 
+      if (this.#configuration.parsingMode === "preserve") {
+        const rule = `${this.#roleProofScope}|property-component|${[...component].sort().join("\u0000")}`;
+        this.#retractRoleRule(rule);
+        const seeded = [
+          OWL_VOCABULARY.AnnotationProperty,
+          OWL_VOCABULARY.DatatypeProperty,
+          OWL_VOCABULARY.ObjectProperty,
+        ]
+          .map((type, index) => ({
+            type,
+            values: categories[index],
+            proofs: component.flatMap((value) =>
+              this.#proofsFor({ termType: "NamedNode", value }, type, rule),
+            ),
+          }))
+          .filter(({ proofs }) => proofs.length);
+        if (seeded.length === 1) {
+          const { type, values, proofs } = seeded[0];
+          for (const value of component) {
+            values.add(value);
+            if (
+              this.#recordDiscoveredRole(
+                { termType: "NamedNode", value },
+                type,
+                proofs.map((proof) => [...proof, rule]),
+              )
+            )
+              changed = true;
+          }
+        }
+        continue;
+      }
       const seededCategories = categories.filter((values) =>
         component.some((iri) => values.has(iri)),
       );
@@ -2138,6 +3054,7 @@ class RdfGraphInterpreter {
         }
       }
     }
+    return changed;
   }
 
   // OWL 2 Mapping to RDF Graphs admits an annotation assertion only where the
@@ -2156,7 +3073,7 @@ class RdfGraphInterpreter {
   // all, so without the recovery it renders with no annotations whatsoever.
   #recoverUndeclaredAnnotation(quad) {
     if (
-      this.#configuration.parsingMode === "strict" ||
+      this.#configuration.parsingMode !== "compatible" ||
       quad.subject.termType !== "NamedNode"
     ) {
       return false;
@@ -2231,12 +3148,29 @@ class RdfGraphInterpreter {
   }
 
   async #accountForUnconsumedTriples() {
+    if (
+      this.#configuration.parsingMode === "preserve" &&
+      this.#configuration.loadAnnotationAxioms
+    ) {
+      for (const [reifications, retained] of [
+        [this.#axiomReifications, this.#retainedAxiomAnnotationBases],
+        [this.#annotationReifications, this.#retainedAnnotationBases],
+      ])
+        for (const key of reifications.keys()) {
+          if (!retained.has(key))
+            throw new UnsupportedConstructError(
+              "An RDF annotation has no retained owning axiom or annotation",
+              { reason: "RDF_ANNOTATION_ANCHOR_UNSUPPORTED" },
+            );
+          await this.#execution.cooperate();
+        }
+    }
     let visited = 0;
     for (const currentQuad of this.#dataset) {
       if (this.#isConsumed(currentQuad)) {
         continue;
       }
-      if (this.#configuration.parsingMode === "strict") {
+      if (this.#configuration.parsingMode !== "compatible") {
         throw new UnsupportedConstructError(
           "The RDF graph presented for OWL reconstruction contains an unconsumed statement",
           this.#unconsumedStatementDetails(currentQuad),
@@ -2330,9 +3264,13 @@ class RdfGraphInterpreter {
       const objectProperties = [];
       const dataProperties = [];
       for (const term of propertyTerms) {
-        if (this.#isDataPropertyTerm(term)) {
+        const selectedCategory = this.#preservedUniqueCategory(
+          [term],
+          ["data", "object"],
+        );
+        if (this.#isDataPropertyTerm(term, selectedCategory)) {
           dataProperties.push(this.#dataProperty(term));
-        } else if (this.#isObjectPropertyTerm(term)) {
+        } else if (this.#isObjectPropertyTerm(term, selectedCategory)) {
           objectProperties.push(await this.#objectPropertyExpression(term, 0));
         } else {
           throw new OWLSyntaxError(
@@ -2454,7 +3392,13 @@ class RdfGraphInterpreter {
   async #classExpression(term, depth) {
     this.#checkExpressionDepth(depth);
     if (term.termType === "NamedNode") {
-      if (this.#isDataRangeTerm(term)) {
+      if (
+        this.#isDataRangeTerm(term) &&
+        !(
+          this.#configuration.parsingMode === "preserve" &&
+          this.#classIris.has(term.value)
+        )
+      ) {
         throw new OWLSyntaxError(
           "A datatype cannot be used as a class expression",
           {
@@ -2541,6 +3485,8 @@ class RdfGraphInterpreter {
           (item) => this.#individual(item),
           quadKey(oneOf),
         );
+        if (this.#configuration.parsingMode === "preserve")
+          this.#requireListArity(individuals, 1, OWL_VOCABULARY.oneOf);
         expression =
           individuals.length === 0
             ? this.#dataFactory.getOWLClass(IRI.create(OWL_VOCABULARY.Nothing))
@@ -2679,7 +3625,11 @@ class RdfGraphInterpreter {
     if (someValuesFrom || allValuesFrom) {
       const fillerQuad = someValuesFrom || allValuesFrom;
       this.#consume(fillerQuad);
-      if (this.#isDataPropertyTerm(propertyTerm)) {
+      const selectedCategory = this.#preservedUniqueCategory(
+        [propertyTerm],
+        this.#preservedRangeCategories(fillerQuad.object, false),
+      );
+      if (this.#isDataPropertyTerm(propertyTerm, selectedCategory)) {
         const property = this.#dataProperty(propertyTerm);
         const filler = await this.#dataRange(fillerQuad.object, depth + 1);
         return someValuesFrom
@@ -2718,7 +3668,14 @@ class RdfGraphInterpreter {
         "An unqualified cardinality cannot use owl:onClass or owl:onDataRange",
       );
     }
-    if (onDataRange || this.#isDataPropertyTerm(propertyTerm)) {
+    const selectedCategory = this.#preservedUniqueCategory(
+      [propertyTerm],
+      onDataRange ? ["data"] : onClass ? ["object"] : ["data", "object"],
+    );
+    if (
+      onDataRange ||
+      this.#isDataPropertyTerm(propertyTerm, selectedCategory)
+    ) {
       const property = this.#dataProperty(propertyTerm);
       let filler;
       if (onDataRange) {
@@ -2826,7 +3783,11 @@ class RdfGraphInterpreter {
           (item) => this.#literal(item),
           quadKey(oneOf),
         );
-        if (values.length === 0 && this.#owl1DataRangeNodes.has(key)) {
+        if (
+          values.length === 0 &&
+          this.#owl1DataRangeNodes.has(key) &&
+          this.#configuration.parsingMode !== "preserve"
+        ) {
           dataRange = this.#dataFactory.getOWLDataComplementOf(
             this.#dataFactory.getOWLDatatype(
               IRI.create(RDFS_VOCABULARY.Literal),
@@ -2912,7 +3873,13 @@ class RdfGraphInterpreter {
       const conflictingCategories = this.#propertyCategories(term.value).filter(
         (category) => category !== "object",
       );
-      if (conflictingCategories.length > 0) {
+      if (
+        conflictingCategories.length > 0 &&
+        !(
+          this.#configuration.parsingMode === "preserve" &&
+          this.#objectPropertyIris.has(term.value)
+        )
+      ) {
         throw new OWLSyntaxError(
           "A property in another OWL category cannot be used as an object property expression",
           { iri: term.value, propertyCategories: conflictingCategories },
@@ -2972,7 +3939,13 @@ class RdfGraphInterpreter {
     const conflictingCategories = this.#propertyCategories(named.value).filter(
       (category) => category !== "data",
     );
-    if (conflictingCategories.length > 0) {
+    if (
+      conflictingCategories.length > 0 &&
+      !(
+        this.#configuration.parsingMode === "preserve" &&
+        this.#dataPropertyIris.has(named.value)
+      )
+    ) {
       throw new OWLSyntaxError(
         "A property in another OWL category cannot be used as a data property expression",
         { iri: named.value, propertyCategories: conflictingCategories },
@@ -3011,12 +3984,91 @@ class RdfGraphInterpreter {
       .map(([category]) => category);
   }
 
+  #preservedUniqueCategory(
+    terms,
+    allowed = ["annotation", "data", "object"],
+    knownPredicatesOnly = false,
+  ) {
+    if (this.#configuration.parsingMode !== "preserve") return undefined;
+    const categories = terms.map((term) =>
+      term.termType === "NamedNode"
+        ? this.#propertyCategories(term.value)
+        : ["object"],
+    );
+    // The assertion loop also visits rdf:type and other structural predicates.
+    // Unknown ordinary predicates remain unconsumed and fail final accounting;
+    // their literal/resource object alone cannot distinguish an annotation.
+    if (knownPredicatesOnly && categories.every((values) => !values.length))
+      return undefined;
+    const candidates = allowed.filter((category) =>
+      categories.every((values) => !values.length || values.includes(category)),
+    );
+    if (candidates.length !== 1)
+      throw new OWLSyntaxError(
+        "The RDF statement does not identify one OWL property role",
+        {
+          reason: candidates.length
+            ? "RDF_AMBIGUOUS_PROPERTY_ROLE"
+            : "RDF_INCOMPATIBLE_PROPERTY_ROLES",
+          properties: terms.map((term) => term.value),
+          propertyCategories: candidates,
+        },
+      );
+    return candidates[0];
+  }
+
+  #preservedRangeCategories(term, annotationAllowed = true) {
+    const data = this.#isDataRangeTerm(term),
+      object = this.#isKnownClassExpressionTerm(term);
+    return [
+      ...(annotationAllowed && term.termType === "NamedNode"
+        ? ["annotation"]
+        : []),
+      ...(!object || data ? ["data"] : []),
+      ...(!data || object ? ["object"] : []),
+    ];
+  }
+
+  #preservedAxiomCategory(quad) {
+    if (this.#configuration.parsingMode !== "preserve") return undefined;
+    if (
+      [
+        RDFS_VOCABULARY.subPropertyOf,
+        OWL_VOCABULARY.equivalentProperty,
+        OWL_VOCABULARY.propertyDisjointWith,
+      ].includes(quad.predicate.value)
+    ) {
+      return this.#preservedUniqueCategory(
+        [quad.subject, quad.object],
+        quad.predicate.value === RDFS_VOCABULARY.subPropertyOf
+          ? undefined
+          : ["data", "object"],
+      );
+    }
+    if (quad.predicate.value === RDFS_VOCABULARY.domain)
+      return this.#preservedUniqueCategory(
+        [quad.subject],
+        quad.object.termType === "NamedNode" ? undefined : ["data", "object"],
+      );
+    if (quad.predicate.value === RDFS_VOCABULARY.range)
+      return this.#preservedUniqueCategory(
+        [quad.subject],
+        this.#preservedRangeCategories(quad.object),
+      );
+    return undefined;
+  }
+
   #requireCompatiblePropertyCategoryReuse(
     iri,
     requestedCategory,
     existingCategories,
   ) {
-    if (this.#configuration.parsingMode === "strict") {
+    if (
+      this.#configuration.parsingMode === "preserve" &&
+      this.#propertyCategories(iri).includes(requestedCategory)
+    )
+      return;
+    if (this.#configuration.parsingMode !== "compatible") {
       throw new OWLSyntaxError(
         "An IRI cannot be reused in another OWL property category",
         { existingCategories, iri, requestedCategory },
@@ -3041,8 +4093,12 @@ class RdfGraphInterpreter {
       "OWL annotation properties require an IRI",
     );
     if (
-      this.#dataPropertyIris.has(named.value) ||
-      this.#objectPropertyIris.has(named.value)
+      (this.#dataPropertyIris.has(named.value) ||
+        this.#objectPropertyIris.has(named.value)) &&
+      !(
+        this.#configuration.parsingMode === "preserve" &&
+        this.#annotationPropertyIris.has(named.value)
+      )
     ) {
       throw new OWLSyntaxError(
         "An object or data property cannot be used as an annotation property",
@@ -3219,16 +4275,16 @@ class RdfGraphInterpreter {
   }
 
   #cardinality(term) {
-    const value = integerValueOfLiteral(term);
+    const value = integerValueOfLiteral(
+      term,
+      this.#configuration.parsingMode === "preserve",
+    );
     if (value === undefined || value < 0) {
       throw new OWLSyntaxError(
         "OWL cardinalities require a non-negative integer literal",
       );
     }
-    if (
-      (typeof value === "bigint" && value > BigInt(Number.MAX_SAFE_INTEGER)) ||
-      (typeof value === "number" && !Number.isSafeInteger(value))
-    ) {
+    if (typeof value === "number" && !Number.isSafeInteger(value)) {
       throw new ResourceLimitError(
         "The OWL cardinality is not a safe integer",
         {
@@ -3237,7 +4293,7 @@ class RdfGraphInterpreter {
         },
       );
     }
-    return Number(value);
+    return normalizeCardinality(String(value));
   }
 
   #booleanLiteral(term) {
@@ -3248,7 +4304,8 @@ class RdfGraphInterpreter {
     );
   }
 
-  #isDataPropertyTerm(term) {
+  #isDataPropertyTerm(term, selectedCategory) {
+    if (selectedCategory !== undefined) return selectedCategory === "data";
     return (
       term.termType === "NamedNode" && this.#dataPropertyIris.has(term.value)
     );
@@ -3265,7 +4322,8 @@ class RdfGraphInterpreter {
     );
   }
 
-  #isObjectPropertyTerm(term) {
+  #isObjectPropertyTerm(term, selectedCategory) {
+    if (selectedCategory !== undefined) return selectedCategory === "object";
     return (
       (term.termType === "NamedNode" &&
         this.#objectPropertyIris.has(term.value)) ||
@@ -3311,7 +4369,9 @@ class RdfGraphInterpreter {
     return subject === "annotation" || object === "annotation";
   }
 
-  #isAnnotationPropertyTerm(term) {
+  #isAnnotationPropertyTerm(term, selectedCategory) {
+    if (selectedCategory !== undefined)
+      return selectedCategory === "annotation";
     return (
       term.termType === "NamedNode" &&
       this.#annotationPropertyIris.has(term.value)
@@ -3628,14 +4688,22 @@ export class RdfToOwlTranslator {
 
     return {
       configuration: normalizedConfiguration,
-      dataFactory: this.#dataFactory,
+      dataFactory:
+        normalizedConfiguration.parsingMode === "preserve"
+          ? createSourcePreservingDataFactory(this.#dataFactory)
+          : this.#dataFactory,
       dataset: graphSelection.dataset,
       diagnostics,
       documentIRI: normalizedDocumentIRI,
       documentScope: documentScopeFor(normalizedDocumentIRI),
+      // Source base IRIs and blank labels can repeat in different documents.
+      // This private scope remains stable across every pass of one preparation.
+      roleProofScope: (nextRoleProofScope++).toString(),
       execution,
       merged: graphSelection.merged,
       selectedGraph: graphSelection.selectedGraph,
+      sourceComplete:
+        graphSelection.merged || graphSelection.dataset.size === dataset.size,
       sourceLocationsByTriple,
     };
   }
@@ -3664,13 +4732,38 @@ export class RdfToOwlTranslator {
     input.execution.pause();
     return {
       declarations,
+      sourceComplete: input.sourceComplete,
+      sourceRoles: interpreter.sourceStructure().roles,
       ontology,
-      reconstruct: (declarationEntities) => {
+      discoverSourceRoles: async (declarationEntities, sourceRoles, stage) => {
+        input.execution.resume();
+        const discovery = new RdfGraphInterpreter({
+          ...input,
+          declarationEntities,
+          sourceRoles,
+          diagnostics: [],
+          transaction: new OntologyTransaction(
+            this.#dataFactory,
+            input.configuration,
+          ),
+        });
+        try {
+          await discovery.discoverSourceRoles(stage);
+          return {
+            roles: discovery.discoveredNamedRoles(),
+            defaultRoles: discovery.discoveredDefaultRoles(),
+          };
+        } finally {
+          input.execution.pause();
+        }
+      },
+      reconstruct: (declarationEntities, sourceRoles) => {
         input.execution.resume();
         return this.#reconstruct(
           input,
           declarationEntities,
           ontology.getOntologyID(),
+          sourceRoles,
         );
       },
     };
@@ -3682,7 +4775,12 @@ export class RdfToOwlTranslator {
     );
   }
 
-  async #reconstruct(input, declarationEntities = [], ontologyID) {
+  async #reconstruct(
+    input,
+    declarationEntities = [],
+    ontologyID,
+    sourceRoles = [],
+  ) {
     const transaction = new OntologyTransaction(
       this.#dataFactory,
       input.configuration,
@@ -3692,6 +4790,7 @@ export class RdfToOwlTranslator {
     const interpreter = new RdfGraphInterpreter({
       ...input,
       declarationEntities,
+      sourceRoles,
       diagnostics,
       ontologyID,
       transaction,
@@ -3701,6 +4800,9 @@ export class RdfToOwlTranslator {
 
     return transaction.commit({
       diagnostics,
+      ...(input.configuration.parsingMode === "preserve"
+        ? { sourceStructure: interpreter.sourceStructure() }
+        : {}),
       documentIRI: input.documentIRI,
       merged: input.merged,
       selectedGraph: input.selectedGraph,

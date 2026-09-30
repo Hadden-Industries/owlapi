@@ -1,3 +1,4 @@
+import { repeatSingleton } from "../model/setConstructs.js";
 import {
   ANNOTATION_VALUE_KINDS,
   AXIOM_KINDS,
@@ -279,7 +280,7 @@ class TranslationSession {
             this.#namedNode(axiom.owlClass.iri.value),
             OWL_VOCABULARY.disjointUnionOf,
             this.#createList(
-              [...axiom.classExpressions].map((value) =>
+              repeatSingleton([...axiom.classExpressions]).map((value) =>
                 this.#mapClassExpression(value),
               ),
             ),
@@ -530,7 +531,7 @@ class TranslationSession {
   }
 
   #mapPairwiseAxiom(values, mapper, predicate, annotations) {
-    const terms = [...values].map(mapper);
+    const terms = repeatSingleton([...values]).map(mapper);
     for (let index = 0; index < terms.length - 1; index += 1) {
       // OWL n-ary equivalence and equality map to a connected chain, not all
       // O(n²) pairs. Annotations apply independently to every generated triple.
@@ -550,7 +551,7 @@ class TranslationSession {
     values,
     valueMapper,
   }) {
-    const terms = [...values].map(valueMapper);
+    const terms = repeatSingleton([...values]).map(valueMapper);
     if (terms.length === 2) {
       this.#addAnnotatedMainTriple(
         terms[0],
@@ -598,8 +599,8 @@ class TranslationSession {
   }
 
   #mapDifferentIndividualsAxiom(axiom) {
-    const individuals = [...axiom.individuals].map((individual) =>
-      this.#mapIndividual(individual),
+    const individuals = repeatSingleton([...axiom.individuals]).map(
+      (individual) => this.#mapIndividual(individual),
     );
     if (individuals.length === 2) {
       this.#addAnnotatedMainTriple(
@@ -683,7 +684,9 @@ class TranslationSession {
       node,
       predicate,
       this.#createList(
-        [...operands].map((operand) => this.#mapClassExpression(operand)),
+        repeatSingleton([...operands]).map((operand) =>
+          this.#mapClassExpression(operand),
+        ),
       ),
     );
     return node;
@@ -832,7 +835,9 @@ class TranslationSession {
       node,
       predicate,
       this.#createList(
-        [...operands].map((operand) => this.#mapDataRange(operand)),
+        repeatSingleton([...operands]).map((operand) =>
+          this.#mapDataRange(operand),
+        ),
       ),
     );
     return node;

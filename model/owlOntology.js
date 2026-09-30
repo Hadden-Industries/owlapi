@@ -3,6 +3,13 @@ import { ENTITY_KINDS, OWLObjectKind } from "./kinds.js";
 import { isCanonicalStructuralObject, StructuralSet } from "./structural.js";
 
 const managerOwnedOntologyStatesByInitializer = new WeakMap();
+const ontologySnapshotReaders = new WeakMap();
+
+export const readOntologySnapshot = (ontology) => {
+  const read = ontologySnapshotReaders.get(ontology);
+  if (!read) throw new TypeError("ontology must be a package OWLOntology");
+  return read();
+};
 
 const requireKind = (value, kinds, name) => {
   if (!isCanonicalStructuralObject(value) || !kinds.includes(value.kind)) {
@@ -79,6 +86,7 @@ export class OWLOntology {
     const ontologyState =
       managerOwnedOntologyState ?? createOntologyState(initialState);
     this.#readStateSnapshot = () => ontologyState.createSnapshot();
+    ontologySnapshotReaders.set(this, this.#readStateSnapshot);
     Object.freeze(this);
   }
 

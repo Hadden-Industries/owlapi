@@ -11,6 +11,12 @@ import { StringDocumentSource } from "../io/stringDocumentSource.js";
 import { ManagedOntologyIndex } from "../internal/loading/managedOntologyIndex.js";
 import { materializeAxiomIterable } from "../internal/model/axiomSemantics.js";
 import { createImmutableDocumentMetadataSnapshot } from "../internal/model/ontologyState.js";
+import {
+  bindManagedOntology,
+  createSourceStructure,
+  publishSourceEvidence,
+  readSourceEvidence,
+} from "../internal/model/sourceEvidence.js";
 import { dlSyntaxParserDescriptor } from "../internal/parsing/dl/descriptor.js";
 import { functionalSyntaxParserDescriptor } from "../internal/parsing/functional/descriptor.js";
 import { jsonLdParserDescriptor } from "../internal/parsing/jsonld/descriptor.js";
@@ -26,7 +32,10 @@ import { rdfXmlParserDescriptor } from "../internal/parsing/rdfxml/descriptor.js
 import { triGParserDescriptor } from "../internal/parsing/trig/descriptor.js";
 import { turtleParserDescriptor } from "../internal/parsing/turtle/descriptor.js";
 import { createDefaultStorerRegistry } from "../internal/storage/storerRegistry.js";
-import { OWLDataFactory } from "./owlDataFactory.js";
+import {
+  OWLDataFactory,
+  createSourcePreservingDataFactory,
+} from "./owlDataFactory.js";
 import { OWLObjectKind } from "./kinds.js";
 import { readAddOntologyAnnotationChange } from "./addOntologyAnnotation.js";
 import { createManagerOwnedOWLOntology } from "./owlOntology.js";
@@ -36,6 +45,20 @@ import { IRI, StructuralSet } from "./structural.js";
 
 const DIAGNOSTIC_SEVERITIES = new Set(["info", "warning"]);
 const SOURCE_LOCATION_FIELDS = ["line", "column", "offset"];
+const builtinDescriptors = new Set([
+  owlXmlParserDescriptor,
+  jsonLdParserDescriptor,
+  rdfXmlParserDescriptor,
+  nQuadsParserDescriptor,
+  nTriplesParserDescriptor,
+  triGParserDescriptor,
+  turtleParserDescriptor,
+  dlSyntaxParserDescriptor,
+  krss1ParserDescriptor,
+  krss2ParserDescriptor,
+  functionalSyntaxParserDescriptor,
+  manchesterSyntaxParserDescriptor,
+]);
 
 const createUnsupportedOntologyChangeError = (change, index, operation) => {
   const error = new TypeError(
@@ -143,11 +166,15 @@ class ParseTransaction {
   #imports = new StructuralSet();
   #jsonLdContexts;
   #rdfDatasetContext;
+  #sourceStructure;
   #ontologyID;
   #prefixes;
 
   constructor(dataFactory, configuration) {
-    this.#dataFactory = dataFactory;
+    this.#dataFactory =
+      configuration.parsingMode === "preserve"
+        ? createSourcePreservingDataFactory(dataFactory)
+        : dataFactory;
     this.#configuration = configuration;
   }
 
@@ -252,6 +279,10 @@ class ParseTransaction {
     this.#rdfDatasetContext = Object.freeze({ merged, selectedGraph });
   }
 
+  setSourceStructure(structure) {
+    this.#sourceStructure = structure;
+  }
+
   commit(defaultFormat, documentIRI) {
     const ontologyID = this.#ontologyID || this.#dataFactory.getOWLOntologyID();
     const managedOntology = createManagerOwnedOWLOntology({
@@ -265,6 +296,9 @@ class ParseTransaction {
         diagnostics: [...this.#diagnostics],
         documentIRI,
         format: this.#documentFormat || defaultFormat,
+        ...(this.#sourceStructure === undefined
+          ? {}
+          : { sourceStructure: this.#sourceStructure }),
         ...(this.#prefixes === undefined ? {} : { prefixes: this.#prefixes }),
         ...(this.#jsonLdContexts === undefined
           ? {}
@@ -305,6 +339,7 @@ const normalizeSource = (source, documentIRI) => {
     contentType: source.getContentType(),
     documentIRI: source.getDocumentIRI() ?? documentIRI,
     fileName: source.getFileName(),
+    format: source.getFormat?.(),
   });
 };
 
@@ -386,6 +421,11 @@ export class OWLOntologyManager {
     });
     this.#managedOntologyIndex.registerOntology(ontology);
     this.#managedOntologyStates.set(ontology, ontologyState);
+    bindManagedOntology(ontology, () =>
+      this.#managedOntologyIndex.createImportsClosureSnapshot(ontology, {
+        operation: "OWL2DLProfile.checkOntology",
+      }),
+    );
     return ontology;
   }
 
@@ -466,15 +506,41 @@ export class OWLOntologyManager {
       );
       // OWL 2 canonical parsing CP 3 runs only after CP 2 has discovered the
       // complete import graph. Keep all provisional objects session-private.
+      const reconstructionInputs = new Map();
+      const sourceRolesByOntology = new Map();
+      const roleDependents = new Map();
       for (const entry of session.entries) {
-        if (!entry.prepared) continue;
+        if (!entry.prepared) {
+          if (normalizedConfiguration.parsingMode === "preserve")
+            sourceRolesByOntology.set(
+              entry.ontology,
+              createSourceStructure(
+                entry.ontology,
+                entry.context.sourceStructure,
+              ).roles,
+            );
+          continue;
+        }
         const declarations = new StructuralSet();
+        const importedMembers = [];
+        // Start from authored declarations, not provisional use roles that
+        // were discovered before imported OWL declarations were available.
+        sourceRolesByOntology.set(
+          entry.ontology,
+          (entry.prepared.sourceRoles ?? []).filter(
+            ({ origin }) => origin === "declaration",
+          ),
+        );
         for (const member of managedOntologyLoadSession.getImportsClosure(
           entry.ontology,
         )) {
           // The translator reads this document's own declarations itself.
           // Seeding those first would suppress local legacy normalization.
           if (member === entry.ontology) continue;
+          importedMembers.push(member);
+          if (!roleDependents.has(member))
+            roleDependents.set(member, new Set());
+          roleDependents.get(member).add(entry);
           const prepared = session.entriesByOntology.get(member)?.prepared;
           const entities = prepared
             ? prepared.declarations
@@ -485,11 +551,110 @@ export class OWLOntologyManager {
                 .map((axiom) => axiom.entity);
           for (const entity of entities) declarations.add(entity);
         }
+        reconstructionInputs.set(entry, { declarations, importedMembers });
+      }
+      const importedRoles = (entry) =>
+        reconstructionInputs
+          .get(entry)
+          .importedMembers.flatMap(
+            (member) =>
+              sourceRolesByOntology.get(member) ??
+              readSourceEvidence(member).structure?.roles ??
+              [],
+          );
+      if (normalizedConfiguration.parsingMode === "preserve") {
+        // Defaults can unlock further specific roles. Recompute derived OWL
+        // and generic facts from authored seeds when this happens; a former
+        // generic use must never become independent evidence for itself.
+        // Every pass spends the document's original timeout/cancellation budget.
+        const authoredSeeds = new Map(sourceRolesByOntology);
+        const defaults = new Map();
+        const namedKeys = (values = []) =>
+          new Set(
+            values
+              .filter(({ iri }) => iri !== undefined)
+              .map(({ iri, type, supports }) => {
+                const proofs = (supports ?? [[]])
+                  .map((proof) => JSON.stringify([...proof].sort()))
+                  .sort();
+                return `${type}\u0000${iri}\u0000${JSON.stringify(proofs)}`;
+              }),
+          );
+        const equalRoles = (left, right) => {
+          const a = namedKeys(left),
+            b = namedKeys(right);
+          return a.size === b.size && [...a].every((key) => b.has(key));
+        };
+        let previousPass;
+        for (;;) {
+          sourceRolesByOntology.clear();
+          for (const [ontology, roles] of authoredSeeds)
+            sourceRolesByOntology.set(ontology, [
+              ...roles,
+              ...(defaults.get(ontology) ?? []),
+            ]);
+          let fixedSeeds = new Map(sourceRolesByOntology);
+          for (const stage of ["explicit", "owl", "rdfs", "complete"]) {
+            const pending = new Set(reconstructionInputs.keys());
+            while (pending.size) {
+              this.#throwIfAborted(normalizedConfiguration);
+              const entry = pending.values().next().value;
+              pending.delete(entry);
+              if (!entry.prepared.discoverSourceRoles) continue;
+              const discovered = await entry.prepared.discoverSourceRoles(
+                reconstructionInputs.get(entry).declarations,
+                [
+                  ...(fixedSeeds.get(entry.ontology) ?? []),
+                  ...importedRoles(entry),
+                ],
+                stage,
+              );
+              const roles = [
+                ...(defaults.get(entry.ontology) ?? []),
+                ...discovered.roles,
+              ];
+              if (stage === "complete")
+                defaults.set(entry.ontology, discovered.defaultRoles);
+              const changed = !equalRoles(
+                sourceRolesByOntology.get(entry.ontology),
+                roles,
+              );
+              sourceRolesByOntology.set(entry.ontology, roles);
+              if (changed)
+                for (const dependent of roleDependents.get(entry.ontology) ??
+                  [])
+                  pending.add(dependent);
+            }
+            // Only unconditional positions may supply local seeds to later
+            // stages. Imported facts remain inputs, never owned declarations.
+            if (stage === "explicit")
+              fixedSeeds = new Map(sourceRolesByOntology);
+          }
+          if (
+            previousPass &&
+            [...sourceRolesByOntology].every(([ontology, roles]) =>
+              equalRoles(previousPass.get(ontology), roles),
+            )
+          )
+            break;
+          previousPass = new Map(sourceRolesByOntology);
+        }
+      }
+      for (const [entry, { declarations }] of reconstructionInputs) {
         const transaction = new ParseTransaction(
           this.#dataFactory,
           normalizedConfiguration,
         );
-        await entry.prepared.reconstruct(declarations, transaction);
+        await entry.prepared.reconstruct(
+          declarations,
+          transaction,
+          normalizedConfiguration.parsingMode === "preserve"
+            ? [
+                ...(sourceRolesByOntology.get(entry.ontology) ?? []),
+                ...importedRoles(entry),
+              ]
+            : importedRoles(entry),
+        );
         const completed = transaction.commit(
           entry.context.format,
           entry.context.documentIRI,
@@ -524,6 +689,12 @@ export class OWLOntologyManager {
       }
       this.#throwIfAborted(normalizedConfiguration);
       documentPublications = session.entries.map((entry) => {
+        if (normalizedConfiguration.parsingMode === "preserve") {
+          entry.context.sourceStructure = createSourceStructure(
+            entry.completedOntology ?? entry.ontology,
+            entry.context.sourceStructure,
+          );
+        }
         const context = createImmutableDocumentMetadataSnapshot(entry.context);
         const ontologyState = this.#managedOntologyStates.get(entry.ontology);
         if (!ontologyState) {
@@ -551,6 +722,17 @@ export class OWLOntologyManager {
     managedOntologyLoadSession.commit();
     for (const publication of documentPublications) {
       publication.ontologyState.commitMutation(publication.mutationDraft);
+      const { ontology } = publication.entry;
+      bindManagedOntology(ontology, () =>
+        this.#managedOntologyIndex.createImportsClosureSnapshot(ontology, {
+          operation: "OWL2DLProfile.checkOntology",
+        }),
+      );
+      publishSourceEvidence(
+        ontology,
+        publication.context.sourceStructure,
+        publication.entry.sourceTrusted,
+      );
     }
     const documents = Object.freeze(
       documentPublications.map(({ context, entry }) =>
@@ -593,6 +775,7 @@ export class OWLOntologyManager {
       context: committed.context,
       ontology: committed.ontology,
       prepared: committed.prepared,
+      sourceTrusted: committed.sourceTrusted,
     };
     session.entries.push(entry);
     session.entriesByOntology.set(entry.ontology, entry);
@@ -671,10 +854,15 @@ export class OWLOntologyManager {
 
     let loaded;
     try {
-      loaded = await this.#documentLoader.load(documentIRI, {
-        config: configuration,
-        signal: configuration.signal,
-      });
+      loaded = await this.#documentLoader.load(
+        documentIRI,
+        Object.freeze({
+          config: configuration,
+          importIRI,
+          importingDocumentIRI: importingEntry.context.documentIRI,
+          signal: configuration.signal,
+        }),
+      );
     } catch (error) {
       if (configuration.signal?.aborted) {
         this.#throwIfAborted(configuration);
@@ -888,6 +1076,10 @@ export class OWLOntologyManager {
   }
 
   async #parseDocument(source, configuration) {
+    const sourceFormat = source.getFormat?.();
+    if (sourceFormat !== undefined) {
+      configuration = configuration.withFormat(sourceFormat);
+    }
     const candidates = this.#registry.resolveCandidates(source, configuration);
     const explicitFormat = configuration.format !== undefined;
     const mismatches = [];
@@ -930,6 +1122,10 @@ export class OWLOntologyManager {
             source.getDocumentIRI?.(),
           ),
           prepared,
+          sourceTrusted:
+            builtinDescriptors.has(candidate.descriptor) &&
+            configuration.loadAnnotationAxioms &&
+            prepared?.sourceComplete !== false,
         };
       } catch (error) {
         if (error instanceof ParserMismatchError) {

@@ -1,5 +1,6 @@
 import { OWLSyntaxError, ResourceLimitError } from "../../../io/errors.js";
 import { IRI } from "../../../model/structural.js";
+import { normalizeCardinality } from "../../model/cardinality.js";
 import { KRSSLexer } from "./lexer.js";
 
 const COOPERATIVE_YIELD_INTERVAL_MS = 50;
@@ -665,16 +666,19 @@ export class KRSSParserCore {
       operands.push(this.#parseClassExpression(depth + 1));
     }
     const closing = this.#expect(")");
-    const unique = uniqueStructuralValues(operands);
-    if (unique.length < this.#policy.minimumBooleanOperands) {
+    const values =
+      this.#configuration.parsingMode === "preserve"
+        ? operands
+        : uniqueStructuralValues(operands);
+    if (values.length < this.#policy.minimumBooleanOperands) {
       this.#syntax(
         `A ${this.#policy.label} Boolean expression requires ${this.#policy.minimumBooleanOperands} operand${this.#policy.minimumBooleanOperands === 1 ? "" : "s"}`,
         closing,
       );
     }
     return kind === "intersection"
-      ? this.#dataFactory.getOWLObjectIntersectionOf(unique)
-      : this.#dataFactory.getOWLObjectUnionOf(unique);
+      ? this.#dataFactory.getOWLObjectIntersectionOf(values)
+      : this.#dataFactory.getOWLObjectUnionOf(values);
   }
 
   #parseComplement(depth) {
@@ -694,14 +698,7 @@ export class KRSSParserCore {
 
   #parseCardinalityRestriction(depth, kind) {
     const cardinalityToken = this.#expect("INTEGER");
-    const cardinality = Number.parseInt(cardinalityToken.value, 10);
-    if (!Number.isSafeInteger(cardinality)) {
-      this.#syntax(
-        `The ${this.#policy.label} cardinality is outside the safe integer range`,
-        cardinalityToken,
-        { found: cardinalityToken.value },
-      );
-    }
+    const cardinality = normalizeCardinality(cardinalityToken.value);
     const property = this.#parseObjectPropertyExpression();
     // KRSS permits an omitted qualifier; OWL Thing is the structural OWL
     // default and keeps unqualified cardinalities canonical across formats.

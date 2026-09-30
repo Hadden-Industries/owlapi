@@ -56,6 +56,7 @@ export {
   OWLOntologyImportsClosureSetProvider,
   OWLOntologyMerger,
 } from "./util/index.js";
+export { OWL2DLProfile, OWLProfileReport } from "./profiles/index.js";
 
 // UNSUPPORTED(OWLAPI parity): Java OWLAPI exposes reasoner interfaces, but
 // The initial 0.1 package provides no reasoner types, factories, or inferred-query

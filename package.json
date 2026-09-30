@@ -23,6 +23,7 @@
     "./model": "./model/index.js",
     "./io": "./io/index.js",
     "./formats": "./formats/index.js",
+    "./profiles": "./profiles/index.js",
     "./util": "./util/index.js"
   },
   "files": [
@@ -31,6 +32,7 @@
     "model/",
     "io/",
     "formats/",
+    "profiles/",
     "util/index.js",
     "util/owlOntologyImportsClosureSetProvider.js",
     "util/owlOntologyMerger.js",
@@ -42,6 +44,7 @@
     "LICENSES/Apache-2.0.txt",
     "NOTICE",
     "docs/compatibility/capabilities.json",
+    "docs/compatibility/canonical-vowl-prerequisites.md",
     "docs/compatibility/java-api-surface.json",
     "docs/compatibility/java-api-surface.md",
     "!**/*.test.js",

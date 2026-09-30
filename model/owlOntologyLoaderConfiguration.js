@@ -1,4 +1,6 @@
-const PARSING_MODES = new Set(["strict", "compatible"]);
+import { validateFormatSelection } from "../internal/parsing/formatSelection.js";
+
+const PARSING_MODES = new Set(["strict", "compatible", "preserve"]);
 const IMPORT_HANDLING = new Set(["throw", "diagnostic"]);
 const GRAPH_POLICIES = new Set([
   "requireSingleGraph",
@@ -126,17 +128,7 @@ const validate = (values) => {
       throw new TypeError(`${name} must be a boolean`);
     }
   }
-  if (
-    values.format !== undefined &&
-    ((typeof values.format === "string" && values.format.length === 0) ||
-      (typeof values.format !== "string" &&
-        (typeof values.format !== "object" ||
-          typeof values.format.key !== "string" ||
-          values.format.key.length === 0 ||
-          !Object.isFrozen(values.format))))
-  ) {
-    throw new TypeError("format must be a format key or OWLDocumentFormat");
-  }
+  validateFormatSelection(values.format);
   if (
     values.signal !== undefined &&
     (typeof values.signal !== "object" ||

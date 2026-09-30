@@ -1,4 +1,4 @@
-<!-- registry-sha256: fcc9e20de24dd299b667d3396e691a81e1ffa1bf2925e5dac6e165b3377c8dd9 -->
+<!-- registry-sha256: edba30693d7be12a4c177a6f3557317d603f072bfbc52f55997ed0b9e5184324 -->
 
 # owlapi API reference
 
@@ -6,7 +6,7 @@ This reference is generated from the authoritative compatibility registry for `o
 
 This is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project; Java names identify compatibility authorities, not organizational continuity or complete parity.
 
-The package exposes one convenience aggregate and 5 Java-recognizable namespace entry points. Import from declared package specifiers only; paths below `internal/` are intentionally outside the public contract.
+The package exposes one convenience aggregate and 6 Java-recognizable namespace entry points. Import from declared package specifiers only; paths below `internal/` are intentionally outside the public contract.
 
 ## `OWLManager`
 
@@ -792,7 +792,7 @@ A JavaScript adaptation supporting the initial public OWLAPI workflow.
 - Relationship: JS_ADAPTATION; compatibility: ADAPTED
 - Release status: PRERELEASE from 0.1.0-alpha.0
 - Call shape: new StringDocumentSource(...arguments)
-- Supported members: prototype.getContentType; prototype.getDocumentIRI; prototype.getFileName; prototype.getText
+- Supported members: prototype.getContentType; prototype.getDocumentIRI; prototype.getFileName; prototype.getFormat; prototype.getText
 - Omitted Java members: Java Reader/InputStream accessors; Java constructor overloads using OWLDocumentFormat and MIME metadata
 - Public errors: TypeError
 - Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.
@@ -941,5 +941,41 @@ A Java-shaped ontology merger that materializes the structural union of supplied
 - Public errors: OWLOntologyStateError; TypeError
 - Qualification: Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised. createMergedOntology builds a structural set union from each supplied ontology's direct axioms before creating the target, then mutates the target only through public manager methods. The optional boolean constructor form selects Java-compatible logical-axiom filtering; the OWLAxiomFilter constructor remains unavailable. An omitted ontologyIRI creates an anonymous target; a supplied value must be an IRI.
 - Evidence: util/owlOntologyMerger.test.js, test/package-boundary.test.mjs, test/installed-package-smoke.mjs, test/consumers/browser/browser-consumers.playwright.js
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
+
+## `OWL2DLProfile`
+
+An asynchronous, bounded OWL 2 DL structural checker over the complete managed import closure, with a separate source-qualified assessment.
+
+- Import: `owlapi/profiles`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.profiles.OWL2DLProfile
+- Relationship: JS_ADAPTATION; compatibility: ADAPTED
+- Release status: PRERELEASE from 0.1.0
+- Call shape: new OWL2DLProfile(); await profile.checkOntology(ontology, options?)
+- Supported members: prototype.checkOntology; prototype.getIRI; prototype.getName
+- Omitted Java members: Java visitor implementation classes; getDatatypeIRIs(); Stream and Collection overloads
+- Public errors: none specific
+- Qualification: Returns a Promise and supports cooperative cancellation and resource limits; incomplete validation is unverified, never valid. The formal verdict applies to the structural OWL closure. Optional sourceAssessment also validates retained RDF/RDFS structures and parsed expressions before consumer filtering. Only trusted original source arity and unambiguous typed use qualify the two documented normalization/declaration differences; mutation invalidates that evidence. Datatype checks follow the mandatory OWL 2 datatype map and raw lexical/value spaces, including nested annotations. See docs/compatibility/canonical-vowl-prerequisites.md for normative choices and Java deviations.
+- Evidence: profiles/owl2DLProfile.test.js, model/rdfsSourcePreservation.test.js, model/sourcePropertyRoles.test.js, internal/profiles/datatypes.test.js, test/package-boundary.test.mjs
+
+Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.
+
+## `OWLProfileReport`
+
+An immutable checker result separating valid, invalid and unverified outcomes, with stable violation records and optional source assessment.
+
+- Import: `owlapi/profiles`
+- Kind: CLASS
+- Java authority: org.semanticweb.owlapi.profiles.OWLProfileReport
+- Relationship: JS_ADAPTATION; compatibility: ADAPTED
+- Release status: PRERELEASE from 0.1.0
+- Call shape: await new OWL2DLProfile().checkOntology(ontology, options?)
+- Supported members: prototype.getOntology; prototype.getProfile; prototype.getSourceAssessment; prototype.getViolations; prototype.isInProfile
+- Omitted Java members: Java violation class hierarchy; Java stream/visitor overloads; Java constructor overloads
+- Public errors: none specific
+- Qualification: isInProfile() returns true only for a completed valid formal check. getSourceAssessment() returns the independently stated source-qualified verdict when requested. Violations are immutable data records rather than Java visitor objects. getOntology() and getProfile() retain their input identities. Additional status, closure revisions, unverifiedChecks and sourceAssessment fields expose bounded JavaScript validation evidence; direct construction does not execute validation.
+- Evidence: profiles/owl2DLProfile.test.js, test/package-boundary.test.mjs
 
 Use the documented JavaScript call shapes and treat unlisted Java overloads or members as unavailable.

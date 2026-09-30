@@ -6,6 +6,7 @@ import {
   UnsupportedConstructError,
 } from "../../../io/errors.js";
 import { IRI } from "../../../model/structural.js";
+import { normalizeCardinality } from "../../model/cardinality.js";
 
 import { decodePrefixedLocalName, FunctionalSyntaxLexer } from "./lexer.js";
 
@@ -992,13 +993,7 @@ export class OWLFunctionalSyntaxOWLParser {
 
   #parseCardinality() {
     const token = this.#expectType("INTEGER");
-    const cardinality = Number(token.value);
-    if (!Number.isSafeInteger(cardinality)) {
-      this.#syntax("The cardinality is outside the safe integer range", token, {
-        found: token.value,
-      });
-    }
-    return cardinality;
+    return normalizeCardinality(token.value);
   }
 
   #checkExpressionDepth(depth) {

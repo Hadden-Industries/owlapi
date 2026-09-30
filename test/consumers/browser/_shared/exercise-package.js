@@ -3,6 +3,7 @@ import * as apibinding from "owlapi/apibinding";
 import * as formats from "owlapi/formats";
 import * as io from "owlapi/io";
 import * as model from "owlapi/model";
+import * as profiles from "owlapi/profiles";
 import * as util from "owlapi/util";
 import { exerciseImportClosureStorage } from "./public-contract.js";
 import closureDocuments from "./import-closure-documents.js";
@@ -59,6 +60,112 @@ Ontology(<https://example.com/browser/functional>
   }),
 ]);
 
+const exerciseProfile = async () => {
+  const imports = [];
+  const manager = apibinding.OWLManager.createOWLOntologyManager({
+    documentLoader: {
+      load: async (_iri, context) => {
+        imports.push(context);
+        return new io.StringDocumentSource(
+          `@prefix owl: <http://www.w3.org/2002/07/owl#> .
+        @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+        <urn:browser:leaf> a owl:Ontology . <urn:browser:A> a owl:Class; rdfs:comment "bad"^^xsd:integer .`,
+          { format: "turtle", documentIRI: "urn:browser:leaf-bytes" },
+        );
+      },
+    },
+  });
+  const loaded = await manager.loadOntologyGraphFromOntologyDocument(
+    new io.StringDocumentSource(
+      `Prefix(:=<urn:browser:>) Ontology(<urn:browser:root> Import(<urn:browser:leaf>)
+      Declaration(Class(:A)) Declaration(Class(:B)) Declaration(ObjectProperty(:p))
+      SubClassOf(:A ObjectIntersectionOf(:B :B))
+      SubClassOf(:A ObjectMinCardinality(9007199254740993 :p :B)))`,
+      { format: "functional", documentIRI: "urn:browser:root-bytes" },
+    ),
+    { parsingMode: "preserve" },
+  );
+  const profile = new profiles.OWL2DLProfile();
+  const report = await profile.checkOntology(loaded.ontology, {
+    sourceAssessment: true,
+  });
+  const superClasses = [...loaded.ontology.getAxioms()]
+    .filter(({ kind }) => kind === "OWLSubClassOfAxiom")
+    .map(({ superClass }) => superClass);
+  const xml = await manager.loadOntologyFromOntologyDocument(
+    new io.StringDocumentSource(
+      'Ontology(Annotation(rdfs:comment "<a/>"^^rdf:XMLLiteral))',
+      { format: "functional" },
+    ),
+    { parsingMode: "preserve" },
+  );
+  const xmlReport = await profile.checkOntology(xml);
+  const xmlControls = [];
+  for (const lexical of ["<a></a>", "<a>"]) {
+    const control = await manager.loadOntologyFromOntologyDocument(
+      new io.StringDocumentSource(
+        `Ontology(Annotation(rdfs:comment "${lexical}"^^rdf:XMLLiteral))`,
+        { format: "functional" },
+      ),
+      { parsingMode: "preserve" },
+    );
+    const checked = await profile.checkOntology(control);
+    xmlControls.push({
+      status: checked.status,
+      codes: checked.violations.map(({ code }) => code),
+      unverified: checked.unverifiedChecks,
+    });
+  }
+  const bounded = await profile.checkOntology(loaded.ontology, { maxWork: 1 });
+  const controller = new AbortController();
+  controller.abort();
+  let abortName;
+  try {
+    await profile.checkOntology(loaded.ontology, { signal: controller.signal });
+  } catch (error) {
+    abortName = error.name;
+  }
+  const factory = manager.getOWLDataFactory();
+  manager.addAxiom(
+    loaded.ontology,
+    factory.getOWLDeclarationAxiom(
+      factory.getOWLClass(model.IRI.create("urn:browser:New")),
+    ),
+  );
+  const mutated = await profile.checkOntology(loaded.ontology, {
+    sourceAssessment: true,
+  });
+  return {
+    formal: report.status,
+    source: report.sourceAssessment.status,
+    closureCount: report.closure.length,
+    sourceCodes: [
+      ...new Set(report.sourceAssessment.violations.map(({ code }) => code)),
+    ].sort(),
+    formats: loaded.documents.map(({ context }) => context.format.key),
+    importContext:
+      imports.length === 1 &&
+      Object.isFrozen(imports[0]) &&
+      imports[0].importIRI.value === "urn:browser:leaf" &&
+      imports[0].importingDocumentIRI.value === "urn:browser:root-bytes",
+    cardinality: superClasses.find(
+      ({ kind }) => kind === "OWLObjectMinCardinality",
+    ).cardinality,
+    singletonOperands: superClasses.find(
+      ({ kind }) => kind === "OWLObjectIntersectionOf",
+    ).operands.length,
+    invalidXml: xmlReport.violations.some(
+      ({ code }) => code === "XML_LITERAL_NOT_CANONICAL",
+    ),
+    xmlControls,
+    bounded: bounded.status,
+    abortName,
+    stale: mutated.sourceAssessment.unverifiedChecks.some(
+      ({ code }) => code === "SOURCE_EVIDENCE_STALE",
+    ),
+  };
+};
+
 /**
  * Exercise only documented package specifiers so the fixture cannot pass by
  * reaching through the tarball boundary. The returned value intentionally uses
@@ -71,6 +178,9 @@ export const exerciseInstalledPackage = async () => {
     formats: root.OWLDocumentFormats === formats.OWLDocumentFormats,
     io: root.StringDocumentSource === io.StringDocumentSource,
     model: root.OWLOntologyManager === model.OWLOntologyManager,
+    profiles:
+      root.OWL2DLProfile === profiles.OWL2DLProfile &&
+      root.OWLProfileReport === profiles.OWLProfileReport,
     util:
       root.OWLOntologyMerger === util.OWLOntologyMerger &&
       root.OWLOntologyImportsClosureSetProvider ===
@@ -112,6 +222,7 @@ export const exerciseInstalledPackage = async () => {
     bindingIdentity,
     documents,
     importClosure,
+    profile: await exerciseProfile(),
     managerClass:
       apibinding.OWLManager.createOWLOntologyManager().constructor.name,
   };

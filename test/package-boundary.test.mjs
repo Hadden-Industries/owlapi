@@ -57,17 +57,19 @@ const EXPECTED_EXPORTS = Object.freeze({
     "dispatchOwlObject",
   ],
   util: ["OWLOntologyImportsClosureSetProvider", "OWLOntologyMerger"],
+  profiles: ["OWL2DLProfile", "OWLProfileReport"],
 });
 
 const sortedKeys = (moduleNamespace) => Object.keys(moduleNamespace).sort();
 
 test("each approved Java-backed namespace exposes exactly its owned bindings", async () => {
-  const [apibinding, model, io, formats, util] = await Promise.all([
+  const [apibinding, model, io, formats, util, profiles] = await Promise.all([
     import("owlapi/apibinding"),
     import("owlapi/model"),
     import("owlapi/io"),
     import("owlapi/formats"),
     import("owlapi/util"),
+    import("owlapi/profiles"),
   ]);
 
   assert.deepEqual(sortedKeys(apibinding), EXPECTED_EXPORTS.apibinding);
@@ -75,18 +77,21 @@ test("each approved Java-backed namespace exposes exactly its owned bindings", a
   assert.deepEqual(sortedKeys(io), EXPECTED_EXPORTS.io);
   assert.deepEqual(sortedKeys(model), EXPECTED_EXPORTS.model);
   assert.deepEqual(sortedKeys(util), EXPECTED_EXPORTS.util);
+  assert.deepEqual(sortedKeys(profiles), EXPECTED_EXPORTS.profiles);
 });
 
 test("the bare aggregate re-exports every public binding with identical identity", async () => {
-  const [root, apibinding, model, io, formats, util] = await Promise.all([
-    import("owlapi"),
-    import("owlapi/apibinding"),
-    import("owlapi/model"),
-    import("owlapi/io"),
-    import("owlapi/formats"),
-    import("owlapi/util"),
-  ]);
-  const ownedModules = [apibinding, model, io, formats, util];
+  const [root, apibinding, model, io, formats, util, profiles] =
+    await Promise.all([
+      import("owlapi"),
+      import("owlapi/apibinding"),
+      import("owlapi/model"),
+      import("owlapi/io"),
+      import("owlapi/formats"),
+      import("owlapi/util"),
+      import("owlapi/profiles"),
+    ]);
+  const ownedModules = [apibinding, model, io, formats, util, profiles];
   const ownedBindings = Object.assign({}, ...ownedModules);
 
   assert.deepEqual(sortedKeys(root), Object.keys(ownedBindings).sort());

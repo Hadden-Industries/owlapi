@@ -7,6 +7,7 @@ import {
 } from "../../../io/errors.js";
 import { OWLObjectKind } from "../../../model/kinds.js";
 import { IRI } from "../../../model/structural.js";
+import { normalizeCardinality } from "../../model/cardinality.js";
 
 import {
   decodePrefixedLocalName,
@@ -1541,13 +1542,7 @@ export class OWLManchesterSyntaxOWLParser {
         found: token.value,
       });
     }
-    const cardinality = Number(token.value);
-    if (!Number.isSafeInteger(cardinality)) {
-      this.#syntax("The cardinality is outside the safe integer range", token, {
-        found: token.value,
-      });
-    }
-    return cardinality;
+    return normalizeCardinality(token.value);
   }
 
   #checkExpressionDepth(depth) {

@@ -10,6 +10,7 @@ import { OWLOntology } from "../../../model/owlOntology.js";
 import { OWLOntologyLoaderConfiguration } from "../../../model/owlOntologyLoaderConfiguration.js";
 import { OwlToRdfTranslator } from "../../mapping/owlToRdfTranslator.js";
 import { RdfToOwlTranslator } from "../../mapping/rdfToOwlTranslator.js";
+import { hasNormalizedSingleton } from "../../model/setConstructs.js";
 import {
   compareOntologies,
   OntologyStructuralComparisonLimitError,
@@ -56,7 +57,9 @@ export const createRdfXmlStorer = ({
         // neither a manager, IRI mapper, nor document loader, so imports remain
         // authored declarations rather than triggering external retrieval.
         const configuration = new OWLOntologyLoaderConfiguration({
-          parsingMode: "strict",
+          parsingMode: hasNormalizedSingleton(snapshot.directAxioms)
+            ? "preserve"
+            : "strict",
           loadAnnotationAxioms: true,
           rdfDatasetGraphPolicy: "requireSingleGraph",
           collectWarnings: true,
