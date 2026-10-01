@@ -90,6 +90,12 @@ export const exerciseParserPreservation = async () => {
         failure.reason === "UNSUPPORTED_KRSS1_RIGHT_IDENTITY",
       "fatal imported clause",
     );
+    requireContract(
+      manager.getOntology(
+        manager.getOWLDataFactory().getOWLOntologyID(IRI.create(rootIRI)),
+      ) === undefined,
+      "failed root is never published",
+    );
     unsupported = false;
     contexts.length = 0;
     const result = await manager.loadOntologyGraphFromOntologyDocument(
@@ -202,8 +208,8 @@ export const exerciseParserPreservation = async () => {
           new StringDocumentSource(target.toString(), { format }),
           { parsingMode },
         );
-      // RDF mapping may add declarations; compare that documented syntax
-      // normalization separately from the exact complete assertion set.
+      // Check the authored literal assertions explicitly, then the complete
+      // declared structure, so extra axioms cannot hide in the round trip.
       const assertions = [...reloaded.getAxioms()].filter(
         (a) => a.kind !== OWLObjectKind.DECLARATION_AXIOM,
       );

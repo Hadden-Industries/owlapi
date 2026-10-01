@@ -165,6 +165,9 @@ describe("KRSS1 structural differentials", () => {
       revision: "d7e997a53b470e32700de89cc610d9daf01ea769",
       version: "5.5.1",
     });
+    // This is the historical run, not a Java run of the companion. The
+    // companion omits only right-identity, which had no effect in that run.
+    // Exact companion structures are independently asserted above.
     expect(counts).toMatchObject(javaDocument.snapshot.axiomTypeCounts);
     expect(counts).toMatchObject({
       ClassAssertion: 1,
