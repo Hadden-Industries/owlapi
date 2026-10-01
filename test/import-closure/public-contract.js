@@ -185,11 +185,12 @@ export const exerciseParserPreservation = async () => {
       report.status === "valid",
       "declared closure formal validity",
     );
-    if (parsingMode === "preserve")
+    if (parsingMode === "preserve") {
       requireContract(
         report.sourceAssessment.status === "valid",
         "package-owned source validity",
       );
+    }
     const storageManager = OWLManager.createOWLOntologyManager();
     const stored = storageManager.createOntology();
     storageManager.addAxioms(stored, [

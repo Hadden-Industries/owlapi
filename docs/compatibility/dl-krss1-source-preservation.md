@@ -21,6 +21,12 @@ Subsequent test exercises and this record are outside the package packlist.
 The corrected harness was qualified against the same tarball after review; its `test/import-closure/public-contract.js` SHA-256 is `41a3a8c732684ef2d2f9db96d313c6d1a72b087713fa3a2aed494a73b412bb07`.
 The final qualification commit contains that harness and this record; the content digest identifies it without a circular reference to its own commit SHA.
 Fresh outputs are `.release/dl-krss1-source-preservation-02/portable.json`, `chromium.log` and `webkit.log` (portable PASS and six browser tests passed).
+PR 26's first CI run qualified this identical tarball on both supported Node majors and all three browsers, but its isolated WebVOWL job rejected one unbraced preserve-mode assertion under the consumer's `curly` lint rule.
+A syntax-only follow-up added braces, passed that exact lint rule locally, and refreshed the already approved `public-contract.js` integrity entry.
+The resulting harness SHA-256 is `aa471f302c5f0d72c02f5704f7b822d6497b86e0e0fbf04f8c92794f4a48134a`; fresh portable qualification and six Chromium/WebKit tests passed under `.release/dl-krss1-source-preservation-03/`.
+The local launcher still could not start Firefox; the final PR revision must supply fresh CI coverage.
+Earlier full-profile and review evidence remains tied to its original revision.
+The final brace-only delta was reviewed directly; final governed and remote checks are refreshed for the new snapshot, while unchanged package bytes reuse the original candidate.
 The package-content manifest and rights facts were refreshed without changing the pending human rights-review status or asserting release approval.
 
 ## Behavior and independent expectations
