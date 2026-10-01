@@ -26,6 +26,8 @@ Because the syntax has no ontology header, a supplied document IRI defines its e
 The pinned Java whole-document differential uses only productions reachable through that entry point.
 Focused project tests also preserve inventoried assertion, inverse-property and numeric-data productions that the Java dispatcher can misroute, accept ordinary terminal whitespace and attached property colons, and retain unmatched general subclass axioms rather than silently dropping them.
 These controlled corrections are recorded in the Phase 10 provenance research and lesson record; the shared oracle fixture itself has no expected structural difference.
+The 2026-10-01 source-preservation correction retains each accepted integer or double token's exact lexical string in every parsing mode, including leading/trailing zeros and integers beyond JavaScript's safe range.
+Cardinality normalization and the existing numeric token grammar are unchanged; datatype assessment remains separate from parsing.
 
 Distinct format descriptors are retained even when one dependency implements several formats.
 Phase 9 registers only exact `text/turtle`; N-Triples, N-Quads, TriG, and the broader N3 language remain unsupported until their separate governed scopes say otherwise.

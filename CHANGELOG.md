@@ -8,6 +8,8 @@ Prerelease identifiers do not create a stability promise.
 
 ## Unreleased
 
+- Preserve DL numeric literal spelling and datatype in every parsing mode, including large integers and lexically distinct equal values; reload original sources to recover previously normalized spellings.
+
 The selected first public candidate is `@hadden-industries/owlapi@0.1.0-rc.1` under `next`; the later stable target remains `0.1.0`.
 It is not published, tagged or accepted merely by merging it.
 
