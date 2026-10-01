@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { DOMParser, XMLSerializer } from "@xmldom/xmldom";
 import {
   exerciseImportClosureStorage,
+  exerciseParserPreservation,
   verifyCollapsedText,
 } from "./public-contract.js";
 
@@ -16,6 +17,17 @@ const documents = Object.fromEntries(
 );
 
 describe("public import-closure storage composition", () => {
+  it("qualifies DL and KRSS1 source preservation through public APIs", async () => {
+    expect(await exerciseParserPreservation()).toEqual({
+      modes: ["strict", "compatible", "preserve"],
+      literalCount: 5,
+      formats: ["dl", "functional", "krss1"],
+      storage: ["functional", "rdfxml"],
+      fatalImport: true,
+      source: "valid",
+      literalBudget: "unverified",
+    });
+  });
   let result;
   beforeAll(async () => {
     result = await exerciseImportClosureStorage(documents);

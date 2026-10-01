@@ -88,6 +88,15 @@ const runConsumer = async (page, mode) => {
     sourceReaderPreserved: true,
   });
   const { xmlControls, ...profile } = result.profile;
+  expect(result.parserPreservation).toEqual({
+    modes: ["strict", "compatible", "preserve"],
+    literalCount: 5,
+    formats: ["dl", "functional", "krss1"],
+    storage: ["functional", "rdfxml"],
+    fatalImport: true,
+    source: "valid",
+    literalBudget: "unverified",
+  });
   expect(profile).toEqual({
     formal: "invalid",
     source: "invalid",

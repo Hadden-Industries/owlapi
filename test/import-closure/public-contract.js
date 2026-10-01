@@ -9,8 +9,10 @@ import {
   AddOntologyAnnotation,
   IRI,
   OWLObjectKind,
+  OWLOntology,
   SetOntologyID,
 } from "owlapi/model";
+import { OWL2DLProfile } from "owlapi/profiles";
 import {
   OWLOntologyImportsClosureSetProvider,
   OWLOntologyMerger,
@@ -25,6 +27,266 @@ const keys = (values) =>
   [...values].map((value) => value.structuralKey()).sort();
 const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
 const strict = { parsingMode: "strict", collectWarnings: true };
+
+// Hand-authored expected axioms and declarations keep this oracle independent
+// of both repaired parsers. The same exercise runs from installed packages.
+export const exerciseParserPreservation = async () => {
+  const dlIRI = "urn:preservation:dl";
+  const krssIRI = "urn:preservation:krss";
+  const rootIRI = "urn:preservation:root";
+  const lexicalCases = [
+    ["0001", "integer"],
+    ["1.00", "double"],
+    ["9007199254740993", "integer"],
+    ["0.10000000000000001", "double"],
+    ["1.", "double"],
+  ];
+  const dlText = lexicalCases
+    .map(([value]) => `age(alice, ${value})`)
+    .join("\n");
+  const declarations = `Declaration(DataProperty(<${dlIRI}#age>)) Declaration(NamedIndividual(<${dlIRI}#alice>)) Declaration(ObjectProperty(<${krssIRI}#p>)) Declaration(ObjectProperty(<${krssIRI}#q>))`;
+  const rootText = `Ontology(<${rootIRI}> Import(<${dlIRI}>) Import(<${krssIRI}>) ${declarations})`;
+  const profile = new OWL2DLProfile();
+  const modes = [];
+  for (const parsingMode of ["strict", "compatible", "preserve"]) {
+    const contexts = [];
+    let unsupported = false;
+    const manager = OWLManager.createOWLOntologyManager({
+      documentLoader: {
+        async load(documentIRI, context) {
+          const iri = documentIRI.value;
+          contexts.push(context);
+          requireContract(
+            iri === dlIRI || iri === krssIRI,
+            "unexpected external import",
+          );
+          return new StringDocumentSource(
+            iri === dlIRI
+              ? dlText
+              : `(define-primitive-role p q${unsupported ? " :right-identity r" : ""})`,
+            { documentIRI: iri, format: iri === dlIRI ? "dl" : "krss1" },
+          );
+        },
+      },
+    });
+    const source = () =>
+      new StringDocumentSource(rootText, {
+        documentIRI: rootIRI,
+        format: "functional",
+      });
+    // A tolerant missing-import policy must never swallow a parser failure.
+    unsupported = true;
+    let failure;
+    try {
+      await manager.loadOntologyFromOntologyDocument(source(), {
+        parsingMode,
+        missingImportHandling: "diagnostic",
+      });
+    } catch (error) {
+      failure = error;
+    }
+    requireContract(
+      failure?.code === "UNSUPPORTED_CONSTRUCT" &&
+        failure.reason === "UNSUPPORTED_KRSS1_RIGHT_IDENTITY",
+      "fatal imported clause",
+    );
+    unsupported = false;
+    contexts.length = 0;
+    const result = await manager.loadOntologyGraphFromOntologyDocument(
+      source(),
+      { parsingMode },
+    );
+    requireContract(
+      result.documents.length === 3,
+      "rollback and reusable document identities",
+    );
+    const byFormat = new Map(
+      result.documents.map((document) => [
+        document.context.format.key,
+        document,
+      ]),
+    );
+    requireContract(
+      same([...byFormat.keys()].sort(), ["dl", "functional", "krss1"]),
+      "per-document formats",
+    );
+    requireContract(
+      contexts.length === 2 &&
+        contexts.every(
+          (context) =>
+            Object.isFrozen(context) &&
+            context.importingDocumentIRI.value === rootIRI &&
+            [dlIRI, krssIRI].includes(context.importIRI.value),
+        ),
+      "frozen import-parent context",
+    );
+    const dl = byFormat.get("dl").ontology;
+    const krss = byFormat.get("krss1").ontology;
+    const rootOntology = byFormat.get("functional").ontology;
+    const f = manager.getOWLDataFactory();
+    const dp = f.getOWLDataProperty(IRI.create(`${dlIRI}#age`));
+    const alice = f.getOWLNamedIndividual(IRI.create(`${dlIRI}#alice`));
+    const p = f.getOWLObjectProperty(IRI.create(`${krssIRI}#p`));
+    const q = f.getOWLObjectProperty(IRI.create(`${krssIRI}#q`));
+    const expected = lexicalCases.map(([lexical, type]) =>
+      f.getOWLDataPropertyAssertionAxiom(
+        dp,
+        alice,
+        f.getOWLLiteral(
+          lexical,
+          IRI.create(`http://www.w3.org/2001/XMLSchema#${type}`),
+        ),
+      ),
+    );
+    requireContract(
+      same(keys(dl.getAxioms()), keys(expected)),
+      "exact DL assertion structure",
+    );
+    requireContract(
+      same(
+        keys(krss.getAxioms()),
+        keys([f.getOWLSubObjectPropertyOfAxiom(p, q)]),
+      ),
+      "supported parent-only KRSS structure",
+    );
+    requireContract(
+      same(keys(dl.getDataPropertiesInSignature()), keys([dp])) &&
+        same(keys(dl.getIndividualsInSignature()), keys([alice])) &&
+        dl.getClassesInSignature().size === 0 &&
+        dl.getObjectPropertiesInSignature().size === 0,
+      "DL typed signature",
+    );
+    requireContract(
+      same(keys(krss.getObjectPropertiesInSignature()), keys([p, q])) &&
+        krss.getClassesInSignature().size === 0 &&
+        krss.getIndividualsInSignature().size === 0,
+      "KRSS typed signature",
+    );
+    requireContract(
+      rootOntology.getOntologyID().ontologyIRI.value === rootIRI &&
+        same(
+          [...rootOntology.getImportsDeclarations()]
+            .map((d) => d.iri.value)
+            .sort(),
+          [dlIRI, krssIRI],
+        ),
+      "root and import identity",
+    );
+    const report = await profile.checkOntology(rootOntology, {
+      sourceAssessment: parsingMode === "preserve",
+    });
+    requireContract(
+      report.status === "valid",
+      "declared closure formal validity",
+    );
+    if (parsingMode === "preserve")
+      requireContract(
+        report.sourceAssessment.status === "valid",
+        "package-owned source validity",
+      );
+    const storageManager = OWLManager.createOWLOntologyManager();
+    const stored = storageManager.createOntology();
+    storageManager.addAxioms(stored, [
+      ...expected,
+      f.getOWLDeclarationAxiom(dp),
+      f.getOWLDeclarationAxiom(alice),
+    ]);
+    for (const format of [
+      OWLDocumentFormats.FUNCTIONAL,
+      OWLDocumentFormats.RDF_XML,
+    ]) {
+      const target = new StringDocumentTarget();
+      await storageManager.saveOntology(stored, format, target);
+      const reloaded =
+        await OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
+          new StringDocumentSource(target.toString(), { format }),
+          { parsingMode },
+        );
+      // RDF mapping may add declarations; compare that documented syntax
+      // normalization separately from the exact complete assertion set.
+      const assertions = [...reloaded.getAxioms()].filter(
+        (a) => a.kind !== OWLObjectKind.DECLARATION_AXIOM,
+      );
+      requireContract(
+        same(keys(assertions), keys(expected)),
+        "storage preserves literal lexical identity",
+      );
+      requireContract(
+        same(keys(reloaded.getAxioms()), keys(stored.getAxioms())),
+        "complete declared storage structure",
+      );
+    }
+    if (parsingMode === "preserve") {
+      const copy = new OWLOntology({
+        axioms: dl.getAxioms(),
+        documentMetadata: {
+          sourceStructure: Object.freeze({ version: 1, policy: "preserve" }),
+        },
+      });
+      const forged = await profile.checkOntology(copy, {
+        sourceAssessment: true,
+      });
+      requireContract(
+        forged.sourceAssessment.unverifiedChecks.some(
+          ({ code }) => code === "SOURCE_EVIDENCE_UNVERIFIED",
+        ),
+        "forged evidence rejected",
+      );
+      manager.addAxiom(
+        rootOntology,
+        f.getOWLDeclarationAxiom(f.getOWLObjectProperty(dp.iri)),
+      );
+      const conflict = await profile.checkOntology(rootOntology, {
+        sourceAssessment: true,
+      });
+      requireContract(
+        conflict.violations.some(
+          ({ code }) => code === "PROPERTY_CATEGORY_COLLISION",
+        ),
+        "closure-wide property conflict",
+      );
+      requireContract(
+        conflict.sourceAssessment.unverifiedChecks.some(
+          ({ code }) => code === "SOURCE_EVIDENCE_STALE",
+        ),
+        "mutation invalidates source evidence",
+      );
+    }
+    modes.push(parsingMode);
+  }
+  const large =
+    await OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
+      new StringDocumentSource(`age(alice, ${"9".repeat(65)})`, {
+        format: "dl",
+      }),
+      { parsingMode: "preserve" },
+    );
+  const numeric = await profile.checkOntology(large, {
+    sourceAssessment: true,
+    maxNumericDigits: 64,
+  });
+  requireContract(
+    numeric.sourceAssessment.status === "valid",
+    "plain integer lexical validation needs no rational arithmetic",
+  );
+  const bounded = await profile.checkOntology(large, {
+    sourceAssessment: true,
+    maxLiteralLength: 64,
+  });
+  requireContract(
+    bounded.sourceAssessment.status === "unverified",
+    "checker literal budget stays distinct from parser admission",
+  );
+  return {
+    modes,
+    literalCount: lexicalCases.length,
+    formats: ["dl", "functional", "krss1"],
+    storage: ["functional", "rdfxml"],
+    fatalImport: true,
+    source: "valid",
+    literalBudget: "unverified",
+  };
+};
 
 /**
  * Fixture-specific oracle, not a general isomorphism algorithm. Each anonymous
