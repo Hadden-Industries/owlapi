@@ -28,6 +28,81 @@ describe("OWL DL Syntax", () => {
     expect(keys(ontology.getAxioms())).toEqual(keys(expected));
   };
 
+  describe.each(["strict", "compatible", "preserve"])(
+    "source literals in %s mode",
+    (parsingMode) => {
+      it.each([
+        ["0001", "integer"],
+        ["0", "integer"],
+        ["9007199254740993", "integer"],
+        ["1.00", "double"],
+        ["0.10000000000000001", "double"],
+        ["1.", "double"],
+        ["9".repeat(400), "integer"],
+        ["0." + "1".repeat(400), "double"],
+      ])("preserves %s as xsd:%s", async (lexical, datatype) => {
+        const manager = createManager();
+        const ontology = await load(manager, `age(alice, ${lexical})`, {
+          parsingMode,
+        });
+        const factory = manager.getOWLDataFactory();
+        const iri = (name) => IRI.create(`${documentIRI}#${name}`);
+        expectAxioms(ontology, [
+          factory.getOWLDataPropertyAssertionAxiom(
+            factory.getOWLDataProperty(iri("age")),
+            factory.getOWLNamedIndividual(iri("alice")),
+            factory.getOWLLiteral(
+              lexical,
+              IRI.create(`http://www.w3.org/2001/XMLSchema#${datatype}`),
+            ),
+          ),
+        ]);
+      });
+
+      it.each([
+        [
+          "1 01 1.0",
+          [
+            ["1", "integer"],
+            ["01", "integer"],
+            ["1.0", "double"],
+          ],
+        ],
+        ["1 1", [["1", "integer"]]],
+      ])(
+        "preserves structural set identity for %s",
+        async (tokens, expected) => {
+          const manager = createManager();
+          const ontology = await load(
+            manager,
+            `exists age.{${tokens}} ⊑ Adult`,
+            { parsingMode },
+          );
+          const factory = manager.getOWLDataFactory();
+          const iri = (name) => IRI.create(`${documentIRI}#${name}`);
+          expectAxioms(ontology, [
+            factory.getOWLSubClassOfAxiom(
+              factory.getOWLDataSomeValuesFrom(
+                [factory.getOWLDataProperty(iri("age"))],
+                factory.getOWLDataOneOf(
+                  expected.map(([lexical, datatype]) =>
+                    factory.getOWLLiteral(
+                      lexical,
+                      IRI.create(
+                        `http://www.w3.org/2001/XMLSchema#${datatype}`,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              factory.getOWLClass(iri("Adult")),
+            ),
+          ]);
+        },
+      );
+    },
+  );
+
   it("positively detects a bounded DL axiom and rejects unrelated syntaxes", () => {
     const registry = new OWLParserRegistry([dlSyntaxParserDescriptor]);
     const [matching] = registry.resolveCandidates(

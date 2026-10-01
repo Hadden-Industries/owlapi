@@ -5,7 +5,10 @@ import * as io from "owlapi/io";
 import * as model from "owlapi/model";
 import * as profiles from "owlapi/profiles";
 import * as util from "owlapi/util";
-import { exerciseImportClosureStorage } from "./public-contract.js";
+import {
+  exerciseImportClosureStorage,
+  exerciseParserPreservation,
+} from "./public-contract.js";
 import closureDocuments from "./import-closure-documents.js";
 
 const DOCUMENTS = Object.freeze([
@@ -222,6 +225,7 @@ export const exerciseInstalledPackage = async () => {
     bindingIdentity,
     documents,
     importClosure,
+    parserPreservation: await exerciseParserPreservation(),
     profile: await exerciseProfile(),
     managerClass:
       apibinding.OWLManager.createOWLOntologyManager().constructor.name,

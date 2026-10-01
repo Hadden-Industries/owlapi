@@ -41,6 +41,23 @@ const expectResource = async (promise, resource, limit, observed) => {
 };
 
 describe("OWL DL Syntax resource safety and diagnostics", () => {
+  it.each(["1234567890", "0.12345678"])(
+    "bounds preserved numeric token %s",
+    async (token) => {
+      const manager = createManager();
+      const text = `age(alice, ${token})`;
+      await expect(
+        load(manager, text, { maxTokenLength: token.length }),
+      ).resolves.toBeDefined();
+      await expectResource(
+        load(manager, text, { maxTokenLength: token.length - 1 }),
+        "maxTokenLength",
+        token.length - 1,
+        token.length,
+      );
+    },
+  );
+
   it("counts real tokens and measures token limits as UTF-8 bytes", async () => {
     const manager = createManager();
 

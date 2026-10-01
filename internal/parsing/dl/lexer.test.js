@@ -15,6 +15,23 @@ const tokenize = (text, values = {}) => {
 };
 
 describe("DLSyntaxLexer", () => {
+  it.each(["-1", "1e3", '"1"'])(
+    "retains %s as an identifier, not a numeric extension",
+    (value) => {
+      expect(tokenize(value)).toEqual([
+        expect.objectContaining({ type: "ID", value }),
+      ]);
+    },
+  );
+
+  it("keeps malformed decimals as separate tokens", () => {
+    expect(tokenize("1.2.3").map(({ type, value }) => [type, value])).toEqual([
+      ["DOUBLE", "1.2"],
+      ["DOT", "."],
+      ["INTEGER", "3"],
+    ]);
+  });
+
   it.each([
     ["SUBCLASS", ["⊑", "->", "sub", "\\sqsubseteq"]],
     ["EQUIVALENT", ["≡", "==", "\\equiv"]],

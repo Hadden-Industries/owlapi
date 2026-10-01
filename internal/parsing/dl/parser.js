@@ -425,31 +425,14 @@ export class OWLDLSyntaxOWLParser {
   #parseLiteral() {
     const token = this.#lexer.consume();
     if (token.type === "INTEGER") {
-      const parsed = Number.parseInt(token.value, 10);
-      if (!Number.isSafeInteger(parsed)) {
-        this.#syntax(
-          "The integer literal is outside the safe integer range",
-          token,
-          { found: token.value },
-        );
-      }
       return this.#dataFactory.getOWLLiteral(
-        String(parsed),
+        token.value,
         IRI.create(XSD_INTEGER_IRI),
       );
     }
     if (token.type === "DOUBLE") {
-      const parsed = Number(token.value);
-      if (!Number.isFinite(parsed)) {
-        this.#syntax("The double literal is not finite", token, {
-          found: token.value,
-        });
-      }
-      const lexicalForm = Number.isInteger(parsed)
-        ? parsed.toFixed(1)
-        : String(parsed);
       return this.#dataFactory.getOWLLiteral(
-        lexicalForm,
+        token.value,
         IRI.create(XSD_DOUBLE_IRI),
       );
     }

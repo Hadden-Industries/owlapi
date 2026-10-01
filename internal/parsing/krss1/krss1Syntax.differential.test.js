@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 
 import { StringDocumentSource } from "../../../index.js";
 import { OWLManager } from "../../../index.js";
-import { OWLObjectKind } from "../../../model/index.js";
+import { IRI, OWLDataFactory, OWLObjectKind } from "../../../model/index.js";
 
 const namespace = "urn:test:phase17#";
 const representations = [
@@ -76,7 +76,7 @@ describe("KRSS1 structural differentials", () => {
     expect(expected).toHaveLength(2);
   });
 
-  it("pins the Java-reachable subset and makes corrected ABox behavior explicit", async () => {
+  it("preserves historical rejection evidence and verifies the supported companion exactly", async () => {
     const root = new URL(
       "../../../util/owlapi-reference/fixtures/krss1/",
       import.meta.url,
@@ -84,16 +84,90 @@ describe("KRSS1 structural differentials", () => {
     const javaDocument = JSON.parse(
       readFileSync(new URL("phase17-structural.java.json", root), "utf8"),
     );
+    await expect(
+      load(
+        readFileSync(new URL("phase17-structural.krss", root), "utf8"),
+        "phase17-structural.krss",
+      ),
+    ).rejects.toMatchObject({ code: "UNSUPPORTED_CONSTRUCT" });
     const ontology = await load(
-      readFileSync(new URL("phase17-structural.krss", root), "utf8"),
-      "phase17-structural.krss",
+      readFileSync(new URL("source-preservation-supported.krss", root), "utf8"),
+      "source-preservation-supported.krss",
     );
+    const f = new OWLDataFactory();
+    const iri = (name) => IRI.create(`${namespace}${name}`);
+    const c = (name) => f.getOWLClass(iri(name));
+    const p = (name) => f.getOWLObjectProperty(iri(name));
+    const i = (name) => f.getOWLNamedIndividual(iri(name));
+    const expected = [
+      f.getOWLSubClassOfAxiom(c("Person"), c("Mammal")),
+      f.getOWLEquivalentClassesAxiom([
+        c("Parent"),
+        f.getOWLObjectIntersectionOf([
+          c("Person"),
+          f.getOWLObjectSomeValuesFrom(p("hasChild"), c("Person")),
+        ]),
+      ]),
+      f.getOWLEquivalentClassesAxiom([
+        c("Guardian"),
+        f.getOWLObjectUnionOf([
+          c("Parent"),
+          f.getOWLObjectComplementOf(c("Robot")),
+        ]),
+      ]),
+      f.getOWLEquivalentClassesAxiom([
+        c("Responsible"),
+        f.getOWLObjectAllValuesFrom(p("hasChild"), c("Person")),
+      ]),
+      f.getOWLSubObjectPropertyOfAxiom(p("hasChild"), p("hasRelative")),
+      f.getOWLTransitiveObjectPropertyAxiom(p("hasRelative")),
+      f.getOWLObjectPropertyRangeAxiom(p("hasChild"), c("Person")),
+      f.getOWLClassAssertionAxiom(c("Parent"), i("alice")),
+      f.getOWLObjectPropertyAssertionAxiom(p("hasChild"), i("alice"), i("bob")),
+      f.getOWLSameIndividualAxiom([i("alice"), i("aliceAlias")]),
+      f.getOWLDifferentIndividualsAxiom([i("alice"), i("bob")]),
+    ];
+    expect(structuralKeys(ontology)).toEqual(
+      expected.map((a) => a.structuralKey()).sort(),
+    );
+    expect(
+      [
+        ...ontology.getClassesInSignature(),
+        ...ontology.getObjectPropertiesInSignature(),
+        ...ontology.getIndividualsInSignature(),
+      ]
+        .map((e) => e.structuralKey())
+        .sort(),
+    ).toEqual(
+      [
+        ...[
+          "Person",
+          "Mammal",
+          "Parent",
+          "Guardian",
+          "Robot",
+          "Responsible",
+        ].map(c),
+        ...["hasChild", "hasRelative"].map(p),
+        ...["alice", "bob", "aliceAlias"].map(i),
+      ]
+        .map((e) => e.structuralKey())
+        .sort(),
+    );
+    expect(ontology.getDataPropertiesInSignature().size).toBe(0);
+    expect(ontology.getAnnotationPropertiesInSignature().size).toBe(0);
+    expect(ontology.getDatatypesInSignature().size).toBe(0);
+    expect([...ontology.getImportsDeclarations()]).toEqual([]);
+    expect([...ontology.getAnnotations()]).toEqual([]);
     const counts = typeCounts(ontology);
 
     expect(javaDocument.oracle).toMatchObject({
       revision: "d7e997a53b470e32700de89cc610d9daf01ea769",
       version: "5.5.1",
     });
+    // This is the historical run, not a Java run of the companion. The
+    // companion omits only right-identity, which had no effect in that run.
+    // Exact companion structures are independently asserted above.
     expect(counts).toMatchObject(javaDocument.snapshot.axiomTypeCounts);
     expect(counts).toMatchObject({
       ClassAssertion: 1,

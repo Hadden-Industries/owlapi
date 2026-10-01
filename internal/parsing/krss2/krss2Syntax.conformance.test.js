@@ -4,7 +4,7 @@ import {
   StringDocumentSource,
 } from "../../../index.js";
 import { OWLManager } from "../../../index.js";
-import { OWLObjectKind } from "../../../model/index.js";
+import { IRI, OWLDataFactory, OWLObjectKind } from "../../../model/index.js";
 
 const load = (text) =>
   OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(
@@ -64,6 +64,29 @@ describe("KRSS2 grammar conformance", () => {
     expect(
       ontology.getAxiomsByType(OWLObjectKind.SUB_PROPERTY_CHAIN_AXIOM),
     ).toHaveProperty("size", 2);
+    const factory = new OWLDataFactory();
+    const role = (name) =>
+      factory.getOWLObjectProperty(
+        IRI.create(`urn:test:krss2-conformance#${name}`),
+      );
+    expect(
+      [...ontology.getAxiomsByType(OWLObjectKind.SUB_PROPERTY_CHAIN_AXIOM)]
+        .map((axiom) => axiom.structuralKey())
+        .sort(),
+    ).toEqual(
+      [
+        factory.getOWLSubPropertyChainOfAxiom(
+          [role("child"), role("sibling")],
+          role("child"),
+        ),
+        factory.getOWLSubPropertyChainOfAxiom(
+          [role("ancestor"), role("parent")],
+          role("parent"),
+        ),
+      ]
+        .map((axiom) => axiom.structuralKey())
+        .sort(),
+    );
     expect(
       ontology.getAxiomsByType(OWLObjectKind.OBJECT_PROPERTY_DOMAIN_AXIOM),
     ).toHaveProperty("size", 2);

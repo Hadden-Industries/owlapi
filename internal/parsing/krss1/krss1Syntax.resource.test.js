@@ -4,7 +4,7 @@ import {
 } from "../../../index.js";
 import { OWLManager } from "../../../index.js";
 import { OWLParserRegistry } from "../parserRegistry.js";
-import { OWLDataFactory } from "../../../model/index.js";
+import { IRI, OWLDataFactory } from "../../../model/index.js";
 
 import { krss1ParserDescriptor } from "./descriptor.js";
 
@@ -23,6 +23,27 @@ const load = (manager, text, values = {}) =>
   );
 
 describe("KRSS1 resource safety and transactions", () => {
+  it("rolls back unsupported clauses and allows reuse of the same document identity", async () => {
+    const manager = createManager();
+    await expect(
+      load(
+        manager,
+        "(define-concept A B) (define-primitive-role p q :right-identity r)",
+      ),
+    ).rejects.toMatchObject({ code: "UNSUPPORTED_CONSTRUCT" });
+    const ontology = await load(manager, "(define-primitive-role p q)");
+    const factory = manager.getOWLDataFactory();
+    expect([...ontology.getClassesInSignature()]).toEqual([]);
+    expect([...ontology.getAxioms()].map((a) => a.structuralKey())).toEqual([
+      factory
+        .getOWLSubObjectPropertyOfAxiom(
+          factory.getOWLObjectProperty(IRI.create("urn:test:krss1-resource#p")),
+          factory.getOWLObjectProperty(IRI.create("urn:test:krss1-resource#q")),
+        )
+        .structuralKey(),
+    ]);
+  });
+
   it("enforces token, input, axiom, nesting, and timeout limits", async () => {
     const manager = createManager();
     const document = "(define-concept A B)";

@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { exerciseParserPreservation } from "./import-closure/public-contract.js";
 
 import * as root from "owlapi";
 import { OWLManager } from "owlapi/apibinding";
@@ -72,4 +73,13 @@ assert.equal(provider.ontologies().size, 1);
 assert.equal(merged.getAxioms().size, ontology.getAxioms().size);
 assert.equal(merged.getImportsDeclarations().size, 0);
 assert.equal(merged.getOntologyID().ontologyIRI, undefined);
+assert.deepEqual(await exerciseParserPreservation(), {
+  modes: ["strict", "compatible", "preserve"],
+  literalCount: 5,
+  formats: ["dl", "functional", "krss1"],
+  storage: ["functional", "rdfxml"],
+  fatalImport: true,
+  source: "valid",
+  literalBudget: "unverified",
+});
 process.stdout.write("Installed owlapi public-boundary smoke test passed\n");

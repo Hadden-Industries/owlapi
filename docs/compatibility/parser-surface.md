@@ -26,6 +26,8 @@ Because the syntax has no ontology header, a supplied document IRI defines its e
 The pinned Java whole-document differential uses only productions reachable through that entry point.
 Focused project tests also preserve inventoried assertion, inverse-property and numeric-data productions that the Java dispatcher can misroute, accept ordinary terminal whitespace and attached property colons, and retain unmatched general subclass axioms rather than silently dropping them.
 These controlled corrections are recorded in the Phase 10 provenance research and lesson record; the shared oracle fixture itself has no expected structural difference.
+The 2026-10-01 source-preservation correction retains each accepted integer or double token's exact lexical string in every parsing mode, including leading/trailing zeros and integers beyond JavaScript's safe range.
+Cardinality normalization and the existing numeric token grammar are unchanged; datatype assessment remains separate from parsing.
 
 Distinct format descriptors are retained even when one dependency implements several formats.
 Phase 9 registers only exact `text/turtle`; N-Triples, N-Quads, TriG, and the broader N3 language remain unsupported until their separate governed scopes say otherwise.
@@ -33,5 +35,7 @@ Phase 9 registers only exact `text/turtle`; N-Triples, N-Quads, TriG, and the br
 
 Phase 17 implements original KRSS through its own descriptor and adapter over the bounded KRSS-family core.
 Shared top-level syntax stays ambiguous: generic `.krss` selects the narrower KRSS1 dialect first, exact `.krss2` selects KRSS2, and definite KRSS2-only vocabulary excludes KRSS1.
-The finite Java-oracle inventory records four controlled corrections—discarded ABox axioms, unreachable integer cardinalities, malformed bare-name bases, and singleton Boolean objects outside the OWL 2 structural invariant—plus preserved right-identity/no-effect and full-IRI rejection behavior.
+The finite Java-oracle inventory records five controlled corrections: discarded ABox axioms, unreachable integer cardinalities, malformed bare-name bases, singleton Boolean objects outside the OWL 2 structural invariant, and explicit rejection of unsupported right-identity clauses.
+The 2026-10-01 decision supersedes earlier no-effect acceptance: well-formed KRSS1 `:right-identity` fails with `UNSUPPORTED_CONSTRUCT` in every mode; malformed local clauses retain syntax errors.
+Full-IRI rejection and KRSS2's ordered identity chains remain unchanged.
 No KRSS1 path called the pre-cutover KRSS2 parser, which Phase 18 subsequently deleted.
