@@ -2034,7 +2034,7 @@
       "id": "PHASE10-DL-PARSER",
       "path": "internal/parsing/dl/parser.js",
       "phase": 10,
-      "scope": "independently authored direct construction of the OWLAPI DL dialect's structural class, assertion, and object-property axiom subset with deterministic document namespaces and no RDF or legacy-parser detour",
+      "scope": "independently authored direct construction of the OWLAPI DL dialect's structural class, assertion, and object-property axiom subset with deterministic document namespaces and no RDF or legacy-parser detour; the owner-approved 2026-10-01 correction preserves exact numeric lexical strings per OWL 2 Structural Specification section 5.7",
       "legacyWebVowlSources": ["src/owl2vowl/js/dlSyntaxParser.js"],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [
@@ -2210,7 +2210,7 @@
       "id": "PHASE17-KRSS-PARSER-CORE",
       "path": "internal/parsing/krss/parserCore.js",
       "phase": 17,
-      "scope": "dialect-neutral lazy recursive-descent core for common KRSS expressions, construction, document ordering, diagnostics, yielding, and finite resource enforcement",
+      "scope": "dialect-neutral lazy recursive-descent core for common KRSS expressions, construction, document ordering, diagnostics, yielding, and finite resource enforcement; the owner-approved 2026-10-01 correction rejects unsupported KRSS1 right-identity after local syntax validation, superseding no-effect acceptance without changing KRSS2",
       "legacyWebVowlSources": [],
       "provenanceCategory": "A_PROJECT_ORIGINAL",
       "normativePublicSources": [

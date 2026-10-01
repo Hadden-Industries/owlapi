@@ -1,4 +1,8 @@
-import { OWLSyntaxError, ResourceLimitError } from "../../../io/errors.js";
+import {
+  OWLSyntaxError,
+  ResourceLimitError,
+  UnsupportedConstructError,
+} from "../../../io/errors.js";
 import { IRI } from "../../../model/structural.js";
 import { normalizeCardinality } from "../../model/cardinality.js";
 import { KRSSLexer } from "./lexer.js";
@@ -434,9 +438,18 @@ export class KRSSParserCore {
           found: `:${attribute.value}`,
         });
       }
-      // The OWLAPI KRSS1 parser accepts the legacy clause but exposes no
-      // structural axiom for it. Consume its role without guessing semantics.
+      // Validate the local production before rejecting its unsupported semantics.
       this.#parseNamedObjectProperty();
+      this.#expect(")");
+      throw new UnsupportedConstructError(
+        "KRSS1 right-identity has no supported structural mapping",
+        {
+          format: "krss1",
+          construct: ":right-identity",
+          reason: "UNSUPPORTED_KRSS1_RIGHT_IDENTITY",
+          ...this.#location(attribute),
+        },
+      );
     }
     this.#expect(")");
     return [this.#dataFactory.getOWLSubObjectPropertyOfAxiom(property, parent)];

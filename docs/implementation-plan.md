@@ -6338,6 +6338,11 @@ If the Java parser accepts a production but observably drops it, Phase 17 **MUST
 
 #### 17.24.3 Corpus provenance and evidence classes
 
+The owner-approved 2026-10-01 source-preservation amendment supersedes the original no-effect KRSS1 `:right-identity` decision.
+A syntactically well-formed clause **MUST** fail with `UNSUPPORTED_CONSTRUCT` and reason `UNSUPPORTED_KRSS1_RIGHT_IDENTITY` in every parsing mode; malformed local productions remain syntax errors.
+It **MUST NOT** silently discard the clause or infer a KRSS2 property-chain mapping.
+Historical Java observations and fixture bytes remain unchanged; `source-preservation-supported.krss` is a project-authored companion that omits only the unsupported clause, not a new Java snapshot or historical corpus.
+
 The pre-phase provenance review found **zero** qualifying public historical ontology artifacts for both strict OWLAPI-style KRSS1 and KRSS2.
 A qualifying artifact would require all of the following: community value, preserved source bytes, first-party maintenance or authorship in the claimed dialect, exact dialect identification, credible release history and lawful public redistribution.
 Historical GO/NCIt conversions whose original bytes or first-party dialect authorship cannot be established, projections from modern ontologies, reconstructed publication snippets, renamed exports and related KRSS-family languages do not satisfy that intersection.

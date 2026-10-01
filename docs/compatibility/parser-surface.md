@@ -35,5 +35,7 @@ Phase 9 registers only exact `text/turtle`; N-Triples, N-Quads, TriG, and the br
 
 Phase 17 implements original KRSS through its own descriptor and adapter over the bounded KRSS-family core.
 Shared top-level syntax stays ambiguous: generic `.krss` selects the narrower KRSS1 dialect first, exact `.krss2` selects KRSS2, and definite KRSS2-only vocabulary excludes KRSS1.
-The finite Java-oracle inventory records four controlled corrections—discarded ABox axioms, unreachable integer cardinalities, malformed bare-name bases, and singleton Boolean objects outside the OWL 2 structural invariant—plus preserved right-identity/no-effect and full-IRI rejection behavior.
+The finite Java-oracle inventory records five controlled corrections: discarded ABox axioms, unreachable integer cardinalities, malformed bare-name bases, singleton Boolean objects outside the OWL 2 structural invariant, and explicit rejection of unsupported right-identity clauses.
+The 2026-10-01 decision supersedes earlier no-effect acceptance: well-formed KRSS1 `:right-identity` fails with `UNSUPPORTED_CONSTRUCT` in every mode; malformed local clauses retain syntax errors.
+Full-IRI rejection and KRSS2's ordered identity chains remain unchanged.
 No KRSS1 path called the pre-cutover KRSS2 parser, which Phase 18 subsequently deleted.

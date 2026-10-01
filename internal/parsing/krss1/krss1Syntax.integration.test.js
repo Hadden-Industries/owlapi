@@ -4,8 +4,31 @@ import {
   StringDocumentSource,
 } from "../../../index.js";
 import { OWLManager } from "../../../index.js";
+import { jest } from "@jest/globals";
+import { OWLParserRegistry } from "../parserRegistry.js";
+import { krss1ParserDescriptor } from "./descriptor.js";
+import { krss2ParserDescriptor } from "../krss2/descriptor.js";
 
 describe("KRSS1 manager integration", () => {
+  it("never falls back to KRSS2 after a fatal exact KRSS1 failure", async () => {
+    const createParser = jest.fn(krss2ParserDescriptor.createParser);
+    const registry = new OWLParserRegistry([
+      krss1ParserDescriptor,
+      { ...krss2ParserDescriptor, createParser },
+    ]);
+    await expect(
+      OWLManager.createOWLOntologyManager({
+        registry,
+      }).loadOntologyFromOntologyDocument(
+        new StringDocumentSource(
+          "(define-primitive-role p q :right-identity r)",
+          { format: "krss1" },
+        ),
+      ),
+    ).rejects.toMatchObject({ code: "UNSUPPORTED_CONSTRUCT" });
+    expect(createParser).not.toHaveBeenCalled();
+  });
+
   it("loads KRSS1 explicitly and through a generic .krss hint", async () => {
     for (const configuration of [
       new OWLOntologyLoaderConfiguration({ format: OWLDocumentFormats.KRSS1 }),

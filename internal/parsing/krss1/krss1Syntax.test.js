@@ -63,19 +63,51 @@ describe("KRSS1 structural parser", () => {
     }
   });
 
-  it("accepts :right-identity without inventing an OWL axiom", async () => {
-    const ontology = await load(
-      "(define-primitive-role hasChild hasRelative :right-identity identityRole)",
-    );
+  describe.each(["strict", "compatible", "preserve"])(
+    "unsupported clauses in %s",
+    (parsingMode) => {
+      it.each([":right-identity", ":RiGhT-IdEnTiTy"])(
+        "rejects %s explicitly",
+        async (attribute) => {
+          await expect(
+            load(`(define-primitive-role p q ${attribute} r)`, { parsingMode }),
+          ).rejects.toMatchObject({
+            code: "UNSUPPORTED_CONSTRUCT",
+            format: "krss1",
+            construct: ":right-identity",
+            reason: "UNSUPPORTED_KRSS1_RIGHT_IDENTITY",
+          });
+        },
+      );
+      it.each([
+        "(define-primitive-role p :right-identity r)",
+        "(define-primitive-role p q :right-identity)",
+        "(define-primitive-role p q :right-identity r",
+        "(define-primitive-role p q :right-identity r :right-identity s)",
+      ])(
+        "keeps malformed local production %s as a syntax error",
+        async (text) => {
+          await expect(load(text, { parsingMode })).rejects.toMatchObject({
+            code: "OWL_SYNTAX_ERROR",
+          });
+        },
+      );
+    },
+  );
 
-    // OWLAPI's KRSS1 parser consumes this legacy KRSS clause but exposes only
-    // the sub-property axiom; preserving that observable contract is safer than
-    // guessing a property-chain meaning absent from the public KRSS1 surface.
-    expect(ontology.getAxioms()).toHaveProperty("size", 1);
-    expect(
-      ontology.getAxiomsByType(OWLObjectKind.SUB_OBJECT_PROPERTY_AXIOM),
-    ).toHaveProperty("size", 1);
-  });
+  it.each([true, false])(
+    "honours sourceLocations=%s for unsupported clauses",
+    async (sourceLocations) => {
+      const text = "(define-primitive-role p q :right-identity r)";
+      const error = await load(text, { sourceLocations }).catch(
+        (cause) => cause,
+      );
+      expect(error.code).toBe("UNSUPPORTED_CONSTRUCT");
+      if (sourceLocations)
+        expect(error).toMatchObject({ line: 1, column: 28, offset: 27 });
+      else expect(error).not.toHaveProperty("offset");
+    },
+  );
 
   it("rejects KRSS2-only top-level productions", async () => {
     await expect(load("(implies Person Mammal)")).rejects.toMatchObject({

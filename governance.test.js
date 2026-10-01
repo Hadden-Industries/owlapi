@@ -1068,6 +1068,18 @@ describe("owlapi governance artifacts", () => {
   });
 
   it("keeps KRSS1 and KRSS2 as distinct compatibility identities", () => {
+    const oracle = readJson(
+      "./docs/compatibility/krss1-behavioral-oracle.json",
+    );
+    expect(
+      oracle.decisions.find(
+        ({ id }) => id === "KRSS1-RIGHT-IDENTITY-CONSUMED-NO-AXIOM",
+      ),
+    ).toMatchObject({
+      javaObservation: "ACCEPTED_NO_STRUCTURAL_EFFECT",
+      javascriptBehavior: "REJECTED_WITH_UNSUPPORTED_CONSTRUCT",
+      classification: "CONTROLLED_COMPATIBILITY_CORRECTION",
+    });
     const matrix = readJson("./docs/compatibility/capabilities.json");
     const byId = new Map(
       matrix.capabilities.map((capability) => [capability.id, capability]),

@@ -9,10 +9,10 @@
     {
       "id": "KRSS1-RIGHT-IDENTITY-CONSUMED-NO-AXIOM",
       "javaObservation": "ACCEPTED_NO_STRUCTURAL_EFFECT",
-      "javascriptBehavior": "ACCEPTED_NO_STRUCTURAL_EFFECT",
-      "classification": "COMPATIBILITY_PRESERVED",
+      "javascriptBehavior": "REJECTED_WITH_UNSUPPORTED_CONSTRUCT",
+      "classification": "CONTROLLED_COMPATIBILITY_CORRECTION",
       "fixture": "util/owlapi-reference/fixtures/krss1/phase17-structural.krss",
-      "rationale": "The legacy clause has no justified OWL structural mapping; inventing a property-chain axiom would misrepresent the original parser contract."
+      "rationale": "The 2026-10-01 source-preservation decision supersedes no-effect acceptance: a well-formed clause rejects with UNSUPPORTED_KRSS1_RIGHT_IDENTITY because no justified structural mapping exists. The historical fixture and Java observation remain unchanged."
     },
     {
       "id": "KRSS1-ABOX-AXIOMS-PRESERVED",
