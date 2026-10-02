@@ -17,7 +17,13 @@ it("lets package-owned storers inspect immutable parameters without a public met
   expect(publicModel.readDocumentFormatParameters).toBeUndefined();
   expect(
     Object.getOwnPropertyNames(implementation.OWLDocumentFormat.prototype),
-  ).toEqual(["constructor", "getParameter", "withParameter"]);
+  ).toEqual([
+    "constructor",
+    "getParameter",
+    "getOntologyLoaderMetaData",
+    "withOntologyLoaderMetaData",
+    "withParameter",
+  ]);
   expect(() =>
     implementation.readDocumentFormatParameters(
       Object.create(implementation.OWLDocumentFormat.prototype),

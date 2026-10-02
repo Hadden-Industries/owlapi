@@ -1,5 +1,9 @@
 # Extract and Publish the `owlapi` Core Module from WebVOWL
 
+The owner's 2 October 2026 consumer-repair instruction is implemented through the [bounded RDF compatibility plan](plans/2026-10-02-rdf-consumer-compatibility.md) and [Java-style parser metadata contract](compatibility/rdf-parser-metadata.md).
+Consumer requests remain subject to owlapi's Java OWLAPI responsibility; VOWL source ledgers, projection and admission policy remain consumer work.
+These additions require fresh candidate qualification and do not enable publication.
+
 > **Status:** Final architecture and implementation blueprint\
 > **Research baseline:** 8 August 2026\
 > **Package identity and versioning decision, amended 30 September 2026:** publish `@hadden-industries/owlapi@0.1.0-rc.1` under `next`; recommend the exact native npm alias `owlapi`; permit UO and WebVOWL production after artifact verification and each application's full consumer acceptance; retain later stable `0.1.0` under `latest` as a separate library release.
@@ -27,7 +31,7 @@
 > Post-release W3C reporting remains a separate programme and not a release gate.
 >
 > **Integrated-candidate scope:** The dated alpha procedures and retained alpha evidence below remain historical inputs, not acceptance evidence for `0.1.0-rc.1`.
-> Where earlier stages list five import roots, integrated first-release qualification MUST exercise all six roots in the current `package.json`, including `owlapi/util`, under the Phase 21/22 plan.
+> Where earlier stages list five import roots, integrated first-release qualification MUST exercise all seven roots in the current `package.json`, including `owlapi/util` and the subsequently approved `owlapi/profiles`, under the Phase 21/22 plan.
 > A new public RC is not required before the integrated candidate or first production release.
 >
 > **Public-API decision, amended 28 September 2026:** production `0.1.0` exposes the Java-recognizable `owlapi`, `owlapi/apibinding`, `owlapi/model`, `owlapi/io`, `owlapi/formats`, and `owlapi/util` entry points; RDF/JS parsing, graph policy, and OWL↔RDF translators remain internal engines behind manager, document, and format APIs; the public surface follows the disciplined zero-major compatibility policy in §2.27 rather than claiming post-zero stability.
@@ -800,7 +804,7 @@ It is a curated JavaScript convenience aggregate and has no claimed one-to-one J
 Every root binding nevertheless **MUST** be an explicit re-export of an approved binding from a registered Java-backed subpath.
 The root may not be used to smuggle a JavaScript-only subsystem into the public contract.
 
-The scoped RC and later `0.1.0` registry expose exactly the six roots below.
+The scoped RC and later `0.1.0` registry expose exactly the seven roots below.
 Canonical generated specifiers use `@hadden-industries/owlapi`; the table shows their local `owlapi` alias spellings:
 
 | Public specifier    | Responsibility                                                                                                          | Java OWLAPI relationship                |
@@ -810,6 +814,7 @@ Canonical generated specifiers use `@hadden-industries/owlapi`; the table shows 
 | `owlapi/model`      | Structural objects, ontology, ontology manager, data factory, model-level loader configuration and document-format base | `org.semanticweb.owlapi.model`          |
 | `owlapi/io`         | Document sources and I/O/parser diagnostics                                                                             | `org.semanticweb.owlapi.io`             |
 | `owlapi/formats`    | Supported ontology-document format identities                                                                           | `org.semanticweb.owlapi.formats`        |
+| `owlapi/profiles`   | OWL 2 DL profile checks and reports                                                                                     | `org.semanticweb.owlapi.profiles`       |
 | `owlapi/util`       | Import-closure set provider and ontology merger                                                                         | `org.semanticweb.owlapi.util`           |
 
 Nested Java packages may later be added at their complete natural depth, for example `org.semanticweb.owlapi.model.parameters` as `owlapi/model/parameters`.
@@ -1318,7 +1323,7 @@ Branded, historical and physical-device results remain transparent non-blocking 
 
 ### 2.21 Decision: support bundlers and document import maps as complementary browser paths
 
-The package supports two browser consumption modes over the same unconditional native-ESM source and the same six public package specifiers:
+The package supports two browser consumption modes over the same unconditional native-ESM source and the same seven public package specifiers:
 
 1. **Bundler consumption is primary.**
    A standards-conforming package-aware bundler resolves the npm `exports` map, direct dependencies and lazy imports.
@@ -1334,7 +1339,7 @@ Phase 19 uses exact `@jspm/generator@2.16.3` under §2.46 as release/development
 Neither the generator nor provider is a production dependency or a URL hard-coded into package source.
 
 The reference path **MUST** prove the actual accepted capability surface rather than a reduced no-build edition.
-Its Chromium, Firefox and WebKit fixture imports all six public specifiers and performs representative public-manager loads for an OWL-native syntax, RDF/XML, Turtle and JSON-LD so the principal static and lazy dependency paths execute.
+Its Chromium, Firefox and WebKit fixture imports all seven public specifiers and performs representative public-manager loads for an OWL-native syntax, RDF/XML, Turtle and JSON-LD so the principal static and lazy dependency paths execute.
 It also verifies that the reference map is version-pinned, contains complete provider integrity metadata, agrees with the public-export and production-closure registries, has retrievable public URLs and executes through the integrity-verified local mirror without `es-module-shims`.
 
 This support claim does not mean that an arbitrary raw npm `node_modules` tree can be exposed over HTTP without preparation.
@@ -1543,7 +1548,7 @@ These dimensions are distinct from semantic capability status: a capability may 
 
 The documented 0.1 compatibility contract comprises:
 
-- the six public package specifiers and their named-export identities;
+- the seven public package specifiers and their named-export identities;
 - every registry binding classified `INITIAL_DEVELOPMENT` or `DEPRECATED_INITIAL_DEVELOPMENT`;
 - documented constructors, methods, accepted argument forms and return-value semantics;
 - documented public `kind` identifiers and structural properties;
@@ -2048,7 +2053,7 @@ The root aggregate may re-export approved bindings from the five subpaths, but e
 
 The initial manifest **MUST NOT** define `main`, `module`, `browser`, an environment condition, a wildcard/pattern export, an extension-bearing alias, or `./package.json`. It exposes neither the physical public-source filenames nor any `internal/` path. In particular, `owlapi/model.js`, `owlapi/model/index.js`, `owlapi/package.json` and `owlapi/*` are not alternate public spellings. Supporting old Node/package tooling is outside the declared environment contract and does not justify a redundant fallback entry point.
 
-Package-governance tests **MUST** compare the manifest with the Public API Surface Registry, import all six exact specifiers, prove the root/subpath binding identities and require `ERR_PACKAGE_PATH_NOT_EXPORTED` or the equivalent resolver failure for every representative alias, deep path and metadata path.
+Package-governance tests **MUST** compare the manifest with the Public API Surface Registry, import all seven exact specifiers, prove the root/subpath binding identities and require `ERR_PACKAGE_PATH_NOT_EXPORTED` or the equivalent resolver failure for every representative alias, deep path and metadata path.
 Any later public subpath requires a Java-package registry decision and the normal SemVer/API process; it cannot be admitted through a pattern.
 
 ### 2.44 Decision: require import purity and publish `sideEffects: false`
@@ -2125,9 +2130,9 @@ Phase 19 **MUST** add exact `@jspm/generator@2.16.3` as a development dependency
 }
 ```
 
-The generator links the six entry points from the unpacked retained `owlapi` tarball and traces their static and statically analyzable literal dynamic-import closure.
+The generator links the seven entry points from the unpacked retained `owlapi` tarball and traces their static and statically analyzable literal dynamic-import closure.
 `owlapi` itself therefore remains the locally inspected candidate; only browser-loadable third-party dependency resolutions use the provider.
-The checked reference map names all six public specifiers, exact package versions, scopes where required and integrity metadata for every provider asset that can carry it.
+The checked reference map names all seven public specifiers, exact package versions, scopes where required and integrity metadata for every provider asset that can carry it.
 It uses documented upstream browser ESM entry points where available.
 Generation fails on a floating version, missing public root, unresolved lazy import, unresolved CommonJS/UMD execution at browser runtime or integrity omission.
 An audited provider conversion of a private CommonJS dependency is permitted only when the converted module and every introduced shim are explicit members of the governed closure rather than hidden runtime behavior.
@@ -2790,7 +2795,7 @@ macos-15     / arm64 / Node 24.19.0
 ```
 
 This is a focused public-boundary suite rather than a duplicate conformance corpus.
-It installs with the same consumer rules, imports all six public specifiers, constructs the manager and data factory, loads representative OWL-native, RDF/XML, Turtle and JSON-LD documents, exercises diagnostics/errors, proves import purity and no automatic network access, and detects path-separator, filename-case, line-ending, encoding and architecture assumptions.
+It installs with the same consumer rules, imports all seven public specifiers, constructs the manager and data factory, loads representative OWL-native, RDF/XML, Turtle and JSON-LD documents, exercises diagnostics/errors, proves import purity and no automatic network access, and detects path-separator, filename-case, line-ending, encoding and architecture assumptions.
 Every lane is required in `ci.yml` and against the retained candidate in `release.yml`.
 A failure is a portability defect or an explicitly reviewed support-contract decision; it cannot be relabelled as extended evidence.
 
@@ -6827,7 +6832,7 @@ The record, schema and review evidence remain repository-only; the compact packa
 
 ##### 17.26.1.1 Runtime portability and package-condition policy
 
-The six approved public exports **MUST** resolve to unconditional native-ESM targets.
+The seven approved public exports **MUST** resolve to unconditional native-ESM targets.
 Phase 19 **MUST NOT** introduce `node`, `browser` or other environment-conditioned package `exports`, or a package `imports` field for platform selection, merely because `owlapi` supports both Node and browsers.
 Those package mechanisms are appropriate only when supported environments genuinely require different module targets; they are not a substitute for a portable implementation or a narrow environment adapter.
 This decision follows the §13 portability rules and Node's distinction between ordinary exports and [private conditional package imports](https://nodejs.org/api/packages.html#subpath-imports).
@@ -6892,7 +6897,7 @@ Under §2.57, three separate `ubuntu-24.04` jobs each install only the selected 
 
 All three fixtures install the retained tarball as an ordinary dependency.
 They must not use a workspace, source alias, repository-relative package import or unexported path.
-The import-map fixture additionally uses `scripts/generate-reference-import-map.mjs` to trace the six public roots and their static/literal-dynamic production closure with exact `@jspm/generator@2.16.3` and the §2.46 `jspm.io`/`production`+`browser`+`module`/integrity configuration. Link the six roots from the unpacked retained tarball and use the provider only for the browser-loadable external closure. Commit a human-reviewable version-pinned map example for the current package version, inject its JSON inline before the first dependent module, and make the generated-vs-reviewed comparison a package gate. Do not inject `es-module-shims`. Fail on an unpinned package URL, missing integrity metadata, an omitted public root, an unresolved lazy import, unresolved CommonJS/UMD semantics reaching browser execution, an unregistered provider conversion/shim, or a stale mapping.
+The import-map fixture additionally uses `scripts/generate-reference-import-map.mjs` to trace the seven public roots and their static/literal-dynamic production closure with exact `@jspm/generator@2.16.3` and the §2.46 `jspm.io`/`production`+`browser`+`module`/integrity configuration. Link the six roots from the unpacked retained tarball and use the provider only for the browser-loadable external closure. Commit a human-reviewable version-pinned map example for the current package version, inject its JSON inline before the first dependent module, and make the generated-vs-reviewed comparison a package gate. Do not inject `es-module-shims`. Fail on an unpinned package URL, missing integrity metadata, an omitted public root, an unresolved lazy import, unresolved CommonJS/UMD semantics reaching browser execution, an unregistered provider conversion/shim, or a stale mapping.
 
 Before browser execution, hydrate every referenced provider module, validate its bytes against the generated integrity metadata and build the ephemeral local mirror/map required by §2.46 without an additional project-owned source transformation.
 Run the native document test against that local mirror in every required engine.
@@ -6906,7 +6911,7 @@ Correct that seam behind the private XML adapter and verify that the fallback re
 
 Each Playwright engine must then prove:
 
-- all six public package specifiers import with identical binding identities where the root re-exports a subpath value;
+- all seven public package specifiers import with identical binding identities where the root re-exports a subpath value;
 - the ordinary bundled document loads representative OWL-native, RDF/XML, Turtle and JSON-LD documents through `OWLManager`;
 - the native import-map document performs the same representative loads without a bundler-owned application module graph, using the integrity-verified local mirror of the exact public reference-provider graph;
 - the bundled dedicated worker loads at least one XML document and one lazy RDF document, returns only structured-clone-safe result/evidence values, and emits no unresolved bare-specifier, CommonJS-global or missing-`DOMParser` failure; and
@@ -6925,7 +6930,7 @@ The README **MUST** include:
 - the new-package identity/discontinuity notice required by §2.10;
 - the §2.15 “Why `owlapi` exists” rationale, including why the evaluated adjacent projects did not satisfy the project's complete requirements;
 - installation through the exact native alias in §2.10, optional direct scoped imports, the selected RC's `next` channel, and no reliance on unqualified-install fallback behavior;
-- ESM examples using only the six supported specifiers, including paired Java/JavaScript manager, document-loading, data-factory, IRI and ontology- query examples;
+- ESM examples using only the seven supported specifiers, including paired Java/JavaScript manager, document-loading, data-factory, IRI and ontology- query examples;
 - supported formats, the exact §2.22 environment-status table, capability status and known limitations, including npm as the authoritative workflow, Yarn/pnpm as `PLAUSIBLE_UNVERIFIED`, CommonJS and the named alternative runtimes as `OUT_OF_SCOPE`, and the Node 22/24 distinction between runtime compatibility and upstream security maintenance, with the §2.57 tested Ubuntu x64/Windows x64/macOS arm64 representatives distinguished from other `PLAUSIBLE_UNVERIFIED` Node OS/architecture combinations;
 - the §2.11 integrated ingestion/lifecycle surface, including its Java parity, query, mutation, merger and manager-selected storage gates, while excluding project-specific materialization helpers and concrete public storer classes;
 - the relationship to, and compatibility objective with, Java OWLAPI, including a clear statement that this is an independent JavaScript implementation not affiliated with or endorsed by the Java OWLAPI project;
@@ -7066,8 +7071,8 @@ TypeScript declaration files and TypeScript documentation/build artefacts
 Consumer verification **MUST** cover at least:
 
 - the isolated WebVOWL candidate application's ordinary test/build workflows resolving all core imports through the installed retained tarball and public package exports, followed after publication by the same workflows against the exact registry dependency;
-- an approved six-root public-export/capability snapshot for §2.11, including the Phase 21/22 lifecycle gates and negative assertions against unapproved APIs, concrete public storers and internal RDF translator/factory exports;
-- named exports and binding-identity checks for all six public entry points, exact §2.43 target agreement, plus rejection of `main`/`module`/`browser`, conditions, patterns, extension aliases, `./package.json`, unexported deep imports and `owlapi/rdf`;
+- an approved seven-root public-export/capability snapshot for §2.11, including the Phase 21/22 lifecycle gates and negative assertions against unapproved APIs, concrete public storers and internal RDF translator/factory exports;
+- named exports and binding-identity checks for all seven public entry points, exact §2.43 target agreement, plus rejection of `main`/`module`/`browser`, conditions, patterns, extension aliases, `./package.json`, unexported deep imports and `owlapi/rdf`;
 - exact agreement among the installed README, `API.md`, `CHANGELOG.md`, the three shipped compatibility documents, the Public API Surface Registry, capability matrix and executable export inventory;
 - exact §2.39 description/keywords, omission of `funding`/`contributors`/author email/invented maintainer metadata, and §2.38 agreement among version, `publishConfig`, authorized command and requested channel;
 - exact §2.45 npm-native `devEngines` values, the running approved npm patch and absence of `engines.npm` and top-level `packageManager`;
@@ -7206,7 +7211,7 @@ the exact root owlapi coordinate passes npm registry-signature, provenance, publ
 the installed manifest has the exact description/keywords, the deliberately omitted metadata fields are absent, and publishConfig.tag=next
 the installed manifest has only the exact unconditional exports map, sideEffects=false and the approved devEngines npm patch, with no forbidden fallback/package-manager fields
 the manifest/tarball has no shrinkwrap, bundled, peer, optional or override dependency authority and no package lock
-all six public import specifiers pass the installed-package smoke suite
+all seven public import specifiers pass the installed-package smoke suite
 the installed files are canonical readable source plus exactly the approved documentation set
 API.md and the compatibility registries agree with the executable public inventory
 local publint@0.3.24 passes the registry-downloaded tarball in strict mode
@@ -7295,7 +7300,7 @@ These bullets replace the former single compound completion sentence.
   Licence, NOTICE, rights inventory, owner/author/steward metadata, provenance dispositions, inbound=outbound policy and absence of an unresolved external copyrightable contribution agree with the exact retained tarball.
   **Constraints:** §§2.12–2.14, 2.50, 22.
 - <a id="p19-package-001"></a> **`P19-PACKAGE-001` — Exact public package boundary.**
-  The readable ESM source, six unconditional exports, files allowlist, `sideEffects: false`, import purity/tree shaking, prohibited deep/ alias/metadata paths, lifecycle-hook exclusions and absence of generated, minified or TypeScript declaration trees pass against retained and installed tarballs.
+  The readable ESM source, seven unconditional exports, files allowlist, `sideEffects: false`, import purity/tree shaking, prohibited deep/ alias/metadata paths, lifecycle-hook exclusions and absence of generated, minified or TypeScript declaration trees pass against retained and installed tarballs.
   **Constraints:** §§2.23–2.26, 2.43–2.45.
 - <a id="p19-dependencies-001"></a> **`P19-DEPENDENCIES-001` — Governed runtime graph.**
   Exact foundational dependencies, the private dependency-seam registry, locked and lockless graphs, update policy, production audit, material inventory, NOTICE and package/SBOM relationships all reconcile.
@@ -7331,7 +7336,7 @@ These bullets replace the former single compound completion sentence.
   The applicable `OIDC_STAGED` or one-time `DIRECT_BOOTSTRAP` state machine publishes the exact qualified scoped RC under `next` with no `latest`, proves pre-tag candidate/staged-byte identity, and creates and verifies the signed immutable tag only at the authorized late boundary; if the reviewed §2.60 reconciliation exception is used, its pinned source run, exact imported artefacts, descendant promotion, full-tarball byte reproduction, absent remote identities and non-repeated qualification are all proved before write authority.
   **Constraints:** §§2.10, 2.29, 2.33, 2.38, 2.53, 2.60–2.61, 17.26.2–.3.
 - <a id="p19-public-verification-001"></a> **`P19-PUBLIC-VERIFICATION-001` — Fresh public verification.**
-  Cache-empty registry installation, root provenance, public metadata, all six entry points, dependency/browser/Node matrices, immutable release assets and durable release record reproduce the accepted retained candidate; both direct scoped installation and the exact native alias resolve the same scoped package and all six roots, while `latest` remains absent.
+  Cache-empty registry installation, root provenance, public metadata, all seven entry points, dependency/browser/Node matrices, immutable release assets and durable release record reproduce the accepted retained candidate; both direct scoped installation and the exact native alias resolve the same scoped package and all seven roots, while `latest` remains absent.
   **Constraints:** §§2.16, 2.24, 2.29, 2.39–2.40, 2.51–2.52, 17.26.4.
 - <a id="p19-webvowl-001"></a> **`P19-WEBVOWL-001` — Ordered external-package consumer.**
   In 19D1 WebVOWL declares only the equivalence-proved exact full-SHA Git coordinate, removes its staging copy, uses no relative/deep/local/workspace import or resolver alias, passes clean boundary/Jest/build/browser gates, and retains only dependencies with a statically and operationally proven WebVOWL owner.
@@ -7558,7 +7563,7 @@ After that command completes, approve `Release / publication confirmed`; only wh
 @hadden-industries/owlapi@next still resolves to the latest accepted Phase 20 RC, or otherwise the latest accepted RC, until cleanup
 registry integrity and tarball contents match the retained evidence
 the lockless fresh-consumer graph is recorded and reconciled with the locked release/SBOM graph
-all six public entry points work in clean Node and browser-bundle consumers
+all seven public entry points work in clean Node and browser-bundle consumers
 all forbidden deep/RDF implementation paths fail
 production dependency installation and audit pass
 the installed manifest records publishConfig.tag=latest and the exact discovery metadata
@@ -7630,7 +7635,7 @@ Phase 20 and this implementation plan complete only when every stable requiremen
 - <a id="p20-provenance-001"></a> **`P20-PROVENANCE-001` — Truthful OIDC/tag relationship.** npm provenance identifies the actual triggering ref, workflow run and source commit for the published bytes, while the separately created signed canonical tag and immutable GitHub release independently resolve to that same source commit; no evidence falsely claims that a later tag existed at attestation time.
   **Constraints:** §§2.51, 2.60, 17.27.5.
 - <a id="p20-package-001"></a> **`P20-PACKAGE-001` — Installed public boundary.**
-  All six public entry points and every approved Java-compatible example pass from the installed package, the exact §2.43 exports map is the sole entry authority, and `owlapi/rdf`, metadata/extension aliases and deep imports fail.
+  All seven public entry points and every approved Java-compatible example pass from the installed package, the exact §2.43 exports map is the sole entry authority, and `owlapi/rdf`, metadata/extension aliases and deep imports fail.
   **Constraints:** §§2.10.4, 2.43, 17.27.1.
 - <a id="p20-documentation-001"></a> **`P20-DOCUMENTATION-001` — Installed documentation contract.**
   The §2.24 installed documentation set is complete and internally consistent, `API.md` exhaustively covers the executable public inventory, every protected binding has its §2.27 classification, and no TypeScript declaration or duplicate/generated production tree is published.
@@ -8307,7 +8312,7 @@ Example:
   "license": "AGPL-3.0-only",
   "type": "module",
   "engines": {
-    "node": ">=22.23.2 <23 || >=24.19.0 <25"
+    "node": ">=22.23.3 <23 || >=24.21.0 <25"
   },
   "devEngines": {
     "runtime": {
@@ -8316,28 +8321,44 @@ Example:
     },
     "packageManager": {
       "name": "npm",
-      "version": "12.0.2",
+      "version": "12.1.0",
       "onFail": "error"
     }
   },
   "browserslist": "baseline widely available",
   "dependencies": {
+    "@hyperjump/uri": "1.3.6",
     "@rdfjs/data-model": "2.1.2",
     "@rdfjs/dataset": "2.0.3",
     "@xmldom/xmldom": "0.9.12",
+    "bcp-47": "2.1.1",
     "jsonld": "9.0.0",
-    "n3": "2.3.0",
+    "n3": "2.7.12",
     "rdfxml-streaming-parser": "3.3.0"
   },
   "devDependencies": {
     "@cyclonedx/cyclonedx-npm": "6.0.1",
+    "@eslint/js": "10.0.1",
+    "@eslint/markdown": "8.0.3",
     "@jspm/generator": "2.16.3",
-    "@playwright/test": "1.62.1",
+    "@playwright/test": "1.63.0",
     "ajv": "8.20.0",
     "ajv-formats": "3.0.1",
+    "cross-env": "10.1.0",
+    "eslint": "10.11.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-compat": "7.0.2",
+    "globals": "17.12.0",
+    "jest": "30.5.2",
+    "jsonpath-rfc9535": "1.3.0",
+    "pacote": "22.0.0",
+    "prettier": "3.9.9",
     "publint": "0.3.24",
     "semver": "7.8.5",
-    "vite": "8.2.2"
+    "spdx-expression-parse": "5.0.0",
+    "tar": "7.5.22",
+    "vite": "8.3.1",
+    "yaml": "2.9.1"
   },
   "exports": {
     ".": "./index.js",
@@ -8345,6 +8366,7 @@ Example:
     "./model": "./model/index.js",
     "./io": "./io/index.js",
     "./formats": "./formats/index.js",
+    "./profiles": "./profiles/index.js",
     "./util": "./util/index.js"
   },
   "files": [
@@ -8353,13 +8375,19 @@ Example:
     "model/",
     "io/",
     "formats/",
+    "profiles/",
+    "util/index.js",
+    "util/owlOntologyImportsClosureSetProvider.js",
+    "util/owlOntologyMerger.js",
     "internal/",
     "README.md",
     "API.md",
     "CHANGELOG.md",
     "LICENSE",
+    "LICENSES/Apache-2.0.txt",
     "NOTICE",
     "docs/compatibility/capabilities.json",
+    "docs/compatibility/canonical-vowl-prerequisites.md",
     "docs/compatibility/java-api-surface.json",
     "docs/compatibility/java-api-surface.md",
     "!**/*.test.js",
@@ -8386,11 +8414,11 @@ Do not expose every internal parser/utility file as accidental API. Except for `
 Every later release pull request changes its tag only as required by §2.38 and the executable channel-consistency gate.
 Description and keywords are the exact §2.39 discovery metadata; `funding`, `contributors`, author email and invented maintainer metadata remain absent.
 `sideEffects: false` is required by §2.44 and its complete-closure import-purity/ tree-shaking gate in §17.26 is release-blocking.
-The six export keys shown above are the sole §2.43 entry authority; their target filenames, registry rows, named facades, source modules and retained tarball must agree.
+The seven export keys shown above are the sole §2.43 entry authority; their target filenames, registry rows, named facades, source modules and retained tarball must agree.
 The Browserslist value shown is only the unreleased-main template.
 Every public release pull request replaces it with that immutable version's actual §2.20 dated query before packing; Phase 20 records its distinct production-freeze query before either an optional RC or the direct stable candidate.
-The six `dependencies` values and eight release-control `devDependencies` values shown are the exact Phase 19 targets under §§2.32 and 2.54.
-The six runtime dependencies are ordinary external runtime dependencies under §§2.32 and 2.48.
+The example records the current approved manifest, including later separately qualified dependency and profile changes.
+The runtime dependencies remain ordinary external dependencies under §§2.32 and 2.48; historical Phase 19 version targets below retain their original context.
 Their coordinated WebVOWL staging qualification was completed on 24 August 2026 with dependency-specific evidence inside one approved gate; Phase 19 must preserve and rerun that accepted baseline rather than repeat the version-selection work.
 The repository `package-lock.json` records the accepted release graph but is not a package file.
 The manifest has no `bundleDependencies`/`bundledDependencies`, `peerDependencies`, `optionalDependencies` or `overrides`, and the package has no `npm-shrinkwrap.json`. Other package-owned test/lint/format development dependencies retained by the extraction are separately inventoried and approved; they do not weaken or replace the eight exact release-control authorities, and no development dependency becomes a runtime dependency.
@@ -9239,7 +9267,7 @@ Retain GitHub's authenticated run-review history with the gate job timeline, kee
 - browser + Node support;
 - high-quality public API and semantic documentation;
 - WebVOWL as a declared production consumer using only `owlapi`, `owlapi/apibinding`, `owlapi/model`, `owlapi/io`, and `owlapi/formats`, with no relative source-tree reach-in or package-bypassing resolver alias;
-- the scoped npm identity `@hadden-industries/owlapi`, exact native alias and all six §2.10.4 roots; and
+- the scoped npm identity `@hadden-industries/owlapi`, exact native alias and all seven §2.10.4 roots; and
 - a public `0.1.0-rc.1` under `next` containing the approved ingestion and Phase 21/22 lifecycle surface, followed by UO artifact/consumer acceptance.
 
 ### 28.2 Explicitly not required for `0.1.0-rc.1`
@@ -9299,7 +9327,7 @@ The extraction is successful when all of the following are true:
 - the `owlapi` production package has no VOWL concepts.
 - `Hadden-Industries/owlapi` is the sole maintained package source; WebVOWL retains neither a package copy nor a workspace/submodule/subtree.
 - RDF/XML is absent as an internal interchange format.
-- WebVOWL imports the core only through the applicable six declared §2.10.4 package entry points; no `owlapi/rdf`, source-tree reach-in, or resolver alias bypasses the package.
+- WebVOWL imports the core only through the applicable seven declared §2.10.4 package entry points; no `owlapi/rdf`, source-tree reach-in, or resolver alias bypasses the package.
 
 ### Semantics
 
@@ -9620,9 +9648,9 @@ The normalized checked-in form assigns each row to its precise subset; this summ
 - [ ] <!-- Gate: P19-CHECK-079; Covers: P19-PACKAGE-001, P19-EVIDENCE-001 --> The actual retained tarball and the independent registry download both pass local exact `publint@0.3.24` in strict mode with identical relevant findings.
 - [ ] <!-- Gate: P19-CHECK-080; Covers: P19-PUBLICATION-001, P19-EVIDENCE-001, P19-CI-CONTROLS-001 --> The GitHub-hosted, manually dispatched `release.yml` run accepts only the captured protected-`main` head, derives version/tag/channel from reviewed files, proves the canonical tag is initially absent, and builds one retained tarball before that tag exists.
       At §§2.60–2.61's late boundary it waits without a runner at `Release / tag accepted`, then verifies the human-created SSH-signed annotated tag's already-authorized signer and exact captured-commit target through `docs/provenance/release-signers.json`, and uses separate clean full-tool and `npm ci --omit=dev` subject workspaces to generate a validated reproducible CycloneDX 1.6 JSON library SBOM with exact `@cyclonedx/cyclonedx-npm@6.0.1`.
-      It independently reconciles the subject's unflattened/full-PURL graph with `npm ls`, the lockfile and packed inventory, generates the exact sorted two-entry §2.52 `SHA256SUMS`, passes the files unchanged only between jobs in that run through the exact §2.56 upload/download SHAs and closed input maps, records the candidate artefact ID and archive digest, retrieves only that ID, rejects extra/missing files and verifies each transfer's SHA-256 without consuming a release cache, installs/audits them in clean consumers, smoke-tests all six public specifiers in Node, and fails if any release step changes the captured source tree.
+      It independently reconciles the subject's unflattened/full-PURL graph with `npm ls`, the lockfile and packed inventory, generates the exact sorted two-entry §2.52 `SHA256SUMS`, passes the files unchanged only between jobs in that run through the exact §2.56 upload/download SHAs and closed input maps, records the candidate artefact ID and archive digest, retrieves only that ID, rejects extra/missing files and verifies each transfer's SHA-256 without consuming a release cache, installs/audits them in clean consumers, smoke-tests all seven public specifiers in Node, and fails if any release step changes the captured source tree.
       A rerun never republishes an existing coordinate and can resume verification only after proving the public bytes/attestation/tag match the retained subject.
-- [ ] <!-- Gate: P19-CHECK-081; Covers: P19-EVIDENCE-001 --> After npm fresh-cache verification, generate and schema-check `owlapi-<version>.release-evidence.json` with exact `ajv@8.20.0` plus `ajv-formats@3.0.1` against its versioned Draft 2020-12 schema, attach it before immutable release publication, then use checksum-verified GitHub CLI `2.98.0` under §2.52 in a fresh job to verify the immutable release and each of the four downloaded assets, strictly check the tarball/SBOM checksums and independently verify the signed tag/commit without adding a redundant detached evidence signature.
+- [ ] <!-- Gate: P19-CHECK-081; Covers: P19-EVIDENCE-001 --> After npm fresh-cache verification, generate and schema-check `hadden-industries-owlapi-<version>.release-evidence.json` with exact `ajv@8.20.0` plus `ajv-formats@3.0.1` against its versioned Draft 2020-12 schema, attach it before immutable release publication, then use checksum-verified GitHub CLI `2.98.0` under §2.52 in a fresh job to verify the immutable release and each of the four downloaded assets, strictly check the tarball/SBOM checksums and independently verify the signed tag/commit without adding a redundant detached evidence signature.
       Commit the append-only repository `release.json` with evidence digest, immutable release URL and all attestation/verification identities; do not treat expiring Actions logs/ artifacts as the canonical record.
 - [ ] <!-- Gate: P19-CHECK-082; Covers: P19-BROWSER-001 --> the retained tarball passes exact `@playwright/test@1.62.1` in its matching Chromium, Firefox and WebKit revisions as three separate, one-worker, cache-free `ubuntu-24.04` jobs against exact `vite@8.2.2` package fixtures; install each engine/dependency set through the lockfile-owned CLI and a named npm script, never `npx`, an Action, runner browser or container; extended branded/historical/real-device evidence is reported only as `PASS`, `FAIL` or reasoned/date-stamped `NOT_RUN`, never terminal `INFRASTRUCTURE_ERROR`.
 - [ ] <!-- Gate: P19-CHECK-083; Covers: P19-BROWSER-001, P19-EVIDENCE-001 --> Later extended-environment executions add dated files beneath `docs/provenance/releases/<version>/extended-tests/` and may regenerate a summary, but never overwrite an earlier observation or rebuild the package.
@@ -9658,7 +9686,7 @@ The normalized checked-in form assigns every row to one or more of these IDs bef
 - [ ] <!-- Gate: P20-CHECK-005; Covers: P20-RELEASE-001, P20-PATH-001, P20-LATE-TAG-001 --> Freeze observable behaviour after the accepted RC when one exists; in the direct path, fully qualify and freeze the actual retained/staged `hadden-industries-owlapi-0.1.0.tgz`. Account for every comparison difference and publish only that separately authorized artefact through the same §§2.55–2.61 workflow/ Action/runner boundary after changing and validating `publishConfig.tag=latest` plus explicit `npm stage publish ... --tag latest`; bind the stage ID, downloaded candidate's matching SHA-256, source tag/commit, fixed tag, both ordered `release-manual` review records and interactive-2FA approval before verification/finalization.
 - [ ] <!-- Gate: P20-CHECK-006; Covers: P20-DOCUMENTATION-001, P20-PACKAGE-001 --> Mark every accepted public binding `INITIAL_DEVELOPMENT`, every retained deprecated binding `DEPRECATED_INITIAL_DEVELOPMENT` and every private engine `INTERNAL_ONLY`; reconcile those rows with `API.md`, compatibility data and executable exports.
 - [ ] <!-- Gate: P20-CHECK-007; Covers: P20-RELEASE-001, P20-PATH-001, P20-DOCUMENTATION-001 --> Enforce §2.27 zero-major SemVer/deprecation rules: compatible corrections use available `0.1.x` patches beginning with `0.1.1`; material additions or incompatible protected-surface changes use the next available zero-minor; the lifecycle programme is included in the first `0.1.0`; and a deprecated binding remains operational throughout its current 0.minor patch line without unsolicited console output.
-- [ ] <!-- Gate: P20-CHECK-008; Covers: P20-RELEASE-001, P20-CHANNEL-001, P20-EVIDENCE-001, P20-PACKAGE-001, P20-METADATA-001, P20-RUNTIME-001, P20-PORTABILITY-001, P20-CI-001, P20-BROWSER-001, P20-TOOLCHAIN-001, P20-DEPENDENCIES-001, P20-GOVERNANCE-001 --> Verify from a fresh cache that `latest` resolves exactly to the production cutover version—normally `0.1.0`—all six public entry points work, internal/deep/metadata/alias paths fail, discovery/channel metadata and the exact npm `12.0.2` `devEngines` value agree, import purity/tree shaking and the exact `@jspm/generator@2.16.3` reference/public-URL/local-mirror suite pass, locked/lockless graphs reconcile, strict registry-tarball lint passes, package/WebVOWL material inventories and notices agree with their distribution scopes, the exact npm root attestation validates, the separate-workspace `@cyclonedx/cyclonedx-npm@6.0.1` graph and Draft 2020-12 `ajv@8.20.0`/`ajv-formats@3.0.1` evidence validate, the exact Playwright/Vite, Ubuntu Node/npm and Windows/macOS installed-tarball matrices pass with their exact runner-image records, local parsing is zero-telemetry/no-network, CodeQL/secret state is accepted, and registry integrity/content match the retained evidence.
+- [ ] <!-- Gate: P20-CHECK-008; Covers: P20-RELEASE-001, P20-CHANNEL-001, P20-EVIDENCE-001, P20-PACKAGE-001, P20-METADATA-001, P20-RUNTIME-001, P20-PORTABILITY-001, P20-CI-001, P20-BROWSER-001, P20-TOOLCHAIN-001, P20-DEPENDENCIES-001, P20-GOVERNANCE-001 --> Verify from a fresh cache that `latest` resolves exactly to the production cutover version—normally `0.1.0`—all seven public entry points work, internal/deep/metadata/alias paths fail, discovery/channel metadata and the exact npm `12.0.2` `devEngines` value agree, import purity/tree shaking and the exact `@jspm/generator@2.16.3` reference/public-URL/local-mirror suite pass, locked/lockless graphs reconcile, strict registry-tarball lint passes, package/WebVOWL material inventories and notices agree with their distribution scopes, the exact npm root attestation validates, the separate-workspace `@cyclonedx/cyclonedx-npm@6.0.1` graph and Draft 2020-12 `ajv@8.20.0`/`ajv-formats@3.0.1` evidence validate, the exact Playwright/Vite, Ubuntu Node/npm and Windows/macOS installed-tarball matrices pass with their exact runner-image records, local parsing is zero-telemetry/no-network, CodeQL/secret state is accepted, and registry integrity/content match the retained evidence.
 - [ ] <!-- Gate: P20-CHECK-009; Covers: P20-RESOURCES-001 --> Pass the approved performance, finite-resource, installed-package-size and browser-bundle-size budgets against the exact retained production tarball and retain the raw measurements, baselines and blocking decisions.
 - [ ] <!-- Gate: P20-CHECK-010; Covers: P20-GATES-001 --> Validate `docs/release/gates.schema.json`, `gates.json` and the exact-version results; reconcile every stable catalogue ID, §30 `Covers` marker, source anchor and requirement digest under §2.62, including the explicit §§2.10–2.69 constraint coverage named by §§17.26.5 and 17.27.6; and leave no required gate outside `PASS` or validated `NOT_APPLICABLE`, no ordinary waiver, and no unresolved `PRODUCT_FAILURE`, `CONTROL_FAILURE` or `EXTERNAL_BLOCKED` state.
 - [ ] <!-- Gate: P20-CHECK-011; Covers: P20-GOVERNANCE-001 --> Complete the fresh §2.66 release-time control audit, §2.63 privacy record, §2.64 accessibility checks, §2.67 bounded/non-certifying W3C claims and §2.68 package-name/non-affiliation record; do not leave a transient infrastructure state as a release result.
@@ -9930,7 +9958,7 @@ A partial declaration would therefore create a second, inaccurate public API pre
 
 The rigorous current choice is to publish honest native JavaScript with no official declarations and to state that boundary.
 This plan does not schedule a declarations project.
-If demonstrated demand later justifies the separately authorized, non-implementing exploration in §2.26, that exploration may assess whether any approach could cover all six public roots, mirror their export paths, verify representative consumers and remain synchronized with the Public API Surface Registry.
+If demonstrated demand later justifies the separately authorized, non-implementing exploration in §2.26, that exploration may assess whether any approach could cover all seven public roots, mirror their export paths, verify representative consumers and remain synchronized with the Public API Surface Registry.
 It produces options and a recommendation only; any actual implementation would need a new architecture decision, configuration approval, implementation plan and version decision.
 
 ### 31.30 Disciplined zero-major SemVer needs an explicit observable-contract boundary
@@ -10745,7 +10773,7 @@ The final architectural rules are:
 
 > **Repository tooling uses npm-native `devEngines`: runtime name `node`, package-manager name `npm`, exact version `12.0.2` and `onFail: error`. npm `12.0.2` creates the lockfile and runs every CI/release npm operation. Every npm development tool is exact in the manifest, installed by lockfile-backed `npm ci` and invoked through a named local `npm run` script; remote `npx`, `npm exec --package`, global development tools and runner-preinstalled release tools are forbidden. `engines.npm`, top-level `packageManager`, Corepack and floating CLI tags are absent because npm tool identity is not a consumer-runtime promise or a second package-manager authority.**
 
-> **Browser bundlers and native document ESM with an application-owned import map are complementary supported paths over the same six public exports. Exact `@jspm/generator@2.16.3` uses `jspm.io`, `production`/`browser`/`module` and integrity metadata to generate the version-pinned reference; public URLs are verified, and a content-addressed archive of the integrity-checked hydrated closure is retained as candidate evidence while its local mirror executes OWL-native, RDF/XML, Turtle and JSON-LD paths through exact `@playwright/test@1.62.1` and its managed Chromium, Firefox and WebKit revisions. The locked and lockless executed closures—not merely package source—must satisfy the date-pinned syntax/API ceiling. Exact `vite@8.2.2` builds the package's bundler/worker fixtures, while WebVOWL retains its independently accepted lockfile toolchain. The provider remains replaceable reference infrastructure, not package runtime or a second canonical source tree. Import maps do not apply to workers; bundled dedicated-worker ingestion is a separate required path. No `es-module-shims`, CommonJS, IIFE, universal package-owned map, environment-conditioned export or turnkey CDN build is introduced.**
+> **Browser bundlers and native document ESM with an application-owned import map are complementary supported paths over the same seven public exports. Exact `@jspm/generator@2.16.3` uses `jspm.io`, `production`/`browser`/`module` and integrity metadata to generate the version-pinned reference; public URLs are verified, and a content-addressed archive of the integrity-checked hydrated closure is retained as candidate evidence while its local mirror executes OWL-native, RDF/XML, Turtle and JSON-LD paths through exact `@playwright/test@1.62.1` and its managed Chromium, Firefox and WebKit revisions. The locked and lockless executed closures—not merely package source—must satisfy the date-pinned syntax/API ceiling. Exact `vite@8.2.2` builds the package's bundler/worker fixtures, while WebVOWL retains its independently accepted lockfile toolchain. The provider remains replaceable reference infrastructure, not package runtime or a second canonical source tree. Import maps do not apply to workers; bundled dedicated-worker ingestion is a separate required path. No `es-module-shims`, CommonJS, IIFE, universal package-owned map, environment-conditioned export or turnkey CDN build is introduced.**
 
 > **npm is the authoritative install, lock, audit, pack, publish and provenance workflow. Yarn and pnpm are `PLAUSIBLE_UNVERIFIED` while genuine package-metadata defects they expose remain actionable. Bun, Deno, Cloudflare Workers, React Native, Electron-specific integration and CommonJS are `OUT_OF_SCOPE` for `0.1.0`; the README distinguishes those statuses from the exact `SUPPORTED` Node, browser-document and bundled-dedicated-worker paths.**
 
@@ -10761,7 +10789,7 @@ The final architectural rules are:
 
 > **npm discovery metadata is precise and stable: the package describes OWL 2 ontology parsing and structural APIs for Node.js/browsers with practical Java OWLAPI conceptual compatibility, and uses the approved OWL/ontology/RDF-focused keywords. It does not claim a reasoner, knowledge-graph platform or WebVOWL-specific identity, and does not fill `funding`, contributor, maintainer or author-email fields without a real semantic purpose.**
 
-> **At `0.1.0`, the six public specifiers, registry-classified bindings, documented call/structural/error contracts and declared semantic capabilities become the protected 0.1 contract. Unexported paths, dependencies and incidental representations do not. Deprecations remain operational and silent throughout their current 0.minor patch line; compatible corrections are patches only when they restore rather than contradict the documented contract; and material additions or incompatible protected-surface changes require the next available zero-minor boundary. Every zero-minor is treated as a deliberate compatibility boundary while the API remains in initial development.**
+> **At `0.1.0`, the seven public specifiers, registry-classified bindings, documented call/structural/error contracts and declared semantic capabilities become the protected 0.1 contract. Unexported paths, dependencies and incidental representations do not. Deprecations remain operational and silent throughout their current 0.minor patch line; compatible corrections are patches only when they restore rather than contradict the documented contract; and material additions or incompatible protected-surface changes require the next available zero-minor boundary. Every zero-minor is treated as a deliberate compatibility boundary while the API remains in initial development.**
 
 > **Before each scoped release, refresh exact-coordinate and immutable-tag availability and effective publication authority. An unexpected conflict requires the existing reviewed successor decision. Historical bare-name ranges do not govern scoped versioning; any future unscoped migration is outside this programme.**
 

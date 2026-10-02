@@ -4,6 +4,7 @@ import { dirname, relative, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
 
 import { Generator } from "@jspm/generator";
+import { assertPackageIdentity } from "./package-identity.mjs";
 
 const repositoryManifest = JSON.parse(
   readFileSync(new URL("../package.json", import.meta.url), "utf8"),
@@ -20,9 +21,10 @@ const toPublicSpecifier = (packageName, exportKey) => {
   return `${packageName}/${exportKey.slice(2)}`;
 };
 
-export const DECLARED_PUBLIC_SPECIFIERS = Object.freeze(
+/** The application owns these import-map aliases; the installed manifest owns package identity. */
+export const BROWSER_CONSUMER_SPECIFIERS = Object.freeze(
   Object.keys(repositoryManifest.exports)
-    .map((exportKey) => toPublicSpecifier(repositoryManifest.name, exportKey))
+    .map((exportKey) => toPublicSpecifier("owlapi", exportKey))
     .sort(compareCodeUnits),
 );
 const ENVIRONMENT_CONDITIONS = Object.freeze([
@@ -212,6 +214,11 @@ export const generateReferenceImportMap = async ({
   packageRoot,
 }) => {
   const resolvedPackageRoot = resolve(packageRoot);
+  assertPackageIdentity(
+    JSON.parse(
+      readFileSync(resolve(resolvedPackageRoot, "package.json"), "utf8"),
+    ),
+  );
   const packageUrl = withTrailingSlash(pathToFileURL(resolvedPackageRoot).href);
   const generator = new Generator({
     baseUrl: pathToFileURL(`${dirname(resolve(applicationPath))}${sep}`),
@@ -237,7 +244,7 @@ export const generateReferenceImportMap = async ({
   await generator.link(pathToFileURL(resolve(applicationPath)).href);
   const map = normalizeGeneratedMap(generator.getMap(), packageUrl);
 
-  for (const specifier of DECLARED_PUBLIC_SPECIFIERS) {
+  for (const specifier of BROWSER_CONSUMER_SPECIFIERS) {
     if (!map.imports?.[specifier]) {
       throw new Error(`Generated reference map omits ${specifier}`);
     }

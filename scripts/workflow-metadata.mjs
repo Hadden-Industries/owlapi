@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import semver from "semver";
+import { PACKAGE_NAME, PACKAGE_FILE_STEM } from "./package-identity.mjs";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 export const deriveWorkflowMetadata = ({
@@ -11,7 +12,7 @@ export const deriveWorkflowMetadata = ({
   runId,
   runAttempt,
 }) => {
-  if (manifest.name !== "owlapi" || !semver.valid(manifest.version)) {
+  if (manifest.name !== PACKAGE_NAME || !semver.valid(manifest.version)) {
     throw new Error("The workflow manifest coordinate is invalid.");
   }
   const prerelease = semver.prerelease(manifest.version);
@@ -36,8 +37,8 @@ export const deriveWorkflowMetadata = ({
 
   const artifactName =
     runId && runAttempt
-      ? `owlapi-${manifest.version}-candidate-${runId}-${runAttempt}`
-      : `owlapi-${manifest.version}-candidate-local-0`;
+      ? `${PACKAGE_FILE_STEM}-${manifest.version}-candidate-${runId}-${runAttempt}`
+      : `${PACKAGE_FILE_STEM}-${manifest.version}-candidate-local-0`;
   const values = {
     artifact_name: artifactName,
     candidate_directory: `.release/candidate/${manifest.version}`,

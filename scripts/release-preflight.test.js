@@ -1,8 +1,8 @@
 import { assertReleasePreflight } from "./release-preflight.mjs";
 
 const manifest = {
-  name: "owlapi",
-  version: "0.1.0-alpha.0",
+  name: "@hadden-industries/owlapi",
+  version: "0.1.0-rc.1",
   publishConfig: {
     access: "public",
     registry: "https://registry.npmjs.org/",
@@ -13,7 +13,7 @@ const manifest = {
 const publication = {
   enabled: true,
   mode: "DIRECT_BOOTSTRAP",
-  coordinate: "owlapi@0.1.0-alpha.0",
+  coordinate: "@hadden-industries/owlapi@0.1.0-rc.1",
   channel: "next",
   reason: "npm requires an existing package before trusted-publisher setup.",
   reviewedOn: "2026-08-28",
@@ -35,10 +35,10 @@ describe("release preflight", () => {
       result: "PASS",
       sourceCommit: "a".repeat(40),
       sourceRef: "refs/heads/main",
-      canonicalTagAbsent: "v0.1.0-alpha.0",
+      canonicalTagAbsent: "v0.1.0-rc.1",
       publicationEnabled: true,
       publicationMode: "DIRECT_BOOTSTRAP",
-      coordinate: "owlapi@0.1.0-alpha.0",
+      coordinate: "@hadden-industries/owlapi@0.1.0-rc.1",
       channel: "next",
     });
   });
@@ -48,7 +48,7 @@ describe("release preflight", () => {
       "a disabled publication boundary",
       { publication: { ...publication, enabled: false, mode: "UNRESOLVED" } },
     ],
-    ["a non-main dispatch", { sourceRef: "refs/heads/release/0.1.0-alpha.0" }],
+    ["a non-main dispatch", { sourceRef: "refs/heads/release/0.1.0-rc.1" }],
     [
       "a checkout different from the captured commit",
       { checkoutHead: "b".repeat(40) },

@@ -1,5 +1,13 @@
 # Java OWLAPI reference harness
 
+`RunRdfConsumerContract.java` is an offline Java 5.5.1 characterization of the 2 October RDF consumer repairs.
+Compile and run with the pinned runtime classpath, using the Windows long-classpath launcher below if needed.
+It preloads the two imported ontologies in memory, refuses unexpected import acquisition, and prints the actual native axioms, annotations, imports and metadata for six project-authored cases.
+Two optional positional arguments identify the matched OntoViBe root and module paths; verify their manifest hashes before running and retain the observation outside the repository.
+The observations justify the tests for inverse properties and imports.
+The [metadata contract](../../docs/compatibility/rdf-parser-metadata.md) records retained JavaScript policies and deliberate differences.
+Raw observations belong in external qualification evidence rather than being regenerated as test expectations.
+
 This directory is development/test tooling only.
 It is never imported by the package production graph, bundled into WebVOWL, or shipped as an `owlapi` runtime dependency.
 
@@ -199,9 +207,11 @@ Do not treat a raw oracle exit as the reconciled result.
 Source mode records actual source bytes, including dirty changes.
 Optional `--candidate <directory>` installs the retained tarball with scripts disabled and verifies its digest before testing the public package.
 This existing source/local-candidate mode does not fetch or qualify a public npm release.
-The [scoped publication plan](../../docs/plans/scoped-npm-publication.md) requires a new explicit registry mode before claiming UO public-registry acceptance; no such CLI flag is claimed here.
-That mode must create an isolated consumer and empty cache, install the exact native alias `npm:@hadden-industries/owlapi@0.1.0-rc.1`, verify actual scoped identity/integrity and resolve only its installed public roots.
-The package has six entry points; UO uses the five Java-shaped subpaths.
+After publication, run the same command with `--registry-version 0.1.0-rc.1` to exercise the public-registry package.
+Place its `--output` directory outside the owlapi checkout; registry mode rejects an output under the repository, including ignored folders.
+The registry option cannot be combined with `--candidate` and rejects tags or version ranges.
+It creates an isolated consumer and empty cache, installs the exact native alias `npm:@hadden-industries/owlapi@0.1.0-rc.1`, verifies actual scoped identity/integrity and resolves only its installed public roots.
+The package has seven entry points; UO uses the five Java-shaped subpaths.
 After artifact publication and verification, UO tests authorized remote import retrieval and its complete contract, then verifies the generated standalone ontology offline with zero loader calls.
 A fully accepted RC may serve UO production without stable `0.1.0`; the source/local-tarball modes alone cannot.
 Generated documents and source blobs are rechecked for changes at the end.

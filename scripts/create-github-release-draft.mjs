@@ -9,6 +9,11 @@ import {
   GitHubReleaseClient,
 } from "./github-release.mjs";
 import { sha256File } from "./release-artifacts.mjs";
+import { PACKAGE_VERSION, PACKAGE_FILE_STEM } from "./package-identity.mjs";
+import {
+  verifyDownloadedCandidateBundle,
+  verifyHistoricalAlphaCandidateBundle,
+} from "./candidate-bundle.mjs";
 
 const argumentValue = (name) => {
   const index = process.argv.indexOf(name);
@@ -22,10 +27,13 @@ const contentType = (name) => {
 };
 
 const readCandidateAssets = (candidateDirectory, version) => {
+  if (![PACKAGE_VERSION, "0.1.0-alpha.0"].includes(version))
+    throw new Error("Unexpected draft release version.");
+  const stem = version === PACKAGE_VERSION ? PACKAGE_FILE_STEM : "owlapi";
   const expectedNames = [
     "SHA256SUMS",
-    `owlapi-${version}.cdx.json`,
-    `owlapi-${version}.tgz`,
+    `${stem}-${version}.cdx.json`,
+    `${stem}-${version}.tgz`,
   ].sort();
   const observedNames = readdirSync(candidateDirectory).sort();
   if (JSON.stringify(observedNames) !== JSON.stringify(expectedNames)) {
@@ -33,6 +41,17 @@ const readCandidateAssets = (candidateDirectory, version) => {
       "The draft release input is not the closed candidate bundle.",
     );
   }
+  (version === PACKAGE_VERSION
+    ? verifyDownloadedCandidateBundle
+    : verifyHistoricalAlphaCandidateBundle)({
+    checksumText: readFileSync(join(candidateDirectory, "SHA256SUMS"), "utf8"),
+    fileNames: observedNames,
+    sbomText: readFileSync(
+      join(candidateDirectory, `${stem}-${version}.cdx.json`),
+      "utf8",
+    ),
+    tarball: readFileSync(join(candidateDirectory, `${stem}-${version}.tgz`)),
+  });
   return expectedNames.map((name) => {
     const path = join(candidateDirectory, name);
     return {

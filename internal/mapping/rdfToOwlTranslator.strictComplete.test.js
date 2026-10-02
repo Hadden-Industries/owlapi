@@ -1,5 +1,3 @@
-import { jest } from "@jest/globals";
-
 import { OWLOntologyLoaderConfiguration } from "../../index.js";
 import { rdfDataFactory, rdfDatasetFactory } from "../rdfjs/environment.js";
 import { RdfToOwlTranslator } from "./rdfToOwlTranslator.js";
@@ -562,39 +560,23 @@ describe("RdfToOwlTranslator strict selected-graph completeness", () => {
     expect(sourceLocationReadCount).toBe(1);
   });
 
-  it("does not construct diagnostic term descriptors for silently ignored compatible statements", async () => {
-    const originalFreeze = Object.freeze;
-    const frozenDiagnosticTermDescriptors = [];
+  it("retains unparsed metadata when optional compatible warnings are disabled", async () => {
     const input = datasetWith(unconsumedCases[0].statement());
     const configuration = configurationFor("compatible", {
       collectWarnings: false,
     });
-    const freezeSpy = jest
-      .spyOn(Object, "freeze")
-      .mockImplementation((value) => {
-        if (
-          value &&
-          typeof value === "object" &&
-          Object.hasOwn(value, "termType") &&
-          Object.hasOwn(value, "value") &&
-          typeof value.equals !== "function"
-        ) {
-          frozenDiagnosticTermDescriptors.push(value);
-        }
-        return originalFreeze(value);
-      });
-
-    let result;
-    try {
-      result = await new RdfToOwlTranslator().translate(input, {
-        configuration,
-      });
-    } finally {
-      freezeSpy.mockRestore();
-    }
+    const result = await new RdfToOwlTranslator().translate(input, {
+      configuration,
+    });
 
     expect(result.context.diagnostics).toEqual([]);
-    expect(frozenDiagnosticTermDescriptors).toEqual([]);
+    expect(result.context.loaderMetaData.getUnparsedTriples()).toEqual([
+      {
+        subject: { termType: "BlankNode", value: "arbitrary-subject" },
+        predicate: { termType: "NamedNode", value: `${EX}arbitraryPredicate` },
+        object: { termType: "NamedNode", value: `${EX}arbitrary-object` },
+      },
+    ]);
   });
 
   it("does not inspect source metadata outside the graph selected for reconstruction", async () => {

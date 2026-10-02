@@ -441,20 +441,19 @@ try {
     logFile: "baseline-build-production.log",
   });
 
-  runWebVowlNpm(
-    [
-      "install",
-      "--save-exact",
-      candidateTarballPath,
-      "--cache",
-      candidateMutationCache,
-    ],
-    {
-      cwd: checkout,
-      label: "retained owlapi tarball exact install",
-      logFile: "candidate-install.log",
-    },
+  // A tarball's scoped manifest name must not create a second dependency key.
+  // WebVOWL owns the owlapi alias; inject only its exact retained-file specifier.
+  const consumerManifest = structuredClone(baselineManifest);
+  consumerManifest.dependencies.owlapi = `file:${candidateTarballPath.replaceAll("\\", "/")}`;
+  writeFileSync(
+    join(checkout, "package.json"),
+    `${JSON.stringify(consumerManifest, null, 2)}\n`,
   );
+  runWebVowlNpm(["install", "--cache", candidateMutationCache], {
+    cwd: checkout,
+    label: "retained owlapi tarball exact install",
+    logFile: "candidate-install.log",
+  });
   const mutatedManifest = readJson(join(checkout, "package.json"));
   const installedSpecifier = mutatedManifest.dependencies?.owlapi;
   if (
@@ -607,7 +606,7 @@ try {
     join(checkout, "node_modules", "owlapi", "package.json"),
   );
   if (
-    installedPackageManifest.name !== "owlapi" ||
+    installedPackageManifest.name !== "@hadden-industries/owlapi" ||
     installedPackageManifest.version !== candidateManifest.package.version
   ) {
     throw new Error(
@@ -668,7 +667,9 @@ try {
     [
       "main.js",
       `import owl2vowl from "../src/owl2vowl/js/index.js";
-import { exerciseImportClosureStorage } from "../src/owlapiQualification/public-contract.js";
+import * as owlapiQualificationApi from "owlapi";
+import { createPublicContract } from "../src/owlapiQualification/public-contract.js";
+const { exerciseImportClosureStorage } = createPublicContract(owlapiQualificationApi);
 import documents from "../src/owlapiQualification/documents.js";
 
 const output = globalThis.document.querySelector("#result");

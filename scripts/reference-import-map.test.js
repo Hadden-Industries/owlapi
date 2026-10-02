@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 
 import {
-  DECLARED_PUBLIC_SPECIFIERS,
+  BROWSER_CONSUMER_SPECIFIERS,
   excludeNodeXmlParserFallback,
   hydrateReferenceImportMap,
   resolveReferenceBrowserDependency,
@@ -35,7 +35,7 @@ describe("reference import-map evidence", () => {
   });
 
   it("requires every declared public package entry point", () => {
-    expect(DECLARED_PUBLIC_SPECIFIERS).toEqual([
+    expect(BROWSER_CONSUMER_SPECIFIERS).toEqual([
       "owlapi",
       "owlapi/apibinding",
       "owlapi/formats",

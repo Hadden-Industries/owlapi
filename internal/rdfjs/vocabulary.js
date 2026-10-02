@@ -8,6 +8,48 @@ const rdfs = (name) => `${RDFS_NAMESPACE}${name}`;
 const owl = (name) => `${OWL_NAMESPACE}${name}`;
 const xsd = (name) => `${XSD_NAMESPACE}${name}`;
 
+// OWL 2 datatype-map identity, shared by parsing metadata and profile checks.
+// This is a finite vocabulary, not a blanket XML Schema namespace exemption.
+export const OWL_BUILT_IN_DATATYPES = Object.freeze([
+  ...[
+    "integer",
+    "nonNegativeInteger",
+    "positiveInteger",
+    "nonPositiveInteger",
+    "negativeInteger",
+    "long",
+    "int",
+    "short",
+    "byte",
+    "unsignedLong",
+    "unsignedInt",
+    "unsignedShort",
+    "unsignedByte",
+    "string",
+    "normalizedString",
+    "token",
+    "language",
+    "Name",
+    "NCName",
+    "NMTOKEN",
+    "decimal",
+    "double",
+    "float",
+    "boolean",
+    "hexBinary",
+    "base64Binary",
+    "anyURI",
+    "dateTime",
+    "dateTimeStamp",
+  ].map(xsd),
+  owl("real"),
+  owl("rational"),
+  rdf("PlainLiteral"),
+  rdf("XMLLiteral"),
+  // RDF 1.1 representation of the language-tagged branch of rdf:PlainLiteral.
+  rdf("langString"),
+]);
+
 export const RDF_VOCABULARY = Object.freeze({
   List: rdf("List"),
   Property: rdf("Property"),

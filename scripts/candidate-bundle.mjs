@@ -1,4 +1,10 @@
 import { basename } from "node:path";
+import {
+  PACKAGE_NAME,
+  PACKAGE_VERSION,
+  PACKAGE_FILE_STEM,
+  PACKAGE_SBOM_PURL,
+} from "./package-identity.mjs";
 
 import {
   formatSha256Sums,
@@ -9,23 +15,24 @@ import {
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
 
-export const verifyDownloadedCandidateBundle = ({
-  checksumText,
-  fileNames,
-  sbomText,
-  tarball,
-}) => {
+const verifyCandidateBundle = (
+  { checksumText, fileNames, sbomText, tarball },
+  historicalAlpha = false,
+) => {
   const packageManifest = JSON.parse(
     readGzipTarFile(tarball, "package.json").toString("utf8"),
   );
   const { name, version } = packageManifest;
-  if (name !== "owlapi" || typeof version !== "string") {
+  const expectedName = historicalAlpha ? "owlapi" : PACKAGE_NAME;
+  const expectedVersion = historicalAlpha ? "0.1.0-alpha.0" : PACKAGE_VERSION;
+  const fileStem = historicalAlpha ? "owlapi" : PACKAGE_FILE_STEM;
+  if (name !== expectedName || version !== expectedVersion) {
     throw new Error(
       "Downloaded candidate tarball has an unexpected package identity.",
     );
   }
-  const tarballFileName = `${name}-${version}.tgz`;
-  const sbomFileName = `${name}-${version}.cdx.json`;
+  const tarballFileName = `${fileStem}-${version}.tgz`;
+  const sbomFileName = `${fileStem}-${version}.cdx.json`;
   const expectedFileNames = ["SHA256SUMS", sbomFileName, tarballFileName].sort(
     compareCodeUnits,
   );
@@ -43,8 +50,11 @@ export const verifyDownloadedCandidateBundle = ({
     sbom.bomFormat !== "CycloneDX" ||
     sbom.specVersion !== "1.6" ||
     sbom.metadata?.component?.type !== "library" ||
-    sbom.metadata?.component?.name !== name ||
-    sbom.metadata?.component?.version !== version
+    (sbom.metadata?.component?.group
+      ? `${sbom.metadata.component.group}/${sbom.metadata.component.name}`
+      : sbom.metadata?.component?.name) !== name ||
+    sbom.metadata?.component?.version !== version ||
+    (!historicalAlpha && sbom.metadata?.component?.purl !== PACKAGE_SBOM_PURL)
   ) {
     throw new Error("Downloaded candidate SBOM identity is invalid.");
   }
@@ -77,3 +87,11 @@ export const verifyDownloadedCandidateBundle = ({
     },
   };
 };
+
+/** Current release path accepts only the owner-selected scoped RC. */
+export const verifyDownloadedCandidateBundle = (input) =>
+  verifyCandidateBundle(input);
+
+/** Read-only historical replay; callers additionally bind the retained alpha source/run. */
+export const verifyHistoricalAlphaCandidateBundle = (input) =>
+  verifyCandidateBundle(input, true);

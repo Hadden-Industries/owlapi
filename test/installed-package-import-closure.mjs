@@ -4,8 +4,11 @@ import { readFileSync } from "node:fs";
 // Install the native networking guards before loading any lifecycle consumer.
 const { assertNoNetworkOperations } =
   await import("./installed-package-no-network.mjs");
-const { exerciseImportClosureStorage } =
+const { createPublicContract } =
   await import("./import-closure/public-contract.js");
+const { exerciseImportClosureStorage } = createPublicContract(
+  await import("owlapi"),
+);
 
 const documents = Object.fromEntries(
   ["root", "left", "right", "leaf"].map((name) => [

@@ -84,7 +84,9 @@ describe("JSON-LD manager integration", () => {
         source("{}", { contentType: "application/ld+json" }),
       );
 
-    expect(result.documents[0].context.format).toBe(OWLDocumentFormats.JSON_LD);
+    expect(result.documents[0].context.format.key).toBe(
+      OWLDocumentFormats.JSON_LD.key,
+    );
   });
 
   it("honors and retains immutable JSON-LD format parameters", async () => {
@@ -98,7 +100,14 @@ describe("JSON-LD manager integration", () => {
         new OWLOntologyLoaderConfiguration({ format }),
       );
 
-    expect(result.documents[0].context.format).toBe(format);
+    expect(result.documents[0].context.format.key).toBe(format.key);
+    expect(
+      result.documents[0].context.format.getParameter("processingMode"),
+    ).toBe(format.getParameter("processingMode"));
+    expect(
+      result.documents[0].context.format.getOntologyLoaderMetaData(),
+    ).toBeDefined();
+    expect(format.getOntologyLoaderMetaData()).toBeUndefined();
     expect(
       [...result.ontology.getClassesInSignature()].map(({ iri }) => iri.value),
     ).toEqual(["urn:test:Person"]);

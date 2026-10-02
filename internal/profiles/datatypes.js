@@ -6,6 +6,7 @@ import { XmlParseError } from "../../io/errors.js";
 import { xmlParserAdapter } from "../parsing/xml/xmlParserAdapter.js";
 import { isCanonicalXmlContent } from "./xmlLiteral.js";
 import {
+  OWL_BUILT_IN_DATATYPES,
   OWL_NAMESPACE as OWL,
   RDF_NAMESPACE as RDF,
   RDFS_NAMESPACE as RDFS,
@@ -36,27 +37,7 @@ export const stringDatatypes = new Set([
   "NCName",
   "NMTOKEN",
 ]);
-export const owlDatatypeMap = new Set([
-  ...[
-    ...integerBounds.keys(),
-    ...stringDatatypes,
-    "decimal",
-    "double",
-    "float",
-    "boolean",
-    "hexBinary",
-    "base64Binary",
-    "anyURI",
-    "dateTime",
-    "dateTimeStamp",
-  ].map((name) => XSD + name),
-  OWL + "real",
-  OWL + "rational",
-  RDF + "PlainLiteral",
-  RDF + "XMLLiteral",
-  // RDF 1.1 representation of the language-tagged branch of rdf:PlainLiteral.
-  RDF + "langString",
-]);
+export const owlDatatypeMap = new Set(OWL_BUILT_IN_DATATYPES);
 export const isBuiltinDatatype = (iri) =>
   owlDatatypeMap.has(iri) || iri === RDFS + "Literal";
 

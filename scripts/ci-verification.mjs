@@ -305,11 +305,12 @@ export const verifyIntegrationProof = async ({
   requireFact(
     candidate.digest === receipt.candidate.digest &&
       candidate.name.startsWith(
-        `owlapi-${context.version}-candidate-${run.id}-`,
+        `hadden-industries-owlapi-${context.version}-candidate-${run.id}-`,
       ) &&
       /^[1-9][0-9]*$/u.test(
         candidate.name.slice(
-          `owlapi-${context.version}-candidate-${run.id}-`.length,
+          `hadden-industries-owlapi-${context.version}-candidate-${run.id}-`
+            .length,
         ),
       ) &&
       Number(candidate.name.split("-").at(-1)) <= run.run_attempt,

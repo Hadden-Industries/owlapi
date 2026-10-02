@@ -1,12 +1,13 @@
 # Publish the scoped owlapi RC and qualify its production consumers
 
-**Status:** Accepted implementation specification, recorded 2026-09-30; documentation updated, executable changes and publication pending.
+**Status:** Accepted implementation specification, recorded 2026-09-30; scoped implementation prepared on 2026-10-02; final qualification, human release reviews and publication remain pending.
 
 **Authority:** [ADR 0009](../adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md), the [main implementation plan](../implementation-plan.md), the [lifecycle plan](../ontology-lifecycle-capability-implementation-plan.md), and UO's canonical [specification](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/specs/2026-08-22-self-contained-owl-import-closure-contract.md), [policy](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/import-closure/contract.v1.json), and [implementation plan](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/plans/2026-08-22-self-contained-owl-import-closure.md).
 
 The approved change selects a different registry identity and explicitly permits a qualified RC in UO and WebVOWL production after each application's own acceptance.
 It preserves the library's semantic, Java parity, losslessness, security, provenance and consumer gates.
-Updating these documents does not change the package manifest, lockfile, workflow, public API registry or release authority, and does not claim that an RC is public or accepted.
+The implementation changes metadata, generated views and release qualification without changing runtime semantics or release authority.
+A prepared source candidate is not a public or accepted RC.
 
 ## 1. Identity and consumer contract
 
@@ -37,11 +38,11 @@ npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@0.1.0-rc.1"
 ```
 
 WebVOWL also retains its public `owlapi` and `owlapi/*` imports through this alias.
-The library additionally exposes the root aggregate, so package qualification covers six entry points even though UO needs five namespaces.
+The library additionally exposes the root aggregate and the approved profiles namespace, so package qualification covers seven entry points even though UO needs five namespaces.
 Direct installation under the real scoped name is also valid and uses scoped specifiers in application imports.
 In both modes the installed manifest, lock resolution, SBOM root, integrity, signature and provenance identify the scoped package.
 
-Keep the relative `exports` keys `.`, `./apibinding`, `./model`, `./io`, `./formats` and `./util`, their source paths, Java package mappings and binding identities unchanged.
+Keep the relative `exports` keys `.`, `./apibinding`, `./model`, `./io`, `./formats`, `./profiles` and `./util`, their source paths, Java package mappings and binding identities unchanged.
 Internal imports remain relative; repository self-reference tests use the actual scoped name after the manifest changes.
 Test the recommended alias in an external installed consumer rather than making a source resolver impersonate it.
 An npm alias applies only to the declaring consumer; it does not rewrite other packages' dependencies or peer contracts.
@@ -90,7 +91,7 @@ Encode the scope correctly in registry requests and npm package URLs/PURLs.
 The local alias is not the package identity in an SBOM or attestation.
 
 Fresh public verification must exercise both ordinary scoped installation and the recommended exact native alias using isolated consumer directories and empty caches.
-For the alias case, verify the root dependency value, `node_modules/owlapi` installed manifest name/version, registry resolution and integrity, all six import roots, binding identity, import purity and prohibited deep imports.
+For the alias case, verify the root dependency value, `node_modules/owlapi` installed manifest name/version, registry resolution and integrity, all seven import roots, binding identity, import purity and prohibited deep imports.
 Preserve the complete runtime, browser, locked/lockless dependency, material, signature, provenance and immutable-release tests.
 Browser bundler and import-map fixtures may retain `owlapi` keys, but their package/provider resolution must name and verify the scoped distribution and full dependency closure.
 Do not introduce a CDN runtime requirement or invent new platform support.
@@ -169,13 +170,18 @@ The target/error migration audit may legitimately report `NO_OBSOLETE_USAGE`; th
 ## 3. Publication and acceptance order
 
 1. Complete the scoped implementation, Phase 21 ancestry/parity reconciliation and Phase 22 candidate qualification at one accepted source revision.
-2. Build and retain one complete scoped RC artifact through the approved release workflow; record its digest, manifest, six exports, SBOM and fresh qualification evidence.
+2. Build and retain one complete scoped RC artifact through the approved release workflow; record its digest, manifest, seven exports, SBOM and fresh qualification evidence.
 3. Resolve the actual publication mode outside a credential-bearing run.
    npm's documented staged-publishing prerequisite is an existing package, so a new scoped package may require the existing bounded direct bootstrap for this real RC.
    A dry run or organization membership does not prove write authority.
    Configure and verify the exact repository/workflow/environment trusted publisher when supported; use no placeholder publication or silent mode fallback.
 4. Obtain the existing exact artifact/publication authorization, follow late signed-tag and protected-environment ordering, and publish the retained artifact with public access under `next`.
    Keep `latest` unset and retain the existing ambiguous-write reconciliation and bootstrap credential removal controls.
+   In the direct-bootstrap workflow, only attempt 1 may execute the credential-bearing npm write.
+   If that write has an ambiguous response, or later verification fails, rerun failed jobs to perform read-only registry verification of the retained bytes; do not rerun the entire workflow.
+   Verification binds the original signed publication run/attempt and authenticated publisher-job result, separately from the current verification attempt.
+   Absent, conflicting or unprovable registry state remains a failure and cannot authorize another write.
+   Project-owned reads retain §2.58's three-attempt transport/408/429/5xx retry policy; an ordinary 404 requires a later verification attempt and is not automatically retried.
 5. Re-download from npm with fresh caches; verify the scoped coordinate, bytes, integrity, signature, provenance, source/tag/workflow and installed runtime/browser behavior.
    Complete release evidence and immutable GitHub release verification.
 6. Hand the verified coordinate and evidence to UO and WebVOWL for their own registry-backed consumer qualification.

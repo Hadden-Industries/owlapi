@@ -19,7 +19,7 @@
   "properties": {
     "$schema": { "type": "string", "minLength": 1 },
     "schemaVersion": { "const": 1 },
-    "packageName": { "const": "owlapi" },
+    "packageName": { "const": "@hadden-industries/owlapi" },
     "packageVersion": { "$ref": "#/$defs/nonEmptyString" },
     "javaReference": {
       "type": "object",
@@ -97,7 +97,7 @@
       "oneOf": [{ "$ref": "#/$defs/nonEmptyString" }, { "type": "null" }]
     },
     "publicReleaseVersion": {
-      "enum": ["0.1.0-alpha.0", "0.1.0"]
+      "enum": ["0.1.0-alpha.0", "0.1.0-rc.1", "0.1.0"]
     },
     "stringArray": {
       "type": "array",

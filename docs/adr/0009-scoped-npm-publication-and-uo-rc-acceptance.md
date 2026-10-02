@@ -1,6 +1,6 @@
 # Scoped npm publication and consumer RC production acceptance
 
-- Status: Accepted design; implementation and publication pending.
+- Status: Accepted design; scoped implementation prepared, final qualification and publication pending.
 - Recorded: 2026-09-30.
 - Authority: The repository owner's scoped-package proposal, explicit acceptance of RC use in UO production, subsequent extension to WebVOWL production, and request to update the affected documentation.
 

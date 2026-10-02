@@ -1,7 +1,5 @@
 import { spawnSync } from "node:child_process";
 import {
-  copyFileSync,
-  cpSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
@@ -9,19 +7,15 @@ import {
   writeFileSync,
 } from "node:fs";
 import { arch, platform, release, tmpdir } from "node:os";
-import { join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { basename, join, resolve } from "node:path";
+import { PACKAGE_NAME, assertPackageIdentity } from "./package-identity.mjs";
+import {
+  INSTALLED_TEST_SCRIPTS,
+  writeInstalledConsumerFixtures,
+} from "./installed-consumer-fixtures.mjs";
 
 import { isStrictDescendantPath, sha256File } from "./release-artifacts.mjs";
 
-const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
-const TEST_SCRIPTS = Object.freeze([
-  "installed-package-smoke.mjs",
-  "installed-package-boundary.mjs",
-  "installed-package-import-purity.mjs",
-  "installed-package-no-network.mjs",
-  "installed-package-import-closure.mjs",
-]);
 const valueAfter = (name) => {
   const index = process.argv.indexOf(name);
   if (index === -1 || !process.argv[index + 1]) {
@@ -41,6 +35,9 @@ if (!npmCli) {
 const candidate = JSON.parse(
   readFileSync(join(candidateDirectory, "candidate-manifest.json"), "utf8"),
 );
+assertPackageIdentity(candidate.package);
+if (basename(candidate.tarball.fileName) !== candidate.tarball.fileName)
+  throw new Error("Candidate tarball must be a basename.");
 const tarballPath = join(candidateDirectory, candidate.tarball.fileName);
 if (sha256File(tarballPath) !== candidate.tarball.sha256) {
   throw new Error(
@@ -77,53 +74,78 @@ const run = (arguments_, options = {}) => {
 };
 
 try {
-  const consumerDirectory = join(temporaryRoot, "consumer");
-  mkdirSync(consumerDirectory);
-  writeFileSync(
-    join(consumerDirectory, "package.json"),
-    `${JSON.stringify(
-      {
-        name: "owlapi-portability-consumer",
-        version: "0.0.0",
-        private: true,
-        type: "module",
-        dependencies: { owlapi: `file:${tarballPath.replaceAll("\\", "/")}` },
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
-  run([npmCli, "install", "--ignore-scripts", "--no-audit", "--no-fund"], {
-    cwd: consumerDirectory,
-    label: "portable retained-tarball install",
-  });
-  mkdirSync(join(consumerDirectory, "import-closure"));
-  copyFileSync(
-    join(REPOSITORY_ROOT, "test", "import-closure", "public-contract.js"),
-    join(consumerDirectory, "import-closure", "public-contract.js"),
-  );
-  cpSync(
-    join(REPOSITORY_ROOT, "test", "import-closure", "fixtures"),
-    join(consumerDirectory, "import-closure", "fixtures"),
-    { recursive: true },
-  );
-  for (const testScript of TEST_SCRIPTS) {
-    copyFileSync(
-      join(REPOSITORY_ROOT, "test", testScript),
-      join(consumerDirectory, testScript),
+  const consumers = {};
+  for (const [mode, dependencyName] of [
+    ["alias", "owlapi"],
+    ["scoped", PACKAGE_NAME],
+  ]) {
+    const consumerDirectory = join(temporaryRoot, mode);
+    mkdirSync(consumerDirectory);
+    writeFileSync(
+      join(consumerDirectory, "package.json"),
+      `${JSON.stringify(
+        {
+          name: "owlapi-portability-consumer",
+          version: "0.0.0",
+          private: true,
+          type: "module",
+          dependencies: {
+            [dependencyName]: `file:${tarballPath.replaceAll("\\", "/")}`,
+          },
+        },
+        null,
+        2,
+      )}\n`,
+      "utf8",
     );
-    run([testScript], {
-      cwd: consumerDirectory,
-      label: `portable ${testScript}`,
-    });
+    run(
+      [
+        npmCli,
+        "install",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund",
+        "--cache",
+        join(consumerDirectory, "npm-cache"),
+      ],
+      {
+        cwd: consumerDirectory,
+        label: "portable retained-tarball install",
+      },
+    );
+    assertPackageIdentity(
+      JSON.parse(
+        readFileSync(
+          join(
+            consumerDirectory,
+            "node_modules",
+            dependencyName,
+            "package.json",
+          ),
+          "utf8",
+        ),
+      ),
+    );
+    writeInstalledConsumerFixtures(consumerDirectory, dependencyName);
+    for (const testScript of INSTALLED_TEST_SCRIPTS) {
+      run([testScript], {
+        cwd: consumerDirectory,
+        label: `portable ${testScript}`,
+      });
+    }
+    const npmTree = JSON.parse(
+      run([npmCli, "ls", "--omit=dev", "--all", "--json"], {
+        cwd: consumerDirectory,
+        label: "portable production dependency graph",
+      }),
+    );
+    consumers[mode] = {
+      mode: "LOCAL_TARBALL",
+      dependencyName,
+      installedTests: INSTALLED_TEST_SCRIPTS,
+      productionGraph: npmTree,
+    };
   }
-  const npmTree = JSON.parse(
-    run([npmCli, "ls", "--omit=dev", "--all", "--json"], {
-      cwd: consumerDirectory,
-      label: "portable production dependency graph",
-    }),
-  );
   const result = {
     schemaVersion: 1,
     result: "PASS",
@@ -131,13 +153,12 @@ try {
     tarball: candidate.tarball,
     runtime: {
       node: process.version,
-      npm: run([npmCli, "--version"], { cwd: consumerDirectory }).trim(),
+      npm: run([npmCli, "--version"]).trim(),
       platform: platform(),
       architecture: arch(),
       osRelease: release(),
     },
-    installedTests: TEST_SCRIPTS,
-    productionGraph: npmTree,
+    consumers,
   };
   writeFileSync(outputPath, `${JSON.stringify(result, null, 2)}\n`, "utf8");
   process.stdout.write(`${outputPath}\n`);

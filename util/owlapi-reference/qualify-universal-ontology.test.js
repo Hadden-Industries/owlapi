@@ -14,6 +14,29 @@ import {
 } from "./qualify-universal-ontology.mjs";
 
 const directories = [];
+
+test("public-registry qualification selects only the exact scoped RC without a candidate fallback", () => {
+  const args = ["--ontology-repository", "uo", "--output", "evidence"];
+  expect(
+    parseQualificationArguments([...args, "--registry-version", "0.1.0-rc.1"]),
+  ).toEqual({
+    ontologyRepository: "uo",
+    outputDirectory: "evidence",
+    registryVersion: "0.1.0-rc.1",
+  });
+  expect(() =>
+    parseQualificationArguments([...args, "--registry-version", "next"]),
+  ).toThrow(/exact scoped RC/u);
+  expect(() =>
+    parseQualificationArguments([
+      ...args,
+      "--registry-version",
+      "0.1.0-rc.1",
+      "--candidate",
+      "local",
+    ]),
+  ).toThrow(/mutually exclusive/u);
+});
 const temporaryDirectory = async () => {
   const path = await mkdtemp(join(tmpdir(), "owlapi-source-parity-test-"));
   directories.push(path);

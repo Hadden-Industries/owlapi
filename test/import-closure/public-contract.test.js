@@ -1,10 +1,12 @@
 import { readFileSync } from "node:fs";
 import { DOMParser, XMLSerializer } from "@xmldom/xmldom";
-import {
+import * as publicApi from "@hadden-industries/owlapi";
+import { createPublicContract } from "./public-contract.js";
+const {
   exerciseImportClosureStorage,
   exerciseParserPreservation,
   verifyCollapsedText,
-} from "./public-contract.js";
+} = createPublicContract(publicApi);
 
 const documents = Object.fromEntries(
   ["root", "left", "right", "leaf"].map((name) => [

@@ -170,7 +170,7 @@ const MODULES = Object.freeze([
   {
     id: "root",
     javaPackage: null,
-    npmSpecifier: "owlapi",
+    npmSpecifier: "@hadden-industries/owlapi",
     module: {
       ...apibinding,
       ...formats,
@@ -185,7 +185,7 @@ const MODULES = Object.freeze([
   {
     id: "apibinding",
     javaPackage: "org.semanticweb.owlapi.apibinding",
-    npmSpecifier: "owlapi/apibinding",
+    npmSpecifier: "@hadden-industries/owlapi/apibinding",
     module: apibinding,
     rationale:
       "Mirrors the Java OWLAPI apibinding namespace for manager construction entry points.",
@@ -193,7 +193,7 @@ const MODULES = Object.freeze([
   {
     id: "model",
     javaPackage: "org.semanticweb.owlapi.model",
-    npmSpecifier: "owlapi/model",
+    npmSpecifier: "@hadden-industries/owlapi/model",
     module: model,
     rationale:
       "Mirrors the Java OWLAPI model namespace while documenting JavaScript-specific structural adaptations explicitly.",
@@ -201,7 +201,7 @@ const MODULES = Object.freeze([
   {
     id: "io",
     javaPackage: "org.semanticweb.owlapi.io",
-    npmSpecifier: "owlapi/io",
+    npmSpecifier: "@hadden-industries/owlapi/io",
     module: io,
     rationale:
       "Mirrors the Java OWLAPI io namespace for document sources, targets, and the package's canonical ontology errors.",
@@ -209,7 +209,7 @@ const MODULES = Object.freeze([
   {
     id: "formats",
     javaPackage: "org.semanticweb.owlapi.formats",
-    npmSpecifier: "owlapi/formats",
+    npmSpecifier: "@hadden-industries/owlapi/formats",
     module: formats,
     rationale:
       "Mirrors the Java OWLAPI formats namespace while exposing stable format identities rather than parser internals.",
@@ -217,24 +217,26 @@ const MODULES = Object.freeze([
   {
     id: "util",
     javaPackage: "org.semanticweb.owlapi.util",
-    npmSpecifier: "owlapi/util",
+    npmSpecifier: "@hadden-industries/owlapi/util",
     module: util,
-    firstPublicRelease: "0.1.0",
+    firstPublicRelease: "0.1.0-rc.1",
     rationale:
       "Mirrors the Java OWLAPI util namespace for the exact approved closure provider and ontology merger entry points.",
   },
   {
     id: "profiles",
     javaPackage: "org.semanticweb.owlapi.profiles",
-    npmSpecifier: "owlapi/profiles",
+    npmSpecifier: "@hadden-industries/owlapi/profiles",
     module: profiles,
-    firstPublicRelease: "0.1.0",
+    firstPublicRelease: "0.1.0-rc.1",
     rationale:
       "Owns the approved asynchronous OWL 2 DL checker and immutable report; source-qualified evidence is separate from the formal Java-shaped verdict.",
   },
 ]);
 
 const SOURCE_MODULES = Object.freeze({
+  RDFParserMetaData: "io/rdfParserMetaData.js",
+  RDFOntologyHeaderStatus: "io/rdfParserMetaData.js",
   AddOntologyAnnotation: "model/addOntologyAnnotation.js",
   OWLManager: "apibinding/owlManager.js",
   OWLDocumentFormats: "formats/owlDocumentFormats.js",
@@ -254,6 +256,8 @@ const SOURCE_MODULES = Object.freeze({
 });
 
 const JAVA_TYPES_BY_EXPORT = Object.freeze({
+  RDFParserMetaData: "org.semanticweb.owlapi.io.RDFParserMetaData",
+  RDFOntologyHeaderStatus: "org.semanticweb.owlapi.io.RDFOntologyHeaderStatus",
   AddOntologyAnnotation: "org.semanticweb.owlapi.model.AddOntologyAnnotation",
   IRI: "org.semanticweb.owlapi.model.IRI",
   OWLAPIError: "org.semanticweb.owlapi.model.OWLRuntimeException",
@@ -280,10 +284,12 @@ const JAVA_TYPES_BY_EXPORT = Object.freeze({
 });
 
 const FIRST_PUBLIC_RELEASE_BY_EXPORT = Object.freeze({
-  AddOntologyAnnotation: "0.1.0",
-  OWLOntologyImportsClosureSetProvider: "0.1.0",
-  OWLOntologyMerger: "0.1.0",
-  SetOntologyID: "0.1.0",
+  RDFParserMetaData: "0.1.0-rc.1",
+  RDFOntologyHeaderStatus: "0.1.0-rc.1",
+  AddOntologyAnnotation: "0.1.0-rc.1",
+  OWLOntologyImportsClosureSetProvider: "0.1.0-rc.1",
+  OWLOntologyMerger: "0.1.0-rc.1",
+  SetOntologyID: "0.1.0-rc.1",
 });
 
 const CLOSEST_JAVA_AUTHORITY = Object.freeze({
@@ -308,6 +314,8 @@ const CLOSEST_JAVA_AUTHORITY = Object.freeze({
 });
 
 const CAPABILITIES_BY_EXPORT = Object.freeze({
+  RDFParserMetaData: ["compatibility.owlapi-5.5.1"],
+  RDFOntologyHeaderStatus: ["compatibility.owlapi-5.5.1"],
   AddOntologyAnnotation: ["compatibility.owlapi-5.5.1"],
   OWLOntologyImportsClosureSetProvider: ["compatibility.owlapi-5.5.1"],
   OWLOntologyMerger: ["compatibility.owlapi-5.5.1"],
@@ -346,6 +354,20 @@ const VERIFICATION_BY_GROUP = Object.freeze({
 });
 
 const VERIFICATION_BY_EXPORT = Object.freeze({
+  RDFParserMetaData: [
+    "io/rdfParserMetaData.test.js",
+    "model/rdfConsumerCompatibility.test.js",
+    "test/package-boundary.test.mjs",
+  ],
+  RDFOntologyHeaderStatus: [
+    "io/rdfParserMetaData.test.js",
+    "model/rdfConsumerCompatibility.test.js",
+    "test/package-boundary.test.mjs",
+  ],
+  OWLDocumentFormat: [
+    "model/owlDocumentFormat.test.js",
+    "io/rdfParserMetaData.test.js",
+  ],
   AddOntologyAnnotation: [
     "model/ontologyChanges.test.js",
     "model/owlOntologyManager.test.js",
@@ -384,7 +406,21 @@ const VERIFICATION_BY_EXPORT = Object.freeze({
 });
 
 const SEMANTIC_QUALIFICATIONS_BY_EXPORT = Object.freeze({
+  RDFParserMetaData: [
+    "Construct with {tripleCount, headerState, unparsedTriples = [], guessedDeclarations = []}; all inputs are defensively copied into immutable parse metadata.",
+    "getUnparsedTriples returns a frozen array of {subject, predicate, object} RDF/JS-shaped term records, not Java RDFTriple instances. Each record has termType and value; literals also have language and datatype {termType: NamedNode, value}, and optionally direction. Blank-node labels are local to the containing document metadata.",
+    "getGuessedDeclarations returns a frozen array of {iri: IRI, entityType: OWLObjectKind} for entity roles in this document's reconstructed structure without explicit local/imported declarations or built-in status. This replaces Java's IRI-to-Class multimap and does not itself add Declaration axioms; unused imported roles are excluded.",
+    "getTripleCount counts unique triples in the selected or merged reconstruction graph, not duplicate source occurrences or excluded named graphs. getHeaderState reflects explicit owl:Ontology subjects in that graph; unlike the pinned Java parser's constant ONE result it reports ZERO and MULTIPLE truthfully.",
+    "Metadata remains available when collectWarnings is false. It records the original parse; it neither tracks subsequent ontology edits nor certifies complete source preservation, inferred-axiom provenance or current source assessment.",
+  ],
+  RDFOntologyHeaderStatus: [
+    "A frozen string-valued vocabulary with PARSED_ZERO_HEADERS, PARSED_ONE_HEADER and PARSED_MULTIPLE_HEADERS, replacing Java enum instances.",
+  ],
+  OWLDocumentFormat: [
+    "getOntologyLoaderMetaData returns RDFParserMetaData or undefined. withOntologyLoaderMetaData returns an immutable format copy instead of Java's mutating setter; withParameter retains historical parse metadata. Shared OWLDocumentFormats constants are never modified.",
+  ],
   OWLOntologyManager: [
+    "getOntologyFormat returns this manager's loaded OWLDocumentFormat or undefined for a programmatically created ontology, and rejects foreign or removed ontologies. RDF metadata belongs to the original completed parse and remains historical after edits.",
     "importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership.",
     "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
     "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically.",
@@ -410,6 +446,10 @@ const SEMANTIC_QUALIFICATIONS_BY_EXPORT = Object.freeze({
 });
 
 const OMITTED_MEMBERS = Object.freeze({
+  RDFParserMetaData: [
+    "Java RDFTriple/RDFNode wrapper hierarchy, Java Stream and Class-valued Multimap APIs, serialization and positional constructor overload",
+  ],
+  RDFOntologyHeaderStatus: ["Java enum methods"],
   IRI: [
     "Java URI/File overloads and scheme helpers",
     "Java Comparable ordering contract",
@@ -421,6 +461,7 @@ const OMITTED_MEMBERS = Object.freeze({
   ],
   OWLDataFactory: ["SWRL object construction"],
   OWLDocumentFormat: [
+    "setOntologyLoaderMetaData (use immutable withOntologyLoaderMetaData)",
     "Java parameter-map and prefix-format mutation APIs",
     "Java document-format factory identity",
   ],
@@ -818,7 +859,7 @@ const buildBindings = (capabilityById) => {
         exposure: "PUBLIC",
         stability: "PRERELEASE",
         firstPublicRelease: parityMetadata
-          ? "0.1.0"
+          ? "0.1.0-rc.1"
           : (FIRST_PUBLIC_RELEASE_BY_EXPORT[exportName] ?? "0.1.0-alpha.0"),
         publicSpecifier: namespace.npmSpecifier,
         sourceModule:

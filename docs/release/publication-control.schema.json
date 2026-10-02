@@ -29,7 +29,7 @@
       "enum": ["UNRESOLVED", "OIDC_STAGED", "DIRECT_BOOTSTRAP"]
     },
     "coordinate": {
-      "enum": ["owlapi@0.1.0-alpha.0", "owlapi@0.1.0-rc.1"]
+      "enum": ["owlapi@0.1.0-alpha.0", "@hadden-industries/owlapi@0.1.0-rc.1"]
     },
     "channel": {
       "const": "next"
@@ -202,7 +202,7 @@
       "if": {
         "properties": {
           "coordinate": {
-            "const": "owlapi@0.1.0-rc.1"
+            "const": "@hadden-industries/owlapi@0.1.0-rc.1"
           }
         },
         "type": "object"

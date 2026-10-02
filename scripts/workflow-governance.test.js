@@ -507,6 +507,19 @@ describe("repository workflow governance", () => {
     );
   });
 
+  test("rejects a scoped publisher that can write again during a failed-job rerun", () => {
+    const document = parseDocument(
+      readFileSync(".github/workflows/release.yml", "utf8"),
+    );
+    const publish = document
+      .getIn(["jobs", "npm_release", "steps"])
+      .items.find((step) => step.get("run")?.includes("npm publish "));
+    publish.delete("if");
+    expect(auditReleaseMutationBoundary(document.toString())).toContain(
+      "release.yml:npm_release must restrict the sole write to the first run attempt",
+    );
+  });
+
   test("rejects authority added to the read-only reconciliation source job", () => {
     const reconciliation = readFileSync(
       ".github/workflows/release-reconciliation.yml",

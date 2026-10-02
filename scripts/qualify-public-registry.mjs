@@ -1,7 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import {
-  mkdirSync,
   mkdtempSync,
   readFileSync,
   readdirSync,
@@ -14,6 +13,18 @@ import { pathToFileURL } from "node:url";
 
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
 import { sha256Buffer } from "./release-artifacts.mjs";
+import {
+  PACKAGE_NAME,
+  PACKAGE_VERSION,
+  assertRegistryTarballUrl,
+} from "./package-identity.mjs";
+import { installRegistryConsumer } from "./public-registry-consumer.mjs";
+import { verifyRegistryProvenance } from "./registry-provenance.mjs";
+import { readPublicRegistry } from "./public-registry-read.mjs";
+import {
+  INSTALLED_TEST_SCRIPTS,
+  writeInstalledConsumerFixtures,
+} from "./installed-consumer-fixtures.mjs";
 
 const registry = "https://registry.npmjs.org/";
 
@@ -24,7 +35,11 @@ export const assertPublicRegistryFacts = ({
   distTags,
   registryTarballSha256,
 }) => {
-  if (metadata?.name !== "owlapi" || metadata.version !== expectedVersion) {
+  if (
+    metadata?.name !== PACKAGE_NAME ||
+    expectedVersion !== PACKAGE_VERSION ||
+    metadata.version !== expectedVersion
+  ) {
     throw new Error(
       "Public registry metadata has the wrong package coordinate.",
     );
@@ -41,12 +56,12 @@ export const assertPublicRegistryFacts = ({
   }
   if (
     !metadata.dist?.integrity ||
-    !metadata.dist.tarball?.startsWith(`${registry}owlapi/-/`)
+    !assertRegistryTarballUrl(metadata.dist.tarball)
   ) {
     throw new Error("Public registry distribution metadata is incomplete.");
   }
   return {
-    coordinate: `owlapi@${expectedVersion}`,
+    coordinate: `${PACKAGE_NAME}@${expectedVersion}`,
     channel: "next",
     integrity: metadata.dist.integrity,
     tarballSha256: registryTarballSha256,
@@ -56,29 +71,11 @@ export const assertPublicRegistryFacts = ({
 const fetchJson = async (path) => {
   const url = new URL(path, registry);
   url.searchParams.set("owlapi-read", String(Date.now()));
-  const response = await fetch(url, {
-    cache: "no-store",
-    headers: { Accept: "application/json", "Cache-Control": "no-cache" },
-  });
-  if (!response.ok) {
-    throw new Error(
-      `Fresh registry metadata read returned HTTP ${response.status}.`,
-    );
-  }
-  return response.json();
+  return JSON.parse((await readPublicRegistry(url)).toString("utf8"));
 };
 
 const fetchTarball = async (url) => {
-  const response = await fetch(url, {
-    cache: "no-store",
-    headers: { "Cache-Control": "no-cache" },
-  });
-  if (!response.ok) {
-    throw new Error(
-      `Fresh registry tarball read returned HTTP ${response.status}.`,
-    );
-  }
-  return Buffer.from(await response.arrayBuffer());
+  return readPublicRegistry(url);
 };
 
 const verifyIntegrity = (buffer, integrity) => {
@@ -94,9 +91,11 @@ const verifyIntegrity = (buffer, integrity) => {
 
 const readCandidate = (directory) => {
   const fileNames = readdirSync(directory);
-  const tarballName = fileNames.find((name) => /^owlapi-.+\.tgz$/u.test(name));
+  const tarballName = fileNames.find((name) =>
+    /^hadden-industries-owlapi-.+\.tgz$/u.test(name),
+  );
   const sbomName = fileNames.find((name) =>
-    /^owlapi-.+\.cdx\.json$/u.test(name),
+    /^hadden-industries-owlapi-.+\.cdx\.json$/u.test(name),
   );
   if (!tarballName || !sbomName) {
     throw new Error("The retained candidate bundle is incomplete.");
@@ -125,114 +124,71 @@ const requireSuccess = (result, label) => {
   return result;
 };
 
-const exerciseFreshConsumer = (version) => {
-  if (process.env.NODE_AUTH_TOKEN || process.env.NPM_TOKEN) {
-    throw new Error(
-      "Public-registry verification must not receive npm credentials.",
-    );
-  }
+const exerciseFreshConsumers = async (metadata, tarball) => {
   const root = mkdtempSync(join(tmpdir(), "owlapi-public-registry-"));
-  const consumer = join(root, "consumer");
-  const bare = join(root, "bare-default");
-  const cache = join(root, "npm-cache");
-  mkdirSync(consumer);
-  mkdirSync(bare);
-  mkdirSync(cache);
   try {
-    writeFileSync(
-      join(consumer, "package.json"),
-      `${JSON.stringify({ name: "owlapi-public-verifier", version: "0.0.0", private: true, type: "module" }, null, 2)}\n`,
-      "utf8",
-    );
-    const common = [
-      "--ignore-scripts",
-      "--no-audit",
-      "--no-fund",
-      `--registry=${registry}`,
-      "--cache",
-      cache,
-    ];
-    requireSuccess(
-      run("npm", ["install", "--save-exact", "owlapi@next", ...common], {
-        cwd: consumer,
-      }),
-      "Fresh owlapi@next install",
-    );
-    const installed = JSON.parse(
-      readFileSync(
-        join(consumer, "node_modules", "owlapi", "package.json"),
-        "utf8",
-      ),
-    );
-    if (installed.version !== version) {
-      throw new Error("owlapi@next installed a different public version.");
-    }
-    const imports = [
-      "owlapi",
-      "owlapi/apibinding",
-      "owlapi/model",
-      "owlapi/io",
-      "owlapi/formats",
-    ];
-    requireSuccess(
-      run(
-        process.execPath,
-        [
-          "--input-type=module",
-          "--eval",
-          `await Promise.all(${JSON.stringify(imports)}.map((specifier) => import(specifier)));`,
-        ],
-        { cwd: consumer },
-      ),
-      "Installed public export smoke test",
-    );
-    const graph = JSON.parse(
-      requireSuccess(
-        run("npm", ["ls", "--all", "--json"], { cwd: consumer }),
-        "Fresh public dependency graph",
-      ).stdout,
-    );
-    const signatures = JSON.parse(
-      requireSuccess(
-        run(
-          "npm",
-          [
-            "audit",
-            "signatures",
-            "--json",
-            `--registry=${registry}`,
-            "--cache",
-            cache,
-          ],
-          { cwd: consumer },
-        ),
-        "npm registry signature and provenance audit",
-      ).stdout,
-    );
-
-    writeFileSync(
-      join(bare, "package.json"),
-      `${JSON.stringify({ name: "owlapi-bare-default-verifier", version: "0.0.0", private: true }, null, 2)}\n`,
-      "utf8",
-    );
-    const bareInstall = run("npm", ["install", "owlapi", ...common], {
-      cwd: bare,
-    });
-    if (bareInstall.status === 0) {
-      throw new Error(
-        "Bare npm install owlapi unexpectedly selected a prerelease.",
+    const results = {};
+    for (const [mode, dependencyName] of [
+      ["scoped", PACKAGE_NAME],
+      ["alias", "owlapi"],
+    ]) {
+      const directory = join(root, mode);
+      const { identity, environment, npmArguments } = installRegistryConsumer({
+        directory,
+        dependencyName,
+        metadata,
+      });
+      writeInstalledConsumerFixtures(directory, dependencyName);
+      for (const script of INSTALLED_TEST_SCRIPTS) {
+        requireSuccess(
+          run(process.execPath, [script], { cwd: directory, env: environment }),
+          script,
+        );
+      }
+      const graph = JSON.parse(
+        requireSuccess(
+          run(
+            process.execPath,
+            [process.env.npm_execpath, "ls", "--all", "--json"],
+            { cwd: directory, env: environment },
+          ),
+          "Fresh dependency graph",
+        ).stdout,
       );
+      const signatures = JSON.parse(
+        requireSuccess(
+          run(
+            process.execPath,
+            [
+              process.env.npm_execpath,
+              "audit",
+              "signatures",
+              "--json",
+              ...npmArguments,
+            ],
+            { cwd: directory, env: environment },
+          ),
+          "Registry signature and provenance audit",
+        ).stdout,
+      );
+      results[mode] = {
+        ...identity,
+        installedTests: INSTALLED_TEST_SCRIPTS,
+        dependencyGraph: graph,
+        signatureAudit: signatures,
+      };
     }
-    return {
-      installedVersion: installed.version,
-      importSpecifiers: imports,
-      dependencyGraph: graph,
-      signatureAudit: signatures,
-      bareInstallWithoutLatest: "EXPECTED_FAILURE",
-    };
+    const provenance = await verifyRegistryProvenance({
+      metadata,
+      tarball,
+      cache: join(root, "provenance-cache"),
+      commit: process.env.GITHUB_SHA,
+      runId: process.env.GITHUB_RUN_ID,
+      runAttempt: Number(process.env.GITHUB_RUN_ATTEMPT),
+    });
+    return { consumer: results, provenance };
   } finally {
-    // This path is created by mkdtemp in the system temporary directory and is
-    // never derived from repository or user input, making bounded cleanup safe.
+    // The directory is a fresh mkdtemp child of the system temporary directory.
     rmSync(root, { recursive: true, force: true });
   }
 };
@@ -253,10 +209,14 @@ const main = async () => {
   const candidate = readCandidate(resolve(candidatePath));
   const { version } = candidate.package;
   const [metadata, distTags] = await Promise.all([
-    fetchJson(`owlapi/${encodeURIComponent(version)}`),
-    fetchJson("-/package/owlapi/dist-tags"),
+    fetchJson(
+      `${encodeURIComponent(PACKAGE_NAME)}/${encodeURIComponent(version)}`,
+    ),
+    fetchJson(`-/package/${encodeURIComponent(PACKAGE_NAME)}/dist-tags`),
   ]);
-  const registryTarball = await fetchTarball(metadata.dist?.tarball);
+  const registryTarball = await fetchTarball(
+    assertRegistryTarballUrl(metadata.dist?.tarball),
+  );
   verifyIntegrity(registryTarball, metadata.dist?.integrity);
   const facts = assertPublicRegistryFacts({
     expectedVersion: version,
@@ -265,7 +225,10 @@ const main = async () => {
     distTags,
     registryTarballSha256: sha256Buffer(registryTarball),
   });
-  const consumer = exerciseFreshConsumer(version);
+  const { consumer, provenance } = await exerciseFreshConsumers(
+    metadata,
+    registryTarball,
+  );
   const report = {
     schemaVersion: 1,
     result: "PASS",
@@ -275,6 +238,7 @@ const main = async () => {
     tarballUrl: metadata.dist.tarball,
     npmPublishedAt: metadata.time ?? null,
     consumer,
+    provenance,
   };
   writeFileSync(
     resolve(outputPath),

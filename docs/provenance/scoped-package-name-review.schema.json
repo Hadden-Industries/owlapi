@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Hadden-Industries/owlapi/blob/main/docs/provenance/scoped-package-name-review.schema.json",
+  "title": "Scoped owlapi package-name and non-affiliation review",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "review",
+    "identity",
+    "purpose",
+    "compatibilityWording",
+    "knownPriorUse",
+    "evidence",
+    "risks",
+    "mitigations",
+    "publicWording",
+    "externalLegalAdviceObtained",
+    "decision"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "./scoped-package-name-review.schema.json"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "review": {
+      "$ref": "#/$defs/review"
+    },
+    "identity": {
+      "const": "@hadden-industries/owlapi"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "compatibilityWording": {
+      "type": "string",
+      "minLength": 1
+    },
+    "knownPriorUse": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "risks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "mitigations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "publicWording": {
+      "type": "string",
+      "minLength": 1
+    },
+    "externalLegalAdviceObtained": {
+      "type": "boolean"
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outcome", "rationale", "conditions"],
+      "properties": {
+        "outcome": {
+          "enum": ["PENDING_HUMAN_REVIEW", "APPROVED_WITH_MITIGATIONS"]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reviewedOn",
+        "reviewer",
+        "authority",
+        "factsSha256"
+      ],
+      "properties": {
+        "status": {
+          "enum": ["PENDING_HUMAN_REVIEW", "REVIEWED"]
+        },
+        "reviewedOn": {
+          "type": ["string", "null"],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "reviewer": {
+          "enum": [null, "Maksym Shostak"]
+        },
+        "authority": {
+          "type": ["string", "null"],
+          "minLength": 1
+        },
+        "factsSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "review": {
+            "properties": {
+              "status": {
+                "const": "REVIEWED"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "then": {
+        "properties": {
+          "review": {
+            "properties": {
+              "reviewer": {
+                "const": "Maksym Shostak"
+              },
+              "reviewedOn": {
+                "type": "string"
+              },
+              "authority": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "decision": {
+            "properties": {
+              "outcome": {
+                "const": "APPROVED_WITH_MITIGATIONS"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "else": {
+        "properties": {
+          "review": {
+            "properties": {
+              "reviewer": {
+                "type": "null"
+              },
+              "reviewedOn": {
+                "type": "null"
+              },
+              "authority": {
+                "type": "null"
+              }
+            },
+            "type": "object"
+          },
+          "decision": {
+            "properties": {
+              "outcome": {
+                "const": "PENDING_HUMAN_REVIEW"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      }
+    }
+  ]
+}

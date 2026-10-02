@@ -101,7 +101,12 @@ export class RDFXMLParser {
     for (const diagnostic of context.diagnostics) {
       transaction.addDiagnostic(diagnostic);
     }
-    transaction.setDocumentFormat(OWLDocumentFormats.RDF_XML);
-    return OWLDocumentFormats.RDF_XML;
+    const loadedFormat = context.loaderMetaData
+      ? OWLDocumentFormats.RDF_XML.withOntologyLoaderMetaData(
+          context.loaderMetaData,
+        )
+      : OWLDocumentFormats.RDF_XML;
+    transaction.setDocumentFormat(loadedFormat);
+    return loadedFormat;
   }
 }

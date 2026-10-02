@@ -1,4 +1,10 @@
-const version = "0.1.0-alpha.0";
+import {
+  PACKAGE_NAME,
+  PACKAGE_VERSION,
+  PACKAGE_FILE_STEM,
+  assertRegistryTarballUrl,
+} from "./package-identity.mjs";
+const alphaVersion = "0.1.0-alpha.0";
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
 
@@ -15,6 +21,19 @@ const REQUIRED_JOB_NAMES = Object.freeze(
     "Release reconciliation / GitHub draft",
     "Release reconciliation / npm direct bootstrap",
     "Release reconciliation / fresh public registry",
+  ].sort(compareCodeUnits),
+);
+
+/** Completed jobs needed before the fresh RC's evidence/finalization jobs may execute. */
+export const SCOPED_RELEASE_JOB_NAMES = Object.freeze(
+  [
+    "Release / protected-main preflight",
+    "Release / qualified",
+    "Release / publication preflight",
+    "Release / tag accepted",
+    "Release / GitHub draft",
+    "Release / npm direct bootstrap",
+    "Release / fresh public registry",
   ].sort(compareCodeUnits),
 );
 
@@ -45,6 +64,13 @@ export const assertReleaseExecutionIdentity = ({
 };
 
 export const buildReleaseEvidence = (facts) => {
+  const scoped = facts.reconciliation === null;
+  const version = scoped ? PACKAGE_VERSION : alphaVersion;
+  const packageName = scoped ? PACKAGE_NAME : "owlapi";
+  const workflowName = scoped ? "Release" : "Release reconciliation";
+  const workflowPath = scoped
+    ? ".github/workflows/release.yml"
+    : ".github/workflows/release-reconciliation.yml";
   if (
     facts.source?.repository !== "Hadden-Industries/owlapi" ||
     facts.source.ref !== `refs/tags/v${version}` ||
@@ -53,7 +79,7 @@ export const buildReleaseEvidence = (facts) => {
     throw new Error("Release source repository, ref, or tag is inconsistent.");
   }
   if (
-    facts.workflow?.name !== "Release reconciliation" ||
+    facts.workflow?.name !== workflowName ||
     !/^[0-9a-f]{40}$/u.test(facts.workflow.commit ?? "") ||
     facts.qualificationWorkflow?.name !== "Release" ||
     facts.qualificationWorkflow.commit !== facts.source.commit
@@ -63,32 +89,81 @@ export const buildReleaseEvidence = (facts) => {
     );
   }
   if (
+    scoped &&
+    (facts.workflow.commit !== facts.source.commit ||
+      ["name", "commit", "runId", "url"].some(
+        (key) => facts.workflow[key] !== facts.qualificationWorkflow[key],
+      ) ||
+      !Number.isSafeInteger(facts.qualificationWorkflow.runAttempt) ||
+      facts.qualificationWorkflow.runAttempt < 1 ||
+      facts.qualificationWorkflow.runAttempt > facts.workflow.runAttempt)
+  )
+    throw new Error(
+      "The scoped RC must use one canonical source and qualification run.",
+    );
+  if (
     facts.publication?.mode !== "DIRECT_BOOTSTRAP" ||
-    facts.publication.coordinate !== `owlapi@${version}` ||
+    facts.publication.coordinate !== `${packageName}@${version}` ||
     facts.publication.channel !== "next" ||
     facts.publication.next !== version ||
     facts.publication.latestPresent !== false ||
     facts.publication.provenance?.sourceCommit !== facts.workflow.commit ||
     facts.publication.provenance.sourceRef !== "refs/heads/main" ||
-    facts.publication.provenance.workflow !==
-      ".github/workflows/release-reconciliation.yml" ||
+    facts.publication.provenance.workflow !== workflowPath ||
     facts.publication.provenance.subjectSha256 !==
       facts.candidate?.tarball?.sha256
   ) {
     throw new Error(
-      "Release publication facts do not describe the reviewed alpha.",
+      "Release publication facts do not describe the reviewed package.",
     );
   }
+  if (scoped) {
+    assertRegistryTarballUrl(facts.publication.tarballUrl);
+    const provenance = facts.publication.provenance;
+    if (
+      provenance.runId !== facts.workflow.runId ||
+      !Number.isSafeInteger(provenance.runAttempt) ||
+      provenance.runAttempt < 1 ||
+      provenance.runAttempt > facts.workflow.runAttempt
+    ) {
+      throw new Error(
+        "Publication provenance belongs to another run or a future attempt.",
+      );
+    }
+    if (
+      facts.publication.publisherJob?.runAttempt !== provenance.runAttempt ||
+      !["success", "failure"].includes(
+        facts.publication.publisherJob?.conclusion,
+      ) ||
+      !facts.publication.publisherJob?.url
+    )
+      throw new Error(
+        "Publication evidence omits the authenticated publisher job.",
+      );
+    if (
+      facts.candidate?.tarball?.name !==
+        `${PACKAGE_FILE_STEM}-${version}.tgz` ||
+      facts.candidate?.sbom?.name !==
+        `${PACKAGE_FILE_STEM}-${version}.cdx.json` ||
+      facts.candidate?.checksums?.name !== "SHA256SUMS"
+    ) {
+      throw new Error(
+        "Scoped release asset names disagree with the selected candidate.",
+      );
+    }
+  }
   if (
-    facts.reconciliation?.failureClass !==
+    !scoped &&
+    (facts.reconciliation?.failureClass !==
       "POST_QUALIFICATION_EVIDENCE_PERSISTENCE_FAILURE" ||
-    facts.reconciliation.sourceFailureJob?.name !== "Release / tag accepted" ||
-    facts.reconciliation.sourceFailureJob.conclusion !== "failure" ||
-    facts.reconciliation.packageReproduction?.result !== "BYTE_IDENTICAL" ||
-    facts.reconciliation.packageReproduction.bytes !==
-      facts.candidate?.tarball?.bytes ||
-    facts.reconciliation.packageReproduction.sha256 !==
-      facts.candidate?.tarball?.sha256
+      facts.reconciliation.sourceFailureJob?.name !==
+        "Release / tag accepted" ||
+      facts.reconciliation.sourceFailureJob.conclusion !== "failure" ||
+      facts.reconciliation.packageReproduction?.result !== "BYTE_IDENTICAL" ||
+      facts.reconciliation.packageReproduction.bytes !==
+        facts.candidate?.tarball?.bytes ||
+      facts.reconciliation.packageReproduction.sha256 !==
+        facts.candidate?.tarball?.sha256)
   ) {
     throw new Error(
       "Release reconciliation lacks exact package reproduction evidence.",
@@ -119,18 +194,18 @@ export const buildReleaseEvidence = (facts) => {
   const requiredJobs = normalizeBy(facts.requiredJobs ?? [], "name");
   if (
     JSON.stringify(requiredJobs.map(({ name }) => name)) !==
-      JSON.stringify(REQUIRED_JOB_NAMES) ||
+      JSON.stringify(scoped ? SCOPED_RELEASE_JOB_NAMES : REQUIRED_JOB_NAMES) ||
     requiredJobs.some(({ conclusion, url }) => conclusion !== "success" || !url)
   ) {
     throw new Error("The release required job inventory is incomplete.");
   }
   return {
     $schema: `https://raw.githubusercontent.com/Hadden-Industries/owlapi/${facts.workflow.commit}/docs/release/release-evidence.schema.json`,
-    schemaVersion: 2,
+    schemaVersion: scoped ? 3 : 2,
     package: {
-      name: "owlapi",
+      name: packageName,
       version,
-      coordinate: `owlapi@${version}`,
+      coordinate: `${packageName}@${version}`,
       channel: "next",
       registry: "https://registry.npmjs.org/",
     },

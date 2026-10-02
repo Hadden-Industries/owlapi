@@ -1,0 +1,46 @@
+{
+  "$schema": "./scoped-package-name-review.schema.json",
+  "schemaVersion": 1,
+  "review": {
+    "status": "PENDING_HUMAN_REVIEW",
+    "reviewedOn": null,
+    "reviewer": null,
+    "authority": null,
+    "factsSha256": "8a26229a6d09c7bb00b190947b4c3e0b64788ab8d4aeb48b6352cbae22bf47f8"
+  },
+  "identity": "@hadden-industries/owlapi",
+  "purpose": "A native-ESM JavaScript package for loading OWL 2 ontologies into a structural object model with deliberately registered compatibility to selected Java OWLAPI concepts.",
+  "compatibilityWording": "The package may describe compatibility with Java OWLAPI concepts and registered Java mappings, but it must identify itself as an independently maintained JavaScript implementation and must not imply official status, sponsorship, endorsement, or organizational continuity.",
+  "knownPriorUse": "This organization-scoped coordinate is separate from the blocked bare owlapi name and its unrelated Overwatch package history. The owner's authenticated scope inspection is recorded in ADR 0009; current publication permissions and exact coordinate availability require live preflight before publication.",
+  "evidence": [
+    "docs/adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md",
+    "docs/plans/scoped-npm-publication.md",
+    "docs/provenance/package-name-review.json",
+    "README.md",
+    "package.json",
+    "docs/compatibility/java-api-surface.json"
+  ],
+  "risks": [
+    "The owlapi designation may still be mistaken for an official Java OWLAPI edition.",
+    "An npm alias may obscure the actual registry identity unless manifests, locks and release evidence retain the scoped coordinate.",
+    "Scope ownership and an absent coordinate do not by themselves prove permission to publish the reviewed artifact."
+  ],
+  "mitigations": [
+    "Retain explicit independent-implementation and non-affiliation wording.",
+    "Use only @hadden-industries/owlapi@0.1.0-rc.1 under next, leave latest unset, and require exact pins for consumer acceptance.",
+    "Verify both direct scoped and native-alias installations against the actual package, registry integrity and provenance.",
+    "Recheck organization permissions and exact coordinate availability immediately before the separately approved publication."
+  ],
+  "publicWording": "This project is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project. The selected scoped package is separate from the unrelated historical unscoped Overwatch package and has no code, API, ownership, or provenance relationship with it.",
+  "externalLegalAdviceObtained": false,
+  "decision": {
+    "outcome": "PENDING_HUMAN_REVIEW",
+    "rationale": "The owner selected the scoped registry identity and authorized its implementation. This fresh name and non-affiliation fact set is prepared for human review without reusing the historical unscoped attestation.",
+    "conditions": [
+      "Complete the fresh scoped-name review and remaining exact-fact release reviews before publication.",
+      "Keep publication disabled until the fully qualified artifact and supported publication mode receive the existing exact-artifact approval.",
+      "UO and WebVOWL each accept the exact RC independently before production; stable 0.1.0 is not required.",
+      "Any future migration to the bare owlapi name is a separate implementation."
+    ]
+  }
+}

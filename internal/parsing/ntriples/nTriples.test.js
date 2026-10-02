@@ -107,7 +107,7 @@ describe("N-Triples manager integration", () => {
     );
 
     const imported = result.documents.find(
-      ({ context }) => context.format === OWLDocumentFormats.N_TRIPLES,
+      ({ context }) => context.format.key === OWLDocumentFormats.N_TRIPLES.key,
     );
     expect(result.documents).toHaveLength(2);
     expect(imported).toBeDefined();

@@ -20,7 +20,7 @@ import {
   normalizeProductionGraph,
   validateGitConsumerLock,
 } from "./git-package-equivalence.mjs";
-import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
+import { verifyHistoricalAlphaCandidateBundle } from "./candidate-bundle.mjs";
 import {
   isStrictDescendantPath,
   readZipArchiveFiles,
@@ -294,7 +294,7 @@ export function verifyCandidateArtifactArchive({ archive, expectedDigest }) {
   }
   const files = new Map(entries.map((entry) => [entry.path, entry.content]));
   const tarball = files.get(tarballFileName);
-  const candidate = verifyDownloadedCandidateBundle({
+  const candidate = verifyHistoricalAlphaCandidateBundle({
     checksumText: files.get("SHA256SUMS").toString("utf8"),
     fileNames: actualPaths,
     sbomText: files.get(sbomFileName).toString("utf8"),

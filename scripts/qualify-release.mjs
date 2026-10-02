@@ -177,10 +177,10 @@ const readRegistryVersion = async (name, version) => {
 const readCandidate = (candidateDirectory) => {
   const fileNames = readdirSync(candidateDirectory);
   const tarballFileName = fileNames.find((name) =>
-    /^owlapi-.+\.tgz$/u.test(name),
+    /^hadden-industries-owlapi-.+\.tgz$/u.test(name),
   );
   const sbomFileName = fileNames.find((name) =>
-    /^owlapi-.+\.cdx\.json$/u.test(name),
+    /^hadden-industries-owlapi-.+\.cdx\.json$/u.test(name),
   );
   if (!tarballFileName || !sbomFileName) {
     throw new Error("The retained candidate is missing its tarball or SBOM.");

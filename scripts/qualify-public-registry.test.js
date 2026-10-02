@@ -1,6 +1,6 @@
 import { assertPublicRegistryFacts } from "./qualify-public-registry.mjs";
 
-const version = "0.1.0-alpha.0";
+const version = "0.1.0-rc.1";
 const retainedSha256 = "a".repeat(64);
 
 describe("fresh public-registry qualification", () => {
@@ -10,18 +10,18 @@ describe("fresh public-registry qualification", () => {
         expectedVersion: version,
         retainedSha256,
         metadata: {
-          name: "owlapi",
+          name: "@hadden-industries/owlapi",
           version,
           dist: {
             integrity: "sha512-example",
-            tarball: `https://registry.npmjs.org/owlapi/-/owlapi-${version}.tgz`,
+            tarball: `https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-${version}.tgz`,
           },
         },
         distTags: { next: version },
         registryTarballSha256: retainedSha256,
       }),
     ).toEqual({
-      coordinate: `owlapi@${version}`,
+      coordinate: `@hadden-industries/owlapi@${version}`,
       channel: "next",
       integrity: "sha512-example",
       tarballSha256: retainedSha256,
@@ -41,7 +41,7 @@ describe("fresh public-registry qualification", () => {
         expectedVersion: version,
         retainedSha256,
         metadata: {
-          name: "owlapi",
+          name: "@hadden-industries/owlapi",
           version,
           dist: {
             integrity: "sha512-example",

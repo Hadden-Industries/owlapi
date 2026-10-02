@@ -13,7 +13,7 @@ import { sha256File } from "./release-artifacts.mjs";
 import { assertReleaseExecutionIdentity } from "./release-evidence.mjs";
 import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 
-const version = "0.1.0-alpha.0";
+import { PACKAGE_VERSION, PACKAGE_FILE_STEM } from "./package-identity.mjs";
 
 const argumentValue = (name) => {
   const index = process.argv.indexOf(name);
@@ -73,6 +73,10 @@ const downloadAsset = async ({ repository, token, asset, directory }) => {
 };
 
 const main = async () => {
+  const version = argumentValue("--version") ?? PACKAGE_VERSION;
+  if (![PACKAGE_VERSION, "0.1.0-alpha.0"].includes(version))
+    throw new Error("Unexpected release version.");
+  const stem = version === PACKAGE_VERSION ? PACKAGE_FILE_STEM : "owlapi";
   const executable = resolve(argumentValue("--gh") ?? "");
   const outputDirectory = resolve(argumentValue("--output-directory") ?? "");
   const reportPath = argumentValue("--report");
@@ -125,9 +129,9 @@ const main = async () => {
   });
   const expectedNames = [
     "SHA256SUMS",
-    `owlapi-${version}.cdx.json`,
-    `owlapi-${version}.release-evidence.json`,
-    `owlapi-${version}.tgz`,
+    `${stem}-${version}.cdx.json`,
+    `${stem}-${version}.release-evidence.json`,
+    `${stem}-${version}.tgz`,
   ].sort();
   if (
     JSON.stringify(release.assets.map(({ name }) => name).sort()) !==

@@ -7,6 +7,7 @@ import addFormats from "ajv-formats";
 
 import * as evidenceGenerator from "./generate-release-evidence.mjs";
 import * as releaseEvidence from "./release-evidence.mjs";
+import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 
 const { buildReleaseEvidence } = releaseEvidence;
 
@@ -142,6 +143,185 @@ const facts = {
     },
   },
 };
+
+const scopedFacts = () => {
+  const candidate = structuredClone(facts);
+  const rc = "0.1.0-rc.1";
+  candidate.source.ref = `refs/tags/v${rc}`;
+  candidate.source.tag = `v${rc}`;
+  candidate.workflow = { ...candidate.qualificationWorkflow };
+  candidate.publication.coordinate = `@hadden-industries/owlapi@${rc}`;
+  candidate.publication.next = rc;
+  candidate.publication.tarballUrl = `https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-${rc}.tgz`;
+  candidate.publication.provenance.sourceCommit = candidate.source.commit;
+  candidate.publication.provenance.workflow = ".github/workflows/release.yml";
+  candidate.publication.provenance.runId = candidate.workflow.runId;
+  candidate.publication.provenance.runAttempt = candidate.workflow.runAttempt;
+  candidate.publication.publisherJob = {
+    url: `${candidate.workflow.url}/job/42`,
+    runAttempt: candidate.workflow.runAttempt,
+    conclusion: "success",
+  };
+  candidate.reconciliation = null;
+  candidate.requiredJobs = [
+    "Release / protected-main preflight",
+    "Release / qualified",
+    "Release / publication preflight",
+    "Release / tag accepted",
+    "Release / GitHub draft",
+    "Release / npm direct bootstrap",
+    "Release / fresh public registry",
+  ].map((name, index) => ({
+    name,
+    conclusion: "success",
+    url: `https://github.com/Hadden-Industries/owlapi/actions/runs/12345/job/${index + 1}`,
+  }));
+  candidate.candidate.tarball.name = `hadden-industries-owlapi-${rc}.tgz`;
+  candidate.candidate.sbom.name = `hadden-industries-owlapi-${rc}.cdx.json`;
+  candidate.githubRelease.assets = [
+    candidate.candidate.checksums,
+    candidate.candidate.sbom,
+    candidate.candidate.tarball,
+  ];
+  return candidate;
+};
+
+test("fresh scoped RC evidence binds one source and run without borrowing alpha reconciliation", () => {
+  const evidence = buildReleaseEvidence(scopedFacts());
+  expect(evidence.package).toEqual({
+    name: "@hadden-industries/owlapi",
+    version: "0.1.0-rc.1",
+    coordinate: "@hadden-industries/owlapi@0.1.0-rc.1",
+    channel: "next",
+    registry: "https://registry.npmjs.org/",
+  });
+  expect(evidence.reconciliation).toBeNull();
+  expect(evidence.schemaVersion).toBe(3);
+  const ajv = new Ajv2020({ allErrors: true, strict: true });
+  addFormats(ajv);
+  const validate = ajv.compile(
+    JSON.parse(
+      readFileSync(
+        join(repositoryRoot, "docs/release/release-evidence.schema.json"),
+        "utf8",
+      ),
+    ),
+  );
+  expect(validate(evidence)).toBe(true);
+  expect(validate.errors).toBeNull();
+});
+
+test.each(["coordinate", "run", "reconciliation", "asset"])(
+  "rejects substituted scoped release %s",
+  (field) => {
+    const candidate = scopedFacts();
+    if (field === "coordinate")
+      candidate.publication.coordinate = "owlapi@0.1.0-rc.1";
+    if (field === "run") candidate.qualificationWorkflow.runId = "98765";
+    if (field === "reconciliation")
+      candidate.reconciliation = facts.reconciliation;
+    if (field === "asset")
+      candidate.candidate.tarball.name = "owlapi-0.1.0-rc.1.tgz";
+    expect(() => buildReleaseEvidence(candidate)).toThrow();
+  },
+);
+
+test.each([
+  "tarball URL",
+  "asset name",
+  "GitHub asset name",
+  "duplicate GitHub asset name",
+])("schema rejects substituted scoped %s even without the builder", (field) => {
+  // Validate a serialized asset, without shared object identities from the builder.
+  const evidence = JSON.parse(
+    JSON.stringify(buildReleaseEvidence(scopedFacts())),
+  );
+  if (field === "tarball URL")
+    evidence.publication.tarballUrl =
+      "https://registry.npmjs.org/owlapi/-/owlapi-0.1.0-rc.1.tgz";
+  else if (field === "asset name")
+    evidence.candidate.tarball.name = "owlapi-0.1.0-rc.1.tgz";
+  else if (field === "GitHub asset name")
+    evidence.githubRelease.assets[0].name = "unrelated.tgz";
+  else
+    evidence.githubRelease.assets[0].name =
+      evidence.githubRelease.assets[1].name;
+  expect(() => validateReleaseEvidence(evidence)).toThrow(/strict schema/u);
+});
+
+test("partial reruns retain successful prerequisites and the original publication attempt", () => {
+  const candidate = scopedFacts();
+  const { runId, commit } = candidate.workflow;
+  const jobs = candidate.requiredJobs.map((job) => ({
+    ...job,
+    html_url: job.url,
+    run_id: Number(runId),
+    head_sha: commit,
+    run_attempt: 1,
+    status: "completed",
+    steps: [],
+  }));
+  const publisher = jobs.find(
+    (job) => job.name === "Release / npm direct bootstrap",
+  );
+  publisher.conclusion = "failure";
+  publisher.steps = [
+    {
+      name: "Perform the single authorized direct-bootstrap write",
+      status: "completed",
+      conclusion: "failure",
+    },
+  ];
+  jobs.push({
+    ...publisher,
+    run_attempt: 2,
+    conclusion: "success",
+    html_url: `${candidate.workflow.url}/job/99`,
+    steps: [{ ...publisher.steps[0], conclusion: "skipped" }],
+  });
+  const input = {
+    jobs,
+    runId,
+    runAttempt: 2,
+    commit,
+    provenance: candidate.publication.provenance,
+  };
+  const accepted = evidenceGenerator.scopedWorkflowJobs(input);
+  expect(accepted.publisherJob).toEqual({
+    url: publisher.html_url,
+    runAttempt: 1,
+    conclusion: "failure",
+  });
+  expect(accepted.requiredJobs).toHaveLength(7);
+  expect(accepted.qualificationRunAttempt).toBe(1);
+  candidate.publication.publisherJob = accepted.publisherJob;
+  candidate.requiredJobs = accepted.requiredJobs;
+  candidate.workflow.runAttempt = 2;
+  candidate.qualificationWorkflow.runAttempt = 1;
+  expect(() =>
+    validateReleaseEvidence(buildReleaseEvidence(candidate)),
+  ).not.toThrow();
+  for (const field of ["run_id", "head_sha", "run_attempt", "conclusion"]) {
+    const changed = structuredClone(input);
+    const latest = changed.jobs.at(-1);
+    latest[field] =
+      field === "run_id"
+        ? 999
+        : field === "head_sha"
+          ? "f".repeat(40)
+          : field === "run_attempt"
+            ? 3
+            : "failure";
+    expect(() => evidenceGenerator.scopedWorkflowJobs(changed)).toThrow();
+  }
+  const skippedWrite = structuredClone(input);
+  skippedWrite.jobs.find(
+    (job) => job.name === publisher.name,
+  ).steps[0].conclusion = "skipped";
+  expect(() => evidenceGenerator.scopedWorkflowJobs(skippedWrite)).toThrow(
+    /publisher job/u,
+  );
+});
 
 describe("release evidence", () => {
   test("combines the successful qualification and promotion jobs", () => {

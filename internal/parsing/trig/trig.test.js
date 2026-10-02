@@ -82,9 +82,15 @@ describe("TriG manager integration", () => {
       ),
     );
 
-    expect(trig.documents[0].context.format).toBe(OWLDocumentFormats.TRIG);
-    expect(turtle.documents[0].context.format).toBe(OWLDocumentFormats.TURTLE);
-    expect(nquads.documents[0].context.format).toBe(OWLDocumentFormats.N_QUADS);
+    expect(trig.documents[0].context.format.key).toBe(
+      OWLDocumentFormats.TRIG.key,
+    );
+    expect(turtle.documents[0].context.format.key).toBe(
+      OWLDocumentFormats.TURTLE.key,
+    );
+    expect(nquads.documents[0].context.format.key).toBe(
+      OWLDocumentFormats.N_QUADS.key,
+    );
   });
 
   it("applies every explicit graph policy and reports graph-context loss", async () => {
@@ -177,7 +183,7 @@ describe("TriG manager integration", () => {
       "Ontology(<urn:test:root> Import(<urn:test:imported>))",
     );
     const imported = closure.documents.find(
-      ({ context }) => context.format === OWLDocumentFormats.TRIG,
+      ({ context }) => context.format.key === OWLDocumentFormats.TRIG.key,
     );
     expect(imported).toBeDefined();
     expect(
