@@ -2572,16 +2572,17 @@ bundle licence and notice review.
     );
   });
 
-  it("requires a new human review for the changed lifecycle dependency facts", () => {
+  it("records the approved lifecycle dependency facts without reusing the earlier review", () => {
     const governance = readJson("./docs/dependency-governance.json");
 
     expect(governance.review).toEqual({
-      status: "PENDING_HUMAN_REVIEW",
-      factsSha256: expect.stringMatching(/^[0-9a-f]{64}$/),
-      reviewer: null,
-      reviewedOn: null,
-      capacity: null,
-      conclusion: null,
+      status: "REVIEWED",
+      factsSha256:
+        "a63d529f85b40f67666478866e3cff877571a737d37ac73360e2eaad655c3e68",
+      reviewer: "Maksym Shostak",
+      reviewedOn: "2026-10-03",
+      capacity: expect.any(String),
+      conclusion: expect.any(String),
     });
     expect(governance.review.factsSha256).not.toBe(
       "60ccbac9295657fcdd69120ba77e2fc1838c022ceeab9bb60256d772d75708eb",

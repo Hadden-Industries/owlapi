@@ -48,7 +48,7 @@ describe("workflow metadata", () => {
     }
   });
 
-  test("prepares the first-release candidate without authorizing publication or alpha reconciliation", () => {
+  test("authorizes only the reviewed scoped bootstrap and rejects contradictory controls", () => {
     const currentManifest = JSON.parse(readFileSync("package.json", "utf8"));
     const publication = JSON.parse(
       readFileSync("docs/release/publication-control.json", "utf8"),
@@ -68,13 +68,31 @@ describe("workflow metadata", () => {
       coordinate: "@hadden-industries/owlapi@0.1.0-rc.1",
       tag: "v0.1.0-rc.1",
       channel: "next",
-      publication_enabled: "false",
-      publication_mode: "UNRESOLVED",
+      publication_enabled: "true",
+      publication_mode: "DIRECT_BOOTSTRAP",
     });
     expect(validate({ ...publication, coordinate: "owlapi@0.2.0" })).toBe(
       false,
     );
     expect(validate({ ...publication, channel: "latest" })).toBe(false);
+    expect(
+      validate({
+        ...publication,
+        enabled: false,
+        mode: "UNRESOLVED",
+        reviewedOn: null,
+      }),
+    ).toBe(true);
+    for (const invalidControls of [
+      { enabled: false },
+      { mode: "UNRESOLVED" },
+      { mode: "OIDC_STAGED" },
+      { reviewedOn: null },
+      { reviewedOn: "2026-13-03" },
+      { reconciliation: {} },
+    ]) {
+      expect(validate({ ...publication, ...invalidControls })).toBe(false);
+    }
   });
 
   test("derives one safe coordinate, channel, tag, and same-run artifact identity", () => {

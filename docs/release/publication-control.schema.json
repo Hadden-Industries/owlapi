@@ -209,16 +209,25 @@
       },
       "then": {
         "properties": {
-          "enabled": {
-            "const": false
-          },
-          "mode": {
-            "const": "UNRESOLVED"
-          },
           "reconciliation": {
             "type": "null"
           }
         },
+        "oneOf": [
+          {
+            "properties": {
+              "enabled": { "const": false },
+              "mode": { "const": "UNRESOLVED" }
+            }
+          },
+          {
+            "properties": {
+              "enabled": { "const": true },
+              "mode": { "const": "DIRECT_BOOTSTRAP" },
+              "reviewedOn": { "type": "string", "format": "date" }
+            }
+          }
+        ],
         "type": "object"
       }
     }
