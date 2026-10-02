@@ -13,6 +13,16 @@ import { tmpdir } from "node:os";
 import { basename, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
+import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
+import {
+  PACKAGE_NAME,
+  PACKAGE_FILE_STEM,
+  assertPackageIdentity,
+} from "./package-identity.mjs";
+import {
+  INSTALLED_TEST_SCRIPTS,
+  writeInstalledConsumerFixtures,
+} from "./installed-consumer-fixtures.mjs";
 
 import {
   assertReleasePacklist,
@@ -27,6 +37,7 @@ const packageJson = JSON.parse(
   readFileSync(join(REPOSITORY_ROOT, "package.json"), "utf8"),
 );
 const VERSION = packageJson.version;
+assertPackageIdentity(packageJson);
 const DEFAULT_OUTPUT_DIRECTORY = join(
   REPOSITORY_ROOT,
   ".release",
@@ -129,7 +140,11 @@ const flattenNpmGraph = (root) => {
 const writeJson = (fileName, value) =>
   writeFileSync(join(outputDirectory, fileName), stableJson(value), "utf8");
 
-const writeConsumerManifest = (directory, tarballPath) =>
+const writeConsumerManifest = (
+  directory,
+  tarballPath,
+  dependencyName = "owlapi",
+) =>
   writeFileSync(
     join(directory, "package.json"),
     stableJson({
@@ -137,7 +152,9 @@ const writeConsumerManifest = (directory, tarballPath) =>
       version: "0.0.0",
       private: true,
       type: "module",
-      dependencies: { owlapi: `file:${tarballPath.replaceAll("\\", "/")}` },
+      dependencies: {
+        [dependencyName]: `file:${tarballPath.replaceAll("\\", "/")}`,
+      },
     }),
     "utf8",
   );
@@ -196,6 +213,14 @@ try {
   const actualPack = firstPackResult(
     npmJson(["pack", "--json", "--pack-destination", outputDirectory]),
   );
+  for (const packed of [dryRun, actualPack]) {
+    assertPackageIdentity(packed);
+    if (packed.filename !== `${PACKAGE_FILE_STEM}-${VERSION}.tgz`) {
+      throw new Error(
+        "npm pack returned an unexpected scoped tarball filename.",
+      );
+    }
+  }
   const tarballPath = join(outputDirectory, actualPack.filename);
   const archiveEntries = inspectGzipTar(readFileSync(tarballPath)).sort(
     (left, right) => compareCodeUnits(left.path, right.path),
@@ -230,7 +255,7 @@ try {
     cwd: subjectDirectory,
     label: "production-only SBOM subject install",
   });
-  const sbomFileName = `owlapi-${VERSION}.cdx.json`;
+  const sbomFileName = `hadden-industries-owlapi-${VERSION}.cdx.json`;
   const sbomPath = join(outputDirectory, sbomFileName);
   runNpm(
     [
@@ -294,6 +319,14 @@ try {
     label: "lockless inspection consumer install",
   });
   runInstalledConsumerScripts(consumerDirectory);
+  assertPackageIdentity(
+    JSON.parse(
+      readFileSync(
+        join(consumerDirectory, "node_modules", "owlapi", "package.json"),
+        "utf8",
+      ),
+    ),
+  );
   const inspectionGraph = npmJson(["ls", "--omit=dev", "--all", "--json"], {
     cwd: consumerDirectory,
     label: "lockless inspection consumer production graph",
@@ -308,6 +341,54 @@ try {
     label: "normal lockless consumer install",
   });
   runInstalledConsumerScripts(normalConsumerDirectory);
+  assertPackageIdentity(
+    JSON.parse(
+      readFileSync(
+        join(normalConsumerDirectory, "node_modules", "owlapi", "package.json"),
+        "utf8",
+      ),
+    ),
+  );
+  const scopedConsumerDirectory = join(temporaryRoot, "scoped-consumer");
+  mkdirSync(scopedConsumerDirectory);
+  writeConsumerManifest(scopedConsumerDirectory, tarballPath, PACKAGE_NAME);
+  runNpm(
+    [
+      "install",
+      "--ignore-scripts",
+      "--cache",
+      join(temporaryRoot, "scoped-npm-cache"),
+    ],
+    {
+      cwd: scopedConsumerDirectory,
+      label: "direct scoped retained-tarball install",
+    },
+  );
+  assertPackageIdentity(
+    JSON.parse(
+      readFileSync(
+        join(
+          scopedConsumerDirectory,
+          "node_modules",
+          PACKAGE_NAME,
+          "package.json",
+        ),
+        "utf8",
+      ),
+    ),
+  );
+  writeInstalledConsumerFixtures(scopedConsumerDirectory, PACKAGE_NAME);
+  for (const script of INSTALLED_TEST_SCRIPTS)
+    run(process.execPath, [script], {
+      cwd: scopedConsumerDirectory,
+      label: `direct scoped ${script}`,
+    });
+  writeJson(
+    "scoped-consumer-production-graph.json",
+    npmJson(["ls", "--omit=dev", "--all", "--json"], {
+      cwd: scopedConsumerDirectory,
+    }),
+  );
   const locklessGraph = npmJson(["ls", "--omit=dev", "--all", "--json"], {
     cwd: normalConsumerDirectory,
     label: "normal lockless consumer production graph",
@@ -378,6 +459,13 @@ try {
     formatSha256Sums(checksumEntries),
     "utf8",
   );
+  // Validate the real generator output through the same closed reader used by later jobs.
+  verifyDownloadedCandidateBundle({
+    fileNames: ["SHA256SUMS", tarballFileName, sbomFileName],
+    checksumText: readFileSync(join(outputDirectory, "SHA256SUMS"), "utf8"),
+    sbomText: readFileSync(sbomPath, "utf8"),
+    tarball: readFileSync(tarballPath),
+  });
   writeJson("candidate-manifest.json", {
     schemaVersion: 1,
     package: { name: packageJson.name, version: VERSION },

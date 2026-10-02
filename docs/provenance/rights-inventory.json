@@ -2,18 +2,18 @@
   "$schema": "./rights-inventory.schema.json",
   "schemaVersion": 1,
   "package": {
-    "name": "owlapi",
+    "name": "@hadden-industries/owlapi",
     "version": "0.1.0-rc.1",
     "repository": "https://github.com/Hadden-Industries/owlapi",
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
-      "fileCount": 108,
-      "sourceManifestSha256": "8f72dbe97c64842acacdbcc98b8b2000f93d9f6103b585f12eb1a8b01592c5a4"
+      "fileCount": 110,
+      "sourceManifestSha256": "5866fde24526ae961016ea410ef73410b78a2ec3364d5a4bbcc74f0cf61861ba"
     }
   },
   "review": {
     "status": "PENDING_HUMAN_REVIEW",
-    "factsSha256": "128f7f4dd72e0b933b8479873dcec228bde2d08f7863311976073ecf9ccdb811",
+    "factsSha256": "af5576448e1668b82beceb1c1f6831875a29af0d43d2b46331381316efe617ce",
     "reviewer": null,
     "reviewedOn": null,
     "capacity": null,
@@ -53,6 +53,7 @@
         "CHANGELOG.md",
         "NOTICE",
         "docs/compatibility/canonical-vowl-prerequisites.md",
+        "docs/compatibility/rdf-parser-metadata.md",
         "docs/compatibility/capabilities.json"
       ],
       "packageTarball": true,
@@ -103,7 +104,7 @@
   "externalDependencies": {
     "bundled": false,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "4ff6e48a1ce3940ad131eec2dcb7cd974f6e42c76a140e112168a1de18bc97da",
+    "inventoryFactsSha256": "5134d3e5ed35336c7f1853be318a485956d14f8bce4c2fd7fb64a7036e668fe0",
     "noticeRule": "Ordinary npm dependencies are installed separately and remain under their own licences. Their licence texts are not copied into the owlapi tarball merely because they appear in the installed dependency graph."
   },
   "unresolvedExternalContributions": [],

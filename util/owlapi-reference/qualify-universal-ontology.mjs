@@ -2,6 +2,7 @@
 import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { realpathSync } from "node:fs";
 import { createRequire } from "node:module";
 import {
   basename,
@@ -13,6 +14,7 @@ import {
   sep,
 } from "node:path";
 import { parseArgs } from "node:util";
+import { isStrictDescendantPath } from "../../scripts/release-artifacts.mjs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
@@ -21,6 +23,15 @@ import {
   resolvePinnedReferenceEnvironment,
 } from "./run-import-closure-contract.mjs";
 import { executeOntologyParsingOracle } from "./run-ontology-parsing-contract.mjs";
+import {
+  PACKAGE_NAME,
+  PACKAGE_VERSION,
+  assertPackageIdentity,
+} from "../../scripts/package-identity.mjs";
+import {
+  fetchRegistryMetadata,
+  installRegistryConsumer,
+} from "../../scripts/public-registry-consumer.mjs";
 import {
   reconcileStructuralDifferences,
   reconcileUnparsedRdf,
@@ -144,15 +155,28 @@ export const parseQualificationArguments = (args) => {
       "ontology-repository": { type: "string" },
       output: { type: "string" },
       candidate: { type: "string" },
+      "registry-version": { type: "string" },
     },
   });
   if (!values["ontology-repository"] || !values.output) {
     throw new Error("--ontology-repository and --output are required");
   }
+  if (values.candidate && values["registry-version"])
+    throw new Error(
+      "Candidate and public-registry modes are mutually exclusive",
+    );
+  if (
+    values["registry-version"] &&
+    values["registry-version"] !== PACKAGE_VERSION
+  )
+    throw new Error("Select the exact scoped RC version");
   return {
     ontologyRepository: values["ontology-repository"],
     outputDirectory: values.output,
     ...(values.candidate ? { candidateDirectory: values.candidate } : {}),
+    ...(values["registry-version"]
+      ? { registryVersion: values["registry-version"] }
+      : {}),
   };
 };
 
@@ -216,13 +240,25 @@ export const materializePinnedOntologySources = async (
 };
 
 /** Resolve only the approved package exports, for source and installed candidates alike. */
-const loadPublicApi = async (packageDirectory) => {
-  const require = createRequire(join(packageDirectory, "package.json"));
+const loadPublicApi = async ({ packageDirectory, consumerDirectory }) => {
+  const require = createRequire(
+    join(consumerDirectory ?? packageDirectory, "package.json"),
+  );
+  const dependencyName = consumerDirectory ? "owlapi" : PACKAGE_NAME;
   const modules = await Promise.all(
-    ["apibinding", "formats", "io", "model", "util"].map(
-      (subpath) =>
-        import(pathToFileURL(require.resolve(`owlapi/${subpath}`)).href),
-    ),
+    ["apibinding", "formats", "io", "model", "util"].map((subpath) => {
+      const path = require.resolve(`${dependencyName}/${subpath}`);
+      if (
+        !isStrictDescendantPath(
+          realpathSync(packageDirectory),
+          realpathSync(path),
+        )
+      )
+        throw new Error(
+          "Ontology qualification resolved outside the selected package.",
+        );
+      return import(pathToFileURL(path).href);
+    }),
   );
   return Object.assign({}, ...modules);
 };
@@ -233,6 +269,7 @@ export const generateOntologyEvidence = async ({
   catalogMappings,
   outputDirectory,
   packageDirectory = REPOSITORY_ROOT,
+  consumerDirectory,
 }) => {
   const {
     OWLManager,
@@ -244,7 +281,7 @@ export const generateOntologyEvidence = async ({
     AddOntologyAnnotation,
     OWLOntologyImportsClosureSetProvider,
     OWLOntologyMerger,
-  } = await loadPublicApi(packageDirectory);
+  } = await loadPublicApi({ packageDirectory, consumerDirectory });
   const mappings = new Map(
     catalogMappings.map(({ ontologyIRI, documentPath }) => [
       ontologyIRI,
@@ -392,6 +429,7 @@ const installCandidate = async (candidateDirectory, outputDirectory) => {
   const candidate = JSON.parse(
     await readFile(join(candidateDirectory, "candidate-manifest.json"), "utf8"),
   );
+  assertPackageIdentity(candidate.package);
   if (basename(candidate.tarball.fileName) !== candidate.tarball.fileName)
     throw new Error("Candidate tarball must be a basename");
   const tarballPath = resolve(candidateDirectory, candidate.tarball.fileName);
@@ -424,8 +462,17 @@ const installCandidate = async (candidateDirectory, outputDirectory) => {
     },
   );
   await writeFile(join(outputDirectory, "candidate-install.log"), log);
+  assertPackageIdentity(
+    JSON.parse(
+      await readFile(
+        join(consumerDirectory, "node_modules", "owlapi", "package.json"),
+        "utf8",
+      ),
+    ),
+  );
   return {
     packageDirectory: join(consumerDirectory, "node_modules", "owlapi"),
+    consumerDirectory,
     identity: candidate,
   };
 };
@@ -561,9 +608,29 @@ export const qualifyUniversalOntology = async ({
   ontologyRepository,
   outputDirectory,
   candidateDirectory,
+  registryVersion,
 }) => {
+  if (candidateDirectory && registryVersion)
+    throw new Error(
+      "Candidate and public-registry modes are mutually exclusive",
+    );
+  if (registryVersion && registryVersion !== PACKAGE_VERSION)
+    throw new Error("Select the exact scoped RC version");
   const output = resolve(outputDirectory);
-  if (!candidateDirectory)
+  if (registryVersion) {
+    const resolvedOutput = join(
+      realpathSync(dirname(output)),
+      basename(output),
+    );
+    const resolvedRepository = realpathSync(REPOSITORY_ROOT);
+    if (
+      resolvedOutput === resolvedRepository ||
+      isStrictDescendantPath(resolvedRepository, resolvedOutput)
+    )
+      throw new Error(
+        "Public-registry qualification requires output outside the owlapi checkout.",
+      );
+  } else if (!candidateDirectory)
     assertSourceQualificationOutputDirectory(REPOSITORY_ROOT, output);
   const reference = await resolvePinnedReferenceEnvironment();
   const manifest = JSON.parse(await readFile(MANIFEST_URL, "utf8"));
@@ -574,12 +641,21 @@ export const qualifyUniversalOntology = async ({
     join(output, "sources"),
     manifest,
   );
-  const installed = candidateDirectory
-    ? await installCandidate(resolve(candidateDirectory), output)
-    : {
-        packageDirectory: REPOSITORY_ROOT,
-        identity: await captureSourceIdentity(REPOSITORY_ROOT),
-      };
+  const installed = registryVersion
+    ? {
+        packageDirectory: join(output, "consumer", "node_modules", "owlapi"),
+        consumerDirectory: join(output, "consumer"),
+        identity: installRegistryConsumer({
+          directory: join(output, "consumer"),
+          metadata: await fetchRegistryMetadata(registryVersion),
+        }).identity,
+      }
+    : candidateDirectory
+      ? await installCandidate(resolve(candidateDirectory), output)
+      : {
+          packageDirectory: REPOSITORY_ROOT,
+          identity: await captureSourceIdentity(REPOSITORY_ROOT),
+        };
   const compilation = await compileOntologyReferenceOracles(
     reference,
     join(output, "java"),
@@ -602,6 +678,7 @@ export const qualifyUniversalOntology = async ({
         catalogMappings: sources.catalogMappings,
         outputDirectory: join(output, root.name),
         packageDirectory: installed.packageDirectory,
+        consumerDirectory: installed.consumerDirectory,
       });
       const documents = [];
       for (const document of generated.documents) {
@@ -689,11 +766,13 @@ export const qualifyUniversalOntology = async ({
       process.stderr.write(`${root.name}: ${error.stack}\n`);
     }
   }
-  const finalSourceIdentity = candidateDirectory
-    ? undefined
-    : await captureSourceIdentity(REPOSITORY_ROOT);
+  const finalSourceIdentity =
+    candidateDirectory || registryVersion
+      ? undefined
+      : await captureSourceIdentity(REPOSITORY_ROOT);
   const candidateUnchanged =
     candidateDirectory ||
+    registryVersion ||
     installed.identity.contentSha256 === finalSourceIdentity.contentSha256;
   const changedArtifacts = await verifyEvidenceDigests([
     ...sources.documents.map((entry) => ({

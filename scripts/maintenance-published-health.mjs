@@ -9,17 +9,17 @@ export const maintenanceTarget = (control) => {
     return {
       action: "NOT_APPLICABLE",
       reason: "PUBLICATION_BOUNDARY_DISABLED",
-      coordinate: "owlapi@latest",
+      coordinate: "@hadden-industries/owlapi@latest",
     };
   }
   if (control.channel !== "latest") {
     return {
       action: "NOT_APPLICABLE",
       reason: "NO_PRODUCTION_RELEASE",
-      coordinate: "owlapi@latest",
+      coordinate: "@hadden-industries/owlapi@latest",
     };
   }
-  return { action: "QUERY", coordinate: "owlapi@latest" };
+  return { action: "QUERY", coordinate: "@hadden-industries/owlapi@latest" };
 };
 
 const main = () => {
@@ -42,7 +42,7 @@ const main = () => {
   }
   const result = spawnSync(
     process.execPath,
-    [npmCli, "view", "owlapi@latest", "version", "--json"],
+    [npmCli, "view", "@hadden-industries/owlapi@latest", "version", "--json"],
     { cwd: repositoryRoot, encoding: "utf8" },
   );
   if (result.status !== 0) {
@@ -54,7 +54,7 @@ const main = () => {
     `${JSON.stringify(
       {
         result: "PASS",
-        coordinate: "owlapi@latest",
+        coordinate: "@hadden-industries/owlapi@latest",
         resolvedVersion: JSON.parse(result.stdout),
       },
       null,

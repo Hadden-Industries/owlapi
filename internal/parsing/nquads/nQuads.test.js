@@ -104,7 +104,9 @@ describe("N-Quads manager integration", () => {
         ),
       );
 
-    expect(result.documents[0].context.format).toBe(OWLDocumentFormats.N_QUADS);
+    expect(result.documents[0].context.format.key).toBe(
+      OWLDocumentFormats.N_QUADS.key,
+    );
   });
 
   it("rejects multiple non-empty graphs under the default policy", async () => {
@@ -239,7 +241,7 @@ describe("N-Quads manager integration", () => {
       "Ontology(<urn:test:root> Import(<urn:test:imported>))",
     );
     const imported = closure.documents.find(
-      ({ context }) => context.format === OWLDocumentFormats.N_QUADS,
+      ({ context }) => context.format.key === OWLDocumentFormats.N_QUADS.key,
     );
     expect(imported).toBeDefined();
     expect(

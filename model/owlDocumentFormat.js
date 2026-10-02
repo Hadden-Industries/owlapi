@@ -1,3 +1,5 @@
+import { RDFParserMetaData } from "../io/rdfParserMetaData.js";
+
 const stringList = (values, name) => {
   if (
     !Array.isArray(values) ||
@@ -78,6 +80,7 @@ export let readDocumentFormatParameters;
 
 export class OWLDocumentFormat {
   #parameters;
+  #ontologyLoaderMetaData;
 
   static {
     readDocumentFormatParameters = (format) => format.#parameters;
@@ -90,6 +93,7 @@ export class OWLDocumentFormat {
     key,
     mediaTypes = [],
     parameters = {},
+    ontologyLoaderMetaData,
     supportsPrefixes = false,
   }) {
     if (typeof key !== "string" || key.length === 0) {
@@ -109,6 +113,17 @@ export class OWLDocumentFormat {
     this.isRdf = isRdf;
     this.isDataset = isDataset;
     this.#parameters = snapshotParameters(parameters);
+    if (ontologyLoaderMetaData !== undefined) {
+      if (
+        Object.getPrototypeOf(ontologyLoaderMetaData) !==
+        RDFParserMetaData.prototype
+      )
+        throw new TypeError(
+          "ontologyLoaderMetaData must be package RDFParserMetaData",
+        );
+      RDFParserMetaData.prototype.getTripleCount.call(ontologyLoaderMetaData);
+    }
+    this.#ontologyLoaderMetaData = ontologyLoaderMetaData;
     Object.freeze(this);
   }
 
@@ -119,6 +134,25 @@ export class OWLDocumentFormat {
     return Object.hasOwn(this.#parameters, key)
       ? this.#parameters[key]
       : defaultValue;
+  }
+
+  /** Historical data from this format's completed parse, or undefined. */
+  getOntologyLoaderMetaData() {
+    return this.#ontologyLoaderMetaData;
+  }
+
+  /** Copying counterpart to Java's setter; never mutates shared format constants. */
+  withOntologyLoaderMetaData(ontologyLoaderMetaData) {
+    return new OWLDocumentFormat({
+      extensions: this.extensions,
+      isDataset: this.isDataset,
+      isRdf: this.isRdf,
+      key: this.key,
+      mediaTypes: this.mediaTypes,
+      parameters: this.#parameters,
+      supportsPrefixes: this.supportsPrefixes,
+      ontologyLoaderMetaData,
+    });
   }
 
   withParameter(key, value) {
@@ -135,6 +169,7 @@ export class OWLDocumentFormat {
       key: this.key,
       mediaTypes: this.mediaTypes,
       parameters: { ...this.#parameters, [key]: value },
+      ontologyLoaderMetaData: this.#ontologyLoaderMetaData,
       supportsPrefixes: this.supportsPrefixes,
     });
   }

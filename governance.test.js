@@ -494,7 +494,7 @@ describe("owlapi governance artifacts", () => {
     ).toBe(true);
   });
 
-  it("maps exactly the three approved Phase 21 bindings without public drift", async () => {
+  it("maps the approved Phase 21 bindings and separately authorized RDF metadata", async () => {
     const ledger = readJson(
       "./docs/compatibility/java-api-parity-decisions.json",
     );
@@ -541,7 +541,7 @@ describe("owlapi governance artifacts", () => {
         supportedMembers,
         relationship: "JS_ADAPTATION",
         compatibility: "ADAPTED",
-        firstPublicRelease: "0.1.0",
+        firstPublicRelease: "0.1.0-rc.1",
         progress: "IN_PROGRESS",
       });
       expect(typeof io[jsExport]).toBe("function");
@@ -592,9 +592,16 @@ describe("owlapi governance artifacts", () => {
       ]);
       for (const prior of baseline.bindings) {
         const current = registry.bindings.find(({ id }) => id === prior.id);
+        const mappedPrior = {
+          ...prior,
+          publicSpecifier: `@hadden-industries/${prior.publicSpecifier}`,
+          callShapes: prior.callShapes.map((shape) =>
+            shape.replaceAll('"owlapi', '"@hadden-industries/owlapi'),
+          ),
+        };
         let expected = firstReleaseRetargetedBindings.has(prior.id)
-          ? { ...prior, firstPublicRelease: "0.1.0" }
-          : prior;
+          ? { ...mappedPrior, firstPublicRelease: "0.1.0-rc.1" }
+          : mappedPrior;
         // The separate Canonical VOWL prerequisite authorization adds exactly
         // this source reader; it does not amend the historical Phase 21 set.
         if (prior.id === "io.StringDocumentSource")
@@ -607,6 +614,29 @@ describe("owlapi governance artifacts", () => {
           };
         if (firstReleaseRetargetedBindings.has(prior.id)) {
           expect(prior.firstPublicRelease).toBe("0.2.0");
+        }
+        if (prior.id === "model.OWLDocumentFormat") {
+          expected = {
+            ...expected,
+            supportedMembers: [
+              "prototype.getOntologyLoaderMetaData",
+              "prototype.getParameter",
+              "prototype.withOntologyLoaderMetaData",
+              "prototype.withParameter",
+            ],
+            omittedMembers: [
+              "setOntologyLoaderMetaData (use immutable withOntologyLoaderMetaData)",
+              ...prior.omittedMembers,
+            ],
+            semanticQualifications: [
+              ...prior.semanticQualifications,
+              "getOntologyLoaderMetaData returns RDFParserMetaData or undefined. withOntologyLoaderMetaData returns an immutable format copy instead of Java's mutating setter; withParameter retains historical parse metadata. Shared OWLDocumentFormats constants are never modified.",
+            ],
+            verification: [
+              "model/owlDocumentFormat.test.js",
+              "io/rdfParserMetaData.test.js",
+            ],
+          };
         }
         // Task 7 changes only these manager projections. Their exact contents
         // are checked below. The owner-approved first-release retarget changes
@@ -632,6 +662,8 @@ describe("owlapi governance artifacts", () => {
       ).toEqual(
         [
           ...ledger.phase21.publicBindings,
+          "io.RDFOntologyHeaderStatus",
+          "io.RDFParserMetaData",
           "profiles.OWL2DLProfile",
           "profiles.OWLProfileReport",
         ].sort(),
@@ -639,8 +671,10 @@ describe("owlapi governance artifacts", () => {
       expect(
         registry.namespaces.map(({ npmSpecifier }) => npmSpecifier),
       ).toEqual([
-        ...baseline.namespaces.map(({ npmSpecifier }) => npmSpecifier),
-        "owlapi/profiles",
+        ...baseline.namespaces.map(
+          ({ npmSpecifier }) => `@hadden-industries/${npmSpecifier}`,
+        ),
+        "@hadden-industries/owlapi/profiles",
       ]);
     }
   });
@@ -812,6 +846,7 @@ describe("owlapi governance artifacts", () => {
       "prototype.getImportsClosure",
       "prototype.getOWLDataFactory",
       "prototype.getOntology",
+      "prototype.getOntologyFormat",
       "prototype.importsClosure",
       "prototype.loadOntologyFromOntologyDocument",
       "prototype.loadOntologyGraphFromOntologyDocument",
@@ -827,6 +862,7 @@ describe("owlapi governance artifacts", () => {
     ]);
     expect(managerBinding.semanticQualifications).toEqual([
       "Names and concepts follow Java OWLAPI where JavaScript runtime semantics permit; only the listed members are promised.",
+      "getOntologyFormat returns this manager's loaded OWLDocumentFormat or undefined for a programmatically created ontology, and rejects foreign or removed ontologies. RDF metadata belongs to the original completed parse and remains historical after edits.",
       "importsClosure returns a frozen deterministic root-first array snapshot instead of Java's Stream<OWLOntology>; getImportsClosure returns a fresh defensive Set with the same order and membership.",
       "Both closure methods reject an ontology not owned by this manager with OWLOntologyStateError instead of returning Java's empty closure.",
       "addAxiom/addAxioms accept one JavaScript iterable form and return boolean instead of Java's ChangeApplied; each complete call is validated and committed atomically.",
@@ -866,7 +902,7 @@ describe("owlapi governance artifacts", () => {
       callShapes: ["new AddOntologyAnnotation(ontology, annotation)"],
       capabilityIds: ["compatibility.owlapi-5.5.1"],
       compatibility: "ADAPTED",
-      firstPublicRelease: "0.1.0",
+      firstPublicRelease: "0.1.0-rc.1",
       javaType: "org.semanticweb.owlapi.model.AddOntologyAnnotation",
       omittedMembers: ["Change-data, reverse-change, and visitor APIs"],
       relationship: "JAVA_ANALOGUE",
@@ -876,7 +912,7 @@ describe("owlapi governance artifacts", () => {
       callShapes: ["new SetOntologyID(ontology, ontologyID)"],
       capabilityIds: ["compatibility.owlapi-5.5.1"],
       compatibility: "ADAPTED",
-      firstPublicRelease: "0.1.0",
+      firstPublicRelease: "0.1.0-rc.1",
       javaType: "org.semanticweb.owlapi.model.SetOntologyID",
       omittedMembers: [
         "Java IRI constructor overload",
@@ -908,7 +944,8 @@ describe("owlapi governance artifacts", () => {
     const registry = readJson("./docs/compatibility/java-api-surface.json");
     const utilNamespace = registry.namespaces.find(({ id }) => id === "util");
     const utilBindings = registry.bindings.filter(
-      ({ publicSpecifier }) => publicSpecifier === "owlapi/util",
+      ({ publicSpecifier }) =>
+        publicSpecifier === "@hadden-industries/owlapi/util",
     );
 
     expect(packageManifest.exports["./util"]).toBe("./util/index.js");
@@ -925,9 +962,9 @@ describe("owlapi governance artifacts", () => {
     expect(utilNamespace).toEqual({
       id: "util",
       javaPackage: "org.semanticweb.owlapi.util",
-      npmSpecifier: "owlapi/util",
+      npmSpecifier: "@hadden-industries/owlapi/util",
       exposure: "PUBLIC",
-      firstPublicRelease: "0.1.0",
+      firstPublicRelease: "0.1.0-rc.1",
       rationale:
         "Mirrors the Java OWLAPI util namespace for the exact approved closure provider and ontology merger entry points.",
       ownedBindingIds: [
@@ -950,7 +987,7 @@ describe("owlapi governance artifacts", () => {
       ],
       capabilityIds: ["compatibility.owlapi-5.5.1"],
       compatibility: "ADAPTED",
-      firstPublicRelease: "0.1.0",
+      firstPublicRelease: "0.1.0-rc.1",
       javaType:
         "org.semanticweb.owlapi.util.OWLOntologyImportsClosureSetProvider",
       omittedMembers: [],
@@ -976,7 +1013,7 @@ describe("owlapi governance artifacts", () => {
       ],
       capabilityIds: ["compatibility.owlapi-5.5.1"],
       compatibility: "ADAPTED",
-      firstPublicRelease: "0.1.0",
+      firstPublicRelease: "0.1.0-rc.1",
       javaType: "org.semanticweb.owlapi.util.OWLOntologyMerger",
       omittedMembers: [
         "OWLAxiomFilter constructor overload and passes(axiom) surface",
@@ -1007,7 +1044,7 @@ describe("owlapi governance artifacts", () => {
         disposition: "PUBLIC_MAPPED",
         exposure: "PUBLIC",
         progress: "COMPLETE",
-        publicSpecifier: "owlapi/util",
+        publicSpecifier: "@hadden-industries/owlapi/util",
       });
     }
   });
@@ -1728,13 +1765,13 @@ describe("owlapi governance artifacts", () => {
         Object.entries(packageJson.exports)
           .filter(([specifier]) => specifier !== ".")
           .map(async ([specifier, target]) => [
-            `owlapi${specifier.slice(1)}`,
+            `${packageJson.name}${specifier.slice(1)}`,
             await import(target),
           ]),
       ),
     );
     const registeredSpecifiers = registry.namespaces
-      .filter(({ npmSpecifier }) => npmSpecifier !== "owlapi")
+      .filter(({ npmSpecifier }) => npmSpecifier !== packageJson.name)
       .map(({ npmSpecifier }) => npmSpecifier)
       .sort();
     expect(registeredSpecifiers).toEqual([...modules.keys()].sort());
@@ -1867,7 +1904,7 @@ bundle licence and notice review.
       "## Why `owlapi` exists",
       packageJson.version,
       `npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@${packageJson.version}"`,
-      "The scoped identity is an accepted documentation decision",
+      "The manifest and release tooling select this scoped identity",
       "A version in `main` is not a published or accepted package",
       "UO and WebVOWL may each use this exact RC in production",
       "independently maintained JavaScript implementation",
@@ -1989,7 +2026,7 @@ bundle licence and notice review.
       "https://haddenindustries.com/schemas/owlapi/pre-registry-git-equivalence.v1.schema.json",
     );
     expect(document.package).toEqual({
-      name: manifest.name,
+      name: "owlapi",
       version: "0.1.0-alpha.0",
       exports: retainedCandidateExports,
     });
@@ -2668,6 +2705,10 @@ bundle licence and notice review.
     const packageJson = readJson("./package.json");
     for (const [documentPath, schemaPath] of [
       [
+        "./docs/provenance/scoped-package-name-review.json",
+        "./docs/provenance/scoped-package-name-review.schema.json",
+      ],
+      [
         "./docs/provenance/rights-inventory.json",
         "./docs/provenance/rights-inventory.schema.json",
       ],
@@ -2781,6 +2822,24 @@ bundle licence and notice review.
     const nameReview = readJson("./docs/provenance/package-name-review.json");
     expect(nameReview.decision.outcome).toBe("APPROVED_WITH_MITIGATIONS");
     expect(nameReview.externalLegalAdviceObtained).toBe(false);
+    const scopedReview = readJson(
+      "./docs/provenance/scoped-package-name-review.json",
+    );
+    expect(scopedReview.identity).toBe(packageJson.name);
+    expect(scopedReview.review.factsSha256).toBe(
+      sha256(
+        stableJson(
+          Object.fromEntries(
+            Object.entries(scopedReview).filter(
+              ([key]) => !["$schema", "schemaVersion", "review"].includes(key),
+            ),
+          ),
+        ),
+      ),
+    );
+    expect(scopedReview.evidence).toContain(
+      "docs/provenance/package-name-review.json",
+    );
   });
 
   const releaseReviewGate =
@@ -2792,6 +2851,7 @@ bundle licence and notice review.
         "./docs/provenance/third-party-material.json",
         "./docs/provenance/rights-inventory.json",
         "./docs/dependency-governance.json",
+        "./docs/provenance/scoped-package-name-review.json",
       ]
         .map((documentPath) => ({
           documentPath,

@@ -5,10 +5,9 @@ import * as io from "owlapi/io";
 import * as model from "owlapi/model";
 import * as profiles from "owlapi/profiles";
 import * as util from "owlapi/util";
-import {
-  exerciseImportClosureStorage,
-  exerciseParserPreservation,
-} from "./public-contract.js";
+import { createPublicContract } from "./public-contract.js";
+const { exerciseImportClosureStorage, exerciseParserPreservation } =
+  createPublicContract(root);
 import closureDocuments from "./import-closure-documents.js";
 
 const DOCUMENTS = Object.freeze([
@@ -179,7 +178,10 @@ export const exerciseInstalledPackage = async () => {
   const bindingIdentity = {
     apibinding: root.OWLManager === apibinding.OWLManager,
     formats: root.OWLDocumentFormats === formats.OWLDocumentFormats,
-    io: root.StringDocumentSource === io.StringDocumentSource,
+    io:
+      root.StringDocumentSource === io.StringDocumentSource &&
+      root.RDFParserMetaData === io.RDFParserMetaData &&
+      root.RDFOntologyHeaderStatus === io.RDFOntologyHeaderStatus,
     model: root.OWLOntologyManager === model.OWLOntologyManager,
     profiles:
       root.OWL2DLProfile === profiles.OWL2DLProfile &&
@@ -204,6 +206,17 @@ export const exerciseInstalledPackage = async () => {
       }),
     );
     const outputManager = apibinding.OWLManager.createOWLOntologyManager();
+    const loadedFormat = manager.getOntologyFormat(ontology);
+    if (loadedFormat.isRdf) {
+      const metadata = loadedFormat.getOntologyLoaderMetaData();
+      if (
+        !(metadata instanceof io.RDFParserMetaData) ||
+        !Number.isSafeInteger(metadata.getTripleCount())
+      )
+        throw new Error(
+          "RDF parser metadata is missing from the browser/worker package",
+        );
+    }
     const provider = new util.OWLOntologyImportsClosureSetProvider(
       manager,
       ontology,

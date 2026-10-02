@@ -7,20 +7,47 @@ import addFormats from "ajv-formats";
 import { deriveWorkflowMetadata } from "./workflow-metadata.mjs";
 
 const manifest = {
-  name: "owlapi",
-  version: "0.1.0-alpha.0",
+  name: "@hadden-industries/owlapi",
+  version: "0.1.0-rc.1",
   publishConfig: { tag: "next" },
 };
 
 const disabledPublication = {
   enabled: false,
   mode: "UNRESOLVED",
-  coordinate: "owlapi@0.1.0-alpha.0",
+  coordinate: "@hadden-industries/owlapi@0.1.0-rc.1",
   channel: "next",
   reviewedOn: null,
 };
 
 describe("workflow metadata", () => {
+  test("selects the scoped RC and rejects the blocked bare identity or another scope", () => {
+    const scopedManifest = {
+      ...manifest,
+      name: "@hadden-industries/owlapi",
+      version: "0.1.0-rc.1",
+    };
+    const publication = {
+      ...disabledPublication,
+      coordinate: "@hadden-industries/owlapi@0.1.0-rc.1",
+    };
+    expect(
+      deriveWorkflowMetadata({ manifest: scopedManifest, publication }),
+    ).toMatchObject({
+      coordinate: "@hadden-industries/owlapi@0.1.0-rc.1",
+      artifact_name: "hadden-industries-owlapi-0.1.0-rc.1-candidate-local-0",
+      publication_enabled: "false",
+    });
+    for (const name of ["owlapi", "@someone-else/owlapi"]) {
+      expect(() =>
+        deriveWorkflowMetadata({
+          manifest: { ...scopedManifest, name },
+          publication: { ...publication, coordinate: `${name}@0.1.0-rc.1` },
+        }),
+      ).toThrow(/coordinate/u);
+    }
+  });
+
   test("prepares the first-release candidate without authorizing publication or alpha reconciliation", () => {
     const currentManifest = JSON.parse(readFileSync("package.json", "utf8"));
     const publication = JSON.parse(
@@ -38,7 +65,7 @@ describe("workflow metadata", () => {
     expect(
       deriveWorkflowMetadata({ manifest: currentManifest, publication }),
     ).toMatchObject({
-      coordinate: "owlapi@0.1.0-rc.1",
+      coordinate: "@hadden-industries/owlapi@0.1.0-rc.1",
       tag: "v0.1.0-rc.1",
       channel: "next",
       publication_enabled: "false",
@@ -59,14 +86,14 @@ describe("workflow metadata", () => {
         runAttempt: "2",
       }),
     ).toEqual({
-      artifact_name: "owlapi-0.1.0-alpha.0-candidate-12345-2",
-      candidate_directory: ".release/candidate/0.1.0-alpha.0",
+      artifact_name: "hadden-industries-owlapi-0.1.0-rc.1-candidate-12345-2",
+      candidate_directory: ".release/candidate/0.1.0-rc.1",
       channel: "next",
-      coordinate: "owlapi@0.1.0-alpha.0",
+      coordinate: "@hadden-industries/owlapi@0.1.0-rc.1",
       publication_enabled: "false",
       publication_mode: "UNRESOLVED",
-      tag: "v0.1.0-alpha.0",
-      version: "0.1.0-alpha.0",
+      tag: "v0.1.0-rc.1",
+      version: "0.1.0-rc.1",
     });
   });
 

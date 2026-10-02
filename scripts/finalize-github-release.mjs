@@ -12,7 +12,7 @@ import { sha256File } from "./release-artifacts.mjs";
 import { assertReleaseExecutionIdentity } from "./release-evidence.mjs";
 import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 
-const version = "0.1.0-alpha.0";
+import { PACKAGE_VERSION } from "./package-identity.mjs";
 
 const argumentValue = (name) => {
   const index = process.argv.indexOf(name);
@@ -20,6 +20,7 @@ const argumentValue = (name) => {
 };
 
 const finalReleaseBody = (evidence) => {
+  const version = evidence.package.version;
   const required = evidence.requiredJobs
     .map(({ name }) => `- ${name}: PASS`)
     .join("\n");
@@ -31,7 +32,7 @@ const finalReleaseBody = (evidence) => {
     .join("\n");
   return `# owlapi ${version}
 
-Initial-development prerelease of the native-ESM \`owlapi\` package. It implements a documented subset of Java OWLAPI concepts; \`API.md\` and the compatibility registry enumerate the exact surface and gaps.
+Initial-development prerelease of the native-ESM \`${evidence.package.name}\` package. It implements a documented subset of Java OWLAPI concepts; \`API.md\` and the compatibility registry enumerate the exact surface and gaps.
 
 ## Required release qualification
 
@@ -48,6 +49,9 @@ ${extended}
 };
 
 const main = async () => {
+  const version = argumentValue("--version") ?? PACKAGE_VERSION;
+  if (![PACKAGE_VERSION, "0.1.0-alpha.0"].includes(version))
+    throw new Error("Unexpected release version.");
   const evidencePath = resolve(argumentValue("--evidence") ?? "");
   const output = argumentValue("--output");
   const repository = process.env.GITHUB_REPOSITORY;

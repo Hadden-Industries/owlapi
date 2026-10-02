@@ -433,6 +433,14 @@ export class OWLOntologyManager {
     return this.#managedOntologyIndex.getOntologyByID(ontologyID);
   }
 
+  /** Java-compatible access to this manager's loaded format; authored ontologies have none. */
+  getOntologyFormat(ontology) {
+    return this.#requireManagedOntologyState(
+      ontology,
+      "getOntologyFormat",
+    ).createSnapshot().documentMetadata?.format;
+  }
+
   addAxiom(ontology, axiom) {
     return this.#addAxiomIterable(ontology, [axiom], "addAxiom");
   }

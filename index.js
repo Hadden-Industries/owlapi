@@ -14,6 +14,8 @@ export {
   OWLStorerNotFoundError,
   ParserMismatchError,
   ResourceLimitError,
+  RDFParserMetaData,
+  RDFOntologyHeaderStatus,
   SecurityPolicyError,
   StringDocumentSource,
   StringDocumentTarget,

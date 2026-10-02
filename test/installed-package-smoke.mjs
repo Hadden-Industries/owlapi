@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
-import { exerciseParserPreservation } from "./import-closure/public-contract.js";
+import { createPublicContract } from "./import-closure/public-contract.js";
 
 import * as root from "owlapi";
+const { exerciseParserPreservation } = createPublicContract(root);
 import { OWLManager } from "owlapi/apibinding";
 import { OWLDocumentFormats } from "owlapi/formats";
 import {
@@ -9,6 +10,8 @@ import {
   StringDocumentTarget,
   OWLOntologyStorageError,
   OWLStorerNotFoundError,
+  RDFParserMetaData,
+  RDFOntologyHeaderStatus,
 } from "owlapi/io";
 import { OWLOntologyManager } from "owlapi/model";
 import {
@@ -25,6 +28,8 @@ assert.strictEqual(root.StringDocumentSource, StringDocumentSource);
 assert.strictEqual(root.StringDocumentTarget, StringDocumentTarget);
 assert.strictEqual(root.OWLOntologyStorageError, OWLOntologyStorageError);
 assert.strictEqual(root.OWLStorerNotFoundError, OWLStorerNotFoundError);
+assert.strictEqual(root.RDFParserMetaData, RDFParserMetaData);
+assert.strictEqual(root.RDFOntologyHeaderStatus, RDFOntologyHeaderStatus);
 const target = new StringDocumentTarget();
 assert.equal(target.toString(), "");
 assert.equal(target.getText, undefined);
@@ -64,6 +69,16 @@ const ontology = await manager.loadOntologyFromOntologyDocument(
 
 assert.equal(ontology.getAxioms().size, 0);
 assert.equal(ontology.getImportsDeclarations().size, 0);
+const parserMetadata = manager
+  .getOntologyFormat(ontology)
+  .getOntologyLoaderMetaData();
+assert.ok(parserMetadata instanceof RDFParserMetaData);
+assert.equal(parserMetadata.getTripleCount(), 1);
+assert.equal(
+  parserMetadata.getHeaderState(),
+  RDFOntologyHeaderStatus.PARSED_ONE_HEADER,
+);
+assert.deepEqual(parserMetadata.getUnparsedTriples(), []);
 const outputManager = OWLManager.createOWLOntologyManager();
 const provider = new OWLOntologyImportsClosureSetProvider(manager, ontology);
 const merged = new OWLOntologyMerger(provider).createMergedOntology(

@@ -23,7 +23,7 @@
       "additionalProperties": false,
       "required": ["name", "version", "repository", "scopeAuthority"],
       "properties": {
-        "name": { "const": "owlapi" },
+        "name": { "enum": ["owlapi", "@hadden-industries/owlapi"] },
         "version": {
           "type": "string",
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"

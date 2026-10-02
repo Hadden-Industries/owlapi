@@ -19,14 +19,14 @@ const tarEntry = (name, content) => {
 };
 
 const fixture = () => {
-  const version = "0.1.0-alpha.0";
-  const tarballFileName = `owlapi-${version}.tgz`;
-  const sbomFileName = `owlapi-${version}.cdx.json`;
+  const version = "0.1.0-rc.1";
+  const tarballFileName = `hadden-industries-owlapi-${version}.tgz`;
+  const sbomFileName = `hadden-industries-owlapi-${version}.cdx.json`;
   const tarball = gzipSync(
     Buffer.concat([
       tarEntry(
         "package/package.json",
-        `${JSON.stringify({ name: "owlapi", version })}\n`,
+        `${JSON.stringify({ name: "@hadden-industries/owlapi", version })}\n`,
       ),
       Buffer.alloc(1024),
     ]),
@@ -35,7 +35,12 @@ const fixture = () => {
     bomFormat: "CycloneDX",
     specVersion: "1.6",
     metadata: {
-      component: { type: "library", name: "owlapi", version },
+      component: {
+        type: "library",
+        name: "@hadden-industries/owlapi",
+        version,
+        purl: `pkg:npm/%40hadden-industries/owlapi@${version}?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2FHadden-Industries%2Fowlapi.git`,
+      },
     },
   })}\n`;
   const checksumText = formatSha256Sums([
@@ -54,12 +59,32 @@ const fixture = () => {
 };
 
 describe("downloaded release-candidate bundle", () => {
+  test("rejects an unscoped SBOM PURL despite matching labels and checksums", () => {
+    const input = fixture();
+    input.sbomText = input.sbomText.replace(
+      "pkg:npm/%40hadden-industries/owlapi@",
+      "pkg:npm/owlapi@",
+    );
+    input.checksumText = formatSha256Sums([
+      {
+        fileName: "hadden-industries-owlapi-0.1.0-rc.1.tgz",
+        sha256: sha256Buffer(input.tarball),
+      },
+      {
+        fileName: "hadden-industries-owlapi-0.1.0-rc.1.cdx.json",
+        sha256: sha256Buffer(Buffer.from(input.sbomText)),
+      },
+    ]);
+    expect(() => verifyDownloadedCandidateBundle(input)).toThrow(
+      /SBOM identity/u,
+    );
+  });
   test("derives and verifies identity from the tarball itself", () => {
     const result = verifyDownloadedCandidateBundle(fixture());
 
     expect(result.package).toEqual({
-      name: "owlapi",
-      version: "0.1.0-alpha.0",
+      name: "@hadden-industries/owlapi",
+      version: "0.1.0-rc.1",
     });
     expect(result.sbom.specVersion).toBe("1.6");
     expect(result.tarball.sha256).toHaveLength(64);
@@ -75,6 +100,14 @@ describe("downloaded release-candidate bundle", () => {
   });
 
   test("rejects checksum or SBOM identity drift", () => {
+    const wrongRepository = fixture();
+    wrongRepository.sbomText = wrongRepository.sbomText.replace(
+      "Hadden-Industries%2F",
+      "another-owner%2F",
+    );
+    expect(() => verifyDownloadedCandidateBundle(wrongRepository)).toThrow(
+      /SBOM identity/u,
+    );
     expect(() =>
       verifyDownloadedCandidateBundle({
         ...fixture(),
@@ -84,7 +117,7 @@ describe("downloaded release-candidate bundle", () => {
 
     const input = fixture();
     input.sbomText = input.sbomText.replace(
-      '"name":"owlapi"',
+      '"name":"@hadden-industries/owlapi"',
       '"name":"other"',
     );
     expect(() => verifyDownloadedCandidateBundle(input)).toThrow(

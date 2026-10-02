@@ -16,7 +16,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 
-import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
+import { verifyHistoricalAlphaCandidateBundle } from "./candidate-bundle.mjs";
 import { GitHubReleaseClient } from "./github-release.mjs";
 import { isStrictDescendantPath } from "./release-artifacts.mjs";
 import { classifyReleaseState } from "./release-state.mjs";
@@ -431,7 +431,7 @@ const readCandidate = (directory, version) => {
     );
   }
   const tarball = readFileSync(join(directory, `owlapi-${version}.tgz`));
-  const verified = verifyDownloadedCandidateBundle({
+  const verified = verifyHistoricalAlphaCandidateBundle({
     checksumText: readFileSync(join(directory, "SHA256SUMS"), "utf8"),
     fileNames: names,
     sbomText: readFileSync(

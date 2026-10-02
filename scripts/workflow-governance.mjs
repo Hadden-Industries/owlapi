@@ -65,7 +65,7 @@ const RECONCILIATION_JOB_IDS = [
   "immutable_verification",
 ];
 const PUBLISH_COMMAND =
-  "npm publish owlapi-0.1.0-rc.1.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/";
+  "npm publish hadden-industries-owlapi-0.1.0-rc.1.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/";
 const ALPHA_RECONCILIATION_PUBLISH_COMMAND =
   "npm publish owlapi-0.1.0-alpha.0.tgz --provenance --tag next --access public --registry=https://registry.npmjs.org/";
 const REGISTRY_KEYS_COMMAND =
@@ -765,6 +765,13 @@ const validateReleaseMutationBoundary = (
   const publishCommand = reconciliation
     ? ALPHA_RECONCILIATION_PUBLISH_COMMAND
     : PUBLISH_COMMAND;
+  if (!reconciliation)
+    add(
+      violations,
+      steps(publication).find((step) => step.run?.includes(publishCommand))
+        ?.if === "${{ github.run_attempt == 1 }}",
+      `${fileName}:npm_release must restrict the sole write to the first run attempt`,
+    );
   requireRun(
     publication,
     publishCommand,

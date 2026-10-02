@@ -5,14 +5,14 @@ describe("published-package maintenance targeting", () => {
     expect(maintenanceTarget({ enabled: true, channel: "next" })).toEqual({
       action: "NOT_APPLICABLE",
       reason: "NO_PRODUCTION_RELEASE",
-      coordinate: "owlapi@latest",
+      coordinate: "@hadden-industries/owlapi@latest",
     });
   });
 
   test("checks latest only after a production publication is enabled", () => {
     expect(maintenanceTarget({ enabled: true, channel: "latest" })).toEqual({
       action: "QUERY",
-      coordinate: "owlapi@latest",
+      coordinate: "@hadden-industries/owlapi@latest",
     });
   });
 });

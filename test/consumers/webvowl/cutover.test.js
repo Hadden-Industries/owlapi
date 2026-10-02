@@ -75,6 +75,9 @@ describe("package-based WebVOWL qualification", () => {
     expect(source).toContain("exerciseImportClosureStorage");
     expect(source).toContain("OWLStorerNotFoundError");
     expect(source).toContain("UnrepresentableOntologyError");
+    expect(source).toContain(
+      'expect(installed.name).toBe("@hadden-industries/owlapi")',
+    );
     expect(source).toContain("ONTOLOGY_NOT_REPRESENTABLE");
     expect(source).toContain("b".repeat(64));
     expect(source).toContain("c".repeat(64));

@@ -8,13 +8,19 @@ Prerelease identifiers do not create a stability promise.
 
 ## Unreleased
 
+- Expose immutable Java-style `RDFParserMetaData`, `RDFOntologyHeaderStatus`, format loader metadata and manager `getOntologyFormat`; retain exact unparsed terms independently of optional warnings.
+- Load compatible RDF imports from secondary headers through the ordinary bounded manager closure; keep existing header selection and strict/preserve distinctions.
+- Reconstruct supported inverse, functional, domain and range axioms for indirectly typed compatible properties before statement accounting.
+- Return per-document RDF format copies carrying parser metadata; use `format.key` for syntax identity instead of reference equality with shared registry constants.
+
 - Preserve DL numeric literal spelling and datatype in every parsing mode, including large integers and lexically distinct equal values; reload original sources to recover previously normalized spellings.
 - Reject well-formed KRSS1 `:right-identity` with `UNSUPPORTED_CONSTRUCT` instead of silently discarding it; supported parent roles and KRSS2 identity chains are unchanged.
 
 The selected first public candidate is `@hadden-industries/owlapi@0.1.0-rc.1` under `next`; the later stable target remains `0.1.0`.
 It is not published, tagged or accepted merely by merging it.
 
-- Record the scoped-publication implementation plan and exact native npm alias, preserving `owlapi/*` consumer imports.
+- Select the scoped npm identity throughout package metadata, generated API references, candidate assets and fresh release evidence; qualify direct scoped installs and the exact native npm alias while preserving `owlapi/*` consumer imports.
+- Add an explicit exact-version public-registry mode to the July ontology harness; source and local-tarball reports remain distinct from public-registry acceptance.
 - Permit the exact RC in Universal Ontology and WebVOWL production after immutable artifact verification and each application's complete consumer acceptance, without waiting for `0.1.0`.
 - Add manager-owned import-closure queries, atomic ontology changes, `OWLOntologyImportsClosureSetProvider`, and `OWLOntologyMerger` through the Java-shaped public surface.
 - Add atomic `StringDocumentTarget` storage and lossless Functional Syntax and representability-checked RDF/XML serialization through `saveOntology`.

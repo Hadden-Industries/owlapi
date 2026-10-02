@@ -127,7 +127,7 @@ const fixture = () => {
   const candidate = {
     ...artifact,
     id: 702,
-    name: "owlapi-0.1.0-rc.1-candidate-100-1",
+    name: "hadden-industries-owlapi-0.1.0-rc.1-candidate-100-1",
     digest: `sha256:${"f".repeat(64)}`,
   };
   const receipt = jsonClone(

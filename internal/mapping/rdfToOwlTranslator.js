@@ -4,6 +4,10 @@ import {
   UnsupportedConstructError,
 } from "../../io/errors.js";
 import {
+  RDFParserMetaData,
+  RDFOntologyHeaderStatus,
+} from "../../io/rdfParserMetaData.js";
+import {
   OWLDataFactory,
   createSourcePreservingDataFactory,
 } from "../../model/owlDataFactory.js";
@@ -15,6 +19,7 @@ import { normalizeCardinality } from "../model/cardinality.js";
 import { selectOntologyGraph } from "../rdfjs/graphPolicy.js";
 import {
   BUILT_IN_ANNOTATION_PROPERTIES,
+  OWL_BUILT_IN_DATATYPES,
   OWL_NAMESPACE,
   OWL_VOCABULARY,
   RDF_NAMESPACE,
@@ -37,6 +42,17 @@ const DECLARATION_CONSTRUCTORS = new Map([
   [RDFS_VOCABULARY.Datatype, "getOWLDatatype"],
 ]);
 const SUBJECT_TERM_TYPES = new Set(["BlankNode", "NamedNode"]);
+const ENTITY_KIND_BY_ROLE = new Map([
+  [OWL_VOCABULARY.Class, OWLObjectKind.CLASS],
+  [RDFS_VOCABULARY.Datatype, OWLObjectKind.DATATYPE],
+  [OWL_VOCABULARY.ObjectProperty, OWLObjectKind.OBJECT_PROPERTY],
+  [OWL_VOCABULARY.DatatypeProperty, OWLObjectKind.DATA_PROPERTY],
+  [OWL_VOCABULARY.AnnotationProperty, OWLObjectKind.ANNOTATION_PROPERTY],
+  [OWL_VOCABULARY.NamedIndividual, OWLObjectKind.NAMED_INDIVIDUAL],
+]);
+const RDF_ROLE_BY_ENTITY_KIND = new Map(
+  [...ENTITY_KIND_BY_ROLE].map(([role, kind]) => [kind, role]),
+);
 // Characteristics OWL 2 defines only for object properties, so asserting one is
 // evidence that a punned IRI was meant as an object property. `owl:inverseOf` is
 // handled separately because it is evidence about both of its arguments.
@@ -474,6 +490,11 @@ class OntologyTransaction {
     this.#ontologyID = ontologyID;
   }
 
+  *structuralValues() {
+    yield* this.#axioms;
+    yield* this.#annotations;
+  }
+
   commit(context) {
     const ontology = new OWLOntology({
       annotations: this.#annotations,
@@ -490,6 +511,9 @@ class OntologyTransaction {
 }
 
 class RdfGraphInterpreter {
+  #unparsedTriples = [];
+  #headerState = RDFOntologyHeaderStatus.PARSED_ZERO_HEADERS;
+  #knownRoles = new Set();
   #anonymousClassNodes = new Set();
   #anonymousDataRangeNodes = new Set();
   #annotationReifications = new Map();
@@ -585,6 +609,13 @@ class RdfGraphInterpreter {
     for (const entity of declarationEntities) {
       this.#recordDeclarationEntity(entity);
     }
+    // Built-ins and explicit declarations supplied by the managed closure are
+    // known inputs. Inferred role propagation is not an authored declaration.
+    for (const [type, values] of this.#namedRoleSets())
+      for (const iri of values)
+        this.#knownRoles.add(JSON.stringify([type, iri]));
+    for (const iri of OWL_BUILT_IN_DATATYPES)
+      this.#knownRoles.add(JSON.stringify([RDFS_VOCABULARY.Datatype, iri]));
     for (const role of sourceRoles) {
       if (role.iri === undefined) continue; // Anonymous identity is document local.
       this.#namedRoleSets().get(role.type)?.add(role.iri);
@@ -633,6 +664,32 @@ class RdfGraphInterpreter {
       [OWL_VOCABULARY.AnnotationProperty, this.#annotationPropertyIris],
       [OWL_VOCABULARY.NamedIndividual, this.#individualIris],
     ]);
+  }
+
+  async parserMetaData() {
+    const guessedDeclarations = [];
+    const visited = new Set();
+    const pending = [...this.#transaction.structuralValues()];
+    while (pending.length) {
+      const value = pending.pop();
+      if (value && typeof value === "object" && !visited.has(value)) {
+        visited.add(value);
+        const type = RDF_ROLE_BY_ENTITY_KIND.get(value.kind);
+        if (
+          type &&
+          !this.#knownRoles.has(JSON.stringify([type, value.iri.value]))
+        )
+          guessedDeclarations.push({ iri: value.iri, entityType: value.kind });
+        for (const child of Object.values(value)) pending.push(child);
+      }
+      await this.#execution.cooperate();
+    }
+    return new RDFParserMetaData({
+      tripleCount: this.#dataset.size,
+      headerState: this.#headerState,
+      unparsedTriples: this.#unparsedTriples,
+      guessedDeclarations,
+    });
   }
 
   // This is a private parsing signature, not source evidence or a collection
@@ -1499,6 +1556,8 @@ class RdfGraphInterpreter {
       const entity = this.#dataFactory[constructorName](
         IRI.create(subject.value),
       );
+      const role = RDF_ROLE_BY_ENTITY_KIND.get(entity.kind);
+      if (role) this.#knownRoles.add(JSON.stringify([role, subject.value]));
       this.#transaction.addAxiom(
         this.#dataFactory.getOWLDeclarationAxiom(
           entity,
@@ -1527,6 +1586,8 @@ class RdfGraphInterpreter {
     }
     this.#declareRdfsClasses();
     this.#declareUntypedProperties();
+    if (await this.#inferCompatiblePropertyUses())
+      this.#inferImplicitPropertyCategories();
     this.#declareUndeclaredAnnotationProperties();
     this.#consumeRedundantOwl1Types();
   }
@@ -1799,6 +1860,25 @@ class RdfGraphInterpreter {
   }
 
   async #readOntologyHeader(includeAnnotations = true) {
+    if (this.#configuration.parsingMode === "compatible") {
+      // Java's imports handler processes every owl:imports statement. Header
+      // selection determines ontology identity, never which imports are fetched.
+      // Use the same discovery pass and manager policy/budgets as ordinary imports.
+      for (const quad of this.#dataset) {
+        if (
+          quad.predicate.value === OWL_VOCABULARY.imports &&
+          quad.object.termType === "NamedNode"
+        ) {
+          this.#transaction.addImportsDeclaration(
+            this.#dataFactory.getOWLImportsDeclaration(
+              IRI.create(quad.object.value),
+            ),
+          );
+          this.#consume(quad);
+        }
+        await this.#execution.cooperate();
+      }
+    }
     const allOntologyTypeQuads = [
       ...this.#dataset.match(null, undefined, undefined, undefined),
     ].filter(
@@ -1810,6 +1890,12 @@ class RdfGraphInterpreter {
     const ontologyNodeKeys = new Set(
       allOntologyTypeQuads.map(({ subject }) => termKey(subject)),
     );
+    this.#headerState =
+      ontologyNodeKeys.size === 0
+        ? RDFOntologyHeaderStatus.PARSED_ZERO_HEADERS
+        : ontologyNodeKeys.size === 1
+          ? RDFOntologyHeaderStatus.PARSED_ONE_HEADER
+          : RDFOntologyHeaderStatus.PARSED_MULTIPLE_HEADERS;
     const referencedOntologyNodeKeys = new Set();
     // OWL 2 RDF mapping Table 4 excludes references through owl:OntologyProperty,
     // not arbitrary annotation properties. Keep the legacy OWL 1 versioning
@@ -3057,6 +3143,40 @@ class RdfGraphInterpreter {
     return changed;
   }
 
+  async #inferCompatiblePropertyUses() {
+    if (this.#configuration.parsingMode !== "compatible") return;
+    let changed = false;
+    const mark = (term, category) => {
+      if (
+        term.termType !== "NamedNode" ||
+        !category ||
+        this.#propertyCategories(term.value).length
+      )
+        return;
+      (category === "data"
+        ? this.#dataPropertyIris
+        : this.#objectPropertyIris
+      ).add(term.value);
+      changed = true;
+    };
+    // Inverse links and object-only characteristics constrain their properties.
+    // Seed all such uses before connected-property propagation and axiom parsing,
+    // so an earlier domain/range cannot be lost merely due to traversal order.
+    for (const quad of this.#dataset) {
+      if (quad.predicate.value === OWL_VOCABULARY.inverseOf) {
+        mark(quad.subject, "object");
+        mark(quad.object, "object");
+      } else if (
+        quad.predicate.value === RDF_VOCABULARY.type &&
+        OBJECT_ONLY_CHARACTERISTICS.has(quad.object.value)
+      ) {
+        mark(quad.subject, "object");
+      }
+      await this.#execution.cooperate();
+    }
+    return changed;
+  }
+
   // OWL 2 Mapping to RDF Graphs admits an annotation assertion only where the
   // predicate is a declared annotation property, so a document that annotates
   // with an undeclared one leaves triples matching no pattern. Strict mode is
@@ -3180,6 +3300,15 @@ class RdfGraphInterpreter {
       if (owlSignificant && this.#recoverUndeclaredAnnotation(currentQuad)) {
         continue;
       }
+      // Unlike optional warning text, loader metadata must retain every
+      // unparsed statement, including literal datatype/language identity.
+      this.#unparsedTriples.push(
+        Object.freeze({
+          subject: rdfTermDescriptor(currentQuad.subject),
+          predicate: rdfTermDescriptor(currentQuad.predicate),
+          object: rdfTermDescriptor(currentQuad.object),
+        }),
+      );
       if (this.#configuration.collectWarnings) {
         const details = this.#unconsumedStatementDetails(currentQuad);
         this.#diagnostics.push({
@@ -4796,10 +4925,12 @@ export class RdfToOwlTranslator {
       transaction,
     });
     await interpreter.interpret();
+    const loaderMetaData = await interpreter.parserMetaData();
     input.execution.check();
 
     return transaction.commit({
       diagnostics,
+      loaderMetaData,
       ...(input.configuration.parsingMode === "preserve"
         ? { sourceStructure: interpreter.sourceStructure() }
         : {}),

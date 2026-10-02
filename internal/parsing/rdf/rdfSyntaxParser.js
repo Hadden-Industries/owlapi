@@ -130,7 +130,12 @@ export class RdfSyntaxParser {
       configuration.format.key === this.#documentFormat.key
         ? configuration.format
         : this.#documentFormat;
-    transaction.setDocumentFormat(selectedDocumentFormat);
-    return selectedDocumentFormat;
+    const loadedFormat = context.loaderMetaData
+      ? selectedDocumentFormat.withOntologyLoaderMetaData(
+          context.loaderMetaData,
+        )
+      : selectedDocumentFormat;
+    transaction.setDocumentFormat(loadedFormat);
+    return loadedFormat;
   }
 }

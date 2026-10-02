@@ -3,8 +3,8 @@
 `owlapi` is a native-ESM JavaScript library for loading OWL 2 ontologies into a structural object model in Node.js and modern browsers.
 Its public concepts deliberately resemble the Java OWLAPI where that makes the API familiar, while its I/O, asynchronous loading, module packaging, and RDF/JS integration follow JavaScript conventions.
 
-> **Planned public release candidate:** `@hadden-industries/owlapi@0.1.0-rc.1` is the selected first public npm target under `next`, including the approved import-closure lifecycle capabilities.
-> The scoped identity is an accepted documentation decision; the manifest and release tooling still require the [scoped-publication implementation](./docs/plans/scoped-npm-publication.md).
+> **Unpublished release candidate:** `@hadden-industries/owlapi@0.1.0-rc.1` is the selected first public npm target under `next`, including the approved import-closure lifecycle capabilities.
+> The manifest and release tooling select this scoped identity; qualification and publication follow the [scoped-publication plan](./docs/plans/scoped-npm-publication.md).
 > UO and WebVOWL may each use this exact RC in production after artifact verification and their own full consumer acceptance; `0.1.0` is not a prerequisite for either application.
 > A version in `main` is not a published or accepted package.
 > Full Java OWLAPI parity is not claimed; the exact implemented surface and every known gap are recorded in [the compatibility registry](./docs/compatibility/java-api-surface.md).
@@ -12,9 +12,15 @@ Its public concepts deliberately resemble the Java OWLAPI where that makes the A
 This project is an independently maintained JavaScript implementation.
 It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project.
 
+RDF loads expose Java-style `RDFParserMetaData` through `manager.getOntologyFormat(ontology).getOntologyLoaderMetaData()`.
+See the [RDF parser metadata contract](./docs/compatibility/rdf-parser-metadata.md) for exact return types, lifetime and Java differences.
+It retains unparsed triples, inferred entity roles and observed header state, including when warnings are disabled; it describes the original parse rather than proving lossless source accounting after edits.
+Loaded RDF formats are per-document copies, so identify their syntax through `format.key`.
+See the exact return types and qualifications in [the API reference](./API.md).
+
 The desired unscoped name `owlapi` was formerly used for an unrelated, now-unpublished Overwatch package and is blocked by npm's name-similarity protection.
 The selected scoped package is a separate registry identity with no code, API, ownership, or provenance relationship to that package.
-The retained [package-name review](https://github.com/Hadden-Industries/owlapi/blob/main/docs/provenance/package-name-review.json) describes the historical unscoped proposal; it must be supplemented by a scoped-identity review before publication.
+The retained [package-name review](https://github.com/Hadden-Industries/owlapi/blob/main/docs/provenance/package-name-review.json) describes the historical unscoped proposal; the separate [scoped-identity review](./docs/provenance/scoped-package-name-review.json) is prepared and awaits human acceptance before publication.
 
 ## Install
 
@@ -186,7 +192,7 @@ const ontology = await manager.loadOntologyFromOntologyDocument(
 ### Native document modules with an import map
 
 The application—not `owlapi`—owns import-map URLs, content security policy, integrity verification, caching, and availability.
-A complete map must cover all six public roots and their external static and literal-dynamic dependency closure.
+A complete map must cover all seven public roots and their external static and literal-dynamic dependency closure.
 The alias keys below must resolve to files from the verified `@hadden-industries/owlapi@0.1.0-rc.1` distribution.
 The application-local URL spelling does not claim an unscoped npm publication.
 This abbreviated shape illustrates application-local URLs; it is not a complete hand-maintained dependency map:
@@ -200,6 +206,7 @@ This abbreviated shape illustrates application-local URLs; it is not a complete 
       "owlapi/model": "/vendor/owlapi/0.1.0-rc.1/model/index.js",
       "owlapi/io": "/vendor/owlapi/0.1.0-rc.1/io/index.js",
       "owlapi/formats": "/vendor/owlapi/0.1.0-rc.1/formats/index.js",
+      "owlapi/profiles": "/vendor/owlapi/0.1.0-rc.1/profiles/index.js",
       "owlapi/util": "/vendor/owlapi/0.1.0-rc.1/util/index.js"
     }
   }

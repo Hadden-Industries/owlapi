@@ -431,8 +431,8 @@ jobs:
         with:
           name: ${{ needs.metadata.outputs.artifact_name }}
           path: |
-            .release/candidate/${{ needs.metadata.outputs.version }}/owlapi-${{ needs.metadata.outputs.version }}.tgz
-            .release/candidate/${{ needs.metadata.outputs.version }}/owlapi-${{ needs.metadata.outputs.version }}.cdx.json
+            .release/candidate/${{ needs.metadata.outputs.version }}/hadden-industries-owlapi-${{ needs.metadata.outputs.version }}.tgz
+            .release/candidate/${{ needs.metadata.outputs.version }}/hadden-industries-owlapi-${{ needs.metadata.outputs.version }}.cdx.json
             .release/candidate/${{ needs.metadata.outputs.version }}/SHA256SUMS
           if-no-files-found: error
           retention-days: 90

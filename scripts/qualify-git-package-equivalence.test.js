@@ -1,4 +1,10 @@
-import { copyFileSync, mkdtempSync, mkdirSync, rmSync } from "node:fs";
+import {
+  readFileSync,
+  writeFileSync,
+  mkdtempSync,
+  mkdirSync,
+  rmSync,
+} from "node:fs";
 import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -13,6 +19,7 @@ import {
   qualifyGitPackageEquivalence,
 } from "./qualify-git-package-equivalence.mjs";
 import { formatSha256Sums, sha256Buffer } from "./release-artifacts.mjs";
+import { PACKAGE_NAME } from "./package-identity.mjs";
 
 test("the historical no-network entry point needs no lifecycle companion files", () => {
   // Resolve the existing source package through its own package scope. This is
@@ -22,7 +29,15 @@ test("the historical no-network entry point needs no lifecycle companion files",
   );
   try {
     const script = join(directory, "installed-package-no-network.mjs");
-    copyFileSync("test/installed-package-no-network.mjs", script);
+    // This source staging test uses the current self-reference; retained alpha
+    // qualification continues to stage the original bare-import fixture unchanged.
+    writeFileSync(
+      script,
+      readFileSync("test/installed-package-no-network.mjs", "utf8").replaceAll(
+        '"owlapi',
+        `"${PACKAGE_NAME}`,
+      ),
+    );
     expect(
       execFileSync(process.execPath, [script], { encoding: "utf8" }),
     ).toContain("no network I/O");

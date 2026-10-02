@@ -7,9 +7,9 @@ import {
 } from "./qualify-release.mjs";
 
 const candidate = {
-  package: { name: "owlapi", version: "0.1.0-alpha.0" },
+  package: { name: "@hadden-industries/owlapi", version: "0.1.0-rc.1" },
   tarball: {
-    fileName: "owlapi-0.1.0-alpha.0.tgz",
+    fileName: "hadden-industries-owlapi-0.1.0-rc.1.tgz",
     sha256: "a".repeat(64),
     bytes: 1234,
   },
@@ -19,24 +19,29 @@ const candidate = {
 describe("release-candidate publication qualification", () => {
   test("normalizes npm 12's single package-keyed dry-run envelope", () => {
     const record = {
-      name: "owlapi",
-      version: "0.1.0-alpha.0",
-      filename: "owlapi-0.1.0-alpha.0.tgz",
+      name: "@hadden-industries/owlapi",
+      version: "0.1.0-rc.1",
+      filename: "hadden-industries-owlapi-0.1.0-rc.1.tgz",
     };
 
-    expect(normalizeNpmPublishDryRun({ owlapi: record })).toEqual(record);
+    expect(
+      normalizeNpmPublishDryRun({ "@hadden-industries/owlapi": record }),
+    ).toEqual(record);
   });
 
   test("rejects an ambiguous or mislabeled dry-run envelope", () => {
     expect(() =>
       normalizeNpmPublishDryRun({
-        owlapi: { name: "owlapi", version: "0.1.0-alpha.0" },
+        owlapi: { name: "@hadden-industries/owlapi", version: "0.1.0-rc.1" },
         other: { name: "other", version: "1.0.0" },
       }),
     ).toThrow(/exactly one package record/u);
     expect(() =>
       normalizeNpmPublishDryRun({
-        unexpected: { name: "owlapi", version: "0.1.0-alpha.0" },
+        unexpected: {
+          name: "@hadden-industries/owlapi",
+          version: "0.1.0-rc.1",
+        },
       }),
     ).toThrow(/key disagrees/u);
   });
@@ -69,9 +74,9 @@ describe("release-candidate publication qualification", () => {
       assertDryRunMatchesCandidate({
         candidate,
         dryRun: {
-          name: "owlapi",
-          version: "0.1.0-alpha.0",
-          filename: "owlapi-0.1.0-alpha.0.tgz",
+          name: "@hadden-industries/owlapi",
+          version: "0.1.0-rc.1",
+          filename: "hadden-industries-owlapi-0.1.0-rc.1.tgz",
           size: 1234,
           entryCount: 3,
           files: [
@@ -82,7 +87,7 @@ describe("release-candidate publication qualification", () => {
         },
       }),
     ).toEqual({
-      coordinate: "owlapi@0.1.0-alpha.0",
+      coordinate: "@hadden-industries/owlapi@0.1.0-rc.1",
       fileCount: 3,
       tarballSha256: "a".repeat(64),
     });
@@ -93,9 +98,9 @@ describe("release-candidate publication qualification", () => {
       assertDryRunMatchesCandidate({
         candidate,
         dryRun: {
-          name: "owlapi",
-          version: "0.1.0-alpha.0",
-          filename: "owlapi-0.1.0-alpha.0.tgz",
+          name: "@hadden-industries/owlapi",
+          version: "0.1.0-rc.1",
+          filename: "hadden-industries-owlapi-0.1.0-rc.1.tgz",
           size: 1234,
           entryCount: 4,
           files: [
