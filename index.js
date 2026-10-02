@@ -66,10 +66,9 @@ export { OWL2DLProfile, OWLProfileReport } from "./profiles/index.js";
 // nominal API without selecting semantics/providers and conformance tests.
 // Verification: capability `reasoner` (UNSUPPORTED_BY_DESIGN).
 
-// TODO(OWLAPI parity): Java OWLAPI exposes OWLOntologyStorer and multiple
-// serializer families. The initial 0.1 package deliberately has no
-// `saveOntology` API; the private Phase 16 OwlToRdfTranslator provides semantic
-// RDF/JS mapping without claiming a public RDF namespace or serialization format.
-// The planned Functional Syntax and RDF/XML storers require explicit format
-// contracts, dependency/provenance review, and syntax-specific round-trip tests.
-// Verification: capabilities `storer.functional` and `storer.rdfxml` (DEFERRED).
+// Java-compatible storage is selected through manager.saveOntology with an
+// explicit Functional Syntax or RDF/XML format and StringDocumentTarget.
+// Concrete storers and the shared RDF mapping engine remain package-private.
+// Other serializer families and public storer registration remain deferred.
+// Verification: capabilities `storer.functional`, `storer.rdfxml`, and
+// `manager.save-ontology`; installed import-closure round-trip tests.

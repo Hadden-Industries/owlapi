@@ -61,8 +61,9 @@ Phase 21 records the exact accepted WebVOWL baseline and either proves it has no
 
 Development started on the dedicated lifecycle feature branch before any accepted public production release.
 The owner has included this capability slice in the selected public RC and later `0.1.0` line; a separate later feature release is no longer planned.
-All eight lifecycle rows retain `DEFERRED` / `NOT_STARTED` until formal qualification passes.
-These states distinguish release acceptance from existing implementation history.
+All eight lifecycle rows retain `DEFERRED` / `NOT_STARTED` until the reconciled Tasks 1–14 prerequisite gates pass, including installed-package and consumer evidence.
+Task 15 step 2 then records their implemented state as `REQUIRED_V1` / `COMPLETE` / phase 22 before packing the final candidate.
+That metadata does not establish release acceptance: `phase22.status` remains `IN_PROGRESS` until the final candidate passes every Phase 22 gate, including UO's prepublication qualification.
 
 Merge the original task commits without squash or rebase into a branch containing the pinned `main` integration baseline.
 Record its exact commit and generated API registry digest in the accepted parity record when reconciliation is complete.
@@ -241,7 +242,8 @@ Every task must preserve these rules:
 ## 3. Fixed capability and API contract
 
 The programme consists of these exact capability IDs.
-Task 1 records them as deferred; Task 15 may mark them complete only after all acceptance gates pass.
+Task 1 records them as deferred; Task 15 step 2 may mark them complete after the reconciled Tasks 1–14 prerequisite gates pass.
+The final candidate's acceptance remains separately governed by `phase22.status` and the Phase 22 catalogue below.
 
 | Capability ID                        | Public entry point                                                           | Required result                                                                        |
 | ------------------------------------ | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
@@ -1400,7 +1402,7 @@ The pinned integration baseline and Phase 21 commits must be ancestors, every pr
    ```
 
 8. Inspect the downloaded candidate in a clean temporary directory.
-   Require actual manifest name `@hadden-industries/owlapi`, exact version `0.1.0-rc.1`, all six approved exports, zero source-tree resolution, zero network during closure/reload tests, both storage formats, and the mandated RDF/XML failure.
+   Require actual manifest name `@hadden-industries/owlapi`, exact version `0.1.0-rc.1`, all seven approved export specifiers, zero source-tree resolution, zero network during closure/reload tests, both storage formats, and the mandated RDF/XML failure.
    Re-run the tagged-to-candidate API-surface comparison against the installed package evidence rather than trusting the source-tree registry alone.
    Inspect the retained WebVOWL qualification result separately and require the exact Phase 21 baseline/audit digest, successful `toString()` save, base-error/reason failure classification, unchanged target text, valid source getter, and absence of both rejected extensions.
 9. Run both Task 14 reconciliation checks for all four July variants and the upstream public-composition checks against the exact candidate.
@@ -1500,7 +1502,7 @@ This programme is complete only when all of the following are simultaneously tru
 Begin now in pre-integration mode on the dedicated lifecycle feature branch.
 Task 1 records the deferred governance baseline; Tasks 2–5 establish state semantics; Task 6 adds the closure utilities; Tasks 8 and 10 add independent comparison and strict-reconstruction foundations; and Task 14 may establish its harness and available real-family experiments.
 Build the canonical Phase 21 foundations next, then dependency-ready Tasks 7, 9, and 11–14.
-Keep all lifecycle capabilities deferred until formal qualification and do not relabel provisional results as accepted scoped RC release evidence.
+Keep all lifecycle capabilities deferred until the reconciled Tasks 1–14 prerequisite gates pass (Task 15 step 2), and do not relabel provisional results as accepted scoped RC release evidence.
 
 Integrate the reviewed task commits against the pinned source-integration baseline, preserving every original commit through a normal merge.
 No prior public production release is required.
@@ -1514,3 +1516,65 @@ Task 15 alone qualifies the exact release and coordinates a separately authorize
 
 At every task and reconciled rerun, follow red → green → refactor: add the focused failing test, run it and confirm the intended failure, implement the minimum coherent behaviour, rerun the focused test, then run the listed regression boundary.
 Do not combine tasks to bypass a failing intermediate contract, and preserve task-sized commits so integration rework remains reviewable.
+
+## 9. Authoritative Phase 22 acceptance catalogue
+
+These gate identities project Tasks 1–15 and the completion gate into the release registry.
+Every Phase 22 result requires the accepted P21-CHECKPOINT-001 predecessor.
+The exact scoped RC remains eligible for consumer production after independent registry and consumer acceptance.
+
+- <a id="p22-predecessor-001"></a> **`P22-PREDECESSOR-001` — Phase 21 ancestry and preservation.**
+  Verify the pinned integration baseline and approved signed Phase 21 completion commit are ancestors of the qualified candidate, with the accepted target/error contract, decision record, capability rows and checkpoint registry preserved.
+
+- <a id="p22-capabilities-001"></a> **`P22-CAPABILITIES-001` — Eight complete lifecycle capabilities.**
+  After the reconciled Tasks 1–14 prerequisite gates pass, record the exact eight lifecycle rows as REQUIRED_V1, COMPLETE, phase 22 and the global release as 0.1.0-rc.1.
+  Source tests alone cannot establish this result.
+
+- <a id="p22-surface-001"></a> **`P22-SURFACE-001` — Bounded Java-compatible surface.**
+  Reconcile the generated registry against the Phase 21 checkpoint and integration baseline, allowing only approved binding/member changes and the scoped identity/release metadata mapping.
+  Preserve exact Java authorities, explicit adaptations and omitted overloads; reject new JS_EXTENSION bindings, public concrete storers, deep imports and shipped development utilities.
+
+- <a id="p22-installed-closure-001"></a> **`P22-INSTALLED-CLOSURE-001` — Installed public composition.**
+  Exercise retained closure traversal, transactional manager mutations, defensive provider snapshots and policy-neutral structural merging from the exact packed package.
+  Prove root identity, root-only annotations, no imports and exact closure axiom union with zero loader calls during closure queries.
+
+- <a id="p22-functional-storage-001"></a> **`P22-FUNCTIONAL-STORAGE-001` — Functional Syntax round trip.**
+  Select the storer only through saveOntology and prove the exhaustive supported structural round trip under one anonymous-individual bijection, preserving within-source sharing and cross-source separation.
+
+- <a id="p22-rdfxml-storage-001"></a> **`P22-RDFXML-STORAGE-001` — RDF/XML round trip.**
+  Select the storer only through saveOntology and prove the exhaustive representable structural round trip from installed candidate bytes, including annotations and anonymous-individual identity.
+
+- <a id="p22-strict-rdf-001"></a> **`P22-STRICT-RDF-001` — Complete strict reconstruction.**
+  Reject every unconsumed selected-graph RDF statement and preserve the approved parser metadata/compatible-loading boundary; retained metadata alone is never a losslessness or consumer admission guarantee.
+
+- <a id="p22-rdfxml-failure-001"></a> **`P22-RDFXML-FAILURE-001` — Mandatory lossless-or-fail boundary.**
+  The mandated non-injective RDF/XML case must reject with OWLOntologyStorageError and reason ONTOLOGY_NOT_REPRESENTABLE, retaining the complete original target text and ontology state.
+  No dedicated representability subclass or syntax fallback is permitted.
+
+- <a id="p22-webvowl-001"></a> **`P22-WEBVOWL-001` — Real WebVOWL storage semantics.**
+  On the accepted immutable audit baseline, install the retained candidate and pass the successful toString() save, unchanged-target non-representability failure, valid source getter, dependency boundary, application tests/builds and browser integration.
+  Preserve the zero-use disposition or separately authorized migration; do not invent application use.
+
+- <a id="p22-java-001"></a> **`P22-JAVA-001` — Pinned Java reconciliation.**
+  Pass parsing and both-format closure reconciliation for all four July variants against OWLAPI 5.5.1 revision d7e997a53b470e32700de89cc610d9daf01ea769 with zero unexplained structural differences and the required network isolation.
+
+- <a id="p22-uo-001"></a> **`P22-UO-001` — UO prepublication qualification.**
+  Before publication, bind UO's actual adapter, contract, corpus/catalogue inputs, full consumer matrix, real distributions and Java parity to the retained candidate digest.
+  Treat any newly packed bytes as a new candidate requiring appropriate requalification.
+  Fresh public-registry/provenance acceptance and UO production cutover remain separate subsequent gates.
+
+### Phase 22 acceptance checklist
+
+- [x] <!-- Gate: P22-CHECK-001; Covers: P22-PREDECESSOR-001 --> Verify the completed Phase 21 predecessor and both required ancestors.
+- [x] <!-- Gate: P22-CHECK-002; Covers: P22-CAPABILITIES-001 --> Complete the eight evidence-backed lifecycle rows for the exact RC.
+- [x] <!-- Gate: P22-CHECK-003; Covers: P22-SURFACE-001 --> Verify the approved generated public-surface delta and package boundary.
+- [x] <!-- Gate: P22-CHECK-004; Covers: P22-INSTALLED-CLOSURE-001 --> Pass installed public composition with no source-tree fallback.
+- [x] <!-- Gate: P22-CHECK-005; Covers: P22-FUNCTIONAL-STORAGE-001 --> Pass the exhaustive Functional Syntax structural round trip.
+- [x] <!-- Gate: P22-CHECK-006; Covers: P22-RDFXML-STORAGE-001 --> Pass the representable RDF/XML structural round trip.
+- [x] <!-- Gate: P22-CHECK-007; Covers: P22-STRICT-RDF-001 --> Reject unconsumed selected-graph statements in strict reconstruction.
+- [x] <!-- Gate: P22-CHECK-008; Covers: P22-RDFXML-FAILURE-001 --> Reject the mandated non-injective case without partial target mutation.
+- [x] <!-- Gate: P22-CHECK-009; Covers: P22-WEBVOWL-001 --> Pass the audited WebVOWL installed-candidate semantic and application gates.
+- [x] <!-- Gate: P22-CHECK-010; Covers: P22-JAVA-001 --> Pass all four real July variants against pinned Java in both formats.
+- [x] <!-- Gate: P22-CHECK-011; Covers: P22-UO-001 --> Accept UO's candidate-bound prepublication matrix before npm publication.
+
+<!-- End Phase 22 acceptance checklist -->

@@ -14,22 +14,62 @@ const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 const registry = "https://registry.npmjs.org/";
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
+const gateDefinitions = JSON.parse(
+  readFileSync(new URL("../docs/release/gates.json", import.meta.url), "utf8"),
+);
 
 export const assertRecordedRequirement = (record, requirementId) => {
-  const matches = (record?.requirements ?? []).filter(
-    (requirement) => requirement.requirementId === requirementId,
-  );
-  if (
-    record?.accepted !== true ||
-    matches.length !== 1 ||
-    matches[0].finalResult !== "PASS"
-  ) {
-    throw new Error(`Release requirement ${requirementId} is not PASS.`);
-  }
-  return {
-    requirementId: matches[0].requirementId,
-    finalResult: matches[0].finalResult,
+  const visiting = new Set();
+  const assertRequirement = (id) => {
+    if (visiting.has(id)) {
+      throw new Error(`Release prerequisite cycle at ${id}.`);
+    }
+    visiting.add(id);
+    const definition = gateDefinitions.requirements.find(
+      (requirement) => requirement.requirementId === id,
+    );
+    if (!definition) {
+      throw new Error(`Unknown release requirement ${id}.`);
+    }
+    const matches = (record?.requirements ?? []).filter(
+      (requirement) => requirement.requirementId === id,
+    );
+    if (
+      record?.accepted !== true ||
+      matches.length !== 1 ||
+      matches[0].finalResult !== "PASS"
+    ) {
+      throw new Error(`Release requirement ${id} is not PASS.`);
+    }
+    // A checkpoint cannot bypass its recorded prerequisite results.
+    for (const predecessor of definition.prerequisiteRequirementIds) {
+      assertRequirement(predecessor);
+    }
+    visiting.delete(id);
+    return {
+      requirementId: matches[0].requirementId,
+      finalResult: matches[0].finalResult,
+    };
   };
+  return assertRequirement(requirementId);
+};
+
+export const assertPrepublicationConsumers = ({ candidate, webvowl, uo }) => {
+  if (
+    webvowl?.qualification !== "RECONCILED" ||
+    webvowl.result !== "PASS" ||
+    webvowl.candidate?.package?.name !== candidate.package.name ||
+    webvowl.candidate?.package?.version !== candidate.package.version ||
+    webvowl.candidate?.tarballSha256 !== candidate.tarball.sha256 ||
+    uo?.stage !== "PREPUBLICATION" ||
+    uo.status !== "PASS_WITH_ACCEPTED_JAVA_PARITY_BOUNDARY" ||
+    uo.candidate?.sha256 !== candidate.tarball.sha256
+  ) {
+    throw new Error(
+      "The retained candidate must match both accepted prepublication consumer reports.",
+    );
+  }
+  return { tarballSha256: candidate.tarball.sha256 };
 };
 
 export const assertDryRunMatchesCandidate = ({ candidate, dryRun }) => {
@@ -286,6 +326,20 @@ const main = async () => {
     throw new Error(`Candidate directory is absent: ${candidateDirectory}`);
   }
   const candidate = readCandidate(candidateDirectory);
+  const evidenceDirectory = join(
+    repositoryRoot,
+    "docs/provenance/releases",
+    candidate.package.version,
+  );
+  const consumerEvidence = assertPrepublicationConsumers({
+    candidate,
+    webvowl: JSON.parse(
+      readFileSync(join(evidenceDirectory, "phase22-webvowl.json"), "utf8"),
+    ),
+    uo: JSON.parse(
+      readFileSync(join(evidenceDirectory, "phase22-uo.json"), "utf8"),
+    ).report,
+  });
   const dryRun = runDryRun(candidate.tarballPath);
   const dryRunResult = assertDryRunMatchesCandidate({ candidate, dryRun });
   const canonicalTag = `v${candidate.package.version}`;
@@ -306,6 +360,7 @@ const main = async () => {
     channel: "next",
     canonicalTag,
     registryState: state.action,
+    consumerEvidence,
     candidate: {
       coordinate: dryRunResult.coordinate,
       fileName: candidate.tarball.fileName,

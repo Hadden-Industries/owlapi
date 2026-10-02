@@ -34,6 +34,21 @@ const sha256 = (value) => createHash("sha256").update(value).digest("hex");
 
 const stableJson = (value) => `${JSON.stringify(value, null, 2)}\n`;
 
+// Historical development is a schema fixture, not the current accepted state.
+const provisionalParityFixture = () => {
+  const ledger = readJson(
+    "./docs/compatibility/java-api-parity-decisions.json",
+  );
+  return {
+    ...ledger,
+    qualification: "PRE_INTEGRATION",
+    integrationBaseline: null,
+    consumerMigrations: { webvowl: null },
+    phase21: { ...ledger.phase21, status: "IN_PROGRESS", registrySha256: null },
+    phase22: { status: "IN_PROGRESS", decisions: ledger.phase22.decisions },
+  };
+};
+
 // Governance output must not depend on the host's ICU build or locale data.
 // JavaScript's relational comparison has specified UTF-16 code-unit ordering,
 // which is sufficient because every governed path and identifier is normalized.
@@ -154,7 +169,7 @@ const currentProductionModules = () =>
   ].sort();
 
 describe("owlapi governance artifacts", () => {
-  it("records canonical parity decisions without claiming an accepted release", () => {
+  it("binds the completed parity checkpoint to its reconciled source and consumer evidence", () => {
     const ledgerPath = "./docs/compatibility/java-api-parity-decisions.json";
     expect(existsSync(new URL(ledgerPath, import.meta.url))).toBe(true);
     const { document: ledger, errors } = validateAgainstSchema(
@@ -162,10 +177,47 @@ describe("owlapi governance artifacts", () => {
       "./docs/compatibility/java-api-parity-decisions.schema.json",
     );
     expect(errors).toEqual([]);
-    expect(ledger.qualification).toBe("PRE_INTEGRATION");
-    expect(ledger.integrationBaseline).toBeNull();
-    expect(ledger.consumerMigrations.webvowl).toBeNull();
-    expect(ledger.phase21.status).toBe("IN_PROGRESS");
+    expect(ledger.qualification).toBe("RECONCILED");
+    expect(ledger.integrationBaseline.commit).toBe(
+      "19cf43d4288d20a737ecac0a39ccd1c53f9a3e77",
+    );
+    expect(ledger.phase21.status).toBe("COMPLETE");
+    // This qualification adds no public API delta to the signed checkpoint.
+    // Preserve that invariant even in source archives without Git history.
+    expect(ledger.phase21.registrySha256).toBe(ledger.phase22.registrySha256);
+    expect(ledger.phase22.registrySha256).toBe(
+      sha256(
+        readFileSync(
+          new URL(
+            "./docs/compatibility/java-api-surface.json",
+            import.meta.url,
+          ),
+        ),
+      ),
+    );
+    const consumer = ledger.consumerMigrations.webvowl;
+    const qualificationBytes = readFileSync(
+      new URL(
+        "./docs/provenance/releases/0.1.0-rc.1/phase21-webvowl.json",
+        import.meta.url,
+      ),
+    );
+    const qualification = JSON.parse(qualificationBytes);
+    expect(qualification.qualification).toBe("RECONCILED");
+    expect(qualification.result).toBe("PASS");
+    expect(
+      Object.values(qualification.gates).every((result) => result === "PASS"),
+    ).toBe(true);
+    expect(consumer.installedCandidate).toEqual({
+      result: "PASS",
+      sha256: qualification.candidate.tarballSha256,
+      evidenceSha256: sha256(qualificationBytes),
+    });
+    expect(qualification.consumerAudit).toEqual({
+      baselineCommit: consumer.baselineCommit,
+      scanSha256: consumer.scanSha256,
+      disposition: consumer.disposition,
+    });
     expect(ledger.javaAuthority).toEqual({
       version: "5.5.1",
       revision: "d7e997a53b470e32700de89cc610d9daf01ea769",
@@ -217,7 +269,7 @@ describe("owlapi governance artifacts", () => {
         expect.objectContaining({
           id,
           status: "REQUIRED_V1",
-          progress: "IN_PROGRESS",
+          progress: "COMPLETE",
           phase: 21,
         }),
       ]);
@@ -235,13 +287,41 @@ describe("owlapi governance artifacts", () => {
       );
       expect(sha256(baseline)).toBe(ledger.developmentBaseline.registrySha256);
       expect(isAncestorOfHead(ledger.developmentBaseline.commit)).toBe(true);
+      const integrated = execFileSync(
+        "git",
+        [
+          "show",
+          `${ledger.integrationBaseline.commit}:docs/compatibility/java-api-surface.json`,
+        ],
+        {
+          cwd: REPOSITORY_ROOT,
+          stdio: ["ignore", "pipe", "pipe"],
+        },
+      );
+      expect(sha256(integrated)).toBe(
+        ledger.integrationBaseline.registrySha256,
+      );
+      expect(isAncestorOfHead(ledger.integrationBaseline.commit)).toBe(true);
+      const checkpoint = ledger.phase22.phase21Checkpoint;
+      expect(checkpoint.commit).toBe(
+        "c45f07719e0d846be354c818d281a38281913c38",
+      );
+      const checkpointRegistry = execFileSync(
+        "git",
+        [
+          "show",
+          `${checkpoint.commit}:docs/compatibility/java-api-surface.json`,
+        ],
+        { cwd: REPOSITORY_ROOT, stdio: ["ignore", "pipe", "pipe"] },
+      );
+      expect(sha256(checkpointRegistry)).toBe(checkpoint.registrySha256);
+      expect(checkpoint.registrySha256).toBe(ledger.phase21.registrySha256);
+      expect(isAncestorOfHead(checkpoint.commit)).toBe(true);
     }
   });
 
   it("rejects fabricated parity acceptance and unapproved ledger fields", () => {
-    const ledger = readJson(
-      "./docs/compatibility/java-api-parity-decisions.json",
-    );
+    const ledger = provisionalParityFixture();
     const schemaPath =
       "./docs/compatibility/java-api-parity-decisions.schema.json";
     const invalidRecords = [
@@ -270,9 +350,7 @@ describe("owlapi governance artifacts", () => {
   });
 
   it("requires complete consumer evidence only for reconciled parity completion", () => {
-    const ledger = readJson(
-      "./docs/compatibility/java-api-parity-decisions.json",
-    );
+    const ledger = provisionalParityFixture();
     const schemaPath =
       "./docs/compatibility/java-api-parity-decisions.schema.json";
     // Synthetic schema fixtures are not release evidence and never enter the
@@ -321,6 +399,37 @@ describe("owlapi governance artifacts", () => {
       consumerMigrations: { webvowl: consumer },
     };
     expect(validateDocumentAgainstSchema(candidate, schemaPath)).toEqual([]);
+    const lifecycleComplete = {
+      ...candidate,
+      phase22: {
+        ...candidate.phase22,
+        status: "COMPLETE",
+        registrySha256: "2".repeat(64),
+        phase21Checkpoint: {
+          commit: "3".repeat(40),
+          registrySha256: "c".repeat(64),
+        },
+      },
+    };
+    expect(
+      validateDocumentAgainstSchema(lifecycleComplete, schemaPath),
+    ).toEqual([]);
+    for (const missing of ["registrySha256", "phase21Checkpoint"]) {
+      const invalid = structuredClone(lifecycleComplete);
+      delete invalid.phase22[missing];
+      expect(
+        validateDocumentAgainstSchema(invalid, schemaPath).length,
+      ).toBeGreaterThan(0);
+    }
+    expect(
+      validateDocumentAgainstSchema(
+        {
+          ...lifecycleComplete,
+          phase21: { ...lifecycleComplete.phase21, status: "IN_PROGRESS" },
+        },
+        schemaPath,
+      ).length,
+    ).toBeGreaterThan(0);
     const retainedGitPackageSpecifier = readJson(
       "./docs/release/pre-registry-git-equivalence.json",
     ).source.git.packageSpecifier;
@@ -420,16 +529,39 @@ describe("owlapi governance artifacts", () => {
     }
   });
 
-  it("records only the eight approved lifecycle adaptations without acceptance", () => {
+  it("records the eight approved lifecycle adaptations with candidate-bound consumer evidence", () => {
     const { document: ledger, errors } = validateAgainstSchema(
       "./docs/compatibility/java-api-parity-decisions.json",
       "./docs/compatibility/java-api-parity-decisions.schema.json",
     );
     expect(errors).toEqual([]);
     expect(ledger.phase22).toEqual({
-      status: "IN_PROGRESS",
+      status: "COMPLETE",
+      registrySha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+      phase21Checkpoint: {
+        commit: "c45f07719e0d846be354c818d281a38281913c38",
+        registrySha256: ledger.phase21.registrySha256,
+      },
       decisions: expect.any(Array),
     });
+    const webvowl = readJson(
+      "./docs/provenance/releases/0.1.0-rc.1/phase22-webvowl.json",
+    );
+    const { report: uo } = readJson(
+      "./docs/provenance/releases/0.1.0-rc.1/phase22-uo.json",
+    );
+    expect(webvowl.result).toBe("PASS");
+    expect(
+      Object.values(webvowl.gates).every((result) => result === "PASS"),
+    ).toBe(true);
+    expect(uo.status).toBe("PASS_WITH_ACCEPTED_JAVA_PARITY_BOUNDARY");
+    expect(uo.candidate.sha256).toBe(webvowl.candidate.tarballSha256);
+    expect(uo.candidate.apiRegistrySha256).toBe(ledger.phase22.registrySha256);
+    expect(uo.consumer.passed).toBe(174);
+    expect(uo.cases).toHaveLength(8);
+    expect(uo.cases.every(({ java }) => java === "MATCH")).toBe(true);
+    expect(uo.registryAcceptance).toBe("NOT_PERFORMED");
+    expect(uo.productionAcceptance).toBe("NOT_GRANTED");
     expect(ledger.phase22.decisions.map(({ id }) => id).sort()).toEqual([
       "LIFECYCLE-ASYNC-SAVE-OVERLOAD",
       "LIFECYCLE-CHANGE-OVERLOAD-SUBSET",
@@ -468,14 +600,17 @@ describe("owlapi governance artifacts", () => {
         ).toBeGreaterThan(0);
       }
     }
-    const accepted = JSON.parse(JSON.stringify(ledger));
-    accepted.phase22.status = "COMPLETE";
-    expect(
-      validateDocumentAgainstSchema(
-        accepted,
-        "./docs/compatibility/java-api-parity-decisions.schema.json",
-      ).length,
-    ).toBeGreaterThan(0);
+    for (const missing of ["registrySha256", "phase21Checkpoint"]) {
+      const accepted = JSON.parse(JSON.stringify(ledger));
+      accepted.phase22.status = "COMPLETE";
+      delete accepted.phase22[missing];
+      expect(
+        validateDocumentAgainstSchema(
+          accepted,
+          "./docs/compatibility/java-api-parity-decisions.schema.json",
+        ).length,
+      ).toBeGreaterThan(0);
+    }
   });
 
   it("classifies every capability exactly once with a normative status", () => {
@@ -542,7 +677,7 @@ describe("owlapi governance artifacts", () => {
         relationship: "JS_ADAPTATION",
         compatibility: "ADAPTED",
         firstPublicRelease: "0.1.0-rc.1",
-        progress: "IN_PROGRESS",
+        progress: "COMPLETE",
       });
       expect(typeof io[jsExport]).toBe("function");
       expect(
@@ -679,7 +814,7 @@ describe("owlapi governance artifacts", () => {
     }
   });
 
-  it("keeps pre-integration lifecycle governance split by deliverable", () => {
+  it("records implemented lifecycle capabilities while keeping concrete storer classes private", () => {
     const matrix = readJson("./docs/compatibility/capabilities.json");
     const registry = readJson("./docs/compatibility/java-api-surface.json");
     const lifecycleCapabilityIds = [
@@ -700,58 +835,58 @@ describe("owlapi governance artifacts", () => {
       {
         id: "manager.imports-closure-query",
         category: "public-api",
-        status: "DEFERRED",
-        progress: "NOT_STARTED",
-        phase: null,
+        status: "REQUIRED_V1",
+        progress: "COMPLETE",
+        phase: 22,
       },
       {
         id: "manager.save-ontology",
         category: "public-api",
-        status: "DEFERRED",
-        progress: "NOT_STARTED",
-        phase: null,
+        status: "REQUIRED_V1",
+        progress: "COMPLETE",
+        phase: 22,
       },
       {
         id: "ontology.change-required-surface",
         category: "public-api",
-        status: "DEFERRED",
-        progress: "NOT_STARTED",
-        phase: null,
+        status: "REQUIRED_V1",
+        progress: "COMPLETE",
+        phase: 22,
       },
       {
         id: "rdf.strict-complete-reconstruction",
         category: "mapping",
-        status: "DEFERRED",
-        progress: "NOT_STARTED",
-        phase: null,
+        status: "REQUIRED_V1",
+        progress: "COMPLETE",
+        phase: 22,
       },
       {
         id: "storer.functional",
         category: "storage",
-        status: "DEFERRED",
-        progress: "NOT_STARTED",
-        phase: null,
+        status: "REQUIRED_V1",
+        progress: "COMPLETE",
+        phase: 22,
       },
       {
         id: "storer.rdfxml",
         category: "storage",
-        status: "DEFERRED",
-        progress: "NOT_STARTED",
-        phase: null,
+        status: "REQUIRED_V1",
+        progress: "COMPLETE",
+        phase: 22,
       },
       {
         id: "util.imports-closure-set-provider",
         category: "public-api",
-        status: "DEFERRED",
-        progress: "NOT_STARTED",
-        phase: null,
+        status: "REQUIRED_V1",
+        progress: "COMPLETE",
+        phase: 22,
       },
       {
         id: "util.ontology-merger",
         category: "public-api",
-        status: "DEFERRED",
-        progress: "NOT_STARTED",
-        phase: null,
+        status: "REQUIRED_V1",
+        progress: "COMPLETE",
+        phase: 22,
       },
     ]);
     expect(matrix.capabilities).not.toContainEqual(
@@ -761,7 +896,7 @@ describe("owlapi governance artifacts", () => {
       lifecycleCapabilities.every(
         ({ phase, progress }) =>
           progress !== "COMPLETE" ||
-          (phase === 22 && matrix.release === "0.1.0"),
+          (phase === 22 && matrix.release === "0.1.0-rc.1"),
       ),
     ).toBe(true);
 

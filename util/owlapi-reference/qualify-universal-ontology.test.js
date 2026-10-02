@@ -9,11 +9,20 @@ import {
   captureSourceIdentity,
   materializePinnedOntologySources,
   parseQualificationArguments,
+  qualificationStage,
   reconcileFamilyEvidence,
   verifyEvidenceDigests,
 } from "./qualify-universal-ontology.mjs";
 
 const directories = [];
+
+test.each([
+  [{}, "DEVELOPMENT"],
+  [{ candidateDirectory: "retained-candidate" }, "PREPUBLICATION"],
+  [{ registryVersion: "0.1.0-rc.1" }, "REGISTRY_ACCEPTANCE"],
+])("labels qualification by the actual package source: %j", (mode, stage) => {
+  expect(qualificationStage(mode)).toBe(stage);
+});
 
 test("public-registry qualification selects only the exact scoped RC without a candidate fallback", () => {
   const args = ["--ontology-repository", "uo", "--output", "evidence"];

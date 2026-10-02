@@ -64,6 +64,23 @@ describe("release-gate result schema", () => {
     expect(validate.errors).toBeNull();
   });
 
+  it.each([21, 22])(
+    "records scoped RC qualification for phase %i without implying acceptance",
+    (phase) => {
+      const result = validResult();
+      result.package = {
+        name: "@hadden-industries/owlapi",
+        version: "0.1.0-rc.1",
+      };
+      result.phase = phase;
+      result.accepted = false;
+      result.requirements[0].requirementId = `P${phase}-CHECKPOINT-001`;
+      result.requirements[0].leafResults[0].gateId = `P${phase}-CHECKPOINT-001-VERIFY`;
+      expect(validate(result)).toBe(true);
+      expect(validate.errors).toBeNull();
+    },
+  );
+
   it("never permits INFRASTRUCTURE_ERROR as a terminal result", () => {
     const result = validResult();
     result.requirements[0].finalResult = "INFRASTRUCTURE_ERROR";

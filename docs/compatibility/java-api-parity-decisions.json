@@ -1,11 +1,14 @@
 {
   "schemaVersion": 2,
-  "qualification": "PRE_INTEGRATION",
+  "qualification": "RECONCILED",
   "developmentBaseline": {
     "commit": "1e588030c6ba7cdc24fbf6c055c3c02ceb388a65",
     "registrySha256": "5fcaf1e0ae5bf8d4193bbbd0ae9b38d8132223524a41aa15e99e846b5f52f428"
   },
-  "integrationBaseline": null,
+  "integrationBaseline": {
+    "commit": "19cf43d4288d20a737ecac0a39ccd1c53f9a3e77",
+    "registrySha256": "1807e113c5db152417e62a56ba7feb95f4bb7e8f2775fa37e76d100303f4bb41"
+  },
   "javaAuthority": {
     "version": "5.5.1",
     "revision": "d7e997a53b470e32700de89cc610d9daf01ea769"
@@ -191,11 +194,59 @@
     "model.OWLStorerNotFoundError"
   ],
   "consumerMigrations": {
-    "webvowl": null
+    "webvowl": {
+      "repository": "https://github.com/Hadden-Industries/webvowl",
+      "baselineCommit": "4f1970e5b6c95655af823c495bd58f9e9993f8b8",
+      "packageSpecifier": "git+https://github.com/Hadden-Industries/owlapi.git#caabb1197ffdab91c1e10d596d177b5142aea5c1",
+      "auditedPathClasses": [
+        "source",
+        "tests",
+        "scripts",
+        "configuration",
+        "HTML",
+        "maintained-documentation"
+      ],
+      "excludedPathClasses": [
+        "docs/owlapi-js/",
+        "docs/provenance/",
+        "node_modules/",
+        "coverage/",
+        "dist/",
+        ".release/",
+        "binary-asset"
+      ],
+      "sourceReaderAllowlist": [
+        {
+          "path": "src/app/js/controller/ontologySourceLoader.js",
+          "line": 637,
+          "expression": "remoteDocument.getText()",
+          "receiverType": "StringDocumentSource",
+          "evidence": "remoteDocument is returned by createImportResolver().load; WebVowlImportResolver.load constructs StringDocumentSource at src/owl2vowl/js/importResolver.js:196. The existing loader and resolver tests verify this ingestion path."
+        },
+        {
+          "path": "src/owl2vowl/js/importResolver.test.js",
+          "line": 87,
+          "expression": "source.getText()",
+          "receiverType": "StringDocumentSource",
+          "evidence": "source is returned by WebVowlImportResolver.load in the HTTP import test; that method constructs StringDocumentSource at src/owl2vowl/js/importResolver.js:196. This assertion checks the exact supplied RDF/XML text."
+        }
+      ],
+      "obsoleteUseCount": 0,
+      "scanSha256": "c4db1cfb068d6882ab7acca4277a4e45d80b584002724b649998e9620d16f359",
+      "disposition": "NO_OBSOLETE_USAGE",
+      "changedPaths": [],
+      "migrationCommit": null,
+      "reviewedPatchSha256": null,
+      "installedCandidate": {
+        "sha256": "381da24580afbceb4073d6ef17a483972a39db6ab98169498bcd10278857cb1b",
+        "evidenceSha256": "bc535fbcdfb9d4aaf117ecc28400352553aa2f920de3005a6a7937b30b5eb0ee",
+        "result": "PASS"
+      }
+    }
   },
   "phase21": {
-    "status": "IN_PROGRESS",
-    "registrySha256": null,
+    "status": "COMPLETE",
+    "registrySha256": "cf367d97cea09eb9fe99b6f0e68f8ddb8ded8555259a4cc956b16bb19218ba6a",
     "publicBindings": [
       "io.StringDocumentTarget",
       "io.OWLOntologyStorageError",
@@ -204,7 +255,7 @@
     "newNamespaces": []
   },
   "phase22": {
-    "status": "IN_PROGRESS",
+    "status": "COMPLETE",
     "decisions": [
       {
         "id": "LIFECYCLE-CLOSURE-COLLECTION-MAPPING",
@@ -469,6 +520,11 @@
           "internal/model/ontologyStructuralIsomorphism.test.js"
         ]
       }
-    ]
+    ],
+    "registrySha256": "cf367d97cea09eb9fe99b6f0e68f8ddb8ded8555259a4cc956b16bb19218ba6a",
+    "phase21Checkpoint": {
+      "commit": "c45f07719e0d846be354c818d281a38281913c38",
+      "registrySha256": "cf367d97cea09eb9fe99b6f0e68f8ddb8ded8555259a4cc956b16bb19218ba6a"
+    }
   }
 }

@@ -1,5 +1,6 @@
 import {
   assertDryRunMatchesCandidate,
+  assertPrepublicationConsumers,
   assertRecordedRequirement,
   assertRegistryBootstrapState,
   normalizeNpmPublishDryRun,
@@ -17,6 +18,91 @@ const candidate = {
 };
 
 describe("release-candidate publication qualification", () => {
+  const acceptedConsumers = () => ({
+    candidate,
+    webvowl: {
+      qualification: "RECONCILED",
+      result: "PASS",
+      candidate: {
+        package: candidate.package,
+        tarballSha256: candidate.tarball.sha256,
+      },
+    },
+    uo: {
+      stage: "PREPUBLICATION",
+      status: "PASS_WITH_ACCEPTED_JAVA_PARITY_BOUNDARY",
+      candidate: { sha256: candidate.tarball.sha256 },
+    },
+  });
+
+  test("binds the publication candidate to both consumer reports", () => {
+    expect(assertPrepublicationConsumers(acceptedConsumers())).toEqual({
+      tarballSha256: candidate.tarball.sha256,
+    });
+    const differentBytes = acceptedConsumers();
+    differentBytes.candidate = {
+      ...candidate,
+      tarball: { ...candidate.tarball, sha256: "b".repeat(64) },
+    };
+    expect(() => assertPrepublicationConsumers(differentBytes)).toThrow(
+      /both accepted prepublication consumer reports/u,
+    );
+  });
+
+  test.each(["webvowl", "uo"])(
+    "rejects absent, failed or superseded %s acceptance",
+    (consumer) => {
+      for (const field of ["missing", "result", "digest"]) {
+        const evidence = acceptedConsumers();
+        const record = evidence[consumer];
+        if (field === "missing") delete evidence[consumer];
+        else if (field === "result")
+          record[consumer === "webvowl" ? "result" : "status"] = "FAIL";
+        else
+          record.candidate[
+            consumer === "webvowl" ? "tarballSha256" : "sha256"
+          ] = "b".repeat(64);
+        expect(() => assertPrepublicationConsumers(evidence)).toThrow(
+          /both accepted prepublication consumer reports/u,
+        );
+      }
+    },
+  );
+
+  test("cannot accept a lifecycle result before the parity checkpoint passes", () => {
+    const record = {
+      accepted: true,
+      requirements: [{ requirementId: "P22-UO-001", finalResult: "PASS" }],
+    };
+    expect(() => assertRecordedRequirement(record, "P22-UO-001")).toThrow(
+      /P21-CHECKPOINT-001 is not PASS/u,
+    );
+    record.requirements.push({
+      requirementId: "P21-CHECKPOINT-001",
+      finalResult: "PASS",
+    });
+    for (const requirementId of [
+      "P21-INTEGRATION-001",
+      "P21-PARITY-001",
+      "P21-CONSUMER-001",
+    ]) {
+      expect(() => assertRecordedRequirement(record, "P22-UO-001")).toThrow(
+        new RegExp(`${requirementId} is not PASS`, "u"),
+      );
+      record.requirements.push({ requirementId, finalResult: "PASS" });
+    }
+    expect(assertRecordedRequirement(record, "P22-UO-001")).toEqual({
+      requirementId: "P22-UO-001",
+      finalResult: "PASS",
+    });
+    record.requirements.find(
+      ({ requirementId }) => requirementId === "P21-CONSUMER-001",
+    ).finalResult = "PRODUCT_FAILURE";
+    expect(() => assertRecordedRequirement(record, "P22-UO-001")).toThrow(
+      /P21-CONSUMER-001 is not PASS/u,
+    );
+  });
+
   test("normalizes npm 12's single package-keyed dry-run envelope", () => {
     const record = {
       name: "@hadden-industries/owlapi",
@@ -140,24 +226,24 @@ describe("release-candidate publication qualification", () => {
         {
           accepted: true,
           requirements: [
-            { requirementId: "P19-BOUNDARY-001", finalResult: "PASS" },
+            { requirementId: "P19-SCOPE-001", finalResult: "PASS" },
           ],
         },
-        "P19-BOUNDARY-001",
+        "P19-SCOPE-001",
       ),
-    ).toEqual({ requirementId: "P19-BOUNDARY-001", finalResult: "PASS" });
+    ).toEqual({ requirementId: "P19-SCOPE-001", finalResult: "PASS" });
     expect(() =>
       assertRecordedRequirement(
         {
           accepted: false,
           requirements: [
             {
-              requirementId: "P19-BOUNDARY-001",
+              requirementId: "P19-SCOPE-001",
               finalResult: "CONTROL_FAILURE",
             },
           ],
         },
-        "P19-BOUNDARY-001",
+        "P19-SCOPE-001",
       ),
     ).toThrow(/not PASS/u);
   });

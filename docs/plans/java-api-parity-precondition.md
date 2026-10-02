@@ -550,3 +550,32 @@ If a dependent lifecycle task lacks the canonical foundation, complete the relev
 Missing release ancestry alone does not block development.
 If reconciliation reveals a materially changed contract, stop the affected work for a reviewed plan and parity-ledger amendment.
 Resolve bounded rework in the canonical implementation and tests; never retain an interim shape with a shim, duplicate class, forwarding export, or fallback API.
+
+## 9. Authoritative Phase 21 acceptance catalogue
+
+These gate identities make Tasks 1–7 executable release obligations.
+They do not change the accepted surface or turn development evidence into release acceptance.
+
+- <a id="p21-integration-001"></a> **`P21-INTEGRATION-001` — Reconciled source baseline.**
+  Pin the canonical main integration commit and its generated API registry digest, verify the approved plan and baseline ancestry, and account for already integrated lifecycle and separately approved public-surface changes without rewriting historical alpha evidence.
+
+- <a id="p21-parity-001"></a> **`P21-PARITY-001` — Exact Java parity contract.**
+  Preserve the six approved decisions, exactly three Phase 21 public bindings, no new namespace or JavaScript extension, the forbidden-member/export assertions, and passing source and installed-boundary evidence.
+  Complete the three Phase 21 capability rows and retain the generated checkpoint registry digest only after these checks pass.
+
+- <a id="p21-consumer-001"></a> **`P21-CONSUMER-001` — Immutable WebVOWL consumer.**
+  Retain the audited baseline commit, actual dependency, complete source-reader allowlist, inventory digest and NO_OBSOLETE_USAGE or authorized MIGRATED disposition.
+  Bind passing installed target/error tests to the exact candidate and retained evidence digest; an unavailable or provisional result is not accepted consumer evidence.
+
+- <a id="p21-checkpoint-001"></a> **`P21-CHECKPOINT-001` — Accepted predecessor checkpoint.**
+  After P21-INTEGRATION-001, P21-PARITY-001 and P21-CONSUMER-001 pass, preserve the owner-approved signed Phase 21 completion commit and registry digest.
+  Verify that commit is an ancestor of the eventual Phase 22 candidate; completion does not authorize publication.
+
+### Phase 21 acceptance checklist
+
+- [ ] <!-- Gate: P21-CHECK-001; Covers: P21-INTEGRATION-001 --> Verify the immutable integration baseline and approved plan ancestry.
+- [ ] <!-- Gate: P21-CHECK-002; Covers: P21-PARITY-001 --> Verify the exact surface, completed capability rows and checkpoint registry digest.
+- [ ] <!-- Gate: P21-CHECK-003; Covers: P21-CONSUMER-001 --> Accept the actual WebVOWL audit and installed-candidate evidence.
+- [ ] <!-- Gate: P21-CHECK-004; Covers: P21-CHECKPOINT-001 --> Retain the approved signed predecessor checkpoint and verify ancestry.
+
+<!-- End Phase 21 acceptance checklist -->

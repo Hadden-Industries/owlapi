@@ -1,4 +1,25 @@
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+
+/** Canonical plans jointly define the first public release; none is optional. */
+export const RELEASE_PLAN_PATHS = Object.freeze([
+  "docs/implementation-plan.md",
+  "docs/plans/java-api-parity-precondition.md",
+  "docs/ontology-lifecycle-capability-implementation-plan.md",
+]);
+
+export const readReleasePlans = () =>
+  RELEASE_PLAN_PATHS.map((path) =>
+    readFileSync(new URL(`../${path}`, import.meta.url), "utf8"),
+  ).join("\n\n");
+
+/** The signed parity checkpoint accepts all three prerequisite results. */
+export const prerequisiteRequirements = (requirementId) => {
+  if (requirementId === "P21-CHECKPOINT-001") {
+    return ["P21-INTEGRATION-001", "P21-PARITY-001", "P21-CONSUMER-001"];
+  }
+  return requirementId.startsWith("P22-") ? ["P21-CHECKPOINT-001"] : [];
+};
 
 const CATALOGUE_SECTIONS = Object.freeze([
   {
@@ -11,12 +32,22 @@ const CATALOGUE_SECTIONS = Object.freeze([
     start: "#### 17.27.6 Authoritative Phase 20 acceptance catalogue",
     end: "Pause for the requested Git checkpoint",
   },
+  {
+    phase: 21,
+    start: "## 9. Authoritative Phase 21 acceptance catalogue",
+    end: "### Phase 21 acceptance checklist",
+  },
+  {
+    phase: 22,
+    start: "## 9. Authoritative Phase 22 acceptance catalogue",
+    end: "### Phase 22 acceptance checklist",
+  },
 ]);
 
 const REQUIREMENT_START_PATTERN =
-  /^- <a id="(p(?:19|20)-[a-z0-9]+(?:-[a-z0-9]+)*-[0-9]{3})"><\/a> \*\*`(P(?:19|20)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3})` —/u;
+  /^- <a id="(p(?:19|20|21|22)-[a-z0-9]+(?:-[a-z0-9]+)*-[0-9]{3})"><\/a> \*\*`(P(?:19|20|21|22)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3})` —/u;
 const CHECKLIST_MARKER_PATTERN =
-  /^- \[([ x])\] <!-- Gate: (P(?:19|20)-CHECK-[0-9]{3}); Covers: ((?:P(?:19|20)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3})(?:, P(?:19|20)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3})*) --> /u;
+  /^- \[([ x])\] <!-- Gate: (P(?:19|20|21|22)-CHECK-[0-9]{3}); Covers: ((?:P(?:19|20|21|22)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3})(?:, P(?:19|20|21|22)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3})*) --> /u;
 
 const sha256 = (value) =>
   `sha256:${createHash("sha256").update(value, "utf8").digest("hex")}`;
@@ -104,6 +135,16 @@ export const parseChecklistRows = (planMarkdown) => {
       phase: 20,
       start: "### Production `0.1.0` completion",
       end: "### Event-triggered contributor-governance checkpoint",
+    },
+    {
+      phase: 21,
+      start: "### Phase 21 acceptance checklist",
+      end: "<!-- End Phase 21 acceptance checklist -->",
+    },
+    {
+      phase: 22,
+      start: "### Phase 22 acceptance checklist",
+      end: "<!-- End Phase 22 acceptance checklist -->",
     },
   ];
 

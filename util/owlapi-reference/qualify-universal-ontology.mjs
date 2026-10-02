@@ -148,6 +148,14 @@ export const assertSourceQualificationOutputDirectory = (
   );
 };
 
+// This labels the tested package source, not release or consumer acceptance.
+export const qualificationStage = ({ candidateDirectory, registryVersion }) =>
+  registryVersion
+    ? "REGISTRY_ACCEPTANCE"
+    : candidateDirectory
+      ? "PREPUBLICATION"
+      : "DEVELOPMENT";
+
 export const parseQualificationArguments = (args) => {
   const { values } = parseArgs({
     args,
@@ -792,7 +800,7 @@ export const qualifyUniversalOntology = async ({
   const result = {
     schemaVersion: 1,
     status: success ? "PASS" : "FAIL",
-    stage: "PRE_INTEGRATION",
+    stage: qualificationStage({ candidateDirectory, registryVersion }),
     sources,
     candidate: installed.identity,
     candidateUnchanged: Boolean(candidateUnchanged),

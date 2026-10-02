@@ -8,6 +8,8 @@ import addFormats from "ajv-formats";
 import {
   parseCatalogueRequirements,
   parseChecklistRows,
+  prerequisiteRequirements,
+  readReleasePlans,
 } from "./release-gate-catalogue.mjs";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
@@ -108,6 +110,11 @@ export const verifyReleaseGates = ({ planMarkdown, registry, schema }) => {
   assertSameIds("Gate registry", catalogueIds, registryIds);
 
   for (const requirement of registry.requirements) {
+    assertEqualJson(
+      `${requirement.requirementId} Phase 21 predecessor`,
+      prerequisiteRequirements(requirement.requirementId),
+      requirement.prerequisiteRequirementIds,
+    );
     if (!requirement.requirementId.startsWith(`P${requirement.phase}-`)) {
       throw new Error(
         `${requirement.requirementId} has an inconsistent phase value.`,
@@ -217,15 +224,16 @@ export const verifyReleaseGates = ({ planMarkdown, registry, schema }) => {
       .length,
     phase19RequirementCount,
     phase20RequirementCount,
+    phase21RequirementCount: registryIds.filter((id) => id.startsWith("P21-"))
+      .length,
+    phase22RequirementCount: registryIds.filter((id) => id.startsWith("P22-"))
+      .length,
     registryRequirementCount: registryIds.length,
   };
 };
 
 const run = () => {
-  const planMarkdown = readFileSync(
-    new URL("../docs/implementation-plan.md", import.meta.url),
-    "utf8",
-  );
+  const planMarkdown = readReleasePlans();
   const registry = readJson("docs/release/gates.json");
   const schema = readJson("docs/release/gates.schema.json");
   const result = verifyReleaseGates({ planMarkdown, registry, schema });

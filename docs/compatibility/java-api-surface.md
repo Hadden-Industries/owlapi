@@ -1,4 +1,4 @@
-<!-- registry-sha256: 1807e113c5db152417e62a56ba7feb95f4bb7e8f2775fa37e76d100303f4bb41 -->
+<!-- registry-sha256: cf367d97cea09eb9fe99b6f0e68f8ddb8ded8555259a4cc956b16bb19218ba6a -->
 
 # Java OWLAPI compatibility surface
 
@@ -65,9 +65,9 @@ A mapped name does not promise every Java overload or method. The relationship, 
 | `OWLAPIError`                          | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.model.OWLRuntimeException                 | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
 | `OWLOntologyCreationError`             | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.model.OWLOntologyCreationException        | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
 | `OWLOntologyStateError`                | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.model.OWLRuntimeException                 | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
-| `OWLOntologyStorageError`              | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.model.OWLOntologyStorageException         | JS_ADAPTATION | ADAPTED        | IN_PROGRESS / PRERELEASE |
+| `OWLOntologyStorageError`              | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.model.OWLOntologyStorageException         | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
 | `OWLParserError`                       | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.io.OWLParserException                     | JAVA_ANALOGUE | ADAPTED        | COMPLETE / PRERELEASE    |
-| `OWLStorerNotFoundError`               | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.model.OWLStorerNotFoundException          | JS_ADAPTATION | ADAPTED        | IN_PROGRESS / PRERELEASE |
+| `OWLStorerNotFoundError`               | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.model.OWLStorerNotFoundException          | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
 | `OWLSyntaxError`                       | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.io.OWLParserException                     | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
 | `ParserMismatchError`                  | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.io.OWLParserException                     | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
 | `RDFOntologyHeaderStatus`              | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.io.RDFOntologyHeaderStatus                | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
@@ -75,7 +75,7 @@ A mapped name does not promise every Java overload or method. The relationship, 
 | `ResourceLimitError`                   | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.model.OWLRuntimeException                 | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
 | `SecurityPolicyError`                  | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration      | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |
 | `StringDocumentSource`                 | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.io.StringDocumentSource                   | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
-| `StringDocumentTarget`                 | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.io.StringDocumentTarget                   | JS_ADAPTATION | ADAPTED        | IN_PROGRESS / PRERELEASE |
+| `StringDocumentTarget`                 | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.io.StringDocumentTarget                   | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
 | `UnloadableImportError`                | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.model.UnloadableImportException           | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
 | `UnparsableOntologyException`          | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.io.UnparsableOntologyException            | JS_ADAPTATION | ADAPTED        | COMPLETE / PRERELEASE    |
 | `UnsupportedConstructError`            | @hadden-industries/owlapi/io         | org.semanticweb.owlapi.io.OWLParserException                     | JS_EXTENSION  | NOT_APPLICABLE | COMPLETE / PRERELEASE    |

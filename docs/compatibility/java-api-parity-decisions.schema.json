@@ -230,7 +230,14 @@
       "required": ["status", "decisions"],
       "properties": {
         "status": {
-          "const": "IN_PROGRESS"
+          "enum": ["IN_PROGRESS", "COMPLETE"]
+        },
+        "registrySha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "phase21Checkpoint": {
+          "$ref": "#/$defs/baseline"
         },
         "decisions": {
           "type": "array",
@@ -335,6 +342,38 @@
     }
   },
   "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "phase22": {
+            "type": "object",
+            "properties": { "status": { "const": "COMPLETE" } }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "qualification": { "const": "RECONCILED" },
+          "phase21": {
+            "type": "object",
+            "properties": { "status": { "const": "COMPLETE" } }
+          },
+          "phase22": {
+            "type": "object",
+            "required": ["registrySha256", "phase21Checkpoint"],
+            "properties": {
+              "registrySha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "phase21Checkpoint": { "$ref": "#/$defs/baseline" }
+            }
+          }
+        }
+      }
+    },
     {
       "if": {
         "properties": {

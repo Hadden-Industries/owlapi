@@ -4,6 +4,9 @@ import { fileURLToPath } from "node:url";
 import {
   parseCatalogueRequirements,
   parseChecklistRows,
+  prerequisiteRequirements,
+  readReleasePlans,
+  RELEASE_PLAN_PATHS,
 } from "./release-gate-catalogue.mjs";
 
 const REPOSITORY_ROOT = new URL("../", import.meta.url);
@@ -46,6 +49,11 @@ const explicitOwnerByRequirement = Object.freeze({
   "P20-BACKUP-001": "RELEASE_CUSTODIAN",
   "P20-GOVERNANCE-001": "SECURITY_MAINTAINER",
   "P20-FUTURE-001": "PACKAGE_MAINTAINER",
+  "P21-CONSUMER-001": "CONSUMER_MAINTAINER",
+  "P21-CHECKPOINT-001": "RELEASE_CUSTODIAN",
+  "P22-PREDECESSOR-001": "RELEASE_CUSTODIAN",
+  "P22-WEBVOWL-001": "CONSUMER_MAINTAINER",
+  "P22-UO-001": "CONSUMER_MAINTAINER",
 });
 
 const verificationKindByRequirement = Object.freeze({
@@ -73,9 +81,17 @@ const verificationKindByRequirement = Object.freeze({
   "P20-WEBVOWL-DEPENDENCIES-001": "HYBRID",
   "P20-BACKUP-001": "HUMAN_REVIEW",
   "P20-GOVERNANCE-001": "HYBRID",
+  "P21-CONSUMER-001": "HYBRID",
+  "P21-CHECKPOINT-001": "HUMAN_REVIEW",
+  "P22-PREDECESSOR-001": "HYBRID",
+  "P22-WEBVOWL-001": "HYBRID",
+  "P22-UO-001": "HYBRID",
 });
 
 const phaseCheckpoint = (requirementId) => {
+  if (/^P(?:21|22)-/u.test(requirementId)) {
+    return requirementId.slice(1, 3);
+  }
   if (requirementId.startsWith("P20-")) {
     return "20";
   }
@@ -120,6 +136,7 @@ const buildRegistry = (planMarkdown) => {
       sourceAnchor: requirement.sourceAnchor,
       requirementDigest: requirement.requirementDigest,
       checkpoint: phaseCheckpoint(requirementId),
+      prerequisiteRequirementIds: prerequisiteRequirements(requirementId),
       owner: explicitOwnerByRequirement[requirementId] ?? "PACKAGE_MAINTAINER",
       applicability: { mode: "ALWAYS" },
       blocking: "REQUIRED",
@@ -165,6 +182,7 @@ const buildRegistry = (planMarkdown) => {
       phase19Section: "17.26.5",
       phase20Section: "17.27.6",
       checklistSection: "30",
+      sourcePaths: RELEASE_PLAN_PATHS,
     },
     policy: {
       successfulFinalResults: ["PASS", "NOT_APPLICABLE"],
@@ -178,10 +196,7 @@ const buildRegistry = (planMarkdown) => {
   };
 };
 
-const planMarkdown = readFileSync(
-  new URL("docs/implementation-plan.md", REPOSITORY_ROOT),
-  "utf8",
-);
+const planMarkdown = readReleasePlans();
 const generated = `${JSON.stringify(buildRegistry(planMarkdown), null, 2)}\n`;
 
 if (process.argv.includes("--write")) {
