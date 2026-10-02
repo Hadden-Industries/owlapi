@@ -1,4 +1,13 @@
-import { assertReleasePreflight } from "./release-preflight.mjs";
+import { execFileSync } from "node:child_process";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+import {
+  assertReleasePreflight,
+  assertReconciledLifecycle,
+  verifyParityCheckpointSignature,
+} from "./release-preflight.mjs";
 
 const manifest = {
   name: "@hadden-industries/owlapi",
@@ -30,6 +39,39 @@ const accepted = {
 };
 
 describe("release preflight", () => {
+  test("refuses provisional lifecycle evidence before a publication run", () => {
+    expect(() =>
+      assertReconciledLifecycle({
+        qualification: "PRE_INTEGRATION",
+        phase21: { status: "IN_PROGRESS" },
+        phase22: { status: "IN_PROGRESS" },
+      }),
+    ).toThrow(/completed reconciled Phase 21 and Phase 22/u);
+  });
+
+  test("requires an immutable parity checkpoint and both registry digests", () => {
+    const ledger = {
+      qualification: "RECONCILED",
+      phase21: { status: "COMPLETE", registrySha256: "a".repeat(64) },
+      phase22: {
+        status: "COMPLETE",
+        registrySha256: "b".repeat(64),
+        phase21Checkpoint: {
+          commit: "c".repeat(40),
+          registrySha256: "a".repeat(64),
+        },
+      },
+    };
+    expect(() => assertReconciledLifecycle(ledger)).not.toThrow();
+    for (const field of ["registrySha256", "phase21Checkpoint"]) {
+      const invalid = structuredClone(ledger);
+      delete invalid.phase22[field];
+      expect(() => assertReconciledLifecycle(invalid)).toThrow(/checkpoint/u);
+    }
+    ledger.phase22.phase21Checkpoint.registrySha256 = "d".repeat(64);
+    expect(() => assertReconciledLifecycle(ledger)).toThrow(/checkpoint/u);
+  });
+
   test("accepts the reviewed direct-bootstrap release boundary", () => {
     expect(assertReleasePreflight(accepted)).toEqual({
       result: "PASS",
@@ -67,5 +109,97 @@ describe("release preflight", () => {
     expect(() =>
       assertReleasePreflight({ ...accepted, ...override }),
     ).toThrow();
+  });
+});
+
+describe("parity checkpoint signature", () => {
+  test("trusts only an active registered signer for the exact commit", () => {
+    const directory = mkdtempSync(join(tmpdir(), "owlapi-checkpoint-test-"));
+    const run = (command, args) =>
+      execFileSync(command, args, {
+        cwd: directory,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"],
+      }).trim();
+    const git = (...args) => run("git", args);
+    try {
+      const key = join(directory, "fixture-key");
+      run("ssh-keygen", ["-q", "-t", "ed25519", "-N", "", "-f", key]);
+      const publicKey = readFileSync(`${key}.pub`, "utf8")
+        .trim()
+        .split(/\s+/u)
+        .slice(0, 2)
+        .join(" ");
+      const fingerprint = /SHA256:[A-Za-z0-9+/]{43}/u.exec(
+        run("ssh-keygen", ["-lf", `${key}.pub`, "-E", "sha256"]),
+      )[0];
+      const registry = {
+        signers: [
+          {
+            id: "fixture",
+            githubIdentity: "FixtureSigner",
+            publicKey,
+            fingerprint,
+            status: "ACTIVE",
+            validFrom: "2026-01-01",
+            validUntil: null,
+            revokedOn: null,
+          },
+        ],
+      };
+      git("init", "--quiet");
+      git(
+        "-c",
+        "user.name=Fixture",
+        "-c",
+        "user.email=fixture@example.test",
+        "-c",
+        "commit.gpgSign=false",
+        "commit",
+        "--allow-empty",
+        "-m",
+        "unsigned fixture",
+      );
+      const unsigned = git("rev-parse", "HEAD");
+      git(
+        "-c",
+        "user.name=Fixture",
+        "-c",
+        "user.email=fixture@example.test",
+        "-c",
+        "gpg.format=ssh",
+        "-c",
+        `user.signingkey=${key.replaceAll("\\", "/")}`,
+        "commit",
+        "-S",
+        "--allow-empty",
+        "-m",
+        "signed fixture",
+      );
+      const signed = git("rev-parse", "HEAD");
+      const verify = (commit, signers = registry) =>
+        verifyParityCheckpointSignature({
+          commit,
+          registry: signers,
+          repository: directory,
+          releaseDate: "2026-10-02",
+        });
+      expect(verify(signed)).toEqual({
+        result: "PASS",
+        commit: signed,
+        signerId: "fixture",
+      });
+      expect(() => verify(unsigned)).toThrow(/verify-commit|signature/u);
+      expect(() => verify(signed, { signers: [] })).toThrow(
+        /verify-commit|signature/u,
+      );
+      expect(() =>
+        verify(signed, {
+          signers: [{ ...registry.signers[0], validUntil: "2026-09-01" }],
+        }),
+      ).toThrow(/not authorized/u);
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
   });
 });

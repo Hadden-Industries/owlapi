@@ -24,7 +24,8 @@
         "checklistNormalizationAlgorithm",
         "phase19Section",
         "phase20Section",
-        "checklistSection"
+        "checklistSection",
+        "sourcePaths"
       ],
       "properties": {
         "normalizationAlgorithm": {
@@ -35,7 +36,14 @@
         },
         "phase19Section": { "const": "17.26.5" },
         "phase20Section": { "const": "17.27.6" },
-        "checklistSection": { "const": "30" }
+        "checklistSection": { "const": "30" },
+        "sourcePaths": {
+          "const": [
+            "docs/implementation-plan.md",
+            "docs/plans/java-api-parity-precondition.md",
+            "docs/ontology-lifecycle-capability-implementation-plan.md"
+          ]
+        }
       }
     },
     "policy": {
@@ -77,11 +85,11 @@
   "$defs": {
     "requirementId": {
       "type": "string",
-      "pattern": "^P(?:19|20)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+      "pattern": "^P(?:19|20|21|22)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
     },
     "leafGateId": {
       "type": "string",
-      "pattern": "^P(?:19|20)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}-[A-Z0-9]+(?:-[A-Z0-9]+)*$"
+      "pattern": "^P(?:19|20|21|22)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}-[A-Z0-9]+(?:-[A-Z0-9]+)*$"
     },
     "owner": {
       "enum": [
@@ -119,7 +127,7 @@
         },
         "command": {
           "type": "string",
-          "pattern": "^npm run qualify:release -- --requirement P(?:19|20)-"
+          "pattern": "^npm run qualify:release -- --requirement P(?:19|20|21|22)-"
         }
       }
     },
@@ -133,7 +141,7 @@
         },
         "jsonPointer": {
           "type": "string",
-          "pattern": "^/requirements/P(?:19|20)-"
+          "pattern": "^/requirements/P(?:19|20|21|22)-"
         }
       }
     },
@@ -154,20 +162,28 @@
         "permittedFinalResults",
         "failureClasses",
         "waiverPolicy",
-        "childGateIds"
+        "childGateIds",
+        "prerequisiteRequirementIds"
       ],
       "properties": {
         "requirementId": { "$ref": "#/$defs/requirementId" },
-        "phase": { "enum": [19, 20] },
+        "prerequisiteRequirementIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/requirementId" }
+        },
+        "phase": { "enum": [19, 20, 21, 22] },
         "sourceAnchor": {
           "type": "string",
-          "pattern": "^p(?:19|20)-[a-z0-9]+(?:-[a-z0-9]+)*-[0-9]{3}$"
+          "pattern": "^p(?:19|20|21|22)-[a-z0-9]+(?:-[a-z0-9]+)*-[0-9]{3}$"
         },
         "requirementDigest": {
           "type": "string",
           "pattern": "^sha256:[0-9a-f]{64}$"
         },
-        "checkpoint": { "enum": ["19A", "19B", "19C", "19D", "20"] },
+        "checkpoint": {
+          "enum": ["19A", "19B", "19C", "19D", "20", "21", "22"]
+        },
         "owner": { "$ref": "#/$defs/owner" },
         "applicability": { "$ref": "#/$defs/applicability" },
         "blocking": { "const": "REQUIRED" },
@@ -193,9 +209,9 @@
       "properties": {
         "gateId": {
           "type": "string",
-          "pattern": "^P(?:19|20)-CHECK-[0-9]{3}$"
+          "pattern": "^P(?:19|20|21|22)-CHECK-[0-9]{3}$"
         },
-        "phase": { "enum": [19, 20] },
+        "phase": { "enum": [19, 20, 21, 22] },
         "rowDigest": {
           "type": "string",
           "pattern": "^sha256:[0-9a-f]{64}$"
@@ -233,7 +249,7 @@
           "uniqueItems": true,
           "items": {
             "type": "string",
-            "pattern": "^P(?:19|20)-CHECK-[0-9]{3}$"
+            "pattern": "^P(?:19|20|21|22)-CHECK-[0-9]{3}$"
           }
         },
         "owner": { "$ref": "#/$defs/owner" },

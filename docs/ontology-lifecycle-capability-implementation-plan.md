@@ -1514,3 +1514,65 @@ Task 15 alone qualifies the exact release and coordinates a separately authorize
 
 At every task and reconciled rerun, follow red → green → refactor: add the focused failing test, run it and confirm the intended failure, implement the minimum coherent behaviour, rerun the focused test, then run the listed regression boundary.
 Do not combine tasks to bypass a failing intermediate contract, and preserve task-sized commits so integration rework remains reviewable.
+
+## 9. Authoritative Phase 22 acceptance catalogue
+
+These gate identities project Tasks 1–15 and the completion gate into the release registry.
+Every Phase 22 result requires the accepted P21-CHECKPOINT-001 predecessor.
+The exact scoped RC remains eligible for consumer production after independent registry and consumer acceptance.
+
+- <a id="p22-predecessor-001"></a> **`P22-PREDECESSOR-001` — Phase 21 ancestry and preservation.**
+  Verify the pinned integration baseline and approved signed Phase 21 completion commit are ancestors of the qualified candidate, with the accepted target/error contract, decision record, capability rows and checkpoint registry preserved.
+
+- <a id="p22-capabilities-001"></a> **`P22-CAPABILITIES-001` — Eight complete lifecycle capabilities.**
+  After all preceding implementation and qualification tasks pass, record the exact eight lifecycle rows as REQUIRED_V1, COMPLETE, phase 22 and the global release as 0.1.0-rc.1.
+  Source tests alone cannot establish this result.
+
+- <a id="p22-surface-001"></a> **`P22-SURFACE-001` — Bounded Java-compatible surface.**
+  Reconcile the generated registry against the Phase 21 checkpoint and integration baseline, allowing only approved binding/member changes and the scoped identity/release metadata mapping.
+  Preserve exact Java authorities, explicit adaptations and omitted overloads; reject new JS_EXTENSION bindings, public concrete storers, deep imports and shipped development utilities.
+
+- <a id="p22-installed-closure-001"></a> **`P22-INSTALLED-CLOSURE-001` — Installed public composition.**
+  Exercise retained closure traversal, transactional manager mutations, defensive provider snapshots and policy-neutral structural merging from the exact packed package.
+  Prove root identity, root-only annotations, no imports and exact closure axiom union with zero loader calls during closure queries.
+
+- <a id="p22-functional-storage-001"></a> **`P22-FUNCTIONAL-STORAGE-001` — Functional Syntax round trip.**
+  Select the storer only through saveOntology and prove the exhaustive supported structural round trip under one anonymous-individual bijection, preserving within-source sharing and cross-source separation.
+
+- <a id="p22-rdfxml-storage-001"></a> **`P22-RDFXML-STORAGE-001` — RDF/XML round trip.**
+  Select the storer only through saveOntology and prove the exhaustive representable structural round trip from installed candidate bytes, including annotations and anonymous-individual identity.
+
+- <a id="p22-strict-rdf-001"></a> **`P22-STRICT-RDF-001` — Complete strict reconstruction.**
+  Reject every unconsumed selected-graph RDF statement and preserve the approved parser metadata/compatible-loading boundary; retained metadata alone is never a losslessness or consumer admission guarantee.
+
+- <a id="p22-rdfxml-failure-001"></a> **`P22-RDFXML-FAILURE-001` — Mandatory lossless-or-fail boundary.**
+  The mandated non-injective RDF/XML case must reject with OWLOntologyStorageError and reason ONTOLOGY_NOT_REPRESENTABLE, retaining the complete original target text and ontology state.
+  No dedicated representability subclass or syntax fallback is permitted.
+
+- <a id="p22-webvowl-001"></a> **`P22-WEBVOWL-001` — Real WebVOWL storage semantics.**
+  On the accepted immutable audit baseline, install the retained candidate and pass the successful toString() save, unchanged-target non-representability failure, valid source getter, dependency boundary, application tests/builds and browser integration.
+  Preserve the zero-use disposition or separately authorized migration; do not invent application use.
+
+- <a id="p22-java-001"></a> **`P22-JAVA-001` — Pinned Java reconciliation.**
+  Pass parsing and both-format closure reconciliation for all four July variants against OWLAPI 5.5.1 revision d7e997a53b470e32700de89cc610d9daf01ea769 with zero unexplained structural differences and the required network isolation.
+
+- <a id="p22-uo-001"></a> **`P22-UO-001` — UO prepublication qualification.**
+  Before publication, bind UO's actual adapter, contract, corpus/catalogue inputs, full consumer matrix, real distributions and Java parity to the retained candidate digest.
+  Treat any newly packed bytes as a new candidate requiring appropriate requalification.
+  Fresh public-registry/provenance acceptance and UO production cutover remain separate subsequent gates.
+
+### Phase 22 acceptance checklist
+
+- [ ] <!-- Gate: P22-CHECK-001; Covers: P22-PREDECESSOR-001 --> Verify the completed Phase 21 predecessor and both required ancestors.
+- [ ] <!-- Gate: P22-CHECK-002; Covers: P22-CAPABILITIES-001 --> Complete the eight evidence-backed lifecycle rows for the exact RC.
+- [ ] <!-- Gate: P22-CHECK-003; Covers: P22-SURFACE-001 --> Verify the approved generated public-surface delta and package boundary.
+- [ ] <!-- Gate: P22-CHECK-004; Covers: P22-INSTALLED-CLOSURE-001 --> Pass installed public composition with no source-tree fallback.
+- [ ] <!-- Gate: P22-CHECK-005; Covers: P22-FUNCTIONAL-STORAGE-001 --> Pass the exhaustive Functional Syntax structural round trip.
+- [ ] <!-- Gate: P22-CHECK-006; Covers: P22-RDFXML-STORAGE-001 --> Pass the representable RDF/XML structural round trip.
+- [ ] <!-- Gate: P22-CHECK-007; Covers: P22-STRICT-RDF-001 --> Reject unconsumed selected-graph statements in strict reconstruction.
+- [ ] <!-- Gate: P22-CHECK-008; Covers: P22-RDFXML-FAILURE-001 --> Reject the mandated non-injective case without partial target mutation.
+- [ ] <!-- Gate: P22-CHECK-009; Covers: P22-WEBVOWL-001 --> Pass the audited WebVOWL installed-candidate semantic and application gates.
+- [ ] <!-- Gate: P22-CHECK-010; Covers: P22-JAVA-001 --> Pass all four real July variants against pinned Java in both formats.
+- [ ] <!-- Gate: P22-CHECK-011; Covers: P22-UO-001 --> Accept UO's candidate-bound prepublication matrix before npm publication.
+
+<!-- End Phase 22 acceptance checklist -->

@@ -17,6 +17,40 @@ const candidate = {
 };
 
 describe("release-candidate publication qualification", () => {
+  test("cannot accept a lifecycle result before the parity checkpoint passes", () => {
+    const record = {
+      accepted: true,
+      requirements: [{ requirementId: "P22-UO-001", finalResult: "PASS" }],
+    };
+    expect(() => assertRecordedRequirement(record, "P22-UO-001")).toThrow(
+      /P21-CHECKPOINT-001 is not PASS/u,
+    );
+    record.requirements.push({
+      requirementId: "P21-CHECKPOINT-001",
+      finalResult: "PASS",
+    });
+    for (const requirementId of [
+      "P21-INTEGRATION-001",
+      "P21-PARITY-001",
+      "P21-CONSUMER-001",
+    ]) {
+      expect(() => assertRecordedRequirement(record, "P22-UO-001")).toThrow(
+        new RegExp(`${requirementId} is not PASS`, "u"),
+      );
+      record.requirements.push({ requirementId, finalResult: "PASS" });
+    }
+    expect(assertRecordedRequirement(record, "P22-UO-001")).toEqual({
+      requirementId: "P22-UO-001",
+      finalResult: "PASS",
+    });
+    record.requirements.find(
+      ({ requirementId }) => requirementId === "P21-CONSUMER-001",
+    ).finalResult = "PRODUCT_FAILURE";
+    expect(() => assertRecordedRequirement(record, "P22-UO-001")).toThrow(
+      /P21-CONSUMER-001 is not PASS/u,
+    );
+  });
+
   test("normalizes npm 12's single package-keyed dry-run envelope", () => {
     const record = {
       name: "@hadden-industries/owlapi",
@@ -140,24 +174,24 @@ describe("release-candidate publication qualification", () => {
         {
           accepted: true,
           requirements: [
-            { requirementId: "P19-BOUNDARY-001", finalResult: "PASS" },
+            { requirementId: "P19-SCOPE-001", finalResult: "PASS" },
           ],
         },
-        "P19-BOUNDARY-001",
+        "P19-SCOPE-001",
       ),
-    ).toEqual({ requirementId: "P19-BOUNDARY-001", finalResult: "PASS" });
+    ).toEqual({ requirementId: "P19-SCOPE-001", finalResult: "PASS" });
     expect(() =>
       assertRecordedRequirement(
         {
           accepted: false,
           requirements: [
             {
-              requirementId: "P19-BOUNDARY-001",
+              requirementId: "P19-SCOPE-001",
               finalResult: "CONTROL_FAILURE",
             },
           ],
         },
-        "P19-BOUNDARY-001",
+        "P19-SCOPE-001",
       ),
     ).toThrow(/not PASS/u);
   });

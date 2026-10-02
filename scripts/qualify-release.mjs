@@ -14,22 +14,44 @@ const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 const registry = "https://registry.npmjs.org/";
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
+const gateDefinitions = JSON.parse(
+  readFileSync(new URL("../docs/release/gates.json", import.meta.url), "utf8"),
+);
 
 export const assertRecordedRequirement = (record, requirementId) => {
-  const matches = (record?.requirements ?? []).filter(
-    (requirement) => requirement.requirementId === requirementId,
-  );
-  if (
-    record?.accepted !== true ||
-    matches.length !== 1 ||
-    matches[0].finalResult !== "PASS"
-  ) {
-    throw new Error(`Release requirement ${requirementId} is not PASS.`);
-  }
-  return {
-    requirementId: matches[0].requirementId,
-    finalResult: matches[0].finalResult,
+  const visiting = new Set();
+  const assertRequirement = (id) => {
+    if (visiting.has(id)) {
+      throw new Error(`Release prerequisite cycle at ${id}.`);
+    }
+    visiting.add(id);
+    const definition = gateDefinitions.requirements.find(
+      (requirement) => requirement.requirementId === id,
+    );
+    if (!definition) {
+      throw new Error(`Unknown release requirement ${id}.`);
+    }
+    const matches = (record?.requirements ?? []).filter(
+      (requirement) => requirement.requirementId === id,
+    );
+    if (
+      record?.accepted !== true ||
+      matches.length !== 1 ||
+      matches[0].finalResult !== "PASS"
+    ) {
+      throw new Error(`Release requirement ${id} is not PASS.`);
+    }
+    // A checkpoint cannot bypass its recorded prerequisite results.
+    for (const predecessor of definition.prerequisiteRequirementIds) {
+      assertRequirement(predecessor);
+    }
+    visiting.delete(id);
+    return {
+      requirementId: matches[0].requirementId,
+      finalResult: matches[0].finalResult,
+    };
   };
+  return assertRequirement(requirementId);
 };
 
 export const assertDryRunMatchesCandidate = ({ candidate, dryRun }) => {

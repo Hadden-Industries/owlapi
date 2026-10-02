@@ -172,7 +172,8 @@ The target/error migration audit may legitimately report `NO_OBSOLETE_USAGE`; th
 1. Complete the scoped implementation, Phase 21 ancestry/parity reconciliation and Phase 22 candidate qualification at one accepted source revision.
 2. Build and retain one complete scoped RC artifact through the approved release workflow; record its digest, manifest, seven exports, SBOM and fresh qualification evidence.
 3. Resolve the actual publication mode outside a credential-bearing run.
-   npm's documented staged-publishing prerequisite is an existing package, so a new scoped package may require the existing bounded direct bootstrap for this real RC.
+   npm now supports staged publishing for a new package, but its documented first-stage operation publishes a public `0.0.0-stage` placeholder.
+   The accepted no-placeholder requirement therefore keeps the existing bounded direct bootstrap as the applicable route for this real RC; do not probe staging by creating that placeholder.
    A dry run or organization membership does not prove write authority.
    Configure and verify the exact repository/workflow/environment trusted publisher when supported; use no placeholder publication or silent mode fallback.
 4. Obtain the existing exact artifact/publication authorization, follow late signed-tag and protected-environment ordering, and publish the retained artifact with public access under `next`.

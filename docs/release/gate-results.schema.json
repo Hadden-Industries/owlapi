@@ -30,7 +30,7 @@
         }
       }
     },
-    "phase": { "enum": [19, 20] },
+    "phase": { "enum": [19, 20, 21, 22] },
     "sourceCommit": {
       "type": "string",
       "pattern": "^[0-9a-f]{40}$"
@@ -68,11 +68,11 @@
     },
     "requirementId": {
       "type": "string",
-      "pattern": "^P(?:19|20)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+      "pattern": "^P(?:19|20|21|22)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
     },
     "leafGateId": {
       "type": "string",
-      "pattern": "^P(?:19|20)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}-[A-Z0-9]+(?:-[A-Z0-9]+)*$"
+      "pattern": "^P(?:19|20|21|22)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}-[A-Z0-9]+(?:-[A-Z0-9]+)*$"
     },
     "terminalResult": {
       "enum": [
