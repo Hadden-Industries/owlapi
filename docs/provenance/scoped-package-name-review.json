@@ -2,11 +2,11 @@
   "$schema": "./scoped-package-name-review.schema.json",
   "schemaVersion": 1,
   "review": {
-    "status": "PENDING_HUMAN_REVIEW",
-    "reviewedOn": null,
-    "reviewer": null,
-    "authority": null,
-    "factsSha256": "8a26229a6d09c7bb00b190947b4c3e0b64788ab8d4aeb48b6352cbae22bf47f8"
+    "status": "REVIEWED",
+    "reviewedOn": "2026-10-03",
+    "reviewer": "Maksym Shostak",
+    "authority": "Project maintainer and release owner. Explicit approval of all manual npm publication controls on 2026-10-03, including the prepared scoped-name facts 8a26229a6d09c7bb00b190947b4c3e0b64788ab8d4aeb48b6352cbae22bf47f8 and their recorded mitigations.",
+    "factsSha256": "b213846296a38aeec7cbddb5de04f1ea6c2603a6153f5f3c775e95b009c94624"
   },
   "identity": "@hadden-industries/owlapi",
   "purpose": "A native-ESM JavaScript package for loading OWL 2 ontologies into a structural object model with deliberately registered compatibility to selected Java OWLAPI concepts.",
@@ -34,8 +34,8 @@
   "publicWording": "This project is an independently maintained JavaScript implementation. It is not affiliated with, sponsored by, or endorsed by the Java OWLAPI project. The selected scoped package is separate from the unrelated historical unscoped Overwatch package and has no code, API, ownership, or provenance relationship with it.",
   "externalLegalAdviceObtained": false,
   "decision": {
-    "outcome": "PENDING_HUMAN_REVIEW",
-    "rationale": "The owner selected the scoped registry identity and authorized its implementation. This fresh name and non-affiliation fact set is prepared for human review without reusing the historical unscoped attestation.",
+    "outcome": "APPROVED_WITH_MITIGATIONS",
+    "rationale": "Maksym Shostak approved the scoped identity, non-affiliation wording and recorded mitigations on 2026-10-03 as part of his explicit authorization for all manual npm publication controls. This is a fresh scoped review and does not reuse the historical unscoped attestation.",
     "conditions": [
       "Complete the fresh scoped-name review and remaining exact-fact release reviews before publication.",
       "Keep publication disabled until the fully qualified artifact and supported publication mode receive the existing exact-artifact approval.",

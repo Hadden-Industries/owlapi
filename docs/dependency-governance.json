@@ -7,12 +7,12 @@
   },
   "recordedOn": "2026-09-30",
   "review": {
-    "status": "PENDING_HUMAN_REVIEW",
+    "status": "REVIEWED",
     "factsSha256": "a63d529f85b40f67666478866e3cff877571a737d37ac73360e2eaad655c3e68",
-    "reviewer": null,
-    "reviewedOn": null,
-    "capacity": null,
-    "conclusion": null
+    "reviewer": "Maksym Shostak",
+    "reviewedOn": "2026-10-03",
+    "capacity": "Project maintainer and release owner",
+    "conclusion": "Approved the exact recorded dependency governance, production audit, denied install-script decisions, dependency boundaries and upgrade gates for @hadden-industries/owlapi@0.1.0-rc.1 as part of explicit approval of all manual npm publication controls. Historical measurement and audit dates remain their original observations; this attestation does not claim a new audit or change dependency or script permissions."
   },
   "productionAudit": {
     "performedOn": "2026-09-30",
