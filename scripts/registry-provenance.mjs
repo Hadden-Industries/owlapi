@@ -1,6 +1,5 @@
 import { createHash, createPublicKey } from "node:crypto";
 import { createRequire } from "node:module";
-import pacote from "pacote";
 import { readPublicRegistry } from "./public-registry-read.mjs";
 import {
   PACKAGE_NAME,
@@ -14,9 +13,6 @@ const repository = "https://github.com/Hadden-Industries/owlapi";
 const workflow = ".github/workflows/release.yml";
 const sourceRef = "refs/heads/main";
 const predicateType = "https://slsa.dev/provenance/v1";
-// Use the verifier shipped with our pinned pacote dependency, without adding a runtime dependency.
-const require = createRequire(import.meta.url);
-const { verify } = createRequire(require.resolve("pacote"))("sigstore");
 
 /** Bind authenticated provenance to this run; a later verification attempt preserves the original publisher. */
 export const assertReleaseProvenance = ({
@@ -84,6 +80,12 @@ export const verifyRegistryProvenance = async ({
   runAttempt,
 }) => {
   assertPackageIdentity(metadata);
+  // Load the mixed CJS/ESM client only for live verification so pure assertions
+  // remain usable with every supported Node/Jest combination.
+  const { default: pacote } = await import("pacote");
+  // Use the verifier shipped with our pinned pacote dependency.
+  const require = createRequire(import.meta.url);
+  const { verify } = createRequire(require.resolve("pacote"))("sigstore");
   const bytes = await readPublicRegistry(
     new URL("-/npm/v1/keys", NPM_REGISTRY),
   );
