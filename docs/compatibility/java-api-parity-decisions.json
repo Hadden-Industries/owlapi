@@ -255,7 +255,7 @@
     "newNamespaces": []
   },
   "phase22": {
-    "status": "IN_PROGRESS",
+    "status": "COMPLETE",
     "decisions": [
       {
         "id": "LIFECYCLE-CLOSURE-COLLECTION-MAPPING",
@@ -520,6 +520,11 @@
           "internal/model/ontologyStructuralIsomorphism.test.js"
         ]
       }
-    ]
+    ],
+    "registrySha256": "cf367d97cea09eb9fe99b6f0e68f8ddb8ded8555259a4cc956b16bb19218ba6a",
+    "phase21Checkpoint": {
+      "commit": "c45f07719e0d846be354c818d281a38281913c38",
+      "registrySha256": "cf367d97cea09eb9fe99b6f0e68f8ddb8ded8555259a4cc956b16bb19218ba6a"
+    }
   }
 }

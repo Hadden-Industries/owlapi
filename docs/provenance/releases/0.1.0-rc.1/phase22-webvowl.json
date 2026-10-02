@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "result": "PASS",
+  "source": {
+    "repository": "C:/Users/maksy/.hi/w/e/task-artifacts/owlapi-rc-publication-20261002/consumer-workspace/webvowl",
+    "branch": "",
+    "commit": "4f1970e5b6c95655af823c495bd58f9e9993f8b8",
+    "ontologyCorpusCommit": "c2220675b0f3345628fc9cc8112a41440afcb2f0",
+    "ontologyCorpusContentSha256": "6be98261e5a169f78d44b3d46d076982233d8b7620e21e6087de2b6e72a30946"
+  },
+  "candidate": {
+    "package": {
+      "name": "@hadden-industries/owlapi",
+      "version": "0.1.0-rc.1"
+    },
+    "tarballFileName": "hadden-industries-owlapi-0.1.0-rc.1.tgz",
+    "tarballSha256": "4e18d8a1d2f41af0f31f0426a24d57ddfa25316fba6be550adf2edd6202cabf8",
+    "sourceState": "UNCOMMITTED_QUALIFICATION_SNAPSHOT"
+  },
+  "qualification": "RECONCILED",
+  "consumerAudit": {
+    "baselineCommit": "4f1970e5b6c95655af823c495bd58f9e9993f8b8",
+    "scanSha256": "c4db1cfb068d6882ab7acca4277a4e45d80b584002724b649998e9620d16f359",
+    "disposition": "NO_OBSOLETE_USAGE"
+  },
+  "verifiedMigration": null,
+  "dependencyHandoff": {
+    "onlyOwlapiCoordinateChanged": true,
+    "applicationDependenciesPreserved": true
+  },
+  "cleanInstall": {
+    "ancestorNodeModules": [],
+    "npmLs": "PASS",
+    "installedPackageIdentity": "PASS"
+  },
+  "gates": {
+    "baselineNpmCi": "PASS",
+    "baselineJest": "PASS",
+    "baselineDevelopmentBuild": "PASS",
+    "baselineProductionBuild": "PASS",
+    "consumerBoundary": "PASS",
+    "candidateJest": "PASS",
+    "installedImportClosure": "PASS",
+    "phase21TargetErrorSemantics": "PASS",
+    "representativeCorpus": "PASS",
+    "candidateDevelopmentBuild": "PASS",
+    "candidateProductionBuild": "PASS",
+    "candidateWebVowlViteConsumerBuild": "PASS",
+    "candidateChromiumIntegration": "PASS"
+  },
+  "maintainedWebVowlCheckoutModified": false
+}

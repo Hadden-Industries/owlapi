@@ -61,8 +61,9 @@ Phase 21 records the exact accepted WebVOWL baseline and either proves it has no
 
 Development started on the dedicated lifecycle feature branch before any accepted public production release.
 The owner has included this capability slice in the selected public RC and later `0.1.0` line; a separate later feature release is no longer planned.
-All eight lifecycle rows retain `DEFERRED` / `NOT_STARTED` until formal qualification passes.
-These states distinguish release acceptance from existing implementation history.
+All eight lifecycle rows retain `DEFERRED` / `NOT_STARTED` until the reconciled Tasks 1–14 prerequisite gates pass, including installed-package and consumer evidence.
+Task 15 step 2 then records their implemented state as `REQUIRED_V1` / `COMPLETE` / phase 22 before packing the final candidate.
+That metadata does not establish release acceptance: `phase22.status` remains `IN_PROGRESS` until the final candidate passes every Phase 22 gate, including UO's prepublication qualification.
 
 Merge the original task commits without squash or rebase into a branch containing the pinned `main` integration baseline.
 Record its exact commit and generated API registry digest in the accepted parity record when reconciliation is complete.
@@ -241,7 +242,8 @@ Every task must preserve these rules:
 ## 3. Fixed capability and API contract
 
 The programme consists of these exact capability IDs.
-Task 1 records them as deferred; Task 15 may mark them complete only after all acceptance gates pass.
+Task 1 records them as deferred; Task 15 step 2 may mark them complete after the reconciled Tasks 1–14 prerequisite gates pass.
+The final candidate's acceptance remains separately governed by `phase22.status` and the Phase 22 catalogue below.
 
 | Capability ID                        | Public entry point                                                           | Required result                                                                        |
 | ------------------------------------ | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
@@ -1400,7 +1402,7 @@ The pinned integration baseline and Phase 21 commits must be ancestors, every pr
    ```
 
 8. Inspect the downloaded candidate in a clean temporary directory.
-   Require actual manifest name `@hadden-industries/owlapi`, exact version `0.1.0-rc.1`, all six approved exports, zero source-tree resolution, zero network during closure/reload tests, both storage formats, and the mandated RDF/XML failure.
+   Require actual manifest name `@hadden-industries/owlapi`, exact version `0.1.0-rc.1`, all seven approved export specifiers, zero source-tree resolution, zero network during closure/reload tests, both storage formats, and the mandated RDF/XML failure.
    Re-run the tagged-to-candidate API-surface comparison against the installed package evidence rather than trusting the source-tree registry alone.
    Inspect the retained WebVOWL qualification result separately and require the exact Phase 21 baseline/audit digest, successful `toString()` save, base-error/reason failure classification, unchanged target text, valid source getter, and absence of both rejected extensions.
 9. Run both Task 14 reconciliation checks for all four July variants and the upstream public-composition checks against the exact candidate.
@@ -1500,7 +1502,7 @@ This programme is complete only when all of the following are simultaneously tru
 Begin now in pre-integration mode on the dedicated lifecycle feature branch.
 Task 1 records the deferred governance baseline; Tasks 2–5 establish state semantics; Task 6 adds the closure utilities; Tasks 8 and 10 add independent comparison and strict-reconstruction foundations; and Task 14 may establish its harness and available real-family experiments.
 Build the canonical Phase 21 foundations next, then dependency-ready Tasks 7, 9, and 11–14.
-Keep all lifecycle capabilities deferred until formal qualification and do not relabel provisional results as accepted scoped RC release evidence.
+Keep all lifecycle capabilities deferred until the reconciled Tasks 1–14 prerequisite gates pass (Task 15 step 2), and do not relabel provisional results as accepted scoped RC release evidence.
 
 Integrate the reviewed task commits against the pinned source-integration baseline, preserving every original commit through a normal merge.
 No prior public production release is required.
@@ -1525,7 +1527,7 @@ The exact scoped RC remains eligible for consumer production after independent r
   Verify the pinned integration baseline and approved signed Phase 21 completion commit are ancestors of the qualified candidate, with the accepted target/error contract, decision record, capability rows and checkpoint registry preserved.
 
 - <a id="p22-capabilities-001"></a> **`P22-CAPABILITIES-001` — Eight complete lifecycle capabilities.**
-  After all preceding implementation and qualification tasks pass, record the exact eight lifecycle rows as REQUIRED_V1, COMPLETE, phase 22 and the global release as 0.1.0-rc.1.
+  After the reconciled Tasks 1–14 prerequisite gates pass, record the exact eight lifecycle rows as REQUIRED_V1, COMPLETE, phase 22 and the global release as 0.1.0-rc.1.
   Source tests alone cannot establish this result.
 
 - <a id="p22-surface-001"></a> **`P22-SURFACE-001` — Bounded Java-compatible surface.**
@@ -1563,16 +1565,16 @@ The exact scoped RC remains eligible for consumer production after independent r
 
 ### Phase 22 acceptance checklist
 
-- [ ] <!-- Gate: P22-CHECK-001; Covers: P22-PREDECESSOR-001 --> Verify the completed Phase 21 predecessor and both required ancestors.
-- [ ] <!-- Gate: P22-CHECK-002; Covers: P22-CAPABILITIES-001 --> Complete the eight evidence-backed lifecycle rows for the exact RC.
-- [ ] <!-- Gate: P22-CHECK-003; Covers: P22-SURFACE-001 --> Verify the approved generated public-surface delta and package boundary.
-- [ ] <!-- Gate: P22-CHECK-004; Covers: P22-INSTALLED-CLOSURE-001 --> Pass installed public composition with no source-tree fallback.
-- [ ] <!-- Gate: P22-CHECK-005; Covers: P22-FUNCTIONAL-STORAGE-001 --> Pass the exhaustive Functional Syntax structural round trip.
-- [ ] <!-- Gate: P22-CHECK-006; Covers: P22-RDFXML-STORAGE-001 --> Pass the representable RDF/XML structural round trip.
-- [ ] <!-- Gate: P22-CHECK-007; Covers: P22-STRICT-RDF-001 --> Reject unconsumed selected-graph statements in strict reconstruction.
-- [ ] <!-- Gate: P22-CHECK-008; Covers: P22-RDFXML-FAILURE-001 --> Reject the mandated non-injective case without partial target mutation.
-- [ ] <!-- Gate: P22-CHECK-009; Covers: P22-WEBVOWL-001 --> Pass the audited WebVOWL installed-candidate semantic and application gates.
-- [ ] <!-- Gate: P22-CHECK-010; Covers: P22-JAVA-001 --> Pass all four real July variants against pinned Java in both formats.
-- [ ] <!-- Gate: P22-CHECK-011; Covers: P22-UO-001 --> Accept UO's candidate-bound prepublication matrix before npm publication.
+- [x] <!-- Gate: P22-CHECK-001; Covers: P22-PREDECESSOR-001 --> Verify the completed Phase 21 predecessor and both required ancestors.
+- [x] <!-- Gate: P22-CHECK-002; Covers: P22-CAPABILITIES-001 --> Complete the eight evidence-backed lifecycle rows for the exact RC.
+- [x] <!-- Gate: P22-CHECK-003; Covers: P22-SURFACE-001 --> Verify the approved generated public-surface delta and package boundary.
+- [x] <!-- Gate: P22-CHECK-004; Covers: P22-INSTALLED-CLOSURE-001 --> Pass installed public composition with no source-tree fallback.
+- [x] <!-- Gate: P22-CHECK-005; Covers: P22-FUNCTIONAL-STORAGE-001 --> Pass the exhaustive Functional Syntax structural round trip.
+- [x] <!-- Gate: P22-CHECK-006; Covers: P22-RDFXML-STORAGE-001 --> Pass the representable RDF/XML structural round trip.
+- [x] <!-- Gate: P22-CHECK-007; Covers: P22-STRICT-RDF-001 --> Reject unconsumed selected-graph statements in strict reconstruction.
+- [x] <!-- Gate: P22-CHECK-008; Covers: P22-RDFXML-FAILURE-001 --> Reject the mandated non-injective case without partial target mutation.
+- [x] <!-- Gate: P22-CHECK-009; Covers: P22-WEBVOWL-001 --> Pass the audited WebVOWL installed-candidate semantic and application gates.
+- [x] <!-- Gate: P22-CHECK-010; Covers: P22-JAVA-001 --> Pass all four real July variants against pinned Java in both formats.
+- [x] <!-- Gate: P22-CHECK-011; Covers: P22-UO-001 --> Accept UO's candidate-bound prepublication matrix before npm publication.
 
 <!-- End Phase 22 acceptance checklist -->

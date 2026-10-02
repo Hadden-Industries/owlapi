@@ -24,6 +24,7 @@ It is not published, tagged or accepted merely by merging it.
 - Permit the exact RC in Universal Ontology and WebVOWL production after immutable artifact verification and each application's complete consumer acceptance, without waiting for `0.1.0`.
 - Add manager-owned import-closure queries, atomic ontology changes, `OWLOntologyImportsClosureSetProvider`, and `OWLOntologyMerger` through the Java-shaped public surface.
 - Add atomic `StringDocumentTarget` storage and lossless Functional Syntax and representability-checked RDF/XML serialization through `saveOntology`.
+- Read saved text only through `StringDocumentTarget.toString()` and classify representation failure with `OWLOntologyStorageError.reason === "ONTOLOGY_NOT_REPRESENTABLE"`; source documents retain `getText()`.
 - Add `OWL2DLProfile` and `OWLProfileReport` through `owlapi/profiles`, including complete managed-closure checks, bounded datatype validation and a distinct source assessment.
 - Add opt-in source-preserving loading, retained RDFS structures and original constructor arity, exact per-document formats, immutable import-parent context and lossless large cardinalities.
 - Reject storage that would discard retained RDFS statements or unattached expressions before modifying its target.

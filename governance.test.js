@@ -182,7 +182,10 @@ describe("owlapi governance artifacts", () => {
       "19cf43d4288d20a737ecac0a39ccd1c53f9a3e77",
     );
     expect(ledger.phase21.status).toBe("COMPLETE");
-    expect(ledger.phase21.registrySha256).toBe(
+    // This qualification adds no public API delta to the signed checkpoint.
+    // Preserve that invariant even in source archives without Git history.
+    expect(ledger.phase21.registrySha256).toBe(ledger.phase22.registrySha256);
+    expect(ledger.phase22.registrySha256).toBe(
       sha256(
         readFileSync(
           new URL(
@@ -299,6 +302,21 @@ describe("owlapi governance artifacts", () => {
         ledger.integrationBaseline.registrySha256,
       );
       expect(isAncestorOfHead(ledger.integrationBaseline.commit)).toBe(true);
+      const checkpoint = ledger.phase22.phase21Checkpoint;
+      expect(checkpoint.commit).toBe(
+        "c45f07719e0d846be354c818d281a38281913c38",
+      );
+      const checkpointRegistry = execFileSync(
+        "git",
+        [
+          "show",
+          `${checkpoint.commit}:docs/compatibility/java-api-surface.json`,
+        ],
+        { cwd: REPOSITORY_ROOT, stdio: ["ignore", "pipe", "pipe"] },
+      );
+      expect(sha256(checkpointRegistry)).toBe(checkpoint.registrySha256);
+      expect(checkpoint.registrySha256).toBe(ledger.phase21.registrySha256);
+      expect(isAncestorOfHead(checkpoint.commit)).toBe(true);
     }
   });
 
@@ -511,16 +529,39 @@ describe("owlapi governance artifacts", () => {
     }
   });
 
-  it("records only the eight approved lifecycle adaptations without acceptance", () => {
+  it("records the eight approved lifecycle adaptations with candidate-bound consumer evidence", () => {
     const { document: ledger, errors } = validateAgainstSchema(
       "./docs/compatibility/java-api-parity-decisions.json",
       "./docs/compatibility/java-api-parity-decisions.schema.json",
     );
     expect(errors).toEqual([]);
     expect(ledger.phase22).toEqual({
-      status: "IN_PROGRESS",
+      status: "COMPLETE",
+      registrySha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+      phase21Checkpoint: {
+        commit: "c45f07719e0d846be354c818d281a38281913c38",
+        registrySha256: ledger.phase21.registrySha256,
+      },
       decisions: expect.any(Array),
     });
+    const webvowl = readJson(
+      "./docs/provenance/releases/0.1.0-rc.1/phase22-webvowl.json",
+    );
+    const { report: uo } = readJson(
+      "./docs/provenance/releases/0.1.0-rc.1/phase22-uo.json",
+    );
+    expect(webvowl.result).toBe("PASS");
+    expect(
+      Object.values(webvowl.gates).every((result) => result === "PASS"),
+    ).toBe(true);
+    expect(uo.status).toBe("PASS_WITH_ACCEPTED_JAVA_PARITY_BOUNDARY");
+    expect(uo.candidate.sha256).toBe(webvowl.candidate.tarballSha256);
+    expect(uo.candidate.apiRegistrySha256).toBe(ledger.phase22.registrySha256);
+    expect(uo.consumer.passed).toBe(174);
+    expect(uo.cases).toHaveLength(8);
+    expect(uo.cases.every(({ java }) => java === "MATCH")).toBe(true);
+    expect(uo.registryAcceptance).toBe("NOT_PERFORMED");
+    expect(uo.productionAcceptance).toBe("NOT_GRANTED");
     expect(ledger.phase22.decisions.map(({ id }) => id).sort()).toEqual([
       "LIFECYCLE-ASYNC-SAVE-OVERLOAD",
       "LIFECYCLE-CHANGE-OVERLOAD-SUBSET",
@@ -559,14 +600,17 @@ describe("owlapi governance artifacts", () => {
         ).toBeGreaterThan(0);
       }
     }
-    const accepted = JSON.parse(JSON.stringify(ledger));
-    accepted.phase22.status = "COMPLETE";
-    expect(
-      validateDocumentAgainstSchema(
-        accepted,
-        "./docs/compatibility/java-api-parity-decisions.schema.json",
-      ).length,
-    ).toBeGreaterThan(0);
+    for (const missing of ["registrySha256", "phase21Checkpoint"]) {
+      const accepted = JSON.parse(JSON.stringify(ledger));
+      accepted.phase22.status = "COMPLETE";
+      delete accepted.phase22[missing];
+      expect(
+        validateDocumentAgainstSchema(
+          accepted,
+          "./docs/compatibility/java-api-parity-decisions.schema.json",
+        ).length,
+      ).toBeGreaterThan(0);
+    }
   });
 
   it("classifies every capability exactly once with a normative status", () => {
@@ -770,7 +814,7 @@ describe("owlapi governance artifacts", () => {
     }
   });
 
-  it("keeps pre-integration lifecycle governance split by deliverable", () => {
+  it("records implemented lifecycle capabilities while keeping concrete storer classes private", () => {
     const matrix = readJson("./docs/compatibility/capabilities.json");
     const registry = readJson("./docs/compatibility/java-api-surface.json");
     const lifecycleCapabilityIds = [
@@ -791,58 +835,58 @@ describe("owlapi governance artifacts", () => {
       {
         id: "manager.imports-closure-query",
         category: "public-api",
-        status: "DEFERRED",
-        progress: "NOT_STARTED",
-        phase: null,
+        status: "REQUIRED_V1",
+        progress: "COMPLETE",
+        phase: 22,
       },
       {
         id: "manager.save-ontology",
         category: "public-api",
-        status: "DEFERRED",
-        progress: "NOT_STARTED",
-        phase: null,
+        status: "REQUIRED_V1",
+        progress: "COMPLETE",
+        phase: 22,
       },
       {
         id: "ontology.change-required-surface",
         category: "public-api",
-        status: "DEFERRED",
-        progress: "NOT_STARTED",
-        phase: null,
+        status: "REQUIRED_V1",
+        progress: "COMPLETE",
+        phase: 22,
       },
       {
         id: "rdf.strict-complete-reconstruction",
         category: "mapping",
-        status: "DEFERRED",
-        progress: "NOT_STARTED",
-        phase: null,
+        status: "REQUIRED_V1",
+        progress: "COMPLETE",
+        phase: 22,
       },
       {
         id: "storer.functional",
         category: "storage",
-        status: "DEFERRED",
-        progress: "NOT_STARTED",
-        phase: null,
+        status: "REQUIRED_V1",
+        progress: "COMPLETE",
+        phase: 22,
       },
       {
         id: "storer.rdfxml",
         category: "storage",
-        status: "DEFERRED",
-        progress: "NOT_STARTED",
-        phase: null,
+        status: "REQUIRED_V1",
+        progress: "COMPLETE",
+        phase: 22,
       },
       {
         id: "util.imports-closure-set-provider",
         category: "public-api",
-        status: "DEFERRED",
-        progress: "NOT_STARTED",
-        phase: null,
+        status: "REQUIRED_V1",
+        progress: "COMPLETE",
+        phase: 22,
       },
       {
         id: "util.ontology-merger",
         category: "public-api",
-        status: "DEFERRED",
-        progress: "NOT_STARTED",
-        phase: null,
+        status: "REQUIRED_V1",
+        progress: "COMPLETE",
+        phase: 22,
       },
     ]);
     expect(matrix.capabilities).not.toContainEqual(
@@ -852,7 +896,7 @@ describe("owlapi governance artifacts", () => {
       lifecycleCapabilities.every(
         ({ phase, progress }) =>
           progress !== "COMPLETE" ||
-          (phase === 22 && matrix.release === "0.1.0"),
+          (phase === 22 && matrix.release === "0.1.0-rc.1"),
       ),
     ).toBe(true);
 

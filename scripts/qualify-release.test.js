@@ -1,5 +1,6 @@
 import {
   assertDryRunMatchesCandidate,
+  assertPrepublicationConsumers,
   assertRecordedRequirement,
   assertRegistryBootstrapState,
   normalizeNpmPublishDryRun,
@@ -17,6 +18,57 @@ const candidate = {
 };
 
 describe("release-candidate publication qualification", () => {
+  const acceptedConsumers = () => ({
+    candidate,
+    webvowl: {
+      qualification: "RECONCILED",
+      result: "PASS",
+      candidate: {
+        package: candidate.package,
+        tarballSha256: candidate.tarball.sha256,
+      },
+    },
+    uo: {
+      stage: "PREPUBLICATION",
+      status: "PASS_WITH_ACCEPTED_JAVA_PARITY_BOUNDARY",
+      candidate: { sha256: candidate.tarball.sha256 },
+    },
+  });
+
+  test("binds the publication candidate to both consumer reports", () => {
+    expect(assertPrepublicationConsumers(acceptedConsumers())).toEqual({
+      tarballSha256: candidate.tarball.sha256,
+    });
+    const differentBytes = acceptedConsumers();
+    differentBytes.candidate = {
+      ...candidate,
+      tarball: { ...candidate.tarball, sha256: "b".repeat(64) },
+    };
+    expect(() => assertPrepublicationConsumers(differentBytes)).toThrow(
+      /both accepted prepublication consumer reports/u,
+    );
+  });
+
+  test.each(["webvowl", "uo"])(
+    "rejects absent, failed or superseded %s acceptance",
+    (consumer) => {
+      for (const field of ["missing", "result", "digest"]) {
+        const evidence = acceptedConsumers();
+        const record = evidence[consumer];
+        if (field === "missing") delete evidence[consumer];
+        else if (field === "result")
+          record[consumer === "webvowl" ? "result" : "status"] = "FAIL";
+        else
+          record.candidate[
+            consumer === "webvowl" ? "tarballSha256" : "sha256"
+          ] = "b".repeat(64);
+        expect(() => assertPrepublicationConsumers(evidence)).toThrow(
+          /both accepted prepublication consumer reports/u,
+        );
+      }
+    },
+  );
+
   test("cannot accept a lifecycle result before the parity checkpoint passes", () => {
     const record = {
       accepted: true,

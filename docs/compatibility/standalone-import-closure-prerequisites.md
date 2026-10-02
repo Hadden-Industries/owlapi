@@ -18,7 +18,10 @@ The capability slice originated on `feature/ontology-import-closure-lifecycle` a
 The owner approved first-release integration on 2026-09-28 and scoped publication with UO RC production eligibility in the [current amendment](../plans/scoped-npm-publication.md).
 The target coordinate is not evidence of publication or acceptance.
 UO may use this exact RC in production after artifact verification and complete consumer acceptance; it need not wait for `0.1.0`.
-Lifecycle capabilities remain `DEFERRED` / `NOT_STARTED` until their formal qualification gates pass.
+The signed Phase 21 checkpoint is `c45f07719e0d846be354c818d281a38281913c38`, following integration baseline `19cf43d4288d20a737ecac0a39ccd1c53f9a3e77`.
+The eight lifecycle capabilities and their exact-candidate prepublication qualification are complete under Phase 22.
+The [qualification record](../provenance/releases/0.1.0-rc.1/qualification.md) binds the producer, WebVOWL and UO results to the retained tarball.
+Publication, public-registry verification and consumer production acceptance remain separate gates.
 
 Build `StringDocumentTarget`, the storage-error hierarchy, and their decision ledger once under the canonical Phase 21 plan on this feature branch.
 Then proceed with all dependency-ready lifecycle work, including provisional consumer experiments.
@@ -38,13 +41,17 @@ Pre-integration evidence is development evidence and is never copied forward as 
 ## Package identity and qualification handoff
 
 UO declares `"owlapi": "npm:@hadden-industries/owlapi@0.1.0-rc.1"` in `devDependencies` and retains its five `owlapi/*` namespace imports.
-The installed package and registry evidence must identify the real scoped name, exact version and verified integrity; the package also has a sixth entry point, its root aggregate.
+The installed package and registry evidence must identify the real scoped name, exact version and verified integrity.
+The package exports six public subpaths plus its root aggregate; UO's composition uses five of those subpaths.
 Native npm dependency aliasing is permitted and does not create an API shim or rewrite transitive/peer dependencies.
 Preserve the source repository and Java package mappings.
 
-Qualify the retained scoped artifact and complete the upstream lifecycle gates before publication, then verify the actual public registry artifact before UO's remote-fetch and full consumer acceptance run.
+Qualify the retained scoped artifact through UO's actual adapter, complete contract matrix, remote-fetch policy and real ontology cases before publication.
+After publication, independently fetch and verify the actual public registry artifact, compare its bytes with the accepted candidate, and complete UO's registry/provenance and production gates.
 The existing source/local-tarball harness is not public-registry proof; add the isolated registry mode described in the scoped-publication plan.
 Record source commit/tag, tarball digest, registry integrity, API evidence, UO revision/input hashes and actual results.
+The pinned-Java qualification report labels its package source as `DEVELOPMENT`, `PREPUBLICATION` or `REGISTRY_ACCEPTANCE`.
+Those stage labels apply to both passing and failing runs; the separate result and evidence determine which gate, if any, has passed.
 A later RC or stable version requires a new exact pin and requalification.
 Do not implement migration to the bare package name in this work.
 
@@ -106,8 +113,9 @@ manager.getImportsClosure(root)
   → OWLOntologyMerger(false)
   → SetOntologyID
   → AddOntologyAnnotation
-  → manager.saveOntology(format, target)
+  → manager.saveOntology(ontology, format, target)
 ```
 
 What the consumer preserves, drops, resolves, verifies, or publishes is governed exclusively by the canonical `universal-ontology` contract.
+The [parity migration guide](../migration/0.1.0-java-api-parity.md) contains an executable composition example using only these public capabilities.
 In particular, this note does not define ontology-annotation attribution, network policy, output format policy, sidecar policy, or atomic publication behavior.
