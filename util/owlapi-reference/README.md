@@ -252,3 +252,36 @@ Both supported Node lines run these same assertions; native failures and missing
 
 The required Node 24 CI job builds the exact Java revision with Maven, runs native oracle regressions, executes both July checks and retains their artifacts, including failures.
 This adds development evidence only; it does not change the release workflow or replace final qualification of the integrated scoped RC against the pinned baseline and Phase 21.
+
+### Local native build-input observations
+
+`nativeReferenceRecipe` and `captureNativeReferenceObservation` in `reference-build-observation.mjs` support the next local reference experiment.
+The recipe returns argument arrays for Maven's exact Help 3.5.2 and Dependency 3.11.0 goals; it does not execute a command or construct a shell command string.
+Supply a task-owned Maven repository, empty user home and fresh report directory.
+Both user and global settings scopes use the included credential-free offline `reference-build-settings.xml`.
+Clear inherited Maven/JVM option injections and disable Maven startup scripts in the native orchestration.
+A missing offline input is a failed experiment, with no automatic download or version fallback.
+
+Retain native Maven and Java version output as `maven-version.txt` and `java-version.txt`; redirect active-profile output to `active-profiles.txt`.
+The exact goals produce `effective-pom.xml` and `runtime-tree.json`; copy the native distribution classpath to `runtime-classpath.txt`.
+The tree report may contain appended native reactor JSON objects; this module does not parse or normalize them.
+`plugins.txt` is the native project/report-plugin superset, including unexecuted goals.
+An already retained report may be used with its original provenance stated explicitly; do not claim it ran under a new recipe.
+The seal does not establish any report's correspondence to the declared recipe; carry retained-report provenance alongside it and inspect both records together.
+Keep command exit statuses and raw logs outside the seven-file report directory.
+Never use `help:system` or unreviewed effective settings/environment dumps here.
+
+The sealer observes clean native Git commit/tree identity, hashes the seven raw reports, recipe and settings, retains the expanded recipe as a **caller declaration**, and creates an exclusive output file outside the report directory.
+It defaults to the established upstream pin; an explicit expected revision may be used for a separately identified local fixture.
+Each report must be nonempty, regular, unlinked and at most 8 MiB; the total is bounded at 32 MiB.
+Input aliases and unexpected files are rejected.
+The caller owns a private, quiescent namespace; these checks do not sandbox a malicious concurrent local writer.
+Git-ignored files and retained `target/` outputs are outside that source identity.
+A warm local package run therefore does not prove a fresh compilation cost.
+
+The record expressly marks report origins and recipe execution as unauthenticated caller evidence.
+Sealing does not validate report semantics, successful native execution, dependency/plugin byte closure, exact JDK build identity or environment equivalence.
+Its digest identifies this **local observation**, with a null semantic compatibility key, uncleared redistribution and disabled shared reuse.
+It cannot authorize a public bundle or replace fresh CI qualification.
+The local Maven version is recorded as observed; this experiment neither upgrades the environment nor represents that version as the current stable production selection.
+The recipe does not control Maven toolchains files or JVM startup home; those remain explicit environment-policy gaps despite the declared Maven user home.
