@@ -651,7 +651,7 @@ const validateCiVerification = (workflow, violations) => {
   requireFields(
     liveSuite,
     {
-      run: "npm test -- --runInBand --json --outputFile=.release/java-qualification/jest.json",
+      run: "mkdir -p .release/java-qualification\nnpm test -- --runInBand --json --outputFile=.release/java-qualification/jest.json\n",
       env: {
         OWLAPI_REFERENCE_CHECKOUT:
           "${{ github.workspace }}/.release/java-owlapi",
