@@ -1,0 +1,140 @@
+{
+  "success": true,
+  "numFailedTests": 0,
+  "numFailedTestSuites": 0,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "fullName": "pinned Java direct-ontology parsing reconciliation compares direct root content while loading the original import context",
+          "status": "passed",
+          "ancestorTitles": [
+            "pinned Java direct-ontology parsing reconciliation"
+          ]
+        },
+        {
+          "fullName": "pinned Java direct-ontology parsing reconciliation compares an imported document's own annotations without adding root axioms",
+          "status": "passed",
+          "ancestorTitles": [
+            "pinned Java direct-ontology parsing reconciliation"
+          ]
+        },
+        {
+          "fullName": "pinned Java direct-ontology parsing reconciliation rejects merged output as evidence of direct-ontology parsing parity",
+          "status": "passed",
+          "ancestorTitles": [
+            "pinned Java direct-ontology parsing reconciliation"
+          ]
+        },
+        {
+          "fullName": "pinned Java direct-ontology parsing reconciliation detects changed imported ontology metadata even though merging excludes it",
+          "status": "passed",
+          "ancestorTitles": [
+            "pinned Java direct-ontology parsing reconciliation"
+          ]
+        }
+      ],
+      "name": "util/owlapi-reference/run-ontology-parsing-contract.test.js"
+    },
+    {
+      "assertionResults": [
+        {
+          "fullName": "pinned Java cyclic import-closure oracle records explicit Java parser settings and source diagnostics",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle refuses an apparent match when native Java reports unparsed RDF",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle refuses unparsed candidate RDF even when reconstructed axioms match",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle matches a cyclic closure under one anonymous-individual bijection",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle matches anonymous ontology identities after an independent document load",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle compares a large named-axiom set without exhausting the JVM call stack",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle returns one structured mismatch result for a changed structural axiom",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle reports all named structural differences after counts and earlier fields differ",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle does not treat reordered inverse-property operands as an axiom difference",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle keeps renamed anonymous graphs matched while reporting an extra named axiom",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle retains structural differences when Java source RDF is unparsed",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle reports an unmatched anonymous graph without parser-generated node labels",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle rejects a many-to-one anonymous-individual mapping across source documents",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle serializes unparsed RDF blank nodes through an RDF writer, not as fake IRIs",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle proves propagation using a native merge of the compared direct JavaScript models",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle loads an unexpected output import without permitting fallback network resolution",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle blocks remote JSON-LD 1 contexts before any HTTP client reaches the network",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle blocks remote JSON-LD 1.1 contexts before any HTTP client reaches the network",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        },
+        {
+          "fullName": "pinned Java cyclic import-closure oracle fails closed when an authored import is absent from the catalog",
+          "status": "passed",
+          "ancestorTitles": ["pinned Java cyclic import-closure oracle"]
+        }
+      ],
+      "name": "util/owlapi-reference/run-import-closure-contract.test.js"
+    }
+  ]
+}

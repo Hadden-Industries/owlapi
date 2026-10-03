@@ -7,7 +7,7 @@ import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 import { parseDocument } from "yaml";
 import { REQUIRED_JOB_IDS } from "./require-job-success.mjs";
-import { CI_JOB_NAMES } from "./ci-verification.mjs";
+import { CI_JOB_NAMES } from "./ci-qualification.mjs";
 
 const REPOSITORY_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const WORKFLOW_DIRECTORY = join(REPOSITORY_ROOT, ".github", "workflows");
@@ -251,7 +251,7 @@ const isCiReceiptTransport = (fileName, jobId, step) =>
     step.uses ===
       "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c") ||
     (jobId === "required" &&
-      step.id === "receipt_upload" &&
+      ["receipt_upload", "main_receipt_upload"].includes(step.id) &&
       step.uses ===
         "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"));
 
@@ -503,6 +503,9 @@ const validateCiVerification = (workflow, violations) => {
     "source_commit",
     "candidate_artifact_id",
     "candidate_artifact_digest",
+    "source_receipt_id",
+    "source_receipt_digest",
+    "qualification",
   ];
   requireFields(
     strategy,
@@ -611,6 +614,59 @@ const validateCiVerification = (workflow, violations) => {
     `${label} aggregate evaluator cannot be skipped`,
   );
   const receipt = steps(jobs.required).find((step) => step.id === "receipt");
+  for (const [id, command] of [
+    [
+      "source_node_24",
+      "node scripts/ci-check-coverage-command.mjs java .release/java-qualification/jest.json",
+    ],
+    [
+      "webvowl",
+      "node scripts/ci-check-coverage-command.mjs webvowl .release/webvowl-result/qualification.json",
+    ],
+  ]) {
+    requireFields(
+      jobs[id]?.outputs,
+      { coverage: "${{ steps.coverage.outputs.coverage }}" },
+      `${label}:${id} coverage output`,
+      violations,
+    );
+    const accounting = steps(jobs[id]).find((step) => step.id === "coverage");
+    requireFields(
+      accounting,
+      { run: command, "timeout-minutes": 1 },
+      `${label}:${id} native coverage`,
+      violations,
+    );
+    add(
+      violations,
+      !!accounting &&
+        !Object.hasOwn(accounting, "if") &&
+        !Object.hasOwn(accounting, "continue-on-error"),
+      `${label}:${id} native coverage cannot be skipped or ignored`,
+    );
+  }
+  const liveSuite = steps(jobs.source_node_24).find(
+    (step) => step.name === "Run the full package suite",
+  );
+  requireFields(
+    liveSuite,
+    {
+      run: "npm test -- --runInBand --json --outputFile=.release/java-qualification/jest.json",
+      env: {
+        OWLAPI_REFERENCE_CHECKOUT:
+          "${{ github.workspace }}/.release/java-owlapi",
+      },
+    },
+    `${label} selected live Java suite`,
+    violations,
+  );
+  add(
+    violations,
+    !!liveSuite &&
+      !Object.hasOwn(liveSuite, "if") &&
+      !Object.hasOwn(liveSuite, "continue-on-error"),
+    `${label} selected live Java suite cannot be skipped or ignored`,
+  );
   requireFields(
     receipt,
     {
@@ -640,6 +696,38 @@ const validateCiVerification = (workflow, violations) => {
       },
     },
     label,
+    violations,
+  );
+  const mainReceipt = steps(jobs.required).find(
+    (step) => step.id === "main_receipt",
+  );
+  requireFields(
+    mainReceipt,
+    {
+      run: "node scripts/ci-verification-command.mjs record-main",
+      if: "github.event_name == 'push'",
+      env: { REQUIRED_JOB_RESULTS_JSON: "${{ toJSON(needs) }}" },
+      "timeout-minutes": 1,
+    },
+    `${label} main qualification`,
+    violations,
+  );
+  requireFields(
+    steps(jobs.required).find((step) => step.id === "main_receipt_upload"),
+    {
+      uses: "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+      if: "steps.main_receipt.outputs.recorded == 'true'",
+      "continue-on-error": true,
+      "timeout-minutes": 1,
+      with: {
+        ...UPLOAD_INPUTS,
+        name: "ci-main-qualification-${{ github.run_id }}-${{ github.run_attempt }}",
+        path: ".release/ci-main-qualification/verification.json",
+        "retention-days": 90,
+        overwrite: false,
+      },
+    },
+    `${label} main qualification transport`,
     violations,
   );
 };

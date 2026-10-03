@@ -1,4 +1,8 @@
 import { pathToFileURL } from "node:url";
+import {
+  coverageFromNeeds,
+  qualifiedSourceFromOutputs,
+} from "./ci-qualification.mjs";
 
 export const FULL_CI_JOB_IDS = Object.freeze([
   "metadata",
@@ -63,9 +67,15 @@ export const requireSuccessfulJobs = (workflow, needs) => {
   return [...required];
 };
 
-export const requireCiJobs = (needs, { eventName, ref } = {}) => {
+export const requireCiJobs = (
+  needs,
+  { eventName, ref, runId, runAttempt, sha } = {},
+) => {
   if (needs?.verification?.outputs?.reuse !== "true") {
-    return { mode: "FULL", requiredJobs: requireSuccessfulJobs("ci", needs) };
+    const requiredJobs = requireSuccessfulJobs("ci", needs);
+    // The receipt writer also binds these reports to its actual Git snapshot.
+    coverageFromNeeds(needs, { runId, runAttempt, commit: sha });
+    return { mode: "FULL", requiredJobs };
   }
   const source = needs.verification.outputs;
   if (
@@ -84,6 +94,7 @@ export const requireCiJobs = (needs, { eventName, ref } = {}) => {
       "CI reuse requires verified main-push evidence and the exact skipped full-job inventory.",
     );
   }
+  qualifiedSourceFromOutputs(source);
   return {
     mode: "REUSED",
     source,
@@ -112,6 +123,9 @@ const main = () => {
       ? requireCiJobs(needs, {
           eventName: process.env.GITHUB_EVENT_NAME,
           ref: process.env.GITHUB_REF,
+          runId: Number(process.env.GITHUB_RUN_ID),
+          runAttempt: Number(process.env.GITHUB_RUN_ATTEMPT),
+          sha: process.env.GITHUB_SHA,
         })
       : { requiredJobs: requireSuccessfulJobs(workflow, needs) };
   process.stdout.write(

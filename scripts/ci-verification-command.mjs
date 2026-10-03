@@ -13,6 +13,7 @@ import { pathToFileURL } from "node:url";
 import {
   CI_WORKFLOW,
   createVerificationReceipt,
+  createMainQualification,
   hostedIdentity,
   selectVerificationProof,
   verifyIntegrationProof,
@@ -21,6 +22,7 @@ import {
 const STATE = ".release/ci-reuse/selection.json";
 const DOWNLOAD = ".release/ci-reuse/download";
 const RECEIPT = ".release/ci-verification/verification.json";
+const MAIN_RECEIPT = ".release/ci-main-qualification/verification.json";
 
 /** Read exact commit identity with a bounded native Git call budget. */
 export const readGitSnapshot = (
@@ -64,9 +66,9 @@ export const readGitSnapshot = (
   };
 };
 
-const readJson = (path) => {
+const readJson = (path, maximumBytes = 256 * 1024) => {
   const stat = lstatSync(path);
-  if (!stat.isFile() || stat.isSymbolicLink() || stat.size > 256 * 1024) {
+  if (!stat.isFile() || stat.isSymbolicLink() || stat.size > maximumBytes) {
     throw new Error("Evidence file is outside its permitted size or type.");
   }
   return JSON.parse(readFileSync(path, "utf8"));
@@ -90,10 +92,13 @@ export const createRepositoryReader = ({
   repository,
   token,
   fetchImpl = fetch,
+  deadline = Date.now() + 60_000,
 }) => {
   if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(repository ?? "") || !token) {
     throw new Error("Read-only GitHub evidence access is unavailable.");
   }
+  const requestDeadline = Math.min(deadline, Date.now() + 60_000);
+  let requests = 0;
   return async (path) => {
     if (
       !/^\/(?:commits|actions|git)\/[A-Za-z0-9_./?=&%-]+$/u.test(path) ||
@@ -101,12 +106,18 @@ export const createRepositoryReader = ({
     ) {
       throw new Error("Unexpected GitHub evidence path.");
     }
+    const remaining = requestDeadline - Date.now();
+    if (++requests > 32 || remaining <= 0)
+      throw Object.assign(
+        new Error("GitHub evidence lookup budget exhausted."),
+        { code: "LOOKUP_LIMIT_EXCEEDED" },
+      );
     const response = await fetchImpl(
       `https://api.github.com/repos/${repository}${path}`,
       {
         redirect: "error",
         cache: "no-store",
-        signal: AbortSignal.timeout(10_000),
+        signal: AbortSignal.timeout(Math.min(10_000, remaining)),
         headers: {
           Accept: "application/vnd.github+json",
           Authorization: `Bearer ${token}`,
@@ -116,7 +127,22 @@ export const createRepositoryReader = ({
     );
     if (!response.ok)
       throw new Error(`GitHub evidence read returned HTTP ${response.status}.`);
-    return response.json();
+    const chunks = [];
+    let bytes = 0;
+    if (!response.body)
+      throw new Error("GitHub evidence response has no JSON body.");
+    for await (const chunk of response.body) {
+      bytes += chunk.byteLength;
+      if (bytes > 2 * 1024 * 1024 || Date.now() > requestDeadline)
+        throw Object.assign(
+          new Error("GitHub evidence response exceeded its budget."),
+          { code: "LOOKUP_LIMIT_EXCEEDED" },
+        );
+      chunks.push(chunk);
+    }
+    return JSON.parse(
+      new TextDecoder("utf-8", { fatal: true }).decode(Buffer.concat(chunks)),
+    );
   };
 };
 
@@ -124,6 +150,9 @@ export const readDownloadedReceipt = (root, artifactName) => {
   // Official download-artifact can place a single artifact directly at the root
   // or inside its named directory. Accept only those two closed inventories.
   let directory = resolve(root);
+  const rootStat = lstatSync(directory);
+  if (!rootStat.isDirectory() || rootStat.isSymbolicLink())
+    throw new Error("Invalid receipt root directory.");
   let names = readdirSync(directory);
   if (names.length === 1 && names[0] === artifactName) {
     directory = join(directory, artifactName);
@@ -135,7 +164,7 @@ export const readDownloadedReceipt = (root, artifactName) => {
   if (names.length !== 1 || names[0] !== "verification.json") {
     throw new Error("Receipt archive has an unexpected inventory.");
   }
-  return readJson(join(directory, "verification.json"));
+  return readJson(join(directory, "verification.json"), 64 * 1024);
 };
 
 const writeJson = (path, value) => {
@@ -157,8 +186,8 @@ const emit = (values, summary) => {
 
 const main = async () => {
   const mode = process.argv[2];
-  if (!["select", "verify", "record"].includes(mode))
-    throw new Error("Expected select, verify or record.");
+  if (!["select", "verify", "record", "record-main"].includes(mode))
+    throw new Error("Expected select, verify, record or record-main.");
   if (mode === "select" && process.env.GITHUB_EVENT_NAME !== "push") {
     emit({ available: "false" }, "Full PR qualification is required.");
     return;
@@ -171,15 +200,19 @@ const main = async () => {
       throw new Error("No successfully downloaded PR receipt is available.");
     }
     const context = contextFromEnvironment(process.env);
-    if (mode === "record") {
-      const receipt = createVerificationReceipt({
+    if (mode === "record" || mode === "record-main") {
+      const receipt = (
+        mode === "record" ? createVerificationReceipt : createMainQualification
+      )({
         context,
         needs: JSON.parse(process.env.REQUIRED_JOB_RESULTS_JSON ?? "null"),
       });
-      writeJson(RECEIPT, receipt);
+      writeJson(mode === "record" ? RECEIPT : MAIN_RECEIPT, receipt);
       emit(
         { recorded: "true" },
-        "Retained the complete PR qualification and original candidate identity.",
+        mode === "record"
+          ? "Retained typed FULL PR qualification and original executed coverage."
+          : `Retained landed-main ${receipt.mode} qualification with direct original executed coverage.`,
       );
       return;
     }
@@ -218,7 +251,7 @@ const main = async () => {
       error instanceof Error
         ? error.message.replaceAll(/[\r\n]/gu, " ").slice(0, 300)
         : "Evidence could not be verified.";
-    if (mode === "record")
+    if (mode === "record" || mode === "record-main")
       emit({ recorded: "false" }, `No reusable receipt retained: ${reason}`);
     else
       emit(

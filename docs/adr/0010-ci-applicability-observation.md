@@ -24,7 +24,8 @@ Preliminary `UNCHANGED_INPUTS` describes only the tracked projection.
 Final applicability is always `REQUIRED`, with proof `UNAVAILABLE` and execution `PENDING` at this preamble.
 The record has observation schema version 1; it is not a qualification receipt or a passed test.
 No workflow output consumes its decision, and it never authorizes omission.
-The existing schema-v1 FULL receipt and authenticated ordinary-main reuse contract remain authoritative.
+The initial milestone retained the schema-v1 FULL receipt and authenticated ordinary-main reuse contract.
+[ADR 0011](0011-full-ci-qualification-lineage.md) subsequently coordinates the schema-v2 FULL-only transition without enabling selective execution.
 This candidate-sourced diagnostic does not claim independently enforced base-control execution.
 Non-file environment, package and consumer-graph equivalence, base qualification and original-execution proofs remain prerequisites for any later selection.
 
@@ -56,7 +57,8 @@ This is one Windows fixture experiment, not complete closure, hostile-bundle, cr
 No shared Java artifact was uploaded or consumed.
 [Maven native prefix contract](https://maven.apache.org/plugins/maven-dependency-plugin/build-classpath-mojo.html#localRepoProperty).
 
-Selective activation and its atomic schema-v2 writer/reader/main-record transition remain deferred until enforceable authority, useful workload opportunities and complete direct-proof evidence exist.
+Selective activation remains deferred until enforceable authority, useful workload opportunities and complete input-equivalence evidence exist.
+The coordinated FULL-only schema-v2 writer/reader/main-record foundation is described in ADR 0011; it does not clear those activation gates.
 Java bundle production and cross-run reuse remain deferred until the complete build/environment/rights inventory, hostile-bundle validation, cold-seeding and hosted comparative gates pass.
 The existing WebVOWL harness installs and tests its baseline before injecting and reinstalling the candidate; graph preparation has not been independently established as a cheap equivalent boundary, so its qualification remains unconditional.
 These are the plan's named deferral consequences, not waived acceptance criteria or completed slices.
