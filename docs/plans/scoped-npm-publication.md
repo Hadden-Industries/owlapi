@@ -1,6 +1,9 @@
 # Publish the scoped owlapi RC and qualify its production consumers
 
-**Status:** Accepted implementation specification, recorded 2026-09-30; scoped implementation prepared on 2026-10-02; final qualification, human release reviews and publication remain pending.
+**Status:** Accepted implementation specification, recorded 2026-09-30.
+The qualified scoped RC was published on 2026-10-02 UTC (2026-10-03 in the owner's timezone), and fresh registry installation/signature/provenance verification passed.
+GitHub release finalization remains pending.
+The owner amended the distribution-tag policy on 2026-10-03; see the [publication record](../provenance/releases/0.1.0-rc.1/publication-status.md).
 
 **Authority:** [ADR 0009](../adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md), the [main implementation plan](../implementation-plan.md), the [lifecycle plan](../ontology-lifecycle-capability-implementation-plan.md), and UO's canonical [specification](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/specs/2026-08-22-self-contained-owl-import-closure-contract.md), [policy](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/import-closure/contract.v1.json), and [implementation plan](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/plans/2026-08-22-self-contained-owl-import-closure.md).
 
@@ -17,7 +20,7 @@ A prepared source candidate is not a public or accepted RC.
 | Real npm package name               | `@hadden-industries/owlapi`                                                                         |
 | Registry                            | `https://registry.npmjs.org/`                                                                       |
 | Selected first public version       | `0.1.0-rc.1`                                                                                        |
-| Publication channel                 | `next`; leave `latest` unset                                                                        |
+| Publication channel                 | `next`; `latest` may also identify the same exact initial RC                                        |
 | Recommended consumer dependency key | `owlapi`                                                                                            |
 | Exact dependency value              | `npm:@hadden-industries/owlapi@0.1.0-rc.1`                                                          |
 | UO dependency section               | `devDependencies`                                                                                   |
@@ -177,7 +180,8 @@ The target/error migration audit may legitimately report `NO_OBSOLETE_USAGE`; th
    A dry run or organization membership does not prove write authority.
    Configure and verify the exact repository/workflow/environment trusted publisher when supported; use no placeholder publication or silent mode fallback.
 4. Obtain the existing exact artifact/publication authorization, follow late signed-tag and protected-environment ordering, and publish the retained artifact with public access under `next`.
-   Keep `latest` unset and retain the existing ambiguous-write reconciliation and bootstrap credential removal controls.
+   Require `next` to identify the selected RC; `latest` may be absent or identify that same RC.
+   Retain the existing ambiguous-write reconciliation and bootstrap credential removal controls.
    In the direct-bootstrap workflow, only attempt 1 may execute the credential-bearing npm write.
    If that write has an ambiguous response, or later verification fails, rerun failed jobs to perform read-only registry verification of the retained bytes; do not rerun the entire workflow.
    Verification binds the original signed publication run/attempt and authenticated publisher-job result, separately from the current verification attempt.
@@ -185,6 +189,10 @@ The target/error migration audit may legitimately report `NO_OBSOLETE_USAGE`; th
    Project-owned reads retain §2.58's three-attempt transport/408/429/5xx retry policy; an ordinary 404 requires a later verification attempt and is not automatically retried.
 5. Re-download from npm with fresh caches; verify the scoped coordinate, bytes, integrity, signature, provenance, source/tag/workflow and installed runtime/browser behavior.
    Complete release evidence and immutable GitHub release verification.
+   For the already-published `0.1.0-rc.1`, the additional `latest` tag alone does not require new code tests or repeat prepublication qualification.
+   Apply the owner-approved documentation amendment in ADR 0009, retain the original failed tag-policy check, and finish the public-registry checks that it prevented from running.
+   Do not rebuild or republish the artifact, change executable validators or schemas, or create a replacement release workflow as part of this documentation amendment.
+   An unchanged workflow still enforcing the old prohibition remains recorded as failed; manual acceptance of the observed tag state must not be presented as a successful workflow rerun.
 6. Hand the verified coordinate and evidence to UO and WebVOWL for their own registry-backed consumer qualification.
    UO's own plan owns its manifest/lockfile change, Python removal, normal ontology publication and production acceptance.
    Run UO's remote-fetch and complete import-closure contract suite, and WebVOWL's application acceptance under Slice E and the main plan's §2.69.
@@ -195,6 +203,7 @@ The target/error migration audit may legitimately report `NO_OBSOLETE_USAGE`; th
 Keep release approval, source completion, registry publication, artifact acceptance, consumer acceptance and deployment as separate recorded states.
 An RC is immutable once published; fix it in a later explicitly selected version.
 Changing `next` or `latest` never updates either application's exact pin or reuses its acceptance for different bytes.
+An unqualified scoped install may select this RC through `latest`; the documented consumer acceptance path continues to use the exact version.
 The later stable library release remains independently gated, and each consumer must requalify before adopting it.
 WebVOWL's accepted public RC requires no special prerelease deployment waiver; its normal deployment controls still apply.
 

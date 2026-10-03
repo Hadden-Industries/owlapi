@@ -4,6 +4,13 @@ The owner's 2 October 2026 consumer-repair instruction is implemented through th
 Consumer requests remain subject to owlapi's Java OWLAPI responsibility; VOWL source ledgers, projection and admission policy remain consumer work.
 These additions require fresh candidate qualification and do not enable publication.
 
+> **3 October 2026 publication amendment:** the byte-identical, prepublication-qualified `@hadden-industries/owlapi@0.1.0-rc.1` is now public and registry-verified.
+> Both `next` and `latest` may identify it.
+> For this exact initial RC, this owner-approved decision supersedes older requirements below to keep `latest` absent, remove it, or repeat completed code qualification solely because of that tag.
+> Existing code qualification is reused; actual registry readback is recorded separately.
+> No runtime, validator, schema or workflow change is part of this documentation amendment.
+> The original failed workflow and pending GitHub finalization remain explicit in the [publication record](provenance/releases/0.1.0-rc.1/publication-status.md).
+
 > **Status:** Final architecture and implementation blueprint\
 > **Research baseline:** 8 August 2026\
 > **Package identity and versioning decision, amended 30 September 2026:** publish `@hadden-industries/owlapi@0.1.0-rc.1` under `next`; recommend the exact native npm alias `owlapi`; permit UO and WebVOWL production after artifact verification and each application's full consumer acceptance; retain later stable `0.1.0` under `latest` as a separate library release.
@@ -615,7 +622,7 @@ This documentation decision does not claim that the current manifest, release to
 | Package name                            | `@hadden-industries/owlapi`                                                                                             |
 | Canonical source repository             | `https://github.com/Hadden-Industries/owlapi`                                                                           |
 | Selected first public version           | `0.1.0-rc.1`, including the approved Phase 21/22 lifecycle slice                                                        |
-| First distribution tag                  | `next`; `latest` remains unset                                                                                          |
+| First distribution tag                  | `next`; `latest` may also identify the same exact initial RC                                                            |
 | Consumer dependency key and exact value | `"owlapi": "npm:@hadden-industries/owlapi@0.1.0-rc.1"`                                                                  |
 | Public export roots                     | Package root, `apibinding`, `model`, `io`, `formats`, `util`                                                            |
 | First-party dependency sections         | WebVOWL `dependencies`; UO `devDependencies` for generation tooling                                                     |
@@ -1598,8 +1605,10 @@ Record actual capabilities and authority without inferring package access from G
 ### 2.29 Decision: treat scoped distribution tags as release channels
 
 Every dist-tag operation targets `@hadden-industries/owlapi` and requires the existing authorization and before/after verification.
-Publish the selected `0.1.0-rc.1` under `next` and leave `latest` unset.
-The later separately accepted stable `0.1.0`, or the existing reviewed same-surface contingency, establishes `latest`.
+Publish the selected `0.1.0-rc.1` under `next`; `latest` may be absent or identify that same RC.
+The owner accepted this policy amendment on 2026-10-03 after the authorized publication produced both tags for byte-identical qualified code; see [ADR 0009](adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md).
+`latest` selects npm's default installation target and does not certify stability or consumer acceptance.
+The later separately accepted stable `0.1.0`, or the existing reviewed same-surface contingency, may move `latest` after its own qualification.
 An accepted RC may nevertheless be used by UO and WebVOWL in production under each application's exact artifact/consumer contract.
 
 The recommended install is an exact native alias, initially `npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@0.1.0-rc.1"`.
@@ -1608,7 +1617,11 @@ A direct scoped install is also valid.
 Never prescribe bare `npm install owlapi` or rely on an unqualified install's fallback behavior when `latest` is absent.
 Verify explicit scoped tag state and exact-coordinate installation instead.
 
-If npm unexpectedly creates or moves `latest` during an authorized prerelease write, retain the existing one bounded, separately authorized corrective removal and verify that `next` still identifies the RC.
+For this initial RC, retain the observed `latest` tag when it identifies the same exact RC as `next`; do not remove it solely because the version is a prerelease.
+Any conflicting tag target requires a separate decision and verified correction.
+The additional tag alone does not require new code, a replacement release workflow, or repeat code qualification.
+Preserve the unchanged artifact and its existing proof, and complete outstanding registry/release verification.
+The original workflow's rejection of `latest` remains an accurately recorded failure under the superseded rule, not a new product failure or a passing workflow result.
 No speculative `alpha`, `beta`, `rc`, `stable` or `legacy` tag is created.
 After stable verification remove a stale `next` unless a real newer prerelease channel is maintained; do not repoint it merely as a second stable alias.
 Exact RC pins remain unchanged by tag cleanup.
@@ -1876,6 +1889,7 @@ The channel mapping is exact:
 
 A required release check derives the expected channel from the package's exact SemVer and rejects disagreement among the manifest version, `publishConfig.tag`, `npm-release` environment request, explicit command-line `--tag`, authorized package coordinate and observed post-publication registry state.
 The check runs before human publication approval and again against the fresh registry result.
+For the initial scoped RC, the observed-state comparison follows the 3 October 2026 amendment in §2.29: `next` must select that RC, and `latest` may select the same RC without contradicting the explicitly requested `next` publication channel.
 Omitting `--tag` or relying on npm's implicit default is not an accepted release path even though the reviewed manifest supplies the same value defensively.
 
 For a `DIRECT_BOOTSTRAP` first RC, the explicit command is `npm publish ... --tag next`.
@@ -7140,8 +7154,9 @@ Any genuinely new publish attempt requires a newly created token, renewed exact 
 
 The outcome branches are normative:
 
-- **Success:** keep the selected `@hadden-industries/owlapi@0.1.0-rc.N` public under `next`; do not unpublish it as a probe and do not assign it to `latest`.
-  If npm unexpectedly created `latest`, execute and verify §2.29's one bounded corrective removal.
+- **Success:** keep the selected `@hadden-industries/owlapi@0.1.0-rc.N` public under `next`; do not unpublish it as a probe.
+  For the initial `0.1.0-rc.1`, retain `latest` when it selects the same qualified bytes, as accepted in §2.29.
+  Other tag changes require a separate decision.
 - **Authentication/2FA failure:** correct the account/session control and make a new attempt at the same reviewed coordinate only after reconfirming the artefact digest and obtaining renewed explicit authorization.
 - **Manifest/tarball/workflow failure before canonical-tag creation:** no draft or tag exists; return to the release gate, make the reviewable correction and create a new source candidate at the same still-unused version after fresh tag/ registry checks; do not mutate retained assets or weaken validation.
 - **Post-qualification evidence-persistence/tooling failure after canonical-tag creation:** only when §2.60's exact-artifact eligibility proofs all pass, keep the signed tag and original retained candidate and continue through the dedicated reconciliation workflow.
@@ -7203,7 +7218,7 @@ From a fresh npm cache and consumer directory, verify all of the following again
 ```text
 npm metadata exposes exactly the selected published @hadden-industries/owlapi@0.1.0-rc.N
 the next tag points exactly to that published scoped RC
-no latest tag exists
+for initial 0.1.0-rc.1, latest is absent or selects the same exact RC under the 3 October 2026 amendment
 exact scoped and native-alias installs resolve the expected public dependency closure; next points to that same RC
 the fresh lockless consumer graph is recorded and every difference from the locked release/SBOM graph is explained
 the registry integrity/tarball content agrees with the retained artefact
@@ -7228,12 +7243,17 @@ controlled-read retries and every external-mutation attempt/reconciliation are r
 the complete package-owned production closure is import-pure, its tree-shaking fixture passes, and package import, manager creation and local parsing produce no outbound request
 the @cyclonedx/cyclonedx-npm@6.0.1 tool/subject workspaces and graph reconciliation pass
 every Draft 2020-12 release record passes ajv@8.20.0 plus ajv-formats@3.0.1 validation
-the exact scoped native alias and direct scoped installs resolve the verified artifact; latest is absent and no unqualified-install fallback is relied on
+the exact scoped native alias and direct scoped installs resolve the verified artifact; both observed tags satisfy the accepted policy and no unqualified-install fallback is relied on
 the frozen gate-registry definition/results reconcile bidirectionally and contain no unresolved blocking state
 ```
 
 Re-download the registry tarball without relying on the release workflow's npm cache, compare its SHA-256 with `SHA256SUMS`, regenerate/compare the production dependency inventory against the retained §2.47 CycloneDX 1.6 SBOM, and rerun the strict §2.49 tarball lint, §2.50 material/notice reconciliation and exact §2.51 npm signature/attestation validation. Preserve and compare the fresh lockless consumer graph under §2.48, then rerun the required Ubuntu Node 22/24, four Windows/macOS portability, three Ubuntu Chromium/Firefox/WebKit, import-map document, dedicated-worker and isolated WebVOWL checks against the registry installation.
 Registry success text or matching metadata alone is insufficient.
+
+For the already-published `0.1.0-rc.1`, apply the owner-approved 3 October 2026 amendment rather than repeating the completed code/platform/browser/consumer suites above.
+The public tarball's exact SHA-256 and integrity match the retained candidate, so its existing qualification remains valid.
+Fresh scoped/alias installation, lock/entry-point/dependency resolution, registry signatures and cryptographic provenance were verified separately; see the publication record.
+This preserves the failed hosted tag-policy result and does not claim that the unchanged executable release-evidence schema or GitHub finalization passed.
 
 After those checks pass, generate `hadden-industries-owlapi-0.1.0-rc.1.release-evidence.json` from the verified workflow state, validate it with the exact §2.47 Ajv/Draft 2020-12 toolchain against the §2.40 schema, attach it to the draft and verify its recorded tarball/SBOM/checksum/tool identities.
 Then publish the draft GitHub release with release immutability enabled.
@@ -9983,7 +10003,8 @@ Shared credentials are prohibited; copyright, corporate stewardship and account 
 ### 31.32 A dormant `next` tag is misleading mutable state, not useful history
 
 npm distribution tags are named mutable pointers used by ordinary install resolution; immutable versions and retained release artefacts already preserve history.
-`next` is useful while it deliberately selects a live prerelease and `latest` is withheld.
+`next` is useful while it deliberately selects a live prerelease.
+For the accepted initial scoped RC, `latest` may identify the same RC; this does not make it a stable version.
 After production verification, leaving `next` on an older alpha or RC suggests an actively recommended alternate channel, while pointing both tags at the production release adds no information.
 Removing `next` until the next real prerelease keeps the registry's channel semantics honest without deleting any version.
 
@@ -10783,7 +10804,7 @@ The final architectural rules are:
 
 > **The public package is `@hadden-industries/owlapi`. Publish the fully qualified `0.1.0-rc.1` under `next`, including Phase 21/22, then verify the public artifact and each application's consumer contract. UO and WebVOWL may each use that accepted RC in production without stable `0.1.0`. Publication remains disabled during preparation and requires the existing exact-artifact approval. Historical unscoped alpha evidence stays unchanged; bare-name version history does not consume scoped coordinates.**
 
-> **Distribution tags name active channels rather than preserve history. The selected public scoped RC and later prereleases use `next`; production `0.1.0` first establishes `latest`; after stable verification, a stale `next` pointer is removed unless a real newer prerelease is maintained, rather than being duplicated onto production. Every tag change is separately authorized, recorded and verified, and `next` returns only with a genuine newer prerelease. Only the bad-release procedure may later move or remove `latest` to contain a defective production release.**
+> **Distribution tags name active channels rather than preserve history. The selected initial scoped RC uses `next`, and the 3 October 2026 amendment permits `latest` to identify that same RC. A later qualified stable release may advance `latest`; after stable verification, a stale `next` pointer is removed unless a real newer prerelease is maintained. Every tag change is separately authorized, recorded and verified. Consumer acceptance always binds an exact version and bytes.**
 
 > **The reviewed manifest and registry operation redundantly name the same SemVer-derived channel. Every prerelease has `publishConfig.tag=next` and an explicit `--tag next`; every accepted production has `publishConfig.tag=latest` and an explicit `--tag latest`. Any disagreement among version, manifest, `npm-release` environment request, command or observed registry state blocks publication.**
 
