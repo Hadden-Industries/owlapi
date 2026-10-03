@@ -1,0 +1,53 @@
+{
+  "recordType": "local-public-registry-verification",
+  "verifiedAt": "2026-10-02T23:52:14Z",
+  "result": "PASS",
+  "coordinate": "@hadden-industries/owlapi@0.1.0-rc.1",
+  "registry": "https://registry.npmjs.org/",
+  "tarballUrl": "https://registry.npmjs.org/@hadden-industries/owlapi/-/owlapi-0.1.0-rc.1.tgz",
+  "bytes": 262167,
+  "sha256": "4e18d8a1d2f41af0f31f0426a24d57ddfa25316fba6be550adf2edd6202cabf8",
+  "integrity": "sha512-uDv9Omh2l2zxAjpVeQi4UxXEad/cRiKQUJT5RhxR3WtaAjPL3gAoOha9dPRhH6o2zlBdeg50g8EIVQgtt8RGqA==",
+  "distTags": {
+    "next": "0.1.0-rc.1",
+    "latest": "0.1.0-rc.1"
+  },
+  "channelDecision": "Owner-approved documentation-only amendment of 2026-10-03; see ADR 0009.",
+  "execution": {
+    "mode": "LOCAL",
+    "node": "24.21.0",
+    "npm": "12.1.0",
+    "installScripts": "DISABLED",
+    "runtimeTestSuitesRerun": false,
+    "codeQualification": "REUSED_FOR_IDENTICAL_BYTES"
+  },
+  "scopedInstallation": {
+    "dependencyName": "@hadden-industries/owlapi",
+    "specifier": "0.1.0-rc.1",
+    "installedIdentityAndLockIntegrity": "PASS",
+    "sevenPublicEntryPointResolutions": "PASS",
+    "dependencyGraph": "PASS",
+    "signatureAudit": { "invalid": [], "missing": [] }
+  },
+  "aliasInstallation": {
+    "dependencyName": "owlapi",
+    "specifier": "npm:@hadden-industries/owlapi@0.1.0-rc.1",
+    "installedIdentityAndLockIntegrity": "PASS",
+    "sevenPublicEntryPointResolutions": "PASS",
+    "dependencyGraph": "PASS",
+    "signatureAudit": { "invalid": [], "missing": [] }
+  },
+  "provenance": {
+    "cryptographicVerification": "PASS",
+    "sourceCommit": "59131be0c1dc3a634e8433b06d2949051c051c0a",
+    "sourceRef": "refs/heads/main",
+    "workflow": ".github/workflows/release.yml",
+    "subjectSha256": "4e18d8a1d2f41af0f31f0426a24d57ddfa25316fba6be550adf2edd6202cabf8",
+    "runId": "37072579336",
+    "runAttempt": 1
+  },
+  "originalWorkflowConclusion": "failure",
+  "originalWorkflowFailure": "The frozen registry verifier prohibited latest; this rule is superseded by the owner's documentation amendment.",
+  "githubReleaseFinalization": "PENDING",
+  "consumerProductionAcceptance": "SEPARATE_CONSUMER_DECISION"
+}
