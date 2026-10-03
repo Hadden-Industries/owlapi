@@ -1,5 +1,15 @@
 # Extract and Publish the `owlapi` Core Module from WebVOWL
 
+> **4 October 2026 rc.2 and release-independence amendment:** the next feature candidate is `@hadden-industries/owlapi@0.1.0-rc.2`, before stable `0.1.0`, under the integrated [Java-parity plan](plans/0.1.0-rc.2-java-parity.md).
+> It adds the selected query/search, change/transformation, Manchester rendering, Turtle/OWL/XML storage, EL/QL/RL profile and syntactic-locality programme to the existing Phase 21/22 foundations.
+> For every owlapi release, including stable and corrective releases, WebVOWL and Universal Ontology acceptance, adoption, migration, deployment and sign-off are non-blocking; each application may incorporate functionality at its own pace.
+> This supersedes conflicting consumer prerequisites in the historical phase prose, acceptance catalogues and completion checklists below and in the linked Phase 21/22 and scoped-publication plans.
+> Producer-owned semantic, package, browser, security, rights, performance, exact-artifact and provenance qualification remains mandatory.
+> The owner's channel clarification makes `latest` follow the most recent public release, including prereleases; rc.2 publication advances both `next` and `latest` under the same release authorization.
+> This supersedes older rc.1-only allowances and prohibitions on advancing `latest` for an RC; unpublished candidates are not releases.
+> See [§2.70](#release-independence) for ownership and [the executable migration plan](plans/0.1.0-rc.2-java-parity.md#72-executable-gap-to-close-before-rc2-qualification) for the still-required gate changes.
+> This planning amendment changes neither executable release controls nor historical results, and does not approve implementation or publication.
+
 The owner's 2 October 2026 consumer-repair instruction is implemented through the [bounded RDF compatibility plan](plans/2026-10-02-rdf-consumer-compatibility.md) and [Java-style parser metadata contract](compatibility/rdf-parser-metadata.md).
 Consumer requests remain subject to owlapi's Java OWLAPI responsibility; VOWL source ledgers, projection and admission policy remain consumer work.
 These additions require fresh candidate qualification and do not enable publication.
@@ -1605,10 +1615,15 @@ Record actual capabilities and authority without inferring package access from G
 ### 2.29 Decision: treat scoped distribution tags as release channels
 
 Every dist-tag operation targets `@hadden-industries/owlapi` and requires the existing authorization and before/after verification.
-Publish the selected `0.1.0-rc.1` under `next`; `latest` may be absent or identify that same RC.
-The owner accepted this policy amendment on 2026-10-03 after the authorized publication produced both tags for byte-identical qualified code; see [ADR 0009](adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md).
+The owner clarified on 2026-10-04 that `latest` identifies the most recently publicly released owlapi version, including prereleases as well as stable releases.
+The rc.2 release therefore sets `next = latest = 0.1.0-rc.2`; subsequent public releases advance `latest` as part of the existing exact-release authorization, without an additional version-specific tag approval.
+RCs retain `next` as their prerelease channel.
+The earlier 2026-10-03 rc.1-only allowance is historical and superseded by this standing policy; see [ADR 0009](adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md).
 `latest` selects npm's default installation target and does not certify stability or consumer acceptance.
-The later separately accepted stable `0.1.0`, or the existing reviewed same-surface contingency, may move `latest` after its own qualification.
+The later authorized stable `0.1.0`, or the existing reviewed same-surface contingency, advances `latest` in the same way.
+Npm's [dist-tag semantics](https://docs.npmjs.com/cli/v12/commands/npm-dist-tag/) do not compute the target from publication timestamps; publishing with `--tag next` does not itself guarantee an update to `latest`.
+The release procedure must establish and verify the required target with the native npm operation as needed, retain before/after evidence, and reconcile an interrupted tag update without republishing package bytes.
+An unpublished retained or staged candidate is not eligible for `latest`; existing failed-release recovery remains applicable to a withdrawn or defective public release.
 An accepted RC may nevertheless be used by UO and WebVOWL in production under each application's exact artifact/consumer contract.
 
 The recommended install is an exact native alias, initially `npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@0.1.0-rc.1"`.
@@ -1617,8 +1632,8 @@ A direct scoped install is also valid.
 Never prescribe bare `npm install owlapi` or rely on an unqualified install's fallback behavior when `latest` is absent.
 Verify explicit scoped tag state and exact-coordinate installation instead.
 
-For this initial RC, retain the observed `latest` tag when it identifies the same exact RC as `next`; do not remove it solely because the version is a prerelease.
-Any conflicting tag target requires a separate decision and verified correction.
+Retain rc.1's historical tag observations, and do not remove a current `latest` target solely because its version is a prerelease.
+A missing or stale `latest` target must be reconciled within the authorized release; an unexpected concurrent target requires investigation before correction.
 The additional tag alone does not require new code, a replacement release workflow, or repeat code qualification.
 Preserve the unchanged artifact and its existing proof, and complete outstanding registry/release verification.
 The original workflow's rejection of `latest` remains an accurately recorded failure under the superseded rule, not a new product failure or a passing workflow result.
@@ -3330,6 +3345,31 @@ Once the RC sequence begins, corrections advance the RC component rather than re
 No calendar deadline forces production publication while a material finding remains unresolved.
 
 ---
+
+<a id="release-independence"></a>
+
+### 2.70 Decision: qualify owlapi releases independently of application adoption
+
+The owner selected `@hadden-industries/owlapi@0.1.0-rc.2` on 4 October 2026 as the next pre-`0.1.0` feature candidate.
+The [rc.2 dossier](plans/0.1.0-rc.2-java-parity.md) synthesizes the supplied Java-parity report against current source, retains R2 assurance and defines nine traceable implementation slices.
+It extends the intended stable surface before Phase 20 freezes that contract; it does not permit feature expansion after the freeze or replace rc.1 artifacts.
+
+No owlapi release or release-finalization decision depends on WebVOWL or Universal Ontology accepting, installing, migrating to or deploying the package.
+Each application owns its exact pin, integration evidence, production acceptance and timetable.
+Prepublication or postpublication application exercises are advisory to owlapi, including when missing, delayed, failed or bound to an older version.
+Publication remains gated by owlapi's own selected compatibility contract, supported environments, security/rights/resource controls and exact retained-artifact/registry/provenance/immutable-release evidence.
+Producer-owned installed-package browser and worker checks remain mandatory without requiring either application.
+Pinned, rights-cleared consumer-origin ontology fixtures may remain producer regression inputs; passing them does not assert application acceptance.
+
+An application report that demonstrates a violation of a supported producer requirement is handled as a producer defect using a reproducible library-level case.
+An unrelated application failure or missing adoption decision has no upstream veto.
+Do not manufacture a consumer PASS or use broad error suppression to implement this separation.
+
+This decision supersedes every contrary release dependency in Phases 19–22, including Phase 20 entry/completion, the Phase 21 consumer checkpoint and Phase 22 WebVOWL/UO acceptance gates.
+Historical catalogues, receipts, approved adaptations and source bindings remain retained under their original identities.
+Before qualifying a successor, implement the rc.2 plan's explicit separation of workflow dependencies, aggregate/receipt inventories, prepublication assertions, schemas and gate prerequisites.
+Preserve producer portions of mixed requirements and require negative tests proving that actual producer failures still block.
+Documentation alone neither changes those validators nor makes an old failed result pass.
 
 ## 3. Current Architecture (What Exists Today)
 
@@ -5980,23 +6020,26 @@ physical legacy deletion
         ↓
 standalone `@hadden-industries/owlapi@0.1.0-rc.1` package / `next` release
         ↓
-public RC verification / application production eligibility under each consumer's own gates
+public rc.1 verification / independent optional application adoption
         ↓
-production-contract verification / production corrections / conditional `0.1.0-rc.N` only when it adds material public evidence
+selected Java-parity feature programme / producer-qualified `0.1.0-rc.2` under `next`
         ↓
-public `@hadden-industries/owlapi@0.1.0` / normally `latest` / qualified later WebVOWL stable-version adoption
+production-contract freeze / corrections / further RC only for material public evidence
+        ↓
+producer-qualified public `@hadden-industries/owlapi@0.1.0` / normally `latest`
 ```
 
-Each application's production acceptance proceeds independently after public-RC verification; neither application's production deployment is a prerequisite for the later library release.
+Each application's evaluation and production acceptance proceeds independently after public-RC verification; neither application's acceptance or adoption is a prerequisite for any library release or finalization.
 
 Each numbered phase **MUST** complete its Definition of Done and applicable learning or acceptance gate, then pause for the requested Git checkpoint.
 The next phase **MUST NOT** begin until that checkpoint is committed and the repository owner explicitly instructs the implementation to proceed.
 
 Phase 20 is not another ingestion-format migration or a semantic feature phase.
 It follows the same checkpoint rule because it freezes the production 0.1 public contract, corrects only demonstrated failures in the accepted surface, and performs external publication.
-It begins only after the Phase 19 scoped RC publication checkpoint and completes with verified stable `0.1.0` and WebVOWL's later exact stable-version adoption, except that §2.33 replaces that coordinate with the first corrective patch only when published `0.1.0` fails mandatory post-publication verification.
+It begins after the selected rc.2 feature programme and producer release checkpoint and completes with verified stable `0.1.0`, except that §2.33 replaces that coordinate with the first corrective patch only when published `0.1.0` fails mandatory post-publication verification.
+WebVOWL's and Universal Ontology's later exact-version adoption remain separately owned, non-blocking work.
 Neither Phase 20 nor its stable-version upgrade gates production use of an RC already accepted by the application.
-The separate follow-on plan owns subsequent semantic feature work.
+The [rc.2 follow-on plan](plans/0.1.0-rc.2-java-parity.md) owns the selected semantic additions before that freeze; later unselected families need a separate scope decision.
 
 For v1, the following are normatively classified as major ontology-ingestion migrations:
 
@@ -7010,6 +7053,9 @@ Also create and verify the pre-rewrite/post-reconstruction §2.65 encrypted-back
 
 #### 17.26.2 Deterministic artefact gate
 
+For successor releases, apply §2.70: application-owned WebVOWL/UO acceptance steps in this historical rc.1 procedure are advisory.
+Preserve mandatory producer package, dependency-ownership, installed-runtime/browser and pinned-fixture checks when migrating the executable gate; do not replace them with an unavailable application report.
+
 The package is published from an exact reviewed tarball, never directly from an unreviewed working directory.
 Before the sequence begins, prepare the exact version and all version-matched release documentation in a dedicated release pull request.
 `npm version <selected-0.1.0-rc.N> --no-git-tag-version` may be used to synchronize the manifest and lockfile, but its complete diff is reviewed and accepted through that pull request.
@@ -7184,6 +7230,10 @@ For the initial scoped RC, remove `next` when no known-good prerelease exists, d
 Do not use unpublish as routine rollback or mutate the draft/immutable artefact to pretend the original write did not occur.
 
 #### 17.26.4 Pre-registry decoupling, post-publication verification, WebVOWL cutover and custody
+
+This section retains the original extraction/cutover procedure and its evidence boundaries.
+Under §2.70, future library release completion depends on producer registry/artifact verification, while WebVOWL's or UO's dependency cutover and application acceptance proceed independently.
+Neither application must adopt rc.2 or stable `0.1.0` for the producer to release or finalize those versions.
 
 The following retained 19D1 procedure is historical unscoped-alpha evidence, not a scoped RC prerequisite to rerun or an RC qualification result.
 Download the exact candidate artefact selected by `docs/release/alpha-reconciliation-control.json` from source workflow run `33160042447`, attempt `1`, artefact ID `9682090118`, and retain the original GitHub Actions ZIP.
@@ -7383,11 +7433,13 @@ Promotion to the normal production `@hadden-industries/owlapi@0.1.0` target is a
 
 ### 17.27 Phase 20 — qualify and publish production-recommended `@hadden-industries/owlapi@0.1.0`
 
-Phase 20 begins only after Phase 19D2 has published and verified the accepted RC—normally `@hadden-industries/owlapi@0.1.0-rc.1`, or solely after §2.60 abandonment its next prerelease—and WebVOWL consumes that exact public-registry package; the Phase 19 checkpoint must also have been committed and pushed.
-It runs release work in `Hadden-Industries/owlapi` and consumer verification in `Hadden-Industries/webvowl`.
+Phase 20 begins after the selected `@hadden-industries/owlapi@0.1.0-rc.2` programme and producer release checkpoint have been implemented, qualified and verified; the accepted source checkpoints must also have completed their authorized Git delivery.
+It runs producer release work in `Hadden-Industries/owlapi`.
+WebVOWL and Universal Ontology need not consume or accept that RC before Phase 20 begins or completes; their optional verification and adoption remain separate under §2.70.
 
 This is a stable-library release phase after the scoped public RC.
-The approved Phase 21/22 closure, mutation, merger and storage surface is already included and remains subject to its lifecycle acceptance gates.
+The approved Phase 21/22 foundations and selected rc.2 additions form the intended stable surface and remain subject to producer qualification.
+Application-acceptance portions of older lifecycle gates are superseded by §2.70.
 UO and WebVOWL may each complete production acceptance on the public RC before Phase 20; this phase does not add a stable-version prerequisite to either application.
 References below to WebVOWL's `0.1.0` cutover describe later adoption of the stable library, not its first permission to run in production.
 
@@ -7457,13 +7509,14 @@ A later provider health outage is reported separately, and an explicitly unverif
 
 #### 17.27.2 Stabilize the accepted capability surface
 
-Run the complete package suite and the exact public-registry WebVOWL consumer suite against the RC.
+Run the complete producer package and installed-registry suites against the RC.
+The exact public-registry WebVOWL suite is advisory and does not control producer release acceptance.
 Each failure is handled test-first:
 
 1. preserve the minimal failing ontology, environment, public call, and observed result;
 2. prove the regression fails against the packed/installed package boundary;
 3. implement the smallest correction without adding a capability family;
-4. rerun focused, Java differential or standards conformance, full package, resource/security, and WebVOWL consumer gates as applicable; and
+4. rerun focused, Java differential or standards conformance, full package, resource/security and producer browser gates as applicable, retaining any optional consumer result separately; and
 5. update expected differences, provenance, compatibility documentation, and `CHANGELOG.md`/release notes only when the correction changes an observable result or controlled deviation, and classify its §2.27 SemVer consequence before accepting it.
 
 After all corrections, run the §2.27 public-observation decision.
@@ -7572,7 +7625,8 @@ Build one retained `hadden-industries-owlapi-0.1.0.tgz` from the reviewed produc
 Generate its §2.47 validated reproducible CycloneDX 1.6 production-only library SBOM and the exact §2.52 `SHA256SUMS`, compare the package/SBOM, locked/lockless graph, strict-lint and third-party-material outputs with the accepted RC when one exists, otherwise with the latest accepted RC and the recorded path-decision diff; account for every difference.
 In the RC path, only the closed promotion- envelope differences above are permitted.
 In the direct path, the retained stable tarball is itself the frozen production candidate.
-Run the complete deterministic-artefact, required multi-engine Playwright and isolated WebVOWL-candidate gates against that production tarball before requesting separate authorization for the registry write.
+Run the complete producer deterministic-artefact, installed-package and required multi-engine Playwright gates against that production tarball before requesting separate authorization for the registry write.
+An isolated WebVOWL-candidate result is advisory under §2.70 and cannot block that authorization merely because the application has not accepted or adopted the version.
 
 After separate `npm-release` environment authorization, stage the exact retained tarball through §2.53 as `@hadden-industries/owlapi@0.1.0` with `--tag latest`, record the returned stage ID and stop before promotion.
 An interactively authenticated maintainer must inspect and download that immutable candidate, verify the fixed `latest` tag and all metadata, prove its SHA-256 is byte-for-byte identical to the retained tarball, rerun the required tarball gates and bind the review evidence to the captured source commit.
@@ -7644,7 +7698,7 @@ Inspect the deployed bundle to prove no removed package source or duplicate pars
 
 #### 17.27.6 Authoritative Phase 20 acceptance catalogue
 
-Phase 20 and this implementation plan complete only when every stable requirement below reconciles under §2.62 and has a permitted final result:
+Phase 20's producer release completes only when every active producer requirement below reconciles under §2.62 and has a permitted final result, with application-owned requirements separated under §2.70 and the rc.2 executable migration plan:
 
 - <a id="p20-release-001"></a> **`P20-RELEASE-001` — Accepted production coordinate.**
   Normally, public `@hadden-industries/owlapi@0.1.0` exists as the first Hadden Industries production release and either it is the accepted production cutover artefact or the separately recorded §2.33 branch has deprecated it and made the first fully verified corrective patch the `latest` production cutover artefact; solely if §2.60's post-tag/prepublication abandonment branch was activated, `0.1.0` remains unpublished and the next available fully gated same-surface patch—normally `0.1.1`—is the first production release and exact cutover.
@@ -7717,8 +7771,27 @@ Phase 20 and this implementation plan complete only when every stable requiremen
   The follow-on capability and W3C test-suite reporting programmes are linked as independent future work rather than represented as unfinished work in this plan.
   **Constraints:** §§2.11, 17.27, 28.
 
-Pause for the requested Git checkpoint before the production external publication and again after the final package/WebVOWL evidence is committed.
-No required work remains in this plan after that final checkpoint.
+Pause for the requested Git checkpoint before the production external publication and again after the final producer package evidence is committed.
+No required producer release work remains after that checkpoint; each application's optional adoption continues under its own plan.
+
+<a id="rc2-java-parity"></a>
+
+### 17.28 Selected pre-stable programme — Java parity in `0.1.0-rc.2`
+
+Execute the [integrated rc.2 implementation plan](plans/0.1.0-rc.2-java-parity.md) before Phase 20's stable-contract freeze.
+It preserves the existing R2 assurance level, independent Java/spec oracles, test-first implementation, substantial-work-package reviews and full frozen-candidate verification.
+Its nine slices cover contract/gate reconciliation, direct queries, closure/search, transactions, transformations, Manchester rendering, Turtle/OWL/XML storage, EL/QL/RL profiles and locality/integrated qualification.
+All selected families target rc.2; any reduction needs an explicit scope revision.
+The plan's IDs are local to that programme and do not repurpose existing phase 23 capability state or historical Phase 19–22 gate identities.
+
+Use the already implemented lifecycle APIs as foundations and regression obligations.
+Resolve exact Java members, adaptations, new public namespaces, dependency reuse and producer/application gate separation before their dependent implementation.
+The current release validator requires both prepublication consumer reports, so executable reconciliation is an explicit work item rather than an assumed consequence of this prose.
+No package version, public API completion flag, release tag or consumer pin changes during this planning revision.
+
+Library qualification, release approval, registry verification and immutable-release closure must all be attributable to exact rc.2 inputs and artifacts.
+Optional consumer pilots can provide feedback at any slice without becoming release dependencies.
+Publication and later stable qualification proceed when producer gates pass even if both applications remain on rc.1.
 
 ## 18. Testing and Verification Strategy
 
@@ -9276,6 +9349,10 @@ Retain GitHub's authenticated run-review history with the gate job timeline, kee
 
 ## 28. Scope: Initial Release vs Future Work
 
+The historical rc.1 inventories below remain the first-candidate baseline.
+The next selected candidate is rc.2 with the additive scope in [§17.28](#rc2-java-parity); those additions precede stable `0.1.0` and supersede older statements deferring them beyond stable.
+For all releases, §2.70 supersedes application-acceptance prerequisites while retaining producer qualification.
+
 ### 28.1 `@hadden-industries/owlapi@0.1.0-rc.1` package target
 
 **In scope:**
@@ -9338,8 +9415,9 @@ It remains rigorously tested internal source because it:
 - supports future RDF serializers without coupling to any format;
 - mirrors normative OWL architecture.
 
-The follow-on plan adds `RDFXMLStorer` on top of this internal mapping and RDF/XML serialization. No translator or RDF/JS factory becomes public merely because a future storer uses it.
-Turtle and other concrete writer families remain later optional capabilities.
+The Phase 22 lifecycle work adds RDF/XML storage on top of this internal mapping and RDF/XML serialization.
+No translator or RDF/JS factory becomes public merely because a storer uses it.
+The selected rc.2 programme adds Turtle and OWL/XML storage before stable `0.1.0`; unselected concrete writer families remain future work.
 
 ---
 
@@ -9699,6 +9777,10 @@ The normalized checked-in form assigns each row to its precise subset; this summ
       When exact-artifact reconciliation is used, also record its reviewed control, original candidate/preflight artefact IDs and digests, failed source job, successful source qualifications, descendant promotion commit, new same-run transport artefact, complete tarball-byte reproduction and distinct canonical-source/publication provenance.
 
 ### Production `0.1.0` completion
+
+Under the 4 October 2026 §2.70 amendment, application-adoption rows and the application portions of mixed rows below are downstream checkpoints, not library-release conditions.
+The rc.2 plan identifies the required executable catalogue/schema/validator migration; retained historical gate definitions are not silently rewritten or marked passed by this planning revision.
+The stable feature baseline includes the selected rc.2 programme before freeze.
 
 **Authoritative requirements:** `P20-RELEASE-001`, `P20-PATH-001`, `P20-CHANNEL-001`, `P20-EVIDENCE-001`, `P20-PROVENANCE-001`, `P20-PACKAGE-001`, `P20-DOCUMENTATION-001`, `P20-METADATA-001`, `P20-RUNTIME-001`, `P20-PORTABILITY-001`, `P20-CI-001`, `P20-LATE-TAG-001`, `P20-MANUAL-001`, `P20-UNTRUSTED-001`, `P20-BROWSER-001`, `P20-RESOURCES-001`, `P20-GATES-001`, `P20-TOOLCHAIN-001`, `P20-DEPENDENCIES-001`, `P20-WEBVOWL-001`, `P20-WEBVOWL-DEPENDENCIES-001`, `P20-BACKUP-001`, `P20-GOVERNANCE-001` and `P20-FUTURE-001`.
 The normalized checked-in form assigns every row to one or more of these IDs before any production qualification result can be accepted.

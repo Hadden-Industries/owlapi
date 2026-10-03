@@ -1,5 +1,12 @@
 # Publish the scoped owlapi RC and qualify its production consumers
 
+> **4 October 2026 successor amendment:** [rc.2 Java parity](0.1.0-rc.2-java-parity.md) is the next selected pre-`0.1.0` programme.
+> The [release-independence decision](../implementation-plan.md#release-independence) applies to every owlapi release and finalization: producer qualification remains mandatory; WebVOWL/UO application acceptance and adoption are independent and non-blocking.
+> Slices D/E and steps 6–7's application work remain consumer-owned activities at their chosen pace, not publication or plan-completion conditions for the producer.
+> This overrides contrary consumer prerequisites below without rewriting rc.1 evidence or executable controls.
+> Successor preparation must implement the gate/schema/workflow reconciliation identified in the rc.2 plan, including separation of producer tests from application reports.
+> The owner's channel clarification makes `latest` follow the most recent public release, including RCs; the authorized rc.2 release therefore sets both `next` and `latest` to `0.1.0-rc.2` without an additional tag-specific approval gate.
+
 **Status:** Accepted implementation specification, recorded 2026-09-30.
 The qualified scoped RC was published on 2026-10-02 UTC (2026-10-03 in the owner's timezone), and fresh registry installation/signature/provenance verification passed.
 GitHub release finalization remains pending.
@@ -8,7 +15,7 @@ The owner amended the distribution-tag policy on 2026-10-03; see the [publicatio
 **Authority:** [ADR 0009](../adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md), the [main implementation plan](../implementation-plan.md), the [lifecycle plan](../ontology-lifecycle-capability-implementation-plan.md), and UO's canonical [specification](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/specs/2026-08-22-self-contained-owl-import-closure-contract.md), [policy](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/import-closure/contract.v1.json), and [implementation plan](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/plans/2026-08-22-self-contained-owl-import-closure.md).
 
 The approved change selects a different registry identity and explicitly permits a qualified RC in UO and WebVOWL production after each application's own acceptance.
-It preserves the library's semantic, Java parity, losslessness, security, provenance and consumer gates.
+It preserves the library's semantic, Java parity, losslessness, security and provenance gates; application gates govern only their respective consumers under the 4 October amendment.
 The implementation changes metadata, generated views and release qualification without changing runtime semantics or release authority.
 A prepared source candidate is not a public or accepted RC.
 
@@ -20,7 +27,7 @@ A prepared source candidate is not a public or accepted RC.
 | Real npm package name               | `@hadden-industries/owlapi`                                                                         |
 | Registry                            | `https://registry.npmjs.org/`                                                                       |
 | Selected first public version       | `0.1.0-rc.1`                                                                                        |
-| Publication channel                 | `next`; `latest` may also identify the same exact initial RC                                        |
+| Publication channel                 | RCs use `next`; `latest` follows the most recent public release, including RCs                      |
 | Recommended consumer dependency key | `owlapi`                                                                                            |
 | Exact dependency value              | `npm:@hadden-industries/owlapi@0.1.0-rc.1`                                                          |
 | UO dependency section               | `devDependencies`                                                                                   |
@@ -58,6 +65,8 @@ Do not add duplicate exports, forwarding modules, wrappers, API aliases or a sec
 Change `package.json.name` and the corresponding root package-name entries in `package-lock.json` to `@hadden-industries/owlapi` while retaining the selected exact RC version.
 Preserve the dependency graph, export targets, engines, license, source layout and repository URLs unless a separately accepted change requires otherwise.
 Retain `publishConfig.access=public`, `publishConfig.registry=https://registry.npmjs.org/` and `publishConfig.tag=next`.
+For successor RCs, include the native npm operation needed to advance `latest` to the same published version and verify both tags within the already authorized release procedure.
+Do not assume that `--tag next` updates `latest`, or require a second approval solely to apply the standing channel policy.
 Do not replace the version with `0.1.0` merely to permit UO or WebVOWL production use.
 
 Update `util/generate-java-api-surface.mjs` and its validations so the generated package identity and canonical public specifiers use the scoped manifest identity.
@@ -133,12 +142,14 @@ Use a disposable consumer with the exact native alias, an empty npm cache, contr
 Verify scoped installed name/version, registry URL, integrity and public namespace resolution before invoking any consumer operation.
 Source and retained-tarball modes remain clearly labelled prepublication evidence and cannot satisfy public-registry acceptance.
 
-Before publication, run Phase 21/22 parity, both storage formats, strict reconstruction, offline reload, installed boundary, browser, WebVOWL and all four pinned July ontology checks against the retained scoped candidate.
+Before publication, run producer-owned Phase 21/22 parity, both existing storage formats, strict reconstruction, offline reload, installed boundary, browser and all four reproducible pinned July ontology checks against the retained scoped candidate.
+WebVOWL application qualification is advisory under the 4 October amendment.
 Run the real UO contract suite in isolation when its runner is available; a missing runner or input is an evidence gap, not a passing mock or consumer acceptance.
-Upstream installed-composition and pinned-July proofs remain publication prerequisites, while completion of UO's own application and public-registry acceptance follows publication and gates UO production.
+Producer-owned installed-composition and reproducible pinned-July proofs remain library requirements; they do not depend on UO application acceptance or its maintained checkout.
+UO's own application and public-registry acceptance occurs when UO chooses to adopt and gates only UO production.
 An unavailable downstream acceptance runner does not by itself prevent publication of an otherwise fully qualified RC intended to enable that validation.
-After publication and artifact verification, run UO's remote-fetch/import-closure tests against the public installed artifact, then its full consumer acceptance suite.
-Do not make these post-publication results prerequisites for the first publication of that same RC.
+When UO elects to adopt after publication and artifact verification, run its remote-fetch/import-closure tests against the public installed artifact, then its full consumer acceptance suite.
+Do not make these results prerequisites for any producer release or finalization.
 
 UO's generation path owns catalog-first resolution followed by authorized remote retrieval, finite retries/redirects, cache policy and import-closure materialization.
 The completed standalone output must verify offline with zero loader/network calls, no imports, root identity, root-only annotations, the exact axiom union and preserved anonymous-individual relationships.
@@ -164,7 +175,7 @@ Record production acceptance and the RC's support status under `SECURITY.md` bef
 
 Once these gates pass, WebVOWL may use the exact RC in production without waiting for stable `0.1.0` or Phase 20.
 UO acceptance cannot qualify WebVOWL, and neither application's incomplete acceptance blocks production acceptance of the other.
-Do not make post-publication WebVOWL acceptance a prerequisite for publishing the same RC.
+Do not make prepublication or postpublication WebVOWL acceptance a prerequisite for any owlapi release or its finalization.
 The later stable-version adoption is a separately qualified upgrade; it does not delay accepted RC production use or extend the RC's security-support window.
 The target/error migration audit may legitimately report `NO_OBSOLETE_USAGE`; that eliminates a no-op source migration, not the registry dependency cutover or application acceptance.
 
@@ -180,7 +191,9 @@ The target/error migration audit may legitimately report `NO_OBSOLETE_USAGE`; th
    A dry run or organization membership does not prove write authority.
    Configure and verify the exact repository/workflow/environment trusted publisher when supported; use no placeholder publication or silent mode fallback.
 4. Obtain the existing exact artifact/publication authorization, follow late signed-tag and protected-environment ordering, and publish the retained artifact with public access under `next`.
-   Require `next` to identify the selected RC; `latest` may be absent or identify that same RC.
+   Require both `next` and `latest` to identify the selected publicly released RC under the 4 October policy.
+   Establish and verify `latest` through the native npm tag operation when publication under `next` does not do so; this channel update is covered by the same release authorization.
+   The initial rc.1 record retains its actual observed tag state and original verification history.
    Retain the existing ambiguous-write reconciliation and bootstrap credential removal controls.
    In the direct-bootstrap workflow, only attempt 1 may execute the credential-bearing npm write.
    If that write has an ambiguous response, or later verification fails, rerun failed jobs to perform read-only registry verification of the retained bytes; do not rerun the entire workflow.

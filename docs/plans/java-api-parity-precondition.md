@@ -1,10 +1,17 @@
 # Java API Parity Precondition Implementation and Reconciliation Plan
 
+> **4 October 2026 scope amendment:** this document retains the Phase 21 foundations and their rc.1 evidence.
+> The next selected programme is [Java parity for rc.2](0.1.0-rc.2-java-parity.md), before stable `0.1.0`.
+> Under the [release-independence decision](../implementation-plan.md#release-independence), WebVOWL/UO acceptance, migration and sign-off are not prerequisites for any owlapi release or finalization.
+> Historical consumer-checkpoint dependencies below are superseded for current release decisions; target/error parity, installed-package semantics and existing approved adaptations remain producer requirements.
+> The rc.2 plan owns the executable gate/schema migration; this amendment does not change historical records or claim that current validators already enforce the new policy.
+
 > **For agentic workers:** Execute this plan inline, test-first, and one task at a time.
 > Canonical pre-integration development is authorized on the dedicated lifecycle branch before `0.1.0`; release acceptance is not.
 > Do not change package configuration, create a release, publish, or commit without the approval normally required by this repository.
 
-**Goal:** Establish the Java-parity guard and the exact public document-target and storage-error foundations required by the import-closure lifecycle without introducing the proposed JavaScript-only `StringDocumentTarget.getText()` member or `UnrepresentableOntologyError` type, and make the corresponding WebVOWL consumer migration an explicit, verified prerequisite.
+**Original rc.1 goal:** Establish the Java-parity guard and the exact public document-target and storage-error foundations required by the import-closure lifecycle without introducing the proposed JavaScript-only `StringDocumentTarget.getText()` member or `UnrepresentableOntologyError` type, with the then-required WebVOWL consumer migration evidence.
+Future library qualification preserves the target/error contract independently of application adoption.
 
 **Architecture:** A closed compatibility decision ledger records every public first-release deviation from pinned Java OWLAPI 5.5.1.
 `StringDocumentTarget` retains text in private state, exposes Java's `toString()` member, and accepts complete replacement only through a package-private storage seam.
