@@ -28,7 +28,8 @@ This observation does not establish that every npm first publication behaves tha
 The owner accepted keeping both tags on 2026-10-03 and limited the resulting changes to documentation, with no extra tests of the unchanged code.
 The accepted state is `next = 0.1.0-rc.1`, with `latest` absent or equal to `0.1.0-rc.1`.
 No tag correction, replacement package, republish, signed-tag change or replacement release workflow is required for this state.
-The original source-bound approval records and executable validators remain unchanged historical evidence.
+The original source-bound approval records remain retained at the signed release tag; the executable validators remain unchanged.
+The working source's rights-inventory hash is refreshed for the approved README amendment and does not replace the published RC's original approval record.
 
 `latest` makes this RC the default scoped installation target.
 It does not turn the RC into a stable version or replace exact consumer pins and acceptance.

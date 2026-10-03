@@ -4,6 +4,7 @@
 Its public concepts deliberately resemble the Java OWLAPI where that makes the API familiar, while its I/O, asynchronous loading, module packaging, and RDF/JS integration follow JavaScript conventions.
 
 > **Published release candidate:** `@hadden-industries/owlapi@0.1.0-rc.1` is available on npm under `next` and `latest`, including the approved import-closure lifecycle capabilities.
+> The manifest and release tooling select this scoped identity; qualification and publication follow the [scoped-publication plan](./docs/plans/scoped-npm-publication.md).
 > Registry bytes, installations, signatures and provenance are verified; GitHub release finalization remains pending in the [publication record](./docs/provenance/releases/0.1.0-rc.1/publication-status.md).
 > `latest` is npm's default installation target and does not imply a stable version or consumer acceptance.
 > UO and WebVOWL may each use this exact RC in production after artifact verification and their own full consumer acceptance; `0.1.0` is not a prerequisite for either application.
