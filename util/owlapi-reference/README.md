@@ -8,6 +8,34 @@ The observations justify the tests for inverse properties and imports.
 The [metadata contract](../../docs/compatibility/rdf-parser-metadata.md) records retained JavaScript policies and deliberate differences.
 Raw observations belong in external qualification evidence rather than being regenerated as test expectations.
 
+## Local runtime bundle experiment
+
+`reference-bundle.mjs` implements the residual local relocation boundary from [the input-aware CI plan](../../docs/plans/2026-10-03-ci-input-aware-qualification.md).
+Maven's native `mdep.localRepoProperty` replaces repository prefixes but leaves reactor target paths and consumer placeholders to be handled.
+This module admits a bounded directory payload and produces the existing consumer's classpath format; it does not resolve Maven dependencies, parse archives or execute Java classes.
+
+The closed schema requires a local experiment purpose, `NOT_CLEARED` redistribution, exact upstream commit/tree, an input-observation record digest, ordered ordinal JAR paths and notice files with byte counts and SHA-256 digests.
+The caller separately supplies the expected manifest, inventory, source and input-record identities.
+Those expectations must come from retained independent observations, never be derived from the downloaded manifest during admission.
+The observation digest is not a deployable compatibility key: complete native plugin/build inputs and the hosted environment policy still require qualification.
+
+`verifyReferenceBundle({ bundleDirectory, expected })` verifies without writing.
+`materializeReferenceBundle({ bundleDirectory, destination, expected })` verifies all bytes first, then copies those same in-memory bytes to a newly created private directory.
+Its return value names `owlapi-runtime-classpath.txt`; the experiment operator places that file at the pinned checkout's existing consumer location.
+No original absolute classpath, Git checkout, Maven cache, harness classes or comparison verdict belongs in the payload.
+Current harnesses still compile and the selected comparisons still run.
+
+Manifest bytes are limited to 256 KiB, individual files to 64 MiB, total payload to 128 MiB, inventory to 512 files and runtime to 256 JARs.
+Admission rejects missing/extra files, reordered or duplicate runtime paths, escaping or aliased paths, links including Windows junctions, hard-linked files and content mismatches.
+The caller owns a private, quiescent namespace and an existing private destination parent; filesystem checks are not a sandbox against a concurrent local writer.
+An existing destination is preserved and refused.
+A write failure may leave a new partial destination; the caller retains diagnostics and disposes of that task-owned directory before starting a fresh attempt.
+
+This local experiment provides no authenticated producer, rights clearance, cross-image equivalence, hosted receipt, seeding or shared reuse.
+CI continues building the pinned Java reference normally.
+Public upload and activation retain the plan's separate gates.
+Synthetic integrity fixtures in the module's unit tests are not native graph or Java behavioral evidence.
+
 This directory is development/test tooling only.
 It is never imported by the package production graph, bundled into WebVOWL, or shipped as an `owlapi` runtime dependency.
 
