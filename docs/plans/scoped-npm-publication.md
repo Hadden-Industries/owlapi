@@ -1,6 +1,9 @@
 # Publish the scoped owlapi RC and qualify its production consumers
 
-**Status:** Accepted implementation specification, recorded 2026-09-30. The qualified scoped RC was published on 2026-10-02 UTC (2026-10-03 in the owner's timezone), and fresh registry installation/signature/provenance verification passed. GitHub release finalization remains pending. The owner amended the distribution-tag policy on 2026-10-03; see the [publication record](../provenance/releases/0.1.0-rc.1/publication-status.md).
+**Status:** Accepted implementation specification, recorded 2026-09-30.
+The qualified scoped RC was published on 2026-10-02 UTC (2026-10-03 in the owner's timezone), and fresh registry installation/signature/provenance verification passed.
+GitHub release finalization remains pending.
+The owner amended the distribution-tag policy on 2026-10-03; see the [publication record](../provenance/releases/0.1.0-rc.1/publication-status.md).
 
 **Authority:** [ADR 0009](../adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md), the [main implementation plan](../implementation-plan.md), the [lifecycle plan](../ontology-lifecycle-capability-implementation-plan.md), and UO's canonical [specification](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/specs/2026-08-22-self-contained-owl-import-closure-contract.md), [policy](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/import-closure/contract.v1.json), and [implementation plan](https://github.com/Hadden-Industries/universal-ontology/blob/main/docs/plans/2026-08-22-self-contained-owl-import-closure.md).
 
@@ -17,7 +20,7 @@ A prepared source candidate is not a public or accepted RC.
 | Real npm package name               | `@hadden-industries/owlapi`                                                                         |
 | Registry                            | `https://registry.npmjs.org/`                                                                       |
 | Selected first public version       | `0.1.0-rc.1`                                                                                        |
-| Publication channel                 | `next`; `latest` may also identify the same exact initial RC                                         |
+| Publication channel                 | `next`; `latest` may also identify the same exact initial RC                                        |
 | Recommended consumer dependency key | `owlapi`                                                                                            |
 | Exact dependency value              | `npm:@hadden-industries/owlapi@0.1.0-rc.1`                                                          |
 | UO dependency section               | `devDependencies`                                                                                   |
@@ -177,7 +180,8 @@ The target/error migration audit may legitimately report `NO_OBSOLETE_USAGE`; th
    A dry run or organization membership does not prove write authority.
    Configure and verify the exact repository/workflow/environment trusted publisher when supported; use no placeholder publication or silent mode fallback.
 4. Obtain the existing exact artifact/publication authorization, follow late signed-tag and protected-environment ordering, and publish the retained artifact with public access under `next`.
-   Require `next` to identify the selected RC; `latest` may be absent or identify that same RC. Retain the existing ambiguous-write reconciliation and bootstrap credential removal controls.
+   Require `next` to identify the selected RC; `latest` may be absent or identify that same RC.
+   Retain the existing ambiguous-write reconciliation and bootstrap credential removal controls.
    In the direct-bootstrap workflow, only attempt 1 may execute the credential-bearing npm write.
    If that write has an ambiguous response, or later verification fails, rerun failed jobs to perform read-only registry verification of the retained bytes; do not rerun the entire workflow.
    Verification binds the original signed publication run/attempt and authenticated publisher-job result, separately from the current verification attempt.

@@ -4,7 +4,12 @@ The owner's 2 October 2026 consumer-repair instruction is implemented through th
 Consumer requests remain subject to owlapi's Java OWLAPI responsibility; VOWL source ledgers, projection and admission policy remain consumer work.
 These additions require fresh candidate qualification and do not enable publication.
 
-> **3 October 2026 publication amendment:** the byte-identical, prepublication-qualified `@hadden-industries/owlapi@0.1.0-rc.1` is now public and registry-verified. Both `next` and `latest` may identify it. For this exact initial RC, this owner-approved decision supersedes older requirements below to keep `latest` absent, remove it, or repeat completed code qualification solely because of that tag. Existing code qualification is reused; actual registry readback is recorded separately. No runtime, validator, schema or workflow change is part of this documentation amendment. The original failed workflow and pending GitHub finalization remain explicit in the [publication record](provenance/releases/0.1.0-rc.1/publication-status.md).
+> **3 October 2026 publication amendment:** the byte-identical, prepublication-qualified `@hadden-industries/owlapi@0.1.0-rc.1` is now public and registry-verified.
+> Both `next` and `latest` may identify it.
+> For this exact initial RC, this owner-approved decision supersedes older requirements below to keep `latest` absent, remove it, or repeat completed code qualification solely because of that tag.
+> Existing code qualification is reused; actual registry readback is recorded separately.
+> No runtime, validator, schema or workflow change is part of this documentation amendment.
+> The original failed workflow and pending GitHub finalization remain explicit in the [publication record](provenance/releases/0.1.0-rc.1/publication-status.md).
 
 > **Status:** Final architecture and implementation blueprint\
 > **Research baseline:** 8 August 2026\
@@ -617,7 +622,7 @@ This documentation decision does not claim that the current manifest, release to
 | Package name                            | `@hadden-industries/owlapi`                                                                                             |
 | Canonical source repository             | `https://github.com/Hadden-Industries/owlapi`                                                                           |
 | Selected first public version           | `0.1.0-rc.1`, including the approved Phase 21/22 lifecycle slice                                                        |
-| First distribution tag                  | `next`; `latest` may also identify the same exact initial RC                                                           |
+| First distribution tag                  | `next`; `latest` may also identify the same exact initial RC                                                            |
 | Consumer dependency key and exact value | `"owlapi": "npm:@hadden-industries/owlapi@0.1.0-rc.1"`                                                                  |
 | Public export roots                     | Package root, `apibinding`, `model`, `io`, `formats`, `util`                                                            |
 | First-party dependency sections         | WebVOWL `dependencies`; UO `devDependencies` for generation tooling                                                     |
@@ -1614,7 +1619,8 @@ Verify explicit scoped tag state and exact-coordinate installation instead.
 
 For this initial RC, retain the observed `latest` tag when it identifies the same exact RC as `next`; do not remove it solely because the version is a prerelease.
 Any conflicting tag target requires a separate decision and verified correction.
-The additional tag alone does not require new code, a replacement release workflow, or repeat code qualification. Preserve the unchanged artifact and its existing proof, and complete outstanding registry/release verification.
+The additional tag alone does not require new code, a replacement release workflow, or repeat code qualification.
+Preserve the unchanged artifact and its existing proof, and complete outstanding registry/release verification.
 The original workflow's rejection of `latest` remains an accurately recorded failure under the superseded rule, not a new product failure or a passing workflow result.
 No speculative `alpha`, `beta`, `rc`, `stable` or `legacy` tag is created.
 After stable verification remove a stale `next` unless a real newer prerelease channel is maintained; do not repoint it merely as a second stable alias.
@@ -7149,7 +7155,8 @@ Any genuinely new publish attempt requires a newly created token, renewed exact 
 The outcome branches are normative:
 
 - **Success:** keep the selected `@hadden-industries/owlapi@0.1.0-rc.N` public under `next`; do not unpublish it as a probe.
-  For the initial `0.1.0-rc.1`, retain `latest` when it selects the same qualified bytes, as accepted in §2.29. Other tag changes require a separate decision.
+  For the initial `0.1.0-rc.1`, retain `latest` when it selects the same qualified bytes, as accepted in §2.29.
+  Other tag changes require a separate decision.
 - **Authentication/2FA failure:** correct the account/session control and make a new attempt at the same reviewed coordinate only after reconfirming the artefact digest and obtaining renewed explicit authorization.
 - **Manifest/tarball/workflow failure before canonical-tag creation:** no draft or tag exists; return to the release gate, make the reviewable correction and create a new source candidate at the same still-unused version after fresh tag/ registry checks; do not mutate retained assets or weaken validation.
 - **Post-qualification evidence-persistence/tooling failure after canonical-tag creation:** only when §2.60's exact-artifact eligibility proofs all pass, keep the signed tag and original retained candidate and continue through the dedicated reconciliation workflow.
@@ -7243,7 +7250,10 @@ the frozen gate-registry definition/results reconcile bidirectionally and contai
 Re-download the registry tarball without relying on the release workflow's npm cache, compare its SHA-256 with `SHA256SUMS`, regenerate/compare the production dependency inventory against the retained §2.47 CycloneDX 1.6 SBOM, and rerun the strict §2.49 tarball lint, §2.50 material/notice reconciliation and exact §2.51 npm signature/attestation validation. Preserve and compare the fresh lockless consumer graph under §2.48, then rerun the required Ubuntu Node 22/24, four Windows/macOS portability, three Ubuntu Chromium/Firefox/WebKit, import-map document, dedicated-worker and isolated WebVOWL checks against the registry installation.
 Registry success text or matching metadata alone is insufficient.
 
-For the already-published `0.1.0-rc.1`, apply the owner-approved 3 October 2026 amendment rather than repeating the completed code/platform/browser/consumer suites above. The public tarball's exact SHA-256 and integrity match the retained candidate, so its existing qualification remains valid. Fresh scoped/alias installation, lock/entry-point/dependency resolution, registry signatures and cryptographic provenance were verified separately; see the publication record. This preserves the failed hosted tag-policy result and does not claim that the unchanged executable release-evidence schema or GitHub finalization passed.
+For the already-published `0.1.0-rc.1`, apply the owner-approved 3 October 2026 amendment rather than repeating the completed code/platform/browser/consumer suites above.
+The public tarball's exact SHA-256 and integrity match the retained candidate, so its existing qualification remains valid.
+Fresh scoped/alias installation, lock/entry-point/dependency resolution, registry signatures and cryptographic provenance were verified separately; see the publication record.
+This preserves the failed hosted tag-policy result and does not claim that the unchanged executable release-evidence schema or GitHub finalization passed.
 
 After those checks pass, generate `hadden-industries-owlapi-0.1.0-rc.1.release-evidence.json` from the verified workflow state, validate it with the exact §2.47 Ajv/Draft 2020-12 toolchain against the §2.40 schema, attach it to the draft and verify its recorded tarball/SBOM/checksum/tool identities.
 Then publish the draft GitHub release with release immutability enabled.
@@ -9993,7 +10003,8 @@ Shared credentials are prohibited; copyright, corporate stewardship and account 
 ### 31.32 A dormant `next` tag is misleading mutable state, not useful history
 
 npm distribution tags are named mutable pointers used by ordinary install resolution; immutable versions and retained release artefacts already preserve history.
-`next` is useful while it deliberately selects a live prerelease. For the accepted initial scoped RC, `latest` may identify the same RC; this does not make it a stable version.
+`next` is useful while it deliberately selects a live prerelease.
+For the accepted initial scoped RC, `latest` may identify the same RC; this does not make it a stable version.
 After production verification, leaving `next` on an older alpha or RC suggests an actively recommended alternate channel, while pointing both tags at the production release adds no information.
 Removing `next` until the next real prerelease keeps the registry's channel semantics honest without deleting any version.
 

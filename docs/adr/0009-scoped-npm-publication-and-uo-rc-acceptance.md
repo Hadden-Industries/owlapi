@@ -1,6 +1,7 @@
 # Scoped npm publication and consumer RC production acceptance
 
-- Status: Accepted design; scoped RC published and registry verification passed; GitHub release finalization remains pending. Distribution-tag policy amended on 2026-10-03.
+- Status: Accepted design; scoped RC published and registry verification passed; GitHub release finalization remains pending.
+  Distribution-tag policy amended on 2026-10-03.
 - Recorded: 2026-09-30.
 - Authority: The repository owner's scoped-package proposal, explicit acceptance of RC use in UO production, subsequent extension to WebVOWL production, and request to update the affected documentation.
 

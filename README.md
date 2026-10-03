@@ -4,7 +4,8 @@
 Its public concepts deliberately resemble the Java OWLAPI where that makes the API familiar, while its I/O, asynchronous loading, module packaging, and RDF/JS integration follow JavaScript conventions.
 
 > **Published release candidate:** `@hadden-industries/owlapi@0.1.0-rc.1` is available on npm under `next` and `latest`, including the approved import-closure lifecycle capabilities.
-> Registry bytes, installations, signatures and provenance are verified; GitHub release finalization remains pending in the [publication record](./docs/provenance/releases/0.1.0-rc.1/publication-status.md). `latest` is npm's default installation target and does not imply a stable version or consumer acceptance.
+> Registry bytes, installations, signatures and provenance are verified; GitHub release finalization remains pending in the [publication record](./docs/provenance/releases/0.1.0-rc.1/publication-status.md).
+> `latest` is npm's default installation target and does not imply a stable version or consumer acceptance.
 > UO and WebVOWL may each use this exact RC in production after artifact verification and their own full consumer acceptance; `0.1.0` is not a prerequisite for either application.
 > A version in `main` is not a published or accepted package.
 > Full Java OWLAPI parity is not claimed; the exact implemented surface and every known gap are recorded in [the compatibility registry](./docs/compatibility/java-api-surface.md).
@@ -20,11 +21,13 @@ See the exact return types and qualifications in [the API reference](./API.md).
 
 The desired unscoped name `owlapi` was formerly used for an unrelated, now-unpublished Overwatch package and is blocked by npm's name-similarity protection.
 The selected scoped package is a separate registry identity with no code, API, ownership, or provenance relationship to that package.
-The retained [package-name review](https://github.com/Hadden-Industries/owlapi/blob/main/docs/provenance/package-name-review.json) describes the historical unscoped proposal; the separate [scoped-identity review](./docs/provenance/scoped-package-name-review.json) records the accepted scoped identity. Its original tag restriction is superseded by the documented amendment in [ADR 0009](./docs/adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md).
+The retained [package-name review](https://github.com/Hadden-Industries/owlapi/blob/main/docs/provenance/package-name-review.json) describes the historical unscoped proposal; the separate [scoped-identity review](./docs/provenance/scoped-package-name-review.json) records the accepted scoped identity.
+Its original tag restriction is superseded by the documented amendment in [ADR 0009](./docs/adr/0009-scoped-npm-publication-and-uo-rc-acceptance.md).
 
 ## Install
 
-Use npm's native dependency alias to install the published RC and retain the imports shown below. Production use remains subject to the verification and consumer acceptance described above:
+Use npm's native dependency alias to install the published RC and retain the imports shown below.
+Production use remains subject to the verification and consumer acceptance described above:
 
 ```shell
 npm install --save-exact "owlapi@npm:@hadden-industries/owlapi@0.1.0-rc.1"
