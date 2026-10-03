@@ -1,5 +1,11 @@
 # `owlapi` Import-Closure Lifecycle Implementation Plan
 
+> **4 October 2026 scope amendment:** Phase 21/22 source foundations and rc.1 receipts remain historical baselines for [the next rc.2 programme](plans/0.1.0-rc.2-java-parity.md), before stable `0.1.0`.
+> The [release-independence decision](implementation-plan.md#release-independence) supersedes every WebVOWL/UO application-acceptance, migration or sign-off dependency on any owlapi release or finalization, including the Task 15, completion and acceptance-catalogue conditions below.
+> Producer-owned Java parity, installed-package/browser semantics, lossless storage and reproducible pinned-corpus checks remain required.
+> Applications choose their own adoption timetable; retained historical results are unchanged.
+> Executable gate/schema/workflow reconciliation is planned explicitly in rc.2 and has not been performed by this documentation revision.
+
 > **For agentic workers:** Execute this plan one task at a time.
 > Keep each red/green/refactor cycle reviewable, run the listed focused verification before continuing, and pause at every approval gate.
 > Do not publish, change repository configuration, or create commits without the repository owner's explicit authorization.
@@ -9,7 +15,7 @@
 > Classification as an adaptation is not permission by itself.
 > This plan authorizes no new public `JS_EXTENSION`; if exact parity proves infeasible beyond an already approved case, stop and obtain a reviewed plan and compatibility-ledger amendment before implementing it.
 
-**Goal:** Release the public, additive `@hadden-industries/owlapi@0.1.0-rc.1` functionality that Universal Ontology needs to construct a self-contained import closure from source ontologies using only Java-OWLAPI-shaped public APIs.
+**Original rc.1 goal:** Release the public, additive `@hadden-industries/owlapi@0.1.0-rc.1` functionality that Universal Ontology needs to construct a self-contained import closure from source ontologies using only Java-OWLAPI-shaped public APIs.
 
 **Architecture:** The ontology manager owns a transactional registry of loaded ontology identities and resolved import edges.
 Public model objects remain externally immutable; manager methods operate through package-private state and package-private serialization engines.
