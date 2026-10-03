@@ -35,6 +35,39 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test.each(["remove", "condition", "ignore failure"])(
+    "rejects a changed observation preamble: %s",
+    (mutation) => {
+      expect(
+        mutateWorkflow("ci.yml", (doc) => {
+          const steps = doc.getIn(["jobs", "source_node_24", "steps"]);
+          const index = steps.items.findIndex(
+            (step) =>
+              step.get("run") === "node scripts/ci-check-applicability.mjs",
+          );
+          expect(index).toBeGreaterThan(-1);
+          if (mutation === "remove") steps.items.splice(index, 1);
+          if (mutation === "condition") steps.items[index].set("if", "false");
+          if (mutation === "ignore failure")
+            steps.items[index].set("continue-on-error", true);
+        }).join("\n"),
+      ).toMatch(/applicability observation/u);
+    },
+  );
+
+  test.each(["npm ci", "npm ci --ignore-scripts", "npm install", "npm i"])(
+    "rejects dependency-review repository installation: %s",
+    (command) => {
+      expect(
+        mutateWorkflow("ci.yml", (doc) => {
+          doc
+            .getIn(["jobs", "dependency_review", "steps"])
+            .add({ name: "Install", run: command, "timeout-minutes": 15 });
+        }).join("\n"),
+      ).toMatch(/no-installation npm/u);
+    },
+  );
+
   test.each([
     ["ci.yml", "quality_windows"],
     ["ci.yml", "source_node_22"],

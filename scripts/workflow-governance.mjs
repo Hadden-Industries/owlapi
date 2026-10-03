@@ -450,6 +450,33 @@ const validateCiVerification = (workflow, violations) => {
     `${label} job identities changed`,
   );
   const strategy = jobs.verification;
+  const observation = steps(jobs.source_node_24).find(
+    (step) =>
+      step.name ===
+      "Observe integration applicability while retaining full qualification",
+  );
+  add(
+    violations,
+    observation?.run === "node scripts/ci-check-applicability.mjs" &&
+      observation["timeout-minutes"] === 1 &&
+      !Object.hasOwn(observation, "if") &&
+      !Object.hasOwn(observation, "continue-on-error"),
+    `${label} applicability observation must remain bounded and cannot condition qualification`,
+  );
+  const dependencyCommands = steps(jobs.dependency_review)
+    .map((step) => step.run)
+    .filter(Boolean);
+  add(
+    violations,
+    JSON.stringify(dependencyCommands) ===
+      JSON.stringify([
+        "npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund",
+        "node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0",
+        "npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash",
+        "npm run workflow:dependency-review-applicability",
+      ]),
+    `${label} dependency review must retain its no-installation npm entry points`,
+  );
   add(
     violations,
     !Object.hasOwn(strategy ?? {}, "if") &&

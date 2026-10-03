@@ -11,3 +11,4 @@
 | [0007](0007-axiom-annotations-nest-on-the-annotation.md)           | Axiom annotations nest on the annotation                     | Accepted |
 | [0008](0008-promote-original-krss1-into-v1.md)                     | Promote original KRSS/KRSS1 into v1                          | Accepted |
 | [0009](0009-scoped-npm-publication-and-uo-rc-acceptance.md)        | Scoped npm publication and consumer RC production acceptance | Accepted |
+| [0010](0010-ci-applicability-observation.md)                       | CI applicability observation and lean dependency review      | Accepted |

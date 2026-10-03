@@ -129,6 +129,8 @@ CodeQL's default-branch and PR scans and the separate release workflows retain t
 A reused CI candidate is not a release approval, and its artifact must not be substituted for the release workflow's required qualification or provenance.
 No branch permissions or protected checks are relaxed by CI reuse.
 The detailed contract and proof are in the [CI reuse plan](docs/plans/2026-09-29-ci-verification-reuse.md).
+The [applicability observation decision](docs/adr/0010-ci-applicability-observation.md) adds input diagnostics while retaining full integration execution and the existing receipt meaning.
+Dependency review does not install repository packages: its remaining runtime and npm entry points require no repository `node_modules`.
 
 ## Optional source-development checkout
 
