@@ -268,6 +268,9 @@ jobs:
       - name: Validate native GitHub Actions syntax and expressions
         run: npm run verify:workflow-syntax
         timeout-minutes: 5
+      - name: Observe integration applicability while retaining full qualification
+        run: node scripts/ci-check-applicability.mjs
+        timeout-minutes: 1
       - name: Check out the immutable original July ontology sources
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -354,9 +357,6 @@ jobs:
       - name: Verify the exact runtime pair
         run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
         timeout-minutes: 5
-      - name: Install the reviewed dependency graph
-        run: npm ci
-        timeout-minutes: 15
       - name: Record the hosted runner identity
         run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
         timeout-minutes: 5

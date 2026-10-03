@@ -22,14 +22,31 @@ const STATE = ".release/ci-reuse/selection.json";
 const DOWNLOAD = ".release/ci-reuse/download";
 const RECEIPT = ".release/ci-verification/verification.json";
 
-export const readGitSnapshot = (directory = process.cwd()) => {
+/** Read exact commit identity with a bounded native Git call budget. */
+export const readGitSnapshot = (
+  directory = process.cwd(),
+  { deadline = Date.now() + 30000 } = {},
+) => {
   const git = (...args) => {
+    const remaining = deadline - Date.now();
+    if (remaining <= 0)
+      throw Object.assign(new Error("Git snapshot deadline elapsed."), {
+        code: "LOOKUP_LIMIT_EXCEEDED",
+      });
     const result = spawnSync("git", args, {
       cwd: directory,
       encoding: "utf8",
       maxBuffer: 1024 * 1024,
       windowsHide: true,
+      timeout: Math.min(10000, remaining),
     });
+    if (["ETIMEDOUT", "ENOBUFS"].includes(result.error?.code))
+      throw Object.assign(
+        new Error("Git snapshot lookup exceeded its budget."),
+        {
+          code: "LOOKUP_LIMIT_EXCEEDED",
+        },
+      );
     if (result.status !== 0)
       throw new Error("Could not establish the exact Git checkout.");
     return result.stdout.trim();

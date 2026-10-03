@@ -2954,6 +2954,10 @@ A genuinely new write attempt requires renewed explicit authorization; a blind s
 Section 2.40 evidence records, per job/operation, the expected role and final conclusion, applicability reason, timeout class and configured duration, matrix fail-fast/continue policy, aggregate dependency inventory/result, concurrency group/cancellation/queue policy, controlled-read retry configuration, every external-mutation attempt and any reconciliation result.
 Publication evidence must positively prove that no skipped, cancelled or timed-out required job reached npm or GitHub-release mutation authority.
 
+The [2026-10-03 applicability observation milestone](adr/0010-ci-applicability-observation.md) preserves this section's full-PR and authenticated main-reuse requirements.
+Its Node 24 preamble reports conservative tracked-input projections but cannot omit Java or WebVOWL qualification; the schema-v1 FULL protocol remains authoritative.
+Dependency review runs its built-in-only npm entry points without repository installation, retaining the exact runtime check, runner record and security Action policy in sections 2.34/2.56.
+
 ### 2.59 Decision: execute every external contribution as untrusted code and keep sensitive data out of its path
 
 The public repository **MUST** set GitHub's fork-workflow approval policy to `all_external_contributors`.
