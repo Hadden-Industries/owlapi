@@ -10,10 +10,12 @@ import {
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import {
-  CI_JOB_NAMES,
   createVerificationReceipt,
+  createMainQualification,
   selectVerificationProof,
   verifyIntegrationProof,
+  selectBaseQualification,
+  verifyBaseQualification,
 } from "./ci-verification.mjs";
 import {
   createRepositoryReader,
@@ -21,6 +23,11 @@ import {
   readGitSnapshot,
 } from "./ci-verification-command.mjs";
 import { REQUIRED_JOB_IDS, requireCiJobs } from "./require-job-success.mjs";
+import {
+  summarizeJavaExecution,
+  summarizeWebvowlExecution,
+} from "./ci-check-coverage.mjs";
+import { CI_JOB_NAMES } from "./ci-qualification.mjs";
 
 const hash = (letter) => letter.repeat(40);
 const jsonClone = (value) => JSON.parse(JSON.stringify(value));
@@ -30,8 +37,44 @@ const repository = {
   full_name: "Hadden-Industries/owlapi",
   default_branch: "main",
 };
-const successfulNeeds = () =>
-  Object.fromEntries(
+const successfulNeeds = (
+  identity = { runId: 100, runAttempt: 2, commit: hash("c") },
+) => {
+  const report = JSON.parse(
+    readFileSync(
+      new URL("./fixtures/ci-java-jest-live.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  for (const suite of report.testResults) suite.name = resolve(suite.name);
+  const java = summarizeJavaExecution(report, identity);
+  const webvowl = summarizeWebvowlExecution(
+    {
+      schemaVersion: 1,
+      result: "PASS",
+      qualification: "PRE_INTEGRATION",
+      candidate: { tarballSha256: "e".repeat(64) },
+      maintainedWebVowlCheckoutModified: false,
+      cleanInstall: { npmLs: "PASS", installedPackageIdentity: "PASS" },
+      gates: {
+        baselineNpmCi: "PASS",
+        baselineJest: "PASS",
+        baselineDevelopmentBuild: "PASS",
+        baselineProductionBuild: "PASS",
+        consumerBoundary: "PASS",
+        candidateJest: "PASS",
+        installedImportClosure: "PASS",
+        phase21TargetErrorSemantics: "PASS",
+        representativeCorpus: "PASS",
+        candidateDevelopmentBuild: "PASS",
+        candidateProductionBuild: "PASS",
+        candidateWebVowlViteConsumerBuild: "PASS",
+        candidateChromiumIntegration: "PASS",
+      },
+    },
+    identity,
+  );
+  return Object.fromEntries(
     REQUIRED_JOB_IDS.ci.map((job) => [
       job,
       {
@@ -39,10 +82,15 @@ const successfulNeeds = () =>
         outputs:
           job === "candidate"
             ? { artifact_id: "702", artifact_digest: "f".repeat(64) }
-            : {},
+            : job === "source_node_24"
+              ? { coverage: JSON.stringify(java) }
+              : job === "webvowl"
+                ? { coverage: JSON.stringify(webvowl) }
+                : {},
       },
     ]),
   );
+};
 
 const fixture = () => {
   const pr = {
@@ -200,15 +248,431 @@ const verify = async (f) => {
   });
 };
 
+const mainFixture = async (reused, partialOrigin = false) => {
+  const f = fixture();
+  if (partialOrigin) {
+    f.receipt = createVerificationReceipt({
+      context: f.prContext,
+      needs: successfulNeeds({ runId: 100, runAttempt: 1, commit: hash("c") }),
+      now: now - 20 * 60_000,
+    });
+    for (const job of f.jobs)
+      if (
+        [CI_JOB_NAMES.source_node_24, CI_JOB_NAMES.webvowl].includes(job.name)
+      )
+        job.run_attempt = 1;
+  }
+  const mainContext = { ...f.context, runId: 200, runAttempt: 1 };
+  const needs = successfulNeeds({
+    runId: 200,
+    runAttempt: 1,
+    commit: hash("d"),
+  });
+  if (reused) {
+    const outputs = await verify(f);
+    for (const job of Object.values(needs)) job.result = "skipped";
+    needs.verification = { result: "success", outputs };
+  }
+  const record = createMainQualification({ context: mainContext, needs, now });
+  const mainRun = {
+    ...f.run,
+    id: 200,
+    run_attempt: 1,
+    event: "push",
+    head_branch: "main",
+    head_sha: hash("d"),
+    created_at: "2026-09-29T17:40:00Z",
+    run_started_at: "2026-09-29T17:41:00Z",
+  };
+  const mainArtifact = {
+    ...f.artifact,
+    id: 800,
+    name: "ci-main-qualification-200-1",
+    digest: `sha256:${"d".repeat(64)}`,
+    workflow_run: { ...f.artifact.workflow_run, id: 200, head_sha: hash("d") },
+  };
+  const context = {
+    ...f.prContext,
+    sha: hash("2"),
+    runId: 300,
+    runAttempt: 1,
+    ref: "refs/pull/32/merge",
+    snapshot: {
+      ...f.prContext.snapshot,
+      commit: hash("2"),
+      tree: hash("3"),
+      parents: [hash("d"), hash("1")],
+    },
+    event: {
+      number: 32,
+      pull_request: {
+        ...f.pr,
+        number: 32,
+        base: { ...f.pr.base, sha: hash("d") },
+        head: { ...f.pr.head, sha: hash("1") },
+      },
+    },
+  };
+  Object.assign(f.responses, {
+    [`/actions/workflows/ci.yml/runs?event=push&head_sha=${hash("d")}&per_page=100`]:
+      { total_count: 1, workflow_runs: [mainRun] },
+    "/actions/runs/200": mainRun,
+    "/actions/runs/200/artifacts?per_page=100": {
+      total_count: 1,
+      artifacts: [mainArtifact],
+    },
+    "/actions/artifacts/800": mainArtifact,
+    [`/git/commits/${hash("d")}`]: {
+      sha: hash("d"),
+      tree: { sha: hash("e") },
+      parents: [{ sha: hash("a") }, { sha: hash("b") }],
+    },
+    [`/git/trees/${hash("e")}`]: {
+      sha: hash("e"),
+      truncated: false,
+      tree: [{ path: ".github", type: "tree", sha: hash("4") }],
+    },
+    [`/git/trees/${hash("4")}`]: {
+      sha: hash("4"),
+      truncated: false,
+      tree: [{ path: "workflows", type: "tree", sha: hash("5") }],
+    },
+    [`/git/trees/${hash("5")}`]: {
+      sha: hash("5"),
+      truncated: false,
+      tree: [{ path: "ci.yml", type: "blob", sha: hash("f") }],
+    },
+    "/actions/runs/200/jobs?filter=latest&per_page=100": {
+      total_count: 16,
+      jobs: Object.values(CI_JOB_NAMES).map((name) => ({
+        name,
+        run_id: 200,
+        run_attempt: 1,
+        head_sha: hash("d"),
+        status: "completed",
+        conclusion:
+          reused &&
+          ![CI_JOB_NAMES.verification, CI_JOB_NAMES.required].includes(name)
+            ? "skipped"
+            : "success",
+      })),
+    },
+  });
+  if (!reused)
+    f.responses["/actions/artifacts/702"] = {
+      ...f.candidate,
+      name: "hadden-industries-owlapi-0.1.0-rc.1-candidate-200-1",
+      workflow_run: {
+        ...f.candidate.workflow_run,
+        id: 200,
+        head_sha: hash("d"),
+      },
+    };
+  const downloadOriginal = async () => jsonClone(f.receipt);
+  return { ...f, context, record, mainRun, mainArtifact, downloadOriginal };
+};
+const validateBase = async (f) => {
+  const selection = await selectBaseQualification({
+    context: f.context,
+    read: f.read,
+    now,
+  });
+  return verifyBaseQualification({
+    context: f.context,
+    selection,
+    record: f.record,
+    read: f.read,
+    downloadOriginal: f.downloadOriginal,
+    now,
+  });
+};
+
+describe("exact landed-main qualification and direct original execution", () => {
+  test("reused main keeps direct check-producing attempts from a partial PR rerun", async () => {
+    const f = await mainFixture(true, true);
+    expect(f.record.source.runAttempt).toBe(2);
+    expect(f.record.checks.java.original.runAttempt).toBe(1);
+    expect(await validateBase(f)).toMatchObject({
+      originals: {
+        webvowl: { original: { role: "PR", runId: 100, runAttempt: 1 } },
+      },
+    });
+  });
+  test("retains earlier successful check attempts in fresh main partial reruns", async () => {
+    const f = await mainFixture(false);
+    f.mainRun.run_attempt = 2;
+    f.record = createMainQualification({
+      context: {
+        ...f.context,
+        eventName: "push",
+        ref: "refs/heads/main",
+        sha: hash("d"),
+        snapshot: f.record.snapshot,
+        event: {
+          ...f.context.event,
+          ref: "refs/heads/main",
+          after: hash("d"),
+          deleted: false,
+          forced: false,
+          repository,
+        },
+        runId: 200,
+        runAttempt: 2,
+      },
+      needs: successfulNeeds({ runId: 200, runAttempt: 1, commit: hash("d") }),
+      now,
+    });
+    f.mainArtifact.name = "ci-main-qualification-200-2";
+    f.responses["/actions/runs/200/jobs?filter=latest&per_page=100"].jobs.at(
+      -1,
+    ).run_attempt = 2;
+    expect(await validateBase(f)).toMatchObject({
+      originals: { java: { original: { runAttempt: 1 } } },
+    });
+  });
+  test.each([false, true])(
+    "authenticates exact-base %s reuse without enabling omissions",
+    async (reused) => {
+      const f = await mainFixture(reused);
+      let transfers = 0;
+      f.downloadOriginal = async () => {
+        transfers++;
+        return jsonClone(f.receipt);
+      };
+      expect(await validateBase(f)).toMatchObject({
+        qualifiedBase: hash("d"),
+        mode: reused ? "REUSED" : "FULL",
+        selectiveExecution: false,
+        originals: {
+          java: {
+            original: {
+              role: reused ? "PR" : "MAIN",
+              runId: reused ? 100 : 200,
+            },
+          },
+        },
+      });
+      expect(transfers).toBe(reused ? 1 : 0);
+    },
+  );
+  test.each([
+    "schema v1",
+    "selective mode",
+    "indirect origin",
+    "missing coverage",
+    "expired main artifact",
+    "expired original",
+    "expired candidate",
+    "failed main job",
+    "skipped selected main job",
+    "workflow mismatch",
+    "wrong base",
+    "incomplete inventory",
+  ])(
+    "rejects %s instead of accepting a convenient historical claim",
+    async (fault) => {
+      const f = await mainFixture(true);
+      if (fault === "schema v1") f.record.schemaVersion = 1;
+      if (fault === "selective mode") f.record.mode = "SELECTIVE";
+      if (fault === "indirect origin")
+        f.record.checks.java.original.role = "MAIN";
+      if (fault === "missing coverage") delete f.record.checks.java;
+      if (fault === "expired main artifact") f.mainArtifact.expired = true;
+      if (fault === "expired original") f.artifact.expired = true;
+      if (fault === "expired candidate") f.candidate.expired = true;
+      if (fault === "failed main job")
+        f.responses[
+          "/actions/runs/200/jobs?filter=latest&per_page=100"
+        ].jobs[0].conclusion = "failure";
+      if (fault === "skipped selected main job")
+        f.responses[
+          "/actions/runs/200/jobs?filter=latest&per_page=100"
+        ].jobs.at(-1).conclusion = "skipped";
+      if (fault === "workflow mismatch")
+        f.responses[`/git/trees/${hash("5")}`].tree[0].sha = hash("a");
+      if (fault === "wrong base") f.record.snapshot.commit = hash("a");
+      if (fault === "incomplete inventory")
+        f.responses["/actions/runs/200/artifacts?per_page=100"].total_count =
+          101;
+      await expect(validateBase(f)).rejects.toThrow();
+    },
+  );
+  test("does not look past a newer failed exact-base run", async () => {
+    const f = await mainFixture(true);
+    f.responses[
+      `/actions/workflows/ci.yml/runs?event=push&head_sha=${hash("d")}&per_page=100`
+    ] = {
+      total_count: 2,
+      workflow_runs: [
+        f.mainRun,
+        { ...f.mainRun, id: 201, conclusion: "failure" },
+      ],
+    };
+    await expect(validateBase(f)).rejects.toThrow(/unsuccessful/u);
+  });
+  test.each(["main rerun", "original rerun", "main deletion"])(
+    "rechecks mutable proof after transfers: %s",
+    async (fault) => {
+      const f = await mainFixture(true);
+      f.downloadOriginal = async () => {
+        if (fault === "main rerun") f.mainRun.run_attempt++;
+        if (fault === "original rerun") f.run.run_attempt++;
+        if (fault === "main deletion") f.mainArtifact.expired = true;
+        return jsonClone(f.receipt);
+      };
+      await expect(validateBase(f)).rejects.toThrow();
+    },
+  );
+  test("a missing exact-base receipt cannot fall back to an arbitrary older commit", async () => {
+    const f = await mainFixture(true);
+    f.context.event.pull_request.base.sha = hash("a");
+    await expect(validateBase(f)).rejects.toThrow(/captured/u);
+  });
+  test("FULL receipts require current explicit coverage; job SUCCESS cannot hide unset Java", () => {
+    const f = fixture();
+    const needs = successfulNeeds();
+    delete needs.source_node_24.outputs.coverage;
+    expect(() =>
+      createVerificationReceipt({ context: f.prContext, needs, now }),
+    ).toThrow(/coverage/u);
+    expect(() =>
+      requireCiJobs(needs, {
+        eventName: "pull_request",
+        ref: f.prContext.ref,
+        runId: 100,
+        runAttempt: 2,
+        sha: hash("c"),
+      }),
+    ).toThrow(/coverage/u);
+  });
+});
+
 describe("reuse of complete PR integration", () => {
+  test("qualifies a partial rerun while preserving native producing attempts", async () => {
+    const f = fixture();
+    f.receipt = createVerificationReceipt({
+      context: f.prContext,
+      needs: successfulNeeds({ runId: 100, runAttempt: 1, commit: hash("c") }),
+      now: now - 20 * 60_000,
+    });
+    for (const job of f.jobs)
+      if (
+        [
+          CI_JOB_NAMES.source_node_24,
+          CI_JOB_NAMES.webvowl,
+          CI_JOB_NAMES.metadata,
+        ].includes(job.name)
+      )
+        job.run_attempt = 1;
+    expect(f.receipt.checks.java.original.runAttempt).toBe(1);
+    expect(f.receipt.runAttempt).toBe(2);
+    expect((await verify(f)).reuse).toBe("true");
+    f.jobs.find((job) => job.name === CI_JOB_NAMES.webvowl).run_attempt = 2;
+    await expect(verify(f)).rejects.toThrow(/producing attempt/u);
+  });
+
+  test.each(["later attempt", "another run", "another commit"])(
+    "rejects coverage from %s during a partial rerun",
+    (fault) => {
+      const f = fixture();
+      const identity = { runId: 100, runAttempt: 1, commit: hash("c") };
+      if (fault === "later attempt") identity.runAttempt = 3;
+      if (fault === "another run") identity.runId = 101;
+      if (fault === "another commit") identity.commit = hash("a");
+      expect(() =>
+        createVerificationReceipt({
+          context: f.prContext,
+          needs: successfulNeeds(identity),
+          now,
+        }),
+      ).toThrow();
+      expect(() =>
+        requireCiJobs(successfulNeeds(identity), {
+          eventName: "pull_request",
+          ref: "refs/pull/31/merge",
+          runId: 100,
+          runAttempt: 2,
+          sha: hash("c"),
+        }),
+      ).toThrow();
+    },
+  );
+
+  test("required aggregation accepts earlier successful producing attempts", () => {
+    const accepted = requireCiJobs(
+      successfulNeeds({ runId: 100, runAttempt: 1, commit: hash("c") }),
+      {
+        eventName: "pull_request",
+        ref: "refs/pull/31/merge",
+        runId: 100,
+        runAttempt: 2,
+        sha: hash("c"),
+      },
+    );
+    expect(accepted.mode).toBe("FULL");
+  });
+  test("records typed FULL coverage rather than inferring live tests from job success", () => {
+    const f = fixture();
+    expect(f.receipt).toMatchObject({
+      schemaVersion: 2,
+      role: "PR",
+      mode: "FULL",
+      checks: {
+        java: {
+          applicability: "REQUIRED",
+          execution: "SUCCESS",
+          proof: "CURRENT_EXECUTION",
+        },
+        webvowl: {
+          applicability: "REQUIRED",
+          execution: "SUCCESS",
+          proof: "CURRENT_EXECUTION",
+        },
+      },
+    });
+  });
+  test("seeds a landed-main record with direct original PR coverage after verified reuse", async () => {
+    const f = fixture();
+    const outputs = await verify(f);
+    const needs = successfulNeeds();
+    for (const job of Object.values(needs)) job.result = "skipped";
+    needs.verification = { result: "success", outputs };
+    const record = createMainQualification({
+      context: { ...f.context, runId: 200, runAttempt: 1 },
+      needs,
+      now,
+    });
+    expect(record).toMatchObject({
+      schemaVersion: 2,
+      role: "MAIN",
+      mode: "REUSED",
+      sourceMode: "FULL",
+      snapshot: f.context.snapshot,
+      checks: {
+        java: {
+          execution: "NOT_RUN",
+          original: {
+            role: "PR",
+            runId: 100,
+            runAttempt: 2,
+            commit: hash("c"),
+          },
+        },
+      },
+    });
+  });
   test("reuses a current-API PR with identical parents and files, retaining the original candidate after a partial rerun", async () => {
-    expect(await verify(fixture())).toEqual({
+    const f = fixture();
+    expect(await verify(f)).toEqual({
       reuse: "true",
       source_run_id: "100",
       source_run_attempt: "2",
       source_commit: hash("c"),
       candidate_artifact_id: "702",
       candidate_artifact_digest: `sha256:${"f".repeat(64)}`,
+      source_receipt_id: "701",
+      source_receipt_digest: `sha256:${"a".repeat(64)}`,
+      qualification: JSON.stringify(f.receipt),
     });
   });
 
@@ -447,9 +911,9 @@ describe("reuse of complete PR integration", () => {
       },
     ],
     [
-      "a source job from an older attempt",
+      "a source job from a later attempt",
       (f) => {
-        f.jobs[1].run_attempt = 1;
+        f.jobs[1].run_attempt = 3;
       },
     ],
     [
@@ -570,6 +1034,44 @@ describe("reuse of complete PR integration", () => {
 });
 
 describe("native evidence boundaries", () => {
+  test("bounds total API requests and deadline without issuing an expired read", async () => {
+    let calls = 0;
+    const fetchImpl = async () => {
+      calls++;
+      return new Response('{"id":1}');
+    };
+    const expired = createRepositoryReader({
+      repository: repository.full_name,
+      token: "test-token",
+      fetchImpl,
+      deadline: Date.now() - 1,
+    });
+    await expect(expired("/actions/runs/1")).rejects.toMatchObject({
+      code: "LOOKUP_LIMIT_EXCEEDED",
+    });
+    expect(calls).toBe(0);
+    const read = createRepositoryReader({
+      repository: repository.full_name,
+      token: "test-token",
+      fetchImpl,
+    });
+    for (let index = 0; index < 32; index++) await read("/actions/runs/1");
+    await expect(read("/actions/runs/1")).rejects.toMatchObject({
+      code: "LOOKUP_LIMIT_EXCEEDED",
+    });
+    expect(calls).toBe(32);
+  });
+  test("bounds the native streamed JSON body before parsing it", async () => {
+    const read = createRepositoryReader({
+      repository: repository.full_name,
+      token: "test-token",
+      fetchImpl: async () =>
+        new Response(JSON.stringify({ body: "x".repeat(2 * 1024 * 1024) })),
+    });
+    await expect(read("/actions/runs/1")).rejects.toMatchObject({
+      code: "LOOKUP_LIMIT_EXCEEDED",
+    });
+  });
   test.each(["failure", "skipped", "success"])(
     "the native command falls back with %s download and no retained selection",
     (outcome) => {
@@ -611,7 +1113,7 @@ describe("native evidence boundaries", () => {
       token: "test-token",
       fetchImpl: async (...args) => {
         calls.push(args);
-        return { ok: true, json: async () => ({ id: 1 }) };
+        return new Response(JSON.stringify({ id: 1 }));
       },
     });
     expect(await read("/actions/runs/1")).toEqual({ id: 1 });

@@ -2955,7 +2955,9 @@ Section 2.40 evidence records, per job/operation, the expected role and final co
 Publication evidence must positively prove that no skipped, cancelled or timed-out required job reached npm or GitHub-release mutation authority.
 
 The [2026-10-03 applicability observation milestone](adr/0010-ci-applicability-observation.md) preserves this section's full-PR and authenticated main-reuse requirements.
-Its Node 24 preamble reports conservative tracked-input projections but cannot omit Java or WebVOWL qualification; the schema-v1 FULL protocol remains authoritative.
+Its Node 24 preamble reports conservative tracked-input projections but cannot omit Java or WebVOWL qualification.
+The [FULL-only qualification lineage milestone](adr/0011-full-ci-qualification-lineage.md) coordinates schema-v2 PR receipts, explicit selected-test accounting, the aggregate/reuse reader and landed-main records; unsupported older evidence requires full execution.
+Independent selector authority, complete input equivalence and comparative approval remain prerequisites for any PR omission or Java reference reuse.
 Dependency review runs its built-in-only npm entry points without repository installation, retaining the exact runtime check, runner record and security Action policy in sections 2.34/2.56.
 
 ### 2.59 Decision: execute every external contribution as untrusted code and keep sensitive data out of its path

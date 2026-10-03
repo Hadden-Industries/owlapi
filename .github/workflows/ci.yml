@@ -39,6 +39,9 @@ jobs:
       source_commit: ${{ steps.verify.outputs.source_commit }}
       candidate_artifact_id: ${{ steps.verify.outputs.candidate_artifact_id }}
       candidate_artifact_digest: ${{ steps.verify.outputs.candidate_artifact_digest }}
+      source_receipt_id: ${{ steps.verify.outputs.source_receipt_id }}
+      source_receipt_digest: ${{ steps.verify.outputs.source_receipt_digest }}
+      qualification: ${{ steps.verify.outputs.qualification }}
     steps:
       - name: Check out the exact proposed source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -207,6 +210,8 @@ jobs:
     defaults:
       run:
         shell: bash
+    outputs:
+      coverage: ${{ steps.coverage.outputs.coverage }}
     steps:
       - name: Check out the proposed source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -299,8 +304,16 @@ jobs:
       - name: Run the full package suite
         env:
           OWLAPI_REFERENCE_CHECKOUT: ${{ github.workspace }}/.release/java-owlapi
-        run: npm test -- --runInBand
+        run: |
+          mkdir -p .release/java-qualification
+          npm test -- --runInBand --json --outputFile=.release/java-qualification/jest.json
         timeout-minutes: 45
+      - name: Record complete live Java test execution
+        id: coverage
+        env:
+          OWLAPI_REFERENCE_CHECKOUT: ${{ github.workspace }}/.release/java-owlapi
+        run: node scripts/ci-check-coverage-command.mjs java .release/java-qualification/jest.json
+        timeout-minutes: 1
       - name: Verify the public package boundary
         run: npm run test:boundary
         timeout-minutes: 45
@@ -820,6 +833,8 @@ jobs:
       run:
         shell: bash
         working-directory: owlapi
+    outputs:
+      coverage: ${{ steps.coverage.outputs.coverage }}
     steps:
       - name: Check out the proposed owlapi source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -893,6 +908,10 @@ jobs:
         # The release workflow retains the strict reconciled qualification route.
         run: npm run test:webvowl-consumer -- --candidate-dir .release/download --webvowl-repository ../consumer-workspace/webvowl --expected-webvowl-commit 4f1970e5b6c95655af823c495bd58f9e9993f8b8 --expected-ontology-commit c2220675b0f3345628fc9cc8112a41440afcb2f0 --development-audit test/consumers/webvowl/development-audit.json --output .release/webvowl-result
         timeout-minutes: 45
+      - name: Record complete native WebVOWL qualification
+        id: coverage
+        run: node scripts/ci-check-coverage-command.mjs webvowl .release/webvowl-result/qualification.json
+        timeout-minutes: 1
 
   required:
     name: CI / required
@@ -955,6 +974,29 @@ jobs:
         with:
           name: ci-verification-${{ github.run_id }}-${{ github.run_attempt }}
           path: .release/ci-verification/verification.json
+          retention-days: 90
+          if-no-files-found: error
+          compression-level: 0
+          include-hidden-files: false
+          overwrite: false
+          archive: true
+      - name: Record successful landed-main qualification
+        id: main_receipt
+        if: github.event_name == 'push'
+        env:
+          REQUIRED_JOB_RESULTS_JSON: ${{ toJSON(needs) }}
+        run: node scripts/ci-verification-command.mjs record-main
+        timeout-minutes: 1
+      - name: Retain the immutable main qualification record
+        id: main_receipt_upload
+        if: steps.main_receipt.outputs.recorded == 'true'
+        # Unavailable lineage requires full execution on the next candidate.
+        continue-on-error: true
+        timeout-minutes: 1
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ci-main-qualification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/ci-main-qualification/verification.json
           retention-days: 90
           if-no-files-found: error
           compression-level: 0

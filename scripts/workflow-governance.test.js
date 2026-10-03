@@ -35,6 +35,51 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test.each(["source_node_24", "webvowl"])(
+    "requires unconditional native coverage in %s",
+    (job) => {
+      for (const mutation of ["remove", "skip", "ignore", "command"]) {
+        expect(
+          mutateWorkflow("ci.yml", (doc) => {
+            const steps = doc.getIn(["jobs", job, "steps"]);
+            const index = steps.items.findIndex(
+              (step) => step.get("id") === "coverage",
+            );
+            expect(index).toBeGreaterThan(-1);
+            if (mutation === "remove") steps.items.splice(index, 1);
+            if (mutation === "skip") steps.items[index].set("if", "false");
+            if (mutation === "ignore")
+              steps.items[index].set("continue-on-error", true);
+            if (mutation === "command")
+              steps.items[index].set(
+                "run",
+                "node scripts/ci-check-coverage-command.mjs java nonexistent.json",
+              );
+          }).join("\n"),
+        ).toMatch(/native coverage/u);
+      }
+    },
+  );
+  test("main qualification transport cannot broaden its artifact or hide-file surface", () => {
+    for (const mutation of [
+      "name",
+      "path",
+      "include-hidden-files",
+      "overwrite",
+    ]) {
+      expect(
+        mutateWorkflow("ci.yml", (doc) => {
+          const upload = doc
+            .getIn(["jobs", "required", "steps"])
+            .items.find((step) => step.get("id") === "main_receipt_upload");
+          upload.setIn(
+            ["with", mutation],
+            ["name", "path"].includes(mutation) ? "arbitrary" : true,
+          );
+        }).join("\n"),
+      ).toMatch(/main qualification transport/u);
+    }
+  });
   test.each(["remove", "condition", "ignore failure"])(
     "rejects a changed observation preamble: %s",
     (mutation) => {

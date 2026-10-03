@@ -129,7 +129,10 @@ CodeQL's default-branch and PR scans and the separate release workflows retain t
 A reused CI candidate is not a release approval, and its artifact must not be substituted for the release workflow's required qualification or provenance.
 No branch permissions or protected checks are relaxed by CI reuse.
 The detailed contract and proof are in the [CI reuse plan](docs/plans/2026-09-29-ci-verification-reuse.md).
-The [applicability observation decision](docs/adr/0010-ci-applicability-observation.md) adds input diagnostics while retaining full integration execution and the existing receipt meaning.
+The [applicability observation decision](docs/adr/0010-ci-applicability-observation.md) adds input diagnostics while retaining full integration execution.
+The [qualification lineage decision](docs/adr/0011-full-ci-qualification-lineage.md) coordinates schema-v2 receipts, explicit live Java/native WebVOWL accounting and exact landed-main records.
+Every selected live Java assertion must execute successfully; changing its group or test name requires reviewing `JAVA_LIVE_INVENTORY` alongside the actual tests.
+Unsupported receipts retain their historical meaning and select full execution; selective execution and Java artifact reuse remain disabled.
 Dependency review does not install repository packages: its remaining runtime and npm entry points require no repository `node_modules`.
 
 ## Optional source-development checkout
