@@ -96,7 +96,11 @@ export function referencePublicationState({
     ...state,
     publication: {
       artifactId,
-      artifactDigest,
+      // The upload action returns bare hex; REST discovery uses sha256:hex.
+      // Admit only the exact SHA-256 shape, then retain one canonical identity.
+      artifactDigest: /^[a-f0-9]{64}$/u.test(artifactDigest ?? "")
+        ? `sha256:${artifactDigest}`
+        : artifactDigest,
       manifestSha256: product.expected.manifestSha256,
       inventorySha256: product.expected.inventorySha256,
       provenanceSha256: product.expected.provenanceSha256,

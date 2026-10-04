@@ -103,6 +103,12 @@ test("binds the service upload to exact executed inputs and unchanged coverage s
   const result = referencePublicationState(args);
   expect({ ...result, publication: null }).toEqual(value.state);
   expect(result.publication.artifactId).toBe(500);
+  const uploadedDigest =
+    "507ec050ced8cfbf49bead84cf7d3ee222f32242d1cbe165d55bc54f76fa7afd";
+  expect(
+    referencePublicationState({ ...args, artifactDigest: uploadedDigest })
+      .publication.artifactDigest,
+  ).toBe(`sha256:${uploadedDigest}`);
   for (const field of [
     "inputKeySha256",
     "inputRecordSha256",
@@ -119,7 +125,15 @@ test("binds the service upload to exact executed inputs and unchanged coverage s
         },
       }),
     ).toThrow();
-  expect(() =>
-    referencePublicationState({ ...args, artifactDigest: "unverified" }),
-  ).toThrow();
+  for (const artifactDigest of [
+    "unverified",
+    undefined,
+    uploadedDigest.slice(1),
+    `${uploadedDigest}\n`,
+    uploadedDigest.toUpperCase(),
+    `sha512:${uploadedDigest}`,
+  ])
+    expect(() =>
+      referencePublicationState({ ...args, artifactDigest }),
+    ).toThrow();
 });
