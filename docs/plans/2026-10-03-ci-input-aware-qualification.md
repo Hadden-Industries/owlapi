@@ -8,7 +8,8 @@ This supersedes proposal-stage receipt-version references below without relabeli
 Preserve uncommitted work and experiments regardless of measured savings.
 On 5 October the owner accepted an ordinary enable-and-verify Java rollout through a reviewed control revision: enable the real protocol to qualify hosted cold/warm transport and operating effects, retain full comparisons and existing bounds, then assess continued operation from those observations.
 This amends the otherwise-before-activation comparative gate for that rollout only; it does not claim operating evidence already exists.
-MaksymShostak is the operator. The 128 MiB payload and 90-day retention limits remain accepted, actual generation/storage and overhead accounting remains required, and disproportionate latency/storage/maintenance or integrity/required behavioral failures require diagnosis and an accountable disable/disposition.
+MaksymShostak is the operator.
+The 128 MiB payload and 90-day retention limits remain accepted, actual generation/storage and overhead accounting remains required, and disproportionate latency/storage/maintenance or integrity/required behavioral failures require diagnosis and an accountable disable/disposition.
 The separate proposed timer and preset trial campaign are superseded; sustained operating acceptance and concrete PR merges remain separate decisions.
 Decision owner: Maksym Shostak, repository owner.
 Originating task: the request to propose a detailed HISEW implementation plan for selective integration checks, reuse of the compiled Java reference, and removal of unnecessary dependency installations.
