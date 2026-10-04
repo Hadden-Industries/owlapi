@@ -24,11 +24,11 @@
   },
   "review": {
     "status": "REVIEWED",
-    "factsSha256": "07cb8699e75b2fb0c21e196a2130313feb5bb7b3f2f9c3ad7bf4a75d35773075",
+    "factsSha256": "d4378943c710740cb51351b7d2982bad6d5bbf4ac9106ca3099ed80e1b06b376",
     "reviewer": "Maksym Shostak",
-    "reviewedOn": "2026-10-03",
+    "reviewedOn": "2026-10-04",
     "capacity": "Project maintainer and release owner",
-    "conclusion": "Approved the exact generated third-party material facts, recorded licence conclusions and distribution dispositions for @hadden-industries/owlapi@0.1.0-rc.1 as part of explicit approval of all manual npm publication controls. This approval retains the distinction between verified published provenance and provenance not published; no dependency is bundled into the package."
+    "conclusion": "Approved this exact facts digest. The sole addition records the development-only Java source and notice assets covered by the accepted fixed-source rights disposition; the 784 npm components and 15 previous material records are unchanged. This approval does not enable shared Java reuse."
   },
   "summary": {
     "componentCount": 784,
@@ -94,7 +94,7 @@
       "MPL-2.0": 12,
       "Python-2.0": 1
     },
-    "materialCount": 15
+    "materialCount": 16
   },
   "components": [
     {
@@ -43831,6 +43831,54 @@
       "deployedApplicationScope": "NOT_APPLICABLE",
       "noticeDisposition": "REPOSITORY_ONLY_SOURCE_REVISION_AND_METHOD_ATTRIBUTION",
       "rationale": "Behavioral oracle output is kept on the characterization side of the clean implementation boundary and is excluded from package and deployment bytes."
+    },
+    {
+      "id": "java-reference-publication-source-notice-materials",
+      "relationship": "DEVELOPMENT_ONLY",
+      "name": "Fixed Java reference source and notice publication materials",
+      "versionOrRevision": "OWLAPI 5.5.1 at d7e997a53b470e32700de89cc610d9daf01ea769; owner-cleared v4 closure",
+      "licenseAssessments": [
+        {
+          "scope": "JFact-derived FastSet source and uncombined source supplement",
+          "declaredLicenseExpression": "LGPL-2.1-or-later",
+          "concludedLicenseExpression": "LGPL-3.0-or-later",
+          "licenseConclusionRationale": "The original 2.1-or-later grant and headers are preserved; the specific owner disposition elects the LGPL3 section 4(d)(0) source/recombination route, with section 5 supplement additional. This is not a professional legal opinion.",
+          "distributionDisposition": "REPOSITORY_ONLY_NOT_IN_PACKAGE"
+        },
+        {
+          "scope": "OBO original supplier POM and preserved supplied notices",
+          "declaredLicenseExpression": "BSD-3-Clause",
+          "concludedLicenseExpression": "BSD-3-Clause",
+          "licenseConclusionRationale": "Preserves the supplier declaration and complete conditions/disclaimer. The owner specifically accepted the documented missing named-notice/provenance gap; no holder attribution is invented.",
+          "distributionDisposition": "REPOSITORY_ONLY_NOT_IN_PACKAGE"
+        },
+        {
+          "scope": "Other component notices and source excerpts, individually mapped by the pinned publication catalogue",
+          "declaredLicenseExpression": "LicenseRef-java-reference-component-terms",
+          "concludedLicenseExpression": "LicenseRef-java-reference-component-terms",
+          "licenseConclusionRationale": "This LicenseRef designates the individually mapped original component/per-file terms in util/owlapi-reference/reference-publication-catalogue.json and publication-assets; it does not create a licence or assert blanket relicensing. The exact original terms remain authoritative under the owner's fixed-source disposition.",
+          "distributionDisposition": "REPOSITORY_ONLY_NOT_IN_PACKAGE"
+        }
+      ],
+      "sourceUrl": "https://github.com/owlcs/owlapi/tree/d7e997a53b470e32700de89cc610d9daf01ea769",
+      "evidenceFiles": [
+        {
+          "path": "util/owlapi-reference/reference-publication-catalogue.json",
+          "sha256": "c613ca6bb368dd90ae5dc8389cafbd5df56cd39314bf3988e2d352239e2d4798"
+        }
+      ],
+      "treeEvidence": {
+        "root": "util/owlapi-reference/publication-assets",
+        "fileCount": 94,
+        "manifestSha256": "4e20ec57b5cc3e62da1e6ad475cf126b8fd6a5de868a363404b5d6a1c4350d3d"
+      },
+      "attributionText": [
+        "Original component and per-file copyright notices are preserved verbatim in the mapped assets; no blanket project attribution replaces them."
+      ],
+      "packageTarballScope": false,
+      "deployedApplicationScope": "NOT_APPLICABLE",
+      "noticeDisposition": "ORIGINAL_COMPONENT_NOTICES_AND_FIXED_SOURCE_OWNER_DISPOSITION",
+      "rationale": "The catalogue binds the exact approved source/notice closure and disposition hashes. These development-reference materials are excluded from npm and application deployment. Shared compiled-reference publication and activation remain separately gated."
     },
     {
       "id": "ruff-development-tool",

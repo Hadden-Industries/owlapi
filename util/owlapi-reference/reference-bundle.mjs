@@ -21,6 +21,11 @@ import {
   sep,
 } from "node:path";
 import { TextDecoder } from "node:util";
+import { isDeepStrictEqual } from "node:util";
+import {
+  createReferenceInputRecord,
+  readNativeChecksums,
+} from "./reference-inputs.mjs";
 
 import Ajv from "ajv";
 
@@ -31,6 +36,15 @@ const schema = JSON.parse(
   ),
 );
 const validate = new Ajv({ strict: true, allErrors: false }).compile(schema);
+const publicationSchema = JSON.parse(
+  readFileSync(
+    new URL("./reference-publication.schema.json", import.meta.url),
+    "utf8",
+  ),
+);
+const validatePublication = new Ajv({ strict: true, allErrors: false }).compile(
+  publicationSchema,
+);
 const digest = (data) => createHash("sha256").update(data).digest("hex");
 const MAX_MANIFEST_BYTES = 256 * 1024;
 const MAX_PAYLOAD_BYTES = 128 * 1024 * 1024;
@@ -104,7 +118,7 @@ function boundedEntries(directory, limit, message) {
   }
 }
 
-function expectations(value) {
+function expectations(value, published = false) {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     fail("independent expectations missing");
   }
@@ -115,6 +129,13 @@ function expectations(value) {
     "sourceCommit",
     "sourceTree",
   ];
+  if (published)
+    keys.push(
+      "inputKeySha256",
+      "runtimeGraphSha256",
+      "rightsSha256",
+      "provenanceSha256",
+    );
   if (Object.keys(value).sort().join() !== keys.sort().join())
     fail("unexpected expectation fields");
   for (const key of keys) {
@@ -129,8 +150,13 @@ function expectations(value) {
   }
 }
 
-function admittedBundle(bundleDirectory, expected) {
-  expectations(expected);
+function admittedBundle(
+  bundleDirectory,
+  expected,
+  published = false,
+  materialized = false,
+) {
+  expectations(expected, published);
   const root = plainPath(bundleDirectory);
   if (!lstatSync(root).isDirectory()) fail("bundle is not a directory");
   const manifestBytes = readRegular(
@@ -142,7 +168,8 @@ function admittedBundle(bundleDirectory, expected) {
   const manifest = JSON.parse(
     new TextDecoder("utf-8", { fatal: true }).decode(manifestBytes),
   );
-  if (!validate(manifest)) fail("invalid manifest schema");
+  if (!(published ? validatePublication(manifest) : validate(manifest)))
+    fail("invalid manifest schema");
   if (
     manifest.source.commit !== expected.sourceCommit ||
     manifest.source.tree !== expected.sourceTree ||
@@ -150,6 +177,16 @@ function admittedBundle(bundleDirectory, expected) {
     digest(JSON.stringify(manifest.inventory)) !== expected.inventorySha256
   )
     fail("independent input identity mismatch");
+  if (
+    published &&
+    (manifest.inputKeySha256 !== expected.inputKeySha256 ||
+      manifest.runtimeGraphSha256 !== expected.runtimeGraphSha256 ||
+      manifest.rightsSha256 !== expected.rightsSha256 ||
+      digest(JSON.stringify(manifest.provenance)) !==
+        expected.provenanceSha256 ||
+      !Number.isFinite(Date.parse(manifest.provenance.createdAt)))
+  )
+    fail("independent publication identity mismatch");
   const paths = manifest.inventory.map((entry) => entry.path);
   if (new Set(paths).size !== paths.length) fail("duplicate inventory path");
   const jars = paths.filter((file) => file.startsWith("runtime/"));
@@ -163,17 +200,42 @@ function admittedBundle(bundleDirectory, expected) {
   )
     fail("incomplete or reordered runtime inventory");
   if (
+    published &&
+    (!paths.includes("sources/reactor.tar") ||
+      !paths.includes("sources/build-inputs.txt") ||
+      !paths.includes("sources/runtime-graph.txt"))
+  )
+    fail("required publication source/input materials missing");
+  if (
     manifest.inventory.reduce((total, entry) => total + entry.bytes, 0) >
     MAX_PAYLOAD_BYTES
   ) {
     fail("payload size limit exceeded");
   }
   const actual = [];
-  const entries = boundedEntries(root, 3, "extra or missing bundle entries");
-  if (entries.length !== 3) fail("extra or missing bundle entries");
+  const rootCount = (published ? 5 : 3) + (materialized ? 1 : 0);
+  const entries = boundedEntries(
+    root,
+    rootCount,
+    "extra or missing bundle entries",
+  );
+  if (entries.length !== rootCount) fail("extra or missing bundle entries");
   for (const entry of entries) {
     if (entry.name === "manifest.json" && entry.isFile()) continue;
-    if (!["runtime", "notices"].includes(entry.name) || !entry.isDirectory()) {
+    if (
+      materialized &&
+      entry.name === "owlapi-runtime-classpath.txt" &&
+      entry.isFile()
+    )
+      continue;
+    if (published && entry.name === "input-record.json" && entry.isFile())
+      continue;
+    if (
+      !(
+        published ? ["runtime", "notices", "sources"] : ["runtime", "notices"]
+      ).includes(entry.name) ||
+      !entry.isDirectory()
+    ) {
       fail("unexpected bundle entry");
     }
     const directory = plainPath(join(root, entry.name));
@@ -195,7 +257,46 @@ function admittedBundle(bundleDirectory, expected) {
       fail("payload digest or size mismatch");
     return { ...entry, data: bytes };
   });
-  return { root, manifest, manifestBytes, payload };
+  let inputRecordBytes = null;
+  if (published) {
+    inputRecordBytes = readRegular(join(root, "input-record.json"), 64 * 1024);
+    if (digest(inputRecordBytes) !== expected.inputRecordSha256)
+      fail("input record digest mismatch");
+    const inputRecord = JSON.parse(
+      new TextDecoder("utf-8", { fatal: true }).decode(inputRecordBytes),
+    );
+    if (!inputRecord?.semantic || typeof inputRecord.semantic !== "object")
+      fail("missing semantic inputs");
+    const { recipeSha256, ...inputs } = inputRecord.semantic;
+    const reconstructed = createReferenceInputRecord(inputs);
+    if (
+      reconstructed.scope !== "HOSTED_EXACT_IMAGE" ||
+      !isDeepStrictEqual(reconstructed, inputRecord) ||
+      reconstructed.keySha256 !== expected.inputKeySha256 ||
+      recipeSha256 !== reconstructed.semantic.recipeSha256
+    )
+      fail("semantic input record mismatch");
+    const external = payload.find(
+      (entry) => entry.path === "sources/build-inputs.txt",
+    ).data;
+    readNativeChecksums(external);
+    if (
+      digest(external) !== reconstructed.semantic.externalSha256 ||
+      digest(
+        payload.find((entry) => entry.path === "sources/runtime-graph.txt")
+          .data,
+      ) !== expected.runtimeGraphSha256
+    )
+      fail("native input/graph record mismatch");
+  }
+  if (
+    materialized &&
+    readRegular(join(root, "owlapi-runtime-classpath.txt"), 64 * 1024).toString(
+      "utf8",
+    ) !== manifest.classpath.map((entry) => join(root, entry)).join(delimiter)
+  )
+    fail("materialized native classpath changed");
+  return { root, manifest, manifestBytes, payload, inputRecordBytes };
 }
 
 /** Local experiment only; independent identities do not authenticate a producer. */
@@ -216,6 +317,48 @@ export function materializeReferenceBundle({
   expected,
 }) {
   const admitted = admittedBundle(bundleDirectory, expected);
+  return materializeAdmitted(admitted, destination);
+}
+
+/** Publication provenance and expected identities must first be admitted through
+ * the bounded service/qualification verifier. A local schema marker grants no rights
+ * or producer authority. These APIs neither enable upload nor execute classes.
+ */
+export function verifyPublishedReferenceBundle({ bundleDirectory, expected }) {
+  const { manifest } = admittedBundle(bundleDirectory, expected, true);
+  return {
+    purpose: manifest.purpose,
+    source: manifest.source,
+    jarCount: manifest.classpath.length,
+    inventory: manifest.inventory,
+    inputKeySha256: manifest.inputKeySha256,
+  };
+}
+
+/** Same-job quiescent handoff only. The one additional native classpath file
+ * must equal the already admitted ordered manifest, with no grammar fallback. */
+export function verifyMaterializedPublishedReferenceBundle({
+  bundleDirectory,
+  expected,
+}) {
+  admittedBundle(bundleDirectory, expected, true, true);
+  return {
+    classpath: join(resolve(bundleDirectory), "owlapi-runtime-classpath.txt"),
+  };
+}
+
+export function materializePublishedReferenceBundle({
+  bundleDirectory,
+  destination,
+  expected,
+}) {
+  return materializeAdmitted(
+    admittedBundle(bundleDirectory, expected, true),
+    destination,
+  );
+}
+
+function materializeAdmitted(admitted, destination) {
   const target = resolve(destination);
   plainPath(dirname(target));
   const overlap = relative(admitted.root, target);
@@ -229,7 +372,9 @@ export function materializeReferenceBundle({
   }
   // Exclusive creation refuses collisions. No cleanup deletes a caller's directory.
   mkdirSync(target, { mode: 0o700 });
-  for (const directory of ["runtime", "notices"])
+  for (const directory of admitted.inputRecordBytes
+    ? ["runtime", "notices", "sources"]
+    : ["runtime", "notices"])
     mkdirSync(join(target, directory), { mode: 0o700 });
   for (const entry of admitted.payload) {
     writeFileSync(join(target, entry.path), entry.data, {
@@ -241,6 +386,12 @@ export function materializeReferenceBundle({
     flag: "wx",
     mode: 0o600,
   });
+  if (admitted.inputRecordBytes)
+    writeFileSync(
+      join(target, "input-record.json"),
+      admitted.inputRecordBytes,
+      { flag: "wx", mode: 0o600 },
+    );
   const classpath = join(target, "owlapi-runtime-classpath.txt");
   writeFileSync(
     classpath,

@@ -1,0 +1,2156 @@
+{
+  "schemaVersion": 1,
+  "purpose": "OWNER_ACCEPTED_REFERENCE_SOURCE_NOTICE_CLOSURE",
+  "sourceCommit": "d7e997a53b470e32700de89cc610d9daf01ea769",
+  "sourceTree": "8f871bacef5ab767afda979e60b1a1e0c98d6323",
+  "packetManifestSha256": "819764ddbfe7162ea85b174afe706038588e61b27e21283cfa7b87828d93d713",
+  "rightsSha256": "c31f01628662182ec041c4c30d9fc253a892d672fe8b4d883ff672d31b42a5d4",
+  "researchReportSha256": "6e7c82574e5d0c83cd129c082986750d9b1ec4b0ee0f4df1b4c99a9209ca26a8",
+  "sourceAttestation": "NOT_CLAIMED",
+  "runtime": [
+    {
+      "path": "runtime/000.jar",
+      "kind": "REACTOR",
+      "module": "apibinding",
+      "coordinate": "net.sourceforge.owlapi:owlapi-apibinding:5.5.1",
+      "filename": "owlapi-apibinding-5.5.1.jar"
+    },
+    {
+      "path": "runtime/001.jar",
+      "kind": "REACTOR",
+      "module": "tools",
+      "coordinate": "net.sourceforge.owlapi:owlapi-tools:5.5.1",
+      "filename": "owlapi-tools-5.5.1.jar"
+    },
+    {
+      "path": "runtime/002.jar",
+      "kind": "REACTOR",
+      "module": "impl",
+      "coordinate": "net.sourceforge.owlapi:owlapi-impl:5.5.1",
+      "filename": "owlapi-impl-5.5.1.jar"
+    },
+    {
+      "path": "runtime/003.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "javax.inject:javax.inject:1",
+      "repositoryPath": "javax/inject/javax.inject/1/javax.inject-1.jar",
+      "filename": "javax.inject-1.jar",
+      "bytes": 2497,
+      "sha256": "91c77044a50c481636c32d916fd89c9118a72195390452c81065080f957de7ff"
+    },
+    {
+      "path": "runtime/004.jar",
+      "kind": "REACTOR",
+      "module": "parsers",
+      "coordinate": "net.sourceforge.owlapi:owlapi-parsers:5.5.1",
+      "filename": "owlapi-parsers-5.5.1.jar"
+    },
+    {
+      "path": "runtime/005.jar",
+      "kind": "REACTOR",
+      "module": "oboformat",
+      "coordinate": "net.sourceforge.owlapi:owlapi-oboformat:5.5.1",
+      "filename": "owlapi-oboformat-5.5.1.jar"
+    },
+    {
+      "path": "runtime/006.jar",
+      "kind": "REACTOR",
+      "module": "rio",
+      "coordinate": "net.sourceforge.owlapi:owlapi-rio:5.5.1",
+      "filename": "owlapi-rio-5.5.1.jar"
+    },
+    {
+      "path": "runtime/007.jar",
+      "kind": "REACTOR",
+      "module": "api",
+      "coordinate": "net.sourceforge.owlapi:owlapi-api:5.5.1",
+      "filename": "owlapi-api-5.5.1.jar"
+    },
+    {
+      "path": "runtime/008.jar",
+      "kind": "REACTOR",
+      "module": "compatibility",
+      "coordinate": "net.sourceforge.owlapi:owlapi-compatibility:5.5.1",
+      "filename": "owlapi-compatibility-5.5.1.jar"
+    },
+    {
+      "path": "runtime/009.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "com.fasterxml.jackson.core:jackson-core:2.16.1",
+      "repositoryPath": "com/fasterxml/jackson/core/jackson-core/2.16.1/jackson-core-2.16.1.jar",
+      "filename": "jackson-core-2.16.1.jar",
+      "bytes": 578125,
+      "sha256": "f5f8ef90609e64fec82eb908e497dc7d81b2eb983fe509b870292a193cde4dfb"
+    },
+    {
+      "path": "runtime/010.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "com.fasterxml.jackson.core:jackson-databind:2.16.1",
+      "repositoryPath": "com/fasterxml/jackson/core/jackson-databind/2.16.1/jackson-databind-2.16.1.jar",
+      "filename": "jackson-databind-2.16.1.jar",
+      "bytes": 1637611,
+      "sha256": "baf8a8ebee8f45ef68cdd5e2dd3923b3e296c0937b96ec0b4806aa3a31bccd1d"
+    },
+    {
+      "path": "runtime/011.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "com.fasterxml.jackson.core:jackson-annotations:2.16.1",
+      "repositoryPath": "com/fasterxml/jackson/core/jackson-annotations/2.16.1/jackson-annotations-2.16.1.jar",
+      "filename": "jackson-annotations-2.16.1.jar",
+      "bytes": 78480,
+      "sha256": "a4730771e6a495dd3793a42cdb8ce6bddb96c77e15f40c98fd8d9a7ae09e7286"
+    },
+    {
+      "path": "runtime/012.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.apache.commons:commons-rdf-api:0.5.0",
+      "repositoryPath": "org/apache/commons/commons-rdf-api/0.5.0/commons-rdf-api-0.5.0.jar",
+      "filename": "commons-rdf-api-0.5.0.jar",
+      "bytes": 22565,
+      "sha256": "360fd9197008502cbc3fd09afe2ad45d8c8c905e21f42e7cd5b2aa1c39742b5e"
+    },
+    {
+      "path": "runtime/013.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.tukaani:xz:1.9",
+      "repositoryPath": "org/tukaani/xz/1.9/xz-1.9.jar",
+      "filename": "xz-1.9.jar",
+      "bytes": 116013,
+      "sha256": "211b306cfc44f8f96df3a0a3ddaf75ba8c5289eed77d60d72f889bb855f535e5"
+    },
+    {
+      "path": "runtime/014.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.slf4j:slf4j-api:2.0.11",
+      "repositoryPath": "org/slf4j/slf4j-api/2.0.11/slf4j-api-2.0.11.jar",
+      "filename": "slf4j-api-2.0.11.jar",
+      "bytes": 67831,
+      "sha256": "ce0e71d673acb9036bb55d0244b261cf033f8e4c1245f14f931dfb1937dd4c95"
+    },
+    {
+      "path": "runtime/015.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.slf4j:jcl-over-slf4j:2.0.11",
+      "repositoryPath": "org/slf4j/jcl-over-slf4j/2.0.11/jcl-over-slf4j-2.0.11.jar",
+      "filename": "jcl-over-slf4j-2.0.11.jar",
+      "bytes": 18425,
+      "sha256": "55e96f9830d732c81f0709e9090f308798381be7dc5aa67dd423c02831b5b4bb"
+    },
+    {
+      "path": "runtime/016.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-model:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-model/5.0.2/rdf4j-model-5.0.2.jar",
+      "filename": "rdf4j-model-5.0.2.jar",
+      "bytes": 173983,
+      "sha256": "c56becf8915a8e27d74ed6accc391d4cd6d231844766b07101aebae0c5eeab71"
+    },
+    {
+      "path": "runtime/017.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-common-exception:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-common-exception/5.0.2/rdf4j-common-exception-5.0.2.jar",
+      "filename": "rdf4j-common-exception-5.0.2.jar",
+      "bytes": 4302,
+      "sha256": "ae5aa914291b4cebeb5fd3657cb0fd4097bfc7df43cb4aeeed36343b94c5eca9"
+    },
+    {
+      "path": "runtime/018.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-common-text:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-common-text/5.0.2/rdf4j-common-text-5.0.2.jar",
+      "filename": "rdf4j-common-text-5.0.2.jar",
+      "bytes": 4674,
+      "sha256": "4e37650e9f124ab13dd5a5464630c83539ea6b70f4f7f024d60174853e57595b"
+    },
+    {
+      "path": "runtime/019.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-common-io:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-common-io/5.0.2/rdf4j-common-io-5.0.2.jar",
+      "filename": "rdf4j-common-io-5.0.2.jar",
+      "bytes": 42431,
+      "sha256": "2268c55e5c7f968020fba63b1c917c87955624c691ad827485a2d2b9e444b05e"
+    },
+    {
+      "path": "runtime/020.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-common-iterator:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-common-iterator/5.0.2/rdf4j-common-iterator-5.0.2.jar",
+      "filename": "rdf4j-common-iterator-5.0.2.jar",
+      "bytes": 46437,
+      "sha256": "cf53dce94ca08c24e3f3a6ef0a23c3d21b5baeafd482139c8a00155891c65c8f"
+    },
+    {
+      "path": "runtime/021.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-common-order:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-common-order/5.0.2/rdf4j-common-order-5.0.2.jar",
+      "filename": "rdf4j-common-order-5.0.2.jar",
+      "bytes": 5146,
+      "sha256": "c3f43a907aaac7446fbac6b95f9e60d0c3a2a645798a7ee3f9a9d657afa57e73"
+    },
+    {
+      "path": "runtime/022.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-model-api:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-model-api/5.0.2/rdf4j-model-api-5.0.2.jar",
+      "filename": "rdf4j-model-api-5.0.2.jar",
+      "bytes": 57501,
+      "sha256": "9e13d31c4e090aa9f0af912ba2da0f46d0018414a8413e161dbbc208538e2029"
+    },
+    {
+      "path": "runtime/023.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-common-annotation:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-common-annotation/5.0.2/rdf4j-common-annotation-5.0.2.jar",
+      "filename": "rdf4j-common-annotation-5.0.2.jar",
+      "bytes": 3249,
+      "sha256": "8860c175c0ac1ac7aa2e195b4895502a15060c44bc1092ece7a59db24d2423c5"
+    },
+    {
+      "path": "runtime/024.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-model-vocabulary:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-model-vocabulary/5.0.2/rdf4j-model-vocabulary-5.0.2.jar",
+      "filename": "rdf4j-model-vocabulary-5.0.2.jar",
+      "bytes": 98855,
+      "sha256": "b44d8d219a01377cb6b20b96baea4ba3e7549041112023117a183d40e8968ebf"
+    },
+    {
+      "path": "runtime/025.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-api:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-rio-api/5.0.2/rdf4j-rio-api-5.0.2.jar",
+      "filename": "rdf4j-rio-api-5.0.2.jar",
+      "bytes": 99688,
+      "sha256": "7a4c190d974c2090f6d88b78427934b453dff34ad90ff520283df7f4adc82951"
+    },
+    {
+      "path": "runtime/026.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-common-xml:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-common-xml/5.0.2/rdf4j-common-xml-5.0.2.jar",
+      "filename": "rdf4j-common-xml-5.0.2.jar",
+      "bytes": 19208,
+      "sha256": "f908c335f4127a395ab33bc5a463842cdde0cf944029bd8908c5b8eaa42fd56d"
+    },
+    {
+      "path": "runtime/027.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "commons-codec:commons-codec:1.15",
+      "repositoryPath": "commons-codec/commons-codec/1.15/commons-codec-1.15.jar",
+      "filename": "commons-codec-1.15.jar",
+      "bytes": 353793,
+      "sha256": "b3e9f6d63a790109bf0d056611fbed1cf69055826defeb9894a71369d246ed63"
+    },
+    {
+      "path": "runtime/028.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "no.hasmac:hasmac-json-ld:0.9.0",
+      "repositoryPath": "no/hasmac/hasmac-json-ld/0.9.0/hasmac-json-ld-0.9.0.jar",
+      "filename": "hasmac-json-ld-0.9.0.jar",
+      "bytes": 316411,
+      "sha256": "72782170501af33f4af0d7964cac6fe0e296c37915bbb6b67adbddd1d05fec89"
+    },
+    {
+      "path": "runtime/029.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-languages:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-rio-languages/5.0.2/rdf4j-rio-languages-5.0.2.jar",
+      "filename": "rdf4j-rio-languages-5.0.2.jar",
+      "bytes": 5282,
+      "sha256": "10de37ce1a132ab9ed6cb735c2be7a2fda9eb7289e83b0695aa2af6af93749d2"
+    },
+    {
+      "path": "runtime/030.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-datatypes:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-rio-datatypes/5.0.2/rdf4j-rio-datatypes-5.0.2.jar",
+      "filename": "rdf4j-rio-datatypes-5.0.2.jar",
+      "bytes": 9311,
+      "sha256": "44bdaa515ea28c962d036560a44530f24aea7cd10b4966053c3dee933bbcbf03"
+    },
+    {
+      "path": "runtime/031.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-binary:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-rio-binary/5.0.2/rdf4j-rio-binary-5.0.2.jar",
+      "filename": "rdf4j-rio-binary-5.0.2.jar",
+      "bytes": 16089,
+      "sha256": "92095b0e5e967693f678792703fad5822c13dc13c01ffb84b3e60847b37f3d33"
+    },
+    {
+      "path": "runtime/032.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-n3:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-rio-n3/5.0.2/rdf4j-rio-n3-5.0.2.jar",
+      "filename": "rdf4j-rio-n3-5.0.2.jar",
+      "bytes": 7114,
+      "sha256": "9d13afdc134eb460a5199163c10fa2d701cf4ba90775f470c940c1d57767a853"
+    },
+    {
+      "path": "runtime/033.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-nquads:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-rio-nquads/5.0.2/rdf4j-rio-nquads-5.0.2.jar",
+      "filename": "rdf4j-rio-nquads-5.0.2.jar",
+      "bytes": 7012,
+      "sha256": "e8c0612c6c1750dd5123378909d8e7e4a4f79e5271a78a37493a37c3feee96d1"
+    },
+    {
+      "path": "runtime/034.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-ntriples:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-rio-ntriples/5.0.2/rdf4j-rio-ntriples-5.0.2.jar",
+      "filename": "rdf4j-rio-ntriples-5.0.2.jar",
+      "bytes": 14666,
+      "sha256": "4b774744a461d6939de98f3e37aff8faeac99cf233328f95933d0df8b5eb92ad"
+    },
+    {
+      "path": "runtime/035.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-rdfjson:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-rio-rdfjson/5.0.2/rdf4j-rio-rdfjson-5.0.2.jar",
+      "filename": "rdf4j-rio-rdfjson-5.0.2.jar",
+      "bytes": 18203,
+      "sha256": "0e923f6f2003ac8d1fd1e10c758fe14a767782a43ce45a8e6257008a90751ac3"
+    },
+    {
+      "path": "runtime/036.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-jsonld:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-rio-jsonld/5.0.2/rdf4j-rio-jsonld-5.0.2.jar",
+      "filename": "rdf4j-rio-jsonld-5.0.2.jar",
+      "bytes": 39216,
+      "sha256": "e11b682c8688ccd6be62a519a8f4d86c438f76497ed64b7910f328d7edd1bbab"
+    },
+    {
+      "path": "runtime/037.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "jakarta.json:jakarta.json-api:2.0.1",
+      "repositoryPath": "jakarta/json/jakarta.json-api/2.0.1/jakarta.json-api-2.0.1.jar",
+      "filename": "jakarta.json-api-2.0.1.jar",
+      "bytes": 45295,
+      "sha256": "6152cdc29c3e99ad4bfb367d43464c9fe97ac800ddc1952b2452c5e0c21f89fd"
+    },
+    {
+      "path": "runtime/038.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.glassfish:jakarta.json:2.0.1",
+      "repositoryPath": "org/glassfish/jakarta.json/2.0.1/jakarta.json-2.0.1.jar",
+      "filename": "jakarta.json-2.0.1.jar",
+      "bytes": 143846,
+      "sha256": "52539b39498b86ca9910b0eacc608a8c78de8db3842caa84bc87169372202cc0"
+    },
+    {
+      "path": "runtime/039.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.apache.httpcomponents:httpclient:4.5.14",
+      "repositoryPath": "org/apache/httpcomponents/httpclient/4.5.14/httpclient-4.5.14.jar",
+      "filename": "httpclient-4.5.14.jar",
+      "bytes": 785639,
+      "sha256": "c8bc7e1c51a6d4ce72f40d2ebbabf1c4b68bfe76e732104b04381b493478e9d6"
+    },
+    {
+      "path": "runtime/040.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.apache.httpcomponents:httpcore:4.4.16",
+      "repositoryPath": "org/apache/httpcomponents/httpcore/4.4.16/httpcore-4.4.16.jar",
+      "filename": "httpcore-4.4.16.jar",
+      "bytes": 327891,
+      "sha256": "6c9b3dd142a09dc468e23ad39aad6f75a0f2b85125104469f026e52a474e464f"
+    },
+    {
+      "path": "runtime/041.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.apache.httpcomponents:httpclient-cache:4.5.14",
+      "repositoryPath": "org/apache/httpcomponents/httpclient-cache/4.5.14/httpclient-cache-4.5.14.jar",
+      "filename": "httpclient-cache-4.5.14.jar",
+      "bytes": 164023,
+      "sha256": "5324d2cbc2d311c9f91b82bcbc746ec2a29f1f5b744395a50ff3afb873db1cee"
+    },
+    {
+      "path": "runtime/042.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-rdfxml:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-rio-rdfxml/5.0.2/rdf4j-rio-rdfxml-5.0.2.jar",
+      "filename": "rdf4j-rio-rdfxml-5.0.2.jar",
+      "bytes": 42267,
+      "sha256": "fcd8ee30ae466ad44843308bce39173af1a71a3c8523bcd4678a696e3a4b64b2"
+    },
+    {
+      "path": "runtime/043.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-trix:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-rio-trix/5.0.2/rdf4j-rio-trix-5.0.2.jar",
+      "filename": "rdf4j-rio-trix-5.0.2.jar",
+      "bytes": 14882,
+      "sha256": "ee4b4337a80a86d226398750952d2352ba19fcf9f6074d1a2cfc99038ab8e716"
+    },
+    {
+      "path": "runtime/044.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-turtle:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-rio-turtle/5.0.2/rdf4j-rio-turtle-5.0.2.jar",
+      "filename": "rdf4j-rio-turtle-5.0.2.jar",
+      "bytes": 38573,
+      "sha256": "68b5f3b70ebbcf6505bda7f10a0febf45e2da17daa98b0ae0ec5730894ea97d4"
+    },
+    {
+      "path": "runtime/045.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-trig:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-rio-trig/5.0.2/rdf4j-rio-trig-5.0.2.jar",
+      "filename": "rdf4j-rio-trig-5.0.2.jar",
+      "bytes": 12702,
+      "sha256": "1958859b71979e5e3e09ee82821a1bc7d41bb2725ac873e115e279f89fd7c208"
+    },
+    {
+      "path": "runtime/046.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-hdt:5.0.2",
+      "repositoryPath": "org/eclipse/rdf4j/rdf4j-rio-hdt/5.0.2/rdf4j-rio-hdt-5.0.2.jar",
+      "filename": "rdf4j-rio-hdt-5.0.2.jar",
+      "bytes": 40999,
+      "sha256": "5afa049723e69fe70aae7575ab44bd52ee2aef11ab323285aa360f8d2dc26605"
+    },
+    {
+      "path": "runtime/047.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "com.github.jsonld-java:jsonld-java:0.13.6",
+      "repositoryPath": "com/github/jsonld-java/jsonld-java/0.13.6/jsonld-java-0.13.6.jar",
+      "filename": "jsonld-java-0.13.6.jar",
+      "bytes": 3336943,
+      "sha256": "ac158c23504fa76dc1a5f43436df2cb34b4b435b79b38c9b941d1c75e2efbe90"
+    },
+    {
+      "path": "runtime/048.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.apache.httpcomponents:httpclient-osgi:4.5.13",
+      "repositoryPath": "org/apache/httpcomponents/httpclient-osgi/4.5.13/httpclient-osgi-4.5.13.jar",
+      "filename": "httpclient-osgi-4.5.13.jar",
+      "bytes": 1370788,
+      "sha256": "e18dd56f0719dec4fdea58fe79c178770fc09fee9a5b481ccd3eea4c07978e1e"
+    },
+    {
+      "path": "runtime/049.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.apache.httpcomponents:httpmime:4.5.13",
+      "repositoryPath": "org/apache/httpcomponents/httpmime/4.5.13/httpmime-4.5.13.jar",
+      "filename": "httpmime-4.5.13.jar",
+      "bytes": 41790,
+      "sha256": "06e754d99245b98dcc2860dcb43d20e737d650da2bf2077a105f68accbd5c5cc"
+    },
+    {
+      "path": "runtime/050.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.apache.httpcomponents:fluent-hc:4.5.13",
+      "repositoryPath": "org/apache/httpcomponents/fluent-hc/4.5.13/fluent-hc-4.5.13.jar",
+      "filename": "fluent-hc-4.5.13.jar",
+      "bytes": 31547,
+      "sha256": "f883b6b027d5e05c53e48e4fe3548715c52dbd590ffa3f52d039574f1a4d0728"
+    },
+    {
+      "path": "runtime/051.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.apache.httpcomponents:httpcore-osgi:4.4.16",
+      "repositoryPath": "org/apache/httpcomponents/httpcore-osgi/4.4.16/httpcore-osgi-4.4.16.jar",
+      "filename": "httpcore-osgi-4.4.16.jar",
+      "bytes": 695131,
+      "sha256": "8b22476c8dcd1a10dab8666dadfd45424e1cb2fc0edaef86fe745566abdba86e"
+    },
+    {
+      "path": "runtime/052.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.apache.httpcomponents:httpcore-nio:4.4.16",
+      "repositoryPath": "org/apache/httpcomponents/httpcore-nio/4.4.16/httpcore-nio-4.4.16.jar",
+      "filename": "httpcore-nio-4.4.16.jar",
+      "bytes": 368896,
+      "sha256": "4018736ede2d321034e8517ea90baefb31831a8608afccc446d8a699fb1d00d4"
+    },
+    {
+      "path": "runtime/053.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "com.github.vsonnier:hppcrt:0.7.5",
+      "repositoryPath": "com/github/vsonnier/hppcrt/0.7.5/hppcrt-0.7.5.jar",
+      "filename": "hppcrt-0.7.5.jar",
+      "bytes": 1935920,
+      "sha256": "f3cfbd511d0bd5a29b72bcca97fcaa81889cf6698f045c5f658744829c8784b9"
+    },
+    {
+      "path": "runtime/054.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "com.github.ben-manes.caffeine:caffeine:3.1.8",
+      "repositoryPath": "com/github/ben-manes/caffeine/caffeine/3.1.8/caffeine-3.1.8.jar",
+      "filename": "caffeine-3.1.8.jar",
+      "bytes": 889211,
+      "sha256": "7dd15f9df1be238ffaa367ce6f556737a88031de4294dad18eef57c474ddf1d3"
+    },
+    {
+      "path": "runtime/055.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "org.checkerframework:checker-qual:3.37.0",
+      "repositoryPath": "org/checkerframework/checker-qual/3.37.0/checker-qual-3.37.0.jar",
+      "filename": "checker-qual-3.37.0.jar",
+      "bytes": 224460,
+      "sha256": "e4ce1376cc2735e1dde220b62ad0913f51297704daad155a33f386bc5db0d9f7"
+    },
+    {
+      "path": "runtime/056.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.21.1",
+      "repositoryPath": "com/google/errorprone/error_prone_annotations/2.21.1/error_prone_annotations-2.21.1.jar",
+      "filename": "error_prone_annotations-2.21.1.jar",
+      "bytes": 16830,
+      "sha256": "d1f3c66aa91ac52549e00ae3b208ba4b9af7d72d68f230643553beb38e6118ac"
+    },
+    {
+      "path": "runtime/057.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "com.google.guava:guava:33.0.0-jre",
+      "repositoryPath": "com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre.jar",
+      "filename": "guava-33.0.0-jre.jar",
+      "bytes": 3047503,
+      "sha256": "f4d85c3e4d411694337cb873abea09b242b664bb013320be6105327c45991537"
+    },
+    {
+      "path": "runtime/058.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "com.google.guava:failureaccess:1.0.2",
+      "repositoryPath": "com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar",
+      "filename": "failureaccess-1.0.2.jar",
+      "bytes": 4740,
+      "sha256": "8a8f81cf9b359e3f6dfa691a1e776985c061ef2f223c9b2c80753e1b458e8064"
+    },
+    {
+      "path": "runtime/059.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava",
+      "repositoryPath": "com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+      "filename": "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+      "bytes": 2199,
+      "sha256": "b372a037d4230aa57fbeffdef30fd6123f9c0c2db85d0aced00c91b974f33f99"
+    },
+    {
+      "path": "runtime/060.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "com.google.j2objc:j2objc-annotations:2.8",
+      "repositoryPath": "com/google/j2objc/j2objc-annotations/2.8/j2objc-annotations-2.8.jar",
+      "filename": "j2objc-annotations-2.8.jar",
+      "bytes": 9301,
+      "sha256": "f02a95fa1a5e95edb3ed859fd0fb7df709d121a35290eff8b74dce2ab7f4d6ed"
+    },
+    {
+      "path": "runtime/061.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "com.google.code.findbugs:jsr305:3.0.2",
+      "repositoryPath": "com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar",
+      "filename": "jsr305-3.0.2.jar",
+      "bytes": 19936,
+      "sha256": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7"
+    },
+    {
+      "path": "runtime/062.jar",
+      "kind": "EXTERNAL",
+      "coordinate": "commons-io:commons-io:2.15.1",
+      "repositoryPath": "commons-io/commons-io/2.15.1/commons-io-2.15.1.jar",
+      "filename": "commons-io-2.15.1.jar",
+      "bytes": 501218,
+      "sha256": "a58af12ee1b68cfd2ebb0c27caef164f084381a00ec81a48cc275fd7ea54e154"
+    }
+  ],
+  "sources": [
+    {
+      "path": "sources/000.jar",
+      "coordinate": "javax.inject:javax.inject:1",
+      "url": "https://repo.maven.apache.org/maven2/javax/inject/javax.inject/1/javax.inject-1-sources.jar",
+      "bytes": 10928,
+      "sha256": "c4b87ee2911c139c3daf498a781967f1eb2e75bc1a8529a2e7b328a15d0e433e",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/001.jar",
+      "coordinate": "com.fasterxml.jackson.core:jackson-core:2.16.1",
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-core/2.16.1/jackson-core-2.16.1-sources.jar",
+      "bytes": 483593,
+      "sha256": "1bd334b0de7d02d7f8a6591f775a28126b1cdce9cd9ae6dc260482b7bdd9a04c",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/002.jar",
+      "coordinate": "com.fasterxml.jackson.core:jackson-databind:2.16.1",
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.16.1/jackson-databind-2.16.1-sources.jar",
+      "bytes": 1215507,
+      "sha256": "91390204018cbeb9c5ed6e60c2624b63c8221082af9b0e94ce7f2d926ec48e2c",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/003.jar",
+      "coordinate": "com.fasterxml.jackson.core:jackson-annotations:2.16.1",
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.16.1/jackson-annotations-2.16.1-sources.jar",
+      "bytes": 83862,
+      "sha256": "cebdb714198d5b3a152efb9e940dc9eb26cb37aa688ce34431b99afb790f6be3",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/004.jar",
+      "coordinate": "org.apache.commons:commons-rdf-api:0.5.0",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-rdf-api/0.5.0/commons-rdf-api-0.5.0-sources.jar",
+      "bytes": 46366,
+      "sha256": "4469c2bd7f37e8160a9569d1bbbc39fa850cd3acfb0f6dca01e48d507f5eb3fa",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/005.jar",
+      "coordinate": "org.tukaani:xz:1.9",
+      "url": "https://repo.maven.apache.org/maven2/org/tukaani/xz/1.9/xz-1.9-sources.jar",
+      "bytes": 136935,
+      "sha256": "5befa47f06b90e752f035191dde7f2deb59f36000f1ca6cc77d2362a82b6f462",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/006.jar",
+      "coordinate": "org.slf4j:slf4j-api:2.0.11",
+      "url": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/2.0.11/slf4j-api-2.0.11-sources.jar",
+      "bytes": 74487,
+      "sha256": "3c1357260d1c649aa747bc6ba7b78fb6ea1bd2f7e6fabd9c6412e9d5c6e2ea0c",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/007.jar",
+      "coordinate": "org.slf4j:jcl-over-slf4j:2.0.11",
+      "url": "https://repo.maven.apache.org/maven2/org/slf4j/jcl-over-slf4j/2.0.11/jcl-over-slf4j-2.0.11-sources.jar",
+      "bytes": 25432,
+      "sha256": "cb4038a6e19d0128b733e1151a425a0caefd13dd140b0131c4e66388704e86de",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/008.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-model:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-model/5.0.2/rdf4j-model-5.0.2-sources.jar",
+      "bytes": 113277,
+      "sha256": "0f60bf87bc0ebffd0715f56ff0e6c85e4c6fd7aa2eea05631e6691e1c81f783f",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/009.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-common-exception:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-common-exception/5.0.2/rdf4j-common-exception-5.0.2-sources.jar",
+      "bytes": 4652,
+      "sha256": "b32bee5200638da6d4d056172eaec339ea626c89e21cb09f68446bedc7987917",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/010.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-common-text:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-common-text/5.0.2/rdf4j-common-text-5.0.2-sources.jar",
+      "bytes": 4846,
+      "sha256": "1c2788a6bfdd8d76d57a3c2fcd8e05f62d52021fc0a027b8a1dc823e1f1097e7",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/011.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-common-io:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-common-io/5.0.2/rdf4j-common-io-5.0.2-sources.jar",
+      "bytes": 40273,
+      "sha256": "79e73a19ef9cc4896141de33a28b5a85c141563c86f4e41d6836b9a7f98a3cab",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/012.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-common-iterator:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-common-iterator/5.0.2/rdf4j-common-iterator-5.0.2-sources.jar",
+      "bytes": 43480,
+      "sha256": "612cd25d1de0bc7bd66852366fbf60139466776af662adbf558a06b0bc230ec3",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/013.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-common-order:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-common-order/5.0.2/rdf4j-common-order-5.0.2-sources.jar",
+      "bytes": 3660,
+      "sha256": "d53b3f31fc00970d1de6a86dd7e7e1bd94fd197397357b99a136f63ec824d219",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/014.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-model-api:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-model-api/5.0.2/rdf4j-model-api-5.0.2-sources.jar",
+      "bytes": 40089,
+      "sha256": "e1320b9bc45cf6da1ad8564011729cd2c22a1176092972b03e41322c84cecb74",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/015.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-common-annotation:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-common-annotation/5.0.2/rdf4j-common-annotation-5.0.2-sources.jar",
+      "bytes": 3593,
+      "sha256": "5cc838c1039c1d48e44d451c79189190f9cacf485497a65e020dd12d95aca2b6",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/016.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-model-vocabulary:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-model-vocabulary/5.0.2/rdf4j-model-vocabulary-5.0.2-sources.jar",
+      "bytes": 85157,
+      "sha256": "93e844e1ee63990a894ce827a41139495198e87612a2930baca8aa04e537b8c1",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/017.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-api:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-rio-api/5.0.2/rdf4j-rio-api-5.0.2-sources.jar",
+      "bytes": 100572,
+      "sha256": "7000447c572228eaef63466d6f809c91f0a4df64254e15c3af1a2b16718d95a0",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/018.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-common-xml:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-common-xml/5.0.2/rdf4j-common-xml-5.0.2-sources.jar",
+      "bytes": 17257,
+      "sha256": "c331f2cb4596644d1bcf8e79a33b74c911a14000474adac732e9fa82fe05987f",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/019.jar",
+      "coordinate": "commons-codec:commons-codec:1.15",
+      "url": "https://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.15/commons-codec-1.15-sources.jar",
+      "bytes": 364441,
+      "sha256": "7019940b2298d333edb946e2db3d10f1caacbbd52bb64e85832cfd0017e049cc",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/020.jar",
+      "coordinate": "no.hasmac:hasmac-json-ld:0.9.0",
+      "url": "https://repo.maven.apache.org/maven2/no/hasmac/hasmac-json-ld/0.9.0/hasmac-json-ld-0.9.0-sources.jar",
+      "bytes": 216410,
+      "sha256": "69d6f6e07b0defb00e71bef4f0c4f3f0cca568abcfc085a51ddeb97782f07ef3",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/021.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-languages:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-rio-languages/5.0.2/rdf4j-rio-languages-5.0.2-sources.jar",
+      "bytes": 5238,
+      "sha256": "da260a15d6abcd24fa2b6b25e9acf386a41f6d38abe6559c7aa227c406932a9f",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/022.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-datatypes:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-rio-datatypes/5.0.2/rdf4j-rio-datatypes-5.0.2-sources.jar",
+      "bytes": 8407,
+      "sha256": "218c12046dd498bf6b2c31972b8b83c39f8a3b3db7bc274fb70c7103c2fb5004",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/023.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-binary:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-rio-binary/5.0.2/rdf4j-rio-binary-5.0.2-sources.jar",
+      "bytes": 12305,
+      "sha256": "9f8ab1bacd33d0eb891b14bb0425ab09aaa5b9a47a53fd82d8c56d1bf9704fff",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/024.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-n3:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-rio-n3/5.0.2/rdf4j-rio-n3-5.0.2-sources.jar",
+      "bytes": 6950,
+      "sha256": "a3db67e4b79711641d064babf5022cf2086e294d786ea8552a0f131095d68f3b",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/025.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-nquads:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-rio-nquads/5.0.2/rdf4j-rio-nquads-5.0.2-sources.jar",
+      "bytes": 6818,
+      "sha256": "429e392d7425bed95ba8726863b0260bd95c21d129297ba19a100f5e4fc629b6",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/026.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-ntriples:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-rio-ntriples/5.0.2/rdf4j-rio-ntriples-5.0.2-sources.jar",
+      "bytes": 11899,
+      "sha256": "9ae798d1dbd38bb27a5ba414a5c525be077ce05bdb35c74db9bf4a69fef0f3b3",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/027.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-rdfjson:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-rio-rdfjson/5.0.2/rdf4j-rio-rdfjson-5.0.2-sources.jar",
+      "bytes": 14312,
+      "sha256": "21061c933f0d46deebb1ca4323d48fa53e517331542bc9622ee900b7c5d760b3",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/028.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-jsonld:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-rio-jsonld/5.0.2/rdf4j-rio-jsonld-5.0.2-sources.jar",
+      "bytes": 17557,
+      "sha256": "b179b94d5aefb10a11a546d3ba21af0ccf82503f8f21b0027f3a84f22f04778a",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/029.jar",
+      "coordinate": "jakarta.json:jakarta.json-api:2.0.1",
+      "url": "https://repo.maven.apache.org/maven2/jakarta/json/jakarta.json-api/2.0.1/jakarta.json-api-2.0.1-sources.jar",
+      "bytes": 74109,
+      "sha256": "0a779b48e18979028d57a6926a72907039ae7a995b12658997736eef951b1172",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/030.jar",
+      "coordinate": "org.glassfish:jakarta.json:2.0.1",
+      "url": "https://repo.maven.apache.org/maven2/org/glassfish/jakarta.json/2.0.1/jakarta.json-2.0.1-sources.jar",
+      "bytes": 131497,
+      "sha256": "4a799d3961be710c9d18481d47bb4041f44f2bc73ab0672b65f45b9aaf8a653f",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/031.jar",
+      "coordinate": "org.apache.httpcomponents:httpclient:4.5.14",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient/4.5.14/httpclient-4.5.14-sources.jar",
+      "bytes": 732725,
+      "sha256": "55b01f9f4cbec9ac646866a4b64b176570d79e293a556796b5b0263d047ef8e6",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/032.jar",
+      "coordinate": "org.apache.httpcomponents:httpcore:4.4.16",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcore/4.4.16/httpcore-4.4.16-sources.jar",
+      "bytes": 409052,
+      "sha256": "705f8cf3671093b6c1db16bbf6971a7ef400e3819784f1af53e5bc3e67b5a9a0",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/033.jar",
+      "coordinate": "org.apache.httpcomponents:httpclient-cache:4.5.14",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient-cache/4.5.14/httpclient-cache-4.5.14-sources.jar",
+      "bytes": 152732,
+      "sha256": "9d7e88933bc25084c5d26fc76402587e282a2c2cb00009750abf231c2fa768b8",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/034.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-rdfxml:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-rio-rdfxml/5.0.2/rdf4j-rio-rdfxml-5.0.2-sources.jar",
+      "bytes": 30642,
+      "sha256": "04e9e618eb761837c8f9cd16cc65b34fbf05c0b592485b695dfce7008f2f79b7",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/035.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-trix:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-rio-trix/5.0.2/rdf4j-rio-trix-5.0.2-sources.jar",
+      "bytes": 11546,
+      "sha256": "de7f2afc332a12430fceb2cd4d65262ddb6ab91659e0a035a54ca24aed0676de",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/036.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-turtle:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-rio-turtle/5.0.2/rdf4j-rio-turtle-5.0.2-sources.jar",
+      "bytes": 32270,
+      "sha256": "d3475beed1e8136031d24702990fbaebc1955612060813e114ef544251eb888b",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/037.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-trig:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-rio-trig/5.0.2/rdf4j-rio-trig-5.0.2-sources.jar",
+      "bytes": 13806,
+      "sha256": "27a76eed13aa8ab68d407347ae09defb6740d2620119b414cab07f9d97640f8c",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/038.jar",
+      "coordinate": "org.eclipse.rdf4j:rdf4j-rio-hdt:5.0.2",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/rdf4j/rdf4j-rio-hdt/5.0.2/rdf4j-rio-hdt-5.0.2-sources.jar",
+      "bytes": 31864,
+      "sha256": "4bbdb59576d2ec49fdcf9b8cc7578c0868bd83eeafb2ca126111651f5c43e177",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/039.jar",
+      "coordinate": "com.github.jsonld-java:jsonld-java:0.13.6",
+      "url": "https://repo.maven.apache.org/maven2/com/github/jsonld-java/jsonld-java/0.13.6/jsonld-java-0.13.6-sources.jar",
+      "bytes": 74696,
+      "sha256": "1ff932326681039bc57ae91495a0f89ea28c92235ec48f5ff74e3c6ab511f899",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/040.jar",
+      "coordinate": "org.apache.httpcomponents:httpclient-osgi:4.5.13",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient-osgi/4.5.13/httpclient-osgi-4.5.13-sources.jar",
+      "bytes": 32315,
+      "sha256": "f43981ec394229906ad0a894811660e4ad9d50303937c7bea393fe23eb0723b6",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/041.jar",
+      "coordinate": "org.apache.httpcomponents:httpmime:4.5.13",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpmime/4.5.13/httpmime-4.5.13-sources.jar",
+      "bytes": 41878,
+      "sha256": "e001f45eedd851e2e3657366df4c8dcd3f1dff42c4a66ffa3a0d2ce7e393d2e6",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/042.jar",
+      "coordinate": "org.apache.httpcomponents:fluent-hc:4.5.13",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/fluent-hc/4.5.13/fluent-hc-4.5.13-sources.jar",
+      "bytes": 28502,
+      "sha256": "49461400f806514ce76c97f6a721ad68810f6bd57d4e01f1a178a966cb001acd",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/043.jar",
+      "coordinate": "org.apache.httpcomponents:httpcore-osgi:4.4.16",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcore-osgi/4.4.16/httpcore-osgi-4.4.16-sources.jar",
+      "bytes": 7759,
+      "sha256": "ebc520250f6a8ffd6b2c796cf532d0a11f563a5565b81e1477ede5eb8a80aeff",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/044.jar",
+      "coordinate": "org.apache.httpcomponents:httpcore-nio:4.4.16",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcore-nio/4.4.16/httpcore-nio-4.4.16-sources.jar",
+      "bytes": 369085,
+      "sha256": "4795a5f7f0419acc27567806a9e92c43e26c1b5c7730092f4502b5356566b188",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/045.jar",
+      "coordinate": "com.github.vsonnier:hppcrt:0.7.5",
+      "url": "https://repo.maven.apache.org/maven2/com/github/vsonnier/hppcrt/0.7.5/hppcrt-0.7.5-sources.jar",
+      "bytes": 1303723,
+      "sha256": "057e83956898e0697a895ffdb0daca85c6803b70e625a5dacf17e16189ed25e8",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/046.jar",
+      "coordinate": "com.github.ben-manes.caffeine:caffeine:3.1.8",
+      "url": "https://repo.maven.apache.org/maven2/com/github/ben-manes/caffeine/caffeine/3.1.8/caffeine-3.1.8-sources.jar",
+      "bytes": 161363,
+      "sha256": "7c8237f5d8f23654e7091056316a3730636b7a0f2e6fce450e2bd522090d6b7f",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/047.jar",
+      "coordinate": "org.checkerframework:checker-qual:3.37.0",
+      "url": "https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/3.37.0/checker-qual-3.37.0-sources.jar",
+      "bytes": 255444,
+      "sha256": "2ca31c7e959ad82fe270b2baac11a59c570f8778191233c54927e94adab7b640",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/048.jar",
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.21.1",
+      "url": "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.21.1/error_prone_annotations-2.21.1-sources.jar",
+      "bytes": 36146,
+      "sha256": "29012a51bb8d7d7bdd7db882f46dec8cccb36b40f34b6e5de2ec7dd647b372ca",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/049.jar",
+      "coordinate": "com.google.guava:guava:33.0.0-jre",
+      "url": "https://repo.maven.apache.org/maven2/com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre-sources.jar",
+      "bytes": 1863997,
+      "sha256": "0c17d911785e8a606d091aa6740d6d520f307749c2bddf6e35066d52fe0036e5",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/050.jar",
+      "coordinate": "com.google.guava:failureaccess:1.0.2",
+      "url": "https://repo.maven.apache.org/maven2/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2-sources.jar",
+      "bytes": 3489,
+      "sha256": "dd3bfa5e2ec5bc5397efb2c3cef044c192313ff77089573667ff97a60c6978e0",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/051.jar",
+      "coordinate": "com.google.j2objc:j2objc-annotations:2.8",
+      "url": "https://repo.maven.apache.org/maven2/com/google/j2objc/j2objc-annotations/2.8/j2objc-annotations-2.8-sources.jar",
+      "bytes": 12028,
+      "sha256": "7413eed41f111453a08837f5ac680edded7faed466cbd35745e402e13f4cc3f5",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/052.jar",
+      "coordinate": "com.google.code.findbugs:jsr305:3.0.2",
+      "url": "https://repo.maven.apache.org/maven2/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2-sources.jar",
+      "bytes": 18102,
+      "sha256": "1c9e85e272d0708c6a591dc74828c71603053b48cc75ae83cce56912a2aa063b",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/053.jar",
+      "coordinate": "commons-io:commons-io:2.15.1",
+      "url": "https://repo.maven.apache.org/maven2/commons-io/commons-io/2.15.1/commons-io-2.15.1-sources.jar",
+      "bytes": 518687,
+      "sha256": "50cb24bb83c1edcb1c1007a4b6c7ea024c71ac0fa018b80a57391d7c7b5b8246",
+      "identityBasis": "PUBLISHED_SOURCE_CLASSIFIER",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/054.jar",
+      "coordinate": "com.google.guava:guava:32.1.3-jre",
+      "url": "https://repo.maven.apache.org/maven2/com/google/guava/guava/32.1.3-jre/guava-32.1.3-jre-sources.jar",
+      "bytes": 1862386,
+      "sha256": "9f6f333b2deaf36644d14ddeed7e6b31151b0c244bab1e4d58ee443ade9a09f3",
+      "identityBasis": "PUBLISHED_SHADE_RECIPE_ORIGIN",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/055.jar",
+      "coordinate": "com.google.guava:failureaccess:1.0.1",
+      "url": "https://repo.maven.apache.org/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1-sources.jar",
+      "bytes": 3493,
+      "sha256": "092346eebbb1657b51aa7485a246bf602bb464cc0b0e2e1c7e7201fadce1e98f",
+      "identityBasis": "PUBLISHED_SHADE_RECIPE_ORIGIN",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/056.jar",
+      "coordinate": "commons-codec:commons-codec:1.11",
+      "url": "https://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.11/commons-codec-1.11-sources.jar",
+      "bytes": 342809,
+      "sha256": "901cb5d1f7c2877017c95d3c5efd5a497738d0162ef72cdf58e9cb13f50b2e9c",
+      "identityBasis": "EMBEDDED_POM_PROPERTIES_ORIGIN",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/057.jar",
+      "coordinate": "org.apache.httpcomponents:fluent-hc:4.5.13",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/fluent-hc/4.5.13/fluent-hc-4.5.13-sources.jar",
+      "bytes": 28502,
+      "sha256": "49461400f806514ce76c97f6a721ad68810f6bd57d4e01f1a178a966cb001acd",
+      "identityBasis": "EMBEDDED_POM_PROPERTIES_ORIGIN",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/058.jar",
+      "coordinate": "org.apache.httpcomponents:httpclient-cache:4.5.13",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient-cache/4.5.13/httpclient-cache-4.5.13-sources.jar",
+      "bytes": 152732,
+      "sha256": "d2c5cd8b616ff3e7fa8b74a718af1890cf65fc942979edeef7cd5517da8334bd",
+      "identityBasis": "EMBEDDED_POM_PROPERTIES_ORIGIN",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/059.jar",
+      "coordinate": "org.apache.httpcomponents:httpclient:4.5.13",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpclient/4.5.13/httpclient-4.5.13-sources.jar",
+      "bytes": 732857,
+      "sha256": "b1e9194fd83ce135831e28346731d9644cb2a08dea37ada2aa56ceb8f1b0c566",
+      "identityBasis": "EMBEDDED_POM_PROPERTIES_ORIGIN",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/060.jar",
+      "coordinate": "org.apache.httpcomponents:httpmime:4.5.13",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpmime/4.5.13/httpmime-4.5.13-sources.jar",
+      "bytes": 41878,
+      "sha256": "e001f45eedd851e2e3657366df4c8dcd3f1dff42c4a66ffa3a0d2ce7e393d2e6",
+      "identityBasis": "EMBEDDED_POM_PROPERTIES_ORIGIN",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/061.jar",
+      "coordinate": "org.apache.httpcomponents:httpcore-nio:4.4.16",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcore-nio/4.4.16/httpcore-nio-4.4.16-sources.jar",
+      "bytes": 369085,
+      "sha256": "4795a5f7f0419acc27567806a9e92c43e26c1b5c7730092f4502b5356566b188",
+      "identityBasis": "EMBEDDED_POM_PROPERTIES_ORIGIN",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    },
+    {
+      "path": "sources/062.jar",
+      "coordinate": "org.apache.httpcomponents:httpcore:4.4.16",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/httpcomponents/httpcore/4.4.16/httpcore-4.4.16-sources.jar",
+      "bytes": 409052,
+      "sha256": "705f8cf3671093b6c1db16bbf6971a7ef400e3819784f1af53e5bc3e67b5a9a0",
+      "identityBasis": "EMBEDDED_POM_PROPERTIES_ORIGIN",
+      "binarySourceAttestation": "NOT_CLAIMED"
+    }
+  ],
+  "static": [
+    {
+      "path": "notices/000.txt",
+      "bytes": 1645,
+      "sha256": "07c81b6b68211deeaf3baf23a6238744c26ad2a104cfaa90800becc091e268dc",
+      "origin": "Exact JSON-LD v0.13.6 tag LICENCE"
+    },
+    {
+      "path": "notices/001.txt",
+      "bytes": 11408,
+      "sha256": "09ade86c241f2944316cbe0fa4ada0ddd167152430094deff1d747a8db043a8e",
+      "origin": "caffeine-3.1.8.jar"
+    },
+    {
+      "path": "notices/002.txt",
+      "bytes": 1185,
+      "sha256": "89e4a1072f3d33faadc551ca1c3f66db076b46e24e34cd71c804e282376bf4e4",
+      "origin": "checker-qual-3.37.0.jar"
+    },
+    {
+      "path": "notices/003.txt",
+      "bytes": 12265,
+      "sha256": "d1afdba4b79823fb04900ed2f7042d1bf8944c0a08f3a76c4a9be25bb3667d12",
+      "origin": "com.fasterxml.jackson.core:jackson-annotations:2.16.1"
+    },
+    {
+      "path": "notices/004.txt",
+      "bytes": 20616,
+      "sha256": "d6a3ac868ac19b8989a555c407a5f4dce1925989fdcf3eac6e5b16733472718d",
+      "origin": "com.fasterxml.jackson.core:jackson-core:2.16.1"
+    },
+    {
+      "path": "notices/005.txt",
+      "bytes": 14697,
+      "sha256": "1672f0442c666df6f314b726b7a3c7a79c8ed7a1dbb8aa61987607f57397abcb",
+      "origin": "com.fasterxml.jackson.core:jackson-databind:2.16.1"
+    },
+    {
+      "path": "notices/006.txt",
+      "bytes": 38358,
+      "sha256": "32ad8a6ba37a1f14451a2d08653332cf350b0b11bab4f26273db35ea6531fa1f",
+      "origin": "com.github.ben-manes.caffeine:caffeine:3.1.8"
+    },
+    {
+      "path": "notices/007.txt",
+      "bytes": 1318,
+      "sha256": "9af379f6c51c3e1d35da356d7ac1eae32aebfd77e25d3b67380ff181b9e1ee08",
+      "origin": "com.google.code.findbugs:jsr305:3.0.2"
+    },
+    {
+      "path": "notices/008.txt",
+      "bytes": 21218,
+      "sha256": "bd4c7bca0bbc40d967152f041b94b2b3177358574f07c547bd2b5ea5413f9ea5",
+      "origin": "com.google.errorprone:error_prone_annotations:2.21.1"
+    },
+    {
+      "path": "notices/009.txt",
+      "bytes": 1574,
+      "sha256": "66e21302f01d6d611908b2b8c477f210db2993392ce31bec64aa8547d83edd8b",
+      "origin": "com.google.guava:failureaccess:1.0.1"
+    },
+    {
+      "path": "notices/010.txt",
+      "bytes": 1574,
+      "sha256": "366d35e10977ad5a5d07cbd91d1d4dc79e8545e111a77c5adce0beed53e0b291",
+      "origin": "com.google.guava:failureaccess:1.0.2"
+    },
+    {
+      "path": "notices/011.txt",
+      "bytes": 471161,
+      "sha256": "d21c2eaa9e44c85d18ea7c21d52b4ba23f341c3a50582dad10a974c5bae61412",
+      "origin": "com.google.guava:guava:32.1.3-jre"
+    },
+    {
+      "path": "notices/012.txt",
+      "bytes": 468797,
+      "sha256": "3ba2e69bcc1ff7954cef79eef69062019057517c26e3236f995a9d43eb09f4f7",
+      "origin": "com.google.guava:guava:33.0.0-jre"
+    },
+    {
+      "path": "notices/013.txt",
+      "bytes": 7928,
+      "sha256": "a17336af843e2505e76f2f59c377269e7a63243a3fdf7268fd28b4e7c3ba03f9",
+      "origin": "com.google.j2objc:j2objc-annotations:2.8"
+    },
+    {
+      "path": "notices/014.txt",
+      "bytes": 12206,
+      "sha256": "60d2fd010bc72e38ebb90e7f3623ca953d1f87c0e56eafdd10e34f6541969b44",
+      "origin": "commons-codec-1.15.jar"
+    },
+    {
+      "path": "notices/015.txt",
+      "bytes": 74186,
+      "sha256": "7a5145a0b9d817881eaa0866fe69732a67999fed4c772b75af394ba3ec8ca5ce",
+      "origin": "commons-codec:commons-codec:1.11"
+    },
+    {
+      "path": "notices/016.txt",
+      "bytes": 80590,
+      "sha256": "1497c22bedf98927c432ec11608895d62a26ecbb0fdebd522f16ebc76dc2a842",
+      "origin": "commons-codec:commons-codec:1.15"
+    },
+    {
+      "path": "notices/017.txt",
+      "bytes": 11644,
+      "sha256": "6bcfb2dd4693a03b8c66df5782422dd892f145cb54b2fbaca89ebe0c8bf1c462",
+      "origin": "commons-io-2.15.1.jar"
+    },
+    {
+      "path": "notices/018.txt",
+      "bytes": 249977,
+      "sha256": "fcc009b359d8f783f9bc51082f8154eaaa0a4adad936a8a63790c6f6fcfc23d0",
+      "origin": "commons-io:commons-io:2.15.1"
+    },
+    {
+      "path": "notices/019.txt",
+      "bytes": 11643,
+      "sha256": "f6ffb1dd291868c8a17738c510d3a63dc857e6dff5a09497cd9bf2ffcb47f1c0",
+      "origin": "commons-rdf-api-0.5.0.jar"
+    },
+    {
+      "path": "notices/020.txt",
+      "bytes": 11646,
+      "sha256": "1ea5cf5aec050afa7f4f1e086fe9a020c145871f51ac36586a9770de168f3857",
+      "origin": "fluent-hc-4.5.13.jar"
+    },
+    {
+      "path": "notices/021.txt",
+      "bytes": 11410,
+      "sha256": "e1fe26d1250f0cfbb04d1ada3c703b7be716766cab950aa1da0b49d1360aa255",
+      "origin": "guava-33.0.0-jre.jar"
+    },
+    {
+      "path": "notices/022.txt",
+      "bytes": 11444,
+      "sha256": "738aeec43ef3df9ce5cb96680f0502d87bbdc5e1f1610a0472dbe807b33aaae2",
+      "origin": "hasmac-json-ld-0.9.0.jar"
+    },
+    {
+      "path": "notices/023.txt",
+      "bytes": 11637,
+      "sha256": "a7d45678c9248f0a3457d98413a04b412c36eaaee60c7716cb4e66343c422ee3",
+      "origin": "httpclient-4.5.14.jar"
+    },
+    {
+      "path": "notices/024.txt",
+      "bytes": 11655,
+      "sha256": "c0eaf9913ccced3022d6194e0152d5de8e5b63392e7a0ee3579c4cbeecb4deb3",
+      "origin": "httpclient-cache-4.5.14.jar"
+    },
+    {
+      "path": "notices/025.txt",
+      "bytes": 24091,
+      "sha256": "ee369c51a94916d5e9b2f4da0719e834ba5ab0498627d1212fd59207fcca4a07",
+      "origin": "httpclient-osgi-4.5.13.jar"
+    },
+    {
+      "path": "notices/026.txt",
+      "bytes": 11631,
+      "sha256": "3f42836eb70dc479138d8a1fe844dad59d2a6800154c5222063a8698361c3c9d",
+      "origin": "httpcore-4.4.16.jar"
+    },
+    {
+      "path": "notices/027.txt",
+      "bytes": 11643,
+      "sha256": "f9bbe7d01d41dc39e0f9b801aca10ea2d005ac492751b0d368de4104019367e5",
+      "origin": "httpcore-nio-4.4.16.jar"
+    },
+    {
+      "path": "notices/028.txt",
+      "bytes": 11653,
+      "sha256": "07b998566ca29fcc1f3f8c1436ff88791b53542806f931b7c8584f9973b19bf6",
+      "origin": "httpcore-osgi-4.4.16.jar"
+    },
+    {
+      "path": "notices/029.txt",
+      "bytes": 11638,
+      "sha256": "4b6b2f56f4c318116116d48f897c174feaf9909d39394baf6c71dbbe39b951b8",
+      "origin": "httpmime-4.5.13.jar"
+    },
+    {
+      "path": "notices/030.txt",
+      "bytes": 12219,
+      "sha256": "c31f754d5db0c87d8dca8429ab94fb309eb1aadb5d02e455737d7a4c8a1a1add",
+      "origin": "jackson-annotations-2.16.1.jar"
+    },
+    {
+      "path": "notices/031.txt",
+      "bytes": 12694,
+      "sha256": "91340a29a5c6a505dfd7961783313bfa5932b9dda47f9701b75b5c6699d20c1f",
+      "origin": "jackson-core-2.16.1.jar"
+    },
+    {
+      "path": "notices/032.txt",
+      "bytes": 12213,
+      "sha256": "bdade5ac30700f5ea95d9b28a433b59b8c313651d6f3c6486ec3ab462f3da273",
+      "origin": "jackson-databind-2.16.1.jar"
+    },
+    {
+      "path": "notices/033.txt",
+      "bytes": 38534,
+      "sha256": "d52af14f5a13cf29e05dea480718ceff95a195ae03d16253e5d888975649ccc1",
+      "origin": "jakarta.json-2.0.1.jar"
+    },
+    {
+      "path": "notices/034.txt",
+      "bytes": 38542,
+      "sha256": "cd0b05c65d3c129700ce339d5c4c12484eab254ea29b5d29074619d57d3779c7",
+      "origin": "jakarta.json-api-2.0.1.jar"
+    },
+    {
+      "path": "notices/035.txt",
+      "bytes": 67411,
+      "sha256": "b350dea1b49f6f23377a7d2e440eb98be6faa0463a76910cea751ceaa8200131",
+      "origin": "jakarta.json:jakarta.json-api:2.0.1"
+    },
+    {
+      "path": "notices/036.txt",
+      "bytes": 4966,
+      "sha256": "1bc8e25f077d87f67dfe60408e6baaf9c78e3942d04defc345be756324c319c9",
+      "origin": "javax.inject:javax.inject:1"
+    },
+    {
+      "path": "notices/037.txt",
+      "bytes": 1239,
+      "sha256": "00ed60cf107e2cf558a27ecc9059f4b27af3289b983fe9c90ea61f9425d72d38",
+      "origin": "jcl-over-slf4j-2.0.11.jar"
+    },
+    {
+      "path": "notices/038.txt",
+      "bytes": 11412,
+      "sha256": "3cd6ed6b9f239d6b986eed251cd1a58740bdd5b49b75e021f882b8f7e0c376f6",
+      "origin": "jsonld-java-0.13.6.jar"
+    },
+    {
+      "path": "notices/039.txt",
+      "bytes": 103621,
+      "sha256": "55cc221f84e2c7cd58a2a101e4ecdd03eeb3ccc9a06ec9a9fd5310add95427b8",
+      "origin": "no.hasmac:hasmac-json-ld:0.9.0"
+    },
+    {
+      "path": "notices/040.txt",
+      "bytes": 29640,
+      "sha256": "0d3227c5914085eaf85065ec276d86032fed89c9063fed4a5b6fd2f4994c03e8",
+      "origin": "org.apache.commons:commons-rdf-api:0.5.0"
+    },
+    {
+      "path": "notices/041.txt",
+      "bytes": 60980,
+      "sha256": "5d5ad0c7bcd05e85a2d2f22602d4e2d7a68bde0af1d2575dbf37cec445ecc968",
+      "origin": "org.apache.httpcomponents:fluent-hc:4.5.13"
+    },
+    {
+      "path": "notices/042.txt",
+      "bytes": 108946,
+      "sha256": "668aac333e1ac40e0b8738f2c2a83f828f0682f8d47931b4dc1e812f073bdcf7",
+      "origin": "org.apache.httpcomponents:httpclient-cache:4.5.13"
+    },
+    {
+      "path": "notices/043.txt",
+      "bytes": 108946,
+      "sha256": "ff495086efb4d74d000f38ac7dbe80bbf9fb37e64b7144cdc4948d9e2a952164",
+      "origin": "org.apache.httpcomponents:httpclient-cache:4.5.14"
+    },
+    {
+      "path": "notices/044.txt",
+      "bytes": 33405,
+      "sha256": "b04e8c5bcee6c7d16d184846c470d55d24a7fa6143be6c46133f66432f81cd31",
+      "origin": "org.apache.httpcomponents:httpclient-osgi:4.5.13"
+    },
+    {
+      "path": "notices/045.txt",
+      "bytes": 585341,
+      "sha256": "8bdeaf528f9715f370d9301a81fbdf9fb174c654e4abb756f5414bc8e5957f5f",
+      "origin": "org.apache.httpcomponents:httpclient:4.5.13"
+    },
+    {
+      "path": "notices/046.txt",
+      "bytes": 585341,
+      "sha256": "7ae008746bd76ee550b1a423efae69c94804bf5211fc532ecd16ec92ecca5111",
+      "origin": "org.apache.httpcomponents:httpclient:4.5.14"
+    },
+    {
+      "path": "notices/047.txt",
+      "bytes": 594736,
+      "sha256": "5d35294193bfc56dbb8263f4298868846281fd615659fa997dfecadd90ab2656",
+      "origin": "org.apache.httpcomponents:httpcore-nio:4.4.16"
+    },
+    {
+      "path": "notices/048.txt",
+      "bytes": 11697,
+      "sha256": "da2bdd27cae4e63208eab7b4d82c0a408cea36978389db294e0231377490149e",
+      "origin": "org.apache.httpcomponents:httpcore-osgi:4.4.16"
+    },
+    {
+      "path": "notices/049.txt",
+      "bytes": 705554,
+      "sha256": "a113cfa52366078d3c0993672d27853be862ba18f98802e218d4c6745b8ba4d7",
+      "origin": "org.apache.httpcomponents:httpcore:4.4.16"
+    },
+    {
+      "path": "notices/050.txt",
+      "bytes": 85218,
+      "sha256": "8133685dd1016fab0fdcbe6a91bac15a22632f3075850f4d18c7e3dd98db73db",
+      "origin": "org.apache.httpcomponents:httpmime:4.5.13"
+    },
+    {
+      "path": "notices/051.txt",
+      "bytes": 1202,
+      "sha256": "0089cf4432d5cb7bb5039ad503ac545011783050c6abf3242aaaab078f841d96",
+      "origin": "org.checkerframework:checker-qual:3.37.0"
+    },
+    {
+      "path": "notices/052.txt",
+      "bytes": 1388,
+      "sha256": "5da805ec83729a64063cc4cbb1eccc8adf67c234ba5d563a0b2face08b34373f",
+      "origin": "org.eclipse.rdf4j:rdf4j-common-annotation:5.0.2"
+    },
+    {
+      "path": "notices/053.txt",
+      "bytes": 2805,
+      "sha256": "ecc73a53b285d94aec49d6dc31566f9db497851d92c9f489ce6490285071f41c",
+      "origin": "org.eclipse.rdf4j:rdf4j-common-exception:5.0.2"
+    },
+    {
+      "path": "notices/054.txt",
+      "bytes": 12990,
+      "sha256": "ec8520dc93778700e45692ed4a17b1e0d623411ad74f8deda591eb5123722ba9",
+      "origin": "org.eclipse.rdf4j:rdf4j-common-io:5.0.2"
+    },
+    {
+      "path": "notices/055.txt",
+      "bytes": 25767,
+      "sha256": "24c9c30b85ffc45acfe5d3417a41f90340622f43c2f999a9fd902211099030b1",
+      "origin": "org.eclipse.rdf4j:rdf4j-common-iterator:5.0.2"
+    },
+    {
+      "path": "notices/056.txt",
+      "bytes": 1376,
+      "sha256": "bf847962fa665fc7a951a37ecc0e88e0cbd9990654647bc6bd991503593c0028",
+      "origin": "org.eclipse.rdf4j:rdf4j-common-order:5.0.2"
+    },
+    {
+      "path": "notices/057.txt",
+      "bytes": 1374,
+      "sha256": "76fc61f62fe0b0d05009162dc2e74a3b0fd45583126bde8a7f6515aeb1eaa16a",
+      "origin": "org.eclipse.rdf4j:rdf4j-common-text:5.0.2"
+    },
+    {
+      "path": "notices/058.txt",
+      "bytes": 4839,
+      "sha256": "aaf6d12ac90a43bdd3c2b09b40aa373c94aedc8ea0d250b6a8a611c3f7a860e9",
+      "origin": "org.eclipse.rdf4j:rdf4j-common-xml:5.0.2"
+    },
+    {
+      "path": "notices/059.txt",
+      "bytes": 17439,
+      "sha256": "fc6c1eaa5d85af4e48a582e699ef52ef750bbc856cfa665bddc06b65bdd5fa74",
+      "origin": "org.eclipse.rdf4j:rdf4j-model-api:5.0.2"
+    },
+    {
+      "path": "notices/060.txt",
+      "bytes": 31392,
+      "sha256": "8c2d7bbe86390675110c7afdd55825ac3fbcd4cd924f432703132178b8da26bb",
+      "origin": "org.eclipse.rdf4j:rdf4j-model-vocabulary:5.0.2"
+    },
+    {
+      "path": "notices/061.txt",
+      "bytes": 32747,
+      "sha256": "142e7f5dd230089ab61fb935c2770a9f92a9ada41d4ed06c9343f10251e9554d",
+      "origin": "org.eclipse.rdf4j:rdf4j-model:5.0.2"
+    },
+    {
+      "path": "notices/062.txt",
+      "bytes": 48157,
+      "sha256": "4031bd47ac6c44038d3f692d40b8b60f68bf597d5c258cdeaf45fc0fe652438b",
+      "origin": "org.eclipse.rdf4j:rdf4j-rio-api:5.0.2"
+    },
+    {
+      "path": "notices/063.txt",
+      "bytes": 4871,
+      "sha256": "5320666db07b5b49d77def49fb1cb0d4142a24d9119e020330e9135a0e3226ab",
+      "origin": "org.eclipse.rdf4j:rdf4j-rio-binary:5.0.2"
+    },
+    {
+      "path": "notices/064.txt",
+      "bytes": 4287,
+      "sha256": "a41862b0a074f03619a818ad4aeeeca68e04843681563cea3e32168879f39fd6",
+      "origin": "org.eclipse.rdf4j:rdf4j-rio-datatypes:5.0.2"
+    },
+    {
+      "path": "notices/065.txt",
+      "bytes": 14579,
+      "sha256": "0bf0eadbb47586e64055b2480438ecf67ed0a56780467915175205eb630bb9bf",
+      "origin": "org.eclipse.rdf4j:rdf4j-rio-hdt:5.0.2"
+    },
+    {
+      "path": "notices/066.txt",
+      "bytes": 6881,
+      "sha256": "398d777dbe8a9d86471c6cb580f277d82de3cfc40e43958ae580359dc1ba31cb",
+      "origin": "org.eclipse.rdf4j:rdf4j-rio-jsonld:5.0.2"
+    },
+    {
+      "path": "notices/067.txt",
+      "bytes": 2092,
+      "sha256": "5515345f7130fecdfe3ae3431e363d5c201a22bf280361d5d7948b2090d777ea",
+      "origin": "org.eclipse.rdf4j:rdf4j-rio-languages:5.0.2"
+    },
+    {
+      "path": "notices/068.txt",
+      "bytes": 3343,
+      "sha256": "af3c8f28bbf54145d7e613ff9f911b3b1cfc97db4db2620a2dc0293de396ee2e",
+      "origin": "org.eclipse.rdf4j:rdf4j-rio-n3:5.0.2"
+    },
+    {
+      "path": "notices/069.txt",
+      "bytes": 3454,
+      "sha256": "547d3afad09c97c3addfe45a259e210f6199d061f3be7c5b1dd4c60506d701cd",
+      "origin": "org.eclipse.rdf4j:rdf4j-rio-nquads:5.0.2"
+    },
+    {
+      "path": "notices/070.txt",
+      "bytes": 4892,
+      "sha256": "2a8a581efe5f185bace7e2c4a5b6ce140123b4667a26ab886c73dbbfbf3c355b",
+      "origin": "org.eclipse.rdf4j:rdf4j-rio-ntriples:5.0.2"
+    },
+    {
+      "path": "notices/071.txt",
+      "bytes": 5555,
+      "sha256": "164603b1a2d1b8fc6b661684fba946436a2791ce37144efc20757312c57a68d9",
+      "origin": "org.eclipse.rdf4j:rdf4j-rio-rdfjson:5.0.2"
+    },
+    {
+      "path": "notices/072.txt",
+      "bytes": 7597,
+      "sha256": "bf7f42fb61d51d8d4c69cb25d5d1bc4765be23c6dab0c4378d29b7f16f3d6b47",
+      "origin": "org.eclipse.rdf4j:rdf4j-rio-rdfxml:5.0.2"
+    },
+    {
+      "path": "notices/073.txt",
+      "bytes": 6140,
+      "sha256": "e1f7b10e31d6b2650bc3e531f2df0c4628c4a2344e684ec10991dfafde6d3297",
+      "origin": "org.eclipse.rdf4j:rdf4j-rio-trig:5.0.2"
+    },
+    {
+      "path": "notices/074.txt",
+      "bytes": 4769,
+      "sha256": "c998796c83d6004c1629eeb0b483d2cd0691287f260a14225c7344cf7472ca43",
+      "origin": "org.eclipse.rdf4j:rdf4j-rio-trix:5.0.2"
+    },
+    {
+      "path": "notices/075.txt",
+      "bytes": 8283,
+      "sha256": "f7ccc1b3e879aac35424fd49b01ec1dd0074624cb8702b76b808189e662136b4",
+      "origin": "org.eclipse.rdf4j:rdf4j-rio-turtle:5.0.2"
+    },
+    {
+      "path": "notices/076.txt",
+      "bytes": 92418,
+      "sha256": "fdffa670700baf11cf0869b6a4973f46c7c7b5d72d08c96fc7b4980da6416929",
+      "origin": "org.glassfish:jakarta.json:2.0.1"
+    },
+    {
+      "path": "notices/077.txt",
+      "bytes": 7475,
+      "sha256": "98d2ca0163120b68ba06490824b77166c3bc6a9e6e09b3d1925b0aee42e8d53d",
+      "origin": "org.slf4j:jcl-over-slf4j:2.0.11"
+    },
+    {
+      "path": "notices/078.txt",
+      "bytes": 38718,
+      "sha256": "c2061dcc0c2bc78c09c6e9f10a30900cca4329c1b7729b00c282d5e2a321b0fa",
+      "origin": "org.slf4j:slf4j-api:2.0.11"
+    },
+    {
+      "path": "notices/079.txt",
+      "bytes": 31322,
+      "sha256": "df96bd23a79aaacaece9ac43732865f12dbcbd5925386d1fe88cf75dac67ce8e",
+      "origin": "org.tukaani:xz:1.9"
+    },
+    {
+      "path": "notices/080.txt",
+      "bytes": 2504493,
+      "sha256": "fcd9ce96a9c4114115855731b2f19b65aa54c39d0d540abd7d6e9f41033ee55a",
+      "origin": "pinned-reactor-source"
+    },
+    {
+      "path": "notices/081.txt",
+      "bytes": 1668,
+      "sha256": "6af95f6c8b98cd98b9d488ade4cb5cda21a19c261e675ca74eeb415c3bc1556e",
+      "origin": "rdf4j-5.0.2-project-license"
+    },
+    {
+      "path": "notices/082.txt",
+      "bytes": 1234,
+      "sha256": "204747872e2cba922d92f22d747d2d050d4db2d0adf6c1478ac1729f5ee3ac94",
+      "origin": "slf4j-api-2.0.11.jar"
+    },
+    {
+      "path": "notices/jackson-incorporated-terms.txt",
+      "bytes": 16613,
+      "sha256": "68e6b3a6e53e1a3561a109c9510f7b1ba3982fceaf2b023213092d6a966e40df",
+      "origin": "Exact jackson-core2.16.1 incorporated terms identified by ClaudeR1"
+    },
+    {
+      "path": "notices/jfact-fast-set-simple.txt",
+      "bytes": 901,
+      "sha256": "1fdd8f095ddd828dc87cf7b1586503d03d489fe243fe23e559f78744df14ffba",
+      "origin": "Exact pinned JFact-derived source header; package precedes license comment"
+    },
+    {
+      "path": "sources/jfact-uncombined-sources.jar",
+      "bytes": 4313,
+      "sha256": "6dbdb841846beecd687437f5045baedc46534ca606feedf004a9d0876b05f8fc",
+      "origin": "Three exact pinned source files packaged by native JDK jar; original headers retained"
+    },
+    {
+      "path": "notices/gpl-3.0.txt",
+      "bytes": 35146,
+      "sha256": "c53a65c2fd561c87eaabf1072ef5dcab8653042bc15308465f52413585eb6271",
+      "origin": "Complete GNU GPL3 text retained from original upstream source"
+    },
+    {
+      "path": "notices/lgpl-3.0.txt",
+      "bytes": 7636,
+      "sha256": "6279632431fca388b0b32bc4684c5191e120f43108a246891f2a8918cd38178f",
+      "origin": "Complete GNU LGPL3 text retained from original upstream source"
+    },
+    {
+      "path": "notices/publication.txt",
+      "bytes": 2501,
+      "sha256": "d8b0a5f1c04c10cc905b4d34a5201bbba5ad20a2de93a07bf091552a73ed249b",
+      "origin": "Proposed prominent Combined Work and OBO gap/source notice"
+    },
+    {
+      "path": "sources/recombination-instructions.txt",
+      "bytes": 4204,
+      "sha256": "a6b4b5fe5688b8ce46dc0248cba4920158e8a87bdbe92a1213fc23deea250366",
+      "origin": "Tested private native modified Combined Work build and substitution instructions"
+    },
+    {
+      "path": "sources/obo-original-pom.txt",
+      "bytes": 5750,
+      "sha256": "32e7d6d69cdc5853c54e83829832044017d5b17c7d01b173398d606f3540b7eb",
+      "origin": "https://raw.githubusercontent.com/owlcollab/oboformat/302bc7dd03a1f8e256085a3a314c96ef55cd0d9c/pom.xml"
+    },
+    {
+      "path": "notices/bsd-3-clause-template.txt",
+      "bytes": 1460,
+      "sha256": "5a93d5831e1297ab10fe643e1a631e83be392896da14ee2951285a79012df69d",
+      "origin": "https://raw.githubusercontent.com/spdx/license-list-data/main/text/BSD-3-Clause.txt ; generic template, not invented original OBO attribution"
+    },
+    {
+      "path": "sources/maven-settings.txt",
+      "bytes": 337,
+      "sha256": "2924d6ac585f98732f2525ce8ecd57b0df347fad6d0a519f04712cf16298de34",
+      "origin": "Exact credential-free Central-only build settings"
+    },
+    {
+      "path": "sources/empty-toolchains.txt",
+      "bytes": 102,
+      "sha256": "6deb7c4e8bf5be02cd1f9c3e2406117f7e971872501a9bae32a4af76f743ee30",
+      "origin": "Exact empty user/global toolchain controls"
+    }
+  ],
+  "reactorArchive": {
+    "path": "sources/reactor.tar",
+    "bytes": 17735680,
+    "sha256": "0e068cba5f5cd1a37b2b7cc4a0d7c26476bb0b19cd13375f6af4440a68bb5d7e"
+  },
+  "uncombinedClasses": [
+    {
+      "path": "uk/ac/manchester/cs/chainsaw/AbstractFastSet.class",
+      "bytes": 1602,
+      "sha256": "715f4939cc1c4ca0d1b914ae8649d70990ff1f7b0cf17efe73469107ce5fdea6"
+    },
+    {
+      "path": "uk/ac/manchester/cs/chainsaw/FastSet.class",
+      "bytes": 576,
+      "sha256": "e2ddef3400dd24b823746a0ee482ab90a0619be222bc326f07f77c5b0509e0ce"
+    },
+    {
+      "path": "uk/ac/manchester/cs/chainsaw/FastSetSimple.class",
+      "bytes": 6979,
+      "sha256": "28a5de87bc7453f6beb193471b2853af5ae3c37d3084e9092794ab8c5b3b3b99"
+    }
+  ],
+  "licenseRoutes": {
+    "reactor": "Apache2alternative where exact source permits; OBOBSD retained",
+    "jakartaJson": "EPL2with sources and source statement",
+    "jcipInJsr305": "Preserve exact BrianGoetz attribution and CC BY2.5URI; do not relabelApache",
+    "otherWorks": "Preserve component and per-file terms; no blanket bundle relicensing",
+    "jfactPortion": "LGPL3 election under preserved LGPL2.1-or-later grant; section 4(d)(0) complete Combined Work source/recombination route, section 5 uncombined safeguard supplementary",
+    "oboPortion": "Supplier-declared BSD3; preserve original declaration, all supplied notices and complete BSD conditions/disclaimer; explicit residual missing named notice/provenance gap for owner acceptance"
+  },
+  "noticeIndex": [
+    {
+      "component": "Exact JSON-LD v0.13.6 tag LICENCE",
+      "notice": "notices/000.txt",
+      "sourceEntries": 1
+    },
+    {
+      "component": "caffeine-3.1.8.jar",
+      "notice": "notices/001.txt",
+      "sourceEntries": 1
+    },
+    {
+      "component": "checker-qual-3.37.0.jar",
+      "notice": "notices/002.txt",
+      "sourceEntries": 1
+    },
+    {
+      "component": "com.fasterxml.jackson.core:jackson-annotations:2.16.1",
+      "notice": "notices/003.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "com.fasterxml.jackson.core:jackson-core:2.16.1",
+      "notice": "notices/004.txt",
+      "sourceEntries": 25
+    },
+    {
+      "component": "com.fasterxml.jackson.core:jackson-databind:2.16.1",
+      "notice": "notices/005.txt",
+      "sourceEntries": 5
+    },
+    {
+      "component": "com.github.ben-manes.caffeine:caffeine:3.1.8",
+      "notice": "notices/006.txt",
+      "sourceEntries": 49
+    },
+    {
+      "component": "com.google.code.findbugs:jsr305:3.0.2",
+      "notice": "notices/007.txt",
+      "sourceEntries": 4
+    },
+    {
+      "component": "com.google.errorprone:error_prone_annotations:2.21.1",
+      "notice": "notices/008.txt",
+      "sourceEntries": 27
+    },
+    {
+      "component": "com.google.guava:failureaccess:1.0.1",
+      "notice": "notices/009.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "com.google.guava:failureaccess:1.0.2",
+      "notice": "notices/010.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "com.google.guava:guava:32.1.3-jre",
+      "notice": "notices/011.txt",
+      "sourceEntries": 622
+    },
+    {
+      "component": "com.google.guava:guava:33.0.0-jre",
+      "notice": "notices/012.txt",
+      "sourceEntries": 619
+    },
+    {
+      "component": "com.google.j2objc:j2objc-annotations:2.8",
+      "notice": "notices/013.txt",
+      "sourceEntries": 11
+    },
+    {
+      "component": "commons-codec-1.15.jar",
+      "notice": "notices/014.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "commons-codec:commons-codec:1.11",
+      "notice": "notices/015.txt",
+      "sourceEntries": 66
+    },
+    {
+      "component": "commons-codec:commons-codec:1.15",
+      "notice": "notices/016.txt",
+      "sourceEntries": 74
+    },
+    {
+      "component": "commons-io-2.15.1.jar",
+      "notice": "notices/017.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "commons-io:commons-io:2.15.1",
+      "notice": "notices/018.txt",
+      "sourceEntries": 253
+    },
+    {
+      "component": "commons-rdf-api-0.5.0.jar",
+      "notice": "notices/019.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "fluent-hc-4.5.13.jar",
+      "notice": "notices/020.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "guava-33.0.0-jre.jar",
+      "notice": "notices/021.txt",
+      "sourceEntries": 1
+    },
+    {
+      "component": "hasmac-json-ld-0.9.0.jar",
+      "notice": "notices/022.txt",
+      "sourceEntries": 1
+    },
+    {
+      "component": "httpclient-4.5.14.jar",
+      "notice": "notices/023.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "httpclient-cache-4.5.14.jar",
+      "notice": "notices/024.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "httpclient-osgi-4.5.13.jar",
+      "notice": "notices/025.txt",
+      "sourceEntries": 4
+    },
+    {
+      "component": "httpcore-4.4.16.jar",
+      "notice": "notices/026.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "httpcore-nio-4.4.16.jar",
+      "notice": "notices/027.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "httpcore-osgi-4.4.16.jar",
+      "notice": "notices/028.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "httpmime-4.5.13.jar",
+      "notice": "notices/029.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "jackson-annotations-2.16.1.jar",
+      "notice": "notices/030.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "jackson-core-2.16.1.jar",
+      "notice": "notices/031.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "jackson-databind-2.16.1.jar",
+      "notice": "notices/032.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "jakarta.json-2.0.1.jar",
+      "notice": "notices/033.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "jakarta.json-api-2.0.1.jar",
+      "notice": "notices/034.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "jakarta.json:jakarta.json-api:2.0.1",
+      "notice": "notices/035.txt",
+      "sourceEntries": 37
+    },
+    {
+      "component": "javax.inject:javax.inject:1",
+      "notice": "notices/036.txt",
+      "sourceEntries": 7
+    },
+    {
+      "component": "jcl-over-slf4j-2.0.11.jar",
+      "notice": "notices/037.txt",
+      "sourceEntries": 1
+    },
+    {
+      "component": "jsonld-java-0.13.6.jar",
+      "notice": "notices/038.txt",
+      "sourceEntries": 1
+    },
+    {
+      "component": "no.hasmac:hasmac-json-ld:0.9.0",
+      "notice": "notices/039.txt",
+      "sourceEntries": 134
+    },
+    {
+      "component": "org.apache.commons:commons-rdf-api:0.5.0",
+      "notice": "notices/040.txt",
+      "sourceEntries": 21
+    },
+    {
+      "component": "org.apache.httpcomponents:fluent-hc:4.5.13",
+      "notice": "notices/041.txt",
+      "sourceEntries": 32
+    },
+    {
+      "component": "org.apache.httpcomponents:httpclient-cache:4.5.13",
+      "notice": "notices/042.txt",
+      "sourceEntries": 73
+    },
+    {
+      "component": "org.apache.httpcomponents:httpclient-cache:4.5.14",
+      "notice": "notices/043.txt",
+      "sourceEntries": 73
+    },
+    {
+      "component": "org.apache.httpcomponents:httpclient-osgi:4.5.13",
+      "notice": "notices/044.txt",
+      "sourceEntries": 18
+    },
+    {
+      "component": "org.apache.httpcomponents:httpclient:4.5.13",
+      "notice": "notices/045.txt",
+      "sourceEntries": 428
+    },
+    {
+      "component": "org.apache.httpcomponents:httpclient:4.5.14",
+      "notice": "notices/046.txt",
+      "sourceEntries": 428
+    },
+    {
+      "component": "org.apache.httpcomponents:httpcore-nio:4.4.16",
+      "notice": "notices/047.txt",
+      "sourceEntries": 426
+    },
+    {
+      "component": "org.apache.httpcomponents:httpcore-osgi:4.4.16",
+      "notice": "notices/048.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "org.apache.httpcomponents:httpcore:4.4.16",
+      "notice": "notices/049.txt",
+      "sourceEntries": 516
+    },
+    {
+      "component": "org.apache.httpcomponents:httpmime:4.5.13",
+      "notice": "notices/050.txt",
+      "sourceEntries": 50
+    },
+    {
+      "component": "org.checkerframework:checker-qual:3.37.0",
+      "notice": "notices/051.txt",
+      "sourceEntries": 1
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-common-annotation:5.0.2",
+      "notice": "notices/052.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-common-exception:5.0.2",
+      "notice": "notices/053.txt",
+      "sourceEntries": 4
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-common-io:5.0.2",
+      "notice": "notices/054.txt",
+      "sourceEntries": 19
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-common-iterator:5.0.2",
+      "notice": "notices/055.txt",
+      "sourceEntries": 36
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-common-order:5.0.2",
+      "notice": "notices/056.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-common-text:5.0.2",
+      "notice": "notices/057.txt",
+      "sourceEntries": 2
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-common-xml:5.0.2",
+      "notice": "notices/058.txt",
+      "sourceEntries": 7
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-model-api:5.0.2",
+      "notice": "notices/059.txt",
+      "sourceEntries": 26
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-model-vocabulary:5.0.2",
+      "notice": "notices/060.txt",
+      "sourceEntries": 46
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-model:5.0.2",
+      "notice": "notices/061.txt",
+      "sourceEntries": 48
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-rio-api:5.0.2",
+      "notice": "notices/062.txt",
+      "sourceEntries": 70
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-rio-binary:5.0.2",
+      "notice": "notices/063.txt",
+      "sourceEntries": 7
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-rio-datatypes:5.0.2",
+      "notice": "notices/064.txt",
+      "sourceEntries": 6
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-rio-hdt:5.0.2",
+      "notice": "notices/065.txt",
+      "sourceEntries": 22
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-rio-jsonld:5.0.2",
+      "notice": "notices/066.txt",
+      "sourceEntries": 10
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-rio-languages:5.0.2",
+      "notice": "notices/067.txt",
+      "sourceEntries": 3
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-rio-n3:5.0.2",
+      "notice": "notices/068.txt",
+      "sourceEntries": 5
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-rio-nquads:5.0.2",
+      "notice": "notices/069.txt",
+      "sourceEntries": 5
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-rio-ntriples:5.0.2",
+      "notice": "notices/070.txt",
+      "sourceEntries": 7
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-rio-rdfjson:5.0.2",
+      "notice": "notices/071.txt",
+      "sourceEntries": 8
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-rio-rdfxml:5.0.2",
+      "notice": "notices/072.txt",
+      "sourceEntries": 11
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-rio-trig:5.0.2",
+      "notice": "notices/073.txt",
+      "sourceEntries": 9
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-rio-trix:5.0.2",
+      "notice": "notices/074.txt",
+      "sourceEntries": 7
+    },
+    {
+      "component": "org.eclipse.rdf4j:rdf4j-rio-turtle:5.0.2",
+      "notice": "notices/075.txt",
+      "sourceEntries": 12
+    },
+    {
+      "component": "org.glassfish:jakarta.json:2.0.1",
+      "notice": "notices/076.txt",
+      "sourceEntries": 67
+    },
+    {
+      "component": "org.slf4j:jcl-over-slf4j:2.0.11",
+      "notice": "notices/077.txt",
+      "sourceEntries": 9
+    },
+    {
+      "component": "org.slf4j:slf4j-api:2.0.11",
+      "notice": "notices/078.txt",
+      "sourceEntries": 29
+    },
+    {
+      "component": "org.tukaani:xz:1.9",
+      "notice": "notices/079.txt",
+      "sourceEntries": 103
+    },
+    {
+      "component": "pinned-reactor-source",
+      "notice": "notices/080.txt",
+      "sourceEntries": 1507
+    },
+    {
+      "component": "rdf4j-5.0.2-project-license",
+      "notice": "notices/081.txt",
+      "sourceEntries": 1
+    },
+    {
+      "component": "slf4j-api-2.0.11.jar",
+      "notice": "notices/082.txt",
+      "sourceEntries": 1
+    },
+    {
+      "component": "jackson-core2.16.1 incorporated works",
+      "notice": "notices/jackson-incorporated-terms.txt",
+      "sourceEntries": 3
+    },
+    {
+      "component": "JFact-derived FastSetSimple LGPL2.1-or-later",
+      "notice": "notices/jfact-fast-set-simple.txt",
+      "sourceEntries": 1
+    }
+  ],
+  "changeRequiresNewDisposition": "Any component or source/notice mapping change; do not inherit the owner decision"
+}

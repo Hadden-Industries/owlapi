@@ -1,5 +1,6 @@
 /** Evidence reuse is an optimization. Unprovable equivalence always requires full CI. */
 import { isDeepStrictEqual } from "node:util";
+import { javaReferenceFromNeeds } from "./java-reference-state.mjs";
 import {
   requireSuccessfulJobs,
   requireCiJobs,
@@ -85,7 +86,7 @@ export const createVerificationReceipt = ({
     commit: snapshot.commit,
   });
   return assertQualificationRecord({
-    schemaVersion: 2,
+    schemaVersion: 3,
     role: "PR",
     mode: "FULL",
     sourceMode: "FULL",
@@ -102,6 +103,13 @@ export const createVerificationReceipt = ({
     policySha256: QUALIFICATION_POLICY_SHA256,
     checks: createQualificationChecks({ context, evidence, role: "PR" }),
     source: null,
+    javaReference: javaReferenceFromNeeds(needs, {
+      role: "PR",
+      mode: "FULL",
+      runId: context.runId,
+      runAttempt: context.runAttempt,
+      commit: snapshot.commit,
+    }),
   });
 };
 
@@ -172,7 +180,7 @@ export const createMainQualification = ({
     digest: `sha256:${needs.candidate.outputs.artifact_digest}`,
   };
   return assertQualificationRecord({
-    schemaVersion: 2,
+    schemaVersion: 3,
     role: "MAIN",
     mode: accepted.mode,
     sourceMode: "FULL",
@@ -194,6 +202,21 @@ export const createMainQualification = ({
       original: source,
     }),
     source,
+    javaReference: origin
+      ? origin.javaReference === null
+        ? null
+        : {
+            ...origin.javaReference,
+            seedRequested: false,
+            publication: null,
+          }
+      : javaReferenceFromNeeds(needs, {
+          role: "MAIN",
+          mode: "FULL",
+          runId: context.runId,
+          runAttempt: context.runAttempt,
+          commit: context.snapshot.commit,
+        }),
   });
 };
 
@@ -347,7 +370,7 @@ export const verifyIntegrationProof = async ({
   const recordedAt = Date.parse(receipt.recordedAt);
   assertQualificationRecord(receipt);
   requireFact(
-    receipt.schemaVersion === 2 &&
+    receipt.schemaVersion === 3 &&
       receipt.role === "PR" &&
       receipt.mode === "FULL" &&
       receipt.repository === context.repository &&

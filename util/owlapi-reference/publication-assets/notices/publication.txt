@@ -1,0 +1,38 @@
+PINNED OWLAPI CI REFERENCE: COMPONENT NOTICES AND SOURCE
+
+This download contains the pinned OWLAPI development reference and its runtime
+dependencies. Component-specific original terms remain applicable; this package
+does not apply a blanket license to third-party components.
+
+runtime/001.jar is owlapi-tools-5.5.1.jar. It incorporates the JFact-derived
+FastSetSimple library material, Copyright 2011 Ignazio Palmisano, Dmitry Tsarkov,
+University of Manchester. Its original GNU LGPL version 2.1-or-later grant is
+preserved in sources/reactor.tar and notices/jfact-fast-set-simple.txt. This
+distribution elects GNU LGPL version 3 under that later-version option.
+The complete GNU LGPL3 and GPL3 texts are in notices/lgpl-3.0.txt and
+notices/gpl-3.0.txt. Corresponding source and caller/application/build materials
+are supplied in the same download, especially sources/reactor.tar and the
+mapped component source archives. See sources/recombination-instructions.txt
+for modification and reconstruction of the Combined Work under LGPL3 section
+4(d)(0). sources/jfact-uncombined.jar and sources/jfact-uncombined-sources.jar
+provide supplementary uncombined class/source materials outside the runtime
+classpath. They do not replace the full reactor/application source requirements.
+
+Recipients may modify the applicable library and recombine/relink/debug those
+modifications as allowed by its license. No CI integrity or qualification
+condition imposed by this project limits recipients' license rights.
+
+OBO's original supplier declares BSD-3-Clause in its preserved source POM.
+The original Git history and complete Google Code archive were inspected; no
+separate original named BSD copyright notice was recovered. All supplied source
+terms and original notices, the supplier POM declaration, BSD3 conditions and
+disclaimer, and identified supplier/source provenance are retained. No holder
+is invented from a committer name, and unrelated wrapper/W3C notices are not
+presented as the missing original supplier notice. The rights disposition
+documents this residual notice/provenance gap explicitly.
+
+The component inventory maps unchanged published component sources and identified
+embedded-work source origins to the corresponding supplied files. Where original
+terms offer a choice, the recorded component-specific route applies only to that
+component. Original headers and notices remain intact. There is no independent
+binary-to-source attestation or claim of bit-for-bit reproducible generation.

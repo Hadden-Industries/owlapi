@@ -614,7 +614,7 @@ describe("reuse of complete PR integration", () => {
   test("records typed FULL coverage rather than inferring live tests from job success", () => {
     const f = fixture();
     expect(f.receipt).toMatchObject({
-      schemaVersion: 2,
+      schemaVersion: 3,
       role: "PR",
       mode: "FULL",
       checks: {
@@ -643,7 +643,7 @@ describe("reuse of complete PR integration", () => {
       now,
     });
     expect(record).toMatchObject({
-      schemaVersion: 2,
+      schemaVersion: 3,
       role: "MAIN",
       mode: "REUSED",
       sourceMode: "FULL",

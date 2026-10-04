@@ -3,6 +3,9 @@
 - Status: Accepted implementation scope under the input-aware CI plan; selective execution and Java artifact reuse remain inactive.
 - Authority: Maksym Shostak's 3 October 2026 instruction to continue the accepted plan, with consolidated, bounded Claude reviews.
 
+Subsequent amendment: [ADR 0012](0012-gated-native-java-reference-reuse.md) coordinates schema-v3 Java materialization and cold-seeding, increases the bounded strategy job to twelve minutes, and records the owner's decision to retain full integration checks.
+The historical schema-v2 milestone and its verification retain their original meaning.
+
 ## Decision
 
 Deliver the plan's coordinated FULL-only schema-v2 milestone before enabling any omission.

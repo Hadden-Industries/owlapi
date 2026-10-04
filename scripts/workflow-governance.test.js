@@ -35,6 +35,82 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test.each([
+    "bypass",
+    "token",
+    "ignored admission",
+    "arbitrary transport",
+    "unconditional tools",
+    "fatal optional tools",
+  ])("rejects a compromised merge seed decision: %s", (mutation) => {
+    expect(
+      mutateWorkflow("ci.yml", (doc) => {
+        const job = doc.getIn(["jobs", "verification"]);
+        const steps = job.get("steps").items;
+        const step = (id) => steps.find((item) => item.get("id") === id);
+        if (mutation === "bypass")
+          job.setIn(["outputs", "reuse"], "${{ steps.verify.outputs.reuse }}");
+        if (mutation === "token")
+          step("seed_strategy").setIn(
+            ["env", "GH_TOKEN"],
+            "${{ github.token }}",
+          );
+        if (mutation === "ignored admission")
+          step("seed_admit").set("continue-on-error", true);
+        if (mutation === "arbitrary transport")
+          step("seed_download").setIn(["with", "artifact-ids"], "500");
+        if (mutation === "unconditional tools") step("seed_tools").delete("if");
+        if (mutation === "fatal optional tools")
+          step("seed_tools").delete("continue-on-error");
+      }).join("\n"),
+    ).toMatch(/CI verification|seed decision|seed transport|seed verifier/u);
+  });
+  test.each(["PR", "overwrite", "path", "reorder"])(
+    "rejects a broadened reference publication: %s",
+    (mutation) => {
+      expect(
+        mutateWorkflow("ci.yml", (doc) => {
+          const steps = doc.getIn(["jobs", "source_node_24", "steps"]);
+          const index = steps.items.findIndex(
+            (step) => step.get("id") === "reference_upload",
+          );
+          const upload = steps.items[index];
+          if (mutation === "PR") upload.set("if", "true");
+          if (mutation === "overwrite")
+            upload.setIn(["with", "overwrite"], true);
+          if (mutation === "path") upload.setIn(["with", "path"], ".release");
+          if (mutation === "reorder") {
+            steps.items.splice(index, 1);
+            steps.items.unshift(upload);
+          }
+        }).join("\n"),
+      ).toMatch(/main-only reference transport|publication must follow/u);
+    },
+  );
+  test.each(["credential", "ignore", "reorder", "unbounded"])(
+    "rejects a compromised native cost screen: %s",
+    (mutation) => {
+      expect(
+        mutateWorkflow("ci.yml", (doc) => {
+          const steps = doc.getIn(["jobs", "source_node_24", "steps"]);
+          const index = steps.items.findIndex(
+            (step) =>
+              step.get("run") ===
+              "node util/owlapi-reference/reference-cost-observation.mjs",
+          );
+          const screen = steps.items[index];
+          if (mutation === "credential")
+            screen.setIn(["env", "GH_TOKEN"], "${{ github.token }}");
+          if (mutation === "ignore") screen.set("continue-on-error", true);
+          if (mutation === "unbounded") screen.delete("timeout-minutes");
+          if (mutation === "reorder") {
+            steps.items.splice(index, 1);
+            steps.items.push(screen);
+          }
+        }).join("\n"),
+      ).toMatch(/isolated cost screen/u);
+    },
+  );
   test.each(["source_node_24", "webvowl"])(
     "requires unconditional native coverage in %s",
     (job) => {
