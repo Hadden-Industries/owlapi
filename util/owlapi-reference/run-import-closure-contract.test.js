@@ -501,6 +501,7 @@ describePinnedOracle("pinned Java cyclic import-closure oracle", () => {
     ).toBe(true);
 
     // Exercise transported bytes independently of the producer's checkout and home.
+    const relocationStarted = performance.now();
     const relocated = await temporaryDirectory("owlapi-relocated-reference-");
     const emptyHome = await temporaryDirectory("owlapi-empty-java-home-");
     const originalClasspath = (
@@ -518,7 +519,7 @@ describePinnedOracle("pinned Java cyclic import-closure oracle", () => {
       );
       await copyFile(original, destination);
       const originalBytes = await readFile(original);
-      expect(await readFile(destination)).toEqual(originalBytes);
+      expect((await readFile(destination)).equals(originalBytes)).toBe(true);
       orderedHashes.push(
         createHash("sha256").update(originalBytes).digest("hex"),
       );
@@ -644,6 +645,7 @@ describePinnedOracle("pinned Java cyclic import-closure oracle", () => {
             .digest("hex"),
           comparisonOutcome: relocatedExecution.result.comparisonOutcome,
           isolatedHomeRemainedEmpty: true,
+          elapsedMs: Math.round(performance.now() - relocationStarted),
         },
       }),
     );

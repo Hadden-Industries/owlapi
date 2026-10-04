@@ -86,6 +86,9 @@ export const REFERENCE_RECIPE = Object.freeze({
   help: "org.apache.maven.plugins:maven-help-plugin:3.5.2",
   dependency: "org.apache.maven.plugins:maven-dependency-plugin:3.11.0",
   declaredSignature: "org.codehaus.mojo.signature:java18:1.0:signature",
+  // The qualified preparation can otherwise observe this tool input only on
+  // some cold runs. Resolve the conservative union; never erase a native input.
+  preparationSupplement: "org.slf4j:jcl-over-slf4j:1.7.32:jar",
   repository: "https://repo.maven.apache.org/maven2",
   nativeSummary:
     "checksums-central-8fac3ebd6edbaca3c794783fa38088af0aa128e7.sha512",
@@ -167,6 +170,14 @@ export function referenceBuildRecipe({
         "-N",
         `${REFERENCE_RECIPE.dependency}:get`,
         `-Dartifact=${REFERENCE_RECIPE.declaredSignature}`,
+        "-Dtransitive=false",
+        ...recording,
+      ],
+      [
+        ...common,
+        "-N",
+        `${REFERENCE_RECIPE.dependency}:get`,
+        `-Dartifact=${REFERENCE_RECIPE.preparationSupplement}`,
         "-Dtransitive=false",
         ...recording,
       ],

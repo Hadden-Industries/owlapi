@@ -133,8 +133,12 @@ describe("native reference preparation boundary", () => {
       expect(goal[goal.indexOf("-t") + 1]).toBe(recipe.toolchains);
       expect(goal[goal.indexOf("-gt") + 1]).toBe(recipe.toolchains);
     }
-    expect(recipe.preparation.at(-2)).toContain(
+    expect(recipe.preparation.at(-3)).toContain(
       `-Dartifact=${REFERENCE_RECIPE.declaredSignature}`,
+    );
+    expect(recipe.preparation.at(-3)).toContain("-Dtransitive=false");
+    expect(recipe.preparation.at(-2)).toContain(
+      "-Dartifact=org.slf4j:jcl-over-slf4j:1.7.32:jar",
     );
     expect(recipe.preparation.at(-2)).toContain("-Dtransitive=false");
     expect(recipe.jvmOptions).toContain("-Duser.timezone=UTC");
