@@ -53,6 +53,9 @@ describe("optional preparation timeout recovery", () => {
       for (const path of [source, jdk, maven]) mkdirSync(path);
       let now = 1_800_000_000_000;
       const clock = jest.spyOn(Date, "now").mockImplementation(() => now);
+      const diagnostics = jest
+        .spyOn(process.stderr, "write")
+        .mockImplementation(() => true);
       let packages = 0;
       const spawn = jest.fn((executable, args, options) => {
         expect(options.shell).toBe(false);
@@ -119,6 +122,13 @@ describe("optional preparation timeout recovery", () => {
         const prepared = collect(options);
         expect(prepared.inputRecord).toBeNull();
         expect(prepared.reason).toBe("NATIVE_KEY_UNAVAILABLE");
+        const diagnostic = JSON.parse(diagnostics.mock.calls[0][0]);
+        expect(diagnostic).toMatchObject({
+          purpose: "NATIVE_PREPARATION_DIAGNOSTIC",
+          phase: "preparation-0",
+          command: { label: "prepare-0", exitCode: null, errors: [] },
+        });
+        expect(diagnostic.error).toContain("native prepare-0 failed");
         expect(
           JSON.parse(readFileSync(join(workspace, "preparation.json"), "utf8"))
             .deadline,
@@ -134,11 +144,13 @@ describe("optional preparation timeout recovery", () => {
             reason: "NATIVE_BUILD_INPUTS_UNVERIFIABLE",
           });
         expect(packages).toBe(1);
+        expect(diagnostics).toHaveBeenCalledTimes(1);
         expect(() => resumed.buildFresh()).toThrow("already attempted");
         expect(packages).toBe(1);
       } finally {
         Object.defineProperty(process, "platform", originalPlatform);
         clock.mockRestore();
+        diagnostics.mockRestore();
         jest.unstable_unmockModule("node:child_process");
         jest.resetModules();
       }

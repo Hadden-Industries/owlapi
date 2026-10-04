@@ -254,6 +254,7 @@ export function prepareReferenceBuild({
     : [];
   if (!Array.isArray(execution) || execution.length > 80)
     fail("native command count budget");
+  let failedCommand = null;
   const run = (executable, args, label, maximumMs = 180_000) => {
     const remaining = executionDeadline - Date.now();
     if (remaining <= 0 || execution.length >= 80)
@@ -282,8 +283,21 @@ export function prepareReferenceBuild({
       `${JSON.stringify(execution, null, 2)}\n`,
       { mode: 0o600 },
     );
-    if (result.error || result.signal || result.status !== 0)
+    if (result.error || result.signal || result.status !== 0) {
+      // Only the closed, credential-free native process contributes these
+      // bounded error lines; never capture the inherited environment.
+      failedCommand = {
+        label,
+        exitCode: result.status,
+        errors: `${result.stdout ?? ""}\n${result.stderr ?? ""}`
+          .slice(-8192)
+          .split(/\r?\n/u)
+          .filter((line) => line.startsWith("[ERROR]"))
+          .slice(-4)
+          .map((line) => line.slice(0, 240)),
+      };
       fail(`native ${label} failed`);
+    }
     return result.stdout.trim();
   };
   const git = (...args) =>
@@ -356,19 +370,24 @@ export function prepareReferenceBuild({
   let inputRecord = null;
   let inputRecordBytes;
   let reason = null;
+  let phase = "key-deadline";
   try {
     if (Date.now() >= deadline) fail("local preparation expired");
     if (resume && preparationState.inputRecordSha256 === null)
       fail("previous native key was unavailable");
     if (!resume)
-      for (const [index, args] of recipe.preparation.entries())
+      for (const [index, args] of recipe.preparation.entries()) {
+        phase = `preparation-${index}`;
         run(join(maven, "bin/mvn"), args, `prepare-${index}`);
+      }
     if (Date.now() >= deadline) fail("native key preparation expired");
+    phase = "native-checksums";
     prepared = boundedFile(
       join(locations.prepared, REFERENCE_RECIPE.nativeSummary),
       1024 * 1024,
     );
     readNativeChecksums(prepared);
+    phase = "runtime-graph";
     runtimeGraph = boundedFile(
       join(source, "distribution/target/reference-runtime-tree.json"),
       1024 * 1024,
@@ -382,6 +401,7 @@ export function prepareReferenceBuild({
       !Array.isArray(graph.children)
     )
       fail("wrong native runtime graph");
+    phase = "input-record";
     inputRecord = createReferenceInputRecord({
       sourceCommit: REFERENCE_RECIPE.sourceCommit,
       sourceTree: REFERENCE_RECIPE.sourceTree,
@@ -394,6 +414,7 @@ export function prepareReferenceBuild({
     });
     inputRecordBytes = Buffer.from(`${JSON.stringify(inputRecord, null, 2)}\n`);
     if (resume) {
+      phase = "saved-record";
       const original = boundedFile(
         join(workspace, "input-record.json"),
         64 * 1024,
@@ -410,12 +431,23 @@ export function prepareReferenceBuild({
       )
         fail("native preparation bytes or environment changed");
     }
-  } catch {
+  } catch (error) {
     // Only pre-compilation key preparation is optional. Source/tool admission,
     // package compilation and every behavioral check remain outside this catch.
     inputRecord = null;
     inputRecordBytes = null;
     reason = "NATIVE_KEY_UNAVAILABLE";
+    if (!resume)
+      process.stderr.write(
+        `${JSON.stringify({
+          purpose: "NATIVE_PREPARATION_DIAGNOSTIC",
+          phase,
+          error: String(
+            error?.message ?? "Optional preparation rejected",
+          ).slice(0, 240),
+          command: failedCommand,
+        })}\n`,
+      );
   }
   // Exactly one phase transition: optional work cannot spend the mandatory
   // source admission and fresh compilation budget. Commands remain individually

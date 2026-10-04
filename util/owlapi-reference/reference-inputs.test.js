@@ -43,6 +43,24 @@ const inputs = () => ({
 });
 
 describe("native reference preparation boundary", () => {
+  test.each(["", "\n", "\r\n"])(
+    "accepts a complete native final record with optional terminator %j",
+    (terminator) => {
+      const second = "org/example/parent/1.0/parent-1.0.pom";
+      const bytes = Buffer.from(
+        `${"a".repeat(128)}  ${artifact}\n${"b".repeat(128)}  ${second}${terminator}`,
+      );
+      expect([...readNativeChecksums(bytes)]).toEqual([
+        [artifact, "a".repeat(128)],
+        [second, "b".repeat(128)],
+      ]);
+      expect(assertNativeBuildClosure(bytes, bytes)).toMatchObject({
+        prepared: 2,
+        built: 2,
+      });
+    },
+  );
+
   test("a conservative preparation accepts only unchanged executed external inputs", () => {
     const prepared = Buffer.concat([
       entry(artifact),
@@ -70,7 +88,10 @@ describe("native reference preparation boundary", () => {
     Buffer.alloc(0),
     Buffer.from("\n"),
     Buffer.from("invalid\n"),
-    Buffer.from(`${"a".repeat(128)}  ${artifact}`),
+    Buffer.from(`${"a".repeat(127)}  ${artifact}`),
+    Buffer.from(`${"a".repeat(128)}  `),
+    Buffer.concat([entry(artifact), Buffer.from("\n")]),
+    Buffer.concat([entry(artifact), Buffer.from("\r\n")]),
     entry("../outside.jar"),
     entry("/absolute.jar"),
     entry("a//b.jar"),

@@ -203,7 +203,10 @@ export function readNativeChecksums(bytes) {
     throw new Error("Native checksums exceed their input bounds.");
   const text = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
   const lines = text.split(/\r?\n/u);
-  if (lines.pop() !== "" || lines.length === 0 || lines.length > 4096)
+  // Maven's native summary may end at a complete record without a newline.
+  // Remove only one optional terminator; blank and partial records still fail.
+  if (lines.at(-1) === "") lines.pop();
+  if (lines.length === 0 || lines.length > 4096)
     throw new Error("Native checksum inventory is incomplete or oversized.");
   const result = new Map();
   for (const line of lines) {
