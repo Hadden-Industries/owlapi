@@ -1,6 +1,6 @@
 # Gate native Java reference reuse while retaining full integration checks
 
-- Status: implementation authorized; shared reuse activation pending hosted and operating acceptance.
+- Status: native protocol delivered; owner-authorized enable-and-verify rollout, hosted operating outcome pending.
 - Authority: Maksym Shostak's instruction to implement the entire input-aware CI plan, specific Java rights disposition, and subsequent decision to keep full integration checks.
 - Supersedes: ADR 0011's receipt format and eight-minute strategy bound.
   Its full behavioral floor, direct original proof, exact normal-merge equivalence and release boundaries remain binding.
@@ -46,15 +46,17 @@ The owner accepted the specific fixed-source disposition after the supplied Deep
 This is an owner disposition for the fixed closure, not a professional legal opinion or compiled-byte source attestation.
 Changed components or source/notice mappings need a new disposition.
 
-The policy remains `enabled: false`.
-Rights acceptance does not authorize shared reuse activation.
+On 5 October, the owner accepted the simpler enable-and-verify rollout through a reviewed control change, retaining full comparisons and existing resource/fallback limits.
+This separately authorizes `enabled: true` with `MaksymShostak` as operator; rights acceptance alone remains insufficient.
+The policy binds that accepted rollout record SHA-256 `2533c701115341a51dd8e48c3b990011a14e93092f6ce8e2f2bc3e3ce432f788`, which authorizes collection of actual operating evidence rather than asserting measured benefit or completed hosted reuse.
+The proposed 48-hour timer and preset trial campaign are superseded; no timer machinery is added.
 The accepted disposition SHA-256 is `c31f01628662182ec041c4c30d9fc253a892d672fe8b4d883ff672d31b42a5d4`; the exact approved private v4 packet manifest SHA-256 is `819764ddbfe7162ea85b174afe706038588e61b27e21283cfa7b87828d93d713`.
 The catalogue and original source/notice bytes are checked independently.
 No owner report or private packet is included in the repository.
 
 An inactive reference-control PR measures a separate fresh Linux baseline before native key preparation.
 This is a cost screen, not an oracle result or cross-run operating acceptance.
-Local Windows observations found a 63.6-second fresh baseline versus 65.5-second key preparation before hashing/lookup/transfer/admission; those observations cannot establish hosted savings. Activation requires the plan's hosted cold/warm/miss/rerun/concurrency comparisons, payload/storage/generation accounting, and a named operator's comparative maintenance and cost decision.
+Local Windows observations found a 63.6-second fresh baseline versus 65.5-second key preparation before hashing/lookup/transfer/admission; those observations cannot establish hosted savings. Corrected inactive Linux qualification established the native key and closure, but did not exercise shared bundle transport. The accepted rollout enables the real protocol to collect hosted cold/warm/miss/rerun/concurrency comparisons, payload/storage/generation accounting and the operator's comparative maintenance and cost decision. Sustained operating acceptance remains pending those results. Disproportionate overhead or an integrity/required behavioral failure requires diagnosis and an accountable disable/disposition; preserve all work and evidence.
 Exact-image invalidation remains until separately qualified equivalence supports an amendment.
 
 ## Recovery and evidence

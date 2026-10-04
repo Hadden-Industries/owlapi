@@ -54,7 +54,12 @@ test("rights approval alone cannot authorize a publication", () => {
   expect(() =>
     referencePublicationProvenance({
       ...fixture(),
-      policy: JAVA_REFERENCE_POLICY,
+      policy: {
+        ...JAVA_REFERENCE_POLICY,
+        enabled: false,
+        operator: null,
+        operatingAcceptanceSha256: null,
+      },
     }),
   ).toThrow(/activation/u);
 });

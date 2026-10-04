@@ -7,8 +7,7 @@ import {
   JAVA_REFERENCE_POLICY,
 } from "./java-reference-state.mjs";
 
-// Synthetic activation evidence exercises the complete state protocol. It does
-// not enable the actual policy or represent a real owner/operating decision.
+// Synthetic identities exercise the state protocol; they are not hosted results.
 const policy = {
   ...JAVA_REFERENCE_POLICY,
   enabled: true,
@@ -49,15 +48,33 @@ const producer = () => ({
   qualificationDigest: `sha256:${"d".repeat(64)}`,
 });
 
-test("keeps current activation disabled despite the specific recorded rights disposition", () => {
-  expect(JAVA_REFERENCE_POLICY.enabled).toBe(false);
+test("binds activation to the accepted owner rollout without allowing missing materialization evidence", () => {
+  expect(JAVA_REFERENCE_POLICY.enabled).toBe(true);
+  expect(JAVA_REFERENCE_POLICY.operator).toBe("MaksymShostak");
+  expect(JAVA_REFERENCE_POLICY.operatingAcceptanceSha256).toBe(
+    "2533c701115341a51dd8e48c3b990011a14e93092f6ce8e2f2bc3e3ce432f788",
+  );
   expect(JAVA_REFERENCE_POLICY.rights).toBe(
     "OWNER_ACCEPTED_SOURCE_NOTICE_CLOSURE",
   );
-  expect(assertJavaReferenceState(null, identity)).toBeNull();
-  expect(() => assertJavaReferenceState(fixture(), identity)).toThrow(
-    /activation/u,
-  );
+  expect(() => assertJavaReferenceState(null, identity)).toThrow(/evidence/u);
+  const actual = {
+    ...fixture(),
+    policySha256: evidenceFingerprint(JAVA_REFERENCE_POLICY),
+  };
+  expect(assertJavaReferenceState(actual, identity)).toEqual(actual);
+  expect(() => assertJavaReferenceState(fixture(), identity)).toThrow();
+});
+
+test("disabled policy preserves fresh coverage and rejects a shared materialization claim", () => {
+  const disabled = createJavaReferenceStateValidator({
+    ...JAVA_REFERENCE_POLICY,
+    enabled: false,
+    operator: null,
+    operatingAcceptanceSha256: null,
+  });
+  expect(disabled(null, identity)).toBeNull();
+  expect(() => disabled(fixture(), identity)).toThrow(/activation/u);
 });
 test.each([
   "operator",

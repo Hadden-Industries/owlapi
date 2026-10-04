@@ -1,18 +1,19 @@
 import { isDeepStrictEqual } from "node:util";
 import { evidenceFingerprint } from "./ci-check-coverage.mjs";
 
-/** Activation requires the exact rights disposition and measured operating
- * acceptance. Implementation approval alone cannot populate these fields. */
+/** Activation binds the fixed rights disposition and the owner's accepted
+ * enable-and-verify rollout. Hosted operating results remain separate evidence. */
 export const JAVA_REFERENCE_POLICY = Object.freeze({
   version: 1,
-  enabled: false,
+  enabled: true,
   rights: "OWNER_ACCEPTED_SOURCE_NOTICE_CLOSURE",
   rightsSha256:
     "c31f01628662182ec041c4c30d9fc253a892d672fe8b4d883ff672d31b42a5d4",
   catalogueSha256:
     "c613ca6bb368dd90ae5dc8389cafbd5df56cd39314bf3988e2d352239e2d4798",
-  operator: null,
-  operatingAcceptanceSha256: null,
+  operator: "MaksymShostak",
+  operatingAcceptanceSha256:
+    "2533c701115341a51dd8e48c3b990011a14e93092f6ce8e2f2bc3e3ce432f788",
   repository: "Hadden-Industries/owlapi",
   repositoryId: 1347610640,
   retentionDays: 90,
