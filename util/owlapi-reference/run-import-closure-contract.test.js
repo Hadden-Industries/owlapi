@@ -1,9 +1,18 @@
 import { jest } from "@jest/globals";
 import { execFile } from "node:child_process";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import {
+  copyFile,
+  mkdir,
+  mkdtemp,
+  readFile,
+  readdir,
+  rm,
+  writeFile,
+} from "node:fs/promises";
 import { createServer } from "node:http";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { delimiter, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
@@ -490,6 +499,154 @@ describePinnedOracle("pinned Java cyclic import-closure oracle", () => {
         ({ unparsedTriples }) => unparsedTriples.length === 0,
       ),
     ).toBe(true);
+
+    // Exercise transported bytes independently of the producer's checkout and home.
+    const relocated = await temporaryDirectory("owlapi-relocated-reference-");
+    const emptyHome = await temporaryDirectory("owlapi-empty-java-home-");
+    const originalClasspath = (
+      await readFile(pinnedReferenceEnvironment.classpathFile, "utf8")
+    )
+      .trim()
+      .split(delimiter);
+    expect(originalClasspath).toHaveLength(63);
+    const orderedHashes = [];
+    const relocatedClasspath = [];
+    for (const [index, original] of originalClasspath.entries()) {
+      const destination = join(
+        relocated,
+        `${String(index).padStart(3, "0")}.jar`,
+      );
+      await copyFile(original, destination);
+      const originalBytes = await readFile(original);
+      expect(await readFile(destination)).toEqual(originalBytes);
+      orderedHashes.push(
+        createHash("sha256").update(originalBytes).digest("hex"),
+      );
+      relocatedClasspath.push(destination);
+    }
+    const classpathFile = join(relocated, "classpath.txt");
+    await writeFile(classpathFile, relocatedClasspath.join(delimiter), "utf8");
+    const relocatedEnvironment = {
+      ...pinnedReferenceEnvironment,
+      classpathFile,
+    };
+    const isolatedProcess = (command, arguments_) => {
+      expect(["java", "javac"]).toContain(command);
+      let directCommand = command;
+      let directArguments = arguments_;
+      let observeOracleHome = false;
+      if (command === "java") {
+        // Resolve the launcher contract directly so the bounded process is the
+        // actual compiler/oracle, without an unbounded nested JVM or lost -D flags.
+        const [
+          classpathFlag,
+          ,
+          launcher,
+          suppliedClasspath,
+          extraEntry,
+          entryPoint,
+          ...entryArguments
+        ] = arguments_;
+        expect(classpathFlag).toBe("-cp");
+        expect(launcher).toBe("RunWithClasspath");
+        expect(suppliedClasspath).toBe(classpathFile);
+        const classpath = [extraEntry, ...relocatedClasspath].join(delimiter);
+        if (entryPoint === "com.sun.tools.javac.Main") {
+          directCommand = "javac";
+          directArguments = ["-cp", classpath, ...entryArguments];
+        } else {
+          expect(entryPoint).toBe("RunImportClosureContract");
+          observeOracleHome = true;
+          directArguments = [
+            "-XshowSettings:properties",
+            "-cp",
+            classpath,
+            entryPoint,
+            ...entryArguments,
+          ];
+        }
+      }
+      const prefix = directCommand === "javac" ? "-J-D" : "-D";
+      const isolatedEnvironment = {
+        ...process.env,
+        HOME: emptyHome,
+        USERPROFILE: emptyHome,
+      };
+      // An empty Java options variable still emits a startup diagnostic.
+      // Remove ambient options rather than suppressing any compiler diagnostics.
+      delete isolatedEnvironment.JAVA_TOOL_OPTIONS;
+      delete isolatedEnvironment.JDK_JAVA_OPTIONS;
+      delete isolatedEnvironment._JAVA_OPTIONS;
+      return new Promise((resolve, reject) => {
+        execFile(
+          directCommand,
+          [
+            `${prefix}user.home=${emptyHome}`,
+            `${prefix}maven.repo.local=${join(emptyHome, ".m2", "repository")}`,
+            ...directArguments,
+          ],
+          {
+            timeout: 60_000,
+            maxBuffer: 8 * 1024 * 1024,
+            windowsHide: true,
+            env: isolatedEnvironment,
+          },
+          (error, stdout, stderr) => {
+            if (error) reject(error);
+            else {
+              try {
+                if (observeOracleHome) {
+                  const properties = stderr
+                    .split(/\r?\n/u)
+                    .map((line) => line.trim());
+                  expect(properties).toContain(`user.home = ${emptyHome}`);
+                  expect(properties).toContain(
+                    `maven.repo.local = ${join(emptyHome, ".m2", "repository")}`,
+                  );
+                }
+                resolve({ exitCode: 0, stdout, stderr });
+              } catch (cause) {
+                reject(cause);
+              }
+            }
+          },
+        );
+      });
+    };
+    expect(await readdir(emptyHome)).toEqual([]);
+    const relocatedOracles = join(relocated, "oracles");
+    await compileOntologyReferenceOracles(
+      relocatedEnvironment,
+      relocatedOracles,
+      {
+        executeProcess: isolatedProcess,
+      },
+    );
+    const relocatedExecution = await executeImportClosureOracle(
+      {
+        catalogMappings: await parseOasisXmlCatalog(fixturePath("catalog.xml")),
+        compiledOracleDirectory: relocatedOracles,
+        rootPath: fixturePath("root.ofn"),
+        verifyOutputPath: fixturePath("collapsed.ofn"),
+      },
+      relocatedEnvironment,
+      { executeProcess: isolatedProcess },
+    );
+    expect(relocatedExecution.result.comparisonOutcome).toBe("MATCH");
+    expect(relocatedExecution.result).toEqual(execution.result);
+    expect(await readdir(emptyHome)).toEqual([]);
+    console.warn(
+      JSON.stringify({
+        nativeReferenceRelocation: {
+          jarCount: relocatedClasspath.length,
+          orderedClasspathSha256: createHash("sha256")
+            .update(JSON.stringify(orderedHashes))
+            .digest("hex"),
+          comparisonOutcome: relocatedExecution.result.comparisonOutcome,
+          isolatedHomeRemainedEmpty: true,
+        },
+      }),
+    );
   });
 
   it("refuses an apparent match when native Java reports unparsed RDF", async () => {
