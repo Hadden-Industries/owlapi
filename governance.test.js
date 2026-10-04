@@ -2449,6 +2449,7 @@ bundle licence and notice review.
       "hisew-checkout-environment-isolation",
       "java-owlapi-api-identity-metadata",
       "java-owlapi-reference-fixtures",
+      "java-reference-publication-source-notice-materials",
       "ruff-development-tool",
       "snapper-development-tool",
       "universal-ontology-documentation-tooling",
@@ -2478,6 +2479,23 @@ bundle licence and notice review.
     expect(
       materialsById.get("java-owlapi-reference-fixtures").licenseAssessments,
     ).toHaveLength(2);
+    const referenceMaterials = materialsById.get(
+      "java-reference-publication-source-notice-materials",
+    );
+    expect(referenceMaterials).toMatchObject({
+      relationship: "DEVELOPMENT_ONLY",
+      packageTarballScope: false,
+      deployedApplicationScope: "NOT_APPLICABLE",
+      treeEvidence: {
+        root: "util/owlapi-reference/publication-assets",
+        fileCount: 94,
+      },
+    });
+    expect(
+      referenceMaterials.licenseAssessments.map(
+        ({ distributionDisposition }) => distributionDisposition,
+      ),
+    ).toEqual(Array(3).fill("REPOSITORY_ONLY_NOT_IN_PACKAGE"));
   });
 
   it("ships the elected Apache-2.0 basis for Java OWLAPI compatibility metadata", () => {

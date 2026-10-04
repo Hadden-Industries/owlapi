@@ -527,6 +527,55 @@ const createQualityToolingFacts = () =>
 const createMaterialFacts = () => [
   ...createQualityToolingFacts(),
   {
+    id: "java-reference-publication-source-notice-materials",
+    relationship: "DEVELOPMENT_ONLY",
+    name: "Fixed Java reference source and notice publication materials",
+    versionOrRevision:
+      "OWLAPI 5.5.1 at d7e997a53b470e32700de89cc610d9daf01ea769; owner-cleared v4 closure",
+    licenseAssessments: [
+      licenseAssessment({
+        scope: "JFact-derived FastSet source and uncombined source supplement",
+        declaredLicenseExpression: "LGPL-2.1-or-later",
+        concludedLicenseExpression: "LGPL-3.0-or-later",
+        licenseConclusionRationale:
+          "The original 2.1-or-later grant and headers are preserved; the specific owner disposition elects the LGPL3 section 4(d)(0) source/recombination route, with section 5 supplement additional. This is not a professional legal opinion.",
+        distributionDisposition: "REPOSITORY_ONLY_NOT_IN_PACKAGE",
+      }),
+      licenseAssessment({
+        scope: "OBO original supplier POM and preserved supplied notices",
+        declaredLicenseExpression: "BSD-3-Clause",
+        licenseConclusionRationale:
+          "Preserves the supplier declaration and complete conditions/disclaimer. The owner specifically accepted the documented missing named-notice/provenance gap; no holder attribution is invented.",
+        distributionDisposition: "REPOSITORY_ONLY_NOT_IN_PACKAGE",
+      }),
+      licenseAssessment({
+        scope:
+          "Other component notices and source excerpts, individually mapped by the pinned publication catalogue",
+        declaredLicenseExpression: "LicenseRef-java-reference-component-terms",
+        licenseConclusionRationale:
+          "This LicenseRef designates the individually mapped original component/per-file terms in util/owlapi-reference/reference-publication-catalogue.json and publication-assets; it does not create a licence or assert blanket relicensing. The exact original terms remain authoritative under the owner's fixed-source disposition.",
+        distributionDisposition: "REPOSITORY_ONLY_NOT_IN_PACKAGE",
+      }),
+    ],
+    sourceUrl:
+      "https://github.com/owlcs/owlapi/tree/d7e997a53b470e32700de89cc610d9daf01ea769",
+    evidenceFiles: [
+      evidenceFile(
+        "util/owlapi-reference/reference-publication-catalogue.json",
+      ),
+    ],
+    treeEvidence: treeEvidence("util/owlapi-reference/publication-assets"),
+    attributionText: [
+      "Original component and per-file copyright notices are preserved verbatim in the mapped assets; no blanket project attribution replaces them.",
+    ],
+    packageTarballScope: false,
+    deployedApplicationScope: "NOT_APPLICABLE",
+    noticeDisposition:
+      "ORIGINAL_COMPONENT_NOTICES_AND_FIXED_SOURCE_OWNER_DISPOSITION",
+    rationale:
+      "The catalogue binds the exact approved source/notice closure and disposition hashes. These development-reference materials are excluded from npm and application deployment. Shared compiled-reference publication and activation remain separately gated.",
+  },
+  {
     id: "gnu-agpl-3.0-only-license-text",
     relationship: "EMBEDDED_OR_COPIED",
     name: "GNU Affero General Public License version 3 text",

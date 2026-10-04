@@ -27,11 +27,20 @@ test("required Node 24 CI builds the pinned Java reference and reconciles all Ju
   expect(checkout("owlcs/owlapi")).toMatchObject({
     with: { ref: java.sourceRevision, "persist-credentials": false },
   });
-  expect(
-    steps.some(({ run }) =>
-      run?.includes("package dependency:build-classpath"),
-    ),
-  ).toBe(true);
+  const materialization = steps.filter(
+    ({ run }) => run === "node scripts/java-reference-command.mjs build",
+  );
+  expect(materialization).toHaveLength(1);
+  expect(materialization[0].if).toBeUndefined();
+  expect(materialization[0]["continue-on-error"]).toBeUndefined();
+  const liveSuite = steps.find(({ run }) =>
+    run?.includes("npm test -- --runInBand --json"),
+  );
+  expect(liveSuite.env.OWLAPI_REFERENCE_CHECKOUT).toBe(
+    "${{ github.workspace }}/.release/java-owlapi",
+  );
+  expect(liveSuite.if).toBeUndefined();
+  expect(liveSuite["continue-on-error"]).toBeUndefined();
   const gate = steps.find(({ run }) =>
     run?.startsWith("npm run test:universal-ontology --"),
   );

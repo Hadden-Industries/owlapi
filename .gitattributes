@@ -2,3 +2,7 @@
 # - Auto-detect text vs binary files
 # - Normalise text files to LF on commit and keep LF on checkout
 * text=auto eol=lf
+
+# Approved third-party source/notice assets retain their exact original bytes.
+# The pinned catalogue provides per-file hashes and source/notice mappings.
+util/owlapi-reference/publication-assets/** -text -diff -whitespace

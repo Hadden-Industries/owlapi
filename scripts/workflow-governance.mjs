@@ -244,12 +244,24 @@ const validateActionUses = (fileName, workflow, document, violations) => {
   }
 };
 
-const isCiReceiptTransport = (fileName, jobId, step) =>
+const isOptionalCiEvidenceStep = (fileName, jobId, step) =>
   fileName === "ci.yml" &&
   ((jobId === "verification" &&
-    step.id === "proof" &&
-    step.uses ===
-      "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c") ||
+    step.id === "seed_tools" &&
+    typeof step.run === "string" &&
+    !step.uses) ||
+    (jobId === "verification" &&
+      ["proof", "seed_download"].includes(step.id) &&
+      step.uses ===
+        "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c") ||
+    (jobId === "source_node_24" &&
+      ["reference_download", "reference_index_download"].includes(step.id) &&
+      step.uses ===
+        "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c") ||
+    (jobId === "source_node_24" &&
+      step.id === "reference_upload" &&
+      step.uses ===
+        "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a") ||
     (jobId === "required" &&
       ["receipt_upload", "main_receipt_upload"].includes(step.id) &&
       step.uses ===
@@ -314,7 +326,7 @@ const validateJobs = (fileName, workflow, violations) => {
       add(
         violations,
         !Object.hasOwn(step, "continue-on-error") ||
-          isCiReceiptTransport(fileName, id, step),
+          isOptionalCiEvidenceStep(fileName, id, step),
         `${fileName}: forbidden workflow construct continue-on-error`,
       );
       add(
@@ -396,11 +408,17 @@ const validateCandidateTransport = (fileName, workflow, violations) => {
     if (
       fileName === "ci.yml" &&
       steps(workflow.jobs?.verification).includes(step) &&
-      step.id === "proof"
+      ["proof", "seed_download"].includes(step.id)
     ) {
       // This single cross-run receipt selector has its own exact policy below.
       continue;
     }
+    if (
+      fileName === "ci.yml" &&
+      steps(workflow.jobs?.source_node_24).includes(step) &&
+      ["reference_download", "reference_index_download"].includes(step.id)
+    )
+      continue;
     const inputs = step.with ?? {};
     const isCandidate =
       inputs["artifact-ids"] === "${{ needs.candidate.outputs.artifact_id }}";
@@ -438,9 +456,231 @@ const validateCandidateTransport = (fileName, workflow, violations) => {
   }
 };
 
+const validateJavaReferenceBoundary = (job, violations) => {
+  const label = "ci.yml: Java reference boundary";
+  requireFields(
+    job,
+    {
+      permissions: { contents: "read", actions: "read" },
+    },
+    label,
+    violations,
+  );
+  requireFields(
+    job?.outputs,
+    { reference: "${{ steps.reference_publication.outputs.reference }}" },
+    label,
+    violations,
+  );
+  const observed = steps(job);
+  const costScreens = observed.filter(
+    (step) =>
+      step.run === "node util/owlapi-reference/reference-cost-observation.mjs",
+  );
+  const costScreen = costScreens[0];
+  add(
+    violations,
+    costScreens.length === 1 &&
+      costScreen["timeout-minutes"] === 4 &&
+      !Object.hasOwn(costScreen, "if") &&
+      !Object.hasOwn(costScreen, "continue-on-error") &&
+      !Object.hasOwn(costScreen, "env") &&
+      observed.indexOf(costScreen) <
+        observed.findIndex(
+          (step) =>
+            step.run === "node scripts/java-reference-command.mjs prepare",
+        ),
+    `${label}: isolated cost screen must precede key preparation without API credentials`,
+  );
+  let previous = -1;
+  for (const [mode, timeout] of [
+    ["prepare", 10],
+    ["index", 1],
+    ["select", 1],
+    ["admit", 1],
+    ["build", 10],
+    ["package", 5],
+    ["publication", 1],
+  ]) {
+    const matches = observed.filter(
+      (step) => step.run === `node scripts/java-reference-command.mjs ${mode}`,
+    );
+    const step = matches[0];
+    const index = observed.indexOf(step);
+    add(
+      violations,
+      matches.length === 1 &&
+        index > previous &&
+        step["timeout-minutes"] === timeout &&
+        !Object.hasOwn(step, "if") &&
+        !Object.hasOwn(step, "continue-on-error"),
+      `${label}: ${mode} must execute once in order with bounded failure semantics`,
+    );
+    previous = index;
+    const env =
+      mode === "index"
+        ? { GH_TOKEN: "${{ github.token }}" }
+        : mode === "select"
+          ? {
+              GH_TOKEN: "${{ github.token }}",
+              REFERENCE_INDEX_DOWNLOAD_OUTCOME:
+                "${{ steps.reference_index_download.outcome }}",
+            }
+          : mode === "admit"
+            ? {
+                GH_TOKEN: "${{ github.token }}",
+                REFERENCE_DOWNLOAD_OUTCOME:
+                  "${{ steps.reference_download.outcome }}",
+              }
+            : mode === "publication"
+              ? {
+                  REFERENCE_UPLOAD_OUTCOME:
+                    "${{ steps.reference_upload.outcome }}",
+                  REFERENCE_ARTIFACT_ID:
+                    "${{ steps.reference_upload.outputs.artifact-id }}",
+                  REFERENCE_ARTIFACT_DIGEST:
+                    "${{ steps.reference_upload.outputs.artifact-digest }}",
+                }
+              : undefined;
+    add(
+      violations,
+      isDeepStrictEqual(step?.env, env),
+      `${label}: ${mode} credential scope changed`,
+    );
+  }
+  add(
+    violations,
+    !Object.hasOwn(job?.env ?? {}, "GH_TOKEN") &&
+      !Object.hasOwn(job?.env ?? {}, "GITHUB_TOKEN"),
+    `${label}: job-level API credentials are forbidden`,
+  );
+  const jdks = observed.filter((step) =>
+    step.uses?.startsWith("actions/setup-java@"),
+  );
+  add(
+    violations,
+    jdks.length === 1,
+    `${label}: reference JDK selection is ambiguous`,
+  );
+  requireFields(
+    jdks[0],
+    {
+      with: {
+        distribution: "temurin",
+        "java-version": "25.0.4+101.0.LTS",
+        "check-latest": false,
+        "overwrite-settings": false,
+        cache: "",
+        "cache-jdk": false,
+      },
+    },
+    label,
+    violations,
+  );
+  const download = observed.find((step) => step.id === "reference_download");
+  const indexDownload = observed.filter(
+    (step) => step.id === "reference_index_download",
+  );
+  requireFields(
+    indexDownload[0],
+    {
+      uses: "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+      if: "steps.reference_index.outputs.available == 'true'",
+      "continue-on-error": true,
+      "timeout-minutes": 1,
+      with: {
+        ...DOWNLOAD_INPUTS,
+        "artifact-ids": "${{ steps.reference_index.outputs.artifact_id }}",
+        "run-id": "${{ steps.reference_index.outputs.run_id }}",
+        repository: "Hadden-Industries/owlapi",
+        "github-token": "${{ github.token }}",
+        path: ".release/java-reference-reuse/index-download",
+      },
+    },
+    `${label}: exact discovery index transport`,
+    violations,
+  );
+  add(
+    violations,
+    indexDownload.length === 1 &&
+      lacksKeys(indexDownload[0].with, ["name", "pattern"]) &&
+      observed.indexOf(indexDownload[0]) >
+        observed.findIndex((step) => step.id === "reference_index") &&
+      observed.indexOf(indexDownload[0]) <
+        observed.findIndex((step) => step.id === "reference_select"),
+    `${label}: discovery index must precede direct product selection`,
+  );
+  const upload = observed.filter((step) => step.id === "reference_upload");
+  requireFields(
+    upload[0],
+    {
+      uses: "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+      if: "github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.reference_package.outputs.publish == 'true'",
+      "continue-on-error": true,
+      "timeout-minutes": 1,
+      with: {
+        name: "${{ steps.reference_package.outputs.artifact_name }}",
+        path: ".release/java-reference-reuse/publication",
+        "retention-days": 90,
+        "if-no-files-found": "error",
+        "compression-level": 0,
+        "include-hidden-files": false,
+        overwrite: false,
+        archive: true,
+      },
+    },
+    `${label}: main-only reference transport`,
+    violations,
+  );
+  add(
+    violations,
+    upload.length === 1 &&
+      observed.indexOf(upload[0]) >
+        observed.findIndex((step) =>
+          step.run?.startsWith("npm run test:universal-ontology --"),
+        ) &&
+      observed.indexOf(upload[0]) <
+        observed.findIndex((step) => step.id === "reference_publication"),
+    `${label}: publication must follow all live Java qualification`,
+  );
+  requireFields(
+    download,
+    {
+      uses: "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+      if: "steps.reference_select.outputs.available == 'true'",
+      "continue-on-error": true,
+      "timeout-minutes": 1,
+      with: {
+        ...DOWNLOAD_INPUTS,
+        "artifact-ids": "${{ steps.reference_select.outputs.artifact_ids }}",
+        "run-id": "${{ steps.reference_select.outputs.run_id }}",
+        repository: "Hadden-Industries/owlapi",
+        "github-token": "${{ github.token }}",
+        path: ".release/java-reference-reuse/download",
+      },
+    },
+    label,
+    violations,
+  );
+  add(
+    violations,
+    download &&
+      lacksKeys(download.with, ["name", "pattern"]) &&
+      observed.indexOf(download) >
+        observed.findIndex((step) => step.id === "reference_select") &&
+      observed.indexOf(download) <
+        observed.findIndex(
+          (step) =>
+            step.run === "node scripts/java-reference-command.mjs admit",
+        ),
+    `${label}: exact dual-product download must precede admission`,
+  );
+};
+
 const validateCiVerification = (workflow, violations) => {
   const label = "ci.yml: CI verification";
   const jobs = workflow.jobs ?? {};
+  validateJavaReferenceBoundary(jobs.source_node_24, violations);
   add(
     violations,
     sameInventory(Object.keys(jobs), Object.keys(CI_JOB_NAMES)) &&
@@ -486,7 +726,7 @@ const validateCiVerification = (workflow, violations) => {
   requireFields(
     strategy,
     {
-      "timeout-minutes": 8,
+      "timeout-minutes": 12,
       permissions: {
         contents: "read",
         actions: "read",
@@ -513,7 +753,7 @@ const validateCiVerification = (workflow, violations) => {
       outputs: Object.fromEntries(
         outputKeys.map((key) => [
           key,
-          `\u0024{{ steps.verify.outputs.${key} }}`,
+          `\u0024{{ steps.seed_strategy.outputs.${key} }}`,
         ]),
       ),
     },
@@ -552,6 +792,116 @@ const validateCiVerification = (workflow, violations) => {
     );
   }
   const select = steps(strategy).find((step) => step.id === "select");
+  const strategySteps = steps(strategy);
+  let previousSeedStep = strategySteps.findIndex(
+    (step) => step.id === "verify",
+  );
+  for (const [id, mode, timeout, env] of [
+    [
+      "seed_select",
+      "select",
+      1,
+      {
+        GH_TOKEN: "${{ github.token }}",
+        VERIFICATION_OUTPUTS_JSON: "${{ toJSON(steps.verify.outputs) }}",
+      },
+    ],
+    [
+      "seed_admit",
+      "admit",
+      1,
+      {
+        GH_TOKEN: "${{ github.token }}",
+        VERIFICATION_OUTPUTS_JSON: "${{ toJSON(steps.verify.outputs) }}",
+        REFERENCE_SEED_DOWNLOAD_OUTCOME: "${{ steps.seed_download.outcome }}",
+        REFERENCE_SEED_TOOLS_OUTCOME: "${{ steps.seed_tools.outcome }}",
+      },
+    ],
+    [
+      "seed_strategy",
+      "strategy",
+      1,
+      {
+        VERIFICATION_OUTPUTS_JSON: "${{ toJSON(steps.verify.outputs) }}",
+      },
+    ],
+  ]) {
+    const matches = strategySteps.filter((step) => step.id === id);
+    const step = matches[0];
+    requireFields(
+      step,
+      {
+        run: `node scripts/java-reference-seed-command.mjs ${mode}`,
+        "timeout-minutes": timeout,
+        env,
+      },
+      `${label}: bounded seed decision`,
+      violations,
+    );
+    add(
+      violations,
+      matches.length === 1 &&
+        strategySteps.indexOf(step) > previousSeedStep &&
+        !Object.hasOwn(step ?? {}, "if") &&
+        !Object.hasOwn(step ?? {}, "continue-on-error") &&
+        isDeepStrictEqual(step.env, env),
+      `${label}: seed decision order and credential boundary changed`,
+    );
+    previousSeedStep = strategySteps.indexOf(step);
+  }
+  const seedDownload = strategySteps.filter(
+    (step) => step.id === "seed_download",
+  );
+  requireFields(
+    seedDownload[0],
+    {
+      uses: "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+      if: "steps.seed_select.outputs.available == 'true'",
+      "continue-on-error": true,
+      "timeout-minutes": 1,
+      with: {
+        ...DOWNLOAD_INPUTS,
+        "artifact-ids": "${{ steps.seed_select.outputs.artifact_ids }}",
+        "run-id": "${{ steps.seed_select.outputs.run_id }}",
+        repository: "Hadden-Industries/owlapi",
+        "github-token": "${{ github.token }}",
+        path: ".release/java-reference-seed/download",
+      },
+    },
+    `${label}: concurrent seed transport`,
+    violations,
+  );
+  const tools = strategySteps.filter((step) => step.id === "seed_tools");
+  requireFields(
+    tools[0],
+    {
+      if: "steps.seed_download.outcome == 'success'",
+      "continue-on-error": true,
+      "timeout-minutes": 2,
+      env: { npm_config_fetch_retries: "0", npm_config_fetch_timeout: "30000" },
+      run: "npm install --global npm@12.1.0 --ignore-scripts --no-audit --no-fund\nnode scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0\nnpm ci --ignore-scripts --no-audit --no-fund\n",
+    },
+    `${label}: conditional locked seed verifier`,
+    violations,
+  );
+  add(
+    violations,
+    seedDownload.length === 1 &&
+      tools.length === 1 &&
+      lacksKeys(seedDownload[0].with, ["name", "pattern"]) &&
+      strategySteps.indexOf(seedDownload[0]) >
+        strategySteps.findIndex((step) => step.id === "seed_select") &&
+      strategySteps.indexOf(tools[0]) >
+        strategySteps.indexOf(seedDownload[0]) &&
+      strategySteps.indexOf(tools[0]) <
+        strategySteps.findIndex((step) => step.id === "seed_admit") &&
+      isDeepStrictEqual(tools[0].env, {
+        npm_config_fetch_retries: "0",
+        npm_config_fetch_timeout: "30000",
+      }) &&
+      tools[0]["continue-on-error"] === true,
+    `${label}: seed transport/verifier order or authority changed`,
+  );
   const proof = steps(strategy).find((step) => step.id === "proof");
   const verify = steps(strategy).find((step) => step.id === "verify");
   requireFields(
@@ -1721,8 +2071,9 @@ export const auditRepositoryControls = ({
   );
   add(
     violations,
-    ci.concurrency?.["cancel-in-progress"] === true,
-    "ci.yml: superseded work must cancel",
+    ci.concurrency?.["cancel-in-progress"] ===
+      "${{ github.event_name == 'pull_request' }}",
+    "ci.yml: superseded PR work must cancel while main producers serialize",
   );
   validateAggregate("ci.yml", ci, "ci", violations);
   validateCiVerification(ci, violations);

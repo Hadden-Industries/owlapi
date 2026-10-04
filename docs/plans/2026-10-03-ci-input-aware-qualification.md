@@ -1,6 +1,11 @@
 # Draft implementation plan for input aware CI qualification
 
 Status: implementation accepted by Maksym Shostak on 3 October 2026; activation remains subject to the gates below.
+Current disposition, 4 October: keep full integration checks; omission and its enforcement arrangement are explicitly deferred by the owner.
+The specific fixed-source Java rights disposition is accepted.
+The [native Java protocol milestone](../adr/0012-gated-native-java-reference-reuse.md) introduces coordinated schema-v3 materialization and cold-seeding while keeping shared reuse disabled until hosted comparative and operating acceptance.
+This supersedes proposal-stage receipt-version references below without relabeling completed historical evidence.
+Preserve uncommitted work and experiments regardless of measured savings.
 Decision owner: Maksym Shostak, repository owner.
 Originating task: the request to propose a detailed HISEW implementation plan for selective integration checks, reuse of the compiled Java reference, and removal of unnecessary dependency installations.
 Inspected source baseline: `044b057487a8fa0b686c9c8e4b7df9b02790eb97`.
@@ -16,7 +21,10 @@ The current full-PR requirement remains authoritative until its replacement is e
 The owner subsequently authorized implementation using HISEW in the existing checkout, an implementation branch, commits and pushes, and configuration changes required by this plan.
 The original accepted bytes are retained in protected HISEW snapshot `b4d42546-f315-4a1e-bc7b-421337d6045c` (SHA-256 `3722119827ac4b10d17b10316d651c1423d9e0d947e0094294d399a2ac1a880d`).
 This authorization does not clear the dependent activation gates, Java redistribution terms, repository settings changes, merge or release.
-Claude Code is the selected independent reviewer and verifier for this implementation; unavailable required Claude review pauses delivery for the owner's decision.
+Claude Code was the original selected independent reviewer and verifier.
+On 4 October, after its weekly limit blocked further review, the owner selected Antigravity CLI with Codex fallback.
+Antigravity's headless command denial led to the authorized independent Codex review.
+Preserve completed historical Claude reviews and retain each substitute's actual output and execution limitations.
 Consolidate each deliverable before broad review, use scoped follow-up reviews for findings, and stop an unchanged unsuccessful retry after one supported correction.
 Include this document at the first commit point, before delivering the lean dependency-review slice.
 

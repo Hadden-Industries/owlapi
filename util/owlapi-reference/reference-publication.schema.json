@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "purpose",
+    "redistribution",
+    "source",
+    "inputRecordSha256",
+    "inputKeySha256",
+    "runtimeGraphSha256",
+    "rightsSha256",
+    "provenance",
+    "inventory",
+    "classpath"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 2 },
+    "purpose": { "const": "CI_JAVA_REFERENCE_BUILD_PRODUCT" },
+    "redistribution": { "const": "OWNER_CLEARED" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "tree"],
+      "properties": {
+        "commit": { "const": "d7e997a53b470e32700de89cc610d9daf01ea769" },
+        "tree": { "const": "8f871bacef5ab767afda979e60b1a1e0c98d6323" }
+      }
+    },
+    "inputRecordSha256": { "$ref": "#/definitions/digest" },
+    "inputKeySha256": { "$ref": "#/definitions/digest" },
+    "runtimeGraphSha256": { "$ref": "#/definitions/digest" },
+    "rightsSha256": { "$ref": "#/definitions/digest" },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "repositoryId",
+        "workflow",
+        "commit",
+        "tree",
+        "runId",
+        "runAttempt",
+        "event",
+        "ref",
+        "createdAt"
+      ],
+      "properties": {
+        "repository": { "const": "Hadden-Industries/owlapi" },
+        "repositoryId": { "const": 1347610640 },
+        "workflow": { "const": ".github/workflows/ci.yml" },
+        "event": { "const": "push" },
+        "ref": { "const": "refs/heads/main" },
+        "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+        "tree": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+        "runId": { "type": "integer", "minimum": 1 },
+        "runAttempt": { "type": "integer", "minimum": 1 },
+        "createdAt": { "type": "string", "minLength": 20, "maxLength": 32 }
+      }
+    },
+    "inventory": {
+      "type": "array",
+      "minItems": 66,
+      "maxItems": 512,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "bytes", "sha256"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "maxLength": 120,
+            "pattern": "^(runtime/[0-9]{3}\\.jar|notices/[a-z0-9][a-z0-9._-]{0,100}\\.txt|sources/[a-z0-9][a-z0-9._-]{0,100}\\.(jar|tar|txt))$"
+          },
+          "bytes": { "type": "integer", "minimum": 1, "maximum": 67108864 },
+          "sha256": { "$ref": "#/definitions/digest" }
+        }
+      }
+    },
+    "classpath": {
+      "type": "array",
+      "minItems": 63,
+      "maxItems": 63,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^runtime/[0-9]{3}\\.jar$" }
+    }
+  },
+  "definitions": { "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }
+}

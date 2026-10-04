@@ -1,0 +1,60 @@
+MODIFYING AND RECOMBINING THE LGPL-COVERED FASTSET MATERIAL
+
+The JFact-derived FastSetSimple portion in runtime/001.jar (owlapi-tools-5.5.1.jar)
+is covered by its original LGPL-2.1-or-later grant. For this distribution the
+later-version option elects LGPL-3.0. Keep the original copyright/license header.
+See notices/gpl-3.0.txt and notices/lgpl-3.0.txt. Section 4(d)(0) supplies the
+Combined Work source/application/build material; the uncombined class/source
+supplement is additional material, not a replacement for the reactor sources.
+
+The same download supplies sources/reactor.tar: exact upstream commit
+d7e997a53b470e32700de89cc610d9daf01ea769, including POMs, caller source and build
+controls. sources/000.jar through sources/062.jar and other numbered archives
+are the supplied component and embedded-work source classifiers mapped by the
+component inventory. Do not assume a numbered source corresponds to the same
+numbered runtime JAR; consult the mapping. General-purpose Maven/JDK tools are
+not included. The qualified build used unmodified Maven 3.10.0 and Temurin
+25.0.4.1+1-LTS. Other tools/environments have not been qualified for this CI.
+This statement does not limit the recipient's license rights to use other tools.
+
+1. In a new directory, extract sources/reactor.tar with standard tar tooling.
+   Example: mkdir reactor; tar -xf sources/reactor.tar -C reactor
+2. Modify reactor/tools/src/main/java/uk/ac/manchester/cs/chainsaw/FastSetSimple.java
+   while preserving its notices and the caller interfaces. A tested example is
+   changing DEFAULTSIZE from 16 to 32, leaving the source header intact.
+3. Use a private Maven repository/home and the included credential-free settings
+   and empty toolchains. From reactor, with JAVA_HOME selecting the JDK, execute:
+
+   mvn -B -ntp -s ../sources/maven-settings.txt -gs ../sources/maven-settings.txt
+     -t ../sources/empty-toolchains.txt -gt ../sources/empty-toolchains.txt
+     -Dmaven.repo.local=<absolute-private-m2> -Duser.home=<absolute-private-home>
+     -Dmaven.test.skip=true -Dno-javadoc=true -pl distribution -am package
+     org.apache.maven.plugins:maven-dependency-plugin:3.11.0:build-classpath
+     -DincludeScope=runtime -Dmdep.outputFile=target/owlapi-runtime-classpath.txt
+
+   This is one command; join the lines using your shell's supported continuation
+   syntax. Clear injected Maven/JVM options, disable Maven startup RC files with
+   MAVEN_SKIP_RC=1, and set MAVEN_OPTS to -Duser.language=en -Duser.country=GB
+   -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8
+   -Dstderr.encoding=UTF-8 plus the private -Duser.home. Quote any path containing
+   spaces according to your shell. Maven resolves the declared build inputs from
+   Maven Central; the source archive is not represented as a complete offline
+   Maven repository or bit-for-bit reproducible build.
+4. The modified Combined Work is reactor/tools/target/owlapi-tools-5.5.1.jar.
+   For the unchanged bundle classpath, substitute this rebuilt JAR for the tools
+   entry only; retain the existing order and the other dependency JARs. Or use
+   the native reactor distribution/target/owlapi-runtime-classpath.txt emitted
+   above, which refers to all newly rebuilt reactor modules and resolved runtime
+   dependencies. Compile any comparison harness afresh against that classpath.
+5. Test your interface-compatible modifications. The retained private experiment
+   compiled and loaded the modified tools JAR from this source archive, observed
+   DEFAULTSIZE 32, exercised FastSetFactory and ArrayIntMap with that implementation,
+   and created an ontology through the rebuilt reactor. This proves the supplied
+   reactor can produce and run a modified Combined Work in that local environment;
+   it is not a source-to-original-binary attestation or acceptance of modified
+   binaries as this project's pinned CI reference.
+
+Recipients may modify, recombine/relink and debug the applicable work as allowed
+by its licenses. Project-specific CI integrity/qualification conditions do not
+restrict those license rights. A modified reference is deliberately ineligible
+as the original pinned oracle without a separately reviewed project decision.

@@ -2972,7 +2972,10 @@ Publication evidence must positively prove that no skipped, cancelled or timed-o
 The [2026-10-03 applicability observation milestone](adr/0010-ci-applicability-observation.md) preserves this section's full-PR and authenticated main-reuse requirements.
 Its Node 24 preamble reports conservative tracked-input projections but cannot omit Java or WebVOWL qualification.
 The [FULL-only qualification lineage milestone](adr/0011-full-ci-qualification-lineage.md) coordinates schema-v2 PR receipts, explicit selected-test accounting, the aggregate/reuse reader and landed-main records; unsupported older evidence requires full execution.
-Independent selector authority, complete input equivalence and comparative approval remain prerequisites for any PR omission or Java reference reuse.
+The [gated native Java reference milestone](adr/0012-gated-native-java-reference-reuse.md) subsequently coordinates schema-v3 materialization, main-only production, independent admission and reevaluated cold-seed state.
+Full integration checks remain required by the owner's decision; shared Java reuse remains disabled pending hosted comparative and operating acceptance.
+Independent selector authority, complete input equivalence and comparative approval remain prerequisites for PR omission.
+Native closure, relocation, environment, fixed-source rights, producer/consumer trust, cold-seeding and comparative operating acceptance separately gate Java reference reuse.
 Dependency review runs its built-in-only npm entry points without repository installation, retaining the exact runtime check, runner record and security Action policy in sections 2.34/2.56.
 
 ### 2.59 Decision: execute every external contribution as untrusted code and keep sensitive data out of its path

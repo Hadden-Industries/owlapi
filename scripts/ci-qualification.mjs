@@ -1,6 +1,11 @@
 /** Versioned CI qualification and direct execution lineage. No selective state is admitted. */
 import { isDeepStrictEqual } from "node:util";
 import {
+  assertJavaReferenceState,
+  JAVA_REFERENCE_POLICY,
+  JAVA_REFERENCE_POLICY_SHA256,
+} from "./java-reference-state.mjs";
+import {
   assertCheckCoverage,
   evidenceFingerprint,
   JAVA_LIVE_INVENTORY,
@@ -34,10 +39,11 @@ export const CHECK_JOBS = Object.freeze({
  * this policy cannot authorize an omitted integration.
  */
 export const QUALIFICATION_POLICY = Object.freeze({
-  version: 2,
+  version: 3,
   mode: "FULL_ONLY",
   selectiveExecution: false,
-  javaReferenceReuse: false,
+  javaReferenceReuse: JAVA_REFERENCE_POLICY.enabled,
+  javaReferencePolicySha256: JAVA_REFERENCE_POLICY_SHA256,
   externalInputEquivalence: "UNPROVEN",
   inventorySha256: evidenceFingerprint({
     java: JAVA_LIVE_INVENTORY,
@@ -106,7 +112,7 @@ export const createQualificationChecks = ({
   return result;
 };
 
-/** Strict v2 FULL/reused envelope. Unsupported versions/modes require fresh CI. */
+/** Strict v3 FULL/reused envelope. Unsupported versions/modes require fresh CI. */
 export const assertQualificationRecord = (record) => {
   fact(
     closed(record, [
@@ -127,11 +133,12 @@ export const assertQualificationRecord = (record) => {
       "policySha256",
       "checks",
       "source",
+      "javaReference",
     ]),
     "Qualification record has an invalid closed schema.",
   );
   fact(
-    record.schemaVersion === 2 &&
+    record.schemaVersion === 3 &&
       ["PR", "MAIN"].includes(record.role) &&
       ["FULL", "REUSED"].includes(record.mode) &&
       record.sourceMode === "FULL" &&
@@ -173,6 +180,13 @@ export const assertQualificationRecord = (record) => {
       digest(record.candidate.digest),
     "Qualification record has unsupported state, inputs or execution identity.",
   );
+  assertJavaReferenceState(record.javaReference, {
+    role: record.role,
+    mode: record.mode,
+    runId: record.runId,
+    runAttempt: record.runAttempt,
+    commit: record.snapshot.commit,
+  });
   let original = null;
   if (record.mode === "REUSED") {
     fact(
