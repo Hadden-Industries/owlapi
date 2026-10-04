@@ -28,6 +28,7 @@ import {
   summarizeWebvowlExecution,
 } from "./ci-check-coverage.mjs";
 import { CI_JOB_NAMES } from "./ci-qualification.mjs";
+import { JAVA_REFERENCE_POLICY_SHA256 } from "./java-reference-state.mjs";
 
 const hash = (letter) => letter.repeat(40);
 const jsonClone = (value) => JSON.parse(JSON.stringify(value));
@@ -83,7 +84,19 @@ const successfulNeeds = (
           job === "candidate"
             ? { artifact_id: "702", artifact_digest: "f".repeat(64) }
             : job === "source_node_24"
-              ? { coverage: JSON.stringify(java) }
+              ? {
+                  coverage: JSON.stringify(java),
+                  reference: JSON.stringify({
+                    schemaVersion: 1,
+                    policySha256: JAVA_REFERENCE_POLICY_SHA256,
+                    materialization: "FRESH",
+                    inputs: null,
+                    execution: identity,
+                    producer: null,
+                    seedRequested: false,
+                    publication: null,
+                  }),
+                }
               : job === "webvowl"
                 ? { coverage: JSON.stringify(webvowl) }
                 : {},
@@ -548,6 +561,72 @@ describe("exact landed-main qualification and direct original execution", () => 
 });
 
 describe("reuse of complete PR integration", () => {
+  test.each(["missing", "old policy", "another execution"])(
+    "successful jobs cannot qualify enabled reuse with %s materialization evidence",
+    (fault) => {
+      const f = fixture();
+      const needs = successfulNeeds();
+      const state = JSON.parse(needs.source_node_24.outputs.reference);
+      if (fault === "missing") delete needs.source_node_24.outputs.reference;
+      else {
+        if (fault === "old policy") state.policySha256 = "0".repeat(64);
+        if (fault === "another execution") state.execution.runId++;
+        needs.source_node_24.outputs.reference = JSON.stringify(state);
+      }
+      expect(() =>
+        createVerificationReceipt({ context: f.prContext, needs, now }),
+      ).toThrow();
+    },
+  );
+
+  test("warm Java materialization still requires current comparisons and preserves its producer across normal merge", async () => {
+    const f = fixture();
+    const needs = successfulNeeds();
+    const state = JSON.parse(needs.source_node_24.outputs.reference);
+    Object.assign(state, {
+      materialization: "REUSED",
+      inputs: {
+        keySha256: "1".repeat(64),
+        inputRecordSha256: "2".repeat(64),
+        runtimeGraphSha256: "3".repeat(64),
+        hostSha256: "4".repeat(64),
+      },
+      producer: {
+        role: "MAIN",
+        runId: 90,
+        runAttempt: 1,
+        commit: hash("9"),
+        artifactId: 601,
+        artifactDigest: `sha256:${"5".repeat(64)}`,
+        qualificationId: 602,
+        qualificationDigest: `sha256:${"6".repeat(64)}`,
+      },
+    });
+    needs.source_node_24.outputs.reference = JSON.stringify(state);
+    f.receipt = createVerificationReceipt({ context: f.prContext, needs, now });
+    expect(f.receipt.checks.java.execution).toBe("SUCCESS");
+    const incomplete = jsonClone(needs);
+    delete incomplete.source_node_24.outputs.coverage;
+    expect(() =>
+      createVerificationReceipt({
+        context: f.prContext,
+        needs: incomplete,
+        now,
+      }),
+    ).toThrow(/coverage/u);
+    const outputs = await verify(f);
+    for (const job of Object.values(needs)) job.result = "skipped";
+    needs.verification = { result: "success", outputs };
+    const main = createMainQualification({
+      context: { ...f.context, runId: 200, runAttempt: 1 },
+      needs,
+      now,
+    });
+    expect(main.javaReference).toEqual(state);
+    expect(main.checks.java.execution).toBe("NOT_RUN");
+    expect(main.checks.java.original.runId).toBe(100);
+  });
+
   test("qualifies a partial rerun while preserving native producing attempts", async () => {
     const f = fixture();
     f.receipt = createVerificationReceipt({
