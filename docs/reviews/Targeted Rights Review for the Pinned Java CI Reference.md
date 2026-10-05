@@ -270,7 +270,7 @@ A practical FastSet notice could, without pretending to replace the original lic
 
 > `owlapi-tools-5.5.1.jar` contains `uk.ac.manchester.cs.chainsaw.FastSetSimple`, originally marked Copyright 2011 Ignazio Palmisano, Dmitry Tsarkov, University of Manchester and licensed under GNU LGPL version 2.1 or, at the recipient's option, any later version.
 > For this distribution the later-version option is exercised under LGPLv3.
-> The GNU GPLv3 and LGPLv3 texts, corresponding source, application/build source and the accompanying uncombined FastSet materials are included at [relative locations]. Recipients may modify the covered Library portions and recombine/relink the application material with a modified version as permitted by LGPLv3.
+> The GNU GPLv3 and LGPLv3 texts, corresponding source, application/build source and the accompanying uncombined FastSet materials are included at \[relative locations\]. Recipients may modify the covered Library portions and recombine/relink the application material with a modified version as permitted by LGPLv3.
 
 That text is a recommended engineering notice, not language mandated verbatim by the licence.
 The mandatory substance comes from LGPLv3 §4(a)–(d) and, if relying on §5 for side-by-side facilities, §5(b). citeturn14search0turn20search3
