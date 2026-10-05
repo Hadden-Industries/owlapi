@@ -1770,13 +1770,16 @@ const validateQualityTooling = (workflows, violations) => {
     for (const [id, job] of entries(workflow.jobs)) {
       const context = `${file}:${id} quality tooling`;
       const consumer = QUALITY_CONSUMERS[file]?.includes(id);
+      const markdownObserver =
+        file === "markdown-quality.yml" &&
+        ["markdown_linux", "markdown_windows"].includes(id);
       const evidence =
         ["release.yml", "extended-tests.yml"].includes(file) &&
         id === "third_party_evidence_shard";
       const python = actionSteps(job, "actions/setup-python");
       add(
         violations,
-        python.length === (consumer || evidence ? 1 : 0),
+        python.length === (consumer || evidence || markdownObserver ? 1 : 0),
         `${context} has an unexpected Python setup inventory`,
       );
       if (!consumer) continue;
@@ -1787,7 +1790,7 @@ const validateQualityTooling = (workflows, violations) => {
       );
       const syncIndex = list.indexOf(sync[0]);
       const checkIndexes = list.flatMap((step, index) =>
-        /^npm (test|run (format:check|lint|test:quality|tools:check))(?: |$)/u.test(
+        /^npm (test|run (format:check|format:source-python:check|lint|lint:source-python|test:quality|test:quality:source|tools:check))(?: |$)/u.test(
           step.run ?? "",
         )
           ? [index]
@@ -1815,6 +1818,50 @@ const validateQualityTooling = (workflows, violations) => {
           checkIndexes.every((index) => index > syncIndex),
         `${context} requires locked synchronization before every consumer`,
       );
+      if (["ci.yml", "release.yml"].includes(file)) {
+        const markdownInstalls = list.filter(
+          (step) => step.run === "npm run markdown:install",
+        );
+        if (id === "source_node_22") {
+          add(
+            violations,
+            markdownInstalls.length === 0,
+            `${context} Node 22 must retain its source-only floor`,
+          );
+          for (const command of [
+            "npm run format:source-python:check",
+            "npm run lint:source-python",
+          ])
+            requireRun(job, command, context, violations);
+        } else {
+          const markdownIndex = list.indexOf(markdownInstalls[0]);
+          add(
+            violations,
+            markdownInstalls.length === 1 &&
+              !markdownInstalls[0].if &&
+              !markdownInstalls[0]["continue-on-error"] &&
+              markdownIndex > syncIndex,
+            `${context} requires unconditional isolated Markdown acquisition`,
+          );
+          const consumers = list.flatMap((step, index) =>
+            [
+              "npm run format:check",
+              "npm run lint",
+              "npm run test:quality",
+            ].includes(step.run)
+              ? [index]
+              : [],
+          );
+          add(
+            violations,
+            consumers.length >= 2 &&
+              consumers.every((index) => index > markdownIndex),
+            `${context} requires Markdown setup before all canonical consumers`,
+          );
+          if (id === "source_node_24")
+            requireRun(job, "npm run test:markdown", context, violations);
+        }
+      }
       if (id === "quality_windows") {
         requireFields(
           job,
@@ -2027,10 +2074,34 @@ const validateTrustedMarkdownWorkflow = (workflow, violations) => {
     const jobSteps = steps(job);
     add(
       violations,
-      jobSteps.length === 7 &&
+      jobSteps.length === 8 &&
         isDeepStrictEqual(job.permissions, { contents: "read" }) &&
         !job.env,
       `${label}:${id}: least privilege and closed steps required`,
+    );
+    requireFields(
+      jobSteps[2],
+      {
+        id: "markdown_python",
+        uses: "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+        with: {
+          "python-version": "3.14.7",
+          architecture: "x64",
+          "check-latest": false,
+          "update-environment": false,
+          cache: "",
+        },
+      },
+      `${label}: pinned resource observer`,
+      violations,
+    );
+    add(
+      violations,
+      !jobSteps[2]?.if &&
+        !jobSteps[2]?.["continue-on-error"] &&
+        !jobSteps[6]?.if &&
+        !jobSteps[6]?.["continue-on-error"],
+      `${label}: window and resource setup must run unconditionally`,
     );
     requireFields(
       jobSteps[0]?.with,
@@ -2044,7 +2115,7 @@ const validateTrustedMarkdownWorkflow = (workflow, violations) => {
       violations,
     );
     requireFields(
-      jobSteps[3]?.with,
+      jobSteps[4]?.with,
       {
         repository: "${{ inputs.candidate_repository }}",
         ref: "${{ inputs.candidate_sha }}",
@@ -2055,7 +2126,7 @@ const validateTrustedMarkdownWorkflow = (workflow, violations) => {
       `${label}: separate candidate data checkout`,
       violations,
     );
-    for (const checkout of [jobSteps[0], jobSteps[3]])
+    for (const checkout of [jobSteps[0], jobSteps[4]])
       add(
         violations,
         checkout?.uses ===
@@ -2071,18 +2142,18 @@ const validateTrustedMarkdownWorkflow = (workflow, violations) => {
       );
     add(
       violations,
-      jobSteps[2]?.["working-directory"] === "trusted/tooling/markdown" &&
+      jobSteps[3]?.["working-directory"] === "trusted/tooling/markdown" &&
         /npm ci --ignore-scripts --no-audit --no-fund --registry=https:\/\/registry\.npmjs\.org\//u.test(
-          jobSteps[2]?.run ?? "",
+          jobSteps[3]?.run ?? "",
         ) &&
         !/(?:candidate|npm install|npm exec|npx )/u.test(
-          jobSteps[2]?.run ?? "",
+          jobSteps[3]?.run ?? "",
         ),
       `${label}: acquire only the trusted locked graph`,
     );
     add(
       violations,
-      isDeepStrictEqual(jobSteps[2]?.env, {
+      isDeepStrictEqual(jobSteps[3]?.env, {
         NODE_AUTH_TOKEN: "",
         NPM_TOKEN: "",
         GH_TOKEN: "",
@@ -2094,15 +2165,14 @@ const validateTrustedMarkdownWorkflow = (workflow, violations) => {
     );
     add(
       violations,
-      jobSteps[4]?.run ===
+      jobSteps[5]?.run ===
         "node --test trusted/scripts/check-markdown-candidate.probes.mjs" &&
-        jobSteps[5]?.run ===
-          "node trusted/scripts/check-markdown-candidate.mjs",
+        jobSteps[6]?.run === "node trusted/scripts/run-markdown-window.mjs",
       `${label}: execute trusted probes and checker only`,
     );
     add(
       violations,
-      isDeepStrictEqual(jobSteps[4]?.env, {
+      isDeepStrictEqual(jobSteps[5]?.env, {
         MARKDOWN_TEST_CLI:
           "${{ github.workspace }}/trusted/tooling/markdown/node_modules/@hadden-industries/markdown-quality/src/cli.js",
       }),
@@ -2110,7 +2180,9 @@ const validateTrustedMarkdownWorkflow = (workflow, violations) => {
     );
     add(
       violations,
-      isDeepStrictEqual(jobSteps[5]?.env, {
+      isDeepStrictEqual(jobSteps[6]?.env, {
+        MARKDOWN_OBSERVER_PYTHON:
+          "${{ steps.markdown_python.outputs.python-path }}",
         MARKDOWN_CANDIDATE_REPOSITORY: "${{ inputs.candidate_repository }}",
         MARKDOWN_CANDIDATE_SHA: "${{ inputs.candidate_sha }}",
         MARKDOWN_TRUSTED_SHA: "${{ github.workflow_sha }}",
@@ -2118,7 +2190,7 @@ const validateTrustedMarkdownWorkflow = (workflow, violations) => {
       `${label}: bind exact candidate and trusted identities`,
     );
     requireFields(
-      jobSteps[6],
+      jobSteps[7],
       {
         if: "${{ !cancelled() }}",
         uses: "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",

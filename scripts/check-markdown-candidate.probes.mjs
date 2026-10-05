@@ -11,7 +11,12 @@ import {
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { tmpdir } from "node:os";
-import { stageCandidate, checkCandidate } from "./check-markdown-candidate.mjs";
+import {
+  stageCandidate,
+  checkCandidate,
+  dataDigest,
+  metadataGit,
+} from "./check-markdown-candidate.mjs";
 
 const artifacts = process.env.MARKDOWN_TEST_ARTIFACT_ROOT ?? tmpdir();
 const cli =
@@ -47,6 +52,20 @@ function fixture() {
   writeFileSync(join(trustedRoot, ".prettierignore"), "");
   return { sourceRoot, trustedRoot, outputRoot };
 }
+test("metadata executable requires an absolute host path outside both checkouts", () => {
+  const paths = fixture();
+  assert.throws(() =>
+    metadataGit(undefined, paths.sourceRoot, paths.trustedRoot),
+  );
+  assert.throws(() => metadataGit("git", paths.sourceRoot, paths.trustedRoot));
+  for (const root of [paths.sourceRoot, paths.trustedRoot]) {
+    const executable = join(root, "git.exe");
+    writeFileSync(executable, "not a host tool");
+    assert.throws(() =>
+      metadataGit(executable, paths.sourceRoot, paths.trustedRoot),
+    );
+  }
+});
 test("repository metadata and dependency environments are excluded from derived data", () => {
   const paths = fixture();
   writeFileSync(
@@ -145,4 +164,30 @@ test("fresh output boundary rejects ancestor, reuse and reserved policy collisio
   const collision = fixture();
   mkdirSync(join(collision.sourceRoot, ".markdown-quality-trusted-inputs"));
   assert.throws(() => stageCandidate(collision));
+});
+test("corpus identity detects same-length edits and renamed local targets", async () => {
+  const paths = fixture();
+  writeFileSync(
+    join(paths.sourceRoot, "README.md"),
+    "# Candidate\n\nSafe prose.\n",
+  );
+  const staging = stageCandidate(paths);
+  assert.equal(dataDigest(paths.outputRoot), staging.stagedDataSha256);
+  writeFileSync(
+    join(paths.outputRoot, "README.md"),
+    "# Candidate\n\nNext prose.\n",
+  );
+  assert.notEqual(dataDigest(paths.outputRoot), staging.stagedDataSha256);
+  await assert.rejects(
+    checkCandidate({ outputRoot: paths.outputRoot, cli, staging }),
+    /Staged inputs changed/,
+  );
+  const first = fixture();
+  const second = fixture();
+  writeFileSync(join(first.sourceRoot, "first.txt"), "same");
+  writeFileSync(join(second.sourceRoot, "other.txt"), "same");
+  assert.notEqual(
+    stageCandidate(first).stagedDataSha256,
+    stageCandidate(second).stagedDataSha256,
+  );
 });

@@ -40,6 +40,15 @@ jobs:
           check-latest: false
           cache: ""
           package-manager-cache: false
+      - name: Select the pinned resource observer Python
+        id: markdown_python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.14.7"
+          architecture: x64
+          check-latest: false
+          update-environment: false
+          cache: ""
       - name: Acquire only the trusted isolated graph without credentials or lifecycle scripts
         working-directory: trusted/tooling/markdown
         env:
@@ -64,18 +73,23 @@ jobs:
         env:
           MARKDOWN_TEST_CLI: ${{ github.workspace }}/trusted/tooling/markdown/node_modules/@hadden-industries/markdown-quality/src/cli.js
         run: node --test trusted/scripts/check-markdown-candidate.probes.mjs
-      - name: Full canonical check of bounded candidate data
+      - name: Observe six consecutive full checks and platform resources
         env:
+          MARKDOWN_OBSERVER_PYTHON: ${{ steps.markdown_python.outputs.python-path }}
           MARKDOWN_CANDIDATE_REPOSITORY: ${{ inputs.candidate_repository }}
           MARKDOWN_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
           MARKDOWN_TRUSTED_SHA: ${{ github.workflow_sha }}
-        run: node trusted/scripts/check-markdown-candidate.mjs
+        run: node trusted/scripts/run-markdown-window.mjs
       - name: Retain evidence even when the canonical checker finds a defect
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: trusted-markdown-linux
-          path: ${{ runner.temp }}/markdown-evidence/trusted-markdown-run.json
+          path: |
+            ${{ runner.temp }}/markdown-window/window.json
+            ${{ runner.temp }}/markdown-window/sample-*/markdown-evidence/trusted-markdown-run.json
+            ${{ runner.temp }}/markdown-window/sample-*/stdout.txt
+            ${{ runner.temp }}/markdown-window/sample-*/stderr.txt
           if-no-files-found: error
           retention-days: 90
           compression-level: 0
@@ -105,6 +119,15 @@ jobs:
           check-latest: false
           cache: ""
           package-manager-cache: false
+      - name: Select the pinned resource observer Python
+        id: markdown_python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.14.7"
+          architecture: x64
+          check-latest: false
+          update-environment: false
+          cache: ""
       - name: Acquire only the trusted isolated graph without credentials or lifecycle scripts
         working-directory: trusted/tooling/markdown
         env:
@@ -134,18 +157,23 @@ jobs:
         env:
           MARKDOWN_TEST_CLI: ${{ github.workspace }}/trusted/tooling/markdown/node_modules/@hadden-industries/markdown-quality/src/cli.js
         run: node --test trusted/scripts/check-markdown-candidate.probes.mjs
-      - name: Full canonical check of bounded candidate data
+      - name: Observe six consecutive full checks and platform resources
         env:
+          MARKDOWN_OBSERVER_PYTHON: ${{ steps.markdown_python.outputs.python-path }}
           MARKDOWN_CANDIDATE_REPOSITORY: ${{ inputs.candidate_repository }}
           MARKDOWN_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
           MARKDOWN_TRUSTED_SHA: ${{ github.workflow_sha }}
-        run: node trusted/scripts/check-markdown-candidate.mjs
+        run: node trusted/scripts/run-markdown-window.mjs
       - name: Retain evidence even when the canonical checker finds a defect
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: trusted-markdown-windows
-          path: ${{ runner.temp }}/markdown-evidence/trusted-markdown-run.json
+          path: |
+            ${{ runner.temp }}/markdown-window/window.json
+            ${{ runner.temp }}/markdown-window/sample-*/markdown-evidence/trusted-markdown-run.json
+            ${{ runner.temp }}/markdown-window/sample-*/stdout.txt
+            ${{ runner.temp }}/markdown-window/sample-*/stderr.txt
           if-no-files-found: error
           retention-days: 90
           compression-level: 0

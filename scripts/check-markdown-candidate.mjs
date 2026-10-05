@@ -7,6 +7,9 @@ import {
   existsSync,
   copyFileSync,
   realpathSync,
+  openSync,
+  readSync,
+  closeSync,
 } from "node:fs";
 import { resolve, relative, isAbsolute, dirname, join } from "node:path";
 import { createHash } from "node:crypto";
@@ -34,6 +37,45 @@ const inside = (root, path) => {
       !rel.startsWith("../"))
   );
 };
+/** Bind every staged path and byte without buffering the candidate corpus. */
+export function dataDigest(root) {
+  const digest = createHash("sha256");
+  const chunk = Buffer.alloc(65536);
+  let entries = 0;
+  let bytes = 0;
+  function visit(directory) {
+    for (const name of readdirSync(directory).sort()) {
+      if (++entries > 110000) throw new Error("Staged entry bound");
+      const path = join(directory, name);
+      const stat = lstatSync(path);
+      const relativePath = relative(root, path).split("\\").join("/");
+      if (stat.isSymbolicLink()) throw new Error("Linked staged data");
+      if (stat.isDirectory()) {
+        digest.update(JSON.stringify(["directory", relativePath]) + "\n");
+        visit(path);
+      } else if (stat.isFile()) {
+        bytes += stat.size;
+        if (bytes > 137363456) throw new Error("Staged byte bound");
+        digest.update(JSON.stringify(["file", relativePath, stat.size]) + "\n");
+        const file = openSync(path, "r");
+        let observed = 0;
+        try {
+          let size;
+          while ((size = readSync(file, chunk, 0, chunk.length, null)) > 0) {
+            observed += size;
+            if (observed > stat.size) throw new Error("Staged file grew");
+            digest.update(chunk.subarray(0, size));
+          }
+        } finally {
+          closeSync(file);
+        }
+        if (observed !== stat.size) throw new Error("Staged file shrank");
+      } else throw new Error("Nonregular staged data");
+    }
+  }
+  visit(root);
+  return digest.digest("hex");
+}
 function regular(root, input, optional = false) {
   const path = resolve(root, input);
   if (!inside(root, path))
@@ -128,6 +170,7 @@ export function stageCandidate({ sourceRoot, trustedRoot, outputRoot }) {
   return {
     entries,
     dataBytes: bytes,
+    stagedDataSha256: dataDigest(outputRoot),
     originalPolicySha256: hash(policyBytes),
     derivedPolicySha256: hash(derived),
     ignoreInputs: ignores.map((input) => ({
@@ -139,6 +182,8 @@ export function stageCandidate({ sourceRoot, trustedRoot, outputRoot }) {
 }
 /** Invoke the installed canonical full check without inherited credentials or configuration. */
 export async function checkCandidate({ outputRoot, cli, staging }) {
+  if (dataDigest(outputRoot) !== staging.stagedDataSha256)
+    throw new Error("Staged inputs changed before the full check");
   cli = realpathSync(cli);
   if (inside(realpathSync(outputRoot), cli))
     throw new Error("Checker must be outside candidate data");
@@ -200,6 +245,8 @@ export async function checkCandidate({ outputRoot, cli, staging }) {
     throw new Error("Invalid or inconsistent canonical checker result");
   if (report.configDigest !== staging.derivedPolicySha256)
     throw new Error("Checker used an unexpected policy");
+  if (dataDigest(outputRoot) !== staging.stagedDataSha256)
+    throw new Error("Full check changed staged inputs");
   return {
     exitCode,
     report,
@@ -209,9 +256,23 @@ export async function checkCandidate({ outputRoot, cli, staging }) {
   };
 }
 
-function revision(root) {
+export function metadataGit(executable, sourceRoot, trustedRoot) {
+  if (!executable || !isAbsolute(executable))
+    throw new Error("Missing bound native host Git");
+  const bound = realpathSync(executable);
+  if (
+    !lstatSync(bound).isFile() ||
+    inside(sourceRoot, bound) ||
+    inside(trustedRoot, bound)
+  )
+    throw new Error(
+      "Metadata Git must be outside candidate and trusted source",
+    );
+  return bound;
+}
+function revision(root, git) {
   // rev-parse reads checkout identity; it runs no candidate program or hook.
-  return execFileSync("git", ["-C", root, "rev-parse", "--verify", "HEAD"], {
+  return execFileSync(git, ["-C", root, "rev-parse", "--verify", "HEAD"], {
     encoding: "utf8",
     timeout: 10000,
     windowsHide: true,
@@ -221,6 +282,11 @@ function revision(root) {
 async function main() {
   const trustedRoot = fileURLToPath(new URL("../", import.meta.url));
   const sourceRoot = resolve(trustedRoot, "../candidate");
+  const git = metadataGit(
+    process.env.MARKDOWN_WINDOW_GIT,
+    sourceRoot,
+    trustedRoot,
+  );
   const scratch = process.env.RUNNER_TEMP;
   const expectedHead = process.env.MARKDOWN_CANDIDATE_SHA;
   const expectedTrusted = process.env.MARKDOWN_TRUSTED_SHA;
@@ -233,8 +299,8 @@ async function main() {
   )
     throw new Error("Missing bounded candidate/trusted identity");
   if (
-    revision(sourceRoot) !== expectedHead ||
-    revision(trustedRoot) !== expectedTrusted
+    revision(sourceRoot, git) !== expectedHead ||
+    revision(trustedRoot, git) !== expectedTrusted
   )
     throw new Error(
       "Checkout identities do not match the requested exact revisions",
@@ -301,14 +367,15 @@ async function main() {
     candidate: {
       repository: candidateRepository,
       head: expectedHead,
-      tree: execFileSync(
-        "git",
-        ["-C", sourceRoot, "rev-parse", "HEAD^{tree}"],
-        { encoding: "utf8", timeout: 10000, windowsHide: true },
-      ).trim(),
+      tree: execFileSync(git, ["-C", sourceRoot, "rev-parse", "HEAD^{tree}"], {
+        encoding: "utf8",
+        timeout: 10000,
+        windowsHide: true,
+      }).trim(),
     },
     trusted: {
       source: expectedTrusted,
+      metadataGitSha256: hash(readFileSync(git)),
       lockSha256: hash(lockBytes),
       executableSha256: result.trustedExecutableSha256,
       core: { version: corePackage.version, integrity: corePackage.integrity },

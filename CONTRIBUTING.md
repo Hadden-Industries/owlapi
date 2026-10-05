@@ -45,12 +45,14 @@ The root `.editorconfig` defines the shared editor baseline: spaces, two-space i
 Native ESM and supported JavaScript syntax are defined separately by `package.json` and `eslint.config.js`.
 
 Prettier retains its defaults for ordinary source files.
-Authored Markdown uses Prettier layout, Snapper sentence formatting, then Prettier layout again, with independent prose diagnostics and ESLint's native GFM content rules.
+Authored Markdown uses the exactly pinned shared Markdown-quality package, with independent prose diagnostics, native GFM content rules, literal-preserving formatting, and local-link checking.
+Its isolated Node 24 tool graph leaves application Node 22 support unchanged.
 Fenced examples are preserved rather than executed or formatted as programs.
 Ruff checks and formats Python development files with stable rules and a 79-column target.
 Generated API views, upstream fixtures, and historical evidence retain their owning generators and byte checks.
 
 Install the Node/npm versions declared in `package.json`, then run `npm ci`.
+For Markdown work, select Node 24.21.0 and explicitly run `npm run markdown:install`; canonical checks never install dependencies.
 Install CPython **3.14.7** and provide its absolute executable path during the explicit development-tool setup; for example, in PowerShell:
 
 ```powershell
@@ -75,7 +77,9 @@ npm run test:quality
 
 Use `format:source`, `format:md`, and `format:py` for language-specific writes; their `:check` variants only check.
 Use `lint:js`, `lint:md`, and `lint:py` for separate static checks.
-For selected Markdown files, use `npm run format:md:check -- "docs/guide.md"` or `npm run lint:md -- "docs/guide.md"`; `lint:files` remains available for existing JavaScript callers.
+For selected Markdown files, use `npm run format:md:check -- -- "docs/guide.md"` or `npm run lint:md -- --files-json "[\"docs/guide.md\"]"`; the canonical CLI requires a literal `--` boundary or JSON selection.
+`lint:files` remains available for existing JavaScript callers.
+On Node 22, use `format:source-python:check`, `lint:source-python`, and `test:quality:source` for the complete source/Python floor; Markdown checks require Node 24.
 The shared Markdown selector includes `.github/` and eligible untracked files, honours repository ignore rules, and rejects symlink and outside paths.
 
 Trailing whitespace is trimmed in every authored file, including Markdown.
@@ -84,7 +88,10 @@ Represent significant trailing spaces in examples as escaped strings or annotate
 Do not add a Markdown trimming exception.
 
 For tool updates, review pins in `package.json`, `pyproject.toml`, `.python-version`, and `scripts/repository-python-tools.mjs`, including uv archive digests; regenerate `uv.lock` with the selected uv version, then synchronize and run the full gates on Windows and Linux.
-Requalify the bounded Snapper 0.11.7 list workaround on every update and remove it when the native diagnostics are corrected.
+The package owns the bounded Snapper 0.11.9 list workaround; requalify it with each package/native upgrade and remove it when upstream diagnostics are corrected.
+Trusted hosted Markdown runs inspect separately checked-out candidate data using the accepted workflow source, graph, policy, and ignores.
+Before merge, the owner accepts the exact candidate and attributable passing trusted run, alongside every existing required status.
+Full six-check pilot windows must meet the accepted 30-second timing and separate Windows committed-memory/Linux process-tree RSS budgets; the observer retains individual receipts and fails closed on any unexpected error or input drift.
 Refresh current dependency/provenance records through their owning tools while preserving historical evidence and pending human-review decisions.
 
 For workflow changes, also run:
