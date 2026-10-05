@@ -16,6 +16,7 @@ const EXPECTED_WORKFLOWS = [
   "ci.yml",
   "extended-tests.yml",
   "maintenance.yml",
+  "markdown-quality.yml",
   "release-reconciliation.yml",
   "release.yml",
 ];
@@ -2005,6 +2006,129 @@ const validateJsonRecord = (schemaName, recordName, violations) => {
   );
 };
 
+/** Constrain the owner-dispatched checker without changing existing required CI floors. */
+const validateTrustedMarkdownWorkflow = (workflow, violations) => {
+  const label = "markdown-quality.yml: trusted data checker";
+  add(
+    violations,
+    workflow?.name === "Trusted Markdown qualification" &&
+      sameInventory(Object.keys(workflow?.on ?? {}), ["workflow_dispatch"]),
+    `${label}: only owner dispatch is accepted`,
+  );
+  add(
+    violations,
+    sameInventory(Object.keys(workflow?.jobs ?? {}), [
+      "markdown_linux",
+      "markdown_windows",
+    ]),
+    `${label}: both qualified platforms are required`,
+  );
+  for (const [id, job] of entries(workflow?.jobs)) {
+    const jobSteps = steps(job);
+    add(
+      violations,
+      jobSteps.length === 7 &&
+        isDeepStrictEqual(job.permissions, { contents: "read" }) &&
+        !job.env,
+      `${label}:${id}: least privilege and closed steps required`,
+    );
+    requireFields(
+      jobSteps[0]?.with,
+      {
+        ref: "${{ github.workflow_sha }}",
+        path: "trusted",
+        "fetch-depth": 1,
+        "persist-credentials": false,
+      },
+      `${label}: exact trusted checkout`,
+      violations,
+    );
+    requireFields(
+      jobSteps[3]?.with,
+      {
+        repository: "${{ inputs.candidate_repository }}",
+        ref: "${{ inputs.candidate_sha }}",
+        path: "candidate",
+        "fetch-depth": 1,
+        "persist-credentials": false,
+      },
+      `${label}: separate candidate data checkout`,
+      violations,
+    );
+    for (const checkout of [jobSteps[0], jobSteps[3]])
+      add(
+        violations,
+        checkout?.uses ===
+          "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" &&
+          lacksKeys(checkout.with, [
+            "token",
+            "ssh-key",
+            "submodules",
+            "lfs",
+            "allow-unsafe-pr-checkout",
+          ]),
+        `${label}: checkout broadens execution or credentials`,
+      );
+    add(
+      violations,
+      jobSteps[2]?.["working-directory"] === "trusted/tooling/markdown" &&
+        /npm ci --ignore-scripts --no-audit --no-fund --registry=https:\/\/registry\.npmjs\.org\//u.test(
+          jobSteps[2]?.run ?? "",
+        ) &&
+        !/(?:candidate|npm install|npm exec|npx )/u.test(
+          jobSteps[2]?.run ?? "",
+        ),
+      `${label}: acquire only the trusted locked graph`,
+    );
+    add(
+      violations,
+      isDeepStrictEqual(jobSteps[2]?.env, {
+        NODE_AUTH_TOKEN: "",
+        NPM_TOKEN: "",
+        GH_TOKEN: "",
+        GITHUB_TOKEN: "",
+        NODE_OPTIONS: "",
+        NODE_PATH: "",
+      }),
+      `${label}: neutral acquisition environment`,
+    );
+    add(
+      violations,
+      jobSteps[4]?.run ===
+        "node --test trusted/scripts/check-markdown-candidate.probes.mjs" &&
+        jobSteps[5]?.run ===
+          "node trusted/scripts/check-markdown-candidate.mjs",
+      `${label}: execute trusted probes and checker only`,
+    );
+    add(
+      violations,
+      isDeepStrictEqual(jobSteps[4]?.env, {
+        MARKDOWN_TEST_CLI:
+          "${{ github.workspace }}/trusted/tooling/markdown/node_modules/@hadden-industries/markdown-quality/src/cli.js",
+      }),
+      `${label}: probes must use only the trusted installed CLI`,
+    );
+    add(
+      violations,
+      isDeepStrictEqual(jobSteps[5]?.env, {
+        MARKDOWN_CANDIDATE_REPOSITORY: "${{ inputs.candidate_repository }}",
+        MARKDOWN_CANDIDATE_SHA: "${{ inputs.candidate_sha }}",
+        MARKDOWN_TRUSTED_SHA: "${{ github.workflow_sha }}",
+      }),
+      `${label}: bind exact candidate and trusted identities`,
+    );
+    requireFields(
+      jobSteps[6],
+      {
+        if: "${{ !cancelled() }}",
+        uses: "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+      },
+      `${label}: retain failing evidence`,
+      violations,
+    );
+  }
+};
+
 /** Report repository policy violations; overrides are source strings for mutation tests. */
 export const auditRepositoryControls = ({
   workflowSourceOverrides = {},
@@ -2017,7 +2141,7 @@ export const auditRepositoryControls = ({
   add(
     violations,
     sameInventory(workflowFiles, EXPECTED_WORKFLOWS),
-    "The repository must contain exactly the five approved workflow files.",
+    "The repository must contain exactly the six approved workflow files.",
   );
   add(
     violations,
@@ -2058,6 +2182,10 @@ export const auditRepositoryControls = ({
     validateCandidateTransport(fileName, workflow, violations);
   }
   validateEvidenceWorkflows(workflows, violations);
+  validateTrustedMarkdownWorkflow(
+    workflows["markdown-quality.yml"] ?? {},
+    violations,
+  );
   validateQualityTooling(workflows, violations);
   const ci = workflows["ci.yml"] ?? {};
   add(violations, ci.name === "CI", "ci.yml: wrong workflow name");

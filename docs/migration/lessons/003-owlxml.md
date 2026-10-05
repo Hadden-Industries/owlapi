@@ -1,7 +1,7 @@
 # Phase 4 learning record: OWL/XML
 
 > **Subsequent decision:** This historical record captures the handoff as it stood when the Phase 4 gate closed.
-> [Accepted ADR 0002](../../../adr/0002-prioritize-rdf-ingestion-and-early-webvowl-cutover.md) later changed Phase 5 to canonical RDF ingestion and shared RDF-to-OWL reconstruction.
+> [Accepted ADR 0002](https://github.com/Hadden-Industries/webvowl/blob/f7372f9b8b93a2bf337fe0125fec8fd7e3454143/docs/adr/0002-prioritize-rdf-ingestion-and-early-webvowl-cutover.md) later changed Phase 5 to canonical RDF ingestion and shared RDF-to-OWL reconstruction.
 > The current sequence and handoff live in `implementation-plan.md`, `migration-status.md`, and `parser-migration-playbook.md`; the original record below is intentionally preserved.
 
 ## Migration identity
