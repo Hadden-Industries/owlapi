@@ -306,6 +306,7 @@ describe("repository workflow governance", () => {
       "ci.yml",
       "extended-tests.yml",
       "maintenance.yml",
+      "markdown-quality.yml",
       "release-reconciliation.yml",
       "release.yml",
     ]);
@@ -737,5 +738,43 @@ describe("repository workflow governance", () => {
         expect.stringMatching(/closed source-run selector/u),
       ]),
     );
+  });
+});
+
+describe("trusted Markdown dispatch", () => {
+  test.each([
+    "candidate execution",
+    "candidate probe override",
+    "write token",
+    "candidate trust",
+    "lifecycle scripts",
+    "lost failure evidence",
+  ])("rejects %s", (mutation) => {
+    const violations = mutateWorkflow("markdown-quality.yml", (document) => {
+      const job = document.getIn(["jobs", "markdown_linux"]);
+      const jobSteps = job.get("steps").items;
+      if (mutation === "candidate execution")
+        jobSteps[5].set(
+          "run",
+          "node candidate/scripts/check-markdown-candidate.mjs",
+        );
+      if (mutation === "candidate probe override")
+        jobSteps[4].setIn(
+          ["env", "MARKDOWN_TEST_CLI"],
+          "${{ github.workspace }}/candidate/evil-package/src/cli.js",
+        );
+      if (mutation === "write token")
+        job.setIn(["permissions", "contents"], "write");
+      if (mutation === "candidate trust")
+        jobSteps[0].setIn(["with", "ref"], "${{ inputs.candidate_sha }}");
+      if (mutation === "lifecycle scripts")
+        jobSteps[2].set(
+          "run",
+          jobSteps[2].get("run").replace(" --ignore-scripts", ""),
+        );
+      if (mutation === "lost failure evidence")
+        jobSteps[6].set("if", "${{ success() }}");
+    });
+    expect(violations.join("\n")).toMatch(/trusted data checker/u);
   });
 });

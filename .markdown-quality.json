@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "preset": "authored-gfm@1",
+  "include": ["**/*.md"],
+  "exclude": [
+    ".development-tools/**",
+    ".release/**",
+    "coverage/**",
+    "playwright-report/**",
+    "test-results/**"
+  ],
+  "ignoreFiles": [".gitignore", ".prettierignore"],
+  "lint": {},
+  "links": { "localFiles": true, "rootRelative": "reject" },
+  "layout": { "endOfLine": "lf", "tabWidth": 2 }
+}
