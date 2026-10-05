@@ -8,16 +8,16 @@
     "scopeAuthority": {
       "method": "npm pack --dry-run --json plus local source-byte hashing",
       "fileCount": 110,
-      "sourceManifestSha256": "e6546cc19b04bf48610a08e71fab5fa0c584f76a580a9babf605b4c8955c03ae"
+      "sourceManifestSha256": "89194771070e2c7cbee2eb7dea07f017a5f07105e4ca1c14d25f829cbe518d08"
     }
   },
   "review": {
-    "status": "REVIEWED",
-    "factsSha256": "8e0fcd50c65bb9271a68efe41e7f9cbfa3e6942e1796cd98958280563c54609f",
-    "reviewer": "Maksym Shostak",
-    "reviewedOn": "2026-10-04",
-    "capacity": "Original author and rights holder for the recorded package-owned expression; project maintainer and release owner",
-    "conclusion": "Approved the exact recorded distribution basis and rights facts for @hadden-industries/owlapi@0.1.0-rc.1 as part of explicit approval of all manual npm publication controls. Package-owned expression remains AGPL-3.0-only; the recorded licence texts and attributed Java public-API facts retain their separate classifications. HADDEN INDUSTRIES LTD remains project steward, not the represented copyright owner. The owner subsequently approved the documentation-only publication-status amendment and its delivery; the source-manifest binding is refreshed for the current README. This does not change the published RC or its original source-bound approval retained at v0.1.0-rc.1. The owner approved the factual registry-reference amendment to d4378943c710740cb51351b7d2982bad6d5bbf4ac9106ca3099ed80e1b06b376; the exact package scope, sources, contributors, material classifications, dependency distribution policy and conclusion are unchanged. This approval does not enable shared Java reuse."
+    "status": "PENDING_HUMAN_REVIEW",
+    "factsSha256": "344821e7cd05633a0dcb514800388b5d723afd759aadd4cf15bcebea8dcb5641",
+    "reviewer": null,
+    "reviewedOn": null,
+    "capacity": null,
+    "conclusion": null
   },
   "contributors": [
     {
@@ -104,7 +104,7 @@
   "externalDependencies": {
     "bundled": false,
     "authority": "docs/provenance/third-party-material.json",
-    "inventoryFactsSha256": "d4378943c710740cb51351b7d2982bad6d5bbf4ac9106ca3099ed80e1b06b376",
+    "inventoryFactsSha256": "095b022c87f98c57ace095f2fd2e9f8d8320c12a5b66b60b4d090e3963c4723a",
     "noticeRule": "Ordinary npm dependencies are installed separately and remain under their own licences. Their licence texts are not copied into the owlapi tarball merely because they appear in the installed dependency graph."
   },
   "unresolvedExternalContributions": [],

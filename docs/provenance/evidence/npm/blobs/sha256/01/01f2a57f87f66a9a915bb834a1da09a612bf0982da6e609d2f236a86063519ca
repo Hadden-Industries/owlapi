@@ -1,14 +1,14 @@
 {
-  "artifactId": "f799b06165bc52463a6dd724583bc25c7d8e344244bf14962b7146ddf13a7e32",
+  "artifactId": "160faede4a5747e1c5ddd61d3c082cd39fe4651cfdfe6bacb88dcf7b0c1f3b4a",
   "evidence": {
     "archiveRoot": "package",
-    "compressedBytes": 586488,
+    "compressedBytes": 586285,
     "duplicateEntries": [],
     "entries": [
       {
         "path": "package/LICENSE.md",
-        "sha256": "387dd7baa307083401a27c58c362c30832f5ba1dba84f10cc22c33401523f45c",
-        "size": 112425,
+        "sha256": "a47172e44a86a7e2cd1c16282341f7726ec60caafe3a6166fe3e0602005b6fa6",
+        "size": 108786,
         "type": "FILE"
       },
       {
@@ -37,14 +37,14 @@
       },
       {
         "path": "package/dist/client/bundledDevClient.mjs",
-        "sha256": "003a305cafb009fc80f13d45101efabab901b6f1433df15e38bdde59ffa02fff",
-        "size": 59832,
+        "sha256": "1e5fabf0104098682fe05faf725666d3f7d1a5c45b8c5288dab5a7ba23d6573c",
+        "size": 51907,
         "type": "FILE"
       },
       {
         "path": "package/dist/client/client.mjs",
-        "sha256": "8a0c940f88b2eb5b78143039815daad8662dd929cc2a88dc4aaa3e60688af895",
-        "size": 39813,
+        "sha256": "e34ce742dc7035bd7776221ecc01c6b43d714030d10698f38236f98476ac2042",
+        "size": 41953,
         "type": "FILE"
       },
       {
@@ -79,8 +79,8 @@
       },
       {
         "path": "package/dist/node/chunks/node.js",
-        "sha256": "5a604cb8f97126675dbdf9044c919b0fd1fe1280bfa4077de225e6adfa213e4a",
-        "size": 1381647,
+        "sha256": "21d5c6b4fb1013b98b1436e9e2a3bb416c8932343ad42ec293bbf760f51a0131",
+        "size": 1383675,
         "type": "FILE"
       },
       {
@@ -97,8 +97,8 @@
       },
       {
         "path": "package/dist/node/index.d.ts",
-        "sha256": "8f213112bdefc3591ced0bfed900a28233ef0e40ba12614641eaf83a8bb9d84a",
-        "size": 165198,
+        "sha256": "16c41a8076354dad90a65c6951ad90d1b18c42cc85a4f8edff17def380349639",
+        "size": 165338,
         "type": "FILE"
       },
       {
@@ -127,8 +127,8 @@
       },
       {
         "path": "package/dist/node/module-runner.js",
-        "sha256": "e3e78e6bf5dd8e6b80d90641f695926a0412aec91e82552facd77caf60b09080",
-        "size": 54230,
+        "sha256": "90ea19fcba6d8f49285a0979ec5dd5d415859b6dacfab424621ee4bfd442963c",
+        "size": 54610,
         "type": "FILE"
       },
       {
@@ -145,8 +145,8 @@
       },
       {
         "path": "package/package.json",
-        "sha256": "fd3af4eaf4eecb2069f3e2715d6aaa2137d084a8a95097389523f52213c08094",
-        "size": 5082,
+        "sha256": "2b906339263f24e9be4219f93d966b4bcf0d4141adc05939a537c3a8fd6f760a",
+        "size": 5081,
         "type": "FILE"
       },
       {
@@ -231,18 +231,18 @@
     "evidenceFiles": [
       {
         "blob": {
-          "bytes": 112425,
+          "bytes": 108786,
           "kind": "PACKAGE_EVIDENCE_FILE",
-          "path": "blobs/sha256/38/387dd7baa307083401a27c58c362c30832f5ba1dba84f10cc22c33401523f45c",
-          "sha256": "387dd7baa307083401a27c58c362c30832f5ba1dba84f10cc22c33401523f45c"
+          "path": "blobs/sha256/a4/a47172e44a86a7e2cd1c16282341f7726ec60caafe3a6166fe3e0602005b6fa6",
+          "sha256": "a47172e44a86a7e2cd1c16282341f7726ec60caafe3a6166fe3e0602005b6fa6"
         },
         "kind": "LICENCE",
         "path": "package/LICENSE.md",
-        "sha256": "387dd7baa307083401a27c58c362c30832f5ba1dba84f10cc22c33401523f45c",
-        "size": 112425
+        "sha256": "a47172e44a86a7e2cd1c16282341f7726ec60caafe3a6166fe3e0602005b6fa6",
+        "size": 108786
       }
     ],
-    "expandedBytes": 2375009,
+    "expandedBytes": 2368132,
     "packageIdentity": {
       "author": "Evan You",
       "homepage": "https://vite.dev",
@@ -253,7 +253,7 @@
         "type": "git",
         "url": "git+https://github.com/vitejs/vite.git"
       },
-      "version": "8.3.1"
+      "version": "8.3.2"
     },
     "packageMetadata": {
       "//": "READ CONTRIBUTING.md to understand what to put under deps vs. devDeps!",
@@ -268,7 +268,7 @@
         "lightningcss": "^1.33.0",
         "picomatch": "^4.0.7",
         "postcss": "^8.5.28",
-        "rolldown": "~1.2.9",
+        "rolldown": "~1.2.11",
         "tinyglobby": "^0.2.17"
       },
       "description": "Native-ESM powered web dev build tool",
@@ -283,17 +283,16 @@
         "@types/escape-html": "^1.0.4",
         "@types/pnpapi": "^0.0.5",
         "@vercel/detect-agent": "^1.2.5",
-        "@vitejs/devtools": "^0.7.5",
-        "@vitest/utils": "4.1.11",
+        "@vitejs/devtools": "^0.7.6",
+        "@vitest/utils": "^4.1.11",
         "@voidzero-dev/vite-task-client": "^0.2.0",
         "artichokie": "^0.4.5",
-        "baseline-browser-mapping": "^2.11.25",
+        "baseline-browser-mapping": "^2.11.26",
         "cac": "^7.0.0",
         "chokidar": "^3.6.0",
         "connect": "^3.7.0",
         "convert-source-map": "^2.0.0",
         "cors": "^2.8.6",
-        "cross-spawn": "^7.0.6",
         "dotenv-expand": "^13.0.0",
         "es-module-lexer": "^2.3.2",
         "esbuild": "^0.28.2",
@@ -304,7 +303,7 @@
         "host-validation-middleware": "^0.1.4",
         "http-proxy-3": "^1.23.3",
         "launch-editor-middleware": "^2.14.1",
-        "magic-string": "^1.4.1",
+        "magic-string": "^1.4.2",
         "mlly": "^1.8.2",
         "mrmime": "^2.0.1",
         "nanoid": "^5.1.16",
@@ -327,8 +326,9 @@
         "sirv": "^3.0.2",
         "strip-literal": "^4.0.0",
         "terser": "^5.51.2",
+        "tinyexec": "^1.3.1",
         "ufo": "^1.6.4",
-        "ws": "^8.21.3"
+        "ws": "^8.22.0"
       },
       "engines": {
         "node": "^20.19.0 || >=22.12.0"
@@ -447,12 +447,12 @@
         "typecheck": "tsc && tsc -p src/node && tsc -p src/client && tsc -p src/module-runner && tsc -p src/shared && tsc -p src/node/__tests_dts__ && tsc -p src/module-runner/__tests_dts__"
       },
       "type": "module",
-      "version": "8.3.1"
+      "version": "8.3.2"
     },
     "physicalEntryCount": 37,
     "tarball": {
-      "bytes": 586488,
-      "sha256": "d1e2250c6eb956e84df6b5d4f8127d420efa9142f393652c77a06906e79d69c3"
+      "bytes": 586285,
+      "sha256": "268c70bb56c0a5ff17dbe4b7ebf21e0981697cce707cfaca84317c5b6b1eac56"
     }
   },
   "kind": "ARCHIVE_INVENTORY",

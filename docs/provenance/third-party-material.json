@@ -16,19 +16,19 @@
     "version": "0.1.0-rc.1",
     "lockfile": "package-lock.json",
     "lockfileVersion": 3,
-    "lockfileSha256": "dab6590a1c9d06623d693aa1c570f3044eb24434d97b1768a8bf00fbba8f8145",
+    "lockfileSha256": "872dac4d74c88af813cc2328f6ab3c142a879141badbf43cb871ae0022a794aa",
     "evidenceManifest": "docs/provenance/npm-package-evidence.json",
-    "evidenceManifestSha256": "d143b8d4daaf24a65ba3f44084f84b7a79ec68149c707a75690aa6fb64cadcdc",
-    "evidenceCorpusRoot": "1bf11debf4bdf2b480f486ae21f8785834b33b8f64bf7a2e11e0b8f05748bfc3",
+    "evidenceManifestSha256": "2ccdc2e47add660769097a7b0aaea72075540775a4b2117216d6d738e0c1bad1",
+    "evidenceCorpusRoot": "d8ae1ffaafb08ed393b0b372388cca27626df8343eb78d7a10890de6592013fa",
     "tarballDependenciesBundled": false
   },
   "review": {
-    "status": "REVIEWED",
-    "factsSha256": "d4378943c710740cb51351b7d2982bad6d5bbf4ac9106ca3099ed80e1b06b376",
-    "reviewer": "Maksym Shostak",
-    "reviewedOn": "2026-10-04",
-    "capacity": "Project maintainer and release owner",
-    "conclusion": "Approved this exact facts digest. The sole addition records the development-only Java source and notice assets covered by the accepted fixed-source rights disposition; the 784 npm components and 15 previous material records are unchanged. This approval does not enable shared Java reuse."
+    "status": "PENDING_HUMAN_REVIEW",
+    "factsSha256": "095b022c87f98c57ace095f2fd2e9f8d8320c12a5b66b60b4d090e3963c4723a",
+    "reviewer": null,
+    "reviewedOn": null,
+    "capacity": null,
+    "conclusion": null
   },
   "summary": {
     "componentCount": 784,
@@ -41,7 +41,7 @@
     "provenanceNotPublishedArtifactCount": 526,
     "scanVerifiedArtifactCount": 724,
     "evidenceBlobCount": 3537,
-    "evidenceRetainedBytes": 71690863,
+    "evidenceRetainedBytes": 71678192,
     "inspectedLicenceFileCount": 690,
     "inspectedNoticeFileCount": 358,
     "productionInspectedLicenceFileCount": 38,
@@ -21979,9 +21979,9 @@
     },
     {
       "dependencyPath": "node_modules/globals",
-      "artifactId": "74ac8883115496e8a52c54be23bdf9924b377fd75571457c7f0e93be4a175844",
+      "artifactId": "c271fd86404459c88d163c3b62d36b46e142722e0b62baf23d8cf489e7040e4a",
       "name": "globals",
-      "version": "17.12.0",
+      "version": "17.13.0",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -22010,12 +22010,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "0383fc5e685f96c763d329dd194ba0408a6c15704180667e60167e7fdfe722df",
-        "provenanceSha256": "db174061639ceef504174b29e3d29fbca36ab366b682a3fea864cba762af3b20",
-        "registrySignatureSha256": "46de1c964813cc06da659a49c3b4f82e47270ed4a90fc00288884f56243e06eb",
-        "scanSha256": "1c2d7d344412abc0502ff481afc177e7b386c81de8a5296f4edca60b7779a5dc"
+        "archiveSha256": "db745800fc7d9dafa3841589f8a0795aed4d242a8ec8ea6cf1e18c3cbc54aa1e",
+        "provenanceSha256": "4474620e414b4cccd5d4429abc6877909b7db20e393f1b5a73af9c9bc750c08a",
+        "registrySignatureSha256": "014a526a54151886b750901b5bfffb73903a2065f184e1c70ab850ee33f9e064",
+        "scanSha256": "59bb97a81eaffb2cb7b702a6ff44e162009c807b09e07d5679016daca6ec58a6"
       },
-      "registryUrl": "https://registry.npmjs.org/globals/-/globals-17.12.0.tgz",
+      "registryUrl": "https://registry.npmjs.org/globals/-/globals-17.13.0.tgz",
       "sourceReference": "sindresorhus/globals",
       "sourceUrl": "https://github.com/sindresorhus/globals",
       "packageAuthor": "Sindre Sorhus | sindresorhus@gmail.com | https://sindresorhus.com",
@@ -36485,9 +36485,9 @@
     },
     {
       "dependencyPath": "node_modules/publint",
-      "artifactId": "8a6523bf08b29fbdf797cb980924e62ce32639b84bbcfbb2e6a90e20c5e7a8cb",
+      "artifactId": "e903e2cf711a482af156a21de551256b79d31aacf5b1272d46b98850cb6e5111",
       "name": "publint",
-      "version": "0.3.24",
+      "version": "0.3.25",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -36523,12 +36523,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "7c76fae9277d7d53f9c4b59cf69abb06459cae941d4a40a6ba7a29fcc5453487",
-        "provenanceSha256": "0e81f4a64bf881cc0fc72615cea6114cacd88aadb192e8c5156fb4b9cabfc266",
-        "registrySignatureSha256": "c8ad936c7d893563f614ff6f2841e3e147a44bd2b06cb2a7cab970145e6aef3e",
-        "scanSha256": "03b7f42011ec2f18b7d69a82914c7bda79b2d7e5863c23d57426dc5878ee61af"
+        "archiveSha256": "51f4dbdc5f805b23c9624e3d5e52bd40d150a8368c049dab4dfa86abc601f379",
+        "provenanceSha256": "fc1ee468b0fc7359501b70234d4b1a658bc7ef80a26075e7d197f6cb90f1da74",
+        "registrySignatureSha256": "491dfd50e469efc1daeaba3b7e3a9f56bd489362e67544e35282fac01f5f0311",
+        "scanSha256": "e59ded2d69ab19e7d536370783c7ca1ae8fb7c4f60ab0caf7678479ca17060c2"
       },
-      "registryUrl": "https://registry.npmjs.org/publint/-/publint-0.3.24.tgz",
+      "registryUrl": "https://registry.npmjs.org/publint/-/publint-0.3.25.tgz",
       "sourceReference": "git+https://github.com/publint/publint.git",
       "sourceUrl": "https://github.com/publint/publint",
       "packageAuthor": "Bjorn Lu",
@@ -42525,9 +42525,9 @@
     },
     {
       "dependencyPath": "node_modules/vite",
-      "artifactId": "f799b06165bc52463a6dd724583bc25c7d8e344244bf14962b7146ddf13a7e32",
+      "artifactId": "160faede4a5747e1c5ddd61d3c082cd39fe4651cfdfe6bacb88dcf7b0c1f3b4a",
       "name": "vite",
-      "version": "8.3.1",
+      "version": "8.3.2",
       "relationship": "DEVELOPMENT_ONLY",
       "lockfileDeclaredLicenseExpressions": ["MIT"],
       "tarballDeclaredLicenseExpression": "MIT",
@@ -42553,9 +42553,9 @@
         {
           "path": "package/LICENSE.md",
           "kind": "LICENCE",
-          "sha256": "387dd7baa307083401a27c58c362c30832f5ba1dba84f10cc22c33401523f45c",
-          "blobSha256": "387dd7baa307083401a27c58c362c30832f5ba1dba84f10cc22c33401523f45c",
-          "blobPath": "blobs/sha256/38/387dd7baa307083401a27c58c362c30832f5ba1dba84f10cc22c33401523f45c"
+          "sha256": "a47172e44a86a7e2cd1c16282341f7726ec60caafe3a6166fe3e0602005b6fa6",
+          "blobSha256": "a47172e44a86a7e2cd1c16282341f7726ec60caafe3a6166fe3e0602005b6fa6",
+          "blobPath": "blobs/sha256/a4/a47172e44a86a7e2cd1c16282341f7726ec60caafe3a6166fe3e0602005b6fa6"
         }
       ],
       "externalLicenseEvidence": [],
@@ -42566,12 +42566,12 @@
         "scan": "VERIFIED"
       },
       "artifactEvidence": {
-        "archiveSha256": "ae8ac6d424dc0438c19b56c4b544eb57ccdf552dddb8891e835b025be3315a7d",
-        "provenanceSha256": "274e72080e83a4cd11812774b26b43926dc5926b899a45ac6b014e13234a0a56",
-        "registrySignatureSha256": "fa86ad93f97c9c6b0c3c690e260269c621dd6af7eada8336b4b95472491c009a",
-        "scanSha256": "737a7d653b21ba90f2c8a930dd8557e8a59303343f23560d3622e51decfeb73d"
+        "archiveSha256": "01f2a57f87f66a9a915bb834a1da09a612bf0982da6e609d2f236a86063519ca",
+        "provenanceSha256": "6c6d284fcf8d12a368dd7443ee136a61f0be5eb59282d56617f9d0c5a4d2fdf7",
+        "registrySignatureSha256": "5bf888106fc320e2500500b825156c378e8a005813adbbe5951f6d8ac4343bf7",
+        "scanSha256": "425d172a8813b77a7b16c3c28c6af6a34b3f30b9d39e7fafbd8b90a43f4bd71f"
       },
-      "registryUrl": "https://registry.npmjs.org/vite/-/vite-8.3.1.tgz",
+      "registryUrl": "https://registry.npmjs.org/vite/-/vite-8.3.2.tgz",
       "sourceReference": "git+https://github.com/vitejs/vite.git",
       "sourceUrl": "https://github.com/vitejs/vite",
       "packageAuthor": "Evan You",
