@@ -1,6 +1,6 @@
 # Gate native Java reference reuse while retaining full integration checks
 
-- Status: native protocol delivered; owner-authorized enable-and-verify rollout, hosted operating outcome pending.
+- Status: native protocol and bounded hosted qualification delivered; shared reuse enabled under the owner-authorized rollout, representative sustained benefit unestablished.
 - Authority: Maksym Shostak's instruction to implement the entire input-aware CI plan, specific Java rights disposition, and subsequent decision to keep full integration checks.
 - Supersedes: ADR 0011's receipt format and eight-minute strategy bound.
   Its full behavioral floor, direct original proof, exact normal-merge equivalence and release boundaries remain binding.
@@ -60,7 +60,11 @@ No owner report or private packet is included in the repository.
 
 An inactive reference-control PR measures a separate fresh Linux baseline before native key preparation.
 This is a cost screen, not an oracle result or cross-run operating acceptance.
-Local Windows observations found a 63.6-second fresh baseline versus 65.5-second key preparation before hashing/lookup/transfer/admission; those observations cannot establish hosted savings. Corrected inactive Linux qualification established the native key and closure, but did not exercise shared bundle transport. The accepted rollout enables the real protocol to collect hosted cold/warm/miss/rerun/concurrency comparisons, payload/storage/generation accounting and the operator's comparative maintenance and cost decision. Sustained operating acceptance remains pending those results. Disproportionate overhead or an integrity/required behavioral failure requires diagnosis and an accountable disable/disposition; preserve all work and evidence.
+Local Windows observations found a 63.6-second fresh baseline versus 65.5-second key preparation before hashing/lookup/transfer/admission; those observations cannot establish hosted savings. Corrected inactive Linux qualification established the native key and closure, but did not exercise shared bundle transport. The accepted rollout subsequently qualified hosted cold/warm transport, fresh fallback with an unfinished latest producer and unavailable older proof, independently admitted concurrent seeding, and direct original FULL proof on normal merge.
+The [completed operating report in PR 41](https://github.com/Hadden-Industries/owlapi/pull/41) records payload/storage/generation accounting and the observation boundaries: warm required-green was 895 seconds and fresh attempt-start-to-green was 893 seconds, with runner variation and different timing origins, so no overall latency improvement is established.
+Final canonical local HISEW verification and landed-main CI passed.
+Representative sustained benefit remains unestablished, and long-term operating acceptance remains an operator decision.
+Disproportionate overhead or an integrity/required behavioral failure requires diagnosis and an accountable disable/disposition; preserve all work and evidence.
 Exact-image invalidation remains until separately qualified equivalence supports an amendment.
 
 ## Recovery and evidence
