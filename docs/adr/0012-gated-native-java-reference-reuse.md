@@ -22,6 +22,10 @@ The reference recipe uses the pinned upstream commit/tree, Maven 3.10.0, the exa
 Native Maven SHA-512 observations and its runtime graph precede compilation.
 Source, actual tool bytes, the closed JVM environment, recipe/control bytes and exact hosted image determine the key.
 The completed build's external closure must agree with preparation.
+Hosted cold runs exposed a one-JAR difference in the conservative preparation inventory: `jcl-over-slf4j` 1.7.32 appeared in PR preparations and was absent from main preparations.
+An explicit nontransitive native Maven resolution records this preparation supplement in both paths, retaining every observed input and strict key equality.
+It does not change the published runtime closure, whose `jcl-over-slf4j` version remains 2.0.11.
+The recipe change invalidates older keys and requires a new qualified producer before warm acceptance.
 An unavailable key still requires fresh compilation and every ordinary test, but cannot claim a seed or publication.
 Compilation and behavioral failures fail CI.
 
