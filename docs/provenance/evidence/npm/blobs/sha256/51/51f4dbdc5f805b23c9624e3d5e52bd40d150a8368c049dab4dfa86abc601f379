@@ -1,8 +1,8 @@
 {
-  "artifactId": "8a6523bf08b29fbdf797cb980924e62ce32639b84bbcfbb2e6a90e20c5e7a8cb",
+  "artifactId": "e903e2cf711a482af156a21de551256b79d31aacf5b1272d46b98850cb6e5111",
   "evidence": {
     "archiveRoot": "package",
-    "compressedBytes": 31507,
+    "compressedBytes": 31763,
     "duplicateEntries": [],
     "entries": [
       {
@@ -19,8 +19,8 @@
       },
       {
         "path": "package/package.json",
-        "sha256": "0e902ded8843229eb4ab9614f6fe6e6f5c37f689fa7e86e2ebd04c4c3e18d2f7",
-        "size": 1379,
+        "sha256": "7741486a60ee177944af88e0e582b2e891149a5f02e64c370c159980938a4b3a",
+        "size": 1378,
         "type": "FILE"
       },
       {
@@ -55,14 +55,14 @@
       },
       {
         "path": "package/src/shared/constants.js",
-        "sha256": "62c16503a6f1f68b93585ba5202017187eae69c400ed5300fc8fd9167e3e8e4d",
+        "sha256": "c8334d8c41098df869795aa39f6bc1516cf57602b82a3a0ce7d686aadd49b169",
         "size": 2113,
         "type": "FILE"
       },
       {
         "path": "package/src/shared/core.js",
-        "sha256": "203bfe20914f85e76e36aeecf19e5edc73148a8428ebd9b226049f7e461ae96e",
-        "size": 52990,
+        "sha256": "b828a8fa08a6313ffa28d214dfbc91deb49f734473a096b82566121b085da953",
+        "size": 53177,
         "type": "FILE"
       },
       {
@@ -122,7 +122,7 @@
         "size": 618
       }
     ],
-    "expandedBytes": 117261,
+    "expandedBytes": 117447,
     "packageIdentity": {
       "author": "Bjorn Lu",
       "homepage": "https://publint.dev",
@@ -133,7 +133,7 @@
         "type": "git",
         "url": "git+https://github.com/publint/publint.git"
       },
-      "version": "0.3.24"
+      "version": "0.3.25"
     },
     "packageMetadata": {
       "author": "Bjorn Lu",
@@ -152,10 +152,10 @@
       "description": "Lint packaging errors",
       "devDependencies": {
         "@types/prompts": "^2.4.9",
-        "fs-fixture": "^2.14.0",
+        "fs-fixture": "^2.16.0",
         "prompts": "^2.4.2",
-        "tinyexec": "^1.3.0",
-        "vitest": "^4.1.10"
+        "tinyexec": "^1.3.1",
+        "vitest": "^5.0.2"
       },
       "engines": {
         "node": ">=18"
@@ -196,12 +196,12 @@
         "typecheck": "tsc"
       },
       "type": "module",
-      "version": "0.3.24"
+      "version": "0.3.25"
     },
     "physicalEntryCount": 15,
     "tarball": {
-      "bytes": 31507,
-      "sha256": "83ad64151c95c63a4347635bbe6b67719fc105a053c9cedf7b785d896719e7c0"
+      "bytes": 31763,
+      "sha256": "52c39daf7e07b9aab218e0def0ffff8b53cfc63dbc47980362bd413b50a935a9"
     }
   },
   "kind": "ARCHIVE_INVENTORY",
