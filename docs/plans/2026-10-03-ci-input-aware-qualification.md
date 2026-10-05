@@ -1,13 +1,16 @@
-# Draft implementation plan for input aware CI qualification
+# Accepted implementation plan for input aware CI qualification
 
-Status: implementation accepted by Maksym Shostak on 3 October 2026; activation remains subject to the gates below.
-Current disposition, 4 October: keep full integration checks; omission and its enforcement arrangement are explicitly deferred by the owner.
+Status: implementation accepted by Maksym Shostak on 3 October 2026; the approved enable-and-verify rollout was delivered on 5 October through [PR 41](https://github.com/Hadden-Industries/owlapi/pull/41).
+Current disposition, 5 October: keep full integration checks; omission and its enforcement arrangement remain explicitly deferred by the owner.
 The specific fixed-source Java rights disposition is accepted.
-The [native Java protocol milestone](../adr/0012-gated-native-java-reference-reuse.md) introduces coordinated schema-v3 materialization and cold-seeding while keeping shared reuse disabled until hosted comparative and operating acceptance.
+The [native Java protocol milestone](../adr/0012-gated-native-java-reference-reuse.md) delivered coordinated schema-v3 materialization and cold-seeding, with shared reuse enabled under the subsequently accepted rollout below.
 This supersedes proposal-stage receipt-version references below without relabeling completed historical evidence.
 Preserve uncommitted work and experiments regardless of measured savings.
 On 5 October the owner accepted an ordinary enable-and-verify Java rollout through a reviewed control revision: enable the real protocol to qualify hosted cold/warm transport and operating effects, retain full comparisons and existing bounds, then assess continued operation from those observations.
-This amends the otherwise-before-activation comparative gate for that rollout only; it does not claim operating evidence already exists.
+This amends the otherwise-before-activation comparative gate for that rollout only.
+Hosted qualification subsequently proved warm transport and admission, fresh fallback with an unfinished latest producer and unavailable older proof, independently admitted concurrent seeding, and normal-main direct FULL proof lineage.
+Final canonical local HISEW verification and [landed-main CI](https://github.com/Hadden-Industries/owlapi/actions/runs/37249632685) passed.
+These observations establish the delivered behavior; overall latency savings and representative sustained benefit remain unproven, and long-term operating acceptance remains a separate owner decision.
 MaksymShostak is the operator.
 The 128 MiB payload and 90-day retention limits remain accepted, actual generation/storage and overhead accounting remains required, and disproportionate latency/storage/maintenance or integrity/required behavioral failures require diagnosis and an accountable disable/disposition.
 The separate proposed timer and preset trial campaign are superseded; sustained operating acceptance and concrete PR merges remain separate decisions.
@@ -20,12 +23,14 @@ The near-term deliverables are removal of the unnecessary dependency installatio
 Selective qualification and Java build reuse are separately gated experiments, not assumed improvements.
 WebVOWL omission remains deferred unless its native equivalence preparation is demonstrably cheaper than the work it would avoid.
 
-This document is the draft change dossier, proposed design and implementation handoff.
+This document retains the accepted change dossier, proposed design and implementation handoff.
+The delivery status above supersedes historical proposal-stage status statements without changing the remaining activation gates or relabeling historical evidence.
 It does not amend existing requirements by its presence.
 The current full-PR requirement remains authoritative until its replacement is explicitly accepted and implemented with its executable controls.
 The owner subsequently authorized implementation using HISEW in the existing checkout, an implementation branch, commits and pushes, and configuration changes required by this plan.
 The original accepted bytes are retained in protected HISEW snapshot `b4d42546-f315-4a1e-bc7b-421337d6045c` (SHA-256 `3722119827ac4b10d17b10316d651c1423d9e0d947e0094294d399a2ac1a880d`).
 This authorization does not clear the dependent activation gates, Java redistribution terms, repository settings changes, merge or release.
+The owner subsequently accepted the fixed Java rights disposition and preauthorized necessary normal merges after required checks; release authority remains separate.
 Claude Code was the original selected independent reviewer and verifier.
 On 4 October, after its weekly limit blocked further review, the owner selected Antigravity CLI with Codex fallback.
 Antigravity's headless command denial led to the authorized independent Codex review.
