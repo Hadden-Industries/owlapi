@@ -512,6 +512,7 @@ describePinnedOracle("pinned Java cyclic import-closure oracle", () => {
     expect(originalClasspath).toHaveLength(63);
     const orderedHashes = [];
     const relocatedClasspath = [];
+    let copiedRuntimeBytes = 0;
     for (const [index, original] of originalClasspath.entries()) {
       const destination = join(
         relocated,
@@ -520,6 +521,7 @@ describePinnedOracle("pinned Java cyclic import-closure oracle", () => {
       await copyFile(original, destination);
       const originalBytes = await readFile(original);
       expect((await readFile(destination)).equals(originalBytes)).toBe(true);
+      copiedRuntimeBytes += originalBytes.length;
       orderedHashes.push(
         createHash("sha256").update(originalBytes).digest("hex"),
       );
@@ -640,6 +642,7 @@ describePinnedOracle("pinned Java cyclic import-closure oracle", () => {
       JSON.stringify({
         nativeReferenceRelocation: {
           jarCount: relocatedClasspath.length,
+          runtimeJarBytes: copiedRuntimeBytes,
           orderedClasspathSha256: createHash("sha256")
             .update(JSON.stringify(orderedHashes))
             .digest("hex"),
