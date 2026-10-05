@@ -1,5 +1,4 @@
 import js from "@eslint/js";
-import markdown from "@eslint/markdown";
 import prettier from "eslint-config-prettier";
 import compat from "eslint-plugin-compat";
 import globals from "globals";
@@ -44,6 +43,7 @@ const qualityRules = {
 export default [
   {
     ignores: [
+      "**/*.md",
       "coverage/**",
       ".release/**",
       "node_modules/**",
@@ -62,21 +62,6 @@ export default [
     ],
   },
   { ...js.configs.recommended, files: ["**/*.{js,mjs,cjs}"] },
-  ...markdown.configs.recommended,
-  {
-    files: ["**/*.md"],
-    language: "markdown/gfm",
-    rules: {
-      "markdown/table-column-count": "error",
-      // GitHub's five alert markers are syntax, not missing link definitions.
-      "markdown/no-missing-label-refs": [
-        "error",
-        {
-          allowLabels: ["!NOTE", "!TIP", "!IMPORTANT", "!WARNING", "!CAUTION"],
-        },
-      ],
-    },
-  },
   {
     files: ["**/*.{js,mjs}"],
     languageOptions: {

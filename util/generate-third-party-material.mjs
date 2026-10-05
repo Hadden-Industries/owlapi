@@ -6,7 +6,7 @@ import parseSpdxExpression from "spdx-expression-parse";
 import { format as formatWithPrettier } from "prettier";
 import { verifyEvidenceManifest } from "./third-party-evidence/evidence-manifest.mjs";
 
-export const GENERATOR_VERSION = "3.1.0";
+export const GENERATOR_VERSION = "3.1.1";
 
 // Legal evidence must be byte-for-byte reproducible on every platform. JavaScript
 // code-unit ordering avoids host locale and ICU-version differences.
@@ -406,28 +406,28 @@ const createQualityToolingFacts = () =>
   [
     {
       id: "universal-ontology-documentation-tooling",
-      name: "Universal Ontology formatter and Ruff configuration adaptations",
+      name: "Universal Ontology Ruff configuration adaptation",
       versionOrRevision: "58a306013d3701f59dfe34341e96fac5a011e3ed",
       license: "MIT",
       source: "Hadden-Industries/universal-ontology",
-      files: [
-        "LICENSES/MIT-universal-ontology.txt",
-        "scripts/documentation-files.mjs",
-        "scripts/documentation-quality.mjs",
-        "ruff.toml",
-      ],
+      files: ["LICENSES/MIT-universal-ontology.txt", "ruff.toml"],
       attribution:
-        "Copyright (c) 2026 Hadden Industries Ltd. Adapted from scripts/formatDocumentation.js and ruff.toml; the complete MIT notice is retained.",
+        "Copyright (c) 2026 Hadden Industries Ltd. The retained Ruff configuration is adapted from ruff.toml; the complete MIT notice is retained. The former documentation formatter adaptation is retired.",
     },
     {
-      id: "webvowl-prose-regressions",
-      name: "WebVOWL prose-formatting regression examples",
-      versionOrRevision: "4f1970e5b6c95655af823c495bd58f9e9993f8b8",
+      id: "shared-markdown-quality-development-tool",
+      name: "Shared Markdown quality development capability",
+      versionOrRevision: "0.1.0-alpha.4",
       license: "AGPL-3.0-only",
-      source: "Hadden-Industries/WebVOWL",
-      files: ["LICENSE", "scripts/documentation-quality.test.js"],
+      source: "Hadden-Industries/markdown-quality",
+      files: [
+        "LICENSE",
+        ".markdown-quality.json",
+        "tooling/markdown/package.json",
+        "tooling/markdown/package-lock.json",
+      ],
       attribution:
-        "Adapted from WebVOWL tooling/prose/test_format_docs.py under the retained AGPL-3.0-only terms; the examples remain development-only tests.",
+        "Copyright (c) 2026 Hadden Industries Ltd. The isolated AGPL-3.0-only capability is pinned through its native npm lock. Its independent distribution retains native Snapper/Rust source and component notices; no tool binary or dependency graph is packed into the OwlAPI application. Former WebVOWL-derived prose examples are retired with their duplicate tests.",
     },
     {
       id: "hisew-checkout-environment-isolation",
@@ -453,21 +453,6 @@ const createQualityToolingFacts = () =>
       ],
       attribution:
         "Copyright (c) 2022 Charles Marsh. The complete wheel licence, including its embedded third-party notices, is retained. The tool and its distributions are not packed.",
-    },
-    {
-      id: "snapper-development-tool",
-      name: "Snapper native Markdown formatter",
-      versionOrRevision: "0.11.7",
-      license: "MIT",
-      source: "TurtleTech-ehf/snapper",
-      files: [
-        "pyproject.toml",
-        "uv.lock",
-        ".snapperrc.toml",
-        "LICENSES/development/snapper-fmt-0.11.7.txt",
-      ],
-      attribution:
-        "Copyright (c) 2026 Rohit Goswami. Native, non-neural Markdown formatting only; the complete wheel MIT terms are retained and the tool is not packed.",
     },
     {
       id: "uv-development-bootstrap",

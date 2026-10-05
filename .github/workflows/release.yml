@@ -156,10 +156,10 @@ jobs:
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
       - name: Verify formatting
-        run: npm run format:check
+        run: npm run format:source-python:check
         timeout-minutes: 45
       - name: Verify static quality
-        run: npm run lint
+        run: npm run lint:source-python
         timeout-minutes: 45
       - name: Run the full package suite
         run: npm test -- --runInBand
@@ -223,6 +223,12 @@ jobs:
         timeout-minutes: 5
         env:
           QUALITY_PYTHON: ${{ steps.quality_python.outputs.python-path }}
+      - name: Acquire the exact isolated Markdown graph
+        run: npm run markdown:install
+        timeout-minutes: 5
+      - name: Exercise canonical Markdown isolation probes
+        run: npm run test:markdown
+        timeout-minutes: 5
       - name: Verify formatting
         run: npm run format:check
         timeout-minutes: 45
@@ -1627,6 +1633,9 @@ jobs:
       - name: Verify the locked environment
         run: npm run tools:check
         timeout-minutes: 10
+      - name: Acquire the exact isolated Markdown graph
+        run: npm run markdown:install
+        timeout-minutes: 5
       - name: Verify formatting
         run: npm run format:check
         timeout-minutes: 10

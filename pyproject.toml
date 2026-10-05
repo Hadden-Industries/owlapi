@@ -6,10 +6,9 @@ dependencies = []
 
 [dependency-groups]
 quality = ["ruff==0.16.9"]
-prose = ["snapper-fmt==0.11.7"]
 
 [tool.uv]
 package = false
 required-version = "==0.12.20"
-default-groups = ["quality", "prose"]
+default-groups = ["quality"]
 no-build = true

@@ -35,6 +35,37 @@ const mutateWorkflow = (fileName, mutate) => {
 };
 
 describe("repository workflow governance", () => {
+  test.each(["skip", "ignore", "late"])(
+    "rejects ineffective isolated Markdown acquisition: %s",
+    (mutation) => {
+      expect(
+        mutateWorkflow("ci.yml", (document) => {
+          const steps = document.getIn(["jobs", "source_node_24", "steps"]);
+          const index = steps.items.findIndex(
+            (step) => step.get("run") === "npm run markdown:install",
+          );
+          const install = steps.items[index];
+          if (mutation === "skip") install.set("if", "false");
+          if (mutation === "ignore") install.set("continue-on-error", true);
+          if (mutation === "late") {
+            steps.items.splice(index, 1);
+            steps.items.push(install);
+          }
+        }).join("\n"),
+      ).toMatch(/isolated Markdown acquisition|Markdown setup before/u);
+    },
+  );
+  test("retains the Node 22 source and Python floor", () => {
+    expect(
+      mutateWorkflow("ci.yml", (document) => {
+        const steps = document.getIn(["jobs", "source_node_22", "steps"]);
+        const lint = steps.items.find(
+          (step) => step.get("run") === "npm run lint:source-python",
+        );
+        lint.set("run", "npm run lint");
+      }).join("\n"),
+    ).toMatch(/lint:source-python/u);
+  });
   test.each([
     "bypass",
     "token",
@@ -749,31 +780,40 @@ describe("trusted Markdown dispatch", () => {
     "candidate trust",
     "lifecycle scripts",
     "lost failure evidence",
+    "untrusted observer Python",
+    "skipped observation window",
   ])("rejects %s", (mutation) => {
     const violations = mutateWorkflow("markdown-quality.yml", (document) => {
       const job = document.getIn(["jobs", "markdown_linux"]);
       const jobSteps = job.get("steps").items;
       if (mutation === "candidate execution")
-        jobSteps[5].set(
+        jobSteps[6].set(
           "run",
           "node candidate/scripts/check-markdown-candidate.mjs",
         );
       if (mutation === "candidate probe override")
-        jobSteps[4].setIn(
+        jobSteps[5].setIn(
           ["env", "MARKDOWN_TEST_CLI"],
           "${{ github.workspace }}/candidate/evil-package/src/cli.js",
         );
+      if (mutation === "untrusted observer Python")
+        jobSteps[6].setIn(
+          ["env", "MARKDOWN_OBSERVER_PYTHON"],
+          "candidate/evil.exe",
+        );
+      if (mutation === "skipped observation window")
+        jobSteps[6].set("if", "false");
       if (mutation === "write token")
         job.setIn(["permissions", "contents"], "write");
       if (mutation === "candidate trust")
         jobSteps[0].setIn(["with", "ref"], "${{ inputs.candidate_sha }}");
       if (mutation === "lifecycle scripts")
-        jobSteps[2].set(
+        jobSteps[3].set(
           "run",
-          jobSteps[2].get("run").replace(" --ignore-scripts", ""),
+          jobSteps[3].get("run").replace(" --ignore-scripts", ""),
         );
       if (mutation === "lost failure evidence")
-        jobSteps[6].set("if", "${{ success() }}");
+        jobSteps[7].set("if", "${{ success() }}");
     });
     expect(violations.join("\n")).toMatch(/trusted data checker/u);
   });

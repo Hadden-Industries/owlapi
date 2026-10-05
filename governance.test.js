@@ -2451,13 +2451,28 @@ bundle licence and notice review.
       "java-owlapi-reference-fixtures",
       "java-reference-publication-source-notice-materials",
       "ruff-development-tool",
-      "snapper-development-tool",
+      "shared-markdown-quality-development-tool",
       "universal-ontology-documentation-tooling",
       "uv-development-bootstrap",
       "w3c-json-ld-api-tests",
       "w3c-owl2-test-artifact",
       "w3c-rdf-tests",
-      "webvowl-prose-regressions",
+    ]);
+    const markdownTool = materialsById.get(
+      "shared-markdown-quality-development-tool",
+    );
+    expect(markdownTool).toMatchObject({
+      relationship: "DEVELOPMENT_ONLY",
+      versionOrRevision: "0.1.0-alpha.4",
+      packageTarballScope: false,
+      deployedApplicationScope: "NOT_APPLICABLE",
+    });
+    expect(markdownTool.licenseAssessments).toEqual([
+      expect.objectContaining({
+        declaredLicenseExpression: "AGPL-3.0-only",
+        concludedLicenseExpression: "AGPL-3.0-only",
+        distributionDisposition: "REPOSITORY_ONLY_NOT_IN_PACKAGE",
+      }),
     ]);
     for (const material of materialsById.values()) {
       expect(material).not.toHaveProperty("reviewStatus");

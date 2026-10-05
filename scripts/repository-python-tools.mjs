@@ -97,7 +97,7 @@ export function runPythonTool(
   args,
   { root = repositoryRoot, ...options } = {},
 ) {
-  if (!["ruff", "snapper-fmt"].includes(name))
+  if (!["ruff"].includes(name))
     throw new Error(`Unsupported repository Python tool: ${name}`);
   const tools = repositoryPythonTools({ root });
   const executable = tools.executable(name);
@@ -157,8 +157,6 @@ const syncArguments = [
   "--no-dev",
   "--group",
   "quality",
-  "--group",
-  "prose",
   "--no-build",
   "--no-python-downloads",
 ];

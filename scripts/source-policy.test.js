@@ -1,5 +1,13 @@
 import { execFileSync } from "node:child_process";
-import { resolve } from "node:path";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { join, posix, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import prettier from "prettier";
@@ -13,6 +21,24 @@ const git = (...args) =>
     encoding: "utf8",
   }).trim();
 
+const nonLfFirstPartyEntries = (entries, isEvidenceInput = () => true) =>
+  entries.split("\0").filter((entry) => {
+    const separator = entry.indexOf("\t");
+    const metadata = separator < 0 ? entry : entry.slice(0, separator);
+    const path = separator < 0 ? "" : entry.slice(separator + 1);
+    return (
+      (/^i\/(?:crlf|mixed)\s/u.test(metadata) ||
+        (/\sw\/(?:crlf|mixed)\s/u.test(metadata) && isEvidenceInput(path))) &&
+      !metadata.includes("attr/-text") &&
+      !path.startsWith("docs/conformance/upstream/")
+    );
+  });
+
+const isWithinEvidenceTree = (path, root) => {
+  const normalizedRoot = posix.normalize(root).replace(/\/$/u, "");
+  return normalizedRoot === "." || path.startsWith(`${normalizedRoot}/`);
+};
+
 describe("standalone source policy", () => {
   let eslint;
 
@@ -20,28 +46,10 @@ describe("standalone source policy", () => {
     eslint = new ESLint({ cwd: repositoryRoot });
     // Load the native configuration and plugins as bounded suite setup, so
     // first-use module loading does not consume a behavioral test's timeout.
-    await eslint.calculateConfigForFile("docs/quality-example.md");
+    await eslint.calculateConfigForFile("scripts/quality-example.js");
   }, 30000);
 
-  it("uses native GFM content rules independently of JavaScript and fenced examples", async () => {
-    const defects = await eslint.lintText(
-      "# Example\n\n[missing][definition]\n\n![](image.png)\n\n| A | B |\n| - | - |\n| one | two | three |\n",
-      { filePath: "docs/quality-example.md" },
-    );
-    const rules = defects[0].messages.map(({ ruleId }) => ruleId);
-    expect(rules).toEqual(
-      expect.arrayContaining([
-        "markdown/no-missing-label-refs",
-        "markdown/require-alt-text",
-        "markdown/table-column-count",
-      ]),
-    );
-    expect(rules).not.toContain("no-undef");
-    const valid = await eslint.lintText(
-      '# Example\n\n> [!NOTE]\n> Valid GitHub alert.\n\n<details><summary>Example</summary>\n\n<a id="anchor"></a>\n\n- [ ] Task.\n\n```javascript\nundefinedName();\n```\n\n</details>\n',
-      { filePath: "docs/quality-example.md" },
-    );
-    expect(valid[0].messages).toEqual([]);
+  it("keeps JavaScript rules independent of the canonical Markdown tool", async () => {
     expect(
       (
         await eslint.lintText("undefinedName();\n", {
@@ -49,25 +57,11 @@ describe("standalone source policy", () => {
         })
       )[0].messages.map(({ ruleId }) => ruleId),
     ).toContain("no-undef");
-  });
-
-  it("rejects reversed links even when the pinned plugin cannot render its diagnostic", async () => {
-    // @eslint/markdown 8.0.3 currently throws through getLoc on this rule's
-    // suggested fix under ESLint 10.11.0. Keep the rule enabled and fail closed;
-    // accept its proper diagnostic when the upstream compatibility bug is fixed.
-    let rejected;
-    try {
-      const [result] = await eslint.lintText("(text)[https://example.com]\n", {
-        filePath: "docs/quality-example.md",
-      });
-      rejected = result.messages.some(
-        ({ ruleId }) => ruleId === "markdown/no-reversed-media-syntax",
-      );
-    } catch (error) {
-      expect(error.message).toMatch(/getLoc/u);
-      rejected = true;
-    }
-    expect(rejected).toBe(true);
+    expect(
+      await eslint.isPathIgnored(
+        resolve(repositoryRoot, "docs/quality-example.md"),
+      ),
+    ).toBe(true);
   });
 
   it("keeps generated Markdown and retained evidence out of editor and CLI lint/format scope", async () => {
@@ -90,7 +84,7 @@ describe("standalone source policy", () => {
       await eslint.isPathIgnored(
         resolve(repositoryRoot, ".github/pull_request_template.md"),
       ),
-    ).toBe(false);
+    ).toBe(true);
   });
 
   it("normalizes first-party text to LF without rewriting pinned upstream bytes", () => {
@@ -116,18 +110,89 @@ describe("standalone source policy", () => {
       "docs/provenance/evidence/npm/blobs/sha256/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: eol: unspecified",
     ]);
 
-    const nonLfFirstPartyEntries = git("ls-files", "--eol")
-      .split(/\r?\n/u)
-      .filter((entry) => /^i\/(?:crlf|mixed)\s/u.test(entry))
-      .filter((entry) => {
-        const [metadata = "", path = ""] = entry.split("\t", 2);
-        return (
-          !metadata.includes("attr/-text") &&
-          !path.startsWith("docs/conformance/upstream/")
-        );
-      });
+    // Git normalizes its index while a local writer can leave CRLF bytes on
+    // disk. Provenance generators hash those physical bytes, so both sides
+    // must satisfy the existing first-party LF policy before publication.
+    const inventory = JSON.parse(
+      readFileSync(
+        resolve(repositoryRoot, "docs/provenance/third-party-material.json"),
+        "utf8",
+      ),
+    );
+    const evidenceFiles = new Set([
+      inventory.package.lockfile,
+      inventory.package.evidenceManifest,
+      ...inventory.materials.flatMap(({ evidenceFiles }) =>
+        evidenceFiles.map(({ path }) => path),
+      ),
+    ]);
+    const evidenceTrees = inventory.materials
+      .map(({ treeEvidence }) => treeEvidence?.root)
+      .filter(Boolean);
+    expect(
+      nonLfFirstPartyEntries(
+        git("ls-files", "--eol", "-z"),
+        (path) =>
+          evidenceFiles.has(path) ||
+          evidenceTrees.some((root) => isWithinEvidenceTree(path, root)),
+      ),
+    ).toEqual([]);
+  });
 
-    expect(nonLfFirstPartyEntries).toEqual([]);
+  it("rejects physical CRLF and mixed text even when Git stores LF, preserving byte-exact assets", () => {
+    const directory = mkdtempSync(join(tmpdir(), "owlapi-source-eol-"));
+    const fixtureGit = (...args) =>
+      execFileSync("git", args, { cwd: directory, encoding: "utf8" });
+    try {
+      fixtureGit("init", "--quiet");
+      writeFileSync(
+        join(directory, ".gitattributes"),
+        "* text=auto eol=lf\npinned/** -text -diff -whitespace\n",
+      );
+      writeFileSync(join(directory, "lf.txt"), "one\ntwo\n");
+      writeFileSync(join(directory, "crlf.txt"), "one\r\ntwo\r\n");
+      writeFileSync(join(directory, "mixed.txt"), "one\r\ntwo\n");
+      writeFileSync(join(directory, "two words-é.txt"), "one\r\ntwo\r\n");
+      if (process.platform !== "win32") {
+        writeFileSync(join(directory, "tab\tname.txt"), "one\r\ntwo\r\n");
+      }
+      writeFileSync(join(directory, "binary.dat"), Buffer.from([0, 13, 10]));
+      mkdirSync(join(directory, "pinned"));
+      mkdirSync(join(directory, "evidence"));
+      writeFileSync(join(directory, "evidence/input.txt"), "one\r\ntwo\r\n");
+      const pinned = Buffer.from("upstream\r\noriginal\r\n");
+      writeFileSync(join(directory, "pinned/original.txt"), pinned);
+      fixtureGit("-c", "core.safecrlf=false", "add", "--", ".");
+      const entries = fixtureGit("ls-files", "--eol", "-z");
+      const rejected = nonLfFirstPartyEntries(entries);
+      expect(
+        rejected.map((entry) => entry.slice(entry.indexOf("\t") + 1)),
+      ).toEqual([
+        "crlf.txt",
+        "evidence/input.txt",
+        "mixed.txt",
+        ...(process.platform === "win32" ? [] : ["tab\tname.txt"]),
+        "two words-é.txt",
+      ]);
+      expect(
+        nonLfFirstPartyEntries(entries, (path) => path === "crlf.txt").map(
+          (entry) => entry.slice(entry.indexOf("\t") + 1),
+        ),
+      ).toEqual(["crlf.txt"]);
+      expect(
+        nonLfFirstPartyEntries(entries, (path) =>
+          isWithinEvidenceTree(path, "./evidence/"),
+        ).map((entry) => entry.slice(entry.indexOf("\t") + 1)),
+      ).toEqual(["evidence/input.txt"]);
+      expect(rejected.every((entry) => /^i\/lf\s/u.test(entry))).toBe(true);
+      expect(
+        execFileSync("git", ["show", ":pinned/original.txt"], {
+          cwd: directory,
+        }),
+      ).toEqual(pinned);
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
   });
 
   it("makes the exact Prettier defaults and EditorConfig mapping discoverable", async () => {

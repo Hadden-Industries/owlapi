@@ -75,6 +75,29 @@ describe("third-party-material prospective generation", () => {
       expect(validate(prospective)).toBe(true);
       expect(validate.errors).toBeNull();
       expect(readFileSync(canonicalPath)).toEqual(canonicalBefore);
+      const shared = prospective.materials.find(
+        ({ id }) => id === "shared-markdown-quality-development-tool",
+      );
+      expect(shared).toMatchObject({
+        relationship: "DEVELOPMENT_ONLY",
+        versionOrRevision: "0.1.0-alpha.4",
+        sourceUrl: "https://github.com/Hadden-Industries/markdown-quality",
+        packageTarballScope: false,
+      });
+      const paths = prospective.materials.flatMap(({ evidenceFiles }) =>
+        evidenceFiles.map(({ path }) => path),
+      );
+      expect(paths).not.toContain("scripts/documentation-quality.mjs");
+      expect(paths).not.toContain("scripts/documentation-files.mjs");
+      expect(paths).not.toContain("scripts/documentation-quality.test.js");
+      expect(
+        prospective.materials.some(
+          ({ id }) => id === "snapper-development-tool",
+        ),
+      ).toBe(false);
+      expect(shared.licenseAssessments[0].concludedLicenseExpression).toBe(
+        "AGPL-3.0-only",
+      );
     } finally {
       rmSync(prospectivePath, { force: true });
     }
