@@ -93,10 +93,9 @@
     "workflow:dependency-review-applicability": "node scripts/report-dependency-review-applicability.mjs",
     "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules --disable-warning=ExperimentalWarning\" jest",
     "test:boundary": "node --test test/package-boundary.test.mjs",
+    "test:owl-contract": "node scripts/qualify-owl-contract.mjs",
     "test:universal-ontology": "node util/owlapi-reference/qualify-universal-ontology.mjs",
     "test:browser": "node scripts/run-browser-tests.mjs",
-    "test:webvowl-browser": "node scripts/test-webvowl-browser.mjs",
-    "test:webvowl-consumer": "node scripts/qualify-webvowl-consumer.mjs",
     "verify:release-gates": "node scripts/verify-release-gates.mjs --json",
     "verify:workflow-governance": "node scripts/workflow-governance.mjs",
     "verify:workflow-syntax": "actionlint -shellcheck= -pyflakes=",
@@ -197,6 +196,7 @@
     "testEnvironment": "node",
     "testPathIgnorePatterns": [
       "/node_modules/",
+      "<rootDir>/test/consumers/owl-contract/",
       "<rootDir>/\\.venv/",
       "<rootDir>/\\.development-tools/",
       "/test/package-boundary.test.mjs"

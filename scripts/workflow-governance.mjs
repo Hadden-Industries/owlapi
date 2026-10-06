@@ -397,6 +397,7 @@ const validateCandidateTransport = (fileName, workflow, violations) => {
       violations,
     );
   const reportSelectors = [
+    "owl_contract",
     "publication_preflight",
     "tag_accepted",
     "draft_release",
@@ -971,8 +972,8 @@ const validateCiVerification = (workflow, violations) => {
       "node scripts/ci-check-coverage-command.mjs java .release/java-qualification/jest.json",
     ],
     [
-      "webvowl",
-      "node scripts/ci-check-coverage-command.mjs webvowl .release/webvowl-result/qualification.json",
+      "owl_contract",
+      "node scripts/ci-check-coverage-command.mjs owl_contract .release/owl-contract/qualification.json",
     ],
   ]) {
     requireFields(
@@ -1124,9 +1125,51 @@ const validateReadOnlyJob = (fileName, id, job, violations, permissions) => {
 const validateManualRelease = (fileName, workflow, violations) => {
   add(
     violations,
-    isDeepStrictEqual(workflow.on, { workflow_dispatch: null }),
+    isDeepStrictEqual(
+      workflow.on,
+      fileName === "release.yml"
+        ? {
+            workflow_dispatch: {
+              inputs: {
+                qualification_only: {
+                  description:
+                    "Run producer qualification without publication or release environments",
+                  type: "boolean",
+                  required: true,
+                  default: false,
+                },
+              },
+            },
+          }
+        : { workflow_dispatch: null },
+    ),
     `${fileName}: workflow_dispatch must be the sole trigger`,
   );
+  if (fileName === "release.yml") {
+    for (const id of [
+      "publication_preflight",
+      "tag_accepted",
+      "draft_release",
+      "npm_release",
+      "registry_verification",
+      "release_evidence",
+      "finalize_release",
+    ])
+      add(
+        violations,
+        workflow.jobs?.[id]?.if === "${{ !inputs.qualification_only }}",
+        `${fileName}:${id} must be excluded from qualification-only dispatch`,
+      );
+    const preflight = steps(workflow.jobs?.release_preflight).find(
+      (step) => step.run === "npm run release:preflight",
+    );
+    add(
+      violations,
+      preflight?.env?.OWLAPI_QUALIFICATION_ONLY ===
+        "${{ inputs.qualification_only }}",
+      `${fileName}: preflight must bind qualification-only admission to dispatch input`,
+    );
+  }
   requireFields(
     workflow.concurrency,
     { group: "owlapi-release", "cancel-in-progress": false, queue: "max" },
@@ -1984,58 +2027,81 @@ const validateSourceGovernanceHistory = (workflows, violations) => {
     );
 };
 
-const validateWebVowlCorpusMaterialization = (
-  fileName,
-  workflow,
-  control,
-  violations,
-) => {
-  const job = workflow.jobs?.webvowl;
-  const checkout = actionSteps(job, "actions/checkout").find(
-    (step) => step.name === "Check out the fixed WebVOWL consumer",
-  );
-  add(
-    violations,
-    fieldsMatch(checkout?.with, {
-      repository: control.webvowl.repository,
-      ref: control.webvowl.commit,
-      "fetch-depth": 0,
-    }),
-    `${fileName}:webvowl must retain complete WebVOWL history for governance tests`,
-  );
-  add(
-    violations,
-    actionSteps(job, "actions/checkout").some((step) =>
-      fieldsMatch(step.with, {
-        repository: control.ontologyCorpus.repository,
-        ref: control.ontologyCorpus.commit,
-      }),
-    ),
-    `${fileName}:webvowl must bind the fixed ontology corpus identity`,
-  );
+const validateOwlContractQualification = (fileName, workflow, violations) => {
+  const job = workflow.jobs?.owl_contract;
   const jobSteps = steps(job);
-  const install = jobSteps.findIndex((step) =>
-    fieldsMatch(step, {
-      name: "Install the fixed ontology corpus dependencies",
-      "working-directory": "consumer-workspace/universal-ontology",
-      run: "npm ci",
-    }),
-  );
-  const materialize = jobSteps.findIndex((step) =>
-    fieldsMatch(step, {
-      name: "Materialize the fixed representative ontology corpus",
-      "working-directory": "consumer-workspace/universal-ontology",
-      run: "npm run build",
-    }),
-  );
-  const qualify = jobSteps.findIndex(
-    (step) =>
-      step.name === "Qualify the retained package through isolated WebVOWL",
+  add(
+    violations,
+    job?.name ===
+      `${fileName === "ci.yml" ? "CI" : "Release"} / installed OWL contract` &&
+      job.needs === "candidate",
+    `${fileName}: required installed OWL contract job is absent or detached`,
   );
   add(
     violations,
-    install !== -1 && materialize > install && qualify > materialize,
-    `${fileName}:webvowl must install and materialize the fixed ontology corpus before qualification`,
+    actionSteps(job, "actions/checkout").length === 1 &&
+      actionSteps(job, "actions/checkout").every(
+        (step) => !step.with?.repository,
+      ),
+    `${fileName}: OWL contract must use only producer source`,
+  );
+  const qualify = jobSteps.find(
+    (step) =>
+      step.name ===
+      "Qualify installed public OWL interfaces against current consumer source",
+  );
+  requireFields(
+    qualify,
+    {
+      run: "npm run test:owl-contract -- --candidate .release/download --output .release/owl-contract",
+      "timeout-minutes": 10,
+    },
+    `${fileName}: shared native OWL assertions`,
+    violations,
+  );
+  requireFields(
+    qualify?.env,
+    {
+      GITHUB_TOKEN: "${{ github.token }}",
+      CANDIDATE_ARTIFACT_ID: "${{ needs.candidate.outputs.artifact_id }}",
+      CANDIDATE_ARTIFACT_DIGEST:
+        "${{ needs.candidate.outputs.artifact_digest }}",
+    },
+    `${fileName}: source and retained candidate bindings`,
+    violations,
+  );
+  add(
+    violations,
+    !JSON.stringify(job).match(
+      /test:webvowl|test:universal-ontology|consumer-workspace|npm run build|playwright|browser-project/iu,
+    ),
+    `${fileName}: OWL contract cannot execute downstream applications or a duplicate browser suite`,
+  );
+  requireFields(
+    job?.outputs,
+    {
+      coverage: "${{ steps.coverage.outputs.coverage }}",
+      artifact_id: "${{ steps.upload.outputs.artifact-id }}",
+      artifact_digest: "${{ steps.upload.outputs.artifact-digest }}",
+    },
+    `${fileName}: native OWL proof outputs`,
+    violations,
+  );
+  requireFields(
+    jobSteps.find((step) => step.id === "coverage"),
+    {
+      run: "node scripts/ci-check-coverage-command.mjs owl_contract .release/owl-contract/qualification.json",
+      "timeout-minutes": 1,
+    },
+    `${fileName}: genuine native OWL assertion accounting`,
+    violations,
+  );
+  const upload = jobSteps.find((step) => step.id === "upload");
+  add(
+    violations,
+    upload?.with?.path?.trim() ===
+      ".release/owl-contract/qualification.json\n.release/owl-contract/native.ndjson",
+    `${fileName}: retain both raw assertions and bound qualification`,
   );
 };
 
@@ -2320,17 +2386,10 @@ export const auditRepositoryControls = ({
     ) === 1,
     "always() is allowed only on CI / required",
   );
-  const webVowlControl = JSON.parse(
-    readFileSync(
-      join(REPOSITORY_ROOT, "docs", "release", "webvowl-consumer.json"),
-      "utf8",
-    ),
-  );
   for (const fileName of ["ci.yml", "release.yml"])
-    validateWebVowlCorpusMaterialization(
+    validateOwlContractQualification(
       fileName,
       workflows[fileName] ?? {},
-      webVowlControl,
       violations,
     );
 
@@ -2388,11 +2447,6 @@ export const auditRepositoryControls = ({
   validateJsonRecord(
     "publication-control.schema.json",
     "publication-control.json",
-    violations,
-  );
-  validateJsonRecord(
-    "webvowl-consumer.schema.json",
-    "webvowl-consumer.json",
     violations,
   );
   return { workflowFiles, issueFormFiles, violations };

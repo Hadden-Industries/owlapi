@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "snapshots": [
+    {
+      "repository": "Hadden-Industries/universal-ontology",
+      "defaultBranch": "main",
+      "commit": "6ba0a855a04304df2bb2460efd68f23c64df5832",
+      "tree": "d3551fd08f88e3a41e7cb9931d4c711ab4769e20",
+      "sources": [
+        {
+          "path": "package.json",
+          "blob": "63ab85d131b9379347e088c6d366b06ceea3a590"
+        },
+        {
+          "path": "scripts/build/fullOntologyAssets.js",
+          "blob": "ca4c20790a1847f7548d9022385f8d17f7d87f85"
+        },
+        {
+          "path": "scripts/materializeImportClosure.js",
+          "blob": "64f53f47b97323c491a9782cd2206e723bd792e3"
+        },
+        {
+          "path": "scripts/ontology/assertLosslessOntologyLoad.js",
+          "blob": "aa52a08fe21dfdd67ba2af5960adc3cbeec47bbe"
+        },
+        {
+          "path": "scripts/ontology/atomicOntologyWriter.js",
+          "blob": "f7fe843d95eb6c7d90c5ac37983bfd5d98d5e82b"
+        },
+        {
+          "path": "scripts/ontology/collapseImportsClosure.js",
+          "blob": "48ca89d91a73b8be22ff1b62ee7be0b68da4422c"
+        },
+        {
+          "path": "scripts/ontology/oasisXmlCatalogIRIMapper.js",
+          "blob": "ee07d40b876128a8e23df1fb912ed0ccddb00f8c"
+        },
+        {
+          "path": "scripts/ontology/ontologyDocumentLoader.js",
+          "blob": "bb33cff2520ae8611ebdbf8dadbcb7e9b25b256a"
+        },
+        {
+          "path": "scripts/ontology/ontologyStructuralFingerprint.js",
+          "blob": "939d77d2ccd91180695d9fcf7481ee97ebd0e3a1"
+        },
+        {
+          "path": "scripts/ontology/qualificationIdentity.js",
+          "blob": "3ac610562b5b02267c8e8f3497ad43ebc5c27a02"
+        },
+        {
+          "path": "scripts/ontology/verifyStandaloneOntology.js",
+          "blob": "64f51aa6385a116ab4f665d137192548df10d46a"
+        },
+        {
+          "path": "scripts/qualifyImportClosure.js",
+          "blob": "1dd3d4f04f0a043f4b013794743d39fa287f6a3a"
+        }
+      ],
+      "sourceSha256": "15e34f1b70ee33e82c9fa0377b775f8555fa1f69fe886b0b640593d2d13e6be3"
+    },
+    {
+      "repository": "Hadden-Industries/webvowl",
+      "defaultBranch": "main",
+      "commit": "c10c41003de9c0fb1940964f3bb40274174538c2",
+      "tree": "d89df3791c770b1c357c6aca2a8604c88122e330",
+      "sources": [
+        {
+          "path": "package.json",
+          "blob": "79a8eedf970b706c61bea01d4c4adb8b21661b5a"
+        },
+        {
+          "path": "packages/vowl/package.json",
+          "blob": "546a92c90784cd2a2ebfefa5efca0bcfab1a5da8"
+        },
+        {
+          "path": "packages/vowl/src/owl/compatibleLoading.js",
+          "blob": "b34180e040564618f36937fc8b02fc710c431f56"
+        },
+        {
+          "path": "packages/vowl/src/owl/exportRdf.js",
+          "blob": "e04a6f11a9132ef1f2c73f0730b09d5beaa0536e"
+        },
+        {
+          "path": "packages/vowl/src/owl/index.js",
+          "blob": "1a8e19acf7bf33dd4d7cdec3734d4c7c622040ad"
+        },
+        {
+          "path": "packages/vowl/src/owl/loading.js",
+          "blob": "f0bea2b9f5b5d3769595b458f8d942a7443a5a64"
+        },
+        {
+          "path": "packages/vowl/src/owl/modelBuilder.js",
+          "blob": "59f0b4bbd5de28905d60b932f00a2ca5ae89ad33"
+        },
+        {
+          "path": "packages/vowl/src/owl/policy.js",
+          "blob": "06fda351aa50696c2e9d6ad143f43ca65fa83c8a"
+        },
+        {
+          "path": "packages/vowl/src/owl/sourceEvidence.js",
+          "blob": "bdfc3c186b861d80b9297178b66d141992898723"
+        },
+        {
+          "path": "src/app/js/controller/canonicalVowlSourceAcquisition.js",
+          "blob": "78e01ccf753ce482eae5239eef1945c2a960d8d5"
+        },
+        {
+          "path": "src/app/js/controller/importResolver.js",
+          "blob": "ecae525c25fb38380c5ef30af8c0b2f911664a99"
+        },
+        {
+          "path": "src/app/js/ui/canonicalInputSelection.js",
+          "blob": "83cfe99d34da69c999ca2b1b886ea4d9b046656d"
+        },
+        {
+          "path": "src/app/js/webmcp/webMcpToolContracts.js",
+          "blob": "b633bc4aa39735154a3f7b72a05e9956084a41ec"
+        }
+      ],
+      "sourceSha256": "db3464edce8ba0cd16e8e281e642b455f06e9e418f2d901f46903536cd7c832a"
+    }
+  ]
+}

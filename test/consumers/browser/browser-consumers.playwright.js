@@ -75,6 +75,8 @@ const runConsumer = async (page, mode) => {
     expect(document.mergedAxiomCount).toBe(document.axiomCount);
     expect(document.mergedImportCount).toBe(0);
   }
+  expect(result.publicModelFields).toBe(60);
+  expect(result.acquisitionContracts).toEqual({ formats: 12, errorKinds: 4 });
   expect(result.importClosure).toEqual({
     closureCount: 4,
     importLoadCount: 3,

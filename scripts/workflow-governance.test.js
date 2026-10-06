@@ -142,7 +142,7 @@ describe("repository workflow governance", () => {
       ).toMatch(/isolated cost screen/u);
     },
   );
-  test.each(["source_node_24", "webvowl"])(
+  test.each(["source_node_24", "owl_contract"])(
     "requires unconditional native coverage in %s",
     (job) => {
       for (const mutation of ["remove", "skip", "ignore", "command"]) {
@@ -280,7 +280,8 @@ describe("repository workflow governance", () => {
     ],
     [
       "a changed job identity",
-      (doc) => doc.setIn(["jobs", "webvowl", "name"], "A different consumer"),
+      (doc) =>
+        doc.setIn(["jobs", "owl_contract", "name"], "A different consumer"),
     ],
   ])("rejects %s in CI reuse policy", (_label, mutate) => {
     expect(mutateWorkflow("ci.yml", mutate).join("\n")).toMatch(
@@ -523,49 +524,36 @@ describe("repository workflow governance", () => {
     );
   });
 
+  test("CI and release invoke identical producer-owned contract assertions", () => {
+    const jobs = ["ci.yml", "release.yml"].map(
+      (file) => parseDocument(workflowSource(file)).toJS().jobs.owl_contract,
+    );
+    const commands = jobs.map((job) =>
+      job.steps.find((step) => step.run?.includes("npm run test:owl-contract")),
+    );
+    expect(commands[0].run).toBe(commands[1].run);
+    for (const job of jobs) {
+      expect(
+        job.steps.filter((step) => step.uses?.startsWith("actions/checkout")),
+      ).toHaveLength(1);
+      expect(JSON.stringify(job)).not.toMatch(
+        /consumer-workspace|test:webvowl|npm run build|browser-project/,
+      );
+    }
+  });
   test.each(["ci.yml", "release.yml"])(
-    "%s binds consumer qualification to the reviewed input commits",
-    (fileName) => {
-      const workflow = parseDocument(workflowSource(fileName)).toJS();
-      const control = JSON.parse(
-        readFileSync("docs/release/webvowl-consumer.json", "utf8"),
-      );
-      const audit = JSON.parse(
-        readFileSync("test/consumers/webvowl/development-audit.json", "utf8"),
-      );
-      const qualification = workflow.jobs.webvowl.steps.find(
-        (step) =>
-          step.name === "Qualify the retained package through isolated WebVOWL",
-      );
-      expect(control.webvowl.commit).toBe(audit.baselineCommit);
-      expect(qualification.run).toContain(
-        `--expected-webvowl-commit ${control.webvowl.commit}`,
-      );
-      expect(qualification.run).toContain(
-        `--expected-ontology-commit ${control.ontologyCorpus.commit}`,
-      );
-      expect(qualification).not.toHaveProperty("if");
-      expect(qualification).not.toHaveProperty("continue-on-error");
+    "%s rejects downstream application execution in the producer contract",
+    (file) => {
+      expect(
+        mutateWorkflow(file, (doc) =>
+          doc.setIn(
+            ["jobs", "owl_contract", "steps", 0, "run"],
+            "npm run test:webvowl-consumer",
+          ),
+        ),
+      ).toEqual(expect.arrayContaining([expect.stringMatching(/downstream/)]));
     },
   );
-
-  test("CI uses provisional evidence without weakening final release qualification", () => {
-    const qualificationCommand = (fileName) =>
-      parseDocument(workflowSource(fileName))
-        .toJS()
-        .jobs.webvowl.steps.find(
-          (step) =>
-            step.name ===
-            "Qualify the retained package through isolated WebVOWL",
-        ).run;
-    expect(qualificationCommand("ci.yml")).toContain(
-      "--development-audit test/consumers/webvowl/development-audit.json",
-    );
-    expect(qualificationCommand("release.yml")).not.toContain(
-      "--development-audit",
-    );
-  });
-
   test.each(["release.yml", "release-reconciliation.yml"])(
     "the native queue false-positive suppression cannot hide job-level queue policy in %s",
     (fileName) => {

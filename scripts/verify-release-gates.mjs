@@ -4,6 +4,8 @@ import { fileURLToPath } from "node:url";
 
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
+import { buildProducerReleaseGates } from "./producer-release-policy.mjs";
+import { isDeepStrictEqual } from "node:util";
 
 import {
   parseCatalogueRequirements,
@@ -232,11 +234,26 @@ export const verifyReleaseGates = ({ planMarkdown, registry, schema }) => {
   };
 };
 
+const ajvProducerSchema = (record) => {
+  const ajv = new Ajv2020({ allErrors: true, strict: true });
+  addFormats(ajv);
+  ajv.addSchema(readJson("docs/release/gates.schema.json"));
+  return ajv.compile(readJson("docs/release/producer-gates.schema.json"))(
+    record,
+  );
+};
+
 const run = () => {
   const planMarkdown = readReleasePlans();
   const registry = readJson("docs/release/gates.json");
   const schema = readJson("docs/release/gates.schema.json");
   const result = verifyReleaseGates({ planMarkdown, registry, schema });
+  const producer = readJson("docs/release/producer-gates.json");
+  if (!isDeepStrictEqual(producer, buildProducerReleaseGates(registry)))
+    throw new Error("Current producer gate projection is stale or altered.");
+  const producerSchema = ajvProducerSchema(producer);
+  if (!producerSchema)
+    throw new Error("Current producer gate schema is invalid.");
   process.stdout.write(`${JSON.stringify(result)}\n`);
 };
 

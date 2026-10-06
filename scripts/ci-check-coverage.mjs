@@ -2,6 +2,7 @@
 import { createHash } from "node:crypto";
 import { isDeepStrictEqual } from "node:util";
 import { relative } from "node:path";
+import { assertOwlContractCoverage } from "./owl-contract-evidence.mjs";
 
 /** Independently reviewed live assertions in the two environment-gated suites.
  * Native Jest capture at 76350128 confirms all 23 names. Updating a live group
@@ -48,21 +49,6 @@ export const JAVA_LIVE_INVENTORY = Object.freeze(
     Object.freeze({ ...group, names: Object.freeze(group.names) }),
   ),
 );
-export const WEBVOWL_GATES = Object.freeze([
-  "baselineNpmCi",
-  "baselineJest",
-  "baselineDevelopmentBuild",
-  "baselineProductionBuild",
-  "consumerBoundary",
-  "candidateJest",
-  "installedImportClosure",
-  "phase21TargetErrorSemantics",
-  "representativeCorpus",
-  "candidateDevelopmentBuild",
-  "candidateProductionBuild",
-  "candidateWebVowlViteConsumerBuild",
-  "candidateChromiumIntegration",
-]);
 export const evidenceFingerprint = (value) =>
   createHash("sha256").update(JSON.stringify(value)).digest("hex");
 const expectedJava = JAVA_LIVE_INVENTORY.flatMap(({ file, group, names }) =>
@@ -83,8 +69,6 @@ const identityValid = (identity) =>
   Number.isSafeInteger(identity.runAttempt) &&
   identity.runAttempt > 0 &&
   /^[a-f0-9]{40}$/u.test(identity.commit ?? "");
-const digestValid = (value) =>
-  typeof value === "string" && /^[a-f0-9]{64}$/u.test(value);
 const javaTests = Object.freeze({
   expected: 23,
   passed: 23,
@@ -145,30 +129,12 @@ export const summarizeJavaExecution = (
   };
 };
 
-/** Consume the maintained consumer harness's native successful report. */
-export const summarizeWebvowlExecution = (report, identity) => {
-  const gates = Object.fromEntries(WEBVOWL_GATES.map((gate) => [gate, "PASS"]));
-  if (
-    report?.schemaVersion !== 1 ||
-    report.result !== "PASS" ||
-    report.qualification !== "PRE_INTEGRATION" ||
-    !isDeepStrictEqual(report.gates, gates) ||
-    report.maintainedWebVowlCheckoutModified !== false ||
-    report.cleanInstall?.npmLs !== "PASS" ||
-    report.cleanInstall.installedPackageIdentity !== "PASS" ||
-    !digestValid(report.candidate?.tarballSha256)
-  )
-    throw new Error("Required WebVOWL native qualification did not succeed.");
-  return {
-    ...common("webvowl", identity),
-    gates,
-    candidateTarballSha256: report.candidate.tarballSha256,
-    evidenceSha256: evidenceFingerprint(report),
-  };
-};
-
 /** Closed check-output schema; no SUCCESS alone, stale identity or extra field is accepted. */
 export const assertCheckCoverage = (record, check, identity) => {
+  if (check === "owl_contract") {
+    common(check, identity);
+    return assertOwlContractCoverage(record, identity);
+  }
   const expected =
     check === "java"
       ? {
@@ -179,18 +145,7 @@ export const assertCheckCoverage = (record, check, identity) => {
             assertions: expectedJava,
           }),
         }
-      : check === "webvowl" &&
-          digestValid(record?.candidateTarballSha256) &&
-          digestValid(record?.evidenceSha256)
-        ? {
-            ...common(check, identity),
-            gates: Object.fromEntries(
-              WEBVOWL_GATES.map((gate) => [gate, "PASS"]),
-            ),
-            candidateTarballSha256: record.candidateTarballSha256,
-            evidenceSha256: record.evidenceSha256,
-          }
-        : null;
+      : null;
   if (!expected || !isDeepStrictEqual(record, expected))
     throw new Error(
       "Required check coverage has invalid state, inventory or current execution identity.",

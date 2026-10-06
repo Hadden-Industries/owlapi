@@ -6,6 +6,11 @@ import * as model from "owlapi/model";
 import * as profiles from "owlapi/profiles";
 import * as util from "owlapi/util";
 import { createPublicContract } from "./public-contract.js";
+import { exercisePublicModelFields } from "./public-model-probes.js";
+import {
+  exerciseFormatConfiguration,
+  exercisePublicErrors,
+} from "./acquisition-contracts.js";
 const { exerciseImportClosureStorage, exerciseParserPreservation } =
   createPublicContract(root);
 import closureDocuments from "./import-closure-documents.js";
@@ -238,6 +243,11 @@ export const exerciseInstalledPackage = async () => {
     bindingIdentity,
     documents,
     importClosure,
+    publicModelFields: exercisePublicModelFields(root),
+    acquisitionContracts: {
+      formats: exerciseFormatConfiguration(root),
+      errorKinds: exercisePublicErrors(root),
+    },
     parserPreservation: await exerciseParserPreservation(),
     profile: await exerciseProfile(),
     managerClass:

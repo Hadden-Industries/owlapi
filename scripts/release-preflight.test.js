@@ -1,7 +1,8 @@
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import {
   assertReleasePreflight,
@@ -39,6 +40,72 @@ const accepted = {
 };
 
 describe("release preflight", () => {
+  test("native qualification-only entry point excludes publication human-review admission", () => {
+    const repository = fileURLToPath(new URL("../", import.meta.url));
+    const head = execFileSync("git", ["rev-parse", "HEAD"], {
+      cwd: repository,
+      encoding: "utf8",
+    }).trim();
+    const invoke = (qualificationOnly) =>
+      spawnSync(process.execPath, ["scripts/release-preflight.mjs"], {
+        cwd: repository,
+        encoding: "utf8",
+        env: {
+          ...process.env,
+          NODE_OPTIONS: "",
+          OWLAPI_QUALIFICATION_ONLY: qualificationOnly,
+          GITHUB_REF: "refs/heads/ci/qualification-entry-point-regression",
+          GITHUB_SHA: head,
+        },
+        timeout: 30_000,
+        maxBuffer: 1024 * 1024,
+      });
+    const qualification = invoke("true");
+    expect(qualification.error).toBeUndefined();
+    expect(qualification.stderr).toBe("");
+    expect(qualification.status).toBe(0);
+    expect(JSON.parse(qualification.stdout)).toEqual({
+      result: "PASS",
+      mode: "QUALIFICATION_ONLY",
+      sourceCommit: head,
+      sourceRef: "refs/heads/ci/qualification-entry-point-regression",
+      publicationEnabled: false,
+    });
+    for (const flag of ["false", "TRUE", "1"]) {
+      const publication = invoke(flag);
+      expect(publication.error).toBeUndefined();
+      expect(publication.status).not.toBe(0);
+      expect(publication.stderr).toMatch(
+        /human fact review|must target refs\/heads\/main/u,
+      );
+    }
+  });
+
+  test("an exact branch can qualify with every publication boundary disabled", () => {
+    const input = {
+      ...accepted,
+      qualificationOnly: true,
+      sourceRef: "refs/heads/ci/unified-owl-contract-qualification",
+      remoteMain: "b".repeat(40),
+      canonicalTagLookupStatus: 0,
+    };
+    expect(assertReleasePreflight(input)).toEqual({
+      result: "PASS",
+      mode: "QUALIFICATION_ONLY",
+      sourceCommit: accepted.checkoutHead,
+      sourceRef: input.sourceRef,
+      publicationEnabled: false,
+    });
+    expect(() =>
+      assertReleasePreflight({ ...input, qualificationOnly: false }),
+    ).toThrow(/main/);
+    expect(() =>
+      assertReleasePreflight({ ...input, checkoutHead: "b".repeat(40) }),
+    ).toThrow(/exact/);
+    expect(() =>
+      assertReleasePreflight({ ...input, qualificationOnly: "true" }),
+    ).toThrow(/boolean/);
+  });
   test("refuses provisional lifecycle evidence before a publication run", () => {
     expect(() =>
       assertReconciledLifecycle({

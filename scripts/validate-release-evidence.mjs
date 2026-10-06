@@ -4,6 +4,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
+import { assertArchivedOwlContractReport } from "./owl-contract-evidence.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 
@@ -21,6 +22,26 @@ export const validateReleaseEvidence = (record) => {
     throw new Error(
       `Release evidence violates its strict schema: ${ajv.errorsText(validate.errors)}`,
     );
+  }
+  if (record.schemaVersion === 4) {
+    assertArchivedOwlContractReport(record.producerContract, {
+      package: { name: record.package.name, version: record.package.version },
+      candidateSha256: record.candidate.tarball.sha256,
+      artifact: {
+        id: Number(record.candidate.artifactId),
+        digest: record.candidate.artifactDigest,
+      },
+    });
+    const execution = record.producerContract.identity;
+    if (
+      execution.workflow !== "Release" ||
+      execution.commit !== record.source.commit ||
+      execution.runId !== Number(record.workflow.runId) ||
+      execution.runAttempt > record.qualificationWorkflow.runAttempt
+    )
+      throw new Error(
+        "Release OWL proof has a different authenticated workflow identity.",
+      );
   }
   return record;
 };

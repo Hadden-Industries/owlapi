@@ -23,10 +23,12 @@ import {
   readGitSnapshot,
 } from "./ci-verification-command.mjs";
 import { REQUIRED_JOB_IDS, requireCiJobs } from "./require-job-success.mjs";
+import { summarizeJavaExecution } from "./ci-check-coverage.mjs";
 import {
-  summarizeJavaExecution,
-  summarizeWebvowlExecution,
-} from "./ci-check-coverage.mjs";
+  summarizeOwlContractExecution,
+  REVIEWED_CONSUMER_SOURCES,
+} from "./owl-contract-evidence.mjs";
+import { contractReport } from "./fixtures/owl-contract-report.mjs";
 import { CI_JOB_NAMES } from "./ci-qualification.mjs";
 import { JAVA_REFERENCE_POLICY_SHA256 } from "./java-reference-state.mjs";
 
@@ -49,30 +51,8 @@ const successfulNeeds = (
   );
   for (const suite of report.testResults) suite.name = resolve(suite.name);
   const java = summarizeJavaExecution(report, identity);
-  const webvowl = summarizeWebvowlExecution(
-    {
-      schemaVersion: 1,
-      result: "PASS",
-      qualification: "PRE_INTEGRATION",
-      candidate: { tarballSha256: "e".repeat(64) },
-      maintainedWebVowlCheckoutModified: false,
-      cleanInstall: { npmLs: "PASS", installedPackageIdentity: "PASS" },
-      gates: {
-        baselineNpmCi: "PASS",
-        baselineJest: "PASS",
-        baselineDevelopmentBuild: "PASS",
-        baselineProductionBuild: "PASS",
-        consumerBoundary: "PASS",
-        candidateJest: "PASS",
-        installedImportClosure: "PASS",
-        phase21TargetErrorSemantics: "PASS",
-        representativeCorpus: "PASS",
-        candidateDevelopmentBuild: "PASS",
-        candidateProductionBuild: "PASS",
-        candidateWebVowlViteConsumerBuild: "PASS",
-        candidateChromiumIntegration: "PASS",
-      },
-    },
+  const owl_contract = summarizeOwlContractExecution(
+    contractReport(identity),
     identity,
   );
   return Object.fromEntries(
@@ -97,8 +77,8 @@ const successfulNeeds = (
                     publication: null,
                   }),
                 }
-              : job === "webvowl"
-                ? { coverage: JSON.stringify(webvowl) }
+              : job === "owl_contract"
+                ? { coverage: JSON.stringify(owl_contract) }
                 : {},
       },
     ]),
@@ -253,6 +233,7 @@ const verify = async (f) => {
     now,
   });
   return verifyIntegrationProof({
+    captureSources: async () => jsonClone(REVIEWED_CONSUMER_SOURCES),
     context: f.context,
     selection,
     receipt: f.receipt,
@@ -271,7 +252,9 @@ const mainFixture = async (reused, partialOrigin = false) => {
     });
     for (const job of f.jobs)
       if (
-        [CI_JOB_NAMES.source_node_24, CI_JOB_NAMES.webvowl].includes(job.name)
+        [CI_JOB_NAMES.source_node_24, CI_JOB_NAMES.owl_contract].includes(
+          job.name,
+        )
       )
         job.run_attempt = 1;
   }
@@ -391,6 +374,7 @@ const validateBase = async (f) => {
     now,
   });
   return verifyBaseQualification({
+    captureSources: async () => jsonClone(REVIEWED_CONSUMER_SOURCES),
     context: f.context,
     selection,
     record: f.record,
@@ -407,7 +391,7 @@ describe("exact landed-main qualification and direct original execution", () => 
     expect(f.record.checks.java.original.runAttempt).toBe(1);
     expect(await validateBase(f)).toMatchObject({
       originals: {
-        webvowl: { original: { role: "PR", runId: 100, runAttempt: 1 } },
+        owl_contract: { original: { role: "PR", runId: 100, runAttempt: 1 } },
       },
     });
   });
@@ -638,7 +622,7 @@ describe("reuse of complete PR integration", () => {
       if (
         [
           CI_JOB_NAMES.source_node_24,
-          CI_JOB_NAMES.webvowl,
+          CI_JOB_NAMES.owl_contract,
           CI_JOB_NAMES.metadata,
         ].includes(job.name)
       )
@@ -646,7 +630,8 @@ describe("reuse of complete PR integration", () => {
     expect(f.receipt.checks.java.original.runAttempt).toBe(1);
     expect(f.receipt.runAttempt).toBe(2);
     expect((await verify(f)).reuse).toBe("true");
-    f.jobs.find((job) => job.name === CI_JOB_NAMES.webvowl).run_attempt = 2;
+    f.jobs.find((job) => job.name === CI_JOB_NAMES.owl_contract).run_attempt =
+      2;
     await expect(verify(f)).rejects.toThrow(/producing attempt/u);
   });
 
@@ -693,7 +678,7 @@ describe("reuse of complete PR integration", () => {
   test("records typed FULL coverage rather than inferring live tests from job success", () => {
     const f = fixture();
     expect(f.receipt).toMatchObject({
-      schemaVersion: 3,
+      schemaVersion: 4,
       role: "PR",
       mode: "FULL",
       checks: {
@@ -702,7 +687,7 @@ describe("reuse of complete PR integration", () => {
           execution: "SUCCESS",
           proof: "CURRENT_EXECUTION",
         },
-        webvowl: {
+        owl_contract: {
           applicability: "REQUIRED",
           execution: "SUCCESS",
           proof: "CURRENT_EXECUTION",
@@ -722,7 +707,7 @@ describe("reuse of complete PR integration", () => {
       now,
     });
     expect(record).toMatchObject({
-      schemaVersion: 3,
+      schemaVersion: 4,
       role: "MAIN",
       mode: "REUSED",
       sourceMode: "FULL",
@@ -967,7 +952,7 @@ describe("reuse of complete PR integration", () => {
       "a skipped full check",
       (f) => {
         f.jobs.find(
-          (j) => j.name === "CI / isolated WebVOWL consumer",
+          (j) => j.name === "CI / installed OWL contract",
         ).conclusion = "skipped";
       },
     ],
@@ -1027,6 +1012,7 @@ describe("reuse of complete PR integration", () => {
     f.run.run_attempt++;
     await expect(
       verifyIntegrationProof({
+        captureSources: async () => jsonClone(REVIEWED_CONSUMER_SOURCES),
         context: f.context,
         selection,
         receipt: f.receipt,
@@ -1080,10 +1066,10 @@ describe("reuse of complete PR integration", () => {
   test("does not issue a full receipt for skipped application tests", () => {
     const f = fixture();
     const needs = successfulNeeds();
-    needs.webvowl.result = "skipped";
+    needs.owl_contract.result = "skipped";
     expect(() =>
       createVerificationReceipt({ context: f.prContext, needs, now }),
-    ).toThrow(/webvowl=skipped/u);
+    ).toThrow(/owl_contract=skipped/u);
   });
 
   test("the aggregate accepts skipped jobs only with verified reuse on main push", async () => {
@@ -1101,7 +1087,7 @@ describe("reuse of complete PR integration", () => {
         ref: "refs/pull/31/merge",
       }),
     ).toThrow();
-    needs.webvowl.result = "failure";
+    needs.owl_contract.result = "failure";
     expect(() =>
       requireCiJobs(needs, { eventName: "push", ref: "refs/heads/main" }),
     ).toThrow();

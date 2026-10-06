@@ -1,5 +1,11 @@
 import { spawnSync } from "node:child_process";
-import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  lstatSync,
+  readFileSync,
+  readdirSync,
+  writeFileSync,
+} from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -9,16 +15,76 @@ import addFormats from "ajv-formats";
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
 import { inspectGzipTar, sha256Buffer } from "./release-artifacts.mjs";
 import { classifyReleaseState } from "./release-state.mjs";
+import {
+  captureConsumerSources,
+  assertReviewedConsumerSources,
+} from "./consumer-source-snapshot.mjs";
+import {
+  assertNativeOwlContractReport,
+  REVIEWED_CONSUMER_SOURCES,
+} from "./owl-contract-evidence.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 const registry = "https://registry.npmjs.org/";
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
-const gateDefinitions = JSON.parse(
-  readFileSync(new URL("../docs/release/gates.json", import.meta.url), "utf8"),
-);
+export const selectRecordedDefinitions = (record, retainedDefinitionsText) => {
+  const candidates =
+    retainedDefinitionsText === undefined
+      ? ["producer-gates.json", "gates.json"].map((name) =>
+          readFileSync(
+            new URL(`../docs/release/${name}`, import.meta.url),
+            "utf8",
+          ),
+        )
+      : [retainedDefinitionsText];
+  const matched = candidates.find(
+    (text) =>
+      sha256Buffer(Buffer.from(text)) ===
+      record?.definitionDigests?.gateRegistrySha256,
+  );
+  if (matched === undefined)
+    throw new Error(
+      "The exact recorded gate definitions are unavailable; supply their retained --definitions snapshot.",
+    );
+  const definitions = JSON.parse(matched);
+  const schemaName =
+    definitions.schemaVersion === 2
+      ? "producer-gates.schema.json"
+      : "gates.schema.json";
+  const ajv = new Ajv2020({ allErrors: true, strict: true });
+  addFormats(ajv);
+  if (definitions.schemaVersion === 2)
+    ajv.addSchema(
+      JSON.parse(
+        readFileSync(
+          new URL("../docs/release/gates.schema.json", import.meta.url),
+          "utf8",
+        ),
+      ),
+    );
+  const validate = ajv.compile(
+    JSON.parse(
+      readFileSync(
+        new URL(`../docs/release/${schemaName}`, import.meta.url),
+        "utf8",
+      ),
+    ),
+  );
+  if (!validate(definitions))
+    throw new Error("Recorded gate definitions violate their strict schema.");
+  return definitions;
+};
 
-export const assertRecordedRequirement = (record, requirementId) => {
+export const assertRecordedRequirement = (
+  record,
+  requirementId,
+  retainedDefinitionsText,
+) => {
+  const gateDefinitions = selectRecordedDefinitions(
+    record,
+    retainedDefinitionsText,
+  );
   const visiting = new Set();
   const assertRequirement = (id) => {
     if (visiting.has(id)) {
@@ -37,6 +103,7 @@ export const assertRecordedRequirement = (record, requirementId) => {
     if (
       record?.accepted !== true ||
       matches.length !== 1 ||
+      matches[0].requirementDigest !== definition.requirementDigest ||
       matches[0].finalResult !== "PASS"
     ) {
       throw new Error(`Release requirement ${id} is not PASS.`);
@@ -54,22 +121,38 @@ export const assertRecordedRequirement = (record, requirementId) => {
   return assertRequirement(requirementId);
 };
 
-export const assertPrepublicationConsumers = ({ candidate, webvowl, uo }) => {
+export const assertPrepublicationOwlContract = ({
+  candidate,
+  report,
+  nativeText,
+  identity,
+  artifact,
+  currentSources,
+}) => {
+  assertNativeOwlContractReport(report, nativeText, {
+    candidateSha256: candidate.tarball.sha256,
+    artifact,
+  });
+  // Freshness concerns the consumed interface. Preserve the producing HEAD;
+  // a later unrelated consumer commit does not invalidate those same blobs.
+  assertReviewedConsumerSources(currentSources, REVIEWED_CONSUMER_SOURCES);
   if (
-    webvowl?.qualification !== "RECONCILED" ||
-    webvowl.result !== "PASS" ||
-    webvowl.candidate?.package?.name !== candidate.package.name ||
-    webvowl.candidate?.package?.version !== candidate.package.version ||
-    webvowl.candidate?.tarballSha256 !== candidate.tarball.sha256 ||
-    uo?.stage !== "PREPUBLICATION" ||
-    uo.status !== "PASS_WITH_ACCEPTED_JAVA_PARITY_BOUNDARY" ||
-    uo.candidate?.sha256 !== candidate.tarball.sha256
-  ) {
+    report.identity.workflow !== "Release" ||
+    report.identity.commit !== identity.commit ||
+    report.identity.runId !== identity.runId ||
+    report.identity.runAttempt > identity.runAttempt
+  )
     throw new Error(
-      "The retained candidate must match both accepted prepublication consumer reports.",
+      "Prepublication requires fresh same-run installed OWL interface proof.",
     );
-  }
-  return { tarballSha256: candidate.tarball.sha256 };
+  return report;
+};
+
+export const readContractEvidenceFile = (path) => {
+  const stat = lstatSync(path);
+  if (!stat.isFile() || stat.isSymbolicLink() || stat.size > 256 * 1024)
+    throw new Error("Invalid contract evidence file type or size.");
+  return readFileSync(path, "utf8");
 };
 
 export const assertDryRunMatchesCandidate = ({ candidate, dryRun }) => {
@@ -312,7 +395,7 @@ const main = async () => {
       );
     }
     process.stdout.write(
-      `${JSON.stringify(assertRecordedRequirement(record, requirementId), null, 2)}\n`,
+      `${JSON.stringify(assertRecordedRequirement(record, requirementId, argumentValue("--definitions") ? readContractEvidenceFile(resolve(argumentValue("--definitions"))) : undefined), null, 2)}\n`,
     );
     return;
   }
@@ -326,19 +409,27 @@ const main = async () => {
     throw new Error(`Candidate directory is absent: ${candidateDirectory}`);
   }
   const candidate = readCandidate(candidateDirectory);
-  const evidenceDirectory = join(
-    repositoryRoot,
-    "docs/provenance/releases",
-    candidate.package.version,
-  );
-  const consumerEvidence = assertPrepublicationConsumers({
+  const contractDirectory = argumentValue("--owl-contract");
+  if (!contractDirectory)
+    throw new Error("Prepublication requires --owl-contract native evidence.");
+  const producerContract = assertPrepublicationOwlContract({
     candidate,
-    webvowl: JSON.parse(
-      readFileSync(join(evidenceDirectory, "phase22-webvowl.json"), "utf8"),
+    report: JSON.parse(
+      readContractEvidenceFile(join(contractDirectory, "qualification.json")),
     ),
-    uo: JSON.parse(
-      readFileSync(join(evidenceDirectory, "phase22-uo.json"), "utf8"),
-    ).report,
+    nativeText: readContractEvidenceFile(
+      join(contractDirectory, "native.ndjson"),
+    ),
+    identity: {
+      commit: process.env.GITHUB_SHA,
+      runId: Number(process.env.GITHUB_RUN_ID),
+      runAttempt: Number(process.env.GITHUB_RUN_ATTEMPT),
+    },
+    artifact: {
+      id: Number(process.env.CANDIDATE_ARTIFACT_ID),
+      digest: `sha256:${process.env.CANDIDATE_ARTIFACT_DIGEST}`,
+    },
+    currentSources: await captureConsumerSources(),
   });
   const dryRun = runDryRun(candidate.tarballPath);
   const dryRunResult = assertDryRunMatchesCandidate({ candidate, dryRun });
@@ -353,14 +444,14 @@ const main = async () => {
     retainedSha256: candidate.tarball.sha256,
   });
   const report = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     result: "PASS",
     checkedAt: new Date().toISOString(),
     registry,
     channel: "next",
     canonicalTag,
     registryState: state.action,
-    consumerEvidence,
+    producerContract,
     candidate: {
       coordinate: dryRunResult.coordinate,
       fileName: candidate.tarball.fileName,

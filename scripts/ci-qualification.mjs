@@ -9,8 +9,8 @@ import {
   assertCheckCoverage,
   evidenceFingerprint,
   JAVA_LIVE_INVENTORY,
-  WEBVOWL_GATES,
 } from "./ci-check-coverage.mjs";
+import { OWL_CONTRACT_INVENTORY_SHA256 } from "./owl-contract-evidence.mjs";
 
 export const CI_JOB_NAMES = Object.freeze({
   verification: "CI / verification strategy",
@@ -27,19 +27,19 @@ export const CI_JOB_NAMES = Object.freeze({
   browser_chromium: "CI / browser / Chromium",
   browser_firefox: "CI / browser / Firefox",
   browser_webkit: "CI / browser / WebKit",
-  webvowl: "CI / isolated WebVOWL consumer",
+  owl_contract: "CI / installed OWL contract",
   required: "CI / required",
 });
 export const CHECK_JOBS = Object.freeze({
   java: "source_node_24",
-  webvowl: "webvowl",
+  owl_contract: "owl_contract",
 });
 /** All tracked bytes and exact hosted identity bind FULL coverage. External input
  * equivalence and independent selection authority are deliberately unproved;
  * this policy cannot authorize an omitted integration.
  */
 export const QUALIFICATION_POLICY = Object.freeze({
-  version: 3,
+  version: 4,
   mode: "FULL_ONLY",
   selectiveExecution: false,
   javaReferenceReuse: JAVA_REFERENCE_POLICY.enabled,
@@ -47,7 +47,7 @@ export const QUALIFICATION_POLICY = Object.freeze({
   externalInputEquivalence: "UNPROVEN",
   inventorySha256: evidenceFingerprint({
     java: JAVA_LIVE_INVENTORY,
-    webvowl: WEBVOWL_GATES,
+    owl_contract: OWL_CONTRACT_INVENTORY_SHA256,
   }),
 });
 export const QUALIFICATION_POLICY_SHA256 =
@@ -112,7 +112,7 @@ export const createQualificationChecks = ({
   return result;
 };
 
-/** Strict v3 FULL/reused envelope. Unsupported versions/modes require fresh CI. */
+/** Strict v4 FULL/reused envelope. Unsupported versions/modes require fresh CI. */
 export const assertQualificationRecord = (record) => {
   fact(
     closed(record, [
@@ -138,7 +138,7 @@ export const assertQualificationRecord = (record) => {
     "Qualification record has an invalid closed schema.",
   );
   fact(
-    record.schemaVersion === 3 &&
+    record.schemaVersion === 4 &&
       ["PR", "MAIN"].includes(record.role) &&
       ["FULL", "REUSED"].includes(record.mode) &&
       record.sourceMode === "FULL" &&
@@ -235,6 +235,13 @@ export const assertQualificationRecord = (record) => {
   fact(
     isDeepStrictEqual(record.checks, expected),
     "Qualification coverage has an invalid state, input or direct original pointer.",
+  );
+  fact(
+    isDeepStrictEqual(
+      record.checks.owl_contract.evidence.candidateArtifact,
+      record.candidate,
+    ),
+    "OWL contract proof qualified a different candidate artifact.",
   );
   fact(
     Buffer.byteLength(JSON.stringify(record)) <= 64 * 1024,

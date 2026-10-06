@@ -1,0 +1,121 @@
+# Installed OWL interface qualification
+
+CI and release run `test:owl-contract` against their own exact retained tarball.
+The suite exercises public OwlAPI exports and OWL data only.
+It loads no UO, VOWL or WebVOWL adapter, projection, build, renderer, filter or worker protocol.
+Existing producer portability and browser jobs remain required; their native package fixtures now also exercise the public model fields and acquisition metadata used by the current consumers.
+
+The owner accepted both 6 October 2026 implementation plans.
+They were committed first at `a83bf47b55c3043d0a3fe779d6435f16d590013d`.
+HISEW execution `aaba2f74-408b-4659-8e45-5b163d936ebf` uses the accepted R2 route and protected plan snapshots `a60f607d-41dc-4eaf-a6ce-593883169f98` and `007fd39d-2c57-4a62-95f6-31e18ee72d93`.
+Implementation evidence, review and hosted acceptance are recorded separately; this specification is not a release or deployment approval.
+
+## Inventory and independent oracles
+
+The initial committed source review covers UO `e2b7cd888a5d38bb32e7c42853c0b1b6dd301a36` and WebVOWL `c10c41003de9c0fb1940964f3bb40274174538c2`.
+The UO advancement from the planning snapshot changed development manifest/lock evidence, with unchanged relevant OWL call sites.
+Local consumer working copies are not qualification inputs.
+
+The inventory consists of 68 native named assertions: eight boundary groups and 60 explicit public model shape cases.
+The reviewed names live in `test/consumers/owl-contract/public-model-cases.js`; cases spell out supplied operands and expected public fields.
+Each owning probe must fail when its promised public value changes.
+Neither candidate output nor consumer output is used to generate an expected semantic result.
+
+| Committed consumer seam                                                                             | Producer obligation and oracle                                                                                                                                                                          | Owning native assertion                                                                                 |
+| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| UO materialization/build entry points; VOWL loading                                                 | Native public exports, identity and alias resolution from the installed candidate, supported format names and typed exports                                                                             | public package exports and native installation identity                                                 |
+| VOWL `modelBuilder.js`; UO structural fingerprint and declaration reads                             | Kind, entity IRI, literal lexical form/datatype/language, annotation fields and structural identity; authored URNs and supplied handles                                                                 | public literal, annotation, entity and structural identity; 60 public model field cases                 |
+| UO document loader/catalog mapper; VOWL loading and compatible loading                              | Actual graph documents and ontology identity, direct imports/axioms, frozen document/import context, format/configuration and public missing-import failure                                             | document graph, loader context, configuration and missing-import errors                                 |
+| UO lossless-load checker; VOWL source evidence                                                      | Document diagnostics, source structure, RDF triple/header/unparsed/guessed-declaration metadata and declaration field shape; small authored RDF and existing preservation fixture                       | RDF parser metadata and retained source evidence; profile validity, uncertainty and parser preservation |
+| VOWL profile policy                                                                                 | Real producer profile validity and uncertainty; independent declared structural expectations and retained lexical assertions in existing producer fixtures                                              | profile validity, uncertainty and parser preservation                                                   |
+| UO collapse/writer/standalone verifier                                                              | Imports closure/provider/merger, identity and annotation changes, source/target getters, deterministic storage and unchanged-target failure; four authored closure documents and expected counts/axioms | imports closure, merger, ontology changes and storage failure contracts                                 |
+| WebVOWL `canonicalVowlSourceAcquisition.js`, `canonicalInputSelection.js`, `webMcpToolContracts.js` | Public format key/media/extension metadata, positive bounded safe defaults and immutable caller configuration; independently authored registry and explicit custom limits                               | public format metadata and acquisition-independent loader configuration                                 |
+| UO document loader; WebVOWL `importResolver.js`                                                     | Public missing/unloadable/resource/security error constructors, codes, native causes and supplied detail fields                                                                                         | public import, resource and security error identity and details; graph loading failure                  |
+
+The reused `test/import-closure/public-contract.js` specifies independent OWL structures and failure expectations and already runs in producer browser modes.
+Its closure fixture includes shared/cyclic relationships, annotation changes, identity changes, deterministic serialization and non-representable storage.
+Projection, annotation selection, UO losslessness policy, remote retries, atomic publication and application deadlines are excluded from the oracles.
+Factory shape assertions supplement parser/Java conformance; they do not claim that every syntax can produce every shape.
+
+## Current-source admission
+
+Each qualification resolves both public repositories' latest default branch HEAD once, then reads immutable native Git trees for those SHAs.
+The report records default branch, commit, root tree, reviewed interface file/blob identities and source digest.
+There is no fallback to an old consumer revision.
+
+The bounded scopes cover UO's `scripts/ontology` and its three relevant entry points, VOWL's `packages/vowl/src/owl`, the four direct WebVOWL metadata/error call sites, and consumer package manifests.
+Production imports were checked at the immutable SHAs with native Git search; consumer tests, historical migration generators and notice tooling are not runtime interface oracles.
+
+The initial guard is deliberately conservative: an edited interface file, removed/new adapter file or new interface subdirectory needs inventory review.
+A changed consumer algorithm does not justify a new producer assertion.
+Review may refresh only source bindings when all supported interface obligations remain covered.
+No automatic baseline updater or success-map generator exists.
+Unrelated documentation and corpus edits can advance a captured HEAD with unchanged interface blobs.
+Relevant future entry points outside these seams require explicit inventory expansion.
+
+Transport permits only the fixed public GitHub API repositories and native metadata/ref/commit/tree paths, no redirects or archives.
+Its shared bounds are 32 requests, 60 seconds, 4 MiB per response and 16 MiB total.
+Truncated trees, non-ordinary interface files, invalid UTF-8 and unavailable reads fail closed.
+The optional workflow read token stays at the fixed API origin and is cleared from installed semantic test and installation child environments.
+
+## Candidate and execution evidence
+
+Native candidate bundle verification precedes a unique isolated npm installation with lifecycle scripts disabled.
+The candidate is installed under the actual `owlapi` dependency name; the suite imports its public root/subpaths and checks real resolution and package identity.
+Producer network guards run before any candidate import.
+Cleanup removes only the tool-created installation.
+
+The Node test runner's custom reporter records actual native pass/fail events, names, skip/todo state and failure details.
+A successful qualification requires the exact registered assertion sequence once, with no missing, failed, skipped, pending, duplicated or unregistered assertion.
+Raw `native.ndjson` is retained even for semantic failures.
+Successful `qualification.json` requires a fresh empty output directory and binds package/tarball, same-run artifact ID/digest, workflow/run/producing attempt/commit, source snapshots, fixture/inventory and native report digest.
+The coverage command reads and validates both files.
+
+CI qualification schema/policy version 4 replaces the historical `webvowl` check with `owl_contract` and `CI / installed OWL contract`.
+Old schema-3 verdicts cannot satisfy it.
+The aggregate also compares the proof's candidate artifact with the retained candidate output.
+Main reuse refreshes current consumer snapshots before admission; drift requires fresh qualification.
+The exact-base reader has the same guard but currently has no production caller; it does not authorize selective omission.
+Partial reruns retain only bounded earlier successful producing attempts in the same authenticated run.
+Selective omission remains unapproved.
+
+Release uses identical assertions and native coverage.
+Both source Node 24 jobs also run the complete live pinned Java parity inventory and the pinned UO-origin July producer corpus (parsing and both closure formats).
+The retained candidate depends on that same-commit source qualification; the installed interface suite separately binds the exact retained tarball.
+These producer semantic checks execute no UO materialization code or WebVOWL application code.
+Publication preflight downloads the exact same-run proof by artifact ID with native digest enforcement, compares its tarball and execution identity, validates raw assertions, and refreshes current source bindings.
+Release evidence schema 4 retains that producer proof and requires the installed-contract job; old schema-2/3 assets remain readable as historical evidence and cannot satisfy current producer finalization.
+Historical schema-4 reading validates its recorded inventory and bindings, so later fixture or reviewed-source changes do not invalidate an immutable archive.
+New evidence construction and current finalization still require the current oracle.
+
+## Active release policy and recovery
+
+`producer-release-policy.json` splits all active mixed requirements.
+Its deterministic `producer-gates.json` projection gives revised obligations new IDs and digests, replaces the Phase 21 checkpoint's application dependency with installed producer proof, and preserves rights, package/dependency/material, security, registry/byte identity, signed API ancestry and pinned UO-origin producer corpus/Java obligations.
+Entirely application-owned dependency and bundle acceptance is retired from producer requirements.
+The original plan catalogue, `gates.json` projection and historical reports are preserved.
+No old application PASS is relabeled as new producer evidence.
+Requirement-ledger inspection selects definitions by the recorded registry byte digest and verifies each requirement digest.
+If an older definition snapshot is unavailable locally, supply the retained `--definitions` file; current IDs never alias retired IDs.
+
+The separate reconciliation workflow is retained solely for its previously authorized unscoped alpha recovery.
+Current scoped publication control has `reconciliation: null` and grants it no authority.
+Scoped recovery uses the existing authenticated same-run failed-job rerun path, retaining original successful producing/publication attempts; it does not regenerate or relabel alpha evidence.
+
+An owner dispatch of `release.yml` with `qualification_only=true` runs the producer qualifications on the exact captured branch.
+Publication preflight, release environments, tag acceptance, npm publication, registry publication readback and GitHub release mutation jobs are excluded.
+Ordinary release mode continues to require current protected main and the existing publication controls.
+This mode exists for publication-free hosted validation of the coordinated migration, not consumer monitoring.
+GitHub's documented branch dispatch and Boolean input semantics are the underlying native controls.
+
+Rollback is one coordinated ordinary revert of runner/inventory, workflows, readers/writers and active producer policy.
+Restore matching protocol versions and obtain fresh candidate qualification; do not rewrite historical evidence.
+Consumer snapshot drift, unexplained public contracts, candidate mismatch, missing native proof or surviving downstream prerequisite requires repair and requalification, never a fabricated success or ordinary waiver.
+
+## Decision basis
+
+First principles place assertions with the party that owns the public guarantee: OwlAPI owns parsing/model/loading/storage/profile data; consumers own their composition and UI.
+Modern practice favors small independent contract fixtures at that seam, native package resolution and explicit artifact provenance.
+Authoritative guidance supplies the native transport and identity controls: [GitHub repository metadata](https://docs.github.com/en/rest/repos/repos#get-a-repository), [complete native Git trees](https://docs.github.com/en/rest/git/trees#get-a-tree), [secure Actions use](https://docs.github.com/en/actions/reference/security/secure-use), [Node native test reporters](https://nodejs.org/api/test.html#test-reporters), and [branch dispatch](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow).
+The adopted repository practice already provides retained candidate verification, producer browser modes, typed receipts and fail-closed aggregate controls.
+The implementation extends those seams without a consumer shim, test framework, additional runtime dependency or alternate governance ledger.

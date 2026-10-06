@@ -112,7 +112,29 @@ export const assertReleasePreflight = ({
   canonicalTagLookupStatus,
   manifest,
   publication,
+  qualificationOnly = false,
 }) => {
+  if (typeof qualificationOnly !== "boolean")
+    throw new Error(
+      "Qualification-only admission must be an explicit boolean.",
+    );
+  if (qualificationOnly) {
+    if (
+      !/^refs\/heads\/[A-Za-z0-9_./-]+$/u.test(sourceRef ?? "") ||
+      !/^[a-f0-9]{40}$/u.test(capturedSha ?? "") ||
+      checkoutHead !== capturedSha
+    )
+      throw new Error(
+        "Qualification-only dispatch requires an exact captured branch checkout.",
+      );
+    return {
+      result: "PASS",
+      mode: "QUALIFICATION_ONLY",
+      sourceCommit: checkoutHead,
+      sourceRef,
+      publicationEnabled: false,
+    };
+  }
   if (sourceRef !== "refs/heads/main") {
     throw new Error(
       `Release dispatch must target refs/heads/main, not ${sourceRef}.`,
@@ -165,6 +187,7 @@ export const assertReleasePreflight = ({
 };
 
 const main = () => {
+  const qualificationOnly = process.env.OWLAPI_QUALIFICATION_ONLY === "true";
   const readJson = (path) =>
     JSON.parse(readFileSync(join(repositoryRoot, path), "utf8"));
   const ledger = readJson("docs/compatibility/java-api-parity-decisions.json");
@@ -210,15 +233,17 @@ const main = () => {
     commit: ledger.phase22.phase21Checkpoint.commit,
     registry: readJson("docs/provenance/release-signers.json"),
   });
-  for (const path of [
-    "docs/provenance/scoped-package-name-review.json",
-    "docs/provenance/rights-inventory.json",
-    "docs/provenance/third-party-material.json",
-  ]) {
-    if (readJson(path).review.status !== "REVIEWED") {
-      throw new Error(
-        `Publication still requires the human fact review in ${path}.`,
-      );
+  if (!qualificationOnly) {
+    for (const path of [
+      "docs/provenance/scoped-package-name-review.json",
+      "docs/provenance/rights-inventory.json",
+      "docs/provenance/third-party-material.json",
+    ]) {
+      if (readJson(path).review.status !== "REVIEWED") {
+        throw new Error(
+          `Publication still requires the human fact review in ${path}.`,
+        );
+      }
     }
   }
   const checkoutHead = runGit(["rev-parse", "HEAD"]).stdout.trim();
@@ -241,6 +266,7 @@ const main = () => {
     { allowMissing: true },
   );
   const report = assertReleasePreflight({
+    qualificationOnly,
     sourceRef: process.env.GITHUB_REF,
     checkoutHead,
     capturedSha: process.env.GITHUB_SHA,

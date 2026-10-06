@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Hadden-Industries/owlapi/main/docs/release/producer-gates.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "catalogue",
+    "policy",
+    "requirements",
+    "checklistGates",
+    "leafGates"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "./producer-gates.schema.json"
+    },
+    "schemaVersion": {
+      "const": 2
+    },
+    "catalogue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["historicalCatalogueSha256", "policySha256", "sourcePaths"],
+      "properties": {
+        "historicalCatalogueSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "policySha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "sourcePaths": {
+          "const": [
+            "docs/implementation-plan.md",
+            "docs/plans/java-api-parity-precondition.md",
+            "docs/ontology-lifecycle-capability-implementation-plan.md",
+            "docs/release/producer-release-policy.json"
+          ]
+        }
+      }
+    },
+    "policy": {
+      "$ref": "https://raw.githubusercontent.com/Hadden-Industries/owlapi/main/docs/release/gates.schema.json#/properties/policy"
+    },
+    "requirements": {
+      "$ref": "https://raw.githubusercontent.com/Hadden-Industries/owlapi/main/docs/release/gates.schema.json#/properties/requirements"
+    },
+    "checklistGates": {
+      "$ref": "https://raw.githubusercontent.com/Hadden-Industries/owlapi/main/docs/release/gates.schema.json#/properties/checklistGates"
+    },
+    "leafGates": {
+      "$ref": "https://raw.githubusercontent.com/Hadden-Industries/owlapi/main/docs/release/gates.schema.json#/properties/leafGates"
+    }
+  }
+}
