@@ -2843,7 +2843,6 @@ bundle licence and notice review.
       "main",
       "module",
       "optionalDependencies",
-      "overrides",
       "peerDependencies",
       "types",
       "typings",
@@ -2861,6 +2860,28 @@ bundle licence and notice review.
 
     for (const field of forbiddenFields) {
       expect(packageJson).not.toHaveProperty(field);
+    }
+    // These declared security overrides govern only the development install.
+    // npm does not apply dependency overrides from a consumed package manifest.
+    expect(Object.keys(packageJson.overrides).sort()).toEqual([
+      "@istanbuljs/load-nyc-config@1.1.0",
+      "source-map-js",
+    ]);
+    const lock = readJson("./package-lock.json");
+    for (const name of [
+      "@istanbuljs/load-nyc-config",
+      "js-yaml",
+      "source-map-js",
+    ]) {
+      const occurrences = Object.entries(lock.packages).filter(
+        ([path]) =>
+          path.endsWith(`/node_modules/${name}`) ||
+          path === `node_modules/${name}`,
+      );
+      expect(occurrences.length).toBeGreaterThan(0);
+      for (const [, occurrence] of occurrences) {
+        expect(occurrence.dev).toBe(true);
+      }
     }
     for (const script of forbiddenLifecycleScripts) {
       expect(packageJson.scripts).not.toHaveProperty(script);
