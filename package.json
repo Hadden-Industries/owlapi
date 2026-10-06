@@ -196,6 +196,7 @@
     "testEnvironment": "node",
     "testPathIgnorePatterns": [
       "/node_modules/",
+      "<rootDir>/test/consumers/owl-contract/",
       "<rootDir>/\\.venv/",
       "<rootDir>/\\.development-tools/",
       "/test/package-boundary.test.mjs"

@@ -123,6 +123,18 @@ export const requireCiJobs = (
 
 export const requireReleaseJobs = (needs, { runId, runAttempt, sha }) => {
   const requiredJobs = requireSuccessfulJobs("release", needs);
+  const java = JSON.parse(needs.source_node_24.outputs.coverage);
+  if (
+    !Number.isSafeInteger(java.runAttempt) ||
+    java.runAttempt < 1 ||
+    java.runAttempt > runAttempt
+  )
+    throw new Error("Java producing attempt is outside this release run.");
+  assertCheckCoverage(java, "java", {
+    runId,
+    runAttempt: java.runAttempt,
+    commit: sha,
+  });
   const evidence = JSON.parse(needs.owl_contract.outputs.coverage);
   if (
     !Number.isSafeInteger(evidence.runAttempt) ||

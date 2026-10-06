@@ -15,22 +15,76 @@ import addFormats from "ajv-formats";
 import { verifyDownloadedCandidateBundle } from "./candidate-bundle.mjs";
 import { inspectGzipTar, sha256Buffer } from "./release-artifacts.mjs";
 import { classifyReleaseState } from "./release-state.mjs";
-import { isDeepStrictEqual } from "node:util";
-import { captureConsumerSources } from "./consumer-source-snapshot.mjs";
-import { assertNativeOwlContractReport } from "./owl-contract-evidence.mjs";
+import {
+  captureConsumerSources,
+  assertReviewedConsumerSources,
+} from "./consumer-source-snapshot.mjs";
+import {
+  assertNativeOwlContractReport,
+  REVIEWED_CONSUMER_SOURCES,
+} from "./owl-contract-evidence.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 const registry = "https://registry.npmjs.org/";
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
-const gateDefinitions = JSON.parse(
-  readFileSync(
-    new URL("../docs/release/producer-gates.json", import.meta.url),
-    "utf8",
-  ),
-);
+export const selectRecordedDefinitions = (record, retainedDefinitionsText) => {
+  const candidates =
+    retainedDefinitionsText === undefined
+      ? ["producer-gates.json", "gates.json"].map((name) =>
+          readFileSync(
+            new URL(`../docs/release/${name}`, import.meta.url),
+            "utf8",
+          ),
+        )
+      : [retainedDefinitionsText];
+  const matched = candidates.find(
+    (text) =>
+      sha256Buffer(Buffer.from(text)) ===
+      record?.definitionDigests?.gateRegistrySha256,
+  );
+  if (matched === undefined)
+    throw new Error(
+      "The exact recorded gate definitions are unavailable; supply their retained --definitions snapshot.",
+    );
+  const definitions = JSON.parse(matched);
+  const schemaName =
+    definitions.schemaVersion === 2
+      ? "producer-gates.schema.json"
+      : "gates.schema.json";
+  const ajv = new Ajv2020({ allErrors: true, strict: true });
+  addFormats(ajv);
+  if (definitions.schemaVersion === 2)
+    ajv.addSchema(
+      JSON.parse(
+        readFileSync(
+          new URL("../docs/release/gates.schema.json", import.meta.url),
+          "utf8",
+        ),
+      ),
+    );
+  const validate = ajv.compile(
+    JSON.parse(
+      readFileSync(
+        new URL(`../docs/release/${schemaName}`, import.meta.url),
+        "utf8",
+      ),
+    ),
+  );
+  if (!validate(definitions))
+    throw new Error("Recorded gate definitions violate their strict schema.");
+  return definitions;
+};
 
-export const assertRecordedRequirement = (record, requirementId) => {
+export const assertRecordedRequirement = (
+  record,
+  requirementId,
+  retainedDefinitionsText,
+) => {
+  const gateDefinitions = selectRecordedDefinitions(
+    record,
+    retainedDefinitionsText,
+  );
   const visiting = new Set();
   const assertRequirement = (id) => {
     if (visiting.has(id)) {
@@ -49,6 +103,7 @@ export const assertRecordedRequirement = (record, requirementId) => {
     if (
       record?.accepted !== true ||
       matches.length !== 1 ||
+      matches[0].requirementDigest !== definition.requirementDigest ||
       matches[0].finalResult !== "PASS"
     ) {
       throw new Error(`Release requirement ${id} is not PASS.`);
@@ -78,12 +133,14 @@ export const assertPrepublicationOwlContract = ({
     candidateSha256: candidate.tarball.sha256,
     artifact,
   });
+  // Freshness concerns the consumed interface. Preserve the producing HEAD;
+  // a later unrelated consumer commit does not invalidate those same blobs.
+  assertReviewedConsumerSources(currentSources, REVIEWED_CONSUMER_SOURCES);
   if (
     report.identity.workflow !== "Release" ||
     report.identity.commit !== identity.commit ||
     report.identity.runId !== identity.runId ||
-    report.identity.runAttempt > identity.runAttempt ||
-    !isDeepStrictEqual(currentSources, report.consumerSources)
+    report.identity.runAttempt > identity.runAttempt
   )
     throw new Error(
       "Prepublication requires fresh same-run installed OWL interface proof.",
@@ -338,7 +395,7 @@ const main = async () => {
       );
     }
     process.stdout.write(
-      `${JSON.stringify(assertRecordedRequirement(record, requirementId), null, 2)}\n`,
+      `${JSON.stringify(assertRecordedRequirement(record, requirementId, argumentValue("--definitions") ? readContractEvidenceFile(resolve(argumentValue("--definitions"))) : undefined), null, 2)}\n`,
     );
     return;
   }

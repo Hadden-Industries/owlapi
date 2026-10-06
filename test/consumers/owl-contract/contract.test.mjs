@@ -136,6 +136,27 @@ test(OWL_CONTRACT_ASSERTIONS[2], async () => {
     ),
     io.MissingImportError,
   );
+  const cause = new Error("loader could not parse the acquired document");
+  const unloadable = OWLManager.createOWLOntologyManager({
+    documentLoader: {
+      load() {
+        throw cause;
+      },
+    },
+  });
+  await assert.rejects(
+    unloadable.loadOntologyGraphFromOntologyDocument(
+      new StringDocumentSource(
+        "Ontology(<urn:contract:unloadable> Import(<urn:contract:broken>))",
+        { format: "functional" },
+      ),
+      { missingImportHandling: "throw" },
+    ),
+    (error) =>
+      error instanceof io.UnloadableImportError &&
+      error.code === "UNLOADABLE_IMPORT" &&
+      error.cause === cause,
+  );
   assertNoNetworkOperations();
 });
 test(OWL_CONTRACT_ASSERTIONS[3], async () => {

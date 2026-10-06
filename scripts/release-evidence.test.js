@@ -9,6 +9,7 @@ import * as evidenceGenerator from "./generate-release-evidence.mjs";
 import * as releaseEvidence from "./release-evidence.mjs";
 import { contractReport } from "./fixtures/owl-contract-report.mjs";
 import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
+import { sourceFingerprint } from "./consumer-source-snapshot.mjs";
 
 const { buildReleaseEvidence } = releaseEvidence;
 
@@ -226,6 +227,35 @@ test("fresh scoped RC evidence binds one source and run without borrowing alpha 
   );
   expect(validate(evidence)).toBe(true);
   expect(validate.errors).toBeNull();
+});
+test("historical schema-4 evidence remains readable after oracle changes but cannot finalize a current release", () => {
+  const evidence = JSON.parse(
+    JSON.stringify(buildReleaseEvidence(scopedFacts())),
+  );
+  const report = evidence.producerContract;
+  report.fixtureSha256 = "0".repeat(64);
+  report.assertions[0].name = "previous interface assertion";
+  report.consumerSources.snapshots[0].sources[0].blob = "9".repeat(40);
+  report.consumerSources.snapshots[0].sourceSha256 = sourceFingerprint(
+    report.consumerSources.snapshots[0].sources,
+  );
+  report.inventorySha256 = sourceFingerprint({
+    assertions: report.assertions.map((row) => row.name),
+    sourceScopes: report.consumerSources.snapshots.map(
+      ({ repository, sources }) => ({ repository, sources }),
+    ),
+  });
+  expect(validateReleaseEvidence(evidence)).toBe(evidence);
+  expect(() =>
+    releaseEvidence.assertReleaseExecutionIdentity({
+      evidence,
+      promotionCommit: evidence.workflow.commit,
+      sourceCommit: evidence.source.commit,
+      tag: evidence.source.tag,
+    }),
+  ).toThrow(/proof/u);
+  report.assertions[0].skipped = true;
+  expect(() => validateReleaseEvidence(evidence)).toThrow(/inconsistent/u);
 });
 
 test.each(["coordinate", "run", "reconciliation", "asset"])(

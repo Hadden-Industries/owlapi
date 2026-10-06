@@ -1033,6 +1033,17 @@ jobs:
           CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
         run: npm run test:owl-contract -- --candidate .release/download --output .release/owl-contract
         timeout-minutes: 10
+      - name: Retain failed native OWL contract assertions
+        if: ${{ failure() && hashFiles('.release/owl-contract/native.ndjson') != '' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: owl-contract-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/owl-contract/native.ndjson
+          if-no-files-found: error
+          retention-days: 90
+          overwrite: false
+          include-hidden-files: false
+          archive: true
       - name: Record complete native OWL contract qualification
         id: coverage
         run: node scripts/ci-check-coverage-command.mjs owl_contract .release/owl-contract/qualification.json

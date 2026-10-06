@@ -10,7 +10,7 @@ Describe the consumer problem and the observable result of this change.
 ## Engineering evidence
 
 - [ ] Tests demonstrate the change or regression before relying on implementation claims.
-- [ ] Required conformance, differential, resource, browser, package-boundary, and WebVOWL consumer gates applicable to this change pass.
+- [ ] Required conformance, differential, resource, browser, package-boundary, and installed OWL interface gates applicable to this change pass.
 - [ ] New or edited code includes the context needed to preserve non-obvious standards, provenance, security, or compatibility decisions.
 
 ## Rights and provenance

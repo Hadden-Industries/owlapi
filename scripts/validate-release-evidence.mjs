@@ -4,7 +4,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
-import { assertOwlContractReport } from "./owl-contract-evidence.mjs";
+import { assertArchivedOwlContractReport } from "./owl-contract-evidence.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 
@@ -24,7 +24,8 @@ export const validateReleaseEvidence = (record) => {
     );
   }
   if (record.schemaVersion === 4) {
-    assertOwlContractReport(record.producerContract, {
+    assertArchivedOwlContractReport(record.producerContract, {
+      package: { name: record.package.name, version: record.package.version },
       candidateSha256: record.candidate.tarball.sha256,
       artifact: {
         id: Number(record.candidate.artifactId),

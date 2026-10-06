@@ -1,4 +1,11 @@
-import { mkdtempSync, rmSync, writeFileSync, mkdirSync } from "node:fs";
+import {
+  mkdtempSync,
+  rmSync,
+  writeFileSync,
+  mkdirSync,
+  readFileSync,
+} from "node:fs";
+import { createHash } from "node:crypto";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
@@ -13,6 +20,7 @@ import {
   normalizeNpmPublishDryRun,
   npmPublishDryRunInvocation,
   readContractEvidenceFile,
+  selectRecordedDefinitions,
 } from "./qualify-release.mjs";
 
 const candidate = {
@@ -59,6 +67,18 @@ describe("release-candidate publication qualification", () => {
     const input = acceptedContract();
     expect(assertPrepublicationOwlContract(input)).toBe(input.report);
   });
+  test("preserves the producing HEAD when current consumer HEAD advances without interface changes", () => {
+    const input = acceptedContract();
+    input.currentSources = JSON.parse(JSON.stringify(input.currentSources));
+    input.currentSources.snapshots[0].commit = "9".repeat(40);
+    input.currentSources.snapshots[0].tree = "8".repeat(40);
+    expect(assertPrepublicationOwlContract(input)).toBe(input.report);
+    expect(input.report.consumerSources.snapshots[0].commit).not.toBe(
+      "9".repeat(40),
+    );
+    input.currentSources.snapshots[0].sources[0].blob = "7".repeat(40);
+    expect(() => assertPrepublicationOwlContract(input)).toThrow();
+  });
   test.each([
     "candidate",
     "native",
@@ -89,19 +109,29 @@ describe("release-candidate publication qualification", () => {
   });
 
   test("cannot accept a lifecycle result before the parity checkpoint passes", () => {
+    const text = readFileSync(
+      new URL("../docs/release/producer-gates.json", import.meta.url),
+      "utf8",
+    );
+    const definitions = JSON.parse(text);
+    const passed = (requirementId) => ({
+      requirementId,
+      finalResult: "PASS",
+      requirementDigest: definitions.requirements.find(
+        (row) => row.requirementId === requirementId,
+      ).requirementDigest,
+    });
     const record = {
       accepted: true,
-      requirements: [
-        { requirementId: "P22-PRODUCER-CORPUS-001", finalResult: "PASS" },
-      ],
+      definitionDigests: {
+        gateRegistrySha256: createHash("sha256").update(text).digest("hex"),
+      },
+      requirements: [passed("P22-PRODUCER-CORPUS-001")],
     };
     expect(() =>
       assertRecordedRequirement(record, "P22-PRODUCER-CORPUS-001"),
     ).toThrow(/P21-PRODUCER-CHECKPOINT-001 is not PASS/u);
-    record.requirements.push({
-      requirementId: "P21-PRODUCER-CHECKPOINT-001",
-      finalResult: "PASS",
-    });
+    record.requirements.push(passed("P21-PRODUCER-CHECKPOINT-001"));
     for (const requirementId of [
       "P21-INTEGRATION-001",
       "P21-PARITY-001",
@@ -110,7 +140,7 @@ describe("release-candidate publication qualification", () => {
       expect(() =>
         assertRecordedRequirement(record, "P22-PRODUCER-CORPUS-001"),
       ).toThrow(new RegExp(`${requirementId} is not PASS`, "u"));
-      record.requirements.push({ requirementId, finalResult: "PASS" });
+      record.requirements.push(passed(requirementId));
     }
     expect(
       assertRecordedRequirement(record, "P22-PRODUCER-CORPUS-001"),
@@ -124,6 +154,43 @@ describe("release-candidate publication qualification", () => {
     expect(() =>
       assertRecordedRequirement(record, "P22-PRODUCER-CORPUS-001"),
     ).toThrow(/P21-OWL-CONTRACT-001 is not PASS/u);
+  });
+  test("historical ledgers select their recorded definitions without translating retired IDs", () => {
+    const text = readFileSync(
+      new URL("../docs/release/gates.json", import.meta.url),
+      "utf8",
+    );
+    const definitions = JSON.parse(text);
+    const requirementId = "P19-SCOPE-001";
+    const definition = definitions.requirements.find(
+      (row) => row.requirementId === requirementId,
+    );
+    const record = {
+      accepted: true,
+      definitionDigests: {
+        gateRegistrySha256: createHash("sha256").update(text).digest("hex"),
+      },
+      requirements: [
+        {
+          requirementId,
+          requirementDigest: definition.requirementDigest,
+          finalResult: "PASS",
+        },
+      ],
+    };
+    expect(selectRecordedDefinitions(record)).toEqual(definitions);
+    expect(assertRecordedRequirement(record, requirementId)).toEqual({
+      requirementId,
+      finalResult: "PASS",
+    });
+    record.requirements[0].requirementDigest = `sha256:${"0".repeat(64)}`;
+    expect(() => assertRecordedRequirement(record, requirementId)).toThrow(
+      /not PASS/u,
+    );
+    record.definitionDigests.gateRegistrySha256 = "0".repeat(64);
+    expect(() => selectRecordedDefinitions(record, text)).toThrow(
+      /exact recorded/u,
+    );
   });
 
   test("normalizes npm 12's single package-keyed dry-run envelope", () => {
@@ -244,12 +311,30 @@ describe("release-candidate publication qualification", () => {
   });
 
   test("accepts only a terminal PASS result for a requested gate requirement", () => {
+    const text = readFileSync(
+      new URL("../docs/release/producer-gates.json", import.meta.url),
+      "utf8",
+    );
+    const definitions = JSON.parse(text);
+    const binding = {
+      definitionDigests: {
+        gateRegistrySha256: createHash("sha256").update(text).digest("hex"),
+      },
+    };
+    const requirementDigest = definitions.requirements.find(
+      (row) => row.requirementId === "P19-PRODUCER-SCOPE-001",
+    ).requirementDigest;
     expect(
       assertRecordedRequirement(
         {
+          ...binding,
           accepted: true,
           requirements: [
-            { requirementId: "P19-PRODUCER-SCOPE-001", finalResult: "PASS" },
+            {
+              requirementId: "P19-PRODUCER-SCOPE-001",
+              requirementDigest,
+              finalResult: "PASS",
+            },
           ],
         },
         "P19-PRODUCER-SCOPE-001",
@@ -258,10 +343,12 @@ describe("release-candidate publication qualification", () => {
     expect(() =>
       assertRecordedRequirement(
         {
+          ...binding,
           accepted: false,
           requirements: [
             {
               requirementId: "P19-PRODUCER-SCOPE-001",
+              requirementDigest,
               finalResult: "CONTROL_FAILURE",
             },
           ],

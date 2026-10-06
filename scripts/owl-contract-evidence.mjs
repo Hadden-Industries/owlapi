@@ -65,6 +65,111 @@ const identityValid = (value) =>
       Number.isSafeInteger(value.runAttempt) &&
       value.runAttempt > 0);
 
+/** Read retained evidence against its recorded definitions, never today's oracle.
+ * This checks archive consistency only; publication uses assertOwlContractReport. */
+export const assertArchivedOwlContractReport = (
+  report,
+  { candidateSha256, artifact, package: packageIdentity },
+) => {
+  const sources = report?.consumerSources;
+  const snapshotsValid =
+    closed(sources, ["schemaVersion", "snapshots"]) &&
+    sources.schemaVersion === 1 &&
+    Array.isArray(sources.snapshots) &&
+    sources.snapshots.length > 0 &&
+    sources.snapshots.length <= 10 &&
+    new Set(sources.snapshots.map((row) => row.repository)).size ===
+      sources.snapshots.length &&
+    sources.snapshots.every(
+      (row) =>
+        closed(row, [
+          "repository",
+          "defaultBranch",
+          "commit",
+          "tree",
+          "sources",
+          "sourceSha256",
+        ]) &&
+        /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(row.repository) &&
+        typeof row.defaultBranch === "string" &&
+        /^[A-Za-z0-9_./-]+$/u.test(row.defaultBranch) &&
+        !row.defaultBranch.includes("..") &&
+        /^[a-f0-9]{40}$/u.test(row.commit) &&
+        /^[a-f0-9]{40}$/u.test(row.tree) &&
+        Array.isArray(row.sources) &&
+        row.sources.length > 0 &&
+        row.sources.length <= 400 &&
+        new Set(row.sources.map((source) => source.path)).size ===
+          row.sources.length &&
+        row.sources.every(
+          (source) =>
+            closed(source, ["path", "blob"]) &&
+            typeof source.path === "string" &&
+            /^[A-Za-z0-9_.@/-]+$/u.test(source.path) &&
+            !source.path.startsWith("/") &&
+            !source.path.includes("..") &&
+            /^[a-f0-9]{40}$/u.test(source.blob),
+        ) &&
+        row.sourceSha256 === sourceFingerprint(row.sources),
+    );
+  const assertionsValid =
+    Array.isArray(report?.assertions) &&
+    report.assertions.length > 0 &&
+    report.assertions.length <= 1000 &&
+    new Set(report.assertions.map((row) => row.name)).size ===
+      report.assertions.length &&
+    report.assertions.every(
+      (row) =>
+        closed(row, ["name", "status", "skipped", "todo"]) &&
+        typeof row.name === "string" &&
+        row.name.length > 0 &&
+        row.name.length <= 512 &&
+        row.status === "passed" &&
+        row.skipped === false &&
+        row.todo === false,
+    );
+  if (
+    !closed(report, [
+      "schemaVersion",
+      "check",
+      "result",
+      "identity",
+      "candidate",
+      "consumerSources",
+      "inventorySha256",
+      "fixtureSha256",
+      "nativeReportSha256",
+      "assertions",
+    ]) ||
+    report.schemaVersion !== 1 ||
+    report.check !== "owl_contract" ||
+    report.result !== "PASS" ||
+    !identityValid(report.identity) ||
+    report.identity.workflow !== "Release" ||
+    !closed(report.candidate, ["package", "tarballSha256", "artifact"]) ||
+    !isDeepStrictEqual(report.candidate.package, packageIdentity) ||
+    !artifactValid(report.candidate.artifact) ||
+    !isDeepStrictEqual(report.candidate.artifact, artifact) ||
+    !digest(candidateSha256) ||
+    report.candidate.tarballSha256 !== candidateSha256 ||
+    !digest(report.fixtureSha256) ||
+    !digest(report.nativeReportSha256) ||
+    !snapshotsValid ||
+    !assertionsValid ||
+    report.inventorySha256 !==
+      sourceFingerprint({
+        assertions: report.assertions.map((row) => row.name),
+        sourceScopes: sources.snapshots.map(
+          ({ repository, sources: rows }) => ({ repository, sources: rows }),
+        ),
+      })
+  )
+    throw new Error(
+      "Retained OWL contract proof is inconsistent with its recorded definitions or candidate.",
+    );
+  return report;
+};
+
 /** Account for each native assertion once; skipped, renamed and fabricated inventories fail closed. */
 export const assertOwlContractReport = (
   report,

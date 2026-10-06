@@ -191,6 +191,8 @@ jobs:
     defaults:
       run:
         shell: bash
+    outputs:
+      coverage: ${{ steps.coverage.outputs.coverage }}
     steps:
       - name: Check out the proposed source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -243,9 +245,60 @@ jobs:
       - name: Verify static quality
         run: npm run lint
         timeout-minutes: 45
+      - name: Check out the immutable original July ontology sources
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Hadden-Industries/universal-ontology
+          ref: e2c667f3584b8fb705671cada0fe205b1000b617
+          path: .release/universal-ontology
+          persist-credentials: false
+      - name: Check out the pinned Java OWLAPI reference
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: owlcs/owlapi
+          ref: d7e997a53b470e32700de89cc610d9daf01ea769
+          path: .release/java-owlapi
+          persist-credentials: false
+      - name: Select the reference JDK
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: "25.0.4+101.0.LTS"
+          check-latest: false
+          overwrite-settings: false
+          cache: ""
+          cache-jdk: false
+      - name: Install the checksum-pinned native Maven reference tool
+        run: |
+          tool_directory="$RUNNER_TEMP/reference-maven-3.10.0"
+          mkdir "$tool_directory"
+          archive="$tool_directory/apache-maven-3.10.0-bin.zip"
+          curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' \
+            --max-time 60 --retry 2 --retry-max-time 120 \
+            https://dlcdn.apache.org/maven/maven-3/3.10.0/binaries/apache-maven-3.10.0-bin.zip \
+            --output "$archive"
+          printf '%s  %s\n' '22d31676d5b92ed53308c19ecded3245d0efd0cddfec51ec7bab62f4f13ad70ddddceff8e62940e0e8e2421f3cde8106737f4becec0aa034ffeff2a754e88337' "$archive" | sha512sum --check --strict
+          unzip -q "$archive" -d "$tool_directory"
+        timeout-minutes: 3
+      - name: Observe the controlled native reference inputs before compilation
+        run: node scripts/java-reference-command.mjs prepare
+        timeout-minutes: 10
+      - name: Freshly compile the controlled native Java reference
+        run: node scripts/java-reference-command.mjs build
+        timeout-minutes: 10
       - name: Run the full package suite
-        run: npm test -- --runInBand
+        env:
+          OWLAPI_REFERENCE_CHECKOUT: ${{ github.workspace }}/.release/java-owlapi
+        run: |
+          mkdir -p .release/java-qualification
+          npm test -- --runInBand --json --outputFile=.release/java-qualification/jest.json
         timeout-minutes: 45
+      - name: Record complete live Java test execution
+        id: coverage
+        env:
+          OWLAPI_REFERENCE_CHECKOUT: ${{ github.workspace }}/.release/java-owlapi
+        run: node scripts/ci-check-coverage-command.mjs java .release/java-qualification/jest.json
+        timeout-minutes: 1
       - name: Verify the public package boundary
         run: npm run test:boundary
         timeout-minutes: 45
@@ -255,6 +308,23 @@ jobs:
       - name: Verify repository workflow governance
         run: npm run verify:workflow-governance
         timeout-minutes: 45
+
+      - name: Reconcile all four July variants in parsing and both closure formats
+        env:
+          OWLAPI_REFERENCE_CHECKOUT: ${{ github.workspace }}/.release/java-owlapi
+        run: npm run test:universal-ontology -- --ontology-repository .release/universal-ontology --output .release/july-qualification
+        timeout-minutes: 15
+      - name: Retain July reconciliation evidence, including failed comparisons
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: july-ontology-reconciliation
+          path: .release/july-qualification
+          if-no-files-found: error
+          retention-days: 90
+          overwrite: false
+          include-hidden-files: false
+          archive: true
 
   dependency_review:
     name: Release / dependency policy
@@ -998,6 +1068,17 @@ jobs:
           CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
         run: npm run test:owl-contract -- --candidate .release/download --output .release/owl-contract
         timeout-minutes: 10
+      - name: Retain failed native OWL contract assertions
+        if: ${{ failure() && hashFiles('.release/owl-contract/native.ndjson') != '' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: owl-contract-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/owl-contract/native.ndjson
+          if-no-files-found: error
+          retention-days: 90
+          overwrite: false
+          include-hidden-files: false
+          archive: true
       - name: Record complete native OWL contract qualification
         id: coverage
         run: node scripts/ci-check-coverage-command.mjs owl_contract .release/owl-contract/qualification.json

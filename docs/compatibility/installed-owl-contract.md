@@ -74,13 +74,19 @@ The coverage command reads and validates both files.
 CI qualification schema/policy version 4 replaces the historical `webvowl` check with `owl_contract` and `CI / installed OWL contract`.
 Old schema-3 verdicts cannot satisfy it.
 The aggregate also compares the proof's candidate artifact with the retained candidate output.
-Main reuse and exact-base readers refresh current consumer snapshots before admission; drift requires fresh qualification.
+Main reuse refreshes current consumer snapshots before admission; drift requires fresh qualification.
+The exact-base reader has the same guard but currently has no production caller; it does not authorize selective omission.
 Partial reruns retain only bounded earlier successful producing attempts in the same authenticated run.
 Selective omission remains unapproved.
 
 Release uses identical assertions and native coverage.
+Both source Node 24 jobs also run the complete live pinned Java parity inventory and the pinned UO-origin July producer corpus (parsing and both closure formats).
+The retained candidate depends on that same-commit source qualification; the installed interface suite separately binds the exact retained tarball.
+These producer semantic checks execute no UO materialization code or WebVOWL application code.
 Publication preflight downloads the exact same-run proof by artifact ID with native digest enforcement, compares its tarball and execution identity, validates raw assertions, and refreshes current source bindings.
 Release evidence schema 4 retains that producer proof and requires the installed-contract job; old schema-2/3 assets remain readable as historical evidence and cannot satisfy current producer finalization.
+Historical schema-4 reading validates its recorded inventory and bindings, so later fixture or reviewed-source changes do not invalidate an immutable archive.
+New evidence construction and current finalization still require the current oracle.
 
 ## Active release policy and recovery
 
@@ -89,6 +95,12 @@ Its deterministic `producer-gates.json` projection gives revised obligations new
 Entirely application-owned dependency and bundle acceptance is retired from producer requirements.
 The original plan catalogue, `gates.json` projection and historical reports are preserved.
 No old application PASS is relabeled as new producer evidence.
+Requirement-ledger inspection selects definitions by the recorded registry byte digest and verifies each requirement digest.
+If an older definition snapshot is unavailable locally, supply the retained `--definitions` file; current IDs never alias retired IDs.
+
+The separate reconciliation workflow is retained solely for its previously authorized unscoped alpha recovery.
+Current scoped publication control has `reconciliation: null` and grants it no authority.
+Scoped recovery uses the existing authenticated same-run failed-job rerun path, retaining original successful producing/publication attempts; it does not regenerate or relabel alpha evidence.
 
 An owner dispatch of `release.yml` with `qualification_only=true` runs the producer qualifications on the exact captured branch.
 Publication preflight, release environments, tag acceptance, npm publication, registry publication readback and GitHub release mutation jobs are excluded.

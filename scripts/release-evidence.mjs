@@ -49,6 +49,16 @@ export const assertReleaseExecutionIdentity = ({
     throw new Error(
       "Current producer release finalization requires schema-4 OWL contract proof.",
     );
+  if (evidence?.reconciliation === null) {
+    // Archive readability never grants authority to finalize a new release.
+    assertOwlContractReport(evidence.producerContract, {
+      candidateSha256: evidence.candidate.tarball.sha256,
+      artifact: {
+        id: Number(evidence.candidate.artifactId),
+        digest: evidence.candidate.artifactDigest,
+      },
+    });
+  }
   if (
     evidence?.workflow?.commit !== promotionCommit ||
     evidence.publication?.provenance?.sourceCommit !== promotionCommit
