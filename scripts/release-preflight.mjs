@@ -112,7 +112,29 @@ export const assertReleasePreflight = ({
   canonicalTagLookupStatus,
   manifest,
   publication,
+  qualificationOnly = false,
 }) => {
+  if (typeof qualificationOnly !== "boolean")
+    throw new Error(
+      "Qualification-only admission must be an explicit boolean.",
+    );
+  if (qualificationOnly) {
+    if (
+      !/^refs\/heads\/[A-Za-z0-9_./-]+$/u.test(sourceRef ?? "") ||
+      !/^[a-f0-9]{40}$/u.test(capturedSha ?? "") ||
+      checkoutHead !== capturedSha
+    )
+      throw new Error(
+        "Qualification-only dispatch requires an exact captured branch checkout.",
+      );
+    return {
+      result: "PASS",
+      mode: "QUALIFICATION_ONLY",
+      sourceCommit: checkoutHead,
+      sourceRef,
+      publicationEnabled: false,
+    };
+  }
   if (sourceRef !== "refs/heads/main") {
     throw new Error(
       `Release dispatch must target refs/heads/main, not ${sourceRef}.`,
@@ -241,6 +263,7 @@ const main = () => {
     { allowMissing: true },
   );
   const report = assertReleasePreflight({
+    qualificationOnly: process.env.OWLAPI_QUALIFICATION_ONLY === "true",
     sourceRef: process.env.GITHUB_REF,
     checkoutHead,
     capturedSha: process.env.GITHUB_SHA,

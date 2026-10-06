@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "authority": "Accepted unified installed OWL qualification plans, 2026-10-06",
+  "replacements": [
+    {
+      "historicalRequirementId": "P19-SCOPE-001",
+      "requirementId": "P19-PRODUCER-SCOPE-001",
+      "obligation": "The accepted Phase 18 and explicitly approved Phase 21/22 public surface retains parsing, parity, losslessness, installed OWL contracts and packaging limits; no unrelated family or nominal API enters the package.",
+      "downstreamOwner": "Downstream consumer acceptance."
+    },
+    {
+      "historicalRequirementId": "P19-DOCUMENTATION-001",
+      "requirementId": "P19-PRODUCER-DOCUMENTATION-001",
+      "obligation": "README, API, changelog and compatibility records match public exports and supported environments, explain the prerelease boundary and exact scoped native alias, distinguish next from exact acceptance pins, and retain non-affiliation and bounded standards claims. Consumer deployments remain independently owned.",
+      "downstreamOwner": "Application production acceptance is recorded by its owner."
+    },
+    {
+      "historicalRequirementId": "P19-WEBVOWL-001",
+      "requirementId": "P19-OWL-CONTRACT-001",
+      "obligation": "Verify native installed package identity, supported exports, dependency resolution without ancestor hoisting or source aliases, the exact retained package bytes and public OWL interface obligations. Fresh public registry integrity and complete package-tree/production-graph equivalence remain producer requirements under P19-PUBLIC-VERIFICATION-001 and P19-PACKAGE-001.",
+      "downstreamOwner": "Consumer source copies, dependency declarations, builds, tests, transport cutover and deployment."
+    },
+    {
+      "historicalRequirementId": "P19-CHECKPOINT-001",
+      "requirementId": "P19-PRODUCER-CHECKPOINT-001",
+      "obligation": "Preserve the independently reviewed signed producer checkpoint, accepted package history and evidence, verify the exact public RC and immutable release, and retain the producer handoff before stable progression.",
+      "downstreamOwner": "Consumer transport migration and registry-backed application checkpoint."
+    },
+    {
+      "historicalRequirementId": "P20-DEPENDENCIES-001",
+      "requirementId": "P20-PRODUCER-DEPENDENCIES-001",
+      "obligation": "Retain the exact package dependency manifest, seam registry, locked/lockless graph records and existing read-only monitor; strict retained/registry-tarball publint and reviewed producer material inventory and package NOTICE must match the actual package distribution.",
+      "downstreamOwner": "Consumer bundled notices and dependency ownership."
+    },
+    {
+      "historicalRequirementId": "P20-WEBVOWL-001",
+      "requirementId": "P20-OWL-CONTRACT-001",
+      "obligation": "Verify the stable or separately accepted same-surface package through the same installed public OWL contract suite, exact public registry coordinate, native alias, byte identity and production graph. Consumer adoption does not define producer qualification.",
+      "downstreamOwner": "Consumer stable adoption and complete application gates."
+    },
+    {
+      "historicalRequirementId": "P20-WEBVOWL-DEPENDENCIES-001",
+      "requirementId": null,
+      "obligation": null,
+      "downstreamOwner": "Entirely consumer-owned dependency and emitted-bundle material inventory; producer dependency/material obligations remain mandatory independently."
+    },
+    {
+      "historicalRequirementId": "P20-BACKUP-001",
+      "requirementId": "P20-PRODUCER-BACKUP-001",
+      "obligation": "Retain encrypted off-platform producer source/release backups, checksum-verified known-good package, commit, manifest, lock, configuration and recovery runbook. Do not imply a restore rehearsal or mutate an immutable published coordinate.",
+      "downstreamOwner": "Application artefacts, deployment health checks and whole-application rollback."
+    },
+    {
+      "historicalRequirementId": "P21-CONSUMER-001",
+      "requirementId": "P21-OWL-CONTRACT-001",
+      "obligation": "Bind the reviewed latest consumer source inventory and actual installed public target/error assertions to the retained candidate, fixture and native evidence digests. Unknown, skipped or provisional assertion results fail closed.",
+      "downstreamOwner": "Consumer migration disposition and adapter execution."
+    },
+    {
+      "historicalRequirementId": "P21-CHECKPOINT-001",
+      "requirementId": "P21-PRODUCER-CHECKPOINT-001",
+      "obligation": "After P21-INTEGRATION-001, P21-PARITY-001 and P21-OWL-CONTRACT-001 pass, preserve the signed producer completion checkpoint and accepted API registry digest; verify required ancestry. Historical signed parity baselines remain evidence of producer API/parity only.",
+      "downstreamOwner": "Historical consumer acceptance is not inherited as new producer proof."
+    },
+    {
+      "historicalRequirementId": "P22-WEBVOWL-001",
+      "requirementId": "P22-OWL-CONTRACT-001",
+      "obligation": "Use the same installed OWL suite in CI and release to exercise successful public save, unchanged-target non-representability failure, valid source getter, exports and loading/profile/model/metadata interfaces. Existing producer browser and worker modes retain these contract obligations.",
+      "downstreamOwner": "Consumer dependency boundary, application suites, builds, graph conversion and UI."
+    },
+    {
+      "historicalRequirementId": "P22-UO-001",
+      "requirementId": "P22-PRODUCER-CORPUS-001",
+      "obligation": "Retain independently reproducible UO-origin producer corpus and pinned Java parsing/import-closure evidence, exact corpus provenance, rights, catalog inputs and no-network constraints under P22-JAVA-001. The current installed OWL report binds the exact retained candidate; newly packed bytes require new qualification. Public-registry identity and provenance remain separate producer gates.",
+      "downstreamOwner": "UO adapters, materialization, distribution generation, full consumer matrix and production cutover."
+    }
+  ]
+}

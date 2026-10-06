@@ -24,7 +24,7 @@ const sha = (value) =>
 const fingerprint = (value) =>
   createHash("sha256").update(JSON.stringify(value)).digest("hex");
 const policyFingerprint = fingerprint(APPLICABILITY_POLICY);
-const checks = ["java", "webvowl"];
+const checks = ["java", "owl_contract"];
 const maximumGitBytes = 4 * 1024 * 1024;
 
 /** Read a complete bounded native Git record. External diff/text conversion never runs. */
@@ -245,6 +245,6 @@ if (
   if (process.env.GITHUB_STEP_SUMMARY)
     appendFileSync(
       process.env.GITHUB_STEP_SUMMARY,
-      `CI applicability observation: Java ${report.checks.java.preliminary} (${report.checks.java.reason}); WebVOWL ${report.checks.webvowl.preliminary} (${report.checks.webvowl.reason}). Both integrations remain REQUIRED. Elapsed ${report.elapsedMilliseconds} ms. Policy ${policyFingerprint}.\n`,
+      `CI applicability observation: Java ${report.checks.java.preliminary} (${report.checks.java.reason}); OWL contract ${report.checks.owl_contract.preliminary} (${report.checks.owl_contract.reason}). Both integrations remain REQUIRED. Elapsed ${report.elapsedMilliseconds} ms. Policy ${policyFingerprint}.\n`,
     );
 }

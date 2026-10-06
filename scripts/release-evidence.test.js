@@ -7,6 +7,7 @@ import addFormats from "ajv-formats";
 
 import * as evidenceGenerator from "./generate-release-evidence.mjs";
 import * as releaseEvidence from "./release-evidence.mjs";
+import { contractReport } from "./fixtures/owl-contract-report.mjs";
 import { validateReleaseEvidence } from "./validate-release-evidence.mjs";
 
 const { buildReleaseEvidence } = releaseEvidence;
@@ -163,7 +164,23 @@ const scopedFacts = () => {
     conclusion: "success",
   };
   candidate.reconciliation = null;
+  candidate.producerContract = contractReport(
+    {
+      runId: Number(candidate.workflow.runId),
+      runAttempt: candidate.workflow.runAttempt,
+      commit: candidate.source.commit,
+    },
+    {
+      workflow: "Release",
+      tarballSha256: candidate.candidate.tarball.sha256,
+      artifact: {
+        id: Number(candidate.candidate.artifactId),
+        digest: candidate.candidate.artifactDigest,
+      },
+    },
+  );
   candidate.requiredJobs = [
+    "Release / installed OWL contract",
     "Release / protected-main preflight",
     "Release / qualified",
     "Release / publication preflight",
@@ -196,7 +213,7 @@ test("fresh scoped RC evidence binds one source and run without borrowing alpha 
     registry: "https://registry.npmjs.org/",
   });
   expect(evidence.reconciliation).toBeNull();
-  expect(evidence.schemaVersion).toBe(3);
+  expect(evidence.schemaVersion).toBe(4);
   const ajv = new Ajv2020({ allErrors: true, strict: true });
   addFormats(ajv);
   const validate = ajv.compile(
@@ -292,7 +309,7 @@ test("partial reruns retain successful prerequisites and the original publicatio
     runAttempt: 1,
     conclusion: "failure",
   });
-  expect(accepted.requiredJobs).toHaveLength(7);
+  expect(accepted.requiredJobs).toHaveLength(8);
   expect(accepted.qualificationRunAttempt).toBe(1);
   candidate.publication.publisherJob = accepted.publisherJob;
   candidate.requiredJobs = accepted.requiredJobs;

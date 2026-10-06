@@ -1,10 +1,18 @@
+import { mkdtempSync, rmSync, writeFileSync, mkdirSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import {
+  contractReport,
+  nativeContractText,
+} from "./fixtures/owl-contract-report.mjs";
 import {
   assertDryRunMatchesCandidate,
-  assertPrepublicationConsumers,
+  assertPrepublicationOwlContract,
   assertRecordedRequirement,
   assertRegistryBootstrapState,
   normalizeNpmPublishDryRun,
   npmPublishDryRunInvocation,
+  readContractEvidenceFile,
 } from "./qualify-release.mjs";
 
 const candidate = {
@@ -18,89 +26,104 @@ const candidate = {
 };
 
 describe("release-candidate publication qualification", () => {
-  const acceptedConsumers = () => ({
-    candidate,
-    webvowl: {
-      qualification: "RECONCILED",
-      result: "PASS",
-      candidate: {
-        package: candidate.package,
-        tarballSha256: candidate.tarball.sha256,
-      },
-    },
-    uo: {
-      stage: "PREPUBLICATION",
-      status: "PASS_WITH_ACCEPTED_JAVA_PARITY_BOUNDARY",
-      candidate: { sha256: candidate.tarball.sha256 },
-    },
+  test("bounds downloaded contract evidence and rejects directories", () => {
+    const directory = mkdtempSync(join(tmpdir(), "owl-contract-reader-"));
+    try {
+      const evidence = join(directory, "native.ndjson");
+      writeFileSync(evidence, "{}\n");
+      expect(readContractEvidenceFile(evidence)).toBe("{}\n");
+      writeFileSync(evidence, Buffer.alloc(256 * 1024 + 1));
+      expect(() => readContractEvidenceFile(evidence)).toThrow(/size/u);
+      const nested = join(directory, "directory");
+      mkdirSync(nested);
+      expect(() => readContractEvidenceFile(nested)).toThrow(/type/u);
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
   });
-
-  test("binds the publication candidate to both consumer reports", () => {
-    expect(assertPrepublicationConsumers(acceptedConsumers())).toEqual({
+  const acceptedContract = () => {
+    const report = contractReport(undefined, {
+      workflow: "Release",
       tarballSha256: candidate.tarball.sha256,
     });
-    const differentBytes = acceptedConsumers();
-    differentBytes.candidate = {
-      ...candidate,
-      tarball: { ...candidate.tarball, sha256: "b".repeat(64) },
+    return {
+      candidate,
+      report,
+      nativeText: nativeContractText,
+      identity: report.identity,
+      artifact: report.candidate.artifact,
+      currentSources: report.consumerSources,
     };
-    expect(() => assertPrepublicationConsumers(differentBytes)).toThrow(
-      /both accepted prepublication consumer reports/u,
-    );
+  };
+  test("prepublication accepts the same native OWL suite without downstream reports", () => {
+    const input = acceptedContract();
+    expect(assertPrepublicationOwlContract(input)).toBe(input.report);
   });
-
-  test.each(["webvowl", "uo"])(
-    "rejects absent, failed or superseded %s acceptance",
-    (consumer) => {
-      for (const field of ["missing", "result", "digest"]) {
-        const evidence = acceptedConsumers();
-        const record = evidence[consumer];
-        if (field === "missing") delete evidence[consumer];
-        else if (field === "result")
-          record[consumer === "webvowl" ? "result" : "status"] = "FAIL";
-        else
-          record.candidate[
-            consumer === "webvowl" ? "tarballSha256" : "sha256"
-          ] = "b".repeat(64);
-        expect(() => assertPrepublicationConsumers(evidence)).toThrow(
-          /both accepted prepublication consumer reports/u,
-        );
-      }
-    },
-  );
+  test.each([
+    "candidate",
+    "native",
+    "source",
+    "workflow",
+    "attempt",
+    "missing",
+    "skipped",
+    "artifact",
+  ])("rejects invalid prepublication contract %s", (fault) => {
+    const input = acceptedContract();
+    if (fault === "candidate")
+      input.candidate = {
+        ...candidate,
+        tarball: { ...candidate.tarball, sha256: "b".repeat(64) },
+      };
+    if (fault === "native")
+      input.nativeText = input.nativeText.replace("passed", "failed");
+    if (fault === "source") input.currentSources = {};
+    if (fault === "workflow")
+      input.identity = { ...input.identity, runId: 999 };
+    if (fault === "attempt")
+      input.identity = { ...input.identity, runAttempt: 1 };
+    if (fault === "missing") input.report.assertions.pop();
+    if (fault === "skipped") input.report.assertions[0].skipped = true;
+    if (fault === "artifact") input.artifact = { ...input.artifact, id: 999 };
+    expect(() => assertPrepublicationOwlContract(input)).toThrow();
+  });
 
   test("cannot accept a lifecycle result before the parity checkpoint passes", () => {
     const record = {
       accepted: true,
-      requirements: [{ requirementId: "P22-UO-001", finalResult: "PASS" }],
+      requirements: [
+        { requirementId: "P22-PRODUCER-CORPUS-001", finalResult: "PASS" },
+      ],
     };
-    expect(() => assertRecordedRequirement(record, "P22-UO-001")).toThrow(
-      /P21-CHECKPOINT-001 is not PASS/u,
-    );
+    expect(() =>
+      assertRecordedRequirement(record, "P22-PRODUCER-CORPUS-001"),
+    ).toThrow(/P21-PRODUCER-CHECKPOINT-001 is not PASS/u);
     record.requirements.push({
-      requirementId: "P21-CHECKPOINT-001",
+      requirementId: "P21-PRODUCER-CHECKPOINT-001",
       finalResult: "PASS",
     });
     for (const requirementId of [
       "P21-INTEGRATION-001",
       "P21-PARITY-001",
-      "P21-CONSUMER-001",
+      "P21-OWL-CONTRACT-001",
     ]) {
-      expect(() => assertRecordedRequirement(record, "P22-UO-001")).toThrow(
-        new RegExp(`${requirementId} is not PASS`, "u"),
-      );
+      expect(() =>
+        assertRecordedRequirement(record, "P22-PRODUCER-CORPUS-001"),
+      ).toThrow(new RegExp(`${requirementId} is not PASS`, "u"));
       record.requirements.push({ requirementId, finalResult: "PASS" });
     }
-    expect(assertRecordedRequirement(record, "P22-UO-001")).toEqual({
-      requirementId: "P22-UO-001",
+    expect(
+      assertRecordedRequirement(record, "P22-PRODUCER-CORPUS-001"),
+    ).toEqual({
+      requirementId: "P22-PRODUCER-CORPUS-001",
       finalResult: "PASS",
     });
     record.requirements.find(
-      ({ requirementId }) => requirementId === "P21-CONSUMER-001",
+      ({ requirementId }) => requirementId === "P21-OWL-CONTRACT-001",
     ).finalResult = "PRODUCT_FAILURE";
-    expect(() => assertRecordedRequirement(record, "P22-UO-001")).toThrow(
-      /P21-CONSUMER-001 is not PASS/u,
-    );
+    expect(() =>
+      assertRecordedRequirement(record, "P22-PRODUCER-CORPUS-001"),
+    ).toThrow(/P21-OWL-CONTRACT-001 is not PASS/u);
   });
 
   test("normalizes npm 12's single package-keyed dry-run envelope", () => {
@@ -226,24 +249,24 @@ describe("release-candidate publication qualification", () => {
         {
           accepted: true,
           requirements: [
-            { requirementId: "P19-SCOPE-001", finalResult: "PASS" },
+            { requirementId: "P19-PRODUCER-SCOPE-001", finalResult: "PASS" },
           ],
         },
-        "P19-SCOPE-001",
+        "P19-PRODUCER-SCOPE-001",
       ),
-    ).toEqual({ requirementId: "P19-SCOPE-001", finalResult: "PASS" });
+    ).toEqual({ requirementId: "P19-PRODUCER-SCOPE-001", finalResult: "PASS" });
     expect(() =>
       assertRecordedRequirement(
         {
           accepted: false,
           requirements: [
             {
-              requirementId: "P19-SCOPE-001",
+              requirementId: "P19-PRODUCER-SCOPE-001",
               finalResult: "CONTROL_FAILURE",
             },
           ],
         },
-        "P19-SCOPE-001",
+        "P19-PRODUCER-SCOPE-001",
       ),
     ).toThrow(/not PASS/u);
   });

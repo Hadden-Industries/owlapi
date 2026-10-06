@@ -1,3 +1,5 @@
+import { summarizeOwlContractExecution } from "./owl-contract-evidence.mjs";
+import { contractReport } from "./fixtures/owl-contract-report.mjs";
 import {
   readFileSync,
   mkdtempSync,
@@ -11,7 +13,6 @@ import { join } from "node:path";
 import { resolve } from "node:path";
 import {
   summarizeJavaExecution,
-  summarizeWebvowlExecution,
   assertCheckCoverage,
 } from "./ci-check-coverage.mjs";
 
@@ -29,58 +30,44 @@ const fixture = () => {
 };
 const identity = { runId: 100, runAttempt: 2, commit: "c".repeat(40) };
 
-const consumerReport = () => ({
-  schemaVersion: 1,
-  result: "PASS",
-  qualification: "PRE_INTEGRATION",
-  candidate: { tarballSha256: "e".repeat(64) },
-  maintainedWebVowlCheckoutModified: false,
-  cleanInstall: { npmLs: "PASS", installedPackageIdentity: "PASS" },
-  gates: {
-    baselineNpmCi: "PASS",
-    baselineJest: "PASS",
-    baselineDevelopmentBuild: "PASS",
-    baselineProductionBuild: "PASS",
-    consumerBoundary: "PASS",
-    candidateJest: "PASS",
-    installedImportClosure: "PASS",
-    phase21TargetErrorSemantics: "PASS",
-    representativeCorpus: "PASS",
-    candidateDevelopmentBuild: "PASS",
-    candidateProductionBuild: "PASS",
-    candidateWebVowlViteConsumerBuild: "PASS",
-    candidateChromiumIntegration: "PASS",
-  },
-});
-test("records the native consumer report and binds the actual tarball digest", () => {
-  const record = summarizeWebvowlExecution(consumerReport(), identity);
+test("binds the actual native contract assertion inventory and retained artifact", () => {
+  const record = summarizeOwlContractExecution(
+    contractReport(identity),
+    identity,
+  );
   expect(record).toMatchObject({
-    check: "webvowl",
+    check: "owl_contract",
     execution: "SUCCESS",
     candidateTarballSha256: "e".repeat(64),
     ...identity,
   });
-  expect(assertCheckCoverage(record, "webvowl", identity)).toEqual(record);
+  expect(assertCheckCoverage(record, "owl_contract", identity)).toEqual(record);
 });
 test.each([
-  "missing gate",
-  "failed gate",
-  "unknown gate",
-  "invalid candidate",
-  "modified checkout",
-  "failed installation",
-  "release report",
-])("rejects invalid consumer qualification: %s", (fault) => {
-  const report = consumerReport();
-  if (fault === "missing gate") delete report.gates.candidateJest;
-  if (fault === "failed gate") report.gates.candidateJest = "FAIL";
-  if (fault === "unknown gate") report.gates.unknown = "PASS";
-  if (fault === "invalid candidate") report.candidate.tarballSha256 = "invalid";
-  if (fault === "modified checkout")
-    report.maintainedWebVowlCheckoutModified = true;
-  if (fault === "failed installation") report.cleanInstall.npmLs = "FAIL";
-  if (fault === "release report") report.qualification = "RECONCILED";
-  expect(() => summarizeWebvowlExecution(report, identity)).toThrow();
+  "missing",
+  "failed",
+  "skipped",
+  "todo",
+  "duplicate",
+  "unknown",
+  "identity",
+  "candidate",
+  "source",
+  "extra",
+])("rejects invalid native contract proof: %s", (fault) => {
+  const report = contractReport(identity);
+  if (fault === "missing") report.assertions.pop();
+  if (fault === "failed") report.assertions[0].status = "failed";
+  if (fault === "skipped") report.assertions[0].skipped = true;
+  if (fault === "todo") report.assertions[0].todo = true;
+  if (fault === "duplicate") report.assertions.push(report.assertions[0]);
+  if (fault === "unknown") report.assertions[0].name = "unregistered";
+  if (fault === "identity") report.identity.runAttempt++;
+  if (fault === "candidate") report.candidate.tarballSha256 = "invalid";
+  if (fault === "source")
+    report.consumerSources.snapshots[0].sources[0].blob = "b".repeat(40);
+  if (fault === "extra") report.extra = "PASS";
+  expect(() => summarizeOwlContractExecution(report, identity)).toThrow();
 });
 test("native recorder requires the live environment and emits no success for skipped tests", () => {
   const root = mkdtempSync(join(tmpdir(), "owlapi-ci-accounting-"));

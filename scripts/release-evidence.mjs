@@ -4,6 +4,7 @@ import {
   PACKAGE_FILE_STEM,
   assertRegistryTarballUrl,
 } from "./package-identity.mjs";
+import { assertOwlContractReport } from "./owl-contract-evidence.mjs";
 const alphaVersion = "0.1.0-alpha.0";
 const compareCodeUnits = (left, right) =>
   left < right ? -1 : left > right ? 1 : 0;
@@ -27,6 +28,7 @@ const REQUIRED_JOB_NAMES = Object.freeze(
 /** Completed jobs needed before the fresh RC's evidence/finalization jobs may execute. */
 export const SCOPED_RELEASE_JOB_NAMES = Object.freeze(
   [
+    "Release / installed OWL contract",
     "Release / protected-main preflight",
     "Release / qualified",
     "Release / publication preflight",
@@ -43,6 +45,10 @@ export const assertReleaseExecutionIdentity = ({
   sourceCommit,
   tag,
 }) => {
+  if (evidence?.reconciliation === null && evidence.schemaVersion !== 4)
+    throw new Error(
+      "Current producer release finalization requires schema-4 OWL contract proof.",
+    );
   if (
     evidence?.workflow?.commit !== promotionCommit ||
     evidence.publication?.provenance?.sourceCommit !== promotionCommit
@@ -118,6 +124,23 @@ export const buildReleaseEvidence = (facts) => {
     );
   }
   if (scoped) {
+    assertOwlContractReport(facts.producerContract, {
+      candidateSha256: facts.candidate.tarball.sha256,
+      artifact: {
+        id: Number(facts.candidate.artifactId),
+        digest: facts.candidate.artifactDigest,
+      },
+    });
+    const contractIdentity = facts.producerContract.identity;
+    if (
+      contractIdentity.workflow !== "Release" ||
+      contractIdentity.commit !== facts.source.commit ||
+      contractIdentity.runId !== Number(facts.workflow.runId) ||
+      contractIdentity.runAttempt > facts.qualificationWorkflow.runAttempt
+    )
+      throw new Error(
+        "Release contract belongs to another execution or future attempt.",
+      );
     assertRegistryTarballUrl(facts.publication.tarballUrl);
     const provenance = facts.publication.provenance;
     if (
@@ -201,7 +224,8 @@ export const buildReleaseEvidence = (facts) => {
   }
   return {
     $schema: `https://raw.githubusercontent.com/Hadden-Industries/owlapi/${facts.workflow.commit}/docs/release/release-evidence.schema.json`,
-    schemaVersion: scoped ? 3 : 2,
+    schemaVersion: scoped ? 4 : 2,
+    ...(scoped ? { producerContract: facts.producerContract } : {}),
     package: {
       name: packageName,
       version,

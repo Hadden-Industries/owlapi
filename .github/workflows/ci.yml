@@ -976,43 +976,25 @@ jobs:
         run: npm run test:browser -- --fixture-root .release/browser/qualified --project webkit
         timeout-minutes: 45
 
-  webvowl:
-    name: CI / isolated WebVOWL consumer
+  owl_contract:
+    name: CI / installed OWL contract
     needs: candidate
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 30
     permissions:
       contents: read
     defaults:
       run:
         shell: bash
-        working-directory: owlapi
     outputs:
       coverage: ${{ steps.coverage.outputs.coverage }}
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+      artifact_digest: ${{ steps.upload.outputs.artifact-digest }}
     steps:
-      - name: Check out the proposed owlapi source
+      - name: Check out the proposed producer source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 1
-          path: owlapi
-          persist-credentials: false
-      - name: Check out the fixed WebVOWL consumer
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          repository: Hadden-Industries/webvowl
-          ref: 4f1970e5b6c95655af823c495bd58f9e9993f8b8
-          # WebVOWL's governance suite proves retained reconstruction ancestry.
-          # A shallow checkout would make valid recorded commits unreachable.
-          fetch-depth: 0
-          path: consumer-workspace/webvowl
-          persist-credentials: false
-      - name: Check out the fixed representative ontology corpus
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          repository: Hadden-Industries/universal-ontology
-          ref: c2220675b0f3345628fc9cc8112a41440afcb2f0
-          fetch-depth: 1
-          path: consumer-workspace/universal-ontology
           persist-credentials: false
       - name: Select Node 24.21.0 without package caching
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -1027,45 +1009,48 @@ jobs:
       - name: Verify the exact runtime pair
         run: node scripts/assert-workflow-runtime.mjs --node 24.21.0 --npm 12.1.0
         timeout-minutes: 5
-      # universal-ontology intentionally ignores dist/, so the pinned source
-      # checkout must materialize the exact corpus before WebVOWL can consume it.
-      - name: Install the fixed ontology corpus dependencies
-        working-directory: consumer-workspace/universal-ontology
+      - name: Install the independently locked producer qualification tools
         run: npm ci
         timeout-minutes: 20
-      - name: Materialize the fixed representative ontology corpus
-        working-directory: consumer-workspace/universal-ontology
-        run: npm run build
-        timeout-minutes: 20
-      - name: Install the independently locked owlapi qualification tools
-        run: npm ci
-        timeout-minutes: 20
-      - name: Install the managed Chromium revision
-        run: npm run playwright:install -- --with-deps chromium
-        timeout-minutes: 20
-      - name: Record the hosted runner and browser identity
-        run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash --browser-project chromium
+      - name: Record the hosted runner identity
+        run: npm run workflow:runner-record -- --expected-os Linux --expected-arch X64 --label ubuntu-24.04 --shell bash
         timeout-minutes: 5
       - name: Download the exact same-run candidate by artifact ID
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           artifact-ids: ${{ needs.candidate.outputs.artifact_id }}
-          path: owlapi/.release/download
+          path: .release/download
           merge-multiple: false
           skip-decompress: false
           digest-mismatch: error
       - name: Verify the closed candidate inventory and checksums
         run: npm run candidate:prepare -- --candidate .release/download
         timeout-minutes: 5
-      - name: Qualify the retained package through isolated WebVOWL
-        # CI exercises the reviewed candidate without claiming release acceptance.
-        # The release workflow retains the strict reconciled qualification route.
-        run: npm run test:webvowl-consumer -- --candidate-dir .release/download --webvowl-repository ../consumer-workspace/webvowl --expected-webvowl-commit 4f1970e5b6c95655af823c495bd58f9e9993f8b8 --expected-ontology-commit c2220675b0f3345628fc9cc8112a41440afcb2f0 --development-audit test/consumers/webvowl/development-audit.json --output .release/webvowl-result
-        timeout-minutes: 45
-      - name: Record complete native WebVOWL qualification
+      - name: Qualify installed public OWL interfaces against current consumer source
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CANDIDATE_ARTIFACT_ID: ${{ needs.candidate.outputs.artifact_id }}
+          CANDIDATE_ARTIFACT_DIGEST: ${{ needs.candidate.outputs.artifact_digest }}
+        run: npm run test:owl-contract -- --candidate .release/download --output .release/owl-contract
+        timeout-minutes: 10
+      - name: Record complete native OWL contract qualification
         id: coverage
-        run: node scripts/ci-check-coverage-command.mjs webvowl .release/webvowl-result/qualification.json
+        run: node scripts/ci-check-coverage-command.mjs owl_contract .release/owl-contract/qualification.json
         timeout-minutes: 1
+      - name: Retain exact installed OWL contract proof
+        id: upload
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: owl-contract-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .release/owl-contract/qualification.json
+            .release/owl-contract/native.ndjson
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+          archive: true
 
   required:
     name: CI / required
@@ -1084,7 +1069,7 @@ jobs:
       - browser_chromium
       - browser_firefox
       - browser_webkit
-      - webvowl
+      - owl_contract
       - quality_windows
     runs-on: ubuntu-24.04
     timeout-minutes: 10

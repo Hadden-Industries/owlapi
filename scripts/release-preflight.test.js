@@ -39,6 +39,31 @@ const accepted = {
 };
 
 describe("release preflight", () => {
+  test("an exact branch can qualify with every publication boundary disabled", () => {
+    const input = {
+      ...accepted,
+      qualificationOnly: true,
+      sourceRef: "refs/heads/ci/unified-owl-contract-qualification",
+      remoteMain: "b".repeat(40),
+      canonicalTagLookupStatus: 0,
+    };
+    expect(assertReleasePreflight(input)).toEqual({
+      result: "PASS",
+      mode: "QUALIFICATION_ONLY",
+      sourceCommit: accepted.checkoutHead,
+      sourceRef: input.sourceRef,
+      publicationEnabled: false,
+    });
+    expect(() =>
+      assertReleasePreflight({ ...input, qualificationOnly: false }),
+    ).toThrow(/main/);
+    expect(() =>
+      assertReleasePreflight({ ...input, checkoutHead: "b".repeat(40) }),
+    ).toThrow(/exact/);
+    expect(() =>
+      assertReleasePreflight({ ...input, qualificationOnly: "true" }),
+    ).toThrow(/boolean/);
+  });
   test("refuses provisional lifecycle evidence before a publication run", () => {
     expect(() =>
       assertReconciledLifecycle({

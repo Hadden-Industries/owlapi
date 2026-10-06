@@ -1,9 +1,11 @@
 import { appendFileSync, lstatSync, readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
+import { dirname, join } from "node:path";
+import { summarizeJavaExecution } from "./ci-check-coverage.mjs";
 import {
-  summarizeJavaExecution,
-  summarizeWebvowlExecution,
-} from "./ci-check-coverage.mjs";
+  summarizeOwlContractExecution,
+  assertNativeOwlContractReport,
+} from "./owl-contract-evidence.mjs";
 
 /** Successful outputs are emitted only after native report and selected-test validation. */
 export const recordCheckCoverage = (
@@ -16,6 +18,17 @@ export const recordCheckCoverage = (
   if (!stat.isFile() || stat.isSymbolicLink() || stat.size > maximum)
     throw new Error("Check report has invalid type or size.");
   const report = JSON.parse(readFileSync(reportPath, "utf8"));
+  if (check === "owl_contract") {
+    const nativePath = join(dirname(reportPath), "native.ndjson");
+    const nativeStat = lstatSync(nativePath);
+    if (
+      !nativeStat.isFile() ||
+      nativeStat.isSymbolicLink() ||
+      nativeStat.size > 256 * 1024
+    )
+      throw new Error("Invalid native contract evidence file.");
+    assertNativeOwlContractReport(report, readFileSync(nativePath, "utf8"));
+  }
   const identity = {
     runId: Number(environment.GITHUB_RUN_ID),
     runAttempt: Number(environment.GITHUB_RUN_ATTEMPT),
@@ -26,8 +39,12 @@ export const recordCheckCoverage = (
   const record =
     check === "java"
       ? summarizeJavaExecution(report, identity)
-      : check === "webvowl"
-        ? summarizeWebvowlExecution(report, identity)
+      : check === "owl_contract"
+        ? summarizeOwlContractExecution(
+            report,
+            identity,
+            environment.GITHUB_WORKFLOW,
+          )
         : null;
   if (!record) throw new Error("Unknown CI check.");
   const serialized = JSON.stringify(record);

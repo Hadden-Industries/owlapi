@@ -1,5 +1,6 @@
 /** Evidence reuse is an optimization. Unprovable equivalence always requires full CI. */
 import { isDeepStrictEqual } from "node:util";
+import { captureConsumerSources } from "./consumer-source-snapshot.mjs";
 import { javaReferenceFromNeeds } from "./java-reference-state.mjs";
 import {
   requireSuccessfulJobs,
@@ -86,7 +87,7 @@ export const createVerificationReceipt = ({
     commit: snapshot.commit,
   });
   return assertQualificationRecord({
-    schemaVersion: 3,
+    schemaVersion: 4,
     role: "PR",
     mode: "FULL",
     sourceMode: "FULL",
@@ -180,7 +181,7 @@ export const createMainQualification = ({
     digest: `sha256:${needs.candidate.outputs.artifact_digest}`,
   };
   return assertQualificationRecord({
-    schemaVersion: 3,
+    schemaVersion: 4,
     role: "MAIN",
     mode: accepted.mode,
     sourceMode: "FULL",
@@ -350,6 +351,7 @@ export const verifyIntegrationProof = async ({
   receipt,
   read,
   now = Date.now(),
+  captureSources = captureConsumerSources,
 }) => {
   assertPush(context);
   const { pr, artifact } = selection;
@@ -370,7 +372,14 @@ export const verifyIntegrationProof = async ({
   const recordedAt = Date.parse(receipt.recordedAt);
   assertQualificationRecord(receipt);
   requireFact(
-    receipt.schemaVersion === 3 &&
+    isDeepStrictEqual(
+      receipt.checks.owl_contract.evidence.consumerSources,
+      await captureSources(),
+    ),
+    "Consumer source snapshots changed; fresh qualification is required.",
+  );
+  requireFact(
+    receipt.schemaVersion === 4 &&
       receipt.role === "PR" &&
       receipt.mode === "FULL" &&
       receipt.repository === context.repository &&
@@ -603,6 +612,7 @@ export const verifyBaseQualification = async ({
   read,
   downloadOriginal,
   now = Date.now(),
+  captureSources = captureConsumerSources,
 }) => {
   const { base, artifact } = selection;
   requireFact(
@@ -610,6 +620,14 @@ export const verifyBaseQualification = async ({
     "Base qualification drifted from the event.",
   );
   assertQualificationRecord(record);
+  const currentConsumerSources = await captureSources();
+  requireFact(
+    isDeepStrictEqual(
+      record.checks.owl_contract.evidence.consumerSources,
+      currentConsumerSources,
+    ),
+    "Consumer source snapshots changed; fresh qualification is required.",
+  );
   const run = await read(`/actions/runs/${selection.run.id}`);
   assertMainRun(run, context, base, now);
   requireFact(
@@ -696,6 +714,7 @@ export const verifyBaseQualification = async ({
       context: originalContext,
       selection: originalSelection,
       receipt: originalReceipt,
+      captureSources: async () => currentConsumerSources,
       read,
       now,
     });

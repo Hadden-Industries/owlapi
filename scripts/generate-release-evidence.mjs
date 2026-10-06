@@ -263,6 +263,10 @@ const generateScopedEvidence = async () => {
       "Scoped artifact or workflow server identity differs from the current run.",
     );
   const preflight = readJson(paths["publication-preflight"]);
+  if (preflight.schemaVersion !== 2)
+    throw new Error(
+      "Current release evidence requires producer-contract preflight version 2.",
+    );
   const tag = readJson(paths["tag-verification"]);
   const draft = readJson(paths["draft-release"]);
   const registry = readJson(paths["registry-verification"]);
@@ -315,6 +319,7 @@ const generateScopedEvidence = async () => {
     actor: process.env.GITHUB_TRIGGERING_ACTOR ?? process.env.GITHUB_ACTOR,
   };
   const evidence = buildReleaseEvidence({
+    producerContract: preflight.producerContract,
     generatedAt,
     source: {
       repository,

@@ -117,6 +117,15 @@ const installFixture = (mode) => {
     join(REPOSITORY_ROOT, "test", "import-closure", "public-contract.js"),
     join(fixtureDirectory, "public-contract.js"),
   );
+  for (const name of [
+    "public-model-cases.js",
+    "public-model-probes.js",
+    "acquisition-contracts.js",
+  ])
+    copyFileSync(
+      join(REPOSITORY_ROOT, "test", "consumers", "owl-contract", name),
+      join(fixtureDirectory, name),
+    );
   const closureDocuments = Object.fromEntries(
     ["root", "left", "right", "leaf"].map((name) => [
       name,
@@ -225,6 +234,9 @@ try {
   for (const fileName of [
     "public-contract.js",
     "import-closure-documents.js",
+    "public-model-cases.js",
+    "public-model-probes.js",
+    "acquisition-contracts.js",
   ]) {
     copyFileSync(
       join(importMapDirectory, fileName),

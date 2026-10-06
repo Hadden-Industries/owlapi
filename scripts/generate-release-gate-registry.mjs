@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { buildProducerReleaseGates } from "./producer-release-policy.mjs";
 
 import {
   parseCatalogueRequirements,
@@ -198,15 +199,24 @@ const buildRegistry = (planMarkdown) => {
 
 const planMarkdown = readReleasePlans();
 const generated = `${JSON.stringify(buildRegistry(planMarkdown), null, 2)}\n`;
+const producerUrl = new URL(
+  "docs/release/producer-gates.json",
+  REPOSITORY_ROOT,
+);
+const producerGenerated = `${JSON.stringify(buildProducerReleaseGates(JSON.parse(generated)), null, 2)}\n`;
 
 if (process.argv.includes("--write")) {
   writeFileSync(REGISTRY_URL, generated, "utf8");
+  writeFileSync(producerUrl, producerGenerated, "utf8");
   process.stdout.write(
     `Updated ${fileURLToPath(REGISTRY_URL)} from the implementation plan.\n`,
   );
 } else {
   const current = readFileSync(REGISTRY_URL, "utf8");
-  if (current !== generated) {
+  if (
+    current !== generated ||
+    readFileSync(producerUrl, "utf8") !== producerGenerated
+  ) {
     process.stderr.write(
       "docs/release/gates.json is not the deterministic projection of the implementation plan.\n",
     );

@@ -1,4 +1,6 @@
 import { pathToFileURL } from "node:url";
+import { isDeepStrictEqual } from "node:util";
+import { assertCheckCoverage } from "./ci-check-coverage.mjs";
 import {
   coverageFromNeeds,
   qualifiedSourceFromOutputs,
@@ -18,7 +20,7 @@ export const FULL_CI_JOB_IDS = Object.freeze([
   "browser_chromium",
   "browser_firefox",
   "browser_webkit",
-  "webvowl",
+  "owl_contract",
 ]);
 
 export const REQUIRED_JOB_IDS = Object.freeze({
@@ -39,7 +41,7 @@ export const REQUIRED_JOB_IDS = Object.freeze({
     "browser_chromium",
     "browser_firefox",
     "browser_webkit",
-    "webvowl",
+    "owl_contract",
   ]),
 });
 
@@ -67,6 +69,17 @@ export const requireSuccessfulJobs = (workflow, needs) => {
   return [...required];
 };
 
+const assertCandidateContractBinding = (needs, evidence) => {
+  const expected = {
+    id: Number(needs.candidate?.outputs?.artifact_id),
+    digest: `sha256:${needs.candidate?.outputs?.artifact_digest}`,
+  };
+  if (!isDeepStrictEqual(expected, evidence.candidateArtifact))
+    throw new Error(
+      "Installed OWL proof does not qualify the retained candidate artifact.",
+    );
+};
+
 export const requireCiJobs = (
   needs,
   { eventName, ref, runId, runAttempt, sha } = {},
@@ -74,7 +87,12 @@ export const requireCiJobs = (
   if (needs?.verification?.outputs?.reuse !== "true") {
     const requiredJobs = requireSuccessfulJobs("ci", needs);
     // The receipt writer also binds these reports to its actual Git snapshot.
-    coverageFromNeeds(needs, { runId, runAttempt, commit: sha });
+    const evidence = coverageFromNeeds(needs, {
+      runId,
+      runAttempt,
+      commit: sha,
+    });
+    assertCandidateContractBinding(needs, evidence.owl_contract);
     return { mode: "FULL", requiredJobs };
   }
   const source = needs.verification.outputs;
@@ -103,6 +121,26 @@ export const requireCiJobs = (
   };
 };
 
+export const requireReleaseJobs = (needs, { runId, runAttempt, sha }) => {
+  const requiredJobs = requireSuccessfulJobs("release", needs);
+  const evidence = JSON.parse(needs.owl_contract.outputs.coverage);
+  if (
+    !Number.isSafeInteger(evidence.runAttempt) ||
+    evidence.runAttempt < 1 ||
+    evidence.runAttempt > runAttempt
+  )
+    throw new Error(
+      "OWL contract producing attempt is outside this release run.",
+    );
+  assertCheckCoverage(evidence, "owl_contract", {
+    runId,
+    runAttempt: evidence.runAttempt,
+    commit: sha,
+  });
+  assertCandidateContractBinding(needs, evidence);
+  return { requiredJobs };
+};
+
 const valueAfter = (name) => {
   const index = process.argv.indexOf(name);
   if (index === -1 || !process.argv[index + 1]) {
@@ -127,7 +165,11 @@ const main = () => {
           runAttempt: Number(process.env.GITHUB_RUN_ATTEMPT),
           sha: process.env.GITHUB_SHA,
         })
-      : { requiredJobs: requireSuccessfulJobs(workflow, needs) };
+      : requireReleaseJobs(needs, {
+          runId: Number(process.env.GITHUB_RUN_ID),
+          runAttempt: Number(process.env.GITHUB_RUN_ATTEMPT),
+          sha: process.env.GITHUB_SHA,
+        });
   process.stdout.write(
     `${JSON.stringify({ workflow, result: "PASS", ...accepted }, null, 2)}\n`,
   );
