@@ -26101,66 +26101,6 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 7684,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/15/152ca83c59d10fb78f72abc3d123b3e88dac356f8370ebdeaed38e7613a68a37",
-          "sha256": "152ca83c59d10fb78f72abc3d123b3e88dac356f8370ebdeaed38e7613a68a37"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "a744edef69b288088d0b06ad2fab9797ad0dbdd9b15f1b1da5c246a14b09a229",
-      "integrity": "sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==",
-      "lockfileLicenses": [
-        "MIT"
-      ],
-      "name": "argparse",
-      "occurrencePaths": [
-        "node_modules/argparse"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 238,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/18/18e307561c9e70ee632acfef8f69db12a02ccd7cf43b6a6fa5d14caf4de53171",
-          "sha256": "18e307561c9e70ee632acfef8f69db12a02ccd7cf43b6a6fa5d14caf4de53171"
-        },
-        "state": "NOT_PUBLISHED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 518,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/55/55abf3e7a7e7575d011c40fbc7f9c08e3fc212faa311ca974ec530d2bf80cf2b",
-          "sha256": "55abf3e7a7e7575d011c40fbc7f9c08e3fc212faa311ca974ec530d2bf80cf2b"
-        },
-        "publishedAt": "2018-02-15T14:24:01.840Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
-            "sig": "MEYCIQDGBSlWYqJJS8ly2A5x23cEqG4hBghOCO+4VmmjZBC4dwIhAMvtmzy1dCR3dTOg8Gp0+gqBp9fCBeqO6fyG9uUEmdyJ"
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/argparse/-/argparse-1.0.10.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 62222,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/5e/5e0b89ca476cca841dc06a23f1b1043765c28d22c9ff5f282ce3ece954ffe71e",
-          "sha256": "5e0b89ca476cca841dc06a23f1b1043765c28d22c9ff5f282ce3ece954ffe71e"
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 29761,
-        "sha256": "7faa149cd7811b7e11fc8353dc6e4e9c4de68a02f8221aa8f7dc22108315ac0d"
-      },
-      "version": "1.0.10"
-    },
-    {
-      "archive": {
-        "evidence": {
           "bytes": 4497,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/69/699ec8843186d7fe162425dcc31ed6f473c3e0be50336d56fd8ab8976d00a3d6",
@@ -27252,66 +27192,6 @@
         "sha256": "6eec23d5d381a8b0ffafe91c19876d3a052e463618695981a7529f3a8bca1997"
       },
       "version": "1.1.0"
-    },
-    {
-      "archive": {
-        "evidence": {
-          "bytes": 5507,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/9e/9ebba6e03a5467ef538623ecb2f856ce715952dfe307400ae80ac0f9d3e1629d",
-          "sha256": "9ebba6e03a5467ef538623ecb2f856ce715952dfe307400ae80ac0f9d3e1629d"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "aeb48ac4317335ad2e1b570b12a83caa980db218f6f88cae2aba8be4db4e34f9",
-      "integrity": "sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==",
-      "lockfileLicenses": [
-        "BSD-3-Clause"
-      ],
-      "name": "sprintf-js",
-      "occurrencePaths": [
-        "node_modules/sprintf-js"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 238,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/43/43582cdb4c28e457a4829516d82051bcdca96f65eb02468014dbededa584ee6d",
-          "sha256": "43582cdb4c28e457a4829516d82051bcdca96f65eb02468014dbededa584ee6d"
-        },
-        "state": "NOT_PUBLISHED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 518,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/a8/a8953ce7de2b6bf21a08b3fd07e89f92549e5983ecfa32495254bbb2f8c3c265",
-          "sha256": "a8953ce7de2b6bf21a08b3fd07e89f92549e5983ecfa32495254bbb2f8c3c265"
-        },
-        "publishedAt": "2015-07-10T13:41:29.308Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
-            "sig": "MEQCIDSB/raarzaOUXXEaSDKssErvTM4Z3cvCQiIPvLi68d6AiAB2PIbdMo0LWWF/Adn+tb00uQT/t7+9335DWW5SSkG4w=="
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/sprintf-js/-/sprintf-js-1.0.3.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 63937,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/d7/d74e16c303bd6a4f0439db128f3256e23302f87634e85050e286de6db14b7715",
-          "sha256": "d74e16c303bd6a4f0439db128f3256e23302f87634e85050e286de6db14b7715"
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 10330,
-        "sha256": "3afb26bcc328dc90f516515acf2783ad35b08dbfe9e0ada18264c3c4ddaa1a83"
-      },
-      "version": "1.0.3"
     },
     {
       "archive": {
@@ -32499,66 +32379,6 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 8063,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/4e/4ed9bcf54c40bae6651c170be4b2d6c3f9523d80f7a7629e801a1b6a61e43353",
-          "sha256": "4ed9bcf54c40bae6651c170be4b2d6c3f9523d80f7a7629e801a1b6a61e43353"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "d107338bdadf17f271ab9e59f9177f7013b11f343ef24a748f2e7ad0ca98b02f",
-      "integrity": "sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==",
-      "lockfileLicenses": [
-        "BSD-2-Clause"
-      ],
-      "name": "esprima",
-      "occurrencePaths": [
-        "node_modules/esprima"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 238,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/32/32f471df286525463e66eaeb90019ac876f525a7803f68fc391183c8115d41b9",
-          "sha256": "32f471df286525463e66eaeb90019ac876f525a7803f68fc391183c8115d41b9"
-        },
-        "state": "NOT_PUBLISHED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 518,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/62/627de2c6fd42f3629211e755fec0c418282d0bb41ac761d8e00bbeb0808f2d14",
-          "sha256": "627de2c6fd42f3629211e755fec0c418282d0bb41ac761d8e00bbeb0808f2d14"
-        },
-        "publishedAt": "2018-07-13T08:39:14.711Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
-            "sig": "MEQCIGs4CVmbB0r5JS31tgOUzl/LIt8Skau/M7QFRDWyKfDyAiAye0DDJfNYhHUTMEQY9/NNLczNGOgSWRX/+0r7WuDeJQ=="
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/esprima/-/esprima-4.0.1.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 68150,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/63/63b549f6abc69e798ad00c3e07a50de761b7151b31d91ba465542d576c48f183",
-          "sha256": "63b549f6abc69e798ad00c3e07a50de761b7151b31d91ba465542d576c48f183"
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 52078,
-        "sha256": "d8a1910e9cbecc95b4c5df75376c46a7a9261859c294ef91505c1442e093cc74"
-      },
-      "version": "4.0.1"
-    },
-    {
-      "archive": {
-        "evidence": {
           "bytes": 13761,
           "kind": "ARCHIVE_INVENTORY",
           "path": "blobs/sha256/8e/8e14bc0892d4cec90e0e5a736f3283b85cc1e439583048b38d8202f9fc4ff4d9",
@@ -32920,28 +32740,28 @@
     {
       "archive": {
         "evidence": {
-          "bytes": 9787,
+          "bytes": 7591,
           "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/ac/acb2962105186247f94b907e6ab3d39b5b4a48f557611f5317b2202ee1baa324",
-          "sha256": "acb2962105186247f94b907e6ab3d39b5b4a48f557611f5317b2202ee1baa324"
+          "path": "blobs/sha256/83/83d624b3d46dc3a8c39e5c7ffb1c24349dfab4e6d9295ee7958bb12a48b76781",
+          "sha256": "83d624b3d46dc3a8c39e5c7ffb1c24349dfab4e6d9295ee7958bb12a48b76781"
         },
         "state": "VERIFIED"
       },
-      "artifactId": "d2f1c0f6180ee370ffb88ec2dce1520554621b4455f370c7df366825476d42c9",
-      "integrity": "sha512-6EuL879VkRA+1Cz578mKMiKvjPNEuk6+r1JaFzoSWejZmtf7xWbIyw1e3KkxlkzTIt9Taw6JBhEppG7utc1P+w==",
+      "artifactId": "d2c449ec198532cfe80b464adb70095a0ea49e75d42688115b628938936e1921",
+      "integrity": "sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==",
       "lockfileLicenses": [
-        "MIT"
+        "BSD-3-Clause"
       ],
-      "name": "js-yaml",
+      "name": "source-map-js",
       "occurrencePaths": [
-        "node_modules/js-yaml"
+        "node_modules/source-map-js"
       ],
       "provenance": {
         "evidence": {
           "bytes": 238,
           "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/42/4252f71c7ee34764a6f896dffd6a1efb5ec335310ed2f683e0421a5c419aa978",
-          "sha256": "4252f71c7ee34764a6f896dffd6a1efb5ec335310ed2f683e0421a5c419aa978"
+          "path": "blobs/sha256/e3/e33da08a167381025e57a9f5c3ed3513e910ee30581a16f5db58fc2b2c6807db",
+          "sha256": "e33da08a167381025e57a9f5c3ed3513e910ee30581a16f5db58fc2b2c6807db"
         },
         "state": "NOT_PUBLISHED"
       },
@@ -32949,37 +32769,37 @@
         "evidence": {
           "bytes": 780,
           "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/ae/ae9ed91b3eee5a27179c975955c28b2055bbbed26dffddec7db0223aba303184",
-          "sha256": "ae9ed91b3eee5a27179c975955c28b2055bbbed26dffddec7db0223aba303184"
+          "path": "blobs/sha256/cc/cc79b320d5f4459e6ae0fca6832193f0315e188d663174a3c1d65b4279da98de",
+          "sha256": "cc79b320d5f4459e6ae0fca6832193f0315e188d663174a3c1d65b4279da98de"
         },
-        "publishedAt": "2026-08-26T20:53:50.335Z",
+        "publishedAt": "2026-09-30T14:08:09.382Z",
         "signatures": [
           {
             "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEYCIQDil985Hb9DcS9hatZSBGFuQT8gI5N6C/CzOrxapTalqwIhALGpl/PTwH5jBdqxWOR6Bqet2uD9c9Q6k2EdUXAeMY0k"
+            "sig": "MEUCIQCZPHMjtDeHbdrm8FkXj5rlr8cwbP4XoW93v0jVGGdWcQIgDcavClXA2dNCvB2XyxxKW7ZkgwaSlqeBeaayOtgq3ik="
           },
           {
             "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
-            "sig": "MEQCIBdUQpKVC7uxNbCfMYpvwn76Wm+eTWwIVBdTiInHiLTLAiAQCivoTEWTXGNNVtAKcZyukOmNwi9FrD6jJ8FnKfzKBA=="
+            "sig": "MEQCIAIRiJPeK+kn49RlwVL7LPl5GHFd6PnL/DKFgl/oQu6HAiBd4xIiwYFmu+pXEiZr7YrCXUt4BQ3XkahaDqCpu90zYA=="
           }
         ],
         "state": "VERIFIED"
       },
-      "resolved": "https://registry.npmjs.org/js-yaml/-/js-yaml-3.15.2.tgz",
+      "resolved": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.2.tgz",
       "scan": {
         "evidence": {
-          "bytes": 75451,
+          "bytes": 116738,
           "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/e0/e061a82b836d930f26487fc66766656050beed7625345a52439730515006fd66",
-          "sha256": "e061a82b836d930f26487fc66766656050beed7625345a52439730515006fd66"
+          "path": "blobs/sha256/43/43676e3bfbd1e8044dbcd066c284aebeeaec817cd4c67d9c3c3025bd8e95e937",
+          "sha256": "43676e3bfbd1e8044dbcd066c284aebeeaec817cd4c67d9c3c3025bd8e95e937"
         },
         "state": "VERIFIED"
       },
       "tarball": {
-        "bytes": 73285,
-        "sha256": "7f005cf0b8ee639b4557e0e321dc067c1f2aa0a442d096e03f2ab53353738794"
+        "bytes": 36349,
+        "sha256": "05c8cf8e7c3a6b56cada7668fe9342b10f4b625efc92aba9ba05b9e8fe4d71a3"
       },
-      "version": "3.15.2"
+      "version": "1.2.2"
     },
     {
       "archive": {
@@ -33888,66 +33708,6 @@
         "sha256": "83c983195340a2b6f20509a08a3a1ad57b167d24810940d3200faa0410860a03"
       },
       "version": "1.0.0"
-    },
-    {
-      "archive": {
-        "evidence": {
-          "bytes": 7591,
-          "kind": "ARCHIVE_INVENTORY",
-          "path": "blobs/sha256/fc/fc5fbfd0af548a159b87f052041e34e1ad8e9c5ecd447549f139e1586bc81db0",
-          "sha256": "fc5fbfd0af548a159b87f052041e34e1ad8e9c5ecd447549f139e1586bc81db0"
-        },
-        "state": "VERIFIED"
-      },
-      "artifactId": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847",
-      "integrity": "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==",
-      "lockfileLicenses": [
-        "BSD-3-Clause"
-      ],
-      "name": "source-map-js",
-      "occurrencePaths": [
-        "node_modules/source-map-js"
-      ],
-      "provenance": {
-        "evidence": {
-          "bytes": 238,
-          "kind": "NPM_PROVENANCE",
-          "path": "blobs/sha256/fd/fd63d3b5ce5fa553bb33bff2495b98c84f125617df9ad778afb56cf3e97ab28a",
-          "sha256": "fd63d3b5ce5fa553bb33bff2495b98c84f125617df9ad778afb56cf3e97ab28a"
-        },
-        "state": "NOT_PUBLISHED"
-      },
-      "registrySignature": {
-        "evidence": {
-          "bytes": 518,
-          "kind": "REGISTRY_SIGNATURE",
-          "path": "blobs/sha256/aa/aaf70ba8ce8d2aa230f1d055b47c04e4fa37ae25ecfc0bfc72d74f564005cead",
-          "sha256": "aaf70ba8ce8d2aa230f1d055b47c04e4fa37ae25ecfc0bfc72d74f564005cead"
-        },
-        "publishedAt": "2024-09-08T16:22:55.645Z",
-        "signatures": [
-          {
-            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
-            "sig": "MEQCIF7zHaog7N5XY2DykQjfGxUeAeVvRFqUB8sMKuD4ChEpAiB50o3vma1R3cIXK4qnyc0QLZHy4+HJnMWjhJr9mK4jnQ=="
-          }
-        ],
-        "state": "VERIFIED"
-      },
-      "resolved": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz",
-      "scan": {
-        "evidence": {
-          "bytes": 116738,
-          "kind": "SCANCODE_FINDINGS",
-          "path": "blobs/sha256/2f/2f2dd07ee1cc0cd093b38ba15179b93854086c23ec0807e969871eeacaa9d251",
-          "sha256": "2f2dd07ee1cc0cd093b38ba15179b93854086c23ec0807e969871eeacaa9d251"
-        },
-        "state": "VERIFIED"
-      },
-      "tarball": {
-        "bytes": 35340,
-        "sha256": "f126a6f9fca487a43219d8cb8c3a955279187a966119d548eb5cd47e999d4853"
-      },
-      "version": "1.2.1"
     },
     {
       "archive": {
@@ -36412,7 +36172,7 @@
       ],
       "name": "js-yaml",
       "occurrencePaths": [
-        "node_modules/xmlbuilder2/node_modules/js-yaml"
+        "node_modules/js-yaml"
       ],
       "provenance": {
         "evidence": {
@@ -38865,7 +38625,7 @@
       ],
       "name": "argparse",
       "occurrencePaths": [
-        "node_modules/xmlbuilder2/node_modules/argparse"
+        "node_modules/argparse"
       ],
       "provenance": {
         "evidence": {
@@ -40203,12 +39963,6 @@
       "sha256": "14f8bf9c72110f35e3541d37815229e369220c56f0e5b32a743d2f772fe84ee9"
     },
     {
-      "bytes": 7684,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/15/152ca83c59d10fb78f72abc3d123b3e88dac356f8370ebdeaed38e7613a68a37",
-      "sha256": "152ca83c59d10fb78f72abc3d123b3e88dac356f8370ebdeaed38e7613a68a37"
-    },
-    {
       "bytes": 7615,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/15/1530215f4014b49050e0ef964a97b1f5f3e102e68c0d01d247055e7076037e7f",
@@ -41157,12 +40911,6 @@
       "sha256": "4e9397f8d923e417cf14fbc6356759c69f48d50302b54b0c05087dac2cead137"
     },
     {
-      "bytes": 8063,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/4e/4ed9bcf54c40bae6651c170be4b2d6c3f9523d80f7a7629e801a1b6a61e43353",
-      "sha256": "4ed9bcf54c40bae6651c170be4b2d6c3f9523d80f7a7629e801a1b6a61e43353"
-    },
-    {
       "bytes": 2491,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/4e/4ef8bc86763f9deb1d4e39989a22cd355f5880c82a74f384037b6ae4b33db7e4",
@@ -41889,6 +41637,12 @@
       "sha256": "83158293361de8ebbcfe7579bd5860886c0767eae6ad65da31c2a280a5cdd131"
     },
     {
+      "bytes": 7591,
+      "kind": "ARCHIVE_INVENTORY",
+      "path": "blobs/sha256/83/83d624b3d46dc3a8c39e5c7ffb1c24349dfab4e6d9295ee7958bb12a48b76781",
+      "sha256": "83d624b3d46dc3a8c39e5c7ffb1c24349dfab4e6d9295ee7958bb12a48b76781"
+    },
+    {
       "bytes": 7346,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/84/84ef17d6d4e606e532e53a15f7a5f17a8effb681a2428a8cd7215f3193469f39",
@@ -42315,12 +42069,6 @@
       "sha256": "9e859bc3b3f9c7597580f26eabe1665715e55caf6f03e1f23b9d05bae9e97534"
     },
     {
-      "bytes": 5507,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/9e/9ebba6e03a5467ef538623ecb2f856ce715952dfe307400ae80ac0f9d3e1629d",
-      "sha256": "9ebba6e03a5467ef538623ecb2f856ce715952dfe307400ae80ac0f9d3e1629d"
-    },
-    {
       "bytes": 3623,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/9e/9ef1e7e2794c1c8868937cfce0510a3f63e00ecc462cd636b91c0d18c1f76e1a",
@@ -42529,12 +42277,6 @@
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/ac/ac5e1b2353ba3ab1f50f7685bc0b01ccc5ef14ab3a6a9ffd0ee4aeb3bf18c8cd",
       "sha256": "ac5e1b2353ba3ab1f50f7685bc0b01ccc5ef14ab3a6a9ffd0ee4aeb3bf18c8cd"
-    },
-    {
-      "bytes": 9787,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/ac/acb2962105186247f94b907e6ab3d39b5b4a48f557611f5317b2202ee1baa324",
-      "sha256": "acb2962105186247f94b907e6ab3d39b5b4a48f557611f5317b2202ee1baa324"
     },
     {
       "bytes": 3653,
@@ -43695,12 +43437,6 @@
       "sha256": "fbf50d5ba384bf97a0f566fb92462e8f637728104928ae3d5ab42594ba655b27"
     },
     {
-      "bytes": 7591,
-      "kind": "ARCHIVE_INVENTORY",
-      "path": "blobs/sha256/fc/fc5fbfd0af548a159b87f052041e34e1ad8e9c5ecd447549f139e1586bc81db0",
-      "sha256": "fc5fbfd0af548a159b87f052041e34e1ad8e9c5ecd447549f139e1586bc81db0"
-    },
-    {
       "bytes": 3922,
       "kind": "ARCHIVE_INVENTORY",
       "path": "blobs/sha256/fc/fc7a6b020c0fd94aea6d65fff43bf8c6a5c1448697a3c1e5888715a61125fc03",
@@ -44061,12 +43797,6 @@
       "sha256": "18c9d0a59bce1165776ea889861b4407ed6fce2c03f99bf746b039751cf6245f"
     },
     {
-      "bytes": 238,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/18/18e307561c9e70ee632acfef8f69db12a02ccd7cf43b6a6fa5d14caf4de53171",
-      "sha256": "18e307561c9e70ee632acfef8f69db12a02ccd7cf43b6a6fa5d14caf4de53171"
-    },
-    {
       "bytes": 16906,
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/19/197b6f9f05535af827b90b0ad36be3b097ec7b52171c744a3b0be6ce9dd7ea50",
@@ -44423,12 +44153,6 @@
     {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/32/32f471df286525463e66eaeb90019ac876f525a7803f68fc391183c8115d41b9",
-      "sha256": "32f471df286525463e66eaeb90019ac876f525a7803f68fc391183c8115d41b9"
-    },
-    {
-      "bytes": 238,
-      "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/32/32fcc81a0cddc097573e57dd4dbc754a2f8ada34e3c6d626186f49145a04f469",
       "sha256": "32fcc81a0cddc097573e57dd4dbc754a2f8ada34e3c6d626186f49145a04f469"
     },
@@ -44663,12 +44387,6 @@
     {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/42/4252f71c7ee34764a6f896dffd6a1efb5ec335310ed2f683e0421a5c419aa978",
-      "sha256": "4252f71c7ee34764a6f896dffd6a1efb5ec335310ed2f683e0421a5c419aa978"
-    },
-    {
-      "bytes": 238,
-      "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/42/4258c428c2bdd3cb2c07e3f274afcd46c003119bd67218a49bb532ef072eea66",
       "sha256": "4258c428c2bdd3cb2c07e3f274afcd46c003119bd67218a49bb532ef072eea66"
     },
@@ -44683,12 +44401,6 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/43/431eb8906e87d0df1ac5d06fe269ad4cf6dbe5de3942d0edf1324451d5baa956",
       "sha256": "431eb8906e87d0df1ac5d06fe269ad4cf6dbe5de3942d0edf1324451d5baa956"
-    },
-    {
-      "bytes": 238,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/43/43582cdb4c28e457a4829516d82051bcdca96f65eb02468014dbededa584ee6d",
-      "sha256": "43582cdb4c28e457a4829516d82051bcdca96f65eb02468014dbededa584ee6d"
     },
     {
       "bytes": 18299,
@@ -47159,6 +46871,12 @@
     {
       "bytes": 238,
       "kind": "NPM_PROVENANCE",
+      "path": "blobs/sha256/e3/e33da08a167381025e57a9f5c3ed3513e910ee30581a16f5db58fc2b2c6807db",
+      "sha256": "e33da08a167381025e57a9f5c3ed3513e910ee30581a16f5db58fc2b2c6807db"
+    },
+    {
+      "bytes": 238,
+      "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/e3/e393ddfd37cacf5e478a4518e998c7d4eada58758f89867af519b86e253f8eca",
       "sha256": "e393ddfd37cacf5e478a4518e998c7d4eada58758f89867af519b86e253f8eca"
     },
@@ -47635,12 +47353,6 @@
       "kind": "NPM_PROVENANCE",
       "path": "blobs/sha256/fd/fd3753290838ce0e7e60942fc4939a696c43be25b99fb124709c343688524c2d",
       "sha256": "fd3753290838ce0e7e60942fc4939a696c43be25b99fb124709c343688524c2d"
-    },
-    {
-      "bytes": 238,
-      "kind": "NPM_PROVENANCE",
-      "path": "blobs/sha256/fd/fd63d3b5ce5fa553bb33bff2495b98c84f125617df9ad778afb56cf3e97ab28a",
-      "sha256": "fd63d3b5ce5fa553bb33bff2495b98c84f125617df9ad778afb56cf3e97ab28a"
     },
     {
       "bytes": 238,
@@ -49155,12 +48867,6 @@
       "sha256": "726f8f11b0e9e630e7e21ad84a1aa7a6bfab63d66983e8ab4bdc3881ba354a24"
     },
     {
-      "bytes": 4855,
-      "kind": "PACKAGE_EVIDENCE_FILE",
-      "path": "blobs/sha256/72/72990421c3b73394c9c63f3ac90525c1b6a9e91157f5f3d132fc0b7b32ab4856",
-      "sha256": "72990421c3b73394c9c63f3ac90525c1b6a9e91157f5f3d132fc0b7b32ab4856"
-    },
-    {
       "bytes": 14351,
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/72/72d72130fb75ef049229a623331a549febf2ed34e1862781803e22dadc9918bc",
@@ -49503,12 +49209,6 @@
       "sha256": "944ac66177fb5184eac21a41832441b8ab9e7dd443608e0e78dc5cf9d5f79970"
     },
     {
-      "bytes": 1303,
-      "kind": "PACKAGE_EVIDENCE_FILE",
-      "path": "blobs/sha256/94/94bcb9959136723aa4fb36e1a6c4d5c662a2369978cfae344dabfb83ae619e79",
-      "sha256": "94bcb9959136723aa4fb36e1a6c4d5c662a2369978cfae344dabfb83ae619e79"
-    },
-    {
       "bytes": 5175,
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/95/958e646593907b1757b5a359844bdf69374392f6089eb009a6e0d6591d866497",
@@ -49783,18 +49483,6 @@
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/a4/a49c9ba464796f65b59fca3f1e6ca40912df1e859f575383223f7ec6c5baae09",
       "sha256": "a49c9ba464796f65b59fca3f1e6ca40912df1e859f575383223f7ec6c5baae09"
-    },
-    {
-      "bytes": 1518,
-      "kind": "PACKAGE_EVIDENCE_FILE",
-      "path": "blobs/sha256/a4/a4cdda44b5adea4731d53dcae78fb5124f8fd853e994f01e25d8c33a7daf818b",
-      "sha256": "a4cdda44b5adea4731d53dcae78fb5124f8fd853e994f01e25d8c33a7daf818b"
-    },
-    {
-      "bytes": 8404,
-      "kind": "PACKAGE_EVIDENCE_FILE",
-      "path": "blobs/sha256/a5/a5326f3f547115adfeaab4836d70dfb9c8acd3d6d78de7f32d49ab118c2dd7d3",
-      "sha256": "a5326f3f547115adfeaab4836d70dfb9c8acd3d6d78de7f32d49ab118c2dd7d3"
     },
     {
       "bytes": 676,
@@ -50299,12 +49987,6 @@
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/c8/c8154c0e94dd628ed5bfc9c18c7accd9863c8b826e19b01bf71791c175504faf",
       "sha256": "c8154c0e94dd628ed5bfc9c18c7accd9863c8b826e19b01bf71791c175504faf"
-    },
-    {
-      "bytes": 1079,
-      "kind": "PACKAGE_EVIDENCE_FILE",
-      "path": "blobs/sha256/c8/c8442419dc614089ea022b3da6bfc089b41a58fb7b9030d1e651f2f36189dce2",
-      "sha256": "c8442419dc614089ea022b3da6bfc089b41a58fb7b9030d1e651f2f36189dce2"
     },
     {
       "bytes": 1102,
@@ -51007,12 +50689,6 @@
       "kind": "PACKAGE_EVIDENCE_FILE",
       "path": "blobs/sha256/f8/f8d791359a50cbcac82c29cb7b0b1b889b28be76fdd35b8ee33f0f7c8704702a",
       "sha256": "f8d791359a50cbcac82c29cb7b0b1b889b28be76fdd35b8ee33f0f7c8704702a"
-    },
-    {
-      "bytes": 2427,
-      "kind": "PACKAGE_EVIDENCE_FILE",
-      "path": "blobs/sha256/f9/f92bbfb27828e8adc2f76453999427ff5343672444ed742a2dc032a7a8dd5b6f",
-      "sha256": "f92bbfb27828e8adc2f76453999427ff5343672444ed742a2dc032a7a8dd5b6f"
     },
     {
       "bytes": 1065,
@@ -52433,12 +52109,6 @@
     {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/55/55abf3e7a7e7575d011c40fbc7f9c08e3fc212faa311ca974ec530d2bf80cf2b",
-      "sha256": "55abf3e7a7e7575d011c40fbc7f9c08e3fc212faa311ca974ec530d2bf80cf2b"
-    },
-    {
-      "bytes": 518,
-      "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/55/55bfa5c486ca777313dc15df3a1ec0817df4d6940554ed5722f90081339f0e2f",
       "sha256": "55bfa5c486ca777313dc15df3a1ec0817df4d6940554ed5722f90081339f0e2f"
     },
@@ -52573,12 +52243,6 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/61/6132695916572af06dadb3602d76637c9f55933cc3f40e12352d8f63ae81d489",
       "sha256": "6132695916572af06dadb3602d76637c9f55933cc3f40e12352d8f63ae81d489"
-    },
-    {
-      "bytes": 518,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/62/627de2c6fd42f3629211e755fec0c418282d0bb41ac761d8e00bbeb0808f2d14",
-      "sha256": "627de2c6fd42f3629211e755fec0c418282d0bb41ac761d8e00bbeb0808f2d14"
     },
     {
       "bytes": 518,
@@ -53657,12 +53321,6 @@
     {
       "bytes": 518,
       "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/a8/a8953ce7de2b6bf21a08b3fd07e89f92549e5983ecfa32495254bbb2f8c3c265",
-      "sha256": "a8953ce7de2b6bf21a08b3fd07e89f92549e5983ecfa32495254bbb2f8c3c265"
-    },
-    {
-      "bytes": 518,
-      "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/a8/a8b5cf97b7a2e3cb36356ff99e4f3069d629c40644dbd79d3e030944bc9228e0",
       "sha256": "a8b5cf97b7a2e3cb36356ff99e4f3069d629c40644dbd79d3e030944bc9228e0"
     },
@@ -53713,12 +53371,6 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/aa/aa741cee98dffd09524792e1ffd96d5600fe0de00b8a0759441196adebf0b794",
       "sha256": "aa741cee98dffd09524792e1ffd96d5600fe0de00b8a0759441196adebf0b794"
-    },
-    {
-      "bytes": 518,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/aa/aaf70ba8ce8d2aa230f1d055b47c04e4fa37ae25ecfc0bfc72d74f564005cead",
-      "sha256": "aaf70ba8ce8d2aa230f1d055b47c04e4fa37ae25ecfc0bfc72d74f564005cead"
     },
     {
       "bytes": 780,
@@ -53791,12 +53443,6 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/ae/ae9bd3893f5ce9d8a746bee4d22c19c3a5d915cfbd7642e44a9aadcbadddd285",
       "sha256": "ae9bd3893f5ce9d8a746bee4d22c19c3a5d915cfbd7642e44a9aadcbadddd285"
-    },
-    {
-      "bytes": 780,
-      "kind": "REGISTRY_SIGNATURE",
-      "path": "blobs/sha256/ae/ae9ed91b3eee5a27179c975955c28b2055bbbed26dffddec7db0223aba303184",
-      "sha256": "ae9ed91b3eee5a27179c975955c28b2055bbbed26dffddec7db0223aba303184"
     },
     {
       "bytes": 780,
@@ -54343,6 +53989,12 @@
       "kind": "REGISTRY_SIGNATURE",
       "path": "blobs/sha256/cc/cc46bdb057e8a084c95dd7340734dde40ebc6cafdaf6f3ea3c96cb15d927830e",
       "sha256": "cc46bdb057e8a084c95dd7340734dde40ebc6cafdaf6f3ea3c96cb15d927830e"
+    },
+    {
+      "bytes": 780,
+      "kind": "REGISTRY_SIGNATURE",
+      "path": "blobs/sha256/cc/cc79b320d5f4459e6ae0fca6832193f0315e188d663174a3c1d65b4279da98de",
+      "sha256": "cc79b320d5f4459e6ae0fca6832193f0315e188d663174a3c1d65b4279da98de"
     },
     {
       "bytes": 518,
@@ -55725,12 +55377,6 @@
       "sha256": "2f15a7a6591530d614c4e9ebb1577fbe347691979161ec6521cace36142f5d93"
     },
     {
-      "bytes": 116738,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/2f/2f2dd07ee1cc0cd093b38ba15179b93854086c23ec0807e969871eeacaa9d251",
-      "sha256": "2f2dd07ee1cc0cd093b38ba15179b93854086c23ec0807e969871eeacaa9d251"
-    },
-    {
       "bytes": 51902,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/31/31320264cfc0915613f91532a1d34bd36c16aa8301e07508e11b6738ade9a3af",
@@ -56053,6 +55699,12 @@
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/43/4347a9f31312b20c41001fa3c2f26695664d3c4e1ac81af157cc2cf7dfa97ddd",
       "sha256": "4347a9f31312b20c41001fa3c2f26695664d3c4e1ac81af157cc2cf7dfa97ddd"
+    },
+    {
+      "bytes": 116738,
+      "kind": "SCANCODE_FINDINGS",
+      "path": "blobs/sha256/43/43676e3bfbd1e8044dbcd066c284aebeeaec817cd4c67d9c3c3025bd8e95e937",
+      "sha256": "43676e3bfbd1e8044dbcd066c284aebeeaec817cd4c67d9c3c3025bd8e95e937"
     },
     {
       "bytes": 33250,
@@ -56451,12 +56103,6 @@
       "sha256": "5da736fe602cc6b7dc06ce47e1275698d0ca6ad8c4ce426a5693f355433c8dd0"
     },
     {
-      "bytes": 62222,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/5e/5e0b89ca476cca841dc06a23f1b1043765c28d22c9ff5f282ce3ece954ffe71e",
-      "sha256": "5e0b89ca476cca841dc06a23f1b1043765c28d22c9ff5f282ce3ece954ffe71e"
-    },
-    {
       "bytes": 54333,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/5e/5e3b250d0ce37b0307c009426c13ca38626251e95b25de2bc32f5675c4fd655a",
@@ -56533,12 +56179,6 @@
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/63/630d954750c203f8be6a5f2b801404f6a4a5da36ae8bd38eb8cc92773119d826",
       "sha256": "630d954750c203f8be6a5f2b801404f6a4a5da36ae8bd38eb8cc92773119d826"
-    },
-    {
-      "bytes": 68150,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/63/63b549f6abc69e798ad00c3e07a50de761b7151b31d91ba465542d576c48f183",
-      "sha256": "63b549f6abc69e798ad00c3e07a50de761b7151b31d91ba465542d576c48f183"
     },
     {
       "bytes": 16983,
@@ -58359,12 +57999,6 @@
       "sha256": "d71e1f9f5f52df4a397abcafbc983080ca08547c99d6a16a89d099d5d80b6f1e"
     },
     {
-      "bytes": 63937,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/d7/d74e16c303bd6a4f0439db128f3256e23302f87634e85050e286de6db14b7715",
-      "sha256": "d74e16c303bd6a4f0439db128f3256e23302f87634e85050e286de6db14b7715"
-    },
-    {
       "bytes": 16983,
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/d7/d753f3f113e3c759fe8da80f704f0fff165bda79166f2a49943d48f1eeadcc1c",
@@ -58483,12 +58117,6 @@
       "kind": "SCANCODE_FINDINGS",
       "path": "blobs/sha256/e0/e0059396d9448ab7e1673332b202d3614b8ac4900d0e0a9b717122ba8d515746",
       "sha256": "e0059396d9448ab7e1673332b202d3614b8ac4900d0e0a9b717122ba8d515746"
-    },
-    {
-      "bytes": 75451,
-      "kind": "SCANCODE_FINDINGS",
-      "path": "blobs/sha256/e0/e061a82b836d930f26487fc66766656050beed7625345a52439730515006fd66",
-      "sha256": "e061a82b836d930f26487fc66766656050beed7625345a52439730515006fd66"
     },
     {
       "bytes": 49071,
@@ -58929,14 +58557,14 @@
       "sha256": "ffbc20b0fff385f75b337760bd14b7fd66380c9e0ff5b0186a65f08255c279e9"
     }
   ],
-  "corpusRoot": "d2d28afd343b2a5eda88644fa85f070169402ef97cb80d1e4546e5dc23d0b6eb",
+  "corpusRoot": "c946fad11baff05444ba7a20756de225142409b7e22854a48bc4c9442b155b3d",
   "generatedBy": {
     "path": "util/acquire-npm-package-evidence.mjs",
     "version": "1.0.0"
   },
   "lockfile": {
     "path": "package-lock.json",
-    "sha256": "cf2d314241725cc46539f1d16804c1b8a2a82e13a9b9fd52b7deb1bb2a84da0f",
+    "sha256": "02ce4308ff30b7053c57f8ba8da3e61d18ebf0fb4aa918b59a98fc6a246fa04f",
     "version": 3
   },
   "occurrences": [
@@ -62371,7 +61999,7 @@
       }
     },
     {
-      "artifactId": "a744edef69b288088d0b06ad2fab9797ad0dbdd9b15f1b1da5c246a14b09a229",
+      "artifactId": "fa01d7cb0ac23ccef372d9880bda4f6431499232412e2a3027a28a469ca815d3",
       "dependencyName": "argparse",
       "dependencyPath": "node_modules/argparse",
       "development": true,
@@ -63358,18 +62986,6 @@
       "artifactId": "7938ccfa18686dcf8d0b84eaa2b5c3f35e879c686ea040a7623c98d20ddfe241",
       "dependencyName": "espree",
       "dependencyPath": "node_modules/espree",
-      "development": true,
-      "optional": false,
-      "platformSelectors": {
-        "cpu": [],
-        "libc": [],
-        "os": []
-      }
-    },
-    {
-      "artifactId": "d107338bdadf17f271ab9e59f9177f7013b11f343ef24a748f2e7ad0ca98b02f",
-      "dependencyName": "esprima",
-      "dependencyPath": "node_modules/esprima",
       "development": true,
       "optional": false,
       "platformSelectors": {
@@ -64593,7 +64209,7 @@
       }
     },
     {
-      "artifactId": "d2f1c0f6180ee370ffb88ec2dce1520554621b4455f370c7df366825476d42c9",
+      "artifactId": "e584589a3f484c16927060968a1d8b684bcde65e9753ba8160f7b697fa395b3b",
       "dependencyName": "js-yaml",
       "dependencyPath": "node_modules/js-yaml",
       "development": true,
@@ -66853,7 +66469,7 @@
       }
     },
     {
-      "artifactId": "d8262f6a29068120a3d5d0617cb4261b3059f5f26c5529a18b2df608e4c0e847",
+      "artifactId": "d2c449ec198532cfe80b464adb70095a0ea49e75d42688115b628938936e1921",
       "dependencyName": "source-map-js",
       "dependencyPath": "node_modules/source-map-js",
       "development": true,
@@ -66916,18 +66532,6 @@
       "artifactId": "a5f5b267deae3aafd8a8c3844f2a050fb8984ace009b96a1d803aac7769a7f47",
       "dependencyName": "spdx-license-ids",
       "dependencyPath": "node_modules/spdx-license-ids",
-      "development": true,
-      "optional": false,
-      "platformSelectors": {
-        "cpu": [],
-        "libc": [],
-        "os": []
-      }
-    },
-    {
-      "artifactId": "aeb48ac4317335ad2e1b570b12a83caa980db218f6f88cae2aba8be4db4e34f9",
-      "dependencyName": "sprintf-js",
-      "dependencyPath": "node_modules/sprintf-js",
       "development": true,
       "optional": false,
       "platformSelectors": {
@@ -67681,30 +67285,6 @@
       }
     },
     {
-      "artifactId": "fa01d7cb0ac23ccef372d9880bda4f6431499232412e2a3027a28a469ca815d3",
-      "dependencyName": "argparse",
-      "dependencyPath": "node_modules/xmlbuilder2/node_modules/argparse",
-      "development": true,
-      "optional": false,
-      "platformSelectors": {
-        "cpu": [],
-        "libc": [],
-        "os": []
-      }
-    },
-    {
-      "artifactId": "e584589a3f484c16927060968a1d8b684bcde65e9753ba8160f7b697fa395b3b",
-      "dependencyName": "js-yaml",
-      "dependencyPath": "node_modules/xmlbuilder2/node_modules/js-yaml",
-      "development": true,
-      "optional": false,
-      "platformSelectors": {
-        "cpu": [],
-        "libc": [],
-        "os": []
-      }
-    },
-    {
       "artifactId": "a323b54498658c26adea6c25c9c03fc83878f3d30400060f51b3cb7e7f5e8f81",
       "dependencyName": "xmlchars",
       "dependencyPath": "node_modules/xmlchars",
@@ -67839,14 +67419,14 @@
   ],
   "schemaVersion": 1,
   "summary": {
-    "archiveVerifiedCount": 654,
-    "artifactCount": 654,
-    "blobCount": 3185,
-    "occurrenceCount": 713,
-    "provenanceNotPublishedCount": 457,
+    "archiveVerifiedCount": 650,
+    "artifactCount": 650,
+    "blobCount": 3163,
+    "occurrenceCount": 709,
+    "provenanceNotPublishedCount": 453,
     "provenanceVerifiedCount": 197,
-    "registrySignatureVerifiedCount": 654,
-    "retainedBytes": 66481618,
-    "scanVerifiedCount": 654
+    "registrySignatureVerifiedCount": 650,
+    "retainedBytes": 66158207,
+    "scanVerifiedCount": 650
   }
 }

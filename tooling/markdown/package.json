@@ -2,6 +2,11 @@
   "name": "owlapi-markdown-tooling",
   "version": "1.0.0",
   "private": true,
+  "overrides": {
+    "micromark-extension-math": {
+      "katex": ">=0.18.2 <1"
+    }
+  },
   "devDependencies": {
     "@hadden-industries/markdown-quality": "1.0.3"
   }

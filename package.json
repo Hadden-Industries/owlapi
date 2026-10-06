@@ -133,7 +133,7 @@
     "lint:source-python": "npm run tools:check && npm run lint:js && npm run lint:py",
     "format:source-python:check": "npm run tools:check && npm run format:source:check && npm run format:py:check",
     "test:quality:source": "npm test -- --runInBand --runTestsByPath scripts/repository-python-tools.test.js scripts/source-policy.test.js",
-    "test:markdown": "node --test scripts/check-markdown-candidate.probes.mjs",
+    "test:markdown": "node --test scripts/check-markdown-candidate.probes.mjs scripts/dependency-security-markdown.probes.mjs",
     "install:markdown": "npm ci --prefix tooling/markdown --ignore-scripts --no-audit --no-fund"
   },
   "dependencies": {
@@ -168,6 +168,12 @@
     "tar": "7.5.22",
     "vite": "8.3.2",
     "yaml": "2.9.1"
+  },
+  "overrides": {
+    "@istanbuljs/load-nyc-config@1.1.0": {
+      "js-yaml": ">=4.3.2 <5"
+    },
+    "source-map-js": ">=1.2.2 <2"
   },
   "repository": {
     "type": "git",
