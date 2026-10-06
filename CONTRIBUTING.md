@@ -52,7 +52,7 @@ Ruff checks and formats Python development files with stable rules and a 79-colu
 Generated API views, upstream fixtures, and historical evidence retain their owning generators and byte checks.
 
 Install the Node/npm versions declared in `package.json`, then run `npm ci`.
-For Markdown work, select Node 24.21.0 and explicitly run `npm run markdown:install`; canonical checks never install dependencies.
+For Markdown work, select Node 24.21.0 and explicitly run `npm run install:markdown`; canonical checks never install dependencies.
 Install CPython **3.14.7** and provide its absolute executable path during the explicit development-tool setup; for example, in PowerShell:
 
 ```powershell

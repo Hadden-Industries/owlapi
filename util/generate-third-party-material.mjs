@@ -417,7 +417,7 @@ const createQualityToolingFacts = () =>
     {
       id: "shared-markdown-quality-development-tool",
       name: "Shared Markdown quality development capability",
-      versionOrRevision: "0.1.0-alpha.4",
+      versionOrRevision: "1.0.3",
       license: "AGPL-3.0-only",
       source: "Hadden-Industries/markdown-quality",
       files: [

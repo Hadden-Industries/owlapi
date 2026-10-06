@@ -2463,7 +2463,7 @@ bundle licence and notice review.
     );
     expect(markdownTool).toMatchObject({
       relationship: "DEVELOPMENT_ONLY",
-      versionOrRevision: "0.1.0-alpha.4",
+      versionOrRevision: "1.0.3",
       packageTarballScope: false,
       deployedApplicationScope: "NOT_APPLICABLE",
     });

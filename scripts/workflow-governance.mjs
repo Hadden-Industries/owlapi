@@ -1863,7 +1863,7 @@ const validateQualityTooling = (workflows, violations) => {
       );
       if (["ci.yml", "release.yml"].includes(file)) {
         const markdownInstalls = list.filter(
-          (step) => step.run === "npm run markdown:install",
+          (step) => step.run === "npm run install:markdown",
         );
         if (id === "source_node_22") {
           add(

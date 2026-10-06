@@ -42,7 +42,7 @@ describe("repository workflow governance", () => {
         mutateWorkflow("ci.yml", (document) => {
           const steps = document.getIn(["jobs", "source_node_24", "steps"]);
           const index = steps.items.findIndex(
-            (step) => step.get("run") === "npm run markdown:install",
+            (step) => step.get("run") === "npm run install:markdown",
           );
           const install = steps.items[index];
           if (mutation === "skip") install.set("if", "false");
