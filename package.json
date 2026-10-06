@@ -134,7 +134,7 @@
     "format:source-python:check": "npm run tools:check && npm run format:source:check && npm run format:py:check",
     "test:quality:source": "npm test -- --runInBand --runTestsByPath scripts/repository-python-tools.test.js scripts/source-policy.test.js",
     "test:markdown": "node --test scripts/check-markdown-candidate.probes.mjs",
-    "markdown:install": "npm ci --prefix tooling/markdown --ignore-scripts --no-audit --no-fund"
+    "install:markdown": "npm ci --prefix tooling/markdown --ignore-scripts --no-audit --no-fund"
   },
   "dependencies": {
     "@hyperjump/uri": "1.3.6",

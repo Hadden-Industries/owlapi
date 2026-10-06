@@ -347,14 +347,14 @@ No delivery date was specified, so the appropriate timeline is a **sequence of r
 
 The **specific recommended owner disposition for `FastSetSimple`** is:
 
-> **CONDITIONAL APPROVAL — LGPLv3 §4(d)(0).**  
+> **CONDITIONAL APPROVAL — LGPLv3 §4(d)(0).**\
 > The explicit `LGPL-2.1-or-later` header authorises exercising the LGPLv3 later-version option.
 > Treat `owlapi-tools-5.5.1.jar` conservatively as containing an LGPLv3 §4 Combined Work because pinned OWLAPI classes directly use/instantiate the FastSet facility. Do not rely solely on LGPLv3 §5 or on physical JAR replaceability. Retain the proposed uncombined `FastSetSimple`/`AbstractFastSet`/`FastSet` source and class files as supplementary §5/audit material, but require the complete reactor/application source and a usable §4(d)(0) recombination recipe. Public native upload is approved only after the prominent §4 notice, GPLv3/LGPLv3 texts, corresponding source/application code, recombination capability and absence of conflicting restrictions are verified against the exact candidate.
 > No licensor contact is indicated merely to exercise the explicit “or later” option. fileciteturn2file0 citeturn14search0turn14search3
 
 The **specific recommended owner disposition for OBO** is:
 
-> **APPROVE WITH DOCUMENTED RESIDUAL NOTICE/PROVENANCE GAP.**  
+> **APPROVE WITH DOCUMENTED RESIDUAL NOTICE/PROVENANCE GAP.**\
 > Treat the original upstream POM change at `302bc7dd03a1f8e256085a3a314c96ef55cd0d9c` as strong contemporaneous evidence that the OBO project was offered under standard BSD-3-Clause.
 > Preserve that declaration, the full BSD-3-Clause conditions/disclaimer, every actual supplier notice and explicit upstream provenance. Record that the historical source/archive review found no component-specific named BSD copyright-holder notice and therefore no downstream holder/year has been inferred.
 > Do not substitute an OWLAPI wrapper notice, the W3C CSS notice, `hdietze@lbl.gov`, LBNL, the Regents of the University of California or `BSD-3-Clause-LBNL` as the missing attribution.

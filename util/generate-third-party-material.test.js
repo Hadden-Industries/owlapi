@@ -80,7 +80,7 @@ describe("third-party-material prospective generation", () => {
       );
       expect(shared).toMatchObject({
         relationship: "DEVELOPMENT_ONLY",
-        versionOrRevision: "0.1.0-alpha.4",
+        versionOrRevision: "1.0.3",
         sourceUrl: "https://github.com/Hadden-Industries/markdown-quality",
         packageTarballScope: false,
       });
