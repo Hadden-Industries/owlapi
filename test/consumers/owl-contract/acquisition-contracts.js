@@ -90,7 +90,7 @@ export const exercisePublicErrors = (owl) => {
     });
     requireContract(
       error instanceof Error &&
-        error.name === name &&
+        error instanceof owl[name] &&
         error.code === code &&
         error.cause === cause &&
         error.documentIRI === documentIRI &&
