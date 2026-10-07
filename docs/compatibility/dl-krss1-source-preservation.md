@@ -116,7 +116,10 @@ No checker defaults or policies were changed.
   This record does not predeclare their results.
 - The existing CI matrix supplies supported Node 22 and Linux coverage; no local Node 22 result is claimed.
 
-Raw logs and manifests are retained under `.release/dl-krss1-source-preservation-01/` and `-02/` for this task, with a durable copy at `C:/Users/maksy/.hi/w/e/task-evidence/2026-10-01-owlapi-dl-krss1`.
+Raw logs and manifests were created under `.release/dl-krss1-source-preservation-01/` and `-02/`, with the original durable copy at `C:/Users/maksy/.hi/w/e/task-evidence/2026-10-01-owlapi-dl-krss1`.
+The 2026-10-07 cleanup recycled attempts `-01/`, `-02/` and `-03/` after verifying preservation of their raw results, candidate bytes, reproduction inputs and review-clone history.
+All former attempt paths in this record map to retained content through `preservation-manifest.json.gz` under `C:/Users/maksy/.hi/w/e/task-artifacts/owlapi-release-residue-20261007-cleanup`; supplemental content is in `supplemental-evidence.zip` there.
+The completed cleanup and evidence readback are recorded in [HISEW issue #131](https://github.com/Hadden-Industries/software-engineering-workflow/issues/131).
 The reviews were static, read-only inspections, not independent executions of the reported tests.
 The required final profile contains Jest, boundary, lint, format, release-gate and workflow-governance checks; it is scheduled through HISEW rather than repeated solely for a receipt.
 
