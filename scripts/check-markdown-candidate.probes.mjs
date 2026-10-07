@@ -7,8 +7,10 @@ import {
   writeFileSync,
   existsSync,
   readFileSync,
+  symlinkSync,
 } from "node:fs";
-import { join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
+import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import { tmpdir } from "node:os";
 import {
@@ -37,6 +39,80 @@ const policy = {
   links: { localFiles: true, rootRelative: "reject" },
   layout: { endOfLine: "lf", tabWidth: 2 },
 };
+
+test("candidate validation follows the public schema export across package layouts", async () => {
+  const paths = fixture();
+  writeFileSync(
+    join(paths.sourceRoot, "README.md"),
+    "# Candidate\n\nSafe prose.\n",
+  );
+  const staging = stageCandidate(paths);
+  const actual = await checkCandidate({
+    outputRoot: paths.outputRoot,
+    cli,
+    staging,
+  });
+  assert.equal(actual.exitCode, 0);
+
+  const require = createRequire(cli);
+  const packageRoot = join(dirname(paths.trustedRoot), "installed-package");
+  mkdirSync(join(packageRoot, "src"), { recursive: true });
+  mkdirSync(join(packageRoot, "public"));
+  mkdirSync(join(packageRoot, "node_modules"));
+  symlinkSync(
+    dirname(require.resolve("ajv/package.json")),
+    join(packageRoot, "node_modules/ajv"),
+    "junction",
+  );
+  writeFileSync(
+    join(packageRoot, "package.json"),
+    JSON.stringify({
+      ...actual.trustedPackage,
+      type: "module",
+      exports: { "./result-schema": "./public/result.json" },
+    }),
+  );
+  const exportedSchema = join(packageRoot, "public/result.json");
+  writeFileSync(
+    exportedSchema,
+    readFileSync(
+      require.resolve("@hadden-industries/markdown-quality/result-schema"),
+    ),
+  );
+  const relocatedCli = join(packageRoot, "src/cli.js");
+  writeFileSync(
+    relocatedCli,
+    `process.stdout.write(${JSON.stringify(JSON.stringify(actual.report) + "\n")});\n`,
+  );
+  assert.equal(
+    existsSync(join(packageRoot, "schemas/result.schema.json")),
+    false,
+  );
+  const relocated = await checkCandidate({
+    outputRoot: paths.outputRoot,
+    cli: relocatedCli,
+    staging,
+  });
+  assert.deepEqual(relocated.report, actual.report);
+
+  // A package-owned rejection must remain a rejection after relocation.
+  writeFileSync(
+    exportedSchema,
+    JSON.stringify({
+      type: "object",
+      properties: { unavailableField: { type: "string" } },
+      required: ["unavailableField"],
+    }),
+  );
+  await assert.rejects(
+    checkCandidate({
+      outputRoot: paths.outputRoot,
+      cli: relocatedCli,
+      staging,
+    }),
+    /Invalid or inconsistent canonical checker result/,
+  );
+});
 function fixture() {
   const root = mkdtempSync(join(artifacts, "candidate-staging-test-"));
   const sourceRoot = join(root, "candidate"),
