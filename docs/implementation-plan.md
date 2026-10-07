@@ -1,5 +1,9 @@
 # Extract and Publish the `owlapi` Core Module from WebVOWL
 
+> **5 October 2026 deferred corrective track:** the [profile performance and default-behavior repair plan](plans/2026-10-05-profile-performance-and-default-behavior-repair-plan.md) records the library-owned part of the WebVOWL loading-regression split.
+> WebVOWL's companion repair can proceed with installed RC.1; it is not a producer release prerequisite.
+> This new draft selects neither implementation nor release scope and does not amend existing public defaults or configuration.
+
 > **4 October 2026 rc.2 and release-independence amendment:** the next feature candidate is `@hadden-industries/owlapi@0.1.0-rc.2`, before stable `0.1.0`, under the integrated [Java-parity plan](plans/0.1.0-rc.2-java-parity.md).
 > It adds the selected query/search, change/transformation, Manchester rendering, Turtle/OWL/XML storage, EL/QL/RL profile and syntactic-locality programme to the existing Phase 21/22 foundations.
 > For every owlapi release, including stable and corrective releases, WebVOWL and Universal Ontology acceptance, adoption, migration, deployment and sign-off are non-blocking; each application may incorporate functionality at its own pace.

@@ -1,5 +1,11 @@
 # Security and dependency consolidation implementation plan
 
+Evidence retention update, 2026-10-06: the `.release/security-dependency-refresh/` paths below describe the historical task staging layout.
+Required evidence now resides under the selected external HISEW evidence root: `task-artifacts/owlapi-security-refresh-20260929-final-evidence/` contains the candidate tarball, CodeQL triage, reviews, measurements and original retention manifest; `task-artifacts/owlapi-ci-timeout-diagnosis-20260929/` contains the later CI diagnosis evidence.
+`task-artifacts/owlapi-security-refresh-20261006-cleanup/` contains `supplemental-evidence.zip` for nested raw results and reproduction inputs, the verified preservation manifests, and the cleanup record.
+The baseline source and evidence snapshots remain reconstructible from Git commit `054ad8154dcbdc11a3c1c60d081db666dd3c2c9c`; the cleanup manifest maps each former staging file to retained evidence, verified Git content or its reconstructible resource group.
+Use these retained identities when resolving the historical paths; the staging directory was recycled on 2026-10-06 after preservation readback, with its original path confirmed absent and all retained evidence verified again.
+
 Status: **ACCEPTED FOR IMPLEMENTATION — in progress on local `main`.**
 
 The owner said “Proceed with implementation” on 2026-09-29.
