@@ -16,6 +16,12 @@ The initial committed source review covers UO `e2b7cd888a5d38bb32e7c42853c0b1b6d
 The UO advancement from the planning snapshot changed development manifest/lock evidence, with unchanged relevant OWL call sites.
 Local consumer working copies are not qualification inputs.
 
+The 7 October 2026 inventory review advances the source bindings to UO `45fce47ce0b226cf4fd25b152f482758eeb268b8` and WebVOWL `f3cb7b19fcb6f334889d86532eb834f9f3b5f86a`.
+Only UO's root package manifest and WebVOWL's root and VOWL package manifests changed within the captured seams.
+UO changed development/documentation commands; WebVOWL changed development dependencies and the runtime `@hyperjump/uri` dependency from `1.3.6` to `1.3.8`.
+The OwlAPI dependency declarations and all inventoried OWL interface code remain unchanged.
+This refresh changes source identities and their derived inventory digest; it preserves the 68 producer assertions and the strict rejection of future unreviewed source changes.
+
 The inventory consists of 68 native named assertions: eight boundary groups and 60 explicit public model shape cases.
 The reviewed names live in `test/consumers/owl-contract/public-model-cases.js`; cases spell out supplied operands and expected public fields.
 Each owning probe must fail when its promised public value changes.
