@@ -221,7 +221,7 @@ test("qualification consumes one finite profile with the existing OwlAPI observa
   const profile = readExecutionProfile({ root: repository });
   assert.equal(profile.samples, 6);
   assert.equal(profile.checkerMs, 30000);
-  assert.equal(profile.memoryBytes, 512 * 1024 * 1024);
+  assert.equal(profile.memoryBytes, 1024 * 1024 * 1024);
   assert.ok(
     Object.values(profile.limits).every(
       (value) => Number.isSafeInteger(value) && value > 0,

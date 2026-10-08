@@ -36,13 +36,17 @@ The owner discarded the unrelated performance-plan edit before final qualificati
 
 ## One trusted profile and shared workflow
 
-`.markdown-quality-execution.json` owns six samples, 30,000 ms checker latency, a 180,000 ms window and 512 MiB observed memory.
+`.markdown-quality-execution.json` owns six samples, 30,000 ms checker latency, a 180,000 ms window and 1,024 MiB observed memory.
 It also bounds Node old space, framing, staging and analyzer limits.
-Node old space and the declared worker heap limit are both 112 MiB.
+Node old space and the declared worker heap limit are both 128 MiB.
 [Node's inherited command-line old-space flag](https://nodejs.org/docs/latest-v24.x/api/worker_threads.html#new-workerfilename-options) overrides the worker setting in the current producer, so matching declarations avoid claiming an independently enforced smaller worker heap.
 The initial 256 MiB cap and the later 128 MiB cap failed the shared local memory window, the latter after five completed samples.
 Read-only staged diagnostics failed analysis at 64/96 MiB and completed at 112 MiB without errors or writes.
-Those diagnostics are not qualification receipts; the frozen profile still requires its own complete observation window under the retained 512 MiB budget.
+Those diagnostics are not qualification receipts.
+The matching 112 MiB profile passed six local and hosted Windows samples under the former 512 MiB target; both hosted Linux positive and negative jobs then stopped at the resource guard before a complete sample, without retaining a numeric peak.
+On 2026-10-08 the owner separately authorized the 1,024 MiB target and matching 128 MiB Node/worker caps.
+The profile has one shared memory value, so the revised target applies to both OS jobs.
+These changed trust bytes require fresh qualification and exact bootstrap, dispatch and result acceptance; the larger limit is not a demonstrated pass.
 `.node-version` declares 24.21.0; the existing `.python-version` declares 3.14.7.
 The isolated core/native archives and lock are explicit trusted inputs.
 Changing a runtime, policy, profile, lock or archive invalidates its qualification identity.
@@ -70,7 +74,7 @@ The independent installed contract and browser checks must qualify these updated
 
 The UO preparation established useful public-bin/schema and logical-path techniques.
 Its later adoption demonstrates the shared contracts, but its trusted inputs, 1,024 MiB budget, governance exceptions and receipts do not accept OwlAPI.
-OwlAPI retains its own 512 MiB target and required completion checks.
+OwlAPI's owner separately approved its 1,024 MiB target after the failed Linux observations; required completion checks remain.
 
 Cutover acceptance requires review of this exact policy/bootstrap, owner acceptance of the immutable trusted inputs, local full HISEW qualification, both hosted OS positive windows, and a real missing-link negative whose candidate policy/profile/scripts cannot suppress the finding or execute code.
 Bootstrap/operational failure is not that negative proof.
